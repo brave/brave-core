@@ -26,6 +26,7 @@ bool HasTreeTabDescendants(const tabs::TabInterface* tab);
 bool IsTreeTabNodeCollapsed(const tabs::TabInterface* tab);
 std::u16string GetTreeTabToggleButtonLabel(const tabs::TabInterface* tab);
 void ToggleTreeTabNodeCollapsed(tabs::TabInterface* tab);
+void AddTreeTabDescendantsToSelection(tabs::TabInterface* tab);
 }  // namespace tree_tab_view_utils
 
 #include <chrome/browser/ui/views/tabs/common/tab_view.cc>
@@ -106,5 +107,20 @@ void TabView::MaybeInitTreeToggleButton() {
 
 void TabView::OnTreeToggleButtonPressed() {
   tree_tab_view_utils::ToggleTreeTabNodeCollapsed(
+      const_cast<tabs::TabInterface*>(GetTabInterface()));
+}
+
+void TabView::MaybeSelectTreeTabDescendants(const ui::MouseEvent& event) {
+  // Only on a plain left click. Modified clicks edit the selection as usual.
+  if (!event.IsOnlyLeftMouseButton() || event.IsShiftDown() ||
+      IsSelectionModifierDown(event)) {
+    return;
+  }
+  // Not a vertical tab, or tree tabs are disabled.
+  if (!tree_toggle_button_) {
+    return;
+  }
+
+  tree_tab_view_utils::AddTreeTabDescendantsToSelection(
       const_cast<tabs::TabInterface*>(GetTabInterface()));
 }

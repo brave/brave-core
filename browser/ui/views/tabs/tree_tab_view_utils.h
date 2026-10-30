@@ -63,6 +63,10 @@ std::u16string GetTreeTabToggleButtonLabel(const tabs::TabInterface* tab);
 // Collapses or expands the tree tab node directly wrapping |tab|.
 void ToggleTreeTabNodeCollapsed(tabs::TabInterface* tab);
 
+// Adds the tree tab descendants of |tab| to the selection if |tab| is
+// selected.
+void AddTreeTabDescendantsToSelection(tabs::TabInterface* tab);
+
 }  // namespace tree_tab_view_utils
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_TREE_TAB_VIEW_UTILS_H_

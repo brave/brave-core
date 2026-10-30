@@ -21,3 +21,17 @@ substitutions:
       line: 'alert_indicator_->OnParentTabButtonColorChanged();'
       code: |2-
           UpdateTreeToggleButton();
+
+  - description: |-
+      Select tree tab descendants in TabView::OnMousePressed() before
+      initializing the drag.
+
+      The drag reads the selection when it's initialized, so dragging a tree
+      tab parent moves its subtree.
+    regex:
+      re_pattern:
+        '(bool TabView::OnMousePressed\(.*?\n)((?:\s*//[^\n]*\n)*\s*controller->GetDragHandler\(\)\.InitializeDrag\()'
+      re_flags: [DOTALL]
+      replace: |-
+        \1    MaybeSelectTreeTabDescendants(event);
+        \2

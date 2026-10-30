@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <memory>
+#include <vector>
 
 #include "base/command_line.h"
 #include "base/location.h"
@@ -19,6 +20,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/split_tab_metrics.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/tabs/vertical_tab_strip_state_controller.h"
@@ -345,4 +347,105 @@ IN_PROC_BROWSER_TEST_F(UpstreamTreeTabsBrowserTest,
   ASSERT_TRUE(tab->GetGroup());
   model().RemoveFromGroup({model().GetIndexOfTab(tab)});
   WaitForViewModelSynced();
+}
+
+IN_PROC_BROWSER_TEST_F(UpstreamTreeTabsBrowserTest,
+                       PressingTreeParentSelectsDescendants) {
+  CreateTree();
+  model().ActivateTabAt(3);
+  LayoutNow();
+
+  // Pressing a tree parent selects its descendants as well, so that dragging
+  // it moves the whole subtree.
+  TabView* tab_view = GetTabViewAt(0);
+  const gfx::PointF point(tab_view->width() / 2, tab_view->height() / 2);
+  static_cast<views::View*>(tab_view)->OnMousePressed(ui::MouseEvent(
+      ui::EventType::kMousePressed, point, point, base::TimeTicks::Now(),
+      ui::EF_LEFT_MOUSE_BUTTON, ui::EF_LEFT_MOUSE_BUTTON));
+  EXPECT_EQ(0, model().active_index());
+  EXPECT_TRUE(model().IsTabSelected(0));
+  EXPECT_TRUE(model().IsTabSelected(1));
+  EXPECT_TRUE(model().IsTabSelected(2));
+  EXPECT_FALSE(model().IsTabSelected(3));
+
+  // Releasing without dragging selects the tab only.
+  static_cast<views::View*>(tab_view)->OnMouseReleased(ui::MouseEvent(
+      ui::EventType::kMouseReleased, point, point, base::TimeTicks::Now(),
+      ui::EF_LEFT_MOUSE_BUTTON, ui::EF_LEFT_MOUSE_BUTTON));
+  EXPECT_TRUE(model().IsTabSelected(0));
+  EXPECT_FALSE(model().IsTabSelected(1));
+  EXPECT_FALSE(model().IsTabSelected(2));
+
+  // A modified click edits the selection as usual.
+  model().ActivateTabAt(3);
+  static_cast<views::View*>(tab_view)->OnMousePressed(ui::MouseEvent(
+      ui::EventType::kMousePressed, point, point, base::TimeTicks::Now(),
+      ui::EF_LEFT_MOUSE_BUTTON | ui::EF_PLATFORM_ACCELERATOR,
+      ui::EF_LEFT_MOUSE_BUTTON));
+  static_cast<views::View*>(tab_view)->OnMouseReleased(ui::MouseEvent(
+      ui::EventType::kMouseReleased, point, point, base::TimeTicks::Now(),
+      ui::EF_LEFT_MOUSE_BUTTON | ui::EF_PLATFORM_ACCELERATOR,
+      ui::EF_LEFT_MOUSE_BUTTON));
+  EXPECT_TRUE(model().IsTabSelected(0));
+  EXPECT_FALSE(model().IsTabSelected(1));
+  EXPECT_FALSE(model().IsTabSelected(2));
+}
+
+// Moving the selected subtree, as dragging does, keeps it nested and the view
+// model in sync.
+IN_PROC_BROWSER_TEST_F(UpstreamTreeTabsBrowserTest, MoveSelectedSubtree) {
+  CreateTree();
+  std::vector<tabs::TabInterface*> tabs;
+  for (int i = 0; i < model().count(); ++i) {
+    tabs.push_back(model().GetTabAtIndex(i));
+  }
+  model().ActivateTabAt(1);
+  model().SelectTabAt(2);
+  ASSERT_TRUE(model().IsTabSelected(1));
+  ASSERT_TRUE(model().IsTabSelected(2));
+
+  // Move tab 1 and 2 to the end.
+  model().MoveSelectedTabsTo(2, std::nullopt);
+  WaitForViewModelSynced();
+  EXPECT_EQ(tabs[0], model().GetTabAtIndex(0));
+  EXPECT_EQ(tabs[3], model().GetTabAtIndex(1));
+  EXPECT_EQ(tabs[1], model().GetTabAtIndex(2));
+  EXPECT_EQ(tabs[2], model().GetTabAtIndex(3));
+  EXPECT_EQ(GetTreeTabNodeAt(2).level() + 1, GetTreeTabNodeAt(3).level());
+  EXPECT_LT(GetTabViewAt(2)->x(), GetTabViewAt(3)->x());
+}
+
+namespace {
+
+// Returns true if every unpinned tab is wrapped by a tree tab node.
+bool AreUnpinnedTabsInTree(TabStripModel* model) {
+  for (int i = model->IndexOfFirstNonPinnedTab(); i < model->count(); ++i) {
+    if (!tabs::TreeTabNodeTabCollection::GetNearestTreeTabNodeCollection(
+            model->GetTabAtIndex(i))) {
+      return false;
+    }
+  }
+  return true;
+}
+
+}  // namespace
+
+// Detaching a split in a group, as dragging it out of the window does.
+IN_PROC_BROWSER_TEST_F(UpstreamTreeTabsBrowserTest, DetachSplitInGroup) {
+  CreateTree();
+  AddTabWithoutOpener();
+  AddTabWithoutOpener();
+  ASSERT_EQ(6, model().count());
+  model().ActivateTabAt(4);
+  model().AddToNewSplit({5}, {},
+                        split_tabs::SplitTabCreatedSource::kTabContextMenu);
+  ASSERT_TRUE(model().GetTabAtIndex(4)->IsSplit());
+  model().AddToNewGroup({3, 4, 5});
+  ASSERT_TRUE(model().GetTabAtIndex(4)->GetGroup());
+  ASSERT_TRUE(model().GetTabAtIndex(4)->IsSplit());
+  EXPECT_TRUE(AreUnpinnedTabsInTree(&model()));
+
+  auto detached = model().DetachTabsAndCollectionsForInsertion({4, 5});
+  EXPECT_EQ(1u, detached.size());
+  EXPECT_TRUE(AreUnpinnedTabsInTree(&model()));
 }

@@ -121,13 +121,19 @@ source_set("interactive_ui_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-  sources = [ "vertical_tab_strip_interactive_ui_tests.cc" ]
+  sources = [
+    "upstream_tree_tabs_interactive_uitest.cc",
+    "vertical_tab_strip_interactive_ui_tests.cc",
+  ]
 
   deps = [
     ":vertical_tabs",
     "//brave/browser/ui",
+    "//brave/browser/ui/tabs:tab_strip",
     "//brave/browser/ui/tabs:tabs_public",
+    "//brave/browser/ui/tabs:tree_tab",
     "//brave/browser/ui/views/frame",
+    "//brave/components/tabs",
     "//chrome/browser",
     "//chrome/browser/ui/exclusive_access",
     "//chrome/test:test_support_ui",

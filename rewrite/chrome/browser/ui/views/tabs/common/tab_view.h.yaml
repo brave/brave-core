@@ -25,5 +25,8 @@ substitutions:
       code: |2
           void MaybeInitTreeToggleButton();
           void OnTreeToggleButtonPressed();
+          // Adds tree tab descendants of this tab to the selection on a plain
+          // left mouse press, so that dragging it moves its subtree.
+          void MaybeSelectTreeTabDescendants(const ui::MouseEvent& event);
           raw_ptr<views::ImageButton> tree_toggle_button_ = nullptr;
 

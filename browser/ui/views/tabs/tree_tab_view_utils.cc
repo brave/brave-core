@@ -7,6 +7,8 @@
 
 #include <algorithm>
 #include <memory>
+#include <unordered_set>
+#include <utility>
 #include <variant>
 
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
@@ -16,6 +18,7 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/tabs/tab_strip_model_selection_state.h"
 #include "chrome/browser/ui/views/tabs/common/split_tab_view.h"
 #include "chrome/browser/ui/views/tabs/common/tab_collection_node.h"
 #include "chrome/browser/ui/views/tabs/common/tab_group_view.h"
@@ -173,6 +176,31 @@ void ToggleTreeTabNodeCollapsed(tabs::TabInterface* tab) {
     return;
   }
   model->SetTreeTabNodeCollapsed(node->id(), !node->collapsed());
+}
+
+void AddTreeTabDescendantsToSelection(tabs::TabInterface* tab) {
+  BraveTabStripModel* model = GetBraveTabStripModel(tab);
+  if (!model || !GetTreeTabNodeForTab(tab)) {
+    return;
+  }
+
+  // Only when |tab| is selected, e.g. not when the press deselected it.
+  const int index = model->GetIndexOfTab(tab);
+  if (index == TabStripModel::kNoTab || !model->IsTabSelected(index)) {
+    return;
+  }
+
+  std::unordered_set<tabs::TabInterface*> descendants;
+  for (int descendant_index : model->GetTreeTabDescendantIndices(index)) {
+    descendants.insert(model->GetTabAtIndex(descendant_index));
+  }
+  if (descendants.empty()) {
+    return;
+  }
+
+  tabs::TabStripModelSelectionState new_selection = model->selection_model();
+  new_selection.AppendTabsToSelection(descendants);
+  model->SetSelectionFromModel(std::move(new_selection));
 }
 
 }  // namespace tree_tab_view_utils
