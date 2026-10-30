@@ -75,8 +75,8 @@ void PsstLogService::AddNativeEntry(mojom::PsstLogLevel level,
                                     const GURL& url,
                                     std::string_view message,
                                     std::optional<base::DictValue> data) {
-  AddEntry(mojom::PsstLogSource::kNative, level, tab_id, /*frame_token=*/std::nullopt,
-           url, message, std::move(data));
+  AddEntry(mojom::PsstLogSource::kNative, level, tab_id,
+           /*frame_token=*/std::nullopt, url, message, std::move(data));
 }
 
 std::vector<mojom::PsstLogEntryPtr> PsstLogService::GetEntries() const {
