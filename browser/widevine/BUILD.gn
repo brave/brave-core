@@ -31,6 +31,7 @@ source_set("widevine") {
     "//components/pref_registry",
     "//components/prefs",
     "//components/subresource_filter/content/browser",
+    "//components/update_client",
     "//components/vector_icons",
     "//content/public/browser",
     "//content/public/common",
@@ -39,12 +40,24 @@ source_set("widevine") {
     "//ui/base",
   ]
 
+  if (!is_android) {
+    deps += [
+      "//chrome/browser/ui/browser_window",
+      "//chrome/browser/ui/tabs:tab_strip",
+    ]
+  }
+
   public_deps = [
+    "//brave/components/brave_drm",
+    "//components/component_updater",
     "//components/permissions",
+    "//content/public/browser",
     "//url",
   ]
 
   sources = [
+    "brave_drm_tab_helper.cc",
+    "brave_drm_tab_helper.h",
     "widevine_permission_request.cc",
     "widevine_permission_request.h",
     "widevine_utils.cc",
