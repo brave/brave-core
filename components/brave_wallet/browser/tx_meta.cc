@@ -59,7 +59,7 @@ base::DictValue TxMeta::ToValue() const {
   dict.Set("tx_hash", tx_hash_);
   if (dapp_origin_) {
     DCHECK(IsValidDappOrigin(*dapp_origin_));
-    dict.Set("origin", dapp_origin_->Serialize());
+    dict.Set("origin", dapp_origin_->GetURL().spec());
   }
   dict.Set("coin", static_cast<int>(GetCoinType()));
   dict.Set("chain_id", chain_id_);

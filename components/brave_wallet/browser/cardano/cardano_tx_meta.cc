@@ -113,7 +113,7 @@ mojom::TransactionInfoPtr CardanoTxMeta::ToTransactionInfo() const {
           : mojom::TransactionType::CardanoSendLovelace,
       std::vector<std::string>() /* tx_params */,
       std::vector<std::string>() /* tx_args */, created_time_, submitted_time_,
-      confirmed_time_, MakeOriginInfo(dapp_origin_), chain_id_,
+      confirmed_time_, MakeDappOriginInfo(dapp_origin_), chain_id_,
       std::nullopt /* effective_recipient */, false /* is_retriable */,
       swap_info_.Clone(), nullptr);
 }

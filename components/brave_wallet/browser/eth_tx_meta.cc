@@ -132,8 +132,8 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
               Uint256ValueToHex(tx_->value()), tx_->data()),
           max_priority_fee_per_gas, max_fee_per_gas)),
       status_, tx_type, tx_params, tx_args, created_time_, submitted_time_,
-      confirmed_time_, MakeOriginInfo(dapp_origin_), chain_id_, final_recipient,
-      IsRetriable(), std::move(swap_info), nullptr);
+      confirmed_time_, MakeDappOriginInfo(dapp_origin_), chain_id_,
+      final_recipient, IsRetriable(), std::move(swap_info), nullptr);
 }
 
 mojom::CoinType EthTxMeta::GetCoinType() const {

@@ -60,7 +60,7 @@ mojom::TransactionInfoPtr FilTxMeta::ToTransactionInfo() const {
       mojom::TxDataUnion::NewFilTxData(tx_->ToFilTxData()), status_,
       mojom::TransactionType::Other, std::vector<std::string>() /* tx_params */,
       std::vector<std::string>() /* tx_args */, created_time_, submitted_time_,
-      confirmed_time_, MakeOriginInfo(dapp_origin_), chain_id_,
+      confirmed_time_, MakeDappOriginInfo(dapp_origin_), chain_id_,
       tx_->ToFilTxData()->to, false, swap_info_.Clone(), nullptr);
 }
 

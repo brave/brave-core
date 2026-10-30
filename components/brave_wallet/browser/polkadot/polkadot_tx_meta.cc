@@ -73,7 +73,7 @@ mojom::TransactionInfoPtr PolkadotTxMeta::ToTransactionInfo() const {
       status_, mojom::TransactionType::Other,
       std::vector<std::string>() /* tx_params */,
       std::vector<std::string>() /* tx_args */, created_time_, submitted_time_,
-      confirmed_time_, MakeOriginInfo(dapp_origin_), chain_id_, "", false,
+      confirmed_time_, MakeDappOriginInfo(dapp_origin_), chain_id_, "", false,
       swap_info_.Clone(), nullptr);
 }
 

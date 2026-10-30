@@ -124,7 +124,7 @@ std::string GetWeb3ClientVersion();
 std::string eTLDPlusOne(const url::Origin& origin);
 
 mojom::OriginInfoPtr MakeOriginInfo(const url::Origin& origin);
-mojom::OriginInfoPtr MakeOriginInfo(
+mojom::OriginInfoPtr MakeDappOriginInfo(
     base::optional_ref<const url::Origin> dapp_origin);
 
 // Hex string of random 32 bytes.
