@@ -27,16 +27,25 @@ EthTxMeta::EthTxMeta(const mojom::AccountIdPtr& from,
   set_chain_id(Uint256ValueToHex(tx_->chain_id()));
 }
 
+EthTxMeta::EthTxMeta(const mojom::AccountIdPtr& from,
+                     std::unique_ptr<EthTransaction> tx,
+                     const std::string& chain_id,
+                     mojom::SwapInfoPtr swap_info,
+                     std::optional<url::Origin> dapp_origin)
+    : TxMeta(from, chain_id, std::move(swap_info), std::move(dapp_origin)),
+      tx_(std::move(tx)) {
+  DCHECK_EQ(from->coin, mojom::CoinType::ETH);
+}
+
 std::unique_ptr<EthTxMeta> EthTxMeta::MakeUnapproved(
     const mojom::AccountIdPtr& from,
     std::unique_ptr<EthTransaction> tx,
     const std::string& chain_id,
     mojom::SwapInfoPtr swap_info,
     std::optional<url::Origin> dapp_origin) {
-  auto meta = std::make_unique<EthTxMeta>(from, std::move(tx));
-  meta->set_dapp_origin(std::move(dapp_origin));
-  meta->InitializeAsUnapproved(chain_id, std::move(swap_info));
-  return meta;
+  return std::make_unique<EthTxMeta>(from, std::move(tx), chain_id,
+                                     std::move(swap_info),
+                                     std::move(dapp_origin));
 }
 
 EthTxMeta::~EthTxMeta() = default;

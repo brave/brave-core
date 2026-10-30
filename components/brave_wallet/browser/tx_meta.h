@@ -58,8 +58,10 @@ class TxMeta {
   }
 
  protected:
-  void InitializeAsUnapproved(const std::string& chain_id,
-                              mojom::SwapInfoPtr swap_info);
+  TxMeta(const mojom::AccountIdPtr& from,
+         const std::string& chain_id,
+         mojom::SwapInfoPtr swap_info,
+         std::optional<url::Origin> dapp_origin);
 
   bool operator==(const TxMeta&) const;
 

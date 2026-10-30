@@ -19,6 +19,10 @@ class CardanoTxMeta : public TxMeta {
   CardanoTxMeta();
   CardanoTxMeta(const mojom::AccountIdPtr& from,
                 std::unique_ptr<CardanoTransaction> tx);
+  CardanoTxMeta(const mojom::AccountIdPtr& from,
+                std::unique_ptr<CardanoTransaction> tx,
+                const std::string& chain_id,
+                mojom::SwapInfoPtr swap_info);
   ~CardanoTxMeta() override;
   CardanoTxMeta(const CardanoTxMeta&) = delete;
   CardanoTxMeta operator=(const CardanoTxMeta&) = delete;

@@ -20,6 +20,16 @@ PolkadotTxMeta::PolkadotTxMeta(const mojom::AccountIdPtr& from,
   set_from(from.Clone());
 }
 
+PolkadotTxMeta::PolkadotTxMeta(const mojom::AccountIdPtr& from,
+                               PolkadotTransaction tx,
+                               const std::string& chain_id,
+                               mojom::SwapInfoPtr swap_info,
+                               std::optional<url::Origin> dapp_origin)
+    : TxMeta(from, chain_id, std::move(swap_info), std::move(dapp_origin)),
+      tx_(std::move(tx)) {
+  DCHECK_EQ(from->coin, mojom::CoinType::DOT);
+}
+
 PolkadotTxMeta::~PolkadotTxMeta() = default;
 
 std::unique_ptr<PolkadotTxMeta> PolkadotTxMeta::MakeUnapproved(
@@ -28,10 +38,9 @@ std::unique_ptr<PolkadotTxMeta> PolkadotTxMeta::MakeUnapproved(
     const std::string& chain_id,
     mojom::SwapInfoPtr swap_info,
     std::optional<url::Origin> dapp_origin) {
-  auto meta = std::make_unique<PolkadotTxMeta>(from, std::move(tx));
-  meta->set_dapp_origin(std::move(dapp_origin));
-  meta->InitializeAsUnapproved(chain_id, std::move(swap_info));
-  return meta;
+  return std::make_unique<PolkadotTxMeta>(from, std::move(tx), chain_id,
+                                          std::move(swap_info),
+                                          std::move(dapp_origin));
 }
 
 base::DictValue PolkadotTxMeta::ToValue() const {

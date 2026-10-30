@@ -17,18 +17,21 @@ namespace brave_wallet {
 TxMeta::TxMeta() = default;
 TxMeta::~TxMeta() = default;
 
+TxMeta::TxMeta(const mojom::AccountIdPtr& from,
+               const std::string& chain_id,
+               mojom::SwapInfoPtr swap_info,
+               std::optional<url::Origin> dapp_origin)
+    : id_(GenerateMetaID()),
+      from_(from.Clone()),
+      created_time_(base::Time::Now()),
+      chain_id_(chain_id),
+      swap_info_(std::move(swap_info)) {
+  set_dapp_origin(std::move(dapp_origin));
+}
+
 void TxMeta::set_dapp_origin(std::optional<url::Origin> dapp_origin) {
   DCHECK(!dapp_origin || !dapp_origin->opaque());
   dapp_origin_ = std::move(dapp_origin);
-}
-
-void TxMeta::InitializeAsUnapproved(const std::string& chain_id,
-                                    mojom::SwapInfoPtr swap_info) {
-  set_id(GenerateMetaID());
-  set_created_time(base::Time::Now());
-  set_status(mojom::TransactionStatus::Unapproved);
-  set_chain_id(chain_id);
-  set_swap_info(std::move(swap_info));
 }
 
 bool TxMeta::operator==(const TxMeta& meta) const {

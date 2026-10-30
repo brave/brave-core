@@ -74,6 +74,15 @@ CardanoTxMeta::CardanoTxMeta(const mojom::AccountIdPtr& from,
   set_from(from.Clone());
 }
 
+CardanoTxMeta::CardanoTxMeta(const mojom::AccountIdPtr& from,
+                             std::unique_ptr<CardanoTransaction> tx,
+                             const std::string& chain_id,
+                             mojom::SwapInfoPtr swap_info)
+    : TxMeta(from, chain_id, std::move(swap_info), std::nullopt),
+      tx_(std::move(tx)) {
+  DCHECK_EQ(from->coin, mojom::CoinType::ADA);
+}
+
 bool CardanoTxMeta::operator==(const CardanoTxMeta& other) const {
   return TxMeta::operator==(other) && *tx_ == *other.tx_;
 }
@@ -85,9 +94,8 @@ std::unique_ptr<CardanoTxMeta> CardanoTxMeta::MakeUnapproved(
     std::unique_ptr<CardanoTransaction> tx,
     const std::string& chain_id,
     mojom::SwapInfoPtr swap_info) {
-  auto meta = std::make_unique<CardanoTxMeta>(from, std::move(tx));
-  meta->InitializeAsUnapproved(chain_id, std::move(swap_info));
-  return meta;
+  return std::make_unique<CardanoTxMeta>(from, std::move(tx), chain_id,
+                                         std::move(swap_info));
 }
 
 base::DictValue CardanoTxMeta::ToValue() const {

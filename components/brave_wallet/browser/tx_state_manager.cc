@@ -91,11 +91,11 @@ bool TxStateManager::ValueToBaseTxMeta(const base::DictValue& value,
 
   const std::string* origin_spec = value.FindString("origin");
   if (origin_spec) {
-    if (*origin_spec != "chrome://wallet") {
-      url::Origin dapp_origin = url::Origin::Create(GURL(*origin_spec));
-      if (!IsValidDappOrigin(dapp_origin)) {
-        return false;
-      }
+    url::Origin dapp_origin = url::Origin::Create(GURL(*origin_spec));
+    bool wallet_origin =
+        dapp_origin.IsSameOriginWith(GURL("chrome://wallet")) ||
+        dapp_origin.IsSameOriginWith(GURL("brave://wallet"));
+    if (!wallet_origin && IsValidDappOrigin(dapp_origin)) {
       meta->set_dapp_origin(dapp_origin);
     }
   }

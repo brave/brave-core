@@ -613,6 +613,7 @@ struct PendingTransactionView: View {
     )
   }
 }
+
 #if DEBUG
 struct PendingTransactionView_Previews: PreviewProvider {
   static var previews: some View {

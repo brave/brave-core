@@ -23,7 +23,6 @@ class JsonRpcService;
 class KeyringService;
 class FilNonceTracker;
 class FilTxStateManager;
-class FilTransaction;
 
 class FilTxManager : public TxManager, public FilBlockTracker::Observer {
  public:

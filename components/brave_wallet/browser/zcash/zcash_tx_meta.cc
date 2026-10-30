@@ -92,6 +92,15 @@ ZCashTxMeta::ZCashTxMeta(const mojom::AccountIdPtr& from,
   set_from(from.Clone());
 }
 
+ZCashTxMeta::ZCashTxMeta(const mojom::AccountIdPtr& from,
+                         std::unique_ptr<ZCashTransaction> tx,
+                         const std::string& chain_id,
+                         mojom::SwapInfoPtr swap_info)
+    : TxMeta(from, chain_id, std::move(swap_info), std::nullopt),
+      tx_(std::move(tx)) {
+  DCHECK_EQ(from->coin, mojom::CoinType::ZEC);
+}
+
 bool ZCashTxMeta::operator==(const ZCashTxMeta& other) const {
   return TxMeta::operator==(other) && *tx_ == *other.tx_;
 }
@@ -103,9 +112,8 @@ std::unique_ptr<ZCashTxMeta> ZCashTxMeta::MakeUnapproved(
     std::unique_ptr<ZCashTransaction> tx,
     const std::string& chain_id,
     mojom::SwapInfoPtr swap_info) {
-  auto meta = std::make_unique<ZCashTxMeta>(from, std::move(tx));
-  meta->InitializeAsUnapproved(chain_id, std::move(swap_info));
-  return meta;
+  return std::make_unique<ZCashTxMeta>(from, std::move(tx), chain_id,
+                                       std::move(swap_info));
 }
 
 base::DictValue ZCashTxMeta::ToValue() const {

@@ -21,6 +21,11 @@ class PolkadotTxMeta : public TxMeta {
  public:
   PolkadotTxMeta();
   PolkadotTxMeta(const mojom::AccountIdPtr& from, PolkadotTransaction tx);
+  PolkadotTxMeta(const mojom::AccountIdPtr& from,
+                 PolkadotTransaction tx,
+                 const std::string& chain_id,
+                 mojom::SwapInfoPtr swap_info,
+                 std::optional<url::Origin> dapp_origin);
   ~PolkadotTxMeta() override;
   PolkadotTxMeta(const PolkadotTxMeta&) = delete;
   PolkadotTxMeta& operator=(const PolkadotTxMeta&) = delete;

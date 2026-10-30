@@ -969,7 +969,7 @@ mojom::OriginInfoPtr MakeOriginInfo(const url::Origin& origin) {
 }
 
 mojom::OriginInfoPtr MakeOriginInfo(
-    const std::optional<url::Origin>& dapp_origin) {
+    base::optional_ref<const url::Origin> dapp_origin) {
   if (!dapp_origin) {
     return nullptr;
   }

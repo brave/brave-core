@@ -58,9 +58,11 @@ void FilTxManager::GetEstimatedGas(
   const std::string value = tx->value();
   const std::string max_fee = tx->max_fee();
   auto to = tx->to().EncodeAsString();
+  const std::string chain_id = meta->chain_id();
+  const std::string from_address = meta->from()->address;
   json_rpc_service_->GetFilEstimateGas(
-      meta->chain_id(), meta->from()->address, to, gas_premium, gas_fee_cap,
-      gas_limit, nonce, max_fee, value,
+      chain_id, from_address, to, gas_premium, gas_fee_cap, gas_limit, nonce,
+      max_fee, value,
       base::BindOnce(&FilTxManager::ContinueAddUnapprovedTransaction,
                      weak_factory_.GetWeakPtr(), std::move(meta),
                      std::move(callback)));
