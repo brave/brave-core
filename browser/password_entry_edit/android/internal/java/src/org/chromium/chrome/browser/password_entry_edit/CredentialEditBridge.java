@@ -16,7 +16,10 @@ import android.content.Context;
 import androidx.fragment.app.Fragment;
 
 import org.jni_zero.CalledByNative;
+import org.jni_zero.JniPtr;
+import org.jni_zero.JniRawPtr;
 import org.jni_zero.JniType;
+import org.jni_zero.JniTypeToken;
 import org.jni_zero.NativeMethods;
 
 import org.chromium.build.annotations.MonotonicNonNull;
@@ -33,9 +36,12 @@ import org.chromium.components.browser_ui.settings.SettingsNavigation;
  */
 @NullMarked
 class CredentialEditBridge implements UiDismissalHandler, CredentialActionDelegate {
+    @JniType("::CredentialEditBridge")
+    interface NativeCredentialEditBridge extends JniTypeToken {}
+
     private static @Nullable CredentialEditBridge sCredentialEditBridge;
 
-    private long mNativeCredentialEditBridge;
+    private @Nullable JniRawPtr<NativeCredentialEditBridge> mNativeCredentialEditBridge;
     private @MonotonicNonNull CredentialEditCoordinator mCoordinator;
 
     static @Nullable CredentialEditBridge get() {
@@ -54,7 +60,7 @@ class CredentialEditBridge implements UiDismissalHandler, CredentialActionDelega
 
     @CalledByNative
     void initAndLaunchUi(
-            long nativeCredentialEditBridge,
+            JniRawPtr<NativeCredentialEditBridge> nativeCredentialEditBridge,
             Context context,
             boolean isBlockedCredential,
             boolean isFederatedCredential) {
@@ -79,10 +85,11 @@ class CredentialEditBridge implements UiDismissalHandler, CredentialActionDelega
     public void initialize(CredentialEditCoordinator coordinator) {
         mCoordinator = coordinator;
         // This will result in setCredential being called from native with the required data.
-        CredentialEditBridgeJni.get().getCredential(mNativeCredentialEditBridge);
+        CredentialEditBridgeJni.get().getCredential(assumeNonNull(mNativeCredentialEditBridge));
 
         // This will result in setExistingUsernames being called from native with the required data.
-        CredentialEditBridgeJni.get().getExistingUsernames(mNativeCredentialEditBridge);
+        CredentialEditBridgeJni.get()
+                .getExistingUsernames(assumeNonNull(mNativeCredentialEditBridge));
     }
 
     @CalledByNative
@@ -111,44 +118,51 @@ class CredentialEditBridge implements UiDismissalHandler, CredentialActionDelega
     // on where the edit component is being destroyed from.
     @Override
     public void onUiDismissed() {
-        if (mNativeCredentialEditBridge != 0) {
+        if (mNativeCredentialEditBridge != null) {
             CredentialEditBridgeJni.get().onUiDismissed(mNativeCredentialEditBridge);
+            releaseNativePtr();
         }
-        mNativeCredentialEditBridge = 0;
         sCredentialEditBridge = null;
     }
 
     @Override
     public void saveChanges(String username, String password) {
-        if (mNativeCredentialEditBridge == 0) return;
+        if (mNativeCredentialEditBridge == null) return;
         CredentialEditBridgeJni.get().saveChanges(mNativeCredentialEditBridge, username, password);
     }
 
     @Override
     public void deleteCredential() {
-        CredentialEditBridgeJni.get().deleteCredential(mNativeCredentialEditBridge);
+        CredentialEditBridgeJni.get().deleteCredential(assumeNonNull(mNativeCredentialEditBridge));
     }
 
     @CalledByNative
     void destroy() {
         if (mCoordinator != null) mCoordinator.dismiss();
-        mNativeCredentialEditBridge = 0;
+        releaseNativePtr();
         sCredentialEditBridge = null;
+    }
+
+    private void releaseNativePtr() {
+        if (mNativeCredentialEditBridge != null) {
+            mNativeCredentialEditBridge.release();
+            mNativeCredentialEditBridge = null;
+        }
     }
 
     @NativeMethods
     interface Natives {
-        void getCredential(long nativeCredentialEditBridge);
+        void getCredential(JniPtr<NativeCredentialEditBridge> self);
 
-        void getExistingUsernames(long nativeCredentialEditBridge);
+        void getExistingUsernames(JniPtr<NativeCredentialEditBridge> self);
 
         void saveChanges(
-                long nativeCredentialEditBridge,
+                JniPtr<NativeCredentialEditBridge> self,
                 @JniType("std::u16string") String username,
                 @JniType("std::u16string") String password);
 
-        void deleteCredential(long nativeCredentialEditBridge);
+        void deleteCredential(JniPtr<NativeCredentialEditBridge> self);
 
-        void onUiDismissed(long nativeCredentialEditBridge);
+        void onUiDismissed(JniPtr<NativeCredentialEditBridge> self);
     }
 }

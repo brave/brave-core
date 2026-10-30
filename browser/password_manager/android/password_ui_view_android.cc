@@ -47,6 +47,7 @@
 #include "components/password_manager/core/browser/ui/credential_ui_entry.h"
 #include "components/password_manager/core/common/password_manager_constants.h"
 #include "content/public/browser/browser_thread.h"
+#include "third_party/jni_zero/jni_zero.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
 
@@ -354,12 +355,13 @@ jint JNI_PasswordUiView_GetMaxPasswordsPerCsvFile(JNIEnv* env) {
 }
 
 // static
-static jlong JNI_PasswordUiView_Init(JNIEnv* env,
-                                     const base::android::JavaRef<jobject>& obj,
-                                     Profile* profile) {
-  PasswordUiViewAndroid* controller =
-      new PasswordUiViewAndroid(env, obj, profile);
-  return reinterpret_cast<intptr_t>(controller);
+static jni_zero::JniRawPtr<PasswordUiViewAndroid> JNI_PasswordUiView_Init(
+    JNIEnv* env,
+    const base::android::JavaRef<jobject>& obj,
+    Profile* profile) {
+  // Not a JniUniquePtr: Destroy() may postpone the deletion until pending
+  // serialization tasks complete, so Java must not delete the object itself.
+  return jni_zero::MakeRaw(new PasswordUiViewAndroid(env, obj, profile));
 }
 
 void PasswordUiViewAndroid::OnSavedPasswordsChanged(
