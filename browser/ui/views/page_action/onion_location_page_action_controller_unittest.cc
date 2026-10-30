@@ -10,6 +10,7 @@
 
 #include "base/functional/bind.h"
 #include "base/scoped_observation.h"
+#include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/browser/ui/views/page_action/page_action_test_observer.h"
 #include "brave/browser/ui/views/page_action/test_tab_interface.h"
 #include "brave/components/tor/onion_location_tab_helper.h"
@@ -22,6 +23,8 @@
 #include "chrome/browser/ui/page_action/test_support/test_page_action_properties_provider.h"
 #include "chrome/browser/ui/toolbar/pinned_toolbar/pinned_toolbar_actions_model.h"
 #include "chrome/test/base/testing_profile.h"
+#include "components/policy/core/common/policy_pref_names.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -100,6 +103,7 @@ class OnionLocationPageActionControllerTest : public testing::Test {
   void RefreshPageAction() { tab_interface_->Activate(); }
 
   TestTabInterface& tab_interface() { return *tab_interface_; }
+  TestingProfile& profile() { return profile_; }
 
   OnionLocationPageActionController* controller() { return controller_.get(); }
   const PageActionTestObserver& observer() const { return observer_; }
@@ -146,6 +150,34 @@ TEST_F(OnionLocationPageActionControllerTest, HiddenAgainAfterReset) {
   RefreshPageAction();
 
   EXPECT_FALSE(observer().visible());
+}
+
+TEST_F(OnionLocationPageActionControllerTest, HiddenWhenTorDisabled) {
+  tab_helper()->SetOnionLocationForTesting(GURL("http://example.onion/"));
+  RefreshPageAction();
+  ASSERT_TRUE(observer().visible());
+
+  TorProfileServiceFactory::SetTorDisabled(true);
+  EXPECT_FALSE(observer().visible());
+
+  TorProfileServiceFactory::SetTorDisabled(false);
+  EXPECT_TRUE(observer().visible());
+}
+
+TEST_F(OnionLocationPageActionControllerTest, HiddenWhenIncognitoDisabled) {
+  tab_helper()->SetOnionLocationForTesting(GURL("http://example.onion/"));
+  RefreshPageAction();
+  ASSERT_TRUE(observer().visible());
+
+  profile().GetTestingPrefService()->SetManagedPref(
+      policy::policy_prefs::kIncognitoModeAvailability,
+      base::Value(
+          static_cast<int>(policy::IncognitoModeAvailability::kDisabled)));
+  EXPECT_FALSE(observer().visible());
+
+  profile().GetTestingPrefService()->RemoveManagedPref(
+      policy::policy_prefs::kIncognitoModeAvailability);
+  EXPECT_TRUE(observer().visible());
 }
 
 // The tab's contents can be swapped out - by tab discarding, or by a shared
