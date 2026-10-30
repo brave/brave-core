@@ -457,6 +457,7 @@ void AIChatService::DeleteConversations(std::optional<base::Time> begin_time,
     for (const auto& [id, state] :
          std::exchange(conversation_generation_state_, {})) {
       NotifyConversationGenerationState(id);
+      MaybeCloseCompletionNotification(id);
     }
 
     // Delete database data
@@ -872,6 +873,7 @@ void AIChatService::EraseConversation(const std::string& id) {
   if (conversation_generation_state_.erase(id) > 0) {
     NotifyConversationGenerationState(id);
   }
+  MaybeCloseCompletionNotification(id);
 
   // Update database
   if (ai_chat_db_ && !temporary) {
@@ -1118,6 +1120,7 @@ void AIChatService::MaybeUnloadConversation(
     if (conversation_generation_state_.erase(uuid) > 0) {
       NotifyConversationGenerationState(uuid);
     }
+    MaybeCloseCompletionNotification(uuid);
     DVLOG(1) << "Erased conversation (" << uuid << "). Now have "
              << conversations_.size() << " Conversation metadata items and "
              << conversation_handlers_.size()
@@ -1209,6 +1212,7 @@ void AIChatService::OnRequestInProgressChanged(ConversationHandler* handler,
     } else {
       it->second = mojom::ConversationGenerationState::kCompletedNotViewed;
       NotifyConversationGenerationState(uuid);
+      MaybeShowCompletionNotification(uuid);
     }
   }
 
@@ -1500,6 +1504,7 @@ void AIChatService::BindConversation(
       it->second == mojom::ConversationGenerationState::kCompletedNotViewed) {
     conversation_generation_state_.erase(it);
     NotifyConversationGenerationState(uuid);
+    MaybeCloseCompletionNotification(uuid);
   }
 
   GetConversation(
@@ -1608,12 +1613,36 @@ void AIChatService::NotifyConversationGenerationState(const std::string& uuid) {
   }
 }
 
+void AIChatService::SetCompletionNotificationCallbacks(
+    ShowCompletionNotificationCallback show,
+    CloseCompletionNotificationCallback close) {
+  show_completion_notification_callback_ = std::move(show);
+  close_completion_notification_callback_ = std::move(close);
+}
+
 bool AIChatService::IsConversationVisible(const std::string& uuid) const {
   auto it = conversation_handlers_.find(uuid);
   if (it == conversation_handlers_.end()) {
     return false;
   }
   return it->second->IsAnyClientConnected();
+}
+
+void AIChatService::MaybeShowCompletionNotification(const std::string& uuid) {
+  if (!show_completion_notification_callback_) {
+    return;
+  }
+  std::u16string title_u16;
+  if (auto it = conversations_.find(uuid); it != conversations_.end()) {
+    title_u16 = base::UTF8ToUTF16(it->second->title);
+  }
+  show_completion_notification_callback_.Run(uuid, title_u16);
+}
+
+void AIChatService::MaybeCloseCompletionNotification(const std::string& uuid) {
+  if (close_completion_notification_callback_) {
+    close_completion_notification_callback_.Run(uuid);
+  }
 }
 
 void AIChatService::OpenConversationWithStagedEntries(
