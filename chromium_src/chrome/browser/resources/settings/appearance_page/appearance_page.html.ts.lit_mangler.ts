@@ -136,3 +136,10 @@ mangle(
   (t) => t.text.includes('hoverCardMemoryUsageToggle')
       && !t.text.includes('hoverCardImagesToggle'),
 )
+
+// Remove upstream's Ctrl+Tab MRU toggle; Brave drives the same
+// browser.ctrl_tab_mru pref from its own toggle on the Content page.
+mangle(
+  (element) => { element.textContent = '' },
+  (t) => t.text.includes('id="ctrlTabMru"'),
+)
