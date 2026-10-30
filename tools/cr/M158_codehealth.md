@@ -1787,10 +1787,52 @@ Java files using `JniUniquePtr<` rose from 16 to 38 in 8115.1..8117.1, and
 `JniRawPtr<` from 9 to 31. Brave has 12
 (`git grep -nE 'private (final )?long mNative\w+' -- '*.java'`).
 
-- [ ] Migrate them, starting with the backported
-      `browser/password_entry_edit/.../CredentialEditBridge.java` and
-      `browser/password_manager/.../PasswordUiView.java`, which should follow
-      upstream's originals
+- [x] The backported `browser/password_entry_edit/.../CredentialEditBridge.java`
+      and `browser/password_manager/.../PasswordUiView.java` migrated to
+      `JniRawPtr`. Pre-existing on master, so fixed there:
+      [#60325](https://github.com/brave/brave-browser/issues/60325), fixed by
+      [#41102](https://github.com/brave/brave-core/pull/41102). `JniRawPtr` and
+      not `JniUniquePtr` because `PasswordUiViewAndroid::Destroy()` sets
+      `DELETION_PENDING` instead of deleting while an export task holds
+      `base::Unretained(this)`, finishing in `PostSerializedPasswords()` — the
+      owning handle's glue would free at the Java boundary. Note they cannot
+      "follow upstream's originals": upstream deleted both components
+      (`6875d2ce472e7`, `3662471ee9fab`) about a year before the campaign began
+      (`ff47b0edea856`), and their last upstream forms still used a raw `long`.
+      The pattern copied is
+      [fcd2c8c09a727](https://chromium.googlesource.com/chromium/src/+/fcd2c8c09a72752233214d440d159ee39e122d57)
+- [x] The other 10 are Brave-only classes with Brave-owned native counterparts,
+      so no upstream CL will ever migrate them. Also master debt, and each needs
+      its own ownership decision plus a device test plan, so one issue each with
+      the analysis in the body; PRs follow the rest of M158:
+      [#60327](https://github.com/brave/brave-browser/issues/60327)
+      `BraveSyncWorker`,
+      [#60328](https://github.com/brave/brave-browser/issues/60328)
+      `BraveSyncDevices`,
+      [#60329](https://github.com/brave/brave-browser/issues/60329)
+      `BraveVpnNativeWorker`,
+      [#60330](https://github.com/brave/brave-browser/issues/60330)
+      `BraveRewardsNativeWorker`,
+      [#60331](https://github.com/brave/brave-browser/issues/60331)
+      `BraveShieldsContentSettings`,
+      [#60332](https://github.com/brave/brave-browser/issues/60332)
+      `BraveLeoMojomHelper`,
+      [#60333](https://github.com/brave/brave-browser/issues/60333)
+      `NTPBackgroundImagesBridge`,
+      [#60334](https://github.com/brave/brave-browser/issues/60334)
+      `BraveReferrer`,
+      [#60335](https://github.com/brave/brave-browser/issues/60335)
+      `BraveDappPermissionPromptDialog`,
+      [#60336](https://github.com/brave/brave-browser/issues/60336)
+      `BraveBookmarkBridge`. The last is not a safe-pointer fix: its field is
+      deleted by `BraveBookmarkBridgeClassAdapter` and upstream's is made
+      protected, so Brave cannot type it — filed as an investigation into
+      replacing that adapter with a plaster first. Four of the others
+      (`BraveSyncWorker`, `BraveSyncDevices`, `BraveVpnNativeWorker`,
+      `BraveRewardsNativeWorker`) share one shape: void `Init` plus a `private`
+      `setNativePtr(long)` callback, which `JniUniquePtr` removes outright, also
+      satisfying jni_zero's package-private requirement on `@CalledByNative`
+      safe-pointer parameters
 
 ### Script the Android names-in-strings check
 
@@ -1798,7 +1840,18 @@ Resolving every `BraveReflectionUtil` literal, `BytecodeTest` string and
 bytecode adapter target (with parameter lists) against the upstream class at the
 new tag found items in M157, 8104.1 and 8107.2.
 
-- [ ] Add a `tools/cr/` script that does this for two tags
+- [ ] Add a `tools/cr/` script that does this for two tags. Not lift work and
+      not specific to a pin, so filed for master with the design in the body:
+      [#60337](https://github.com/brave/brave-browser/issues/60337), and
+      requested under [Tooling TODOs](#tooling-todos). Resolving from source at
+      each tag (a `git ls-tree` index, then `git show`) rather than from
+      bytecode, because the bytecode ground truth would need an Android build at
+      the _old_ tag. Two tags and not one so that "broke between tags" separates
+      from pre-existing debt. Note none of the three families fails loudly
+      today: `BraveReflectionUtil` returns null in release builds
+      (`BraveReflectionUtil.java:57`), `BytecodeTest` is an on-device javatest,
+      and a stale adapter target simply never matches its map entry
+      (`BraveClassVisitor.java:178,234,255`)
 
 ### License metadata uses SPDX identifiers
 
@@ -2142,3 +2195,25 @@ Every build round starts by digging the failed steps and distinct errors out of
 the log; `autolift.py build-summary` does it after the fact.
 
 - [ ] Print that summary at the end of a failed build
+
+### New tool: resolve Brave's Java name literals against two tags
+
+No tool exists, so every lift resolves by hand the names Brave hardcodes as
+strings: `BraveReflectionUtil.invokeMethod`/`getField` literals (37 call sites),
+`BytecodeTest` `methodExists`/`fieldExists`/`constructorsMatch` strings (437
+assertions) and bytecode adapter targets (~150 adapters). None fails loudly —
+`BraveReflectionUtil` returns null in release builds
+(`BraveReflectionUtil.java:57`), `BytecodeTest` is an on-device javatest, and a
+stale adapter target never matches its map entry
+(`BraveClassVisitor.java:178,234,255`) — yet the sweep has found a silent
+regression in each of the last three lifts (M157, 8093.0: `isTabModelRestored`
+renamed, which turned tab auto-grouping off in release; M158, 8104.1:
+`setupContentSettingsPreference` gained a parameter, emptying two per-site rows;
+8107.2: `UndoBarController.showUndoBar`).
+
+Design and the rest of the evidence are in
+[#60337](https://github.com/brave/brave-browser/issues/60337); the lift-side
+finding is under "Script the Android names-in-strings check" above.
+
+- [ ] Add the script, resolving each literal from source at both tags and
+      separating "broke between tags" from pre-existing debt
