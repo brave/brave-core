@@ -23,6 +23,7 @@ class OnionLocationNavigationThrottle : public content::NavigationThrottle {
                                 bool is_tor_profile);
   explicit OnionLocationNavigationThrottle(
       content::NavigationThrottleRegistry& registry,
+      bool is_tor_disabled,
       bool is_tor_profile);
   ~OnionLocationNavigationThrottle() override;
 
@@ -33,6 +34,7 @@ class OnionLocationNavigationThrottle : public content::NavigationThrottle {
   const char* GetNameForLogging() override;
 
  private:
+  bool is_tor_disabled_;
   bool is_tor_profile_ = false;
 
   OnionLocationNavigationThrottle(const OnionLocationNavigationThrottle&) =

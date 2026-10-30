@@ -9,6 +9,7 @@
 #include "base/callback_list.h"
 #include "base/memory/raw_ref.h"
 #include "chrome/browser/ui/page_action/page_action_controller.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents_observer.h"
 
@@ -45,6 +46,8 @@ class OnionLocationPageActionController : public content::WebContentsObserver {
   void UpdatePageAction(content::WebContents* contents);
   void ResetPageAction();
 
+  void OnTorAvailabilityChanged();
+
   // content::WebContentsObserver:
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
@@ -54,6 +57,9 @@ class OnionLocationPageActionController : public content::WebContentsObserver {
 
   base::CallbackListSubscription did_activate_subscription_;
   base::CallbackListSubscription will_discard_contents_subscription_;
+
+  PrefChangeRegistrar local_state_change_registrar_;
+  PrefChangeRegistrar profile_pref_change_registrar_;
 };
 
 }  // namespace page_actions
