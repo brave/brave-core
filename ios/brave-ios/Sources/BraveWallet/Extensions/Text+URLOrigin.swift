@@ -29,16 +29,8 @@ extension Text {
   }
 
   /// Creates a text view that displays a BraveWallet.OriginInfo, bolding the eTLD+1.
-  init(originInfo: BraveWallet.OriginInfo) {
-    // Internal Transaction from Brave:
-    // originInfo.eTldPlusOne=""
-    // originInfo.originSpec="chrome://wallet"
-    // From Uniswap:
-    // originInfo.eTldPlusOne="uniswap.org"
-    // originInfo.originSpec="https://app.uniswap.org"
-    if originInfo.isBraveWalletOrigin {
-      self = Text(Strings.Wallet.braveWallet)
-    } else {
+  init(originInfo: BraveWallet.OriginInfo?) {
+    if let originInfo = originInfo, !originInfo.isBraveWalletOrigin {
       let origin = originInfo.originSpec
       let eTldPlusOne = originInfo.eTldPlusOne
       if let range = origin.range(of: eTldPlusOne) {
@@ -51,6 +43,8 @@ extension Text {
       } else {
         self = Text(origin)
       }
+    } else {
+      self = Text(Strings.Wallet.braveWallet)
     }
   }
 }

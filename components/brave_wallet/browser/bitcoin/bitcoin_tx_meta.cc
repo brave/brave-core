@@ -34,12 +34,6 @@ mojom::BtcTxDataPtr ToBtcTxData(BitcoinTransaction& tx) {
 }  // namespace
 
 BitcoinTxMeta::BitcoinTxMeta() : tx_(std::make_unique<BitcoinTransaction>()) {}
-BitcoinTxMeta::BitcoinTxMeta(const mojom::AccountIdPtr& from)
-    : tx_(std::make_unique<BitcoinTransaction>()) {
-  DCHECK_EQ(from->coin, mojom::CoinType::BTC);
-  set_from(from.Clone());
-}
-
 BitcoinTxMeta::BitcoinTxMeta(const mojom::AccountIdPtr& from,
                              std::unique_ptr<BitcoinTransaction> tx)
     : tx_(std::move(tx)) {
