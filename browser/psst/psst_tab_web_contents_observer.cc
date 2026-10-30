@@ -207,10 +207,9 @@ PsstTabWebContentsObserver::AsWeakPtr() {
   return weak_factory_.GetWeakPtr();
 }
 
-void PsstTabWebContentsObserver::Log(
-    mojom::PsstLogLevel level,
-    std::string_view message,
-    std::optional<base::DictValue> data) {
+void PsstTabWebContentsObserver::Log(mojom::PsstLogLevel level,
+                                     std::string_view message,
+                                     std::optional<base::DictValue> data) {
   if (!log_service_) {
     return;
   }
