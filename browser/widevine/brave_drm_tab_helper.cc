@@ -1,9 +1,9 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2019 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/brave_drm_tab_helper.h"
+#include "brave/browser/widevine/brave_drm_tab_helper.h"
 
 #include <memory>
 #include <utility>
@@ -13,7 +13,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/widevine/constants.h"
 #include "build/build_config.h"
-#include "chrome/browser/browser_process_impl.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/permissions/permission_util.h"
@@ -65,8 +65,9 @@ content::WebContents* GetActiveWebContents() {
 }
 
 void ReloadIfActive(content::WebContents* web_contents) {
-  if (GetActiveWebContents() == web_contents)
+  if (GetActiveWebContents() == web_contents) {
     web_contents->GetController().Reload(content::ReloadType::NORMAL, false);
+  }
 }
 #endif  // !BUILDFLAG(IS_LINUX)
 #endif  // !BUILDFLAG(IS_ANDROID)
@@ -97,12 +98,14 @@ void BraveDrmTabHelper::BindBraveDRM(
     mojo::PendingAssociatedReceiver<brave_drm::mojom::BraveDRM> receiver,
     content::RenderFrameHost* rfh) {
   auto* web_contents = content::WebContents::FromRenderFrameHost(rfh);
-  if (!web_contents)
+  if (!web_contents) {
     return;
+  }
 
   auto* tab_helper = BraveDrmTabHelper::FromWebContents(web_contents);
-  if (!tab_helper)
+  if (!tab_helper) {
     return;
+  }
   tab_helper->brave_drm_receivers_.Bind(rfh, std::move(receiver));
 }
 
@@ -201,8 +204,9 @@ void BraveDrmTabHelper::OnEvent(const update_client::CrxUpdateItem& item) {
 #else
     // When widevine is ready to use, only active tab that requests widevine is
     // reloaded automatically.
-    if (is_widevine_requested_)
+    if (is_widevine_requested_) {
       ReloadIfActive(web_contents());
+    }
 #endif  // BUILDFLAG(IS_LINUX)
     // Stop observing component update event.
     observer_.Reset();
