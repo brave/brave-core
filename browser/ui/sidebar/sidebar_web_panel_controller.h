@@ -33,7 +33,12 @@ class SidebarWebPanelController : public TabStripModelObserver {
 
   void ToggleWebPanel(const SidebarItem& item);
   bool HasOpenPanel() const;
+
+  // Lets the page run its unload handlers, so the tab may outlive this call.
   void CloseWebPanel();
+
+  // Skips unload handlers, so the tab is gone by the time this returns.
+  void CloseWebPanelForShutdown();
 
   const SidebarItem& panel_item() const { return panel_item_; }
   const content::WebContents* panel_contents() const {

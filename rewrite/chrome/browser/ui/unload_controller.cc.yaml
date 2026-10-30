@@ -60,7 +60,7 @@ substitutions:
         \(!HandleBeforeClose\(\)\) \{\s+return;\s+\}\n)'
       re_flags: [DOTALL]
       replace: |
-        \1  sidebar::MaybeCloseWebPanel(browser_);
+        \1  sidebar::MaybeCloseWebPanelForShutdown(browser_);
   - description: |
       Let SharedPinnedTabService detach shared pinned tabs before they close
 
