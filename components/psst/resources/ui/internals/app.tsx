@@ -56,9 +56,8 @@ export function App({ api }: { api: PsstInternalsApi }) {
       <header>
         <h1>PSST Internals</h1>
         <div className='subtitle'>
-          In-memory diagnostics for the Privacy Settings Tuning flow in this
-          profile. Entries are not persisted and are lost when the browser
-          exits.
+          Brave keeps the Privacy Settings Tuning flow diagnostics
+          entries in memory only and clears them when the browser exits.
         </div>
       </header>
 
