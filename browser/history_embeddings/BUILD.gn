@@ -97,7 +97,6 @@ source_set("browser_tests") {
   testonly = true
   sources = [
     "brave_history_ui_embeddings_browsertest.cc",
-    "history_embeddings_omnibox_browsertest.cc",
     "open_tab_search_browsertest.cc",
   ]
 
@@ -110,7 +109,6 @@ source_set("browser_tests") {
     "//brave/components/constants",
     "//brave/components/history_embeddings:test_support",
     "//brave/components/local_ai/core",
-    "//chrome/browser/autocomplete",
     "//chrome/browser/history",
     "//chrome/browser/history_embeddings",
     "//chrome/browser/profiles",
@@ -122,15 +120,12 @@ source_set("browser_tests") {
     "//components/history/core/browser",
     "//components/history_embeddings/core",
     "//components/keyed_service/core",
-    "//components/omnibox/browser",
-    "//components/omnibox/browser:test_support",
     "//components/prefs",
     "//content/public/browser",
     "//content/test:test_support",
     "//net:test_support",
     "//testing/gmock",
     "//testing/gtest",
-    "//third_party/metrics_proto",
     "//ui/base",
     "//url",
   ]
