@@ -8,27 +8,11 @@ import Strings
 import SwiftUI
 
 func eTldPlusOneRange(in origin: String, eTldPlusOne: String) -> Range<String.Index>? {
-  guard !eTldPlusOne.isEmpty,
-    let hostRange = URLComponents(string: origin)?.rangeOfHost
-  else {
+  guard !eTldPlusOne.isEmpty else {
     return nil
   }
 
-  let host = origin[hostRange]
-  let hostEnd = host.last == "." ? host.index(before: host.endIndex) : host.endIndex
-  guard host.distance(from: host.startIndex, to: hostEnd) >= eTldPlusOne.count else {
-    return nil
-  }
-
-  let eTldStart = host.index(hostEnd, offsetBy: -eTldPlusOne.count)
-  let eTldRange = eTldStart..<hostEnd
-  guard String(host[eTldRange]).caseInsensitiveCompare(eTldPlusOne) == .orderedSame,
-    eTldStart == host.startIndex || host[host.index(before: eTldStart)] == "."
-  else {
-    return nil
-  }
-
-  return eTldRange
+  return origin.range(of: eTldPlusOne, options: [.caseInsensitive, .backwards])
 }
 
 private func originText(_ origin: String, eTldPlusOne: String) -> Text {
