@@ -1060,6 +1060,18 @@
 /* No comment provided by engineer. */
 "ntp.sponsoredImageDescription" = "E szponzorált kép megtekintésével tartalomkészítőket és kiadókat támogat.";
 
+/* The title of a picker for user to pick which type of topsites to show in NTP */
+"ntp.topsites" = "Népszerű oldalak";
+
+/* Favorites type of topsites. Selection means NTP will display favorites tiles if there is any. */
+"ntp.topsitesTypeFavorites" = "Kedvencek";
+
+/* MostVisited type of topsites. Selection means NTP will display most visited tiles if there is any. */
+"ntp.topsitesTypeMostVisited" = "Gyakran látogatott";
+
+/* None type of topsites. Selection means there won't be any topsites tiles in NTP */
+"ntp.topsitesTypeNone" = "Nincs";
+
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "A Jutalmak funkció bekapcsolásával elfogadja a következőt: %@.";
 
@@ -1450,12 +1462,6 @@
 /* The title for the alert that shows up when an item is expired */
 "playList.expiredAlertTitle" = "Lejárt videó";
 
-/* Number of items in the playlsit folder. Example: '10 items' */
-"playlist.folderItemCountPlural" = "%d elem";
-
-/* Title for when there's a single item inside of a folder */
-"playlist.foldersCountSingular" = "%d elem";
-
 /* Description for load resources error alert */
 "playList.loadResourcesErrorAlertDescription" = "Hiba történt az erőforrás betöltésekor!";
 
@@ -1587,12 +1593,6 @@
 
 /* The title of the screen to create a new folder */
 "playlistFolders.newFolderScreenTitle" = "Új lejátszási lista";
-
-/* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
-"playlistFolders.subtitleItemCount" = "%lld elem";
-
-/* The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item. */
-"playlistFolders.subtitleItemSingleCount" = "1 elem";
 
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "Cím nélküli lejátszási lista";
@@ -2410,12 +2410,6 @@
 /* Title of the settings toggle that enables Sponsored Ads */
 "settings.sponsoredAdsEnabledTitle" = "Szponzorált hirdetések engedélyezése";
 
-/* Description to explain the survey panelist toggle */
-"settings.surveyPanelistDescription" = "Engedélyezi, hogy a Brave privát kérdőívekre mutató linkeket jelenítsen meg az új lapon. Ezek segítenek a funkciók fejlesztésében és a hirdetések hatékonyságának mérésében. [Tudjon meg többet](%@)";
-
-/* Title to explain the survey panelist toggle */
-"settings.surveyPanelistTitle" = "Brave felmérések engedélyezése";
-
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
 
@@ -3060,12 +3054,6 @@
 
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "Lapok törlése";
-
-/* A label in the tab tray mode switcher shown when there are 0 or more than 1 regular tabs open e.g. '129 Tabs' */
-"tabGrid.tabsCountFormatPlural" = "%lld Fülök";
-
-/* A label in the tab tray mode switcher shown when there is 1 regular tab open e.g. '1 Tab' */
-"tabGrid.tabsCountFormatSingular" = "%lld Fül";
 
 /* Accessibility label for a button that when tapped presents the users history & recently closed tabs */
 "tabGrid.viewHistoryAccessibilityLabel" = "Előzmények megtekintése";

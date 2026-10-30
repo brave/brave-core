@@ -1060,6 +1060,18 @@
 /* No comment provided by engineer. */
 "ntp.sponsoredImageDescription" = "Подржавате ауторе садржаја гледањем ове спонзорисане слике.";
 
+/* The title of a picker for user to pick which type of topsites to show in NTP */
+"ntp.topsites" = "Омиљени сајтови";
+
+/* Favorites type of topsites. Selection means NTP will display favorites tiles if there is any. */
+"ntp.topsitesTypeFavorites" = "Омиљено";
+
+/* MostVisited type of topsites. Selection means NTP will display most visited tiles if there is any. */
+"ntp.topsitesTypeMostVisited" = "Често посећивано";
+
+/* None type of topsites. Selection means there won't be any topsites tiles in NTP */
+"ntp.topsitesTypeNone" = "Ништа";
+
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Ако укључите награде, сагласни сте са документом %@.";
 
@@ -1450,12 +1462,6 @@
 /* The title for the alert that shows up when an item is expired */
 "playList.expiredAlertTitle" = "Видео је истекао";
 
-/* Number of items in the playlsit folder. Example: '10 items' */
-"playlist.folderItemCountPlural" = "Ставки: %d";
-
-/* Title for when there's a single item inside of a folder */
-"playlist.foldersCountSingular" = "Ставки: %d";
-
 /* Description for load resources error alert */
 "playList.loadResourcesErrorAlertDescription" = "Дошло је до проблема приликом учитавања ресурса!";
 
@@ -1587,12 +1593,6 @@
 
 /* The title of the screen to create a new folder */
 "playlistFolders.newFolderScreenTitle" = "Нова плејлиста";
-
-/* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
-"playlistFolders.subtitleItemCount" = "Ставки: %lld";
-
-/* The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item. */
-"playlistFolders.subtitleItemSingleCount" = "Ставки: 1";
 
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "Плејлиста без наслова";
@@ -2410,12 +2410,6 @@
 /* Title of the settings toggle that enables Sponsored Ads */
 "settings.sponsoredAdsEnabledTitle" = "Активирај спонзорисане огласе";
 
-/* Description to explain the survey panelist toggle */
-"settings.surveyPanelistDescription" = "Омогућава Brave-у да приказује линкове за приватне анкете на новој картици. Анкете нам помажу да креирамо боље функције и меримо ефикасност огласних кампања заснованих на прегледачу. [Сазнајте више](%@)";
-
-/* Title to explain the survey panelist toggle */
-"settings.surveyPanelistTitle" = "Активирај Brave анкете";
-
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
 
@@ -3060,12 +3054,6 @@
 
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "Уништи картице";
-
-/* A label in the tab tray mode switcher shown when there are 0 or more than 1 regular tabs open e.g. '129 Tabs' */
-"tabGrid.tabsCountFormatPlural" = "%lld картица";
-
-/* A label in the tab tray mode switcher shown when there is 1 regular tab open e.g. '1 Tab' */
-"tabGrid.tabsCountFormatSingular" = "%lld картица";
 
 /* Accessibility label for a button that when tapped presents the users history & recently closed tabs */
 "tabGrid.viewHistoryAccessibilityLabel" = "Прикажи историју";
