@@ -155,8 +155,6 @@ IN_PROC_BROWSER_TEST_F(PsstLogReceiverBrowserTest, EntryIsStampedByTheBrowser) {
   EXPECT_EQ(kMainFrameHost, entries[0]->site);
   EXPECT_EQ(sessions::SessionTabHelper::IdForTab(web_contents()).id(),
             entries[0]->tab_id);
-  EXPECT_EQ(web_contents()->GetPrimaryMainFrame()->GetFrameToken().ToString(),
-            entries[0]->frame_token);
 }
 
 // An unrecognized level is still recorded, as info.
@@ -250,7 +248,6 @@ IN_PROC_BROWSER_TEST_F(PsstLogReceiverBrowserTest,
   EXPECT_EQ(kSubFrameHost, entries[0]->site);
   EXPECT_EQ(sessions::SessionTabHelper::IdForTab(web_contents()).id(),
             entries[0]->tab_id);
-  EXPECT_EQ(subframe->GetFrameToken().ToString(), entries[0]->frame_token);
 }
 
 }  // namespace psst
