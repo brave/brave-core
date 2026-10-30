@@ -10,9 +10,7 @@
 #include <algorithm>
 #include <memory>
 
-#include "base/check_deref.h"
 #include "base/functional/bind.h"
-#include "base/memory/raw_ref.h"
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
@@ -34,25 +32,6 @@
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/scoped_canvas.h"
 #include "ui/views/window/non_client_view.h"
-
-class BraveBrowserFrameViewMac::ScopedFocusModeDisable {
- public:
-  explicit ScopedFocusModeDisable(FocusModeController* controller)
-      : controller_(CHECK_DEREF(controller)),
-        was_enabled_(controller->IsEnabled()) {
-    controller_->SetEnabled(false);
-  }
-
-  ~ScopedFocusModeDisable() {
-    if (was_enabled_) {
-      controller_->SetEnabled(true);
-    }
-  }
-
- private:
-  const raw_ref<FocusModeController> controller_;
-  bool was_enabled_;
-};
 
 BraveBrowserFrameViewMac::BraveBrowserFrameViewMac(
     BrowserWidget* browser_widget,
@@ -295,17 +274,16 @@ void BraveBrowserFrameViewMac::OnFullscreenStateChanged() {
   // after immersive mode has been disabled and the top container has been
   // returned to the browser view.
   if (GetBrowserView()->IsFullscreen()) {
-    if (!scoped_focus_mode_disable_) {
+    if (!focus_mode_suppression_) {
       auto* browser = GetBrowserView()->browser();
       if (auto* controller = FocusModeController::From(browser)) {
-        scoped_focus_mode_disable_ =
-            std::make_unique<ScopedFocusModeDisable>(controller);
+        focus_mode_suppression_ = controller->Suppress();
       }
     }
     BrowserFrameViewMac::OnFullscreenStateChanged();
   } else {
     BrowserFrameViewMac::OnFullscreenStateChanged();
-    scoped_focus_mode_disable_.reset();
+    focus_mode_suppression_.RunAndReset();
   }
 }
 

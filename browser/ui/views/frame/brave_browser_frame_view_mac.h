@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "base/callback_list.h"
+#include "base/functional/callback_helpers.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
@@ -34,8 +35,6 @@ class BraveBrowserFrameViewMac : public BrowserFrameViewMac,
   void OnFocusModeToggled(bool enabled) override;
 
  private:
-  class ScopedFocusModeDisable;
-
   bool ShouldShowWindowTitleForVerticalTabs() const;
   void UpdateWindowTitleVisibility();
   void UpdateWindowTitleAndControls();
@@ -59,7 +58,7 @@ class BraveBrowserFrameViewMac : public BrowserFrameViewMac,
   BooleanPrefMember show_title_bar_on_vertical_tabs_;
   BooleanPrefMember compact_horizontal_tabs_;
 
-  std::unique_ptr<ScopedFocusModeDisable> scoped_focus_mode_disable_;
+  base::ScopedClosureRunner focus_mode_suppression_;
   base::ScopedObservation<FocusModeController, FocusModeController::Observer>
       focus_mode_observation_{this};
   base::CallbackListSubscription overlay_reveal_subscription_;
