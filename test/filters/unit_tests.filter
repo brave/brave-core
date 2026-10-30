@@ -714,6 +714,10 @@
 -RenderViewContextMenuMenuSimplificationTest.PageMenuSeparators
 -RenderViewContextMenuMenuSimplificationTest.PureSelectionLayout
 
+# These tests don't account for our added context menu items
+# (e.g. Open Link with Tor, Open Link in Container Tab).
+-RenderViewContextMenuMenuSimplificationTest.*
+
 # These tests fail because it's expected that the generated tabs have
 # suggestions like "Ask Google about this tab", whereas our results have
 # suggestions like "Ask Brave about this tab"
