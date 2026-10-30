@@ -37,6 +37,10 @@ void FakeConnectionManager::SetSelectedRegion(mojom::VpnRegionPtr region) {
   last_selected_region_ = std::move(region);
 }
 
+void FakeConnectionManager::SetAutoReconnectState(bool enable) {
+  last_auto_reconnect_request_ = enable;
+}
+
 void FakeConnectionManager::SetSmartProxyRoutingState(bool enable) {
   last_smart_proxy_routing_request_ = enable;
 }
