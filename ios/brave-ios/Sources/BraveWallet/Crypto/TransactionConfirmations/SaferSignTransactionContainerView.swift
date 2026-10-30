@@ -110,13 +110,7 @@ struct SaferSignTransactionContainerView: View {
       }
       .frame(width: min(faviconSize, maxFaviconSize), height: min(faviconSize, maxFaviconSize))
 
-      Group {
-        if let dappOriginInfo = dappOriginInfo {
-          Text(originInfo: dappOriginInfo)
-        } else {
-          Text(Strings.Wallet.braveWallet)
-        }
-      }
+      Text(originInfo: dappOriginInfo)
       .foregroundColor(Color(braveSystemName: .textPrimary))
       .font(.subheadline)
       .multilineTextAlignment(.center)

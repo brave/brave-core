@@ -17,7 +17,6 @@ namespace brave_wallet {
 class BitcoinTxMeta : public TxMeta {
  public:
   BitcoinTxMeta();
-  explicit BitcoinTxMeta(const mojom::AccountIdPtr& from);
   BitcoinTxMeta(const mojom::AccountIdPtr& from,
                 std::unique_ptr<BitcoinTransaction> tx);
   BitcoinTxMeta(const mojom::AccountIdPtr& from,

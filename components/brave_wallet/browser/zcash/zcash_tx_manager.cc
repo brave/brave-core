@@ -13,7 +13,6 @@
 
 #include "base/functional/bind.h"
 #include "base/notimplemented.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_block_tracker.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_tx_meta.h"
