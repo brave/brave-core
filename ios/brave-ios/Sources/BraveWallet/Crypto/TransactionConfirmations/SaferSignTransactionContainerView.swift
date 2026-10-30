@@ -111,10 +111,10 @@ struct SaferSignTransactionContainerView: View {
       .frame(width: min(faviconSize, maxFaviconSize), height: min(faviconSize, maxFaviconSize))
 
       Text(originInfo: dappOriginInfo)
-      .foregroundColor(Color(braveSystemName: .textPrimary))
-      .font(.subheadline)
-      .multilineTextAlignment(.center)
-      .padding(.top, 8)
+        .foregroundColor(Color(braveSystemName: .textPrimary))
+        .font(.subheadline)
+        .multilineTextAlignment(.center)
+        .padding(.top, 8)
     }
   }
 
