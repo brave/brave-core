@@ -4,16 +4,18 @@ This directory provides a consistent structure for implementing machine learning
 
 ## Pipeline
 
-[Pipeline](pipeline/README.md) defines the instructions for the various steps of a ML process. Often instructions are detailed by components loaded in from external Brave-sources.
+The pipeline defines the steps of a machine-learning process, including model
+architecture and when to apply preprocessing transformations.
 
 ## Data
 
-[Data](data/README.md) defines data structures useful for handling data when implementing ML processes.
+Data defines structures used by machine-learning processes.
 
 ## Transformation
 
-[Transformation](transformation/README.md) defines algorithms for applying pre-processing transformations to model input data.
+Transformation defines algorithms that preprocess model input data.
 
 ## Model
 
-[Model](model/README.md) defines functions for applying ML models, such as generating predictions.
+Models apply machine-learning algorithms. Each model type is implemented
+separately.
