@@ -36,15 +36,13 @@ struct PsstLogEntry {
   // Tab the entry belongs to, used to group the timeline.
   int32? tab_id;
 
-  // Distinguishes subframes within a tab.
-  string? frame_token;
-
   PsstLogLevel level;
   PsstLogSource source;
 
   // eTLD+1 the entry relates to, derived by the browser.
   string site;
 
+  // Logging message
   string message;
 
   // Optional structured payload, JSON-serialized for display.
@@ -52,10 +50,6 @@ struct PsstLogEntry {
 };
 
 // Renderer -> browser sink for logs from the injected user/policy scripts.
-// Bound per-frame and only in the PSST isolated world, so page script can
-// neither see nor call it. The browser derives tab id, frame token and site
-// from the receiving frame, so a compromised renderer cannot attribute a log
-// entry to another tab or site.
 interface PsstLogSink {
   Log(PsstLogLevel level,
       string message,
