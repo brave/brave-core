@@ -72,6 +72,7 @@ robolectric_library("junit") {
 
   deps = [
     ":java",
+    "//brave/android/java/org/chromium/chrome/browser/day_zero:java",
     "//chrome/android/junit:chrome_junit_tests_helper",
     "//third_party/androidx:androidx_viewpager2_viewpager2_java",
   ]

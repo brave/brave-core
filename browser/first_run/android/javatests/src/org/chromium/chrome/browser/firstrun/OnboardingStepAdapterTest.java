@@ -9,6 +9,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
+import static org.chromium.chrome.browser.day_zero.DayZeroHelper.DAY_ZERO_DEFAULT_VARIANT;
+import static org.chromium.chrome.browser.day_zero.DayZeroHelper.DAY_ZERO_VARIANT_Y;
 
 import android.text.SpannableString;
 import android.view.ContextThemeWrapper;
@@ -36,10 +44,12 @@ public class OnboardingStepAdapterTest {
     private static final int HELP_BRAVE_SEARCH = 0;
     private static final int BLOCK_INTERRUPTIONS = 1;
     private static final int MAKE_BRAVE_BETTER = 2;
+    private static final int CUSTOMIZE_BRAVE = 2;
     private static final int TOTAL_STEPS = 3;
 
     private ViewGroup mParent;
     private SpannableString mWdpLearnMore;
+    private PageBounceAnimator mPageBounceAnimator;
     private TestListener mListener;
 
     @Before
@@ -50,12 +60,23 @@ public class OnboardingStepAdapterTest {
                         R.style.Theme_Brave_WelcomeOnboarding);
         mParent = new android.widget.FrameLayout(themedContext);
         mWdpLearnMore = new SpannableString("Learn more about WDP");
+        mPageBounceAnimator = mock(PageBounceAnimator.class);
         mListener = new TestListener();
+    }
+
+    private OnboardingStepAdapter createAdapter() {
+        return createAdapter(DAY_ZERO_DEFAULT_VARIANT, false);
+    }
+
+    private OnboardingStepAdapter createAdapter(
+            final String dayZeroVariant, final boolean skipMakeBraveBetter) {
+        return new OnboardingStepAdapter(
+                mWdpLearnMore, dayZeroVariant, skipMakeBraveBetter, mPageBounceAnimator, mListener);
     }
 
     @Test
     public void testItemCountAndViewTypes() {
-        OnboardingStepAdapter adapter = new OnboardingStepAdapter(mWdpLearnMore, mListener);
+        OnboardingStepAdapter adapter = createAdapter();
 
         assertEquals(TOTAL_STEPS, adapter.getItemCount());
         assertEquals(HELP_BRAVE_SEARCH, adapter.getItemViewType(0));
@@ -65,7 +86,7 @@ public class OnboardingStepAdapterTest {
 
     @Test
     public void testHelpBraveSearchButtons() {
-        OnboardingStepAdapter adapter = new OnboardingStepAdapter(mWdpLearnMore, mListener);
+        OnboardingStepAdapter adapter = createAdapter();
 
         OnboardingStepAdapter.OnboardingBaseViewHolder holder =
                 adapter.onCreateViewHolder(mParent, 0);
@@ -79,18 +100,17 @@ public class OnboardingStepAdapterTest {
         assertEquals(mWdpLearnMore.toString(), subtitle.getText().toString());
 
         later.performClick();
-        assertEquals(1, mListener.mRequestedPage);
+        verify(mPageBounceAnimator).animateToPosition(BLOCK_INTERRUPTIONS);
         assertEquals(0, mListener.mWebDiscoverEnabledCount);
 
-        mListener.reset();
         sure.performClick();
-        assertEquals(1, mListener.mRequestedPage);
+        verify(mPageBounceAnimator, times(2)).animateToPosition(BLOCK_INTERRUPTIONS);
         assertEquals(1, mListener.mWebDiscoverEnabledCount);
     }
 
     @Test
     public void testBlockInterruptionsNextPage() {
-        OnboardingStepAdapter adapter = new OnboardingStepAdapter(mWdpLearnMore, mListener);
+        OnboardingStepAdapter adapter = createAdapter();
 
         OnboardingStepAdapter.OnboardingBaseViewHolder holder =
                 adapter.onCreateViewHolder(mParent, 1);
@@ -98,14 +118,42 @@ public class OnboardingStepAdapterTest {
 
         assertNotNull(continueButton);
         continueButton.performClick();
-        assertEquals(2, mListener.mRequestedPage);
+        verify(mPageBounceAnimator).animateToPosition(MAKE_BRAVE_BETTER);
+        assertEquals(0, mListener.mDismissCount);
 
         adapter.onViewRecycled(holder);
     }
 
     @Test
+    public void testBlockInterruptionsDismissesWhenMakeBraveBetterSkipped() {
+        OnboardingStepAdapter adapter = createAdapter(DAY_ZERO_DEFAULT_VARIANT, true);
+
+        OnboardingStepAdapter.OnboardingBaseViewHolder holder =
+                adapter.onCreateViewHolder(mParent, BLOCK_INTERRUPTIONS);
+        Button continueButton = holder.itemView.findViewById(R.id.onboarding_continue);
+
+        continueButton.performClick();
+        verify(mPageBounceAnimator, never()).animateToPosition(anyInt());
+        assertEquals(1, mListener.mDismissCount);
+    }
+
+    @Test
+    public void testCustomizeStepVariant() {
+        OnboardingStepAdapter adapter = createAdapter(DAY_ZERO_VARIANT_Y, false);
+
+        assertEquals(TOTAL_STEPS + 1, adapter.getItemCount());
+
+        OnboardingStepAdapter.OnboardingBaseViewHolder holder =
+                adapter.onCreateViewHolder(mParent, BLOCK_INTERRUPTIONS);
+        Button continueButton = holder.itemView.findViewById(R.id.onboarding_continue);
+
+        continueButton.performClick();
+        verify(mPageBounceAnimator).animateToPosition(CUSTOMIZE_BRAVE);
+    }
+
+    @Test
     public void testMakeBraveBetterManagedHidesCheckboxes() {
-        OnboardingStepAdapter adapter = new OnboardingStepAdapter(mWdpLearnMore, mListener);
+        OnboardingStepAdapter adapter = createAdapter();
         adapter.setCrashReportingManaged(true);
         adapter.setP3aManaged(true);
 
@@ -127,7 +175,7 @@ public class OnboardingStepAdapterTest {
 
     @Test
     public void testMakeBraveBetterCrashesManagedHidesCheckbox() {
-        OnboardingStepAdapter adapter = new OnboardingStepAdapter(mWdpLearnMore, mListener);
+        OnboardingStepAdapter adapter = createAdapter();
         adapter.setCrashReportingManaged(true);
         adapter.setP3aManaged(false);
 
@@ -144,7 +192,7 @@ public class OnboardingStepAdapterTest {
 
     @Test
     public void testMakeBraveBetterP3aManagedHidesCheckbox() {
-        OnboardingStepAdapter adapter = new OnboardingStepAdapter(mWdpLearnMore, mListener);
+        OnboardingStepAdapter adapter = createAdapter();
         adapter.setCrashReportingManaged(false);
         adapter.setP3aManaged(true);
 
@@ -161,7 +209,7 @@ public class OnboardingStepAdapterTest {
 
     @Test
     public void testMakeBraveBetterCrashesCheckedSetsCheckbox() {
-        OnboardingStepAdapter adapter = new OnboardingStepAdapter(mWdpLearnMore, mListener);
+        OnboardingStepAdapter adapter = createAdapter();
         adapter.setCrashReportingManaged(false);
         adapter.setCrashReportingChecked(true);
 
@@ -176,7 +224,7 @@ public class OnboardingStepAdapterTest {
 
     @Test
     public void testMakeBraveBetterP3aCheckedSetsCheckbox() {
-        OnboardingStepAdapter adapter = new OnboardingStepAdapter(mWdpLearnMore, mListener);
+        OnboardingStepAdapter adapter = createAdapter();
         adapter.setP3aManaged(false);
         adapter.setP3aChecked(true);
 
@@ -191,7 +239,7 @@ public class OnboardingStepAdapterTest {
 
     @Test
     public void testMakeBraveBetterCrashReportingToggleNotifiesListener() {
-        OnboardingStepAdapter adapter = new OnboardingStepAdapter(mWdpLearnMore, mListener);
+        OnboardingStepAdapter adapter = createAdapter();
         adapter.setCrashReportingManaged(false);
         adapter.setCrashReportingChecked(false);
 
@@ -214,7 +262,7 @@ public class OnboardingStepAdapterTest {
 
     @Test
     public void testMakeBraveBetterP3aToggleNotifiesListener() {
-        OnboardingStepAdapter adapter = new OnboardingStepAdapter(mWdpLearnMore, mListener);
+        OnboardingStepAdapter adapter = createAdapter();
         adapter.setP3aManaged(false);
         adapter.setP3aChecked(false);
 
@@ -237,18 +285,12 @@ public class OnboardingStepAdapterTest {
 
     private static final class TestListener
             implements OnboardingStepAdapter.OnboardingNavigationListener {
-        int mRequestedPage = -1;
         int mDismissCount;
         int mWebDiscoverEnabledCount;
         int mCrashReportingChangeCount;
         int mP3aChangeCount;
         boolean mLastCrashReportingEnabled;
         boolean mLastP3aEnabled;
-
-        @Override
-        public void onRequestPageChange(int position) {
-            mRequestedPage = position;
-        }
 
         @Override
         public void onDismiss() {
@@ -270,16 +312,6 @@ public class OnboardingStepAdapterTest {
         public void onP3aPreferenceChanged(final boolean enabled) {
             mP3aChangeCount++;
             mLastP3aEnabled = enabled;
-        }
-
-        void reset() {
-            mRequestedPage = -1;
-            mDismissCount = 0;
-            mWebDiscoverEnabledCount = 0;
-            mCrashReportingChangeCount = 0;
-            mP3aChangeCount = 0;
-            mLastCrashReportingEnabled = false;
-            mLastP3aEnabled = false;
         }
     }
 }
