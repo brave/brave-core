@@ -127,10 +127,18 @@ void SidebarController::TearDownPreBrowserWindowDestruction() {
   sidebar_ = nullptr;
 }
 
-void SidebarController::CloseWebPanel() {
+void SidebarController::CloseWebPanelForShutdown() {
   if (web_panel_controller_) {
-    web_panel_controller_->CloseWebPanel();
+    web_panel_controller_->CloseWebPanelForShutdown();
   }
+}
+
+bool SidebarController::IsWebPanelTab(
+    const content::WebContents* contents) const {
+  // Deliberately not GetWebPanelController(), which would lazily create a
+  // controller for a window that never opened a panel.
+  return web_panel_controller_ &&
+         web_panel_controller_->panel_contents() == contents;
 }
 
 void SidebarController::OnItemPressed(size_t index,
