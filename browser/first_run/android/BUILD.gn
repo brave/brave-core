@@ -14,9 +14,11 @@ android_library("java") {
   deps = [
     ":java_resources",
     "//base:base_java",
+    "//brave/android/java/org/chromium/chrome/browser/day_zero:java",
     "//brave/build/android:android_brave_strings_grd",
     "//third_party/android_deps:com_airbnb_android_lottie_java",
     "//third_party/android_deps:material_design_java",
+    "//third_party/androidx:androidx_annotation_annotation_java",
     "//third_party/androidx:androidx_recyclerview_recyclerview_java",
     "//third_party/androidx:androidx_viewpager2_viewpager2_java",
   ]
@@ -47,6 +49,7 @@ android_resources("java_resources") {
     "java/res/layout-sw600dp-port/make_brave_better.xml",
     "java/res/layout/block_interruptions.xml",
     "java/res/layout/block_interruptions_landscape_content.xml",
+    "java/res/layout/customize_brave.xml",
     "java/res/layout/help_brave_search.xml",
     "java/res/layout/help_brave_search_landscape_content.xml",
     "java/res/layout/make_brave_better.xml",
@@ -70,7 +73,9 @@ robolectric_library("junit") {
 
   deps = [
     ":java",
+    "//brave/android/java/org/chromium/chrome/browser/day_zero:java",
     "//chrome/android/junit:chrome_junit_tests_helper",
+    "//third_party/androidx:androidx_recyclerview_recyclerview_java",
     "//third_party/androidx:androidx_viewpager2_viewpager2_java",
   ]
 }
