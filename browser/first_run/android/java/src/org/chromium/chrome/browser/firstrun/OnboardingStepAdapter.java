@@ -101,7 +101,8 @@ public class OnboardingStepAdapter
         }
 
         if (viewType == R.layout.customize_brave) {
-            // TODO: GitHub issue https://github.com/brave/brave-browser/issues/60341.
+            // TODO(https://github.com/brave/brave-browser/issues/60341): Implement the Customize
+            // Brave view holder.
             throw new AssertionError("Customize Brave view holder is not implemented yet.");
         }
 
