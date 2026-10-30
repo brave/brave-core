@@ -31,7 +31,7 @@ export function formatTime(timestampMs: number) {
 }
 
 export function formatTabId(tabId: number | undefined) {
-  return tabId === null || tabId === undefined ? '—' : String(tabId);
+  return tabId === null || tabId === undefined ? '—' : String(tabId)
 }
 
 // Tab-separated so the result can be pasted straight into a bug report or a
