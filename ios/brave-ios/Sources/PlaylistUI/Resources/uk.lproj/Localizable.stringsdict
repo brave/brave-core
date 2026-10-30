@@ -13,13 +13,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>lld</string>
 			<key>few</key>
-			<string>Об’єкти: %lld</string>
+			<string>%lld елементи</string>
 			<key>many</key>
-			<string>Об’єкти: %lld</string>
+			<string>%lld елементів</string>
 			<key>one</key>
 			<string>%lld елемент</string>
 			<key>other</key>
-			<string>Об’єкти: %lld</string>
+			<string>%lld елементів</string>
 		</dict>
 	</dict>
 </dict>
