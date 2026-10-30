@@ -30,7 +30,7 @@ extension Text {
 
   /// Creates a text view that displays a BraveWallet.OriginInfo, bolding the eTLD+1.
   init(originInfo: BraveWallet.OriginInfo?) {
-    if let originInfo = originInfo, !originInfo.isBraveWalletOrigin {
+    if let originInfo = originInfo {
       let origin = originInfo.originSpec
       let eTldPlusOne = originInfo.eTldPlusOne
       if let range = origin.range(of: eTldPlusOne) {

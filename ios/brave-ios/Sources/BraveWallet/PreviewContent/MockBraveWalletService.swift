@@ -81,7 +81,7 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   }
 
   func activeOrigin(completion: @escaping (BraveWallet.OriginInfo) -> Void) {
-    completion(.init())
+    completion(.init(originSpec: "https://example.com", eTldPlusOne: "example.com"))
   }
 
   func pendingSignMessageRequests(

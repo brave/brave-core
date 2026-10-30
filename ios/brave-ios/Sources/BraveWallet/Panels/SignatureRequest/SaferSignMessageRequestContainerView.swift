@@ -126,25 +126,19 @@ struct SaferSignMessageRequestContainerView: View {
   private var originAndFavicon: some View {
     VStack {
       Group {
-        if request.originInfo.isBraveWalletOrigin {
-          Image(uiImage: UIImage(sharedNamed: "brave.logo")!)
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-        } else {
-          if let url = URL(string: request.originInfo.originSpec) {
-            FaviconReader(url: url) { image in
-              if let image = image {
-                Image(uiImage: image)
-                  .resizable()
-                  .scaledToFit()
-              } else {
-                Circle()
-                  .stroke(Color(braveSystemName: .dividerStrong), lineWidth: pixelLength)
-              }
+        if let url = URL(string: request.originInfo.originSpec) {
+          FaviconReader(url: url) { image in
+            if let image = image {
+              Image(uiImage: image)
+                .resizable()
+                .scaledToFit()
+            } else {
+              Circle()
+                .stroke(Color(braveSystemName: .dividerStrong), lineWidth: pixelLength)
             }
-            .background(Color(braveSystemName: .neutral20))
-            .clipShape(RoundedRectangle(cornerRadius: 4))
           }
+          .background(Color(braveSystemName: .neutral20))
+          .clipShape(RoundedRectangle(cornerRadius: 4))
         }
       }
       .frame(width: min(faviconSize, maxFaviconSize), height: min(faviconSize, maxFaviconSize))

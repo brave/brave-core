@@ -20,7 +20,6 @@ namespace brave_wallet {
 class PolkadotTxMeta : public TxMeta {
  public:
   PolkadotTxMeta();
-  PolkadotTxMeta(const mojom::AccountIdPtr& from, PolkadotTransaction tx);
   PolkadotTxMeta(const mojom::AccountIdPtr& from,
                  PolkadotTransaction tx,
                  const std::string& chain_id,

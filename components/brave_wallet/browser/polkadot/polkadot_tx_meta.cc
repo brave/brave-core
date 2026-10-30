@@ -13,12 +13,6 @@
 namespace brave_wallet {
 
 PolkadotTxMeta::PolkadotTxMeta() = default;
-PolkadotTxMeta::PolkadotTxMeta(const mojom::AccountIdPtr& from,
-                               PolkadotTransaction tx)
-    : tx_(std::move(tx)) {
-  DCHECK_EQ(from->coin, mojom::CoinType::DOT);
-  set_from(from.Clone());
-}
 
 PolkadotTxMeta::PolkadotTxMeta(const mojom::AccountIdPtr& from,
                                PolkadotTransaction tx,

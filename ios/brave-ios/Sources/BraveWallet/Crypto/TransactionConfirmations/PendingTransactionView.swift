@@ -124,16 +124,10 @@ struct PendingTransactionView: View {
       .frame(width: min(faviconSize, maxFaviconSize), height: min(faviconSize, maxFaviconSize))
       .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
 
-      Group {
-        if let dappOriginInfo = confirmationStore.dappOriginInfo {
-          Text(originInfo: dappOriginInfo)
-        } else {
-          Text(Strings.Wallet.braveWallet)
-        }
-      }
-      .font(.subheadline)
-      .foregroundColor(Color(braveSystemName: .textPrimary))
-      .multilineTextAlignment(.center)
+      Text(originInfo: confirmationStore.dappOriginInfo)
+        .font(.subheadline)
+        .foregroundColor(Color(braveSystemName: .textPrimary))
+        .multilineTextAlignment(.center)
     }
     .accessibilityElement(children: .combine)
   }
