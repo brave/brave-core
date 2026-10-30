@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
 
 #include <utility>
