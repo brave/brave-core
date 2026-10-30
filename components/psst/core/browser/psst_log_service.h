@@ -53,15 +53,9 @@ class PsstLogService : public KeyedService {
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
-  // Appends an entry, stamping it with the current time and reducing `url` to
-  // its eTLD+1 — or to its host for URLs with no registry (IP literals,
-  // localhost), or to the empty string if `url` is invalid. `data` is
-  // JSON-serialized for display, if present. Evicts the oldest entry once
-  // `kMaxLogEntries` is reached.
   void AddEntry(mojom::PsstLogSource source,
                 mojom::PsstLogLevel level,
                 std::optional<int32_t> tab_id,
-                std::optional<std::string> frame_token,
                 const GURL& url,
                 std::string_view message,
                 std::optional<base::DictValue> data = std::nullopt);
