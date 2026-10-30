@@ -27,6 +27,9 @@ These are the user-facing scripts in this directory:
   `oldest..newest` git commit range.
 - `prune_test_filters.py` — Detects and (optionally) removes obsolete entries
   from the current platform's test-filter files.
+- `java_names.py` — Resolves the upstream Java names Brave hardcodes as strings
+  (`BraveReflectionUtil` call sites and `BytecodeTest` assertions) against two
+  Chromium tags, and reports the ones an upgrade silently broke.
 
 ## Library modules
 
@@ -41,6 +44,8 @@ Shared abstractions used by the entry points and tests:
 - `conflict_resolution.py` — The fixed answers `brockit rebase` gives to the
   conflicts it stops on.
 - `git_status.py` — Parser for `git status --porcelain` output.
+- `java_source.py` — Reads Java declarations out of source text at any revision,
+  with no checkout and no build.
 - `versioning.py` — Chromium version number parsing.
 - `vscode.py` — IPC for opening files in VS Code in the integrated terminal.
 
