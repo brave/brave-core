@@ -47,7 +47,7 @@
 			<key>one</key>
 			<string>%lld pestanya</string>
 			<key>other</key>
-			<string>{0, plural, one {%lld pestanya} other {%lld pestanyes}}</string>
+			<string>%lld pestanyes</string>
 		</dict>
 	</dict>
 </dict>
