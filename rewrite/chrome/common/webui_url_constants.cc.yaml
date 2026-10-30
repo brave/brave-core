@@ -29,6 +29,6 @@ substitutions:
               kAdsInternalsHost,
               kNewTabTakeoverHost,
         #if BUILDFLAG(ENABLE_PSST)
-              kPsstInternalsHost,
+              psst::kPsstInternalsHost,
         #endif
         \2

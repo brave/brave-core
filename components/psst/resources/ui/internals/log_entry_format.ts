@@ -5,9 +5,6 @@
 
 import * as Mojom from '../api/psst_internals_api'
 
-// Matches `PsstLogService::kInvalidTabId`.
-const kInvalidTabId = -1
-
 export const levelNames = new Map<Mojom.PsstLogLevel, string>([
   [Mojom.PsstLogLevel.kDebug, 'debug'],
   [Mojom.PsstLogLevel.kInfo, 'info'],
@@ -33,8 +30,8 @@ export function formatTime(timestampMs: number) {
   return `${time}.${String(date.getMilliseconds()).padStart(3, '0')}`
 }
 
-export function formatTabId(tabId: number) {
-  return tabId === kInvalidTabId ? '—' : String(tabId)
+export function formatTabId(tabId: number | undefined) {
+  return tabId === null || tabId === undefined ? '—' : String(tabId);
 }
 
 // Tab-separated so the result can be pasted straight into a bug report or a

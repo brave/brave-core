@@ -7,7 +7,7 @@
 #define BRAVE_BROWSER_UI_WEBUI_PSST_PSST_INTERNALS_UI_H_
 
 #include "brave/browser/ui/webui/psst/psst_internals_handler.h"
-#include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/psst/core/common/constants.h"
 #include "brave/components/psst/core/common/psst_ui_common.mojom.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "content/public/browser/webui_config.h"

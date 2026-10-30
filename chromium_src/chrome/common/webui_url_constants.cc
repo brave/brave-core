@@ -11,5 +11,8 @@
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
 #endif
+#if BUILDFLAG(ENABLE_PSST)
+#include "brave/components/psst/core/common/constants.h"
+#endif
 
 #include <chrome/common/webui_url_constants.cc>
