@@ -26,8 +26,10 @@ source_set("ai_chat") {
     "workspace_folder_chooser.h",
   ]
 
-  # workspace_folder_chooser.h derives from ui::SelectFileDialog::Listener.
-  public_deps = [ "//ui/shell_dialogs" ]
+  public_deps = [
+    "//chrome/browser/ui/webui/top_chrome",
+    "//ui/shell_dialogs",
+  ]
 
   deps = [
     "//brave/browser:tab_helpers_header",
@@ -84,7 +86,6 @@ source_set("ai_chat") {
       "//chrome/browser/ui/tabs:tab_model",
       "//chrome/browser/ui/tabs:tab_strip",
       "//chrome/browser/ui/thumbnails",
-      "//chrome/browser/ui/webui/top_chrome",
       "//chrome/browser/ui/webui/util",
     ]
   } else {
