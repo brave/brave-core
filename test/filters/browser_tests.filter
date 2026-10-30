@@ -2878,6 +2878,11 @@
 -ContextualTasksContextMenuAskGoogleBrowserTest.HistogramRecordedOnAskGoogleClick
 -ContextualTasksContextMenuSubmenuBrowserTest.SubmenuShownWhenSubmenuFeatureEnabled
 
+# Upstream race: the invocation that opened the floaty can still be running when
+# the histogram tester is created, so it records an extra kSuccess
+# Glic.InvokeResult2 sample (see OpenGlicForActiveTabAndWaitIdle()).
+-GlicInvokeBrowserTest.LiveMode*
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -All/DeclarativeNetRequestBrowserTest.RendererCacheCleared/*
 -All/FromGWSNavigationAndKeepAliveRequestBrowserTest.TwoDifferentCategoryRequestAndTwoDifferentCategoryNavigationsFromSRP/*
