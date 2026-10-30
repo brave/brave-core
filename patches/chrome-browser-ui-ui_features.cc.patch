@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/ui_features.cc b/chrome/browser/ui/ui_features.cc
-index 1f958582a085d4709b3ef430f2eb99d57ab1be0f..c8e783ab9d57084c9755008f54dc1d5640acb13e 100644
+index 1f958582a085d4709b3ef430f2eb99d57ab1be0f..f94943ff7c7eb20eac84fdcf5f9e70c832501e02 100644
 --- a/chrome/browser/ui/ui_features.cc
 +++ b/chrome/browser/ui/ui_features.cc
 @@ -147,7 +147,7 @@ BASE_FEATURE(kFeedbackDisabledDialog, base::FEATURE_DISABLED_BY_DEFAULT);
@@ -36,6 +36,15 @@ index 1f958582a085d4709b3ef430f2eb99d57ab1be0f..c8e783ab9d57084c9755008f54dc1d56
  
  BASE_FEATURE(kTabModalUsesDesktopWidget, base::FEATURE_DISABLED_BY_DEFAULT);
  
+@@ -336,7 +331,7 @@ BASE_FEATURE(kNTPFooterBadgingPolicies, base::FEATURE_ENABLED_BY_DEFAULT);
+ BASE_FEATURE(kEnterpriseManagementDisclaimerUsesCustomLabel,
+              base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+-BASE_FEATURE(kEnterpriseReleaseNotes, base::FEATURE_ENABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kEnterpriseReleaseNotes, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kManagedProfileRequiredInterstitial,
+              base::FEATURE_ENABLED_BY_DEFAULT);
 @@ -384,7 +379,7 @@ BASE_FEATURE(kNonMilestoneUpdateToast, base::FEATURE_ENABLED_BY_DEFAULT);
  BASE_FEATURE(kRespectShouldTriggerSessionRestoreOnDesktop,
               base::FEATURE_ENABLED_BY_DEFAULT);
