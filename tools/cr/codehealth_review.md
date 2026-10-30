@@ -13,24 +13,27 @@ of upstream code has missed a fix.
 ## Inputs
 
 - **Range:** the Chromium tags the branch lifts across. The old tag is
-  `projects.chrome.tag` in `package.json` on `origin/master`; the new one is the
-  same field on the branch, or the subject of its "Update patches from Chromium
-  X to Y" commit. Review the whole range, not just its tail. Expect 4000 to 9000
-  commits (cr156: `155.0.8059.30..156.0.8078.4`, 8957 commits). Run `git log` in
-  `src/`, not in `src/brave`.
+  `projects.chrome.tag` in `package.json` on the branch's base: `origin/master`,
+  or `origin/cr<N-1>` while the previous milestone hasn't landed (M159:
+  `158.0.8127.2`). The new one is the same field on the branch, or the subject
+  of its "Update patches from Chromium X to Y" commit. Review the whole range,
+  not just its tail. Expect 4000 to 9000 commits (cr156:
+  `155.0.8059.30..156.0.8078.4`, 8957 commits). Run `git log` in `src/`, not in
+  `src/brave`.
 - **V8 range:** `v8_revision` in `src/DEPS` at both tags. Run that `git log` in
   `src/v8`.
 - **Milestone:** the major version of the new tag. The tracker is
   `tools/cr/M<milestone>_codehealth.md`.
 - **What the rebase already fixed:**
   `git log --format='%h %s%n%b' origin/master..origin/cr<milestone>` in
-  `src/brave`. These are the build fixes made during the rebase. Each one names
-  the upstream commit it follows, and shows which patterns recur. A commit
-  marked `[WIP]` isn't a fix yet: list what it leaves to verify as an item
-  (M157, 8097.1: the iOS MojoFacade reset). Neither is a commit that drops a
-  hook or a pin. After "Drop the X patch/override", grep that the Brave function
-  the hook called still has a caller (M158: `brave::AttachTabHelpers()` was left
-  with none). After "Drop the X pin", read the commit that added the pin
+  `src/brave` (for a branch not on origin yet, `<base>..cr<milestone>` locally).
+  These are the build fixes made during the rebase. Each one names the upstream
+  commit it follows, and shows which patterns recur. A commit marked `[WIP]`
+  isn't a fix yet: list what it leaves to verify as an item (M157, 8097.1: the
+  iOS MojoFacade reset). Neither is a commit that drops a hook or a pin. After
+  "Drop the X patch/override", grep that the Brave function the hook called
+  still has a caller (M158: `brave::AttachTabHelpers()` was left with none).
+  After "Drop the X pin", read the commit that added the pin
   (`git log origin/master -S'<feature>'`) and check that upstream's clean-up
   didn't keep the branch Brave avoided (M158: `kFewerUpdateConfirmations`).
 
@@ -137,7 +140,9 @@ Linux EULA plaster), and match them against the `Bug:`, `Fixed:` and
 `Reviewed-on:` lines in `bodies`. Match CL numbers against the bodies of reverts
 and relands too, since the original CL only appears in their quoted description.
 Umbrella bugs (Bedrock, exit-time destructors) account for most hits; skip them,
-along with ids that only occur in a patch's context lines.
+along with ids that only occur in a patch's context lines. Exclude the indented,
+quoted culprit blocks of Brave's lift commits, or every lift culprit matches
+itself (M159: 809 ids, one real hit).
 
 ### 2. Run the sweeps
 
@@ -149,7 +154,12 @@ signal it tried, which sweep it belongs to, what it found (verified items, or
 only noise), and how to rerun it. Step 5 uses them. Also ask for the hashes of
 the commits it read, one per line, and append them to `$D/claimed` for step 3.
 Forks may not be allowed to write report files, so ask for the items and notes
-in the final reply as well.
+in the final reply as well. Don't start step 3 or write the tracker until every
+subagent has sent its final reply: a notice that it still has background work
+running is interim (M159: a sweep was still running when the tracker was
+published). Tell each subagent not to leave commands running in the background
+once it has replied: a slow fallback it no longer needs, like a `git grep -f` it
+replaced with `rg`, keeps it from finishing (M159, sweep g).
 
 #### a. Overlap: commits touching what Brave overrides
 
@@ -163,7 +173,11 @@ reads the same (M158, 8115.1: 179 files, 8k lines). Look for:
   `#define` or plaster anchors to into another function or file, so Brave's hook
   no longer runs on the path that matters (`ManagedUIHandler::Initialize()`
   moved to another file and chrome://history crashed; clipboard sanitising moved
-  into `FrameClipboardContext`).
+  into `FrameClipboardContext`). A new enabled-by-default flag can do the same
+  inside one class: read new features against the virtuals Brave overrides in
+  the files they gate (M159, 8133.1: `kOmniboxSkipRedundantLocationBarUpdates`
+  made `LocationBarView::Update()` call a non-virtual `OnChangedImpl()`, past
+  `BraveLocationBarView::OnChanged()`; found by two sweeps).
 - **Consolidation.** Several entry points were merged into a new one that skips
   Brave's `_ChromiumImpl` wrapper (`AllowServiceWorker()` and friends became
   `IsAnyStorageAccessAllowed()`, which bypassed Request-OTR). For each embedder
@@ -304,6 +318,12 @@ Brave turns upstream things off in many places, and upstream keeps moving them:
     find code paths that stopped checking them.
 - **Prefs.** For each `SetDefaultPrefValue` and pref override, check that
   upstream still reads that pref.
+- **Upstream removes a feature Brave keeps.** Removal campaigns add clean-up
+  that deletes the feature's data or prefs on startup. Grep the range for
+  `Delete residual|Delete deprecated|sql::Database::Delete|ClearPref` in startup
+  code, and match the paths against Brave's users (M159:
+  `DeleteHistoryEmbeddingsDatabase()` deletes the database Brave's history
+  embeddings service still uses; found by bug-id clustering in sweep f).
 - **Profile types and predicates.** New profile kinds, or changed meanings,
   bypass Brave's private-window checks. Brave's own predicate overrides break
   new invariants too (a miss, found in the rebase: Brave makes
@@ -612,10 +632,13 @@ unless Brave touches the code.
   are candidates for dropping a "flaky upstream" filter. Prefer the macro index
   of both tags (`git grep` for `TEST*`, `IN_PROC_BROWSER_TEST*` and
   `INSTANTIATE*`, then classify each suite as `_F`, `_P` or both) over parsing
-  the diff, which misses macros split across lines. It also finds suites renamed
-  wholesale (M157, 8093.0: `PinnedToolbarActionsContainerTest`, and five tab
-  sharing suites that became `All/…/N`). `tools/cr/prune_test_filters.py` does
-  the existence check with built binaries, but it deletes renamed entries.
+  the diff, which misses macros split across lines; accept an empty prefix on a
+  split `INSTANTIATE_TEST_SUITE_P(` line, or aliases instantiated with `,` are
+  lost (M159, 8133.1: `GlicApiActorTest` took tests out of a `-GlicApiTest*.*`
+  filter). It also finds suites renamed wholesale (M157, 8093.0:
+  `PinnedToolbarActionsContainerTest`, and five tab sharing suites that became
+  `All/…/N`). `tools/cr/prune_test_filters.py` does the existence check with
+  built binaries, but it deletes renamed entries.
 - **Brave GN additions on a target upstream emptied.** When upstream turns a
   target into an aggregator ("no sources, allow_circular_includes_from or
   deps"), Brave's `deps +=` and `allow_circular_includes_from` patches on it
@@ -630,10 +653,14 @@ unless Brave touches the code.
   upstream deleted; stale entries in `base/compile_overridden_features.inc`.
   Nothing checks these automatically. A mechanical check: take identifiers of 8+
   characters on `-` lines of `range.diff` that are on no `+` line, keep those
-  Brave uses, and drop those still in the tree at the new tag
-  (`git grep -h -o -w -F -f <candidates> $B`); what's left is a removed name
-  Brave still uses (M158, 8115.1: 6 real out of 9, all Android and iOS build
-  breaks such as `OriginalProfileSupplier` and
+  Brave uses, and drop those still in the tree at the new tag; what's left is a
+  removed name Brave still uses. `rg -F -f <candidates>` over `src/` takes
+  seconds where `git grep -f` at the tag takes over ten minutes, but `rg`
+  honours `.gitignore`, so verify each hit. This was the highest-yield check in
+  M159: it found the iOS CSV importer break and the removed
+  `android_override_version_name` GN arg, which GN only reports as a "Build
+  argument has no effect" warning. (M158, 8115.1: 6 real out of 9, all Android
+  and iOS build breaks such as `OriginalProfileSupplier` and
   `CSPDirectiveName::TreatAsPublicAddress`). Also grep all of Brave for the
   basename of each file deleted or moved in the range
   (`git diff --name-status --diff-filter=DR $A $B`; git detects renames by
@@ -812,11 +839,17 @@ found. In 8111.1..8113.1 it gave none out of 647 (486 after noise), in
 8113.1..8115.1 none out of 707 (480 after noise), in 8115.1..8117.1 none out of
 535 (346 after noise), and in 8117.1..8127.2 one optional item out of 2899 (1962
 after noise; Quick Delete from Android WebUI history, found by reading a
-hand-picked diff against a Brave hide list). Keep it short there, and drop
-`BUILD.gn`, `DEPS`, `*.xml` and `features.*` before the basename match; they
-make up nearly all of its hits. In 8127.2 the basename match found nothing:
-generic names (`app.ts`, `README.md`) dominate, so match full paths or
-fully-qualified Java names with a stoplist instead.
+hand-picked diff against a Brave hide list). In M159, 8127.2..8131.1, it gave
+two optional items out of 1603 (1029 after noise), both flags Brave doesn't pin:
+`kAndroidNewTabButtonTabstripWebUI` by skimming subjects, and
+`kOmniboxVoicePlateIntent` by matching full paths of the upstream headers and
+Java classes Brave uses. In 8131.1..8133.1 it gave none out of 730 (321 after
+noise; the full-path match of Brave's includes gave 11 commits, all APIs Brave
+doesn't call). Keep it short there, and drop `BUILD.gn`, `DEPS`, `*.xml` and
+`features.*` before the basename match; they make up nearly all of its hits. In
+8127.2 the basename match found nothing: generic names (`app.ts`, `README.md`)
+dominate, so match full paths or fully-qualified Java names with a stoplist
+instead.
 
 Items found here meet the same ground rules as any other. Each one is a
 mechanism no sweep describes, so record it in the method notes for step 5 (the
