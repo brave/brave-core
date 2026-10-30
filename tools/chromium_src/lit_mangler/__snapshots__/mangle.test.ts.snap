@@ -927,7 +927,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/settings/autofill_page/contact_info/contact_info_page.html.ts
 +++ gen/chrome/browser/resources/settings/preprocessed/autofill_page/contact_info/contact_info_page.html.ts
-@@ -3,45 +3,26 @@
+@@ -3,46 +3,26 @@
  import type {SettingsContactInfoPageElement} from './contact_info_page.js';
  
  export function getHtml(this: SettingsContactInfoPageElement) {
@@ -982,7 +982,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
        \${this.profileEnabledSyntheticPref_?.extensionId ? html\`
          <div class="cr-row continuation">
            <extension-controlled-indicator class="flex"
-@@ -58,17 +39,13 @@
+@@ -59,17 +39,13 @@
      </div>
      <div class="card">
        <div class="cr-row continuation">
@@ -1002,7 +1002,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
            \${this.addresses.map((item, index) => html\`
              <div class="list-item" role="listitem">
                <div class="start">
-@@ -95,10 +72,9 @@
+@@ -96,10 +72,9 @@
                </cr-icon-button>
              </div>
            \`)}
@@ -1014,7 +1014,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
          </div>
        </div>
        <cr-action-menu id="addressSharedMenu" role-description="$i18n{menu}">
-@@ -153,9 +129,9 @@
+@@ -154,9 +129,9 @@
              @close="\${this.onEmailRemoveConfirmationDialogClose_}">
          </settings-simple-confirmation-dialog>
        \` : ''}
@@ -1025,7 +1025,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
          <h2 class="flex">$i18n{emailVerificationSectionTitle}</h2>
        </div>
        \${this.isEmailVerificationProtocolEnabled_ ? html\`
-@@ -235,10 +211,9 @@
+@@ -236,10 +211,9 @@
            $i18n{emailVerificationEmptyLabel}
          </div>
        \` : ''}
