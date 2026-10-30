@@ -401,6 +401,7 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
   if (auto* focus_mode_controller = FocusModeController::From(browser_)) {
     focus_mode_observation_.Observe(focus_mode_controller);
   }
+  UpdateFloatingStateForBrowserMode();
 
   // Subscribe browser closing event, so we can dispose of the context menu.
   browser_did_close_subscription_ = browser_->RegisterBrowserDidClose(

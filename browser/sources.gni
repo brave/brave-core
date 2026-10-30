@@ -465,6 +465,7 @@ if (!is_android) {
   brave_chrome_browser_deps += [
     "//brave/browser/infobars:impl",
     "//brave/browser/new_tab:impl",
+    "//brave/browser/ui/focus_mode",
     "//brave/browser/ui/split_view",
     "//brave/browser/ui/tabs:impl",
     "//brave/browser/ui/views/page_action:impl",
