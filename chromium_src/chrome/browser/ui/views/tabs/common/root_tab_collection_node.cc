@@ -10,9 +10,11 @@
 
 #include "base/functional/bind.h"
 #include "base/task/sequenced_task_runner.h"
+#include "chrome/browser/ui/views/tabs/common/tab_view.h"
 #include "components/tabs/public/tab_collection.h"
 #include "components/tabs/public/tab_collection_types.h"
 #include "components/tabs/public/tab_interface.h"
+#include "ui/views/view_utils.h"
 
 // Tree tab hooks. Defined in brave/browser/ui/views/tabs/tree_tab_view_utils.cc
 // so that this upstream target doesn't depend on Brave targets.
@@ -119,6 +121,16 @@ void RootTabCollectionNode::SyncWithTreeTabs() {
   for (const auto& handle : result.moved) {
     if (TabCollectionNode* moved_node = GetNodeForHandle(handle)) {
       on_child_moved_callback_list_.Notify(moved_node);
+    }
+  }
+
+  // Tree tab node states could have been changed, e.g. collapsed or got new
+  // descendants.
+  if (TabCollectionNode* unpinned = GetChildNodeOfType(Type::UNPINNED)) {
+    for (const auto& child : unpinned->children()) {
+      if (auto* tab_view = views::AsViewClass<TabView>(child->view())) {
+        tab_view->UpdateTreeToggleButton();
+      }
     }
   }
 }

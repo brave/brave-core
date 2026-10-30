@@ -1,0 +1,29 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Declare the tree tab collapse/expand button of TabView.
+
+      Defined in chromium_src.
+    add_to_public:
+      class_name: TabView
+      code: |-
+        // Updates the tree tab toggle button for the current tree tab node.
+        void UpdateTreeToggleButton();
+        bool ShouldShowTreeToggleButton() const;
+        views::ImageButton* tree_toggle_button_for_testing() {
+          return tree_toggle_button_;
+        }
+
+  - description: |-
+      Declare the private members for the tree tab toggle button of TabView.
+    add_before_line:
+      line: 'void ResetCollectionNode();'
+      code: |2
+          void MaybeInitTreeToggleButton();
+          void OnTreeToggleButtonPressed();
+          raw_ptr<views::ImageButton> tree_toggle_button_ = nullptr;
+

@@ -18,10 +18,15 @@ source_set("tree_tab_view_utils") {
 
   deps = [
     "//base",
+    "//brave/app:brave_generated_resources_grit",
+    "//brave/browser/ui/tabs:tab_strip",
     "//brave/components/tabs",
     "//chrome/browser/ui:layout_constants",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/tabs:tab_strip",
     "//chrome/browser/ui/views/tabs/common",
     "//chrome/browser/ui/views/tabs/common:impl",
+    "//ui/base",
     "//ui/views",
   ]
 }

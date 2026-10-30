@@ -1,0 +1,36 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Lay out the tree tab toggle button in the trailing slot in TabViewVerticalLayout::OnInstalled().
+
+      It takes the close button's place when it's visible.
+    regex:
+      re_pattern:
+        '(void TabViewVerticalLayout::OnInstalled\(.*?tab_children_configs_ = \{.*?\};)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+          if (TabView().tree_toggle_button_) {
+            tab_children_configs_.insert(
+                tab_children_configs_.begin(),
+                TabChildConfig(TabView().tree_toggle_button_, kIconDesignWidth,
+                               kDefaultPadding, /*align_leading=*/false,
+                               /*expand=*/false));
+          }
+
+  - description: |-
+      Show the tree tab toggle button in place of the close button in TabViewVerticalLayout::IsChildVisible().
+    preempt_function_impl:
+      function_name: TabViewVerticalLayout::IsChildVisible
+      code: |-
+        if (child_view == TabView().tree_toggle_button_) {
+          return TabView().ShouldShowTreeToggleButton();
+        }
+        if (child_view == TabView().close_button_ &&
+            TabView().ShouldShowTreeToggleButton()) {
+          return false;
+        }
