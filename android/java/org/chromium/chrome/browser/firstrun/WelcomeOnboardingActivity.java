@@ -40,7 +40,6 @@ import org.chromium.base.ApplicationStatus.ActivityStateListener;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Log;
 import org.chromium.brave.browser.customize_menu.CustomizeBraveMenu;
-import org.chromium.build.annotations.MonotonicNonNull;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
@@ -118,9 +117,6 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
     private boolean mHasRestoredState;
     private boolean mCrashReportingChecked;
     private boolean mP3aChecked;
-
-    // Day Zero experiment variant, read in finishNativeInitialization().
-    @MonotonicNonNull private String mDayZeroVariant;
 
     private void checkReferral() {
         InstallReferrerClient referrerClient = InstallReferrerClient.newBuilder(this).build();
@@ -307,7 +303,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
 
-        mDayZeroVariant = getDayZeroVariant();
+        final String dayZeroVariant = getDayZeroVariant();
 
         mIsP3aManaged = BraveLocalState.get().isManagedPreference(BravePref.P3A_ENABLED);
         mIsCrashReportingManaged =
@@ -319,7 +315,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
         final OnboardingStepAdapter stepAdapter =
                 new OnboardingStepAdapter(
                         mWdpLearnMore,
-                        mDayZeroVariant,
+                        dayZeroVariant,
                         skipMakeBraveBetter,
                         mPageBounceAnimator,
                         this);
