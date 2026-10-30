@@ -28,6 +28,7 @@ import {
   makeTxServiceObserver,
   makeBraveWalletServiceObserver,
   makeBraveWalletServiceTokenObserver,
+  makePanelHandlerObserver,
 } from '../common/wallet_api_proxy_observers'
 
 const store = configureStore({
@@ -63,6 +64,9 @@ proxy.addJsonRpcServiceObserver(makeJsonRpcServiceObserver(store))
 proxy.addKeyringServiceObserver(makeKeyringServiceObserver(store))
 proxy.addTxServiceObserver(makeTxServiceObserver(store))
 proxy.addBraveWalletServiceObserver(makeBraveWalletServiceObserver(store))
+proxy.panelHandler.addObserver(
+  makePanelHandlerObserver(store).$.bindNewPipeAndPassRemote(),
+)
 proxy.addBraveWalletServiceTokenObserver(
   makeBraveWalletServiceTokenObserver(store),
 )

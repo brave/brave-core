@@ -291,15 +291,7 @@ export class MockedWalletApiProxy {
     setDefaultBaseCurrency: async (currency: string) => {
       this.defaultBaseCurrency = currency
     },
-    getActiveOrigin: async () => {
-      return {
-        originInfo: {
-          originSpec: 'https://brave.com',
-          eTldPlusOne: 'brave.com',
-        },
-      }
-    },
-    getNetworkForSelectedAccountOnActiveOrigin: async () => {
+    getNetworkForSelectedAccountOnActiveOrigin: async (activeOriginSpec) => {
       return { network: this.selectedNetwork }
     },
     isBase58EncodedSolanaPubkey: async (key) => {
@@ -326,7 +318,10 @@ export class MockedWalletApiProxy {
                 ?.accountId ?? null),
       }
     },
-    setNetworkForSelectedAccountOnActiveOrigin: async (chainId) => {
+    setNetworkForSelectedAccountOnActiveOrigin: async (
+      activeOriginSpec,
+      chainId,
+    ) => {
       if (this.selectedNetwork.chainId === chainId) {
         return {
           success: true,
@@ -423,6 +418,7 @@ export class MockedWalletApiProxy {
       }
     },
     getNetworkForAccountOnActiveOrigin: async (
+      activeOriginSpec: string,
       account: BraveWallet.AccountId,
     ) => {
       if (account.coin === BraveWallet.CoinType.SOL) {
@@ -814,6 +810,7 @@ export class MockedWalletApiProxy {
             (req) => req.requestId !== requestId,
           )
         this.braveWalletService.setNetworkForSelectedAccountOnActiveOrigin?.(
+          request.originInfo.originSpec,
           request.chainId,
         )
       }

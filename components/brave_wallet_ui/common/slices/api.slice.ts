@@ -182,7 +182,7 @@ export const {
   useGetAccountInfosRegistryQuery,
   useGetAccountTokenCurrentBalanceQuery,
   useGetActiveOriginConnectedAccountIdsQuery,
-  useGetActiveOriginQuery,
+  useGetActivePanelOriginQuery,
   useGetAddressByteCodeQuery,
   useGetAddressFromNameServiceUrlQuery,
   useGetAvailableShieldedAccountQuery,

@@ -88,7 +88,6 @@ class KeyringServiceObserver: BraveWalletKeyringServiceObserver {
 
 class WalletServiceObserver: BraveWalletBraveWalletServiceObserver {
 
-  var _onActiveOriginChanged: ((_ originInfo: BraveWallet.OriginInfo) -> Void)?
   var _onDefaultEthereumWalletChanged: ((_ wallet: BraveWallet.DefaultWallet) -> Void)?
   var _onDefaultSolanaWalletChanged: ((_ wallet: BraveWallet.DefaultWallet) -> Void)?
   var _onDefaultCardanoWalletChanged: ((_ wallet: BraveWallet.DefaultWallet) -> Void)?
@@ -101,7 +100,6 @@ class WalletServiceObserver: BraveWalletBraveWalletServiceObserver {
 
   init(
     walletService: BraveWalletBraveWalletService,
-    _onActiveOriginChanged: ((_ originInfo: BraveWallet.OriginInfo) -> Void)? = nil,
     _onDefaultEthereumWalletChanged: ((_ wallet: BraveWallet.DefaultWallet) -> Void)? = nil,
     _onDefaultSolanaWalletChanged: ((_ wallet: BraveWallet.DefaultWallet) -> Void)? = nil,
     _onDefaultCardanoWalletChanged: ((_ wallet: BraveWallet.DefaultWallet) -> Void)? = nil,
@@ -113,7 +111,6 @@ class WalletServiceObserver: BraveWalletBraveWalletServiceObserver {
       nil,
     _onResetWallet: (() -> Void)? = nil
   ) {
-    self._onActiveOriginChanged = _onActiveOriginChanged
     self._onDefaultEthereumWalletChanged = _onDefaultEthereumWalletChanged
     self._onDefaultSolanaWalletChanged = _onDefaultSolanaWalletChanged
     self._onDefaultCardanoWalletChanged = _onDefaultCardanoWalletChanged
@@ -124,10 +121,6 @@ class WalletServiceObserver: BraveWalletBraveWalletServiceObserver {
     self._onDiscoverAssetsCompleted = _onDiscoverAssetsCompleted
     self._onResetWallet = _onResetWallet
     walletService.addObserver(self)
-  }
-
-  func onActiveOriginChanged(originInfo: BraveWallet.OriginInfo) {
-    _onActiveOriginChanged?(originInfo)
   }
 
   func onDefaultEthereumWalletChanged(wallet: BraveWallet.DefaultWallet) {

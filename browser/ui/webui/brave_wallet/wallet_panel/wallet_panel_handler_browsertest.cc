@@ -11,9 +11,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/test/run_until.h"
 #include "base/test/test_future.h"
-#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
@@ -114,10 +112,7 @@ class WalletPanelHandlerBrowserTest : public InProcessBrowserTest {
 
   // The origin the panel puts on screen for this tab.
   std::string GetDisplayedOriginSpec() {
-    return brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
-               browser()->GetProfile())
-        ->GetActiveOriginSync()
-        ->origin_spec;
+    return main_frame()->GetLastCommittedOrigin().Serialize();
   }
 
   // RequestPermission, ConnectToSite and IsSolanaAccountConnected never touch

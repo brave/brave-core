@@ -119,6 +119,7 @@ class WalletWebUIBubbleManager : public WebUIBubbleManagerImpl<WalletPanelUI>,
  public:
   WalletWebUIBubbleManager(views::View* anchor_view,
                            BrowserWindowInterface* browser,
+                           content::WebContents* web_contents,
                            const GURL& webui_url,
                            int task_manager_string_id,
                            bool force_load_on_create)
@@ -127,6 +128,7 @@ class WalletWebUIBubbleManager : public WebUIBubbleManagerImpl<WalletPanelUI>,
                                task_manager_string_id,
                                force_load_on_create),
         browser_(browser),
+        web_contents_(web_contents),
         anchor_view_(anchor_view) {}
 
   bool ShowBubble() {
@@ -172,7 +174,11 @@ class WalletWebUIBubbleManager : public WebUIBubbleManagerImpl<WalletPanelUI>,
     }
     WalletPanelUI* wallet_panel =
         webui->GetController()->template GetAs<WalletPanelUI>();
-    if (!wallet_panel || !browser_) {
+    if (!wallet_panel) {
+      return bubble_view_;
+    }
+    wallet_panel->SetTabWebContents(web_contents_);
+    if (!browser_) {
       return bubble_view_;
     }
     // Redirect popups opened from the panel to open as separate popup windows.
@@ -201,6 +207,7 @@ class WalletWebUIBubbleManager : public WebUIBubbleManagerImpl<WalletPanelUI>,
 
  private:
   const raw_ptr<BrowserWindowInterface> browser_;
+  const raw_ptr<content::WebContents> web_contents_;
   const raw_ptr<views::View> anchor_view_;
   base::WeakPtr<WebUIBubbleDialogView> bubble_view_ = nullptr;
   base::WeakPtrFactory<WalletWebUIBubbleManager> weak_factory_{this};
@@ -238,7 +245,8 @@ WalletBubbleManagerDelegateImpl::WalletBubbleManagerDelegateImpl(
 
   DCHECK(anchor_view);
   webui_bubble_manager_ = std::make_unique<WalletWebUIBubbleManager>(
-      anchor_view, browser, webui_url, IDS_ACCNAME_BRAVE_WALLET_BUTTON,
+      anchor_view, browser, web_contents_, webui_url,
+      IDS_ACCNAME_BRAVE_WALLET_BUTTON,
       /*force_load_on_create=*/false);
 }
 
