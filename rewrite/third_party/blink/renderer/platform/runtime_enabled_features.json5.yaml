@@ -32,6 +32,20 @@ substitutions:
               name: "CompositorTimelineTrigger",
               status: "experimental", // Brave: revert when crbug.com/541924666 is fixed.
 
+  - description: |-
+      Hold XMLRustForNonXslt at experimental.
+
+      The Rust parser is slower than libxml2 on some images, and
+      upstream moved the flag back to experimental on main while that is
+      investigated (crbug.com/578167868).
+    regex:
+      pattern: |2-
+              name: "XMLRustForNonXslt",
+              status: "stable",
+      replace: |2-
+              name: "XMLRustForNonXslt",
+              status: "experimental", // Brave: revert when crbug.com/578167868 is fixed.
+
   # The three following entries are plastered to generate no `base::Feature` at
   # all.
   - description:
