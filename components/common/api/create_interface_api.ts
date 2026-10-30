@@ -504,6 +504,10 @@ export function createInterfaceApi<
           // Technically we shouldn't allow this as it might just be partial
           return update as QData
         }
+        // Replace Maps and Sets rather than merging them as objects.
+        if (update instanceof Map || update instanceof Set) {
+          return update as QData
+        }
         // Objects can be combined
         return { ...old, ...(update as Partial<QData>) } as QData
       }
