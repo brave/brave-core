@@ -7,11 +7,14 @@
 #define BRAVE_BROWSER_UI_FOCUS_MODE_FOCUS_MODE_CONTROLLER_H_
 
 #include "base/functional/callback_helpers.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 
 class BrowserWindowInterface;
+class PrefService;
 
 // Orchestrates Focus Mode for a single browser window.
 class FocusModeController {
@@ -24,8 +27,9 @@ class FocusModeController {
   DECLARE_USER_DATA(FocusModeController);
 
   // `host` is the UnownedUserDataHost of the browser window this controller
-  // belongs to.
-  explicit FocusModeController(ui::UnownedUserDataHost& host);
+  // belongs to. `prefs` is the profile PrefService that backs the Focus Mode
+  // enabled state.
+  FocusModeController(ui::UnownedUserDataHost& host, PrefService& prefs);
   FocusModeController(const FocusModeController&) = delete;
   FocusModeController& operator=(const FocusModeController&) = delete;
   ~FocusModeController();
@@ -48,11 +52,15 @@ class FocusModeController {
 
  private:
   void EndSuppress();
+  void OnPrefChanged();
+  void NotifyIfChanged();
 
   base::ObserverList<Observer> observers_;
-  bool enabled_ = false;
+  PrefChangeRegistrar pref_change_registrar_;
   int suppress_count_ = 0;
+  bool last_notified_enabled_ = false;
   ui::ScopedUnownedUserData<FocusModeController> scoped_unowned_user_data_;
+  const raw_ref<PrefService> prefs_;
   base::WeakPtrFactory<FocusModeController> weak_factory_{this};
 };
 

@@ -55,6 +55,7 @@ BraveBrowserFrameViewWin::BraveBrowserFrameViewWin(
               &BraveBrowserFrameViewWin::OnTopOverlayRevealFractionChanged,
               base::Unretained(this)));
     }
+    OnFocusModeToggled(controller->IsEnabled());
   }
 }
 

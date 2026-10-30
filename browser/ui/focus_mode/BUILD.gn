@@ -9,12 +9,15 @@ source_set("focus_mode") {
     "focus_mode_controller.h",
     "focus_mode_features.cc",
     "focus_mode_features.h",
+    "focus_mode_prefs.cc",
+    "focus_mode_prefs.h",
     "focus_mode_utils.cc",
     "focus_mode_utils.h",
   ]
 
   public_deps = [
     "//base",
+    "//components/prefs",
     "//ui/base/unowned_user_data",
   ]
 
@@ -28,6 +31,7 @@ source_set("unit_tests") {
 
   deps = [
     ":focus_mode",
+    "//components/prefs:test_support",
     "//testing/gtest",
   ]
 }

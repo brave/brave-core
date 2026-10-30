@@ -394,6 +394,22 @@ IN_PROC_BROWSER_TEST_F(FocusModeTopOverlayBrowserTest,
   EXPECT_EQ(overlay->bounds().y(), 0);
 }
 
+IN_PROC_BROWSER_TEST_F(FocusModeTopOverlayBrowserTest,
+                       FocusModeStateSyncedAcrossWindows) {
+  focus_mode_controller()->SetEnabled(true);
+  ASSERT_TRUE(focus_mode_controller()->IsEnabled());
+
+  auto* second_browser = CreateBrowser(browser()->GetProfile());
+  ASSERT_TRUE(second_browser);
+  auto* second_controller = FocusModeController::From(second_browser);
+  ASSERT_TRUE(second_controller);
+  EXPECT_TRUE(second_controller->IsEnabled());
+
+  second_controller->SetEnabled(false);
+  EXPECT_FALSE(second_controller->IsEnabled());
+  EXPECT_FALSE(focus_mode_controller()->IsEnabled());
+}
+
 #if BUILDFLAG(IS_MAC)
 IN_PROC_BROWSER_TEST_F(FocusModeTopOverlayBrowserTest,
                        ExitFullscreenWithSuppressedOverlay) {
