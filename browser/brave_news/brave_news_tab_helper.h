@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_BRAVE_NEWS_BRAVE_NEWS_TAB_HELPER_H_
 #define BRAVE_BROWSER_BRAVE_NEWS_BRAVE_NEWS_TAB_HELPER_H_
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -18,8 +19,8 @@
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
-#include "content/public/browser/web_contents_observer.h"
-#include "content/public/browser/web_contents_user_data.h"
+#include "chrome/browser/ui/tabs/contents_observing_tab_feature.h"
+#include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_NEWS));
 
@@ -27,11 +28,18 @@ namespace content {
 class RenderFrameHost;
 }
 
+namespace tabs {
+class TabInterface;
+}  // namespace tabs
+
+// Finds the Brave News feeds of the page shown in a tab. Owned by
+// BraveTabFeatures.
 class BraveNewsTabHelper
-    : public content::WebContentsUserData<BraveNewsTabHelper>,
-      public content::WebContentsObserver,
+    : public tabs::ContentsObservingTabFeature,
       public brave_news::BraveNewsPrefManager::PrefObserver {
  public:
+  DECLARE_USER_DATA(BraveNewsTabHelper);
+
   struct FeedDetails {
     GURL feed_url;
     std::string title = "";
@@ -59,8 +67,13 @@ class BraveNewsTabHelper
         const std::vector<GURL>& feed_urls) = 0;
   };
 
-  static void MaybeCreateForWebContents(content::WebContents* contents);
+  static BraveNewsTabHelper* From(tabs::TabInterface* tab);
 
+  // Returns nullptr off the record.
+  static std::unique_ptr<BraveNewsTabHelper> MaybeCreate(
+      tabs::TabInterface& tab);
+
+  explicit BraveNewsTabHelper(tabs::TabInterface& tab);
   BraveNewsTabHelper(const BraveNewsTabHelper&) = delete;
   BraveNewsTabHelper& operator=(const BraveNewsTabHelper&) = delete;
 
@@ -91,7 +104,13 @@ class BraveNewsTabHelper
   void OnPublishersChanged() override;
 
  private:
-  explicit BraveNewsTabHelper(content::WebContents* contents);
+  // tabs::ContentsObservingTabFeature:
+  void OnDiscardContents(tabs::TabInterface* tab,
+                         content::WebContents* old_contents,
+                         content::WebContents* new_contents) override;
+
+  // Forgets the feeds of the page that was shown.
+  void ResetPageFeeds();
 
   bool ShouldFindFeeds();
   void OnReceivedNewPublishers(brave_news::MojomPublishers publishers);
@@ -113,10 +132,9 @@ class BraveNewsTabHelper
                           brave_news::BraveNewsPrefManager::PrefObserver>
       pref_observation_{this};
 
-  base::WeakPtrFactory<BraveNewsTabHelper> weak_ptr_factory_{this};
+  ui::ScopedUnownedUserData<BraveNewsTabHelper> scoped_unowned_user_data_;
 
-  friend WebContentsUserData;
-  WEB_CONTENTS_USER_DATA_KEY_DECL();
+  base::WeakPtrFactory<BraveNewsTabHelper> weak_ptr_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_NEWS_BRAVE_NEWS_TAB_HELPER_H_

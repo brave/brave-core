@@ -297,6 +297,7 @@ source_set("unit_tests") {
     deps += [
       "//brave/browser/brave_news",
       "//brave/browser/brave_news:impl",
+      "//brave/browser/brave_news:tab_helper",
       "//brave/browser/ui",
       "//brave/components/brave_news/common",
       "//brave/components/brave_news/common:mojom",
