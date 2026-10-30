@@ -58,9 +58,8 @@ class BraveNewsPageActionController
  private:
   void OnPrefChanged();
 
-  // (Re-)observes |contents| and its BraveNewsTabHelper, since the tab's
-  // contents can be swapped out (e.g. tab discarding). Stops observing the
-  // previously attached helper, which may be about to be destroyed.
+  // (Re-)observes |contents|, since the tab's contents can be swapped out
+  // (e.g. tab discarding), and the tab's BraveNewsTabHelper.
   void AttachToTabHelper(content::WebContents* contents);
 
   void UpdatePageAction(content::WebContents* contents);

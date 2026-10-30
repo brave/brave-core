@@ -166,6 +166,9 @@ class BraveTabFeatures : public TabFeatures {
   std::unique_ptr<ContentsObservingTabFeature> web_discovery_tab_helper_;
   // Detects the Rewards creator of the page. Null without Brave Rewards.
   std::unique_ptr<ContentsObservingTabFeature> rewards_tab_helper_;
+  // Finds the page's Brave News feeds. Null without Brave News or off the
+  // record. Declared before the page action controllers that observe it.
+  std::unique_ptr<ContentsObservingTabFeature> brave_news_tab_helper_;
   // Offers to enable Widevine when the page asks for it. Null without it.
   std::unique_ptr<ContentsObservingTabFeature> drm_tab_helper_;
   // Holds the Shields state for the page shown in the tab.

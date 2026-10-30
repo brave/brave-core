@@ -8,7 +8,7 @@
 #include <memory>
 #include <vector>
 
-#include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
 #include "brave/browser/ui/views/page_action/page_action_test_observer.h"
@@ -54,10 +54,6 @@ brave_news::mojom::PublisherPtr MakePublisher(const GURL& feed_source,
   return publisher;
 }
 
-void AttachTabHelpers(content::WebContents* contents) {
-  BraveNewsTabHelper::CreateForWebContents(contents);
-}
-
 }  // namespace
 
 class BraveNewsPageActionControllerTest : public testing::Test {
@@ -80,8 +76,8 @@ class BraveNewsPageActionControllerTest : public testing::Test {
 
     pinned_actions_model_ =
         std::make_unique<PinnedToolbarActionsModel>(&profile_);
-    tab_interface_ = std::make_unique<TestTabInterface>(
-        &profile_, base::BindRepeating(&AttachTabHelpers));
+    tab_interface_ =
+        std::make_unique<TestTabInterface>(&profile_, base::DoNothing());
     ON_CALL(*tab_interface_, GetBrowserWindowInterface())
         .WillByDefault(Return(&browser_window_));
     tab_interface_->Activate();
@@ -101,6 +97,7 @@ class BraveNewsPageActionControllerTest : public testing::Test {
 
     page_action_controller_->AddObserver(kActionShowBraveNews, observation_);
 
+    tab_helper_ = std::make_unique<BraveNewsTabHelper>(*tab_interface_);
     controller_ = std::make_unique<BraveNewsPageActionController>(
         *tab_interface_, *page_action_controller_);
     controller_->Init();
@@ -109,6 +106,7 @@ class BraveNewsPageActionControllerTest : public testing::Test {
   void TearDown() override {
     observation_.Reset();
     controller_.reset();
+    tab_helper_.reset();
     action_item_subscription_ = base::CallbackListSubscription();
     action_item_.reset();
     page_action_controller_.reset();
@@ -116,9 +114,7 @@ class BraveNewsPageActionControllerTest : public testing::Test {
     pinned_actions_model_.reset();
   }
 
-  BraveNewsTabHelper* tab_helper() {
-    return BraveNewsTabHelper::FromWebContents(tab_interface_->GetContents());
-  }
+  BraveNewsTabHelper* tab_helper() { return tab_helper_.get(); }
 
   TestTabInterface& tab_interface() { return *tab_interface_; }
 
@@ -142,6 +138,7 @@ class BraveNewsPageActionControllerTest : public testing::Test {
   base::ScopedObservation<PageActionModelInterface, PageActionModelObserver>
       observation_{&observer_};
 
+  std::unique_ptr<BraveNewsTabHelper> tab_helper_;
   std::unique_ptr<BraveNewsPageActionController> controller_;
 };
 
@@ -176,28 +173,18 @@ TEST_F(BraveNewsPageActionControllerTest, HiddenAgainWhenFeedRemoved) {
 }
 
 // The tab's contents can be swapped out - by tab discarding, or by a shared
-// pinned tab being moved to another window. The controller has to follow the
-// swapped in contents, and stop observing the outgoing contents' tab helper,
-// which is about to be destroyed.
+// pinned tab being moved to another window. The tab helper follows the swapped
+// in contents, which has no feed until it loads a page.
 TEST_F(BraveNewsPageActionControllerTest, FollowsDiscardedContents) {
-  BraveNewsTabHelper* const discarded_tab_helper = tab_helper();
-  discarded_tab_helper->SetDefaultFeedForTesting(
+  tab_helper()->SetDefaultFeedForTesting(
       MakePublisher(GURL("https://example.com/feed"), /*subscribed=*/false));
   ASSERT_TRUE(observer().visible());
 
   // The swapped in contents has no feed, so the action hides.
   tab_interface().DiscardContents();
-  ASSERT_NE(discarded_tab_helper, tab_helper());
   EXPECT_FALSE(observer().visible());
 
-  // The discarded contents no longer drives the page action.
-  const int model_change_count = observer().model_change_count();
-  discarded_tab_helper->SetDefaultFeedForTesting(
-      MakePublisher(GURL("https://example.com/other-feed"),
-                    /*subscribed=*/true));
-  EXPECT_EQ(model_change_count, observer().model_change_count());
-
-  // The swapped in one does.
+  // The tab helper still drives the page action.
   tab_helper()->SetDefaultFeedForTesting(
       MakePublisher(GURL("https://example.com/new-feed"),
                     /*subscribed=*/false));

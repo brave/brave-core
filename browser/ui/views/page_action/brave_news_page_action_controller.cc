@@ -112,7 +112,7 @@ void BraveNewsPageActionController::OnPrefChanged() {
 void BraveNewsPageActionController::AttachToTabHelper(
     content::WebContents* contents) {
   BraveNewsTabHelper* const tab_helper =
-      contents ? BraveNewsTabHelper::FromWebContents(contents) : nullptr;
+      contents ? BraveNewsTabHelper::From(&tab_.get()) : nullptr;
 
   if (contents && tab_helper) {
     if (!page_feeds_observer_.IsObservingSource(tab_helper)) {
@@ -135,7 +135,7 @@ void BraveNewsPageActionController::AttachToTabHelper(
 void BraveNewsPageActionController::UpdatePageAction(
     content::WebContents* contents) {
   BraveNewsTabHelper* const tab_helper =
-      contents ? BraveNewsTabHelper::FromWebContents(contents) : nullptr;
+      contents ? BraveNewsTabHelper::From(&tab_.get()) : nullptr;
 
   if (!tab_helper || !should_show_.GetValue() || !news_enabled_.GetValue() ||
       !opted_in_.GetValue()) {

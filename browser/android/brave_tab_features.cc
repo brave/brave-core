@@ -14,6 +14,7 @@
 #include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
 #include "brave/browser/serp_metrics/serp_metrics_tab_helper.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
 #include "brave/components/misc_metrics/features.h"
@@ -27,6 +28,10 @@
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
 #include "brave/browser/brave_ads/creatives/search_result_ad/creative_search_result_ad_tab_helper.h"
 #include "brave/browser/brave_ads/tabs/ads_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/browser/brave_news/brave_news_tab_helper.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
@@ -95,6 +100,10 @@ BraveTabFeatures::BraveTabFeatures(content::WebContents* web_contents,
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
   drm_tab_helper_ = std::make_unique<BraveDrmTabHelper>(tab_interface);
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+  brave_news_tab_helper_ = BraveNewsTabHelper::MaybeCreate(tab_interface);
 #endif
 }
 

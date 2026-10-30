@@ -11,7 +11,6 @@ source_set("brave_news") {
   sources = [
     "brave_news_controller_delegate_impl.h",
     "brave_news_controller_factory.h",
-    "brave_news_tab_helper.h",
     "direct_feed_fetcher_delegate_impl.h",
   ]
 
@@ -29,6 +28,38 @@ source_set("brave_news") {
   ]
 }
 
+source_set("tab_helper") {
+  sources = [
+    "brave_news_tab_helper.cc",
+    "brave_news_tab_helper.h",
+    "rss_links_fetcher.cc",
+    "rss_links_fetcher.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/brave_news/browser",
+    "//brave/components/brave_news/common:mojom",
+    "//brave/components/brave_news/common:rss_link_reader_mojom",
+    "//brave/components/brave_news/common/buildflags",
+    "//chrome/browser/ui/tabs:tabs_public",
+    "//mojo/public/cpp/bindings",
+    "//ui/base/unowned_user_data",
+    "//url",
+  ]
+
+  deps = [
+    ":brave_news",
+    "//brave/components/brave_news/common",
+    "//chrome/browser/profiles:profile",
+    "//components/tabs:public",
+    "//content/public/browser",
+    "//services/network/public/cpp",
+    "//services/network/public/mojom",
+    "//services/service_manager/public/cpp",
+  ]
+}
+
 source_set("impl") {
   visibility = [
     "//brave/browser:core",
@@ -37,10 +68,7 @@ source_set("impl") {
 
   sources = [
     "brave_news_controller_factory.cc",
-    "brave_news_tab_helper.cc",
     "direct_feed_fetcher_delegate_impl.cc",
-    "rss_links_fetcher.cc",
-    "rss_links_fetcher.h",
   ]
 
   if (is_android) {
@@ -107,6 +135,7 @@ source_set("browser_tests") {
 
     deps = [
       ":brave_news",
+      ":tab_helper",
       "//brave/components/brave_news/browser",
       "//brave/components/brave_news/common",
       "//brave/components/brave_news/common:mojom",
