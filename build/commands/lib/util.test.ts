@@ -16,6 +16,7 @@ import util, { prefixPatchPaths } from './util.ts'
 
 jest.mock('./log.ts', () => ({
   command: jest.fn(),
+  detail: jest.fn(),
   status: jest.fn(),
   warn: jest.fn(),
   error: jest.fn(),
@@ -925,7 +926,7 @@ describe('util', () => {
       expect(mtime(original)).toBeGreaterThan(oldTime * 1000)
       expect(mtime(newer)).toBeGreaterThan(oldTime * 1000)
       expect(mtime(unsupported)).toBe(oldTime * 1000)
-      expect(consoleLog).toHaveBeenCalledWith(`${original} is touched.`)
+      expect(Log.detail).toHaveBeenCalledWith(`${original} is touched.`)
       expect(Log.progressFinish).toHaveBeenCalled()
     })
 
@@ -950,7 +951,7 @@ describe('util', () => {
 
       expect(fs.existsSync(gen)).toBe(false)
       expect(fs.existsSync(freshGen)).toBe(true)
-      expect(consoleLog).toHaveBeenCalledWith(`${gen} has been deleted.`)
+      expect(Log.detail).toHaveBeenCalledWith(`${gen} has been deleted.`)
     })
 
     it.each([

@@ -159,7 +159,7 @@ function updateFileUTimesIfOverrideIsNewer(original: string, override: string) {
   if (isOverrideNewer(original, override)) {
     const date = new Date()
     fs.utimesSync(original, date, date)
-    console.log(original + ' is touched.')
+    Log.detail(original + ' is touched.')
   }
 }
 
@@ -167,7 +167,7 @@ function deleteFileIfOverrideIsNewer(original: string, override: string) {
   if (fs.existsSync(original) && isOverrideNewer(original, override)) {
     try {
       fs.unlinkSync(original)
-      console.log(original + ' has been deleted.')
+      Log.detail(original + ' has been deleted.')
     } catch (err) {
       console.error('Unable to delete file: ' + original + ' error: ', err)
       process.exit(1)

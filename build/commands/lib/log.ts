@@ -7,7 +7,7 @@ import os from 'node:os'
 import chalk from 'chalk'
 import logUpdate from 'log-update'
 import tsm from 'teamcity-service-messages'
-import { isTeamcity } from './ciDetect.ts'
+import { activeAiAgentEnvVars, isAiAgent, isTeamcity } from './ciDetect.ts'
 
 export let divider: string
 function setLineLength() {
@@ -86,6 +86,27 @@ export async function progressScopeAsync(
     await callable()
   } finally {
     progressFinish(message)
+  }
+}
+
+let detailsLeftOut = false
+
+// A line only worth it to a person following along, such as one per file
+// handled. An AI agent reads all the output it gets, so for one these only
+// fill its context, and are left out.
+export function detail(message: string) {
+  if (!isAiAgent) {
+    console.log(message)
+    return
+  }
+  if (!detailsLeftOut) {
+    detailsLeftOut = true
+    console.log(
+      statusStyle(
+        `Detected AI agent env (${activeAiAgentEnvVars().join(', ')}). `
+          + 'Leaving out per-file details.',
+      ),
+    )
   }
 }
 
