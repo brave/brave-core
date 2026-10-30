@@ -8,6 +8,7 @@ import Brave
 import BraveCore
 import BraveNews
 import BraveShared
+import BraveShields
 import BraveVPN
 import BraveWidgetsModels
 import BrowserIntentsModels
@@ -44,7 +45,20 @@ struct ProfileState {
 
   init(profileController: BraveProfileController) {
     profile = profileController.profile
-    shredManager = ShredManager(braveCore: profileController, profile: profileController.profile)
+    shredManager = ShredManager(
+      braveCore: profileController,
+      profile: profileController.profile,
+      connectedWindowIds: {
+        UIApplication.shared.connectedScenes.compactMap {
+          BrowserState.getWindowId(from: $0.session).flatMap(UUID.init(uuidString:))
+        }
+      },
+      dormantWindowIds: {
+        UIApplication.shared.openSessions
+          .filter { $0.scene == nil }
+          .compactMap { BrowserState.getWindowId(from: $0).flatMap(UUID.init(uuidString:)) }
+      }
+    )
 
     // Setup DAU
     let serpMetrics = SerpMetricsServiceFactory.get(profile: profileController.profile)

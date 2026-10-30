@@ -88,6 +88,7 @@ class TabManager: NSObject {
   var privateTabSelectedIndex: Int?
   var tempTabs: [any TabState]?
   private weak var rewards: BraveRewards?
+  private let braveCore: BraveProfileController?
   private let profile: any Profile
   private weak var tabGeneratorAPI: BraveTabGeneratorAPI?
   private var domainFrc = Domain.frc()
@@ -125,12 +126,15 @@ class TabManager: NSObject {
 
     self.windowId = windowId
     self.rewards = rewards
+    self.braveCore = braveCore
     self.profile = profile
     self.tabGeneratorAPI = braveCore?.tabGeneratorAPI
     self.privateBrowsingManager = privateBrowsingManager
     self.shredManager = shredManager
     self.tabCreationFactory = tabCreationFactory
     super.init()
+
+    shredManager.register(self)
 
     Preferences.Chromium.syncOpenTabsEnabled.observe(from: self)
 
@@ -223,7 +227,7 @@ class TabManager: NSObject {
     return tabs(isPrivate: isPrivate).count
   }
 
-  func tabs(isPrivate: Bool, query: String? = nil) -> [any TabState] {
+  private func tabs(isPrivate: Bool, query: String? = nil) -> [any TabState] {
     assert(Thread.isMainThread)
 
     let allTabs = allTabs.filter { $0.isPrivate == isPrivate }
@@ -1396,9 +1400,22 @@ extension TabManager: NSFetchedResultsControllerDelegate {
   }
 }
 
-extension TabManager {
+// Declared in an extension so that only these members, rather than every member witnessing a
+// requirement such as `allTabs`, are inferred to be main actor-isolated.
+extension TabManager: ShredTabContainer {
   var isPrivateBrowsing: Bool {
     privateBrowsingManager.isPrivateBrowsing || Preferences.Privacy.privateBrowsingOnly.value
+  }
+
+  func websiteDataStore(isPrivate: Bool) -> WKWebsiteDataStore {
+    if FeatureList.kUseProfileWebViewConfiguration.enabled, let braveCore {
+      let configuration =
+        isPrivate
+        ? braveCore.defaultWebViewConfiguration : braveCore.nonPersistentWebViewConfiguration
+      return configuration.websiteDataStore
+    }
+    let configuration = isPrivate ? Self.privateConfiguration : Self.defaultConfiguration
+    return configuration.websiteDataStore
   }
 }
 
