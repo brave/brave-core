@@ -38,6 +38,7 @@ Commit categories formalised here (see `EntryType`):
     - [cr*] IWYU fixes.
     - [cr*] Bump resource_ids.
     - [cr*] Update Lit mangler snapshot.
+    - [cr*] Version CodeHealth tracker.
     - [cr*] Disable failing upstream tests.
     - [cr*] Update lists for upstream flake tests.
 
@@ -137,7 +138,7 @@ def _match(subject: str, pattern: re.Pattern) -> bool:
 # squash priority order: when multiple pinned groups are present in the
 # same rebase plan, they're emitted top-to-bottom in this order
 # (version → plaster_reruns → conflict → gnrt → IWYU →
-# resource_ids → lit_mangler → disable_tests →
+# resource_ids → lit_mangler → codehealth_tracker → disable_tests →
 # dead_upstream_tests → flake_tests). The regexes are
 # anchored fullmatches applied to the `[crNNN]`-stripped subject, so each
 # pattern matches both the tagged and the untagged form of the same commit.
@@ -167,6 +168,7 @@ PINNED_GROUPS = [
     ('iwyu', re.compile(r'IWYU fixes\.?')),
     ('resource_ids', re.compile(r'Bump resource_ids\.?')),
     ('lit_mangler', re.compile(r'Update Lit mangler snapshot\.?')),
+    ('codehealth_tracker', re.compile(r'Version CodeHealth tracker\.?')),
     (
         'disable_tests',
         re.compile(
@@ -442,6 +444,16 @@ class EntryLine:
         )
 
     @property
+    def is_attached_autosquash(self) -> bool:
+        """True when git reattached this autosquash marker to its target,
+        i.e. it already carries git's `fixup`/`fixup -C`/`squash` command."""
+        return (
+            self._command != 'pick'
+            and self._subcommand is not None
+            and self._subcommand[0] in _AUTOSQUASH_SUBCOMMANDS
+        )
+
+    @property
     def reassign_target_hash(self) -> str | None:
         """The target hash carried in the `reassign!<hash>!` prefix --
         or `None` if the prefix has no hash. Raises
@@ -576,9 +588,10 @@ def rewrite_plan(
         pinned_squashed: When `True`, group pinned commits at the top
             of the plan, in `PINNED_GROUPS` priority order. The first
             commit in each group stays `pick`; subsequent ones become
-            `squash`. Reassign commits are repositioned to sit
-            immediately above their target (with the target rewritten
-            to `squash`). Drop commits remove themselves together with
+            `squash`, except attached `fixup!`/`amend!`/`squash!`
+            markers, which keep git's command. Reassign commits are
+            repositioned to sit immediately above their target (with the
+            target rewritten to `squash`). Drop commits remove themselves together with
             their target. Defaults to `False`.
         discard_recyclable: When `True`, drop recyclable commits from
             the plan entirely. Defaults to `False`.
@@ -680,13 +693,16 @@ def rewrite_plan(
                 continue
             if entry_line.pinned_group is not None:
                 # First commit in the group becomes `pick`; subsequent
-                # ones become `squash`. The setter keeps `out` in sync.
-                entry_line.command = (
-                    'pick'
-                    if not pinned_groups[entry_line.pinned_group]
-                    else 'squash'
-                )
-                pinned_groups[entry_line.pinned_group].append(entry_line)
+                # ones become `squash`. Attached autosquash markers keep
+                # git's command, so a `fixup` body is still discarded and
+                # `fixup -C` still replaces the message. The setter keeps
+                # `out` in sync.
+                group = pinned_groups[entry_line.pinned_group]
+                if not group:
+                    entry_line.command = 'pick'
+                elif not entry_line.is_attached_autosquash:
+                    entry_line.command = 'squash'
+                group.append(entry_line)
                 continue
 
         all_others.append(entry_line)
@@ -873,6 +889,11 @@ class MsgBlock:
                 message_lines = block_lines[2:]
 
             msg = "\n".join(line.strip() for line in message_lines).strip()
+            if note is not None and note.command == "fixup!":
+                # Git discards a `fixup!` commit's message, body included
+                # (stacked `# fixup! fixup! …` markers too). Treat it the
+                # same as a `will be skipped:` block.
+                continue
             if (
                 note is not None
                 and note.command == "squash!"
@@ -890,12 +911,6 @@ class MsgBlock:
                 blocks[-1]._extend_message(msg)
             elif msg:
                 blocks.append(MsgBlock(full_message=msg, note=note))
-            elif note is not None and note.command == "fixup!":
-                # A bare `# fixup!` block carries no message of its own
-                # -- git is just echoing the marker for context (this
-                # also happens with stacked `# fixup! fixup! …` markers).
-                # Treat it the same as a `will be skipped:` block.
-                continue
             else:
                 raise EditorRecoverableFailure(
                     f'Unexpected empty message in block. Block lines: '

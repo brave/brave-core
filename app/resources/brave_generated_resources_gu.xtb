@@ -117,6 +117,8 @@
 <translation id="2162109630536601963">જો આ એક્સ્ટેંશન નેટવર્ક વિનંતીઓ કરે છે, તો તે Tor અથવા ખાનગી મોડનો ઉપયોગ ન કરશે.</translation>
 <translation id="2725327089319971976">ખાનગી મોડ અને Tor મોડમાં આ એક્સ્ટેંશનને અક્ષમ કરવા માટે, આ વિકલ્પને અનસિલેક્ટ કરો.</translation>
 <translation id="438106944087726695">Brave દ્વારા હોસ્ટ કરેલ</translation>
+<translation id="2265651566599167057">Socket દ્વારા malware તરીકે ચિહ્નિત કરાયેલ.</translation>
+<translation id="2607395470596637070">Brave માં Socket તમને કેવી રીતે સુરક્ષિત કરે છે તે વિશે વધુ જાણો</translation>
 <translation id="3371343170427636147">Brave Browser Nightly Apps</translation>
 <translation id="4097979995947147464">Brave Browser Beta Apps</translation>
 <translation id="8303432794159193481">Brave Browser Dev Apps</translation>
@@ -723,7 +725,7 @@
 <translation id="4432071071853308688">આ કોડ ખાલી છે</translation>
 <translation id="955848693465029904">અંતરિક સિંક સેટઅપ ભૂલ</translation>
 <translation id="7456398316301207582">અંતરિક એકાઉન્ટ કાઢી નાખો ભૂલ</translation>
-<translation id="859506441384380749">આ કોડ Braveના જૂના વર્ઝન દ્વારા જનરેટ કરવામાં આવ્યો હતો, કૃપા કરીને પહેલા તમારા બીજા ડિવાઇસને અપગ્રેડ કરો</translation>
+<translation id="4002014583969312635">એવું લાગે છે કે આ કોડ Brave ના જૂના વર્ઝન પર ચાલતા device પર બનાવવામાં આવ્યો હતો. કૃપા કરીને તમારા બીજા device પર Brave ના નવીનતમ વર્ઝન પર અપડેટ કરો, અને પછી નવો sync કોડ બનાવો.</translation>
 <translation id="3132642509209154999">આ કોડની સમયસીમા સમાપ્ત થઈ ગઈ છે. કૃપા કરીને તમારા બીજા ડિવાઇસ પર એક નવો કોડ જનરેટ કરો અને ફરી પ્રયાસ કરો.</translation>
 <translation id="2859229680945501779">આ કોડ અમાન્ય છે. કૃપા કરીને ચકાસો કે તમારા ડિવાઇસ પર સમય અને ટાઇમઝોન યોગ્ય રીતે સેટ છે.</translation>
 <translation id="2339730291919608488">સિંક ચેન છોડી દો</translation>

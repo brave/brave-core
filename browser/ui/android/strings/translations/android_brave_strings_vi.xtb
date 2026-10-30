@@ -220,7 +220,6 @@
 <translation id="9040069796107003510">Biểu tượng Brave Phần thưởng</translation>
 <translation id="6333347122924254968">Hiển thị biểu tượng Brave Phần thưởng trên thanh địa chỉ</translation>
 <translation id="4393974575368329991">Thanh điều hướng phía dưới</translation>
-<translation id="8727059712928806451">Bật thanh dưới cùng</translation>
 <translation id="1834226716203076292">Hiển thị thanh dưới cùng để truy cập nhanh vào trang chủ, dấu trang và tìm kiếm</translation>
 <translation id="1422686363939271829">Cài đặt này bị vô hiệu hóa khi thanh địa chỉ được chọn hiển thị ở phía dưới</translation>
 <translation id="6587448235155023666">Các thay đổi bạn thực hiện sẽ có hiệu lực vào lần tới khi bạn khởi chạy lại Brave</translation>
@@ -290,7 +289,7 @@
 <translation id="2569646144216067185">Số từ: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Mã đồng bộ hóa sai</translation>
 <translation id="8284063834901328650">Mã QR đồng bộ hóa sai</translation>
-<translation id="859506441384380749">Mã này được tạo ra bởi một phiên bản cũ của Brave, hãy nâng cấp thiết bị kia của bạn trước</translation>
+<translation id="4002014583969312635">Có vẻ mã này được tạo trên thiết bị chạy phiên bản Brave cũ. Vui lòng cập nhật lên phiên bản Brave mới nhất trên thiết bị khác của bạn, sau đó tạo mã đồng bộ hóa mới.</translation>
 <translation id="3132642509209154999">Mã này đã hết hạn. Vui lòng tạo một mã mới trên thiết bị kia của bạn và thử lại.</translation>
 <translation id="2859229680945501779">Mã này không hợp lệ. Vui lòng kiểm tra xem thời gian và múi giờ có được đặt chính xác trên thiết bị của bạn không.</translation>
 <translation id="3149880132460839085">Đồng bộ Brave</translation>
@@ -336,8 +335,6 @@
 <translation id="8185825081026121627">Nhận Token thông báo chú ý cơ bản để xem quyền quảng cáo bảo toàn quyền riêng tư của Phần thưởng Brave.</translation>
 <translation id="5321518976657560663">Lỗi đặt lại</translation>
 <translation id="4114170343590425996">Có lỗi xảy ra khi đặt lại Phần thưởng Brave. Vui lòng khởi chạy lại Brave và thử lại.</translation>
-<translation id="6417420737057016607">Quảng cáo Brave</translation>
-<translation id="5611966874859284786">Hiển thị quảng cáo thông báo khi không sử dụng Brave</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Đặt lại dữ liệu Brave Phần thưởng…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Xóa dữ liệu Brave Quảng cáo…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Thêm Dấu trang</translation>
@@ -400,8 +397,9 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="4546260624932151782">Hiển thị các trang yêu thích</translation>
 <translation id="5313967007315987356">Thêm trang web</translation>
 <translation id="1773147648972887693">Hiển thị các trang thường truy cập</translation>
-<translation id="752098910262610337">Hiển thị phím tắt</translation>
 <translation id="7134741506051403308">Ẩn tiện ích</translation>
+<translation id="1247759249260562308">Chỉnh sửa trang yêu thích</translation>
+<translation id="6387214885349500492">Ghim mục yêu thích này</translation>
 <translation id="7462178177755090262">Màn hình khởi động</translation>
 <translation id="5365434987337264071">Thẻ đã mở lần cuối</translation>
 <translation id="6019856124237323989">{HOURS, plural,
@@ -979,6 +977,7 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="6365389672683343144">Đăng ký Brave VPN của bạn có thể bảo vệ tối đa 5 thiết bị trên Android, iOS và máy tính để bàn. Chỉ cần liên kết đăng ký Google Play với tài khoản Brave của bạn.</translation>
 <translation id="6610899852831463073">Không thể bật Duyệt web an toàn</translation>
 <translation id="7954263306665462056">Duyệt web an toàn đã bị tắt trên thiết bị của bạn. Để bật duyệt web này, hãy đảm bảo đã cài đặt Google Play Services và đó là bản cập nhật.</translation>
+<translation id="6417420737057016607">Quảng cáo Brave</translation>
 <translation id="7748944510530490017">Mạng chính</translation>
 <translation id="2781668117338732220">Mạng phụ</translation>
 <translation id="282560918037172384">Mạng thử nghiệm</translation>

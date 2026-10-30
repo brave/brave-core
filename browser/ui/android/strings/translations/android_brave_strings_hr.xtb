@@ -220,7 +220,6 @@
 <translation id="9040069796107003510">Ikona Nagrada Brave</translation>
 <translation id="6333347122924254968">Prikaži ikonu Nagrade Brave u adresnoj traci</translation>
 <translation id="4393974575368329991">Donja navigacijska traka</translation>
-<translation id="8727059712928806451">Omogući donju traku</translation>
 <translation id="1834226716203076292">Prikaži donju traku za brzi pristup početnoj stranici, oznakama i tražilici</translation>
 <translation id="1422686363939271829">Ova je funkcionalnost isključena kad se odabere donja pozicija adresne trake</translation>
 <translation id="6587448235155023666">Vaše se promjene primjenjuju sljedeći puta kada pokrene preglednik Brave</translation>
@@ -290,7 +289,7 @@
 <translation id="2569646144216067185">Broj riječi: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Pogrešni kôd za sinkronizaciju</translation>
 <translation id="8284063834901328650">Pogrešni kôd QR za sinkronizaciju</translation>
-<translation id="859506441384380749">Ovaj kôd generirao se zastarjelom inačicom preglednika Brave, prvo nadogradite drugi uređaj</translation>
+<translation id="4002014583969312635">Izgleda da je ovaj kȏd nastao na uređaju s instaliranom starijom inačicom preglednika Brave. Ažurirajte na najnoviju inačicu preglednika Brave na svom drugom uređaju, a zatim stvorite novi kȏd za sinkronizaciju.</translation>
 <translation id="3132642509209154999">Kôd je istekao. Generirajte novi na drugom uređaju i pokušajte ponovno.</translation>
 <translation id="2859229680945501779">Ovaj kôd nije valjan. Provjerite jesu li na uređaju vrijeme i vremenska zona ispravno postavljeni.</translation>
 <translation id="3149880132460839085">Sinkronizacija Brave</translation>
@@ -336,8 +335,6 @@
 <translation id="8185825081026121627">Osvojite osnovne privlačne tokene za pregledavanje oglasa kojima se poštuje privatnost u nagradama Brave.</translation>
 <translation id="5321518976657560663">Greška ponovnog postavljanja</translation>
 <translation id="4114170343590425996">Došlo je do greške prilikom ponovnog postavljanja nagrada Brave. Ponovno pokrenite preglednik Brave i pokušajte ponovno...</translation>
-<translation id="6417420737057016607">Brave Ads</translation>
-<translation id="5611966874859284786">Prikaži obavijesti kada se preglednik Brave ne upotrebljava</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Ponovno postavite podatke Nagrada Brave…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Obriši podatke oglasa Brave…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Dodaj oznaku</translation>
@@ -400,8 +397,9 @@ Sigurno želite to napraviti?</translation>
 <translation id="4546260624932151782">Prikaži omiljene</translation>
 <translation id="5313967007315987356">Dodaj web-lokaciju</translation>
 <translation id="1773147648972887693">Prikaži često posjećeno</translation>
-<translation id="752098910262610337">Prikaži prečace</translation>
 <translation id="7134741506051403308">Sakrij spravicu</translation>
+<translation id="1247759249260562308">Uređivanje omiljene stavke</translation>
+<translation id="6387214885349500492">Prikvači ovaj favorit</translation>
 <translation id="7462178177755090262">Zaslon za otvaranje</translation>
 <translation id="5365434987337264071">Zadnja otvorena kartica</translation>
 <translation id="6019856124237323989">{HOURS, plural,
@@ -984,6 +982,7 @@ račun. Želite li ga sada napraviti?</translation>
 <translation id="6365389672683343144">Vašom pretplatom na VPN preglednika Brave može se zaštititi do 5 uređaja, preko sustava Android, iOS i stolnog računala. Samo povežite svoju pretplatu na Google Play s računom Brave.</translation>
 <translation id="6610899852831463073">Nije moguće omogućiti sigurno pregledavanje</translation>
 <translation id="7954263306665462056">Sigurno pregledavanje onemogućeno je na vašem uređaju. Da biste ga omogućili, pobrinite se da ste instalirali aplikaciju Usluge za Google Play i da je ona ažurirana.</translation>
+<translation id="6417420737057016607">Brave Ads</translation>
 <translation id="7748944510530490017">Primarne mreže</translation>
 <translation id="2781668117338732220">Sekundarne mreže</translation>
 <translation id="282560918037172384">Probne mreže</translation>

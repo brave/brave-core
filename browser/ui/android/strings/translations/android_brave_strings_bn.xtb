@@ -220,7 +220,6 @@
 <translation id="9040069796107003510">Brave-এর পুরস্কার আইকন</translation>
 <translation id="6333347122924254968">Brave রিওয়ার্ডগুলো দেখাতে বলছে</translation>
 <translation id="4393974575368329991">নিচের নেভিগেশন টুলবার</translation>
-<translation id="8727059712928806451">নীচের বার সক্ষম করুন</translation>
 <translation id="1834226716203076292">হোম, বুকমার্ক এবং সার্চে দ্রুত প্রবেশের জন্য একটি নিচের বার দেখান</translation>
 <translation id="1422686363939271829">নিচের অ্যাড্রেস বারের অবস্থান নির্বাচন করা হলে এই সেটিংটি নিষ্ক্রিয় হয়ে যায়</translation>
 <translation id="6587448235155023666">আপনি পরবর্তীকালে Brave পুনরায় চালু করার সময় আপনার পরিবর্তনগুলি কার্যকর হবে</translation>
@@ -290,7 +289,7 @@
 <translation id="2569646144216067185">শব্দ সংখ্যা: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">ভুল সিঙ্ক কোড</translation>
 <translation id="8284063834901328650">ভুল সিঙ্ক QR কোড</translation>
-<translation id="859506441384380749">এই কোডটি Brave-এর একটি অবমূল্যায়ন সংস্করণ দ্বারা তৈরি করা হয়েছে, অনুগ্রহ করে প্রথমে আপনার অন্য ডিভাইস আপগ্রেড করুন</translation>
+<translation id="4002014583969312635">মনে হচ্ছে এই কোডটি Brave-এর একটি পুরোনো ভার্সন চালানো কোনও ডিভাইসে তৈরি করা হয়েছিল। অনুগ্রহ করে আপনার অন্য ডিভাইসে Brave-এর সর্বশেষ ভার্সনে আপডেট করুন এবং তারপর একটি নতুন সিঙ্ক কোড তৈরি করুন।</translation>
 <translation id="3132642509209154999">এই কোডটির মেয়াদ শেষ হয়েছে। অনুগ্রহ করে আপনার অন্য ডিভাইসে একটি নতুন তৈরি করুন এবং আবার চেষ্টা করুন।</translation>
 <translation id="2859229680945501779">এই কোডটি অকার্যকর। আপনার ডিভাইসে সময় এবং টাইমজোন সঠিকভাবে সেট করা আছে কিনা অনুগ্রহ করে তা চেক করে নিন।</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
@@ -336,8 +335,6 @@
 <translation id="8185825081026121627">Brave পুরস্কারসমূহ বিজ্ঞাপন গোপনীয়তা সংরক্ষণের জন্য বেসিক মনোযোগ টোকেন উপার্জন করুন।</translation>
 <translation id="5321518976657560663">রিসেট সংক্রান্ত ত্রুটি</translation>
 <translation id="4114170343590425996">Brave রিওয়ার্ড পুনরায় সেট করার সময় এখানে একটি ত্রুটি ঘটেছে। অনুগ্রহ করে Brave পুনরায় চালু করে আবার চেষ্টা করুন।</translation>
-<translation id="6417420737057016607">Brave বিজ্ঞাপন</translation>
-<translation id="5611966874859284786">Brave ব্যবহার না হলে বিজ্ঞাপনের বিজ্ঞপ্তি দেখান</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Brave রিওয়ার্ডস সংক্রান্ত ডেটা পুনরায় সেট করুন…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Brave বিজ্ঞাপনের ডেটা সাফ করুন…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">বুকমার্ক যোগ করুন</translation>
@@ -400,8 +397,9 @@
 <translation id="4546260624932151782">ফেবরিটগুলো দেখান</translation>
 <translation id="5313967007315987356">সাইট যোগ করুন</translation>
 <translation id="1773147648972887693">প্রায়শই পরিদর্শন করা সাইটগুলো দেখান</translation>
-<translation id="752098910262610337">শর্টকাট দেখান</translation>
 <translation id="7134741506051403308">উইজেট লুকান</translation>
+<translation id="1247759249260562308">ফেবরিট সম্পাদনা করুন</translation>
+<translation id="6387214885349500492">এই ফেবরিট পিন করুন</translation>
 <translation id="7462178177755090262">প্রাথমিক স্ক্রিন</translation>
 <translation id="5365434987337264071">সর্বশেষ খোলা ট্যাব</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {নিষ্ক্রিয় থাকার <ph name="HOURS_ONE"/> ঘন্টা পর নতুন ট্যাব} other {নিষ্ক্রিয় থাকার <ph name="HOURS_MANY"/> ঘন্টা পর নতুন ট্যাব}}</translation>
@@ -976,6 +974,7 @@
 <translation id="6365389672683343144">আপনার Brave VPN সাবস্ক্রিপশন Android, iOS এবং ডেস্কটপ জুড়ে 5টি পর্যন্ত ডিভাইস রক্ষা করতে পারে। শুধু আপনার Brave অ্যাকাউন্টে আপনার Google Play সাবস্ক্রিপশনে লিঙ্ক করুন।</translation>
 <translation id="6610899852831463073">নিরাপদ ব্রাউজিং চালুকরা যাবে না</translation>
 <translation id="7954263306665462056">আপনার ডিভাইসে নিরাপদ ব্রাউজিং বন্ধ করা হয়েছে। এটি চালু করতে, Google Play Services ইনস্টল করা আছে এবং এটি আপ টু ডেট তা নিশ্চিত করুন৷।</translation>
+<translation id="6417420737057016607">Brave বিজ্ঞাপন</translation>
 <translation id="7748944510530490017">প্রাথমিক নেটওয়ার্ক</translation>
 <translation id="2781668117338732220">গৌণ নেটওয়ার্কসমূহ</translation>
 <translation id="282560918037172384">নেটওয়ার্ক পরীক্ষা করুন</translation>

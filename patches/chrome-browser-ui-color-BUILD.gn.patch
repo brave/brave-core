@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/color/BUILD.gn b/chrome/browser/ui/color/BUILD.gn
-index 42f66c6cce565ea6aa6f55bd75e61b6788eec601..5c7d36d789d0dbef19ece1445dffd11a1dfbf5f2 100644
+index a73bb082108a171f1a3e5506ce99552badf657f5..e36d641be30cf73b86a3a82f4f07df6916be029a 100644
 --- a/chrome/browser/ui/color/BUILD.gn
 +++ b/chrome/browser/ui/color/BUILD.gn
 @@ -46,6 +46,7 @@ source_set("mixers") {
@@ -8,9 +8,9 @@ index 42f66c6cce565ea6aa6f55bd75e61b6788eec601..5c7d36d789d0dbef19ece1445dffd11a
    ]
 +  sources += brave_browser_ui_color_mixers_sources
  
-   configs += [ "//build/config/compiler:wexit_time_destructors" ]
- 
-@@ -64,6 +65,7 @@ source_set("mixers") {
+   deps = [
+     ":color_headers",
+@@ -62,6 +63,7 @@ source_set("mixers") {
      "//ui/color",
      "//ui/color:mixers",
    ]

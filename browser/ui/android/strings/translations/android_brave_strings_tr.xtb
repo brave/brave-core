@@ -220,7 +220,6 @@
 <translation id="9040069796107003510">Brave Ödülleri simgesi</translation>
 <translation id="6333347122924254968">Adres çubuğunda Brave Ödülleri simgesini göster</translation>
 <translation id="4393974575368329991">Alt gezinme araç çubuğu</translation>
-<translation id="8727059712928806451">Alt çubuğu etkinleştir</translation>
 <translation id="1834226716203076292">Ana sayfa, yer imleri ve aramaya hızlı erişim için bir alt çubuk göster</translation>
 <translation id="1422686363939271829">Alt adres çubuğu konumu seçildiğinde bu ayar devre dışı bırakılır</translation>
 <translation id="6587448235155023666">Yaptığınız değişiklikler cihazı yeniden başlattığınızda etkinleşecektir.</translation>
@@ -290,7 +289,7 @@
 <translation id="2569646144216067185">Sözcük sayısı: <ph name="WORD_COUNT"/> yok</translation>
 <translation id="7507533586185621084">Yanlış eşzamanlama kodu</translation>
 <translation id="8284063834901328650">Yanlış eş zamanlama QR kodu</translation>
-<translation id="859506441384380749">Bu kod Brave'in artık kullanılmayan bir sürümü tarafından oluşturulmuş, lütfen önce diğer cihazınızı yükseltin</translation>
+<translation id="4002014583969312635">Görünüşe göre bu kod Brave'in eski bir sürümünü çalıştıran bir cihazda oluşturulmuş. Lütfen diğer cihazınızda Brave'i en yeni sürümüne güncelleyin ve bundan sonra yeni bir senkronizasyon kodu oluşturun.</translation>
 <translation id="3132642509209154999">Bu kodun süresi dolmuş. Lütfen diğer cihazınızda yeni bir kod oluşturun ve tekrar deneyin.</translation>
 <translation id="2859229680945501779">Bu kod geçersiz. Lütfen cihazınızdaki saatin ve saat diliminin doğru şekilde ayarlandığını teyit edin.</translation>
 <translation id="3149880132460839085">Brave Senkronizasyonu</translation>
@@ -336,8 +335,6 @@
 <translation id="8185825081026121627">Gizliliği koruyan Brave Rewards reklamlarına bakarak Basic Attention Token kazanın.</translation>
 <translation id="5321518976657560663">Sıfırlama Hatası</translation>
 <translation id="4114170343590425996">Brave Ödülleri sıfırlanırken bir hata oluştu. Lütfen Brave'i yeniden başlatın ve tekrar deneyin.</translation>
-<translation id="6417420737057016607">Brave Reklamları</translation>
-<translation id="5611966874859284786">Brave kullanımda olmadığında bildirim reklamlarını göster</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Brave Ödülleri verilerini sıfırla…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Brave Reklamları verilerini temizle…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Yer İşareti Ekle</translation>
@@ -401,8 +398,9 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="4546260624932151782">Favorileri göster</translation>
 <translation id="5313967007315987356">Site ekle</translation>
 <translation id="1773147648972887693">Sık ziyaret edilenleri göster</translation>
-<translation id="752098910262610337">Kestirmeleri göster</translation>
 <translation id="7134741506051403308">Öğeyi gizle</translation>
+<translation id="1247759249260562308">Sık kullanılanı düzenle</translation>
+<translation id="6387214885349500492">Bu favoriyi sabitle</translation>
 <translation id="7462178177755090262">Açılış Ekranı</translation>
 <translation id="5365434987337264071">Son açık sekme</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {<ph name="HOURS_ONE"/> saatlik hareketsizlikten sonra yeni sekme} other {<ph name="HOURS_MANY"/> saatlik hareketsizlikten sonra yeni sekme}}</translation>
@@ -977,6 +975,7 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="6365389672683343144">Brave VPN aboneliğiniz; Android, iOS ve masaüstü genelinde 5 cihaza kadar koruma sağlayabilir. Sadece Google Play aboneliğinizi Brave hesabınıza bağlayın.</translation>
 <translation id="6610899852831463073">Güvenli Tarama etkinleştirilemiyor</translation>
 <translation id="7954263306665462056">Güvenli Tarama, cihazınızda devre dışı bırakıldı. Etkinleştirmek için Google Play hizmetlerinin yüklendiğinden ve güncel olduğundan emin olun.</translation>
+<translation id="6417420737057016607">Brave Reklamları</translation>
 <translation id="7748944510530490017">Birincil Ağlar</translation>
 <translation id="2781668117338732220">İkincil Ağlar</translation>
 <translation id="282560918037172384">Test Ağları</translation>

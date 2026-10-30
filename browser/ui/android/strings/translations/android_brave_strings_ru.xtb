@@ -220,7 +220,6 @@
 <translation id="9040069796107003510">Значок Вознаграждений Brave</translation>
 <translation id="6333347122924254968">Показывать значок Вознаграждений Brave в адресной строке</translation>
 <translation id="4393974575368329991">Нижняя панель навигации</translation>
-<translation id="8727059712928806451">Включить нижнюю панель</translation>
 <translation id="1834226716203076292">Показывать нижнюю панель для быстрого доступа к главной странице, закладкам и поиску</translation>
 <translation id="1422686363939271829">Этот параметр отключен, когда выбрана нижняя позиция адресной строки</translation>
 <translation id="6587448235155023666">Ваши изменения вступят в силу при следующем запуске Brave</translation>
@@ -290,7 +289,7 @@
 <translation id="2569646144216067185">Количество слов: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Неверный код синхронизации</translation>
 <translation id="8284063834901328650">Неверный QR-код синхронизации</translation>
-<translation id="859506441384380749">Код был сгенерирован в устаревшей версии Brave. Обновите браузер на другом устройстве.</translation>
+<translation id="4002014583969312635">Этот код был создан на устройстве с устаревшей версией Brave. Обновите браузер, а затем создайте новый код синхронизации.</translation>
 <translation id="3132642509209154999">Этот код устарел. Сгенерируйте его на втором устройстве еще раз и повторите попытку.</translation>
 <translation id="2859229680945501779">Невозможно применить код. Проверьте, правильно ли указаны время и часовой пояс на вашем устройстве.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
@@ -336,8 +335,6 @@
 <translation id="8185825081026121627">Зарабатывайте жетон базового внимания за просмотр рекламы Вознаграждений Brave, сохраняющей конфиденциальность.</translation>
 <translation id="5321518976657560663">Ошибка сброса</translation>
 <translation id="4114170343590425996">Произошла ошибка при сбросе Вознаграждений Brave. Пожалуйста, перезапустите Brave и попробуйте снова.</translation>
-<translation id="6417420737057016607">Brave Реклама</translation>
-<translation id="5611966874859284786">Показывать всплывающую рекламу, когда Brave не используется.</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Сбросьте данные Вознаграждений Brave…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Удалить данные Brave Рекламы<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Добавление закладки</translation>
@@ -400,8 +397,9 @@
 <translation id="4546260624932151782">Показать избранное</translation>
 <translation id="5313967007315987356">Добавить сайт</translation>
 <translation id="1773147648972887693">Показать часто посещаемые</translation>
-<translation id="752098910262610337">Показать ярлыки</translation>
 <translation id="7134741506051403308">Скрыть виджет</translation>
+<translation id="1247759249260562308">Изменение избранной закладки</translation>
+<translation id="6387214885349500492">Закрепить этот избранный сайт</translation>
 <translation id="7462178177755090262">Экран при запуске</translation>
 <translation id="5365434987337264071">Последняя открытая вкладка</translation>
 <translation id="6019856124237323989">{HOURS, plural,
@@ -979,6 +977,7 @@
 <translation id="6365389672683343144">Вы можете использовать Brave VPN максимум на пяти устройствах Android, iOS и компьютерах. Для этого привяжите подписку Google Play к аккаунту Brave.</translation>
 <translation id="6610899852831463073">Безопасный просмотр недоступен</translation>
 <translation id="7954263306665462056">На вашем устройстве безопасный просмотр отключен. Чтобы его включить, убедитесь, что сервисы Google Play установлены и обновлены до последней версии.</translation>
+<translation id="6417420737057016607">Brave Реклама</translation>
 <translation id="7748944510530490017">Основные сети</translation>
 <translation id="2781668117338732220">Дополнительные сети</translation>
 <translation id="282560918037172384">Тестовые сети</translation>

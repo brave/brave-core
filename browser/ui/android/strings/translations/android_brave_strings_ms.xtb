@@ -220,7 +220,6 @@
 <translation id="9040069796107003510">Ikon Ganjaran Brave</translation>
 <translation id="6333347122924254968">Tunjukkan ikon Ganjaran Brave dalam bar alamat</translation>
 <translation id="4393974575368329991">Bar alat navigasi bawah</translation>
-<translation id="8727059712928806451">Dayakan bar bawah</translation>
 <translation id="1834226716203076292">Tunjukkan bar bawah untuk akses pantas ke laman utama, penanda halaman dan carian</translation>
 <translation id="1422686363939271829">Tetapan ini dimatikan apabila kedudukan bar alamat bawah dipilih</translation>
 <translation id="6587448235155023666">Perubahan anda akan kelihatan apabila anda melancarkan semula Brave</translation>
@@ -290,7 +289,7 @@
 <translation id="2569646144216067185">Jumlah perkataan: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Kod segerakan salah</translation>
 <translation id="8284063834901328650">Kod QR segerakan salah</translation>
-<translation id="859506441384380749">Kod ini dijana oleh versi Brave yang telah ditamatkan, sila naik taraf peranti anda yang lain dahulu</translation>
+<translation id="4002014583969312635">Nampaknya kod ini telah dicipta pada peranti yang menjalankan versi Brave lebih lama. Sila kemas kini kepada versi terkini Brave pada peranti anda yang lain dan cipta kod segerak baharu.</translation>
 <translation id="3132642509209154999">Kod ini telah tamat tempoh. Sila jana yang baharu pada peranti anda yang lain dan cuba lagi.</translation>
 <translation id="2859229680945501779">Kod ini tidak sah. Sila periksa bahawa masa dan zon masa ditetapkan dengan betul pada peranti anda.</translation>
 <translation id="3149880132460839085">Segerak Brave</translation>
@@ -336,8 +335,6 @@
 <translation id="8185825081026121627">Dapatkan Token Perhatian Asas dengan melihat iklan Brave Rewards yang menjaga privasi.</translation>
 <translation id="5321518976657560663">Set Semula Ralat</translation>
 <translation id="4114170343590425996">Terdapat ralat semasa mengeset semula Ganjaran Brave. Sila lancarkan semula Brave dan cuba semula.</translation>
-<translation id="6417420737057016607">Iklan Brave</translation>
-<translation id="5611966874859284786">Tunjukkan iklan pemberitahuan apabila Brave tidak digunakan</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Tetapkan semula data Brave Rewards…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Buang data Brave Ads…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Tambah Penanda Halaman</translation>
@@ -400,8 +397,9 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="4546260624932151782">Paparkan keutamaan</translation>
 <translation id="5313967007315987356">Tambahkan tapak</translation>
 <translation id="1773147648972887693">Paparkan laman web yang kerap dilawati</translation>
-<translation id="752098910262610337">Paparkan pintasan</translation>
 <translation id="7134741506051403308">Sembunyikan widget</translation>
+<translation id="1247759249260562308">Edit kegemaran</translation>
+<translation id="6387214885349500492">Semat kegemaran ini</translation>
 <translation id="7462178177755090262">Skrin Pembukaan</translation>
 <translation id="5365434987337264071">Tab terakhir dibuka</translation>
 <translation id="6019856124237323989">{HOURS, plural,
@@ -979,6 +977,7 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="6365389672683343144">Langganan VPN Brave anda boleh melindungi hingga 5 peranti, merentasi Android, iOS dan desktop. Hanya pautkan langganan Google Play anda kepada akaun Brave anda.`</translation>
 <translation id="6610899852831463073">Tidak boleh mendayakan Semak Imbas Selamat</translation>
 <translation id="7954263306665462056">Semak Imbas Selamat telah dinyahdayakan pada peranti anda. Untuk mendayakannya, pastikan bahawa Perkhidmatan Google Play telah dipasang dan berstatus terkini.</translation>
+<translation id="6417420737057016607">Iklan Brave</translation>
 <translation id="7748944510530490017">Rangkaian Utama</translation>
 <translation id="2781668117338732220">Rangkaian Kedua</translation>
 <translation id="282560918037172384">Rangkaian Ujian</translation>

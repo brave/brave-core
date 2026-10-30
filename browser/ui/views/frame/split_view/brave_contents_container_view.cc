@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/views/brave_layout_provider.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view_mini_toolbar.h"
@@ -201,7 +202,7 @@ void BraveContentsContainerView::UpdateBorderRoundedCorners() {
   if (reader_mode_toolbar_) {
     reader_mode_toolbar_->SetCornerRadius(
         views::LayoutProvider::Get()->GetCornerRadiusMetric(
-            views::ShapeContextTokensOverride::kRoundedCornersBorderRadius));
+            ExtendedShapeContextTokens::kRoundedCornersBorderRadius));
   }
 #endif
 }

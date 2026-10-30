@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/signin/BUILD.gn b/chrome/browser/resources/signin/BUILD.gn
-index 90c87d8b5744a7565f13944631f57bf476068f93..10ab154a9dc30485cef30cd9dfee37925e86314a 100644
+index 15eead184629130a05a92ad6fb564cd7bbf4f1f7..05f4aba30ab0cb765f0b7c6783fa927bb9406617 100644
 --- a/chrome/browser/resources/signin/BUILD.gn
 +++ b/chrome/browser/resources/signin/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 90c87d8b5744a7565f13944631f57bf476068f93..10ab154a9dc30485cef30cd9dfee3792
  import("//chrome/common/features.gni")
  import("//components/signin/features.gni")
  import("//ui/webui/resources/tools/build_webui.gni")
-@@ -179,4 +180,5 @@ build_webui("build") {
+@@ -180,4 +181,5 @@ build_webui("build") {
    ]
  
    webui_context_type = "trusted"

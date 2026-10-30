@@ -67,7 +67,7 @@ class ResourceContextData : public base::SupportsUserData::Data {
   ResourceContextData& operator=(const ResourceContextData&) = delete;
   ~ResourceContextData() override;
 
-  static void StartProxying(
+  static BraveProxyingURLLoaderFactory<T>* StartProxying(
       content::BrowserContext* browser_context,
       content::GlobalRenderFrameHostToken render_frame_token,
       network::URLLoaderFactoryBuilder& factory_builder,

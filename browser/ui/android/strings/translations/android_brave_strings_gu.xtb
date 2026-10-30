@@ -220,7 +220,6 @@
 <translation id="9040069796107003510">Brave રિવોર્ડ્સ ચિહ્ન</translation>
 <translation id="6333347122924254968">સરનામા પટ્ટીમાં Brave રિવોર્ડ્સ ચિહ્ન બતાવો</translation>
 <translation id="4393974575368329991">નીચેનું નૅવિગેશન ટૂલબાર</translation>
-<translation id="8727059712928806451">નીચેનો બાર સક્ષમ કરો</translation>
 <translation id="1834226716203076292">હોમ, બુકમાર્ક્સ, અને શોધ માટે ઝડપી ઍક્સેસ કરવા નીચે એક બાર બતાવો</translation>
 <translation id="1422686363939271829">જો નીચેનું સરનામું બાર વિરામ પર પસંદ કરવામાં આવે છે તો આ સેટિંગ અક્ષમ છે</translation>
 <translation id="6587448235155023666">આગલા વખતે જ્યારે તમે Brave ને ફરીથી લોન્ચ કરો ત્યારે તમારા ફેરફારો પ્રભાવમાં આવશે</translation>
@@ -290,7 +289,7 @@
 <translation id="2569646144216067185">શબ્દ ગણના: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">ખોટું સિંક કોડ</translation>
 <translation id="8284063834901328650">ખોટું સિંક QR કોડ</translation>
-<translation id="859506441384380749">આ કોડ Braveના જૂના વર્ઝન દ્વારા જનરેટ કરવામાં આવ્યો હતો, કૃપા કરીને પહેલા તમારા બીજા ડિવાઇસને અપગ્રેડ કરો</translation>
+<translation id="4002014583969312635">એવું લાગે છે કે આ કોડ Brave ના જૂના વર્ઝન પર ચાલતા device પર બનાવવામાં આવ્યો હતો. કૃપા કરીને તમારા બીજા device પર Brave ના નવીનતમ વર્ઝન પર અપડેટ કરો, અને પછી નવો sync કોડ બનાવો.</translation>
 <translation id="3132642509209154999">આ કોડની સમયસીમા સમાપ્ત થઈ ગઈ છે. કૃપા કરીને તમારા બીજા ડિવાઇસ પર એક નવો કોડ જનરેટ કરો અને ફરી પ્રયાસ કરો.</translation>
 <translation id="2859229680945501779">આ કોડ અમાન્ય છે. કૃપા કરીને ચકાસો કે તમારા ડિવાઇસ પર સમય અને ટાઇમઝોન યોગ્ય રીતે સેટ છે.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
@@ -343,8 +342,6 @@
 <translation id="8185825081026121627">ગોપનીયતા જાળવી રિવોર્ડ્સ એડ્સ જોવાના બદલામાં બેઝિક એટેન્શન ટોકન મેળવો.</translation>
 <translation id="5321518976657560663">ત્રુટિ રીસેટ કરો</translation>
 <translation id="4114170343590425996">Brave પુરસ્કારોને રીસેટ કરવામાં ભૂલ આવી હતી. કૃપયા Brave ને ફરીથી લોંચ કરો અને ફરીથી પ્રયાસ કરો.</translation>
-<translation id="6417420737057016607">Brave જાહેરાતો</translation>
-<translation id="5611966874859284786">જ્યારે Brave ઉપયોગમાં નથી ત્યારે સૂચના એડ્સ બતાવો</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Brave રિવોર્ડ્સ ડેટા રીસેટ કરો…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Brave Ads ડેટા સાફ કરો…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">બૂકમાર્ક ઉમેરો</translation>
@@ -407,8 +404,9 @@
 <translation id="4546260624932151782">મનપસંદ બતાવો</translation>
 <translation id="5313967007315987356">સાઈટ ઉમેરો</translation>
 <translation id="1773147648972887693">વારંવાર મુલાકાત લીધેલ બતાવો</translation>
-<translation id="752098910262610337">શૉર્ટકટ્સ બતાવો</translation>
 <translation id="7134741506051403308">વિજેટ છુપાવો</translation>
+<translation id="1247759249260562308">મનપસંદમાં ફેરફાર કરો</translation>
+<translation id="6387214885349500492">આ મનપસંદને પિન કરો</translation>
 <translation id="7462178177755090262">પ્રારંભ સ્ક્રીન</translation>
 <translation id="5365434987337264071">છેલ્લો ખુલેલ ટૅબ</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {અપ્રવૃત્તિ પછી <ph name="HOURS_ONE"/> કલાકમાં નવો ટૅબ} other {અપ્રવૃત્તિ પછી <ph name="HOURS_MANY"/> કલાકોમાં નવો ટૅબ}}</translation>
@@ -981,6 +979,7 @@
 <translation id="6365389672683343144">તમારી Brave VPN સબ્સ્ક્રિપ્શન તમારું સુરક્ષિત કરી શકે છે 5 ઉપકરણો પર, Android, iOS, અને ડેસ્કટોપ માં. ફક્ત તમારો Google Play સબ્સ્ક્રિપશન તમારા Brave એકાઉન્ટ સાથે લિંક કરો.</translation>
 <translation id="6610899852831463073">સંકોડિત બ્રાઉઝિંગ સક્ષમ કરી શકાય તેવું છે.</translation>
 <translation id="7954263306665462056">તમારા ઉપકરણ પર Brave સર્વિસેસ સ્થાપિત છે અને તે અપડેટેડ છે તે ખાતરી કરવા માટે સચોટ રીતે સક્ષમ કરો.</translation>
+<translation id="6417420737057016607">Brave જાહેરાતો</translation>
 <translation id="7748944510530490017">મુખ્ય નેટવર્ક્સ</translation>
 <translation id="2781668117338732220">માધ્યમ નેટવર્ક્સ</translation>
 <translation id="282560918037172384">ટેસ્ટ નેટવર્ક્સ</translation>
