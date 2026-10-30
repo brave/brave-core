@@ -42,6 +42,7 @@ import org.chromium.base.test.util.DoNotBatch;
 import org.chromium.base.test.util.Feature;
 import org.chromium.base.test.util.Features.DisableFeatures;
 import org.chromium.base.test.util.Features.EnableFeatures;
+import org.chromium.base.test.util.Restriction;
 import org.chromium.brave.browser.customize_menu.CustomizeBraveMenu;
 import org.chromium.brave.browser.customize_menu.MenuItemData;
 import org.chromium.chrome.browser.BraveRewardsPolicy;
@@ -50,6 +51,7 @@ import org.chromium.chrome.browser.tracing.settings.DeveloperSettings;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.BraveSearchWidgetUtils;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.chrome.test.R;
+import org.chromium.ui.base.DeviceFormFactor;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -787,6 +789,21 @@ public class BraveSettingsSearchTest {
 
         clearAndTypeIntoSearch("Multiple windows");
         assertSearchResult("Multiple windows");
+    }
+
+    /**
+     * Verifies the bookmarks bar is not searchable on a phone, where the Appearance screen shows
+     * neither of its two rows.
+     */
+    @Test
+    @SmallTest
+    @Feature({"Preferences"})
+    @Restriction(DeviceFormFactor.PHONE)
+    public void testBookmarkBarNotSearchableOnPhone() {
+        mSettingsActivityTestRule.startSettingsActivity();
+
+        typeIntoSearch("Show bookmarks bar");
+        assertSearchResultEmpty();
     }
 
     /**
