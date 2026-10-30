@@ -120,8 +120,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
     private boolean mP3aChecked;
 
     // Day Zero experiment variant, read in finishNativeInitialization().
-    @MonotonicNonNull
-    private String mDayZeroVariant;
+    @MonotonicNonNull private String mDayZeroVariant;
 
     private void checkReferral() {
         InstallReferrerClient referrerClient = InstallReferrerClient.newBuilder(this).build();
@@ -282,9 +281,10 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
                         (textView) -> CustomTabActivity.showInfoPage(this, WDP_LINK));
         final String wdpText = getResources().getString(R.string.wdp_text);
 
-        mWdpLearnMore = SpanApplier.applySpans(
-                wdpText,
-                new SpanInfo("<learn_more>", "</learn_more>", wdpLearnMoreClickableSpan));
+        mWdpLearnMore =
+                SpanApplier.applySpans(
+                        wdpText,
+                        new SpanInfo("<learn_more>", "</learn_more>", wdpLearnMoreClickableSpan));
 
         mOnboardingPager.setUserInputEnabled(false);
         mPageBounceAnimator = new PageBounceAnimator(mOnboardingPager);
@@ -316,7 +316,13 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
 
         // If both settings are managed by policy, skip this page entirely.
         final boolean skipMakeBraveBetter = mIsP3aManaged && mIsCrashReportingManaged;
-        final OnboardingStepAdapter stepAdapter = new OnboardingStepAdapter(mWdpLearnMore, mDayZeroVariant, skipMakeBraveBetter, mPageBounceAnimator, this);
+        final OnboardingStepAdapter stepAdapter =
+                new OnboardingStepAdapter(
+                        mWdpLearnMore,
+                        mDayZeroVariant,
+                        skipMakeBraveBetter,
+                        mPageBounceAnimator,
+                        this);
         mOnboardingPager.setAdapter(stepAdapter);
 
         if (!mIsCrashReportingManaged) {
@@ -380,7 +386,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
         // Filter out day zero variants different from X, Y, and Z.
         if (DayZeroHelper.DAY_ZERO_VARIANT_X.equals(variant)
                 || DAY_ZERO_VARIANT_Y.equals(variant)
-        || DAY_ZERO_VARIANT_Z.equals(variant)) {
+                || DAY_ZERO_VARIANT_Z.equals(variant)) {
             return variant;
         }
         return DayZeroHelper.DAY_ZERO_DEFAULT_VARIANT;

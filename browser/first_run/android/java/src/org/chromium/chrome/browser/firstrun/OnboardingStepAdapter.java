@@ -73,15 +73,25 @@ public class OnboardingStepAdapter
             final OnboardingNavigationListener listener) {
         mWdpLearnMore = wdpLearnMore;
         mSkipMakeBraveBetter = skipMakeBraveBetter;
-        mHasCustomizeStep = DAY_ZERO_VARIANT_Y.equals(dayZeroVariant) || DAY_ZERO_VARIANT_Z.equals(dayZeroVariant);
+        mHasCustomizeStep =
+                DAY_ZERO_VARIANT_Y.equals(dayZeroVariant)
+                        || DAY_ZERO_VARIANT_Z.equals(dayZeroVariant);
         mPageBounceAnimator = pageBounceAnimator;
         mListener = listener;
 
-        mSteps = mHasCustomizeStep ? new int[]{
-                R.layout.help_brave_search, R.layout.block_interruptions, R.layout.customize_brave, R.layout.make_brave_better
-            } : new int[]{
-                R.layout.help_brave_search, R.layout.block_interruptions, R.layout.make_brave_better
-            };
+        mSteps =
+                mHasCustomizeStep
+                        ? new int[] {
+                            R.layout.help_brave_search,
+                            R.layout.block_interruptions,
+                            R.layout.customize_brave,
+                            R.layout.make_brave_better
+                        }
+                        : new int[] {
+                            R.layout.help_brave_search,
+                            R.layout.block_interruptions,
+                            R.layout.make_brave_better
+                        };
 
         mHelpBraveSearchPosition = 0;
         mBlockInterruptionsPosition = 1;
@@ -99,15 +109,22 @@ public class OnboardingStepAdapter
         final View view = inflater.inflate(mSteps[viewType], parent, false);
 
         if (viewType == mHelpBraveSearchPosition) {
-            return new HelpBraveSearchViewHolder(view, mWdpLearnMore, mBlockInterruptionsPosition, mPageBounceAnimator, mListener);
+            return new HelpBraveSearchViewHolder(
+                    view,
+                    mWdpLearnMore,
+                    mBlockInterruptionsPosition,
+                    mPageBounceAnimator,
+                    mListener);
         }
 
         if (viewType == mBlockInterruptionsPosition) {
             // If Make Brave Better page needs to be skipped because both settings are managed
             // by policy the assigned valued will be -1 (check the logic in the constructor)
             // so the listener will call onDismiss.
-            final int nextOnboardingPosition = mHasCustomizeStep ? mCustomizeBravePosition : mMakeBraveBetterPosition;
-            return new BlockInterruptionsViewHolder(view, nextOnboardingPosition, mPageBounceAnimator, mListener);
+            final int nextOnboardingPosition =
+                    mHasCustomizeStep ? mCustomizeBravePosition : mMakeBraveBetterPosition;
+            return new BlockInterruptionsViewHolder(
+                    view, nextOnboardingPosition, mPageBounceAnimator, mListener);
         }
 
         if (viewType == mCustomizeBravePosition) {
