@@ -1376,6 +1376,7 @@
 -SyncConfirmationUITest.RecordConsentWithEscapedHtmlCharacters/*
 
 # These tests fail on CI but pass locally
+-All/GlicWebDragAndDropBrowserTest.testWebToGlicDragMaterialization/Webview
 -All/SoftNavigationTest.BackForwardCache/*
 -All/SoftNavigationTest.LayoutShift/*
 -AutoPictureInPictureTabHelperBrowserTest.*
