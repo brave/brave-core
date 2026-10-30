@@ -298,6 +298,23 @@ IN_PROC_BROWSER_TEST_F(UpstreamTreeTabsBrowserTest, ToggleButton) {
   EXPECT_FALSE(GetTreeTabNodeAt(0).collapsed());
 }
 
+IN_PROC_BROWSER_TEST_F(UpstreamTreeTabsBrowserTest,
+                       ActivatingHiddenTabExpandsAncestors) {
+  CreateTree();
+  model().ActivateTabAt(3);
+  model().SetTreeTabNodeCollapsed(GetTreeTabNodeAt(1).id(), true);
+  model().SetTreeTabNodeCollapsed(GetTreeTabNodeAt(0).id(), true);
+  WaitForViewModelSynced();
+
+  // Expanded asynchronously, not in the middle of the model's notifications.
+  model().ActivateTabAt(2);
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return !GetTreeTabNodeAt(0).collapsed() && !GetTreeTabNodeAt(1).collapsed();
+  }));
+  WaitForViewModelSynced();
+  EXPECT_TRUE(GetTabViewAt(2)->GetVisible());
+}
+
 IN_PROC_BROWSER_TEST_F(UpstreamTreeTabsBrowserTest, FlattenAndRebuild) {
   CreateTree();
 

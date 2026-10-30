@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/common/root_tab_collection_node.cc b/chrome/browser/ui/views/tabs/common/root_tab_collection_node.cc
-index 7c362fa41355834860aa2c94211bf85df9c1bbab..4efd557cc86adc35710341d9c768b8498042da99 100644
+index 7c362fa41355834860aa2c94211bf85df9c1bbab..c81d057cdf5de429666eb45c2ee2dbd267338ff1 100644
 --- a/chrome/browser/ui/views/tabs/common/root_tab_collection_node.cc
 +++ b/chrome/browser/ui/views/tabs/common/root_tab_collection_node.cc
 @@ -97,6 +97,10 @@ void RootTabCollectionNode::OnChildrenAdded(
@@ -36,12 +36,15 @@ index 7c362fa41355834860aa2c94211bf85df9c1bbab..4efd557cc86adc35710341d9c768b849
    const tabs::TabCollection::Position& from_position = node_data.position;
    const tabs::TabCollection::NodeHandle& moved_node_handle = node_data.handle;
  
-@@ -176,6 +189,9 @@ void RootTabCollectionNode::OnTabStripModelChanged(
+@@ -176,6 +189,12 @@ void RootTabCollectionNode::OnTabStripModelChanged(
      TabStripModel* tab_strip_model,
      const TabStripModelChange& change,
      const TabStripSelectionChange& selection) {
 +  if (ShouldSyncWithTreeTabs({})) {
 +    SyncWithTreeTabs();
++  }
++  if (selection.active_tab_changed()) {
++    ScheduleExpandActiveTabTreeAncestors();
 +  }
    if (tab_strip_model->closing_all()) {
      on_active_tab_changed_callback_list_.Notify(nullptr);

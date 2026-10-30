@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/common/tab_view.cc b/chrome/browser/ui/views/tabs/common/tab_view.cc
-index 61a57c1534a1fa5838350941f54ea5e1658f73cb..85c776cbfa52a689db39a5a9e84f65d09411eba4 100644
+index 5292c13b13a551016bddf54ceb5928f9aeeff62a..538582c4f531670cbfa2018ff95c9a8e49b50fb4 100644
 --- a/chrome/browser/ui/views/tabs/common/tab_view.cc
 +++ b/chrome/browser/ui/views/tabs/common/tab_view.cc
-@@ -367,6 +367,7 @@ TabView::TabView(TabCollectionNode* collection_node)
+@@ -365,6 +365,7 @@ TabView::TabView(TabCollectionNode* collection_node)
  
    title_->SetProperty(views::kElementIdentifierKey, kVerticalTabTitleElementId);
    SetProperty(views::kElementIdentifierKey, kTabElementId);
@@ -10,7 +10,7 @@ index 61a57c1534a1fa5838350941f54ea5e1658f73cb..85c776cbfa52a689db39a5a9e84f65d0
    // Layout manager must be set after child views are created because the
    // vertical layout stores pointers to those children.
    SetLayoutManager(CreateTabViewLayout(orientation_));
-@@ -659,6 +660,7 @@ bool TabView::OnMousePressed(const ui::MouseEvent& event) {
+@@ -657,6 +658,7 @@ bool TabView::OnMousePressed(const ui::MouseEvent& event) {
        controller->SelectTab(GetTabInterface(), GetGestureDetail(event));
        base::RecordAction(base::UserMetricsAction("SwitchTab_Click"));
      }
@@ -18,7 +18,7 @@ index 61a57c1534a1fa5838350941f54ea5e1658f73cb..85c776cbfa52a689db39a5a9e84f65d0
      // Potentially start the drag for the mouse press.
      // Follow-up mouse-movement events will update the drag controller and
      // eventually kick off the drag-loop.
-@@ -1251,6 +1253,7 @@ void TabView::UpdateColors() {
+@@ -1224,6 +1226,7 @@ void TabView::UpdateColors() {
    title_->SetEnabledColor(colors.foreground_color);
    close_button_->SetColors(colors);
    alert_indicator_->OnParentTabButtonColorChanged();

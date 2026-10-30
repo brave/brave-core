@@ -67,6 +67,9 @@ void ToggleTreeTabNodeCollapsed(tabs::TabInterface* tab);
 // selected.
 void AddTreeTabDescendantsToSelection(tabs::TabInterface* tab);
 
+// Expands the collapsed tree tab ancestors of |tab| so that it's visible.
+void ExpandCollapsedTreeTabAncestors(const tabs::TabInterface* tab);
+
 }  // namespace tree_tab_view_utils
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_TREE_TAB_VIEW_UTILS_H_

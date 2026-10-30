@@ -203,4 +203,27 @@ void AddTreeTabDescendantsToSelection(tabs::TabInterface* tab) {
   model->SetSelectionFromModel(std::move(new_selection));
 }
 
+void ExpandCollapsedTreeTabAncestors(const tabs::TabInterface* tab) {
+  if (!tab) {
+    return;
+  }
+
+  // |tab| could be in a split or a group wrapped by a tree tab node.
+  const tabs::TreeTabNodeTabCollection* tree_node_collection =
+      tabs::TreeTabNodeTabCollection::GetNearestTreeTabNodeCollection(tab);
+  BraveTabStripModel* model = GetBraveTabStripModel(tab);
+  if (!tree_node_collection || !model) {
+    return;
+  }
+
+  const tabs::TreeTabNode& node = tree_node_collection->node();
+  while (auto collapsed_ancestor = node.GetClosestCollapsedAncestorId()) {
+    model->SetTreeTabNodeCollapsed(*collapsed_ancestor, false);
+    if (node.GetClosestCollapsedAncestorId() == collapsed_ancestor) {
+      // Failed to expand.
+      return;
+    }
+  }
+}
+
 }  // namespace tree_tab_view_utils

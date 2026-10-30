@@ -22,6 +22,7 @@ namespace tree_tab_view_utils {
 tabs::ConstChildrenPtrs GetChildrenForView(
     const tabs::TabCollection& collection);
 bool HasTreeTabNodeChild(const tabs::TabCollection& collection);
+void ExpandCollapsedTreeTabAncestors(const tabs::TabInterface* tab);
 }  // namespace tree_tab_view_utils
 
 #include <chrome/browser/ui/views/tabs/common/root_tab_collection_node.cc>
@@ -133,6 +134,9 @@ void RootTabCollectionNode::SyncWithTreeTabs() {
       }
     }
   }
+
+  // e.g. A new active tab could be added under a collapsed tree tab node.
+  ScheduleExpandActiveTabTreeAncestors();
 }
 
 void RootTabCollectionNode::SyncChildrenWithTreeTabs(
@@ -219,6 +223,28 @@ void RootTabCollectionNode::RemoveStaleChildren(TabCollectionNode* node,
 bool RootTabCollectionNode::IsInPinnedContainer(const TabCollectionNode* node) {
   TabCollectionNode* pinned = GetChildNodeOfType(Type::PINNED);
   return pinned && pinned->GetNodeForHandle(node->GetHandle());
+}
+
+void RootTabCollectionNode::ScheduleExpandActiveTabTreeAncestors() {
+  // Expanding notifies the tab strip model's observers, so don't do it in the
+  // middle of the model's notifications.
+  if (expand_active_tab_tree_ancestors_pending_) {
+    return;
+  }
+  expand_active_tab_tree_ancestors_pending_ = true;
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, base::BindOnce(
+                     [](base::WeakPtr<RootTabCollectionNode> self) {
+                       if (!self) {
+                         return;
+                       }
+                       self->expand_active_tab_tree_ancestors_pending_ = false;
+                       if (!self->tab_strip_model_->closing_all()) {
+                         tree_tab_view_utils::ExpandCollapsedTreeTabAncestors(
+                             self->tab_strip_model_->GetActiveTab());
+                       }
+                     },
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 bool RootTabCollectionNode::HasExistingDescendant(

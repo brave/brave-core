@@ -37,13 +37,17 @@ substitutions:
         }
 
   - description: |-
-      Sync tree tabs in RootTabCollectionNode::OnTabStripModelChanged().
+      Sync tree tabs and reveal the active tab in RootTabCollectionNode::OnTabStripModelChanged().
 
       The tree tab delegate could have restructured the hierarchy without any
-      collection notification.
+      collection notification. The active tab could be in a collapsed tree,
+      e.g. activated by keyboard.
     preempt_function_impl:
       function_name: RootTabCollectionNode::OnTabStripModelChanged
       code: |-
         if (ShouldSyncWithTreeTabs({})) {
           SyncWithTreeTabs();
+        }
+        if (selection.active_tab_changed()) {
+          ScheduleExpandActiveTabTreeAncestors();
         }

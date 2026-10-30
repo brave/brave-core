@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/common/root_tab_collection_node.h b/chrome/browser/ui/views/tabs/common/root_tab_collection_node.h
-index 90df0c9a3ad13cd055630f5add86038b695c8d41..f6e1d250d0c1c46520f24f64079648d2fd233666 100644
+index 90df0c9a3ad13cd055630f5add86038b695c8d41..67ea04439af659f91ee7bac56932d99f4406df1c 100644
 --- a/chrome/browser/ui/views/tabs/common/root_tab_collection_node.h
 +++ b/chrome/browser/ui/views/tabs/common/root_tab_collection_node.h
-@@ -77,6 +77,30 @@ class RootTabCollectionNode : public TabCollectionNode,
+@@ -77,6 +77,34 @@ class RootTabCollectionNode : public TabCollectionNode,
        std::optional<tab_groups::TabGroupId> new_focused_group_id,
        std::optional<tab_groups::TabGroupId> old_focused_group_id) override;
  
@@ -28,7 +28,11 @@ index 90df0c9a3ad13cd055630f5add86038b695c8d41..f6e1d250d0c1c46520f24f64079648d2
 +  // model.
 +  bool HasExistingDescendant(const tabs::ConstChildPtr& node_data);
 +  bool IsInPinnedContainer(const TabCollectionNode* node);
++  // Expands collapsed tree tab ancestors of the active tab so that it's
++  // visible.
++  void ScheduleExpandActiveTabTreeAncestors();
 +  bool tree_tabs_sync_pending_ = false;
++  bool expand_active_tab_tree_ancestors_pending_ = false;
 +
    void NotifyTabSelectionChanged(
        const std::set<tabs::TabInterface*>& changed_tabs);

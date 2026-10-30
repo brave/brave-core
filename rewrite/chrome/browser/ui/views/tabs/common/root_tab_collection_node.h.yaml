@@ -37,5 +37,9 @@ substitutions:
           // model.
           bool HasExistingDescendant(const tabs::ConstChildPtr& node_data);
           bool IsInPinnedContainer(const TabCollectionNode* node);
+          // Expands collapsed tree tab ancestors of the active tab so that it's
+          // visible.
+          void ScheduleExpandActiveTabTreeAncestors();
           bool tree_tabs_sync_pending_ = false;
+          bool expand_active_tab_tree_ancestors_pending_ = false;
 
