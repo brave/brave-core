@@ -38,10 +38,10 @@ WorkspacesBubbleView::~WorkspacesBubbleView() = default;
 
 WorkspacesBubbleView::WorkspacesBubbleView(views::View* anchor_view,
                                            BrowserWindowInterface* browser,
-                                           base::RepeatingClosure on_new_space)
+                                           ShowDialogCallback on_show_dialog)
     : BubbleDialogDelegate(anchor_view, views::BubbleBorder::TOP_LEFT),
       browser_(browser),
-      on_new_space_(std::move(on_new_space)) {
+      on_show_dialog_(std::move(on_show_dialog)) {
   SetButtons(static_cast<int>(ui::mojom::DialogButton::kNone));
   SetShowCloseButton(false);
   set_margins(gfx::Insets());
@@ -58,8 +58,8 @@ WorkspacesBubbleView::WorkspacesBubbleView(views::View* anchor_view,
   CHECK(service);
 
   const SessionID window_id = browser->GetSessionID();
-  const std::optional<base::Uuid> showing =
-      service->GetWorkspaceForWindow(window_id);
+  showing_workspace_ = service->GetWorkspaceForWindow(window_id);
+  const std::optional<base::Uuid>& showing = showing_workspace_;
 
   auto* workspaces_container =
       contents->AddChildView(std::make_unique<views::View>());
@@ -142,9 +142,12 @@ WorkspacesBubbleView::WorkspacesBubbleView(views::View* anchor_view,
 
   auto* settings_button =
       button_row->AddChildView(std::make_unique<views::MdTextButton>(
-          views::Button::PressedCallback(),
+          base::BindRepeating(&WorkspacesBubbleView::OnSettingsClicked,
+                              weak_factory_.GetWeakPtr()),
           l10n_util::GetStringUTF16(IDS_WORKSPACES_BUBBLE_SETTINGS_BUTTON)));
-  settings_button->SetEnabled(false);
+  // Settings edits the workspace this window is showing, so it has nothing to
+  // act on while the window is unmanaged.
+  settings_button->SetEnabled(showing_workspace_.has_value());
   settings_button->SetProperty(views::kMarginsKey, gfx::Insets(4));
   button_row_layout->SetFlexForView(settings_button, 1);
 
@@ -161,8 +164,17 @@ WorkspacesBubbleView::WorkspacesBubbleView(views::View* anchor_view,
 }
 
 void WorkspacesBubbleView::OnNewSpaceClicked() {
-  if (on_new_space_) {
-    on_new_space_.Run();
+  if (on_show_dialog_) {
+    on_show_dialog_.Run(std::nullopt);
+  }
+  GetWidget()->Close();
+}
+
+void WorkspacesBubbleView::OnSettingsClicked() {
+  // The button is disabled while the window is unmanaged.
+  CHECK(showing_workspace_.has_value());
+  if (on_show_dialog_) {
+    on_show_dialog_.Run(showing_workspace_);
   }
   GetWidget()->Close();
 }

@@ -12,7 +12,7 @@
 #include "base/location.h"
 #include "base/memory/ptr_util.h"
 #include "base/task/single_thread_task_runner.h"
-#include "brave/browser/ui/views/workspaces/create_workspace_dialog.h"
+#include "brave/browser/ui/views/workspaces/workspace_dialog.h"
 #include "brave/browser/ui/views/workspaces/workspaces_bubble_view.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "components/constrained_window/constrained_window_views.h"
@@ -47,7 +47,7 @@ void WorkspacesBubbleController::ShowBubble(views::View* anchor_view,
 
   bubble_ = std::make_unique<WorkspacesBubbleView>(
       anchor_view, browser,
-      base::BindRepeating(&WorkspacesBubbleController::ShowCreateDialog,
+      base::BindRepeating(&WorkspacesBubbleController::ShowWorkspaceDialog,
                           weak_factory_.GetWeakPtr()));
 
   // The controller keeps ownership of the delegate; CreateBubble uses
@@ -58,14 +58,16 @@ void WorkspacesBubbleController::ShowBubble(views::View* anchor_view,
   bubble_widget_->Show();
 }
 
-void WorkspacesBubbleController::ShowCreateDialog() {
+void WorkspacesBubbleController::ShowWorkspaceDialog(
+    std::optional<base::Uuid> workspace_to_rename) {
   if (create_dialog_widget_) {
     return;
   }
 
-  // CreateWorkspaceDialog sets CLIENT_OWNS_WIDGET on itself; the controller
+  // WorkspaceDialog sets CLIENT_OWNS_WIDGET on itself; the controller
   // keeps ownership of the delegate and owns the returned Widget.
-  create_dialog_ = std::make_unique<CreateWorkspaceDialog>(browser_);
+  create_dialog_ = std::make_unique<WorkspaceDialog>(
+      browser_, std::move(workspace_to_rename));
   create_dialog_widget_ =
       base::WrapUnique(constrained_window::CreateBrowserModalDialogViews(
           create_dialog_.get(), parent_window_));

@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_WORKSPACES_WORKSPACES_BUBBLE_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_WORKSPACES_WORKSPACES_BUBBLE_VIEW_H_
 
+#include <optional>
+
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
@@ -34,21 +36,29 @@ class WorkspacesBubbleView : public views::BubbleDialogDelegate {
 
   // |browser| is the window the bubble acts on: workspaces load into it, and
   // it supplies the profile whose workspace service is used for lookups. It
-  // must outlive this bubble. |on_new_space| is run when the user activates
-  // the New Space action.
+  // must outlive this bubble. |on_show_dialog| is run when the user activates
+  // New Space (with no workspace, to create one) or Settings (with the
+  // workspace this window is showing, to rename it).
+  using ShowDialogCallback =
+      base::RepeatingCallback<void(std::optional<base::Uuid>)>;
   WorkspacesBubbleView(views::View* anchor_view,
                        BrowserWindowInterface* browser,
-                       base::RepeatingClosure on_new_space);
+                       ShowDialogCallback on_show_dialog);
   ~WorkspacesBubbleView() override;
 
  private:
   void OnNewSpaceClicked();
+  void OnSettingsClicked();
   void OnUnmanagedSelected();
   void OnWorkspaceSelected(const base::Uuid& id);
   void OnDeleteClicked(const base::Uuid& id);
 
   const raw_ptr<BrowserWindowInterface> browser_;
-  base::RepeatingClosure on_new_space_;
+  ShowDialogCallback on_show_dialog_;
+
+  // The workspace this window is showing, or empty when it is unmanaged.
+  // Settings acts on it, so it is kept past construction.
+  std::optional<base::Uuid> showing_workspace_;
   base::WeakPtrFactory<WorkspacesBubbleView> weak_factory_{this};
 };
 
