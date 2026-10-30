@@ -7,42 +7,55 @@ import BraveCore
 import Strings
 import SwiftUI
 
+func eTldPlusOneRange(in origin: String, eTldPlusOne: String) -> Range<String.Index>? {
+  guard !eTldPlusOne.isEmpty,
+    let hostRange = URLComponents(string: origin)?.rangeOfHost
+  else {
+    return nil
+  }
+
+  let host = origin[hostRange]
+  let hostEnd = host.last == "." ? host.index(before: host.endIndex) : host.endIndex
+  guard host.distance(from: host.startIndex, to: hostEnd) >= eTldPlusOne.count else {
+    return nil
+  }
+
+  let eTldStart = host.index(hostEnd, offsetBy: -eTldPlusOne.count)
+  let eTldRange = eTldStart..<hostEnd
+  guard String(host[eTldRange]).caseInsensitiveCompare(eTldPlusOne) == .orderedSame,
+    eTldStart == host.startIndex || host[host.index(before: eTldStart)] == "."
+  else {
+    return nil
+  }
+
+  return eTldRange
+}
+
+private func originText(_ origin: String, eTldPlusOne: String) -> Text {
+  guard let range = eTldPlusOneRange(in: origin, eTldPlusOne: eTldPlusOne) else {
+    return Text(origin)
+  }
+
+  let originStart = origin[origin.startIndex..<range.lowerBound]
+  let etldPlusOne = origin[range]
+  let originEnd = origin[range.upperBound...]
+  return
+    Text(String(originStart).zwspOutput) + Text(etldPlusOne).bold()
+    + Text(String(originEnd).zwspOutput)
+}
+
 extension Text {
   /// Creates a text view that displays a URLOrigin, bolding the eTLD+1.
   init(urlOrigin: URLOrigin) {
-    if urlOrigin == WalletConstants.braveWalletOrigin {
-      self = Text(Strings.Wallet.braveWallet)
-    } else {
-      let origin = urlOrigin.url?.absoluteString ?? ""
-      let eTldPlusOne = urlOrigin.url?.baseDomain ?? ""
-      if let range = origin.range(of: eTldPlusOne) {
-        let originStart = origin[origin.startIndex..<range.lowerBound]
-        let etldPlusOne = origin[range.lowerBound..<range.upperBound]
-        let originEnd = origin[range.upperBound...]
-        self =
-          Text(String(originStart).zwspOutput) + Text(etldPlusOne).bold()
-          + Text(String(originEnd).zwspOutput)
-      } else {
-        self = Text(origin)
-      }
-    }
+    let origin = urlOrigin.url?.absoluteString ?? ""
+    let eTldPlusOne = urlOrigin.url?.baseDomain ?? ""
+    self = originText(origin, eTldPlusOne: eTldPlusOne)
   }
 
   /// Creates a text view that displays a BraveWallet.OriginInfo, bolding the eTLD+1.
   init(originInfo: BraveWallet.OriginInfo?) {
     if let originInfo = originInfo {
-      let origin = originInfo.originSpec
-      let eTldPlusOne = originInfo.eTldPlusOne
-      if let range = origin.range(of: eTldPlusOne) {
-        let originStart = origin[origin.startIndex..<range.lowerBound]
-        let etldPlusOne = origin[range.lowerBound..<range.upperBound]
-        let originEnd = origin[range.upperBound...]
-        self =
-          Text(String(originStart).zwspOutput) + Text(etldPlusOne).bold()
-          + Text(String(originEnd).zwspOutput)
-      } else {
-        self = Text(origin)
-      }
+      self = originText(originInfo.originSpec, eTldPlusOne: originInfo.eTldPlusOne)
     } else {
       self = Text(Strings.Wallet.braveWallet)
     }

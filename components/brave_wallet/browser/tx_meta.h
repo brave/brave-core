@@ -8,7 +8,6 @@
 
 #include <optional>
 #include <string>
-#include <utility>
 
 #include "base/time/time.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
