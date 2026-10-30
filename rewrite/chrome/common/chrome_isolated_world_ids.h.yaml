@@ -14,7 +14,15 @@ substitutions:
       max_value: ISOLATED_WORLD_ID_EXTENSIONS
       entries:
         - ISOLATED_WORLD_ID_BRAVE_INTERNAL
-        # PSST gets its own world so that the logging API and the console shim
-        # installed for its scripts don't leak into, or capture output from,
-        # the other Brave features sharing ISOLATED_WORLD_ID_BRAVE_INTERNAL.
+  - description: |
+      Add a separate isolated world ID for internal Brave PSST feature
+
+      PSST feature gets its own isolated world so that the logging API
+      and the console shim installed for its scripts neither leak into
+      nor capture output from the other Brave features
+      that share ISOLATED_WORLD_ID_BRAVE_INTERNAL.
+    add_enum_entries:
+      enum_name: ChromeIsolatedWorldIDs
+      max_value: ISOLATED_WORLD_ID_EXTENSIONS
+      entries:
         - ISOLATED_WORLD_ID_BRAVE_PSST
