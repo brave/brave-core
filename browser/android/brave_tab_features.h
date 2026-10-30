@@ -57,6 +57,8 @@ class BraveTabFeatures : public TabFeatures_Chromium {
   std::unique_ptr<ContentsObservingTabFeature> web_discovery_tab_helper_;
   // Detects the Rewards creator of the page. Null without Brave Rewards.
   std::unique_ptr<ContentsObservingTabFeature> rewards_tab_helper_;
+  // Offers to enable Widevine when the page asks for it. Null without it.
+  std::unique_ptr<ContentsObservingTabFeature> drm_tab_helper_;
 
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;
   std::unique_ptr<ai_chat::WebMcpInjector> web_mcp_injector_;

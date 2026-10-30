@@ -18,6 +18,7 @@
 #include "components/permissions/permission_request_manager.h"
 #include "components/permissions/permission_util.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "components/update_client/crx_update_item.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_handle.h"
@@ -73,10 +74,21 @@ void ReloadIfActive(content::WebContents* web_contents) {
 #endif  // !BUILDFLAG(IS_ANDROID)
 }  // namespace
 
-BraveDrmTabHelper::BraveDrmTabHelper(content::WebContents* contents)
-    : WebContentsObserver(contents),
-      content::WebContentsUserData<BraveDrmTabHelper>(*contents),
-      brave_drm_receivers_(contents, this) {
+DEFINE_USER_DATA(BraveDrmTabHelper);
+
+// static
+BraveDrmTabHelper* BraveDrmTabHelper::From(tabs::TabInterface* tab) {
+  return tab ? Get(tab->GetUnownedUserDataHost()) : nullptr;
+}
+
+BraveDrmTabHelper::BraveDrmTabHelper(tabs::TabInterface& tab)
+    : tabs::ContentsObservingTabFeature(tab),
+      brave_drm_receivers_(
+          std::make_unique<
+              content::RenderFrameHostReceiverSet<brave_drm::mojom::BraveDRM>>(
+              tab.GetContents(),
+              this)),
+      scoped_unowned_user_data_(tab.GetUnownedUserDataHost(), *this) {
 #if !BUILDFLAG(IS_ANDROID)
   auto* updater = g_browser_process->component_updater();
   // We don't need to observe if widevine is already registered.
@@ -102,11 +114,12 @@ void BraveDrmTabHelper::BindBraveDRM(
     return;
   }
 
-  auto* tab_helper = BraveDrmTabHelper::FromWebContents(web_contents);
+  auto* tab_helper = BraveDrmTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   if (!tab_helper) {
     return;
   }
-  tab_helper->brave_drm_receivers_.Bind(rfh, std::move(receiver));
+  tab_helper->brave_drm_receivers_->Bind(rfh, std::move(receiver));
 }
 
 bool BraveDrmTabHelper::ShouldShowWidevineOptIn() const {
@@ -145,9 +158,22 @@ void BraveDrmTabHelper::DidStartNavigation(
   is_permission_requested_ = false;
 }
 
+void BraveDrmTabHelper::OnDiscardContents(tabs::TabInterface* tab,
+                                          content::WebContents* old_contents,
+                                          content::WebContents* new_contents) {
+  // The receivers and the request state belong to the old contents' frames.
+  brave_drm_receivers_ = std::make_unique<
+      content::RenderFrameHostReceiverSet<brave_drm::mojom::BraveDRM>>(
+      new_contents, this);
+  is_widevine_requested_ = false;
+  is_permission_requested_ = false;
+  tabs::ContentsObservingTabFeature::OnDiscardContents(tab, old_contents,
+                                                       new_contents);
+}
+
 void BraveDrmTabHelper::OnWidevineKeySystemAccessRequest() {
   OnWidevineKeySystemAccessRequestForFrame(
-      &brave_drm_receivers_.CurrentTargetFrame());
+      &brave_drm_receivers_->CurrentTargetFrame());
 }
 
 void BraveDrmTabHelper::OnWidevineKeySystemAccessRequestForFrame(
@@ -213,5 +239,3 @@ void BraveDrmTabHelper::OnEvent(const update_client::CrxUpdateItem& item) {
   }
 #endif  // !BUILDFLAG(IS_ANDROID)
 }
-
-WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveDrmTabHelper);

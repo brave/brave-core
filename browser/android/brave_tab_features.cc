@@ -22,6 +22,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
+#include "third_party/widevine/cdm/buildflags.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
 #include "brave/browser/brave_ads/creatives/search_result_ad/creative_search_result_ad_tab_helper.h"
@@ -34,6 +35,10 @@
 
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY)
 #include "brave/browser/web_discovery/web_discovery_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_WIDEVINE)
+#include "brave/browser/widevine/brave_drm_tab_helper.h"
 #endif
 
 namespace tabs {
@@ -86,6 +91,10 @@ BraveTabFeatures::BraveTabFeatures(content::WebContents* web_contents,
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   rewards_tab_helper_ =
       std::make_unique<brave_rewards::RewardsTabHelper>(tab_interface);
+#endif
+
+#if BUILDFLAG(ENABLE_WIDEVINE)
+  drm_tab_helper_ = std::make_unique<BraveDrmTabHelper>(tab_interface);
 #endif
 }
 
