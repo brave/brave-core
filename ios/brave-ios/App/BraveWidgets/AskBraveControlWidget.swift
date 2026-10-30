@@ -15,7 +15,7 @@ struct AskBraveControlWidget: ControlWidget {
     if #available(iOS 26.0, *) {
       let shortcut = WidgetShortcut.askBrave
       return StaticControlConfiguration(kind: "AskBraveControlWidget") {
-        ControlWidgetButton(action: OpenControlWidgetShortcutIntent(shortcut: shortcut)) {
+        ControlWidgetButton(action: OpenAskBraveControlIntent()) {
           Label(shortcut.displayString, braveSystemImage: shortcut.braveSystemImageName ?? "")
         }
       }
