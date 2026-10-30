@@ -24,6 +24,11 @@ class EthTxMeta : public TxMeta {
   EthTxMeta();
   EthTxMeta(const mojom::AccountIdPtr& from,
             std::unique_ptr<EthTransaction> tx);
+  EthTxMeta(const mojom::AccountIdPtr& from,
+            std::unique_ptr<EthTransaction> tx,
+            const std::string& chain_id,
+            mojom::SwapInfoPtr swap_info,
+            std::optional<url::Origin> dapp_origin);
   ~EthTxMeta() override;
   EthTxMeta(const EthTxMeta&) = delete;
   EthTxMeta operator=(const EthTxMeta&) = delete;

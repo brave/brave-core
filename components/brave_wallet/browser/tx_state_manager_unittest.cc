@@ -148,6 +148,16 @@ TEST_F(TxStateManagerUnitTest, ConvertFromAddress) {
   EXPECT_TRUE(tx_state_manager_->ValueToTxMeta(legacy_value));
   EXPECT_EQ(eth_account_id_,
             tx_state_manager_->ValueToTxMeta(legacy_value)->from());
+
+  for (const char* origin_spec : {"chrome://wallet", "chrome://wallet/",
+                                  "brave://wallet/", "chrome://settings/"}) {
+    auto legacy_wallet_tx = value->Clone();
+    legacy_wallet_tx.Set("origin", origin_spec);
+    auto legacy_wallet_meta =
+        tx_state_manager_->ValueToTxMeta(legacy_wallet_tx);
+    ASSERT_TRUE(legacy_wallet_meta);
+    EXPECT_FALSE(legacy_wallet_meta->dapp_origin());
+  }
 }
 
 TEST_F(TxStateManagerUnitTest, TxOperations) {

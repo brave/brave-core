@@ -47,14 +47,22 @@ BitcoinTxMeta::BitcoinTxMeta(const mojom::AccountIdPtr& from,
   set_from(from.Clone());
 }
 
+BitcoinTxMeta::BitcoinTxMeta(const mojom::AccountIdPtr& from,
+                             std::unique_ptr<BitcoinTransaction> tx,
+                             const std::string& chain_id,
+                             mojom::SwapInfoPtr swap_info)
+    : TxMeta(from, chain_id, std::move(swap_info), std::nullopt),
+      tx_(std::move(tx)) {
+  DCHECK_EQ(from->coin, mojom::CoinType::BTC);
+}
+
 std::unique_ptr<BitcoinTxMeta> BitcoinTxMeta::MakeUnapproved(
     const mojom::AccountIdPtr& from,
     std::unique_ptr<BitcoinTransaction> tx,
     const std::string& chain_id,
     mojom::SwapInfoPtr swap_info) {
-  auto meta = std::make_unique<BitcoinTxMeta>(from, std::move(tx));
-  meta->InitializeAsUnapproved(chain_id, std::move(swap_info));
-  return meta;
+  return std::make_unique<BitcoinTxMeta>(from, std::move(tx), chain_id,
+                                         std::move(swap_info));
 }
 
 bool BitcoinTxMeta::operator==(const BitcoinTxMeta& other) const {

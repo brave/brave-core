@@ -24,16 +24,25 @@ SolanaTxMeta::SolanaTxMeta(const mojom::AccountIdPtr& from,
   set_from(std::move(from));
 }
 
+SolanaTxMeta::SolanaTxMeta(const mojom::AccountIdPtr& from,
+                           std::unique_ptr<SolanaTransaction> tx,
+                           const std::string& chain_id,
+                           mojom::SwapInfoPtr swap_info,
+                           std::optional<url::Origin> dapp_origin)
+    : TxMeta(from, chain_id, std::move(swap_info), std::move(dapp_origin)),
+      tx_(std::move(tx)) {
+  DCHECK_EQ(from->coin, mojom::CoinType::SOL);
+}
+
 std::unique_ptr<SolanaTxMeta> SolanaTxMeta::MakeUnapproved(
     const mojom::AccountIdPtr& from,
     std::unique_ptr<SolanaTransaction> tx,
     const std::string& chain_id,
     mojom::SwapInfoPtr swap_info,
     std::optional<url::Origin> dapp_origin) {
-  auto meta = std::make_unique<SolanaTxMeta>(from, std::move(tx));
-  meta->set_dapp_origin(std::move(dapp_origin));
-  meta->InitializeAsUnapproved(chain_id, std::move(swap_info));
-  return meta;
+  return std::make_unique<SolanaTxMeta>(from, std::move(tx), chain_id,
+                                        std::move(swap_info),
+                                        std::move(dapp_origin));
 }
 
 SolanaTxMeta::~SolanaTxMeta() = default;

@@ -20,6 +20,10 @@ class BitcoinTxMeta : public TxMeta {
   explicit BitcoinTxMeta(const mojom::AccountIdPtr& from);
   BitcoinTxMeta(const mojom::AccountIdPtr& from,
                 std::unique_ptr<BitcoinTransaction> tx);
+  BitcoinTxMeta(const mojom::AccountIdPtr& from,
+                std::unique_ptr<BitcoinTransaction> tx,
+                const std::string& chain_id,
+                mojom::SwapInfoPtr swap_info);
   ~BitcoinTxMeta() override;
   BitcoinTxMeta(const BitcoinTxMeta&) = delete;
   BitcoinTxMeta operator=(const BitcoinTxMeta&) = delete;
