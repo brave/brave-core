@@ -1051,7 +1051,7 @@ public class BraveUnifiedPanelHandler {
         BraveShieldsScreenshotUtil screenshotUtil =
                 new BraveShieldsScreenshotUtil(
                         mContext,
-                        (byte[] pngBytes) -> {
+                        (byte @Nullable [] pngBytes) -> {
                             if (pngBytes != null && pngBytes.length > 0) {
                                 mReportScreenshotBytes = pngBytes;
                             }
