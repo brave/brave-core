@@ -25,6 +25,40 @@ bool BraveShouldShowTitlebar(const ui::UnownedUserDataHost& host);
 #undef UsesImmersiveFullscreenTabbedMode
 
 bool WindowFeatureController::UsesImmersiveFullscreenMode() const {
+  // Upstream assumes the immersive decision doesn't change while the window is
+  // fullscreen. Vertical tabs can be toggled in non-immersive fullscreen, so
+  // keep the decision taken when the window entered fullscreen.
+  if (frozen_uses_immersive_fullscreen_mode_.has_value()) {
+    return *frozen_uses_immersive_fullscreen_mode_;
+  }
+  return BraveUsesImmersiveFullscreenMode();
+}
+
+bool WindowFeatureController::UsesImmersiveFullscreenTabbedMode() const {
+  if (frozen_uses_immersive_fullscreen_tabbed_mode_.has_value()) {
+    return *frozen_uses_immersive_fullscreen_tabbed_mode_;
+  }
+  return BraveUsesImmersiveFullscreenTabbedMode();
+}
+
+void WindowFeatureController::SetImmersiveDecisionFrozenForFullscreen(
+    bool is_fullscreen) {
+  if (!is_fullscreen) {
+    frozen_uses_immersive_fullscreen_mode_.reset();
+    frozen_uses_immersive_fullscreen_tabbed_mode_.reset();
+    return;
+  }
+
+  // Keep the decision taken when this fullscreen session started.
+  if (frozen_uses_immersive_fullscreen_mode_.has_value()) {
+    return;
+  }
+  frozen_uses_immersive_fullscreen_mode_ = BraveUsesImmersiveFullscreenMode();
+  frozen_uses_immersive_fullscreen_tabbed_mode_ =
+      BraveUsesImmersiveFullscreenTabbedMode();
+}
+
+bool WindowFeatureController::BraveUsesImmersiveFullscreenMode() const {
   // Disable immersive when vertical tabs(or compact mode) were on at startup:
   // overlay_widget_ is not created in that case, so immersive would crash. The
   // first call is made while BrowserWindowFeatures::Init() creates the
@@ -48,7 +82,7 @@ bool WindowFeatureController::UsesImmersiveFullscreenMode() const {
   return WindowFeatureController::UsesImmersiveFullscreenMode_ChromiumImpl();
 }
 
-bool WindowFeatureController::UsesImmersiveFullscreenTabbedMode() const {
+bool WindowFeatureController::BraveUsesImmersiveFullscreenTabbedMode() const {
   if (BraveDisablesImmersiveFullscreenMode(*unowned_user_data_host_)) {
     return false;
   }
