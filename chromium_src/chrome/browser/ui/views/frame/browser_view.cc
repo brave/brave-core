@@ -23,6 +23,13 @@
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 #include "chrome/browser/ui/web_applications/app_browser_controller.h"
 
+namespace sidebar {
+
+bool IsWebPanelTab(BrowserWindowInterface* browser,
+                   const content::WebContents* contents);
+
+}  // namespace sidebar
+
 #define InfoBarContainerView BraveInfoBarContainerView
 #define ToolbarView BraveToolbarView
 #define BookmarkBarView BraveBookmarkBarView
@@ -51,14 +58,16 @@
 // before calling GetActiveContentsWebView(). GetActiveContentsView() gives
 // contents view for normal tab. Need to patch because related vars should
 // be updated in the middle of this method.
-#define BRAVE_BROWSER_VIEW_ON_ACTIVE_TAB_CHANGED                  \
-  if (multi_contents_view_) {                                     \
-    change_tab_contents &= !IsWebPanelContents(new_contents);     \
-    BraveMultiContentsView::From(multi_contents_view_)            \
-        ->set_web_panel_active(IsWebPanelContents(new_contents)); \
-    if (IsWebPanelContents(old_contents)) {                       \
-      active_contents_view = GetActiveContentsWebView();          \
-    }                                                             \
+#define BRAVE_BROWSER_VIEW_ON_ACTIVE_TAB_CHANGED          \
+  if (multi_contents_view_) {                             \
+    const bool web_panel_active =                         \
+        sidebar::IsWebPanelTab(browser_, new_contents);   \
+    change_tab_contents &= !web_panel_active;             \
+    BraveMultiContentsView::From(multi_contents_view_)    \
+        ->set_web_panel_active(web_panel_active);         \
+    if (sidebar::IsWebPanelTab(browser_, old_contents)) { \
+      active_contents_view = GetActiveContentsWebView();  \
+    }                                                     \
   }
 
 #include <chrome/browser/ui/views/frame/browser_view.cc>
@@ -72,10 +81,6 @@
 #undef ToolbarView
 #undef InfoBarContainerView
 #undef BRAVE_BROWSER_VIEW_LAYOUT_CONVERTED_HIT_TEST
-
-bool BrowserView::IsWebPanelContents(content::WebContents* contents) {
-  NOTREACHED();
-}
 
 void BrowserView::ExclusiveAccessContextImpl::UpdateExclusiveAccessBubble(
     const ExclusiveAccessBubbleParams& params,
