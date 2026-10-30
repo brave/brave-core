@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveShared
 import BraveUI
 import Strings
@@ -13,6 +14,7 @@ struct AdBlockDebugView: View {
   var body: some View {
     Form {
       CompileContentBlockersSectionView()
+      MeasureFullListContentBlockersSectionView()
       CorruptCacheSectionView()
       NavigationLink(
         destination: AdblockRuleExclusionView(),
@@ -66,8 +68,10 @@ private struct CompileContentBlockersSectionView: View {
       if let result {
         switch result {
         case .success(let averageTime):
-          Text("Average compile time: \(averageTime.formatted())")
-            .foregroundStyle(.green)
+          Text(
+            "Average compile time: \(averageTime.formatted(.units(allowed: [.seconds, .milliseconds], width: .narrow)))"
+          )
+          .foregroundStyle(.green)
         case .failure(let failure):
           Text("Failed to compile: \(String(describing: failure))")
             .foregroundStyle(.red)
@@ -189,6 +193,202 @@ private struct CompileContentBlockersSectionView: View {
         where: { $0.setting.uuid == uuid }
       )?.setting.externalURL.lastPathComponent ?? uuid
     }
+  }
+}
+
+/// Converts and compiles the enabled standard filter lists without substituting the slim list,
+/// sharding them into multiple rule lists with exceptions duplicated in every shard.
+private struct MeasureFullListContentBlockersSectionView: View {
+  private struct Report {
+    var lineCount = 0
+    var ruleCount = 0
+    var exceptionCount = 0
+    var conversionChunks = 0
+    var conversionTime: Duration = .zero
+    var shardCount = 0
+    var shardCompileTimes: [Duration] = []
+  }
+
+  private static let maxRuleCount = 150_000
+  private static let testIdentifierPrefix = "debug-full-list-shard"
+
+  @State private var report: Report?
+  @State private var status: String?
+  @State private var error: Error?
+  @State private var task: Task<Void, Never>?
+
+  var body: some View {
+    Section {
+      if let report {
+        LabeledContent("Lines", value: "\(report.lineCount)")
+        LabeledContent("Converted rules", value: "\(report.ruleCount)")
+        LabeledContent("Exception rules", value: "\(report.exceptionCount)")
+        LabeledContent(
+          "Fits in one list",
+          value: report.ruleCount + 1 <= Self.maxRuleCount ? "Yes" : "No"
+        )
+        LabeledContent(
+          "Conversion",
+          value:
+            "\(report.conversionTime.formatted(.units(allowed: [.seconds, .milliseconds], width: .narrow))) (\(report.conversionChunks) chunks)"
+        )
+        LabeledContent("Shards", value: "\(report.shardCount)")
+        ForEach(Array(report.shardCompileTimes.enumerated()), id: \.offset) { index, time in
+          LabeledContent(
+            "Shard \(index + 1) compile",
+            value: time.formatted(.units(allowed: [.seconds, .milliseconds], width: .narrow))
+          )
+        }
+        LabeledContent(
+          "Total compile",
+          value: report.shardCompileTimes.reduce(Duration.zero, +).formatted(
+            .units(allowed: [.seconds, .milliseconds], width: .narrow)
+          )
+        )
+      }
+      if let error {
+        Text("Failed: \(String(describing: error))")
+          .foregroundStyle(.red)
+      }
+      if task != nil {
+        ProgressView(status ?? "Measuring")
+      } else {
+        Button("Measure", action: measure)
+          .foregroundStyle(Color(braveSystemName: .textInteractive))
+      }
+    } header: {
+      Text("Full List Content Blockers")
+    } footer: {
+      Text(
+        "Converts the enabled standard lists using the full default list instead of the slim list, then compiles them as shards of up to \(Self.maxRuleCount) rules with all exceptions copied into each shard."
+      )
+    }
+  }
+
+  @MainActor private func measure() {
+    report = nil
+    error = nil
+    task = Task {
+      defer { task = nil }
+      do {
+        report = try await runMeasurement()
+      } catch {
+        self.error = error
+      }
+    }
+  }
+
+  @MainActor private func runMeasurement() async throws -> Report {
+    let groupsManager = AdBlockGroupsManager.shared
+    let files = groupsManager.getManager(for: .standard).compilableFiles(
+      for: groupsManager.sourceProvider.enabledSources(for: .standard)
+    )
+    let ruleStore = groupsManager.contentBlockerManager.ruleStore
+    let fileURLs = files.map(\.localFileURL)
+
+    status = "Converting \(files.count) lists"
+    let clock = ContinuousClock()
+    let conversionStart = clock.now
+    let prepared = try await Task.detached {
+      try Self.prepareShards(fileURLs: fileURLs)
+    }.value
+
+    var report = Report()
+    report.lineCount = prepared.lineCount
+    report.ruleCount = prepared.ruleCount
+    report.exceptionCount = prepared.exceptionCount
+    report.conversionChunks = prepared.conversionChunks
+    report.conversionTime = clock.now - conversionStart
+    report.shardCount = prepared.shards.count
+
+    for (index, encoded) in prepared.shards.enumerated() {
+      try Task.checkCancellation()
+      status = "Compiling shard \(index + 1) of \(prepared.shards.count)"
+      let identifier = "\(Self.testIdentifierPrefix)-\(index)"
+      let start = clock.now
+      _ = try await ruleStore.compileContentRuleList(
+        forIdentifier: identifier,
+        encodedContentRuleList: encoded
+      )
+      report.shardCompileTimes.append(clock.now - start)
+      try await ruleStore.removeContentRuleList(forIdentifier: identifier)
+    }
+
+    return report
+  }
+
+  private struct PreparedShards: Sendable {
+    let lineCount: Int
+    let ruleCount: Int
+    let exceptionCount: Int
+    let conversionChunks: Int
+    /// Encoded rule lists, each holding a slice of block rules followed by every exception.
+    let shards: [String]
+  }
+
+  nonisolated private static func prepareShards(fileURLs: [URL]) throws -> PreparedShards {
+    let lines = try fileURLs.flatMap { url in
+      try String(contentsOf: url, encoding: .utf8).components(separatedBy: .newlines)
+    }
+    let (rules, chunks) = try convert(lines: lines[...])
+
+    var blocks: [[String: Any]] = []
+    var exceptions: [[String: Any]] = []
+    for rule in rules {
+      let action = rule["action"] as? [String: Any]
+      if action?["type"] as? String == "ignore-previous-rules" {
+        exceptions.append(rule)
+      } else {
+        blocks.append(rule)
+      }
+    }
+
+    let firstPartyException: [String: Any] = [
+      "action": ["type": "ignore-previous-rules"],
+      "trigger": ["url-filter": ".*", "load-type": ["first-party"]],
+    ]
+    let shardSize = maxRuleCount - exceptions.count - 1
+    guard shardSize > 0 else {
+      throw CocoaError(
+        .validationNumberTooLarge,
+        userInfo: [NSLocalizedDescriptionKey: "Exceptions alone exceed the rule limit"]
+      )
+    }
+
+    let shards = try stride(from: 0, to: blocks.count, by: shardSize).map { start in
+      let shard = Array(blocks[start..<min(start + shardSize, blocks.count)])
+      let data = try JSONSerialization.data(
+        withJSONObject: shard + exceptions + [firstPartyException]
+      )
+      return String(decoding: data, as: UTF8.self)
+    }
+
+    return PreparedShards(
+      lineCount: lines.count,
+      ruleCount: rules.count,
+      exceptionCount: exceptions.count,
+      conversionChunks: chunks,
+      shards: shards
+    )
+  }
+
+  /// Converts the lines, halving any input whose output the converter had to truncate.
+  nonisolated private static func convert(
+    lines: ArraySlice<String>
+  ) throws -> (rules: [[String: Any]], chunks: Int) {
+    let result = try AdblockEngine.contentBlockerRules(
+      fromFilterSet: lines.joined(separator: "\n")
+    )
+    if result.truncated && lines.count > 1 {
+      let middle = lines.startIndex + lines.count / 2
+      let left = try convert(lines: lines[..<middle])
+      let right = try convert(lines: lines[middle...])
+      return (left.rules + right.rules, left.chunks + right.chunks)
+    }
+    let rules =
+      try JSONSerialization.jsonObject(with: Data(result.rulesJSON.utf8)) as? [[String: Any]]
+      ?? []
+    return (rules, 1)
   }
 }
 
