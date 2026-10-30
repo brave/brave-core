@@ -23,7 +23,6 @@ import org.chromium.chrome.browser.ui.actions.ActionId;
 import org.chromium.chrome.browser.ui.actions.ActionRegistry;
 import org.chromium.chrome.browser.ui.bottombar.BottomBarButtonManager.ActionConfig;
 import org.chromium.components.browser_ui.widget.scrim.ScrimManager;
-import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +59,6 @@ public class BraveBottomBarCoordinator extends BottomBarCoordinator {
             BottomBarMediator.VisibilityDelegate visibilityDelegate,
             NullableObservableSupplier<Profile> profileSupplier,
             NonNullObservableSupplier<Boolean> omniboxFocusStateSupplier,
-            NonNullObservableSupplier<ModalDialogManager> modalDialogManagerSupplier,
             LayoutStateProvider layoutStateProvider,
             NonNullObservableSupplier<@ControlsPosition Integer> toolbarPositionSupplier,
             BrowserControlsVisibilityManager browserControlsVisibilityManager,
@@ -76,7 +74,6 @@ public class BraveBottomBarCoordinator extends BottomBarCoordinator {
                 visibilityDelegate,
                 profileSupplier,
                 omniboxFocusStateSupplier,
-                modalDialogManagerSupplier,
                 layoutStateProvider,
                 toolbarPositionSupplier,
                 browserControlsVisibilityManager,
@@ -142,12 +139,6 @@ public class BraveBottomBarCoordinator extends BottomBarCoordinator {
                         /* initiallyVisible= */ false));
 
         return configs;
-    }
-
-    /** Brave's bookmark button owns the container the promo dialog advertises. */
-    @Override
-    public boolean maybeShowPromoDialog(Profile profile) {
-        return false;
     }
 
     @Override
