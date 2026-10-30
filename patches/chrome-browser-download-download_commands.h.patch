@@ -1,0 +1,16 @@
+diff --git a/chrome/browser/download/download_commands.h b/chrome/browser/download/download_commands.h
+index 30c82ab1e392a311112d54622182ce439cc972b3..e577e02bc4fd2fa5932299ed19c7600a0c0e4754 100644
+--- a/chrome/browser/download/download_commands.h
++++ b/chrome/browser/download/download_commands.h
+@@ -48,7 +48,10 @@ class DownloadCommands {
+     EDIT_WITH_MEDIA_APP = 22,  // Open file using the ChromeOS media app with
+                                // an editing hint.
+ 
+-    kMaxValue = EDIT_WITH_MEDIA_APP,  // Keep last.
++    REMOVE_FROM_LIST = 23,
++    DELETE_LOCAL_FILE = 24,
++    COPY_DOWNLOAD_LINK = 25,
++    kMaxValue = COPY_DOWNLOAD_LINK,  // Keep last.
+   };
+ 
+   // |model| must outlive DownloadCommands.

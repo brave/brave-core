@@ -5,18 +5,27 @@
 
 substitutions:
   - description: |-
-      Append AddQuickAction(DownloadCommands::DELETE_LOCAL_FILE)
+      Add a delete quick action to the download bubble row.
+
+      Brave lets users delete the downloaded file straight from the row, so
+      DELETE_LOCAL_FILE is registered as a quick action alongside the upstream
+      ones, right after OPEN_WHEN_COMPLETE.
     add_after_line:
       line: 'AddQuickAction(DownloadCommands::OPEN_WHEN_COMPLETE);'
       code: 'AddQuickAction(DownloadCommands::DELETE_LOCAL_FILE);'
 
   - description: |-
-      Add case DownloadCommands::DELETE_LOCAL_FILE in the switch statement of
-      GetAccessibleNameForQuickAction
-    add_before_line:
-      line: 'case DownloadCommands::SHOW_IN_FOLDER:'
-      code: |-
-        case DownloadCommands::DELETE_LOCAL_FILE:
-          return l10n_util::GetStringFUTF16(
-              IDS_DOWNLOAD_BUBBLE_DELETE_MAIN_BUTTON_ACCESSIBILITY,
-              info_->model()->GetFileNameToReportUser().LossyDisplayName());
+      Name the delete quick action for accessibility.
+
+      GetAccessibleNameForQuickAction must handle every quick action added to
+      the row, so DELETE_LOCAL_FILE needs its own case. It is inserted at the
+      top of the switch, since case order is irrelevant.
+    regex:
+      re_pattern: '(DownloadBubbleRowView::GetAccessibleNameForQuickAction\(.*?\bswitch\s*\([^)]*\)\s*\{)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+            case DownloadCommands::DELETE_LOCAL_FILE:
+              return l10n_util::GetStringFUTF16(
+                  IDS_DOWNLOAD_BUBBLE_DELETE_MAIN_BUTTON_ACCESSIBILITY,
+                  info_->model()->GetFileNameToReportUser().LossyDisplayName());
