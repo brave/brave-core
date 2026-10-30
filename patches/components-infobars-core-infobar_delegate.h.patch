@@ -1,5 +1,5 @@
 diff --git a/components/infobars/core/infobar_delegate.h b/components/infobars/core/infobar_delegate.h
-index 5c0c180b10215c9f809b40d6e78e90ff2949021a..e672f8009ba71f0dfeb6bab94d88e0080f0a9482 100644
+index e22d3cd1de0fd4d3419637542c224eb01da59d0a..45b20c3a7668d131fd39a482f9899cefd3fc09be 100644
 --- a/components/infobars/core/infobar_delegate.h
 +++ b/components/infobars/core/infobar_delegate.h
 @@ -213,6 +213,18 @@ class InfoBarDelegate {

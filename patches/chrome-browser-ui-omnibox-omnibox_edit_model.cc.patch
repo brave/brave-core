@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/omnibox/omnibox_edit_model.cc b/chrome/browser/ui/omnibox/omnibox_edit_model.cc
-index f0ffb784f3364716e0c7e7fdca0edb099f1e017e..3ec9b03b33d0e3461ddc835d04c82c2aa961ca9d 100644
+index c92ed8787af3c425c180e80deab4b997748ed168..0562946d9f21a7c78b22ff47887d3ad9bc77758c 100644
 --- a/chrome/browser/ui/omnibox/omnibox_edit_model.cc
 +++ b/chrome/browser/ui/omnibox/omnibox_edit_model.cc
 @@ -548,6 +548,10 @@ bool OmniboxEditModel::ShouldShowCurrentPageIcon() const {
@@ -32,7 +32,7 @@ index f0ffb784f3364716e0c7e7fdca0edb099f1e017e..3ec9b03b33d0e3461ddc835d04c82c2a
    return searchbox::CanPasteAndGo(controller_->client(), text);
  }
  
-@@ -1875,7 +1884,8 @@ void OmniboxEditModel::GetInfoForCurrentText(AutocompleteMatch* match,
+@@ -1874,7 +1883,8 @@ void OmniboxEditModel::GetInfoForCurrentText(AutocompleteMatch* match,
        *match = *autocomplete_controller()->result().default_match();
        found_match_for_text = true;
      } else if (controller_->IsPopupOpen() &&
@@ -42,7 +42,7 @@ index f0ffb784f3364716e0c7e7fdca0edb099f1e017e..3ec9b03b33d0e3461ddc835d04c82c2a
        const OmniboxPopupSelection selection = GetPopupSelection();
        *match = autocomplete_controller()->result().match_at(selection.line);
        found_match_for_text = true;
-@@ -2222,6 +2232,9 @@ std::u16string OmniboxEditModel::GetPopupAccessibilityLabelForCurrentSelection(
+@@ -2220,6 +2230,9 @@ std::u16string OmniboxEditModel::GetPopupAccessibilityLabelForCurrentSelection(
      const std::u16string& match_text,
      bool include_positional_info,
      int* label_prefix_length) {

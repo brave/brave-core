@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/common/features.cc b/third_party/blink/common/features.cc
-index 54b44614e1d949ada3a9c99381d7b9544c3e9db6..4cc49571e932433f769be3c44d5bfaecd3009332 100644
+index 5d0d0402f6a18c2ad331c9a29d8493406671825e..b14818b308cebbcf4a39a4e372e07ace67414f35 100644
 --- a/third_party/blink/common/features.cc
 +++ b/third_party/blink/common/features.cc
 @@ -133,7 +133,7 @@ BASE_FEATURE(kAllowDatapipeDrainedAsBytesConsumerInBFCache,

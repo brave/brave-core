@@ -1,10 +1,10 @@
 diff --git a/front_end/panels/application/ApplicationPanelSidebar.ts b/front_end/panels/application/ApplicationPanelSidebar.ts
-index 0ea24130128e2093af7ab77d2e392e0931868c40..8a17cc431777e833bde93b0db0d57141677e32f7 100644
+index cba008f07f4406a1ad4abbb3c5b4c61828c67a5c..3113243a2f28d0de082a23ba4bacfa147845a317 100644
 --- a/front_end/panels/application/ApplicationPanelSidebar.ts
 +++ b/front_end/panels/application/ApplicationPanelSidebar.ts
-@@ -562,6 +562,7 @@ export class ApplicationPanelSidebar extends UI.Widget.VBox implements SDK.Targe
-         },
-         {scoped: true});
+@@ -584,6 +584,7 @@ export class ApplicationPanelSidebar extends UI.Widget.VBox implements SDK.Targe
+     },
+                                                              {scoped: true});
      this.contentElement.style.contain = 'layout style';
 +    storageTreeElement.removeChild(this.trustTokensTreeElement); [this.backgroundFetchTreeElement, this.backgroundSyncTreeElement, this.periodicBackgroundSyncTreeElement, this.reportingApiTreeElement].forEach(e => backgroundServiceTreeElement.removeChild(e));
    }

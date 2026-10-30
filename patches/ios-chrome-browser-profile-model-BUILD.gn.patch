@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/profile/model/BUILD.gn b/ios/chrome/browser/profile/model/BUILD.gn
-index 7a36c1dc4a39286f517664c90e6feb44f23c09a8..d0f2b5e48062d29abb35bca026eb7ae65043462d 100644
+index 222010c16359c1f9af322745bbf99d2123056173..da9e20987ed611289036fae5caa05d0487a7c79f 100644
 --- a/ios/chrome/browser/profile/model/BUILD.gn
 +++ b/ios/chrome/browser/profile/model/BUILD.gn
-@@ -280,6 +280,7 @@ source_set("keyed_service_factories") {
+@@ -281,6 +281,7 @@ source_set("keyed_service_factories") {
      "//ios/public/provider/chrome/browser/cobalt:cobalt_api",
      "//ios/web/common:features",
    ]

@@ -1,5 +1,5 @@
 diff --git a/components/ntp_tiles/BUILD.gn b/components/ntp_tiles/BUILD.gn
-index f0b9fa8de81ba82f574ae64dcf44e4c8093df81f..b587d84f621ae4e7e69ff4c7a13aaece1ce0ff55 100644
+index 1d3f529d1b35df9858f0d14426651ed98ab1ec21..20b7e76f4970b48a72e3319ed706292f937fc147 100644
 --- a/components/ntp_tiles/BUILD.gn
 +++ b/components/ntp_tiles/BUILD.gn
 @@ -33,7 +33,10 @@ source_set("enterprise_shortcuts_pref_names") {

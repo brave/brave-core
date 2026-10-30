@@ -1,8 +1,8 @@
 diff --git a/components/omnibox/browser/BUILD.gn b/components/omnibox/browser/BUILD.gn
-index f7aaba4a989da2663c8ef1692e5ad7fbb9ff3f3c..683075294c3d5c59b1ca6147143ce71723eed5e3 100644
+index 033213598f966e022583a2e32ff0970c71ec96eb..1e673db378da3176058c6f351f6ef4cb384d6fb9 100644
 --- a/components/omnibox/browser/BUILD.gn
 +++ b/components/omnibox/browser/BUILD.gn
-@@ -376,6 +376,7 @@ static_library("browser") {
+@@ -375,6 +375,7 @@ static_library("browser") {
      "zero_suggest_verbatim_match_provider.cc",
      "zero_suggest_verbatim_match_provider.h",
    ]
@@ -10,7 +10,7 @@ index f7aaba4a989da2663c8ef1692e5ad7fbb9ff3f3c..683075294c3d5c59b1ca6147143ce717
  
    public_deps = [
      ":aim_eligibility_service_features",
-@@ -403,6 +404,7 @@ static_library("browser") {
+@@ -402,6 +403,7 @@ static_library("browser") {
      "//third_party/tflite_support:tflite_support_proto",
      "//url",
    ]
@@ -18,7 +18,7 @@ index f7aaba4a989da2663c8ef1692e5ad7fbb9ff3f3c..683075294c3d5c59b1ca6147143ce717
  
    deps = [
      "//build:android_buildflags",
-@@ -450,6 +452,7 @@ static_library("browser") {
+@@ -448,6 +450,7 @@ static_library("browser") {
      "//ui/base",
      "//ui/gfx",
    ]
@@ -26,7 +26,7 @@ index f7aaba4a989da2663c8ef1692e5ad7fbb9ff3f3c..683075294c3d5c59b1ca6147143ce717
  
    if (is_android) {
      deps += [ "//components/location/android:settings" ]
-@@ -1151,6 +1154,7 @@ mojom("mojo_bindings") {
+@@ -1146,6 +1149,7 @@ mojom("mojo_bindings") {
        ":suggest_template_info_mojo_bindings",
      ]
    }
@@ -34,7 +34,7 @@ index f7aaba4a989da2663c8ef1692e5ad7fbb9ff3f3c..683075294c3d5c59b1ca6147143ce717
  }
  
  if (!is_ios) {
-@@ -1171,6 +1175,7 @@ if (!is_ios) {
+@@ -1166,6 +1170,7 @@ if (!is_ios) {
          traits_deps = [ "//third_party/omnibox_proto" ]
        },
      ]
@@ -42,7 +42,7 @@ index f7aaba4a989da2663c8ef1692e5ad7fbb9ff3f3c..683075294c3d5c59b1ca6147143ce717
    }
  
    mojom("suggest_template_info_mojo_bindings") {
-@@ -1181,6 +1186,7 @@ if (!is_ios) {
+@@ -1176,6 +1181,7 @@ if (!is_ios) {
        "//mojo/public/mojom/base",
        "//url/mojom:url_mojom_gurl",
      ]

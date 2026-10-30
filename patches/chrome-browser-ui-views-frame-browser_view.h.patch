@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/frame/browser_view.h b/chrome/browser/ui/views/frame/browser_view.h
-index 750e46c97b64dccccf4268e912df5dbdb6516b3c..afdf84a01632fa04698cd00a38b3a9fe4712940b 100644
+index 9c4c495caf983d1b065411fb510f558ff96c2db5..f1330ea6c1de05c1c1036cda7a6f80f6682b1515 100644
 --- a/chrome/browser/ui/views/frame/browser_view.h
 +++ b/chrome/browser/ui/views/frame/browser_view.h
 @@ -75,7 +75,7 @@
@@ -96,7 +96,7 @@ index 750e46c97b64dccccf4268e912df5dbdb6516b3c..afdf84a01632fa04698cd00a38b3a9fe
    // Do not friend BrowserViewLayout. Use the BrowserViewLayoutDelegate
    // interface to keep these two classes decoupled and testable.
    friend class BrowserViewLayoutDelegateImpl;
-@@ -864,11 +866,11 @@ class BrowserView : public BrowserWindow,
+@@ -865,11 +867,11 @@ class BrowserView : public BrowserWindow,
  
    // Display the current active split view as a series of multiple side-by-side
    // web contents.
@@ -110,7 +110,7 @@ index 750e46c97b64dccccf4268e912df5dbdb6516b3c..afdf84a01632fa04698cd00a38b3a9fe
  
    // Update the index of the active split based on the active tab's web
    // contents.
-@@ -927,12 +929,12 @@ class BrowserView : public BrowserWindow,
+@@ -928,12 +930,12 @@ class BrowserView : public BrowserWindow,
  
    // Prepare and update the split view for the specified WebContents. Returns
    // true if split view is updated and needs a layout.
@@ -125,7 +125,7 @@ index 750e46c97b64dccccf4268e912df5dbdb6516b3c..afdf84a01632fa04698cd00a38b3a9fe
  
    // Updates various optional child Views, e.g. Bookmarks Bar, Info Bar
    // in response to a change notification from the specified
-@@ -974,7 +976,7 @@ class BrowserView : public BrowserWindow,
+@@ -975,7 +977,7 @@ class BrowserView : public BrowserWindow,
  
    // Copy the accelerator table from the app resources into something we can
    // use.
@@ -134,7 +134,7 @@ index 750e46c97b64dccccf4268e912df5dbdb6516b3c..afdf84a01632fa04698cd00a38b3a9fe
  
    // Retrieves the command id for the specified Windows app command.
    int GetCommandIDForAppCommandID(int app_command_id) const;
-@@ -1004,7 +1006,7 @@ class BrowserView : public BrowserWindow,
+@@ -1005,7 +1007,7 @@ class BrowserView : public BrowserWindow,
    void ReparentTopContainerForStartOfImmersive();
  
    // Reparents |top_container_| to |main_container_|.
@@ -143,7 +143,7 @@ index 750e46c97b64dccccf4268e912df5dbdb6516b3c..afdf84a01632fa04698cd00a38b3a9fe
  
    // In certain situations, such as immersive mode and touch ui mode on
    // ChromeOS, the tab strip and PWA views must be parented to the top container
-@@ -1200,8 +1202,8 @@ class BrowserView : public BrowserWindow,
+@@ -1201,8 +1203,8 @@ class BrowserView : public BrowserWindow,
  
    // The Bookmark Bar View for this window. Lazily created. May be null for
    // non-tabbed browsers like popups. May not be visible.

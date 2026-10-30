@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/unload_controller.cc b/chrome/browser/ui/unload_controller.cc
-index 9cefffb0e2bf7c7e1f8a9b3d539b18e1a0114b34..0219e2f49c0fb53ea0073c745b554e51b4cb2363 100644
+index 5863c280f965663c2e899640793c278909c4b442..6964b10b2eda77ac58a8cbfa1c82d4dc4c61870b 100644
 --- a/chrome/browser/ui/unload_controller.cc
 +++ b/chrome/browser/ui/unload_controller.cc
-@@ -181,6 +181,7 @@ void UnloadController::OnWindowClosing() {
+@@ -182,6 +182,7 @@ void UnloadController::OnWindowClosing() {
    if (!HandleBeforeClose()) {
      return;
    }
@@ -10,7 +10,7 @@ index 9cefffb0e2bf7c7e1f8a9b3d539b18e1a0114b34..0219e2f49c0fb53ea0073c745b554e51
  
    // Don't use GetForProfileIfExisting here, we want to force creation of the
    // session service so that user can restore what was open.
-@@ -207,6 +208,9 @@ void UnloadController::OnWindowClosing() {
+@@ -208,6 +209,9 @@ void UnloadController::OnWindowClosing() {
    if (tab_restore_service && notify_restore_service) {
      tab_restore_service->BrowserClosing(BrowserLiveTabContext::From(browser_));
    }
@@ -20,7 +20,7 @@ index 9cefffb0e2bf7c7e1f8a9b3d539b18e1a0114b34..0219e2f49c0fb53ea0073c745b554e51
  
    if (!browser_->GetTabStripModel()->empty()) {
      // Closing all the tabs results in eventually calling back to
-@@ -515,6 +519,7 @@ UnloadController::GetBrowserClosingStatus() const {
+@@ -512,6 +516,7 @@ UnloadController::GetBrowserClosingStatus() const {
  bool UnloadController::RunBeforeUnloadForShutdown(
      bool skip_beforeunload,
      const base::RepeatingCallback<void(bool)>& on_close_confirmed) {
@@ -28,7 +28,7 @@ index 9cefffb0e2bf7c7e1f8a9b3d539b18e1a0114b34..0219e2f49c0fb53ea0073c745b554e51
    cancel_download_confirmation_state_ =
        CancelDownloadConfirmationState::kResponseReceived;
    // The devtools browser gets its beforeunload events as the results of
-@@ -538,6 +543,7 @@ bool UnloadController::RunBeforeUnloadForShutdown(
+@@ -535,6 +540,7 @@ bool UnloadController::RunBeforeUnloadForShutdown(
  }
  
  void UnloadController::ResetBeforeUnloadForShutdown() {
@@ -36,7 +36,7 @@ index 9cefffb0e2bf7c7e1f8a9b3d539b18e1a0114b34..0219e2f49c0fb53ea0073c745b554e51
    cancel_download_confirmation_state_ =
        CancelDownloadConfirmationState::kNotPrompted;
    if (state_ != State::kRunningBeforeUnloadForShutdown &&
-@@ -644,6 +650,9 @@ void UnloadController::OnTabStripModelChanged(
+@@ -667,6 +673,9 @@ void UnloadController::OnTabStripModelChanged(
  }
  
  void UnloadController::TabStripEmpty() {
@@ -46,7 +46,7 @@ index 9cefffb0e2bf7c7e1f8a9b3d539b18e1a0114b34..0219e2f49c0fb53ea0073c745b554e51
    // Set state_ here, so that extensions, etc, do not attempt to add tabs to the
    // browser before it closes.
    if (state_ == State::kIdle) {
-@@ -1112,6 +1121,9 @@ void UnloadController::InProgressDownloadResponse(bool cancel_downloads) {
+@@ -1170,6 +1179,9 @@ void UnloadController::InProgressDownloadResponse(bool cancel_downloads) {
  }
  
  void UnloadController::FinishWarnBeforeClosing(WarnBeforeClosingResult result) {

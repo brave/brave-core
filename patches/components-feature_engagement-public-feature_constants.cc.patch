@@ -1,5 +1,5 @@
 diff --git a/components/feature_engagement/public/feature_constants.cc b/components/feature_engagement/public/feature_constants.cc
-index 935dc3d4fe1d9786a7e4f9221469acc242bca0ba..a6c026b04d5e91cded51da901451d21b60648fda 100644
+index 29d512a06362d7c6eec23e674b71cd6151bc222d..a81b0aef1f05055824d140e4b7ebfd58213ef684 100644
 --- a/components/feature_engagement/public/feature_constants.cc
 +++ b/components/feature_engagement/public/feature_constants.cc
 @@ -83,9 +83,9 @@ BASE_FEATURE(kIPHDesktopRealboxContextualSearchFeature,
@@ -26,7 +26,7 @@ index 935dc3d4fe1d9786a7e4f9221469acc242bca0ba..a6c026b04d5e91cded51da901451d21b
  BASE_FEATURE(kIPHGMCLocalMediaCastingFeature,
               "IPH_GMCLocalMediaCasting",
               base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -188,9 +188,9 @@ BASE_FEATURE(kIPHPasswordsSavePrimingPromoFeature,
+@@ -191,9 +191,9 @@ BASE_FEATURE(kIPHPasswordsSavePrimingPromoFeature,
  BASE_FEATURE(kIPHPasswordsSaveRecoveryPromoFeature,
               "IPH_PasswordsSaveRecoveryPromo",
               base::FEATURE_ENABLED_BY_DEFAULT);
@@ -38,7 +38,7 @@ index 935dc3d4fe1d9786a7e4f9221469acc242bca0ba..a6c026b04d5e91cded51da901451d21b
  BASE_FEATURE(kIPHPasswordsManagementBubbleDuringSigninFeature,
               "IPH_PasswordsManagementBubbleDuringSignin",
               base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -206,9 +206,9 @@ BASE_FEATURE(kIPHPasswordSharingFeature,
+@@ -209,9 +209,9 @@ BASE_FEATURE(kIPHPasswordSharingFeature,
  BASE_FEATURE(kIPHPdfGlicSummarizeFeature,
               "IPH_PdfGlicSummarizeFeature",
               base::FEATURE_ENABLED_BY_DEFAULT);
@@ -50,7 +50,7 @@ index 935dc3d4fe1d9786a7e4f9221469acc242bca0ba..a6c026b04d5e91cded51da901451d21b
  BASE_FEATURE(kIPHPdfSearchifyFeature,
               "IPH_PdfSearchifyFeature",
               base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -239,7 +239,7 @@ BASE_FEATURE(kIPHReadingListDiscoveryFeature,
+@@ -242,7 +242,7 @@ BASE_FEATURE(kIPHReadingListDiscoveryFeature,
  BASE_FEATURE(kIPHReadingListEntryPointFeature,
               "IPH_ReadingListEntryPoint",
               base::FEATURE_DISABLED_BY_DEFAULT);
@@ -59,7 +59,7 @@ index 935dc3d4fe1d9786a7e4f9221469acc242bca0ba..a6c026b04d5e91cded51da901451d21b
               "IPH_ReadingListInSidePanel",
               base::FEATURE_DISABLED_BY_DEFAULT);
  BASE_FEATURE(kIPHReadingModeAiPlaybackFeature,
-@@ -275,21 +275,21 @@ BASE_FEATURE(kIPHSmartTabSharingFeature,
+@@ -278,21 +278,21 @@ BASE_FEATURE(kIPHSmartTabSharingFeature,
  BASE_FEATURE(kIPHSmartTabSharingTryItFeature,
               "IPH_SmartTabSharingTryItFeature",
               base::FEATURE_DISABLED_BY_DEFAULT);
@@ -89,7 +89,7 @@ index 935dc3d4fe1d9786a7e4f9221469acc242bca0ba..a6c026b04d5e91cded51da901451d21b
  BASE_FEATURE(kIPHTabGroupsFocusingFeature,
               "IPH_TabGroupsFocusingFeature",
               base::FEATURE_DISABLED_BY_DEFAULT);
-@@ -317,9 +317,9 @@ BASE_FEATURE(kIPHSideSearchPageActionLabelFeature,
+@@ -320,9 +320,9 @@ BASE_FEATURE(kIPHSideSearchPageActionLabelFeature,
  BASE_FEATURE(kIPHPwaQuietNotificationFeature,
               "IPH_PwaQuietNotification",
               base::FEATURE_ENABLED_BY_DEFAULT);
@@ -101,7 +101,7 @@ index 935dc3d4fe1d9786a7e4f9221469acc242bca0ba..a6c026b04d5e91cded51da901451d21b
  BASE_FEATURE(kIPHTabGroupsSaveV2CloseGroupFeature,
               "IPH_TabGroupsSaveV2CloseGroup",
               base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -350,9 +350,9 @@ BASE_FEATURE(kIPHPriceTrackingInSidePanelFeature,
+@@ -353,9 +353,9 @@ BASE_FEATURE(kIPHPriceTrackingInSidePanelFeature,
  BASE_FEATURE(kIPHBackNavigationMenuFeature,
               "IPH_BackNavigationMenu",
               base::FEATURE_DISABLED_BY_DEFAULT);
@@ -113,7 +113,7 @@ index 935dc3d4fe1d9786a7e4f9221469acc242bca0ba..a6c026b04d5e91cded51da901451d21b
  #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) ||
          // BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA)
  
-@@ -1070,9 +1070,9 @@ BASE_FEATURE(kIPHAutofillExternalAccountProfileSuggestionFeature,
+@@ -1064,9 +1064,9 @@ BASE_FEATURE(kIPHAutofillExternalAccountProfileSuggestionFeature,
  BASE_FEATURE(kIPHAutofillHomeWorkProfileSuggestionFeature,
               "IPH_AutofillHomeWorkProfileSuggestion",
               base::FEATURE_ENABLED_BY_DEFAULT);

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/renderer_context_menu/render_view_context_menu.h b/chrome/browser/renderer_context_menu/render_view_context_menu.h
-index dc713d3fbc15a074472e4e21319fec80c713c76d..d89cb9f2d0353ec0ffe0efff7a39e5bea95808b1 100644
+index 4570e4b63217bb87bd4e888dd275caaf1cc528dc..8f2d22f769eabf3c39da563adde0d9020b25e80a 100644
 --- a/chrome/browser/renderer_context_menu/render_view_context_menu.h
 +++ b/chrome/browser/renderer_context_menu/render_view_context_menu.h
 @@ -116,7 +116,7 @@ enum class SplitTabLayout;

@@ -1,8 +1,8 @@
 diff --git a/components/optimization_guide/core/optimization_guide_features.cc b/components/optimization_guide/core/optimization_guide_features.cc
-index e3c4e6e900020c5ad7b1073a260210d33395eb45..bf8b52bcf052fcf5e29f49ab38347071d1756990 100644
+index 3c0cdb52abae2b47d1e56e3c2dfb5519c38b1bcd..89e3a08c391b158e0c343d9a5b07fc614d4afb7b 100644
 --- a/components/optimization_guide/core/optimization_guide_features.cc
 +++ b/components/optimization_guide/core/optimization_guide_features.cc
-@@ -57,7 +57,7 @@ constexpr auto enabled_by_default_mobile_only =
+@@ -52,7 +52,7 @@ constexpr auto enabled_by_default_mobile_only =
  
  // Enables the syncing of the Optimization Hints component, which provides
  // hints for what optimizations can be applied on a page load.
@@ -11,7 +11,7 @@ index e3c4e6e900020c5ad7b1073a260210d33395eb45..bf8b52bcf052fcf5e29f49ab38347071
  
  // Enables the prediction of optimization targets.
  BASE_FEATURE(kOptimizationTargetPrediction, base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -82,9 +82,9 @@ BASE_FEATURE(kBuildTFLiteModelExecutionTaskOnLoadingThread,
+@@ -77,9 +77,9 @@ BASE_FEATURE(kBuildTFLiteModelExecutionTaskOnLoadingThread,
  
  // Killswitch for fetching on search results from a remote Optimization Guide
  // Service.
@@ -23,7 +23,7 @@ index e3c4e6e900020c5ad7b1073a260210d33395eb45..bf8b52bcf052fcf5e29f49ab38347071
  
  // Kill switch for disabling model quality logging.
  BASE_FEATURE(kModelQualityLogging, base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -97,8 +97,8 @@ BASE_FEATURE(kOptimizationGuidePredictionModelKillswitch,
+@@ -92,8 +92,8 @@ BASE_FEATURE(kOptimizationGuidePredictionModelKillswitch,
               base::FEATURE_DISABLED_BY_DEFAULT);
  
  // Whether to enable model execution.

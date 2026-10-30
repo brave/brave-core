@@ -1,8 +1,8 @@
 diff --git a/scripts/build/run_with_restat.py b/scripts/build/run_with_restat.py
-index d69be7d76a0598af2d40f69a1d63861a05119f29..b8035b058e9cc45c087965e2f61ea8eae9cc52ae 100644
+index 51eed4d32db481bc5b3ba6ec1bfd543a79f16670..1890dd62fcc3926cab7e2c5e44c850869ceaa6f9 100644
 --- a/scripts/build/run_with_restat.py
 +++ b/scripts/build/run_with_restat.py
-@@ -99,5 +99,6 @@ def main():
+@@ -106,5 +106,6 @@ def main():
      sys.exit(0)
  
  

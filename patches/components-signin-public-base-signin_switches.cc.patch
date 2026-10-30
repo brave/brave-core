@@ -1,8 +1,8 @@
 diff --git a/components/signin/public/base/signin_switches.cc b/components/signin/public/base/signin_switches.cc
-index 70bc2b4b6ff3e5226378bd77c5eeeca98a7aa0e9..3595fdbf6b46040c739173744181286f83838821 100644
+index 07c72840082e765a3dbe1ae68e33b631dde9174c..c2feb5c6cdbd78c067e2f12e903fa7544c931b9c 100644
 --- a/components/signin/public/base/signin_switches.cc
 +++ b/components/signin/public/base/signin_switches.cc
-@@ -698,9 +698,9 @@ BASE_FEATURE(kFirstRunDesktopChoiceScreenRefresh,
+@@ -708,9 +708,9 @@ BASE_FEATURE(kFirstRunDesktopChoiceScreenRefresh,
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
  #if BUILDFLAG(IS_WIN)
@@ -14,7 +14,7 @@ index 70bc2b4b6ff3e5226378bd77c5eeeca98a7aa0e9..3595fdbf6b46040c739173744181286f
  #endif
  bool IsFirstRunDesktopRefreshEnabled(bool is_in_search_engine_choice_region) {
    if (is_in_search_engine_choice_region &&
-@@ -852,7 +852,7 @@ BASE_FEATURE(kProfileCreationDeclineSigninCTAExperiment,
+@@ -862,7 +862,7 @@ BASE_FEATURE(kProfileCreationDeclineSigninCTAExperiment,
  #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
  
  #if BUILDFLAG(IS_ANDROID)
@@ -23,7 +23,7 @@ index 70bc2b4b6ff3e5226378bd77c5eeeca98a7aa0e9..3595fdbf6b46040c739173744181286f
  #endif  // BUILDFLAG(IS_ANDROID)
  
  BASE_FEATURE(kProfilesReordering, base::FEATURE_DISABLED_BY_DEFAULT);
-@@ -891,7 +891,7 @@ BASE_FEATURE(kSigninInterceptGraphicUpdate, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -901,7 +901,7 @@ BASE_FEATURE(kSigninInterceptGraphicUpdate, base::FEATURE_DISABLED_BY_DEFAULT);
  #endif  // BUILDFLAG(ENABLE_DICE_SUPPORT)
  
  #if BUILDFLAG(IS_ANDROID)
@@ -32,7 +32,7 @@ index 70bc2b4b6ff3e5226378bd77c5eeeca98a7aa0e9..3595fdbf6b46040c739173744181286f
  #endif  // BUILDFLAG(IS_ANDROID)
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-@@ -980,8 +980,8 @@ BASE_FEATURE(kSupportWebSigninAddSession, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -995,8 +995,8 @@ BASE_FEATURE(kSupportWebSigninAddSession, base::FEATURE_ENABLED_BY_DEFAULT);
  BASE_FEATURE(kSwitchToIncognitoInSettings, base::FEATURE_ENABLED_BY_DEFAULT);
  #endif  // BUILDFLAG(IS_ANDROID)
  

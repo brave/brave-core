@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/bindings/idl_in_modules.gni b/third_party/blink/renderer/bindings/idl_in_modules.gni
-index 68b809c784a4c9e4c938726d7125497f2747974c..26ed4166dac2f88865b30111b363a30b31bd5e34 100644
+index fa79d4c7bffd07ed2cfca4156c1381093158f408..653e19a4caa614b75ad6da262ad07933cbdd71ec 100644
 --- a/third_party/blink/renderer/bindings/idl_in_modules.gni
 +++ b/third_party/blink/renderer/bindings/idl_in_modules.gni
-@@ -1426,3 +1426,5 @@ if (enable_compute_pressure) {
+@@ -1429,3 +1429,5 @@ if (enable_compute_pressure) {
      "//third_party/blink/renderer/modules/compute_pressure/testing/internals_compute_pressure.idl",
    ]
  }

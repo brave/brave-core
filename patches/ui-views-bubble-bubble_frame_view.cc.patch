@@ -1,8 +1,8 @@
 diff --git a/ui/views/bubble/bubble_frame_view.cc b/ui/views/bubble/bubble_frame_view.cc
-index 21637c9103c0a0e0964283952f7f91b87276803f..d0a03eb9ade295e744925d013c5069fc1ea6c562 100644
+index c9d5d3a959cc1d840e9395710f111c8f74f8ba50..cf969c1f3465cffb46ea651a90643cc98830d388 100644
 --- a/ui/views/bubble/bubble_frame_view.cc
 +++ b/ui/views/bubble/bubble_frame_view.cc
-@@ -1220,7 +1220,8 @@ int BubbleFrameView::GetFrameWidthForClientWidth(int client_width) const {
+@@ -1224,7 +1224,8 @@ int BubbleFrameView::GetFrameWidthForClientWidth(int client_width) const {
        GetWidget()->widget_delegate()->AsDialogDelegate();
    bool snapping =
        dialog_delegate && dialog_delegate->buttons() !=

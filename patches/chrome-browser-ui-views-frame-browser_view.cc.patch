@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/frame/browser_view.cc b/chrome/browser/ui/views/frame/browser_view.cc
-index 72293b2721601595dcde74875d34306c2fd111e3..87739ee3b60c704da2f71343695e7b7a21d0b8ee 100644
+index 4e124a293ba1829c2fec197ddb0f7f337c313879..6dca28e4579cc0ac14670436b4ce6f2828bfe66e 100644
 --- a/chrome/browser/ui/views/frame/browser_view.cc
 +++ b/chrome/browser/ui/views/frame/browser_view.cc
 @@ -653,6 +653,10 @@ bool DoCutCopyPasteForWebContents(content::WebContents* contents,
@@ -66,7 +66,7 @@ index 72293b2721601595dcde74875d34306c2fd111e3..87739ee3b60c704da2f71343695e7b7a
    // Update various elements that are interested in knowing the current
    // WebContents.
  
-@@ -3476,7 +3491,7 @@ WebContentsModalDialogHost* BrowserView::GetWebContentsModalDialogHostFor(
+@@ -3485,7 +3500,7 @@ WebContentsModalDialogHost* BrowserView::GetWebContentsModalDialogHostFor(
    }
  }
  
@@ -75,7 +75,7 @@ index 72293b2721601595dcde74875d34306c2fd111e3..87739ee3b60c704da2f71343695e7b7a
    return bookmark_bar_view_.get();
  }
  
-@@ -5147,7 +5162,7 @@ void BrowserView::AddedToWidget() {
+@@ -5156,7 +5171,7 @@ void BrowserView::AddedToWidget() {
    // LINT.ThenChange(//chrome/browser/ui/views/frame/layout/browser_view_layout.h:BrowserViewLayoutViews)
  
    SetLayoutManager(BrowserViewLayout::CreateLayout(
@@ -84,7 +84,7 @@ index 72293b2721601595dcde74875d34306c2fd111e3..87739ee3b60c704da2f71343695e7b7a
        std::move(layout_views)));
  
    EnsureFocusOrder();
-@@ -5381,7 +5396,7 @@ bool BrowserView::MaybeShowBookmarkBar(WebContents* contents) {
+@@ -5390,7 +5405,7 @@ bool BrowserView::MaybeShowBookmarkBar(WebContents* contents) {
    }
  
    if (!bookmark_bar_view_) {

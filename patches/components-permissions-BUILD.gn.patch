@@ -1,5 +1,5 @@
 diff --git a/components/permissions/BUILD.gn b/components/permissions/BUILD.gn
-index f4086e03f00d9bcdb276edfac9cc893fe417a38f..fe69c7baf341995d5401fa68ab346b0c6ff2e40e 100644
+index b02472c6114785d6b62d60d4dd9430ca14465fd7..8ad86ecfd9df4264a95b819f235c6be5ab3b1be0 100644
 --- a/components/permissions/BUILD.gn
 +++ b/components/permissions/BUILD.gn
 @@ -2,11 +2,12 @@
@@ -16,7 +16,7 @@ index f4086e03f00d9bcdb276edfac9cc893fe417a38f..fe69c7baf341995d5401fa68ab346b0c
    sources = [
      "constants.cc",
      "constants.h",
-@@ -132,6 +133,7 @@ source_set("permissions") {
+@@ -135,6 +136,7 @@ source_set("permissions") {
      "switches.cc",
      "switches.h",
    ]
@@ -24,7 +24,7 @@ index f4086e03f00d9bcdb276edfac9cc893fe417a38f..fe69c7baf341995d5401fa68ab346b0c
    deps = [
      "//base",
      "//components/back_forward_cache",
-@@ -170,6 +172,7 @@ source_set("permissions") {
+@@ -173,6 +175,7 @@ source_set("permissions") {
      "//ui/strings:ui_strings_grit",
      "//url",
    ]

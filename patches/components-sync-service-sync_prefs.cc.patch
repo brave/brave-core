@@ -1,5 +1,5 @@
 diff --git a/components/sync/service/sync_prefs.cc b/components/sync/service/sync_prefs.cc
-index 6554502ac97f47a57220bd1db69918a76236c199..e8a4efe11d0c6b01318405ef9747354df15d1e10 100644
+index 3c2caa10f43d49d1a56109376294a85b75a25ba6..162bc3282994881f64286d482d115850ed7dcb9e 100644
 --- a/components/sync/service/sync_prefs.cc
 +++ b/components/sync/service/sync_prefs.cc
 @@ -680,6 +680,8 @@ const char* SyncPrefs::GetPrefNameForType(UserSelectableType type) {

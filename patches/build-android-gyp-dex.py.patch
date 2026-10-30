@@ -1,8 +1,8 @@
 diff --git a/build/android/gyp/dex.py b/build/android/gyp/dex.py
-index 67ba3b2a53415897ed388adc14ebd42d1341afa9..e34328bef818b80bb908679edfdd81fccb4ad03a 100755
+index 4882e4bc446ce09838bf47526a3d834740027301..d4c4b64e3ce24d0c332206c339c99083ff635a43 100755
 --- a/build/android/gyp/dex.py
 +++ b/build/android/gyp/dex.py
-@@ -39,6 +39,7 @@ _GRAALVM_SHARD_TARGET_SIZE = int(1.5 * 1024 * 1024)
+@@ -38,6 +38,7 @@ _GRAALVM_SHARD_TARGET_SIZE = int(1.5 * 1024 * 1024)
  _GRAALVM_XMS_FLAG = '-Xms1g'
  
  DEFAULT_IGNORE_WARNINGS = (

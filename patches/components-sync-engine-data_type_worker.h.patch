@@ -1,5 +1,5 @@
 diff --git a/components/sync/engine/data_type_worker.h b/components/sync/engine/data_type_worker.h
-index 3474a6251c084ccaba251d67083a03b7d2749e72..2eead7e09fdfafbc404f3a10685238baf7a3c77f 100644
+index 51cfa82553aa5ac1e8effc25d9b1c16081e5a6c2..238e9f09c43062cd76d58abe258b04864dddbd54 100644
 --- a/components/sync/engine/data_type_worker.h
 +++ b/components/sync/engine/data_type_worker.h
 @@ -217,6 +217,11 @@ class DataTypeWorker : public UpdateHandler,

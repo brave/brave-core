@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/notifications/BUILD.gn b/chrome/browser/notifications/BUILD.gn
-index a6430a89209499c857ffb462dd056bc282c61ecc..41a2e25afdf678241aed748769b86933a4bbf5ec 100644
+index 8a2689a4ec2e17482a2740940c39ee632471fa95..67682f002f5a691e7dc47e024368730f1521533d 100644
 --- a/chrome/browser/notifications/BUILD.gn
 +++ b/chrome/browser/notifications/BUILD.gn
-@@ -663,6 +663,7 @@ if (is_android) {
+@@ -661,6 +661,7 @@ if (is_android) {
      deps = [
        ":java_resources",
        "//base:base_java",
