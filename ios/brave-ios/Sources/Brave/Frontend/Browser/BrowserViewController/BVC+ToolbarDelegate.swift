@@ -649,7 +649,7 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
 
   func shredData(for url: URL, in tab: some TabState) {
     LottieAnimationView.showShredAnimation(on: view) {
-      self.tabManager.shredData(for: url, in: tab)
+      self.tabManager.shredManager.shredData(for: url, in: tab)
     }
   }
 

@@ -136,6 +136,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
       braveCore: nil,
       profile: FakeProfile(),
       privateBrowsingManager: privateBrowsingManager,
+      shredManager: ShredManager(braveCore: nil, profile: FakeProfile()),
       tabCreationFactory: { params in
         let tab = FakeTabState()
         tab.profile = params.profile

@@ -40,9 +40,11 @@ struct ProfileState {
   var dau: DAU
   var attributionManager: AttributionManager
   let profile: any Profile
+  let shredManager: ShredManager
 
   init(profileController: BraveProfileController) {
     profile = profileController.profile
+    shredManager = ShredManager(braveCore: profileController, profile: profileController.profile)
 
     // Setup DAU
     let serpMetrics = SerpMetricsServiceFactory.get(profile: profileController.profile)
@@ -107,7 +109,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
   // We currently only load a single (default) profile, so no need to create multiple states per
   // window/scene created.
-  private static var profileState: ProfileState?
+  private(set) static var profileState: ProfileState?
 
   private var cancellables: Set<AnyCancellable> = []
 
@@ -361,6 +363,7 @@ extension SceneDelegate {
       profile: AppState.shared.profile,
       attributionManager: profileState.attributionManager,
       rewards: profileState.rewards,
+      shredManager: profileState.shredManager,
       newsFeedDataSource: AppState.shared.newsFeedDataSource,
       userActivity: sceneState.connectionOptions.userActivities.first,
       downloadBackgroundTaskModel: AppState.shared.downloadBackgroundTaskModel
@@ -744,6 +747,7 @@ extension SceneDelegate {
     profile: LegacyBrowserProfile,
     attributionManager: AttributionManager,
     rewards: Brave.BraveRewards,
+    shredManager: ShredManager,
     newsFeedDataSource: BraveNews.FeedDataSource,
     userActivity: NSUserActivity?,
     downloadBackgroundTaskModel: DownloadBackgroundTaskScheduler?
@@ -814,6 +818,7 @@ extension SceneDelegate {
       braveCore: braveCore,
       profileController: profileController,
       rewards: rewards,
+      shredManager: shredManager,
       crashedLastSession: crashedLastSession,
       newsFeedDataSource: newsFeedDataSource,
       privateBrowsingManager: privateBrowsingManager,

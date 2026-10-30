@@ -88,17 +88,15 @@ class TabManager: NSObject {
   var privateTabSelectedIndex: Int?
   var tempTabs: [any TabState]?
   private weak var rewards: BraveRewards?
-  private var braveCore: BraveProfileController?
   private let profile: any Profile
   private weak var tabGeneratorAPI: BraveTabGeneratorAPI?
   private var domainFrc = Domain.frc()
   private let syncedTabsQueue = DispatchQueue(label: "synced-tabs-queue")
   private var syncTabsTask: DispatchWorkItem?
   private var metricsHeartbeat: Timer?
-  private let historyAPI: BraveHistoryAPI?
   public let privateBrowsingManager: PrivateBrowsingManager
-  private var forgetTasks: [Bool: [String: Task<Void, Error>]] = [:]
   private let tabCreationFactory: (TabStateFactory.CreateTabParams) -> any TabState
+  let shredManager: ShredManager
 
   let windowId: UUID
 
@@ -120,17 +118,17 @@ class TabManager: NSObject {
     braveCore: BraveProfileController?,
     profile: any Profile,
     privateBrowsingManager: PrivateBrowsingManager,
+    shredManager: ShredManager,
     tabCreationFactory: @escaping (TabStateFactory.CreateTabParams) -> any TabState
   ) {
     assert(Thread.isMainThread)
 
     self.windowId = windowId
     self.rewards = rewards
-    self.braveCore = braveCore
     self.profile = profile
     self.tabGeneratorAPI = braveCore?.tabGeneratorAPI
-    self.historyAPI = braveCore?.historyAPI
     self.privateBrowsingManager = privateBrowsingManager
+    self.shredManager = shredManager
     self.tabCreationFactory = tabCreationFactory
     super.init()
 
@@ -225,7 +223,7 @@ class TabManager: NSObject {
     return tabs(isPrivate: isPrivate).count
   }
 
-  private func tabs(isPrivate: Bool, query: String? = nil) -> [any TabState] {
+  func tabs(isPrivate: Bool, query: String? = nil) -> [any TabState] {
     assert(Thread.isMainThread)
 
     let allTabs = allTabs.filter { $0.isPrivate == isPrivate }
@@ -239,45 +237,6 @@ class TabManager: NSObject {
     } else {
       return allTabs
     }
-  }
-
-  @MainActor private static var tabManagersInConnectedWindows: [TabManager] {
-    UIApplication.shared.connectedScenes
-      .compactMap { ($0 as? UIWindowScene)?.browserViewController?.tabManager }
-  }
-
-  /// The ids of windows whose scene is dormant, e.g. a window on a now disconnected external
-  /// display.
-  @MainActor private static var dormantWindowIds: [UUID] {
-    UIApplication.shared.openSessions
-      .filter { $0.scene == nil }
-      .compactMap { BrowserState.getWindowId(from: $0).flatMap(UUID.init(uuidString:)) }
-  }
-
-  /// The base domains with an open tab in any window, including windows whose
-  /// scene is dormant.
-  ///
-  /// In-memory tabs are authoritative for a connected window, but a dormant
-  /// window has none, so its persisted session is read instead (this can occur
-  /// when window was on a now disconnected external display).
-  /// - Parameter excluding: A tab to disregard, for callers asking whether a site
-  /// remains open elsewhere once this tab is gone.
-  /// - Parameter excludedWindowIds: Dormant windows to disregard, e.g. windows being discarded.
-  @MainActor private static func openBaseDomainsInAllWindows(
-    isPrivate: Bool,
-    excluding excludedTab: (any TabState)? = nil,
-    excludingWindows excludedWindowIds: [UUID] = []
-  ) -> Set<String> {
-    let openURLs =
-      tabManagersInConnectedWindows
-      .flatMap { $0.tabs(isPrivate: isPrivate) }
-      .filter { $0 !== excludedTab }
-      .compactMap { $0.visibleURL }
-    let dormantWindowIds = Self.dormantWindowIds.filter { !excludedWindowIds.contains($0) }
-    let dormantURLs =
-      dormantWindowIds.isEmpty
-      ? [] : SessionTab.allURLs(isPrivate: isPrivate, inWindows: dormantWindowIds)
-    return Set((openURLs + dormantURLs).compactMap { $0.urlToShred?.baseDomain })
   }
 
   /// Function for adding local tabs as synced sessions
@@ -769,439 +728,31 @@ class TabManager: NSObject {
     }
   }
 
-  /// Forget all data for websites with a pending Auto Shred.
-  /// Will forget all data instantly with no delay.
-  ///
-  /// This covers websites set to Auto Shred on app exit, as well as websites set to Auto Shred
-  /// when the site is closed that have no open tab. The latter is required because the delayed
-  /// task started in `forgetDataDelayed(for:in:delay:)` does not survive app termination.
-  ///
-  /// Must be called after tabs are restored so that open tabs are taken into account.
-  func forgetDataWithPendingShredOnStartup() {
-    guard BraveCore.FeatureList.kBraveShredFeature.enabled else { return }
-    Task { @MainActor in
-      // Private tabs use a non-persistent data store, so only regular tabs can keep a website's
-      // persistent data alive across launches.
-      let openBaseDomains = Self.openBaseDomainsInAllWindows(isPrivate: false)
-      let isSiteClosed: (URL) -> Bool = { url in
-        guard let baseDomain = url.urlToShred?.baseDomain else { return false }
-        return !openBaseDomains.contains(baseDomain)
-      }
-
-      var urlsToShred: Set<URL> = []
-      if FeatureList.kBraveShieldsContentSettings.enabled {
-        guard let braveShieldsSettings = BraveShieldsSettingsServiceFactory.get(profile: profile)
-        else { return }
-        // Auto Shred settings are per domain, but history can hold many URLs per domain, so
-        // cache the lookups.
-        var shredLevelCache: [String: SiteShredLevel] = [:]
-        func shouldShred(_ url: URL, considerAllShieldsOption: Bool) -> Bool {
-          let cacheKey = "\(url.domainURL.absoluteString)\(considerAllShieldsOption)"
-          let shredLevel: SiteShredLevel
-          if let cachedShredLevel = shredLevelCache[cacheKey] {
-            shredLevel = cachedShredLevel
-          } else {
-            shredLevel =
-              braveShieldsSettings.autoShredMode(
-                for: url,
-                considerAllShieldsOption: considerAllShieldsOption
-              ).siteShredLevel
-            shredLevelCache[cacheKey] = shredLevel
-          }
-          switch shredLevel {
-          case .never:
-            return false
-          case .appExit:
-            return true
-          case .whenSiteClosed:
-            return isSiteClosed(url)
-          }
-        }
-
-        // iterate over WKWebsiteDataStore data records
-        let dataRecords = await WKWebsiteDataStore.default().dataRecords(
-          ofTypes: WKWebsiteDataStore.allWebsiteDataTypesIncludingPrivate()
-        )
-        for record in dataRecords {
-          if let url = URL(string: "https://" + record.displayName),
-            shouldShred(url, considerAllShieldsOption: true)
-          {
-            urlsToShred.insert(url)
-          }
-        }
-        if Preferences.Shields.shredHistoryItems.value {
-          // if user enabled shred and/or shred history but does not have data
-          // in WKWebsiteDataStore, we still need to shred it.
-          if let historyNodes = await historyAPI?.search(
-            withQuery: nil,
-            options: HistorySearchOptions(
-              maxCount: 0,
-              hostnameSuffix: nil,
-              duplicateHandling: .removeAll,
-              begin: nil,
-              end: nil
-            )
-          ) {
-            for node in historyNodes
-            where shouldShred(node.url, considerAllShieldsOption: false) {
-              urlsToShred.insert(node.url)
-            }
-          }
-          // Similar to history above for Recently Closed tabs
-          for tab in RecentlyClosed.all() {
-            if let url = URL(string: tab.url), shouldShred(url, considerAllShieldsOption: false) {
-              urlsToShred.insert(url)
-            }
-          }
-        }
-      } else {  // kBraveShieldsContentSettings disabled
-        let globalShredLevel = Preferences.Shields.shredLevel
-        urlsToShred = Set(
-          await Domain.allURLsWithShredLevel(
-            rawShredLevel: SiteShredLevel.appExit.rawValue,
-            isGlobalShredLevel: globalShredLevel == .appExit
-          )
-        )
-        let whenSiteClosedURLs = await Domain.allURLsWithShredLevel(
-          rawShredLevel: SiteShredLevel.whenSiteClosed.rawValue,
-          isGlobalShredLevel: globalShredLevel == .whenSiteClosed
-        )
-        urlsToShred.formUnion(whenSiteClosedURLs.filter(isSiteClosed))
-      }
-      guard !urlsToShred.isEmpty else { return }
-      await forgetData(for: Array(urlsToShred))
-    }
-  }
-
-  /// Forget all data for websites if the website has Auto Shred set to site
-  /// tabs closed. A delay allows us to cancel this Auto Shred in case the user goes back to
-  /// this website.
-  ///
-  /// - Parameters:
-  ///   - url: The url of the website to forget
-  ///   - tab: The tab in which the website is or was open in
-  ///   - delayInSeconds: Only attempt to forget the content after a short delay (default: 30s)
-  ///   - checkOtherTabs: Check if other tabs are open for the given domain
-  @MainActor func forgetDataIfNeeded(
-    for url: URL,
-    in tab: some TabState
-  ) {
-    guard FeatureList.kBraveShredFeature.enabled else { return }
-    guard let url = url.urlToShred,
-      let baseDomain = url.baseDomain
-    else { return }
-    forgetTasks[tab.isPrivate]?[baseDomain]?.cancel()
-    let shredLevel =
-      tab.braveShieldsHelper?.shredLevel(
-        for: url,
-        considerAllShieldsOption: true
-      ) ?? .never
-
-    switch shredLevel {
-    case .never:
-      return
-    case .appExit:
-      // Will be Shred on startup at next launch in `forgetDataWithPendingShredOnStartup()`.
-      return
-    case .whenSiteClosed:
-      // Ensure that no other tabs are open for this domain
-      let openBaseDomains = Self.openBaseDomainsInAllWindows(
-        isPrivate: tab.isPrivate,
-        excluding: tab
-      )
-      guard !openBaseDomains.contains(baseDomain) else { return }
-      // If the app terminates before this delayed task runs, it is recovered on startup at the
-      // next launch in `forgetDataWithPendingShredOnStartup()`.
-      forgetDataDelayed(for: url, in: tab, delay: 30)
-    }
-  }
-
-  /// Forget all data for websites set to Auto Shred when the site is closed whose tabs were open
-  /// in the given discarded windows.
-  ///
-  /// Tabs in a discarded window are closed without going through `removeTab`. Must be called
-  /// before the windows' persisted tabs are deleted.
-  @MainActor static func forgetDataForDiscardedWindows(_ windowIds: [UUID]) {
-    // With no connected window, the next window to restore picks these sites up in
-    // `forgetDataWithPendingShredOnStartup()`.
-    guard FeatureList.kBraveShredFeature.enabled, !windowIds.isEmpty,
-      let tabManager = tabManagersInConnectedWindows.first
-    else { return }
-    for isPrivate in [false, true] {
-      let urls = SessionTab.allURLs(isPrivate: isPrivate, inWindows: windowIds)
-      guard !urls.isEmpty else { continue }
-      tabManager.forgetDataForClosedTabs(
-        urls: urls,
-        isPrivate: isPrivate,
-        excludingWindows: windowIds
-      )
-    }
-  }
-
-  @MainActor private func forgetDataForClosedTabs(
-    urls: [URL],
-    isPrivate: Bool,
-    excludingWindows windowIds: [UUID]
-  ) {
-    let openBaseDomains = Self.openBaseDomainsInAllWindows(
-      isPrivate: isPrivate,
-      excludingWindows: windowIds
-    )
-    var checkedBaseDomains: Set<String> = []
-    let urlsToShred = urls.compactMap(\.urlToShred).filter { url in
-      guard let baseDomain = url.baseDomain, !openBaseDomains.contains(baseDomain),
-        checkedBaseDomains.insert(baseDomain).inserted
-      else { return false }
-      return shredLevel(for: url, isPrivate: isPrivate) == .whenSiteClosed
-    }
-    guard !urlsToShred.isEmpty else { return }
-    let dataStore = websiteDataStore(isPrivate: isPrivate)
-    Task {
-      await forgetData(for: urlsToShred, dataStore: dataStore)
-    }
-  }
-
-  /// The Auto Shred level for `url`, for when no `TabState` is available to ask its
-  /// `BraveShieldsTabHelper`.
-  @MainActor private func shredLevel(for url: URL, isPrivate: Bool) -> SiteShredLevel {
-    if FeatureList.kBraveShieldsContentSettings.enabled {
-      let profile = isPrivate ? profile.offTheRecordProfile : profile
-      return BraveShieldsSettingsServiceFactory.get(profile: profile)?.autoShredMode(
-        for: url,
-        considerAllShieldsOption: true
-      ).siteShredLevel ?? .never
-    }
-    return Domain.getOrCreate(forUrl: url, persistent: !isPrivate).shredLevel
-  }
-
-  private var websiteDataStoreForCurrentMode: WKWebsiteDataStore {
-    websiteDataStore(isPrivate: privateBrowsingManager.isPrivateBrowsing)
-  }
-
-  private func websiteDataStore(isPrivate isPrivateBrowsing: Bool) -> WKWebsiteDataStore {
-    if FeatureList.kUseProfileWebViewConfiguration.enabled, let braveCore {
-      let configuration =
-        isPrivateBrowsing
-        ? braveCore.defaultWebViewConfiguration : braveCore.nonPersistentWebViewConfiguration
-      return configuration.websiteDataStore
-    } else {
-      let configuration = isPrivateBrowsing ? Self.privateConfiguration : Self.defaultConfiguration
-      return configuration.websiteDataStore
-    }
-  }
-
-  @MainActor private var tabManagersInOtherWindows: [TabManager] {
-    Self.tabManagersInConnectedWindows.filter { $0 !== self }
-  }
-
-  /// Closes the tabs whose URL matches `shouldClose` in this window.
-  ///
-  /// The selected tab is closed last, otherwise `removeTab` could select another tab that is
-  /// about to be closed, reloading a website whose data is being wiped.
-  @discardableResult
-  @MainActor private func closeTabsToShred(
-    isPrivate: Bool,
-    where shouldClose: @escaping (URL) -> Bool
-  ) -> [any TabState] {
-    let tabsToClose = tabs(isPrivate: isPrivate).filter {
-      $0.visibleURL.map(shouldClose) ?? false
-    }
-    return removeTabsToShred(tabsToClose)
-  }
-
   /// Removes `tabs`, deleting their web views first, with the selected tab removed last.
+  ///
+  /// The selected tab is removed last, otherwise `removeTab` could select another tab that is
+  /// about to be removed, reloading a website whose data is being wiped.
   @discardableResult
-  @MainActor private func removeTabsToShred(_ tabs: [any TabState]) -> [any TabState] {
-    var tabsToClose = tabs
-    if let index = tabsToClose.firstIndex(where: { $0 === selectedTab }) {
-      tabsToClose.append(tabsToClose.remove(at: index))
+  @MainActor func removeTabsToShred(_ tabs: [any TabState]) -> [any TabState] {
+    var tabsToRemove = tabs
+    if let index = tabsToRemove.firstIndex(where: { $0 === selectedTab }) {
+      tabsToRemove.append(tabsToRemove.remove(at: index))
     }
-    for tabToClose in tabsToClose {
+    for tab in tabsToRemove {
       // The Tab's WebView is not deinitialized immediately, so it's possible the
       // WebView still stores data after we shred but before the WebView is deinitialized.
       // Delete the web view to prevent data being stored after data is Shred.
-      tabToClose.deleteWebView()
-      removeTab(tabToClose)
+      tab.deleteWebView()
+      removeTab(tab)
     }
-    return tabsToClose
+    return tabsToRemove
   }
 
-  /// Closes the tabs whose URL matches `shouldClose` in every other window, including windows
-  /// whose scene is dormant.
-  ///
-  /// Website data stores are shared between windows, so a shred would otherwise leave a live tab
-  /// in another window pointing at wiped data, free to write more of it. A dormant window has no
-  /// live tabs, but would restore the shredded site when reconnected, so its persisted tabs are
-  /// deleted instead.
-  @MainActor private func closeTabsToShredInOtherWindows(
-    isPrivate: Bool,
-    where shouldClose: @escaping (URL) -> Bool
-  ) {
-    for tabManager in tabManagersInOtherWindows {
-      tabManager.closeTabsToShred(isPrivate: isPrivate, where: shouldClose)
-    }
-    let dormantWindowIds = Self.dormantWindowIds
-    if !dormantWindowIds.isEmpty {
-      SessionTab.deleteAll(isPrivate: isPrivate, inWindows: dormantWindowIds, where: shouldClose)
-    }
-  }
-
-  /// Closes the tabs whose URL matches `shouldClose` in every window.
-  ///
-  /// - Returns: The tabs closed in this window.
-  @discardableResult
-  @MainActor private func closeTabsToShredInAllWindows(
-    isPrivate: Bool,
-    where shouldClose: @escaping (URL) -> Bool
-  ) -> [any TabState] {
-    let closedTabs = closeTabsToShred(isPrivate: isPrivate, where: shouldClose)
-    closeTabsToShredInOtherWindows(isPrivate: isPrivate, where: shouldClose)
-    return closedTabs
-  }
-
-  /// Shreds data for a set of tabs and returns tabs that are to be shredded/removed.
-  @MainActor func shredDataForTabs(_ tabs: [any TabState]) -> Set<TabState.ID> {
-    let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
-    let urlsToShred = Set(tabs.compactMap(\.visibleURL?.urlToShred))
-    let tabsToRemove = closeTabsToShredInAllWindows(isPrivate: isPrivateBrowsing) {
-      $0.urlToShred.map(urlsToShred.contains) ?? false
-    }
-    Task {
-      await forgetData(for: Array(urlsToShred), dataStore: websiteDataStoreForCurrentMode)
-    }
-    return Set(tabsToRemove.map(\.id))
-  }
-
-  @MainActor func shredAllTabsForCurrentMode() {
-    let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
-    let urlsToShred = Set(tabs(isPrivate: isPrivateBrowsing).compactMap(\.visibleURL?.urlToShred))
-    let baseDomainsToShred = Set(urlsToShred.compactMap(\.baseDomain))
+  @MainActor func removeAllTabsToShred(isPrivate: Bool) {
     isBulkDeleting = true
-    removeTabsToShred(tabs(isPrivate: isPrivateBrowsing))
+    removeTabsToShred(tabs(isPrivate: isPrivate))
     isBulkDeleting = false
     delegates.forEach { $0.get()?.tabManagerDidRemoveAllTabs(self, toast: nil) }
-    closeTabsToShredInOtherWindows(isPrivate: isPrivateBrowsing) {
-      guard let baseDomain = $0.urlToShred?.baseDomain else { return false }
-      return baseDomainsToShred.contains(baseDomain)
-    }
-    Task {
-      await forgetData(for: Array(urlsToShred), dataStore: websiteDataStoreForCurrentMode)
-    }
-  }
-
-  @MainActor func shredData(for url: URL, in tab: some TabState) {
-    guard let url = url.urlToShred,
-      let baseDomain = url.baseDomain
-    else { return }
-
-    closeTabsToShredInAllWindows(isPrivate: tab.isPrivate) {
-      $0.urlToShred?.baseDomain == baseDomain
-    }
-
-    Task {
-      // Forget all the data
-      await forgetData(for: url, in: tab)
-    }
-  }
-
-  /// Start a task to delete all data for this url
-  /// The task may be delayed in case we want to cancel it
-  @MainActor private func forgetDataDelayed(
-    for url: URL,
-    in tab: some TabState,
-    delay: TimeInterval
-  ) {
-    guard let url = url.urlToShred,
-      let baseDomain = url.baseDomain
-    else { return }
-    let isPrivate = tab.isPrivate
-    let dataStore = tab.configuration?.websiteDataStore
-    forgetTasks[isPrivate] = forgetTasks[isPrivate] ?? [:]
-    // Start a task to delete all data for this etldP1
-    // The task may be delayed in case we want to cancel it
-    forgetTasks[isPrivate]?[baseDomain] = Task { [weak tab] in
-      try await Task.sleep(seconds: delay)
-      // A closed tab's live WebView keeps writing Local Storage after it is deleted. The tab may
-      // instead still be open, having navigated away from the site, so only delete closed ones.
-      if let tab,
-        !Self.tabManagersInConnectedWindows.contains(where: { tabManager in
-          tabManager.allTabs.contains { $0 === tab }
-        })
-      {
-        tab.deleteWebView()
-      }
-      await self.forgetData(for: [url], dataStore: dataStore)
-      self.forgetTasks[isPrivate]?.removeValue(forKey: baseDomain)
-    }
-  }
-
-  @MainActor private func forgetData(for url: URL, in tab: (any TabState)?) async {
-    await forgetData(for: [url], dataStore: tab?.configuration?.websiteDataStore)
-
-    ContentBlockerManager.log.debug("Cleared website data for `\(url.baseDomain ?? "")`")
-    if let baseDomain = url.baseDomain, let tab {
-      forgetTasks[tab.isPrivate]?.removeValue(forKey: baseDomain)
-    }
-  }
-
-  @MainActor private func forgetData(for urls: [URL], dataStore: WKWebsiteDataStore? = nil) async {
-    let urls = urls.compactMap(\.urlToShred)
-    let baseDomains = Set(urls.compactMap { $0.baseDomain })
-    guard !baseDomains.isEmpty else { return }
-
-    let dataStore = dataStore ?? WKWebsiteDataStore.default()
-    // Delete 1P data records
-    await dataStore.deleteDataRecords(
-      forDomains: baseDomains
-    )
-
-    if BraveCore.FeatureList.kBraveShredCacheData.enabled {
-      // Delete all cache data (otherwise 3P cache entries left behind
-      // are visible in Manage Website Data view brave-browser #41095)
-      let cacheTypes = Set([
-        WKWebsiteDataTypeMemoryCache, WKWebsiteDataTypeDiskCache,
-        WKWebsiteDataTypeOfflineWebApplicationCache,
-      ])
-      let cacheRecords = await dataStore.dataRecords(ofTypes: cacheTypes)
-      await dataStore.removeData(ofTypes: cacheTypes, for: cacheRecords)
-    }
-
-    // Delete the history for forgotten websites
-    if let historyAPI = self.historyAPI, Preferences.Shields.shredHistoryItems.value {
-      // if we're only forgetting 1 site, we can query history by it's domain
-      let query = urls.count == 1 ? urls.first?.baseDomain : nil
-
-      let nodes = await historyAPI.search(
-        withQuery: query,
-        options: HistorySearchOptions(
-          maxCount: 0,
-          hostnameSuffix: nil,
-          duplicateHandling: .keepAll,
-          begin: nil,
-          end: nil
-        )
-      ).filter { node in
-        guard let baseDomain = node.url.baseDomain else { return false }
-        return baseDomains.contains(baseDomain)
-      }
-      historyAPI.removeHistory(for: nodes)
-    }
-
-    if Preferences.Shields.shredHistoryItems.value {
-      RecentlyClosed.remove(baseDomains: baseDomains)
-      RecentSearch.remove(baseDomains: baseDomains)
-    }
-
-    for url in urls {
-      await FaviconFetcher.deleteCache(for: url)
-    }
-  }
-
-  /// Cancel a forget data request in case we navigate back to the tab within a certain period
-  @MainActor func cancelForgetData(for url: URL, in tab: some TabState) {
-    guard let etldPlusOne = url.urlToShred?.baseDomain else { return }
-    forgetTasks[tab.isPrivate]?[etldPlusOne]?.cancel()
-    forgetTasks[tab.isPrivate]?.removeValue(forKey: etldPlusOne)
   }
 
   @MainActor func removeTab(_ tab: any TabState) {
@@ -1212,7 +763,7 @@ class TabManager: NSObject {
 
     if let url = tab.visibleURL {
       // Check if this data needs to be forgotten
-      forgetDataIfNeeded(for: url, in: tab)
+      shredManager.siteClosed(url, in: tab)
     }
 
     if tab.isPrivate {
@@ -1525,24 +1076,7 @@ class TabManager: NSObject {
       if let shouldShredDomain = shouldShredDomainCache[cacheKey] {
         shouldShredTab = shouldShredDomain
       } else {
-        if FeatureList.kBraveShieldsContentSettings.enabled {
-          let profile = isPrivate ? self.profile.offTheRecordProfile : self.profile
-          let braveShieldsSettings = BraveShieldsSettingsServiceFactory.get(profile: profile)
-          shouldShredTab =
-            braveShieldsSettings?.autoShredMode(
-              for: url,
-              considerAllShieldsOption: true
-            ).siteShredLevel.shredOnAppExit ?? false
-        } else {
-          // Don't access `shredLevel` directly, but `TabState` is unavailable
-          // to access via `BraveShieldsTabHelper`. Deprecated access here until
-          // `kBraveShieldsContentSettings` feature flag is removed.
-          let siteDomain = Domain.getOrCreate(
-            forUrl: url,
-            persistent: !isPrivate
-          )
-          shouldShredTab = siteDomain.shredLevel.shredOnAppExit
-        }
+        shouldShredTab = self.shredManager.shredLevel(for: url, isPrivate: isPrivate).shredOnAppExit
         shouldShredDomainCache[cacheKey] = shouldShredTab
       }
       return shouldShredTab
@@ -1862,6 +1396,12 @@ extension TabManager: NSFetchedResultsControllerDelegate {
   }
 }
 
+extension TabManager {
+  var isPrivateBrowsing: Bool {
+    privateBrowsingManager.isPrivateBrowsing || Preferences.Privacy.privateBrowsingOnly.value
+  }
+}
+
 extension WKWebViewConfiguration {
   /// Updates a WebKit configuration with Brave's defaults and preferences that can't be done
   /// from inside Chromium's `WKWebViewConfigurationProvider::ResetWithWebViewConfiguration`
@@ -1883,38 +1423,5 @@ extension WKWebViewConfiguration {
         forURLScheme: InternalURL.scheme
       )
     }
-  }
-}
-
-extension WKWebsiteDataStore {
-  @MainActor fileprivate func deleteDataRecords(forDomain domain: String) async {
-    await deleteDataRecords(forDomains: Set([domain]))
-  }
-
-  @MainActor fileprivate func deleteDataRecords(forDomains domains: Set<String>) async {
-    let records = await dataRecords(
-      ofTypes: WKWebsiteDataStore.allWebsiteDataTypesIncludingPrivate()
-    )
-    let websiteRecords = records.filter { record in
-      domains.contains(record.displayName)
-    }
-
-    await removeData(
-      ofTypes: WKWebsiteDataStore.allWebsiteDataTypesIncludingPrivate(),
-      for: websiteRecords
-    )
-  }
-
-  /// This includes all public types from `WKWebsiteDataStore.allWebsiteDataTypes` as well as private data types.
-  public static func allWebsiteDataTypesIncludingPrivate() -> Set<String> {
-    // https://github.com/WebKit/WebKit/blob/b66e4895df40202b14bb20fb47444c3e0a3c164e/Source/WebKit/UIProcess/API/Cocoa/WKWebsiteDataRecordPrivate.h
-    var types = WKWebsiteDataStore.allWebsiteDataTypes()
-    types.insert("_WKWebsiteDataTypeHSTSCache")
-    types.insert("_WKWebsiteDataTypeResourceLoadStatistics")
-    types.insert("_WKWebsiteDataTypeCredentials")
-    types.insert("_WKWebsiteDataTypeAdClickAttributions")
-    types.insert("_WKWebsiteDataTypePrivateClickMeasurements")
-    types.insert("_WKWebsiteDataTypeAlternativeServices")
-    return types
   }
 }

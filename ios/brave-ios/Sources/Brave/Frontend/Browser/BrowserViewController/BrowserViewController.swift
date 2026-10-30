@@ -311,6 +311,7 @@ public class BrowserViewController: UIViewController {
     braveCore: BraveCoreMain,
     profileController: BraveProfileController,
     rewards: BraveRewards,
+    shredManager: ShredManager,
     crashedLastSession: Bool,
     newsFeedDataSource: FeedDataSource,
     privateBrowsingManager: PrivateBrowsingManager,
@@ -346,6 +347,7 @@ public class BrowserViewController: UIViewController {
       braveCore: profileController,
       profile: profileController.profile,
       privateBrowsingManager: privateBrowsingManager,
+      shredManager: shredManager,
       tabCreationFactory: TabStateFactory.create
     )
 
@@ -1387,7 +1389,7 @@ public class BrowserViewController: UIViewController {
     self.tabManager.selectTab(tabToSelect)
 
     // Shred sites with a pending Auto Shred. Must run after tabs are restored.
-    self.tabManager.forgetDataWithPendingShredOnStartup()
+    self.tabManager.shredManager.forgetDataWithPendingShredOnStartup()
 
     if !setupTasksCompleted {
       for task in postSetupTasks {

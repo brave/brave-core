@@ -949,6 +949,7 @@ extension Animation {
       braveCore: nil,
       profile: FakeProfile(),
       privateBrowsingManager: .init(),
+      shredManager: ShredManager(braveCore: nil, profile: FakeProfile()),
       tabCreationFactory: { _ in
         FakeTabState()
       }
