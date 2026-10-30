@@ -31,6 +31,7 @@ BrowserHostImpl::BrowserHostImpl(
   OnConnectionStateChanged(connection_manager_->connection_state(),
                            connection_manager_->error_message());
   OnSelectedRegionChanged(connection_manager_->current_region());
+  OnAutoReconnectStateChanged(connection_manager_->auto_reconnect_enabled());
   OnSmartProxyRoutingStateChanged(
       connection_manager_->smart_proxy_routing_enabled());
   OnAllowLanTrafficStateChanged(
@@ -73,6 +74,10 @@ void BrowserHostImpl::SetSelectedRegion(mojom::VpnRegionPtr region) {
   connection_manager_->SetSelectedRegion(std::move(region));
 }
 
+void BrowserHostImpl::SetAutoReconnectState(bool enable) {
+  connection_manager_->SetAutoReconnectState(enable);
+}
+
 void BrowserHostImpl::SetSmartProxyRoutingState(bool enable) {
   connection_manager_->SetSmartProxyRoutingState(enable);
 }
@@ -89,6 +94,10 @@ void BrowserHostImpl::OnConnectionStateChanged(
 
 void BrowserHostImpl::OnSelectedRegionChanged(const mojom::VpnRegion& region) {
   browser_endpoint_->OnSelectedRegionChanged(region.Clone());
+}
+
+void BrowserHostImpl::OnAutoReconnectStateChanged(bool enabled) {
+  browser_endpoint_->OnAutoReconnectStateChanged(enabled);
 }
 
 void BrowserHostImpl::OnSmartProxyRoutingStateChanged(bool enabled) {

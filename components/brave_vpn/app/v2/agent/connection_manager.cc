@@ -49,6 +49,11 @@ const mojom::VpnRegion& ConnectionManager::current_region() const {
   return *current_region_;
 }
 
+bool ConnectionManager::auto_reconnect_enabled() const {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  return auto_reconnect_enabled_;
+}
+
 bool ConnectionManager::smart_proxy_routing_enabled() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return smart_proxy_routing_enabled_;
@@ -107,6 +112,13 @@ void ConnectionManager::SetSelectedRegion(mojom::VpnRegionPtr region) {
   NOTIMPLEMENTED_LOG_ONCE();
 }
 
+void ConnectionManager::SetAutoReconnectState(bool enable) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  // TODO(https://github.com/brave/brave-browser/issues/54641)
+  // Implement once there are concrete connection API stubs.
+  NOTIMPLEMENTED_LOG_ONCE();
+}
+
 void ConnectionManager::SetSmartProxyRoutingState(bool enable) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   // TODO(https://github.com/brave/brave-browser/issues/54641)
@@ -143,6 +155,15 @@ void ConnectionManager::UpdateSelectedRegion(mojom::VpnRegionPtr region) {
   }
   current_region_ = std::move(region);
   observers_.Notify(&Observer::OnSelectedRegionChanged, *current_region_);
+}
+
+void ConnectionManager::UpdateAutoReconnectState(bool enabled) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (auto_reconnect_enabled_ == enabled) {
+    return;
+  }
+  auto_reconnect_enabled_ = enabled;
+  observers_.Notify(&Observer::OnAutoReconnectStateChanged, enabled);
 }
 
 void ConnectionManager::UpdateSmartProxyRoutingState(bool enabled) {

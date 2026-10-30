@@ -48,6 +48,9 @@ class TestObserver : public ConnectionManager::Observer {
   void OnSelectedRegionChanged(const mojom::VpnRegion& region) override {
     selected_region_name_updates_.push_back(region.name);
   }
+  void OnAutoReconnectStateChanged(bool enabled) override {
+    auto_reconnect_state_updates_.push_back(enabled);
+  }
   void OnSmartProxyRoutingStateChanged(bool enabled) override {
     smart_proxy_routing_state_updates_.push_back(enabled);
   }
@@ -65,6 +68,9 @@ class TestObserver : public ConnectionManager::Observer {
   const std::vector<std::string>& selected_region_name_updates() const {
     return selected_region_name_updates_;
   }
+  const std::vector<bool>& auto_reconnect_state_updates() const {
+    return auto_reconnect_state_updates_;
+  }
   const std::vector<bool>& smart_proxy_routing_state_updates() const {
     return smart_proxy_routing_state_updates_;
   }
@@ -79,6 +85,7 @@ class TestObserver : public ConnectionManager::Observer {
  private:
   std::vector<ConnectionStateUpdate> connection_state_updates_;
   std::vector<std::string> selected_region_name_updates_;
+  std::vector<bool> auto_reconnect_state_updates_;
   std::vector<bool> smart_proxy_routing_state_updates_;
   std::vector<AllowLanTrafficStateUpdate> allow_lan_traffic_state_updates_;
   std::vector<std::string> last_hostname_updates_;
@@ -170,6 +177,18 @@ TEST_F(ConnectionManagerTest, UpdatesAllowLanTrafficState) {
   EXPECT_FALSE(updates[0].enabled);
   EXPECT_TRUE(updates[1].available);
   EXPECT_TRUE(updates[1].enabled);
+}
+
+TEST_F(ConnectionManagerTest, UpdatesAutoReconnectState) {
+  EXPECT_FALSE(manager_.auto_reconnect_enabled());
+
+  manager_.UpdateAutoReconnectState(true);
+  manager_.UpdateAutoReconnectState(true);
+  manager_.UpdateAutoReconnectState(false);
+
+  EXPECT_FALSE(manager_.auto_reconnect_enabled());
+  EXPECT_EQ((std::vector<bool>{true, false}),
+            observer_.auto_reconnect_state_updates());
 }
 
 TEST_F(ConnectionManagerTest, UpdatesSmartProxyRoutingState) {

@@ -140,6 +140,7 @@ TEST_F(BrowserHostImplTest, SendsCurrentStateOnCreation) {
   connection_manager_.UpdateConnectionState(
       mojom::VpnConnectionState::kConnectFailed, "Server unreachable");
   connection_manager_.UpdateSelectedRegion(mojom::VpnRegion::New("Europe"));
+  connection_manager_.UpdateAutoReconnectState(true);
   connection_manager_.UpdateSmartProxyRoutingState(true);
   connection_manager_.UpdateAllowLanTrafficState(true, true);
   connection_manager_.UpdateLastHostname("eu-1.example.com");
@@ -160,6 +161,7 @@ TEST_F(BrowserHostImplTest, SendsCurrentStateOnCreation) {
   ASSERT_EQ(1u, regions.size());
   EXPECT_EQ("Europe", regions[0]->name);
 
+  EXPECT_EQ(std::vector<bool>{true}, endpoint.auto_reconnect_state_updates());
   EXPECT_EQ(std::vector<bool>{true},
             endpoint.smart_proxy_routing_state_updates());
 
@@ -183,6 +185,7 @@ TEST_F(BrowserHostImplTest, RelaysStateChangesToEndpoint) {
   connection_manager_.UpdateConnectionState(
       mojom::VpnConnectionState::kConnectFailed, "Server unreachable");
   connection_manager_.UpdateSelectedRegion(mojom::VpnRegion::New("Asia"));
+  connection_manager_.UpdateAutoReconnectState(true);
   connection_manager_.UpdateSmartProxyRoutingState(true);
   connection_manager_.UpdateAllowLanTrafficState(true, false);
   connection_manager_.UpdateLastHostname("as-1.example.com");
@@ -203,6 +206,8 @@ TEST_F(BrowserHostImplTest, RelaysStateChangesToEndpoint) {
   EXPECT_EQ("Asia", regions[1]->name);
 
   EXPECT_EQ((std::vector<bool>{false, true}),
+            endpoint.auto_reconnect_state_updates());
+  EXPECT_EQ((std::vector<bool>{false, true}),
             endpoint.smart_proxy_routing_state_updates());
 
   const auto& lan = endpoint.allow_lan_traffic_state_updates();
@@ -221,6 +226,7 @@ TEST_F(BrowserHostImplTest, ForwardsCallsToConnectionManager) {
   browser_.host()->Disconnect();
   browser_.host()->ResetConnectionState();
   browser_.host()->SetSelectedRegion(mojom::VpnRegion::New("Europe"));
+  browser_.host()->SetAutoReconnectState(true);
   browser_.host()->SetSmartProxyRoutingState(true);
   // False rather than true: proves the request was recorded, not just that the
   // optional happens to hold a truthy value.
@@ -232,6 +238,7 @@ TEST_F(BrowserHostImplTest, ForwardsCallsToConnectionManager) {
   EXPECT_EQ(1, connection_manager_.reset_connection_state_calls());
   ASSERT_TRUE(connection_manager_.last_selected_region());
   EXPECT_EQ("Europe", connection_manager_.last_selected_region()->name);
+  EXPECT_EQ(true, connection_manager_.last_auto_reconnect_request());
   EXPECT_EQ(true, connection_manager_.last_smart_proxy_routing_request());
   EXPECT_EQ(false, connection_manager_.last_allow_lan_traffic_request());
 }

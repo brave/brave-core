@@ -30,6 +30,7 @@ class FakeConnectionManager : public ConnectionManager {
   void ResetConnectionState() override;
   void GetAllRegions(GetAllRegionsCallback callback) override;
   void SetSelectedRegion(mojom::VpnRegionPtr region) override;
+  void SetAutoReconnectState(bool enable) override;
   void SetSmartProxyRoutingState(bool enable) override;
   void SetAllowLanTrafficState(bool enable) override;
 
@@ -38,6 +39,7 @@ class FakeConnectionManager : public ConnectionManager {
 
   // Lets tests simulate the VPN changing state.
   using ConnectionManager::UpdateAllowLanTrafficState;
+  using ConnectionManager::UpdateAutoReconnectState;
   using ConnectionManager::UpdateConnectionState;
   using ConnectionManager::UpdateLastHostname;
   using ConnectionManager::UpdateSelectedRegion;
@@ -54,6 +56,9 @@ class FakeConnectionManager : public ConnectionManager {
   const mojom::VpnRegionPtr& last_selected_region() const {
     return last_selected_region_;
   }
+  std::optional<bool> last_auto_reconnect_request() const {
+    return last_auto_reconnect_request_;
+  }
   std::optional<bool> last_smart_proxy_routing_request() const {
     return last_smart_proxy_routing_request_;
   }
@@ -67,6 +72,7 @@ class FakeConnectionManager : public ConnectionManager {
   int reset_connection_state_calls_ = 0;
   std::vector<mojom::VpnRegionPtr> regions_;
   mojom::VpnRegionPtr last_selected_region_;
+  std::optional<bool> last_auto_reconnect_request_;
   std::optional<bool> last_smart_proxy_routing_request_;
   std::optional<bool> last_allow_lan_traffic_request_;
 };
