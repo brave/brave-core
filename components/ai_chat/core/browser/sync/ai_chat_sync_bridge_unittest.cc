@@ -684,7 +684,7 @@ TEST_F(AIChatSyncBridgeTest,
 // created. A later metadata record must upgrade the stub in place without
 // dropping the entry rows that were attached during the stub phase. Entries
 // hold conversation_uuid as a plain column rather than a foreign key, so
-// `INSERT OR REPLACE` on the parent has nothing to cascade into.
+// writing the parent row has nothing to cascade into.
 TEST_F(AIChatSyncBridgeTest,
        ApplyIncrementalSyncChangesUpgradesStubConversation) {
   CreateBridge();
@@ -727,7 +727,7 @@ TEST_F(AIChatSyncBridgeTest,
             .has_value());
   }
 
-  // Title is populated and the entry survived the REPLACE.
+  // Title is populated and the entry survived.
   auto conversations = db_->GetAllConversations();
   ASSERT_EQ(conversations.size(), 1u);
   EXPECT_EQ(conversations[0]->uuid, "conv-to-upgrade");
