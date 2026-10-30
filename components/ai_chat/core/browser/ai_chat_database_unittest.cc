@@ -192,6 +192,16 @@ class AIChatDatabaseTest : public testing::Test,
     CHECK(statement.Run());
   }
 
+  // Inserts a completion event row that no conversation_entry row owns.
+  bool InsertOrphanCompletion(std::string_view entry_uuid, int event_order) {
+    sql::Statement statement(db_->GetDB().GetUniqueStatement(
+        "INSERT INTO conversation_entry_event_completion"
+        " (conversation_entry_uuid, event_order, text) VALUES(?, ?, X'00')"));
+    statement.BindString(0, entry_uuid);
+    statement.BindInt(1, event_order);
+    return statement.Run();
+  }
+
  protected:
   base::test::TaskEnvironment task_environment_{
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};
@@ -1499,6 +1509,40 @@ TEST_P(AIChatDatabaseTest, DeleteConversationEntryWithAssociatedContent) {
   EXPECT_EQ(archive_result->entries[0]->uuid.value(), history[1]->uuid.value());
 }
 
+TEST_P(AIChatDatabaseTest, ApplyRemoteEntryFailsOnFailedChildInsert) {
+  // A child row that fails to insert fails the whole apply and leaves the
+  // replaced entry intact, rather than reporting a partial entry as applied.
+  auto make_response = [](std::string_view uuid, std::string_view completion) {
+    auto response = mojom::ConversationTurn::New();
+    response->uuid = std::string(uuid);
+    response->character_type = mojom::CharacterType::ASSISTANT;
+    response->action_type = mojom::ActionType::RESPONSE;
+    response->created_time = base::Time::Now();
+    response->events = std::vector<mojom::ConversationEntryEventPtr>();
+    response->events->push_back(
+        mojom::ConversationEntryEvent::NewCompletionEvent(
+            mojom::CompletionEvent::New(std::string(completion))));
+    return response;
+  };
+
+  auto original = make_response("entry-1", "Original");
+  ASSERT_TRUE(db_->ApplyRemoteEntry("conv", original->Clone(), {}, {}));
+
+  // No entry owns this row, so the replace doesn't delete it, and it collides
+  // with the edit's first event.
+  ASSERT_TRUE(InsertOrphanCompletion("edit-1", /*event_order=*/0));
+
+  auto replacement = make_response("entry-1", "Replaced");
+  replacement->edits.emplace();
+  replacement->edits->push_back(make_response("edit-1", "Edited"));
+  EXPECT_FALSE(db_->ApplyRemoteEntry("conv", std::move(replacement), {}, {}));
+
+  auto data = db_->GetConversationData("conv");
+  ASSERT_TRUE(data);
+  ASSERT_EQ(data->entries.size(), 1u);
+  ExpectConversationEntryEquals(FROM_HERE, data->entries[0], original);
+}
+
 // Sync metadata tests (non-parameterized, use the same fixture setup pattern).
 class AIChatDatabaseSyncTest : public testing::Test {
  public:
@@ -1650,12 +1694,27 @@ TEST_F(AIChatDatabaseSyncTest,
   EXPECT_EQ(conversations[0]->title, "Updated");
   EXPECT_EQ(conversations[0]->total_tokens, 42u);
 
-  // ...and the existing entry survives (foreign_keys off, so REPLACE of the
-  // conversation row does not cascade into entries).
+  // ...and the existing entry survives.
   auto data = db_->GetConversationData("conv");
   ASSERT_TRUE(data);
   ASSERT_EQ(data->entries.size(), 1u);
   EXPECT_EQ(data->entries[0]->uuid, "entry-1");
+}
+
+TEST_F(AIChatDatabaseSyncTest, ApplyRemoteConversationMetadataTwice) {
+  // Replaying this device's own record leaves the row unchanged, which must
+  // still take the update path rather than insert a duplicate uuid.
+  auto conversation = mojom::Conversation::New();
+  conversation->uuid = "conv";
+  conversation->title = "Title";
+  conversation->total_tokens = 42;
+  ASSERT_TRUE(db_->ApplyRemoteConversationMetadata(conversation->Clone()));
+  EXPECT_TRUE(db_->ApplyRemoteConversationMetadata(std::move(conversation)));
+
+  auto conversations = db_->GetAllConversations();
+  ASSERT_EQ(conversations.size(), 1u);
+  EXPECT_EQ(conversations[0]->title, "Title");
+  EXPECT_EQ(conversations[0]->total_tokens, 42u);
 }
 
 TEST_F(AIChatDatabaseSyncTest,

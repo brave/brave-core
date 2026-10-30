@@ -1207,7 +1207,9 @@ bool AIChatDatabase::AddConversationEntry(
             return false;
           }
           event_statement.BindString(2, entry->uuid.value());
-          event_statement.Run();
+          if (!event_statement.Run()) {
+            return false;
+          }
           break;
         }
         case mojom::ConversationEntryEvent::Tag::kSearchQueriesEvent: {
@@ -1227,7 +1229,9 @@ bool AIChatDatabase::AddConversationEntry(
             return false;
           }
           event_statement.BindString(2, entry->uuid.value());
-          event_statement.Run();
+          if (!event_statement.Run()) {
+            return false;
+          }
           break;
         }
         case mojom::ConversationEntryEvent::Tag::kSourcesEvent: {
@@ -1250,7 +1254,9 @@ bool AIChatDatabase::AddConversationEntry(
             return false;
           }
           event_statement.BindString(2, entry->uuid.value());
-          event_statement.Run();
+          if (!event_statement.Run()) {
+            return false;
+          }
           break;
         }
         case mojom::ConversationEntryEvent::Tag::kInlineSearchEvent: {
@@ -1274,7 +1280,9 @@ bool AIChatDatabase::AddConversationEntry(
             return false;
           }
           event_statement.BindString(2, entry->uuid.value());
-          event_statement.Run();
+          if (!event_statement.Run()) {
+            return false;
+          }
           break;
         }
         case mojom::ConversationEntryEvent::Tag::kToolUseEvent: {
@@ -1300,7 +1308,9 @@ bool AIChatDatabase::AddConversationEntry(
             return false;
           }
           event_statement.BindString(2, entry->uuid.value());
-          event_statement.Run();
+          if (!event_statement.Run()) {
+            return false;
+          }
           break;
         }
         default: {
@@ -1345,7 +1355,9 @@ bool AIChatDatabase::AddConversationEntry(
       BindAndEncryptOptionalString(uploaded_file_statement, 5,
                                    uploaded_file->extracted_text);
       uploaded_file_statement.BindString(6, entry->uuid.value());
-      uploaded_file_statement.Run();
+      if (!uploaded_file_statement.Run()) {
+        return false;
+      }
     }
   }
 
@@ -2072,37 +2084,60 @@ bool AIChatDatabase::ApplyRemoteConversationMetadata(
     return false;
   }
 
-  // Upsert by uuid. Chromium builds SQLite with SQLITE_OMIT_UPSERT, so this is
-  // INSERT OR REPLACE and the column list has to name every column in the
-  // table: REPLACE resets the ones it leaves out. It cannot cascade into the
-  // entry or associated content rows, which hold conversation_uuid as a plain
-  // string column rather than a real foreign key and sync as their own
-  // per-record entities. Clearing is_sync_stub lists a stub that
-  // ApplyRemoteEntry created ahead of this record.
-  static constexpr char kUpsertConversationQuery[] =
-      "INSERT OR REPLACE INTO conversation"
-      "  (uuid, title, model_key, total_tokens, trimmed_tokens, is_sync_stub)"
-      "  VALUES(?, ?, ?, ?, ?, 0)";
-  sql::Statement statement(
-      GetDB().GetCachedStatement(SQL_FROM_HERE, kUpsertConversationQuery));
-  CHECK(statement.is_valid());
-  statement.BindString(0, conversation->uuid);
-  // Fail on an encryption error rather than bind NULL over the stored title.
-  if (conversation->title.empty()) {
-    statement.BindNull(1);
-  } else if (!BindAndEncryptString(statement, 1, conversation->title)) {
+  // Upsert by uuid: update the row in place, and insert only when there is
+  // none. Chromium builds SQLite with SQLITE_OMIT_UPSERT, and INSERT OR REPLACE
+  // would reset every column it doesn't name, whereas UPDATE keeps them.
+  // Neither touches the entry or associated content rows, which sync as their
+  // own records. Clearing is_sync_stub lists a stub that ApplyRemoteEntry
+  // created ahead of this record.
+  static constexpr char kUpdateConversationQuery[] =
+      "UPDATE conversation SET title=?, model_key=?, total_tokens=?,"
+      " trimmed_tokens=?, is_sync_stub=0 WHERE uuid=?";
+  static constexpr char kInsertConversationQuery[] =
+      "INSERT INTO conversation"
+      "  (title, model_key, total_tokens, trimmed_tokens, uuid)"
+      "  VALUES(?, ?, ?, ?, ?)";
+  // Both statements take the same parameters in the same order.
+  auto bind = [&](sql::Statement& statement) {
+    // Fail on an encryption error rather than bind NULL over the stored title.
+    if (conversation->title.empty()) {
+      statement.BindNull(0);
+    } else if (!BindAndEncryptString(statement, 0, conversation->title)) {
+      return false;
+    }
+    BindOptionalString(statement, 1, conversation->model_key);
+    statement.BindInt64(2, conversation->total_tokens);
+    statement.BindInt64(3, conversation->trimmed_tokens);
+    statement.BindString(4, conversation->uuid);
+    return true;
+  };
+
+  sql::Statement update_statement(
+      GetDB().GetCachedStatement(SQL_FROM_HERE, kUpdateConversationQuery));
+  CHECK(update_statement.is_valid());
+  if (!bind(update_statement)) {
     return false;
   }
-  BindOptionalString(statement, 2, conversation->model_key);
-  statement.BindInt64(3, conversation->total_tokens);
-  statement.BindInt64(4, conversation->trimmed_tokens);
-
-  if (!statement.Run()) {
-    DVLOG(0) << "Failed to upsert remote conversation: "
+  if (!update_statement.Run()) {
+    DVLOG(0) << "Failed to update remote conversation: "
              << db_.GetErrorMessage();
     return false;
   }
+  if (GetDB().GetLastChangeCount() > 0) {
+    return true;
+  }
 
+  sql::Statement insert_statement(
+      GetDB().GetCachedStatement(SQL_FROM_HERE, kInsertConversationQuery));
+  CHECK(insert_statement.is_valid());
+  if (!bind(insert_statement)) {
+    return false;
+  }
+  if (!insert_statement.Run()) {
+    DVLOG(0) << "Failed to insert remote conversation: "
+             << db_.GetErrorMessage();
+    return false;
+  }
   return true;
 }
 
