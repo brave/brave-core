@@ -8,5 +8,5 @@ substitutions:
       'Use BraveMediaNotificationControllerDelegate for Brave Talk mic
       foreground-service support.'
     regex:
-      pattern: 'ChromeMediaNotificationControllerDelegate::new'
-      replace: 'BraveMediaNotificationControllerDelegate::new'
+      re_pattern: '(Chrome)(MediaNotificationControllerDelegate::new)'
+      replace: 'Brave\2'
