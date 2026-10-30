@@ -4,6 +4,14 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
+  - description: 'Skip the sidebar web panel when encoding pinned tabs'
+    add_after_line:
+      line: 'content::WebContents* web_contents = tab->GetContents();'
+      code: |2-
+            if (BraveShouldSkipPinnedTab(browser, web_contents)) {
+              continue;
+            }
+
   - description: 'Add handler to modify encoded pinned tab'
     regex:
       re_pattern: |-
