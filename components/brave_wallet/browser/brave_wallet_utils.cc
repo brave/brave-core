@@ -965,15 +965,15 @@ std::string eTLDPlusOne(const url::Origin& origin) {
 }
 
 mojom::OriginInfoPtr MakeOriginInfo(const url::Origin& origin) {
-  DCHECK(IsValidDappOrigin(origin));
   return mojom::OriginInfo::New(origin.Serialize(), eTLDPlusOne(origin));
 }
 
-mojom::OriginInfoPtr MakeOriginInfo(
+mojom::OriginInfoPtr MakeDappOriginInfo(
     base::optional_ref<const url::Origin> dapp_origin) {
   if (!dapp_origin) {
     return nullptr;
   }
+  DCHECK(IsValidDappOrigin(*dapp_origin));
   return MakeOriginInfo(*dapp_origin);
 }
 

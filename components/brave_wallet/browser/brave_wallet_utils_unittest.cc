@@ -484,6 +484,19 @@ TEST(BraveWalletUtilsUnitTest, MakeOriginInfo) {
   EXPECT_EQ("brave.com", origin_info->e_tld_plus_one);
 }
 
+TEST(BraveWalletUtilsUnitTest, MakeOriginInfoAllowsNonDappOrigins) {
+  const url::Origin wallet_origin =
+      url::Origin::Create(GURL("chrome://wallet"));
+  auto wallet_origin_info = MakeOriginInfo(wallet_origin);
+  ASSERT_TRUE(wallet_origin_info);
+  EXPECT_EQ(wallet_origin.Serialize(), wallet_origin_info->origin_spec);
+
+  const url::Origin opaque_origin;
+  auto opaque_origin_info = MakeOriginInfo(opaque_origin);
+  ASSERT_TRUE(opaque_origin_info);
+  EXPECT_EQ(opaque_origin.Serialize(), opaque_origin_info->origin_spec);
+}
+
 TEST(BraveWalletUtilsUnitTest, GenerateRandomHexString) {
   std::set<std::string> strings;
   for (int i = 0; i < 1000; ++i) {

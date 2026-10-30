@@ -95,6 +95,8 @@ bool TxStateManager::ValueToBaseTxMeta(const base::DictValue& value,
     bool wallet_origin =
         dapp_origin.IsSameOriginWith(GURL("chrome://wallet")) ||
         dapp_origin.IsSameOriginWith(GURL("brave://wallet"));
+    // `origin` must be either a valid dapp origin, or legacy stored wallet
+    // origin which is converted to nullopt for dapp_origin.
     if (IsValidDappOrigin(dapp_origin)) {
       meta->set_dapp_origin(dapp_origin);
     } else if (!wallet_origin) {
