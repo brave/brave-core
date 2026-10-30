@@ -24,6 +24,7 @@
 #include "components/password_manager/core/browser/password_form.h"
 #include "components/password_manager/core/browser/ui/saved_passwords_presenter.h"
 #include "components/url_formatter/url_formatter.h"
+#include "third_party/jni_zero/jni_zero.h"
 #include "ui/base/l10n/l10n_util.h"
 
 // Must come after all headers that specialize FromJniType() / ToJniType().
@@ -64,7 +65,7 @@ CredentialEditBridge::CredentialEditBridge(
       java_bridge_(java_bridge) {
   Java_CredentialEditBridge_initAndLaunchUi(
       base::android::AttachCurrentThread(), java_bridge_,
-      reinterpret_cast<intptr_t>(this), context, credential.blocked_by_user,
+      jni_zero::MakeRaw(this), context, credential.blocked_by_user,
       credential.federation_origin.IsValid());
 }
 
