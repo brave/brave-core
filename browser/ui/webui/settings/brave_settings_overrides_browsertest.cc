@@ -26,6 +26,11 @@ IN_PROC_BROWSER_TEST_F(BraveSettingsOverridesWebUITest, UI) {
   RunTest("settings/settings_ui_test.js", "runMochaSuite('BraveSettingsUI')");
 }
 
+IN_PROC_BROWSER_TEST_F(BraveSettingsOverridesWebUITest, AppearancePage) {
+  RunTest("settings/appearance_page_test.js",
+          "runMochaSuite('BraveAppearancePage')");
+}
+
 IN_PROC_BROWSER_TEST_F(BraveSettingsOverridesWebUITest, AutofillPage) {
   RunTest("settings/autofill_page_test.js",
           "runMochaSuite('BraveAutofillPage')");
