@@ -59,7 +59,6 @@ void PsstLogReceiver::Log(mojom::PsstLogLevel level,
 
   log_service_->AddEntry(
       mojom::PsstLogSource::kScript, level, tab_id,
-      sender_rfh.GetFrameToken().ToString(),
       sender_rfh.GetLastCommittedOrigin().GetURL(),
       base::TruncateUTF8ToByteSize(message, kMaxScriptMessageLength),
       std::move(data));
