@@ -18,6 +18,7 @@ android_library("java") {
     "//brave/build/android:android_brave_strings_grd",
     "//third_party/android_deps:com_airbnb_android_lottie_java",
     "//third_party/android_deps:material_design_java",
+    "//third_party/androidx:androidx_annotation_annotation_java",
     "//third_party/androidx:androidx_recyclerview_recyclerview_java",
     "//third_party/androidx:androidx_viewpager2_viewpager2_java",
   ]

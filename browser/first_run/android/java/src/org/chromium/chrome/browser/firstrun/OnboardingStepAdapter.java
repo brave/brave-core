@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.LayoutRes;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -22,6 +23,9 @@ import com.google.android.material.checkbox.MaterialCheckBox;
 
 import org.chromium.brave.browser.firstrun.R;
 import org.chromium.build.annotations.NullMarked;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * RecyclerView adapter for the onboarding ViewPager2, inflating one layout per step and delegating
@@ -47,12 +51,8 @@ public class OnboardingStepAdapter
         void onP3aPreferenceChanged(final boolean enabled);
     }
 
-    private final int[] mSteps;
-
-    private final int mHelpBraveSearchPosition;
-    private final int mBlockInterruptionsPosition;
-    private final int mCustomizeBravePosition;
-    private final int mMakeBraveBetterPosition;
+    /** Layouts of the visible steps, in display order. */
+    private final List<Integer> mSteps = new ArrayList<>();
 
     private final SpannableString mWdpLearnMore;
     private final PageBounceAnimator mPageBounceAnimator;
@@ -62,8 +62,6 @@ public class OnboardingStepAdapter
     private boolean mCrashReportingManaged;
     private boolean mP3aChecked;
     private boolean mP3aManaged;
-    private final boolean mSkipMakeBraveBetter;
-    private final boolean mHasCustomizeStep;
 
     public OnboardingStepAdapter(
             final SpannableString wdpLearnMore,
@@ -72,67 +70,42 @@ public class OnboardingStepAdapter
             final PageBounceAnimator pageBounceAnimator,
             final OnboardingNavigationListener listener) {
         mWdpLearnMore = wdpLearnMore;
-        mSkipMakeBraveBetter = skipMakeBraveBetter;
-        mHasCustomizeStep =
-                DAY_ZERO_VARIANT_Y.equals(dayZeroVariant)
-                        || DAY_ZERO_VARIANT_Z.equals(dayZeroVariant);
         mPageBounceAnimator = pageBounceAnimator;
         mListener = listener;
 
-        mSteps =
-                mHasCustomizeStep
-                        ? new int[] {
-                            R.layout.help_brave_search,
-                            R.layout.block_interruptions,
-                            R.layout.customize_brave,
-                            R.layout.make_brave_better
-                        }
-                        : new int[] {
-                            R.layout.help_brave_search,
-                            R.layout.block_interruptions,
-                            R.layout.make_brave_better
-                        };
-
-        mHelpBraveSearchPosition = 0;
-        mBlockInterruptionsPosition = 1;
-        mCustomizeBravePosition = mHasCustomizeStep ? 2 : -1;
-        if (mSkipMakeBraveBetter) {
-            mMakeBraveBetterPosition = -1;
-        } else {
-            mMakeBraveBetterPosition = mHasCustomizeStep ? 3 : 2;
+        mSteps.add(R.layout.help_brave_search);
+        mSteps.add(R.layout.block_interruptions);
+        if (DAY_ZERO_VARIANT_Y.equals(dayZeroVariant)
+                || DAY_ZERO_VARIANT_Z.equals(dayZeroVariant)) {
+            mSteps.add(R.layout.customize_brave);
+        }
+        if (!skipMakeBraveBetter) {
+            mSteps.add(R.layout.make_brave_better);
         }
     }
 
     @Override
     public OnboardingBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        final View view = inflater.inflate(mSteps[viewType], parent, false);
+        final View view = inflater.inflate(viewType, parent, false);
 
-        if (viewType == mHelpBraveSearchPosition) {
+        if (viewType == R.layout.help_brave_search) {
             return new HelpBraveSearchViewHolder(
-                    view,
-                    mWdpLearnMore,
-                    mBlockInterruptionsPosition,
-                    mPageBounceAnimator,
-                    mListener);
+                    view, mWdpLearnMore, getNextPosition(viewType), mPageBounceAnimator, mListener);
         }
 
-        if (viewType == mBlockInterruptionsPosition) {
-            // If Make Brave Better page needs to be skipped because both settings are managed
-            // by policy the assigned valued will be -1 (check the logic in the constructor)
-            // so the listener will call onDismiss.
-            final int nextOnboardingPosition =
-                    mHasCustomizeStep ? mCustomizeBravePosition : mMakeBraveBetterPosition;
+        if (viewType == R.layout.block_interruptions) {
+            // When it is the last step the next position is -1 and the view holder dismisses.
             return new BlockInterruptionsViewHolder(
-                    view, nextOnboardingPosition, mPageBounceAnimator, mListener);
+                    view, getNextPosition(viewType), mPageBounceAnimator, mListener);
         }
 
-        if (viewType == mCustomizeBravePosition) {
+        if (viewType == R.layout.customize_brave) {
             // TODO:
             throw new AssertionError("Customize Brave view holder is not implemented yet.");
         }
 
-        if (viewType == mMakeBraveBetterPosition) {
+        if (viewType == R.layout.make_brave_better) {
             return new MakeBraveBetterViewHolder(
                     view,
                     mCrashReportingManaged,
@@ -160,13 +133,13 @@ public class OnboardingStepAdapter
     }
 
     @Override
-    public int getItemViewType(int position) {
-        return position;
+    public @LayoutRes int getItemViewType(int position) {
+        return mSteps.get(position);
     }
 
     @Override
     public int getItemCount() {
-        return mSteps.length;
+        return mSteps.size();
     }
 
     public void setCrashReportingChecked(final boolean checked) {
@@ -174,7 +147,7 @@ public class OnboardingStepAdapter
             return;
         }
         mCrashReportingChecked = checked;
-        notifyItemChanged(mMakeBraveBetterPosition);
+        notifyStepChanged(R.layout.make_brave_better);
     }
 
     public void setCrashReportingManaged(final boolean managed) {
@@ -182,7 +155,7 @@ public class OnboardingStepAdapter
             return;
         }
         mCrashReportingManaged = managed;
-        notifyItemChanged(mMakeBraveBetterPosition);
+        notifyStepChanged(R.layout.make_brave_better);
     }
 
     public void setP3aChecked(final boolean checked) {
@@ -190,7 +163,7 @@ public class OnboardingStepAdapter
             return;
         }
         mP3aChecked = checked;
-        notifyItemChanged(mMakeBraveBetterPosition);
+        notifyStepChanged(R.layout.make_brave_better);
     }
 
     public void setP3aManaged(final boolean managed) {
@@ -198,7 +171,20 @@ public class OnboardingStepAdapter
             return;
         }
         mP3aManaged = managed;
-        notifyItemChanged(mMakeBraveBetterPosition);
+        notifyStepChanged(R.layout.make_brave_better);
+    }
+
+    /** Returns the position after the given step, or -1 when it is the last one. */
+    private int getNextPosition(@LayoutRes final int step) {
+        final int next = mSteps.indexOf(step) + 1;
+        return next < mSteps.size() ? next : -1;
+    }
+
+    private void notifyStepChanged(@LayoutRes final int step) {
+        final int position = mSteps.indexOf(step);
+        if (position != -1) {
+            notifyItemChanged(position);
+        }
     }
 
     public abstract static class OnboardingBaseViewHolder extends RecyclerView.ViewHolder {
