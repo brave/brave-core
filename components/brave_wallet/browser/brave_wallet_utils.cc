@@ -26,6 +26,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/solana_address.h"
@@ -964,7 +965,7 @@ std::string eTLDPlusOne(const url::Origin& origin) {
 }
 
 mojom::OriginInfoPtr MakeOriginInfo(const url::Origin& origin) {
-  DCHECK(!origin.opaque());
+  DCHECK(IsValidDappOrigin(origin));
   return mojom::OriginInfo::New(origin.Serialize(), eTLDPlusOne(origin));
 }
 

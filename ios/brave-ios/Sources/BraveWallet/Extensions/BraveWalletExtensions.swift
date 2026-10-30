@@ -133,13 +133,6 @@ extension BraveWallet.TransactionInfo {
   }
 }
 
-extension BraveWallet.OriginInfo {
-  /// If the current OriginInfo matches the Brave Wallet origin
-  var isBraveWalletOrigin: Bool {
-    originSpec == WalletConstants.braveWalletOriginSpec
-  }
-}
-
 extension BraveWallet.ChainId {
   open override func isEqual(_ object: Any?) -> Bool {
     guard let object = object as? BraveWallet.ChainId else { return false }
