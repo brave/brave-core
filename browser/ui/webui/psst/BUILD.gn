@@ -21,10 +21,6 @@ static_library("psst") {
 
   public_deps = [
     "//brave/browser/psst",
-
-    # `psst_internals_ui.h` uses `kPsstInternalsHost` from
-    # //brave/components/constants/webui_url_constants.h.
-    "//brave/components/constants",
     "//brave/components/psst/core/browser",
     "//brave/components/psst/core/common",
     "//brave/components/psst/core/common:mojom",
@@ -60,11 +56,9 @@ source_set("browser_tests") {
 
   deps = [
     "//brave/browser/psst",
-    "//brave/components/constants",
     "//brave/components/psst/core/browser",
     "//brave/components/psst/core/common",
     "//chrome/browser/profiles:profile",
-    "//chrome/browser/ui",
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/tabs",
     "//chrome/test:test_support",
