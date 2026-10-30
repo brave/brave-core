@@ -74,14 +74,19 @@ public class OnboardingStepAdapterTest {
                 mWdpLearnMore, dayZeroVariant, skipMakeBraveBetter, mPageBounceAnimator, mListener);
     }
 
+    private OnboardingStepAdapter.OnboardingBaseViewHolder createViewHolder(
+            final OnboardingStepAdapter adapter, final int position) {
+        return adapter.onCreateViewHolder(mParent, adapter.getItemViewType(position));
+    }
+
     @Test
     public void testItemCountAndViewTypes() {
         OnboardingStepAdapter adapter = createAdapter();
 
         assertEquals(TOTAL_STEPS, adapter.getItemCount());
-        assertEquals(HELP_BRAVE_SEARCH, adapter.getItemViewType(0));
-        assertEquals(BLOCK_INTERRUPTIONS, adapter.getItemViewType(1));
-        assertEquals(MAKE_BRAVE_BETTER, adapter.getItemViewType(2));
+        assertEquals(R.layout.help_brave_search, adapter.getItemViewType(HELP_BRAVE_SEARCH));
+        assertEquals(R.layout.block_interruptions, adapter.getItemViewType(BLOCK_INTERRUPTIONS));
+        assertEquals(R.layout.make_brave_better, adapter.getItemViewType(MAKE_BRAVE_BETTER));
     }
 
     @Test
@@ -89,7 +94,7 @@ public class OnboardingStepAdapterTest {
         OnboardingStepAdapter adapter = createAdapter();
 
         OnboardingStepAdapter.OnboardingBaseViewHolder holder =
-                adapter.onCreateViewHolder(mParent, 0);
+                createViewHolder(adapter, HELP_BRAVE_SEARCH);
         TextView subtitle = holder.itemView.findViewById(R.id.brave_onboarding_subtitle);
         Button later = holder.itemView.findViewById(R.id.onboarding_later);
         Button sure = holder.itemView.findViewById(R.id.onboarding_sure);
@@ -113,7 +118,7 @@ public class OnboardingStepAdapterTest {
         OnboardingStepAdapter adapter = createAdapter();
 
         OnboardingStepAdapter.OnboardingBaseViewHolder holder =
-                adapter.onCreateViewHolder(mParent, 1);
+                createViewHolder(adapter, BLOCK_INTERRUPTIONS);
         Button continueButton = holder.itemView.findViewById(R.id.onboarding_continue);
 
         assertNotNull(continueButton);
@@ -128,8 +133,10 @@ public class OnboardingStepAdapterTest {
     public void testBlockInterruptionsDismissesWhenMakeBraveBetterSkipped() {
         OnboardingStepAdapter adapter = createAdapter(DAY_ZERO_DEFAULT_VARIANT, true);
 
+        assertEquals(TOTAL_STEPS - 1, adapter.getItemCount());
+
         OnboardingStepAdapter.OnboardingBaseViewHolder holder =
-                adapter.onCreateViewHolder(mParent, BLOCK_INTERRUPTIONS);
+                createViewHolder(adapter, BLOCK_INTERRUPTIONS);
         Button continueButton = holder.itemView.findViewById(R.id.onboarding_continue);
 
         continueButton.performClick();
@@ -142,9 +149,10 @@ public class OnboardingStepAdapterTest {
         OnboardingStepAdapter adapter = createAdapter(DAY_ZERO_VARIANT_Y, false);
 
         assertEquals(TOTAL_STEPS + 1, adapter.getItemCount());
+        assertEquals(R.layout.customize_brave, adapter.getItemViewType(CUSTOMIZE_BRAVE));
 
         OnboardingStepAdapter.OnboardingBaseViewHolder holder =
-                adapter.onCreateViewHolder(mParent, BLOCK_INTERRUPTIONS);
+                createViewHolder(adapter, BLOCK_INTERRUPTIONS);
         Button continueButton = holder.itemView.findViewById(R.id.onboarding_continue);
 
         continueButton.performClick();
@@ -158,7 +166,7 @@ public class OnboardingStepAdapterTest {
         adapter.setP3aManaged(true);
 
         OnboardingStepAdapter.OnboardingBaseViewHolder holder =
-                adapter.onCreateViewHolder(mParent, 2);
+                createViewHolder(adapter, MAKE_BRAVE_BETTER);
         MaterialCheckBox crashReports = holder.itemView.findViewById(R.id.send_crash_reports);
         MaterialCheckBox p3aReports = holder.itemView.findViewById(R.id.send_p3a_reports);
         Button startBrowsing = holder.itemView.findViewById(R.id.onboarding_start_browsing);
@@ -180,7 +188,7 @@ public class OnboardingStepAdapterTest {
         adapter.setP3aManaged(false);
 
         OnboardingStepAdapter.OnboardingBaseViewHolder holder =
-                adapter.onCreateViewHolder(mParent, 2);
+                createViewHolder(adapter, MAKE_BRAVE_BETTER);
         MaterialCheckBox crashReports = holder.itemView.findViewById(R.id.send_crash_reports);
         MaterialCheckBox p3aReports = holder.itemView.findViewById(R.id.send_p3a_reports);
 
@@ -197,7 +205,7 @@ public class OnboardingStepAdapterTest {
         adapter.setP3aManaged(true);
 
         OnboardingStepAdapter.OnboardingBaseViewHolder holder =
-                adapter.onCreateViewHolder(mParent, 2);
+                createViewHolder(adapter, MAKE_BRAVE_BETTER);
         MaterialCheckBox crashReports = holder.itemView.findViewById(R.id.send_crash_reports);
         MaterialCheckBox p3aReports = holder.itemView.findViewById(R.id.send_p3a_reports);
 
@@ -214,7 +222,7 @@ public class OnboardingStepAdapterTest {
         adapter.setCrashReportingChecked(true);
 
         OnboardingStepAdapter.OnboardingBaseViewHolder holder =
-                adapter.onCreateViewHolder(mParent, 2);
+                createViewHolder(adapter, MAKE_BRAVE_BETTER);
         MaterialCheckBox crashReports = holder.itemView.findViewById(R.id.send_crash_reports);
 
         assertNotNull(crashReports);
@@ -229,7 +237,7 @@ public class OnboardingStepAdapterTest {
         adapter.setP3aChecked(true);
 
         OnboardingStepAdapter.OnboardingBaseViewHolder holder =
-                adapter.onCreateViewHolder(mParent, 2);
+                createViewHolder(adapter, MAKE_BRAVE_BETTER);
         MaterialCheckBox p3aReports = holder.itemView.findViewById(R.id.send_p3a_reports);
 
         assertNotNull(p3aReports);
@@ -244,7 +252,7 @@ public class OnboardingStepAdapterTest {
         adapter.setCrashReportingChecked(false);
 
         OnboardingStepAdapter.OnboardingBaseViewHolder holder =
-                adapter.onCreateViewHolder(mParent, 2);
+                createViewHolder(adapter, MAKE_BRAVE_BETTER);
         MaterialCheckBox crashReports = holder.itemView.findViewById(R.id.send_crash_reports);
 
         assertNotNull(crashReports);
@@ -267,7 +275,7 @@ public class OnboardingStepAdapterTest {
         adapter.setP3aChecked(false);
 
         OnboardingStepAdapter.OnboardingBaseViewHolder holder =
-                adapter.onCreateViewHolder(mParent, 2);
+                createViewHolder(adapter, MAKE_BRAVE_BETTER);
         MaterialCheckBox p3aReports = holder.itemView.findViewById(R.id.send_p3a_reports);
 
         assertNotNull(p3aReports);
