@@ -266,8 +266,7 @@ public class OnboardingStepAdapter
     // step.
     private static final class CustomizeBraveViewHolder extends OnboardingBaseViewHolder {
 
-        private CustomizeBraveViewHolder(
-                final View itemView) {
+        private CustomizeBraveViewHolder(final View itemView) {
             super(itemView);
         }
 
