@@ -16,9 +16,6 @@ public class BraveMediaNotificationControllerDelegateAdapter extends BraveClassV
     public BraveMediaNotificationControllerDelegateAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        redirectConstructor(
-                sChromeMediaNotificationControllerDelegate,
-                sBraveMediaNotificationControllerDelegate);
         deleteMethod(sBraveMediaNotificationControllerDelegate, "getContext");
         makePublicMethod(sChromeMediaNotificationControllerDelegate, "getContext");
     }
