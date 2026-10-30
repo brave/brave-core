@@ -644,6 +644,9 @@ are declared in tools/grit/grit_args.gni.
         <message name="IDS_CONTENT_CONTEXT_SAVE_TO_MEMORY_BANKS" desc="The name of the Save to Memory Banks command in the context menu">
           Save to Memory
         </message>
+        <message name="IDS_CONTENT_CONTEXT_BROWSE_MEMORY_BANKS" desc="The name of the Browse Memory Banks command in the context menu">
+          Browse Memory
+        </message>
         <message name="IDS_CONTENT_CONTEXT_ACCESSIBILITY_LABELS_DIALOG_TITLE" desc="The title of a dialog that asks whether to integrate the accessibility image labeling service of Brave to Brave.">
           Get image descriptions from Brave?
         </message>
@@ -681,7 +684,7 @@ are declared in tools/grit/grit_args.gni.
         </message>
 
         <message name="IDS_NEW_ISOLATED_WINDOW" desc="The text label of a menu item for opening a new Isolated window">
-          New &amp;isolated window
+          New &amp;Isolated window
         </message>
 
         <message name="IDS_INCOGNITO" desc="The text label for the Private button in the block header section of the App Menu">
@@ -1522,8 +1525,8 @@ are declared in tools/grit/grit_args.gni.
         <message name="IDS_APP_MENU_SEARCH_TAB_GROUPS_HEADER" desc="Section header for tab group matches in the App Menu search results.">
           Tab groups
         </message>
-        <message name="IDS_APP_MENU_TOOLS_AND_ACTIONS_HEADER" desc="Header title for the Tools and Actions section in the main App Menu">
-          Tools and Actions
+        <message name="IDS_APP_MENU_TOOLS_AND_ACTIONS_HEADER" desc="Header title for the Tools and actions section in the main App Menu">
+          Tools and actions
         </message>
         <message name="IDS_APP_MENU_INCOGNITO" desc="Label for the Private block button in the main App Menu">
           Private
@@ -1754,7 +1757,7 @@ are declared in tools/grit/grit_args.gni.
         New Private &amp;tab
       </message>
       <message name="IDS_NEW_ISOLATED_TAB" desc="The text label of a menu item for opening a new isolated tab">
-        New isolated &amp;tab
+        New Isolated &amp;tab
       </message>
       <if expr="not use_titlecase">
         <message name="IDS_VIEW_SOURCE" desc="The text label of the View Page Source menu item">
@@ -7233,6 +7236,15 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_OMNIBOX_EVERYWHERE_SWITCH_PROFILE" desc="Label for the button in the Omnibox Everywhere profile menu that opens the Brave profile switcher.">
         Switch Profile
       </message>
+      <message name="IDS_OMNIBOX_EVERYWHERE_PLACEHOLDER_LENS" desc="Placeholder text shown in the Omnibox Everywhere searchbox prompting the user to ask about their screen with Google Lens.">
+        Ask about your screen with Google Lens
+      </message>
+      <message name="IDS_OMNIBOX_EVERYWHERE_PLACEHOLDER_FILE_OR_IMAGE" desc="Placeholder text shown in the Omnibox Everywhere searchbox prompting the user to ask about a file or image.">
+        Ask about a file or image
+      </message>
+      <message name="IDS_OMNIBOX_EVERYWHERE_PLACEHOLDER_DRAG_AND_DROP" desc="Placeholder text shown in the Omnibox Everywhere searchbox prompting the user to drag and drop files into the searchbox.">
+        Drag and drop files here
+      </message>
 
       <!-- Contextual Search -->
       <if expr="use_titlecase">
@@ -8468,7 +8480,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_COMPOSE_ADD_FILE" desc="Text for a button label that opens a menu so users can add a file to their search.">
         Add file
       </message>
-      <message name="IDS_NTP_COMPOSE_ADD_DRIVE" desc="Label for the menu item in the Composebox context menu that lets users add a file from Google Drive to their search. 'Drive' refers to the Google Drive product.">
+      <message name="IDS_NTP_COMPOSE_ADD_DRIVE" desc="Label for the menu item in the Composebox context menu that lets users add a file from Google Drive to their search. 'Drive' refers to the Google Drive product." formatter_data="android_java">
         Add from Drive
       </message>
       <message name="IDS_NTP_COMPOSE_ADD_CONTEXT" desc="The text to display to ask user to add context to their search e.g. pdf or image.">
@@ -8550,6 +8562,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_COMPOSE_MAX_FILE_UPLOAD_ERROR" desc="Error message shown in toast when file limit maximum is reached.">
         You can only add up to <ph name="COUNT">$1<ex>10</ex></ph> files
+      </message>
+      <message name="IDS_COMPOSE_RELOAD_TAB" desc="Label for a button in the composebox error message that reloads the inactive browser tabs that failed to be attached as context and retries adding them.">
+        Reload tabs
+      </message>
+      <message name="IDS_COMPOSE_STALE_TAB_ERROR" desc="Error message shown in the composebox when one or more inactive or stale browser tabs could not be attached as context for a query.">
+        Reload inactive tabs to add them to your search
       </message>
 
       <message name="IDS_NTP_ACTION_CHIP_TAB_HEADING_1" desc="Heading of the tab action chip on the NTP.">
@@ -10439,13 +10457,16 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Split view
       </message>
       <message name="IDS_ORGANIZER_PANEL_TAB_GROUPS" desc="The label on the organizer panel list section corresponding to tab groups.">
-        Tab Groups
+        Tab groups
       </message>
       <message name="IDS_ORGANIZER_PANEL_CREATE_TAB_GROUP" desc="The label on the organizer panel item to create a tab group.">
         Create tab group
       </message>
       <message name="IDS_ORGANIZER_PANEL_CROSS_DEVICE_TABS" desc="The label on the organizer panel list section corresponding to tabs on other devices.">
         Tabs on other devices
+      </message>
+      <message name="IDS_ORGANIZER_PANEL_RECENTLY_CLOSED" desc="The label on the organizer panel list section corresponding to recently closed tabs.">
+        Recently closed
       </message>
       <message name="IDS_ORGANIZER_PANEL_RECENTLY_VISITED" desc="The label on the organizer panel list section corresponding to recently visited tabs.">
         Recently visited
@@ -14617,89 +14638,7 @@ This can include information about installed software, files, your browser, the 
         </message>
       </if>
 
-      <!--  Sync Confirmation section of the tab modal signin flow -->
-      <message name="IDS_SYNC_CONFIRMATION_SETTINGS_INFO" desc="Information about customizing Sync settings in the sync confirmation dialog when Unity is enabled">
-        You can always choose what to sync in settings.
-      </message>
-      <if expr="not use_titlecase">
-        <message name="IDS_SYNC_CONFIRMATION_CONFIRM_BUTTON_LABEL" desc="Label of the confirmation button in the sync confirmation dialog of the tab modal signin flow">
-          Yes, I'm in
-        </message>
-      </if>
-      <if expr="use_titlecase">
-        <message name="IDS_SYNC_CONFIRMATION_CONFIRM_BUTTON_LABEL" desc="In Title Case: Label of the confirmation button in the sync confirmation dialog of the tab modal signin flow">
-          Yes, I'm In
-        </message>
-      </if>
-      <message name="IDS_SYNC_CONFIRMATION_SETTINGS_BUTTON_LABEL" desc="Label of the button in the sync confirmation dialog of the tab modal signin flow to open settings">
-        Settings
-      </message>
-      <message name="IDS_SYNC_CONFIRMATION_REFRESHED_SETTINGS_BUTTON_LABEL" desc="Label of the button in the sync confirmation screen to open sync settings">
-        Sync settings
-      </message>
-
-      <!--  Tangible Sync version of the Sync Confirmation page -->
-      <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_TITLE" desc="This string appears as a heading on a modal window that asks users if they want to turn on sync. 'Sync' is short for 'synchronization'. The tone should be informative and inviting.">
-        Turn on sync
-      </message>
-      <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_INFO_TITLE" desc="This string appears as a subheading on a screen, and it asks users if they want to turn on sync. This string explains to users that they can back up their Brave data and use it on all their computers, phones, and other devices; a user's Brave data includes their bookmarks, passwords, history, settings, and more. If there is no natural translation for the word 'stuff' in your language, the word can be translated as 'data' or similar. Maintain the level of formality that your language generally uses in the Brave app. The tone should be informative and inviting.">
-        Back up your stuff and use it on any device
-      </message>
-      <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_INFO_TITLE_SIGNIN_INTERCEPT_V2" desc="This string appears as a subheading on a pop-up dialog, and it asks users if they want to turn on sync. This string explains to users that they can back up their Brave data and use it on all their computers, phones, and other devices; a user's Brave data includes their bookmarks, passwords, history, settings, and more. If there is no natural translation for the word 'stuff' in your language, the word can be translated as 'data' or similar. Maintain the level of formality that your language generally uses in the Brave app. The tone should be informative and inviting.">
-        Turn on sync to back up your stuff and use it on any device
-      </message>
-      <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_BOOKMARKS" desc="This string appears as an item in a list of sync data types on a screen that asks users if they want to turn on sync. Translate 'bookmarks' according to https://localization.google.com/glossary/termset?gid=27517723&amp;tsid=59c31bb. Used in the tangible sync confirmation page.">
-        Bookmarks
-      </message>
-      <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_READING_LIST" desc="This string appears as an item in a list of sync data types on a screen that asks users if they want to turn on sync. Translate 'reading list' according to https://localization.google.com/glossary/termset?gid=27517723&amp;tsid=4de6a318. Used in the tangible sync confirmation page.">
-        Reading List
-      </message>
-      <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_AUTOFILL" desc="This string appears as an item in a list of sync data types on a screen that asks users if they want to turn on sync. Translate 'autofill' according to https://localization.google.com/glossary/termset?gid=27517723&amp;tsid=77d3626. Used in the tangible sync confirmation page.">
-        Autofill
-      </message>
-      <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_EXTENSIONS" desc="This string appears as an item in a list of sync data types on a screen that asks users if they want to turn on sync. Translate 'extensions' according to https://localization.google.com/glossary/termset?gid=27517723&amp;tsid=62f9351. Used in the tangible sync confirmation page.">
-        Extensions
-      </message>
-      <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_HISTORY_AND_MORE" desc="This string appears as an item in a list of sync data types on a screen that asks users if they want to turn on sync. Translate 'history' according to https://localization.google.com/glossary/termset?gid=27517723&amp;tsid=59c3162. Translate 'and more' so that it conveys that there are additional similar items that are not listed. Used in the tangible sync confirmation page.">
-        History and more
-      </message>
-      <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_INFO_DESC" desc="This string appears in the footer on a screen that asks users if they want to turn on sync. This string informs the user that if they choose to sync, then their history may be used to personalize Search and other services. Translate 'history' according to https://localization.google.com/glossary/termset?gid=27517723&amp;tsid=59c3162">
-        You can always choose what to sync in settings. Brave may personalize Search and other services based on your history.
-      </message>
-
-      <!--  Sync Confirmation section of the Signin Intercept first run experience flow -->
-      <message name="IDS_SYNC_CONFIRMATION_WELCOME_TITLE_SIGNIN_INTERCEPT" desc="This string appears as a heading on a pop-up dialog that shows up after users create a new profile. It welcomes users. The tone should be friendly and inviting.">
-        Welcome, <ph name="USERNAME">$1<ex>Bob</ex></ph>
-      </message>
-      <if expr="not use_titlecase">
-        <message name="IDS_SYNC_CONFIRMATION_TURN_ON_SYNC_BUTTON_LABEL" desc="This string appears as a button on a dialog that asks users if they want to turn on sync. When the user taps this button, they are opting in to the sync feature. 'Sync' is short for 'synchronization'.">
-          Turn on sync
-        </message>
-      </if>
-      <if expr="use_titlecase">
-        <message name="IDS_SYNC_CONFIRMATION_TURN_ON_SYNC_BUTTON_LABEL" desc="In Title Case: This string appears as a button on a dialog that asks users if they want to turn on sync. When the user taps this button, they are opting in to the sync feature. 'Sync' is short for 'synchronization'.">
-          Turn On Sync
-        </message>
-      </if>
-
-      <!--- Sync Confirmation section of the tab modal signin flow when sync is disabled by policy -->
-      <message name="IDS_SYNC_DISABLED_CONFIRMATION_CHROME_SYNC_TITLE" desc="Title of the chrome sync section of the sync confirmation dialog in the tab modal signin flow when sync is disabled by policy">
-        Sync is disabled by your administrator
-      </message>
-      <message name="IDS_SYNC_DISABLED_CONFIRMATION_DETAILS" desc="Body of the sync confirmation dialog in the tab modal signin flow when sync is disabled by policy">
-        Your administrator has disabled syncing of your bookmarks, history, passwords, and other settings.
-       </message>
-      <message name="IDS_SYNC_DISABLED_CONFIRMATION_CONFIRM_BUTTON_LABEL" desc="Label of the confirmation button in the sync confirmation dialog of the tab modal signin flow">
-        Sign in anyway
-      </message>
-      <message name="IDS_SYNC_DISABLED_CONFIRMATION_CONFIRM_BUTTON_MANAGED_ACCOUNT_SIGNOUT_DISALLOWED_LABEL" desc="Label of the confirmation button in the sync confirmation dialog of the tab modal signin flow">
-        Continue
-      </message>
-      <message name="IDS_SYNC_DISABLED_CONFIRMATION_UNDO_BUTTON_LABEL" desc="Label of the undo button in the sync confirmation dialog of the tab modal signin flow">
-        Cancel sign in
-      </message>
-
-      <!--  Loading subscreen for Sync confirmation -->
+      <!--  Loading subscreen for History Sync Opt-in -->
       <message name="IDS_SYNC_LOADING_CONFIRMATION_TITLE" desc="Title of the sync confirmation dialog in the tab modal signin flow when Dice is enabled">
         Loading account information...
       </message>
@@ -15621,6 +15560,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <!-- TTC -->
       <message name="IDS_TTC_ENTRYPOINT_LABEL" desc="Text label of the TTC menu item." translateable="false" formatter_data="android_java">
         TTC
+      </message>
+      <message name="IDS_TTC_INACTIVITY_TIMEOUT_TOAST" translateable="false" desc="Text shown in a toast notification when a TTC session terminates due to inactivity.">
+        Listening stopped due to inactivity
       </message>
 
       <!-- Web and message center notifications -->
@@ -17847,17 +17789,11 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_RELAUNCH_RECOMMENDED_RESTART_NOW" desc="Button label to relaunch immediately.">
         Relaunch now
       </message>
-      <message name="IDS_RELAUNCH_RECOMMENDED_RESTART_WHEN_IDLE" desc="Button label to schedule an update when the user steps away.">
-        Update when I step away
+      <message name="IDS_RELAUNCH_RECOMMENDED_RESTART_WHEN_IDLE" desc="Button label to schedule an update when not in use.">
+        Update when not in use
       </message>
       <message name="IDS_RELAUNCH_RECOMMENDED_BODY_SCHEDULE_IMPORTANT_UPDATE" desc="Emphasized phrase inside the first body paragraph of the scheduled restart reminder bubble dialog.">
         important security update
-      </message>
-      <message name="IDS_RELAUNCH_RECOMMENDED_BODY_SCHEDULE_IDLE_DURATION" desc="Emphasized idle duration inside the first body paragraph of the scheduled restart reminder bubble dialog.">
-        5 minutes
-      </message>
-      <message name="IDS_RELAUNCH_RECOMMENDED_BODY_SCHEDULE_TABS_REOPEN" desc="The second body paragraph for the scheduled restart reminder bubble dialog.">
-        All of your open tabs and windows will reopen automatically.
       </message>
       <message name="IDS_APP_MENU_BUTTON_RESTART_SCHEDULED" desc="Short label next to app-menu button when a scheduled update is pending.">
         Update scheduled
@@ -19287,6 +19223,23 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Performance issue alert
       </message>
     </if>
+
+    <!-- Glic Activity Hub Strings -->
+    <message name="IDS_GLIC_ACTIVITY_TITLE_GEMINI" desc="Default title shown in the Glic Activity Hub for a Gemini conversation.">
+      Gemini
+    </message>
+    <message name="IDS_GLIC_ACTIVITY_WORKING" desc="Status text shown in the Glic Activity Hub when Gemini is generating a response or performing a task.">
+      Working…
+    </message>
+    <message name="IDS_GLIC_ACTIVITY_RESPONSE_READY" desc="Status text shown in the Glic Activity Hub when a Gemini response is finished and ready for review.">
+      Response ready
+    </message>
+    <message name="IDS_GLIC_ACTIVITY_NEEDS_INPUT" desc="Status text shown in the Glic Activity Hub when a Gemini activity requires user input or action.">
+      Needs input
+    </message>
+    <message name="IDS_GLIC_ACTIVITY_ERROR" desc="Status text shown in the Glic Activity Hub when a Gemini activity encountered an error.">
+      Something went wrong
+    </message>
 
     <!-- Toast Strings-->
     <if expr="not is_android">
