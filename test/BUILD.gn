@@ -1686,18 +1686,16 @@ test("brave_browser_tests") {
         "${target_gen_dir}/brave_browser_tests_manifest/AndroidManifest.xml"
     android_manifest_dep = ":brave_browser_tests_manifest"
 
-    data += [
-      "$root_out_dir/brave_resources.pak",
-      "$root_gen_dir/chrome/android/chrome_apk_paks/chrome_100_percent.pak",
-      "$root_gen_dir/chrome/android/chrome_apk_paks/locales/en-US.pak",
-      "$root_gen_dir/chrome/android/chrome_apk_paks/resources.pak",
-      "$root_gen_dir/components/components_resources.pak",
-      "$root_gen_dir/components/dev_ui_components_resources.pak",
-      "//brave/components/brave_perf_predictor/resources/entities-httparchive-nostats.json",
-    ]
+    data += [ "//brave/components/brave_perf_predictor/resources/entities-httparchive-nostats.json" ]
 
     # android only tests
-    deps += [ "//brave/browser/android/youtube_script_injector:browser_tests" ]
+    deps += [
+      # Renderer processes read Brave resources (cosmetic filters, wallet
+      # provider JS) through OpenApkAsset() and cannot reach the pushed data
+      # dir, so the pak has to be an apk asset.
+      "//brave:brave_pak_assets",
+      "//brave/browser/android/youtube_script_injector:browser_tests",
+    ]
     deps -= android_test_exception_deps
     deps += android_only_test_deps
     sources -= android_test_exception_sources
