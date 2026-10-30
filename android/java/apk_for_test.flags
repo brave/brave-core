@@ -725,10 +725,6 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.tab.TabBrowserControlsConstraintsHelper {
-    *** getObservableConstraints(...);
-}
-
 -keep class org.chromium.components.cached_flags.CachedFlag {
     <init>(...);
 }
