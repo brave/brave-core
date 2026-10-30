@@ -265,6 +265,12 @@
         <message name="IDS_WORKSPACE_DIALOG_CANCEL_BUTTON" desc="Cancel button label shared by workspace dialogs">
           Cancel
         </message>
+        <message name="IDS_WORKSPACE_SETTINGS_DIALOG_TITLE" desc="Title of the dialog for changing the settings of the space the window currently has open">
+          Space Settings
+        </message>
+        <message name="IDS_WORKSPACE_SETTINGS_DIALOG_SAVE_BUTTON" desc="Accept button label in the space settings dialog">
+          Save
+        </message>
         <message name="IDS_WORKSPACE_ROW_MORE_BUTTON_TOOLTIP" desc="Tooltip for the per-row button that opens the workspace's options menu">
           Space Options
         </message>
@@ -320,6 +326,12 @@
         </message>
         <message name="IDS_WORKSPACE_DIALOG_CANCEL_BUTTON" desc="Cancel button label shared by workspace dialogs">
           Cancel
+        </message>
+        <message name="IDS_WORKSPACE_SETTINGS_DIALOG_TITLE" desc="Title of the dialog for changing the settings of the space the window currently has open">
+          Space settings
+        </message>
+        <message name="IDS_WORKSPACE_SETTINGS_DIALOG_SAVE_BUTTON" desc="Accept button label in the space settings dialog">
+          Save
         </message>
         <message name="IDS_WORKSPACE_ROW_MORE_BUTTON_TOOLTIP" desc="Tooltip for the per-row button that opens the workspace's options menu">
           Space options
