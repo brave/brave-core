@@ -71,7 +71,6 @@ export class Config {
   useDummyLastchange: boolean
   braveVersion: string
   braveIOSMarketingPatchVersion: string | undefined
-  androidOverrideVersionName: string
   releaseTag: string | undefined
   mac_signing_identifier: string | undefined
   mac_installer_signing_identifier: string
@@ -200,7 +199,6 @@ export class Config {
       ['brave_ios_marketing_version_patch'],
       '',
     )
-    this.androidOverrideVersionName = this.braveVersion
     this.releaseTag = this.braveVersion.split('+')[0]
     this.mac_signing_identifier = envConfig.getString([
       'mac_signing_identifier',
@@ -505,9 +503,6 @@ export class Config {
     if (this.targetOS === 'android') {
       if (options.target_android_output_format) {
         this.targetAndroidOutputFormat = options.target_android_output_format
-      }
-      if (options.android_override_version_name) {
-        this.androidOverrideVersionName = options.android_override_version_name
       }
       if (options.android_aab_to_apk) {
         this.androidAabToApk = options.android_aab_to_apk
