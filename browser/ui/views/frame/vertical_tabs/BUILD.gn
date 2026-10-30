@@ -52,6 +52,7 @@ source_set("browser_tests") {
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   sources = [
+    "upstream_tree_tabs_browsertest.cc",
     "vertical_tab_strip_browsertest.cc",
     "vertical_tab_strip_root_view_browsertest.cc",
   ]
@@ -61,10 +62,14 @@ source_set("browser_tests") {
     "//base/i18n:test_support",
     "//brave/browser/ui",
     "//brave/browser/ui/tabs:tab_menu",
+    "//brave/browser/ui/tabs:tab_strip",
     "//brave/browser/ui/tabs:tabs_public",
+    "//brave/browser/ui/tabs:tree_tab",
     "//brave/browser/ui/views/frame",
     "//brave/browser/ui/views/sidebar",
+    "//brave/browser/ui/views/tabs:tree_tab_view_utils",
     "//brave/components/sidebar/browser",
+    "//brave/components/tabs",
     "//cc/paint",
     "//chrome/browser",
     "//chrome/browser/tab_group_sync:factories",

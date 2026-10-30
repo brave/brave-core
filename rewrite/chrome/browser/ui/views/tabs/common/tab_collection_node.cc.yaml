@@ -28,3 +28,29 @@ substitutions:
         \1
             case Type::TREE_NODE:
               NOTREACHED();\2
+
+  - description: |-
+      Mirror children of tree tab node collections in their place in
+      TabCollectionNode::Initialize().
+    regex:
+      re_pattern:
+        '(TabCollectionNode::Initialize\(\) \{.*?const tabs::TabCollection\* collection =\s*std::get<tabs::ConstDanglingUntriagedTabCollection>\(node_data_\);)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+            if (MaybeInitializeTreeTabChildren(*collection)) {
+              return node_view;
+            }
+
+  - description: |-
+      Remove children mirrored in place of tree tab node collections in
+      TabCollectionNode::Deinitialize().
+    regex:
+      re_pattern:
+        '(TabCollectionNode::Deinitialize\(\) \{.*?const tabs::TabCollection\* collection =\s*std::get<tabs::ConstDanglingUntriagedTabCollection>\(node_data_\);)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+            if (MaybeDeinitializeTreeTabChildren(*collection)) {
+              return;
+            }

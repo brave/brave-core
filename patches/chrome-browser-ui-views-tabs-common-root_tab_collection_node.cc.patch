@@ -1,0 +1,48 @@
+diff --git a/chrome/browser/ui/views/tabs/common/root_tab_collection_node.cc b/chrome/browser/ui/views/tabs/common/root_tab_collection_node.cc
+index 7c362fa41355834860aa2c94211bf85df9c1bbab..4efd557cc86adc35710341d9c768b8498042da99 100644
+--- a/chrome/browser/ui/views/tabs/common/root_tab_collection_node.cc
++++ b/chrome/browser/ui/views/tabs/common/root_tab_collection_node.cc
+@@ -97,6 +97,10 @@ void RootTabCollectionNode::OnChildrenAdded(
+     const tabs::TabCollection::Position& position,
+     const tabs::TabCollectionNodes& handles,
+     bool insert_from_detached) {
++  if (ShouldSyncWithTreeTabs({position.parent_handle})) {
++    SyncWithTreeTabs();
++    return;
++  }
+   for (auto handle : handles) {
+     tabs::ConstChildPtr child = GetNodeFromHandle(handle);
+     GetNodeForHandle(position.parent_handle)
+@@ -109,6 +113,10 @@ void RootTabCollectionNode::OnChildrenAdded(
+ void RootTabCollectionNode::OnChildrenRemoved(
+     const tabs::TabCollection::Position& position,
+     const tabs::TabCollectionNodes& handles) {
++  if (ShouldSyncWithTreeTabs({position.parent_handle})) {
++    SyncWithTreeTabs();
++    return;
++  }
+   TabCollectionNode* parent_node = GetNodeForHandle(position.parent_handle);
+   if (!parent_node) {
+     return;
+@@ -128,6 +136,11 @@ void RootTabCollectionNode::OnChildrenRemoved(
+ void RootTabCollectionNode::OnChildMoved(
+     const tabs::TabCollection::Position& to_position,
+     const tabs::TabCollectionObserver::NodeData& node_data) {
++  if (ShouldSyncWithTreeTabs(
++          {to_position.parent_handle, node_data.position.parent_handle})) {
++    SyncWithTreeTabs();
++    return;
++  }
+   const tabs::TabCollection::Position& from_position = node_data.position;
+   const tabs::TabCollection::NodeHandle& moved_node_handle = node_data.handle;
+ 
+@@ -176,6 +189,9 @@ void RootTabCollectionNode::OnTabStripModelChanged(
+     TabStripModel* tab_strip_model,
+     const TabStripModelChange& change,
+     const TabStripSelectionChange& selection) {
++  if (ShouldSyncWithTreeTabs({})) {
++    SyncWithTreeTabs();
++  }
+   if (tab_strip_model->closing_all()) {
+     on_active_tab_changed_callback_list_.Notify(nullptr);
+     return;

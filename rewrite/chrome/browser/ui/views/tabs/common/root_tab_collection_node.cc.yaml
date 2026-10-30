@@ -1,0 +1,49 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Sync the view model with tree tabs instead of applying OnChildrenAdded().
+    preempt_function_impl:
+      function_name: RootTabCollectionNode::OnChildrenAdded
+      code: |-
+        if (ShouldSyncWithTreeTabs({position.parent_handle})) {
+          SyncWithTreeTabs();
+          return;
+        }
+
+  - description: |-
+      Sync the view model with tree tabs instead of applying
+      OnChildrenRemoved().
+    preempt_function_impl:
+      function_name: RootTabCollectionNode::OnChildrenRemoved
+      code: |-
+        if (ShouldSyncWithTreeTabs({position.parent_handle})) {
+          SyncWithTreeTabs();
+          return;
+        }
+
+  - description: |-
+      Sync the view model with tree tabs instead of applying OnChildMoved().
+    preempt_function_impl:
+      function_name: RootTabCollectionNode::OnChildMoved
+      code: |-
+        if (ShouldSyncWithTreeTabs(
+                {to_position.parent_handle, node_data.position.parent_handle})) {
+          SyncWithTreeTabs();
+          return;
+        }
+
+  - description: |-
+      Sync tree tabs in RootTabCollectionNode::OnTabStripModelChanged().
+
+      The tree tab delegate could have restructured the hierarchy without any
+      collection notification.
+    preempt_function_impl:
+      function_name: RootTabCollectionNode::OnTabStripModelChanged
+      code: |-
+        if (ShouldSyncWithTreeTabs({})) {
+          SyncWithTreeTabs();
+        }

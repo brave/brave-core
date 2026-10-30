@@ -1,0 +1,22 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Declare the tree tab hooks of TabCollectionNode::Initialize() and
+      Deinitialize().
+
+      Tree tab node collections are not mirrored in the view model; their
+      children are mirrored in their place. Defined in chromium_src.
+    add_to_protected:
+      class_name: TabCollectionNode
+      code: |
+        // Mirrors the children of |collection| with its tree tab node
+        // collections hoisted. Returns false if |collection| has no tree tab
+        // node child, in which case nothing is done.
+        bool MaybeInitializeTreeTabChildren(const tabs::TabCollection& collection);
+        bool MaybeDeinitializeTreeTabChildren(
+            const tabs::TabCollection& collection);
+
