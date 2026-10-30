@@ -54,6 +54,9 @@ class TestPolkadotApi : public mojom::PolkadotApi {
   ~TestPolkadotApi() override = default;
 
   MOCK_METHOD2(GetAccounts, void(bool any_type, GetAccountsCallback callback));
+  MOCK_METHOD2(SignPayload,
+               void(const std::string& payload_json,
+                    SignPayloadCallback callback));
 
   void BindReceiver(mojo::PendingReceiver<mojom::PolkadotApi> receiver) {
     receivers_.Add(this, std::move(receiver));

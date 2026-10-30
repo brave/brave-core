@@ -125,6 +125,11 @@ PolkadotRpcUrlMapCallback NoParachainUrlMap() {
       [](std::string_view chain_id) -> std::vector<GURL> { return {}; });
 }
 
+PolkadotWalletService::OriginPermissionChecker NoOriginPermissionChecking() {
+  return base::BindRepeating(
+      [](const url::Origin&, const mojom::AccountIdPtr&) { return true; });
+}
+
 base::DictValue RequestBodyToJsonDict(const network::ResourceRequest& req) {
   const auto* body_elems = req.request_body->elements();
   CHECK(body_elems->size() == 1u);
@@ -351,6 +356,10 @@ void PolkadotMockRpc::RejectAccountInfoRequest() {
   reject_account_info_request_ = true;
 }
 
+void PolkadotMockRpc::RejectSystemPropertiesRequest() {
+  reject_system_properties_request_ = true;
+}
+
 void PolkadotMockRpc::RejectPaymentInfoRequest() {
   reject_payment_info_request_ = true;
 }
@@ -561,22 +570,34 @@ void PolkadotMockRpc::AddGetRuntimeInfo() {
 }
 
 void PolkadotMockRpc::AddGetLatestRuntimeVersion(uint32_t spec_version) {
-  // The metadata provider probes the chain's latest runtime version to decide
-  // whether its cached metadata is still current. Only specVersion and
-  // transactionVersion are consumed.
-  req_res_pairs_.emplace(
-      base::test::ParseJsonDict(
-          R"({"id":1,"jsonrpc":"2.0","method":"state_getRuntimeVersion","params":[]})"),
-      absl::StrFormat(
-          R"({
-            "jsonrpc":"2.0",
-            "id":1,
-            "result":{
-              "specVersion":%u,
-              "transactionVersion":27
-            }
-          })",
-          spec_version));
+  AddRuntimeVersionReqRes(/*params_json=*/"[]", spec_version);
+}
+
+void PolkadotMockRpc::AddRuntimeVersionReqRes(std::string_view params_json,
+                                              uint32_t spec_version) {
+  static constexpr char kRequestFormat[] =
+      R"({"id":1,"jsonrpc":"2.0","method":"state_getRuntimeVersion","params":%s})";
+
+  // Only specVersion and transactionVersion are consumed by callers.
+  static constexpr char kResponseFormat[] = R"({
+    "jsonrpc":"2.0",
+    "id":1,
+    "result":{
+      "specVersion":%u,
+      "transactionVersion":27
+    }
+  })";
+
+  auto request =
+      base::test::ParseJsonDict(absl::StrFormat(kRequestFormat, params_json));
+
+  if (reject_runtime_version_) {
+    req_res_pairs_.emplace(std::move(request), std::string(kRpcErrorResponse));
+    return;
+  }
+
+  req_res_pairs_.emplace(std::move(request),
+                         absl::StrFormat(kResponseFormat, spec_version));
 }
 
 void PolkadotMockRpc::AddGetGenesisBlockHash() {
@@ -978,6 +999,10 @@ void PolkadotMockRpc::RequestInterceptor(const network::ResourceRequest& req) {
     return;
   }
 
+  if (HandleSystemPropertiesRequest(req, req_body)) {
+    return;
+  }
+
   if (HandleGetAccountInfoRequest(req, req_body)) {
     return;
   }
@@ -1064,6 +1089,41 @@ bool PolkadotMockRpc::HandleMetadataRequest(const network::ResourceRequest& req,
     }
 
     return false;
+  }
+
+  return false;
+}
+
+bool PolkadotMockRpc::HandleSystemPropertiesRequest(
+    const network::ResourceRequest& req,
+    const base::DictValue& req_body) {
+  const auto* method = req_body.FindString("method");
+  if (!method) {
+    return false;
+  }
+
+  if (*method == "system_properties") {
+    if (reject_system_properties_request_) {
+      url_loader_factory_->AddResponse(req.url.spec(), R"(
+        { "jsonrpc": "2.0",
+          "error": { "code": 1234 },
+          "id": 1 })");
+      return true;
+    }
+
+    if (req.url == GURL(polkadot_asset_hub_url_)) {
+      url_loader_factory_->AddResponse(req.url.spec(),
+                                       R"({
+          "jsonrpc":"2.0",
+          "id":1,
+          "result":{
+            "ss58Format":0,
+            "tokenDecimals":10,
+            "tokenSymbol":"DOT"
+          }})");
+
+      return true;
+    }
   }
 
   return false;
