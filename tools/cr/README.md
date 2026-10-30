@@ -31,7 +31,8 @@ These are the user-facing scripts in this directory:
   [autolift/SKILL.md](autolift/SKILL.md): build log summaries, culprit lookup,
   culprit hash verification, the autofix run's CI report and fixup push, and
   channel bumps: a minor bump's branch and pull request for each release channel
-  on its milestone.
+  on its milestone; and `gerrit-upload` (`autolift/gerrit_upload.py`), which
+  uploads a published `cr<N>` to Gerrit as a relation chain of CLs.
 - `ci/cli.py` — Lists a pull request's checks, reports what failed behind them
   on Jenkins and TeamCity, and reruns a check's build.
 
