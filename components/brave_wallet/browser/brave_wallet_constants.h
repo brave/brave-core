@@ -108,7 +108,7 @@ inline constexpr char kBitcoinTestnetRpcEndpoint[] =
 
 inline constexpr char kMeldRpcEndpoint[] = "https://api-meld.wallet.brave.com";
 inline constexpr char kMeldRpcVersionHeader[] = "Meld-Version";
-inline constexpr char kMeldRpcVersion[] = "2023-05-26";
+inline constexpr char kMeldRpcVersion[] = "2026-02-03";
 
 // Meld chain codes mapped to Brave's coin and chain id.
 inline constexpr auto kMeldSupportedChains =
@@ -117,6 +117,7 @@ inline constexpr auto kMeldSupportedChains =
         {"ARBITRUM", {mojom::CoinType::ETH, mojom::kArbitrumMainnetChainId}},
         {"AURORA", {mojom::CoinType::ETH, mojom::kAuroraMainnetChainId}},
         {"AVAXC", {mojom::CoinType::ETH, mojom::kAvalancheMainnetChainId}},
+        {"BASE", {mojom::CoinType::ETH, mojom::kBaseMainnetChainId}},
         {"BSC", {mojom::CoinType::ETH, mojom::kBnbSmartChainMainnetChainId}},
         {"CELO", {mojom::CoinType::ETH, mojom::kCeloMainnetChainId}},
         {"ETH", {mojom::CoinType::ETH, mojom::kMainnetChainId}},
@@ -128,7 +129,7 @@ inline constexpr auto kMeldSupportedChains =
         {"BTC", {mojom::CoinType::BTC, mojom::kBitcoinMainnet}},
         {"ZEC", {mojom::CoinType::ZEC, mojom::kZCashMainnet}},
         {"ADA", {mojom::CoinType::ADA, mojom::kCardanoMainnet}},
-        {"ASSETHUB", {mojom::CoinType::DOT, mojom::kPolkadotMainnetAssetHub}},
+        {"DOT", {mojom::CoinType::DOT, mojom::kPolkadotMainnetAssetHub}},
     });
 
 inline constexpr auto kEthBalanceScannerContractAddresses =

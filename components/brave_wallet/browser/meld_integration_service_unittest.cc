@@ -19,7 +19,6 @@
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/meld_integration.mojom.h"
 #include "components/grit/brave_components_strings.h"
 #include "net/base/url_search_params.h"
@@ -241,8 +240,6 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
     },
     "websiteUrl": "http://www.banxa.com",
     "logos": {
-      "dark": "https://images-serviceprovider.meld.io/BANXA/logo_dark.png",
-      "light": "https://images-serviceprovider.meld.io/BANXA/logo_light.png",
       "darkShort": "https://images-serviceprovider.meld.io/BANXA/short_logo_dark.png",
       "lightShort": null
     }
@@ -470,19 +467,17 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
   Errors errors;
 
   const auto url = MeldIntegrationService::GetPaymentMethodsURL("US", "USD");
-  EXPECT_EQ(url.path(), "/service-providers/properties/payment-methods");
+  EXPECT_EQ(url.path(), "/network-partner/supported/payment-methods");
   EXPECT_THAT(net::UrlSearchParams(url).params(),
-              ElementsAre(Pair("accountFilter", "false"),  //
-                          Pair("countries", "US"),         //
-                          Pair("fiatCurrencies", "USD"),   //
-                          Pair("includeServiceProviderDetails", "false"),
-                          Pair("statuses", "LIVE,RECENTLY_ADDED")));
+              ElementsAre(Pair("category", "CRYPTO_ONRAMP"),  //
+                          Pair("country", "US"),              //
+                          Pair("currencyCode", "USD")));
   std::tie(payment_methods, errors) = TestGetPaymentMethods(R"([
   {
-    "paymentMethod": "ACH",
+    "method": "ACH",
     "name": null,
-    "paymentType": "BANK_TRANSFER",
-    "logos": {
+    "type": "BANK_TRANSFER",
+    "logo": {
       "dark": "https://images-paymentMethod.meld.io/ACH/logo_dark.png",
       "light": "https://images-paymentMethod.meld.io/ACH/logo_light.png"
     }
@@ -501,10 +496,10 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
 
   std::tie(payment_methods, errors) = TestGetPaymentMethods(R"([
   {
-    "paymentMethod": "ACH",
+    "method": "ACH",
     "name": "ACH",
-    "paymentType": "BANK_TRANSFER",
-    "logos": {
+    "type": "BANK_TRANSFER",
+    "logo": {
       "dark": null,
       "light": "https://images-paymentMethod.meld.io/ACH/logo_light.png"
     }
@@ -519,34 +514,6 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
       "ACH", "ACH", "BANK_TRANSFER", std::nullopt,
       "https://images-paymentMethod.meld.io/ACH/logo_light.png"));
   EXPECT_EQ(*payment_methods, expected_null_dark_logo);
-
-  std::tie(payment_methods, errors) = TestGetPaymentMethods(R"({
-    "paymentMethod": "ACH",
-    "name": "ACH",
-    "paymentType": "BANK_TRANSFER",
-    "logos": {
-      "dark": null,
-      "light": "https://images-paymentMethod.meld.io/ACH/logo_light.png"
-    }
-  })",
-                                                            "US", "USD");
-  EXPECT_TRUE(errors.has_value());
-  EXPECT_EQ(*errors, std::vector<std::string>{
-                         l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
-
-  // `paymentMethod` is a required field.
-  std::tie(payment_methods, errors) = TestGetPaymentMethods(R"([{
-    "name": "ACH",
-    "paymentType": "BANK_TRANSFER",
-    "logos": {
-      "dark": null,
-      "light": "https://images-paymentMethod.meld.io/ACH/logo_light.png"
-    }
-  }])",
-                                                            "US", "USD");
-  EXPECT_TRUE(errors.has_value());
-  EXPECT_EQ(*errors, std::vector<std::string>{
-                         l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
 
   std::tie(payment_methods, errors) = TestGetPaymentMethods(
       "some wrong data", "US", "USD", net::HTTP_REQUEST_TIMEOUT);
@@ -577,23 +544,24 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
   Errors errors;
 
   const auto url = MeldIntegrationService::GetFiatCurrenciesURL();
-  EXPECT_EQ(url.path(), "/service-providers/properties/fiat-currencies");
+  EXPECT_EQ(url.path(), "/network-partner/supported/currencies");
   EXPECT_THAT(net::UrlSearchParams(url).params(),
-              ElementsAre(Pair("accountFilter", "false"),
-                          Pair("includeServiceProviderDetails", "false"),
-                          Pair("statuses", "LIVE,RECENTLY_ADDED")));
+              ElementsAre(Pair("category", "CRYPTO_ONRAMP"),  //
+                          Pair("type", "FIAT")));
 
-  std::tie(fiat_currencies, errors) = TestGetFiatCurrencies(R"([
-  {
-    "currencyCode": "AFN",
-    "name": null,
-    "symbolImageUrl": "https://images-currency.meld.io/fiat/AFN/symbol.png"
-  },
-  {
-    "currencyCode": "DZD",
-    "name": "Algerian Dinar",
-    "symbolImageUrl": "https://images-currency.meld.io/fiat/DZD/symbol.png"
-  }])");
+  std::tie(fiat_currencies, errors) = TestGetFiatCurrencies(R"({
+  "currencies": [
+    {
+      "currencyCode": "AFN",
+      "name": null,
+      "symbol": "https://images-currency.meld.io/fiat/AFN/symbol.png"
+    },
+    {
+      "currencyCode": "DZD",
+      "name": "Algerian Dinar",
+      "symbol": "https://images-currency.meld.io/fiat/DZD/symbol.png"
+    }
+  ]})");
   EXPECT_FALSE(errors.has_value());
   ASSERT_TRUE(fiat_currencies);
 
@@ -605,24 +573,6 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
       "DZD", "Algerian Dinar",
       "https://images-currency.meld.io/fiat/DZD/symbol.png"));
   EXPECT_EQ(*fiat_currencies, expected);
-
-  std::tie(fiat_currencies, errors) = TestGetFiatCurrencies(R"({
-    "currencyCode": "AFN",
-    "name": null,
-    "symbolImageUrl": "https://images-currency.meld.io/fiat/AFN/symbol.png"
-  })");
-  EXPECT_TRUE(errors.has_value());
-  EXPECT_EQ(*errors, std::vector<std::string>{
-                         l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
-
-  // `currencyCode` is a required field.
-  std::tie(fiat_currencies, errors) = TestGetFiatCurrencies(R"([{
-    "name": null,
-    "symbolImageUrl": "https://images-currency.meld.io/fiat/AFN/symbol.png"
-  }])");
-  EXPECT_TRUE(errors.has_value());
-  EXPECT_EQ(*errors, std::vector<std::string>{
-                         l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
 
   std::tie(fiat_currencies, errors) =
       TestGetFiatCurrencies("some wrong data", net::HTTP_REQUEST_TIMEOUT);
@@ -654,39 +604,30 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
 
   const auto url = MeldIntegrationService::GetCryptoCurrenciesURL();
 
-  const std::string expected_crypto_chains =
-      IsPolkadotEnabled()
-          ? "ADA,ARBITRUM,ASSETHUB,AURORA,AVAXC,BSC,BTC,CELO,ETH,FIL,FTM,"
-            "OPTIMISM,POLYGON,SOLANA,ZEC"
-          : "ADA,ARBITRUM,AURORA,AVAXC,BSC,BTC,CELO,ETH,FIL,FTM,OPTIMISM,"
-            "POLYGON,SOLANA,ZEC";
-
-  EXPECT_EQ(url.path(), "/service-providers/properties/crypto-currencies");
+  EXPECT_EQ(url.path(), "/network-partner/supported/currencies");
   EXPECT_THAT(net::UrlSearchParams(url).params(),
-              ElementsAre(Pair("accountFilter", "false"),
-                          Pair("cryptoChains", expected_crypto_chains),
-                          Pair("includeServiceProviderDetails", "false"),
-                          Pair("statuses", "LIVE,RECENTLY_ADDED")));
+              ElementsAre(Pair("category", "CRYPTO_ONRAMP"),  //
+                          Pair("type", "CRYPTO")));
 
-  std::tie(crypto_currencies, errors) = TestGetCryptoCurrencies(R"([
-  {
-    "currencyCode": "USDT_POLYGON",
-    "name": "Tether",
-    "chainCode": "POLYGON",
-    "chainName": "Polygon",
-    "chainId": "137",
-    "contractAddress": "0xe41d2489571d322189246dafa5ebde1f4699f498",
-    "symbolImageUrl": "https://images-currency.meld.io/crypto/USDT_POLYGON/symbol.png"
-  },
-  {
-    "currencyCode": "00",
-    "name": "00 Token",
-    "chainCode": "ETH",
-    "chainName": "Ethereum",
-    "chainId": "1",
-    "contractAddress": "0x111111111117dc0aa78b770fa6a738034120c302",
-    "symbolImageUrl": "https://images-currency.meld.io/crypto/00/symbol.png"
-  }])");
+  std::tie(crypto_currencies, errors) = TestGetCryptoCurrencies(R"({
+  "currencies": [
+    {
+      "currencyCode": "USDT_POLYGON",
+      "name": "Tether",
+      "chainCode": "POLYGON",
+      "chainId": "137",
+      "contract": "0xe41d2489571d322189246dafa5ebde1f4699f498",
+      "symbol": "https://images-currency.meld.io/crypto/USDT_POLYGON/symbol.png"
+    },
+    {
+      "currencyCode": "00",
+      "name": "00 Token",
+      "chainCode": "ETH",
+      "chainId": "1",
+      "contract": "0x111111111117dc0aa78b770fa6a738034120c302",
+      "symbol": "https://images-currency.meld.io/crypto/00/symbol.png"
+    }
+  ]})");
   EXPECT_FALSE(errors.has_value());
   ASSERT_TRUE(crypto_currencies);
 
@@ -700,32 +641,6 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
       "0x111111111117dc0aa78b770fa6a738034120c302",
       "https://images-currency.meld.io/crypto/00/symbol.png"));
   EXPECT_EQ(*crypto_currencies, expected);
-
-  std::tie(crypto_currencies, errors) = TestGetCryptoCurrencies(R"({
-    "currencyCode": "USDT_KCC",
-    "name": null,
-    "chainCode": "KCC",
-    "chainName": "KuCoin Community Chain",
-    "chainId": "0",
-    "contractAddress": "0xe41d2489571d322189246dafa5ebde1f4699f498",
-    "symbolImageUrl": "https://images-currency.meld.io/crypto/USDT_KCC/symbol.png"
-  })");
-  EXPECT_TRUE(errors.has_value());
-  EXPECT_EQ(*errors, std::vector<std::string>{
-                         l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
-
-  // `currencyCode` is a required field.
-  std::tie(crypto_currencies, errors) = TestGetCryptoCurrencies(R"([{
-    "name": "Tether",
-    "chainCode": "KCC",
-    "chainName": "KuCoin Community Chain",
-    "chainId": "0",
-    "contractAddress": "0xe41d2489571d322189246dafa5ebde1f4699f498",
-    "symbolImageUrl": "https://images-currency.meld.io/crypto/USDT_KCC/symbol.png"
-  }])");
-  EXPECT_TRUE(errors.has_value());
-  EXPECT_EQ(*errors, std::vector<std::string>{
-                         l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
 
   std::tie(crypto_currencies, errors) =
       TestGetCryptoCurrencies("some wrong data", net::HTTP_REQUEST_TIMEOUT);
@@ -756,22 +671,20 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
   Errors errors;
 
   const auto url = MeldIntegrationService::GetCountriesURL();
-  EXPECT_EQ(url.path(), "/service-providers/properties/countries");
+  EXPECT_EQ(url.path(), "/network-partner/supported/countries");
   EXPECT_THAT(net::UrlSearchParams(url).params(),
-              ElementsAre(Pair("accountFilter", "false"),
-                          Pair("includeServiceProviderDetails", "false"),
-                          Pair("statuses", "LIVE,RECENTLY_ADDED")));
-  std::tie(countries, errors) = TestGetCountries(R"([
-  {
-    "countryCode": "AF",
-    "name": "Afghanistan",
-    "flagImageUrl": "https://images-country.meld.io/AF/flag.svg"
-  },
-  {
-    "countryCode": "AL",
-    "name": "Albania",
-    "flagImageUrl": "https://images-country.meld.io/AL/flag.svg"
-  }])");
+              ElementsAre(Pair("category", "CRYPTO_ONRAMP")));
+  std::tie(countries, errors) = TestGetCountries(R"({
+  "countries": [
+    {
+      "countryCode": "AF",
+      "name": "Afghanistan"
+    },
+    {
+      "countryCode": "AL",
+      "name": "Albania"
+    }
+  ]})");
   EXPECT_FALSE(errors.has_value());
   ASSERT_TRUE(countries);
 
@@ -779,16 +692,6 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
   expected.push_back(mojom::MeldCountry::New("AF", "Afghanistan"));
   expected.push_back(mojom::MeldCountry::New("AL", "Albania"));
   EXPECT_EQ(*countries, expected);
-
-  // `countryCode` is a required field.
-  std::tie(countries, errors) = TestGetCountries(R"([
-  {
-    "name": "Albania",
-    "flagImageUrl": "https://images-country.meld.io/AL/flag.svg"
-  }])");
-  EXPECT_TRUE(errors.has_value());
-  EXPECT_EQ(*errors, std::vector<std::string>{
-                         l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
 
   std::tie(countries, errors) = TestGetCountries("some wrong data");
   EXPECT_TRUE(errors.has_value());
