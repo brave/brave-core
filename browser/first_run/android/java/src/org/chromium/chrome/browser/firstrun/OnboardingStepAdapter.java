@@ -36,12 +36,12 @@ public class OnboardingStepAdapter
         extends RecyclerView.Adapter<OnboardingStepAdapter.OnboardingBaseViewHolder> {
 
     /**
-     * Listener used by onboarding step views to request a forward page change in the host.
+     * Listener used by onboarding step views to dismiss the onboarding and to report preference
+     * changes to the host.
      *
      * @see WelcomeOnboardingActivity
      */
     public interface OnboardingNavigationListener {
-
         void onDismiss();
 
         void onWebDiscoverPreferenceEnabled();
@@ -205,7 +205,7 @@ public class OnboardingStepAdapter
         private HelpBraveSearchViewHolder(
                 final View itemView,
                 final SpannableString wdpLearnMore,
-                final int blockInterruptionsPosition,
+                final int nextPosition,
                 final PageBounceAnimator pageBounceAnimator,
                 final OnboardingNavigationListener listener) {
             super(itemView);
@@ -216,15 +216,14 @@ public class OnboardingStepAdapter
 
             mLater = itemView.findViewById(R.id.onboarding_later);
             mLater.setClipToOutline(true);
-            mLater.setOnClickListener(
-                    v -> pageBounceAnimator.animateToPosition(blockInterruptionsPosition));
+            mLater.setOnClickListener(v -> pageBounceAnimator.animateToPosition(nextPosition));
 
             mSure = itemView.findViewById(R.id.onboarding_sure);
             mSure.setClipToOutline(true);
             mSure.setOnClickListener(
                     view -> {
                         listener.onWebDiscoverPreferenceEnabled();
-                        pageBounceAnimator.animateToPosition(blockInterruptionsPosition);
+                        pageBounceAnimator.animateToPosition(nextPosition);
                     });
         }
 
