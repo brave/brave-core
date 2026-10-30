@@ -148,6 +148,9 @@ struct PolkadotMockRpc {
   bool HandleMetadataRequest(const network::ResourceRequest& req,
                              const base::DictValue& req_body);
 
+  bool HandleSystemPropertiesRequest(const network::ResourceRequest& req,
+                                     const base::DictValue& req_body);
+
   bool HandleGetAccountInfoRequest(const network::ResourceRequest& req,
                                    const base::DictValue& req_body);
 

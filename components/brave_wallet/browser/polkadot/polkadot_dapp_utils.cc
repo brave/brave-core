@@ -7,12 +7,19 @@
 
 #include <algorithm>
 
+#include "base/strings/strcat.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 
 namespace brave_wallet {
 
 namespace {
+
+// `MultiSignature::Sr25519`'s variant index. Our Polkadot keyrings only hold
+// sr25519 keypairs.
+// https://github.com/polkadot-js/api/blob/master/packages/types/src/interfaces/extrinsics/definitions.ts
+inline constexpr uint8_t kSr25519MultiSignatureIndex = 1;
 
 bool IsPolkadotDappAccount(const mojom::AccountIdPtr& account_id) {
   return account_id->keyring_id == mojom::KeyringId::kPolkadotMainnet ||
@@ -66,6 +73,14 @@ mojom::PolkadotInjectedAccountPtr MakePolkadotInjectedAccount(
   return mojom::PolkadotInjectedAccount::New(
       account.address, /*genesis_hash=*/std::nullopt,
       kPolkadotObfuscatedAccountName, kPolkadotSr25519KeypairType);
+}
+
+std::string MakePolkadotSignerSignatureHex(
+    base::span<const uint8_t, kSr25519SignatureSize> signature) {
+  return base::StrCat(
+      {"0x",
+       base::HexEncodeLower(base::span_from_ref(kSr25519MultiSignatureIndex)),
+       base::HexEncodeLower(signature)});
 }
 
 }  // namespace brave_wallet

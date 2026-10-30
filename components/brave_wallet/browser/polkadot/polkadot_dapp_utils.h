@@ -9,8 +9,10 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/span.h"
 #include "base/types/optional_ref.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 
 namespace brave_wallet {
 
@@ -35,6 +37,13 @@ mojom::AccountIdPtr GetPolkadotPreferredDappAccount(
 // Converts an account into the `InjectedAccount` shape dapps expect.
 mojom::PolkadotInjectedAccountPtr MakePolkadotInjectedAccount(
     const mojom::AccountInfo& account);
+
+// A `SignerResult.signature`: the signature behind its `MultiSignature` variant
+// index, hex-encoded. polkadot-js hands what a signer returns straight to
+// `MultiSignature`, so a bare 64-byte signature would be read as the wrong
+// variant.
+std::string MakePolkadotSignerSignatureHex(
+    base::span<const uint8_t, kSr25519SignatureSize> signature);
 
 }  // namespace brave_wallet
 

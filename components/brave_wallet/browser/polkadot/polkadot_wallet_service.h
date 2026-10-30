@@ -7,8 +7,14 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_WALLET_SERVICE_H_
 
 #include <array>
+#include <optional>
+#include <string>
+#include <string_view>
 #include <vector>
 
+#include "base/containers/circular_deque.h"
+#include "base/containers/flat_map.h"
+#include "base/functional/callback.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_chain_metadata.h"
@@ -22,6 +28,7 @@
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
+#include "url/origin.h"
 
 class PrefService;
 
@@ -41,6 +48,18 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
 
   using GenerateSignedTransferExtrinsicCallback = base::OnceCallback<void(
       base::expected<PolkadotExtrinsicMetadata, std::string>)>;
+
+  // The signature payload is the one recorded on the request, so approval can
+  // only ever sign the bytes the user was shown. Null when the request was
+  // rejected, or approved before anything described it.
+  using SignPolkadotTransactionRequestCallback =
+      base::OnceCallback<void(bool,
+                              std::optional<std::vector<uint8_t>>,
+                              const std::optional<std::string>&)>;
+
+  using OriginPermissionChecker =
+      base::RepeatingCallback<bool(const url::Origin&,
+                                   const mojom::AccountIdPtr&)>;
 
   using SignAndSendTransactionCallback = base::OnceCallback<void(
       base::expected<std::pair<std::string, PolkadotExtrinsicMetadata>,
@@ -85,6 +104,41 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
       const std::string& chain_id,
       const std::string& address,
       ValidateAddressForTransactionCallback callback) override;
+
+  void GetPendingSignPolkadotTransactionRequests(
+      GetPendingSignPolkadotTransactionRequestsCallback callback) override;
+  std::vector<mojom::SignPolkadotTransactionRequestPtr>
+  GetPendingSignPolkadotTransactionRequestsSync() const;
+
+  void NotifySignPolkadotTransactionRequestProcessed(
+      bool approved,
+      int32_t id,
+      const std::optional<std::string>& error) override;
+
+  // Queues a dApp's `signer.signPayload()` call for the user to approve. The
+  // panel is what runs `callback`, by way of
+  // NotifySignPolkadotTransactionRequestProcessed.
+  void AddSignPolkadotTransactionRequest(
+      mojom::SignPolkadotTransactionRequestPtr request,
+      SignPolkadotTransactionRequestCallback callback);
+
+  mojom::SignPolkadotTransactionRequestPtr
+  GetPendingSignPolkadotTransactionRequest(int32_t id);
+
+  // Records the bytes request `id` signs over, if `id` is still pending. Only
+  // meaningful to callers that have just read the request they are describing.
+  void SetSignPolkadotTransactionRequestSignaturePayload(
+      int32_t id,
+      std::vector<uint8_t> signature_payload);
+
+  // Rejects every queued request whose origin no longer holds permission for
+  // the account it is bound to. Driven by the owner's content-settings
+  // observer, which is also what installs the checker.
+  void DrainSignPolkadotTransactionRequestsWithoutPermission();
+
+  void set_origin_permission_checker(OriginPermissionChecker checker) {
+    origin_permission_checker_ = std::move(checker);
+  }
 
   // Get the chain metadata associated with the provided chain_id. Metadata is
   // required for encoding and decoding extrinsics as chains have their own
@@ -141,7 +195,28 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
   static std::optional<std::string_view> GetChainIdFromGenesisHash(
       std::string_view genesis_hash);
 
+  // Signs the bytes an extrinsic's signature payload encodes to. Over-long
+  // payloads are hashed down first, which is what keeps a signature's message
+  // bounded; the caller hands us the payload un-hashed either way.
+  std::optional<std::array<uint8_t, kSr25519SignatureSize>>
+  SignSignaturePayload(const mojom::AccountIdPtr& account_id,
+                       base::span<const uint8_t> signature_payload);
+
  private:
+  struct PendingSignPolkadotTransactionRequest {
+    PendingSignPolkadotTransactionRequest(
+        mojom::SignPolkadotTransactionRequestPtr request,
+        SignPolkadotTransactionRequestCallback callback);
+    PendingSignPolkadotTransactionRequest(
+        PendingSignPolkadotTransactionRequest&&);
+    PendingSignPolkadotTransactionRequest& operator=(
+        PendingSignPolkadotTransactionRequest&&);
+    ~PendingSignPolkadotTransactionRequest();
+
+    mojom::SignPolkadotTransactionRequestPtr request;
+    SignPolkadotTransactionRequestCallback callback;
+  };
+
   // KeyringServiceObserverBase:
   void Unlocked() override;
 
@@ -192,12 +267,18 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
   mojo::ReceiverSet<mojom::PolkadotWalletService> receivers_;
 
   PolkadotSubstrateRpc polkadot_substrate_rpc_;
+
   PolkadotChainMetadataPrefs chain_metadata_prefs_;
   PolkadotMetadataProvider metadata_provider_;
   mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
       keyring_observer_receiver_{this};
   absl::flat_hash_set<std::unique_ptr<PolkadotSignedTransferTask>>
       polkadot_sign_transactions_;
+
+  int32_t sign_polkadot_transactions_id_ = 0;
+  base::circular_deque<PendingSignPolkadotTransactionRequest>
+      sign_polkadot_transaction_requests_;
+  OriginPermissionChecker origin_permission_checker_;
 
   base::WeakPtrFactory<PolkadotWalletService> weak_ptr_factory_{this};
 };

@@ -284,11 +284,25 @@ struct PolkadotInjectedAccount {
   string type;
 };
 
+// Our `SignerResult` impl.
+// https://github.com/polkadot-js/api/blob/master/packages/types/src/types/extrinsic.ts
+struct PolkadotSignerResult {
+  // The id of the request the user approved.
+  int32 id;
+  // Hex-encoded sr25519 signature over the SCALE-encoded signer payload.
+  string signature;
+};
+
 interface PolkadotApi {
   // `accounts.get(anyType)`. `any_type` asks for accounts that can't be used
   // for signing, which we have none of so we ignore the param.
   GetAccounts(bool any_type) => (array<PolkadotInjectedAccount>? accounts,
                                  PolkadotProviderErrorBundle? error);
+
+  // `signer.signPayload(payload)`. `payload_json` is the dApp's
+  // `SignerPayloadJSON`, serialized by the renderer.
+  SignPayload(string payload_json) => (PolkadotSignerResult? result,
+                                       PolkadotProviderErrorBundle? error);
 };
 
 // https://github.com/polkadot-js/extension#injection-information
@@ -2285,6 +2299,16 @@ interface PolkadotWalletService {
 
   ValidateAddressForTransaction(string chain_id, string address)
       => (PolkadotValidationStatus status);
+
+  // The dApp `signer.signPayload()` calls awaiting the user's approval, oldest
+  // first.
+  GetPendingSignPolkadotTransactionRequests()
+      => (array<SignPolkadotTransactionRequest> requests);
+
+  // Used for UI notifying native when the user approves/rejects the sign
+  // request at the front of the queue.
+  NotifySignPolkadotTransactionRequestProcessed(
+      bool approved, int32 id, string? error);
 };
 
 enum TransactionStatus {
@@ -2946,6 +2970,34 @@ struct SignCardanoTransactionRequest {
 
   // Human-readable transaction summary for the signing UI.
   string details_json;
+};
+
+// A dApp's `signer.signPayload()` call awaiting the user's approval.
+struct SignPolkadotTransactionRequest {
+  int32 id;
+
+  AccountId account_id;
+  OriginInfo origin_info;
+  ChainId chain_id;
+
+  // The `SignerPayloadJSON` the dApp handed us, serialized by the renderer.
+  // https://github.com/polkadot-js/api/blob/master/packages/types/src/types/extrinsic.ts
+  string raw_payload_json;
+
+  // SCALE-encoded runtime metadata for `chain_id`, so the UI can decode the
+  // payload's call data without fetching metadata itself.
+  array<uint8> metadata_bytes;
+
+  // Carried alongside `metadata_bytes` because the metadata does not describe
+  // them: without them the UI denominates the call's balances in the type
+  // registry's generic defaults rather than the chain's own units.
+  PolkadotChainProperties chain_properties;
+
+  // The bytes `raw_payload_json` encodes to, un-hashed, filled in by the
+  // browser once the bridge frame has described the request. Null until then,
+  // which is what keeps a request from being signed before the user has been
+  // shown what signing it means.
+  array<uint8>? signature_payload;
 };
 
 enum ExternalWalletType {

@@ -17,11 +17,13 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_dapp_utils.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_test_utils.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -130,8 +132,12 @@ class PolkadotProviderImplUnitTest : public testing::Test {
     service_delegate_ = TestBraveWalletServiceDelegate::Create();
     keyring_service_->SetDelegate(service_delegate_.get());
 
+    polkadot_wallet_service_ = std::make_unique<PolkadotWalletService>(
+        *keyring_service_, *network_manager_, prefs_,
+        url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap());
+
     provider_ = std::make_unique<PolkadotProviderImpl>(
-        *keyring_service_,
+        *keyring_service_, *polkadot_wallet_service_,
         base::BindLambdaForTesting(
             [this]() -> std::unique_ptr<BraveWalletProviderDelegate> {
               auto delegate = std::make_unique<
@@ -233,6 +239,7 @@ class PolkadotProviderImplUnitTest : public testing::Test {
   std::unique_ptr<NetworkManager> network_manager_;
   std::unique_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<KeyringService> keyring_service_;
+  std::unique_ptr<PolkadotWalletService> polkadot_wallet_service_;
 
   std::vector<raw_ptr<MockBraveWalletProviderDelegate>> delegates_;
   std::unique_ptr<PolkadotProviderImpl> provider_;

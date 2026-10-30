@@ -11,27 +11,39 @@
 #include <utility>
 #include <vector>
 
+#include "base/check.h"
+#include "base/check_op.h"
+#include "base/json/json_writer.h"
 #include "base/memory/raw_ptr.h"
+#include "base/task/current_thread.h"
+#include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "base/values.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_dapp_utils.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_test_utils.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"  // IWYU pragma: keep
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "url/gurl.h"
 #include "url/origin.h"
 
 using base::test::TestFuture;
@@ -99,6 +111,13 @@ class PolkadotApiImplUnitTest : public testing::Test {
 
     service_delegate_ = TestBraveWalletServiceDelegate::Create();
     keyring_service_->SetDelegate(service_delegate_.get());
+
+    polkadot_mock_rpc_ = std::make_unique<PolkadotMockRpc>(
+        &url_loader_factory_, network_manager_.get());
+
+    polkadot_wallet_service_ = std::make_unique<PolkadotWalletService>(
+        *keyring_service_, *network_manager_, prefs_,
+        url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap());
   }
 
   void TearDown() override {
@@ -118,7 +137,9 @@ class PolkadotApiImplUnitTest : public testing::Test {
         .WillByDefault(testing::Return(true));
 
     api_ = std::make_unique<PolkadotApiImpl>(
-        *keyring_service_, std::move(delegate), granted_account.Clone());
+        *keyring_service_, *polkadot_wallet_service_, std::move(delegate),
+        granted_account.Clone(),
+        url::Origin::Create(GURL("https://brave.com")));
   }
 
   void CreateWallet() {
@@ -150,9 +171,23 @@ class PolkadotApiImplUnitTest : public testing::Test {
     return future.Take();
   }
 
+  auto SignPayload(const std::string& payload_json) {
+    TestFuture<mojom::PolkadotSignerResultPtr,
+               mojom::PolkadotProviderErrorBundlePtr>
+        future;
+    api_->SignPayload(payload_json, future.GetCallback());
+    return future;
+  }
+
   MockBraveWalletProviderDelegate* delegate() { return delegate_; }
 
   KeyringService* keyring_service() { return keyring_service_.get(); }
+
+  PolkadotWalletService* polkadot_wallet_service() {
+    return polkadot_wallet_service_.get();
+  }
+
+  PolkadotMockRpc* polkadot_mock_rpc() { return polkadot_mock_rpc_.get(); }
 
  private:
   base::test::TaskEnvironment task_environment_;
@@ -165,6 +200,8 @@ class PolkadotApiImplUnitTest : public testing::Test {
   std::unique_ptr<NetworkManager> network_manager_;
   std::unique_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<KeyringService> keyring_service_;
+  std::unique_ptr<PolkadotWalletService> polkadot_wallet_service_;
+  std::unique_ptr<PolkadotMockRpc> polkadot_mock_rpc_;
 
   raw_ptr<MockBraveWalletProviderDelegate> delegate_ = nullptr;
   std::unique_ptr<PolkadotApiImpl> api_;
@@ -331,6 +368,69 @@ TEST_F(PolkadotApiImplUnitTest, GetAccounts_AccountRemovedAfterGrant) {
   EXPECT_THAT(error, EqualsMojo(mojom::PolkadotProviderErrorBundle::New(
                          mojom::PolkadotProviderError::kInternalError,
                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR))));
+}
+
+static constexpr std::string_view kPayloadJson = R"({
+  "specVersion": "0x001e9808",
+  "transactionVersion": "0x0000000f",
+  "address": "1UC3h7uQVraXVhGhfPqmk6F7syCLrxMSVbJBuQqW7R8SHdK",
+  "assetId": null,
+  "blockHash": "0xa4d849853e6d5f0df4e03b3fbc104d7937d8e85585fcbafa06290bfb4de081a9",
+  "blockNumber": "0x0148d3ac",
+  "era": "0xc400",
+  "genesisHash": "0x68d56f15f85d3136970ec16946040bc1752654e906147f7e43e9d539d7c3de2f",
+  "metadataHash": null,
+  "method": "0x1f03051c000401000007093581e70e3001000003890dff6f1608140d01020800010100f8224098b97b27e917689228c41f23e2b06cc48666bc6eaec030169b441578400f0101010000040201090704000f00163982d4df06000d00040201090704000b00f0ab75a40d000101002a975dad1c0fb19221a9288a0ae4b63ed29f3c625a73578117dde65482b8fc23310201090704010200040201090704000f00268d0c30d20601040100040100000700e40b5402080d01020c0001030083cf32ace9e4c47165934f9a695fc23f96dee73d2ccb4f8d0d25b94af68380348f8eea289c3183f0f0bcb2a1fa2ee9ee89434eba012ccb4f8d0d25b94af68380348f8eea289c3183f0f0bcb2a1fa2ee9ee89434eba0103c83d82a9d2060300",
+  "mode": 0,
+  "nonce": "0x00000001",
+  "signedExtensions": [
+    "AuthorizeCall",
+    "CheckNonZeroSender",
+    "CheckSpecVersion",
+    "CheckTxVersion",
+    "CheckGenesis",
+    "CheckMortality",
+    "CheckNonce",
+    "CheckWeight",
+    "ChargeAssetTxPayment",
+    "PrevalidateAttests",
+    "CheckMetadataHash",
+    "EthSetOrigin",
+    "StorageWeightReclaim",
+    "UnitTransactionExtension",
+    "VerifyMultiSignature",
+    "AsPgas",
+    "AsDotnsGateway",
+    "RestrictOrigins"
+  ],
+  "tip": "0x00000000000000000000000000000000",
+  "version": 4,
+  "withSignedTransaction": false
+})";
+
+TEST_F(PolkadotApiImplUnitTest, SignPayload) {
+  polkadot_mock_rpc()->FinalizeSetup();
+
+  CreateWallet();
+
+  auto account = AddAccount();
+  ASSERT_TRUE(account);
+  CreateApi(account->account_id);
+
+  auto future = SignPayload(std::string(kPayloadJson));
+
+  base::test::RunUntil([this] {
+    return !polkadot_wallet_service()
+                ->GetPendingSignPolkadotTransactionRequestsSync()
+                .empty();
+  });
+
+  polkadot_wallet_service()->NotifySignPolkadotTransactionRequestProcessed(
+      true, 0, std::nullopt);
+
+  auto [signature, error] = future.Take();
+  EXPECT_FALSE(error);
+  ASSERT_TRUE(signature);
 }
 
 }  // namespace brave_wallet

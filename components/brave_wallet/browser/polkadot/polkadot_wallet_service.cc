@@ -17,9 +17,29 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_utils.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/hash_utils.h"
+#include "url/gurl.h"
 
 namespace brave_wallet {
+
+PolkadotWalletService::PendingSignPolkadotTransactionRequest::
+    PendingSignPolkadotTransactionRequest(
+        mojom::SignPolkadotTransactionRequestPtr request,
+        SignPolkadotTransactionRequestCallback callback)
+    : request(std::move(request)), callback(std::move(callback)) {}
+
+PolkadotWalletService::PendingSignPolkadotTransactionRequest::
+    PendingSignPolkadotTransactionRequest(
+        PendingSignPolkadotTransactionRequest&&) = default;
+
+PolkadotWalletService::PendingSignPolkadotTransactionRequest&
+PolkadotWalletService::PendingSignPolkadotTransactionRequest::operator=(
+    PendingSignPolkadotTransactionRequest&&) = default;
+
+PolkadotWalletService::PendingSignPolkadotTransactionRequest::
+    ~PendingSignPolkadotTransactionRequest() = default;
 
 PolkadotWalletService::PolkadotWalletService(
     KeyringService& keyring_service,
@@ -184,6 +204,97 @@ void PolkadotWalletService::ValidateAddressForTransaction(
           weak_ptr_factory_.GetWeakPtr(), address, std::move(callback)));
 }
 
+void PolkadotWalletService::GetPendingSignPolkadotTransactionRequests(
+    GetPendingSignPolkadotTransactionRequestsCallback callback) {
+  std::move(callback).Run(GetPendingSignPolkadotTransactionRequestsSync());
+}
+
+std::vector<mojom::SignPolkadotTransactionRequestPtr>
+PolkadotWalletService::GetPendingSignPolkadotTransactionRequestsSync() const {
+  std::vector<mojom::SignPolkadotTransactionRequestPtr> requests;
+  for (const auto& pending : sign_polkadot_transaction_requests_) {
+    requests.push_back(pending.request.Clone());
+  }
+  return requests;
+}
+
+void PolkadotWalletService::NotifySignPolkadotTransactionRequestProcessed(
+    bool approved,
+    int32_t id,
+    const std::optional<std::string>& error) {
+  if (sign_polkadot_transaction_requests_.empty() ||
+      sign_polkadot_transaction_requests_.front().request->id != id) {
+    return;
+  }
+  auto pending = std::move(sign_polkadot_transaction_requests_.front());
+  sign_polkadot_transaction_requests_.pop_front();
+
+  std::move(pending.callback)
+      .Run(approved, std::move(pending.request->signature_payload), error);
+}
+
+void PolkadotWalletService::AddSignPolkadotTransactionRequest(
+    mojom::SignPolkadotTransactionRequestPtr request,
+    SignPolkadotTransactionRequestCallback callback) {
+  if (request->id < 0) {
+    request->id = sign_polkadot_transactions_id_++;
+  }
+  sign_polkadot_transaction_requests_.emplace_back(std::move(request),
+                                                   std::move(callback));
+}
+
+mojom::SignPolkadotTransactionRequestPtr
+PolkadotWalletService::GetPendingSignPolkadotTransactionRequest(int32_t id) {
+  for (auto& pending : sign_polkadot_transaction_requests_) {
+    if (pending.request->id == id) {
+      return pending.request.Clone();
+    }
+  }
+
+  return nullptr;
+}
+
+void PolkadotWalletService::SetSignPolkadotTransactionRequestSignaturePayload(
+    int32_t id,
+    std::vector<uint8_t> signature_payload) {
+  for (auto& pending : sign_polkadot_transaction_requests_) {
+    if (pending.request->id == id) {
+      pending.request->signature_payload = std::move(signature_payload);
+      return;
+    }
+  }
+}
+
+void PolkadotWalletService::
+    DrainSignPolkadotTransactionRequestsWithoutPermission() {
+  CHECK(!origin_permission_checker_.is_null());
+
+  // Requests are moved out before their callbacks run, so that re-entrant
+  // mutation from a callback cannot invalidate iteration.
+  std::vector<PendingSignPolkadotTransactionRequest> to_drain;
+  for (auto it = sign_polkadot_transaction_requests_.begin();
+       it != sign_polkadot_transaction_requests_.end();) {
+    if (!it->request->origin_info) {
+      ++it;
+      continue;
+    }
+    auto origin =
+        url::Origin::Create(GURL(it->request->origin_info->origin_spec));
+    if (origin_permission_checker_.Run(origin, it->request->account_id)) {
+      ++it;
+      continue;
+    }
+    to_drain.push_back(std::move(*it));
+    it = sign_polkadot_transaction_requests_.erase(it);
+  }
+
+  // approved=false so the provider rejects the request as if the user declined
+  // it.
+  for (auto& drained : to_drain) {
+    std::move(drained.callback).Run(false, std::nullopt, std::nullopt);
+  }
+}
+
 void PolkadotWalletService::GenerateSignedTransferExtrinsicImpl(
     std::string chain_id,
     mojom::AccountIdPtr account_id,
@@ -298,6 +409,20 @@ void PolkadotWalletService::GetFeeEstimate(
       base::BindOnce(&PolkadotWalletService::OnGenerateTransferForFee,
                      weak_ptr_factory_.GetWeakPtr(), chain_id,
                      std::move(callback)));
+}
+
+std::optional<std::array<uint8_t, kSr25519SignatureSize>>
+PolkadotWalletService::SignSignaturePayload(
+    const mojom::AccountIdPtr& account_id,
+    base::span<const uint8_t> signature_payload) {
+  // https://github.com/polkadot-js/api/blob/master/packages/types/src/extrinsic/util.ts
+  if (signature_payload.size() > kPolkadotMaxUnhashedSignaturePayloadSize) {
+    return keyring_service_->SignMessageByPolkadotKeyring(
+        account_id, Blake2bHash<32>({signature_payload}));
+  }
+
+  return keyring_service_->SignMessageByPolkadotKeyring(account_id,
+                                                        signature_payload);
 }
 
 void PolkadotWalletService::OnGenerateTransferForFee(

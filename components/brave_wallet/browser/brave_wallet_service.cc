@@ -308,6 +308,9 @@ BraveWalletService::BraveWalletService(
     polkadot_wallet_service_ = std::make_unique<PolkadotWalletService>(
         *keyring_service(), *network_manager(), *profile_prefs,
         url_loader_factory, base::BindRepeating(GetPolkadotDappUrls));
+    polkadot_wallet_service_->set_origin_permission_checker(
+        base::BindRepeating(&BraveWalletService::HasPermissionForPendingRequest,
+                            base::Unretained(this)));
   }
 
 #if BUILDFLAG(ENABLE_SNAP)
@@ -1371,6 +1374,10 @@ void BraveWalletService::OnContentSettingChanged(
   DrainSignMessageRequestsWithoutPermission();
   DrainSignSolTransactionsRequestsWithoutPermission();
   DrainSignCardanoTransactionRequestsWithoutPermission();
+  if (auto* polkadot_wallet_service = GetPolkadotWalletService()) {
+    polkadot_wallet_service
+        ->DrainSignPolkadotTransactionRequestsWithoutPermission();
+  }
 }
 
 template <typename PendingDeque, typename GetAccountId, typename DrainCallback>

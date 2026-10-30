@@ -978,6 +978,10 @@ void PolkadotMockRpc::RequestInterceptor(const network::ResourceRequest& req) {
     return;
   }
 
+  if (HandleSystemPropertiesRequest(req, req_body)) {
+    return;
+  }
+
   if (HandleGetAccountInfoRequest(req, req_body)) {
     return;
   }
@@ -1064,6 +1068,32 @@ bool PolkadotMockRpc::HandleMetadataRequest(const network::ResourceRequest& req,
     }
 
     return false;
+  }
+
+  return false;
+}
+bool PolkadotMockRpc::HandleSystemPropertiesRequest(
+    const network::ResourceRequest& req,
+    const base::DictValue& req_body) {
+  const auto* method = req_body.FindString("method");
+  if (!method) {
+    return false;
+  }
+
+  if (*method == "system_properties") {
+    if (req.url == GURL(polkadot_asset_hub_url_)) {
+      url_loader_factory_->AddResponse(req.url.spec(),
+                                       R"({
+          "jsonrpc":"2.0",
+          "id":1,
+          "result":{
+            "ss58Format":0,
+            "tokenDecimals":10,
+            "tokenSymbol":"DOT"
+          }})");
+
+      return true;
+    }
   }
 
   return false;

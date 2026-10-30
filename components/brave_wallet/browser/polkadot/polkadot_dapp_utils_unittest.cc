@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_dapp_utils.h"
 
+#include <array>
 #include <memory>
 #include <optional>
 #include <string>
@@ -230,6 +231,20 @@ TEST_F(PolkadotDappUtilsUnitTest, MakeInjectedAccount) {
   EXPECT_EQ(injected->name, kPolkadotObfuscatedAccountName);
   EXPECT_EQ(injected->type, kPolkadotSr25519KeypairType);
   EXPECT_FALSE(injected->genesis_hash);
+}
+
+TEST_F(PolkadotDappUtilsUnitTest, MakeSignerSignatureHex) {
+  std::array<uint8_t, kSr25519SignatureSize> signature = {};
+  signature.fill(uint8_t{0xab});
+
+  std::string expected = "0x01";
+  for (size_t i = 0; i < kSr25519SignatureSize; ++i) {
+    expected += "ab";
+  }
+
+  // The leading `01` is `MultiSignature::Sr25519`'s variant index, without
+  // which polkadot-js reads the signature as the wrong variant.
+  EXPECT_EQ(MakePolkadotSignerSignatureHex(signature), expected);
 }
 
 }  // namespace brave_wallet
