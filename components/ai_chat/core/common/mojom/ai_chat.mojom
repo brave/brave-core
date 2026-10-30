@@ -66,6 +66,12 @@ const uint32 MAX_IMAGES = 20;
 const uint32 MAX_DOCUMENTS = 5;
 const uint32 MAX_DOCUMENT_SIZE_BYTES = 4718592; // 4.5MB
 
+enum ConversationGenerationState {
+  kIdle,
+  kGenerating,
+  kCompletedNotViewed,
+};
+
 
 struct Conversation {
   string uuid;
@@ -249,6 +255,9 @@ interface ServiceObserver {
   OnConversationListChanged(array<Conversation> conversations);
   OnStateChanged(ServiceState state);
   OnSkillsChanged(array<Skill> skills);
+  OnConversationGenerationStateChanged(
+    string conversation_uuid,
+    ConversationGenerationState state);
 };
 
 // Browser-side handler for general AI Chat UI functions, implemented

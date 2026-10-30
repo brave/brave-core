@@ -159,6 +159,10 @@ export default function createAIChatApi(
       isStandalone: state<boolean | undefined>(undefined),
 
       tabs: state<Mojom.TabData[]>([]),
+
+      conversationGenerationState: state<
+        Map<string, Mojom.ConversationGenerationState>
+      >(new Map()),
     },
 
     // actions are passed through to consumers as-is, no caching or result handling
@@ -183,7 +187,7 @@ export default function createAIChatApi(
       >,
     },
 
-    // Events are subscribable data and offers an easy hook to wrap the subscription
+    // Events are subscribable data and offer an easy hook to wrap the subscription
     events: {
       // Provide a partial implementation of a receiver,
       // and eventsFor will optionally generate events
@@ -193,6 +197,24 @@ export default function createAIChatApi(
         {
           onConversationListChanged: (conversations) => {
             api.getConversations.update(conversations)
+          },
+          onConversationGenerationStateChanged: (
+            uuid: string,
+            state: Mojom.ConversationGenerationState,
+          ) => {
+            api.conversationGenerationState.update(
+              (
+                old: Map<string, Mojom.ConversationGenerationState> = new Map(),
+              ) => {
+                const next = new Map(old)
+                if (state === Mojom.ConversationGenerationState.kIdle) {
+                  next.delete(uuid)
+                } else {
+                  next.set(uuid, state)
+                }
+                return next
+              },
+            )
           },
           onStateChanged: (state) => {
             api.state.update(state)
