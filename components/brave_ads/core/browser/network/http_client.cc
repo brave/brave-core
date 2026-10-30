@@ -11,6 +11,7 @@
 
 #include "base/check.h"
 #include "base/containers/flat_map.h"
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
@@ -132,7 +133,8 @@ bool ShouldFetchOhttpKeyConfig(PrefService& prefs) {
   // Must track the real eligibility and dispatch conditions exactly, or
   // this either fetches needlessly or isn't ready when a confirmation needs
   // it.
-  return kShouldSupportOhttp.Get() && AdsEnabled(prefs) &&
+  return base::FeatureList::IsEnabled(kAdsObliviousHttpFeature) &&
+         kShouldSupportOhttp.Get() && AdsEnabled(prefs) &&
          !HasJoinedBraveRewardsAndConnectedWallet(prefs);
 }
 
@@ -179,6 +181,7 @@ void HttpClient::SendRequest(mojom::UrlRequestInfoPtr mojom_url_request,
   CHECK(mojom_url_request);
 
   const bool use_ohttp =
+      base::FeatureList::IsEnabled(kAdsObliviousHttpFeature) &&
       kShouldSupportOhttp.Get() && mojom_url_request->use_ohttp;
 
   if (!use_ohttp) {

@@ -13,12 +13,12 @@
 
 namespace brave_ads {
 
-TEST(BraveAdsObliviousHttpFeatureTest, IsDisabled) {
-  EXPECT_FALSE(base::FeatureList::IsEnabled(kAdsObliviousHttpFeature));
+TEST(BraveAdsObliviousHttpFeatureTest, IsEnabled) {
+  EXPECT_TRUE(base::FeatureList::IsEnabled(kAdsObliviousHttpFeature));
 }
 
-TEST(BraveAdsObliviousHttpFeatureTest, ShouldNotSupport) {
-  EXPECT_FALSE(kShouldSupportOhttp.Get());
+TEST(BraveAdsObliviousHttpFeatureTest, ShouldSupport) {
+  EXPECT_TRUE(kShouldSupportOhttp.Get());
 }
 
 TEST(BraveAdsObliviousHttpFeatureTest, TimeoutDuration) {
