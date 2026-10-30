@@ -57,7 +57,7 @@ constexpr char kWaitForRowCountScript[] = R"(
 
 GURL InternalsURL() {
   return GURL(
-      base::StrCat({content::kChromeUIScheme, "://", kPsstInternalsHost}));
+      base::StrCat({content::kChromeUIScheme, url::kStandardSchemeSeparator, kPsstInternalsHost}));
 }
 
 }  // namespace
