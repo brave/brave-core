@@ -434,6 +434,15 @@ if (is_win || is_mac || is_linux) {
 }
 
 if (!is_android) {
+  # Gestures: right-button drag gestures over page content. Desktop
+  # (Views/Aura) only.
+  brave_chrome_browser_deps += [
+    "//brave/components/gestures/core/browser",
+    "//brave/components/gestures/core/common:features",
+  ]
+}
+
+if (!is_android) {
   # BraveHidDelegate inherits from ChromeHidDelegate, and referenced by
   # BraveContentBrowserClient, so we put into the same source_set.
   brave_chrome_browser_sources += [

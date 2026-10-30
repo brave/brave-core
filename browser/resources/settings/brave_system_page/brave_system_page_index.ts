@@ -27,6 +27,7 @@ import '../brave_system_page/brave_vpn_page.js'
 // </if>
 import '../brave_origin_page/brave_origin_onboarding.js'
 import '../shortcuts_page/shortcuts_page.js'
+import '../gestures_page/gestures_page.js'
 
 export interface SettingsBraveSystemPageIndexElement {
   $: {
@@ -68,6 +69,10 @@ export class SettingsBraveSystemPageIndexElement extends
         type: Boolean,
         value: () => loadTimeData.getBoolean('areShortcutsSupported'),
       },
+      showGesturesPage_: {
+        type: Boolean,
+        value: true,
+      },
       // <if expr="enable_brave_vpn_wireguard">
       showVPNPage_: {
         type: Boolean,
@@ -87,6 +92,7 @@ export class SettingsBraveSystemPageIndexElement extends
 
   declare private showBatterySettings_: boolean;
   declare private showShortcutsPage_: boolean;
+  declare private showGesturesPage_: boolean;
   declare private showOriginOnboarding_: boolean;
 
   // <if expr="enable_brave_vpn_wireguard">
@@ -202,6 +208,10 @@ export class SettingsBraveSystemPageIndexElement extends
         case routes.SHORTCUTS:
           this.$.viewManager.switchView(
             'shortcuts', 'no-animation', 'no-animation');
+          break;
+        case routes.GESTURES:
+          this.$.viewManager.switchView(
+            'gestures', 'no-animation', 'no-animation');
           break;
       }
     });
