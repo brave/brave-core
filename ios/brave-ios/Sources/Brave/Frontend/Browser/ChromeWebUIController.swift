@@ -47,7 +47,7 @@ class ChromeWebUIController: UIViewController, BraveWebViewUIDelegate {
   func webView(
     _ webView: CWVWebView,
     runJavaScriptAlertPanelWithMessage message: String,
-    pageURL url: URL,
+    pageURL url: URL?,
     completionHandler: @escaping () -> Void
   ) {
     let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
@@ -66,7 +66,7 @@ class ChromeWebUIController: UIViewController, BraveWebViewUIDelegate {
   func webView(
     _ webView: CWVWebView,
     runJavaScriptConfirmPanelWithMessage message: String,
-    pageURL url: URL,
+    pageURL url: URL?,
     completionHandler: @escaping (Bool) -> Void
   ) {
     let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
@@ -95,7 +95,7 @@ class ChromeWebUIController: UIViewController, BraveWebViewUIDelegate {
     _ webView: CWVWebView,
     runJavaScriptTextInputPanelWithPrompt prompt: String,
     defaultText: String,
-    pageURL url: URL,
+    pageURL url: URL?,
     completionHandler: @escaping (String?) -> Void
   ) {
     let alertController = UIAlertController(title: nil, message: prompt, preferredStyle: .alert)
