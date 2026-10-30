@@ -28,7 +28,6 @@
 #include "brave/browser/ui/page_info/features.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
-#include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
@@ -940,7 +939,7 @@ bool BraveBrowserView::MaybeUpdateDevtools(content::WebContents* web_contents) {
   // split tab is active when MultiContentsView shows split view now.
   // But, it could not when web panel is active and split view is opened
   // together. Early return to avoid crash from that.
-  if (IsWebPanelContents(web_contents) && IsInSplitView()) {
+  if (sidebar::IsWebPanelTab(browser_, web_contents) && IsInSplitView()) {
     return DevtoolsUIController::From(browser_)->UpdateDevtools(web_contents,
                                                                 false);
   }
@@ -961,7 +960,7 @@ bool BraveBrowserView::MaybeUpdateSplitView(
   // But, it could not when web panel is active and split view is opened
   // together. Early return to avoid crash from that. If |web_contents| is not
   // related with split tab, don't need to call base class' method.
-  if (IsWebPanelContents(web_contents) &&
+  if (sidebar::IsWebPanelTab(browser_, web_contents) &&
       multi_contents_view_->IsInSplitView()) {
     return false;
   }
@@ -1311,21 +1310,6 @@ void BraveBrowserView::HandleBrowserWindowMouseEvent(
     // handle mouse move events accordingly.
     region_view->HandleMouseMoveEvent(point_in_screen);
   }
-}
-
-bool BraveBrowserView::IsWebPanelContents(content::WebContents* contents) {
-  if (!sidebar::IsWebPanelFeatureEnabled() || !contents) {
-    return false;
-  }
-
-  if (auto* sidebar_controller = sidebar::SidebarController::From(browser_)) {
-    if (auto* web_panel_controller =
-            sidebar_controller->GetWebPanelController()) {
-      return web_panel_controller->panel_contents() == contents;
-    }
-  }
-
-  return false;
 }
 
 ClientFrameElementInfo BraveBrowserView::GetFrameElementInfo() const {
