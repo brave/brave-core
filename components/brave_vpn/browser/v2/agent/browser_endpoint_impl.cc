@@ -40,6 +40,11 @@ void BrowserEndpointImpl::OnSelectedRegionChanged(mojom::VpnRegionPtr region) {
   // Pass the selected region change to the service.
 }
 
+void BrowserEndpointImpl::OnAutoReconnectStateChanged(bool enabled) {
+  // TODO(https://github.com/brave/brave-browser/issues/54624)
+  // Pass the auto-reconnect state change to the service.
+}
+
 void BrowserEndpointImpl::OnSmartProxyRoutingStateChanged(bool enabled) {
   // TODO(https://github.com/brave/brave-browser/issues/54624)
   // Pass the smart proxy routing state change to the service.

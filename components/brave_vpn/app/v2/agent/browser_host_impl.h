@@ -57,6 +57,7 @@ class BrowserHostImpl final : public brave_vpn::mojom::BrowserHost,
   void ResetConnectionState() override;
   void GetAllRegions(GetAllRegionsCallback callback) override;
   void SetSelectedRegion(mojom::VpnRegionPtr region) override;
+  void SetAutoReconnectState(bool enable) override;
   void SetSmartProxyRoutingState(bool enable) override;
   void SetAllowLanTrafficState(bool enable) override;
 
@@ -65,6 +66,7 @@ class BrowserHostImpl final : public brave_vpn::mojom::BrowserHost,
       mojom::VpnConnectionState state,
       std::optional<std::string> error_message) override;
   void OnSelectedRegionChanged(const mojom::VpnRegion& region) override;
+  void OnAutoReconnectStateChanged(bool enabled) override;
   void OnSmartProxyRoutingStateChanged(bool enabled) override;
   void OnAllowLanTrafficStateChanged(bool available, bool enabled) override;
   void OnLastHostnameChanged(const std::string& hostname) override;

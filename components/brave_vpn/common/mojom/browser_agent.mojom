@@ -44,6 +44,9 @@ interface BrowserEndpoint {
   // Updates the currently selected VPN region.
   OnSelectedRegionChanged(VpnRegion region);
 
+  // Updates the current auto-reconnect state.
+  OnAutoReconnectStateChanged(bool enabled);
+
   // Updates the current Smart Proxy routing state.
   OnSmartProxyRoutingStateChanged(bool enabled);
 
@@ -118,6 +121,11 @@ interface BrowserHost {
   // Sets the desired region to connect to. The agent may decline; an actual
   // change is reported through the corresponding BrowserEndpoint callback.
   SetSelectedRegion(VpnRegion region);
+
+  // Requests an auto-reconnect state change. The agent may decline; an
+  // actual change is reported through the corresponding BrowserEndpoint
+  // callback.
+  SetAutoReconnectState(bool enable);
 
   // Requests a Smart Proxy routing state change. The agent may decline; an
   // actual change is reported through the corresponding BrowserEndpoint
