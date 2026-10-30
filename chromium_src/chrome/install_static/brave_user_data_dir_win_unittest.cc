@@ -57,31 +57,38 @@ class ScopedNTRegistryTestingOverride {
 
 TEST(UserDataDir, EmptyResultsInDefault) {
   std::wstring result, invalid;
+  bool policy_set = true;
 
   install_static::GetUserDataDirectoryImpl(L"brave.exe", kFakeInstallConstants,
-                                           &result, &invalid);
+                                           &result, &invalid, &policy_set);
   EXPECT_TRUE(EndsWith(result, kUserDataDirNameSuffix));
   EXPECT_EQ(std::wstring(), invalid);
+  EXPECT_FALSE(policy_set);
 
   result = L"";
-  install_static::GetUserDataDirectoryImpl(
-      L"brave.exe --user-data-dir=", kFakeInstallConstants, &result, &invalid);
+  install_static::GetUserDataDirectoryImpl(L"brave.exe --user-data-dir=",
+                                           kFakeInstallConstants, &result,
+                                           &invalid, &policy_set);
   EXPECT_TRUE(EndsWith(result, kUserDataDirNameSuffix));
   EXPECT_EQ(std::wstring(), invalid);
+  EXPECT_FALSE(policy_set);
 }
 
 TEST(UserDataDir, InvalidResultsInDefault) {
   std::wstring result, invalid;
+  bool policy_set = true;
 
   install_static::GetUserDataDirectoryImpl(L"brave.exe --user-data-dir=<>|:",
                                            kFakeInstallConstants, &result,
-                                           &invalid);
+                                           &invalid, &policy_set);
   EXPECT_TRUE(EndsWith(result, kUserDataDirNameSuffix));
   EXPECT_EQ(L"<>|:", invalid);
+  EXPECT_FALSE(policy_set);
 }
 
 TEST(UserDataDir, RegistrySettingsInHKLMOverrides) {
   std::wstring result, invalid;
+  bool policy_set = false;
 
   // Override the registry to say one value in HKLM, and confirm it takes
   // precedence over the command line in both implementations.
@@ -97,14 +104,16 @@ TEST(UserDataDir, RegistrySettingsInHKLMOverrides) {
 
   install_static::GetUserDataDirectoryImpl(L"brave.exe --user-data-dir=xxx",
                                            kFakeInstallConstants, &result,
-                                           &invalid);
+                                           &invalid, &policy_set);
 
   EXPECT_TRUE(EndsWith(result, L"\\yyy"));
   EXPECT_EQ(std::wstring(), invalid);
+  EXPECT_TRUE(policy_set);
 }
 
 TEST(UserDataDir, RegistrySettingsInHKCUOverrides) {
   std::wstring result, invalid;
+  bool policy_set = false;
 
   // Override the registry to say one value in HKCU, and confirm it takes
   // precedence over the command line in both implementations.
@@ -120,14 +129,39 @@ TEST(UserDataDir, RegistrySettingsInHKCUOverrides) {
 
   install_static::GetUserDataDirectoryImpl(L"brave.exe --user-data-dir=xxx",
                                            kFakeInstallConstants, &result,
-                                           &invalid);
+                                           &invalid, &policy_set);
 
   EXPECT_TRUE(EndsWith(result, L"\\yyy"));
   EXPECT_EQ(std::wstring(), invalid);
+  EXPECT_TRUE(policy_set);
+}
+
+TEST(UserDataDir, InvalidRegistrySettingsResultsInDefault) {
+  std::wstring result, invalid;
+  bool policy_set = true;
+
+  registry_util::RegistryOverrideManager override_manager;
+  std::wstring temp;
+  ASSERT_NO_FATAL_FAILURE(
+      override_manager.OverrideRegistry(HKEY_LOCAL_MACHINE, &temp));
+  ScopedNTRegistryTestingOverride nt_override(nt::HKLM, temp);
+
+  base::win::RegKey key(HKEY_LOCAL_MACHINE, kPolicyRegistryKey, KEY_WRITE);
+  LONG rv = key.WriteValue(kUserDataDirRegistryKey, L"<>|:");
+  ASSERT_EQ(rv, ERROR_SUCCESS);
+
+  GetUserDataDirectoryImpl(L"brave.exe --user-data-dir=xxx",
+                           kFakeInstallConstants, &result, &invalid,
+                           &policy_set);
+
+  EXPECT_TRUE(result.ends_with(kUserDataDirNameSuffix));
+  EXPECT_EQ(L"<>|:", invalid);
+  EXPECT_FALSE(policy_set);
 }
 
 TEST(UserDataDir, RegistrySettingsInHKLMTakesPrecedenceOverHKCU) {
   std::wstring result, invalid;
+  bool policy_set = false;
 
   // Override the registry in both HKLM and HKCU, and confirm HKLM takes
   // precedence.
@@ -150,14 +184,16 @@ TEST(UserDataDir, RegistrySettingsInHKLMTakesPrecedenceOverHKCU) {
 
   install_static::GetUserDataDirectoryImpl(L"brave.exe --user-data-dir=xxx",
                                            kFakeInstallConstants, &result,
-                                           &invalid);
+                                           &invalid, &policy_set);
 
   EXPECT_TRUE(EndsWith(result, L"\\111"));
   EXPECT_EQ(std::wstring(), invalid);
+  EXPECT_TRUE(policy_set);
 }
 
 TEST(UserDataDir, RegistrySettingWithPathExpansionHKCU) {
   std::wstring result, invalid;
+  bool policy_set = false;
 
   registry_util::RegistryOverrideManager override_manager;
   std::wstring temp;
@@ -170,7 +206,7 @@ TEST(UserDataDir, RegistrySettingWithPathExpansionHKCU) {
 
   install_static::GetUserDataDirectoryImpl(L"brave.exe --user-data-dir=xxx",
                                            kFakeInstallConstants, &result,
-                                           &invalid);
+                                           &invalid, &policy_set);
 
   EXPECT_EQ(strlen("X:\\WINDOWS"), result.size());
   EXPECT_EQ(std::wstring::npos, result.find(L"${windows}"));
@@ -179,6 +215,7 @@ TEST(UserDataDir, RegistrySettingWithPathExpansionHKCU) {
                  toupper);
   EXPECT_TRUE(EndsWith(upper, L"\\WINDOWS"));
   EXPECT_EQ(std::wstring(), invalid);
+  EXPECT_TRUE(policy_set);
 }
 
 }  // namespace
