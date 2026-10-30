@@ -101,9 +101,7 @@ public class OnboardingStepAdapter
         }
 
         if (viewType == R.layout.customize_brave) {
-            // TODO(https://github.com/brave/brave-browser/issues/60341): Implement the Customize
-            // Brave view holder.
-            throw new AssertionError("Customize Brave view holder is not implemented yet.");
+            return new CustomizeBraveViewHolder(view);
         }
 
         if (viewType == R.layout.make_brave_better) {
@@ -261,6 +259,21 @@ public class OnboardingStepAdapter
         @Override
         public void viewRecycled() {
             mBlockInterruptions.cancelAnimation();
+        }
+    }
+
+    // TODO(https://github.com/brave/brave-browser/issues/60341): Implement the Customize Brave
+    // step.
+    private static final class CustomizeBraveViewHolder extends OnboardingBaseViewHolder {
+
+        private CustomizeBraveViewHolder(
+                final View itemView) {
+            super(itemView);
+        }
+
+        @Override
+        public void viewRecycled() {
+            /* No-op. */
         }
     }
 
