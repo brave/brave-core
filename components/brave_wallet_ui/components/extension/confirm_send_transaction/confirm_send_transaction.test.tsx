@@ -106,7 +106,7 @@ describe('ConfirmSendTransactionInternal', () => {
 
 const mockDAppSendTransaction = {
   ...mockETHNativeTokenSendTransaction,
-  originInfo: mockUniswapOriginInfo,
+  dappOriginInfo: mockUniswapOriginInfo,
 }
 
 describe('ConfirmSendTransactionDApp', () => {
