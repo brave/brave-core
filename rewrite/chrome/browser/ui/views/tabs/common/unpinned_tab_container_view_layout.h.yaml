@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Declare tree tab helpers of UnpinnedTabContainerViewLayout.
+
+      Defined in chromium_src.
+    add_before_line:
+      line: 'const TabStripOrientation orientation_;'
+      code: |2
+          // Returns the indentation of |child| by its tree tab level.
+          // |available_width| is the width |child| would have without it.
+          int GetTreeTabIndent(const views::View* child, int available_width) const;
+          // Returns true if |child| is hidden by a collapsed tree tab ancestor.
+          bool IsInCollapsedTreeTabNode(const views::View* child) const;
+

@@ -1,0 +1,26 @@
+diff --git a/chrome/browser/ui/views/tabs/common/unpinned_tab_container_view_layout.cc b/chrome/browser/ui/views/tabs/common/unpinned_tab_container_view_layout.cc
+index 366f3e39e58776aac2547fc16504fdd9fee888f8..e7e75d892c110bf0e61ce3ac9e19212dca586807 100644
+--- a/chrome/browser/ui/views/tabs/common/unpinned_tab_container_view_layout.cc
++++ b/chrome/browser/ui/views/tabs/common/unpinned_tab_container_view_layout.cc
+@@ -248,6 +248,11 @@ views::ProposedLayout UnpinnedTabContainerViewLayout::CalculateVerticalLayout(
+                 collapse_state != tabs::VerticalTabStripCollapseState::kExpanded
+             ? 0
+             : horizontal_padding;
++    if (collapse_state == tabs::VerticalTabStripCollapseState::kExpanded &&
++        size_bounds.width().is_bounded()) {
++      x += GetTreeTabIndent(
++          child, size_bounds.width().value() - x - horizontal_padding);
++    }
+     views::SizeBound child_height_bound = size_bounds.height();
+     // In focused mode, pass the scroll viewport height constraint to the child
+     // focused group if the incoming size bounds height is unbounded, so that
+@@ -383,6 +388,9 @@ bool UnpinnedTabContainerViewLayout::IsChildVisibleInContainer(
+   if (!CanBeVisible(child)) {
+     return false;
+   }
++  if (IsInCollapsedTreeTabNode(child)) {
++    return false;
++  }
+   auto drag_data = tab_container_view->GetVisualDataForDraggedView(*child);
+   if (drag_data && drag_data->should_hide) {
+     return false;

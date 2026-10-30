@@ -203,6 +203,52 @@ IN_PROC_BROWSER_TEST_F(UpstreamTreeTabsBrowserTest,
   EXPECT_TRUE(model().tree_model());
 }
 
+IN_PROC_BROWSER_TEST_F(UpstreamTreeTabsBrowserTest, IndentedByLevel) {
+  CreateTree();
+
+  // Tree tab node collections aren't mirrored, so all tabs are direct
+  // children of the unpinned container.
+  for (int i = 0; i < model().count(); ++i) {
+    SCOPED_TRACE(testing::Message() << "tab index: " << i);
+    TabView* tab_view = GetTabViewAt(i);
+    ASSERT_TRUE(tab_view);
+    EXPECT_EQ(region_view()->GetUnpinnedTabsContainer(), tab_view->parent());
+    EXPECT_TRUE(tab_view->GetVisible());
+  }
+
+  EXPECT_LT(GetTabViewAt(0)->x(), GetTabViewAt(1)->x());
+  EXPECT_LT(GetTabViewAt(1)->x(), GetTabViewAt(2)->x());
+  EXPECT_EQ(GetTabViewAt(0)->x(), GetTabViewAt(3)->x());
+  // Indented tabs share the same trailing edge.
+  EXPECT_EQ(GetTabViewAt(0)->bounds().right(),
+            GetTabViewAt(2)->bounds().right());
+  // Tabs are stacked in model order.
+  EXPECT_LT(GetTabViewAt(0)->y(), GetTabViewAt(1)->y());
+  EXPECT_LT(GetTabViewAt(1)->y(), GetTabViewAt(2)->y());
+  EXPECT_LT(GetTabViewAt(2)->y(), GetTabViewAt(3)->y());
+}
+
+IN_PROC_BROWSER_TEST_F(UpstreamTreeTabsBrowserTest, CollapseAndExpand) {
+  CreateTree();
+  model().ActivateTabAt(3);
+
+  model().SetTreeTabNodeCollapsed(GetTreeTabNodeAt(0).id(), true);
+  WaitForViewModelSynced();
+  EXPECT_TRUE(GetTabViewAt(0)->GetVisible());
+  EXPECT_FALSE(GetTabViewAt(1)->GetVisible());
+  EXPECT_FALSE(GetTabViewAt(2)->GetVisible());
+  EXPECT_TRUE(GetTabViewAt(3)->GetVisible());
+  // Tab 3 comes right after tab 0.
+  EXPECT_LT(GetTabViewAt(3)->y() - GetTabViewAt(0)->bounds().bottom(),
+            GetTabViewAt(0)->height());
+
+  model().SetTreeTabNodeCollapsed(GetTreeTabNodeAt(0).id(), false);
+  WaitForViewModelSynced();
+  for (int i = 0; i < model().count(); ++i) {
+    EXPECT_TRUE(GetTabViewAt(i)->GetVisible()) << "tab index: " << i;
+  }
+}
+
 IN_PROC_BROWSER_TEST_F(UpstreamTreeTabsBrowserTest, FlattenAndRebuild) {
   CreateTree();
 

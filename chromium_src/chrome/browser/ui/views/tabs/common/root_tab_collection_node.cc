@@ -55,6 +55,15 @@ void RootTabCollectionNode::OnTreeTabChanged(const TreeTabChange& change) {
   // Tree tab changes are notified in the middle of collection updates, so the
   // hierarchy may not be in a consistent state yet. Sync later.
   ScheduleSyncWithTreeTabs();
+
+  if (change.type == TreeTabChange::Type::kNodeCollapsedStateChanged ||
+      change.type == TreeTabChange::Type::kNodeChildrenChanged ||
+      change.type == TreeTabChange::Type::kNodeReparented) {
+    if (auto* unpinned = GetChildNodeOfType(Type::UNPINNED);
+        unpinned && unpinned->view()) {
+      unpinned->view()->InvalidateLayout();
+    }
+  }
 }
 
 bool RootTabCollectionNode::ShouldSyncWithTreeTabs(

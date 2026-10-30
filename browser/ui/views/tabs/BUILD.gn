@@ -16,7 +16,14 @@ source_set("tree_tab_view_utils") {
 
   public_deps = [ "//components/tabs:public" ]
 
-  deps = [ "//base" ]
+  deps = [
+    "//base",
+    "//brave/components/tabs",
+    "//chrome/browser/ui:layout_constants",
+    "//chrome/browser/ui/views/tabs/common",
+    "//chrome/browser/ui/views/tabs/common:impl",
+    "//ui/views",
+  ]
 }
 
 source_set("browser_tests") {
