@@ -25,7 +25,8 @@ std::unique_ptr<FocusModeController> CreateBraveFocusModeController(
     return nullptr;
   }
   return factory.CreateInstance<FocusModeController>(
-      *browser, browser->GetUnownedUserDataHost());
+      *browser, browser->GetUnownedUserDataHost(),
+      *browser->GetProfile()->GetPrefs());
 }
 
 std::unique_ptr<VerticalTabController> CreateBraveVerticalTabController(
