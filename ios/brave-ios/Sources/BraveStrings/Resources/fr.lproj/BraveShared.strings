@@ -80,7 +80,7 @@
 "autofill.managePasswords.deleteCredentialsAlertTitle" = "Confirmer ?";
 
 /* Label for the button used to delete the current login. */
-"autofill.managePasswords.deleteManagePasswordButtonTitle" = "Testing Delete 1 for French";
+"autofill.managePasswords.deleteManagePasswordButtonTitle" = "Supprimer";
 
 /* Label for the button used to confirm delete action for the current password. */
 "autofill.managePasswords.deleteManagePasswordConfrimButtonTitle" = "Supprimer le mot de passe";
