@@ -30,8 +30,8 @@ base::FilePath GetDefaultUserDataDirectory() {
       sizeof(install_static::InstallConstants), 0, "", L"", L"", L"", L""};
   std::wstring result, invalid;
   bool policy_set = true;
-  install_static::GetUserDataDirectoryImpl(L"", kFakeInstallConstants, &result,
-                                           &invalid, &policy_set);
+  install_static::GetUserDataDirectoryImpl(L"brave.exe", kFakeInstallConstants,
+                                           &result, &invalid, &policy_set);
   user_data_dir = base::FilePath(result);
 #else   // BUILDFLAG(IS_WIN)
   chrome::GetDefaultUserDataDirectory(&user_data_dir);
