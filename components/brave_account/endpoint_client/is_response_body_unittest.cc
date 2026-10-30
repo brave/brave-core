@@ -49,11 +49,6 @@ struct JSONResponseBodyValid {
   static std::optional<JSONResponseBodyValid> FromValue(const base::Value&);
 };
 
-class ProtobufResponseBodyPrivateInheritance : google::protobuf::MessageLite {
- public:
-  static constexpr char kName[] = "ProtobufResponseBodyPrivateInheritance";
-};
-
 struct ProtobufResponseBodyValid : google::protobuf::MessageLite {
   static constexpr char kName[] = "ProtobufResponseBodyValid";
 };
@@ -64,6 +59,7 @@ struct IsResponseBodyTestCase {
   static constexpr bool kSatisfiesConcept = SatisfiesConcept;
 };
 
+// Protobuf edge cases are covered by is_protobuf_message_unittest.cc.
 using IsResponseBodyTestCases = testing::Types<
     IsResponseBodyTestCase<JSONResponseBodyNoFromValue, false>,
     IsResponseBodyTestCase<JSONResponseBodyNonStaticFromValue, false>,
@@ -71,7 +67,6 @@ using IsResponseBodyTestCases = testing::Types<
     IsResponseBodyTestCase<JSONResponseBodyFromValueWithWrongParameterType,
                            false>,
     IsResponseBodyTestCase<JSONResponseBodyValid, true>,
-    IsResponseBodyTestCase<ProtobufResponseBodyPrivateInheritance, false>,
     IsResponseBodyTestCase<ProtobufResponseBodyValid, true>>;
 
 struct IsResponseBodyTestCaseName {

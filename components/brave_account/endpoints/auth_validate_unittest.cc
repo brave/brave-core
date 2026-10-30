@@ -16,11 +16,6 @@
 
 namespace brave_account::endpoints {
 
-bool operator==(const AuthValidate::Response::SuccessBody& lhs,
-                const AuthValidate::Response::SuccessBody& rhs) {
-  return lhs.email == rhs.email;
-}
-
 namespace {
 
 using AuthValidateTestCase = EndpointTestCase<AuthValidate>;

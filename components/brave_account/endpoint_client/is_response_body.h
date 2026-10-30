@@ -10,7 +10,7 @@
 #include <optional>
 
 #include "base/values.h"
-#include "google/protobuf/message_lite.h"
+#include "brave/components/brave_account/endpoint_client/is_protobuf_message.h"
 
 namespace brave_account::endpoint_client::detail {
 
@@ -23,11 +23,9 @@ concept IsJSONResponseBody = requires(const base::Value& value) {
   } -> std::same_as<std::optional<ResponseBody>>;
 };
 
-// A Protobuf response body is a type publicly derived from
-// google::protobuf::MessageLite.
+// A Protobuf response body is a type that IsProtobufMessage.
 template <typename ResponseBody>
-concept IsProtobufResponseBody =
-    std::derived_from<ResponseBody, google::protobuf::MessageLite>;
+concept IsProtobufResponseBody = IsProtobufMessage<ResponseBody>;
 
 // A response body is either a JSON response body or a Protobuf response body.
 template <typename ResponseBody>

@@ -10,7 +10,9 @@ source_set("endpoint_client") {
   sources = [
     "brave_endpoint.h",
     "client.h",
+    "has_to_value.h",
     "is_endpoint.h",
+    "is_protobuf_message.h",
     "is_request.h",
     "is_request_body.h",
     "is_response.h",
@@ -45,10 +47,12 @@ source_set("test_support") {
 
   deps = [
     "//base",
+    "//base/test:test_support",
     "//brave/components/brave_account/endpoint_client",
     "//net",
     "//services/network:test_support",
     "//services/network/public/cpp",
+    "//testing/gmock",
   ]
 }
 
@@ -57,7 +61,9 @@ source_set("unit_tests") {
 
   sources = [
     "client_unittest.cc",
+    "has_to_value_unittest.cc",
     "is_endpoint_unittest.cc",
+    "is_protobuf_message_unittest.cc",
     "is_request_body_unittest.cc",
     "is_request_unittest.cc",
     "is_response_body_unittest.cc",
@@ -77,6 +83,7 @@ source_set("unit_tests") {
     "//services/network:test_support",
     "//services/network/public/cpp",
     "//services/network/public/mojom",
+    "//testing/gmock",
     "//testing/gtest",
     "//third_party/protobuf:protobuf_lite",
     "//url",
