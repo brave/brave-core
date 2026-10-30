@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/unload_controller.cc b/chrome/browser/ui/unload_controller.cc
-index 02ae74168cb077798c27404b6e7fda0fe5bfb6f7..12bcf373f47368136117db04f1ef261491e4a0c7 100644
+index 02ae74168cb077798c27404b6e7fda0fe5bfb6f7..1cfeac17009377e3674cf3686051a63f510ef06f 100644
 --- a/chrome/browser/ui/unload_controller.cc
 +++ b/chrome/browser/ui/unload_controller.cc
 @@ -180,6 +180,7 @@ void UnloadController::OnWindowClosing() {
    if (!HandleBeforeClose()) {
      return;
    }
-+  sidebar::MaybeCloseWebPanel(browser_);
++  sidebar::MaybeCloseWebPanelForShutdown(browser_);
  
    // Don't use GetForProfileIfExisting here, we want to force creation of the
    // session service so that user can restore what was open.
