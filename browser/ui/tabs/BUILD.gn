@@ -14,6 +14,7 @@ import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
+import("//third_party/widevine/cdm/widevine.gni")
 
 assert(is_win || is_mac || is_linux || is_chromeos || is_android)
 
@@ -90,6 +91,7 @@ if (!is_android) {
       "//chrome/browser/ui/tabs:tab_strip",
       "//chrome/browser/ui/thumbnails",
       "//components/prefs",
+      "//third_party/widevine/cdm:buildflags",
     ]
 
     if (enable_ai_chat) {
@@ -106,6 +108,10 @@ if (!is_android) {
 
     if (enable_brave_rewards) {
       deps += [ "//brave/browser/brave_rewards:tab_helper" ]
+    }
+
+    if (enable_widevine) {
+      deps += [ "//brave/browser/widevine" ]
     }
 
     if (enable_brave_ads) {
