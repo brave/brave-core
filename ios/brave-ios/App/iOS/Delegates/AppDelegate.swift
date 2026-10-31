@@ -469,17 +469,17 @@ extension AppDelegate {
     // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
     // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
 
-    sceneSessions.forEach { session in
-      if let windowIdString = BrowserState.getWindowId(from: session),
-        let windowId = UUID(uuidString: windowIdString)
-      {
-        SessionWindow.delete(windowId: windowId)
+    let windowIds = sceneSessions.compactMap { session -> UUID? in
+      if let windowIdString = BrowserState.getWindowId(from: session) {
+        return UUID(uuidString: windowIdString)
       } else if let userActivity = session.scene?.userActivity,
-        let windowIdString = BrowserState.getNewWindowInfo(from: userActivity).windowId,
-        let windowId = UUID(uuidString: windowIdString)
+        let windowIdString = BrowserState.getNewWindowInfo(from: userActivity).windowId
       {
-        SessionWindow.delete(windowId: windowId)
+        return UUID(uuidString: windowIdString)
       }
+      return nil
     }
+    BrowserState.forgetDataForDiscardedWindows(windowIds)
+    windowIds.forEach { SessionWindow.delete(windowId: $0) }
   }
 }
