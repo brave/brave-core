@@ -23,6 +23,7 @@ class UserScriptManager {
     var scripts: [ScriptType] = [
       .faviconFetcher,
       .nightMode,
+      .adsTextContentDistiller,
     ]
 
     if Preferences.UserScript.playlist.value {
@@ -125,6 +126,7 @@ class UserScriptManager {
     case youtubeQuality
     case braveLeoAIChat
     case braveTranslate
+    case adsTextContentDistiller
 
     fileprivate var script: WKUserScript? {
       switch self {
@@ -169,6 +171,7 @@ class UserScriptManager {
       case .braveTranslate:
         return Preferences.UserScript.translate.value && FeatureList.kBraveTranslateEnabled.enabled
           ? BraveTranslateScriptHandler.userScript : nil
+      case .adsTextContentDistiller: return AdsTextContentDistillerScriptHandler.userScript
       }
     }
 
