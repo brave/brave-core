@@ -830,6 +830,124 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
   EXPECT_FALSE(eth_sign_typed_data->meta);
 }
 
+TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParamsStringChainId) {
+  constexpr char kJson[] = R"([
+      "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826",
+      "{
+        \"types\" :{
+          \"EIP712Domain\": [
+            { \"name\": \"name\", \"type\": \"string\" },
+            { \"name\": \"version\", \"type\": \"string\" },
+            %s
+            { \"name\": \"verifyingContract\", \"type\": \"address\" },
+          ],
+          \"Mail\": [
+            {\"name\": \"from\", \"type\": \"Person\"},
+            {\"name\": \"to\", \"type\": \"Person\"},
+            {\"name\": \"contents\", \"type\": \"string\"}
+          ],
+          \"Person\": [
+            {\"name\": \"name\", \"type\": \"string\"},
+            {\"name\": \"wallet\", \"type\": \"address\"}
+          ]
+        },
+        \"primaryType\": \"Mail\",
+        \"domain\": {
+          \"name\": \"Ether Mail\",
+          \"version\": \"1\",
+          \"chainId\": %s,
+          \"verifyingContract\": \"0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC\",
+        },
+        \"message\": {
+          \"from\": {
+            \"name\":\"Cow\",
+            \"wallet\":\"0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826\"
+          },
+          \"to\": {
+            \"name\":\"Bob\",
+            \"wallet\":\"0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB\"
+          },
+          \"contents\":\"Hello, Bob!\"
+        }
+      }"
+    ])";
+
+  constexpr char kChainIdTypeEntry[] =
+      "{ \\\"name\\\": \\\"chainId\\\", \\\"type\\\": \\\"uint256\\\" },";
+  constexpr char kNumericDomainHash[] =
+      "f2cee375fa42b42143804025fc449deafd50cc031ca257e0b194a650a912090f";
+
+  constexpr struct {
+    const char* chain_id_literal;
+    const char* expected_chain_id;
+  } kDeclaredCases[] = {
+      {R"(\"1\")", "0x1"},
+      {R"(\"0x1\")", "0x1"},
+      {R"(\"999\")", "0x3e7"},
+      {R"(\"0x10000000000000000\")", "0x10000000000000000"},
+  };
+  for (const auto& test_case : kDeclaredCases) {
+    SCOPED_TRACE(test_case.chain_id_literal);
+    auto params_list = ParseJsonList(
+        absl::StrFormat(kJson, kChainIdTypeEntry, test_case.chain_id_literal));
+    auto eth_sign_typed_data = ParseEthSignTypedDataParams(
+        params_list, EthSignTypedDataHelper::Version::kV4);
+    ASSERT_TRUE(eth_sign_typed_data);
+    EXPECT_EQ(eth_sign_typed_data->chain_id, test_case.expected_chain_id);
+  }
+
+  constexpr struct {
+    const char* chain_id_literal;
+    const char* expected_chain_id;
+  } kUndeclaredCases[] = {
+      {R"(\"\")", "0x0"},
+      {R"(\"abc\")", nullptr},
+      {R"(-1)", nullptr},
+      {R"(1.5)", nullptr},
+      {R"(9007199254740993.0)", nullptr},
+      {R"(true)", nullptr},
+      {R"(\"0x10000000000000000000000000000000000000000000000000000000000000000\")",
+       nullptr},
+  };
+  for (const auto& test_case : kUndeclaredCases) {
+    SCOPED_TRACE(test_case.chain_id_literal);
+    auto params_list =
+        ParseJsonList(absl::StrFormat(kJson, "", test_case.chain_id_literal));
+    auto eth_sign_typed_data = ParseEthSignTypedDataParams(
+        params_list, EthSignTypedDataHelper::Version::kV4);
+    if (!test_case.expected_chain_id) {
+      EXPECT_FALSE(eth_sign_typed_data);
+      continue;
+    }
+    ASSERT_TRUE(eth_sign_typed_data);
+    EXPECT_EQ(eth_sign_typed_data->chain_id, test_case.expected_chain_id);
+  }
+
+  auto numeric_params_list =
+      ParseJsonList(absl::StrFormat(kJson, kChainIdTypeEntry, "1"));
+  auto numeric_data = ParseEthSignTypedDataParams(
+      numeric_params_list, EthSignTypedDataHelper::Version::kV4);
+  ASSERT_TRUE(numeric_data);
+  EXPECT_EQ(base::HexEncodeLower(numeric_data->domain_hash),
+            kNumericDomainHash);
+
+  auto string_one_params =
+      ParseJsonList(absl::StrFormat(kJson, kChainIdTypeEntry, R"(\"1\")"));
+  auto string_one_data = ParseEthSignTypedDataParams(
+      string_one_params, EthSignTypedDataHelper::Version::kV4);
+  ASSERT_TRUE(string_one_data);
+  EXPECT_EQ(base::HexEncodeLower(string_one_data->domain_hash),
+            kNumericDomainHash);
+
+  auto string_hex_one_params =
+      ParseJsonList(absl::StrFormat(kJson, kChainIdTypeEntry, R"(\"0x1\")"));
+  auto string_hex_one_data = ParseEthSignTypedDataParams(
+      string_hex_one_params, EthSignTypedDataHelper::Version::kV4);
+  ASSERT_TRUE(string_hex_one_data);
+  EXPECT_EQ(base::HexEncodeLower(string_hex_one_data->domain_hash),
+            kNumericDomainHash);
+}
+
 TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
   std::string json = R"({
     "id": "1",

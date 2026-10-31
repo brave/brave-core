@@ -400,6 +400,25 @@ class EthereumProviderImplUnitTest : public testing::Test {
     return response_pair;
   }
 
+  std::pair<bool, base::Value> CommonRequestOrSendAsyncSignWithApproval(
+      base::Value input_value,
+      bool approved) {
+    base::test::TestFuture<mojom::EthereumProviderResponsePtr> response_future;
+    provider()->CommonRequestOrSendAsync(std::move(input_value),
+                                         response_future.GetCallback(), false);
+    if (!base::test::RunUntil([&] {
+          return !brave_wallet_service_->GetPendingSignMessageRequestsSync()
+                      .empty();
+        })) {
+      return {true, base::Value()};
+    }
+    brave_wallet_service_->NotifySignMessageRequestProcessed(
+        approved, brave_wallet_service_->sign_message_id_ - 1, nullptr,
+        std::nullopt);
+    auto response = response_future.Take();
+    return {response->reject, std::move(response->formed_response)};
+  }
+
   std::vector<std::string> RequestEthereumPermissions() {
     std::vector<std::string> allowed_accounts;
     base::RunLoop run_loop;
@@ -1929,6 +1948,89 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageWithTypedDataStructure) {
     EXPECT_EQ(error_message,
               l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
   }
+}
+
+constexpr char kSignTypedDataPayloadTemplate[] =
+    R"({"id":1, "jsonrpc": "2.0", "method": "%s",
+        "params": ["%s", "{
+          \"types\": {
+            \"EIP712Domain\": [
+              { \"name\": \"name\", \"type\": \"string\" },
+              { \"name\": \"version\", \"type\": \"string\" },
+              { \"name\": \"chainId\", \"type\": \"uint256\" },
+              { \"name\": \"verifyingContract\", \"type\": \"address\" }
+            ],
+            \"Person\": [
+              { \"name\": \"name\", \"type\": \"string\" },
+              { \"name\": \"wallet\", \"type\": \"address\" }
+            ],
+            \"Mail\": [
+              { \"name\": \"from\", \"type\": \"Person\" },
+              { \"name\": \"to\", \"type\": \"Person\" },
+              { \"name\": \"contents\", \"type\": \"string\" }
+            ]
+          },
+          \"primaryType\": \"Mail\",
+          \"domain\": {
+            \"name\": \"Ether Mail\",
+            \"version\": \"1\",
+            \"chainId\": %s,
+            \"verifyingContract\": \"0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC\"
+          },
+          \"message\": {
+            \"from\": { \"name\": \"Cow\",
+              \"wallet\": \"0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826\" },
+            \"to\": { \"name\": \"Bob\",
+              \"wallet\": \"0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB\" },
+            \"contents\": \"Hello, Bob!\"
+          }
+        }"]})";
+
+TEST_F(EthereumProviderImplUnitTest, SignTypedMessageStringChainIdMismatch) {
+  CreateWallet();
+  Navigate(GURL("https://brave.com"));
+  auto account_0 = GetAccountUtils().EnsureEthAccount(0);
+  for (const auto* method : {"eth_signTypedData_v4", "eth_signTypedData_v3"}) {
+    SCOPED_TRACE(method);
+    std::string request_payload_json =
+        absl::StrFormat(kSignTypedDataPayloadTemplate, method,
+                        account_0->address, R"(\"0xaa36a7\")");
+
+    auto response = CommonRequestOrSendAsync(ParseJson(request_payload_json));
+    mojom::ProviderError error_code;
+    std::string error_message;
+    GetErrorCodeMessage(std::move(response.second), &error_code,
+                        &error_message);
+    EXPECT_EQ(response.first, true);
+    EXPECT_EQ(error_code, mojom::ProviderError::kInternalError);
+    const std::u16string mismatch_chain_id = u"0xaa36a7";
+    EXPECT_EQ(error_message,
+              l10n_util::GetStringFUTF8(
+                  IDS_BRAVE_WALLET_SIGN_MESSAGE_CHAIN_ID_MISMATCH,
+                  mismatch_chain_id));
+  }
+}
+
+TEST_F(EthereumProviderImplUnitTest, SignTypedMessageStringChainIdMatches) {
+  CreateWallet();
+  Navigate(GURL("https://brave.com"));
+  auto account_0 = GetAccountUtils().EnsureEthAccount(0);
+  AddEthereumPermission(account_0->account_id);
+  std::string request_payload_json =
+      absl::StrFormat(kSignTypedDataPayloadTemplate, "eth_signTypedData_v4",
+                      account_0->address, R"(\"0x1\")");
+
+  auto response = CommonRequestOrSendAsyncSignWithApproval(
+      ParseJson(request_payload_json), true);
+
+  ASSERT_TRUE(response.second.is_string());
+  EXPECT_FALSE(response.second.GetString().empty());
+  mojom::ProviderError error_code;
+  std::string error_message;
+  GetErrorCodeMessage(std::move(response.second), &error_code, &error_message);
+  EXPECT_EQ(response.first, false);
+  EXPECT_EQ(error_code, mojom::ProviderError::kSuccess);
+  EXPECT_TRUE(error_message.empty());
 }
 
 TEST_F(EthereumProviderImplUnitTest, SigninWithEthereumError) {
