@@ -16,6 +16,7 @@
 #include "base/test/run_until.h"
 #include "base/test/test_future.h"
 #include "base/threading/thread_restrictions.h"
+#include "brave/browser/browsing_data/brave_clear_browsing_data.h"
 #include "brave/browser/containers/containers_service_factory.h"
 #include "brave/browser/containers/used_container_storage_partitions.h"
 #include "brave/browser/ui/browser_commands.h"
@@ -65,10 +66,12 @@
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/browsing_data/core/pref_names.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/permissions/request_type.h"
 #include "components/permissions/test/mock_permission_prompt_factory.h"
+#include "components/prefs/pref_service.h"
 #include "components/services/app_service/public/cpp/app_launch_util.h"
 #include "components/sessions/core/tab_restore_service.h"
 #include "components/tabs/public/tab_interface.h"
@@ -2602,6 +2605,51 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
                                            scope);
   ExpectPartitionSiteDataClearedEventually(container_web_contents,
                                            container_data, scope);
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       ClearContainerStorageOnExitWhenDeleteCookiesOnExit) {
+  const GURL url("https://a.test/containers/container_test.html");
+  const GURL worker_url("https://a.test/containers/container_worker.js");
+  const std::string scope = "https://a.test/containers/";
+
+  const PartitionSiteData default_data = {"default_cookie", "default_value",
+                                          "default_key", "default_value"};
+  const PartitionSiteData container_data = {"container_cookie",
+                                            "container_value", "container_key",
+                                            "container_value"};
+
+  std::vector<mojom::ContainerPtr> synced;
+  synced.push_back(MakeContainer(kTestContainerId, "Test"));
+  SetContainersToPrefs(synced, *browser()->GetProfile()->GetPrefs());
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  content::WebContents* default_web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  SetPartitionSiteData(default_web_contents, default_data, worker_url, scope);
+  ExpectPartitionSiteDataPresent(default_web_contents, default_data, scope);
+
+  content::WebContents* container_web_contents =
+      OpenUrlInContainerTab(url, kTestContainerId);
+  SetPartitionSiteData(container_web_contents, container_data, worker_url,
+                       scope);
+  ExpectPartitionSiteDataPresent(container_web_contents, container_data, scope);
+
+  browser()->GetProfile()->GetPrefs()->SetBoolean(
+      browsing_data::prefs::kDeleteCookiesOnExit, true);
+
+  // ClearOnExit() blocks shutdown until its removal tasks are done, so nothing
+  // may be left in the remover's queue once it returns.
+  content::BraveClearBrowsingData::ClearOnExit();
+  EXPECT_EQ(0u, browser()
+                    ->GetProfile()
+                    ->GetBrowsingDataRemover()
+                    ->GetPendingTaskCountForTesting());
+
+  EXPECT_TRUE(
+      IsPartitionSiteDataCleared(default_web_contents, default_data, scope));
+  EXPECT_TRUE(IsPartitionSiteDataCleared(container_web_contents, container_data,
+                                         scope));
 }
 
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
