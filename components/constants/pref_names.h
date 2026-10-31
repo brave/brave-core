@@ -17,14 +17,6 @@ inline constexpr char kManagedBraveShieldsEnabledForUrls[] =
     "brave.managed_shields_enabled";
 inline constexpr char kManagedDefaultBraveFingerprintingV2[] =
     "brave.profile.managed_default_content_settings.brave_fingerprinting_v2";
-inline constexpr char kAdsBlocked[] = "brave.stats.ads_blocked";
-// We no longer update this pref, but we keep it around for now because it's
-// added to kAdsBlocked when being displayed.
-inline constexpr char kTrackersBlocked[] = "brave.stats.trackers_blocked";
-inline constexpr char kJavascriptBlocked[] = "brave.stats.javascript_blocked";
-inline constexpr char kHttpsUpgradesStat[] = "brave.stats.https_upgrades";
-inline constexpr char kFingerprintingBlocked[] =
-    "brave.stats.fingerprinting_blocked";
 inline constexpr char kLastCheckYMD[] = "brave.stats.last_check_ymd";
 inline constexpr char kLastCheckWOY[] = "brave.stats.last_check_woy";
 inline constexpr char kLastCheckMonth[] = "brave.stats.last_check_month";

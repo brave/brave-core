@@ -52,6 +52,15 @@ inline constexpr char kAllowElementBlockerInPrivateMode[] =
 inline constexpr char kShredBrowsingHistoryEnabled[] =
     "brave.shields.shred_browsing_history";
 
+inline constexpr char kAdsBlocked[] = "brave.stats.ads_blocked";
+// We no longer update this pref, but we keep it around for now because it's
+// added to kAdsBlocked when being displayed.
+inline constexpr char kTrackersBlocked[] = "brave.stats.trackers_blocked";
+inline constexpr char kJavascriptBlocked[] = "brave.stats.javascript_blocked";
+inline constexpr char kHttpsUpgradesStat[] = "brave.stats.https_upgrades";
+inline constexpr char kFingerprintingBlocked[] =
+    "brave.stats.fingerprinting_blocked";
+
 }  // namespace prefs
 }  // namespace brave_shields
 

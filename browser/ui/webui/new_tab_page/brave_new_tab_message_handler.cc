@@ -25,6 +25,7 @@
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
@@ -59,6 +60,11 @@
 #include "brave/components/brave_talk/pref_names.h"
 #endif
 
+using brave_shields::prefs::kAdsBlocked;
+using brave_shields::prefs::kFingerprintingBlocked;
+using brave_shields::prefs::kHttpsUpgradesStat;
+using brave_shields::prefs::kJavascriptBlocked;
+using brave_shields::prefs::kTrackersBlocked;
 using ntp_background_images::ViewCounterServiceFactory;
 using ntp_background_images::prefs::kNewTabPageShowBackgroundImage;
 using ntp_background_images::prefs::kNewTabTakeoverNotificationDismissed;
