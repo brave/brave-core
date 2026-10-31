@@ -43,6 +43,7 @@ import org.chromium.build.annotations.NonNull;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.autofill.settings.AutofillAndPasswordsFragment;
 import org.chromium.chrome.browser.password_manager.BravePasswordManagerHelper;
 import org.chromium.chrome.browser.password_manager.ManagePasswordsReferrer;
 import org.chromium.chrome.browser.preferences.Pref;
@@ -50,7 +51,6 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.BraveSettingsPreferenceGroupAdapter;
 import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
 import org.chromium.chrome.browser.settings.ChromeManagedPreferenceDelegate;
-import org.chromium.chrome.browser.settings.MainSettings;
 import org.chromium.chrome.browser.settings.search.ChromeBaseSearchIndexProvider;
 import org.chromium.chrome.browser.ui.favicon.FaviconHelper;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
@@ -109,8 +109,6 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
     private static final int PASSWORD_EXPORT_INTENT_REQUEST_CODE = 3485764;
     // Unique request code for the password importing activity.
     private static final int PASSWORD_IMPORT_INTENT_REQUEST_CODE = 3485765;
-
-    private static final String PREF_PASSWORDS = "passwords";
 
     private boolean mNoPasswords;
     private boolean mNoPasswordExceptions;
@@ -827,13 +825,15 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
                         SettingsIndexData indexData,
                         Map<String, SearchIndexProvider> providerMap) {
                     super.initPreferenceXml(context, profile, indexData, providerMap);
-                    // The "passwords" entry in main_preferences.xml uses BravePasswordsPreference
-                    // (a custom class) with no android:fragment attribute, so the normal
-                    // child-parent link is never established via XML parsing. Register it manually
-                    // so resolveIndex() does not treat PasswordSettings entries as orphans.
+                    // The passwords entry in autofill_and_passwords_preferences.xml uses
+                    // BravePasswordsPreference (a custom class) with no android:fragment
+                    // attribute, so the normal child-parent link is never established via XML
+                    // parsing. Register it manually so resolveIndex() does not treat
+                    // PasswordSettings entries as orphans.
                     String parentId =
                             PreferenceParser.createUniqueId(
-                                    MainSettings.class.getName(), PREF_PASSWORDS);
+                                    AutofillAndPasswordsFragment.class.getName(),
+                                    AutofillAndPasswordsFragment.PREF_PASSWORDS);
                     indexData.addChildParentLink(PasswordSettings.class.getName(), parentId);
                 }
 
