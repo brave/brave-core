@@ -1,8 +1,8 @@
 diff --git a/build/android/gyp/errorprone.py b/build/android/gyp/errorprone.py
-index 9f27e5cd89ad654b019bcfa2b5b5989f37bb6c8e..17efa3acde20977b730e2ffbc4c80be3ad8c5d26 100755
+index 96e352cb979cbf56eb73a86600e97fdf56b034dd..28ffa7c5b3effcd621408b6bcfc7adfd0d276aeb 100755
 --- a/build/android/gyp/errorprone.py
 +++ b/build/android/gyp/errorprone.py
-@@ -36,6 +36,8 @@ CHROMIUM_PLUGIN_TESTONLY_WARNINGS_TO_DISABLE = [
+@@ -55,6 +55,8 @@ CHROMIUM_PLUGIN_TESTONLY_WARNINGS_TO_DISABLE = [
  
  # Full list of checks: https://errorprone.info/bugpatterns
  ERRORPRONE_WARNINGS_TO_DISABLE = [

@@ -74,6 +74,7 @@ source_set("unit_tests") {
 
   sources = [
     "brave_sanitized_image_source_unittest.cc",
+    "brave_theme_source_unittest.cc",
     "untrusted_sanitized_image_source_unittest.cc",
   ]
   deps = [
@@ -81,7 +82,10 @@ source_set("unit_tests") {
     "//base/test:test_support",
     "//brave/browser/ui",
     "//brave/components/brave_wallet/common/buildflags",
+    "//chrome/browser/themes",
+    "//chrome/browser/ui/webui:theme_source",
     "//chrome/test:test_support",
+    "//chrome/test/base:testing_browser_process",
     "//content/test:test_support",
     "//services/data_decoder/public/cpp:test_support",
     "//services/network:test_support",

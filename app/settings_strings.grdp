@@ -394,9 +394,6 @@
     <message name="IDS_SETTINGS_SIDE_PANEL_ALIGNMENT_CONTEXTUAL_TASKS_IN_SIDE_PANEL" desc="Label for configuring Brave Search side panel alignment.">
       Brave Search in side panel
     </message>
-    <message name="IDS_SETTINGS_SIDE_PANEL_ALIGNMENT_CONTEXTUAL_TASKS_IN_CHROME" desc="Label for configuring Brave Search side panel alignment.">
-      Brave Search in Brave
-    </message>
     <message name="IDS_SETTINGS_SIDE_PANEL_ALIGNMENT_CONTEXTUAL_TASKS_PANEL" desc="Label for configuring Brave Search side panel alignment.">
       Brave Search panel
     </message>
@@ -1052,11 +1049,11 @@
     <message name="IDS_SETTINGS_CLEAR_BROWSING_DATA_MORE" desc="Label of the 'More' chip in the time picker in the 'Delete browsing data' dialog. Clicking on this chip will show a menu with more time period options for deleting browsing data.">
       More
     </message>
-    <message name="IDS_SETTINGS_MANAGE_IN_YOUR_GEMINI_APPS_ACTIVITY" desc="Description for the Gemini Apps Activity linkout.">
-      Manage your Gemini Apps activity
+    <message name="IDS_SETTINGS_MANAGE_IN_YOUR_GEMINI_APPS_ACTIVITY" desc="Description for the Gemini history linkout.">
+      Manage your Gemini history
   </message>
-  <message name="IDS_SETTINGS_GEMINI_APPS_ACTIVITY" desc="Title for the Gemini Apps Activity section in Other Data.">
-      Gemini Apps activity
+  <message name="IDS_SETTINGS_GEMINI_APPS_ACTIVITY" desc="Title for the Gemini history section in Other Data.">
+      Gemini history
   </message>
     <message name="IDS_SETTINGS_DELETE_DATA_FROM_DEVICE" desc="This is the label for the primary button on the 'Delete browsing data' dialog. Clicking on this will trigger the deletion. This is the label shown when account data cannot be cleared, for example: the user is signed out. It indicates that the deletion will only affect data stored on this device and will not affect synced data.">
       Delete from this device
@@ -3537,17 +3534,11 @@
     <message name="IDS_SETTINGS_PEOPLE_VERIFY_ACCOUNT_BUTTON" desc="This button is shown in Brave's Settings, in the 'You and Brave' section. It appears when the user needs to sign back in to Brave in order to continue saving and using data (like bookmarks, passwords, or payment methods) in their Brave sync chain. When the user clicks this button, they will be prompted to enter their Brave sync chain credentials.">
       Verify it's you
     </message>
-    <message name="IDS_SETTINGS_TURN_OFF_SYNC_MANAGED_PROFILE_EXPLANATION" desc="The text to display in the 'Turn Sync off' dialog to stop syncing for managed profiles.">
-      Because this account is managed by <ph name="DOMAIN">$1<ex>example.com</ex></ph> you will not be signed out of your Brave sync chain. Your bookmarks, history, passwords, and other settings will no longer be synced. However, your previously synced data will remain stored in your Brave sync chain and can be managed on <ph name="BEGIN_LINK">&lt;a href="$2" target="_blank"&gt;<ex>&lt;a href="$2" target="_blank"&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
-    </message>
     <message name="IDS_SETTINGS_TURN_OFF_SYNC_AND_SIGN_OUT_DIALOG_TITLE" desc="The text to display on the title of the dialog to turn off sync and sign out.">
       Turn off sync and personalization?
     </message>
     <message name="IDS_SETTINGS_TURN_OFF_SYNC_AND_SIGN_OUT_DIALOG_TITLE_SUPERVISED_PROFILE" desc="The text to display on the title of the dialog to turn off sync and sign out of a supervised profile." translateable="false">
       Turn off sync and personalization?
-    </message>
-    <message name="IDS_SETTINGS_TURN_OFF_SYNC_DIALOG_MANAGED_CONFIRM" desc="The text to display on the confirm button of the dialog to turn off sync, when the profile is managed by admin.">
-      Delete and continue
     </message>
     <message name="IDS_SETTINGS_TURN_OFF_SYNC_DIALOG_CHECKBOX" desc="The text to display next to the checkbox of the dialog to turn off sync, asking users if they want to delete these data from the device.">
       Remove bookmarks, history, passwords, and more from this device
@@ -3725,59 +3716,6 @@
       </message>
     </if>
 
-    <!-- History search -->
-    <message name="IDS_SETTINGS_HISTORY_SEARCH_SETTING_LABEL" desc="Title of the page of the settings that enables history search.">
-      History search, powered by AI
-    </message>
-    <message name="IDS_SETTINGS_HISTORY_SEARCH_SETTING_SUBLABEL_V2" desc="This string is the subheading of a setting for ‘History search, powered by AI’. This subheading summarizes the user benefit of the History Search feature. This is an AI (artificial intelligence) feature that improves the search functionality so that users can write queries in natural language and search their Brave browsing history. The tone should be motivating.">
-      Use everyday language to search your browsing history and find sites you visited
-    </message>
-    <message name="IDS_SETTINGS_HISTORY_SEARCH_LEARN_MORE_A11Y_LABEL" desc="Label for the 'Learn more' link in the toggle for the setting that enables history search.">
-      Learn more about history searches
-    </message>
-    <message name="IDS_SETTINGS_HISTORY_SEARCH_WHEN_ON_PAGE_CONTENT" desc="This string is a bullet point in the ‘When on’ column, which describes the behavior of this feature. This string explains how users can write queries in natural language and search their Brave browsing history. The tone should be motivating.">
-      You can search your browsing history based on general page content, not only page title and URL, and see improved results
-    </message>
-    <message name="IDS_SETTINGS_HISTORY_SEARCH_WHEN_ON_SEARCH_FROM" desc="This string is a bullet point in the ‘When on’ column, which describes the behavior of this feature. This string explains how users search their Brave browsing history from the address bar (always shown on the top of Brave). They can also search from the History page itself. The tone should be motivating.">
-      You can search in the address bar using "@history", as well as from the History page
-    </message>
-    <message name="IDS_SETTINGS_HISTORY_SEARCH_WHEN_ON_LOG_START" desc="This string is a bullet point in the ‘When on’ column, which describes the behavior of this feature. This string explains that the AI-powered history search results will only use data about sites the user visits after they turn on this feature. Earlier history data, from when the feature setting was turned off, won’t appear in the search results. The tone should be informative.">
-      Only sites you visit after turning on this feature are shown in AI-powered history results
-    </message>
-    <message name="IDS_SETTINGS_HISTORY_SEARCH_CONSIDER_DATA" desc="This is a bullet point in the ‘Things to consider’ column, which describes things users should consider about a feature. This string explains that AI features will send data to Brave servers in order to provide the feature’s respective benefit. The tone should be informative.">
-      When you search browsing history, your history searches, the page content of best matches, and generated model outputs are sent to Brave
-    </message>
-    <message name="IDS_SETTINGS_HISTORY_SEARCH_CONSIDER_DATA_ENCRYPTED" desc="This is a bullet point in the ‘Things to consider’ column, which describes things users should consider about a feature. This string explains that AI features will save data to the user’s device in order to provide the feature’s respective benefit. The data will be appropriately encrypted for security. The tone should be informative.">
-      As you browse sites, their page contents are encrypted and saved to your device
-    </message>
-    <message name="IDS_SETTINGS_HISTORY_SEARCH_SUBLABEL_ON" desc="This string is the subheading of a setting for ‘History search, powered by AI’. This subheading notes that the setting is currently turned on. Then, it summarizes the user benefit of the History Search feature. This is an AI (artificial intelligence) feature that improves the search functionality so that users can write queries in natural language and search their Brave browsing history. The tone should be motivating.">
-      Use everyday language to search your browsing history and find sites you visited. This setting is on.
-    </message>
-    <message name="IDS_SETTINGS_HISTORY_SEARCH_SUBLABEL_OFF" desc="This string is the subheading of a setting for ‘History search, powered by AI’. This subheading notes that the setting is currently turned on. Then, it summarizes the user benefit of the History Search feature. This is an AI (artificial intelligence) feature that improves the search functionality so that users can write queries in natural language and search their Brave browsing history. The tone should be motivating.">
-      Use everyday language to search your browsing history and find sites you visited. This setting is off.
-    </message>
-    <message name="IDS_SETTINGS_HISTORY_SEARCH_WITH_ANSWERS_SETTING_SUBLABEL_V2" desc="Sublabel of the setting that enables history search, powered by AI, with answers enabled.">
-      Use everyday language to search your browsing history and find sites you visited. You can also ask questions and get answers based on your browsing history
-    </message>
-    <message name="IDS_SETTINGS_HISTORY_SEARCH_WITH_ANSWERS_WHEN_ON_PAGE_CONTENT" desc="This string is a bullet point in the ‘When on’ column, which describes the behavior of this feature. This string explains how users can write queries in natural language and search their Brave browsing history to get answers. The tone should be motivating.">
-      When you search your browsing history, answers and search results are based on the content of a page. This gives you improved results
-    </message>
-    <message name="IDS_SETTINGS_HISTORY_SEARCH_WITH_ANSWERS_WHEN_ON_RECALL_INFO" desc="This string is a bullet point in the ‘When on’ column, which describes the behavior of this feature. This string explains how users can write questions (using question words like ‘what’, ‘who’, ‘where’) and get answer summaries based on their Brave browsing history. The tone should be motivating.">
-      When you ask questions about your history, you can get answers about specific information from a page you visited
-    </message>
-    <message name="IDS_SETTINGS_HISTORY_SEARCH_WITH_ANSWERS_CONSIDER_DATA_ENCRYPTED" desc="This is a bullet point in the ‘Things to consider’ column, which describes things users should consider about a feature. This string explains that AI features will save data to the user’s device in order to provide the feature’s respective benefit. The data will be appropriately encrypted for security. The tone should be informative.">
-      As you browse sites, their page contents are encrypted and saved to your device. This may affect Brave's performance
-    </message>
-    <message name="IDS_SETTINGS_HISTORY_SEARCH_WITH_ANSWERS_CONSIDER_OUTDATED" desc="This is a bullet point in the ‘Things to consider’ column, which describes things users should consider about a feature. This string explains that history search results and answers powered by AI may become outdated since they are dependent on the user's last visit to the page contents.">
-      AI-powered history search results and answers may become outdated if site content has changed since your last visit
-    </message>
-    <message name="IDS_SETTINGS_HISTORY_SEARCH_WITH_ANSWERS_SUBLABEL_ON" desc="This string is the subheading of a setting for ‘History search, powered by AI’ when answers are available. This subheading notes that the setting is currently turned on. Then, it summarizes the user benefit of the History Search feature. This is an AI (artificial intelligence) feature that improves the search functionality so that users can write queries in natural language and search their Brave browsing history. The tone should be motivating.">
-      Use everyday language to search your browsing history and find sites you visited. You can also ask questions and get answers based on your browsing history. This setting is on.
-    </message>
-    <message name="IDS_SETTINGS_HISTORY_SEARCH_WITH_ANSWERS_SUBLABEL_OFF" desc="This string is the subheading of a setting for ‘History search, powered by AI’ when answers are available. This subheading notes that the setting is currently turned on. Then, it summarizes the user benefit of the History Search feature. This is an AI (artificial intelligence) feature that improves the search functionality so that users can write queries in natural language and search their Brave browsing history. The tone should be motivating.">
-      Use everyday language to search your browsing history and find sites you visited. You can also ask questions and get answers based on your browsing history. The setting is off.
-    </message>
-
     <!-- Brave Search AI Mode and connected apps (AIM Workspace) -->
     <message name="IDS_SETTINGS_GOOGLE_SEARCH_AI_MODE_WORKSPACE_LABEL" desc="Label of the setting row that opens connection settings for Brave Search AI Mode and Workspace connected apps.">
       Brave Search AI Mode and connected apps
@@ -3874,14 +3812,11 @@
         Browser proxy settings are controlled by multiple sources
       </message>
     </if>
-    <if expr="_google_chrome">
-      <message name="IDS_SETTINGS_SYSTEM_FEATURE_ON_DEVICE_AI_ENABLED_LABEL" desc="Label for the toggle that allows or prevents chrome to download on device GenAI models to local disk.">
-        On-device AI
-      </message>
-      <message name="IDS_SETTINGS_SYSTEM_FEATURE_ON_DEVICE_AI_ENABLED_SUB_LABEL" desc="This string describes what turning off the toggle implies.">
-        To power features like scam detection, Brave can use AI models that run directly on your device. When this is off, these features might not work. <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" aria-description="$2"&gt;</ph>Learn more about on-device AI<ph name="END_LINK">&lt;/a&gt;</ph>
-      </message>
-    </if>
+
+    <!-- On-device AI Settings Page -->
+    <message name="IDS_SETTINGS_SYSTEM_FEATURE_ON_DEVICE_AI_ENABLED_LABEL" desc="Label for the toggle that allows or prevents chrome to download on device GenAI models to local disk.">
+      On-device AI
+    </message>
 
     <message name="IDS_PAGE_NOT_AVAILABLE_FOR_GUEST_HEADING" desc="This is the heading for the page not available for guest.">
       <ph name="PAGE_NAME">$1<ex>Bookmarks</ex></ph> is not available to Guest users.

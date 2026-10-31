@@ -19,6 +19,7 @@ from PB.recipe_modules.brave.brave_core_checkout.properties import (
     InputProperties,
 )
 from recipe_api import RecipeApi
+from recipe_modules.git.api import RefKind
 
 if TYPE_CHECKING:
     from recipe_modules import brave_core_checkout
@@ -96,6 +97,15 @@ class BraveCoreCheckoutApi(RecipeApi):
         # The brave-core root of the standard job layout, resolved once.
         self._root = self.m.path.abs(self.m.path.brave_core)
 
+    def set_brave_core_ref(self, ref: str) -> None:
+        """Check out *ref* instead of the `brave_core_ref` property, e.g. a ref
+        the recipe only resolves at run time.
+
+        Args:
+            ref: A fully-qualified ref, such as `refs/heads/cr159`.
+        """
+        self._brave_core_ref = ref
+
     @property
     def _git_ref(self) -> GitRef:
         """The `brave_core_ref`, checked to be safe to pass to git."""
@@ -124,17 +134,23 @@ class BraveCoreCheckoutApi(RecipeApi):
         logging.info('Writing %s:\n%s', self._root / '.env', text)
         self.m.file.write_text('write .env', self._root / '.env', text)
 
-    def _with_brave_core_layout(fn):
-        """A decorator for functions that run in the brave-core layout: its
-        `bootstrap` dir on $PATH, and the Chromium environment.
+    @contextlib.contextmanager
+    def brave_core_layout(self):
+        """Run the steps in the block in the brave-core layout: its `bootstrap`
+        dir on $PATH, and the Chromium environment.
         """
+        with (
+            self._bootstrap_layout(),
+            self.m.chromium_checkout.chromium_layout(),
+        ):
+            yield
+
+    def _with_brave_core_layout(fn):
+        """A decorator for functions that run in the `brave_core_layout`."""
 
         @functools.wraps(fn)
         def inner(self, *args, **kwargs):
-            with (
-                self._bootstrap_layout(),
-                self.m.chromium_checkout.chromium_layout(),
-            ):
+            with self.brave_core_layout():
                 return fn(self, *args, **kwargs)
 
         return inner
@@ -180,6 +196,34 @@ class BraveCoreCheckoutApi(RecipeApi):
             self.m.git_cache.clone_checkout(
                 CACHE_REPO_URL, dest, mirror_dir, ref, step_prefix=STEP_PREFIX
             )
+        if ref.kind == RefKind.HEAD:
+            self._attach_branch(ref.branch)
+
+    def _attach_branch(self, branch: str) -> None:
+        """Put the checkout on its local *branch*, at the commit checked out.
+
+        Whatever an earlier job left on that branch, or a rebase it left
+        stopped, is dropped, so the branch is always at its latest.
+        """
+        git_dir = self._root / '.git'
+        if self.m.path.exists(git_dir / 'rebase-merge') or self.m.path.exists(
+            git_dir / 'rebase-apply'
+        ):
+            # `--quit` keeps HEAD and the tree, which the checkout replaces.
+            self.m.git(
+                'rebase',
+                '--quit',
+                name=f'{STEP_PREFIX} drop stopped rebase',
+                cwd=self._root,
+            )
+        self.m.git(
+            'checkout',
+            '--force',
+            '-B',
+            branch,
+            name=f'{STEP_PREFIX} checkout branch',
+            cwd=self._root,
+        )
 
     def ensure_checkout(
         self, *, chromium_src: str | Path | None = None

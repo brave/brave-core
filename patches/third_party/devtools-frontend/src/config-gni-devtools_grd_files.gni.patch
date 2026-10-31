@@ -1,5 +1,5 @@
 diff --git a/config/gni/devtools_grd_files.gni b/config/gni/devtools_grd_files.gni
-index 709c4546b506afd858365f876caffd5734ba95db..b3b6e002cde7bb72113071119d5cc2da887c0bc3 100644
+index 53990f01920bf377600dcf7f9f1350262eb89a61..02559cb1fab5986e398e28b6675a545eda977b23 100644
 --- a/config/gni/devtools_grd_files.gni
 +++ b/config/gni/devtools_grd_files.gni
 @@ -9,6 +9,8 @@

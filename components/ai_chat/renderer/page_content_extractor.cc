@@ -355,7 +355,7 @@ void PageContentExtractor::ExecuteContentTool(
   // mojo reply is still sent with nullopt.
   auto wrapped = mojo::WrapCallbackWithDefaultInvokeIfNotRun(
       std::move(callback), std::optional<std::string>(std::nullopt));
-  document.ExecuteScriptTool(
+  document.ExecuteScriptToolByName(
       blink::ToolInvocationToken(), blink::WebString::FromUtf8(name),
       blink::WebString::FromUtf8(input_json),
       base::BindOnce(

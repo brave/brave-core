@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/chrome_browser_main.cc b/chrome/browser/chrome_browser_main.cc
-index 9aa6f338c73e80ee878c068db1811230ee3e6339..595665808b54035d6aae99a9d800b024ae2a9a32 100644
+index 03ff0ee796c19093c3b2b280b8de8694c9847126..a2fb60a2efb00bb10c2acd129f440590b830c8f8 100644
 --- a/chrome/browser/chrome_browser_main.cc
 +++ b/chrome/browser/chrome_browser_main.cc
-@@ -1062,6 +1062,7 @@ void ChromeBrowserMainParts::ToolkitInitialized() {
+@@ -1072,6 +1072,7 @@ void ChromeBrowserMainParts::ToolkitInitialized() {
  
  #if BUILDFLAG(IS_MAC) && BUILDFLAG(ENABLE_UPDATER)
  void PromptUpdaterPromotion() {

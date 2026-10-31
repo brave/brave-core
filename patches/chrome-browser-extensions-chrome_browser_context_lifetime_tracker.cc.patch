@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/chrome_browser_context_lifetime_tracker.cc b/chrome/browser/extensions/chrome_browser_context_lifetime_tracker.cc
-index 378a90ded8bc12d55be0da3c681994667f482a01..558a12e802aa9eef1bcef2ff9f049383a4e3d586 100644
+index 20e4f197c032cf3713fa3b1b2a0834cbfae9dca9..8438e594d7f7887dc227534cc05fdd5162ad6a86 100644
 --- a/chrome/browser/extensions/chrome_browser_context_lifetime_tracker.cc
 +++ b/chrome/browser/extensions/chrome_browser_context_lifetime_tracker.cc
 @@ -40,7 +40,7 @@ class ChromeBrowserContextLifetimeTracker::ProfileWatcher

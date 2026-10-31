@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/groups/tab_group_editor_bubble_view.cc b/chrome/browser/ui/views/tabs/groups/tab_group_editor_bubble_view.cc
-index 35b2167b99ca25001f1a08a06c839bfa8e15fc96..aa4afe37da2e15326cced6e57a0cf1b75830b0d4 100644
+index 03f28f393e1059d2c291459685852437f50175cf..af4236643526ed24456a5ebc4925f9f8bb6f1274 100644
 --- a/chrome/browser/ui/views/tabs/groups/tab_group_editor_bubble_view.cc
 +++ b/chrome/browser/ui/views/tabs/groups/tab_group_editor_bubble_view.cc
 @@ -141,7 +141,7 @@ constexpr int kSeparatorPadding = 8;

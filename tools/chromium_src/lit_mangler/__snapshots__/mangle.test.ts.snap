@@ -50,7 +50,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/extensions/detail_view.html.ts
 +++ gen/chrome/browser/resources/extensions/preprocessed/detail_view.html.ts
-@@ -365,16 +365,13 @@
+@@ -365,18 +365,13 @@
              <span>$i18n{itemPinToToolbar}</span>
            </extensions-toggle-row>
          \` : ''}
@@ -60,8 +60,10 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -              @change="\${this.onAllowIncognitoChange_}">
 +          <extensions-toggle-row id="allow-incognito" ?checked="\${this.data.incognitoAccess.isActive}" class="hr" @change="\${this.onAllowIncognitoChange_}">
              <div>
-               <div>$i18n{itemAllowIncognito}</div>
--              <div class="section-content">$i18n{incognitoInfoWarning}</div>
+               <div>\${this.getItemAllowIncognitoString_()}</div>
+-              <div class="section-content">
+-                \${this.getIncognitoInfoWarningString_()}
+-              </div>
 -              <div class="section-content" id="allow-incognito-warning"
 -                  ?hidden="\${!this.data.incognitoAccessPendingChange}">
 +              <div class="section-content">$i18n{privateInfoWarning}<span ?hidden="\${!this.data.incognitoAccess.isActive}"> $i18n{spanningInfoWarning}</span><span> $i18n{privateAndTorInfoWarning}</span></div>
@@ -243,8 +245,8 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
    \${this.syncedDevices_.map((syncedDevice, index) => html\`
      <history-synced-device-card .device="\${syncedDevice.device}"
          .lastUpdateTime="\${syncedDevice.lastUpdateTime}"
-         .tabs="\${syncedDevice.tabs}"
-@@ -21,26 +20,23 @@
+         .windows="\${syncedDevice.windows}" .searchTerm="\${this.searchTerm}"
+@@ -19,26 +18,23 @@
          @opened-changed="\${this.onCardOpenedChanged_}" data-index="\${index}">
      </history-synced-device-card>
    \`)}
@@ -276,7 +278,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
    <div id="history-sync-optin" class="history-sync-optin">
      \${this.isSignInState_(HistorySignInState.SIGNED_OUT) ||
              this.isSignInState_(HistorySignInState.WEB_ONLY_SIGNED_IN) ?
-@@ -135,12 +131,11 @@
+@@ -133,12 +129,11 @@
        </cr-button>
      \`}
    </div>
@@ -291,6 +293,23 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
          <button id="menuOpenButton" class="dropdown-item"
              @click="\${this.onOpenAllClick_}">
            $i18n{openAll}
+"
+`;
+
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/password_manager/site_favicon.html.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/password_manager/site_favicon.html
++++ gen/chrome/browser/resources/password_manager/preprocessed/site_favicon.html
+@@ -1,7 +1,3 @@
+-<div id="favicon" style="background-image: \${this.getBackgroundImage_()}"
+-    ?hidden="\${this.showDownloadedIcon_}">
++<div id="favicon" style="background-image: \${this.getBackgroundImage_()}" ?hidden="\${this.showDownloadedIcon_}">
+ </div>
+-<img is="cr-auto-img" id="downloadedFavicon"
+-    ?hidden="\${!this.showDownloadedIcon_}"
+-    @load="\${this.onLoad_}" @error="\${this.onLoadError_}"
+-    auto-src="\${this.url}">
++<img is="cr-auto-img" id="downloadedFavicon" ?hidden="\${!this.showDownloadedIcon_}" @load="\${this.onLoad_}" @error="\${this.onLoadError_}">
 "
 `;
 
@@ -798,10 +817,10 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/settings/appearance_page/appearance_page_index.html.ts
 +++ gen/chrome/browser/resources/settings/preprocessed/appearance_page/appearance_page_index.html.ts
-@@ -4,17 +4,17 @@
+@@ -3,16 +3,16 @@
+ import type {SettingsAppearancePageIndexElement} from './appearance_page_index.js';
  
  export function getHtml(this: SettingsAppearancePageIndexElement) {
-   // clang-format off
    return html\`<!--_html_template_start_-->
 -<cr-view-manager id="viewManager" class="cr-centered-card-container"
 -    ?show-all="\${this.shouldShowAll}">
@@ -821,7 +840,6 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 +     <settings-brave-appearance-sidebar id="sidebar" slot="view">
 +     </settings-brave-appearance-sidebar></cr-view-manager>
  <!--_html_template_end_-->\`;
-   // clang-format on
  }
 "
 `;
@@ -830,7 +848,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/settings/autofill_page/autofill_page.html.ts
 +++ gen/chrome/browser/resources/settings/preprocessed/autofill_page/autofill_page.html.ts
-@@ -3,41 +3,28 @@
+@@ -3,40 +3,28 @@
  import type {SettingsAutofillPageElement} from './autofill_page.js';
  
  export function getHtml(this: SettingsAutofillPageElement) {
@@ -847,8 +865,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
  </h2>
 -<div class="card-container" @data-category-click="\${this.onDataCategoryClick_}"
 -    @data-chip-click="\${this.onDataChipClick_}">
--  <category-reference-card card-title="$i18n{localPasswordManager}"
--      is-external
+-  <category-reference-card card-title="$i18n{localPasswordManager}" is-external
 -      .categoryId="\${this.hierarchy_.passwordManager.id}"
 -      .chips="\${this.getVisibleChips_(this.hierarchy_.passwordManager.chips)}">
 +<div class="card-container" @data-category-click="\${this.onDataCategoryClick_}" @data-chip-click="\${this.onDataChipClick_}">
@@ -884,7 +901,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
    \${this.isShoppingEnabled_ ? html\`
      <category-reference-card id="shoppingManagerButton"
          card-title="$i18n{shoppingCardTitle}"
-@@ -57,27 +44,22 @@
+@@ -56,27 +44,22 @@
          $i18n{autofillPersonalContextSettingsSummary}
        </div>
      </div>
@@ -927,116 +944,110 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/settings/autofill_page/contact_info/contact_info_page.html.ts
 +++ gen/chrome/browser/resources/settings/preprocessed/autofill_page/contact_info/contact_info_page.html.ts
-@@ -3,46 +3,26 @@
+@@ -3,42 +3,25 @@
  import type {SettingsContactInfoPageElement} from './contact_info_page.js';
  
  export function getHtml(this: SettingsContactInfoPageElement) {
    return html\`<!--_html_template_start_-->
--  <settings-subpage page-title="$i18n{contactInfoTitle}"
--      route-path="\${this.routePath}"
--      learn-more-url="$i18n{addressesAndPaymentMethodsLearnMoreURL}"
--      class="multi-card">
-+  <settings-subpage page-title="$i18n{contactInfoTitle}" route-path="\${this.routePath}" learn-more-url="$i18n{addressesAndPaymentMethodsLearnMoreURL}" class="multi-card">
-     <div class="card">
--      <settings-toggle-button id="autofillProfileToggle"
--          no-extension-indicator label="$i18n{enableProfilesLabel}"
--          sub-label="$i18n{enableProfilesSublabel}"
--          pref-key="synthetic.settings.autofill.profile_enabled"
--          no-set-pref
--          @settings-boolean-control-change="\${
-+      <settings-toggle-button id="autofillProfileToggle" no-extension-indicator="" label="$i18n{enableProfilesLabel}" sub-label="$i18n{enableProfilesSublabel}" pref-key="synthetic.settings.autofill.profile_enabled" no-set-pref="" @settings-boolean-control-change="\${
-               this.onAutofillProfileToggleSettingsBooleanControlChange_}">
-       </settings-toggle-button>
--      <div id="otpFillingLoadingRow" class="cr-row hr cr-padded-text"
--          aria-live="polite" aria-busy="true"
--          ?hidden="\${!this.shouldShowOtpFillingLoadingRow_()}">
-+      <div id="otpFillingLoadingRow" class="cr-row hr cr-padded-text" aria-live="polite" aria-busy="true" ?hidden="\${!this.shouldShowOtpFillingLoadingRow_()}">
-         <div class="flex" id="otpFillingLoadingLabelWrapper">
-           <div class="label">$i18n{enableGmailOtpFillingTitle}</div>
--          <div class="cr-secondary-text label"
--              id="otpFillingLoadingSubLabel">
--            <div id="otpFillingLoadingSubLabelWithLink"
--                .innerHTML="\${this.getGmailOtpFillingDescription_()}"
--                @click="\${this.onGmailOtpFillingLinkClick_}">
-+          <div class="cr-secondary-text label" id="otpFillingLoadingSubLabel">
-+            <div id="otpFillingLoadingSubLabelWithLink" .innerHTML="\${this.getGmailOtpFillingDescription_()}" @click="\${this.onGmailOtpFillingLinkClick_}">
-             </div>
+-<settings-subpage page-title="$i18n{contactInfoTitle}"
+-    route-path="\${this.routePath}"
+-    learn-more-url="$i18n{addressesAndPaymentMethodsLearnMoreURL}"
+-    class="multi-card">
++<settings-subpage page-title="$i18n{contactInfoTitle}" route-path="\${this.routePath}" learn-more-url="$i18n{addressesAndPaymentMethodsLearnMoreURL}" class="multi-card">
+   <div class="card">
+-    <settings-toggle-button id="autofillProfileToggle" no-extension-indicator
+-        label="$i18n{enableProfilesLabel}"
+-        sub-label="$i18n{enableProfilesSublabel}"
+-        pref-key="synthetic.settings.autofill.profile_enabled" no-set-pref
+-        @settings-boolean-control-change="\${
++    <settings-toggle-button id="autofillProfileToggle" no-extension-indicator="" label="$i18n{enableProfilesLabel}" sub-label="$i18n{enableProfilesSublabel}" pref-key="synthetic.settings.autofill.profile_enabled" no-set-pref="" @settings-boolean-control-change="\${
+             this.onAutofillProfileToggleSettingsBooleanControlChange_}">
+     </settings-toggle-button>
+-    <div id="otpFillingLoadingRow" class="cr-row hr cr-padded-text"
+-        aria-live="polite" aria-busy="true"
+-        ?hidden="\${!this.shouldShowOtpFillingLoadingRow_()}">
++    <div id="otpFillingLoadingRow" class="cr-row hr cr-padded-text" aria-live="polite" aria-busy="true" ?hidden="\${!this.shouldShowOtpFillingLoadingRow_()}">
+       <div class="flex" id="otpFillingLoadingLabelWrapper">
+         <div class="label">$i18n{enableGmailOtpFillingTitle}</div>
+         <div class="cr-secondary-text label" id="otpFillingLoadingSubLabel">
+-          <div id="otpFillingLoadingSubLabelWithLink"
+-              .innerHTML="\${this.getGmailOtpFillingDescription_()}"
+-              @click="\${this.onGmailOtpFillingLinkClick_}">
++          <div id="otpFillingLoadingSubLabelWithLink" .innerHTML="\${this.getGmailOtpFillingDescription_()}" @click="\${this.onGmailOtpFillingLinkClick_}">
            </div>
          </div>
-         <div id="otpFillingLoadingSpinner" class="spinner"></div>
        </div>
--      <settings-toggle-button id="autofillOtpFillingToggle" class="hr"
--          ?hidden="\${!this.shouldShowOtpFillingToggle_()}"
--          label="$i18n{enableGmailOtpFillingTitle}"
--          sub-label-with-link="$i18n{enableGmailOtpFillingDescription}"
--          @sub-label-link-clicked="\${
--              this.onGmailOtpFillingSubLabelLinkClicked_}"
--          @settings-boolean-control-change="\${
--              this.onAutofillOtpFillingToggleSettingsBooleanControlChange_}"
--          pref-key="synthetic.settings.autofill.otp_filling"
--          no-set-pref>
-+      <settings-toggle-button id="autofillOtpFillingToggle" class="hr" ?hidden="\${!this.shouldShowOtpFillingToggle_()}" label="$i18n{enableGmailOtpFillingTitle}" sub-label-with-link="$i18n{enableGmailOtpFillingDescription}" @sub-label-link-clicked="\${
-+              this.onGmailOtpFillingSubLabelLinkClicked_}" @settings-boolean-control-change="\${
-+              this.onAutofillOtpFillingToggleSettingsBooleanControlChange_}" pref-key="synthetic.settings.autofill.otp_filling" no-set-pref="">
-       </settings-toggle-button>
-       \${this.profileEnabledSyntheticPref_?.extensionId ? html\`
-         <div class="cr-row continuation">
-           <extension-controlled-indicator class="flex"
-@@ -59,17 +39,13 @@
+       <div id="otpFillingLoadingSpinner" class="spinner"></div>
      </div>
-     <div class="card">
+-    <settings-toggle-button id="autofillOtpFillingToggle" class="hr"
+-        ?hidden="\${!this.shouldShowOtpFillingToggle_()}"
+-        label="$i18n{enableGmailOtpFillingTitle}"
+-        sub-label-with-link="$i18n{enableGmailOtpFillingDescription}"
+-        @sub-label-link-clicked="\${this.onGmailOtpFillingSubLabelLinkClicked_}"
+-        @settings-boolean-control-change="\${
+-            this.onAutofillOtpFillingToggleSettingsBooleanControlChange_}"
+-        pref-key="synthetic.settings.autofill.otp_filling" no-set-pref>
++    <settings-toggle-button id="autofillOtpFillingToggle" class="hr" ?hidden="\${!this.shouldShowOtpFillingToggle_()}" label="$i18n{enableGmailOtpFillingTitle}" sub-label-with-link="$i18n{enableGmailOtpFillingDescription}" @sub-label-link-clicked="\${this.onGmailOtpFillingSubLabelLinkClicked_}" @settings-boolean-control-change="\${
++            this.onAutofillOtpFillingToggleSettingsBooleanControlChange_}" pref-key="synthetic.settings.autofill.otp_filling" no-set-pref="">
+     </settings-toggle-button>
+     \${this.profileEnabledSyntheticPref_?.extensionId ? html\`
        <div class="cr-row continuation">
-         <h2 class="flex">$i18n{addresses}</h2>
--        <cr-button id="addAddress" class="header-aligned-button"
--            @click="\${this.onAddAddressClick_}"
--            aria-label="$i18n{addAddressTitle}"
--            ?disabled="\${!this.profileEnabledSyntheticPref_?.value}">
-+        <cr-button id="addAddress" class="header-aligned-button" @click="\${this.onAddAddressClick_}" aria-label="$i18n{addAddressTitle}" ?disabled="\${!this.profileEnabledSyntheticPref_?.value}">
-           $i18n{add}
-         </cr-button>
-       </div>
--      <div class="list-frame" aria-label="$i18n{addressesTableAriaLabel}"
--          role="list">
-+      <div class="list-frame" aria-label="$i18n{addressesTableAriaLabel}" role="list">
-         <div id="addressList" class="vertical-list" role="none">
-           \${this.addresses.map((item, index) => html\`
-             <div class="list-item" role="listitem">
-               <div class="start">
-@@ -96,10 +72,9 @@
-               </cr-icon-button>
-             </div>
-           \`)}
-         </div>
--        <div id="noAddressesLabel" class="list-item"
--            ?hidden="\${this.addresses.length > 0}">
-+        <div id="noAddressesLabel" class="list-item" ?hidden="\${this.addresses.length > 0}">
-           $i18n{noAddressesFound}
-         </div>
-       </div>
-       <cr-action-menu id="addressSharedMenu" role-description="$i18n{menu}">
-@@ -154,9 +129,9 @@
-             @close="\${this.onEmailRemoveConfirmationDialogClose_}">
-         </settings-simple-confirmation-dialog>
-       \` : ''}
+         <extension-controlled-indicator class="flex"
+@@ -55,17 +38,13 @@
+   </div>
+   <div class="card">
+     <div class="cr-row continuation">
+       <h2 class="flex">$i18n{addresses}</h2>
+-      <cr-button id="addAddress" class="header-aligned-button"
+-          @click="\${this.onAddAddressClick_}"
+-          aria-label="$i18n{addAddressTitle}"
+-          ?disabled="\${!this.profileEnabledSyntheticPref_?.value}">
++      <cr-button id="addAddress" class="header-aligned-button" @click="\${this.onAddAddressClick_}" aria-label="$i18n{addAddressTitle}" ?disabled="\${!this.profileEnabledSyntheticPref_?.value}">
+         $i18n{add}
+       </cr-button>
      </div>
--    <div class="card">
-+    <div class="card" hidden="">
-       <div class="cr-row continuation">
-         <h2 class="flex">$i18n{emailVerificationSectionTitle}</h2>
+-    <div class="list-frame" aria-label="$i18n{addressesTableAriaLabel}"
+-        role="list">
++    <div class="list-frame" aria-label="$i18n{addressesTableAriaLabel}" role="list">
+       <div id="addressList" class="vertical-list" role="none">
+         \${this.addresses.map((item, index) => html\`
+           <div class="list-item" role="listitem">
+             <div class="start">
+@@ -89,10 +68,9 @@
+             </cr-icon-button>
+           </div>
+         \`)}
        </div>
-       \${this.isEmailVerificationProtocolEnabled_ ? html\`
-@@ -236,10 +211,9 @@
-           $i18n{emailVerificationEmptyLabel}
-         </div>
-       \` : ''}
-       <cr-action-menu id="emailSharedMenu" role-description="$i18n{menu}">
--        <button id="menuRemoveEmail" class="dropdown-item"
--            @click="\${this.onMenuRemoveEmailClick_}">
-+        <button id="menuRemoveEmail" class="dropdown-item" @click="\${this.onMenuRemoveEmailClick_}">
-           $i18n{removeVerifiedEmailPermission}
-         </button>
-       </cr-action-menu>
+-      <div id="noAddressesLabel" class="list-item"
+-          ?hidden="\${this.addresses.length > 0}">
++      <div id="noAddressesLabel" class="list-item" ?hidden="\${this.addresses.length > 0}">
+         $i18n{noAddressesFound}
+       </div>
      </div>
+     <cr-action-menu id="addressSharedMenu" role-description="$i18n{menu}">
+@@ -145,9 +123,9 @@
+           @close="\${this.onEmailRemoveConfirmationDialogClose_}">
+       </settings-simple-confirmation-dialog>
+     \` : ''}
+   </div>
+-  <div class="card">
++  <div class="card" hidden="">
+     <div class="cr-row continuation">
+       <h2 class="flex">$i18n{emailVerificationSectionTitle}</h2>
+     </div>
+     \${this.isEmailVerificationProtocolEnabled_ ? html\`
+@@ -221,10 +199,9 @@
+         $i18n{emailVerificationEmptyLabel}
+       </div>
+     \` : ''}
+     <cr-action-menu id="emailSharedMenu" role-description="$i18n{menu}">
+-      <button id="menuRemoveEmail" class="dropdown-item"
+-          @click="\${this.onMenuRemoveEmailClick_}">
++      <button id="menuRemoveEmail" class="dropdown-item" @click="\${this.onMenuRemoveEmailClick_}">
+         $i18n{removeVerifiedEmailPermission}
+       </button>
+     </cr-action-menu>
+   </div>
 "
 `;
 
@@ -1213,7 +1224,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
        \${this.expandedBrowsingDataTypeOptionsList_.map(item => html\`
          <settings-checkbox pref-key="\${item.prefKey}" no-set-pref
              .subLabelHtml="\${item.subLabel || ''}"
-@@ -36,39 +35,39 @@
+@@ -36,39 +35,40 @@
            \`)}
          \` : ''}
        </div>
@@ -1256,13 +1267,12 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
      <settings-clear-browsing-data-account-indicator>
      </settings-clear-browsing-data-account-indicator>
 -</if>
--    <div id="spinner" class="spinner"
--        ?hidden="\${!this.isDeletionInProgress_}"></div>
++
+     <div id="spinner" class="spinner" ?hidden="\${!this.isDeletionInProgress_}">
+     </div>
 -    <cr-button id="cancelButton" class="cancel-button"
 -        @click="\${this.onCancelClick_}"
 -        ?disabled="\${this.isDeletionInProgress_}" autofocus>
-+
-+    <div id="spinner" class="spinner" ?hidden="\${!this.isDeletionInProgress_}"></div>
 +    <cr-button id="cancelButton" class="cancel-button" @click="\${this.onCancelClick_}" ?disabled="\${this.isDeletionInProgress_}" autofocus="">
        $i18n{cancel}
      </cr-button>
@@ -1286,15 +1296,14 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_time_picker.html.ts
 +++ gen/chrome/browser/resources/settings/preprocessed/clear_browsing_data_dialog/clear_browsing_data_time_picker.html.ts
-@@ -5,17 +5,13 @@
+@@ -5,16 +5,13 @@
  export function getHtml(this: SettingsClearBrowsingDataTimePickerElement) {
    return html\`<!--_html_template_start_-->
  <div class="row" id="timePicker">
    \${this.expandedOptionList_.map(item => html\`
 -    <cr-chip class="time-period-chip"
 -        ?selected="\${this.isTimePeriodSelected_(item.value)}"
--        data-time-period="\${item.value}"
--        @click="\${this.onTimePeriodClick_}">
+-        data-time-period="\${item.value}" @click="\${this.onTimePeriodClick_}">
 -      <cr-icon icon="cr:check"
 -          ?hidden="\${!this.isTimePeriodSelected_(item.value)}">
 -      </cr-icon>
@@ -1315,10 +1324,10 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/settings/default_browser_page/default_browser_page.html.ts
 +++ gen/chrome/browser/resources/settings/preprocessed/default_browser_page/default_browser_page.html.ts
-@@ -4,12 +4,11 @@
+@@ -3,12 +3,11 @@
+ import type {SettingsDefaultBrowserPageElement} from './default_browser_page.js';
  
  export function getHtml(this: SettingsDefaultBrowserPageElement) {
-   // clang-format off
    return html\`<!--_html_template_start_-->
 -<settings-section page-title="$i18n{defaultBrowser}"
 -    class="cr-centered-card-container">
@@ -1330,7 +1339,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
          <div id="canBeDefaultBrowser">$i18n{defaultBrowser}</div>
          <div class="secondary" id="makeDefaultLabel">
            \${this.getMakeDefaultLabel()}
-@@ -20,36 +19,31 @@
+@@ -19,35 +18,30 @@
          $i18n{defaultBrowserMakeDefaultButton}
        </cr-button>
      </div>
@@ -1372,7 +1381,6 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -</settings-section>
 +
  <!--_html_template_end_-->\`;
-   // clang-format on
  }
 "
 `;
@@ -1381,168 +1389,157 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/settings/people_page/people_page.html.ts
 +++ gen/chrome/browser/resources/settings/preprocessed/people_page/people_page.html.ts
-@@ -5,120 +5,39 @@
+@@ -4,109 +4,39 @@
  import type {SettingsPeoplePageElement} from './people_page.js';
  
  export function getHtml(this: SettingsPeoplePageElement) {
    return html\`<!--_html_template_start_-->
 -<settings-section page-title="$i18n{peoplePageTitle}">
 +
-       <div>
+   <div>
  
 -<if expr="not is_chromeos">
 +
-         \${this.shouldShowSyncAccountControl_() ? html\`
--          <settings-sync-account-control
--              .syncStatus="\${this.syncStatus!}"
--              promo-label-with-account="$i18n{peopleSignInPrompt}"
--              promo-label-with-no-account="$i18n{peopleSignInPrompt}"
--              promo-secondary-label-with-account=
--                  "$i18n{peopleSignInPromptSecondaryWithAccount}"
--              promo-secondary-label-with-no-account=
--                  "$i18n{peopleSignInPromptSecondaryWithNoAccount}"
--              .accessPoint="\${ChromeSigninAccessPoint.SETTINGS}">
--          </settings-sync-account-control>
-+          
-         \` : ''}
+     \${this.shouldShowSyncAccountControl_() ? html\`
+-      <settings-sync-account-control .syncStatus="\${this.syncStatus!}"
+-          promo-label-with-account="$i18n{peopleSignInPrompt}"
+-          promo-label-with-no-account="$i18n{peopleSignInPrompt}"
+-          promo-secondary-label-with-account="$i18n{peopleSignInPromptSecondaryWithAccount}"
+-          promo-secondary-label-with-no-account="$i18n{peopleSignInPromptSecondaryWithNoAccount}"
+-          .accessPoint="\${ChromeSigninAccessPoint.SETTINGS}">
+-      </settings-sync-account-control>
++      
+     \` : ''}
  
-         \${this.shouldLinkToProfileRow_() ? html\`
--          <div id="profile-row" class="cr-row first two-line"
--              ?actionable="\${this.isProfileActionable_}"
--              @click="\${this.onProfileClick_}">
--            \${this.syncStatus ? html\`
--              <div id="profile-icon"
--                  style="background-image: \${this.getIconImageSet_(
--                      this.profileIconUrl_)}">
--              </div>
--              <div class="flex cr-row-gap cr-padded-text text-elide">
--                <span id="profile-name">\${this.profileName_}</span>
--              </div>
--              <cr-icon-button class="subpage-arrow"
--                  aria-label="$i18n{editPerson}"
--                  aria-describedby="profile-name"
--                  aria-roledescription="$i18n{subpageArrowRoleDescription}">
--              </cr-icon-button>
--            \` : ''}
+     \${this.shouldLinkToProfileRow_() ? html\`
+-      <div id="profile-row" class="cr-row first two-line"
+-          ?actionable="\${this.isProfileActionable_}"
+-          @click="\${this.onProfileClick_}">
+-        \${this.syncStatus ? html\`
+-          <div id="profile-icon"
+-              style="background-image: \${
+-                  this.getIconImageSet_(this.profileIconUrl_)}">
 -          </div>
-+          
-         \` : ''}
+-          <div class="flex cr-row-gap cr-padded-text text-elide">
+-            <span id="profile-name">\${this.profileName_}</span>
+-          </div>
+-          <cr-icon-button class="subpage-arrow" aria-label="$i18n{editPerson}"
+-              aria-describedby="profile-name"
+-              aria-roledescription="$i18n{subpageArrowRoleDescription}">
+-          </cr-icon-button>
+-        \` : ''}
+-      </div>
++      
+     \` : ''}
 -</if>
  
 -<if expr="is_chromeos">
--        \${!this.shouldLinkToAccountSettingsPage_() ? html\`
--          <div id="profile-row" class="cr-row first two-line"
--              ?actionable="\${this.isProfileActionable_}"
--              @click="\${this.onProfileClick_}">
--            \${this.syncStatus ? html\`
--              <div id="profile-icon"
--                  style="background-image: \${this.getIconImageSet_(
--                      this.profileIconUrl_)}">
--              </div>
--              <div class="flex cr-row-gap cr-padded-text text-elide">
--                <span id="profile-name">\${this.profileName_}</span>
--                <div class="secondary" ?hidden="\${!this.isSyncing_()}">
--                  \${this.syncStatus.signedInUsername}
--                </div>
--              </div>
--              <cr-icon-button class="icon-external"
--                  id="profile-subpage-arrow"
--                  ?hidden="\${!this.isProfileActionable_}"
--                  aria-label="$i18n{accountManagerSubMenuLabel}"
--                  aria-describedby="profile-name">
--              </cr-icon-button>
--            \` : ''}
--          </div>
--        \` : ''}
--</if>
- 
-+
-+
-         <!-- Shared Elements -->
--        <cr-link-row id="account-subpage-row" class="cr-row first"
--            @click="\${this.onAccountClick_}"
--            .label="\${this.primaryAccountName_}"
--            .subLabel="\${this.getAccountRowSubtitle_()}"
--            role-description="$i18n{subpageArrowRoleDescription}"
--            button-aria-description="$i18n{accountPageTitle}"
--            ?hidden="\${!this.shouldLinkToAccountSettingsPage_()}">
+-    \${!this.shouldLinkToAccountSettingsPage_() ? html\`
+-      <div id="profile-row" class="cr-row first two-line"
+-          ?actionable="\${this.isProfileActionable_}"
+-          @click="\${this.onProfileClick_}">
+-        \${this.syncStatus ? html\`
 -          <div id="profile-icon"
--              style="background-image: \${this.getIconImageSet_(
--                  this.primaryAccountIconUrl_)}">
+-              style="background-image: \${
+-                  this.getIconImageSet_(this.profileIconUrl_)}">
 -          </div>
--        </cr-link-row>
-+        
- 
--        <cr-link-row id="sync-setup"
--            label="$i18n{syncAndNonPersonalizedServices}"
--            .subLabel="\${this.getSyncAndNonPersonalizedServicesSubtext_()}"
--            @click="\${this.onSyncClick_}"
--            role-description="$i18n{subpageArrowRoleDescription}"
--            ?hidden="\${this.shouldHideSyncSetupLinkRow_()}">
--        </cr-link-row>
-+        
- 
--        <cr-link-row id="google-services"
--            label="$i18n{googleServicesPageTitle}"
--            @click="\${this.onGoogleServicesClick_}"
--            role-description="$i18n{subpageArrowRoleDescription}"
--            ?hidden="\${!this.shouldHideSyncSetupLinkRow_()}">
--        </cr-link-row>
-+        
- 
--<if expr="not is_chromeos">
-+
-         \${this.signinAllowed_ ? html\`
--          <cr-link-row id="manage-google-account"
--              label="$i18n{manageGoogleAccount}"
--              ?hidden="\${!this.shouldShowGoogleAccount_}"
--              @click="\${this.onGoogleAccountClick_}" external>
--          </cr-link-row>
-+          
- 
--          <cr-link-row id="edit-profile"
--              label="$i18n{profileNameAndPicture}"
--              @click="\${this.onProfileClick_}">
-+          <cr-link-row id="edit-profile" label="$i18n{profileNameAndPicture}" @click="\${this.onProfileClick_}" class="first">
-           </cr-link-row>
-         \` : ''}
- 
--        <cr-link-row id="importDataDialogTrigger"
--            label="$i18n{importTitle}"
--            @click="\${this.onImportDataClick_}">
-+        <cr-link-row id="importDataDialogTrigger" label="$i18n{importTitle}" @click="\${this.onImportDataClick_}">
-         </cr-link-row>
- 
-         \${this.isDasherlessProfile_ ? html\`
-           <div id="sync-not-allowed" class="cr-row continuation">
-@@ -127,14 +46,14 @@
-               $i18n{syncUnavailableForNonGoogleAccount}
-             </div>
-           </div>
-         \` : ''}
+-          <div class="flex cr-row-gap cr-padded-text text-elide">
+-            <span id="profile-name">\${this.profileName_}</span>
+-            <div class="secondary" ?hidden="\${!this.isSyncing_()}">
+-              \${this.syncStatus.signedInUsername}
+-            </div>
+-          </div>
+-          <cr-icon-button class="icon-external" id="profile-subpage-arrow"
+-              ?hidden="\${!this.isProfileActionable_}"
+-              aria-label="$i18n{accountManagerSubMenuLabel}"
+-              aria-describedby="profile-name">
+-          </cr-icon-button>
+-        \` : ''}
+-      </div>
+-    \` : ''}
 -</if>
  
 +
-       </div>
--    </settings-section>
++
+     <!-- Shared Elements -->
+-    <cr-link-row id="account-subpage-row" class="cr-row first"
+-        @click="\${this.onAccountClick_}" .label="\${this.primaryAccountName_}"
+-        .subLabel="\${this.getAccountRowSubtitle_()}"
+-        role-description="$i18n{subpageArrowRoleDescription}"
+-        button-aria-description="$i18n{accountPageTitle}"
+-        ?hidden="\${!this.shouldLinkToAccountSettingsPage_()}">
+-      <div id="profile-icon"
+-          style="background-image: \${
+-              this.getIconImageSet_(this.primaryAccountIconUrl_)}">
+-      </div>
+-    </cr-link-row>
++    
+ 
+-    <cr-link-row id="sync-setup" label="$i18n{syncAndNonPersonalizedServices}"
+-        .subLabel="\${this.getSyncAndNonPersonalizedServicesSubtext_()}"
+-        @click="\${this.onSyncClick_}"
+-        role-description="$i18n{subpageArrowRoleDescription}"
+-        ?hidden="\${this.shouldHideSyncSetupLinkRow_()}">
+-    </cr-link-row>
++    
+ 
+-    <cr-link-row id="google-services" label="$i18n{googleServicesPageTitle}"
+-        @click="\${this.onGoogleServicesClick_}"
+-        role-description="$i18n{subpageArrowRoleDescription}"
+-        ?hidden="\${!this.shouldHideSyncSetupLinkRow_()}">
+-    </cr-link-row>
 +    
  
 -<if expr="not is_chromeos">
 +
-     \${this.showSignoutDialog_ ? html\`
-       <settings-signout-dialog .syncStatus="\${this.syncStatus}"
-           @close="\${this.onDisconnectDialogClose_}">
-       </settings-signout-dialog>
-@@ -144,9 +63,9 @@
-       <settings-import-data-dialog
-           @close="\${this.onImportDataDialogClose_}">
-       </settings-import-data-dialog>
+     \${this.signinAllowed_ ? html\`
+-      <cr-link-row id="manage-google-account" label="$i18n{manageGoogleAccount}"
+-          ?hidden="\${!this.shouldShowGoogleAccount_}"
+-          @click="\${this.onGoogleAccountClick_}" external>
+-      </cr-link-row>
++      
+ 
+-      <cr-link-row id="edit-profile" label="$i18n{profileNameAndPicture}"
+-          @click="\${this.onProfileClick_}">
++      <cr-link-row id="edit-profile" label="$i18n{profileNameAndPicture}" @click="\${this.onProfileClick_}" class="first">
+       </cr-link-row>
+     \` : ''}
+ 
+-    <cr-link-row id="importDataDialogTrigger" label="$i18n{importTitle}"
+-        @click="\${this.onImportDataClick_}">
++    <cr-link-row id="importDataDialogTrigger" label="$i18n{importTitle}" @click="\${this.onImportDataClick_}">
+     </cr-link-row>
+ 
+     \${this.isDasherlessProfile_ ? html\`
+       <div id="sync-not-allowed" class="cr-row continuation">
+@@ -115,14 +45,14 @@
+           $i18n{syncUnavailableForNonGoogleAccount}
+         </div>
+       </div>
      \` : ''}
 -</if>
+ 
 +
-     <cr-toast duration="3000" id="toast">
-       <span>$i18n{syncSettingsSavedToast}</span>
-     </cr-toast>
+   </div>
+-</settings-section>
+ 
+-<if expr="not is_chromeos">
++
++
+ \${this.showSignoutDialog_ ? html\`
+   <settings-signout-dialog .syncStatus="\${this.syncStatus}"
+       @close="\${this.onDisconnectDialogClose_}">
+   </settings-signout-dialog>
+@@ -131,9 +61,9 @@
+ \${this.showImportDataDialog_ ? html\`
+   <settings-import-data-dialog @close="\${this.onImportDataDialogClose_}">
+   </settings-import-data-dialog>
+ \` : ''}
+-</if>
++
+ <cr-toast duration="3000" id="toast">
+   <span>$i18n{syncSettingsSavedToast}</span>
+ </cr-toast>
  <!--_html_template_end_-->\`;
 "
 `;
@@ -1551,427 +1548,387 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/settings/people_page/sync_controls.html.ts
 +++ gen/chrome/browser/resources/settings/preprocessed/people_page/sync_controls.html.ts
-@@ -5,19 +5,10 @@
+@@ -4,19 +4,10 @@
  import type {SettingsSyncControlsElement} from './sync_controls.js';
  
  export function getHtml(this: SettingsSyncControlsElement) {
    return html\`<!--_html_template_start_-->
 -<if expr="is_chromeos">
--  <div ?hidden="\${this.isAccountSettingsPage_}">
--      <div class="settings-box first">
--        <localized-link class="secondary"
--            localized-string="$i18n{browserSyncFeatureLabel}"
--            link-url="$i18n{osSyncSettingsUrl}">
--        </localized-link>
--      </div>
+-<div ?hidden="\${this.isAccountSettingsPage_}">
+-  <div class="settings-box first">
+-    <localized-link class="secondary"
+-        localized-string="$i18n{browserSyncFeatureLabel}"
+-        link-url="$i18n{osSyncSettingsUrl}">
+-    </localized-link>
 -  </div>
+-</div>
 -</if>
  
 +
-     \${!this.isAccountSettingsPage_ ? html\`
-       <div id="sync-data-radio" class="cr-row first">
-         <cr-radio-group
-             .selected="\${this.selectedSyncDataRadio_()}"
-@@ -33,10 +24,9 @@
-     \` : ''}
- 
-     <div ?hidden="\${!this.showSyncDisabledInformation}">
-       <div class="cr-row first">
--        <cr-policy-indicator id="syncDisabledIndicator"
--            indicator-type="userPolicy">
-+        <cr-policy-indicator id="syncDisabledIndicator" indicator-type="userPolicy">
-         </cr-policy-indicator>
-         <div class="cr-secondary-text flex">
-           $i18n{syncDisabledUserInformation}
-         </div>
-@@ -50,23 +40,15 @@
-       <div class="cr-row first">
-         <h2 class="cr-title-text flex">$i18n{accountDataTypesHeading}</h2>
-       </div>
-       <div class="cr-row continuation">
+ \${!this.isAccountSettingsPage_ ? html\`
+   <div id="sync-data-radio" class="cr-row first">
+     <cr-radio-group .selected="\${this.selectedSyncDataRadio_()}"
+         @selected-changed="\${this.onSyncDataRadioSelectedChanged_}">
+@@ -47,23 +38,15 @@
+   <div class="cr-row first">
+     <h2 class="cr-title-text flex">$i18n{accountDataTypesHeading}</h2>
+   </div>
+   <div class="cr-row continuation">
 -<if expr="is_chromeos">
--        <localized-link class="cr-secondary-text flex"
--            localized-string="$i18n{accountDataTypesBody}"
--            link-url="$i18n{osSyncSettingsUrl}">
--        </localized-link>
+-    <localized-link class="cr-secondary-text flex"
+-        localized-string="$i18n{accountDataTypesBody}"
+-        link-url="$i18n{osSyncSettingsUrl}">
+-    </localized-link>
 -</if>
 -<if expr="not is_chromeos">
 +
 +
-         <div class="cr-secondary-text flex">$i18n{accountDataTypesBody}</div>
+     <div class="cr-secondary-text flex">$i18n{accountDataTypesBody}</div>
 -</if>
 +
+   </div>
+-  <div class="cr-row continuation"
+-      ?hidden="\${!this.shouldShowBatchUploadPromo_()}">
+-    <div class="cr-secondary-text flex" id="batchUploadPromo"
+-        .innerHTML="\${this.batchUploadPromoHTML_}"
+-        @click="\${this.onBatchUploadPromoClick_}">
++  <div class="cr-row continuation" ?hidden="\${!this.shouldShowBatchUploadPromo_()}">
++    <div class="cr-secondary-text flex" id="batchUploadPromo" .innerHTML="\${this.batchUploadPromoHTML_}" @click="\${this.onBatchUploadPromoClick_}">
+     </div>
+   </div>
+ </div>
+ 
+@@ -93,276 +76,161 @@
+     </div>
+   \` : ''}
+ 
+   <div ?hidden="\${this.isAccountSettingsPage_}">
+-    <div class="list-item"
+-        ?hidden="\${!!this.syncPrefs && !this.syncPrefs.typedUrlsRegistered}">
++    <div class="list-item" ?hidden="\${!!this.syncPrefs && !this.syncPrefs.typedUrlsRegistered}">
+       <div id="historyCheckboxLabel">
+         $i18n{historyCheckboxLabel}
        </div>
--      <div class="cr-row continuation"
--          ?hidden="\${!this.shouldShowBatchUploadPromo_()}">
--        <div class="cr-secondary-text flex" id="batchUploadPromo"
--            .innerHTML="\${this.batchUploadPromoHTML_}"
--            @click="\${this.onBatchUploadPromoClick_}">
-+      <div class="cr-row continuation" ?hidden="\${!this.shouldShowBatchUploadPromo_()}">
-+        <div class="cr-secondary-text flex" id="batchUploadPromo" .innerHTML="\${this.batchUploadPromoHTML_}" @click="\${this.onBatchUploadPromoClick_}">
-         </div>
+-      <cr-policy-indicator indicator-type="userPolicy"
+-          ?hidden="\${
++      <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${
+               !this.showPolicyIndicator_(this.syncPrefs?.typedUrlsManaged)}">
+       </cr-policy-indicator>
+-      <cr-toggle id="historyToggle"
+-          .checked="\${!!this.syncPrefs?.typedUrlsSynced}"
+-          @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${
+-              this.disableTypeCheckBox_(this.syncPrefs?.typedUrlsManaged)}"
+-          aria-labelledby="historyCheckboxLabel"
+-          data-type="\${UserSelectableType.HISTORY}" data-pref="typedUrlsSynced">
++      <cr-toggle id="historyToggle" .checked="\${!!this.syncPrefs?.typedUrlsSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${
++              this.disableTypeCheckBox_(this.syncPrefs?.typedUrlsManaged)}" aria-labelledby="historyCheckboxLabel" data-type="\${UserSelectableType.HISTORY}" data-pref="typedUrlsSynced">
+       </cr-toggle>
+     </div>
+   </div>
+ 
+-  <div class="list-item"
+-      ?hidden="\${!!this.syncPrefs && !this.syncPrefs.bookmarksRegistered}">
++  <div class="list-item" ?hidden="\${!!this.syncPrefs && !this.syncPrefs.bookmarksRegistered}">
+     <div id="bookmarksCheckboxLabel">
+       $i18n{bookmarksCheckboxLabel}
+     </div>
+-    <cr-policy-indicator indicator-type="userPolicy"
+-        ?hidden="\${
++    <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${
+             !this.showPolicyIndicator_(this.syncPrefs?.bookmarksManaged)}">
+     </cr-policy-indicator>
+-    <cr-toggle .checked="\${!!this.syncPrefs?.bookmarksSynced}"
+-        @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${
+-            this.disableTypeCheckBox_(this.syncPrefs?.bookmarksManaged)}"
+-        aria-labelledby="bookmarksCheckboxLabel"
+-        data-type="\${UserSelectableType.BOOKMARKS}" data-pref="bookmarksSynced">
++    <cr-toggle .checked="\${!!this.syncPrefs?.bookmarksSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${
++            this.disableTypeCheckBox_(this.syncPrefs?.bookmarksManaged)}" aria-labelledby="bookmarksCheckboxLabel" data-type="\${UserSelectableType.BOOKMARKS}" data-pref="bookmarksSynced">
+     </cr-toggle>
+   </div>
+ 
+-  <div class="list-item"
+-      ?hidden="\${!!this.syncPrefs && !this.syncPrefs.readingListRegistered}">
++  <div class="list-item" ?hidden="\${!!this.syncPrefs && !this.syncPrefs.readingListRegistered}">
+     <div id="readingListCheckboxLabel">
+       $i18n{readingListCheckboxLabel}
+     </div>
+-    <cr-policy-indicator indicator-type="userPolicy"
+-        ?hidden="\${
++    <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${
+             !this.showPolicyIndicator_(this.syncPrefs?.readingListManaged)}">
+     </cr-policy-indicator>
+-    <cr-toggle .checked="\${!!this.syncPrefs?.readingListSynced}"
+-        @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${
+-            this.disableTypeCheckBox_(this.syncPrefs?.readingListManaged)}"
+-        aria-labelledby="readingListCheckboxLabel"
+-        data-type="\${UserSelectableType.READING_LIST}"
+-        data-pref="readingListSynced">
++    <cr-toggle .checked="\${!!this.syncPrefs?.readingListSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${
++            this.disableTypeCheckBox_(this.syncPrefs?.readingListManaged)}" aria-labelledby="readingListCheckboxLabel" data-type="\${UserSelectableType.READING_LIST}" data-pref="readingListSynced">
+     </cr-toggle>
+   </div>
+ 
+   <div ?hidden="\${this.isAccountSettingsPage_}">
+-    <div class="list-item"
+-        ?hidden="\${!!this.syncPrefs && !this.syncPrefs.tabsRegistered}">
++    <div class="list-item" ?hidden="\${!!this.syncPrefs && !this.syncPrefs.tabsRegistered}">
+       <div id="openTabsCheckboxLabel">
+         $i18n{openTabsCheckboxLabel}
        </div>
+-      <cr-policy-indicator indicator-type="userPolicy"
+-          ?hidden="\${!this.showPolicyIndicator_(this.syncPrefs?.tabsManaged)}">
++      <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${!this.showPolicyIndicator_(this.syncPrefs?.tabsManaged)}">
+       </cr-policy-indicator>
+-      <cr-toggle .checked="\${!!this.syncPrefs?.tabsSynced}"
+-          @change="\${this.onSingleSyncDataTypeChange_}"
+-          ?disabled="\${this.disableTypeCheckBox_(this.syncPrefs?.tabsManaged)}"
+-          aria-labelledby="openTabsCheckboxLabel"
+-          data-type="\${UserSelectableType.TABS}" data-pref="tabsSynced">
++      <cr-toggle .checked="\${!!this.syncPrefs?.tabsSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${this.disableTypeCheckBox_(this.syncPrefs?.tabsManaged)}" aria-labelledby="openTabsCheckboxLabel" data-type="\${UserSelectableType.TABS}" data-pref="tabsSynced">
+       </cr-toggle>
      </div>
  
-@@ -96,304 +78,170 @@
-         </div>
-       \` : ''}
- 
-       <div ?hidden="\${this.isAccountSettingsPage_}">
--        <div class="list-item"
--            ?hidden="\${!!this.syncPrefs &&
-+        <div class="list-item" ?hidden="\${!!this.syncPrefs &&
-                 !this.syncPrefs.typedUrlsRegistered}">
-           <div id="historyCheckboxLabel">
-             $i18n{historyCheckboxLabel}
-           </div>
--          <cr-policy-indicator indicator-type="userPolicy"
--              ?hidden="\${!this.showPolicyIndicator_(
-+          <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${!this.showPolicyIndicator_(
-                     this.syncPrefs?.typedUrlsManaged)}">
-           </cr-policy-indicator>
--          <cr-toggle id="historyToggle"
--              .checked="\${!!this.syncPrefs?.typedUrlsSynced}"
--              @change="\${this.onSingleSyncDataTypeChange_}"
--              ?disabled="\${this.disableTypeCheckBox_(
--                this.syncPrefs?.typedUrlsManaged)}"
--              aria-labelledby="historyCheckboxLabel"
--              data-type="\${UserSelectableType.HISTORY}"
--              data-pref="typedUrlsSynced">
-+          <cr-toggle id="historyToggle" .checked="\${!!this.syncPrefs?.typedUrlsSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${this.disableTypeCheckBox_(
-+                this.syncPrefs?.typedUrlsManaged)}" aria-labelledby="historyCheckboxLabel" data-type="\${UserSelectableType.HISTORY}" data-pref="typedUrlsSynced">
-           </cr-toggle>
-         </div>
+-    <div class="list-item"
+-        ?hidden="\${
++    <div class="list-item" ?hidden="\${
+             !!this.syncPrefs && !this.syncPrefs.savedTabGroupsRegistered}">
+       <div id="savedTabGroupsCheckboxLabel">
+         $i18n{savedTabGroupsCheckboxLabel}
        </div>
+-      <cr-policy-indicator indicator-type="userPolicy"
+-          ?hidden="\${!this.showPolicyIndicator_(
++      <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${!this.showPolicyIndicator_(
+               this.syncPrefs?.savedTabGroupsManaged)}">
+       </cr-policy-indicator>
+-      <cr-toggle .checked="\${!!this.syncPrefs?.savedTabGroupsSynced}"
+-          @change="\${this.onSingleSyncDataTypeChange_}"
+-          ?disabled="\${this.disableTypeCheckBox_(
+-              this.syncPrefs?.savedTabGroupsManaged)}"
+-          aria-labelledby="savedTabGroupsCheckboxLabel"
+-          data-type="\${UserSelectableType.SAVED_TAB_GROUPS}"
+-          data-pref="savedTabGroupsSynced">
++      <cr-toggle .checked="\${!!this.syncPrefs?.savedTabGroupsSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${this.disableTypeCheckBox_(
++              this.syncPrefs?.savedTabGroupsManaged)}" aria-labelledby="savedTabGroupsCheckboxLabel" data-type="\${UserSelectableType.SAVED_TAB_GROUPS}" data-pref="savedTabGroupsSynced">
+       </cr-toggle>
+     </div>
+   </div>
  
--      <div class="list-item"
--          ?hidden="\${!!this.syncPrefs && !this.syncPrefs.bookmarksRegistered}">
-+      <div class="list-item" ?hidden="\${!!this.syncPrefs && !this.syncPrefs.bookmarksRegistered}">
-         <div id="bookmarksCheckboxLabel">
-           $i18n{bookmarksCheckboxLabel}
-         </div>
--        <cr-policy-indicator indicator-type="userPolicy"
--            ?hidden="\${!this.showPolicyIndicator_(
-+        <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${!this.showPolicyIndicator_(
-                   this.syncPrefs?.bookmarksManaged)}">
-         </cr-policy-indicator>
--        <cr-toggle .checked="\${!!this.syncPrefs?.bookmarksSynced}"
--            @change="\${this.onSingleSyncDataTypeChange_}"
--            ?disabled="\${this.disableTypeCheckBox_(
--                this.syncPrefs?.bookmarksManaged)}"
--            aria-labelledby="bookmarksCheckboxLabel"
--            data-type="\${UserSelectableType.BOOKMARKS}"
--            data-pref="bookmarksSynced">
-+        <cr-toggle .checked="\${!!this.syncPrefs?.bookmarksSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${this.disableTypeCheckBox_(
-+                this.syncPrefs?.bookmarksManaged)}" aria-labelledby="bookmarksCheckboxLabel" data-type="\${UserSelectableType.BOOKMARKS}" data-pref="bookmarksSynced">
-         </cr-toggle>
-       </div>
+-  <div class="list-item"
+-      ?hidden="\${!!this.syncPrefs && !this.syncPrefs.autofillRegistered}">
++  <div class="list-item" ?hidden="\${!!this.syncPrefs && !this.syncPrefs.autofillRegistered}">
+     <div id="autofillCheckboxLabel">
+       $i18n{autofillCheckboxLabel}
+     </div>
+-    <cr-policy-indicator indicator-type="userPolicy"
+-        ?hidden="\${
++    <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${
+             !this.showPolicyIndicator_(this.syncPrefs?.autofillManaged)}">
+     </cr-policy-indicator>
+-    <cr-toggle id="autofillCheckbox"
+-        .checked="\${!!this.syncPrefs?.autofillSynced}"
+-        @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${
+-            this.disableTypeCheckBox_(this.syncPrefs?.autofillManaged)}"
+-        aria-labelledby="autofillCheckboxLabel"
+-        data-type="\${UserSelectableType.AUTOFILL}" data-pref="autofillSynced">
++    <cr-toggle id="autofillCheckbox" .checked="\${!!this.syncPrefs?.autofillSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${
++            this.disableTypeCheckBox_(this.syncPrefs?.autofillManaged)}" aria-labelledby="autofillCheckboxLabel" data-type="\${UserSelectableType.AUTOFILL}" data-pref="autofillSynced">
+     </cr-toggle>
+   </div>
  
--      <div class="list-item"
--          ?hidden="\${!!this.syncPrefs &&
-+      <div class="list-item" ?hidden="\${!!this.syncPrefs &&
-               !this.syncPrefs.readingListRegistered}">
-         <div id="readingListCheckboxLabel">
-           $i18n{readingListCheckboxLabel}
-         </div>
--        <cr-policy-indicator indicator-type="userPolicy"
--            ?hidden="\${!this.showPolicyIndicator_(
-+        <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${!this.showPolicyIndicator_(
-                   this.syncPrefs?.readingListManaged)}">
-         </cr-policy-indicator>
--        <cr-toggle .checked="\${!!this.syncPrefs?.readingListSynced}"
--            @change="\${this.onSingleSyncDataTypeChange_}"
--            ?disabled="\${this.disableTypeCheckBox_(
--                this.syncPrefs?.readingListManaged)}"
--            aria-labelledby="readingListCheckboxLabel"
--            data-type="\${UserSelectableType.READING_LIST}"
--            data-pref="readingListSynced">
-+        <cr-toggle .checked="\${!!this.syncPrefs?.readingListSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${this.disableTypeCheckBox_(
-+                this.syncPrefs?.readingListManaged)}" aria-labelledby="readingListCheckboxLabel" data-type="\${UserSelectableType.READING_LIST}" data-pref="readingListSynced">
-         </cr-toggle>
-       </div>
+-  <div class="list-item"
+-      ?hidden="\${!!this.syncPrefs && !this.syncPrefs.paymentsRegistered}">
+-    <div>
+-      $i18n{paymentsCheckboxLabel}
+-    </div>
+-    <cr-policy-indicator indicator-type="userPolicy"
+-        ?hidden="\${
+-            !this.showPolicyIndicator_(this.syncPrefs?.paymentsManaged)}">
+-    </cr-policy-indicator>
+-    <cr-toggle id="paymentsCheckbox"
+-        .checked="\${!!this.syncPrefs?.paymentsSynced}"
+-        @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${
+-            this.disableTypeCheckBox_(this.syncPrefs?.paymentsManaged)}"
+-        aria-label="$i18n{paymentsCheckboxLabel}"
+-        data-type="\${UserSelectableType.PAYMENTS}" data-pref="paymentsSynced">
+-    </cr-toggle>
+-  </div>
++  
  
-       <div ?hidden="\${this.isAccountSettingsPage_}">
--        <div class="list-item"
--            ?hidden="\${!!this.syncPrefs && !this.syncPrefs.tabsRegistered}">
-+        <div class="list-item" ?hidden="\${!!this.syncPrefs && !this.syncPrefs.tabsRegistered}">
-           <div id="openTabsCheckboxLabel">
-             $i18n{openTabsCheckboxLabel}
-           </div>
--          <cr-policy-indicator indicator-type="userPolicy"
--              ?hidden="\${!this.showPolicyIndicator_(
-+          <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${!this.showPolicyIndicator_(
-                     this.syncPrefs?.tabsManaged)}">
-           </cr-policy-indicator>
--          <cr-toggle .checked="\${!!this.syncPrefs?.tabsSynced}"
--              @change="\${this.onSingleSyncDataTypeChange_}"
--              ?disabled="\${this.disableTypeCheckBox_(
--                this.syncPrefs?.tabsManaged)}"
--              aria-labelledby="openTabsCheckboxLabel"
--              data-type="\${UserSelectableType.TABS}"
--              data-pref="tabsSynced">
-+          <cr-toggle .checked="\${!!this.syncPrefs?.tabsSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${this.disableTypeCheckBox_(
-+                this.syncPrefs?.tabsManaged)}" aria-labelledby="openTabsCheckboxLabel" data-type="\${UserSelectableType.TABS}" data-pref="tabsSynced">
-           </cr-toggle>
-         </div>
+-  <div class="list-item"
+-      ?hidden="\${!!this.syncPrefs && !this.syncPrefs.passwordsRegistered}">
++  <div class="list-item" ?hidden="\${!!this.syncPrefs && !this.syncPrefs.passwordsRegistered}">
+     <div id="passwordsCheckboxLabel">
+       $i18n{passwordsCheckboxLabel}
+     </div>
+-    <cr-policy-indicator indicator-type="userPolicy"
+-        ?hidden="\${
++    <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${
+             !this.showPolicyIndicator_(this.syncPrefs?.passwordsManaged)}">
+     </cr-policy-indicator>
+-    <cr-toggle .checked="\${!!this.syncPrefs?.passwordsSynced}"
+-        @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${
+-            this.disableTypeCheckBox_(this.syncPrefs?.passwordsManaged)}"
+-        aria-labelledby="passwordsCheckboxLabel"
+-        data-type="\${UserSelectableType.PASSWORDS}" data-pref="passwordsSynced">
++    <cr-toggle .checked="\${!!this.syncPrefs?.passwordsSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${
++            this.disableTypeCheckBox_(this.syncPrefs?.passwordsManaged)}" aria-labelledby="passwordsCheckboxLabel" data-type="\${UserSelectableType.PASSWORDS}" data-pref="passwordsSynced">
+     </cr-toggle>
+   </div>
  
--        <div class="list-item"
--            ?hidden="\${!!this.syncPrefs &&
-+        <div class="list-item" ?hidden="\${!!this.syncPrefs &&
-                 !this.syncPrefs.savedTabGroupsRegistered}">
-           <div id="savedTabGroupsCheckboxLabel">
-             $i18n{savedTabGroupsCheckboxLabel}
-           </div>
--          <cr-policy-indicator indicator-type="userPolicy"
--              ?hidden="\${!this.showPolicyIndicator_(
-+          <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${!this.showPolicyIndicator_(
-                     this.syncPrefs?.savedTabGroupsManaged)}">
-           </cr-policy-indicator>
--          <cr-toggle .checked="\${!!this.syncPrefs?.savedTabGroupsSynced}"
--              @change="\${this.onSingleSyncDataTypeChange_}"
--              ?disabled="\${this.disableTypeCheckBox_(
--                this.syncPrefs?.savedTabGroupsManaged)}"
--              aria-labelledby="savedTabGroupsCheckboxLabel"
--              data-type="\${UserSelectableType.SAVED_TAB_GROUPS}"
--              data-pref="savedTabGroupsSynced">
-+          <cr-toggle .checked="\${!!this.syncPrefs?.savedTabGroupsSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${this.disableTypeCheckBox_(
-+                this.syncPrefs?.savedTabGroupsManaged)}" aria-labelledby="savedTabGroupsCheckboxLabel" data-type="\${UserSelectableType.SAVED_TAB_GROUPS}" data-pref="savedTabGroupsSynced">
-           </cr-toggle>
-         </div>
-       </div>
+-  <div class="list-item"
+-      ?hidden="\${!!this.syncPrefs && !this.syncPrefs.preferencesRegistered}">
++  <div class="list-item" ?hidden="\${!!this.syncPrefs && !this.syncPrefs.preferencesRegistered}">
+     <div id="settingsCheckboxLabel">
+       $i18n{settingsCheckboxLabel}
+     </div>
+-    <cr-policy-indicator indicator-type="userPolicy"
+-        ?hidden="\${
++    <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${
+             !this.showPolicyIndicator_(this.syncPrefs?.preferencesManaged)}">
+     </cr-policy-indicator>
+-    <cr-toggle .checked="\${!!this.syncPrefs?.preferencesSynced}"
+-        @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${
+-            this.disableTypeCheckBox_(this.syncPrefs?.preferencesManaged)}"
+-        aria-labelledby="settingsCheckboxLabel"
+-        data-type="\${UserSelectableType.PREFERENCES}"
+-        data-pref="preferencesSynced">
++    <cr-toggle .checked="\${!!this.syncPrefs?.preferencesSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${
++            this.disableTypeCheckBox_(this.syncPrefs?.preferencesManaged)}" aria-labelledby="settingsCheckboxLabel" data-type="\${UserSelectableType.PREFERENCES}" data-pref="preferencesSynced">
+     </cr-toggle>
+   </div>
  
--      <div class="list-item"
--          ?hidden="\${!!this.syncPrefs && !this.syncPrefs.autofillRegistered}">
-+      <div class="list-item" ?hidden="\${!!this.syncPrefs && !this.syncPrefs.autofillRegistered}">
-         <div id="autofillCheckboxLabel">
-           $i18n{autofillCheckboxLabel}
-         </div>
--        <cr-policy-indicator indicator-type="userPolicy"
--             ?hidden="\${!this.showPolicyIndicator_(
-+        <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${!this.showPolicyIndicator_(
-                   this.syncPrefs?.autofillManaged)}">
-         </cr-policy-indicator>
--        <cr-toggle id="autofillCheckbox"
--            .checked="\${!!this.syncPrefs?.autofillSynced}"
--            @change="\${this.onSingleSyncDataTypeChange_}"
--            ?disabled="\${this.disableTypeCheckBox_(
--              this.syncPrefs?.autofillManaged)}"
--            aria-labelledby="autofillCheckboxLabel"
--            data-type="\${UserSelectableType.AUTOFILL}"
--            data-pref="autofillSynced">
-+        <cr-toggle id="autofillCheckbox" .checked="\${!!this.syncPrefs?.autofillSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${this.disableTypeCheckBox_(
-+              this.syncPrefs?.autofillManaged)}" aria-labelledby="autofillCheckboxLabel" data-type="\${UserSelectableType.AUTOFILL}" data-pref="autofillSynced">
-         </cr-toggle>
-       </div>
+-  <div class="list-item"
+-      ?hidden="\${!!this.syncPrefs && !this.syncPrefs.appsRegistered}">
++  <div class="list-item" ?hidden="\${!!this.syncPrefs && !this.syncPrefs.appsRegistered}">
+     <div id="appCheckboxLabel">$i18n{appCheckboxLabel}</div>
+-    <cr-policy-indicator indicator-type="userPolicy"
+-        ?hidden="\${!this.showPolicyIndicator_(this.syncPrefs?.appsManaged)}">
++    <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${!this.showPolicyIndicator_(this.syncPrefs?.appsManaged)}">
+     </cr-policy-indicator>
+-    <cr-toggle .checked="\${!!this.syncPrefs?.appsSynced}"
+-        @change="\${this.onSingleSyncDataTypeChange_}"
+-        ?disabled="\${this.disableTypeCheckBox_(this.syncPrefs?.appsManaged)}"
+-        aria-labelledby="appCheckboxLabel"
+-        data-type="\${UserSelectableType.APPS}" data-pref="appsSynced">
++    <cr-toggle .checked="\${!!this.syncPrefs?.appsSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${this.disableTypeCheckBox_(this.syncPrefs?.appsManaged)}" aria-labelledby="appCheckboxLabel" data-type="\${UserSelectableType.APPS}" data-pref="appsSynced">
+     </cr-toggle>
+   </div>
  
--      <div class="list-item"
--           ?hidden="\${!!this.syncPrefs && !this.syncPrefs.paymentsRegistered}">
--        <div>
--          $i18n{paymentsCheckboxLabel}
--        </div>
--        <cr-policy-indicator indicator-type="userPolicy"
--            ?hidden="\${!this.showPolicyIndicator_(
--                  this.syncPrefs?.paymentsManaged)}">
--        </cr-policy-indicator>
--        <cr-toggle id="paymentsCheckbox"
--            .checked="\${!!this.syncPrefs?.paymentsSynced}"
--            @change="\${this.onSingleSyncDataTypeChange_}"
--            ?disabled="\${this.disableTypeCheckBox_(
--                this.syncPrefs?.paymentsManaged)}"
--            aria-label="$i18n{paymentsCheckboxLabel}"
--            data-type="\${UserSelectableType.PAYMENTS}"
--            data-pref="paymentsSynced">
--        </cr-toggle>
--      </div>
-+      
+-  <div class="list-item"
+-      ?hidden="\${!!this.syncPrefs && !this.syncPrefs.extensionsRegistered}">
++  <div class="list-item" ?hidden="\${!!this.syncPrefs && !this.syncPrefs.extensionsRegistered}">
+     <div id="extensionsCheckboxLabel">
+       $i18n{extensionsCheckboxLabel}
+     </div>
+-    <cr-policy-indicator indicator-type="userPolicy"
+-        ?hidden="\${
++    <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${
+             !this.showPolicyIndicator_(this.syncPrefs?.extensionsManaged)}">
+     </cr-policy-indicator>
+-    <cr-toggle .checked="\${!!this.syncPrefs?.extensionsSynced}"
+-        @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${
+-            this.disableTypeCheckBox_(this.syncPrefs?.extensionsManaged)}"
+-        aria-labelledby="extensionsCheckboxLabel"
+-        data-type="\${UserSelectableType.EXTENSIONS}"
+-        data-pref="extensionsSynced">
++    <cr-toggle .checked="\${!!this.syncPrefs?.extensionsSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${
++            this.disableTypeCheckBox_(this.syncPrefs?.extensionsManaged)}" aria-labelledby="extensionsCheckboxLabel" data-type="\${UserSelectableType.EXTENSIONS}" data-pref="extensionsSynced">
+     </cr-toggle>
+   </div>
  
--      <div class="list-item"
--          ?hidden="\${!!this.syncPrefs && !this.syncPrefs.passwordsRegistered}">
-+      <div class="list-item" ?hidden="\${!!this.syncPrefs && !this.syncPrefs.passwordsRegistered}">
-         <div id="passwordsCheckboxLabel">
-           $i18n{passwordsCheckboxLabel}
-         </div>
--        <cr-policy-indicator indicator-type="userPolicy"
--            ?hidden="\${!this.showPolicyIndicator_(
-+        <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${!this.showPolicyIndicator_(
-                   this.syncPrefs?.passwordsManaged)}">
-         </cr-policy-indicator>
--        <cr-toggle .checked="\${!!this.syncPrefs?.passwordsSynced}"
--            @change="\${this.onSingleSyncDataTypeChange_}"
--            ?disabled="\${this.disableTypeCheckBox_(
--              this.syncPrefs?.passwordsManaged)}"
--            aria-labelledby="passwordsCheckboxLabel"
--            data-type="\${UserSelectableType.PASSWORDS}"
--            data-pref="passwordsSynced">
-+        <cr-toggle .checked="\${!!this.syncPrefs?.passwordsSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${this.disableTypeCheckBox_(
-+              this.syncPrefs?.passwordsManaged)}" aria-labelledby="passwordsCheckboxLabel" data-type="\${UserSelectableType.PASSWORDS}" data-pref="passwordsSynced">
-         </cr-toggle>
-       </div>
+-  <div class="list-item"
+-      ?hidden="\${!!this.syncPrefs && !this.syncPrefs.themesRegistered}">
++  <div class="list-item" ?hidden="\${!!this.syncPrefs && !this.syncPrefs.themesRegistered}">
+     <div id="themeCheckboxLabel">
+       $i18n{themeCheckboxLabel}
+     </div>
+-    <cr-policy-indicator indicator-type="userPolicy"
+-        ?hidden="\${!this.showPolicyIndicator_(this.syncPrefs?.themesManaged)}">
++    <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${!this.showPolicyIndicator_(this.syncPrefs?.themesManaged)}">
+     </cr-policy-indicator>
+-    <cr-toggle .checked="\${!!this.syncPrefs?.themesSynced}"
+-        @change="\${this.onSingleSyncDataTypeChange_}"
+-        ?disabled="\${this.disableTypeCheckBox_(this.syncPrefs?.themesManaged)}"
+-        aria-labelledby="themeCheckboxLabel"
+-        data-type="\${UserSelectableType.THEMES}" data-pref="themesSynced">
++    <cr-toggle .checked="\${!!this.syncPrefs?.themesSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${this.disableTypeCheckBox_(this.syncPrefs?.themesManaged)}" aria-labelledby="themeCheckboxLabel" data-type="\${UserSelectableType.THEMES}" data-pref="themesSynced">
+     </cr-toggle>
+   </div>
  
--      <div class="list-item"
--          ?hidden="\${!!this.syncPrefs &&
-+      <div class="list-item" ?hidden="\${!!this.syncPrefs &&
-               !this.syncPrefs.preferencesRegistered}">
-         <div id="settingsCheckboxLabel">
-           $i18n{settingsCheckboxLabel}
-         </div>
--        <cr-policy-indicator indicator-type="userPolicy"
--            ?hidden="\${!this.showPolicyIndicator_(
-+        <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${!this.showPolicyIndicator_(
-                   this.syncPrefs?.preferencesManaged)}">
-         </cr-policy-indicator>
--        <cr-toggle .checked="\${!!this.syncPrefs?.preferencesSynced}"
--            @change="\${this.onSingleSyncDataTypeChange_}"
--            ?disabled="\${this.disableTypeCheckBox_(
--                this.syncPrefs?.preferencesManaged)}"
--            aria-labelledby="settingsCheckboxLabel"
--            data-type="\${UserSelectableType.PREFERENCES}"
--            data-pref="preferencesSynced">
-+        <cr-toggle .checked="\${!!this.syncPrefs?.preferencesSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${this.disableTypeCheckBox_(
-+                this.syncPrefs?.preferencesManaged)}" aria-labelledby="settingsCheckboxLabel" data-type="\${UserSelectableType.PREFERENCES}" data-pref="preferencesSynced">
-         </cr-toggle>
-       </div>
- 
--      <div class="list-item"
--          ?hidden="\${!!this.syncPrefs && !this.syncPrefs.appsRegistered}">
-+      <div class="list-item" ?hidden="\${!!this.syncPrefs && !this.syncPrefs.appsRegistered}">
-         <div id="appCheckboxLabel">$i18n{appCheckboxLabel}</div>
--        <cr-policy-indicator indicator-type="userPolicy"
--              ?hidden="\${!this.showPolicyIndicator_(
-+        <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${!this.showPolicyIndicator_(
-                   this.syncPrefs?.appsManaged)}">
-         </cr-policy-indicator>
--        <cr-toggle .checked="\${!!this.syncPrefs?.appsSynced}"
--            @change="\${this.onSingleSyncDataTypeChange_}"
--            ?disabled="\${this.disableTypeCheckBox_(
--                this.syncPrefs?.appsManaged)}"
--            aria-labelledby="appCheckboxLabel"
--            data-type="\${UserSelectableType.APPS}"
--            data-pref="appsSynced">
-+        <cr-toggle .checked="\${!!this.syncPrefs?.appsSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${this.disableTypeCheckBox_(
-+                this.syncPrefs?.appsManaged)}" aria-labelledby="appCheckboxLabel" data-type="\${UserSelectableType.APPS}" data-pref="appsSynced">
-         </cr-toggle>
-       </div>
- 
--      <div class="list-item"
--          ?hidden="\${!!this.syncPrefs && !this.syncPrefs.extensionsRegistered}">
-+      <div class="list-item" ?hidden="\${!!this.syncPrefs && !this.syncPrefs.extensionsRegistered}">
-         <div id="extensionsCheckboxLabel">
-           $i18n{extensionsCheckboxLabel}
-         </div>
--        <cr-policy-indicator indicator-type="userPolicy"
--            ?hidden="\${!this.showPolicyIndicator_(
-+        <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${!this.showPolicyIndicator_(
-                   this.syncPrefs?.extensionsManaged)}">
-         </cr-policy-indicator>
--        <cr-toggle .checked="\${!!this.syncPrefs?.extensionsSynced}"
--            @change="\${this.onSingleSyncDataTypeChange_}"
--            ?disabled="\${this.disableTypeCheckBox_(
--                this.syncPrefs?.extensionsManaged)}"
--            aria-labelledby="extensionsCheckboxLabel"
--            data-type="\${UserSelectableType.EXTENSIONS}"
--            data-pref="extensionsSynced">
-+        <cr-toggle .checked="\${!!this.syncPrefs?.extensionsSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${this.disableTypeCheckBox_(
-+                this.syncPrefs?.extensionsManaged)}" aria-labelledby="extensionsCheckboxLabel" data-type="\${UserSelectableType.EXTENSIONS}" data-pref="extensionsSynced">
-         </cr-toggle>
-       </div>
- 
--      <div class="list-item"
--          ?hidden="\${!!this.syncPrefs && !this.syncPrefs.themesRegistered}">
-+      <div class="list-item" ?hidden="\${!!this.syncPrefs && !this.syncPrefs.themesRegistered}">
-         <div id="themeCheckboxLabel">
-           $i18n{themeCheckboxLabel}
-         </div>
--        <cr-policy-indicator indicator-type="userPolicy"
--            ?hidden="\${!this.showPolicyIndicator_(
-+        <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${!this.showPolicyIndicator_(
-                   this.syncPrefs?.themesManaged)}">
-         </cr-policy-indicator>
--        <cr-toggle .checked="\${!!this.syncPrefs?.themesSynced}"
--            @change="\${this.onSingleSyncDataTypeChange_}"
--            ?disabled="\${this.disableTypeCheckBox_(
--                this.syncPrefs?.themesManaged)}"
--            aria-labelledby="themeCheckboxLabel"
--            data-type="\${UserSelectableType.THEMES}"
--            data-pref="themesSynced">
-+        <cr-toggle .checked="\${!!this.syncPrefs?.themesSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${this.disableTypeCheckBox_(
-+                this.syncPrefs?.themesManaged)}" aria-labelledby="themeCheckboxLabel" data-type="\${UserSelectableType.THEMES}" data-pref="themesSynced">
-         </cr-toggle>
-       </div>
- 
--      <div class="list-item"
--           ?hidden="\${!!this.syncPrefs &&
-+      <div class="list-item" ?hidden="\${!!this.syncPrefs &&
-                !this.syncPrefs.productComparisonRegistered}">
-         <div id="productComparisonsCheckboxLabel">
-           $i18n{productComparisonsCheckboxLabel}
-         </div>
--        <cr-policy-indicator indicator-type="userPolicy"
--            ?hidden="\${!this.showPolicyIndicator_(
-+        <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${!this.showPolicyIndicator_(
-                   this.syncPrefs?.productComparisonManaged)}">
-         </cr-policy-indicator>
--        <cr-toggle .checked="\${!!this.syncPrefs?.productComparisonSynced}"
--            @change="\${this.onSingleSyncDataTypeChange_}"
--            ?disabled="\${this.disableTypeCheckBox_(
--              this.syncPrefs?.productComparisonManaged)}"
--            aria-labelledby="productComparisonsCheckboxLabel"
--            data-type="\${UserSelectableType.PRODUCT_COMPARISON}"
--            data-pref="productComparisonSynced">
-+        <cr-toggle .checked="\${!!this.syncPrefs?.productComparisonSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${this.disableTypeCheckBox_(
-+              this.syncPrefs?.productComparisonManaged)}" aria-labelledby="productComparisonsCheckboxLabel" data-type="\${UserSelectableType.PRODUCT_COMPARISON}" data-pref="productComparisonSynced">
-         </cr-toggle>
-       </div>
+-  <div class="list-item"
+-      ?hidden="\${
++  <div class="list-item" ?hidden="\${
+           !!this.syncPrefs && !this.syncPrefs.productComparisonRegistered}">
+     <div id="productComparisonsCheckboxLabel">
+       $i18n{productComparisonsCheckboxLabel}
+     </div>
+-    <cr-policy-indicator indicator-type="userPolicy"
+-        ?hidden="\${!this.showPolicyIndicator_(
++    <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${!this.showPolicyIndicator_(
+             this.syncPrefs?.productComparisonManaged)}">
+     </cr-policy-indicator>
+-    <cr-toggle .checked="\${!!this.syncPrefs?.productComparisonSynced}"
+-        @change="\${this.onSingleSyncDataTypeChange_}"
+-        ?disabled="\${this.disableTypeCheckBox_(
+-            this.syncPrefs?.productComparisonManaged)}"
+-        aria-labelledby="productComparisonsCheckboxLabel"
+-        data-type="\${UserSelectableType.PRODUCT_COMPARISON}"
+-        data-pref="productComparisonSynced">
++    <cr-toggle .checked="\${!!this.syncPrefs?.productComparisonSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${this.disableTypeCheckBox_(
++            this.syncPrefs?.productComparisonManaged)}" aria-labelledby="productComparisonsCheckboxLabel" data-type="\${UserSelectableType.PRODUCT_COMPARISON}" data-pref="productComparisonSynced">
+     </cr-toggle>
+   </div>
  
 -<if expr="is_chromeos">
--      <div class="list-item" id="cookiesSyncItem"
--          ?hidden="\${this.hideCookieItem_()}">
--        <div>
--          $i18n{cookiesCheckboxLabel}
--        </div>
--        <cr-policy-indicator indicator-type="userPolicy"
--            ?hidden="\${!this.showPolicyIndicator_(
--                  this.syncPrefs?.cookiesManaged)}">
--        </cr-policy-indicator>
--        <cr-toggle id="cookiesCheckbox"
--            .checked="\${!!this.syncPrefs?.cookiesSynced}"
--            @change="\${this.onSingleSyncDataTypeChange_}"
--            ?disabled="\${this.disableTypeCheckBox_(
--                this.syncPrefs?.cookiesManaged)}"
--            aria-label="$i18n{cookiesCheckboxLabel}"
--            data-type="\${UserSelectableType.COOKIES}"
--            data-pref="cookiesSynced">
--        </cr-toggle>
--      </div>
+-  <div class="list-item" id="cookiesSyncItem"
+-      ?hidden="\${this.hideCookieItem_()}">
+-    <div>
+-      $i18n{cookiesCheckboxLabel}
+-    </div>
+-    <cr-policy-indicator indicator-type="userPolicy"
+-        ?hidden="\${!this.showPolicyIndicator_(this.syncPrefs?.cookiesManaged)}">
+-    </cr-policy-indicator>
+-    <cr-toggle id="cookiesCheckbox"
+-        .checked="\${!!this.syncPrefs?.cookiesSynced}"
+-        @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${
+-            this.disableTypeCheckBox_(this.syncPrefs?.cookiesManaged)}"
+-        aria-label="$i18n{cookiesCheckboxLabel}"
+-        data-type="\${UserSelectableType.COOKIES}" data-pref="cookiesSynced">
+-    </cr-toggle>
+-  </div>
  
--      <div class="list-item"
--           ?hidden="\${!!this.syncPrefs &&
--               !this.syncPrefs.wifiConfigurationsRegistered}">
--        <div id="wifiConfigurationsCheckboxLabel">
--          $i18n{wifiConfigurationsCheckboxLabel}
--        </div>
--        <cr-policy-indicator indicator-type="userPolicy"
--            ?hidden="\${!this.showPolicyIndicator_(
--                  this.syncPrefs?.wifiConfigurationsManaged)}">
-+    \${this.isAiChatSyncEnabled_ ? html\`
+-  <div class="list-item"
+-      ?hidden="\${
+-          !!this.syncPrefs && !this.syncPrefs.wifiConfigurationsRegistered}">
+-    <div id="wifiConfigurationsCheckboxLabel">
+-      $i18n{wifiConfigurationsCheckboxLabel}
+-    </div>
+-    <cr-policy-indicator indicator-type="userPolicy"
+-        ?hidden="\${!this.showPolicyIndicator_(
+-            this.syncPrefs?.wifiConfigurationsManaged)}">
+-    </cr-policy-indicator>
+-    <cr-toggle id="wifiToggle"
+-        .checked="\${!!this.syncPrefs?.wifiConfigurationsSynced}"
+-        @change="\${this.onSingleSyncDataTypeChange_}"
+-        ?disabled="\${this.disableTypeCheckBox_(
+-            this.syncPrefs?.wifiConfigurationsManaged)}"
+-        aria-labelledby="wifiConfigurationsCheckboxLabel"
+-        data-pref="wifiConfigurationsSynced">
+-    </cr-toggle>
+-  </div>
+-</if>
+-</div>
++\${this.isAiChatSyncEnabled_ ? html\`
 +      <div class="list-item" ?hidden="\${!this.syncPrefs?.aiChatRegistered}">
 +        <div id="aiChatCheckboxLabel">\${this.aiChatCheckboxLabel_}</div>
 +        <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${!this.showPolicyIndicator_(
 +                this.syncPrefs?.aiChatManaged)}">
-         </cr-policy-indicator>
--        <cr-toggle id="wifiToggle"
--            .checked="\${!!this.syncPrefs?.wifiConfigurationsSynced}"
--            @change="\${this.onSingleSyncDataTypeChange_}"
--            ?disabled="\${this.disableTypeCheckBox_(
--              this.syncPrefs?.wifiConfigurationsManaged)}"
--            aria-labelledby="wifiConfigurationsCheckboxLabel"
--            data-pref="wifiConfigurationsSynced">
++        </cr-policy-indicator>
 +        <cr-toggle .checked="\${!!this.syncPrefs?.aiChatSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${this.disableTypeCheckBox_(
 +                this.syncPrefs?.aiChatManaged)}" aria-labelledby="aiChatCheckboxLabel" data-type="\${UserSelectableType.AI_CHAT}" data-pref="aiChatSynced">
-         </cr-toggle>
-       </div>
--</if>
--    </div>
++        </cr-toggle>
++      </div>
 +    \` : ''}</div>
  <!--_html_template_end_-->\`;
  }
@@ -1982,16 +1939,16 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/settings/performance_page/memory_page.html.ts
 +++ gen/chrome/browser/resources/settings/preprocessed/performance_page/memory_page.html.ts
-@@ -3,47 +3,27 @@
+@@ -4,47 +4,27 @@
  import {MemorySaverModeAggressiveness} from './performance_metrics_proxy.js';
  
  export function getHtml(this: SettingsMemoryPageElement) {
    return html\`<!--_html_template_start_-->
--<settings-section
--    ?show-send-feedback-button="\${this.showSendFeedbackButton_()}"
+-<settings-section ?show-send-feedback-button="\${this.showSendFeedbackButton_()}"
 -    @send-feedback="\${this.onSendFeedback_}"
 -    page-title="$i18n{memoryPageTitle}">
--  <settings-toggle-button id="toggleButton" @change="\${this.onMemorySaverModeChange_}"
+-  <settings-toggle-button id="toggleButton"
+-      @change="\${this.onMemorySaverModeChange_}"
 -      pref-key="performance_tuning.high_efficiency_mode.state"
 -      label="$i18n{memorySaverModeLabel}"
 -      sub-label-with-link="$i18n{memorySaverModeDescription}"
@@ -2046,13 +2003,12 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/settings/performance_page/performance_page.html.ts
 +++ gen/chrome/browser/resources/settings/preprocessed/performance_page/performance_page.html.ts
-@@ -1,31 +1,13 @@
- import {html} from '//resources/lit/v3_0/lit.rollup.js';
+@@ -2,28 +2,13 @@
+ 
  import type {PerformancePageElement} from './performance_page.js';
  
  export function getHtml(this: PerformancePageElement) {
--  return html\`<!--_html_template_start_--><settings-section
--    ?show-send-feedback-button="\${this.showSendFeedbackButton_()}"
+-  return html\`<!--_html_template_start_--><settings-section ?show-send-feedback-button="\${this.showSendFeedbackButton_()}"
 -    @send-feedback="\${this.onSendFeedback_}"
 -    page-title="$i18n{generalPageTitle}">
 -  <settings-toggle-button id="performanceInterventionToggleButton"
@@ -2060,9 +2016,10 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -      pref-key="performance_tuning.intervention_notification.enabled"
 -      label="$i18n{performanceInterventionEnabledLabel}"
 -      sub-label-with-link="$i18n{performanceInterventionEnabledDescription}"
--      @sub-label-link-clicked="\${this.onPerformanceInterventionSubLabelLinkClicked_}">
+-      @sub-label-link-clicked="\${
 +  return html\`<!--_html_template_start_--><settings-section ?show-send-feedback-button="\${this.showSendFeedbackButton_()}" @send-feedback="\${this.onSendFeedback_}" page-title="$i18n{generalPageTitle}">
-+  <settings-toggle-button id="performanceInterventionToggleButton" @change="\${this.onPerformanceInterventionToggleButtonChange_}" pref-key="performance_tuning.intervention_notification.enabled" label="$i18n{performanceInterventionEnabledLabel}" sub-label-with-link="$i18n{performanceInterventionEnabledDescription}" @sub-label-link-clicked="\${this.onPerformanceInterventionSubLabelLinkClicked_}">
++  <settings-toggle-button id="performanceInterventionToggleButton" @change="\${this.onPerformanceInterventionToggleButtonChange_}" pref-key="performance_tuning.intervention_notification.enabled" label="$i18n{performanceInterventionEnabledLabel}" sub-label-with-link="$i18n{performanceInterventionEnabledDescription}" @sub-label-link-clicked="\${
+           this.onPerformanceInterventionSubLabelLinkClicked_}">
    </settings-toggle-button>
 -  <settings-toggle-button id="discardRingTreatmentToggleButton"
 -      @change="\${this.onDiscardRingChange_}"
@@ -2070,18 +2027,14 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -      label="$i18n{discardRingTreatmentEnabledLabel}"
 -      sub-label-with-link="
 -            $i18n{discardRingTreatmentEnabledDescriptionWithLearnLink}"
--      @sub-label-link-clicked="\${this.onDiscardRingTreatmentSubLabelLinkClicked_}">
+-      @sub-label-link-clicked="\${
+-          this.onDiscardRingTreatmentSubLabelLinkClicked_}">
 -  </settings-toggle-button>
--  <cr-link-row
--      label="$i18n{tabHoverPreviewCardLinkTitle}"
--      sub-label="$i18n{tabHoverPreviewCardLinkSubtitle}"
--      @click="\${this.onTabHoverPreviewCardLinkClick_}" external>
 +  
-+  <cr-link-row label="$i18n{tabHoverPreviewCardLinkTitle}" sub-label="$i18n{tabHoverPreviewCardLinkSubtitle}" @click="\${this.onTabHoverPreviewCardLinkClick_}" external="">
-   </cr-link-row>
-   <tab-discard-exception-list id="exceptionList">
-   </tab-discard-exception-list>
- </settings-section>
+   \${!this.settingsRefresh2026Enabled_ ? html\`
+     <cr-link-row label="$i18n{tabHoverPreviewCardLinkTitle}"
+         sub-label="$i18n{tabHoverPreviewCardLinkSubtitle}"
+         @click="\${this.onTabHoverPreviewCardLinkClick_}" external>
 "
 `;
 
@@ -2109,18 +2062,11 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "
 `;
 
-exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/privacy_page/privacy_page.html.lit_mangler.ts should match snapshot 1`] = `
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/privacy_page/privacy_page.html.ts.lit_mangler.ts should match snapshot 1`] = `
 "===================================================================
---- ../chrome/browser/resources/settings/privacy_page/privacy_page.html
-+++ gen/chrome/browser/resources/settings/preprocessed/privacy_page/privacy_page.html
-@@ -1,5 +1,5 @@
--  <settings-section page-title="$i18n{privacyPageTitle}">
-+<settings-section page-title="$i18n{privacyPageTitle}">
-     \${this.showClearBrowsingDataDialog_ ? html\`
-       <settings-clear-browsing-data-dialog
-           @close="\${this.onCbdDialogClose_}"
-           @browsing-data-deleted="\${this.onBrowsingDataDeleted_}">
-@@ -10,40 +10,17 @@
+--- ../chrome/browser/resources/settings/privacy_page/privacy_page.html.ts
++++ gen/chrome/browser/resources/settings/preprocessed/privacy_page/privacy_page.html.ts
+@@ -16,40 +16,17 @@
            @close="\${this.onPrivacyGuideDialogClose_}">
        </settings-privacy-guide-dialog>
      \` : ''}
@@ -2169,17 +2115,15 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "
 `;
 
-exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/privacy_page/security/security_page.html.lit_mangler.ts should match snapshot 1`] = `
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/privacy_page/security/security_page.html.ts.lit_mangler.ts should match snapshot 1`] = `
 "===================================================================
---- ../chrome/browser/resources/settings/privacy_page/security/security_page.html
-+++ gen/chrome/browser/resources/settings/preprocessed/privacy_page/security/security_page.html
-@@ -1,30 +1,17 @@
- <!-- #html_wrapper_imports_start
- import {SafeBrowsingSetting} from './safe_browsing_types.js';
- import {HttpsFirstModeSetting} from './security_page.js';
-+import {loadTimeData} from '../../i18n_setup.js';
- #html_wrapper_imports_end -->
+--- ../chrome/browser/resources/settings/privacy_page/security/security_page.html.ts
++++ gen/chrome/browser/resources/settings/preprocessed/privacy_page/security/security_page.html.ts
+@@ -6,29 +6,15 @@
+ import type {SettingsSecurityPageElement} from './security_page.js';
  
+ export function getHtml(this: SettingsSecurityPageElement) {
+   return html\`<!--_html_template_start_-->
 -  <settings-subpage page-title="$i18n{securityPageTitle}"
 -      learn-more-url="$i18n{safeBrowsingHelpCenterURL}"
 -      route-path="\${this.routePath}">
@@ -2209,7 +2153,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
                  <h3 class="description-header">
                    $i18n{columnHeadingWhenOn}
                  </h3>
-@@ -84,44 +71,24 @@
+@@ -88,44 +74,24 @@
                    </li>
                  </ul>
                </div>
@@ -2258,7 +2202,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
        </settings-radio-group>
      </div>
      \${this.enableHttpsFirstModeNewSettings_ ? html\`
-@@ -161,19 +128,12 @@
+@@ -165,19 +131,12 @@
      \` : ''}
      <div class="cr-row first">
        <h2 class="cr-title-text">$i18n{advancedPageTitle}</h2>
@@ -2280,7 +2224,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
        \${this.showSecureDnsSetting_ ? html\`
          <settings-secure-dns id="secureDnsSettingOld">
          </settings-secure-dns>
-@@ -182,21 +142,10 @@
+@@ -186,21 +145,10 @@
      \${this.enableHttpsFirstModeNewSettings_ && this.showSecureDnsSetting_ ? html\`
        <settings-secure-dns class="hr" id="secureDnsSettingNew">
        </settings-secure-dns>
@@ -2304,7 +2248,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
      \${this.enableSecurityKeysSubpage_ ? html\`
        <cr-link-row id="securityKeysSubpageTrigger" class="hr"
            label="$i18n{securityKeysTitle}"
-@@ -205,20 +154,12 @@
+@@ -209,20 +157,12 @@
            role-description="$i18n{subpageArrowRoleDescription}">
        </cr-link-row>
      \` : ''}
@@ -2485,11 +2429,11 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "
 `;
 
-exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/settings_main/settings_main.html.lit_mangler.ts should match snapshot 1`] = `
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/settings_main/settings_main.html.ts.lit_mangler.ts should match snapshot 1`] = `
 "===================================================================
---- ../chrome/browser/resources/settings/settings_main/settings_main.html
-+++ gen/chrome/browser/resources/settings/preprocessed/settings_main/settings_main.html
-@@ -42,14 +42,9 @@
+--- ../chrome/browser/resources/settings/settings_main/settings_main.html.ts
++++ gen/chrome/browser/resources/settings/preprocessed/settings_main/settings_main.html.ts
+@@ -50,14 +50,9 @@
      </div>
    \` : '')}
  
@@ -2505,14 +2449,15 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
  
    \${cache(this.showAiPage_(this.pageVisibility_?.ai) ? html\`
      <div slot="view" id="ai">
-@@ -75,18 +70,18 @@
+@@ -83,19 +78,19 @@
        </settings-search-page-index>
      \` : '')}
    </div>
  
 -<if expr="not is_chromeos">
 +
-   \${cache(this.showPage_(this.pageVisibility_?.defaultBrowser) ? html\`
+   \${cache(!this.settingsRefresh2026Enabled_ &&
+       this.showPage_(this.pageVisibility_?.defaultBrowser) ? html\`
      <div slot="view" id="defaultBrowser">
        \${cache(this.renderPlugin_(this.routes_.DEFAULT_BROWSER) ? html\`
          <settings-default-browser-page></settings-default-browser-page>
@@ -2522,11 +2467,11 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -</if>
  
 +
-   \${cache(this.showPage_(this.pageVisibility_?.onStartup) ? html\`
+   \${cache(!this.settingsRefresh2026Enabled_ &&
+       this.showPage_(this.pageVisibility_?.onStartup) ? html\`
      <div slot="view" id="onStartup">
        \${cache(this.renderPlugin_(this.routes_.ON_STARTUP) ? html\`
-         <settings-on-startup-page></settings-on-startup-page>
-@@ -96,17 +91,14 @@
+@@ -106,17 +101,14 @@
  
    \${cache(this.showPage_(this.pageVisibility_?.languages) ? html\`
      <div slot="view" id="languages">
@@ -2547,14 +2492,15 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
      </div>
    \` : '')}
  
-@@ -126,18 +118,18 @@
-       \` : '')}
-     </div>
+@@ -142,19 +134,19 @@
+       this.showPage_(this.pageVisibility_?.general) ? html\`
+     <div slot="view" id="general">General page placeholder</div>
    \` : '')}
  
 -<if expr="not is_chromeos">
 +
-   \${cache(this.showPage_(this.pageVisibility_?.system) ? html\`
+   \${cache(!this.settingsRefresh2026Enabled_ &&
+       this.showPage_(this.pageVisibility_?.system) ? html\`
      <div slot="view" id="system">
        \${cache(this.renderPlugin_(this.routes_.SYSTEM) ? html\`
 -        <settings-system-page></settings-system-page>
@@ -2565,11 +2511,11 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -</if>
  
 +
-   \${cache(this.showPage_(this.pageVisibility_?.reset) ? html\`
+   \${cache(!this.settingsRefresh2026Enabled_ &&
+       this.showPage_(this.pageVisibility_?.reset) ? html\`
      <div slot="view" id="reset">
        \${cache(this.renderPlugin_(this.routes_.RESET) ? html\`
-         <settings-reset-page></settings-reset-page>
-@@ -150,5 +142,52 @@
+@@ -168,7 +160,54 @@
        <settings-about-page role="main" class="cr-centered-card-container">
        </settings-about-page>
      \` : '')}
@@ -2623,15 +2569,20 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 +        </settings-brave-extensions-page-index>
 +      </div>
 +    \` : '')}</cr-view-manager>
+ <!--_html_template_end_-->\`;
+ }
 "
 `;
 
-exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/settings_menu/settings_menu.html.lit_mangler.ts should match snapshot 1`] = `
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/settings_menu/settings_menu.html.ts.lit_mangler.ts should match snapshot 1`] = `
 "===================================================================
---- ../chrome/browser/resources/settings/settings_menu/settings_menu.html
-+++ gen/chrome/browser/resources/settings/preprocessed/settings_menu/settings_menu.html
-@@ -1,132 +1,133 @@
--    <div role="navigation">
+--- ../chrome/browser/resources/settings/settings_menu/settings_menu.html.ts
++++ gen/chrome/browser/resources/settings/preprocessed/settings_menu/settings_menu.html.ts
+@@ -4,96 +4,107 @@
+ 
+ export function getHtml(this: SettingsMenuElement) {
+   return html\`<!--_html_template_start_-->
+     <div role="navigation">
 -      <cr-menu-selector id="menu" selectable="a:not(#extensionsLink)"
 -          attr-for-selected="href" @iron-activate="\${this.onIronActivate_}"
 -          @click="\${this.onLinkClick_}" selected-attribute="selected">
@@ -2639,19 +2590,24 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -            id="people" href="/people"
 -            ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.people)}"
 -            class="cr-nav-menu-item">
--<if expr="not _google_chrome">
-+<div role="navigation">
 +      <cr-menu-selector id="menu" selectable="a:not(#extensionsLink)" attr-for-selected="href" @iron-activate="\${this.onIronActivate_}" @click="\${this.onLinkClick_}" selected-attribute="selected">
 +        <a role="menuitem" id="people" href="/people" ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.people)}" class="cr-nav-menu-item">
+           \${this.settingsRefresh2026Enabled_ ? html\`
+             <cr-icon icon="settings20:home"></cr-icon>
+             <!-- TODO(b/574662686): Update "Home" string -->
+             <span class="menu-label">Home</span>
+           \` : html\`
+-<if expr="not _google_chrome">
 +
-           <cr-icon icon="settings:person"></cr-icon>
+             <cr-icon icon="settings:person"></cr-icon>
 -</if>
 -<if expr="_google_chrome">
--          <cr-icon icon="settings-internal:google-g"></cr-icon>
+-            <cr-icon icon="settings-internal:google-g"></cr-icon>
 -</if>
 +
 +
-           <span class="menu-label">$i18n{peoplePageTitle}</span>
+             <span class="menu-label">$i18n{peoplePageTitle}</span>
+           \`}
            <cr-ripple></cr-ripple>
 -        </a>
 -        <a role="menuitem" id="autofill" href="/autofill"
@@ -2698,6 +2654,11 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -            ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.performance)}">
 -          <cr-icon icon="settings:speed"></cr-icon>
 -          <span class="menu-label">$i18n{performancePageTitle}</span>
+-          <cr-ripple></cr-ripple>
+-        </a>
+-        <a role="menuitem" id="ai" href="/ai"
+-            ?hidden="\${!this.showAiPageMenuItem_()}"
+-            class="cr-nav-menu-item">
 +        </a><a role="menuitem" id="braveWallet" href="/web3" class="cr-nav-menu-item" ?hidden="\${this.shouldHideMenuItem_(
 +          this.pageVisibility_?.braveWallet)}">
 +    <cr-icon icon="product-brave-wallet"></cr-icon>
@@ -2714,14 +2675,10 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 +    <span class="menu-label">$i18n{braveSync}</span>
 +    <cr-ripple></cr-ripple>
 +  </a><a role="menuitem" id="search" href="/search" class="cr-nav-menu-item">
-+          <cr-icon icon="settings:search"></cr-icon>
-+          <span class="menu-label">$i18n{searchPageTitle}</span>
-           <cr-ripple></cr-ripple>
--        </a>
--        <a role="menuitem" id="ai" href="/ai"
--            ?hidden="\${!this.showAiPageMenuItem_()}"
--            class="cr-nav-menu-item">
-+        </a><a role="menuitem" id="extensions" href="/extensions" class="cr-nav-menu-item" ?hidden="\${this.shouldHideMenuItem_(
++      <cr-icon icon="settings:search"></cr-icon>
++      <span class="menu-label">$i18n{searchPageTitle}</span>
++      <cr-ripple></cr-ripple>
++    </a><a role="menuitem" id="extensions" href="/extensions" class="cr-nav-menu-item" ?hidden="\${this.shouldHideMenuItem_(
 +          this.pageVisibility_?.extensions)}">
 +    <cr-icon icon="browser-extensions"></cr-icon>
 +    <span class="menu-label">$i18n{braveDefaultExtensions}</span>
@@ -2742,34 +2699,39 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -          <span class="menu-label">$i18n{appearancePageTitle}</span>
 -          <cr-ripple></cr-ripple>
 -        </a>
--        <a role="menuitem" id="search" href="/search" class="cr-nav-menu-item">
--          <cr-icon icon="settings:search"></cr-icon>
--          <span class="menu-label">$i18n{searchPageTitle}</span>
--          <cr-ripple></cr-ripple>
--        </a>
++        
+         \${!this.settingsRefresh2026Enabled_ ? html\`
+-          <a role="menuitem" id="search" href="/search"
+-              class="cr-nav-menu-item">
+-            <cr-icon icon="settings:search"></cr-icon>
+-            <span class="menu-label">$i18n{searchPageTitle}</span>
+-            <cr-ripple></cr-ripple>
+-          </a>
 -<if expr="not is_chromeos">
--        <a role="menuitem" id="defaultBrowser" class="cr-nav-menu-item"
--          href="/defaultBrowser"
--          ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.defaultBrowser)}">
-+        
-+        
+-          <a role="menuitem" id="defaultBrowser" class="cr-nav-menu-item"
+-              href="/defaultBrowser"
+-              ?hidden="\${this.shouldHideMenuItem_(
++          
 +
-+        <a role="menuitem" id="defaultBrowser" class="cr-nav-menu-item" href="/defaultBrowser" ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.defaultBrowser)}">
-           <cr-icon icon="settings:web-asset"></cr-icon>
-           <span class="menu-label">$i18n{defaultBrowser}</span>
-           <cr-ripple></cr-ripple>
-         </a>
++          <a role="menuitem" id="defaultBrowser" class="cr-nav-menu-item" href="/defaultBrowser" ?hidden="\${this.shouldHideMenuItem_(
+                   this.pageVisibility_?.defaultBrowser)}">
+             <cr-icon icon="settings:web-asset"></cr-icon>
+             <span class="menu-label">$i18n{defaultBrowser}</span>
+             <cr-ripple></cr-ripple>
+           </a>
 -</if>
--        <a role="menuitem" id="onStartup" href="/onStartup"
--            class="cr-nav-menu-item"
--            ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.onStartup)}">
+-          <a role="menuitem" id="onStartup" href="/onStartup"
+-              class="cr-nav-menu-item"
+-              ?hidden="\${this.shouldHideMenuItem_(
 +
-+        <a role="menuitem" id="onStartup" href="/onStartup" class="cr-nav-menu-item" ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.onStartup)}">
-           <cr-icon icon="settings:power-settings-new"></cr-icon>
-           <span class="menu-label">$i18n{onStartup}</span>
-           <cr-ripple></cr-ripple>
-         </a>
-         <div class="menu-separator"></div>
++          <a role="menuitem" id="onStartup" href="/onStartup" class="cr-nav-menu-item" ?hidden="\${this.shouldHideMenuItem_(
+                   this.pageVisibility_?.onStartup)}">
+             <cr-icon icon="settings:power-settings-new"></cr-icon>
+             <span class="menu-label">$i18n{onStartup}</span>
+             <cr-ripple></cr-ripple>
+           </a>
+           <div class="menu-separator"></div>
+         \` : ''}
 -        <a role="menuitem" id="languages" href="/languages"
 -            class="cr-nav-menu-item"
 -            ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.languages)}">
@@ -2782,14 +2744,11 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
            <span class="menu-label">$i18n{languagesPageTitle}</span>
            <cr-ripple></cr-ripple>
          </a>
--        <a role="menuitem" id="downloads" href="/downloads"
--            class="cr-nav-menu-item"
--            ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.downloads)}">
-+        <a role="menuitem" id="downloads" href="/downloads" class="cr-nav-menu-item" ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.downloads)}">
-           <cr-icon icon="settings:download"></cr-icon>
-           <span class="menu-label">$i18n{downloadsPageTitle}</span>
-           <cr-ripple></cr-ripple>
-         </a>
+@@ -106,67 +117,54 @@
+             <span class="menu-label">$i18n{downloadsPageTitle}</span>
+             <cr-ripple></cr-ripple>
+           </a>
+         \` : ''}
 -        <a role="menuitem" id="accessibility" href="/accessibility"
 -            class="cr-nav-menu-item"
 -            ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.a11y)}">
@@ -2798,25 +2757,44 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
            <span class="menu-label">$i18n{a11yPageTitle}</span>
            <cr-ripple></cr-ripple>
          </a>
+         \${this.settingsRefresh2026Enabled_ ? html\`
+-          <a role="menuitem" id="search" href="/search"
+-              class="cr-nav-menu-item">
+-            <cr-icon icon="settings:search"></cr-icon>
+-            <span class="menu-label">$i18n{searchPageTitle}</span>
+-            <cr-ripple></cr-ripple>
+-          </a>
+-          <a role="menuitem" id="general" href="/general"
+-              class="cr-nav-menu-item"
+-              ?hidden="\${this.shouldHideMenuItem_(
++          
++          <a role="menuitem" id="general" href="/general" class="cr-nav-menu-item" ?hidden="\${this.shouldHideMenuItem_(
+                   this.pageVisibility_?.general)}">
+             <cr-icon icon="settings:build"></cr-icon>
+             <!-- TODO(b/574664004): Update "General" string -->
+             <span class="menu-label">General</span>
+             <cr-ripple></cr-ripple>
+           </a>
+         \` : html\`
 -<if expr="not is_chromeos">
--        <a role="menuitem" id="system" href="/system" class="cr-nav-menu-item"
--            ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.system)}">
 +
-+        <a role="menuitem" id="system" href="/system" class="cr-nav-menu-item" ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.system)}">
-           <cr-icon icon="settings:build"></cr-icon>
-           <span class="menu-label">$i18n{systemPageTitle}</span>
-           <cr-ripple></cr-ripple>
-         </a>
+           <a role="menuitem" id="system" href="/system" class="cr-nav-menu-item"
+               ?hidden="\${this.shouldHideMenuItem_(
+                   this.pageVisibility_?.system)}">
+             <cr-icon icon="settings:build"></cr-icon>
+             <span class="menu-label">$i18n{systemPageTitle}</span>
+             <cr-ripple></cr-ripple>
+           </a>
 -</if>
--        <a role="menuitem" id="reset" href="/reset"
--            ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.reset)}"
--            class="cr-nav-menu-item">
 +
-+        <a role="menuitem" id="reset" href="/reset" ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.reset)}" class="cr-nav-menu-item">
-           <cr-icon icon="settings:restart-alt"></cr-icon>
-           <span class="menu-label">$i18n{resetPageTitle}</span>
-           <cr-ripple></cr-ripple>
-         </a>
+           <a role="menuitem" id="reset" href="/reset"
+               ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.reset)}"
+               class="cr-nav-menu-item">
+             <cr-icon icon="settings:restart-alt"></cr-icon>
+             <span class="menu-label">$i18n{resetPageTitle}</span>
+             <cr-ripple></cr-ripple>
+           </a>
+         \`}
 -        <div ?hidden="\${this.hideBottomMenuSeparator_()}"
 -            class="menu-separator"></div>
 -        <a role="menuitem" id="extensionsLink" class="cr-nav-menu-item"
@@ -2852,16 +2830,17 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
        </cr-menu-selector>
      </div>
  
+ <!--_html_template_end_-->\`;
 "
 `;
 
-exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/site_settings/add_site_dialog.html.lit_mangler.ts should match snapshot 1`] = `
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/site_settings/add_site_dialog.html.ts.lit_mangler.ts should match snapshot 1`] = `
 "===================================================================
---- ../chrome/browser/resources/settings/site_settings/add_site_dialog.html
-+++ gen/chrome/browser/resources/settings/preprocessed/site_settings/add_site_dialog.html
-@@ -1,23 +1,17 @@
--    <cr-dialog id="dialog" close-text="$i18n{close}">
-+<cr-dialog id="dialog" close-text="$i18n{close}">
+--- ../chrome/browser/resources/settings/site_settings/add_site_dialog.html.ts
++++ gen/chrome/browser/resources/settings/preprocessed/site_settings/add_site_dialog.html.ts
+@@ -6,24 +6,18 @@
+   return html\`<!--_html_template_start_-->
+     <cr-dialog id="dialog" close-text="$i18n{close}">
        <div slot="title">$i18n{addSiteTitle}</div>
        <div slot="body">
 -        <cr-input id="site" label="$i18n{addSite}"
@@ -3444,7 +3423,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/signin/profile_picker/profile_card.html.ts
 +++ gen/chrome/browser/resources/signin/profile_picker/preprocessed/profile_card.html.ts
-@@ -5,61 +5,39 @@
+@@ -5,62 +5,39 @@
  
  export function getHtml(this: ProfileCardElement) {
    return html\`<!--_html_template_start_-->
@@ -3502,8 +3481,9 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
      </div>
    </div>
 -  <profile-card-menu .profileState="\${this.profileState}"
--      ?hidden="\${isGlicVersion()}">
-+  <profile-card-menu .profileState="\${this.profileState}" ?hidden="\${isGlicVersion()}">
+-      .profileIndex="\${this.profileIndex}"
+-      .profilesCount="\${this.profilesCount}" ?hidden="\${isGlicVersion()}">
++  <profile-card-menu .profileState="\${this.profileState}" .profileIndex="\${this.profileIndex}" .profilesCount="\${this.profilesCount}" ?hidden="\${isGlicVersion()}">
    </profile-card-menu>
  </div>
 -<cr-tooltip id="gaiaNameTooltip" for="gaiaName" manual-mode offset="0"
@@ -3537,9 +3517,9 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
      <div class="subtitle" .innerHTML="\${this.getSubtitle_()}"></div>
    </div>
    <div id="profilesWrapper" ?hidden="\${(this.shouldHideProfilesWrapper_())}">
-@@ -23,35 +22,24 @@
-             @toggle-drag="\${this.onToggleDrag_}"
-             @disable-all-picker-buttons="\${this.onDisableAllPickerButtons_}">
+@@ -26,35 +25,24 @@
+             @disable-all-picker-buttons="\${this.onDisableAllPickerButtons_}"
+             @move-profile="\${this.onMoveProfile_}">
          </profile-card>
        \`)}
 -      <cr-button id="addProfile" class="profile-item"

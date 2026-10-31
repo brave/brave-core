@@ -1,8 +1,8 @@
 diff --git a/components/permissions/request_type.h b/components/permissions/request_type.h
-index 70ce0b07da74da50a292c88f7f360442f77cc0b4..e0cbbab9fdada93e1ae2109a464170b34a3dcea5 100644
+index 0d9f32d9cec26fd3ecc94359dd47b6616ed45db6..fd935eea29630fe38a89cf9dcc8fe9118a976fce 100644
 --- a/components/permissions/request_type.h
 +++ b/components/permissions/request_type.h
-@@ -74,7 +74,17 @@ enum class RequestType {
+@@ -75,7 +75,17 @@ enum class RequestType {
    kWebPrinting,
  #endif
    kWindowManagement,

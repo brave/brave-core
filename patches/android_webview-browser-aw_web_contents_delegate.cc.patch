@@ -1,5 +1,5 @@
 diff --git a/android_webview/browser/aw_web_contents_delegate.cc b/android_webview/browser/aw_web_contents_delegate.cc
-index beefa8d1dc08f002838ed8151f808f834d1016cd..ef3ba52c6b2bfd72085ec18a23a6ed6ffb079d9e 100644
+index 1a872a9330e03f87fb960173b6bd3c0dc0bd5c37..645618543bb9db505528fe3114cf0dd79f5f8bad 100644
 --- a/android_webview/browser/aw_web_contents_delegate.cc
 +++ b/android_webview/browser/aw_web_contents_delegate.cc
 @@ -279,6 +279,9 @@ bool AwWebContentsDelegate::CheckMediaAccessPermission(

@@ -1,5 +1,5 @@
 diff --git a/components/sync/service/sync_auth_manager.cc b/components/sync/service/sync_auth_manager.cc
-index 931356eac5f6a76018ba64277c060d3af2b4c960..ddce1e485d57e6e84a09c639d03d442e6b3fc138 100644
+index 801ac90d770bb2331fd9522be8f036054ec70a9b..386b273605ccc474128cdc3c80ec5aa49950762e 100644
 --- a/components/sync/service/sync_auth_manager.cc
 +++ b/components/sync/service/sync_auth_manager.cc
 @@ -97,6 +97,11 @@ const SyncAccountInfo& SyncAuthManager::ActiveAccount::Get() const {

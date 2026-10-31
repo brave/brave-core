@@ -130,6 +130,18 @@ commit body and in the report. Then carry on. Examples from cr158:
 
 ### Editing upstream code
 
+- Make every file change with the Edit and Write tools, one edit per change,
+  never with a script (`python3 -`, `sed -i`, `perl -pi`, a heredoc or `>` into
+  a source file). That includes resolving conflict markers and editing patches,
+  yamls and upstream files. CI approves the Edit and Write tools for anything in
+  the checkout, so their edits skip the permission review. A command that
+  rewrites files goes through that review instead, which can't see that a change
+  only carries a Brave customisation onto new upstream code, and blocks it
+  (cr159: a script re-adding Brave's `and False` to `create_string_rc.py` during
+  a lift conflict was denied as "Security Weaken"). Tools that write files
+  themselves (`plaster apply`, `brockit`, `git`, the `pnpm run` commands) are
+  fine. If the review still denies an action, don't try another way to get the
+  same result: stop, and record it in the report.
 - Upstream files (anything in `src/` outside `src/brave`) change only through
   plaster or a patch. Never run a formatter over them.
 - Change a plastered file by editing its `rewrite/**.yaml` and running
@@ -270,11 +282,40 @@ commit body and in the report. Then carry on. Examples from cr158:
   the changed lines of Brave files. Revert anything it reformats outside the
   change, such as unrelated tracker files.
 
+### Long commands
+
+- Run commands that take minutes in the background (the Bash tool's
+  `run_in_background`): `autolift.py lift` and `lift --continue`,
+  `pnpm run init`, the builds, the presubmit and long test runs. Then end the
+  turn: you are notified when the command finishes. Don't poll it, `sleep`, or
+  read its output in the meantime: every check is another paid turn. Give builds
+  the longest background `timeout` (7200000 ms): the 10-minute default kills a
+  cold build midway (cr159: after the out dir was wiped). After a kill, "failed
+  to flush ... interrupt by signal" in `siso.INFO` is only the kill; check for
+  "read 0 bytes" (see [Machine state](#machine-state)).
+- Keep their output out of your context: send it to a log in `.autolift/cr<N>/`
+  (`> .autolift/cr<N>/<name>.log 2>&1`), as the commands below do. Never let it
+  print, and never pipe it through `tee`, `tail`, `head` or `grep` (cr159:
+  `autolift.py lift 2>&1 | tail -150` showed nothing for the whole lift). A CI
+  run streams every `*.log` there to its console as it is written.
+  `autolift.py lift` writes Brockit's output to its own log there, and prints
+  only its summary.
+- Once it finishes, read only what you need from the log:
+  `autolift.py build-summary`, `grep`, `tail -n`. Never the whole log.
+
 ### Machine state
 
 - Never delete caches, out directories or anything outside the repo working tree
   (`~/.cache`, the siso cache, `out/`). If one looks corrupt, record it in the
-  report and stop.
+  report and stop. A build killed mid-run can leave truncated blobs in siso's
+  local cache, which it then serves back as empty outputs: "failed to parse
+  depfile ... EOF" (cr159: `native_browser_test_java__header.d` after a resumed
+  run's Android build). Check with
+  `grep -c "failed to flush" ../out/<dir>/siso.INFO`; "read 0 bytes: unexpected
+  EOF" there means the cache itself is corrupt, so removing the one depfile only
+  moves the failure to the next action (cr159: 207 files). One retry tells it
+  apart from a transient failure; after that, stop and ask for the cache to be
+  cleared.
 - Run one build per checkout at a time. Before starting one, check that no
   earlier build is still running there:
   `pgrep -af "siso|autoninja" | grep "$(realpath ..)"`. A build from another
@@ -282,7 +323,7 @@ commit body and in the report. Then carry on. Examples from cr158:
 - `brave/build/config/siso/brave_siso_config.star` is hardlinked into
   `src/build/config/siso/`. Editing tools that write atomically break the link,
   and the build then reads a stale copy. After editing it, run
-  `python3 build/hardlink_file.py build/config/siso/brave_siso_config.star ../build/config/siso/brave_siso_config.star`
+  `vpython3 build/hardlink_file.py build/config/siso/brave_siso_config.star ../build/config/siso/brave_siso_config.star`
   and check that both paths have the same inode (`stat -c '%i %n'`).
 
 ## Tooling
@@ -320,7 +361,7 @@ vpython3 tools/cr/autolift/autolift.py lift --continue
 # Reset cr<N>, set its base as upstream, and start brockit rebase (step 1).
 vpython3 tools/cr/autolift/autolift.py prepare 158
 
-# New milestone only, at the very end: push it and open its PR (step 10).
+# New milestone only, at the very end: push it and open its PR (step 11).
 vpython3 tools/cr/autolift/autolift.py publish 159
 
 # Outcome, failed steps and distinct errors of a build log.
@@ -343,6 +384,37 @@ Python for binary inspection.
 
 ## Procedure
 
+Once a step is done, append `## Step <n> done: <title>` to the report, with its
+outcome in a line or two (for step 3: "`brave:all` builds; 4 fixes"). These
+headings are what a resumed run goes by.
+
+### Resuming a run
+
+A run that stopped before the end (an error, an API outage, the job being
+stopped) can be resumed: the CI job then keeps the checkout, the out dir and
+`.autolift/cr<N>/` as the run left them, and asks you to resume instead of
+starting over.
+
+- Don't run `autolift.py prepare` again: it resets `cr<N>` to `origin/cr<N>`,
+  which drops the stopped run's commits.
+- Carry on with the step after the last `## Step <n> done` heading in the
+  report. With no such heading, work out where the run got to from the report's
+  other sections, the logs in `.autolift/cr<N>/`, `git log <base>..HEAD` and
+  `git status`.
+- Check what the interrupted step left first: a rebase or `brockit lift` that
+  stopped midway, conflict markers, uncommitted changes, a build or test log
+  that ends abruptly. Finish that step, or redo it, before going on.
+- Compare `git reflog` with the report's commit lists: the branch can be
+  rewritten outside the run between sessions (cr159: teammates' fixes
+  cherry-picked on top, and two of the run's fixups dropped). Don't undo it;
+  list it in the report, and say which steps it came after and so wasn't
+  verified by.
+- Subagents don't survive an interruption. If step 8 stopped with sweeps
+  running, rerun them all on the existing dump directory (complete if `subjects`
+  has the range's commit count), ignoring the stopped sweeps' scratch files.
+- Append `## Resumed (<date>)` to the report, saying which step you picked up at
+  and why.
+
 ### 1. Reset and rebase
 
 ```sh
@@ -362,7 +434,7 @@ For a new milestone, with no `origin/cr<N>` yet, it creates `cr<N>` from the
 base (for 159: from `origin/cr158`), sets the same upstream, and skips the
 rebase, since the branch has nothing of its own yet. Go straight to
 [step 2](#2-lift): `--to=@latest-for-branch` takes the major from the branch
-name. The new branch stays local until [step 10](#10-publish-a-new-milestone).
+name. The new branch stays local until [step 11](#11-publish-a-new-milestone).
 
 The base is `origin/master` once master's Chromium version is on milestone
 `N-1`, which is when the previous milestone has landed, and `origin/cr<N-1>`
@@ -547,18 +619,20 @@ After `--continue`:
 ### 3. Linux build
 
 ```sh
-pnpm run build --ignore_compile_failure --target=brave:all \
+pnpm run build --target=brave:all \
     --gn=enable_updater:true --gn=use_prebuilt_omaha4:false \
     > .autolift/cr<N>/build-linux.log 2>&1
 ```
 
 Use exactly this command; never raw `autoninja`, `ninja` or `siso`. The out dir
-is `../out/Component`. `--ignore_compile_failure` keeps going after errors, so
-one round shows many failures. Loop:
+is `../out/Component`. The build stops at the first failure, so each round fixes
+what failed and rebuilds; the build is incremental, so rounds are cheap. Don't
+add `--ignore_compile_failure`: a failure is cheaper to fix as soon as it shows,
+and later errors often only follow from it. Loop:
 
 1. `autolift.py build-summary .autolift/cr<N>/build-linux.log`.
-2. Group the errors by root cause, not by file. One header change can fail 60
-   objects.
+2. Steps running in parallel may fail together. Group their errors by root
+   cause, not by file: one header change can fail many objects.
 3. For each group, find the culprit and the fix (see
    [Fix patterns](#fix-patterns)). Independent groups can be researched in
    parallel, by subagents that only research. Edits and commits stay in the main
@@ -566,9 +640,8 @@ one round shows many failures. Loop:
 4. Commit each fix with its culprit, re-run `pnpm run format --base=HEAD` on
    Brave files, and rebuild.
 
-"cannot make progress due to previous N errors" with many steps remaining is
-normal: those steps depend on the failures. If a log ends with an error about
-`out/Component/build.guard`, two builds overlapped. Make sure only one runs.
+If a log ends with an error about `out/Component/build.guard`, two builds
+overlapped. Make sure only one runs.
 
 To check one fix quickly, build just the targets it touches with the same
 command and flags, e.g. `--target=brave_unit_tests`,
@@ -582,7 +655,7 @@ Once the build is green, run the tests that cover each fix, and add coverage
 where a runtime fix has none.
 
 ```sh
-python3 tools/recipes/runtest.py --build-dir ../out/Component --xvfb \
+vpython3 tools/recipes/runtest.py --build-dir ../out/Component --xvfb \
     <binary> --no-sandbox --gtest_filter='<Suite>.*'
 ```
 
@@ -638,7 +711,7 @@ manglers.
 ### 6. Android
 
 ```sh
-pnpm run init --target_os=android
+pnpm run init --target_os=android > .autolift/cr<N>/init-android.log 2>&1
 pnpm run build Static --target_os=android --target_arch=x64 \
     --target=brave:all --gn=android_static_analysis:on \
     > .autolift/cr<N>/build-android.log 2>&1
@@ -653,11 +726,10 @@ with `gn gen --check`, which catches deps that a Linux-only `gn check` missed
 Android deps); when a lift changes GN deps, expect Android to need its own. Read
 the `gn gen` warnings too: "Build argument has no effect" on an arg Brave sets
 means upstream removed it, and the build stays green without it (cr159:
-`android_override_version_name`, so the APK lost Brave's version name). This
-command has no `--ignore_compile_failure`, so it stops at the first error:
-expect one round per failure. Re-run `pnpm run init --target_os=android` after
-changing `brave/DEPS`. It also checks that the new deps sync. All Android fixes
-get `--tagged=Android`.
+`android_override_version_name`, so the APK lost Brave's version name). Like the
+Linux build, it stops at the first failure. Re-run
+`pnpm run init --target_os=android` after changing `brave/DEPS`. It also checks
+that the new deps sync. All Android fixes get `--tagged=Android`.
 
 For tests, run only the Android tests for code touched by Android fixes.
 Robolectric tests run on the host, with `brave/script` on `PYTHONPATH`:
@@ -674,17 +746,52 @@ such as `BytecodeTest`, need an emulator: `tools/android/avd/avd.py install` and
 several GB and needs `/dev/kvm`. If no device can be had, list the Android tests
 as unverified in the report.
 
-### 7. Code health review
+### 7. Presubmit
 
-Once the Linux and Android builds pass, run `tools/cr/codehealth_review.md` over
-the run's whole range, `<old tag>..<new tag>` (cr159:
-`158.0.8127.2..159.0.8131.1`). It writes or updates
-`tools/cr/M<N>_codehealth.md` with what fails silently: overrides that stopped
-applying, re-enabled features, Brave copies that missed upstream fixes. For a
-branch that isn't on origin yet, "what the rebase already fixed" is
-`<base>..cr<N>` locally, not `origin/master..origin/cr<N>`. Follow its own
-instructions (subagents, static verification only), and commit the tracker with
-any change to `codehealth_review.md` as `Version CodeHealth tracker`.
+Once the Linux and Android builds pass, run the presubmit against the branch's
+upstream (the base):
+
+```sh
+pnpm run presubmit --base "$(git rev-parse --abbrev-ref '@{upstream}')" \
+    > .autolift/cr<N>/presubmit.log 2>&1
+```
+
+Address what it reports, errors above all, rebuild the targets a fix touches,
+and run the presubmit again until no errors are left. Address warnings too when
+they point at a real problem. Some warnings aren't worth addressing, or are
+outdated: the one about empty lines in patches no longer matters, as plaster
+generates those patches. List each warning left alone, and why, in the report.
+
+A finding is almost always in code that a commit on the branch added, so fix it
+in that commit, as a fixup. Find the commit that last touched the flagged line:
+
+```sh
+git log --no-patch --format='%H %s' -1 -L<line>,+1:<file> <base>..HEAD
+```
+
+and commit the fix with `git cr commit --fixup=<sha>`, using the commit a
+`fixup!` fixes when the one found is itself a fixup (cr159: pylint findings in
+the run's own tooling changes were committed as separate fixes instead). A fix
+is a commit of its own only when no branch commit introduced the problem: the
+line is unchanged from the base, or upstream changed what makes it wrong, in
+which case it gets that culprit.
+
+### 8. Code health review
+
+Once the presubmit is addressed, run `tools/cr/codehealth_review.md` over the
+run's whole range, `<old tag>..<new tag>` (cr159: `158.0.8127.2..159.0.8131.1`).
+It writes or updates `tools/cr/M<N>_codehealth.md` with what fails silently:
+overrides that stopped applying, re-enabled features, Brave copies that missed
+upstream fixes. For a branch that isn't on origin yet, "what the rebase already
+fixed" is `<base>..cr<N>` locally, not `origin/master..origin/cr<N>`. Follow its
+own instructions (subagents, static verification only), and commit the tracker
+with any change to `codehealth_review.md` as `Version CodeHealth tracker`.
+
+The review takes a long time: its sweeps run for an hour or more each, in
+parallel, and that is expected. Start them, end your turn, and wait for their
+notifications, however long they take. Never stop a sweep, or write the tracker
+without one, to finish sooner (cr159: the run ended with every sweep still
+running, and the tracker had nothing for the range).
 
 The review is finished only when every subagent it started has come back with
 its final result. A completion notice that says the agent still has background
@@ -702,12 +809,12 @@ they're picked up, so list them in the report and carry on. It is the last step
 before the run stops, or before a new milestone is published: don't publish
 without it.
 
-### 8. Update this document
+### 9. Update this document
 
 Before finishing, fold what the run taught into this file, following
 [Maintaining this document](#maintaining-this-document), and commit it.
 
-### 9. Wrap up
+### 10. Wrap up
 
 - `autolift.py verify-culprits <base> <branch range>` reports no problems.
 - `git status` is clean. Untracked files are scratch you created, or deps
@@ -715,12 +822,12 @@ Before finishing, fold what the run taught into this file, following
 - No build is left running.
 - Print the report.
 
-### 10. Publish a new milestone
+### 11. Publish a new milestone
 
 Only when `prepare` created the branch in step 1, because `origin/cr<N>` didn't
 exist, and only once the whole run is done: the lift finished, the Linux and
-Android builds pass, the code health review is complete (every review subagent
-back) and committed, and wrap-up is clean. Then:
+Android builds pass, the presubmit reports no errors, the code health review is
+complete (every review subagent back) and committed, and wrap-up is clean. Then:
 
 ```sh
 vpython3 tools/cr/autolift/autolift.py publish <N>
@@ -907,12 +1014,15 @@ The report is `.autolift/cr<N>/report.md`. `autolift.py prepare` and `lift`
 append their own sections to it; append yours as you go (decisions, fixes, what
 you couldn't verify), and print it at the end. Include:
 
+- A `## Step <n> done: <title>` heading as each step finishes (see
+  [Procedure](#procedure)).
 - The bump range, and the branch range.
 - Each commit made, as `<sha> <subject> (culprit <short hash> | no culprit)`,
   with fixups listed under their target.
 - Each `--tagged=WIP` commit: the concern and the alternatives.
 - Issues found but left alone because the codehealth tracker covers them, and
   any test failures attributed to the environment or to flakiness.
+- Presubmit warnings left alone, and why.
 - Tooling TODOs filed or extended in `M<N>_codehealth.md`.
 - Tool bugs fixed during the run, with their commits.
 - What wasn't verified: platforms not built (iOS, Windows, macOS), tests that

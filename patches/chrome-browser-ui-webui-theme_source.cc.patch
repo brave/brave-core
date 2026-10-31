@@ -1,12 +1,16 @@
 diff --git a/chrome/browser/ui/webui/theme_source.cc b/chrome/browser/ui/webui/theme_source.cc
-index 0c7072ef10befebbe9ec145e44ac06ca01d8ea74..ce535982c03e59b6bc02d8cb074d67a745738cac 100644
+index 4cdcbbd47faf50e922ca233fb4ae458b78e1e916..8051be0f2f36e288d6e7733a04f8527446bb80ab 100644
 --- a/chrome/browser/ui/webui/theme_source.cc
 +++ b/chrome/browser/ui/webui/theme_source.cc
-@@ -500,6 +500,7 @@ void ThemeSource::SendColorsCss(
- #else
-   const auto* theme_service =
-       ThemeServiceFactory::GetForProfile(profile_->GetOriginalProfile());
-+  BRAVE_THEME_SOURCE_SEND_COLORS_CSS
-   bool is_grayscale = theme_service->GetIsGrayscale();
-   bool is_baseline = theme_service->GetIsBaseline();
- #endif
+@@ -527,6 +527,11 @@ void ThemeSource::SendColorsCss(
+   if (Profile* profile = GetProfileForRequest(wc_getter)) {
+     const auto* theme_service =
+         ThemeServiceFactory::GetForProfile(profile->GetOriginalProfile());
++    if (!theme_service) {
++      CHECK(profile->IsSystemProfile());
++      std::move(callback).Run(nullptr);
++      return;
++    }
+     is_grayscale = theme_service->GetIsGrayscale();
+     is_baseline = theme_service->GetIsBaseline();
+   }

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/prefs/BUILD.gn b/chrome/browser/prefs/BUILD.gn
-index f73a22f47658fc998b277c3297e3163c34743884..f50a69c77b1eab00fd88374b2046d178e9a9ace5 100644
+index ebb1b23de7e5284d6ea78494f289459970b4f25e..87a516dc9aa18ed516a55b8a66c96aa26c9dd523 100644
 --- a/chrome/browser/prefs/BUILD.gn
 +++ b/chrome/browser/prefs/BUILD.gn
 @@ -2,6 +2,7 @@

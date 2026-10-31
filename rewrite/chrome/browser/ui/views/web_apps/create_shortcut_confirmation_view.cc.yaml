@@ -14,8 +14,8 @@ substitutions:
       comment, rather than removed, so the guard stays visible.
     regex:
       re_pattern: |-
-        CHECK_EQ\(features::kDesktopPWAsTabStripSettings\.default_state,\s+base::FEATURE_DISABLED_BY_DEFAULT, base::NotFatalUntil::M162\);
+        CHECK_EQ\(features::kDesktopPWAsTabStripSettings\.GetDefaultState\(\),\s+base::FEATURE_DISABLED_BY_DEFAULT,\s+base::NotFatalUntil::M162\);
       replace: |-
-        // CHECK_EQ(features::kDesktopPWAsTabStripSettings.default_state,
+        // CHECK_EQ(features::kDesktopPWAsTabStripSettings.GetDefaultState(),
           //          base::FEATURE_DISABLED_BY_DEFAULT,
           //          base::NotFatalUntil::M162);

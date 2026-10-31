@@ -83,10 +83,6 @@ export function supportGnArgs<
         '--android_aab_to_apk',
         'applies an aab to apk conversion to the output aab',
       )
-      .option(
-        '--android_override_version_name <android_override_version_name>',
-        'Android version number',
-      )
       .option('--build_omaha', 'build omaha stub/standalone installer')
       .option(
         '--build_sparkle',

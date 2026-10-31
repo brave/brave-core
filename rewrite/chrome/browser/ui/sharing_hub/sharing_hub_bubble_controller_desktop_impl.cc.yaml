@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Show the share omnibox icon only for web pages, and only when pinned.
+
+      Internal pages get no share icon, and the icon follows Brave's
+      kPinShareMenuButton pref.
+    preempt_function_impl:
+      function_name: SharingHubBubbleControllerDesktopImpl::ShouldOfferOmniboxIcon
+      code: |-
+        if (!ShouldOfferBraveShareIcon(GetWebContents())) {
+          return false;
+        }

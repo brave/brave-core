@@ -1009,15 +1009,6 @@ are declared in tools/grit/grit_args.gni.
       <if expr="is_win or is_macosx or is_linux or is_chromeos">
         </if>
 
-      <if expr="not use_titlecase">
-        </if>
-      <if expr="use_titlecase">
-        </if>
-      <if expr="not use_titlecase">
-        </if>
-      <if expr="use_titlecase">
-        </if>
-
       <if expr="not is_chromeos and not is_android">
         <if expr="use_titlecase">
           <then>

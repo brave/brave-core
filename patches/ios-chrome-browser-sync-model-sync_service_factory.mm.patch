@@ -1,13 +1,18 @@
 diff --git a/ios/chrome/browser/sync/model/sync_service_factory.mm b/ios/chrome/browser/sync/model/sync_service_factory.mm
-index e1c5550d73d62d3d4432d42c67257c38e7799aa6..03e3f2185798bafeea1211c4137750be9c225cff 100644
+index de4d84750fc1da5e79ecfcdb7f710cb374ba36c3..0aad91744019e4777610134ac605115d2f035089 100644
 --- a/ios/chrome/browser/sync/model/sync_service_factory.mm
 +++ b/ios/chrome/browser/sync/model/sync_service_factory.mm
-@@ -241,7 +241,7 @@ std::unique_ptr<KeyedService> BuildSyncService(ProfileIOS* profile) {
-   init_params.debug_identifier = profile->GetProfileName();
+@@ -238,7 +238,12 @@ std::unique_ptr<KeyedService> BuildSyncService(ProfileIOS& profile) {
+   init_params.debug_identifier = profile.GetProfileName();
    init_params.os_crypt_async = GetApplicationContext()->GetOSCryptAsync();
    auto sync_service =
 -      std::make_unique<syncer::SyncServiceImpl>(std::move(init_params));
-+      BRAVE_BUILD_SERVICE_INSTANCE_FOR
-   sync_service->Initialize(CreateControllers(profile, sync_service.get()));
++      std::make_unique<syncer::BraveSyncServiceImpl>(
++          std::move(init_params),
++          std::make_unique<syncer::BraveSyncServiceImplDelegate>(
++              DeviceInfoSyncServiceFactory::GetForProfile(profile),
++              ios::HistoryServiceFactory::GetForProfile(profile)),
++          GetApplicationContext()->GetOSCryptAsync());
+   sync_service->Initialize(CreateControllers(&profile, sync_service.get()));
  
    password_manager::PasswordReceiverService* password_receiver_service =

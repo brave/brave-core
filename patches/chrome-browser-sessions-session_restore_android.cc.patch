@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/sessions/session_restore_android.cc b/chrome/browser/sessions/session_restore_android.cc
-index eee9ca90428320878c91ce111801ca8f59deea7e..32e2670f47dc8dc8c7757b3069682ebf400205f2 100644
+index c2da2c91a58feed4465787e77599ae9fc97f3807..462f3de67240d62f9c14553d982a26e5ae1e82d3 100644
 --- a/chrome/browser/sessions/session_restore_android.cc
 +++ b/chrome/browser/sessions/session_restore_android.cc
 @@ -24,7 +24,7 @@
@@ -20,7 +20,7 @@ index eee9ca90428320878c91ce111801ca8f59deea7e..32e2670f47dc8dc8c7757b3069682ebf
  
  }  // namespace
  
-@@ -114,7 +114,7 @@ void SessionRestore::RestoreForeignSessionWindows(
+@@ -116,7 +116,7 @@ void SessionRestore::RestoreForeignSessionWindows(
      std::vector<const sessions::SessionWindow*>::const_iterator begin,
      std::vector<const sessions::SessionWindow*>::const_iterator end,
      base::OnceCallback<void(std::vector<BrowserWindowInterface*>)> callback) {
@@ -29,7 +29,7 @@ index eee9ca90428320878c91ce111801ca8f59deea7e..32e2670f47dc8dc8c7757b3069682ebf
    // The extensions sessions API can restore foreign windows.
    size_t window_count = std::distance(begin, end);
    // Wait for `window_count` callbacks.
-@@ -136,5 +136,5 @@ void SessionRestore::RestoreForeignSessionWindows(
+@@ -138,5 +138,5 @@ void SessionRestore::RestoreForeignSessionWindows(
    }
  #else
    NOTREACHED();

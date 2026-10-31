@@ -1,0 +1,35 @@
+diff --git a/chrome/test/data/webui/tab_search/test_tab_search_api_proxy.ts b/chrome/test/data/webui/tab_search/test_tab_search_api_proxy.ts
+index bff75e2cd3c7408ee75c7d9de82b395521016c08..4b972814e58c0ad2f856cd9525da2fdcf53cfbbc 100644
+--- a/chrome/test/data/webui/tab_search/test_tab_search_api_proxy.ts
++++ b/chrome/test/data/webui/tab_search/test_tab_search_api_proxy.ts
+@@ -91,4 +91,30 @@ export class TestTabSearchApiProxy extends TestBrowserProxy implements
+   setIsSplit(isSplit: boolean) {
+     this.isSplit_ = isSplit;
+   }
++
++  getSuggestedTopics() {
++    return Promise.resolve({topics: [], error: null});
++  }
++
++  getFocusTabs() {
++    return Promise.resolve({windowCreated: false, error: null});
++  }
++
++  undoFocusTabs() {
++    return Promise.resolve();
++  }
++
++  openLeoGoPremiumPage() {}
++
++  openLearnMorePage() {}
++
++  setTabFocusEnabled() {}
++
++  getTabFocusShowFRE() {
++    return Promise.resolve({showFRE: false});
++  }
++
++  searchTabsByContent() {
++    return Promise.resolve({tabIds: []});
++  }
+ }

@@ -1074,6 +1074,12 @@
     <message name="IDS_PROFILE_PICKER_PROFILE_MENU_CUSTOMIZE_TEXT" desc="Text of the customize button in profile card menu">
       Edit
     </message>
+    <message name="IDS_PROFILE_PICKER_PROFILE_MENU_MOVE_LEFT_TEXT" desc="Text of the move left button in the profile card menu in the Profile Picker. Clicking this button reorders the profiles list by moving the profile one position to the left.">
+      Move left
+    </message>
+    <message name="IDS_PROFILE_PICKER_PROFILE_MENU_MOVE_RIGHT_TEXT" desc="Text of the move right button in the profile card menu in the Profile Picker. Clicking this button reorders the profiles list by moving the profile one position to the right.">
+      Move right
+    </message>
     <message name="IDS_PROFILE_PICKER_ASK_ON_STARTUP" desc="Text for the checkbox on the profile picker main view">
       Show on startup
     </message>
@@ -1285,16 +1291,16 @@
     </message>
 
     <message name="IDS_FEATURE_SHOWCASE_GEMINI_DISCLOSURE_1_ROW" desc="This is a disclosure regarding human review and data usage for model training. 'Learn more' links to privacy choices. It is a critical privacy notice. This string includes legal disclaimers and a quality warning about AI 'hallucinations.' The tone should be cautionary.">
-      Chats are reviewed and used to improve Brave AI. Gemini is AI and can make mistakes. You can <ph name="BEGIN_LINK_MANAGE_ACTIVITY">&lt;a href="$1" target="_blank"&gt;</ph>manage your activity<ph name="END_LINK_MANAGE_ACTIVITY">&lt;/a&gt;</ph>, including info about your location. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a href="$2" target="_blank"&gt;</ph>Learn more about your choices<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+      Chats are reviewed and used to train generative AI models. Gemini is AI and can make mistakes. You can <ph name="BEGIN_LINK_MANAGE_HISTORY">&lt;a href="$1" target="_blank"&gt;</ph>manage your history<ph name="END_LINK_MANAGE_HISTORY">&lt;/a&gt;</ph>, including info about your location. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a href="$2" target="_blank"&gt;</ph>Learn more about your choices<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
     </message>
     <message name="IDS_FEATURE_SHOWCASE_GEMINI_DISCLOSURE_1_US" desc="This is a disclosure regarding human review and data usage for model training. 'Learn more' links to privacy choices. It is a critical privacy notice. This string includes legal disclaimers and a quality warning about AI 'hallucinations.' The tone should be cautionary.">
-      Chats are reviewed and used to improve Brave AI. Gemini is AI and can make mistakes. Some content may not be suitable for everyone. You can <ph name="BEGIN_LINK_MANAGE_ACTIVITY">&lt;a href="$1" target="_blank"&gt;</ph>manage your activity<ph name="END_LINK_MANAGE_ACTIVITY">&lt;/a&gt;</ph>, including info about your location. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a href="$2" target="_blank"&gt;</ph>Learn more about your choices<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+      Chats are reviewed and used to train generative AI models. Gemini is AI and can make mistakes. Some content may not be suitable for everyone. You can <ph name="BEGIN_LINK_MANAGE_HISTORY">&lt;a href="$1" target="_blank"&gt;</ph>manage your history<ph name="END_LINK_MANAGE_HISTORY">&lt;/a&gt;</ph>, including info about your location. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a href="$2" target="_blank"&gt;</ph>Learn more about your choices<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
     </message>
     <message name="IDS_FEATURE_SHOWCASE_GEMINI_DISCLOSURE_1_ENTERPRISE_ROW" desc="This string includes legal disclaimers and a quality warning about AI 'hallucinations.' The tone should be cautionary.">
-      Neither your conversations with Gemini nor your <ph name="BEGIN_LINK_WORKSPACE_DATA_PRIVACY">&lt;a href="$1" target="_blank"&gt;</ph>Brave Workspace data<ph name="END_LINK_WORKSPACE_DATA_PRIVACY">&lt;/a&gt;</ph> will be reviewed or used to improve generative AI models. Gemini is AI and can make mistakes.
+      Neither your conversations with Gemini nor your <ph name="BEGIN_LINK_WORKSPACE_DATA_PRIVACY">&lt;a href="$1" target="_blank"&gt;</ph>Brave Workspace data<ph name="END_LINK_WORKSPACE_DATA_PRIVACY">&lt;/a&gt;</ph> will be reviewed or used to train generative AI models. Gemini is AI and can make mistakes.
     </message>
     <message name="IDS_FEATURE_SHOWCASE_GEMINI_DISCLOSURE_1_ENTERPRISE_US" desc="This string includes legal disclaimers and a quality warning about AI 'hallucinations.' The tone should be cautionary.">
-      Neither your conversations with Gemini nor your <ph name="BEGIN_LINK_WORKSPACE_DATA_PRIVACY">&lt;a href="$1" target="_blank"&gt;</ph>Brave Workspace data<ph name="END_LINK_WORKSPACE_DATA_PRIVACY">&lt;/a&gt;</ph> will be reviewed or used to improve generative AI models. Gemini is AI and can make mistakes. Some content may not be suitable for everyone.
+      Neither your conversations with Gemini nor your <ph name="BEGIN_LINK_WORKSPACE_DATA_PRIVACY">&lt;a href="$1" target="_blank"&gt;</ph>Brave Workspace data<ph name="END_LINK_WORKSPACE_DATA_PRIVACY">&lt;/a&gt;</ph> will be reviewed or used to train generative AI models. Gemini is AI and can make mistakes. Some content may not be suitable for everyone.
     </message>
     <message name="IDS_FEATURE_SHOWCASE_GEMINI_DISCLOSURE_2_KR" desc="">
       Our <ph name="BEGIN_LINK_TERMS">&lt;a href="$1" target="_blank"&gt;</ph>Terms<ph name="END_LINK_TERMS">&lt;/a&gt;</ph>, <ph name="BEGIN_LINK_LOCATION_TERMS">&lt;a href="$2" target="_blank"&gt;</ph>Korean Location Terms<ph name="END_LINK_LOCATION_TERMS">&lt;/a&gt;</ph>, and <ph name="BEGIN_LINK_PRIVACY">&lt;a href="$3" target="_blank"&gt;</ph>Privacy Notice<ph name="END_LINK_PRIVACY">&lt;/a&gt;</ph> apply.
@@ -1431,12 +1437,6 @@
       To clean up any duplicate bookmarks, save them in your Brave sync chain
     </message>
   </if>
-    <message name="IDS_SIGN_IN_BENEFITS_IPH_TEXT" desc="Text of the IPH bubble announcing benefits for users who signed in before the sync-to-signin migration.">
-      While you're signed in, you can use the bookmarks, extensions, and more saved in your Brave sync chain on all your devices
-    </message>
-    <message name="IDS_SIGN_IN_BENEFITS_WITHOUT_BOOKMARKS_AND_EXTENSIONS_IPH_TEXT" desc="Text of the IPH bubble announcing benefits for users who signed in before the sync-to-signin migration, not mentioning bookmarks and extensions because they require an explicit sign in.">
-      While you're signed in, you can use the themes, settings, and more saved in your Brave sync chain on all your devices
-    </message>
     <!-- Sign in on your phone (QR code) strings  -->
     <if expr="not use_titlecase">
       <message name="IDS_AVATAR_BUTTON_SIGNIN_ON_PHONE" desc="Text on the avatar pill expanding while the QR code bubble is showing, which will let the user sign in on their phone.">

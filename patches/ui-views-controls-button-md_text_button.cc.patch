@@ -1,5 +1,5 @@
 diff --git a/ui/views/controls/button/md_text_button.cc b/ui/views/controls/button/md_text_button.cc
-index f4f6b86afebdc20b3ad6aeffd34f64655195df77..82f7eaa32ce237bf240f348a18dbeae86163a659 100644
+index 9e08508ca25e7729524cc27c39a56fc272c4b7c5..72a04be50c12a321272dd5b2066d6deeb9d1818f 100644
 --- a/ui/views/controls/button/md_text_button.cc
 +++ b/ui/views/controls/button/md_text_button.cc
 @@ -43,7 +43,7 @@
@@ -206,7 +206,7 @@ index f4f6b86afebdc20b3ad6aeffd34f64655195df77..82f7eaa32ce237bf240f348a18dbeae8
    int target_height = LayoutProvider::GetControlHeightForFont(
        label()->GetTextContext(), style::STYLE_PRIMARY, label()->font_list());
  
-@@ -283,7 +283,7 @@ gfx::Insets MdTextButton::CalculateDefaultPadding() const {
+@@ -284,7 +284,7 @@ gfx::Insets MdTextButton::CalculateDefaultPadding() const {
                             right_padding);
  }
  
@@ -215,7 +215,7 @@ index f4f6b86afebdc20b3ad6aeffd34f64655195df77..82f7eaa32ce237bf240f348a18dbeae8
    if (explicitly_set_normal_color()) {
      return;
    }
-@@ -311,7 +311,7 @@ void MdTextButton::UpdateTextColor() {
+@@ -312,7 +312,7 @@ void MdTextButton::UpdateTextColor() {
    set_explicitly_set_colors(colors);
  }
  
@@ -224,7 +224,7 @@ index f4f6b86afebdc20b3ad6aeffd34f64655195df77..82f7eaa32ce237bf240f348a18dbeae8
    bool is_disabled = GetVisualState() == STATE_DISABLED;
    const ui::ColorProvider* color_provider = GetColorProvider();
    SkColor bg_color = color_provider->GetColor(ui::kColorButtonBackground);
-@@ -360,7 +360,7 @@ void MdTextButton::UpdateBackgroundColor() {
+@@ -361,7 +361,7 @@ void MdTextButton::UpdateBackgroundColor() {
            true /* antialias */, true /* should_border_scale */)));
  }
  
@@ -233,7 +233,7 @@ index f4f6b86afebdc20b3ad6aeffd34f64655195df77..82f7eaa32ce237bf240f348a18dbeae8
    if (use_text_color_for_icon_ && HasImage(ButtonState::STATE_NORMAL)) {
      const std::optional<ui::ImageModel>& image_model =
          GetImageModel(ButtonState::STATE_NORMAL);
-@@ -375,7 +375,7 @@ void MdTextButton::UpdateIconColor() {
+@@ -376,7 +376,7 @@ void MdTextButton::UpdateIconColor() {
    }
  }
  
@@ -242,7 +242,7 @@ index f4f6b86afebdc20b3ad6aeffd34f64655195df77..82f7eaa32ce237bf240f348a18dbeae8
    if (GetWidget()) {
      UpdateTextColor();
      UpdateBackgroundColor();
-@@ -384,7 +384,7 @@ void MdTextButton::UpdateColors() {
+@@ -385,7 +385,7 @@ void MdTextButton::UpdateColors() {
    }
  }
  
@@ -251,7 +251,7 @@ index f4f6b86afebdc20b3ad6aeffd34f64655195df77..82f7eaa32ce237bf240f348a18dbeae8
    switch (button_style) {
      case ui::ButtonStyle::kProminent:
        return GetColorProvider()->GetColor(ui::kColorSysStateHoverOnProminent);
-@@ -396,18 +396,18 @@ SkColor MdTextButton::GetHoverColor(ui::ButtonStyle button_style) {
+@@ -397,18 +397,18 @@ SkColor MdTextButton::GetHoverColor(ui::ButtonStyle button_style) {
    }
  }
  
@@ -273,7 +273,7 @@ index f4f6b86afebdc20b3ad6aeffd34f64655195df77..82f7eaa32ce237bf240f348a18dbeae8
      : LabelButtonActionViewInterface(action_view), action_view_(action_view) {}
  
  void MdTextButtonActionViewInterface::ActionItemChangedImpl(
-@@ -418,7 +418,7 @@ void MdTextButtonActionViewInterface::ActionItemChangedImpl(
+@@ -419,7 +419,7 @@ void MdTextButtonActionViewInterface::ActionItemChangedImpl(
                                action_item->GetImage());
  }
  

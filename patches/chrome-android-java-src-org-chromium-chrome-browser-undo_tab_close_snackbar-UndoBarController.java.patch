@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/undo_tab_close_snackbar/UndoBarController.java b/chrome/android/java/src/org/chromium/chrome/browser/undo_tab_close_snackbar/UndoBarController.java
-index 474db4ea0af2dd6fdbc97a12b28ec75c2e52b834..602ddabd3a67d94515e3ecf33dd820da5d987914 100644
+index eed626ea8393a22243d3481e1cffa5c5cba90222..77f70c451336c6e176cd6c8d4ab621399495c289 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/undo_tab_close_snackbar/UndoBarController.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/undo_tab_close_snackbar/UndoBarController.java
 @@ -4,6 +4,9 @@
@@ -12,7 +12,7 @@ index 474db4ea0af2dd6fdbc97a12b28ec75c2e52b834..602ddabd3a67d94515e3ecf33dd820da
  import static org.chromium.build.NullUtil.assumeNonNull;
  
  import android.content.Context;
-@@ -217,6 +220,14 @@ public abstract class UndoBarController
+@@ -218,6 +221,14 @@ public abstract class UndoBarController
      private void showUndoBar(UndoClosureSnapshot snapshot) {
          if (snapshot.isEmpty()) return;
  

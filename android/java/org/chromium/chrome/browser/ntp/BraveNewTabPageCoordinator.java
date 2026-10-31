@@ -206,6 +206,11 @@ public class BraveNewTabPageCoordinator extends NewTabPageCoordinator {
         }
 
         @Override
+        public void showTileRemovedSnackbar(Runnable undoHandler) {
+            mDelegate.showTileRemovedSnackbar(undoHandler);
+        }
+
+        @Override
         public double getSuggestionScore(GURL url) {
             return mDelegate.getSuggestionScore(url);
         }

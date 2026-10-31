@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/tabs/tab_strip_model.h b/chrome/browser/ui/tabs/tab_strip_model.h
-index 8fae54e33d042ecbb911853188737dd02494f540..75b8a7ab073432a5b205305dbb51f8f2e467a99c 100644
+index fd05ff074826a260e64f743ef9834a2825ab359d..91b8398cecb208cad80512e3cd33d374807a1531 100644
 --- a/chrome/browser/ui/tabs/tab_strip_model.h
 +++ b/chrome/browser/ui/tabs/tab_strip_model.h
 @@ -50,7 +50,7 @@
@@ -56,7 +56,7 @@ index 8fae54e33d042ecbb911853188737dd02494f540..75b8a7ab073432a5b205305dbb51f8f2
                                     int destination_index);
  
    // Updates the layout for the tabs with `split_id` and notifies observers.
-@@ -923,7 +923,12 @@ class TabStripModel {
+@@ -925,7 +925,12 @@ class TabStripModel {
    tabs::TabInterface* GetTabForWebContents(
        const content::WebContents* contents) const;
  

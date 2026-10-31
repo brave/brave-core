@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Provides the Brave version.
+    add_import:
+      import: //brave/build/version.gni
+
+  - description: Use the Brave version as the Android version name.
+    regex:
+      pattern: 'chrome_version_name = chrome_version_full'
+      replace: 'chrome_version_name = brave_version'

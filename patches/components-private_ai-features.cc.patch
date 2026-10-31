@@ -1,8 +1,8 @@
 diff --git a/components/private_ai/features.cc b/components/private_ai/features.cc
-index 19098ac71a00026d56b622a373e900011e650a09..43622ebfe22e8c0d15675b3bdcb6347058bf17ab 100644
+index f37e64ef2a7042ffcaeb413b34f55c265cf4e2f1..1665b47d74e04d4051a099e7487b588c3cb8b4e2 100644
 --- a/components/private_ai/features.cc
 +++ b/components/private_ai/features.cc
-@@ -9,7 +9,13 @@
+@@ -11,7 +11,13 @@
  
  namespace private_ai {
  

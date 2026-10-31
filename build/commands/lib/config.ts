@@ -71,7 +71,6 @@ export class Config {
   useDummyLastchange: boolean
   braveVersion: string
   braveIOSMarketingPatchVersion: string | undefined
-  androidOverrideVersionName: string
   releaseTag: string | undefined
   mac_signing_identifier: string | undefined
   mac_installer_signing_identifier: string
@@ -200,7 +199,6 @@ export class Config {
       ['brave_ios_marketing_version_patch'],
       '',
     )
-    this.androidOverrideVersionName = this.braveVersion
     this.releaseTag = this.braveVersion.split('+')[0]
     this.mac_signing_identifier = envConfig.getString([
       'mac_signing_identifier',
@@ -505,9 +503,6 @@ export class Config {
     if (this.targetOS === 'android') {
       if (options.target_android_output_format) {
         this.targetAndroidOutputFormat = options.target_android_output_format
-      }
-      if (options.android_override_version_name) {
-        this.androidOverrideVersionName = options.android_override_version_name
       }
       if (options.android_aab_to_apk) {
         this.androidAabToApk = options.android_aab_to_apk
@@ -842,11 +837,6 @@ export class Config {
         getSisoBuiltinRemoteLimit(),
       )
 
-      // Prevent depot_tools from setting lower timeouts.
-      const kRbeTimeout = '10m'
-      env.RBE_exec_timeout = env.RBE_exec_timeout || kRbeTimeout
-      env.RBE_reclient_timeout = env.RBE_reclient_timeout || kRbeTimeout
-
       // Autoninja generates -j value when RBE is enabled, adjust limits for
       // Brave-specific setup.
       Config.#capEnvNumber(env, 'NINJA_CORE_MULTIPLIER', 20)
@@ -892,13 +882,6 @@ export class Config {
       env.SISO_LIMITS = Array.from(envSisoLimits.entries())
         .map(([key, value]) => `${key}=${value}`)
         .join(',')
-
-      if (this.offline) {
-        // Use all local resources in offline mode. RBE_local_resource_fraction
-        // can be set to a lower value for racing mode, but in offline mode we
-        // want to use all cores.
-        env.RBE_local_resource_fraction = '1.0'
-      }
     }
 
     if (isCI) {

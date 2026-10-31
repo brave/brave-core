@@ -110,6 +110,15 @@ TabFeatures::data_protection_controller() {
   return brave_tab_features_->data_protection_controller();
 }
 
+tasks::TaskTabHelper* TabFeatures::task_tab_helper() {
+  return brave_tab_features_->task_tab_helper();
+}
+
+SupervisedUserNavigationObserver*
+TabFeatures::supervised_user_navigation_observer() {
+  return brave_tab_features_->supervised_user_navigation_observer();
+}
+
 // static
 BraveTabFeatures* BraveTabFeatures::FromTabFeatures(TabFeatures* tab_features) {
   return static_cast<BraveTabFeatures*>(

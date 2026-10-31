@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.cc b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-index 972bd7bc04d240f23d4c527bdb6faa81272421e5..52e79a4172796f8144f162b4ee5d6f585fe134d4 100644
+index 1f61a4efebf2ded10931602b7b1f55ec2535b246..a93e6de8ccd9821365cd30c591e593df69f984fe 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.cc
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.cc
 @@ -325,7 +325,7 @@ void LocationBarView::Init() {
@@ -82,7 +82,7 @@ index 972bd7bc04d240f23d4c527bdb6faa81272421e5..52e79a4172796f8144f162b4ee5d6f58
  
    // Perform layout.
    int entry_width = width();
-@@ -1411,8 +1433,8 @@ void LocationBarView::RefreshBackground() {
+@@ -1425,8 +1447,8 @@ void LocationBarView::RefreshBackground() {
      // Under CR23 guidelines, if the Omnibox is unfocused, but still contains
      // in-progress user input, the background color matches the popup (unless
      // high-contrast mode is enabled).

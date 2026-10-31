@@ -1,5 +1,5 @@
 diff --git a/third_party/lit/v3_0/BUILD.gn b/third_party/lit/v3_0/BUILD.gn
-index 2c9521edc8911306ad3a975db5dccfd66314f56e..1764520e184b5811344bdd332029a08a6fb8cd7b 100644
+index 0a247b4b5af792d99826cc54b6d777a45c870ace..c97c654c4af5397a1700f02cfedc90da4aede32d 100644
 --- a/third_party/lit/v3_0/BUILD.gn
 +++ b/third_party/lit/v3_0/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -18,7 +18,7 @@ index 2c9521edc8911306ad3a975db5dccfd66314f56e..1764520e184b5811344bdd332029a08a
      "//chrome/browser/resources/about_sys:build_ts",
      "//chrome/browser/resources/access_code_cast:build_ts",
      "//chrome/browser/resources/actor_overlay:build_ts",
-@@ -187,6 +189,7 @@ ts_library("build_ts") {
+@@ -189,6 +191,7 @@ ts_library("build_ts") {
      "//ui/webui/resources/cr_elements:build_ts",
      "//ui/webui/resources/tools:webui_resources_tools_python_unittests",
    ]

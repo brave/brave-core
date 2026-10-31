@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/mac/signing/pipeline.py b/chrome/installer/mac/signing/pipeline.py
-index 9f639604a263fcbd60735cb25151a15d9d8a3a8a..24517859f02631d89caa93c44bee8ed683b10d5f 100644
+index 2659086e728142bc38e93a2f1ce990b15c1be621..e33d8dceb049e5a3c51fe328ab1afb7c875ed761 100644
 --- a/chrome/installer/mac/signing/pipeline.py
 +++ b/chrome/installer/mac/signing/pipeline.py
-@@ -783,6 +783,9 @@ async def sign_all(
+@@ -911,6 +911,9 @@ async def sign_all(
                  ),
                  timeout=60 * 60 * 2,
              )
@@ -12,9 +12,9 @@ index 9f639604a263fcbd60735cb25151a15d9d8a3a8a..24517859f02631d89caa93c44bee8ed6
  
  
  async def _sign_and_maybe_notarize_distributions(
-@@ -950,3 +953,5 @@ async def _package_and_maybe_notarize_distributions(
-     if config.notarize.should_staple():
+@@ -1196,3 +1199,5 @@ async def _package_and_maybe_notarize_distributions(
          for path in staple_paths:
              notarize.staple(path)
+     _tag_pkg_distributions(pkgs_to_tag, tag_tool=tag_tool)
 +
 +from brave_chromium_utils import inline_file; inline_file("//brave/chromium_src/chrome/installer/mac/signing/pipeline.py", globals(), locals())

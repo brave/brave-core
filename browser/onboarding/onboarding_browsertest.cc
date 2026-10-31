@@ -10,6 +10,7 @@
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
+#include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
@@ -64,6 +65,9 @@ class OnboardingBrowserTest : public InProcessBrowserTest {
   void TearDownOnMainThread() override {
     can_highlight_callback_reset_.reset();
     did_stop_loading_callback_reset_.reset();
+    // The tabs close after this, and would leave the sets dangling.
+    can_highlight_contents_.clear();
+    did_stop_loading_contents_.clear();
     InProcessBrowserTest::TearDownOnMainThread();
   }
 
@@ -114,10 +118,10 @@ class OnboardingBrowserTest : public InProcessBrowserTest {
 
  private:
   // Tabs, by contents, whose helper completed its first-run check.
-  std::set<content::WebContents*> can_highlight_contents_;
+  std::set<raw_ptr<content::WebContents>> can_highlight_contents_;
   // Tabs, by contents, whose helper considered the highlight when loading
   // stopped.
-  std::set<content::WebContents*> did_stop_loading_contents_;
+  std::set<raw_ptr<content::WebContents>> did_stop_loading_contents_;
   std::optional<base::AutoReset<OnboardingTabHelper::WebContentsCallback>>
       can_highlight_callback_reset_;
   std::optional<base::AutoReset<OnboardingTabHelper::WebContentsCallback>>

@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/sessions/session_restore.cc b/chrome/browser/sessions/session_restore.cc
-index ea1990e8cd42875e6d651edbe429c76de7e8ab9f..cc3eb4fea659a1410bd4dfa7994b8f0083a0ad88 100644
+index b8a1270aee6410b7c3726483c4ee48992d125ab5..8062092eddfeb8f73f8e17f47a47fb2ff79d1132 100644
 --- a/chrome/browser/sessions/session_restore.cc
 +++ b/chrome/browser/sessions/session_restore.cc
-@@ -1446,6 +1446,7 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
-                                : WindowOpenDisposition::kNewBackgroundTab;
+@@ -1450,6 +1450,7 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+                        : ui::mojom::WindowOpenDisposition::kNewBackgroundTab;
        params.tabstrip_add_types = add_types;
        is_first_tab = false;
 +      BraveModifyStartupTabNavigationParams(startup_tab, browser, params);

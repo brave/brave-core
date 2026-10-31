@@ -201,7 +201,7 @@ public class BraveAutofillServiceImpl extends SplitCompatAutofillService.Impl {
                         // This is a top-level entry point (AutofillService) with no
                         // Profile passed in from the framework.
                         ProfileManager.getLastUsedRegularProfile());
-        ArrayList<AutofillProfile> profileList = personalDataManager.getProfilesToSuggest();
+        List<AutofillProfile> profileList = personalDataManager.getProfilesToSuggest();
 
         FillResponse.Builder fillResponse = new FillResponse.Builder();
         String appPackageName = ContextUtils.getApplicationContext().getPackageName();

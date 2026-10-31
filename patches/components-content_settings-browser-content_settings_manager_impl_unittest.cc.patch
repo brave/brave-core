@@ -1,0 +1,17 @@
+diff --git a/components/content_settings/browser/content_settings_manager_impl_unittest.cc b/components/content_settings/browser/content_settings_manager_impl_unittest.cc
+index 97b269792b6f3abb4b079ff28d89f991ab4235dc..626f11699658be9ee4b39716cd29ae755503a36a 100644
+--- a/components/content_settings/browser/content_settings_manager_impl_unittest.cc
++++ b/components/content_settings/browser/content_settings_manager_impl_unittest.cc
+@@ -46,6 +46,12 @@ class NoCookieSettingsDelegate : public ContentSettingsManagerImpl::Delegate {
+   std::unique_ptr<ContentSettingsManagerImpl::Delegate> Clone() override {
+     return std::make_unique<NoCookieSettingsDelegate>();
+   }
++  void GetBraveShieldsSettings(
++      const content::GlobalRenderFrameHostToken& frame_token,
++      mojom::ContentSettingsManager::GetBraveShieldsSettingsCallback
++          callback) override {
++    std::move(callback).Run(brave_shields::mojom::ShieldsSettings::New());
++  }
+ };
+ 
+ using ContentSettingsManagerImplTest = content::RenderViewHostTestHarness;
