@@ -65,8 +65,6 @@ export const ConnectionSection = (props: Props) => {
   // State
   const [isPermissionDenied, setIsPermissionDenied] =
     React.useState<boolean>(false)
-  const [isSolanaConnected, setIsSolanaConnected] =
-    React.useState<boolean>(false)
   const [showAccounts, setShowAccounts] = React.useState<boolean>(false)
   const [showNetworks, setShowNetworks] = React.useState<boolean>(false)
   const [selectedNetworkState, setSelectedNetworkState] = React.useState<
@@ -118,20 +116,11 @@ export const ConnectionSection = (props: Props) => {
     if (!effectiveSelectedAccountId || isPermissionDenied) {
       return false
     }
-    if (coin === BraveWallet.CoinType.SOL) {
-      return isSolanaConnected
-    }
     return connectedAccounts.some(
       (accountId) =>
         accountId.uniqueKey === effectiveSelectedAccountId.uniqueKey,
     )
-  }, [
-    connectedAccounts,
-    effectiveSelectedAccountId,
-    coin,
-    isSolanaConnected,
-    isPermissionDenied,
-  ])
+  }, [connectedAccounts, effectiveSelectedAccountId, coin, isPermissionDenied])
 
   const connectionStatusText = React.useMemo((): string => {
     if (isPermissionDenied) {
@@ -215,28 +204,6 @@ export const ConnectionSection = (props: Props) => {
   React.useEffect(() => {
     setLocalSelectedAccountId(undefined)
   }, [selectedAccountId])
-
-  React.useEffect(() => {
-    let subscribed = true
-
-    if (selectedAccount && coin === BraveWallet.CoinType.SOL) {
-      ;(async () => {
-        const { panelHandler } = getWalletPanelApiProxy()
-        await panelHandler
-          .isSolanaAccountConnected(selectedAccount.address)
-          .then((result) => {
-            if (subscribed) {
-              setIsSolanaConnected(result.connected)
-            }
-          })
-          .catch((e) => console.log(e))
-      })()
-    }
-
-    return () => {
-      subscribed = false
-    }
-  }, [selectedAccount, coin])
 
   React.useEffect(() => {
     let subscribed = true

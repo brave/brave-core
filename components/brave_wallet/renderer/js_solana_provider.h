@@ -185,6 +185,7 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
       const std::vector<uint8_t> serialized_tx,
       mojom::SolanaMessageVersion version);
 
+  std::optional<std::string> connected_account_address_;
   bool wallet_standard_loaded_ = false;
   v8::Global<v8::Value> solana_web3_module_;
   std::unique_ptr<content::V8ValueConverter> v8_value_converter_;

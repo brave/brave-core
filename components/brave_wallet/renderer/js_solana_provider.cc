@@ -220,6 +220,7 @@ void JSSolanaProvider::AccountChangedEvent(
     v8::Local<v8::Value> v8_public_key = CreatePublicKey(context, *account);
     args.push_back(std::move(v8_public_key));
   }
+  connected_account_address_ = account;
   FireEvent(kSolanaAccountChangedEvent, std::move(args));
 }
 
@@ -228,6 +229,7 @@ void JSSolanaProvider::DisconnectEvent() {
   v8::Isolate* isolate =
       render_frame()->GetWebFrame()->GetAgentGroupScheduler()->Isolate();
   v8::HandleScope handle_scope(isolate);
+  connected_account_address_ = std::nullopt;
   FireEvent(kDisconnectEvent, std::vector<v8::Local<v8::Value>>());
 }
 
@@ -274,22 +276,19 @@ bool JSSolanaProvider::GetIsBraveWallet(gin::Arguments* arguments) {
 }
 
 bool JSSolanaProvider::GetIsConnected(gin::Arguments* arguments) {
-  bool is_connected = false;
-  if (!solana_provider_->IsConnected(&is_connected)) {
-    return false;
-  }
-  return is_connected;
+  return connected_account_address_.has_value() &&
+         !connected_account_address_->empty();
 }
 
 v8::Local<v8::Value> JSSolanaProvider::GetPublicKey(gin::Arguments* arguments) {
   v8::Isolate* isolate = arguments->isolate();
   v8::Local<v8::Context> context = isolate->GetCurrentContext();
-  std::string public_key;
-  if (!solana_provider_->GetPublicKey(&public_key) || public_key.empty()) {
+  if (!connected_account_address_.has_value() ||
+      connected_account_address_->empty()) {
     return v8::Null(isolate);
   }
 
-  return CreatePublicKey(context, public_key);
+  return CreatePublicKey(context, *connected_account_address_);
 }
 
 v8::Local<v8::Promise> JSSolanaProvider::Connect(gin::Arguments* arguments) {
@@ -348,6 +347,7 @@ v8::Local<v8::Promise> JSSolanaProvider::Disconnect(gin::Arguments* arguments) {
   }
 
   solana_provider_->Disconnect();
+  connected_account_address_ = std::nullopt;
 
   std::ignore = resolver.ToLocalChecked()->Resolve(isolate->GetCurrentContext(),
                                                    v8::Undefined(isolate));
@@ -655,6 +655,7 @@ void JSSolanaProvider::OnConnect(
   v8::Local<v8::Value> result;
   v8::Local<v8::Value> v8_public_key;
   if (error == mojom::SolanaProviderError::kSuccess) {
+    connected_account_address_ = public_key;
     v8_public_key = CreatePublicKey(context, public_key);
     v8::Local<v8::Object> object = v8::Object::New(isolate);
     CHECK(CreateDataProperty(context, object, kPublicKey, v8_public_key)

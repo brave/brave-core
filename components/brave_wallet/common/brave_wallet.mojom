@@ -350,12 +350,6 @@ interface SolanaProvider {
 
   Disconnect();
 
-  [Sync]
-  IsConnected() => (bool is_connected);
-
-  // return base58 encoded public key
-  [Sync]
-  GetPublicKey() => (string public_key);
 
   // It takes a base58 encoded serialized Message and return a serialized
   // Transaction with signature in wire format.
@@ -479,8 +473,6 @@ interface PanelHandler {
   CancelConnectToSite();
 
   Focus();
-
-  IsSolanaAccountConnected(string account) => (bool connected);
 
   // Create a permission request for users based on active web contents.
   // The flow will be similar to dapp request permission except it is initiated
