@@ -10,7 +10,6 @@
 #include <optional>
 #include <string>
 #include <string_view>
-#include <tuple>
 #include <utility>
 
 #include "base/check.h"
@@ -50,58 +49,12 @@
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "services/network/test/test_utils.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/gurl.h"
 
 namespace brave_account::endpoint_client {
-
-template <typename T, typename E>
-bool operator==(const Response<T, E>& lhs, const Response<T, E>& rhs) {
-  return std::tie(lhs.net_error, lhs.status_code, lhs.body) ==
-         std::tie(rhs.net_error, rhs.status_code, rhs.body);
-}
-
-template <typename T, typename E>
-bool operator==(const WithHeaders<Response<T, E>>& lhs,
-                const WithHeaders<Response<T, E>>& rhs) {
-  if (static_cast<const Response<T, E>&>(lhs) !=
-      static_cast<const Response<T, E>&>(rhs)) {
-    return false;
-  }
-
-  if (!lhs.headers || !rhs.headers) {
-    return lhs.headers == rhs.headers;
-  }
-
-  return lhs.headers->StrictlyEquals(*rhs.headers);
-}
-
-bool operator==(const JSONRequestBody& lhs, const JSONRequestBody& rhs) {
-  return lhs.request == rhs.request;
-}
-
-bool operator==(const JSONSuccessBody& lhs, const JSONSuccessBody& rhs) {
-  return lhs.success == rhs.success;
-}
-
-bool operator==(const JSONErrorBody& lhs, const JSONErrorBody& rhs) {
-  return lhs.error == rhs.error;
-}
-
-bool operator==(const ProtobufRequestBody& lhs,
-                const ProtobufRequestBody& rhs) {
-  return lhs.request() == rhs.request();
-}
-
-bool operator==(const ProtobufSuccessBody& lhs,
-                const ProtobufSuccessBody& rhs) {
-  return lhs.success() == rhs.success();
-}
-
-bool operator==(const ProtobufErrorBody& lhs, const ProtobufErrorBody& rhs) {
-  return lhs.error() == rhs.error();
-}
 
 namespace {
 
@@ -164,7 +117,7 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
     base::test::TestFuture<Response> future;
     Client<Endpoint>::Send(test_url_loader_factory_.GetSafeWeakWrapper(),
                            MakeRequest(), future.GetCallback());
-    EXPECT_EQ(future.Take(), test_case.response);
+    EXPECT_THAT(future.Take(), ResponseEq(test_case.response));
   }
 
  private:
@@ -479,9 +432,9 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
     EXPECT_EQ(resource_request.headers.GetHeader(
                   net::HttpRequestHeaders::kContentType),
               Request::ContentType());
-    EXPECT_EQ(RequestBodyFrom<typename Endpoint::Request::Body>(
-                  network::GetUploadData(resource_request)),
-              MakeRequest().body);
+    EXPECT_THAT(RequestBodyFrom<typename Endpoint::Request::Body>(
+                    network::GetUploadData(resource_request)),
+                detail::BodyEq(MakeRequest().body));
 
     if constexpr (base::is_instantiation<Request, WithHeaders>) {
       EXPECT_EQ(resource_request.headers.GetHeader(

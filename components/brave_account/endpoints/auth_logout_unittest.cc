@@ -16,16 +16,6 @@
 
 namespace brave_account::endpoints {
 
-bool operator==(const AuthLogout::Response::SuccessBody&,
-                const AuthLogout::Response::SuccessBody&) {
-  return true;
-}
-
-bool operator==(const AuthLogout::Response::ErrorBody&,
-                const AuthLogout::Response::ErrorBody&) {
-  return true;
-}
-
 namespace {
 
 using AuthLogoutTestCase = EndpointTestCase<AuthLogout>;

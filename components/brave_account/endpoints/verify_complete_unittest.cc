@@ -6,7 +6,6 @@
 #include "brave/components/brave_account/endpoints/verify_complete.h"
 
 #include <optional>
-#include <tuple>
 
 #include "base/no_destructor.h"
 #include "base/types/expected.h"
@@ -16,12 +15,6 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_account::endpoints {
-
-bool operator==(const VerifyComplete::Response::SuccessBody& lhs,
-                const VerifyComplete::Response::SuccessBody& rhs) {
-  return std::tie(lhs.auth_token, lhs.email) ==
-         std::tie(rhs.auth_token, rhs.email);
-}
 
 namespace {
 

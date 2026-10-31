@@ -16,11 +16,6 @@
 
 namespace brave_account::endpoints {
 
-bool operator==(const ServiceToken::Response::SuccessBody& lhs,
-                const ServiceToken::Response::SuccessBody& rhs) {
-  return lhs.auth_token == rhs.auth_token;
-}
-
 namespace {
 
 using ServiceTokenTestCase = EndpointTestCase<ServiceToken>;
