@@ -38,6 +38,9 @@
 #include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/resource_coordinator/lifecycle_unit_state.mojom.h"
+#include "chrome/browser/resource_coordinator/tab_lifecycle_unit_external.h"
+#include "chrome/browser/resource_coordinator/tab_lifecycle_unit_source.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -54,6 +57,8 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/language/core/browser/language_prefs.h"
 #include "components/network_session_configurator/common/network_switches.h"
+#include "components/tabs/public/tab_interface.h"
+#include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/reload_type.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/test/browser_test.h"
@@ -159,8 +164,8 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
   }
 
   speedreader::SpeedreaderTabHelper* tab_helper() {
-    return speedreader::SpeedreaderTabHelper::FromWebContents(
-        ActiveWebContents());
+    return speedreader::SpeedreaderTabHelper::From(
+        tabs::TabInterface::MaybeGetFromContents(ActiveWebContents()));
   }
 
   speedreader::SpeedreaderService* speedreader_service() {
@@ -309,6 +314,35 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, RestoreSpeedreaderPage) {
   browser()->tab_strip_model()->ActivateTabAt(0);
   ASSERT_TRUE(WaitDistilled());
   EXPECT_TRUE(speedreader::IsDistilled(tab_helper()->PageDistillState()));
+}
+
+// Discarding a tab replaces its contents, but keeps its Speedreader tab helper,
+// which must distill the page that the new contents loads.
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, FollowsDiscardedContents) {
+  NavigateToPageSynchronously(kTestPageReadable,
+                              WindowOpenDisposition::NEW_BACKGROUND_TAB);
+  TabStripModel* const tab_strip_model = browser()->tab_strip_model();
+  const int index = tab_strip_model->count() - 1;
+  tabs::TabInterface* const tab = tab_strip_model->GetTabAtIndex(index);
+  auto* const th = speedreader::SpeedreaderTabHelper::From(tab);
+  ASSERT_TRUE(th);
+
+  auto* const lifecycle_unit =
+      resource_coordinator::TabLifecycleUnitSource::GetTabLifecycleUnitExternal(
+          tab->GetContents());
+  ASSERT_TRUE(lifecycle_unit);
+  ASSERT_TRUE(
+      lifecycle_unit->DiscardTab(::mojom::LifecycleUnitDiscardReason::URGENT));
+  EXPECT_EQ(th, speedreader::SpeedreaderTabHelper::From(tab));
+
+  content::TestNavigationObserver navigation_observer(tab->GetContents());
+  tab_strip_model->ActivateTabAt(index);
+  tab->GetContents()->GetController().LoadIfNecessary();
+  navigation_observer.Wait();
+
+  EXPECT_TRUE(WaitDistillable(th));
+  EXPECT_TRUE(ClickReaderButton());
+  EXPECT_TRUE(speedreader::IsDistilled(th->PageDistillState()));
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, NavigationNostickTest) {
@@ -596,10 +630,10 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ReloadContent) {
   NavigateToPageSynchronously(kTestPageReadable);
   auto* contents_2 = ActiveWebContents();
 
-  auto* tab_helper_1 =
-      speedreader::SpeedreaderTabHelper::FromWebContents(contents_1);
-  auto* tab_helper_2 =
-      speedreader::SpeedreaderTabHelper::FromWebContents(contents_2);
+  auto* tab_helper_1 = speedreader::SpeedreaderTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(contents_1));
+  auto* tab_helper_2 = speedreader::SpeedreaderTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(contents_2));
 
   EXPECT_TRUE(speedreader::IsDistilled(tab_helper_1->PageDistillState()));
   EXPECT_TRUE(speedreader::IsDistilled(tab_helper_2->PageDistillState()));
@@ -669,8 +703,8 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPage) {
                             ISOLATED_WORLD_ID_BRAVE_INTERNAL)
                 .ExtractString());
   content::WaitForLoadStop(web_contents);
-  auto* tab_helper =
-      speedreader::SpeedreaderTabHelper::FromWebContents(web_contents);
+  auto* tab_helper = speedreader::SpeedreaderTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   EXPECT_TRUE(speedreader::IsDistillable(tab_helper->PageDistillState()));
   EXPECT_TRUE(speedreader_service()->IsAllowedForSite(web_contents));
 

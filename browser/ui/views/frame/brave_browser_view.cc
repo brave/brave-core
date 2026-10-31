@@ -644,8 +644,8 @@ void BraveBrowserView::UpdateReaderModeToolbar() {
     if (!web_contents) {
       return false;
     }
-    if (auto* th =
-            speedreader::SpeedreaderTabHelper::FromWebContents(web_contents)) {
+    if (auto* th = speedreader::SpeedreaderTabHelper::From(
+            tabs::TabInterface::MaybeGetFromContents(web_contents))) {
       return speedreader::IsDistilled(th->PageDistillState());
     }
     return false;

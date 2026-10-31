@@ -278,8 +278,8 @@ void MaybeDistillAndShowSpeedreaderBubble(BrowserWindowInterface* browser) {
   if (!contents) {
     return;
   }
-  if (auto* tab_helper =
-          speedreader::SpeedreaderTabHelper::FromWebContents(contents)) {
+  if (auto* tab_helper = speedreader::SpeedreaderTabHelper::From(
+          tabs::TabInterface::MaybeGetFromContents(contents))) {
     tab_helper->ProcessIconClick();
   }
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)

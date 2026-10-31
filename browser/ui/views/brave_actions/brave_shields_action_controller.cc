@@ -241,8 +241,8 @@ bool BraveShieldsActionController::IsPageInReaderMode(
     return false;
   }
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  if (auto* speedreader_tab_helper =
-          speedreader::SpeedreaderTabHelper::FromWebContents(web_contents)) {
+  if (auto* speedreader_tab_helper = speedreader::SpeedreaderTabHelper::From(
+          tabs::TabInterface::MaybeGetFromContents(web_contents))) {
     return speedreader::IsDistilled(speedreader_tab_helper->PageDistillState());
   }
 #endif

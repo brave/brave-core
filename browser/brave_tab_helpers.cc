@@ -23,7 +23,6 @@
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
-#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
@@ -64,10 +63,6 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
-#endif
-
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-#include "brave/browser/ui/speedreader/speedreader_tab_helper.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -112,10 +107,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 
   brave_perf_predictor::PerfPredictorTabHelper::CreateForWebContents(
       web_contents);
-
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-  speedreader::SpeedreaderTabHelper::MaybeCreateForWebContents(web_contents);
-#endif
 
 #if BUILDFLAG(ENABLE_TOR)
   tor::TorTabHelper::MaybeCreateForWebContents(web_contents);

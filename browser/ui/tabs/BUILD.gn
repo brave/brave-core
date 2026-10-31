@@ -127,6 +127,10 @@ if (!is_android) {
       deps += [ "//brave/browser/brave_wallet:tab_helper" ]
     }
 
+    if (enable_speedreader) {
+      deps += [ "//brave/browser/ui/speedreader" ]
+    }
+
     if (enable_brave_ads) {
       deps += [
         "//brave/browser/brave_ads/creatives/search_result_ad",
