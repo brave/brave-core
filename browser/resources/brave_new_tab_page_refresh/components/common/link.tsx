@@ -12,6 +12,7 @@ interface Props {
   className?: string
   onClick?: () => void
   onContextMenu?: React.MouseEventHandler<HTMLAnchorElement>
+  onFocus?: React.FocusEventHandler<HTMLAnchorElement>
   onBlur?: React.FocusEventHandler<HTMLAnchorElement>
   openInNewTab?: boolean
   children: React.ReactNode
@@ -30,6 +31,7 @@ export function Link(props: Props) {
       target={props.openInNewTab ? '_blank' : '_self'}
       onClick={props.onClick}
       onContextMenu={props.onContextMenu}
+      onFocus={props.onFocus}
       onBlur={props.onBlur}
     >
       {props.children}

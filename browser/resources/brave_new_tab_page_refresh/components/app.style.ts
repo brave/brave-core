@@ -10,6 +10,8 @@ export const narrowBreakpoint = '900px'
 export const threeColumnBreakpoint = '1275px'
 export const horizontalContentPadding = 24
 
+const captionMinHeight = 30
+
 const topControlsNarrowBreakpoint = '1075px'
 const topControlsWideBreakpoint = threeColumnBreakpoint
 
@@ -177,7 +179,7 @@ export const style = scoped.css`
     justify-content: center;
 
     @container (width > ${narrowBreakpoint}) {
-      min-height: 200px;
+      min-height: ${200 - captionMinHeight}px;
     }
   }
 
@@ -192,7 +194,7 @@ export const style = scoped.css`
       margin-inline-end: 16px;
 
       min-width: fit-content;
-      min-height: 30px;
+      min-height: ${captionMinHeight}px;
 
       position-try-fallbacks: --try-captions-above;
     }
@@ -202,13 +204,26 @@ export const style = scoped.css`
     inset-block-end: anchor(start);
     inset-inline-start: anchor(start);
     inset-inline-end: unset;
-    margin-block-end: 16px;
+    margin-block-end: var(--caption-margin-block-end, 16px);
     margin-inline-start: 0;
     margin-inline-end: 0;
   }
 
+  .caption-container:has(.new-tab-takeover-disclosure) {
+    --caption-margin-block-end: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+  }
+
   .caption-container:has(.centered-ntt-cta-button) {
     position: static;
+  }
+
+  .sponsored-background-safe-area {
+    @container (width > ${narrowBreakpoint}) {
+      margin-block-end: ${captionMinHeight}px;
+    }
   }
 
   .widget-container {

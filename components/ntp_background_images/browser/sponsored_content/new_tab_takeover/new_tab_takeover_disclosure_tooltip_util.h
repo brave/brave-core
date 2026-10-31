@@ -14,9 +14,8 @@ namespace ntp_background_images {
 // otherwise returns true.
 bool ShouldAutoDisplayNewTabTakeoverDisclosureTooltip(const PrefService& prefs);
 
-// Decrements the remaining display count without clamping, so it can go
-// negative if called more often than
-// `ShouldAutoDisplayNewTabTakeoverDisclosureTooltip` allows.
+// Decrements the remaining display count. Must only be called when
+// `ShouldAutoDisplayNewTabTakeoverDisclosureTooltip` returns true.
 void RecordNewTabTakeoverDisclosureTooltipWasDisplayed(PrefService& prefs);
 
 // Sets the remaining display count to 0, preventing further auto-display.
