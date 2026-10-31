@@ -23,6 +23,7 @@
 #include "brave/components/skus/common/features.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
+#include "chrome/browser/enterprise/browser_management/management_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/tabs/recent_tabs_sub_menu_model.h"
@@ -30,6 +31,7 @@
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/policy/core/common/management/scoped_management_service_override_for_testing.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
 
@@ -462,6 +464,23 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuItemsHaveIcons) {
   model.Init();
 
   CheckMenuIcons(&model, 1);
+}
+
+// Upstream adds a Chrome Enterprise release notes link for managed browsers on
+// Linux; Brave removes it.
+IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest,
+                       NoEnterpriseReleaseNotesWhenManaged) {
+  policy::ScopedManagementServiceOverrideForTesting profile_management(
+      policy::ManagementServiceFactory::GetForProfile(browser()->GetProfile()),
+      policy::EnterpriseManagementAuthority::CLOUD_DOMAIN);
+
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  BraveAppMenuModel model(browser_view->toolbar(), browser());
+  model.Init();
+
+  EXPECT_TRUE(model.GetIndexOfCommandId(IDC_SHOW_MANAGEMENT_PAGE).has_value());
+  EXPECT_FALSE(model.GetIndexOfCommandId(IDC_CHROME_ENTERPRISE_RELEASE_NOTES)
+                   .has_value());
 }
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
