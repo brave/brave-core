@@ -96,6 +96,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/browser/ui/speedreader/speedreader_tab_helper.h"
 #include "brave/components/speedreader/common/features.h"
 #endif
 
@@ -188,6 +189,8 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
+  // Created before the page action controller, which observes it.
+  speedreader_tab_helper_ = speedreader::SpeedreaderTabHelper::MaybeCreate(tab);
   if (base::FeatureList::IsEnabled(
           speedreader::features::kSpeedreaderFeature) &&
       page_action_controller()->ActionExists(kActionShowSpeedreader)) {
