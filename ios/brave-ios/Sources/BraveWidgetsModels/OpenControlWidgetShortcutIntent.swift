@@ -15,14 +15,19 @@ public struct OpenControlWidgetShortcutIntent: UISceneAppIntent {
   public static let title: LocalizedStringResource = "Open Brave"
   public static let openAppWhenRun: Bool = true
 
-  public var shortcut: WidgetShortcut
+  /// Control Center restores this after `init()`. The stored `WidgetShortcut` does not come back.
+  @Parameter(title: "Shortcut")
+  public var shortcutValue: Int?
 
-  public init() {
-    self.shortcut = .unknown
+  public init() {}
+
+  public init(shortcut: WidgetShortcut?) {
+    self.shortcutValue = shortcut?.rawValue
   }
 
-  public init(shortcut: WidgetShortcut) {
-    self.shortcut = shortcut
+  public var shortcut: WidgetShortcut? {
+    guard let shortcutValue else { return nil }
+    return WidgetShortcut(rawValue: shortcutValue)
   }
 }
 
