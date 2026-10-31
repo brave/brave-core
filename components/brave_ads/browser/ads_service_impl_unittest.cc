@@ -43,6 +43,7 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/idle/idle.h"
+#include "url/gurl.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/components/brave_rewards/core/features.h"
@@ -146,6 +147,12 @@ class BraveAdsAdsServiceImplTest : public testing::Test {
   void OnNotificationAdClicked(const std::string& placement_id) {
     ads_service_->OnNotificationAdClicked(placement_id);
   }
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+  void OnExternalWalletConnected() {
+    ads_service_->OnExternalWalletConnected();
+  }
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 
   void ClearData(ResultCallback callback) {
     ads_service_->ClearData(std::move(callback));
@@ -1101,6 +1108,37 @@ TEST_F(BraveAdsAdsServiceImplTest,
   EXPECT_THAT(delegate_->closed_notification_ad_ids(),
               testing::ElementsAre(placement_id));
 }
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+TEST_F(BraveAdsAdsServiceImplTest,
+       ClickingAReminderAfterConnectingAWalletOpensItsTargetUrlAndClosesIt) {
+  // Arrange
+  prefs_.SetBoolean(prefs::kSponsoredEnabled, true);
+  prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
+  prefs_.SetBoolean(prefs::kNotificationsEnabled, true);
+  delegate_->set_can_show_notifications(true);
+  Startup();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return bat_ads_service_factory_->initialize_count() == 1U; }));
+
+  OnExternalWalletConnected();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return bat_ads_service_factory_->initialize_count() == 2U; }));
+  ASSERT_TRUE(delegate_->last_shown_notification_ad_placement_id());
+  const std::string placement_id =
+      *delegate_->last_shown_notification_ad_placement_id();
+
+  // Act
+  OnNotificationAdClicked(placement_id);
+
+  // Assert
+  EXPECT_THAT(delegate_->last_opened_url(),
+              testing::Optional(GURL("https://support.brave.app/hc/en-us/"
+                                     "articles/14648356808845")));
+  EXPECT_THAT(delegate_->closed_notification_ad_ids(),
+              testing::ElementsAre(placement_id));
+}
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 
 TEST_F(BraveAdsAdsServiceImplTest,
        ClosingTheSamePlacementIdASecondTimeForwardsItAsANotificationAdEvent) {
