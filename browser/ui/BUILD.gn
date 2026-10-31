@@ -126,6 +126,7 @@ source_set("ui") {
     "//brave/browser/ui/whats_new:unit_test",
     "//brave/browser/web_discovery:browser_tests",
     "//brave/browser/widevine:browser_tests",
+    "//brave/browser/workspaces:browser_tests",
 
     # Covers the Android test() subtargets, e.g. JNI registration.
     "//brave/test:*",
