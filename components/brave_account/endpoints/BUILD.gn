@@ -21,10 +21,10 @@ source_set("endpoints") {
     "verify_resend.h",
   ]
 
-  deps = [ "//brave/components/brave_account/endpoint_client" ]
-
-  public_deps =
-      [ "//brave/components/brave_account/endpoints:generated_api_types" ]
+  public_deps = [
+    "//brave/components/brave_account/endpoint_client",
+    "//brave/components/brave_account/endpoints:generated_api_types",
+  ]
 }
 
 generated_types("generated_api_types") {
