@@ -190,6 +190,8 @@ void TxService::AddUnapprovedEvmDappTransaction(
     const url::Origin& origin,
     bool sign_only,
     AddUnapprovedEvmTransactionCallback callback) {
+  CHECK(IsValidDappOrigin(origin));
+
   if (auto sender = account_resolver_delegate_->ResolveAddress(from);
       sender &&
       BlockchainRegistry::GetInstance()->IsRestrictedAddress(*sender)) {
@@ -214,6 +216,8 @@ void TxService::AddUnapprovedEvmDappTransaction(
     const url::Origin& origin,
     bool sign_only,
     AddUnapprovedEvmTransactionCallback callback) {
+  CHECK(IsValidDappOrigin(origin));
+
   if (auto sender = account_resolver_delegate_->ResolveAddress(from);
       sender &&
       BlockchainRegistry::GetInstance()->IsRestrictedAddress(*sender)) {
