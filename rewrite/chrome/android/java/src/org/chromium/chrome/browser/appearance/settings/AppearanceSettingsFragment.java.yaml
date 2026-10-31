@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Expose getBookmarkBarVisibilityStateSummaryRes() to Brave's Appearance
+      settings.
+
+      AppearancePreferences replaces the upstream settings search index
+      provider, so it has to set the bookmark bar visibility summary on the
+      indexed row itself. It lives in a different package and calls the mapping
+      rather than duplicating the three-state switch, which would silently go
+      stale if upstream added a state.
+    regex:
+      re_pattern: |-
+        static (@StringRes int getBookmarkBarVisibilityStateSummaryRes\()
+      replace: |-
+        public static \1

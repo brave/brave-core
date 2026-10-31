@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/appearance/settings/AppearanceSettingsFragment.java b/chrome/android/java/src/org/chromium/chrome/browser/appearance/settings/AppearanceSettingsFragment.java
+index dfd8f79fed49a2dd645e51745f6761051edf6fe2..0052d7a14a04a667f74828b53029714a75b3b990 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/appearance/settings/AppearanceSettingsFragment.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/appearance/settings/AppearanceSettingsFragment.java
+@@ -400,7 +400,7 @@ public class AppearanceSettingsFragment extends ChromeBaseSettingsFragment
+         return mPrefObserver;
+     }
+ 
+-    static @StringRes int getBookmarkBarVisibilityStateSummaryRes(Profile profile) {
++    public static @StringRes int getBookmarkBarVisibilityStateSummaryRes(Profile profile) {
+         @BookmarkBarVisibilityState
+         int state =
+                 BookmarkBarUtils.shouldUseProfileUserPrefs()
