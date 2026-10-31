@@ -63,6 +63,7 @@ class TxStateManager {
 
  private:
   FRIEND_TEST_ALL_PREFIXES(TxStateManagerUnitTest, ConvertFromAddress);
+  FRIEND_TEST_ALL_PREFIXES(TxStateManagerUnitTest, RejectInvalidTxStatus);
   FRIEND_TEST_ALL_PREFIXES(TxStateManagerUnitTest, TxOperations);
   FRIEND_TEST_ALL_PREFIXES(EthTxManagerUnitTest, Reset);
 
