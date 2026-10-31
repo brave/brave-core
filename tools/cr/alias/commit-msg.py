@@ -65,6 +65,15 @@
 #    name is "codehealth+fix-issue-123", the commit message will include a link
 #    to "Resolves https://github.com/brave/brave-browser/issues/123".
 #
+# 8. `force_commit_hook` environment variable
+#
+#    The hook leaves commit messages alone during a rebase or cherry-pick, and
+#    for `fixup!` and `amend!` commits. Setting `force_commit_hook=1` (what
+#    `git cr commit --force-commit-hook` does) runs it anyway, for a commit made
+#    by hand while a rebase is stopped. During a rebase, the branch's tags,
+#    upstream and range come from the branch being rebased. A `fixup!` or
+#    `amend!` subject gets no tags, so autosquash still finds its target.
+#
 # This script can be set up either as a commit-msg hook, or as a
 # prepare-commit-msg hook. The difference is that the commit-msg hook will run
 # after the commit message is created, while the prepare-commit-msg hook will
@@ -163,14 +172,28 @@ def _chromium_tag(ref: str) -> str | None:
         return None
 
 
-def culprit_range_problem(git_dir: str, full_hash: str) -> str | None:
+def current_branch() -> str:
+    """The branch being committed to: the one being rebased, during a rebase,
+    as HEAD is detached then."""
+    for state in ('rebase-merge', 'rebase-apply'):
+        head_name = _git('rev-parse', '--git-path', f'{state}/head-name')
+        path = Path(head_name.stdout.strip())
+        if head_name.returncode == 0 and path.is_file():
+            ref = path.read_bytes().decode('utf-8').strip()
+            return ref.removeprefix('refs/heads/')
+    return _git('rev-parse', '--abbrev-ref', 'HEAD').stdout.strip()
+
+
+def culprit_range_problem(
+    git_dir: str, full_hash: str, branch: str
+) -> str | None:
     """Says why a Chromium culprit is outside the branch's range, if it is.
 
     On a `cr<N>` branch, an upstream culprit is a commit between the
     Chromium tag its upstream (the base) pins, and the one HEAD pins. The
     check is skipped, with a warning, when those tags can't be resolved.
     """
-    upstream = _git('rev-parse', '--abbrev-ref', '@{upstream}')
+    upstream = _git('rev-parse', '--abbrev-ref', f'{branch}@{{upstream}}')
     if upstream.returncode:
         return None
     old, new = _chromium_tag(upstream.stdout.strip()), _chromium_tag('HEAD')
@@ -205,7 +228,8 @@ def culprit_range_problem(git_dir: str, full_hash: str) -> str | None:
 
 
 def main():
-    if (
+    forced = os.getenv('force_commit_hook') == '1'
+    if not forced and (
         os.path.exists('.git/rebase-merge')
         or os.path.exists('.git/rebase-apply')
         or os.path.exists('.git/CHERRY_PICK_HEAD')
@@ -226,20 +250,15 @@ def main():
         return 1
 
     # Skip fixup! changes.
-    if commit_message.startswith('fixup!') or commit_message.startswith(
-        'amend!'
-    ):
+    squash_marker = commit_message.startswith(('fixup!', 'amend!'))
+    if squash_marker and not forced:
         return 0
 
     first_line = commit_message.split('\n', 1)[0]
 
     # Getting the branch name to see if there's any tags that can be deduced
     # from it.
-    branch_name = (
-        subprocess.check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD'])
-        .strip()
-        .decode()
-    )
+    branch_name = current_branch()
 
     tags = set()
     # Checking for chromium upgrade branches
@@ -261,8 +280,12 @@ def main():
         tags.update(tags_env.split(','))
 
     # Making sure we are not re-inserting tags that are already in the commit
-    # message
-    tags = [f'[{tag}]' for tag in tags if f'[{tag}]' not in first_line]
+    # message, nor putting any in front of a `fixup!` that autosquash matches.
+    tags = [
+        f'[{tag}]'
+        for tag in tags
+        if f'[{tag}]' not in first_line and not squash_marker
+    ]
 
     # These are the report links that are added to the commit message when
     # there's an upstream culprit.
@@ -293,7 +316,9 @@ def main():
             )
             return 1
         if not repo and re.fullmatch(cr_branch_pattern, branch_name):
-            if problem := culprit_range_problem(git_dir, full_hash):
+            if problem := culprit_range_problem(
+                git_dir, full_hash, branch_name
+            ):
                 print(problem, file=sys.stderr)
                 return 1
         culprits.append((git_dir, full_hash, url_base))
