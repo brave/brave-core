@@ -6,12 +6,13 @@
 #include <memory>
 
 #include "base/command_line.h"
-#include "base/test/test_future.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/test_future.h"
 #include "brave/browser/ui/tabs/brave_tab_menu_model.h"
 #include "brave/browser/ui/tabs/public/switches.h"
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 #include "brave/components/containers/buildflags/buildflags.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -161,7 +162,11 @@ IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest, CopyLinks) {
   menu = CreateMenuControllerAt(0);
   CreateMenuModelAt(menu.get(), 0);
   menu->ExecuteCommand(TabStripModel::CommandCopyURL, /*event_flags=*/0);
+#if BUILDFLAG(IS_WIN)
+  EXPECT_EQ(read_clipboard(), u"data:text/html,1\r\ndata:text/html,2");
+#else
   EXPECT_EQ(read_clipboard(), u"data:text/html,1\ndata:text/html,2");
+#endif
 }
 
 IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest,

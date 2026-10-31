@@ -48,6 +48,7 @@
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/url_sanitizer/core/browser/url_sanitizer_service.h"
+#include "build/build_config.h"
 #include "chrome/browser/bookmarks/bookmark_html_writer.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -436,7 +437,14 @@ void CopyLinksOfTabs(BrowserWindowInterface* browser,
     // Keep it out of the OS clipboard history and cloud clipboard sync.
     scw.MarkAsOffTheRecord();
   }
-  scw.WriteText(base::UTF8ToUTF16(base::JoinString(urls, "\n")));
+  // Match Blink, which writes CRLF line endings for copied page text on
+  // Windows, so older text controls that only break on CRLF show one per line.
+#if BUILDFLAG(IS_WIN)
+  constexpr char kLineBreak[] = "\r\n";
+#else
+  constexpr char kLineBreak[] = "\n";
+#endif
+  scw.WriteText(base::UTF8ToUTF16(base::JoinString(urls, kLineBreak)));
 }
 
 void ToggleWindowTitleVisibilityForVerticalTabs(
