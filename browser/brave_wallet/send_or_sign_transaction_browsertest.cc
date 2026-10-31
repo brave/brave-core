@@ -31,6 +31,7 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/network_session_configurator/common/network_switches.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -297,8 +298,8 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
 
   void CallEthereumEnable(bool is_repeat_call = false) {
     base::RunLoop run_loop;
-    auto* tab_helper =
-        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents());
+    auto* tab_helper = brave_wallet::BraveWalletTabHelper::From(
+        tabs::TabInterface::MaybeGetFromContents(web_contents()));
     tab_helper->SetShowBubbleCallbackForTesting(run_loop.QuitClosure());
 
     ASSERT_TRUE(ExecJs(web_contents(), "ethereumEnable()"));
@@ -405,9 +406,9 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
             data)));
     observer()->WaitForNewUnapprovedTx();
     base::RunLoop().RunUntilIdle();
-    ASSERT_TRUE(
-        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-            ->IsShowingBubble());
+    ASSERT_TRUE(brave_wallet::BraveWalletTabHelper::From(
+                    tabs::TabInterface::MaybeGetFromContents(web_contents()))
+                    ->IsShowingBubble());
 
     auto infos = GetAllTransactionInfo(chain_id);
     ASSERT_EQ(1UL, infos.size());
@@ -472,9 +473,9 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
     observer()->WaitForNewUnapprovedTx();
 
     base::RunLoop().RunUntilIdle();
-    EXPECT_TRUE(
-        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-            ->IsShowingBubble());
+    EXPECT_TRUE(brave_wallet::BraveWalletTabHelper::From(
+                    tabs::TabInterface::MaybeGetFromContents(web_contents()))
+                    ->IsShowingBubble());
 
     auto infos = GetAllTransactionInfo(chain_id);
 
@@ -780,9 +781,9 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, InvalidAddress) {
                    sign_only)));
 
     WaitForSendOrSignTransactionResultReady();
-    EXPECT_FALSE(
-        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-            ->IsShowingBubble());
+    EXPECT_FALSE(brave_wallet::BraveWalletTabHelper::From(
+                     tabs::TabInterface::MaybeGetFromContents(web_contents()))
+                     ->IsShowingBubble());
     EXPECT_EQ(EvalJs(web_contents(), "getSendOrSignTransactionError()")
                   .ExtractString(),
               l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
@@ -808,9 +809,9 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, NoEthPermission) {
                    sign_only)));
 
     WaitForSendOrSignTransactionResultReady();
-    EXPECT_FALSE(
-        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-            ->IsShowingBubble());
+    EXPECT_FALSE(brave_wallet::BraveWalletTabHelper::From(
+                     tabs::TabInterface::MaybeGetFromContents(web_contents()))
+                     ->IsShowingBubble());
     EXPECT_EQ(EvalJs(web_contents(), "getSendOrSignTransactionError()")
                   .ExtractString(),
               l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));

@@ -33,6 +33,7 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/content_client.h"
 #include "content/public/test/browser_test.h"
@@ -304,8 +305,8 @@ class TestTxServiceObserver : public mojom::TxServiceObserver {
 };
 
 bool WaitForWalletBubble(content::WebContents* web_contents) {
-  auto* tab_helper =
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents);
+  auto* tab_helper = brave_wallet::BraveWalletTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   if (!tab_helper->IsShowingBubble()) {
     base::RunLoop run_loop;
     tab_helper->SetShowBubbleCallbackForTesting(run_loop.QuitClosure());
@@ -316,8 +317,8 @@ bool WaitForWalletBubble(content::WebContents* web_contents) {
 }
 
 void CloseWalletBubble(content::WebContents* web_contents) {
-  auto* tab_helper =
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents);
+  auto* tab_helper = brave_wallet::BraveWalletTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   tab_helper->CloseBubble();
 }
 
@@ -1535,9 +1536,9 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {
 
   // eagerly connect
   CallSolanaRequest(R"({method: "connect", params: { onlyIfTrusted: true }})");
-  EXPECT_FALSE(
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-          ->IsShowingBubble());
+  EXPECT_FALSE(brave_wallet::BraveWalletTabHelper::From(
+                   tabs::TabInterface::MaybeGetFromContents(web_contents()))
+                   ->IsShowingBubble());
   WaitForResultReady();
   EXPECT_EQ(GetRequestResult(), account_0->address);
   ASSERT_TRUE(IsSolanaConnected(web_contents()));
