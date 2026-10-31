@@ -228,6 +228,14 @@ bool MigrateFrom11to12(sql::Database* db) {
   return true;
 }
 
+bool MigrateFrom12to13(sql::Database* db) {
+  static constexpr char kAddIsSyncStubColumnQuery[] =
+      "ALTER TABLE conversation ADD COLUMN is_sync_stub INTEGER NOT NULL "
+      "DEFAULT 0";
+  sql::Statement statement(db->GetUniqueStatement(kAddIsSyncStubColumnQuery));
+  return statement.is_valid() && statement.Run();
+}
+
 // Key in sql::MetaTable for the serialized DataTypeState.
 const char kAIChatDataTypeStateKey[] = "ai_chat_data_type_state";
 
@@ -243,7 +251,7 @@ constexpr int kLowestSupportedDatabaseVersion = 1;
 constexpr int kCompatibleDatabaseVersionNumber = 7;
 
 // Current version of the database. Increase if breaking changes are made.
-constexpr int kCurrentDatabaseVersion = 12;
+constexpr int kCurrentDatabaseVersion = 13;
 
 AIChatDatabase::AIChatDatabase(
     const base::FilePath& db_file_path,
@@ -407,6 +415,15 @@ sql::InitStatus AIChatDatabase::InitInternal() {
       }
       current_version = 12;
     }
+    if (migration_success && current_version == 12) {
+      migration_success = MigrateFrom12to13(&GetDB());
+      if (migration_success) {
+        migration_success = meta_table.SetCompatibleVersionNumber(
+                                kCompatibleDatabaseVersionNumber) &&
+                            meta_table.SetVersionNumber(13);
+      }
+      current_version = 13;
+    }
     // Migration unsuccessful, raze the database and re-init
     if (!migration_success) {
       transaction.Rollback();
@@ -453,6 +470,7 @@ std::vector<mojom::ConversationPtr> AIChatDatabase::GetAllConversations() {
       "  ORDER BY conversation_entry.date desc) "
       " AS last_activity_date"
       " ON last_activity_date.conversation_uuid = conversation.uuid"
+      " WHERE NOT conversation.is_sync_stub"
       " ORDER BY conversation.uuid ASC";
   sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE, kQuery));
   CHECK(statement.is_valid());
@@ -1189,7 +1207,9 @@ bool AIChatDatabase::AddConversationEntry(
             return false;
           }
           event_statement.BindString(2, entry->uuid.value());
-          event_statement.Run();
+          if (!event_statement.Run()) {
+            return false;
+          }
           break;
         }
         case mojom::ConversationEntryEvent::Tag::kSearchQueriesEvent: {
@@ -1209,7 +1229,9 @@ bool AIChatDatabase::AddConversationEntry(
             return false;
           }
           event_statement.BindString(2, entry->uuid.value());
-          event_statement.Run();
+          if (!event_statement.Run()) {
+            return false;
+          }
           break;
         }
         case mojom::ConversationEntryEvent::Tag::kSourcesEvent: {
@@ -1232,7 +1254,9 @@ bool AIChatDatabase::AddConversationEntry(
             return false;
           }
           event_statement.BindString(2, entry->uuid.value());
-          event_statement.Run();
+          if (!event_statement.Run()) {
+            return false;
+          }
           break;
         }
         case mojom::ConversationEntryEvent::Tag::kInlineSearchEvent: {
@@ -1256,7 +1280,9 @@ bool AIChatDatabase::AddConversationEntry(
             return false;
           }
           event_statement.BindString(2, entry->uuid.value());
-          event_statement.Run();
+          if (!event_statement.Run()) {
+            return false;
+          }
           break;
         }
         case mojom::ConversationEntryEvent::Tag::kToolUseEvent: {
@@ -1282,7 +1308,9 @@ bool AIChatDatabase::AddConversationEntry(
             return false;
           }
           event_statement.BindString(2, entry->uuid.value());
-          event_statement.Run();
+          if (!event_statement.Run()) {
+            return false;
+          }
           break;
         }
         default: {
@@ -1327,7 +1355,9 @@ bool AIChatDatabase::AddConversationEntry(
       BindAndEncryptOptionalString(uploaded_file_statement, 5,
                                    uploaded_file->extracted_text);
       uploaded_file_statement.BindString(6, entry->uuid.value());
-      uploaded_file_statement.Run();
+      if (!uploaded_file_statement.Run()) {
+        return false;
+      }
     }
   }
 
@@ -1549,7 +1579,8 @@ bool AIChatDatabase::DeleteConversation(std::string_view conversation_uuid) {
   }
 
   for (const auto& entry_uuid : entry_uuids) {
-    if (!DeleteEntryAndOwnedRows(entry_uuid)) {
+    if (!DeleteEntryAndOwnedRows(entry_uuid,
+                                 /*keep_workspace_content=*/false)) {
       return false;
     }
   }
@@ -1607,7 +1638,8 @@ bool AIChatDatabase::DeleteConversationEntry(
     return false;
   }
 
-  if (!DeleteEntryAndOwnedRows(conversation_entry_uuid)) {
+  if (!DeleteEntryAndOwnedRows(conversation_entry_uuid,
+                               /*keep_workspace_content=*/false)) {
     return false;
   }
 
@@ -1620,7 +1652,8 @@ bool AIChatDatabase::DeleteConversationEntry(
 }
 
 bool AIChatDatabase::DeleteEntryAndOwnedRows(
-    std::string_view conversation_entry_uuid) {
+    std::string_view conversation_entry_uuid,
+    bool keep_workspace_content) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   // An edit is a conversation_entry row of its own which owns its own child
@@ -1653,9 +1686,17 @@ bool AIChatDatabase::DeleteEntryAndOwnedRows(
     // associated_content is keyed by conversation_entry_uuid but is also
     // scoped by conversation, so it isn't one of kEntryEventTables.
     {
-      static constexpr char kQuery[] =
+      static constexpr char kDeleteAllQuery[] =
           "DELETE FROM associated_content WHERE conversation_entry_uuid=?";
-      sql::Statement statement(GetDB().GetUniqueStatement(kQuery));
+      static constexpr char kDeleteNonWorkspaceQuery[] =
+          "DELETE FROM associated_content WHERE conversation_entry_uuid=?"
+          " AND content_type != 2";
+      sql::Statement statement;
+      if (keep_workspace_content) {
+        statement.Assign(GetDB().GetUniqueStatement(kDeleteNonWorkspaceQuery));
+      } else {
+        statement.Assign(GetDB().GetUniqueStatement(kDeleteAllQuery));
+      }
       CHECK(statement.is_valid());
       statement.BindString(0, entry_uuid);
       if (!statement.Run()) {
@@ -1842,7 +1883,10 @@ bool AIChatDatabase::CreateSchema() {
       "title BLOB,"
       "model_key TEXT,"
       "total_tokens INTEGER NOT NULL,"
-      "trimmed_tokens INTEGER NOT NULL)";
+      "trimmed_tokens INTEGER NOT NULL,"
+      // Set while the row only holds synced entries whose conversation
+      // metadata record hasn't arrived. GetAllConversations() skips these.
+      "is_sync_stub INTEGER NOT NULL DEFAULT 0)";
   CHECK(GetDB().IsSQLValid(kCreateConversationTableQuery));
   if (!GetDB().Execute(kCreateConversationTableQuery)) {
     return false;
@@ -2029,6 +2073,138 @@ bool AIChatDatabase::CreateSchema() {
   }
 
   return true;
+}
+
+bool AIChatDatabase::ApplyRemoteConversationMetadata(
+    mojom::ConversationPtr conversation) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(conversation);
+  CHECK(!conversation->uuid.empty());
+  if (!LazyInit()) {
+    return false;
+  }
+
+  // Upsert by uuid: update the row in place, and insert only when there is
+  // none. Chromium builds SQLite with SQLITE_OMIT_UPSERT, and INSERT OR REPLACE
+  // would reset every column it doesn't name, whereas UPDATE keeps them.
+  // Neither touches the entry or associated content rows, which sync as their
+  // own records. Clearing is_sync_stub lists a stub that ApplyRemoteEntry
+  // created ahead of this record.
+  static constexpr char kUpdateConversationQuery[] =
+      "UPDATE conversation SET title=?, model_key=?, total_tokens=?,"
+      " trimmed_tokens=?, is_sync_stub=0 WHERE uuid=?";
+  static constexpr char kInsertConversationQuery[] =
+      "INSERT INTO conversation"
+      "  (title, model_key, total_tokens, trimmed_tokens, uuid)"
+      "  VALUES(?, ?, ?, ?, ?)";
+  // Both statements take the same parameters in the same order.
+  auto bind = [&](sql::Statement& statement) {
+    // Fail on an encryption error rather than bind NULL over the stored title.
+    if (conversation->title.empty()) {
+      statement.BindNull(0);
+    } else if (!BindAndEncryptString(statement, 0, conversation->title)) {
+      return false;
+    }
+    BindOptionalString(statement, 1, conversation->model_key);
+    statement.BindInt64(2, conversation->total_tokens);
+    statement.BindInt64(3, conversation->trimmed_tokens);
+    statement.BindString(4, conversation->uuid);
+    return true;
+  };
+
+  sql::Statement update_statement(
+      GetDB().GetCachedStatement(SQL_FROM_HERE, kUpdateConversationQuery));
+  CHECK(update_statement.is_valid());
+  if (!bind(update_statement)) {
+    return false;
+  }
+  if (!update_statement.Run()) {
+    DVLOG(0) << "Failed to update remote conversation: "
+             << db_.GetErrorMessage();
+    return false;
+  }
+  if (GetDB().GetLastChangeCount() > 0) {
+    return true;
+  }
+
+  sql::Statement insert_statement(
+      GetDB().GetCachedStatement(SQL_FROM_HERE, kInsertConversationQuery));
+  CHECK(insert_statement.is_valid());
+  if (!bind(insert_statement)) {
+    return false;
+  }
+  if (!insert_statement.Run()) {
+    DVLOG(0) << "Failed to insert remote conversation: "
+             << db_.GetErrorMessage();
+    return false;
+  }
+  return true;
+}
+
+bool AIChatDatabase::ApplyRemoteEntry(
+    std::string_view conversation_uuid,
+    mojom::ConversationTurnPtr entry,
+    std::vector<mojom::AssociatedContentPtr> associated_content,
+    std::vector<std::string> contents) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(!conversation_uuid.empty());
+  CHECK(entry);
+  CHECK(entry->uuid.has_value() && !entry->uuid->empty());
+  CHECK_EQ(associated_content.size(), contents.size());
+  if (!LazyInit()) {
+    return false;
+  }
+
+  sql::Transaction transaction(&GetDB());
+  if (!transaction.Begin()) {
+    DVLOG(0) << "Transaction cannot begin";
+    return false;
+  }
+
+  // AddConversationEntry refuses to create an orphan entry, so make sure the
+  // parent row exists first. An entry and its conversation metadata are
+  // separate sync records and can arrive in either order: OR IGNORE leaves an
+  // existing conversation untouched, and otherwise holds the entry in a stub
+  // row that ApplyRemoteConversationMetadata fills in when the metadata
+  // record arrives. Until then the stub is hidden from GetAllConversations(),
+  // so it can't be shown, replied to, or uploaded with placeholder metadata.
+  static constexpr char kInsertStubConversationQuery[] =
+      "INSERT OR IGNORE INTO conversation"
+      "  (uuid, title, model_key, total_tokens, trimmed_tokens, is_sync_stub)"
+      "  VALUES(?, NULL, NULL, 0, 0, 1)";
+  sql::Statement stub_statement(
+      GetDB().GetCachedStatement(SQL_FROM_HERE, kInsertStubConversationQuery));
+  CHECK(stub_statement.is_valid());
+  stub_statement.BindString(0, conversation_uuid);
+  if (!stub_statement.Run()) {
+    DVLOG(0) << "Failed to insert stub conversation: " << db_.GetErrorMessage();
+    return false;
+  }
+
+  // Full-replace the entry: delete the existing row along with its event,
+  // uploaded file, associated content and edit rows, then re-insert. Sync does
+  // not carry edit revisions, so the only ones written back are those the
+  // caller passes in |entry->edits|. Workspace content is device-local and
+  // never synced, so its rows stay attached to the re-inserted entry.
+  if (!DeleteEntryAndOwnedRows(*entry->uuid,
+                               /*keep_workspace_content=*/true)) {
+    return false;
+  }
+  if (!AddConversationEntry(conversation_uuid, std::move(entry))) {
+    return false;
+  }
+
+  // Re-add the synced associated content removed above, with the
+  // caller-supplied texts. An empty list means the remote entry has none, and
+  // the rows stay deleted.
+  if (!associated_content.empty() &&
+      !AddOrUpdateAssociatedContent(conversation_uuid,
+                                    std::move(associated_content),
+                                    std::move(contents))) {
+    return false;
+  }
+
+  return transaction.Commit();
 }
 
 bool AIChatDatabase::GetAllSyncMetadata(syncer::MetadataBatch* metadata_batch) {
