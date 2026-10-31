@@ -127,7 +127,7 @@
 
   <!-- Pix account linking prompt strings -->
   <message name="IDS_PIX_ACCOUNT_LINKING_PROMPT_B_TITLE" desc="Title for the bottom sheet showing Pix account linking prompt (Variation B)." formatter_data="android_java">
-    Pay with Pix without switching apps
+    Pay with Pix without switching apps next time
   </message>
   <message name="IDS_PIX_ACCOUNT_LINKING_PROMPT_B_VALUE_PROP_MESSAGE_1" desc="First value prop message in the bottom sheet showing Pix account linking prompt (Variation B)." formatter_data="android_java">
     Pay without copying and pasting Pix code. <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>See how it works<ph name="END_LINK1">&lt;/link1&gt;</ph>
@@ -161,7 +161,7 @@
   </message>
   <message name="IDS_PIX_ACCOUNT_LINKING_PROMPT_C_BODY" desc="Body text for the bottom sheet showing Pix account linking prompt (Variation C)." formatter_data="android_java">You won't need to switch apps anymore. Brave encryption protects your info and will confirm that it's you before payment happens.</message>
   <message name="IDS_PIX_ACCOUNT_LINKING_PROMPT_EMAIL_INFO_WITH_SETTINGS_LINK" desc="A message in the bottom sheet showing Pix account linking prompt informing the user which account email their Pix account will be linked to, followed by a link to Brave settings to turn off Pix code detection." formatter_data="android_java">
-    Pix account will be linked to <ph name="ACCOUNT_EMAIL">%1$s<ex>user@gmail.com</ex></ph>. To turn off Pix code detection, go to <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>Brave settings<ph name="END_LINK1">&lt;/link1&gt;</ph>
+    Pix account will be linked to <ph name="ACCOUNT_EMAIL">%1$s<ex>user@gmail.com</ex></ph>. To turn off Pix code detection, go to <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>Brave settings<ph name="END_LINK1">&lt;/link1&gt;</ph>.
   </message>
   <!-- Pix account linking success screen strings -->
   <message name="IDS_PIX_ACCOUNT_LINKING_SUCCESS_SCREEN_TITLE" desc="Title for the bottom sheet showing Pix account linking success screen." formatter_data="android_java">
@@ -171,7 +171,7 @@
     Pay with Pix without switching apps in Brave
   </message>
   <message name="IDS_PIX_ACCOUNT_LINKING_SUCCESS_SCREEN_VALUE_PROP_MESSAGE_2" desc="Second value prop message in the Pix account linking success screen." formatter_data="android_java">
-    Send Pix to friends and businesses using Wallet
+    Send Pix to friends and businesses using Google Wallet
   </message>
   <message name="IDS_PIX_ACCOUNT_LINKING_SUCCESS_SCREEN_VALUE_PROP_MESSAGE_3" desc="Third value prop message in the Pix account linking success screen." formatter_data="android_java">
     Enjoy all the convenience and security that you count on from Pix

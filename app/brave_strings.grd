@@ -566,6 +566,11 @@ New bookmarks can’t be saved in your account until you delete some. If you sig
                     To get future Brave updates, you'll need Windows 10 or later. This computer is using Windows 8.1.
         </message>
       </if>
+      <if expr="is_win">
+        <message name="IDS_WIN_10_PRE_1809_OBSOLETE" desc="A message displayed on an at-launch infobar and about:help warning the user that the computer they are using will soon be or is already unsupported.">
+          To get future Brave updates, you'll need Windows 10 version 1809 or later. This computer is using an older version of Windows 10.
+        </message>
+      </if>
       <if expr="is_linux">
         <message name="IDS_LINUX_OBSOLETE" desc="A message displayed on an at-launch infobar and about:help warning the user that the OS version they are using is no longer supported.">
           Brave may not function correctly because it is no longer supported on this Linux distribution
@@ -728,7 +733,7 @@ Brave is unable to recover your settings.
           Can not install the same Brave version that is currently running. Please close Brave and try again.
         </message>
         <message name="IDS_INSTALL_OS_NOT_SUPPORTED" desc="Error displayed if OS is not supported">
-          Brave requires Windows 10 or higher.
+          Brave requires Windows 10 version 1809 or higher.
         </message>
         <message name="IDS_INSTALL_OS_ERROR" desc="Error displayed when any Windows API call fails and we do not have more specific information.">
           An operating system error occurred during installation. Please download Brave again.
@@ -1831,6 +1836,16 @@ Brave is unable to recover your settings.
           =1 {A new update for Brave is available and will be applied as soon as you relaunch. Your Private window won't reopen.}
           other {A new update for Brave is available and will be applied as soon as you relaunch. Your # Private windows won't reopen.}}
         </message>
+        <message name="IDS_UPDATE_RECOMMENDED_ISOLATED" desc="The main text of the Update Recommended dialog variant with a count of open Isolated windows.">
+          {COUNT, plural,
+          =1 {A new update for Brave is available and will be applied as soon as you relaunch. Your Isolated window won't reopen.}
+          other {A new update for Brave is available and will be applied as soon as you relaunch. Your # Isolated windows won't reopen.}}
+        </message>
+        <message name="IDS_UPDATE_RECOMMENDED_INCOGNITO_AND_ISOLATED" desc="The main text of the Update Recommended dialog variant with a count of open Private and Isolated windows.">
+          {COUNT, plural,
+          =1 {A new update for Brave is available and will be applied as soon as you relaunch. There is Private or Isolated window open. It won't reopen after you relaunch.}
+          other {A new update for Brave is available and will be applied as soon as you relaunch. There are # Private and Isolated windows open across profiles. They won't reopen after you relaunch.}}
+        </message>
         <message name="IDS_RELAUNCH_AND_UPDATE" desc="The button in the Update Recommended dialog which updates and relaunches Brave.">
           Relaunch
         </message>
@@ -1852,6 +1867,12 @@ Brave is unable to recover your settings.
           Not used in Brave. Placeholder to keep resource maps in sync.
         </message>
         <message name="IDS_UPDATE_RECOMMENDED_ALT" desc="Alternate main text of the Update Recommended dialog with a count of open Private windows." translateable="false">
+          Not used in Brave. Placeholder to keep resource maps in sync.
+        </message>
+        <message name="IDS_UPDATE_RECOMMENDED_ALT_ISOLATED" desc="Alternate main text of the Update Recommended dialog variant with a count of open Isolated windows." translateable="false">
+          Not used in Brave. Placeholder to keep resource maps in sync.
+        </message>
+        <message name="IDS_UPDATE_RECOMMENDED_ALT_INCOGNITO_AND_ISOLATED" desc="Alternate main text of the Update Recommended dialog variant with a count of open Private and Isolated windows." translateable="false">
           Not used in Brave. Placeholder to keep resource maps in sync.
         </message>
       </if>
@@ -2038,11 +2059,80 @@ Brave is unable to recover your settings.
         <message name="IDS_SIDE_PANEL_CONTEXTUAL_TASKS_PINNABLE_IPH" desc="The body text of the IPH describing that the Contextual Tasks side panel is pinnable.">
           You can pin Contextual Tasks to ask questions as you browse
         </message>
+        <message name="IDS_SIDE_PANEL_CONTEXTUAL_TASKS_PINNABLE_IPH_SIDE_PANEL" desc="The body text of the IPH describing that the Contextual Tasks side panel is pinnable.">
+          You can pin Brave Search side panel to ask questions as you browse
+        </message>
+        <message name="IDS_SIDE_PANEL_CONTEXTUAL_TASKS_PINNABLE_IPH_IN_SIDE_PANEL" desc="The body text of the IPH describing that the Contextual Tasks side panel is pinnable.">
+          You can pin Brave Search in side panel to ask questions as you browse
+        </message>
+        <message name="IDS_SIDE_PANEL_CONTEXTUAL_TASKS_PINNABLE_IPH_IN_CHROME" desc="The body text of the IPH describing that the Contextual Tasks side panel is pinnable.">
+          You can pin Brave Search in Brave to ask questions as you browse
+        </message>
+        <message name="IDS_SIDE_PANEL_CONTEXTUAL_TASKS_PINNABLE_IPH_PANEL" desc="The body text of the IPH describing that the Contextual Tasks side panel is pinnable.">
+          You can pin Brave Search panel to ask questions as you browse
+        </message>
+        <message name="IDS_SIDE_PANEL_CONTEXTUAL_TASKS_PINNABLE_IPH_PIN_SHORTCUT" desc="The text on the button to pin the Contextual Tasks shortcut in the pinnable IPH.">
+          Pin Shortcut
+        </message>
         <message name="IDS_CONTEXTUAL_TASKS_EPHEMERAL_TOOLBAR_BUTTON_IPH" desc="The body text of the IPH describing that the Contextual Tasks ephemeral toolbar button can be used to reopen Contextual Tasks.">
           You can reopen Contextual Tasks to ask questions while you browse
         </message>
+        <message name="IDS_CONTEXTUAL_TASKS_EPHEMERAL_TOOLBAR_BUTTON_IPH_SIDE_PANEL" desc="The body text of the IPH describing that the Contextual Tasks ephemeral toolbar button can be used to reopen Brave Search side panel.">
+          You can reopen Brave Search side panel to ask questions while you browse
+        </message>
+        <message name="IDS_CONTEXTUAL_TASKS_EPHEMERAL_TOOLBAR_BUTTON_IPH_IN_SIDE_PANEL" desc="The body text of the IPH describing that the Contextual Tasks ephemeral toolbar button can be used to reopen Brave Search in side panel.">
+          You can reopen Brave Search in side panel to ask questions while you browse
+        </message>
+        <message name="IDS_CONTEXTUAL_TASKS_EPHEMERAL_TOOLBAR_BUTTON_IPH_IN_CHROME" desc="The body text of the IPH describing that the Contextual Tasks ephemeral toolbar button can be used to reopen Brave Search in Brave.">
+          You can reopen Brave Search in Brave to ask questions while you browse
+        </message>
+        <message name="IDS_CONTEXTUAL_TASKS_EPHEMERAL_TOOLBAR_BUTTON_IPH_PANEL" desc="The body text of the IPH describing that the Contextual Tasks ephemeral toolbar button can be used to reopen Brave Search panel.">
+          You can reopen Brave Search panel to ask questions while you browse
+        </message>
         <message name="IDS_CONTEXTUAL_TASKS_EPHEMERAL_TOOLBAR_BUTTON_IPH_SCREENREADER" desc="The screen reader text of the IPH describing that the Contextual Tasks ephemeral toolbar button can be used to reopen Contextual Tasks." is_accessibility_with_no_ui="true">
           From the "Contextual Tasks" button on the toolbar, you can reopen Contextual Tasks to ask questions while you browse
+        </message>
+        <message name="IDS_CONTEXTUAL_TASKS_EPHEMERAL_TOOLBAR_BUTTON_IPH_SCREENREADER_SIDE_PANEL" desc="The screen reader text of the IPH describing that the Contextual Tasks ephemeral toolbar button can be used to reopen Brave Search side panel." is_accessibility_with_no_ui="true">
+          From the "Brave Search side panel" button on the toolbar, you can reopen Brave Search side panel to ask questions while you browse
+        </message>
+        <message name="IDS_CONTEXTUAL_TASKS_EPHEMERAL_TOOLBAR_BUTTON_IPH_SCREENREADER_IN_SIDE_PANEL" desc="The screen reader text of the IPH describing that the Contextual Tasks ephemeral toolbar button can be used to reopen Brave Search in side panel." is_accessibility_with_no_ui="true">
+          From the "Brave Search in side panel" button on the toolbar, you can reopen Brave Search in side panel to ask questions while you browse
+        </message>
+        <message name="IDS_CONTEXTUAL_TASKS_EPHEMERAL_TOOLBAR_BUTTON_IPH_SCREENREADER_IN_CHROME" desc="The screen reader text of the IPH describing that the Contextual Tasks ephemeral toolbar button can be used to reopen Brave Search in Brave." is_accessibility_with_no_ui="true">
+          From the "Brave Search in Brave" button on the toolbar, you can reopen Brave Search in Brave to ask questions while you browse
+        </message>
+        <message name="IDS_CONTEXTUAL_TASKS_EPHEMERAL_TOOLBAR_BUTTON_IPH_SCREENREADER_PANEL" desc="The screen reader text of the IPH describing that the Contextual Tasks ephemeral toolbar button can be used to reopen Brave Search panel." is_accessibility_with_no_ui="true">
+          From the "Brave Search panel" button on the toolbar, you can reopen Brave Search panel to ask questions while you browse
+        </message>
+        <message name="IDS_CONTEXTUAL_TASKS_PINNED_ICON_CHANGED_IPH" desc="The body text of the one-time toast IPH informing users who previously pinned the Contextual Tasks shortcut that its toolbar icon has been updated.">
+          New icon, same shortcut: Click to ask questions as you browse with Contextual Tasks.
+        </message>
+        <message name="IDS_CONTEXTUAL_TASKS_PINNED_ICON_CHANGED_IPH_SIDE_PANEL" desc="The body text of the one-time toast IPH informing users who previously pinned the Brave Search side panel shortcut that its toolbar icon has been updated.">
+          New icon, same shortcut: Click to ask questions as you browse with Brave Search side panel.
+        </message>
+        <message name="IDS_CONTEXTUAL_TASKS_PINNED_ICON_CHANGED_IPH_IN_SIDE_PANEL" desc="The body text of the one-time toast IPH informing users who previously pinned the Brave Search in side panel shortcut that its toolbar icon has been updated.">
+          New icon, same shortcut: Click to ask questions as you browse with Brave Search in side panel.
+        </message>
+        <message name="IDS_CONTEXTUAL_TASKS_PINNED_ICON_CHANGED_IPH_IN_CHROME" desc="The body text of the one-time toast IPH informing users who previously pinned the Brave Search in Brave shortcut that its toolbar icon has been updated.">
+          New icon, same shortcut: Click to ask questions as you browse with Brave Search in Brave.
+        </message>
+        <message name="IDS_CONTEXTUAL_TASKS_PINNED_ICON_CHANGED_IPH_PANEL" desc="The body text of the one-time toast IPH informing users who previously pinned the Brave Search panel shortcut that its toolbar icon has been updated.">
+          New icon, same shortcut: Click to ask questions as you browse with Brave Search panel.
+        </message>
+        <message name="IDS_CONTEXTUAL_TASKS_PINNED_ICON_CHANGED_IPH_SCREENREADER" desc="The screen reader text of the one-time toast IPH informing users who previously pinned the Contextual Tasks shortcut that its toolbar icon has been updated." is_accessibility_with_no_ui="true">
+          The "Contextual Tasks" button on the toolbar has a new icon. Click it to ask questions as you browse with Contextual Tasks.
+        </message>
+        <message name="IDS_CONTEXTUAL_TASKS_PINNED_ICON_CHANGED_IPH_SCREENREADER_SIDE_PANEL" desc="The screen reader text of the one-time toast IPH informing users who previously pinned the Brave Search side panel shortcut that its toolbar icon has been updated." is_accessibility_with_no_ui="true">
+          The "Brave Search side panel" button on the toolbar has a new icon. Click it to ask questions as you browse with Brave Search side panel.
+        </message>
+        <message name="IDS_CONTEXTUAL_TASKS_PINNED_ICON_CHANGED_IPH_SCREENREADER_IN_SIDE_PANEL" desc="The screen reader text of the one-time toast IPH informing users who previously pinned the Brave Search in side panel shortcut that its toolbar icon has been updated." is_accessibility_with_no_ui="true">
+          The "Brave Search in side panel" button on the toolbar has a new icon. Click it to ask questions as you browse with Brave Search in side panel.
+        </message>
+        <message name="IDS_CONTEXTUAL_TASKS_PINNED_ICON_CHANGED_IPH_SCREENREADER_IN_CHROME" desc="The screen reader text of the one-time toast IPH informing users who previously pinned the Brave Search in Brave shortcut that its toolbar icon has been updated." is_accessibility_with_no_ui="true">
+          The "Brave Search in Brave" button on the toolbar has a new icon. Click it to ask questions as you browse with Brave Search in Brave.
+        </message>
+        <message name="IDS_CONTEXTUAL_TASKS_PINNED_ICON_CHANGED_IPH_SCREENREADER_PANEL" desc="The screen reader text of the one-time toast IPH informing users who previously pinned the Brave Search panel shortcut that its toolbar icon has been updated." is_accessibility_with_no_ui="true">
+          The "Brave Search panel" button on the toolbar has a new icon. Click it to ask questions as you browse with Brave Search panel.
         </message>
         <message name="IDS_TUTORIAL_CONTEXTUAL_TASKS_STEP1" desc="The body text of the first step of the Contextual Tasks tutorial.">
           Open the overflow menu
@@ -2051,7 +2141,19 @@ Brave is unable to recover your settings.
           Select "Pin to toolbar"
         </message>
         <message name="IDS_TUTORIAL_CONTEXTUAL_TASKS_STEP3" desc="The body text of the third step of the Contextual Tasks tutorial.">
-          Pinned! Use Contextual Tasks again from the toolbar
+          Success! You can now easily ask questions as you browse with Brave Search AI Mode
+        </message>
+        <message name="IDS_TUTORIAL_CONTEXTUAL_TASKS_STEP3_SIDE_PANEL" desc="The body text of the third step of the Contextual Tasks tutorial.">
+          Success! You can now easily ask questions as you browse with Brave Search side panel
+        </message>
+        <message name="IDS_TUTORIAL_CONTEXTUAL_TASKS_STEP3_IN_SIDE_PANEL" desc="The body text of the third step of the Contextual Tasks tutorial.">
+          Success! You can now easily ask questions as you browse with Brave Search in side panel
+        </message>
+        <message name="IDS_TUTORIAL_CONTEXTUAL_TASKS_STEP3_IN_CHROME" desc="The body text of the third step of the Contextual Tasks tutorial.">
+          Success! You can now easily ask questions as you browse with Brave Search in Brave
+        </message>
+        <message name="IDS_TUTORIAL_CONTEXTUAL_TASKS_STEP3_PANEL" desc="The body text of the third step of the Contextual Tasks tutorial.">
+          Success! You can now easily ask questions as you browse with Brave Search panel
         </message>
         <!-- Overlay WebUI Strings -->
         <message name="IDS_LENS_OVERLAY_COPY" desc="Command in the Lens Overlay context menu to copy text.">
@@ -2382,6 +2484,16 @@ Brave is unable to recover your settings.
               =1 {Your administrator asks that you relaunch Brave to apply this update. Your Private window won't reopen.}
               other {Your administrator asks that you relaunch Brave to apply this update. Your # Private windows won't reopen.}}
           </message>
+          <message name="IDS_RELAUNCH_RECOMMENDED_BODY_ISOLATED" desc="The body text of a dialog variant that tells users that a browser relaunch is recommended for an update with Isolated counter.">
+             {COUNT, plural,
+              =1 {Your administrator asks that you relaunch Brave to apply this update. Your Isolated window won't reopen.}
+              other {Your administrator asks that you relaunch Brave to apply this update. Your # Isolated windows won't reopen.}}
+          </message>
+          <message name="IDS_RELAUNCH_RECOMMENDED_BODY_INCOGNITO_AND_ISOLATED" desc="The body text of a dialog variant that tells users that a browser relaunch is recommended for an update with Private and Isolated counter.">
+             {COUNT, plural,
+              =1 {Your administrator asks that you relaunch Brave to apply this update. There is Private or Isolated window open. It won't reopen after you relaunch.}
+              other {Your administrator asks that you relaunch Brave to apply this update. There are # Private and Isolated windows open across profiles. They won't reopen after you relaunch.}}
+          </message>
           <message name="IDS_RELAUNCH_RECOMMENDED_SCHEDULED_IDLE_TOAST" desc="Toast notification message shown after scheduling an idle restart.">
             Brave will update when you're away
           </message>
@@ -2418,11 +2530,31 @@ Brave is unable to recover your settings.
               =1 {Your administrator requires that you relaunch Brave to apply an update. Your Private window won't reopen.}
               other {Your administrator requires that you relaunch Brave to apply an update. Your # Private windows won't reopen.}}
           </message>
-             <message name="IDS_ADVANCED_PROTECTION_RELAUNCH_REQUIRED_BODY" desc="The body text of a dialog that tells Advanced Protection users the browser must be relaunched with Private counter">
+          <message name="IDS_RELAUNCH_REQUIRED_BODY_ISOLATED" desc="The body text of a dialog variant that tells users the browser must be relaunched with Isolated counter.">
+             {COUNT, plural,
+              =1 {Your administrator requires that you relaunch Brave to apply an update. Your Isolated window won't reopen.}
+              other {Your administrator requires that you relaunch Brave to apply an update. Your # Isolated windows won't reopen.}}
+          </message>
+          <message name="IDS_RELAUNCH_REQUIRED_BODY_INCOGNITO_AND_ISOLATED" desc="The body text of a dialog variant that tells users the browser must be relaunched with Private and Isolated counter.">
+             {COUNT, plural,
+              =1 {Your administrator requires that you relaunch Brave to apply an update. There is Private or Isolated window open. It won't reopen after you relaunch.}
+              other {Your administrator requires that you relaunch Brave to apply an update. There are # Private and Isolated windows open across profiles. They won't reopen after you relaunch.}}
+          </message>
+          <message name="IDS_ADVANCED_PROTECTION_RELAUNCH_REQUIRED_BODY" desc="The body text of a dialog that tells Advanced Protection users the browser must be relaunched with Private counter">
              {COUNT, plural,
               =0 {Advanced Protection requires that you relaunch Brave to apply an update}
               =1 {Advanced Protection requires that you relaunch Brave to apply an update. Your Private window won't reopen.}
               other {Advanced Protection requires that you relaunch Brave to apply an update. Your # Private windows won't reopen.}}
+          </message>
+          <message name="IDS_ADVANCED_PROTECTION_RELAUNCH_REQUIRED_BODY_ISOLATED" desc="The body text of a dialog variant that tells Advanced Protection users the browser must be relaunched with Isolated counter">
+             {COUNT, plural,
+              =1 {Advanced Protection requires that you relaunch Brave to apply an update. Your Isolated window won't reopen.}
+              other {Advanced Protection requires that you relaunch Brave to apply an update. Your # Isolated windows won't reopen.}}
+          </message>
+          <message name="IDS_ADVANCED_PROTECTION_RELAUNCH_REQUIRED_BODY_INCOGNITO_AND_ISOLATED" desc="The body text of a dialog variant that tells Advanced Protection users the browser must be relaunched with Private and Isolated counter">
+             {COUNT, plural,
+              =1 {Advanced Protection requires that you relaunch Brave to apply an update. There is Private or Isolated window open. It won't reopen after you relaunch.}
+              other {Advanced Protection requires that you relaunch Brave to apply an update. There are # Private and Isolated windows open across profiles. They won't reopen after you relaunch.}}
           </message>
         </if>
       </if>
@@ -3430,9 +3562,6 @@ If this page isn’t working as expected, try allowing optimization.
       <message name="IDS_SEND_TAB_TO_SELF_SIGN_IN_PROMO_BUTTON_LABEL" desc="Label of the sign-in button in the send-tab-to-self sign-in promo bubble.">
         Sign in to Brave
       </message>
-      <message name="IDS_SEND_TAB_TO_SELF_SIGN_IN_PROMO_LABEL" desc="Text when a signed out user attempts to use send-tab-to-self, then sees a sign-in promo.">
-        To send this tab to another device, sign in to Brave on both devices
-      </message>
       <message name="IDS_SEND_TAB_TO_SELF_NO_TARGET_DEVICE_LABEL" desc="Text shown when a user with no available target devices attempts to use send-tab-to-self.">
         To send this tab to another device, sign in to Brave there
       </message>
@@ -3448,8 +3577,77 @@ If this page isn’t working as expected, try allowing optimization.
       </if>
 
       <!-- Contextual Tasks -->
+      <message name="IDS_CONTEXTUAL_TASKS_PINNING_LABEL_AI_MODE" desc="The label shown in the Customize Brave settings menu and toolbar to pin Contextual Tasks to the toolbar.">
+        Brave Search AI Mode
+      </message>
+      <message name="IDS_CONTEXTUAL_TASKS_PINNING_LABEL_SIDE_PANEL" desc="The label shown in the Customize Brave settings menu and toolbar to pin Contextual Tasks to the toolbar.">
+        Brave Search side panel
+      </message>
+      <message name="IDS_CONTEXTUAL_TASKS_PINNING_LABEL_IN_SIDE_PANEL" desc="The label shown in the Customize Brave settings menu and toolbar to pin Contextual Tasks to the toolbar.">
+        Brave Search in side panel
+      </message>
+      <message name="IDS_CONTEXTUAL_TASKS_PINNING_LABEL_IN_CHROME" desc="The label shown in the Customize Brave settings menu and toolbar to pin Contextual Tasks to the toolbar.">
+        Brave Search in Brave
+      </message>
+      <message name="IDS_CONTEXTUAL_TASKS_PINNING_LABEL_PANEL" desc="The label shown in the Customize Brave settings menu and toolbar to pin Contextual Tasks to the toolbar.">
+        Brave Search panel
+      </message>
+      <message name="IDS_CONTEXTUAL_TASKS_EPHEMERAL_BUTTON_CLOSE_TOOL_TIP" desc="The tooltip text used for the contextual task ephemeral toolbar button when the side panel is open.">
+        Close Brave Search AI Mode
+      </message>
+      <message name="IDS_CONTEXTUAL_TASKS_EPHEMERAL_BUTTON_CLOSE_TOOL_TIP_SIDE_PANEL" desc="The tooltip text used for the contextual task ephemeral toolbar button when the side panel is open.">
+        Close Brave Search side panel
+      </message>
+      <message name="IDS_CONTEXTUAL_TASKS_EPHEMERAL_BUTTON_CLOSE_TOOL_TIP_IN_SIDE_PANEL" desc="The tooltip text used for the contextual task ephemeral toolbar button when the side panel is open.">
+        Close Brave Search in side panel
+      </message>
+      <message name="IDS_CONTEXTUAL_TASKS_EPHEMERAL_BUTTON_CLOSE_TOOL_TIP_IN_CHROME" desc="The tooltip text used for the contextual task ephemeral toolbar button when the side panel is open.">
+        Close Brave Search in Brave
+      </message>
+      <message name="IDS_CONTEXTUAL_TASKS_EPHEMERAL_BUTTON_CLOSE_TOOL_TIP_PANEL" desc="The tooltip text used for the contextual task ephemeral toolbar button when the side panel is open.">
+        Close Brave Search panel
+      </message>
+      <message name="IDS_CONTEXTUAL_TASKS_SIDE_PANEL_REOPEN_TOOL_TIP" desc="The tooltip text used for contextual task toolbar button">
+        Reopen Brave Search AI Mode
+      </message>
+      <message name="IDS_CONTEXTUAL_TASKS_SIDE_PANEL_REOPEN_TOOL_TIP_SIDE_PANEL" desc="The tooltip text used for contextual task toolbar button">
+        Reopen Brave Search side panel
+      </message>
+      <message name="IDS_CONTEXTUAL_TASKS_SIDE_PANEL_REOPEN_TOOL_TIP_IN_SIDE_PANEL" desc="The tooltip text used for contextual task toolbar button">
+        Reopen Brave Search in side panel
+      </message>
+      <message name="IDS_CONTEXTUAL_TASKS_SIDE_PANEL_REOPEN_TOOL_TIP_IN_CHROME" desc="The tooltip text used for contextual task toolbar button">
+        Reopen Brave Search in Brave
+      </message>
+      <message name="IDS_CONTEXTUAL_TASKS_SIDE_PANEL_REOPEN_TOOL_TIP_PANEL" desc="The tooltip text used for contextual task toolbar button">
+        Reopen Brave Search panel
+      </message>
       <message name="IDS_CONTEXTUAL_TASKS_EPHEMERAL_BUTTON_CONTEXT_MENU_REMOVE" desc="The label of the context menu item for removing the contextual tasks ephemeral toolbar button and hiding the side panel.">
         Hide side panel
+      </message>
+      <message name="IDS_CONTEXTUAL_TASKS_EPHEMERAL_BUTTON_CONTEXT_MENU_CLOSE" desc="The label of the context menu item for removing the contextual tasks ephemeral toolbar button and closing the side panel.">
+        Close side panel
+      </message>
+      <message name="IDS_CONTEXTUAL_TASKS_EPHEMERAL_BUTTON_CONTEXT_MENU_CLOSE_AI_MODE" desc="The label of the context menu item for removing the contextual tasks ephemeral toolbar button and closing the side panel.">
+        Close Brave Search AI Mode
+      </message>
+      <message name="IDS_CONTEXTUAL_TASKS_EPHEMERAL_BUTTON_CONTEXT_MENU_CLOSE_SIDE_PANEL" desc="The label of the context menu item for removing the contextual tasks ephemeral toolbar button and closing the side panel.">
+        Close Brave Search side panel
+      </message>
+      <message name="IDS_CONTEXTUAL_TASKS_EPHEMERAL_BUTTON_CONTEXT_MENU_CLOSE_IN_SIDE_PANEL" desc="The label of the context menu item for removing the contextual tasks ephemeral toolbar button and closing the side panel.">
+        Close Brave Search in side panel
+      </message>
+      <message name="IDS_CONTEXTUAL_TASKS_EPHEMERAL_BUTTON_CONTEXT_MENU_CLOSE_IN_CHROME" desc="The label of the context menu item for removing the contextual tasks ephemeral toolbar button and closing the side panel.">
+        Close Brave Search in Brave
+      </message>
+      <message name="IDS_CONTEXTUAL_TASKS_EPHEMERAL_BUTTON_CONTEXT_MENU_CLOSE_PANEL" desc="The label of the context menu item for removing the contextual tasks ephemeral toolbar button and closing the side panel.">
+        Close Brave Search panel
+      </message>
+      <message name="IDS_CONTEXTUAL_TASKS_EPHEMERAL_BUTTON_CONTEXT_MENU_DISMISS_ACTIVE_SEARCH" desc="The label of the context menu item for dismissing the active search and removing the contextual tasks ephemeral toolbar button when the side panel is closed.">
+        Dismiss active search
+      </message>
+      <message name="IDS_CONTEXTUAL_TASKS_EPHEMERAL_BUTTON_CONTEXT_MENU_DISMISS_ACTIVE_SEARCH_IN_TAB" desc="The label of the context menu item for dismissing the active search in the current tab and removing the contextual tasks ephemeral toolbar button when the side panel is closed.">
+        Dismiss active search in this tab
       </message>
 
       <!-- Enterprise device signals disclaimer -->
@@ -3458,6 +3656,9 @@ If this page isn’t working as expected, try allowing optimization.
       </message>
       <message name="IDS_ENTERPRISE_DEVICE_SIGNALS_DISCLAIMER_SUBTITLE" desc="Subtitle of an enterprise device signals collection disclaimer modal dialog. The dialog is shown on Brave startup to managed Brave users who have not previously acknowledged device signals collection.">
         To secure your work on Brave, your organization will be able to view or manage certain information when you’re signed-in to Brave.
+      </message>
+      <message name="IDS_CONTEXTUAL_TASKS_MENU_SIGN_IN_TO_CHROME" desc="The 'Sign in to Brave' option in the Contextual Tasks 3-dot overflow menu shown when the user is signed out.">
+        Sign in to Brave
       </message>
     <message name="IDS_CHROME_SHORTCUT_NAME_BETA" desc="The Chrome shortcut name for beta channel">
           Google Chrome Beta
