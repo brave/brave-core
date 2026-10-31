@@ -47,8 +47,8 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
   @Published var filTxGasLimit: String?
   /// The gas fee cap for filcoin transaction
   @Published var filTxGasFeeCap: String?
-  /// The origin info of this transaction
-  @Published var originInfo: BraveWallet.OriginInfo?
+  /// The dApp origin info of this transaction
+  @Published var dappOriginInfo: BraveWallet.OriginInfo?
   /// This is an id for the unppproved transaction that is currently displayed on screen
   @Published var activeTransactionId: BraveWallet.TransactionInfo.ID = "" {
     didSet {
@@ -716,7 +716,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     shouldFetchCurrentAllowance: Bool,
     shouldFetchGasTokenBalance: Bool
   ) async {
-    originInfo = activeParsedTransaction.transaction.originInfo
+    dappOriginInfo = activeParsedTransaction.transaction.dappOriginInfo
     transactionDetails = activeTransactionDetails
 
     switch activeParsedTransaction.details {

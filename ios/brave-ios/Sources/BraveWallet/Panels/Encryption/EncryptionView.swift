@@ -246,8 +246,8 @@ struct EncryptionView_Previews: PreviewProvider {
   static var previews: some View {
     let account = BraveWallet.AccountInfo.previewAccount
     let originInfo = BraveWallet.OriginInfo(
-      originSpec: WalletConstants.braveWalletOriginSpec,
-      eTldPlusOne: ""
+      originSpec: "https://example.com",
+      eTldPlusOne: "example.com"
     )
     let requests: [EncryptionView.EncryptionType] = [
       .getEncryptionPublicKey(

@@ -1069,7 +1069,7 @@ TEST_F(SolanaTxManagerUnitTest, WalletOrigin) {
   auto tx_meta = solana_tx_manager()->GetTxForTesting(meta_id);
   ASSERT_TRUE(tx_meta);
   EXPECT_EQ(tx_meta->chain_id(), mojom::kSolanaMainnet);
-  EXPECT_EQ(tx_meta->origin(), url::Origin::Create(GURL("chrome://wallet")));
+  EXPECT_FALSE(tx_meta->dapp_origin());
 }
 
 TEST_F(SolanaTxManagerUnitTest, SomeSiteOrigin) {
@@ -1092,7 +1092,7 @@ TEST_F(SolanaTxManagerUnitTest, SomeSiteOrigin) {
   auto tx_meta = solana_tx_manager()->GetTxForTesting(meta_id);
   ASSERT_TRUE(tx_meta);
   EXPECT_EQ(tx_meta->chain_id(), mojom::kSolanaMainnet);
-  EXPECT_EQ(tx_meta->origin(),
+  EXPECT_EQ(tx_meta->dapp_origin(),
             url::Origin::Create(GURL("https://some.site.com")));
 }
 

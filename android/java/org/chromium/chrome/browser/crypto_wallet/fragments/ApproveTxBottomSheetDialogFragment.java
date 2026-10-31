@@ -279,10 +279,11 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
             refreshListContentUi();
         }
 
-        if (mTxInfo.originInfo != null && URLUtil.isValidUrl(mTxInfo.originInfo.originSpec)) {
+        if (mTxInfo.dappOriginInfo != null
+                && URLUtil.isValidUrl(mTxInfo.dappOriginInfo.originSpec)) {
             TextView domain = view.findViewById(R.id.domain);
             domain.setVisibility(View.VISIBLE);
-            domain.setText(Utils.geteTldSpanned(mTxInfo.originInfo));
+            domain.setText(Utils.geteTldSpanned(mTxInfo.dappOriginInfo));
         }
     }
 

@@ -75,7 +75,7 @@ export const getMockedTransactionInfo =
       createdTime: { msec: 0 },
       submittedTime: { msec: 0 },
       confirmedTime: { msec: 0 },
-      originInfo: {
+      dappOriginInfo: {
         originSpec: 'https://brave.com',
         eTldPlusOne: 'brave.com',
       },
@@ -586,7 +586,7 @@ SerializableTransactionInfo = {
   createdTime: { msec: 1654540245386 },
   submittedTime: { msec: 0 },
   confirmedTime: { msec: 0 },
-  originInfo: {
+  dappOriginInfo: {
     originSpec: 'https://f40y4d.csb.app',
     eTldPlusOne: 'csb.app',
   },

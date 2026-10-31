@@ -113,10 +113,7 @@ export function DecryptMessageRequestPanel(props: Props) {
             </Tooltip>
             <VerticalSpace space='12px' />
             <URLText textColor='secondary'>
-              <CreateSiteOrigin
-                originSpec={payload.originInfo.originSpec}
-                eTldPlusOne={payload.originInfo.eTldPlusOne}
-              />
+              <CreateSiteOrigin originInfo={payload.originInfo} />
             </URLText>
           </Column>
           <Title textColor='primary'>

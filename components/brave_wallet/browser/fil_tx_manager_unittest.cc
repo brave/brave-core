@@ -142,18 +142,13 @@ class FilTxManagerUnitTest : public testing::Test {
 
   PrefService* prefs() { return &prefs_; }
 
-  url::Origin GetOrigin() const {
-    return url::Origin::Create(GURL("https://brave.com"));
-  }
-
   void AddUnapprovedTransaction(const std::string& chain_id,
                                 mojom::FilTxDataPtr tx_data,
                                 const mojom::AccountIdPtr& from,
-                                const std::optional<url::Origin>& origin,
                                 std::string* meta_id) {
     base::RunLoop run_loop;
     fil_tx_manager()->AddUnapprovedFilecoinTransaction(
-        chain_id, std::move(tx_data), from, origin, nullptr,
+        chain_id, std::move(tx_data), from, nullptr,
         base::BindLambdaForTesting([&](bool success, const std::string& id,
                                        const std::string& err_message) {
           ASSERT_TRUE(success);
@@ -238,7 +233,7 @@ TEST_F(FilTxManagerUnitTest, SubmitTransactions) {
 
   std::string meta_id1;
   AddUnapprovedTransaction(mojom::kFilecoinTestnet, tx_data.Clone(),
-                           from_account, std::nullopt, &meta_id1);
+                           from_account, &meta_id1);
 
   auto tx_meta1 = fil_tx_manager()->GetTxForTesting(meta_id1);
   EXPECT_TRUE(tx_meta1);
@@ -252,7 +247,7 @@ TEST_F(FilTxManagerUnitTest, SubmitTransactions) {
 
   std::string meta_id2;
   AddUnapprovedTransaction(mojom::kFilecoinTestnet, tx_data.Clone(),
-                           from_account, std::nullopt, &meta_id2);
+                           from_account, &meta_id2);
   auto tx_meta2 = fil_tx_manager()->GetTxForTesting(meta_id2);
   ASSERT_TRUE(tx_meta2);
   EXPECT_EQ(tx_meta2->chain_id(), mojom::kFilecoinTestnet);
@@ -307,7 +302,7 @@ TEST_F(FilTxManagerUnitTest, SubmitTransactionError) {
 
   std::string meta_id1;
   AddUnapprovedTransaction(mojom::kFilecoinTestnet, tx_data.Clone(),
-                           from_account, std::nullopt, &meta_id1);
+                           from_account, &meta_id1);
 
   auto tx_meta1 = fil_tx_manager()->GetTxForTesting(meta_id1);
   EXPECT_TRUE(tx_meta1);
@@ -357,7 +352,7 @@ TEST_F(FilTxManagerUnitTest, SubmitTransactionConfirmed) {
 
   std::string meta_id1;
   AddUnapprovedTransaction(mojom::kFilecoinTestnet, tx_data.Clone(),
-                           from_account, std::nullopt, &meta_id1);
+                           from_account, &meta_id1);
 
   auto tx_meta1 = fil_tx_manager()->GetTxForTesting(meta_id1);
   EXPECT_TRUE(tx_meta1);
@@ -405,7 +400,7 @@ TEST_F(FilTxManagerUnitTest, SubmitTransactionConfirmed) {
   EXPECT_EQ(tx_meta1->status(), mojom::TransactionStatus::Confirmed);
 }
 
-TEST_F(FilTxManagerUnitTest, WalletOrigin) {
+TEST_F(FilTxManagerUnitTest, NoDappOrigin) {
   const auto from_account = FilTestAcc(0);
   const std::string to_account = "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy";
   SetGasEstimateInterceptor(from_account, to_account);
@@ -414,32 +409,13 @@ TEST_F(FilTxManagerUnitTest, WalletOrigin) {
                                        "" /* max_fee */, to_account, "11");
   std::string meta_id;
   AddUnapprovedTransaction(mojom::kFilecoinTestnet, std::move(tx_data),
-                           from_account, std::nullopt, &meta_id);
+                           from_account, &meta_id);
 
   auto tx_meta = fil_tx_manager()->GetTxForTesting(meta_id);
   ASSERT_TRUE(tx_meta);
   EXPECT_EQ(tx_meta->chain_id(), mojom::kFilecoinTestnet);
 
-  EXPECT_EQ(tx_meta->origin(), url::Origin::Create(GURL("chrome://wallet")));
-}
-
-TEST_F(FilTxManagerUnitTest, SomeSiteOrigin) {
-  const auto from_account = FilTestAcc(0);
-  const std::string to_account = "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy";
-  SetGasEstimateInterceptor(from_account, to_account);
-  auto tx_data = mojom::FilTxData::New("" /* nonce */, "" /* gas_premium */,
-                                       "" /* gas_fee_cap */, "" /* gas_limit */,
-                                       "" /* max_fee */, to_account, "11");
-  std::string meta_id;
-  AddUnapprovedTransaction(
-      mojom::kFilecoinTestnet, std::move(tx_data), from_account,
-      url::Origin::Create(GURL("https://some.site.com")), &meta_id);
-
-  auto tx_meta = fil_tx_manager()->GetTxForTesting(meta_id);
-  ASSERT_TRUE(tx_meta);
-  EXPECT_EQ(tx_meta->origin(),
-            url::Origin::Create(GURL("https://some.site.com")));
-  EXPECT_EQ(tx_meta->chain_id(), mojom::kFilecoinTestnet);
+  EXPECT_FALSE(tx_meta->dapp_origin());
 }
 
 TEST_F(FilTxManagerUnitTest, GetFilTransactionMessageToSign) {
@@ -453,7 +429,7 @@ TEST_F(FilTxManagerUnitTest, GetFilTransactionMessageToSign) {
         "4" /* gas_limit */, "" /* max_fee */, to_account, "11");
     std::string meta_id;
     AddUnapprovedTransaction(mojom::kFilecoinTestnet, std::move(tx_data),
-                             from_account, std::nullopt, &meta_id);
+                             from_account, &meta_id);
     auto tx_meta = fil_tx_manager()->GetTxForTesting(meta_id);
     ASSERT_TRUE(tx_meta);
     EXPECT_EQ(tx_meta->chain_id(), mojom::kFilecoinTestnet);
@@ -485,7 +461,7 @@ TEST_F(FilTxManagerUnitTest, GetFilTransactionMessageToSign) {
         "4" /* gas_limit */, "" /* max_fee */, to_account, "11");
     std::string meta_id;
     AddUnapprovedTransaction(mojom::kFilecoinTestnet, std::move(tx_data),
-                             from_account, std::nullopt, &meta_id);
+                             from_account, &meta_id);
     auto tx_meta = fil_tx_manager()->GetTxForTesting(meta_id);
     ASSERT_TRUE(tx_meta);
     EXPECT_EQ(tx_meta->chain_id(), mojom::kFilecoinTestnet);
@@ -520,7 +496,7 @@ TEST_F(FilTxManagerUnitTest, ProcessHardwareSignature) {
       "4" /* gas_limit */, "" /* max_fee */, to_account, "11");
   std::string meta_id;
   AddUnapprovedTransaction(mojom::kFilecoinTestnet, std::move(tx_data),
-                           from_account, std::nullopt, &meta_id);
+                           from_account, &meta_id);
   auto tx_meta = fil_tx_manager()->GetTxForTesting(meta_id);
   ASSERT_TRUE(tx_meta);
   EXPECT_EQ(tx_meta->chain_id(), mojom::kFilecoinTestnet);
@@ -587,7 +563,7 @@ TEST_F(FilTxManagerUnitTest, ProcessHardwareSignatureError) {
       "4" /* gas_limit */, "" /* max_fee */, to_account, "11");
   std::string meta_id;
   AddUnapprovedTransaction(mojom::kFilecoinTestnet, std::move(tx_data),
-                           from_account, std::nullopt, &meta_id);
+                           from_account, &meta_id);
   auto tx_meta = fil_tx_manager()->GetTxForTesting(meta_id);
   ASSERT_TRUE(tx_meta);
   EXPECT_EQ(tx_meta->chain_id(), mojom::kFilecoinTestnet);

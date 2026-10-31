@@ -171,11 +171,15 @@ void PolkadotTxManager::AddUnapprovedPolkadotTransaction(
                                          params->from->keyring_id)) {
     return std::move(callback).Run(false, "", WalletInternalErrorMessage());
   }
+  auto meta = PolkadotTxMeta::MakeUnapproved(
+      params->from, PolkadotTransaction(), chain_id,
+      std::move(params->swap_info), std::nullopt);
+
   polkadot_wallet_service_->GetChainMetadata(
       chain_id,
       base::BindOnce(&PolkadotTxManager::OnGetChainMetadataForUnapproved,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(params),
-                     std::move(callback)));
+                     weak_ptr_factory_.GetWeakPtr(), std::move(meta),
+                     std::move(params), std::move(callback)));
 }
 
 PolkadotTxStateManager& PolkadotTxManager::GetPolkadotTxStateManager() {
@@ -183,6 +187,7 @@ PolkadotTxStateManager& PolkadotTxManager::GetPolkadotTxStateManager() {
 }
 
 void PolkadotTxManager::OnGetChainMetadataForUnapproved(
+    std::unique_ptr<PolkadotTxMeta> meta,
     mojom::NewPolkadotTransactionParamsPtr params,
     AddUnapprovedPolkadotTransactionCallback callback,
     base::expected<PolkadotChainMetadata, std::string> chain_metadata) {
@@ -215,12 +220,13 @@ void PolkadotTxManager::OnGetChainMetadataForUnapproved(
       asset_id, recipient->pubkey,
       base::BindOnce(&PolkadotTxManager::OnGetFeeForUnapproved,
                      weak_ptr_factory_.GetWeakPtr(),
-                     std::move(chain_metadata.value()), std::move(params),
-                     std::move(callback)));
+                     std::move(chain_metadata.value()), std::move(meta),
+                     std::move(params), std::move(callback)));
 }
 
 void PolkadotTxManager::OnGetFeeForUnapproved(
     PolkadotChainMetadata chain_metadata,
+    std::unique_ptr<PolkadotTxMeta> meta,
     mojom::NewPolkadotTransactionParamsPtr params,
     AddUnapprovedPolkadotTransactionCallback callback,
     base::expected<PolkadotWalletService::FeeEstimate, std::string>
@@ -228,10 +234,6 @@ void PolkadotTxManager::OnGetFeeForUnapproved(
   if (!fee_estimate.has_value()) {
     return std::move(callback).Run(false, "", WalletInternalErrorMessage());
   }
-
-  // We don't support Polkadot dApps so far, so all transactions come from
-  // wallet origin.
-  std::optional<url::Origin> origin = std::nullopt;
 
   auto recipient =
       ParsePolkadotAccount(params->to, chain_metadata->ss58_prefix);
@@ -252,8 +254,6 @@ void PolkadotTxManager::OnGetFeeForUnapproved(
     }
   }
 
-  PolkadotTxMeta tx_metadata;
-
   PolkadotTransaction tx;
   tx.set_amount(amount);
   tx.set_fee(fee_estimate->partial_fee);
@@ -263,23 +263,14 @@ void PolkadotTxManager::OnGetFeeForUnapproved(
   if (!params->asset_id.is_null()) {
     tx.set_asset_id(params->asset_id->id);
   }
-  tx_metadata.set_tx(std::move(tx));
+  meta->set_tx(std::move(tx));
 
-  tx_metadata.set_from(params->from);
-  tx_metadata.set_id(TxMeta::GenerateMetaID());
-  tx_metadata.set_origin(
-      origin.value_or(url::Origin::Create(GURL("chrome://wallet"))));
-  tx_metadata.set_created_time(base::Time::Now());
-  tx_metadata.set_status(mojom::TransactionStatus::Unapproved);
-  tx_metadata.set_chain_id(params->chain_id);
-  tx_metadata.set_swap_info(std::move(params->swap_info));
-
-  if (!tx_state_manager().AddOrUpdateTx(tx_metadata)) {
+  if (!tx_state_manager().AddOrUpdateTx(*meta)) {
     std::move(callback).Run(false, "", WalletInternalErrorMessage());
     return;
   }
 
-  std::move(callback).Run(true, tx_metadata.id(), "");
+  std::move(callback).Run(true, meta->id(), "");
 }
 
 void PolkadotTxManager::SpeedupOrCancelTransaction(

@@ -127,7 +127,7 @@ export interface ParsedTransaction
   erc721TokenId?: string
   intent: string
   chainId: string
-  originInfo?: BraveWallet.OriginInfo | undefined
+  dappOriginInfo?: BraveWallet.OriginInfo | undefined
 
   // Value
   value: string
@@ -2033,7 +2033,7 @@ export const parseTransactionWithoutPrices = ({
     maxPriorityFeePerGas,
     missingGasLimitError,
     nonce: getTransactionNonce(tx),
-    originInfo: tx.originInfo,
+    dappOriginInfo: tx.dappOriginInfo,
     recipient: to,
     recipientLabel: getAddressLabel(to, accounts),
     sameAddressError,
