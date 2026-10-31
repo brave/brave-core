@@ -113,10 +113,10 @@
 "BraveShieldsGlobalControls" = "Kawalan Global";
 
 /* Shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfo" = "Simpan maklumat hubungan untuk laporan laman rosak pada masa hadapan";
+"BraveShieldsSaveContactInfo" = "Simpan maklumat hubungan untuk laporan laman web rosak pada masa hadapan";
 
 /* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfoDescription" = "Jika anda memberikan maklumat hubungan, ia akan disimpan untuk laporan pada masa hadapan";
+"BraveShieldsSaveContactInfoDescription" = "Jika anda memberikan maklumat hubungan, ia akan disimpan untuk laporan akan datang";
 
 /* No comment provided by engineer. */
 "BraveShieldsSiteBroken" = "Jika laman ini kelihatan rosak, cubalah Pelindung di bawah";

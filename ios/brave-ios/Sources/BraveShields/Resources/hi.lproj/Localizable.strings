@@ -74,7 +74,7 @@
 "blockMobileAnnoyances" = "'ऐप में स्विच करें' सूचनाओं को अवरुद्ध करें";
 
 /* No comment provided by engineer. */
-"BlockScripts" = "स्क्रिप्ट्स को अवरुद्ध करें";
+"BlockScripts" = "स्क्रिप्ट्स को अवरुद्ध करें ";
 
 /* No comment provided by engineer. */
 "BlockScriptsDescription" = "JavaScript (साइटें खराब हो सकती हैं) ब्लॉक करता है।";

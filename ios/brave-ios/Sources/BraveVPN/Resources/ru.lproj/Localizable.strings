@@ -131,7 +131,7 @@
 "vpn.installTitle" = "Установить VPN";
 
 /* Button text to try free Brave VPN */
-"vpn.learnMore" = "Начни 7-дневную бесплатную пробную версию";
+"vpn.learnMore" = "Начать 7-дневную бесплатную пробную версию";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "Продлевается ежемесячно";
