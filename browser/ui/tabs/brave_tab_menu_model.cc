@@ -19,6 +19,7 @@
 #include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/tab_restore_service_factory.h"
+#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_menu_model_delegate.h"
@@ -117,6 +118,15 @@ void BraveTabMenuModel::Build(BrowserWindowInterface* browser_window,
                       GetRestoreTabCommandStringId());
   AddItemWithStringId(TabStripModel::CommandBookmarkAllTabs,
                       IDS_TAB_CXMENU_BOOKMARK_ALL_TABS);
+
+  // Upstream only shows CommandCopyURL in web app tab menus. Reuse it here
+  // to copy the links of all selected tabs.
+  if (!GetIndexOfCommandId(TabStripModel::CommandCopyURL) &&
+      chrome::CanCopyUrl(browser_window)) {
+    AddItem(TabStripModel::CommandCopyURL,
+            l10n_util::GetPluralStringFUTF16(IDS_TAB_CXMENU_COPY_LINKS,
+                                             selected_tab_count));
+  }
 
   if (brave::CanBringAllTabs(browser_window)) {
     AddItemWithStringId(TabStripModel::CommandBringAllTabsToThisWindow,

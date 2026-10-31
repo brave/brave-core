@@ -22,6 +22,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/notreached.h"
 #include "base/path_service.h"
+#include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
@@ -47,6 +48,7 @@
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/url_sanitizer/core/browser/url_sanitizer_service.h"
+#include "build/build_config.h"
 #include "chrome/browser/bookmarks/bookmark_html_writer.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -419,6 +421,30 @@ void CopyLinkWithStrictCleaning(BrowserWindowInterface* browser,
     scw.MarkAsOffTheRecord();
   }
   scw.WriteText(base::UTF8ToUTF16(final_url.spec()));
+}
+
+void CopyLinksOfTabs(BrowserWindowInterface* browser,
+                     const std::vector<int>& indices) {
+  auto* tab_strip_model = browser->GetTabStripModel();
+  std::vector<std::string> urls;
+  for (int index : indices) {
+    urls.push_back(
+        tab_strip_model->GetWebContentsAt(index)->GetVisibleURL().spec());
+  }
+
+  ui::ScopedClipboardWriter scw(ui::ClipboardBuffer::kCopyPaste);
+  if (browser->GetProfile()->IsOffTheRecord()) {
+    // Keep it out of the OS clipboard history and cloud clipboard sync.
+    scw.MarkAsOffTheRecord();
+  }
+  // Match Blink, which writes CRLF line endings for copied page text on
+  // Windows, so older text controls that only break on CRLF show one per line.
+#if BUILDFLAG(IS_WIN)
+  constexpr char kLineBreak[] = "\r\n";
+#else
+  constexpr char kLineBreak[] = "\n";
+#endif
+  scw.WriteText(base::UTF8ToUTF16(base::JoinString(urls, kLineBreak)));
 }
 
 void ToggleWindowTitleVisibilityForVerticalTabs(

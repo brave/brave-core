@@ -7,10 +7,12 @@
 
 #include "base/command_line.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/test_future.h"
 #include "brave/browser/ui/tabs/brave_tab_menu_model.h"
 #include "brave/browser/ui/tabs/public/switches.h"
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 #include "brave/components/containers/buildflags/buildflags.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -28,6 +30,7 @@
 #include "components/grit/brave_components_strings.h"
 #include "content/public/test/browser_test.h"
 #include "testing/gmock/include/gmock/gmock.h"
+#include "ui/base/clipboard/clipboard.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
 
@@ -126,6 +129,44 @@ IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest, Basics) {
   chrome::CloseTab(browser());
   EXPECT_TRUE(menu->IsCommandIdEnabled(TabStripModel::CommandRestoreTab));
   EXPECT_FALSE(menu->IsCommandIdEnabled(TabStripModel::CommandBookmarkAllTabs));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest, CopyLinks) {
+  const GURL url1("data:text/html,1");
+  const GURL url2("data:text/html,2");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url1));
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), url2, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  auto* tab_strip_model = browser()->tab_strip_model();
+  ASSERT_EQ(tab_strip_model->count(), 2);
+
+  auto read_clipboard = [] {
+    base::test::TestFuture<std::u16string> future;
+    ui::Clipboard::GetForCurrentThread()->ReadText(
+        ui::ClipboardBuffer::kCopyPaste, std::nullopt, future.GetCallback());
+    return future.Take();
+  };
+
+  // Only the clicked tab's link is copied when it isn't part of a selection.
+  auto menu = CreateMenuControllerAt(1);
+  auto* menu_model = CreateMenuModelAt(menu.get(), 1);
+  ASSERT_TRUE(menu_model->GetIndexOfCommandId(TabStripModel::CommandCopyURL)
+                  .has_value());
+  EXPECT_TRUE(menu->IsCommandIdEnabled(TabStripModel::CommandCopyURL));
+  menu->ExecuteCommand(TabStripModel::CommandCopyURL, /*event_flags=*/0);
+  EXPECT_EQ(read_clipboard(), u"data:text/html,2");
+
+  // All selected tabs' links are copied, one per line, in tab order.
+  tab_strip_model->AddSelectionFromAnchorTo(0);
+  menu = CreateMenuControllerAt(0);
+  CreateMenuModelAt(menu.get(), 0);
+  menu->ExecuteCommand(TabStripModel::CommandCopyURL, /*event_flags=*/0);
+#if BUILDFLAG(IS_WIN)
+  EXPECT_EQ(read_clipboard(), u"data:text/html,1\r\ndata:text/html,2");
+#else
+  EXPECT_EQ(read_clipboard(), u"data:text/html,1\ndata:text/html,2");
+#endif
 }
 
 IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest,
