@@ -1803,11 +1803,12 @@ void AdsServiceImpl::OnRewardsWalletCreated() {
 }
 
 void AdsServiceImpl::OnExternalWalletConnected() {
-  ShowReminder(mojom::ReminderType::kExternalWalletConnected);
-
   ShutdownAds(base::BindOnce(
       &AdsServiceImpl::ClearDataPrefsAndAdsServiceDataAndMaybeRestart,
-      weak_ptr_factory_.GetWeakPtr(), /*intentional*/ base::DoNothing()));
+      weak_ptr_factory_.GetWeakPtr(),
+      base::IgnoreArgs<bool>(base::BindOnce(
+          &AdsServiceImpl::ShowReminder, weak_ptr_factory_.GetWeakPtr(),
+          mojom::ReminderType::kExternalWalletConnected))));
 }
 
 void AdsServiceImpl::OnCompleteReset(bool success) {
