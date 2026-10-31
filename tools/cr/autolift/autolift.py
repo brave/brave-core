@@ -666,14 +666,14 @@ def _cmd_prepare(args: argparse.Namespace) -> int:
             f"{branch}'s pull request at master (the CI job's call)."
         )
     # A new branch has nothing of its own to rebase yet.
-    rebase = exists and not args.no_rebase
-    mismatch = chromium_mismatch() if rebase else None
+    do_rebase = exists and not args.no_rebase
+    mismatch = chromium_mismatch() if do_rebase else None
     if mismatch:
         summary += f'\n- {mismatch}: synced before the rebase.'
     print(summary)
     append_report(args.milestone, f'prepare {args.milestone}', summary)
 
-    if not rebase:
+    if not do_rebase:
         return 0
     if mismatch and (returncode := sync_chromium(args.milestone)):
         return returncode
@@ -943,10 +943,10 @@ class Publish:
         status to stop with, or 0.
         """
         regen = self._state('regen-needed')
-        rebase = ['rebase', '--squash-minor-bumps']
+        rebase_args = ['rebase', '--squash-minor-bumps']
         if regen.exists():
-            rebase.append('--discard-regen-changes')
-        needed = self._brockit(*rebase, '--dry-run')
+            rebase_args.append('--discard-regen-changes')
+        needed = self._brockit(*rebase_args, '--dry-run')
         if needed not in (0, _REBASE_NEEDED):
             self._note('`brockit rebase --dry-run` failed; not pushing.')
             return 1
@@ -955,8 +955,8 @@ class Publish:
                 self._note(f'{mismatch}: ran `pnpm run sync` first.')
                 if returncode := sync_chromium(self.milestone):
                     return returncode
-            self._note(f'Ran `brockit {" ".join(rebase)}`.')
-            if returncode := self._brockit(*rebase):
+            self._note(f'Ran `brockit {" ".join(rebase_args)}`.')
+            if returncode := self._brockit(*rebase_args):
                 self._note(
                     'The rebase stopped. Finish it with `brockit rebase '
                     '--continue`, and run publish again.'
