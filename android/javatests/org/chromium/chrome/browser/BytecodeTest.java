@@ -2739,10 +2739,6 @@ public class BytecodeTest {
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/omnibox/LocationBarMediator",
-                        "mBrandedColorScheme"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/omnibox/LocationBarMediator",
                         "mTemplateUrlServiceSupplier"));
         Assert.assertTrue(
                 fieldExists(
