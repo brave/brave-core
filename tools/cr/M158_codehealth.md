@@ -2185,9 +2185,11 @@ hand.
 The "Chromium changes:" block keeps a hash as given, so some commits cite
 13-character hashes.
 
-- [ ] Resolve the culprit to its full hash before writing the block
-- [ ] Reject a culprit outside the branch's Chromium range (what
-      `autolift.py verify-culprits` checks after the fact)
+- [x] Resolve the culprit to its full hash before writing the block (fixed in
+      `[cr158][cr] Write culprits as full hashes, and check their range`)
+- [x] Reject a culprit outside the branch's Chromium range (what
+      `autolift.py verify-culprits` checks after the fact) (fixed in
+      `[cr158][cr] Write culprits as full hashes, and check their range`)
 
 ### `pnpm run build`: refuse a second build in the same out dir
 
