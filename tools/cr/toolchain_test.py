@@ -322,6 +322,16 @@ class _FakeRepoTest(unittest.TestCase):
         self.repo.setup()
         self.addCleanup(self.repo.cleanup)
         self.repo._run_git_command(['checkout', '-b', 'cr150'], self.repo.brave)
+        # The hook links culprits through Chromium's origin.
+        self.repo._run_git_command(
+            [
+                'remote',
+                'add',
+                'origin',
+                'https://chromium.googlesource.com/chromium/src.git',
+            ],
+            self.repo.chromium,
+        )
         self._install_commit_msg_hook()
 
     def _install_commit_msg_hook(self) -> None:

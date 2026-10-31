@@ -200,12 +200,24 @@ class TestCulpritLinks(unittest.TestCase):
 
     A bare hash resolves against the Chromium checkout ('../'); a
     '<subrepo>:<hash>' value (e.g. 'v8/src:...') resolves against that subrepo
-    (e.g. '../v8/src') and links to its own googlesource project.
+    (e.g. '../v8/src'). Each links through its checkout's origin push URL.
     """
 
     def setUp(self) -> None:
         self._sandbox = self.enterContext(_Sandbox())
         self._sandbox.install_hook()
+        self._set_origin(
+            self._sandbox.repo.chromium,
+            'https://chromium.googlesource.com/chromium/src.git',
+        )
+
+    def _set_origin(
+        self, repo_path: Path, url: str, push_url: str | None = None
+    ) -> None:
+        git = self._sandbox.repo._run_git_command
+        git(['remote', 'add', 'origin', url], repo_path)
+        if push_url:
+            git(['remote', 'set-url', '--push', 'origin', push_url], repo_path)
 
     def _commit_in(self, subject: str, repo_path: Path) -> str:
         """Create an empty commit in repo_path and return its hash."""
@@ -235,6 +247,10 @@ class TestCulpritLinks(unittest.TestCase):
         """A 'v8/src:<hash>' culprit resolves in ../v8/src, links to v8/v8."""
         repo = self._sandbox.repo
         repo.add_repo('v8/src')
+        self._set_origin(
+            repo.chromium / 'v8' / 'src',
+            'https://chromium.googlesource.com/v8/v8',
+        )
         culprit_hash = self._commit_in(
             'Some v8 change', repo.chromium / 'v8' / 'src'
         )
@@ -256,6 +272,10 @@ class TestCulpritLinks(unittest.TestCase):
         repo = self._sandbox.repo
         chromium_hash = self._commit_in('Chromium side', repo.chromium)
         repo.add_repo('v8/src')
+        self._set_origin(
+            repo.chromium / 'v8' / 'src',
+            'https://chromium.googlesource.com/v8/v8.git',
+        )
         v8_hash = self._commit_in('V8 side', repo.chromium / 'v8' / 'src')
         self._sandbox.stage_change()
         result = self._sandbox.run_gc(
@@ -279,16 +299,89 @@ class TestCulpritLinks(unittest.TestCase):
         self.assertIn('Chromium side', msg)
         self.assertIn('V8 side', msg)
 
-    def test_unknown_subrepo_is_rejected(self) -> None:
-        """An unknown subrepo prefix aborts the commit with a helpful error."""
+    def test_subrepo_that_is_not_a_checkout_is_rejected(self) -> None:
+        """A subrepo with no git checkout aborts the commit."""
         self._sandbox.stage_change()
         result = self._sandbox.run_gc(
             ['commit', '--culprit', 'skia:deadbeef', '-m', 'Fix']
         )
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("Unknown culprit subrepo 'skia'", result.stderr)
-        # The known subrepos are listed to guide the user.
-        self.assertIn('v8/src', result.stderr)
+        self.assertIn(
+            "Culprit subrepo 'skia' is not a git checkout", result.stderr
+        )
+
+    def test_github_subrepo_links_to_github(self) -> None:
+        """A subrepo on GitHub, over ssh, links to its GitHub commit page."""
+        repo = self._sandbox.repo
+        repo.add_repo('third_party/foo')
+        self._set_origin(
+            repo.chromium / 'third_party' / 'foo',
+            'git@github.com:example/foo.git',
+        )
+        culprit_hash = self._commit_in(
+            'A foo change', repo.chromium / 'third_party' / 'foo'
+        )
+        self._sandbox.stage_change()
+        result = self._sandbox.run_gc(
+            [
+                'commit',
+                '--culprit',
+                f'third_party/foo:{culprit_hash}',
+                '-m',
+                'x',
+            ]
+        )
+        self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
+        self.assertIn(
+            f'https://github.com/example/foo/commit/{culprit_hash}',
+            self._sandbox.last_commit_message(),
+        )
+
+    def test_push_url_wins_over_a_git_cache_fetch_url(self) -> None:
+        """A checkout fetching from a local mirror links through its push
+        URL, as in CI."""
+        repo = self._sandbox.repo
+        repo.add_repo('v8/src')
+        self._set_origin(
+            repo.chromium / 'v8' / 'src',
+            str(repo.chromium / 'v8' / 'src'),
+            push_url='https://chromium.googlesource.com/a/v8/v8.git',
+        )
+        culprit_hash = self._commit_in(
+            'Some v8 change', repo.chromium / 'v8' / 'src'
+        )
+        self._sandbox.stage_change()
+        result = self._sandbox.run_gc(
+            ['commit', '--culprit', f'v8/src:{culprit_hash}', '-m', 'Fix']
+        )
+        self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
+        self.assertIn(
+            f'https://chromium.googlesource.com/v8/v8/+/{culprit_hash}',
+            self._sandbox.last_commit_message(),
+        )
+
+    def test_remote_on_another_host_is_rejected(self) -> None:
+        """A remote neither on googlesource nor on GitHub can't be linked."""
+        repo = self._sandbox.repo
+        repo.add_repo('third_party/bar')
+        self._set_origin(
+            repo.chromium / 'third_party' / 'bar', 'https://gitlab.com/x/bar'
+        )
+        culprit_hash = self._commit_in(
+            'A bar change', repo.chromium / 'third_party' / 'bar'
+        )
+        self._sandbox.stage_change()
+        result = self._sandbox.run_gc(
+            [
+                'commit',
+                '--culprit',
+                f'third_party/bar:{culprit_hash}',
+                '-m',
+                'x',
+            ]
+        )
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("Can't link to commits in", result.stderr)
 
     def test_culprit_already_in_message_is_not_duplicated(self) -> None:
         """A culprit whose hash is already in the message adds no link block."""
