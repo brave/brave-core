@@ -8,11 +8,13 @@
 
 #include <memory>
 #include <string>
+#include <string_view>
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
 #include "base/values.h"
+#include "brave/components/psst/core/browser/psst_log_service.h"
 #include "brave/components/psst/core/browser/psst_settings_service.h"
 #include "brave/components/psst/core/common/psst_metadata_schema.h"
 #include "brave/components/psst/core/common/psst_script_responses.h"
@@ -77,7 +79,8 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
   // keeps a reference to `tab` for its lifetime. `browser_context`,
   // `psst_settings_service`, and `ui_delegate` must not be null.
   // `variations_service` may be null, in which case the country used for
-  // rule matching is left empty. `world_id` is the isolated world that PSST
+  // rule matching is left empty. `log_service` may be null, in which case no
+  // diagnostics are recorded. `world_id` is the isolated world that PSST
   // scripts are injected into.
   static std::unique_ptr<PsstTabWebContentsObserver> MaybeCreate(
       tabs::TabInterface& tab,
@@ -85,6 +88,7 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
       std::unique_ptr<PsstUiDelegate> ui_delegate,
       PsstSettingsService* psst_settings_service,
       variations::VariationsService* variations_service,
+      PsstLogService* log_service,
       const int32_t world_id);
 
   ~PsstTabWebContentsObserver() override;
@@ -103,7 +107,13 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
                              PsstRuleRegistry* registry,
                              PsstSettingsService* psst_settings_service,
                              variations::VariationsService* variations_service,
+                             PsstLogService* log_service,
                              std::unique_ptr<PsstUiDelegate> ui_delegate);
+
+  // Records a step of the flow on the brave://psst-internals timeline.
+  void Log(mojom::PsstLogLevel level,
+           std::string_view message,
+           std::optional<base::DictValue> data = std::nullopt);
 
   void InsertUserScript(std::unique_ptr<MatchedRule> rule);
 
@@ -134,6 +144,7 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
   const raw_ptr<PsstRuleRegistry> registry_;
   const raw_ptr<PsstSettingsService> psst_settings_service_ = nullptr;
   const raw_ptr<variations::VariationsService> variations_service_ = nullptr;
+  const raw_ptr<PsstLogService> log_service_;
   InjectScriptCallback inject_script_callback_;
   mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>
       script_injector_remote_;

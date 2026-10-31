@@ -5,6 +5,8 @@
 
 static_library("psst") {
   public = [
+    "psst_log_receiver.h",
+    "psst_log_service_factory.h",
     "psst_reporter_service_factory.h",
     "psst_settings_service_factory.h",
     "psst_tab_web_contents_observer.h",
@@ -16,6 +18,8 @@ static_library("psst") {
   sources = [
     "psst_infobar_delegate.cc",
     "psst_infobar_delegate.h",
+    "psst_log_receiver.cc",
+    "psst_log_service_factory.cc",
     "psst_reporter_service_factory.cc",
     "psst_settings_service_factory.cc",
     "psst_tab_web_contents_observer.cc",
@@ -45,6 +49,7 @@ static_library("psst") {
     "//components/infobars/core",
     "//components/permissions",
     "//components/prefs",
+    "//components/sessions:session_id",
     "//components/tabs:public",
     "//components/variations/service",
     "//content/public/browser",
@@ -85,10 +90,14 @@ source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-  sources = [ "psst_tab_web_contents_observer_browsertest.cc" ]
+  sources = [
+    "psst_log_receiver_browsertest.cc",
+    "psst_tab_web_contents_observer_browsertest.cc",
+  ]
 
   deps = [
     "//base",
+    "//brave/browser/psst",
     "//brave/browser/ui",
     "//brave/browser/ui/tabs:tabs_public",
     "//brave/browser/ui/webui/psst",
@@ -102,6 +111,8 @@ source_set("browser_tests") {
     "//chrome/test:test_support",
     "//components/component_updater:test_support",
     "//components/infobars/content",
+    "//components/sessions",
+    "//components/sessions:session_id",
     "//content/test:test_support",
     "//net:test_support",
     "//ui/web_dialogs",
