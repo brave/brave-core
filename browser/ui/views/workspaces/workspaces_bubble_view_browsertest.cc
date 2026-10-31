@@ -211,6 +211,31 @@ IN_PROC_BROWSER_TEST_F(WorkspacesBubbleBrowserTest, OneRowPerWorkspace) {
   auto* bubble = OpenBubble();
   ASSERT_TRUE(bubble);
 
-  EXPECT_EQ(CountDescendants<WorkspaceRowView>(bubble), 2)
-      << "Bubble should render one WorkspaceRowView per saved workspace";
+  // The window's own unmanaged space leads the list, so the saved workspaces
+  // account for every row after the first.
+  EXPECT_EQ(CountDescendants<WorkspaceRowView>(bubble), 3)
+      << "Bubble should render one WorkspaceRowView per saved workspace, "
+         "plus one for the window's unmanaged space";
+}
+
+// Every window has an unmanaged space holding whatever tabs are not part of a
+// named one, and the bubble has to offer a way back to it.
+IN_PROC_BROWSER_TEST_F(WorkspacesBubbleBrowserTest, UnmanagedSpaceRowShown) {
+  auto* service = GetWorkspaceService();
+  ASSERT_TRUE(service);
+  service->SaveWorkspaceMetadata(MakeMeta("Alpha", 3));
+
+  auto* bubble = OpenBubble();
+  ASSERT_TRUE(bubble);
+
+  const std::u16string expected =
+      l10n_util::GetStringUTF16(IDS_WORKSPACE_UNMANAGED_SPACE_NAME);
+  EXPECT_TRUE(
+      AnyDescendantMatches(bubble,
+                           [&](views::View* v) {
+                             auto* label = views::AsViewClass<views::Label>(v);
+                             return label && label->GetText() == expected;
+                           }))
+      << "Expected a row labelled '" << base::UTF16ToUTF8(expected)
+      << "' for the window's unmanaged space";
 }
