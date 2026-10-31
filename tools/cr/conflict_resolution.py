@@ -40,8 +40,12 @@ import repository
 import versioning
 from versioning import Version
 
-# The CodeHealth tracker for a milestone, e.g. `tools/cr/M158_codehealth.md`.
-_CODEHEALTH_TRACKER_RE = re.compile(r'tools/cr/M\d+_codehealth\.md')
+# The CodeHealth tracker for a milestone, e.g. `tools/cr/codehealth/M158.md`,
+# or `tools/cr/M158_codehealth.md` in the commits of branches from before the
+# trackers moved there.
+_CODEHEALTH_TRACKER_RE = re.compile(
+    r'tools/cr/codehealth/M\d+\.md|tools/cr/M\d+_codehealth\.md'
+)
 
 # The `package.json` line with the Chromium tag (`projects.chrome.tag`), the
 # only `tag` key in the file.
