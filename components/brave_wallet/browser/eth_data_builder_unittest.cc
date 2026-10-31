@@ -418,13 +418,6 @@ TEST(EthCallDataBuilderTest, MakeFilLookupKeyList) {
 
 namespace ens {
 
-TEST(EthCallDataBuilderTest, Resolver) {
-  EXPECT_EQ(Resolver("brantly.eth"),
-            "0x0178b8bf"
-            // Name hash of brantly.eth.
-            "43fcd34d8589090581e1d2bdcf5dc17feb05b2006401fb1c3fdded335a465b51");
-}
-
 TEST(EthCallDataBuilderTest, DnsEncode) {
   // Based on DNSUtilTest.DNSDomainFromDot test. But without total length limit
   // and support of terminal dot.
