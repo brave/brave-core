@@ -432,6 +432,7 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
     EXPECT_EQ(resource_request.headers.GetHeader(
                   net::HttpRequestHeaders::kContentType),
               Request::ContentType());
+    EXPECT_FALSE(resource_request.SavesCookies());
     EXPECT_THAT(RequestBodyFrom<typename Endpoint::Request::Body>(
                     network::GetUploadData(resource_request)),
                 detail::BodyEq(MakeRequest().body));
