@@ -197,12 +197,23 @@ void BraveShieldsTabHelper::OnContentSettingChanged(
     const ContentSettingsPattern& primary_pattern,
     const ContentSettingsPattern& secondary_pattern,
     ContentSettingsTypeSet content_type_set) {
-  if ((content_type_set.ContainsAllTypes() ||
-       content_type_set.GetType() == ContentSettingsType::BRAVE_SHIELDS) &&
-      primary_pattern.Matches(GetCurrentSiteURL())) {
+  if (!primary_pattern.Matches(GetCurrentSiteURL())) {
+    return;
+  }
+
+  if (content_type_set.Contains(ContentSettingsType::BRAVE_SHIELDS)) {
     for (Observer& obs : observer_list_) {
       obs.OnShieldsEnabledChanged();
     }
+  }
+
+  if (content_type_set.ContainsAllTypes() ||
+      (content_type_set.GetType() >=
+           ContentSettingsType::BRAVE_SHIELDS_PANEL_START &&
+       content_type_set.GetType() <=
+           ContentSettingsType::BRAVE_SHIELDS_PANEL_END) ||
+      content_type_set.GetType() == ContentSettingsType::JAVASCRIPT) {
+    ReloadWebContents();
   }
 }
 
@@ -318,8 +329,6 @@ void BraveShieldsTabHelper::SetBraveShieldsEnabled(bool is_enabled) {
         brave_shields::prefs::kShieldsDisabledCount,
         prefs->GetInteger(brave_shields::prefs::kShieldsDisabledCount) + 1);
   }
-
-  ReloadWebContents();
 }
 
 bool BraveShieldsTabHelper::IsBraveShieldsAdBlockOnlyModeEnabled() {
@@ -425,8 +434,6 @@ bool BraveShieldsTabHelper::GetNoScriptEnabled() {
 
 void BraveShieldsTabHelper::SetAdBlockMode(mojom::AdBlockMode mode) {
   brave_shields_settings_->SetAdBlockMode(mode, GetCurrentSiteURL());
-
-  ReloadWebContents();
 }
 
 void BraveShieldsTabHelper::SetCookieBlockMode(mojom::CookieBlockMode mode) {
@@ -449,8 +456,6 @@ void BraveShieldsTabHelper::SetCookieBlockMode(mojom::CookieBlockMode mode) {
   brave_shields::SetCookieControlType(&*host_content_settings_map_, prefs,
                                       control_type, GetCurrentSiteURL(),
                                       g_browser_process->local_state());
-
-  ReloadWebContents();
 }
 
 void BraveShieldsTabHelper::SetHttpsUpgradeMode(mojom::HttpsUpgradeMode mode) {
@@ -473,8 +478,6 @@ void BraveShieldsTabHelper::SetHttpsUpgradeMode(mojom::HttpsUpgradeMode mode) {
 
 void BraveShieldsTabHelper::SetIsNoScriptEnabled(bool is_enabled) {
   brave_shields_settings_->SetNoScriptEnabled(is_enabled, GetCurrentSiteURL());
-
-  ReloadWebContents();
 }
 
 void BraveShieldsTabHelper::BlockAllowedScripts(
