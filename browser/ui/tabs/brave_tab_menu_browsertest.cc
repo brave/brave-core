@@ -4,13 +4,21 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <memory>
+#include <string>
+#include <vector>
 
 #include "base/command_line.h"
+#include "base/run_loop.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_tab_menu_model.h"
 #include "brave/browser/ui/tabs/public/switches.h"
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
+#include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/containers/buildflags/buildflags.h"
+#include "brave/components/url_sanitizer/core/browser/url_sanitizer_service.h"
+#include "brave/grit/brave_generated_resources.h"
+#include "brave/ui/base/clipboard/test/privacy_capturing_test_clipboard.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -27,8 +35,14 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/test/browser_test.h"
+#include "net/test/embedded_test_server/embedded_test_server.h"
 #include "testing/gmock/include/gmock/gmock.h"
+#include "ui/base/clipboard/clipboard.h"
+#include "ui/base/clipboard/clipboard_buffer.h"
+#include "ui/base/clipboard/scoped_clipboard_writer.h"
+#include "ui/base/clipboard/test/clipboard_test_util.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
@@ -92,6 +106,41 @@ class BraveTabMenuBrowserTest : public InProcessBrowserTest {
     for (int i = 0; i < pinned_tab_count; ++i) {
       browser->GetTabStripModel()->SetTabPinned(i, true);
     }
+  }
+
+  // Opens the menu on the first tab, checks the "Copy link(s)" item and
+  // returns the copied text.
+  std::string CopyLinksFromMenu(int selected_tab_count) {
+    auto menu = CreateMenuControllerAt(0);
+    auto* menu_model = CreateMenuModelAt(menu.get(), 0);
+    auto index =
+        menu_model->GetIndexOfCommandId(TabStripModel::CommandCopyLinks);
+    EXPECT_TRUE(index.has_value());
+    if (!index) {
+      return std::string();
+    }
+    EXPECT_EQ(l10n_util::GetPluralStringFUTF16(IDS_TAB_CXMENU_COPY_LINKS,
+                                               selected_tab_count),
+              menu_model->GetLabelAt(*index));
+    EXPECT_TRUE(menu->IsCommandIdEnabled(TabStripModel::CommandCopyLinks));
+
+    ui::ScopedClipboardWriter(ui::ClipboardBuffer::kCopyPaste).WriteText(u"");
+    menu->ExecuteCommand(TabStripModel::CommandCopyLinks, /*event_flags=*/0);
+    return ui::clipboard_test_util::ReadAsciiText(
+        ui::Clipboard::GetForCurrentThread(), ui::ClipboardBuffer::kCopyPaste,
+        /*data_dst=*/nullptr);
+  }
+
+  void SetSanitizerRules(const std::string& matchers) {
+    auto* sanitizer = brave::URLSanitizerServiceFactory::GetForBrowserContext(
+        browser()->GetProfile());
+    base::RunLoop loop;
+    sanitizer->SetInitializationCallbackForTesting(loop.QuitClosure());
+    brave::URLSanitizerComponentInstaller::RawConfig config;
+    config.matchers = matchers;
+    static_cast<brave::URLSanitizerComponentInstaller::Observer*>(sanitizer)
+        ->OnConfigReady(config);
+    loop.Run();
   }
 
   std::vector<content::WebContents*> GetWebContentses(
@@ -492,6 +541,71 @@ IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest,
   EXPECT_FALSE(
       menu_model->GetIndexOfCommandId(TabStripModel::CommandToggleVertical)
           .has_value());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest,
+                       CopyLinks_CopiesSelectedTabsInOrder) {
+  ASSERT_TRUE(embedded_test_server()->Start());
+  const GURL url1 = embedded_test_server()->GetURL("/title1.html");
+  const GURL url2 = embedded_test_server()->GetURL("/title2.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url1));
+  ASSERT_TRUE(AddTabAtIndex(1, url2, ui::PAGE_TRANSITION_TYPED));
+
+  auto* tab_strip_model = browser()->GetTabStripModel();
+  tab_strip_model->ActivateTabAt(0);
+
+  {
+    SCOPED_TRACE("One selected tab");
+    EXPECT_EQ(url1.spec(), CopyLinksFromMenu(1));
+  }
+
+  {
+    SCOPED_TRACE("Two selected tabs");
+    tab_strip_model->ExtendSelectionTo(1);
+    EXPECT_EQ(url1.spec() + "\n" + url2.spec(), CopyLinksFromMenu(2));
+  }
+
+  {
+    SCOPED_TRACE("Internal page");
+    ASSERT_TRUE(
+        AddTabAtIndex(2, GURL("brave://version/"), ui::PAGE_TRANSITION_TYPED));
+    tab_strip_model->ActivateTabAt(0);
+    tab_strip_model->ExtendSelectionTo(2);
+    EXPECT_EQ(url1.spec() + "\n" + url2.spec() + "\nbrave://version/",
+              CopyLinksFromMenu(3));
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest,
+                       CopyLinks_RemovesTrackingParams) {
+  SetSanitizerRules(R"([
+    { "include": [ "*://*/*"], "params": ["utm_content"] }
+  ])");
+  ASSERT_TRUE(embedded_test_server()->Start());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(),
+      embedded_test_server()->GetURL("/title1.html?id=1&utm_content=x")));
+
+  EXPECT_EQ(embedded_test_server()->GetURL("/title1.html?id=1").spec(),
+            CopyLinksFromMenu(1));
+}
+
+// Links copied from a private window must not leak into the OS clipboard
+// history or cloud clipboard sync.
+IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest,
+                       CopyLinks_PrivateWindowCopyIsOffTheRecord) {
+  brave::ScopedPrivacyCapturingTestClipboard fake_clipboard;
+
+  BrowserWindowInterface* private_browser = CreateIncognitoBrowser();
+  ASSERT_TRUE(private_browser->GetProfile()->IsOffTheRecord());
+  brave::CopyTabLinks(private_browser, std::vector<int>{0});
+  EXPECT_EQ(static_cast<uint32_t>(ui::Clipboard::kNoLocalClipboardHistory |
+                                  ui::Clipboard::kNoCloudClipboard),
+            fake_clipboard.last_privacy_types());
+
+  brave::CopyTabLinks(browser(), std::vector<int>{0});
+  EXPECT_EQ(static_cast<uint32_t>(ui::Clipboard::kNone),
+            fake_clipboard.last_privacy_types());
 }
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
