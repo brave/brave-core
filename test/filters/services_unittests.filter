@@ -9,3 +9,82 @@
 # TFLite model load that records these histograms. See
 # chromium_src/services/passage_embeddings/passage_embedder_impl.cc.
 -PassageEmbedderImplTest.RecordsGemmaHistograms
+
+# These tests fail because Brave treats a request that is same-site with its
+# top frame origin as first-party, even when its SiteForCookies is null. When
+# upstream blocks such a request, IsFullCookieAccessAllowed() falls back to
+# BraveIsAllowedThirdParty(), which compares the URL with the top frame origin
+# only. See
+# chromium_src/components/content_settings/core/common/cookie_settings_base.cc.
+# This is intended: it keeps first-party frames nested in third-party frames
+# working.
+-All/RestrictedCookieManagerTest.ChangeSettings/*
+-All/RestrictedCookieManagerTest.CookiesEnabledFor/*
+-All/RestrictedCookieManagerTest.GetAllForUrlPolicy/*
+-All/RestrictedCookieManagerTest.SetCanonicalCookiePolicy/*
+-All/RestrictedCookieManagerTest.SetCookieFromStringCrossOrigin/NETWORK_000100
+-All/RestrictedCookieManagerTest.SetCookieFromStringCrossOrigin/SCRIPT_000100
+-CookieManagerTest.BlockThirdPartyCookies
+-NetworkServiceNetworkDelegateTest.ClearSiteDataPartitionedStateOnlyForCrossSiteSubframe
+
+# These tests fail because Brave gives a cross-site context ephemeral storage
+# when the cookie settings would block its cookies.
+# IsEphemeralCookieAccessAllowed() and IsEphemeralPrivacyModeEnabled() report
+# that access as allowed, where upstream reports it as blocked or as
+# kPartitionedStateAllowedOnly. See
+# chromium_src/services/network/cookie_settings.cc and
+# chromium_src/services/network/restricted_cookie_manager.cc.
+# This is intended: ephemeral storage replaces third-party cookie blocking.
+-All/RestrictedCookieManagerTest.CookiesEnabledFor_WithStorageAccess/*
+-All/RestrictedCookieManagerTest.GetAllForUrlEqualsMatch_WithStorageAccess/*
+-All/RestrictedCookieManagerTest.PreferBoundCookieContextForCookiesEnabledFor/*
+-All/RestrictedCookieManagerTest.PreferBoundCookieContextForCookieStoreSet/*
+-All/RestrictedCookieManagerTest.PreferBoundCookieContextForScriptGet/*
+-All/RestrictedCookieManagerTest.PreferBoundCookieContextForTopFrameOrigin/*
+-All/RestrictedCookieManagerTest.SetCanonicalCookie_WithStorageAccess/*
+-NetworkContextTest.PrivacyModeEnabledIfCookiesBlocked
+-NetworkContextTest.PrivacyModeEnabledIfThirdPartyCookiesBlocked
+
+# These tests fail because IsEphemeralCookieAccessible() and
+# AnnotateAndMoveUserBlockedEphemeralCookies() return true as soon as access is
+# allowed, without the upstream calls that add the WARN_THIRD_PARTY_PHASEOUT
+# warning to the inclusion status. FilteredCookieAccessEvents also hits the
+# same-site case above. See chromium_src/services/network/cookie_settings.cc.
+# This is an accepted side effect: only DevTools reads the warning, and
+# restoring it would route Brave's allow decision through the stricter
+# upstream check.
+-All/RestrictedCookieManagerTest.FilteredCookieAccessEvents/*
+-NetworkContextTest.CanSetCookieTrueIfCookiesAllowed
+
+# These tests fail because CookieSettingsBase::ShouldUseEphemeralStorage()
+# decides on ephemeral storage without the request's cookie setting overrides,
+# so a storage access grant does not keep a cross-site request out of
+# ephemeral storage, and the request never sees the cookie the test set in the
+# persistent cookie jar. Brave disables the Storage Access API, and its
+# browser_tests are filtered as well. See
+# chromium_src/components/content_settings/core/common/cookie_settings_base.cc.
+# This is intended while the Storage Access API is disabled.
+-StorageAccessHeaderNetworkContextParameterizedTest.Retry/1
+-StorageAccessHeaderNetworkContextParameterizedTest.RetryABAWithResourceRequestOptIn/*
+-StorageAccessHeaderNetworkContextParameterizedTest.RetryAfterInactive/1
+-StorageAccessHeaderNetworkContextTest.OptedInViaResourceRequest
+-StorageAccessHeaderNetworkContextTest.RequestHeader_Active_TopLevelStorageAccess
+-StorageAccessHeaderRedirectNetworkContextTest.RetryThenRedirect/*
+
+# These tests crash because net::TestCookieAccessDelegate does not override
+# CookieAccessDelegate::ShouldUseEphemeralStorage(), whose base implementation
+# is NOTREACHED(). See chromium_src/net/cookies/cookie_access_delegate.cc.
+# This is a gap in Brave's test support, not intended behaviour, and is to be
+# fixed so these tests can be re-enabled.
+# https://github.com/brave/brave-browser/issues/60258
+-All/RestrictedCookieManagerTest.ChangeNotificationIncludesAccessSemantics/*
+-All/RestrictedCookieManagerTest.NoChangeNotificationForNonlegacyCookie/*
+
+# This test fails because Brave allows unpartitioned cookie access for a nonced
+# cookie partition key when the request is same-site with its top frame.
+# Brave's IsFullCookieAccessAllowed() override discards the upstream rejection
+# of nonced keys before its BraveIsAllowedThirdParty() fallback. See
+# chromium_src/components/content_settings/core/common/cookie_settings_base.cc.
+# This is a bug, not intended behaviour, and is to be fixed so this test can be
+# re-enabled. https://github.com/brave/brave-browser/issues/60259
+-SharedResourceCheckerTest.CookiesDisabled/1
