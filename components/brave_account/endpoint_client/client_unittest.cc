@@ -16,9 +16,10 @@
 #include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
+#include "base/location.h"
 #include "base/no_destructor.h"
 #include "base/test/bind.h"
-#include "base/test/run_until.h"
+#include "base/test/gtest_util.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/threading/thread.h"
@@ -487,14 +488,13 @@ using ClientTestProtobufResponseWithHeaders =
                ProtobufEndpoint::Request,
                WithHeaders<ProtobufEndpoint::Response>>;
 
-enum class CancelRequestOn { kSameSequence, kDifferentSequence };
-
-class ClientTestCancelableRequest
-    : public testing::TestWithParam<CancelRequestOn> {
+class ClientTestCancelableRequest : public testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory test_url_loader_factory_;
 };
+
+using ClientTestCancelableRequestDeathTest = ClientTestCancelableRequest;
 
 struct RetryOptionsTestCase {
   std::string test_name;
@@ -574,49 +574,81 @@ INSTANTIATE_TEST_SUITE_P(
     ClientTestProtobufResponseWithHeaders::GenerateTestCases(),
     ClientTestProtobufResponseWithHeaders::kNameGenerator);
 
-TEST_P(ClientTestCancelableRequest, Cancel) {
+TEST_F(ClientTestCancelableRequest, ResetPreventsCallback) {
+  MockResponseFor<JSONEndpoint>(
+      test_url_loader_factory_,
+      {.net_error = net::OK, .status_code = net::HTTP_OK});
+
+  base::test::TestFuture<JSONEndpoint::Response> cancelled_future;
+  RequestHandle request_handle =
+      Client<JSONEndpoint>::Send<RequestCancelability::kCancelable>(
+          test_url_loader_factory_.GetSafeWeakWrapper(),
+          JSONEndpoint::Request(), cancelled_future.GetCallback());
+
+  // Sent after the cancelled request, so once this one completes, the cancelled
+  // one would have too.
+  base::test::TestFuture<JSONEndpoint::Response> future;
+  Client<JSONEndpoint>::Send(test_url_loader_factory_.GetSafeWeakWrapper(),
+                             JSONEndpoint::Request(), future.GetCallback());
+
+  request_handle.reset();
+
+  ASSERT_TRUE(future.Wait());
+  EXPECT_FALSE(cancelled_future.IsReady());
+}
+
+TEST_F(ClientTestCancelableRequest, ResetInsideCallbackIsSafe) {
+  MockResponseFor<JSONEndpoint>(
+      test_url_loader_factory_,
+      {.net_error = net::OK, .status_code = net::HTTP_OK});
+
+  base::test::TestFuture<void> future;
+  RequestHandle request_handle =
+      Client<JSONEndpoint>::Send<RequestCancelability::kCancelable>(
+          test_url_loader_factory_.GetSafeWeakWrapper(),
+          JSONEndpoint::Request(),
+          base::BindLambdaForTesting(
+              [&request_handle,
+               done = future.GetCallback()](JSONEndpoint::Response) mutable {
+                request_handle.reset();
+                std::move(done).Run();
+              }));
+
+  ASSERT_TRUE(future.Wait());
+  EXPECT_FALSE(request_handle);
+}
+
+TEST_F(ClientTestCancelableRequest, ResetAfterCompletionIsNoOp) {
+  MockResponseFor<JSONEndpoint>(
+      test_url_loader_factory_,
+      {.net_error = net::OK, .status_code = net::HTTP_OK});
+
   base::test::TestFuture<JSONEndpoint::Response> future;
   RequestHandle request_handle =
       Client<JSONEndpoint>::Send<RequestCancelability::kCancelable>(
           test_url_loader_factory_.GetSafeWeakWrapper(),
           JSONEndpoint::Request(), future.GetCallback());
 
-  auto weak_simple_url_loader =
-      CHECK_DEREF(static_cast<network::SimpleURLLoader*>(request_handle.get()))
-          .GetWeakPtr();
-  EXPECT_TRUE(weak_simple_url_loader);
+  ASSERT_TRUE(future.Wait());
+  request_handle.reset();
+}
 
-  // We intentionally don't add a response for this request.
-  // It will hang, so the only way it completes is
-  // by explicitly canceling via |request_handle|.
-  if (GetParam() == CancelRequestOn::kSameSequence) {
-    request_handle.reset();
-  } else {
-    base::Thread thread("cancel-thread");
+TEST_F(ClientTestCancelableRequestDeathTest, ResetOnAnotherSequenceCrashes) {
+  base::test::TestFuture<JSONEndpoint::Response> future;
+  RequestHandle request_handle =
+      Client<JSONEndpoint>::Send<RequestCancelability::kCancelable>(
+          test_url_loader_factory_.GetSafeWeakWrapper(),
+          JSONEndpoint::Request(), future.GetCallback());
+
+  EXPECT_CHECK_DEATH({
+    base::Thread thread("other-sequence");
     CHECK(thread.Start());
     thread.task_runner()->PostTask(
         FROM_HERE,
-        base::BindOnce(
-            [](RequestHandle request_handle) { request_handle.reset(); },
-            std::move(request_handle)));
-    thread.FlushForTesting();  // ensures request_handle.reset() ran
-  }
-
-  // The deleter uses `SequencedTaskRunner::DeleteSoon()`
-  // on the owning sequence, so wait for it to run.
-  EXPECT_TRUE(base::test::RunUntil([&] { return !weak_simple_url_loader; }));
-  EXPECT_FALSE(future.IsReady());
+        base::BindOnce([](RequestHandle) {}, std::move(request_handle)));
+    thread.FlushForTesting();
+  });
 }
-
-INSTANTIATE_TEST_SUITE_P(CancelableRequest,
-                         ClientTestCancelableRequest,
-                         testing::Values(CancelRequestOn::kSameSequence,
-                                         CancelRequestOn::kDifferentSequence),
-                         [](const auto& info) {
-                           return info.param == CancelRequestOn::kSameSequence
-                                      ? "same_sequence"
-                                      : "different_sequence";
-                         });
 
 TEST(ClientTestUrlReplacements, OverridesReachTheOutgoingRequest) {
   base::test::TaskEnvironment task_environment;

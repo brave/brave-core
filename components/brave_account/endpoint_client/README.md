@@ -250,8 +250,14 @@ request_handle.reset();  // cancels the request
 ```
 
 `RequestHandle` is a type-erased `std::unique_ptr<>` to the underlying
-`network::SimpleURLLoader` with a sequence-aware deleter, so you can safely pass
-it across sequences. Destroying the handle cancels the request.
+`network::SimpleURLLoader`.
+
+Destroying the handle cancels the request **synchronously**: the response
+callback can't run afterwards, since `SimpleURLLoader` guarantees that a loader
+deleted before its callback runs never runs it.
+
+A non-empty handle must be destroyed (or `reset()`) on the sequence that called
+`Send<>()`; destroying it elsewhere `CHECK`-fails.
 
 ---
 

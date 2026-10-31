@@ -46,12 +46,11 @@ namespace brave_account {
 // state is destroyed -> its flows are destroyed -> their pending requests are
 // cancelled.
 //
-// Cancelling does not un-queue an already-posted response task, so every
-// callback that task would run must be bound through a `WeakPtr` to be
-// dropped. `SendFlowOwnedRequest()` binds the slot-erase through
-// `weak_factory_` here; the user callback it is given must be bound through
-// the derived flow's own `weak_factory_`. Each class needs its own factory,
-// since `base::WeakPtr` cannot downcast to bind a `&Derived::On...` method.
+// Cancelling is synchronous, so a cancelled request's callback never runs.
+// `SendFlowOwnedRequest()` binds the slot-erase through `weak_factory_` here,
+// since a response handler's pref write can destroy this flow before the
+// `.Then()` continuation runs. Each class needs its own factory, since
+// `base::WeakPtr` cannot downcast to bind a `&Derived::On...` method.
 //
 // Rules for flow implementers:
 //

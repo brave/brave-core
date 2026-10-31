@@ -22,7 +22,9 @@ class Client;
 
 namespace detail {
 
-// Sequence-aware deleter (marshals destruction to |task_runner_|).
+// Deletes the RequestHandle's SimpleURLLoader inline, so cancellation is
+// synchronous. CHECKs that this happens on the sequence that issued the
+// request, the only one the loader may be touched from.
 class RequestHandleDeleter {
  public:
   RequestHandleDeleter();
