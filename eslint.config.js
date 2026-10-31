@@ -329,8 +329,24 @@ export default defineConfig([
   },
   {
     files: ['chromium_src/**/*.ts'],
+    plugins: {
+      // Chromium's webui lint plugin isn't loaded here; stub the rule so
+      // `eslint-disable` comments for it in overridden files resolve.
+      '@webui-eslint': {
+        rules: { 'lit-element-structure': { create: () => ({}) } },
+      },
+    },
     rules: {
       '@eslint-community/eslint-comments/no-unlimited-disable': 'off',
     },
+  },
+  {
+    // The stub above never reports, so directives for it look
+    // unused.
+    files: [
+      'chromium_src/chrome/browser/resources/settings/**/*.ts',
+      'chromium_src/chrome/browser/resources/signin/**/*.ts',
+    ],
+    linterOptions: { reportUnusedDisableDirectives: 'off' },
   },
 ])

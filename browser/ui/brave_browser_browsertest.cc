@@ -242,7 +242,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
 
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL("https://www.brave.com/"),
-      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_EQ(2, tab_strip->count());
 

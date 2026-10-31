@@ -1,5 +1,5 @@
 diff --git a/content/browser/renderer_host/clipboard_host_impl.cc b/content/browser/renderer_host/clipboard_host_impl.cc
-index 38a163ec1f9a7f1cd0e24fe929ececeefb4baf4b..b63a8f2322361ebbcd0cc44210ba16172ee78cfc 100644
+index 1c56fd299a34a63322eecf001a9ce8d97e28fa5d..e5867231336b21e07266f34c73d112ed10f387fc 100644
 --- a/content/browser/renderer_host/clipboard_host_impl.cc
 +++ b/content/browser/renderer_host/clipboard_host_impl.cc
 @@ -143,6 +143,8 @@ class FrameClipboardContext : public ClipboardHostImpl::Context {
@@ -20,9 +20,9 @@ index 38a163ec1f9a7f1cd0e24fe929ececeefb4baf4b..b63a8f2322361ebbcd0cc44210ba1617
 +  }
 +
   private:
-   std::unique_ptr<ClipboardHostImpl> impl_;
- };
-@@ -886,6 +892,8 @@ void ClipboardHostImpl::WriteText(const std::u16string& text) {
+   ~ClipboardHostDocumentHelper() override = default;
+ 
+@@ -889,6 +895,8 @@ void ClipboardHostImpl::WriteText(const std::u16string& text) {
    ClipboardPasteData data;
    data.text = text;
    ++pending_writes_;

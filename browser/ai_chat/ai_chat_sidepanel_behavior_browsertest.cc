@@ -144,7 +144,7 @@ class AIChatGlobalSidePanelBrowserTest
     // Create a new tab
     GURL test_url("chrome://version/");
     ui_test_utils::NavigateToURLWithDisposition(
-        browser, test_url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+        browser, test_url, WindowOpenDisposition::kNewForegroundTab,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
     // Wait for tab to be active
@@ -305,7 +305,7 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
   // Open the full-page AI Chat conversation in a new tab, keeping the original
   // tab so the tab strip stays valid after AI Chat is detached.
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-      browser(), GURL(kAIChatUIURL), WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser(), GURL(kAIChatUIURL), WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   content::WebContents* leo_contents = tab_strip->GetActiveWebContents();
   ASSERT_TRUE(leo_contents);
@@ -388,7 +388,7 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
   // tab so the tab strip stays valid after AI Chat is detached.
   auto* tab_strip = browser()->tab_strip_model();
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-      browser(), GURL(kAIChatUIURL), WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser(), GURL(kAIChatUIURL), WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   content::WebContents* leo_contents = tab_strip->GetActiveWebContents();
   ASSERT_TRUE(leo_contents);
@@ -431,7 +431,7 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
   // Open the full-page AI Chat conversation in a new tab, keeping the original
   // tab so the tab strip stays valid after AI Chat is detached.
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-      browser(), GURL(kAIChatUIURL), WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser(), GURL(kAIChatUIURL), WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   content::WebContents* ai_chat_contents = tab_strip->GetActiveWebContents();
   ASSERT_TRUE(ai_chat_contents);
@@ -514,7 +514,7 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
 
   // Open a separate full-page AI Chat conversation in a new tab.
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-      browser(), GURL(kAIChatUIURL), WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser(), GURL(kAIChatUIURL), WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   content::WebContents* full_page_contents = tab_strip->GetActiveWebContents();
   ASSERT_TRUE(full_page_contents);
@@ -556,7 +556,7 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
 
   auto* tab_strip = browser()->tab_strip_model();
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-      browser(), GURL(kAIChatUIURL), WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser(), GURL(kAIChatUIURL), WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   content::WebContents* leo_contents = tab_strip->GetActiveWebContents();
   ASSERT_TRUE(leo_contents);
@@ -573,7 +573,7 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
   // the conversation: it survives as a full-page tab.
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL("chrome://version/"),
-      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   EXPECT_NE(tab_strip->GetIndexOfWebContents(leo_contents),
             TabStripModel::kNoTab);
@@ -724,7 +724,7 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
                        ReverseMoveIsNoOpForFullPageChat) {
   auto* tab_strip = browser()->tab_strip_model();
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-      browser(), GURL(kAIChatUIURL), WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser(), GURL(kAIChatUIURL), WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   content::WebContents* leo_contents = tab_strip->GetActiveWebContents();
   ASSERT_TRUE(leo_contents);
@@ -749,7 +749,7 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
 
   auto* tab_strip = browser()->tab_strip_model();
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-      browser(), GURL(kAIChatUIURL), WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser(), GURL(kAIChatUIURL), WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   content::WebContents* leo_contents = tab_strip->GetActiveWebContents();
   ASSERT_TRUE(leo_contents);

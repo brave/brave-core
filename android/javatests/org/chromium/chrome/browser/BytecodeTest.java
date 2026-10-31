@@ -83,7 +83,7 @@ import org.chromium.chrome.browser.feed.FeedSurfaceCoordinator;
 import org.chromium.chrome.browser.feed.SnapScrollHelper;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
-import org.chromium.chrome.browser.glic.GlicButtonDelegate;
+import org.chromium.chrome.browser.glic.toolbar_button.GlicButtonDelegate;
 import org.chromium.chrome.browser.homepage.settings.BraveRadioButtonGroupHomepagePreference;
 import org.chromium.chrome.browser.hub.HubShowPaneHelper;
 import org.chromium.chrome.browser.hub.PaneListBuilder;
@@ -186,6 +186,7 @@ import org.chromium.components.browser_ui.device_lock.DeviceLockActivityLauncher
 import org.chromium.components.browser_ui.media.MediaNotificationInfo;
 import org.chromium.components.browser_ui.site_settings.ContentSettingException;
 import org.chromium.components.browser_ui.site_settings.PermissionInfo;
+import org.chromium.components.browser_ui.site_settings.PermissionSetting;
 import org.chromium.components.browser_ui.site_settings.SiteSettingsCategory;
 import org.chromium.components.browser_ui.site_settings.Website;
 import org.chromium.components.browser_ui.site_settings.WebsiteAddress;
@@ -770,12 +771,6 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
-                        "getAddExceptionDialogMessageResourceId",
-                        MethodModifier.REGULAR,
-                        int.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
                         "resetList",
                         MethodModifier.REGULAR,
                         void.class));
@@ -1002,22 +997,6 @@ public class BytecodeTest {
                         MethodModifier.STATIC,
                         String.class,
                         int.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/omnibox/styles/OmniboxResourceProvider",
-                        "getToolbarSidePaddingForNtp",
-                        MethodModifier.STATIC,
-                        int.class,
-                        Context.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/undo_tab_close_snackbar/UndoBarController",
-                        "showUndoBar",
-                        MethodModifier.REGULAR,
-                        void.class,
-                        List.class,
-                        List.class,
-                        boolean.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/notifications/NotificationPlatformBridge",
@@ -1341,6 +1320,7 @@ public class BytecodeTest {
                         void.class,
                         Preference.class,
                         Integer.class,
+                        PermissionSetting.class,
                         boolean.class,
                         boolean.class));
         Assert.assertTrue(
@@ -1925,7 +1905,7 @@ public class BytecodeTest {
                         BrowserControlsStateProvider.class,
                         boolean.class,
                         PageZoomManager.class,
-                        Function.class,
+                        OmniboxResourceProvider.class,
                         SnackbarManager.class,
                         View.class,
                         OmniboxChipManager.class,
@@ -2220,8 +2200,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/ui/appmenu/AppMenu",
                         BraveAppMenu.getAppMenuVisibilityDelegateClass(),
                         Resources.class,
-                        HierarchicalMenuController.class,
-                        boolean.class));
+                        HierarchicalMenuController.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/components/external_intents/ExternalNavigationHandler",

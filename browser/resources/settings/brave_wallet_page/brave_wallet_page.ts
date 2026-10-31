@@ -9,7 +9,7 @@ import type {CrInputElement} from 'chrome://resources/cr_elements/cr_input/cr_in
 
 import {PrefService} from '/shared/settings/prefs2/pref_service.js'
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
-import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
+import {WebUiListenerMixin} from '/shared/settings/web_ui_listener_mixin.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
 import {RouteObserverMixin, Router} from '../router.js'
@@ -106,12 +106,7 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
         value: false,
       },
 
-      isPrivateWindowsEnabled_: {
-        type: Object,
-        value() {
-          return {}
-        },
-      },
+      isPrivateWindowsEnabled_: Boolean,
 
       showRestartToast_: {
         type: Boolean,
@@ -131,7 +126,7 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
   private declare cryptocurrency_list_: CurrencyType[]
   private declare currency_list_: CurrencyType[]
   private declare isTransactionSimulationsFeatureEnabled: boolean
-  private declare isPrivateWindowsEnabled_: chrome.settingsPrivate.PrefObject<boolean>
+  private declare isPrivateWindowsEnabled_: boolean
   private declare showRestartToast_: boolean
   private declare isZCashShieldedTxEnabled_: boolean
   private declare isCardanoDAppSupportEnabled_: boolean
@@ -163,11 +158,7 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
         this.transaction_simulation_opt_in_options_ = list
       })
     this.browserProxy_.getWalletInPrivateWindowsEnabled().then((val) => {
-      this.isPrivateWindowsEnabled_ = {
-        key: '',
-        type: chrome.settingsPrivate.PrefType.BOOLEAN,
-        value: val,
-      }
+      this.isPrivateWindowsEnabled_ = val
     })
     this.browserProxy_.isZCashShieldedTxEnabled().then(val => {
       this.isZCashShieldedTxEnabled_ = val
@@ -294,14 +285,9 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
     window.alert(this.i18n('walletResetTransactionInfoConfirmed'))
   }
 
-  private onPrivateWindowsEnabled_() {
-    // Toggle the setting switch UI, but don't actually update the pref.
-    const pref: chrome.settingsPrivate.PrefObject = {
-      key: '',
-      type: chrome.settingsPrivate.PrefType.BOOLEAN,
-      value: !this.isPrivateWindowsEnabled_.value,
-    }
-    this.isPrivateWindowsEnabled_ = pref
+  private onPrivateWindowsEnabled_(e: Event) {
+    // Reflect the switch in the UI, but don't update the pref until restart.
+    this.isPrivateWindowsEnabled_ = (e.target as HTMLInputElement).checked
     this.updateRestartToast_()
   }
 
@@ -309,7 +295,7 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
     // Show restart toast if current private windows pref
     // value does not match UI switch.
     this.browserProxy_.getWalletInPrivateWindowsEnabled().then(enabled => {
-      if (enabled !== this.isPrivateWindowsEnabled_.value) {
+      if (enabled !== this.isPrivateWindowsEnabled_) {
         this.showRestartToast_ = true
       } else {
         this.showRestartToast_ = false
@@ -319,7 +305,7 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
 
   private applyPrefChangesAndRestart(e: Event) {
     this.browserProxy_.setWalletInPrivateWindowsEnabled(
-      this.isPrivateWindowsEnabled_.value
+      this.isPrivateWindowsEnabled_
     ).then(() => {
         e.stopPropagation()
         window.open("chrome://restart", "_self")

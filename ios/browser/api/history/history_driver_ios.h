@@ -9,17 +9,13 @@
 #include <vector>
 
 #include "base/functional/callback.h"
-#include "base/memory/raw_ptr.h"
 #include "components/history/core/browser/browsing_history_driver.h"
 #include "components/history/core/browser/browsing_history_service.h"
 #include "url/gurl.h"
 
 class HistoryDriverIOS : public history::BrowsingHistoryDriver {
  public:
-  using WebHistoryServiceGetter =
-      base::RepeatingCallback<history::WebHistoryService*()>;
-
-  explicit HistoryDriverIOS(WebHistoryServiceGetter history_service_getter);
+  HistoryDriverIOS();
 
   HistoryDriverIOS(const HistoryDriverIOS&) = delete;
   HistoryDriverIOS& operator=(const HistoryDriverIOS&) = delete;
@@ -42,14 +38,10 @@ class HistoryDriverIOS : public history::BrowsingHistoryDriver {
                                       bool has_synced_results) override;
   bool AllowHistoryDeletions() override;
   bool ShouldHideWebHistoryUrl(const GURL& url) override;
-  history::WebHistoryService* GetWebHistoryService() override;
   void ShouldShowNoticeAboutOtherFormsOfBrowsingHistory(
       const syncer::SyncService* sync_service,
       history::WebHistoryService* history_service,
       base::OnceCallback<void(bool)> callback) override;
-
-  // The current web history service.
-  WebHistoryServiceGetter history_service_getter_;
 };
 
 #endif  // BRAVE_IOS_BROWSER_API_HISTORY_HISTORY_DRIVER_IOS_H_

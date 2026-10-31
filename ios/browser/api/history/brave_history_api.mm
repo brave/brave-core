@@ -35,17 +35,6 @@
 #error "This file requires ARC support."
 #endif
 
-namespace {
-
-history::WebHistoryService* WebHistoryServiceGetter(
-    base::WeakPtr<ProfileIOS> profile) {
-  DCHECK(profile.get())
-      << "Getter should not be called after ProfileIOS destruction.";
-  return ios::WebHistoryServiceFactory::GetForProfile(profile.get());
-}
-
-}  // anonymous namespace
-
 DomainMetricTypeIOS const DomainMetricTypeIOSNoMetric =
     static_cast<history::DomainMetricType>(
         history::DomainMetricType::kNoMetric);
@@ -224,19 +213,16 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
     DCHECK_CURRENTLY_ON(web::WebThread::UI);
     _profile = profile;
 
-    history_service_ = ios::HistoryServiceFactory::GetForProfile(
-        _profile, ServiceAccessType::EXPLICIT_ACCESS);
+    history_service_ = ios::HistoryServiceFactory::GetForProfile(_profile);
     web_history_service_ =
         ios::WebHistoryServiceFactory::GetForProfile(_profile);
 
-    _browsingHistoryDriver = std::make_unique<HistoryDriverIOS>(
-        base::BindRepeating(&WebHistoryServiceGetter, _profile->AsWeakPtr()));
+    _browsingHistoryDriver = std::make_unique<HistoryDriverIOS>();
 
     _browsingHistoryService = std::make_unique<history::BrowsingHistoryService>(
         _browsingHistoryDriver.get(),
-        ios::HistoryServiceFactory::GetForProfile(
-            _profile, ServiceAccessType::EXPLICIT_ACCESS),
-        SyncServiceFactory::GetForProfile(_profile),
+        ios::HistoryServiceFactory::GetForProfile(_profile),
+        web_history_service_, SyncServiceFactory::GetForProfile(_profile),
         /*device_info_tracker=*/nullptr);
   }
   return self;

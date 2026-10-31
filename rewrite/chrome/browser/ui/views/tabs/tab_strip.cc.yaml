@@ -9,7 +9,7 @@ substitutions:
     regex:
       re_pattern:
         '(std::vector<gfx::Rect> CalculateBoundsForDraggedViews\(\s*const
-        std::vector<TabSlotView\*>& views\) override {)'
+        std::vector<views::View\*>& views\) override {)'
       replace:
         '\1\n    BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS'
 
@@ -29,6 +29,11 @@ substitutions:
         '(TabStrip::SetSelection\(const ui::ListSelectionModel& new_selection\)
         {[\s\S]*if \()(IsGroupCollapsed\(new_group\))'
       replace: '\1\2 && IsTabStripEditable()'
+
+  - description: 'Use BraveTabContainer instead of TabContainer'
+    regex:
+      pattern: 'std::make_unique<TabContainer>('
+      replace: 'std::make_unique<BraveTabContainer>('
 
   - description: 'Use BraveTabDragController instead of TabDragController'
     regex:

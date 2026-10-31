@@ -718,10 +718,10 @@ void BraveTab::OnTabDataChanged(TabChangeType tab_change_type,
 
   // Our vertical tab uses CompoundTabContainer.
   // When tab is moved from the group by pinning, it's moved to
-  // pinned TabContainerImpl before its tab group id is cleared.
-  // And it causes runtime crash as using this tab from pinned TabContainerImpl
+  // pinned TabContainer before its tab group id is cleared.
+  // And it causes runtime crash as using this tab from pinned TabContainer
   // has assumption that it's not included in any group.
-  // So, clear in-advance when tab enters to pinned TabContainerImpl.
+  // So, clear in-advance when tab enters to pinned TabContainer.
   auto* vtc =
       VerticalTabController::From(controller()->GetBrowserWindowInterface());
   if (data_changed && vtc && vtc->ShouldShowBraveVerticalTabs() &&

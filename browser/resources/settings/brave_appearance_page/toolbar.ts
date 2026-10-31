@@ -5,7 +5,7 @@
 
 import { afterNextRender, PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import { I18nMixin, I18nMixinInterface } from 'chrome://resources/cr_elements/i18n_mixin.js'
-import { WebUiListenerMixin } from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
+import { WebUiListenerMixin } from '/shared/settings/web_ui_listener_mixin.js'
 import { PrefServiceObserverMixin } from '/shared/settings/prefs2/pref_service_observer_mixin.js'
 import { sendWithPromise } from 'chrome://resources/js/cr.js'
 import { loadTimeData } from "../i18n_setup.js"

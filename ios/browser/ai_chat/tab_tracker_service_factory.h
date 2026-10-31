@@ -8,36 +8,24 @@
 
 #include <memory>
 
-#include "base/no_destructor.h"
-#include "ios/chrome/browser/shared/model/profile/profile_keyed_service_factory_ios.h"
+#include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
+#include "ios/chrome/browser/shared/model/profile/typed_profile_keyed_service_factory_ios.h"
 
 class ProfileIOS;
 
-namespace base {
-
-template <typename T>
-class NoDestructor;
-}  // namespace base
-
 namespace ai_chat {
 
-class TabTrackerService;
-
-class TabTrackerServiceFactory : public ProfileKeyedServiceFactoryIOS {
+class TabTrackerServiceFactory
+    : public TypedProfileKeyedServiceFactoryIOS<TabTrackerServiceFactory,
+                                                TabTrackerService> {
  public:
-  static TabTrackerService* GetForProfile(ProfileIOS* profile);
-  static TabTrackerServiceFactory* GetInstance();
+  explicit TabTrackerServiceFactory(PassKey key);
 
   TabTrackerServiceFactory(const TabTrackerServiceFactory&) = delete;
   TabTrackerServiceFactory& operator=(const TabTrackerServiceFactory&) = delete;
 
  private:
-  friend class base::NoDestructor<TabTrackerServiceFactory>;
-
-  TabTrackerServiceFactory();
-  ~TabTrackerServiceFactory() override;
-
-  // ProfileKeyedServiceFactoryIOS implementation.
+  // TypedProfileKeyedServiceFactoryIOS implementation.
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
       ProfileIOS* profile) const override;
 };

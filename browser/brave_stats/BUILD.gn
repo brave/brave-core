@@ -99,6 +99,7 @@ source_set("browser_tests") {
   }
 
   deps = [
+    "//brave/browser:browser_process",
     "//brave/browser/brave_stats",
     "//brave/components/brave_referrals/browser",
     "//chrome/browser",

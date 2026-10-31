@@ -1,0 +1,38 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Add the imports for the preference check below.
+
+      Anchored on the package statement rather than on neighbouring imports, so
+      an upstream import churn cannot break this.
+    regex:
+      re_pattern: |-
+        ^(package org\.chromium\.chrome\.browser\.undo_tab_close_snackbar;)$
+      re_flags: [MULTILINE]
+      replace: |-
+        \1
+
+        import org.chromium.base.BravePreferenceKeys;
+        import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+
+  - description: |-
+      Honour Brave's "show undo when tabs closed" preference.
+
+      With the preference off there is no snackbar left to dismiss, so the
+      closures must be committed here or the tabs stay pending forever.
+    regex:
+      re_pattern: |-
+        (private void showUndoBar\(UndoClosureSnapshot snapshot\) \{\n *if \(snapshot\.isEmpty\(\)\) return;\n)
+      replace: |
+        \1
+                if (!ChromeSharedPreferences.getInstance()
+                        .readBoolean(BravePreferenceKeys.SHOW_UNDO_WHEN_TABS_CLOSED, true)) {
+                    for (int tabId : snapshot.tabIds()) {
+                        commitTabClosure(tabId);
+                    }
+                    return;
+                }

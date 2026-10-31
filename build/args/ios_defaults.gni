@@ -18,6 +18,9 @@ ios_enable_widget_kit_extension = false
 use_partition_alloc_as_malloc = false
 enable_backup_ref_ptr_support = false
 
+# Brave iOS relies on static key pinning, which upstream disables for iOS.
+chrome_key_pinning_supported = true
+
 ios_provider_target = "//brave/ios/browser/providers:brave_providers"
 
 ios_locales_pack_extra_source_patterns =

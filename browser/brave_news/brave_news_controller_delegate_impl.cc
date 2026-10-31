@@ -33,7 +33,7 @@ void BraveNewsControllerDelegateImpl::OpenSettings() {
       &profile_.get(),
       GURL(base::StrCat({kBraveUINewTabURL, "?openSettings=BraveNews"})),
       ui::PAGE_TRANSITION_AUTO_TOPLEVEL);
-  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.disposition = WindowOpenDisposition::kNewForegroundTab;
   Navigate(&params);
 }
 

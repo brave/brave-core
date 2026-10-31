@@ -91,7 +91,7 @@
   </div>
   <settings-toggle-button id="noScriptControlToggle"
       class="cr-row"
-      pref="[[noScriptControlType_]]"
+      checked="[[isNoScriptEnabled_]]"
       label="$i18n{noScriptControlLabel}"
       on-settings-boolean-control-change="onNoScriptControlChange_"
       disabled="[[isAdBlockOnlyModeEnabled_]]">
@@ -112,7 +112,7 @@
   <settings-toggle-button id="fingerprintingToggleControlType"
     hidden="[[showStrictFingerprintingMode_]]"
     class="cr-row"
-    pref="[[isFingerprintingEnabled_]]"
+    checked="[[isFingerprintingEnabled_]]"
     label="$i18n{fingerprintingControlLabel}"
     on-settings-boolean-control-change="onFingerprintingToggleControlChange_"
     disabled="[[isAdBlockOnlyModeEnabled_]]">
@@ -141,12 +141,12 @@
     label="$i18n{forgetFirstPartyStorageLabel}"
     sub-label="$i18n{forgetFirstPartyStorageSubLabel}"
     on-settings-boolean-control-change="onForgetFirstPartyStorageToggleChange_"
-    pref="[[isForgetFirstPartyStorageEnabled_]]"
+    checked="[[isForgetFirstPartyStorageEnabled_]]"
     disabled="[[isAdBlockOnlyModeEnabled_]]">
   </settings-toggle-button>
   <settings-toggle-button id="setContactInfoSaveFlagToggle"
       class="cr-row"
-      pref="[[isContactInfoSaveFlagEnabled_]]"
+      checked="[[isContactInfoSaveFlagEnabled_]]"
       label="$i18n{braveShieldsSaveContactInfo}"
       sub-label="$i18n{braveShieldsSaveContactInfoSublabel}"
       on-settings-boolean-control-change="onSaveContactInfoToggle_">
@@ -154,7 +154,7 @@
   <settings-toggle-button id="allowElementBlockerInPrivateModeToggle"
       hidden="[[!isBlockElementFeatureEnabled_]]"
       class="cr-row"
-      pref="[[isAllowElementBlockerInPrivateModeEnabled_]]"
+      checked="[[isAllowElementBlockerInPrivateModeEnabled_]]"
       label="$i18n{allowElementBlockerInPrivateModeLabel}"
       sub-label="$i18n{allowElementBlockerInPrivateModeSubLabel}"
       on-settings-boolean-control-change="onAllowElementBlockerInPrivateModeToggle_">

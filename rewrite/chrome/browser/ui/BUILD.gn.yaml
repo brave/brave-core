@@ -16,14 +16,6 @@ substitutions:
       literal: brave_chrome_browser_ui_browser_header_visibility
       import: //brave/browser/sources.gni
 
-  - description: Add the Brave UI public dependencies.
-    insert_into_list:
-      target: ui_public_dependencies
-      list_name: public_deps
-      values:
-        - //brave/browser/ui:ui_public_dependencies
-        - //components/saved_tab_groups/public
-
   - description: |-
       accelerator_table.cc chromium_src override uses ENABLE_COMMANDER build
       flag. The dependency for the flag needs to be added.

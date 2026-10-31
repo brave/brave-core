@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Add Brave's site-settings categories to the category default prefs.
+
+      `settings-category-default-radio-group` keeps its selection in a
+      `synthetic.settings.category_default.<category>` pref, which `PrefService`
+      only creates for the listed categories. Without Brave's, their default
+      radios show no selection and don't save.
+    regex:
+      re_pattern: >-
+        (const CATEGORY_DEFAULT_SYNTHETIC_PREFS: string\[\] = \[.*?)(\n\];)
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+          'autoplay',
+          'braveOpenAIChat',
+          'cardano',
+          'ethereum',
+          'googleSignIn',
+          'solana',\2

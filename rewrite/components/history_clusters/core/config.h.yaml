@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Ship Journeys disabled on all platforms
+
+      Upstream removed the kJourneys feature, which Brave used to ship
+      disabled, and now enables Journeys on desktop by build-time default.
+    regex:
+      re_pattern: '(bool is_journeys_enabled_no_locale_check =\s+)[^;]+;'
+      replace: '\1false;'

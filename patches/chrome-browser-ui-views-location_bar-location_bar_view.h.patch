@@ -1,0 +1,58 @@
+diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.h b/chrome/browser/ui/views/location_bar/location_bar_view.h
+index 856d9d7c66a7314d7046571bb3dfefda898970cc..65fc54381807ebc4711fed17cd55ce48f8f026de 100644
+--- a/chrome/browser/ui/views/location_bar/location_bar_view.h
++++ b/chrome/browser/ui/views/location_bar/location_bar_view.h
+@@ -132,11 +132,11 @@ class LocationBarView
+   ~LocationBarView() override;
+ 
+   // Returns the location bar border radius in DIPs.
+-  int GetBorderRadius() const;
++  virtual int GetBorderRadius() const;
+   static int ComputeBorderRadius(gfx::Size size);
+ 
+   // Initializes the LocationBarView.
+-  void Init();
++  virtual void Init();
+ 
+   bool in_popup_state_transition() const override;
+ 
+@@ -276,7 +276,7 @@ class LocationBarView
+ 
+   void OnOmniboxFocused();
+   void OpenOmniboxPopup(bool query_zps = true);
+-  void OnOmniboxBlurred();
++  virtual void OnOmniboxBlurred();
+   // Returns true if Full WebUI Omnibox is enabled and ready to handle focus.
+   bool IsFullWebUiOmniboxReady() const;
+   // Returns whether the toolbar containing this location bar is visible.
+@@ -320,7 +320,12 @@ class LocationBarView
+ 
+   OmniboxPopupUI* GetOmniboxPopupUI();
+ 
++  virtual views::View* GetSearchPromotionButton() const;
++  virtual std::vector<views::View*> GetRightMostTrailingViews();
++  virtual std::vector<views::View*> GetLeftMostTrailingViews();
++
+  private:
++  friend class BraveLocationBarView;
+   FRIEND_TEST_ALL_PREFIXES(SecurityIndicatorTest, CheckIndicatorText);
+   FRIEND_TEST_ALL_PREFIXES(TouchLocationBarViewBrowserTest,
+                            OmniboxViewViewsSize);
+@@ -344,7 +349,7 @@ class LocationBarView
+   int GetMinimumLeadingWidth() const;
+ 
+   // Returns the amount of space required to the right of the omnibox text.
+-  int GetMinimumTrailingWidth() const;
++  virtual int GetMinimumTrailingWidth() const;
+ 
+   // The LocationBarView bounds, without the ends which have a border radius.
+   // E.g., if the LocationBarView was 50dip long, and the border radius was 2,
+@@ -352,7 +357,7 @@ class LocationBarView
+   gfx::Rect GetLocalBoundsWithoutEndcaps() const;
+ 
+   // Updates the background on a theme change, or dropdown state change.
+-  void RefreshBackground();
++  virtual void RefreshBackground();
+ 
+   // Updates the visibility state of the content setting icons to reflect what
+   // is blocked or actively in use on the current page. Returns true if the

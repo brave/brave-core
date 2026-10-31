@@ -11,7 +11,6 @@
 #include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "base/memory/ptr_util.h"
-#include "base/no_destructor.h"
 #include "base/strings/sys_string_conversions.h"
 #include "components/favicon/core/fallback_url_util.h"
 #include "components/favicon/core/favicon_service.h"
@@ -47,20 +46,21 @@ base::CancelableTaskTracker::TaskId GetIconRawBitmapForPageUrl(
   int max_size_in_pixel =
       std::max(desired_size_in_pixel, min_source_size_in_pixel);
 
-  static const base::NoDestructor<favicon_base::IconTypeSet> large_icon_types(
-      {favicon_base::IconType::kWebManifestIcon,
-       favicon_base::IconType::kFavicon, favicon_base::IconType::kTouchIcon,
-       favicon_base::IconType::kTouchPrecomposedIcon});
+  static const favicon_base::IconTypeSet large_icon_types = {
+      favicon_base::IconType::kWebManifestIcon,
+      favicon_base::IconType::kFavicon, favicon_base::IconType::kTouchIcon,
+      favicon_base::IconType::kTouchPrecomposedIcon};
 
   scoped_refptr<favicon::LargeIconWorker> worker = base::MakeRefCounted<
       favicon::LargeIconWorker>(
       min_source_size_in_pixel, desired_size_in_pixel,
       favicon::LargeIconService::NoBigEnoughIconBehavior::kReturnFallbackColor,
+      favicon::LargeIconService::NonSquareIconBehavior::kSkip,
       std::move(raw_bitmap_callback), favicon_base::LargeIconImageCallback(),
       tracker);
 
   return favicon_service->GetRawFaviconForPageURL(
-      page_url, *large_icon_types, max_size_in_pixel, /*fallback_to_host=*/true,
+      page_url, large_icon_types, max_size_in_pixel, /*fallback_to_host=*/true,
       base::BindOnce(&favicon::LargeIconWorker::OnIconLookupComplete, worker),
       tracker);
 }

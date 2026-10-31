@@ -27,7 +27,9 @@ if (enable_sparkle && !build_sparkle) {
 source_set("browser_process") {
   visibility = [
     "//brave/browser/*",
+    "//brave/test/*",
     "//chrome/browser/*",
+    "//chrome/test/*",
   ]
 
   sources = [ "brave_browser_process.h" ]
@@ -73,6 +75,11 @@ source_set("brave_global_features_impl") {
   }
 }
 
+# Header-only so targets that can't depend on :core can use it.
+source_set("tab_helpers_header") {
+  sources = [ "brave_tab_helpers.h" ]
+}
+
 source_set("core") {
   visibility = [ "//chrome/browser" ]
 
@@ -85,16 +92,24 @@ source_set("core") {
   deps = brave_chrome_browser_deps + [
            "//brave/browser/ui/webui:favicon_source_chromium_impl",
            "//brave/browser/ui/window_feature_controller:chromium_impl",
+           "//brave/components/variations",
            "//brave/ui/webui/custom_profile_image/buildflags",
+           "//components/ntp_tiles:popular_sites_pref_names",
          ]
   if (!is_android) {
-    deps += [ "//brave/browser/ui:brave_browser_header" ]
+    deps += [
+      "//brave/browser/ui:brave_browser_header",
+      "//chrome/browser/ui/webui/side_panel/bookmarks:mojo_bindings",
+    ]
   }
   if (enable_brave_custom_profile_image_webui) {
     deps += [ "//brave/browser/ui/webui/custom_profile_image" ]
   }
-  public_deps = brave_chrome_browser_public_deps +
-                [ "//chrome/browser:browser_public_dependencies" ]
+  public_deps = [
+    ":tab_helpers_header",
+    "//brave/components/psst/buildflags",
+    "//chrome/browser:shell_integration",
+  ]
   allow_circular_includes_from =
       brave_chrome_browser_allow_circular_includes_from
 }

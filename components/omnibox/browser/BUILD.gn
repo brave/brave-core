@@ -106,7 +106,10 @@ source_set("unit_tests") {
 
     deps += [
       "//brave/components/commander/browser",
+      "//brave/components/resources:strings",
       "//brave/components/vector_icons",
+      "//third_party/omnibox_proto",
+      "//ui/base",
     ]
   }
 

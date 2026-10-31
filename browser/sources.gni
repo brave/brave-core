@@ -101,7 +101,6 @@ brave_chrome_browser_sources = [
   "//brave/browser/brave_shell_integration.cc",
   "//brave/browser/brave_shell_integration.h",
   "//brave/browser/brave_tab_helpers.cc",
-  "//brave/browser/brave_tab_helpers.h",
   "//brave/browser/browser_context_keyed_service_factories.cc",
   "//brave/browser/browser_context_keyed_service_factories.h",
   "//brave/browser/geolocation/brave_geolocation_permission_context_delegate.cc",
@@ -161,6 +160,8 @@ brave_chrome_browser_deps = [
   "//brave/browser/sync",
   "//brave/browser/themes",
   "//brave/browser/ui",
+  "//brave/browser/ui:brave_tab_prefs",
+  "//brave/browser/ui:ui_features",
   "//brave/browser/ui/webui/brave_account",
   "//brave/browser/updater:buildflags",
   "//brave/common",
@@ -694,6 +695,7 @@ if (is_android) {
     "//components/password_manager/core/browser/import:importer",
     "//components/password_manager/core/browser/leak_detection",
     "//components/sync_device_info",
+    "//components/user_data_importer/common",
   ]
 
   if (enable_brave_ads) {
@@ -792,20 +794,6 @@ if (is_win || is_android) {
     "//brave/browser/day_zero_browser_ui_expt/pref_names.h",
   ]
 }
-
-brave_chrome_browser_public_deps = [
-  "//brave/app/vector_icons",
-  "//brave/browser:browser_process",
-  "//brave/browser/resources/bookmark_icon:bookmark_icon_resources",
-  "//brave/browser/resources/tab_strip:tab_strip_resources",
-  "//brave/common/importer:interfaces",
-  "//brave/components/brave_sync:constants",
-  "//brave/components/containers/buildflags",
-  "//brave/components/psst/buildflags",
-  "//brave/components/traffic_control/buildflags",
-  "//brave/components/v8/buildflags",
-  "//brave/components/variations",
-]
 
 if (is_mac) {
   brave_chrome_framework_public_deps = [ "//brave:framework_bundle_data" ]

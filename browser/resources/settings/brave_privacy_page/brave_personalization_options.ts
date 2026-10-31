@@ -12,7 +12,7 @@ import {
 import {
   WebUiListenerMixin,
   WebUiListenerMixinInterface,
-} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
+} from '/shared/settings/web_ui_listener_mixin.js'
 import { loadTimeData } from '../i18n_setup.js'
 
 import { getTemplate } from './brave_personalization_options.html.js'
@@ -24,9 +24,13 @@ import {
 import { assert } from 'chrome://resources/js/assert.js'
 import { SettingsToggleButtonElement } from '../controls/settings_toggle_button.js'
 
+import '/shared/settings/md_select.css.js'
 import 'chrome://resources/cr_elements/cr_icon/cr_icon.js'
 import '../controls/settings_dropdown_menu.js'
 import '../privacy_page/do_not_track_toggle.js'
+
+const kOnDeviceSpeechModelPrefKey =
+  'brave.local_ai.on_device_speech_model_enabled'
 
 const SettingsBravePersonalizationOptionsBase = WebUiListenerMixin(
   PrefServiceObserverMixin(PolymerElement),
@@ -164,12 +168,8 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
           return loadTimeData.getBoolean('isWindowsRecallAvailable')
         },
       },
-      windowsRecallDisabledPref_: {
-        type: Object,
-        value: () => {
-          return {}
-        },
-      },
+      windowsRecallDisabled_: Boolean,
+      onDeviceSpeechModelEnabled_: Boolean,
     }
   }
 
@@ -188,7 +188,8 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
   declare private requestOTRAction_: String
   declare private pushMessagingPref_: chrome.settingsPrivate.PrefObject<boolean>
   declare private isWindowsRecallAvailable_: boolean
-  declare private windowsRecallDisabledPref_: chrome.settingsPrivate.PrefObject
+  declare private windowsRecallDisabled_: boolean
+  declare private onDeviceSpeechModelEnabled_: boolean
 
   browserProxy_: BravePrivacyBrowserProxy =
     BravePrivacyBrowserProxyImpl.getInstance()
@@ -221,12 +222,17 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
   }
 
   setWindowsRecallDisabled_(disabled: boolean) {
-    const pref = {
-      key: '',
-      type: chrome.settingsPrivate.PrefType.BOOLEAN,
-      value: disabled,
-    }
-    this.windowsRecallDisabledPref_ = pref
+    this.windowsRecallDisabled_ = disabled
+  }
+
+  onDeviceSpeechModelEnabledChange_(event: Event) {
+    const target = event.target
+    assert(target instanceof SettingsToggleButtonElement)
+    chrome.settingsPrivate.setPref(kOnDeviceSpeechModelPrefKey, target.checked)
+  }
+
+  private updateOnDeviceSpeechModelEnabled_(pref: chrome.settingsPrivate.PrefObject) {
+    this.onDeviceSpeechModelEnabled_ = !!pref.value
   }
 
   restartBrowser_(e: Event) {
@@ -248,6 +254,18 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
 
   override ready() {
     super.ready()
+
+    // <if expr="enable_local_ai">
+    // Local-state pref, so it can't be bound via `pref-key`.
+    chrome.settingsPrivate.getPref(kOnDeviceSpeechModelPrefKey).then(
+      (pref) => this.updateOnDeviceSpeechModelEnabled_(pref))
+    chrome.settingsPrivate.onPrefsChanged.addListener((prefs) => {
+      const pref = prefs.find((p) => p.key === kOnDeviceSpeechModelPrefKey)
+      if (pref) {
+        this.updateOnDeviceSpeechModelEnabled_(pref)
+      }
+    })
+    // </if>
 
     if (this.isWindowsRecallAvailable_) {
       this.addWebUiListener(

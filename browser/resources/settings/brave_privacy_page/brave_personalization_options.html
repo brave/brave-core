@@ -1,4 +1,3 @@
-<link rel="import" href="chrome://resources/cr_elements/md_select.css.html">
 <style include="settings-shared md-select">
   .settings-box {
     display: flex;
@@ -30,9 +29,10 @@
   <settings-toggle-button id="onDeviceSpeechModelEnabled"
       class="cr-row"
       icon="microphone"
-      pref="{{prefs.brave.local_ai.on_device_speech_model_enabled}}"
+      checked="[[onDeviceSpeechModelEnabled_]]"
       label="$i18n{onDeviceSpeechModelLabel}"
-      sub-label="$i18n{onDeviceSpeechModelSubLabel}">
+      sub-label="$i18n{onDeviceSpeechModelSubLabel}"
+      on-settings-boolean-control-change="onDeviceSpeechModelEnabledChange_">
   </settings-toggle-button>
 </template>
 <!-- </if> -->
@@ -121,12 +121,12 @@
   <template is="dom-if" if="[[isWindowsRecallAvailable_]]">
     <settings-toggle-button id="windowsRecallDisabled"
         class="cr-row"
-        pref="[[windowsRecallDisabledPref_]]"
+        checked="[[windowsRecallDisabled_]]"
         on-settings-boolean-control-change="windowsRecallDisabledChange_"
         label="$i18n{windowsRecallDisabledLabel}"
         sub-label="$i18n{windowsRecallDisabledSubLabel}">
         <template is="dom-if"
-                  if="[[shouldShowRestartWindowsRecall_(windowsRecallDisabledPref_.value)]]">
+                  if="[[shouldShowRestartWindowsRecall_(windowsRecallDisabled_)]]">
             <cr-button on-click="restartBrowser_" slot="more-actions">
               $i18n{restart}
             </cr-button>

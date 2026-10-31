@@ -163,6 +163,8 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </if>
       <if expr="is_win">
         </if>
+      <if expr="is_win">
+        </if>
       <if expr="is_linux">
         </if>
       <if expr="is_win">
@@ -366,6 +368,11 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
           =1 {A new update for Brave is available and will be applied as soon as you relaunch. Your Private window won't reopen.}
           other {A new update for Brave is available and will be applied as soon as you relaunch. Your # Private windows won't reopen.}}
         </message>
+        <message name="IDS_UPDATE_RECOMMENDED_INCOGNITO_AND_ISOLATED" desc="The main text of the Update Recommended dialog variant with a count of open Private and Isolated windows.">
+          {COUNT, plural,
+          =1 {A new update for Brave is available and will be applied as soon as you relaunch. There is Private or Isolated window open. It won't reopen after you relaunch.}
+          other {A new update for Brave is available and will be applied as soon as you relaunch. There are # Private and Isolated windows open across profiles. They won't reopen after you relaunch.}}
+        </message>
         </if>
       <if expr="is_chromeos">
         </if>
@@ -419,17 +426,32 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
               =1 {Your administrator asks that you relaunch Brave to apply this update. Your Private window won't reopen.}
               other {Your administrator asks that you relaunch Brave to apply this update. Your # Private windows won't reopen.}}
           </message>
+          <message name="IDS_RELAUNCH_RECOMMENDED_BODY_INCOGNITO_AND_ISOLATED" desc="The body text of a dialog variant that tells users that a browser relaunch is recommended for an update with Private and Isolated counter.">
+             {COUNT, plural,
+              =1 {Your administrator asks that you relaunch Brave to apply this update. There is Private or Isolated window open. It won't reopen after you relaunch.}
+              other {Your administrator asks that you relaunch Brave to apply this update. There are # Private and Isolated windows open across profiles. They won't reopen after you relaunch.}}
+          </message>
           <message name="IDS_RELAUNCH_REQUIRED_BODY" desc="The body text of a dialog that tells users the browser must be relaunched with Private counter.">
              {COUNT, plural,
               =0 {Your administrator requires that you relaunch Brave to apply an update}
               =1 {Your administrator requires that you relaunch Brave to apply an update. Your Private window won't reopen.}
               other {Your administrator requires that you relaunch Brave to apply an update. Your # Private windows won't reopen.}}
           </message>
-             <message name="IDS_ADVANCED_PROTECTION_RELAUNCH_REQUIRED_BODY" desc="The body text of a dialog that tells Advanced Protection users the browser must be relaunched with Private counter">
+          <message name="IDS_RELAUNCH_REQUIRED_BODY_INCOGNITO_AND_ISOLATED" desc="The body text of a dialog variant that tells users the browser must be relaunched with Private and Isolated counter.">
+             {COUNT, plural,
+              =1 {Your administrator requires that you relaunch Brave to apply an update. There is Private or Isolated window open. It won't reopen after you relaunch.}
+              other {Your administrator requires that you relaunch Brave to apply an update. There are # Private and Isolated windows open across profiles. They won't reopen after you relaunch.}}
+          </message>
+          <message name="IDS_ADVANCED_PROTECTION_RELAUNCH_REQUIRED_BODY" desc="The body text of a dialog that tells Advanced Protection users the browser must be relaunched with Private counter">
              {COUNT, plural,
               =0 {Advanced Protection requires that you relaunch Brave to apply an update}
               =1 {Advanced Protection requires that you relaunch Brave to apply an update. Your Private window won't reopen.}
               other {Advanced Protection requires that you relaunch Brave to apply an update. Your # Private windows won't reopen.}}
+          </message>
+          <message name="IDS_ADVANCED_PROTECTION_RELAUNCH_REQUIRED_BODY_INCOGNITO_AND_ISOLATED" desc="The body text of a dialog variant that tells Advanced Protection users the browser must be relaunched with Private and Isolated counter">
+             {COUNT, plural,
+              =1 {Advanced Protection requires that you relaunch Brave to apply an update. There is Private or Isolated window open. It won't reopen after you relaunch.}
+              other {Advanced Protection requires that you relaunch Brave to apply an update. There are # Private and Isolated windows open across profiles. They won't reopen after you relaunch.}}
           </message>
         </if>
       </if>

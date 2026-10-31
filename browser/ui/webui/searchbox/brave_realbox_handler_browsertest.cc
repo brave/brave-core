@@ -69,7 +69,7 @@ class BraveRealboxHandlerTest : public InProcessBrowserTest {
     AutocompleteMatch match;
     match.keyword = keyword;
     handler.omnibox_controller()->client()->OnAutocompleteAccept(
-        url, nullptr, WindowOpenDisposition::CURRENT_TAB,
+        url, nullptr, WindowOpenDisposition::kCurrentTab,
         ui::PageTransition::PAGE_TRANSITION_TYPED,
         omnibox::AutocompleteMatchType::kSearchSuggest, base::TimeTicks::Now(),
         false, false, u"", match, match);

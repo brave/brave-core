@@ -53,6 +53,10 @@ def RunSteps(api: DEPS):
     if mode == 'ensure_checkout':
         api.brave_core_checkout.ensure_checkout()
         return
+    if mode == 'commit_hook':
+        api.brave_core_checkout.ensure_checkout()
+        api.brave_core_checkout.install_commit_hook()
+        return
     if mode:
         api.brave_core_checkout.checkout()
         return
@@ -143,7 +147,33 @@ def GenTests(api: TEST_DEPS):
         api.post_process(
             post_process.MustRun, 'brave-core restore origin push url'
         ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'brave-core checkout branch',
+            ['checkout', '--force', '-B', '1.80.x'],
+        ),
+        api.post_process(
+            post_process.DoesNotRun, 'brave-core drop stopped rebase'
+        ),
         api.post_process(post_process.StatusSuccess),
+    )
+    # A branch an earlier job left in a stopped rebase is reset all the same.
+    yield api.test(
+        'checkout branch with stopped rebase',
+        api.env.set('MODE', 'checkout'),
+        api.brave_core_checkout.brave_core_ref('refs/heads/1.80.x'),
+        api.brave_core_checkout.with_git_cache(),
+        api.brave_core_checkout.git_cache_populated(),
+        api.brave_core_checkout.existing_checkout(),
+        api.path.dirs('b/src/brave/.git/rebase-merge'),
+        api.post_process(
+            post_process.StepCommandContains,
+            'brave-core drop stopped rebase',
+            ['rebase', '--quit'],
+        ),
+        api.post_process(post_process.MustRun, 'brave-core checkout branch'),
+        api.post_process(post_process.StatusSuccess),
+        api.post_process(post_process.DropExpectation),
     )
     # A release tag is mirrored and checked out by its fully-qualified name.
     yield api.test(
@@ -237,6 +267,23 @@ def GenTests(api: TEST_DEPS):
         api.chromium_checkout.existing_checkout(),
         api.post_process(post_process.DoesNotRun, 'clone from git cache'),
         api.post_process(post_process.DoesNotRun, 'pnpm run sync'),
+        # Only on request: a checkout alone installs no hook.
+        api.post_process(post_process.DoesNotRun, 'install commit-msg hook'),
+        api.post_process(post_process.StatusSuccess),
+    )
+    # `git cr`'s commit-msg hook, installed from the checkout's root with the
+    # `bootstrap` shims on PATH.
+    yield api.test(
+        'commit hook',
+        api.env.set('MODE', 'commit_hook'),
+        api.brave_core_checkout.with_git_cache(),
+        api.brave_core_checkout.git_cache_populated(),
+        api.chromium_checkout.existing_checkout(),
+        api.post_process(
+            post_process.StepCommandContains,
+            'install commit-msg hook',
+            ['git', 'cr', 'install-hook'],
+        ),
         api.post_process(post_process.StatusSuccess),
     )
     # The `.env` is composed from the module's properties and config items, and

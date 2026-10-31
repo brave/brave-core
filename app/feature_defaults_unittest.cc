@@ -19,7 +19,7 @@
 #include "components/autofill/core/common/autofill_debug_features.h"
 #include "components/autofill/core/common/autofill_features.h"
 #include "components/autofill/core/common/autofill_payments_features.h"
-#include "components/browser_actuator/internal/features.h"
+#include "components/browser_actuator/internal/transport/features.h"
 #include "components/browser_actuator/public/features.h"
 #include "components/commerce/core/commerce_feature_list.h"
 #include "components/compose/core/browser/compose_features.h"
@@ -87,6 +87,7 @@
 #include "components/security_interstitials/core/features.h"
 #else
 #include "chrome/browser/child_module/features.h"
+#include "chrome/browser/default_browser/default_browser_features.h"
 #include "chrome/browser/enterprise/data_protection/data_protection_features.h"
 #include "chrome/browser/sharing_hub/sharing_hub_features.h"
 #include "chrome/browser/ui/toasts/toast_features.h"
@@ -155,12 +156,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kPreloadingEagerViewportHeuristics,
       &blink::features::kPreloadingModerateViewportHeuristics,
       &browser_actuator::kBrowserActuator,
-      &browser_actuator::kBrowserActuatorProtoStreamTransport,
+      &browser_actuator::transport::kBrowserActuatorProtoStreamTransport,
 #if !BUILDFLAG(IS_ANDROID)
       &child_module::features::kDynamicPatching,
-#endif
-#if BUILDFLAG(IS_ANDROID)
-      &chrome::android::kAndroidPageInfoAsAppMenuItem,
 #endif
 #if BUILDFLAG(ENABLE_PDF_SAVE_TO_DRIVE)
       &chrome_pdf::features::kPdfSaveToDrive,
@@ -177,6 +175,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &contextual_tasks::kContextualTasksCookiePrefetch,
       &critical_actions::features::kCriticalActionHistory,
 #if !BUILDFLAG(IS_ANDROID)
+      &default_browser::kDefaultBrowserPromptSurfaces,
       &enterprise_data_protection::kEnableForceDownloadToCloud,
       &extensions_features::kApiGlicPrivate,
 #endif
@@ -214,9 +213,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kEmailVerificationProtocol,
       &features::kEnterpriseReleaseNotes,
       &features::kFedCm,
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-      &features::kFewerUpdateConfirmations,
-#endif
       &features::kHttpsFirstBalancedMode,
       &features::kIndigo,
 #if BUILDFLAG(IS_WIN)
@@ -231,6 +227,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kPrivacySandboxAdsAPIsM1Override,
 #if !BUILDFLAG(IS_ANDROID)
       &features::kPwaNavigationCapturing,
+#endif
+#if !BUILDFLAG(IS_ANDROID)
+      &features::kReadAnythingOmniboxChip,
 #endif
       &features::kSCTAuditingHashdance,
       &features::kServiceWorkerAutoPreload,
@@ -254,7 +253,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &history_clusters::features::kOnDeviceClusteringKeywordFiltering,
       &history_clusters::internal::kHistoryClustersInternalsPage,
       &history_clusters::internal::kHistoryClustersNavigationContextClustering,
-      &history_clusters::internal::kJourneys,
       &history_clusters::internal::kJourneysImages,
       &history_clusters::internal::kOmniboxHistoryClusterProvider,
       &history_embeddings::kHistoryEmbeddings,
@@ -299,7 +297,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &permissions::features::kCpssUseTfliteSignatureRunner,
       &permissions::features::kPermissionsPromptSurvey,
       &permissions::features::kPermissionPredictionsV2,
-      &permissions::features::kShowRelatedWebsiteSetsPermissionGrants,
       &personal_context::features::kPersonalContext,
       &privacy_sandbox::kEnforcePrivacySandboxAttestations,
 #if !BUILDFLAG(IS_ANDROID)

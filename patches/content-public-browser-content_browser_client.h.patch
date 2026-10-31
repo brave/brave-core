@@ -1,11 +1,11 @@
 diff --git a/content/public/browser/content_browser_client.h b/content/public/browser/content_browser_client.h
-index 9a920eb24de3df04b60f1d130cff086d314e3055..d96943c87c50901f64ef1d9c12156e56c56fb185 100644
+index b9a2b7cc0655a569a8e4e2835f5846257f509706..8a846b3d850f0b50cff207fcf137ddf9fcc87287 100644
 --- a/content/public/browser/content_browser_client.h
 +++ b/content/public/browser/content_browser_client.h
-@@ -3435,6 +3435,20 @@ class CONTENT_EXPORT ContentBrowserClient {
-   // WebUI, DevTools, or an embedder-specific extension scheme) that should be
-   // exempt from top-level window size checks in `WebContentsBasedCanceller`.
-   virtual bool IsExemptFromWindowSizeCheck(const GURL& url);
+@@ -3460,6 +3460,20 @@ class CONTENT_EXPORT ContentBrowserClient {
+   // Returns true if `web_contents` is used for NoStatePrefetch and will not be
+   // rendered.
+   virtual bool IsNoStatePrefetch(WebContents* web_contents);
 +
 +  // Same as `CreateWebSocket`, but also carries the initiator renderer's
 +  // process id and origin, for handshakes that have no `RenderFrameHost`.

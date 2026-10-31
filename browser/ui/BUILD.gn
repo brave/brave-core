@@ -36,25 +36,6 @@ import("//components/gcm_driver/config.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 
-# See //chrome/browser/ui:ui_public_dependencies.
-group("ui_public_dependencies") {
-  visibility = [
-    "//brave/browser/ui",
-    "//chrome/browser/ui:ui_public_dependencies",
-  ]
-  public_deps = [
-    ":brave_tab_prefs",
-    ":ui_features",
-    "//brave/components/brave_wallet/common/buildflags",
-    "//brave/components/brave_wayback_machine/buildflags",
-    "//brave/components/containers/buildflags",
-    "//brave/components/local_ai/buildflags",
-    "//brave/components/playlist/core/common/buildflags",
-    "//brave/components/speedreader/common/buildflags",
-    "//brave/components/traffic_control/buildflags",
-  ]
-}
-
 if (!is_android) {
   source_set("brave_browser_header") {
     public = [ "brave_browser.h" ]
@@ -133,6 +114,8 @@ source_set("ui") {
   ]
 
   deps = [
+    ":brave_tab_prefs",
+    ":ui_features",
     "//brave/brave_domains",
     "//brave/browser/brave_adaptive_captcha",
     "//brave/browser/brave_origin",
@@ -141,6 +124,7 @@ source_set("ui") {
     "//brave/browser/ui/page_info",
     "//brave/browser/ui/webui/brave_account",
     "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/local_ai/buildflags",
 
     # Unconditional for gn check as the NTP WebUI always needs the mojom
     # types since typescript cannnot yet conditionally import during typecheck.
@@ -215,7 +199,7 @@ source_set("ui") {
   allow_circular_includes_from = brave_ui_allow_circular_includes_from
   deps += brave_ui_allow_circular_includes_from
 
-  public_deps = [ ":ui_public_dependencies" ]
+  public_deps = []
 
   if (toolkit_views) {
     public_deps += [
@@ -841,6 +825,7 @@ source_set("ui") {
     ]
 
     deps += [
+      "//brave/browser/resources/tab_strip:tab_strip_resources",
       "//brave/browser/ui/darker_theme",
       "//brave/browser/ui/focus_mode",
       "//brave/browser/ui/side_panel",
@@ -922,14 +907,6 @@ source_set("ui") {
       ]
 
       deps += [ "//chrome/browser/ui/views/renderer_context_menu" ]
-    }
-
-    if (enable_sparkle) {
-      sources += [
-        "views/update_recommended_message_box_mac.h",
-        "views/update_recommended_message_box_mac.mm",
-      ]
-      deps += [ "//chrome/browser/ui/views:update_recommended_message_box" ]
     }
 
     if (is_win) {
@@ -1051,7 +1028,6 @@ source_set("ui") {
     "//brave/app:command_ids",
     "//brave/app/vector_icons",
     "//brave/browser:browser_process",
-    "//brave/browser:sparkle_buildflags",
     "//brave/browser/misc_metrics",
     "//brave/browser/shell_integrations/buildflags",
     "//brave/browser/ui/brave_tooltips",
@@ -1750,6 +1726,7 @@ source_set("browser_tests") {
 
     sources = [
       "brave_browser_browsertest.cc",
+      "relaunch_to_update_browsertest.cc",
       "views/frame/brave_system_menu_model_builder_browsertest.cc",
       "window_closing_confirm_browsertest.cc",
     ]
@@ -1762,6 +1739,7 @@ source_set("browser_tests") {
       "//brave/components/constants",
       "//chrome/browser",
       "//chrome/browser/devtools:test_support",
+      "//chrome/browser/first_run:test_support",
       "//chrome/browser/profiles:profile",
       "//chrome/browser/ui:browser_tabstrip",
       "//chrome/browser/ui:tab_ui_helper",
@@ -1781,6 +1759,11 @@ source_set("browser_tests") {
       "//content/test:test_support",
       "//ui/actions",
     ]
+
+    if (enable_sparkle) {
+      sources += [ "relaunch_to_update_sparkle_browsertest.mm" ]
+      deps += [ "//brave/browser/mac:test_support" ]
+    }
 
     if (enable_playlist_webui) {
       sources += [ "views/side_panel/playlist/playlist_side_panel_coordinator_browsertest.cc" ]

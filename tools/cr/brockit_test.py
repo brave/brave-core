@@ -6,8 +6,11 @@
 
 from __future__ import annotations
 
+import argparse
+import itertools
 import os
 import subprocess
+import sys
 import unittest
 from pathlib import Path
 import shutil
@@ -1796,6 +1799,286 @@ class MergeTest(unittest.TestCase):
 
         with self.assertRaises(brockit.InvalidInputException):
             brockit.Merge.create().execute(dry_run=True)
+
+
+class RebasePlanTest(unittest.TestCase):
+    """Tests for `RebasePlan`."""
+
+    def setUp(self):
+        self.fake_chromium_src = FakeChromiumRepo()
+        self.fake_chromium_src.setup()
+        self.addCleanup(self.fake_chromium_src.cleanup)
+        self.brave = self.fake_chromium_src.brave
+        self.fake_chromium_src.update_brave_version('151.0.7049.1')
+        self.base = self._git('rev-parse', 'HEAD')
+        self._git('checkout', '-b', 'cr149')
+        self.fake_chromium_src.update_brave_version('152.0.7204.1')
+
+    def _git(self, *args: str) -> str:
+        return self.fake_chromium_src._run_git_command(list(args), self.brave)
+
+    def _commit(self, *subjects: str) -> None:
+        for subject in subjects:
+            self.fake_chromium_src.commit_empty(subject, self.brave)
+
+    def _capture(self, **kwargs) -> brockit.RebasePlan:
+        head = self._git('rev-parse', 'HEAD')
+        plan = brockit.RebasePlan.capture(self.base, 'cr149', **kwargs)
+        # Capturing never touches the branch.
+        self.assertEqual(self._git('rev-parse', 'HEAD'), head)
+        self.assertFalse(brockit.repository.brave.is_rebase_in_progress())
+        return plan
+
+    @staticmethod
+    def _subject(entry) -> str:
+        # `<command> <hash> # <subject>[ # <note>]`
+        return entry.out.split('#', 2)[1].strip()
+
+    def _commands(self, entries: list) -> list[tuple[str, str]]:
+        return [(entry.command, self._subject(entry)) for entry in entries]
+
+    def test_current_plan_lists_the_branch_in_order(self):
+        self._commit('[cr149] Feature A', 'fixup! [cr149] Feature A')
+        plan = self._capture()
+        self.assertEqual(
+            [self._subject(entry) for entry in plan.current][-2:],
+            ['[cr149] Feature A', 'fixup! [cr149] Feature A'],
+        )
+        self.assertTrue(all(e.command == 'pick' for e in plan.current))
+
+    def test_canonical_branch_does_not_change(self):
+        self._commit('[cr149] Feature A')
+        plan = self._capture(pinned_squashed=True)
+        self.assertFalse(plan.changes)
+        self.assertEqual(
+            self._commands(plan.current), self._commands(plan.rewritten)
+        )
+
+    def test_autosquash_changes_a_pending_fixup(self):
+        self._commit('[cr149] Feature A', 'fixup! [cr149] Feature A')
+        plan = self._capture()
+        self.assertTrue(plan.changes)
+        self.assertEqual(
+            self._commands(plan.rewritten)[-1],
+            ('fixup', 'fixup! [cr149] Feature A'),
+        )
+
+    def test_pinned_squashed_squashes_minor_bumps(self):
+        bump = 'Update from Chromium 152.0.7204.1 to Chromium 152.0.7204.2.'
+        self._commit(bump)
+        self.assertFalse(self._capture().changes)
+        plan = self._capture(pinned_squashed=True)
+        self.assertTrue(plan.changes)
+        self.assertIn(('squash', bump), self._commands(plan.rewritten))
+
+    def test_discard_recyclable_drops_regen_commits(self):
+        self._commit(
+            'Update patches from Chromium 152.0.7204.1 to '
+            'Chromium 152.0.7204.2.'
+        )
+        self.assertFalse(self._capture().changes)
+        plan = self._capture(discard_recyclable=True)
+        self.assertTrue(plan.changes)
+        self.assertEqual(len(plan.rewritten), len(plan.current) - 1)
+
+    def test_wip_commits_are_kept(self):
+        self._commit('[cr149] Feature A', '[cr149][WIP] Not done yet')
+        self.assertFalse(self._capture(pinned_squashed=True).changes)
+
+
+class RebaseDryRunTest(unittest.TestCase):
+    """Tests for `rebase --dry-run`."""
+
+    def setUp(self):
+        self.fake_chromium_src = FakeChromiumRepo()
+        self.fake_chromium_src.setup()
+        self.addCleanup(self.fake_chromium_src.cleanup)
+        self.brave = self.fake_chromium_src.brave
+        self.remote = self.fake_chromium_src.remote / 'brave'
+        # A `cr149` branch on `origin/master`, with its single version bump.
+        self.fake_chromium_src.create_brave_remote()
+        self._git(
+            'config', 'receive.denyCurrentBranch', 'ignore', repo=self.remote
+        )
+        self.fake_chromium_src.update_brave_version('151.0.7049.1')
+        self._git('push', '--force', 'origin', 'HEAD:master')
+        self._git('checkout', '-b', 'cr149')
+        self._git('branch', '--set-upstream-to=origin/master')
+        self.fake_chromium_src.update_brave_version('152.0.7204.1')
+
+    def _git(self, *args: str, repo: Path | None = None) -> str:
+        return self.fake_chromium_src._run_git_command(
+            list(args), repo or self.brave
+        )
+
+    def _dry_run(self, **kwargs) -> None:
+        head = self._git('rev-parse', 'HEAD')
+        try:
+            brockit.Rebase().execute(dry_run=True, **kwargs)
+        finally:
+            # Nothing is rebased, either way.
+            self.assertEqual(self._git('rev-parse', 'HEAD'), head)
+            self.assertFalse(brockit.repository.brave.is_rebase_in_progress())
+
+    def test_canonical_branch_needs_no_rebase(self):
+        self.fake_chromium_src.commit_empty('[cr149] Feature A', self.brave)
+        self._dry_run(squash_minor_bumps=True)
+
+    def test_unsquashed_minor_bumps_need_a_rebase(self):
+        self.fake_chromium_src.commit_empty(
+            'Update from Chromium 152.0.7204.1 to Chromium 152.0.7204.2.',
+            self.brave,
+        )
+        with self.assertRaises(brockit.RebaseNeededException):
+            self._dry_run(squash_minor_bumps=True)
+
+    def test_minor_bumps_stay_without_squash_minor_bumps(self):
+        self.fake_chromium_src.commit_empty(
+            'Update from Chromium 152.0.7204.1 to Chromium 152.0.7204.2.',
+            self.brave,
+        )
+        self._dry_run()
+
+    def test_pending_fixup_needs_a_rebase(self):
+        self.fake_chromium_src.commit_empty('[cr149] Feature A', self.brave)
+        self.fake_chromium_src.commit_empty(
+            'fixup! [cr149] Feature A', self.brave
+        )
+        with self.assertRaises(brockit.RebaseNeededException):
+            self._dry_run(squash_minor_bumps=True)
+
+    def test_wip_commit_needs_no_rebase(self):
+        self.fake_chromium_src.commit_empty('[cr149] Feature A', self.brave)
+        self.fake_chromium_src.commit_empty(
+            '[cr149][WIP] Not done yet', self.brave
+        )
+        self._dry_run(squash_minor_bumps=True)
+
+    def test_moved_base_needs_a_rebase(self):
+        self.fake_chromium_src.commit_empty('[cr149] Feature A', self.brave)
+        self._git('checkout', '-b', '_tmp_upstream', 'origin/master')
+        self.fake_chromium_src.commit_empty('Upstream change', self.brave)
+        self._git('push', 'origin', 'HEAD:master')
+        self._git('fetch', 'origin')
+        self._git('checkout', 'cr149')
+        with self.assertRaises(brockit.RebaseNeededException):
+            self._dry_run(squash_minor_bumps=True)
+
+    def _main(self, outcome: Exception | None) -> int:
+        with (
+            patch.object(sys, 'argv', ['brockit.py', 'rebase', '--dry-run']),
+            patch.object(brockit.Rebase, 'execute', side_effect=outcome),
+        ):
+            return brockit.main()
+
+    def test_exit_codes_tell_a_needed_rebase_from_a_failure(self):
+        self.assertEqual(self._main(None), 0)
+        self.assertEqual(
+            self._main(brockit.RebaseNeededException('needs a rebase')), 2
+        )
+        self.assertEqual(
+            self._main(brockit.InvalidInputException('no upstream')), 1
+        )
+
+
+class FetchChromiumDashVersionTest(unittest.TestCase):
+    """Tests for `fetch_chromium_dash_version`, and its retries."""
+
+    def setUp(self):
+        self.requests = 0
+
+    @staticmethod
+    def _reply(version: str | None = '158.0.8127.4', status: int = 200):
+        reply = MagicMock(status_code=status)
+        reply.json.return_value = [{'version': version}] if version else []
+        if status >= 400:
+            reply.raise_for_status.side_effect = brockit.requests.HTTPError(
+                f'{status}', response=reply
+            )
+        return reply
+
+    def _fetch(self, *replies):
+        """Fetches `beta` with ChromiumDash answering *replies* in order, and
+        a release for every request after them."""
+        answers = itertools.chain(replies, itertools.repeat(self._reply()))
+        with (
+            patch.object(
+                brockit.requests, 'get', side_effect=answers
+            ) as request,
+            patch.object(brockit.time, 'sleep') as sleep,
+        ):
+            try:
+                return brockit.fetch_chromium_dash_version('beta'), sleep
+            finally:
+                self.requests = request.call_count
+
+    def test_highest_version_across_platforms(self):
+        version, sleep = self._fetch(self._reply('158.0.8127.2'))
+        self.assertEqual(version, brockit.Version('158.0.8127.4'))
+        self.assertEqual(self.requests, 5)
+        sleep.assert_not_called()
+
+    def test_transient_failures_are_retried(self):
+        version, sleep = self._fetch(
+            brockit.requests.ConnectionError('reset'),
+            self._reply(status=503),
+        )
+        self.assertEqual(version, brockit.Version('158.0.8127.4'))
+        self.assertEqual([c.args[0] for c in sleep.call_args_list], [5, 10])
+
+    def test_a_reply_without_a_release_is_retried(self):
+        version, sleep = self._fetch(self._reply(version=None))
+        self.assertEqual(version, brockit.Version('158.0.8127.4'))
+        sleep.assert_called_once_with(5)
+
+    def test_gives_up_after_three_tries(self):
+        with self.assertRaises(brockit.BadOutcomeException):
+            self._fetch(*[brockit.requests.Timeout('slow')] * 3)
+        self.assertEqual(self.requests, 3)
+
+    def test_client_errors_are_not_retried(self):
+        with self.assertRaises(brockit.BadOutcomeException):
+            self._fetch(self._reply(status=404))
+        self.assertEqual(self.requests, 1)
+
+
+class ShowTest(unittest.TestCase):
+    def setUp(self):
+        self.solved_refs: list[str] = []
+
+    def _show(self, **kwargs) -> list[str]:
+        args = argparse.Namespace(
+            package_version=None,
+            from_ref_value=None,
+            log_link=False,
+            chromium_version_label=None,
+        )
+        for key, value in kwargs.items():
+            setattr(args, key, value)
+        with (
+            patch.object(
+                brockit, '_solve_brave_ref', side_effect=lambda ref: ref
+            ) as solve,
+            patch.object(
+                brockit.Version,
+                'from_git',
+                side_effect=lambda ref: f'version-at-{ref}',
+            ),
+            patch.object(brockit.console, 'print') as print_mock,
+        ):
+            brockit.show(args)
+        self.solved_refs = [c.args[0] for c in solve.call_args_list]
+        return [c.args[0] for c in print_mock.call_args_list]
+
+    def test_package_version_at_ref(self):
+        self.assertEqual(
+            self._show(package_version='origin/master'),
+            ['upstream version: version-at-origin/master'],
+        )
+        self.assertEqual(self.solved_refs, ['origin/master'])
+
+    def test_package_version_not_requested(self):
+        self.assertEqual(self._show(), [])
 
 
 if __name__ == '__main__':

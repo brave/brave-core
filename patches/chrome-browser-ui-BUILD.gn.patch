@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 1e352a02e9720c91917e329c22674fdd33451f4b..c83eee60b50e9bc3dbe6549d885d8e29b1f4dcea 100644
+index 0772e0c6b5cd4c0577f9d89ee0820fc7fc8d7c5f..4542cdee2cfcb442827908f9967b95354af28481 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 1e352a02e9720c91917e329c22674fdd33451f4b..c83eee60b50e9bc3dbe6549d885d8e29
  import("//build/config/buildflags_paint_preview.gni")
  import("//build/config/chrome_build.gni")
  import("//build/config/compiler/compiler.gni")
-@@ -1109,6 +1110,7 @@ source_set("accelerator_table") {
+@@ -1103,6 +1104,7 @@ source_set("accelerator_table") {
    sources = [ "accelerator_table.cc" ]
    public_deps = [ "//ui/actions:actions_headers" ]
    deps = [
@@ -18,7 +18,7 @@ index 1e352a02e9720c91917e329c22674fdd33451f4b..c83eee60b50e9bc3dbe6549d885d8e29
      "//build:branding_buildflags",
      "//chrome/app:command_ids",
      "//chrome/browser/ui/actions:command_id_to_action_id",
-@@ -1478,6 +1480,7 @@ if (!is_android) {
+@@ -1333,6 +1335,7 @@ if (!is_android) {
        ":core",
        "//chrome/browser/ui/browser_window/internal",
      ]
@@ -26,17 +26,3 @@ index 1e352a02e9720c91917e329c22674fdd33451f4b..c83eee60b50e9bc3dbe6549d885d8e29
      public_deps = [
        ":browser_window_deleter",
        "//base",
-@@ -1634,11 +1637,13 @@ if (!is_android) {
- group("ui_public_dependencies") {
-   visibility = [ "//chrome/browser:browser_public_dependencies" ]
-   public_deps = [
-+    "//brave/browser/ui:ui_public_dependencies",
-     "//components/cross_device/logging",
-     "//components/dom_distiller/core",
-     "//components/enterprise/buildflags",
-     "//components/paint_preview/buildflags",
-     "//components/safe_browsing:buildflags",
-+    "//components/saved_tab_groups/public",
-     "//components/segmentation_platform/public",
-     "//components/sync",
-     "//components/sync_user_events",

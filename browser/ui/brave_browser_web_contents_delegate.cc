@@ -52,18 +52,18 @@ content::WebContents* BraveBrowserWebContentsDelegate::AddNewContents(
     const blink::mojom::WindowFeatures& window_features,
     bool user_gesture,
     bool* was_blocked) {
-  // For NEW_FOREGROUND_TAB disposition (target="_blank" links) from a source
+  // For kNewForegroundTab disposition (target="_blank" links) from a source
   // in the left pane of a linked split view, set the split tab ID on the new
   // contents so that SplitViewLinkNavigationThrottle can redirect it to the
   // right pane. If the split tab ID was set, change the disposition to
-  // NEW_BACKGROUND_TAB to prevent the empty tab from becoming visible.
+  // kNewBackgroundTab to prevent the empty tab from becoming visible.
   // It'll be closed immediately right after navigation is routed to right
   // pane. By routing at SplitViewLinkNavigationThrottle, proper referrer/opener
   // could be set. These are set after navigation starts. So, can't get it here.
-  if (disposition == WindowOpenDisposition::NEW_FOREGROUND_TAB && source &&
+  if (disposition == WindowOpenDisposition::kNewForegroundTab && source &&
       user_gesture && new_contents.get() && !target_url.is_empty()) {
     if (split_view::SetSplitTabIdForRedirect(source, new_contents.get())) {
-      disposition = WindowOpenDisposition::NEW_BACKGROUND_TAB;
+      disposition = WindowOpenDisposition::kNewBackgroundTab;
     }
   }
 

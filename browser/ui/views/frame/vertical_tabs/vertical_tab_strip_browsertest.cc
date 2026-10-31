@@ -100,6 +100,7 @@
 
 #if defined(USE_AURA)
 #include "chrome/browser/ui/views/frame/opaque_browser_frame_view.h"
+#include "ui/aura/client/cursor_client.h"
 #include "ui/aura/test/ui_controls_aurawin.h"
 #include "ui/aura/window.h"
 #endif
@@ -137,6 +138,16 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
   void ToggleVerticalTabStrip() {
     brave::ToggleVerticalTabStrip(browser());
     browser_non_client_frame_view()->DeprecatedLayoutImmediately();
+  }
+
+  // Makes View::IsMouseHovered() return false regardless of where the real
+  // cursor is, so hover-dependent state changes are deterministic.
+  void DisableRealMouseHover() {
+#if defined(USE_AURA)
+    aura::client::GetCursorClient(
+        browser_view()->GetWidget()->GetNativeWindow()->GetRootWindow())
+        ->DisableMouseEvents();
+#endif
   }
 
   void AppendTab(BrowserWindowInterface* browser) {
@@ -438,6 +449,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VisualState) {
   prefs->SetBoolean(brave_tabs::kVerticalTabsCollapsed, false);
   EXPECT_EQ(State::kExpanded, region_view->state());
   prefs->SetBoolean(brave_tabs::kVerticalTabsCollapsed, true);
+
+  DisableRealMouseHover();
 
   // Check if mouse hover triggers floating mode.
   {
@@ -1098,7 +1111,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ExpandedState) {
   // Check expanded state is toggled via command.
   auto* command_controller = chrome::BrowserCommandController::From(browser());
   command_controller->ExecuteCommandWithDisposition(
-      IDC_TOGGLE_VERTICAL_TABS_EXPANDED, WindowOpenDisposition::CURRENT_TAB);
+      IDC_TOGGLE_VERTICAL_TABS_EXPANDED, WindowOpenDisposition::kCurrentTab);
   EXPECT_EQ(State::kCollapsed, region_view_1->state());
 
   // And new browser should follow the preference.
@@ -1559,7 +1572,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
 }
 
 // BraveTabContainer::PaintChildren() paints slot views from the z-order cache
-// owned by TabContainerImpl. The cache must be refreshed by the paint when it
+// owned by TabContainer. The cache must be refreshed by the paint when it
 // is dirty, so an activation change has to be reflected in the paint order of
 // the very next paint: the active tab is painted last, on top of the others.
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
@@ -2340,6 +2353,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
   prefs->SetBoolean(brave_tabs::kVerticalTabsFloatingEnabled, false);
   ASSERT_EQ(BraveVerticalTabStripRegionView::State::kExpanded,
             region_view->state());
+
+  DisableRealMouseHover();
 
   // Hiding the toggle button should force the tab strip to collapse, since
   // there is no other way to expand/collapse it, and should force floating

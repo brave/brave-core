@@ -121,6 +121,7 @@ static_library("misc_metrics_impl") {
     deps += [
       "//brave/browser/extensions/manifest_v2",
       "//brave/browser/themes",
+      "//brave/browser/ui:brave_tab_prefs",
       "//chrome/browser/themes",
       "//chrome/browser/ui/tabs:tab_strip",
       "//extensions/browser",
@@ -233,6 +234,7 @@ source_set("browser_tests") {
     "//brave/browser:browser_process",
     "//brave/browser/misc_metrics",
     "//brave/browser/misc_metrics:misc_metrics_impl",
+    "//brave/browser/ui:brave_tab_prefs",
     "//brave/components/constants",
     "//brave/components/misc_metrics",
     "//chrome/browser:browser_process",

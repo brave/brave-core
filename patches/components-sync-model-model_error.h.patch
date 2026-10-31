@@ -1,5 +1,5 @@
 diff --git a/components/sync/model/model_error.h b/components/sync/model/model_error.h
-index 7a255bcff2de872271ea4e9621a427dcf94533e6..efcee05702c283c36e73a299b366faab170340a0 100644
+index fbe4ed43eb7887acae8012289253cea614cb00e5..74412397b88cfcd928c2b8aa8b2e056459bf960f 100644
 --- a/components/sync/model/model_error.h
 +++ b/components/sync/model/model_error.h
 @@ -204,7 +204,8 @@ class ModelError {

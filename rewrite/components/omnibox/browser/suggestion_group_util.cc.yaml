@@ -1,0 +1,22 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Give the quick commands group its section and header.
+
+      Brave's commander provider puts its matches in GROUP_OTHER_NAVS, which
+      upstream files under the search section without a header. The entry goes
+      first: the map keeps the first of duplicate keys.
+    regex:
+      re_pattern: '(g_default_groups\.Get\(\) = \{)'
+      replace: |-
+        \1
+        #if BUILDFLAG(ENABLE_COMMANDER)
+                {GROUP_OTHER_NAVS,
+                 CreateGroup(SECTION_OTHER_NAVS,
+                             GroupConfig_RenderType_DEFAULT_VERTICAL,
+                             IDS_IDC_COMMANDER)},
+        #endif

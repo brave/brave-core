@@ -1,0 +1,33 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+
+assert(enable_sparkle)
+
+# `sparkle_glue` itself is built as part of //chrome/browser.
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "fake_sparkle.h",
+    "fake_sparkle.mm",
+  ]
+
+  deps = [ "//chrome/browser" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "sparkle_glue_unittest.mm" ]
+
+  deps = [
+    ":test_support",
+    "//base/test:test_support",
+    "//chrome/browser",
+    "//testing/gtest",
+  ]
+}

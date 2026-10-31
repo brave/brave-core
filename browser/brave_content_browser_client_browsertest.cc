@@ -90,7 +90,7 @@ class BraveContentBrowserClientTest : public InProcessBrowserTest {
     ui_test_utils::UrlLoadObserver load_complete(final_url);
     browser()->OpenURL(
         content::OpenURLParams(original_url, content::Referrer(),
-                               WindowOpenDisposition::CURRENT_TAB,
+                               WindowOpenDisposition::kCurrentTab,
                                ui::PAGE_TRANSITION_TYPED, false),
         /*navigation_handle_callback=*/{});
     load_complete.Wait();

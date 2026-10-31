@@ -12,51 +12,12 @@
 #include "chrome/browser/ui/exclusive_access/exclusive_access_context.h"
 #include "chrome/browser/ui/views/frame/shadow_overlay_view.h"
 
-#define BrowserViewLayoutDelegateImplOld \
-  BrowserViewLayoutDelegateImplOld;      \
-  friend class BraveBrowserView
-
-#define BrowserWindow BraveBrowserWindow
-#define BookmarkBarView BraveBookmarkBarView
-
-#define MaybeUpdateDevtools virtual MaybeUpdateDevtools
-#define MaybeUpdateSplitView virtual MaybeUpdateSplitView
-#define GetTabStripVisible virtual GetTabStripVisible
-#define UpdateTabSearchBubbleHost virtual UpdateTabSearchBubbleHost
-
 #if BUILDFLAG(IS_WIN)
-// On Windows <winuser.h> defines LoadAccelerators
-// Using push_macro seems to be causing #undef not to work in Chromium 125.
-// Unclear what causes this.
-// #pragma push_macro("LoadAccelerators")
+// <winuser.h> defines LoadAccelerators, which would rename
+// BrowserView::LoadAccelerators() in translation units that include it.
 #undef LoadAccelerators
 #endif
-#define LoadAccelerators virtual LoadAccelerators
-#define ShowSplitView virtual ShowSplitView
-#define HideSplitView virtual HideSplitView
-#define ReparentTopContainerForEndOfImmersive \
-  virtual ReparentTopContainerForEndOfImmersive
-#define ShouldDrawTabStrokes virtual ShouldDrawTabStrokes
-#define GetFrameElementInfo virtual GetFrameElementInfo
 
 #include <chrome/browser/ui/views/frame/browser_view.h>  // IWYU pragma: export
-
-#undef GetFrameElementInfo
-#undef ReparentTopContainerForEndOfImmersive
-#undef ShouldDrawTabStrokes
-#undef HideSplitView
-#undef ShowSplitView
-#undef LoadAccelerators
-#if BUILDFLAG(IS_WIN)
-// #pragma pop_macro("LoadAccelerators")
-#endif
-
-#undef UpdateTabSearchBubbleHost
-#undef GetTabStripVisible
-#undef MaybeUpdateSplitView
-#undef MaybeUpdateDevtools
-#undef BookmarkBarView
-#undef BrowserWindow
-#undef BrowserViewLayoutDelegateImplOld
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_VIEW_H_

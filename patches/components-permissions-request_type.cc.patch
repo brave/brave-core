@@ -1,5 +1,5 @@
 diff --git a/components/permissions/request_type.cc b/components/permissions/request_type.cc
-index 0737b2e03ee7932eeb1257760ff1d8ac3f2348a8..b175a3b2d215a4a59ab539a6ba05548461d3e641 100644
+index e6d2f3b344a0071cc94399530a9cc0ceab266883..6b99b5ec79cfc979ad0e5d9dfae6790b274eacd5 100644
 --- a/components/permissions/request_type.cc
 +++ b/components/permissions/request_type.cc
 @@ -74,6 +74,15 @@ int GetIconIdAndroid(RequestType type) {
@@ -34,7 +34,7 @@ index 0737b2e03ee7932eeb1257760ff1d8ac3f2348a8..b175a3b2d215a4a59ab539a6ba055484
    }
    NOTREACHED();
  }
-@@ -369,6 +387,22 @@ std::optional<RequestType> ContentSettingsTypeToRequestTypeIfExists(
+@@ -371,6 +389,22 @@ std::optional<RequestType> ContentSettingsTypeToRequestTypeIfExists(
  #endif
      case ContentSettingsType::FEDERATED_IDENTITY_API:
        return RequestType::kIdentityProvider;
@@ -57,7 +57,7 @@ index 0737b2e03ee7932eeb1257760ff1d8ac3f2348a8..b175a3b2d215a4a59ab539a6ba055484
      default:
        return std::nullopt;
  #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
-@@ -461,6 +495,20 @@ std::optional<ContentSettingsType> RequestTypeToContentSettingsType(
+@@ -463,6 +497,20 @@ std::optional<ContentSettingsType> RequestTypeToContentSettingsType(
      case RequestType::kWebAppInstallation:
        return ContentSettingsType::WEB_APP_INSTALLATION;
  #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
@@ -78,7 +78,7 @@ index 0737b2e03ee7932eeb1257760ff1d8ac3f2348a8..b175a3b2d215a4a59ab539a6ba055484
        // Not associated with a ContentSettingsType.
  #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
      case RequestType::kAmbientLogin:
-@@ -472,6 +520,14 @@ std::optional<ContentSettingsType> RequestTypeToContentSettingsType(
+@@ -474,6 +522,14 @@ std::optional<ContentSettingsType> RequestTypeToContentSettingsType(
  #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
      case RequestType::kRegisterProtocolHandler:
  #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
@@ -93,7 +93,7 @@ index 0737b2e03ee7932eeb1257760ff1d8ac3f2348a8..b175a3b2d215a4a59ab539a6ba055484
        return std::nullopt;
    }
  }
-@@ -602,6 +658,30 @@ const char* PermissionKeyForRequestType(permissions::RequestType request_type) {
+@@ -604,6 +660,30 @@ const char* PermissionKeyForRequestType(permissions::RequestType request_type) {
        return "window_management";
      case permissions::RequestType::kIdentityProvider:
        return "identity_provider";

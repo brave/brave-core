@@ -156,7 +156,7 @@ mangle(
       throw new Error('[Customize Chrome > Toolbar] sp-heading is gone.')
     }
 
-    el.setAttribute('hide-back-button', 'true')
+    el.setAttribute('hide-back-button', '')
   },
   (template) => template.text.includes('sp-heading'),
 )

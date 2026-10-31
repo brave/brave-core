@@ -21,7 +21,6 @@ public final class BraveAutofillOptionsSearchIndex {
             Context context, SettingsIndexData indexData, SettingsRoutes routes) {
         updateAutofillPrivateWindowEntry(context, indexData);
         updateMainAutofillAndPasswordsEntry(indexData, routes);
-        updateLegacyAutofillOptionsEntry(context, indexData, routes);
         updateHomeOfTransactionsAutofillOptionsEntry(indexData, routes);
         addAutofillOptionsChildParentLinks(indexData, routes);
     }
@@ -29,7 +28,6 @@ public final class BraveAutofillOptionsSearchIndex {
     public static final class SettingsRoutes {
         private final String mMainSettingsFragmentName;
         private final String mMainAutofillAndPasswordsKey;
-        private final String mLegacyAutofillOptionsKey;
         private final String mHomeOfTransactionsFragmentName;
         private final String mHomeOfTransactionsAutofillSettingsKey;
         private final String mHomeOfTransactionsReferrerExtra;
@@ -38,14 +36,12 @@ public final class BraveAutofillOptionsSearchIndex {
         public SettingsRoutes(
                 String mainSettingsFragmentName,
                 String mainAutofillAndPasswordsKey,
-                String legacyAutofillOptionsKey,
                 String homeOfTransactionsFragmentName,
                 String homeOfTransactionsAutofillSettingsKey,
                 String homeOfTransactionsReferrerExtra,
                 int homeOfTransactionsSettingsMenuReferrer) {
             mMainSettingsFragmentName = mainSettingsFragmentName;
             mMainAutofillAndPasswordsKey = mainAutofillAndPasswordsKey;
-            mLegacyAutofillOptionsKey = legacyAutofillOptionsKey;
             mHomeOfTransactionsFragmentName = homeOfTransactionsFragmentName;
             mHomeOfTransactionsAutofillSettingsKey = homeOfTransactionsAutofillSettingsKey;
             mHomeOfTransactionsReferrerExtra = homeOfTransactionsReferrerExtra;
@@ -107,24 +103,6 @@ public final class BraveAutofillOptionsSearchIndex {
                 new SettingsIndexData.Entry.Builder(mainAutofillAndPasswordsEntry)
                         .setFragment(routes.mHomeOfTransactionsFragmentName)
                         .setArguments(createHomeOfTransactionsArgs(routes))
-                        .build());
-    }
-
-    private static void updateLegacyAutofillOptionsEntry(
-            Context context, SettingsIndexData indexData, SettingsRoutes routes) {
-        SettingsIndexData.Entry legacyAutofillOptionsEntry =
-                indexData.getEntryForKey(
-                        routes.mMainSettingsFragmentName, routes.mLegacyAutofillOptionsKey);
-        if (legacyAutofillOptionsEntry == null) {
-            return;
-        }
-
-        indexData.updateEntry(
-                legacyAutofillOptionsEntry.id,
-                new SettingsIndexData.Entry.Builder(legacyAutofillOptionsEntry)
-                        .setTitle(AutofillOptionsMediator.getFragmentTitle(context))
-                        .setFragment(AutofillOptionsFragment.class.getName())
-                        .setArguments(createAutofillOptionsSearchArgs())
                         .build());
     }
 

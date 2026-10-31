@@ -5,8 +5,9 @@
 
 #include "brave/ios/browser/ai_chat/model_service_factory.h"
 
+#include <utility>
+
 #include "base/functional/bind.h"
-#include "base/no_destructor.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "components/user_prefs/user_prefs.h"
@@ -14,26 +15,13 @@
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 
 namespace ai_chat {
-ModelService* ModelServiceFactory::GetForProfile(ProfileIOS* profile) {
-  return GetInstance()->GetServiceForProfileAs<ModelService>(profile, true);
-}
-
-ModelService* ModelServiceFactory::GetForProfileIfExists(ProfileIOS* profile) {
-  return GetInstance()->GetServiceForProfileAs<ModelService>(profile, false);
-}
-
-ModelServiceFactory* ModelServiceFactory::GetInstance() {
-  static base::NoDestructor<ModelServiceFactory> instance;
-  return instance.get();
-}
-
-ModelServiceFactory::ModelServiceFactory()
-    : ProfileKeyedServiceFactoryIOS("ModelService",
-                                    ProfileSelection::kNoInstanceInIncognito,
-                                    ServiceCreation::kCreateLazily,
-                                    TestingCreation::kCreateService) {}
-
-ModelServiceFactory::~ModelServiceFactory() {}
+ModelServiceFactory::ModelServiceFactory(PassKey key)
+    : TypedProfileKeyedServiceFactoryIOS(
+          std::move(key),
+          "ModelService",
+          ProfileSelection::kNoInstanceInIncognito,
+          ServiceCreation::kCreateLazily,
+          TestingCreation::kCreateService) {}
 
 std::unique_ptr<KeyedService> ModelServiceFactory::BuildServiceInstanceFor(
     ProfileIOS* profile) const {

@@ -315,7 +315,7 @@ EphemeralStorageBrowserTest::GetValuesFromFrames(WebContents* web_contents) {
 WebContents* EphemeralStorageBrowserTest::LoadURLInNewTab(GURL url) {
   ui_test_utils::AllBrowserTabAddedWaiter add_tab;
   EXPECT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser(), url, WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   return add_tab.Wait();
 }

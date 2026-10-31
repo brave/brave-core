@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/startup_data.cc b/chrome/browser/startup_data.cc
-index 2eb69e65ac7049df1efc485e2ca0bffaae21516c..d2e7abfa5c52ab0a7b7157eca498f611b1b04b03 100644
+index 66d5eeb02bcc5c70a342a272b0ac6e5e2155359a..b9d83a3d1332d68de89a6428afa00531cd636854 100644
 --- a/chrome/browser/startup_data.cc
 +++ b/chrome/browser/startup_data.cc
 @@ -56,7 +56,7 @@
@@ -20,7 +20,7 @@ index 2eb69e65ac7049df1efc485e2ca0bffaae21516c..d2e7abfa5c52ab0a7b7157eca498f611
    // On desktop Android the ExtensionsBrowserClient is created here because it
    // must be initialized before BrowserContextKeyedServiceFactories are built.
    // Some factories use ExtensionsBrowserClient::Get() in their DependsOn().
-@@ -291,7 +291,7 @@ void StartupData::CreateServicesInternal() {
+@@ -292,7 +292,7 @@ void StartupData::CreateServicesInternal() {
  }
  #endif
  

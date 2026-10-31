@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/profile_avatar_icon_util.cc b/chrome/browser/profiles/profile_avatar_icon_util.cc
-index 3113d8bba9ba64ff8aba9c616630d0eeba0c7413..f43012a3d262dab8c115d27de0e27cd30dd92513 100644
+index 90e331de4f562654e670bfca733e1f79b5eadc1b..f2e8691d555f4b8c79a0a0708cc8cfcde3b189da 100644
 --- a/chrome/browser/profiles/profile_avatar_icon_util.cc
 +++ b/chrome/browser/profiles/profile_avatar_icon_util.cc
 @@ -567,7 +567,7 @@ constexpr size_t kDefaultAvatarIconsCount = 1;
@@ -11,7 +11,7 @@ index 3113d8bba9ba64ff8aba9c616630d0eeba0c7413..f43012a3d262dab8c115d27de0e27cd3
  #endif
  
  #if !BUILDFLAG(IS_ANDROID)
-@@ -737,6 +737,7 @@ size_t GetPlaceholderAvatarIndex() {
+@@ -738,6 +738,7 @@ size_t GetPlaceholderAvatarIndex() {
  
  size_t GetModernAvatarIconStartIndex() {
  #if !BUILDFLAG(IS_CHROMEOS) && !BUILDFLAG(IS_ANDROID)
@@ -19,7 +19,7 @@ index 3113d8bba9ba64ff8aba9c616630d0eeba0c7413..f43012a3d262dab8c115d27de0e27cd3
    return GetPlaceholderAvatarIndex() + 1;
  #else
    // Only use the placeholder avatar on ChromeOS and Android.
-@@ -770,6 +771,7 @@ std::string GetPlaceholderAvatarIconUrl() {
+@@ -771,6 +772,7 @@ std::string GetPlaceholderAvatarIconUrl() {
  
  const IconResourceInfo* GetDefaultAvatarIconResourceInfo(size_t index) {
    CHECK_LT(index, kDefaultAvatarIconsCount);
@@ -27,7 +27,7 @@ index 3113d8bba9ba64ff8aba9c616630d0eeba0c7413..f43012a3d262dab8c115d27de0e27cd3
    static const std::array<IconResourceInfo, kDefaultAvatarIconsCount>
        resource_info = {{
    // Old avatar icons:
-@@ -1094,6 +1096,7 @@ base::ListValue GetIconsAndLabelsForProfileAvatarSelector(
+@@ -1095,6 +1097,7 @@ base::ListValue GetIconsAndLabelsForProfileAvatarSelector(
          selected_avatar_idx == GetPlaceholderAvatarIndex());
      avatars.Insert(avatars.begin(),
                     base::Value(std::move(generic_avatar_info)));

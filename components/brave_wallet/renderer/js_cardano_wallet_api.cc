@@ -73,18 +73,18 @@ void JSCardanoWalletApi::OnDestruct() {
 gin::ObjectTemplateBuilder JSCardanoWalletApi::GetObjectTemplateBuilder(
     v8::Isolate* isolate) {
   return gin::Wrappable<JSCardanoWalletApi>::GetObjectTemplateBuilder(isolate)
-      .SetMethod("getNetworkId", &JSCardanoWalletApi::GetNetworkId)
-      .SetMethod("getUsedAddresses", &JSCardanoWalletApi::GetUsedAddresses)
-      .SetMethod("getUnusedAddresses", &JSCardanoWalletApi::GetUnusedAddresses)
-      .SetMethod("getChangeAddress", &JSCardanoWalletApi::GetChangeAddress)
-      .SetMethod("getRewardAddresses", &JSCardanoWalletApi::GetRewardAddresses)
-      .SetMethod("getUtxos", &JSCardanoWalletApi::GetUtxos)
-      .SetMethod("getBalance", &JSCardanoWalletApi::GetBalance)
-      .SetMethod("signTx", &JSCardanoWalletApi::SignTx)
-      .SetMethod("signData", &JSCardanoWalletApi::SignData)
-      .SetMethod("submitTx", &JSCardanoWalletApi::SubmitTx)
-      .SetMethod("getExtensions", &JSCardanoWalletApi::GetExtensions)
-      .SetMethod("getCollateral", &JSCardanoWalletApi::GetCollateral);
+      .SetMethod<&JSCardanoWalletApi::GetNetworkId>("getNetworkId")
+      .SetMethod<&JSCardanoWalletApi::GetUsedAddresses>("getUsedAddresses")
+      .SetMethod<&JSCardanoWalletApi::GetUnusedAddresses>("getUnusedAddresses")
+      .SetMethod<&JSCardanoWalletApi::GetChangeAddress>("getChangeAddress")
+      .SetMethod<&JSCardanoWalletApi::GetRewardAddresses>("getRewardAddresses")
+      .SetMethod<&JSCardanoWalletApi::GetUtxos>("getUtxos")
+      .SetMethod<&JSCardanoWalletApi::GetBalance>("getBalance")
+      .SetMethod<&JSCardanoWalletApi::SignTx>("signTx")
+      .SetMethod<&JSCardanoWalletApi::SignData>("signData")
+      .SetMethod<&JSCardanoWalletApi::SubmitTx>("submitTx")
+      .SetMethod<&JSCardanoWalletApi::GetExtensions>("getExtensions")
+      .SetMethod<&JSCardanoWalletApi::GetCollateral>("getCollateral");
 }
 
 const gin::WrapperInfo* JSCardanoWalletApi::wrapper_info() const {
