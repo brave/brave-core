@@ -18,10 +18,8 @@
 #include "base/json/json_reader.h"
 #include "base/no_destructor.h"
 #include "base/test/bind.h"
-#include "base/test/run_until.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
-#include "base/threading/thread.h"
 #include "base/types/expected.h"
 #include "base/types/is_instantiation.h"
 #include "brave/components/brave_account/endpoint_client/is_endpoint.h"
@@ -486,10 +484,7 @@ using ClientTestProtobufResponseWithHeaders =
                ProtobufEndpoint::Request,
                WithHeaders<ProtobufEndpoint::Response>>;
 
-enum class CancelRequestOn { kSameSequence, kDifferentSequence };
-
-class ClientTestCancelableRequest
-    : public testing::TestWithParam<CancelRequestOn> {
+class ClientTestCancelableRequest : public testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory test_url_loader_factory_;
@@ -573,7 +568,7 @@ INSTANTIATE_TEST_SUITE_P(
     ClientTestProtobufResponseWithHeaders::GenerateTestCases(),
     ClientTestProtobufResponseWithHeaders::kNameGenerator);
 
-TEST_P(ClientTestCancelableRequest, Cancel) {
+TEST_F(ClientTestCancelableRequest, Cancel) {
   base::test::TestFuture<JSONEndpoint::Response> future;
   RequestHandle request_handle =
       Client<JSONEndpoint>::Send<RequestCancelability::kCancelable>(
@@ -588,34 +583,13 @@ TEST_P(ClientTestCancelableRequest, Cancel) {
   // We intentionally don't add a response for this request.
   // It will hang, so the only way it completes is
   // by explicitly canceling via |request_handle|.
-  if (GetParam() == CancelRequestOn::kSameSequence) {
-    request_handle.reset();
-  } else {
-    base::Thread thread("cancel-thread");
-    CHECK(thread.Start());
-    thread.task_runner()->PostTask(
-        FROM_HERE,
-        base::BindOnce(
-            [](RequestHandle request_handle) { request_handle.reset(); },
-            std::move(request_handle)));
-    thread.FlushForTesting();  // ensures request_handle.reset() ran
-  }
+  request_handle.reset();
 
-  // The deleter uses `SequencedTaskRunner::DeleteSoon()`
-  // on the owning sequence, so wait for it to run.
-  EXPECT_TRUE(base::test::RunUntil([&] { return !weak_simple_url_loader; }));
+  // Cancellation is synchronous: no task needs to run for the loader to be
+  // gone, and the callback must never fire.
+  EXPECT_FALSE(weak_simple_url_loader);
   EXPECT_FALSE(future.IsReady());
 }
-
-INSTANTIATE_TEST_SUITE_P(CancelableRequest,
-                         ClientTestCancelableRequest,
-                         testing::Values(CancelRequestOn::kSameSequence,
-                                         CancelRequestOn::kDifferentSequence),
-                         [](const auto& info) {
-                           return info.param == CancelRequestOn::kSameSequence
-                                      ? "same_sequence"
-                                      : "different_sequence";
-                         });
 
 TEST(ClientTestUrlReplacements, OverridesReachTheOutgoingRequest) {
   base::test::TaskEnvironment task_environment;

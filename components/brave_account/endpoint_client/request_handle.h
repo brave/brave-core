@@ -22,7 +22,9 @@ class Client;
 
 namespace detail {
 
-// Sequence-aware deleter (marshals destruction to |task_runner_|).
+// Deletes the managed loader, CHECKing that this happens on the sequence that
+// issued the request - the only sequence the loader may be touched from, and
+// what makes cancellation synchronous.
 class RequestHandleDeleter {
  public:
   RequestHandleDeleter();

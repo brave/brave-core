@@ -8,10 +8,7 @@
 #include <memory>
 #include <utility>
 
-#include "base/location.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/run_loop.h"
-#include "base/task/sequenced_task_runner.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "brave/components/brave_account/brave_account_state_prefs.h"
@@ -64,18 +61,6 @@ class FlowBaseTest : public testing::Test {
         *encryptor_);
   }
 
-  void TearDown() override {
-    // Cancelling a request frees its `SimpleURLLoader` via `DeleteSoon()`
-    // (see `~RequestHandleDeleter`), and `~TaskEnvironment` drops pending
-    // tasks instead of running them - so without draining here, LSAN reports
-    // the loader as leaked. The deletion task is already queued on this
-    // sequence, so a quit closure posted behind it runs strictly after it.
-    base::RunLoop run_loop;
-    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-        FROM_HERE, run_loop.QuitClosure());
-    run_loop.Run();
-  }
-
   base::test::TaskEnvironment task_environment_;
   TestingPrefServiceSimple pref_service_;
   std::unique_ptr<AccountStatePrefs> account_state_prefs_;
@@ -108,10 +93,6 @@ TEST_F(FlowBaseTest, FlowOwnedRequest_DestructionCancelsPendingRequest) {
   flow_->SendFlowOwnedRequest<TestEndpoint>(TestEndpoint::Request(),
                                             future.GetCallback());
   flow_.reset();
-  base::RunLoop run_loop;
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, run_loop.QuitClosure());
-  run_loop.Run();
   EXPECT_FALSE(future.IsReady());
 }
 

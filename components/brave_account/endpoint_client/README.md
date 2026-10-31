@@ -217,8 +217,25 @@ request_handle.reset();  // cancels the request
 ```
 
 `RequestHandle` is a type-erased `std::unique_ptr<>` to the underlying
-`network::SimpleURLLoader` with a sequence-aware deleter, so you can safely pass
-it across sequences. Destroying the handle cancels the request.
+`network::SimpleURLLoader`, so callers can only hold, move, or reset it.
+
+Destroying the handle cancels the request **synchronously**: it destroys the
+loader, which closes the loader's `URLLoaderClient` receiver, and mojo never
+dispatches to a destroyed receiver. Once `reset()` returns, the response
+callback will not run.
+
+That guarantee is why the handle is bound to the sequence that called `Send<>()`
+and must be destroyed on that sequence - doing it elsewhere CHECK-fails.
+Marshalling destruction to the owning sequence instead (via `DeleteSoon()`)
+would leave a window in which an already-queued response still runs the
+callback, which makes "dropping the handle cancels the request" true only
+sometimes - the worst kind of contract, since every caller learns it from the
+common case.
+
+If a caller ever genuinely needs to cancel from another sequence, the way to add
+it is a shared cancellation flag that `Send<>()`'s completion handler checks, so
+that the "callback will not run" guarantee stays unconditional. Do not weaken it
+back to a deferred delete.
 
 ---
 
