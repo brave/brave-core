@@ -23,6 +23,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
+#include "content/public/test/test_navigation_observer.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/default_handlers.h"
 #include "net/test/embedded_test_server/http_request.h"
@@ -585,4 +586,32 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
 
   ASSERT_TRUE(seen_cookies().contains(wp_top_url_));
   EXPECT_EQ(seen_cookies().at(wp_top_url_), "frame=true");
+}
+
+// A credentialless iframe has a nonced cookie partition key, which forbids
+// unpartitioned cookie access even when the frame is same-site with its top
+// frame.
+IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
+                       CredentiallessIframeHasNoFullCookieAccess) {
+  const GURL url = https_server_.GetURL("a.com", "/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+  content::RenderFrameHost* main_frame = web_contents->GetPrimaryMainFrame();
+  ASSERT_TRUE(main_frame->IsFullCookieAccessAllowed());
+
+  static constexpr char kAddCredentiallessIframe[] = R"(
+    const iframe = document.createElement('iframe');
+    iframe.credentialless = true;
+    iframe.src = $1;
+    document.body.appendChild(iframe);
+  )";
+  content::TestNavigationObserver observer(web_contents);
+  ASSERT_TRUE(content::ExecJs(
+      main_frame, content::JsReplace(kAddCredentiallessIframe, url)));
+  observer.Wait();
+
+  content::RenderFrameHost* child_frame = content::ChildFrameAt(main_frame, 0);
+  ASSERT_TRUE(child_frame);
+  ASSERT_TRUE(child_frame->IsCredentialless());
+  EXPECT_FALSE(child_frame->IsFullCookieAccessAllowed());
 }
