@@ -7,7 +7,7 @@ import './wallet_networks_subpage.js'
 
 import type {CrInputElement} from 'chrome://resources/cr_elements/cr_input/cr_input.js'
 
-import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js'
+import {PrefService} from '/shared/settings/prefs2/pref_service.js'
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
@@ -42,7 +42,7 @@ interface CurrencyType {
 }
 
 const SettingsBraveWalletPageBase =
-  WebUiListenerMixin(PrefsMixin(I18nMixin(RouteObserverMixin(SettingsViewMixin(PolymerElement)))))
+  WebUiListenerMixin(I18nMixin(RouteObserverMixin(SettingsViewMixin(PolymerElement))))
 
 class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
   static get is() {
@@ -259,7 +259,7 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
     if (Number.isNaN(value) || value < 1 || value > 10080) {
       return
     }
-    this.setPrefValue('brave.wallet.auto_lock_minutes', value)
+    PrefService.getInstance().setPrefValue('brave.wallet.auto_lock_minutes', value)
   }
 
   private onWalletNetworksEditorClick_() {

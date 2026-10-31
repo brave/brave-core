@@ -22,6 +22,7 @@
 <translation id="8541922081612557424">Brave-ийн тухай</translation>
 <translation id="987734326276404793">Утсан дээрээ Brave-р үнэ мөшгөх мэдэгдэл аваарай</translation>
 <translation id="1203500561924088507">Суулгасанд баярлалаа. Та <ph name="BUNDLE_NAME"/>-г ашиглахаасаа өмнө хөтчөө дахин эхлүүлэх ёстой.</translation>
+<translation id="1213674046343558619"><ph name="IMPORTANT_UPDATE"/> хүлээгдэж байна. Таны хөтчийн хэрэглээний аюулгүй байдлыг хангахын тулд Brave таныг дараагийн удаа <ph name="IDLE_DURATION"/>-н турш идэвхгүй байхад шинэчлэгдэнэ.</translation>
 <translation id="1232234696885483911">Таныг Зурган хайлтыг нээхэд хуудасны гарчиг, URL болон PDF зэрэг контентыг сервер лүү автоматаар илгээнэ. <ph name="LEARN_MORE"/></translation>
 <translation id="1934377710648094656">Та нэвтэрсэн байхдаа Brave-д Brave Бүртгэлээсээ нууц үг болон бусад зүйлээ ашиглах боломжтой. Үүнийг өөрчлөхийн тулд “Brave дахь таны бүртгэл” рүү очно уу.</translation>
 <translation id="583633806828413086">Mac-н цэсийн мөрд Brave дахь Gemini-г харуулах</translation>
@@ -222,6 +223,7 @@
 <translation id="3286538390144397061">Одоо дахин эхлүүлнэ үү</translation>
 <translation id="2339258256897053758">Brave-ийн API түлхүүр байхгүй байна. Brave-ийн зарим функц идэвхгүй болно.</translation>
 <translation id="8926637909431618259">Brave-ийг хаахад ард байгаа програмуудыг ажиллуулсан хэвээр бай.</translation>
+<translation id="8245661393996028021">Brave таныг эзгүй үед шинэчлэгдэнэ</translation>
 <translation id="518125528057094977">Brave аюултай холболт ашиглан аливаа сайтыг ачаалахаас өмнө танд сануулна</translation>
 <translation id="8652321858775514885">Хэрэв та Brave-д нэвтэрсэн бол таныг Brave-н бүх цонхыг хаах үед Brave Бүртгэлээс тань бусад ихэнх сайтаас гаргана. Сайтад таныг санахыг зөвшөөрөхийн тулд <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="3352986031709923790">хайлтын хэсгийн баруун дээд булан: баруун <ph name="RIGHT"/>%, дээд <ph name="TOP"/>%</translation>
@@ -230,6 +232,7 @@
 <translation id="2645435784669275700">ChromeOS</translation>
 <translation id="2297290224191497273">Brave-н одоо байгаа профайл руу сэлгэх үү?</translation>
 <translation id="3412460710772753638">Энэ төхөөрөмж дээрх Нууц үгний менежерт</translation>
+<translation id="172368702860945706">Brave шинэчлэгдэх хүсэлтэй байна</translation>
 <translation id="5079573433701109938"><ph name="DEVICE"/>-с хавчуурга болон бусад зүйлээ авахын тулд Brave-д нэвтэрнэ үү</translation>
 <translation id="3438772217992559640">Зурган хайлтаар энэ табаас хайх</translation>
 <translation id="2491221873705777076">Утсан дээрээ Brave-р Сайжруулсан аюулгүй хөтчийг өргөтгөх</translation>
@@ -367,6 +370,7 @@
 <translation id="4877750182157975795"><ph name="DEVICE_TYPE"/> дээрээ Brave-р Brave-н бүх дуртай зүйлдээ хандаарай</translation>
 <translation id="1204184037023366446">Brave-д таны гарыг хянах зөвшөөрөл шаардлагатай</translation>
 <translation id="5406591571925937375">Та ойрын үед зочлоогүй байна. Brave <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, <ph name="PERMISSION_3"/>-г хассан.</translation>
+<translation id="3576895950897485019">Brave-д нэвтэрнэ үү</translation>
 <translation id="5174969993834422967">Та ихэвчлэн мэдэгдлийг блоклодог. Энэ сайтад танд мэдэгдэхийг зөвшөөрөхийн тулд байршлын хэсгийн тань баруун дээд буланд байх мэдэгдлийн дүрс тэмдгийг товшино уу.</translation>
 <translation id="5174983315706567306">Дискийн зай хангалтгүй байна.</translation>
 <translation id="8157129267754368853">Brave бүртгэл дахин баталгаажуулахыг шаарддаг</translation>
@@ -375,6 +379,7 @@
 <translation id="5234764350956374838">Хэрэгсэхгүй болго</translation>
 <translation id="7690383309583926074">Brave аппыг аваад явж байх зуураа нууц үгээ хадгалаарай</translation>
 <translation id="8586264863973514035">Өөрчлөлтөө хэрэгжүүлэхийн тулд Brave-г дахин ажиллуулна уу</translation>
+<translation id="8127050479140582768">Энэ табыг өөр төхөөрөмж рүү илгээхийн тулд хоёр төхөөрөмж дээр хоёулан дээр нь Brave-д нэвтэрнэ үү.</translation>
 <translation id="5286907366254680517">Илэрсэн</translation>
 <translation id="7264453786974905915">Brave аппыг авах</translation>
 <translation id="7230006500876504868">Brave-р хайх</translation>
@@ -734,6 +739,7 @@
 <translation id="5128665650717824082">Brave for Testing-г өгөгдмөл хөтчөө болгох боломжгүй.</translation>
 <translation id="3053208669360972929">Brave-р хүссэн газраасаа хайгаарай</translation>
 <translation id="2433912322225810055">Энэ нь мөн таныг Brave-ыг эхлүүлж байх үед эсвэл Omnibox-аас хайлт хийж буй үед гарч ирдэг хуудсыг хянаж байдаг.</translation>
+<translation id="8789425457808164956">Энэ табыг өөр төхөөрөмж рүү илгээхийн тулд тэндээс Brave-д нэвтэрнэ үү</translation>
 <translation id="4100716194836114130">Энэ бол таны Brave.</translation>
 <translation id="8712637175834984815">Ойлголоо</translation>
 <translation id="1419543648228375718">Brave-д нэвтрэх үү?</translation>

@@ -220,7 +220,6 @@
 <translation id="9040069796107003510">Brave 奖励图标</translation>
 <translation id="6333347122924254968">在地址栏显示 Brave 奖励图标</translation>
 <translation id="4393974575368329991">底部导航工具栏</translation>
-<translation id="8727059712928806451">启用底部工具栏</translation>
 <translation id="1834226716203076292">显示底部栏以便快速访问主页、书签和搜索</translation>
 <translation id="1422686363939271829">选择底部地址栏位置时，此设置将会被禁用</translation>
 <translation id="6587448235155023666">您所做的更改将在您下次重新启动 Brave 时生效</translation>
@@ -290,7 +289,7 @@
 <translation id="2569646144216067185">字数：<ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">同步代码错误</translation>
 <translation id="8284063834901328650">同步二维码错误</translation>
-<translation id="859506441384380749">此代码由已弃用的 Brave 版本生成，请先升级您的其他设备</translation>
+<translation id="4002014583969312635">代码可能创建于使用较低版本 Brave 的设备。请在您的设备上将 Brave 更新至最新版本，再创建同步代码。</translation>
 <translation id="3132642509209154999">此代码已过期。请在其他设备上生成新的代码，然后重试。</translation>
 <translation id="2859229680945501779">此代码无效。请检查您设备上的时间和时区设置是否正确。</translation>
 <translation id="3149880132460839085">Brave 同步</translation>
@@ -336,8 +335,6 @@
 <translation id="8185825081026121627">通过查看“Brave 奖励”计划中保护隐私的广告来赚取基本的代币。</translation>
 <translation id="5321518976657560663">重置错误</translation>
 <translation id="4114170343590425996">重置 Brave 奖励时出错。请重新启动 Brave，然后重试。</translation>
-<translation id="6417420737057016607">Brave广告</translation>
-<translation id="5611966874859284786">在不使用 Brave 时显示通知广告</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>重置 Brave 奖励数据…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>清除 Brave 广告数据…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">添加书签</translation>
@@ -400,8 +397,9 @@
 <translation id="4546260624932151782">显示收藏夹</translation>
 <translation id="5313967007315987356">添加网站</translation>
 <translation id="1773147648972887693">显示经常访问的菜单</translation>
-<translation id="752098910262610337">显示快捷方式</translation>
 <translation id="7134741506051403308">隐藏小部件</translation>
+<translation id="1247759249260562308">编辑收藏夹</translation>
+<translation id="6387214885349500492">置顶此收藏夹</translation>
 <translation id="7462178177755090262">启动屏幕</translation>
 <translation id="5365434987337264071">上次打开的标签页</translation>
 <translation id="6019856124237323989">{HOURS, plural,
@@ -979,6 +977,7 @@
 <translation id="6365389672683343144">您的 Brave VPN 订阅可以保护多达 5 个设备，涵盖 Android, iOS 和桌面。只需将您的 Google Play 订阅连接到您的 Brave 账户即可使用。</translation>
 <translation id="6610899852831463073">无法启用安全浏览</translation>
 <translation id="7954263306665462056">您的裝置已停用安全浏览。想要启用，请确保 Google Play 服务已按照且保持最新版本。</translation>
+<translation id="6417420737057016607">Brave广告</translation>
 <translation id="7748944510530490017">主要网络</translation>
 <translation id="2781668117338732220">次要网络</translation>
 <translation id="282560918037172384">测试网络</translation>

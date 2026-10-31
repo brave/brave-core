@@ -9,7 +9,6 @@ import './brave_tor_snowflake_install_failed_dialog.js'
 import type {CrInputElement} from 'chrome://resources/cr_elements/cr_input/cr_input.js'
 import type {CrRadioGroupElement} from 'chrome://resources/cr_elements/cr_radio_group/cr_radio_group.js'
 import type {SettingsToggleButtonElement} from '../controls/settings_toggle_button.js'
-import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js'
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
@@ -34,7 +33,7 @@ interface SettingsBraveTorPageElement {
 }
 
 const SettingBraveTorPageElementBase =
-  I18nMixin(RouteObserverMixin(WebUiListenerMixin(PrefsMixin(PolymerElement))))
+  I18nMixin(RouteObserverMixin(WebUiListenerMixin(PolymerElement)))
 
 const Usage = Object.freeze({
   NOT_USED: 0,

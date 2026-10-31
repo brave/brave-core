@@ -433,7 +433,6 @@
 <translation id="412480955826088549">Descargando componente...</translation>
 <translation id="4894106830958548828">Lo comprendo</translation>
 <translation id="2729085694451916573">Cadena de prueba para <ph name="PART_ONE"/>marcadores de posición<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Más información<ph name="PART_TWO_END"/></translation>
-<translation id="6705666103672654256">Tus búsquedas y el contenido de las páginas se procesan en este dispositivo. No se envía nada a Brave ni lo ven revisores humanos. Esta es una función experimental y no siempre acertará.</translation>
 <translation id="7534079972563542000">Dominios imparables</translation>
 <translation id="4492298165410552103">¿Quieres activar dominios imparables en Brave?</translation>
 <translation id="5015092481905019948">Brave comenzará a usar <ph name="PROVIDER_NAME"/> para resolver nombres de dominio<ph name="DOMAIN_LIST"/> que estén en <ph name="DOMAIN_PROVIDER_NAME"/>. Brave oculta tu dirección IP. Si activas esto, <ph name="PROVIDER_NAME"/> verá que alguien quiere visitar estos dominios, pero nada más. Consulta las<ph name="BEGIN_PROVIDER_TOU_LINK"/>condiciones de uso<ph name="END_PROVIDER_TOU_LINK"/> y la <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>política de privacidad<ph name="END_PROVIDER_PRIVACY_LINK"/> de <ph name="PROVIDER_NAME"/>.</translation>
@@ -809,8 +808,6 @@
 <translation id="223536150967420869">Comprar</translation>
 <translation id="538450413584738399">Intercambio</translation>
 <translation id="6810855196544084176">Usar puente</translation>
-<translation id="3488255243387417752">Vender</translation>
-<translation id="5223034545851554347">No tienes suficientes <ph name="TOKEN_SYMBOL"/> en esta cuenta.</translation>
 <translation id="6585419509320235293">Elige un activo para enviar</translation>
 <translation id="1018742998826182079">Elige un activo para intercambiar</translation>
 <translation id="2791691551852500015">Introduce la dirección del destinatario</translation>
@@ -1327,7 +1324,6 @@
 <translation id="4312994183947987913">Comprar/Depositarngresar</translation>
 <translation id="5133421763709317473">No se han encontrado activos que coincidan con la búsqueda ni el filtro</translation>
 <translation id="6423985584914773314">No es una dirección de FIL válida</translation>
-<translation id="6153197326949684688">Vende con <ph name="OFFRAMP_PROVIDER"/></translation>
 <translation id="5795821518596541838">Socio de transacciones</translation>
 <translation id="1916136859742693273">La billetera de Brave utiliza Meld.io para ayudar a agregar y mostrar varios proveedores de criptomonedas para tu región. Compartiremos información con Meld.io para completar la transacción, incluida la dirección de tu billetera y el código de país. Para más información, lee los términos de uso de Meld.</translation>
 <translation id="245827814248186739">He leído y acepto los <ph name="LINK_BEFORE"/>términos de uso de Meld<ph name="LINK_AFTER"/></translation>
@@ -1643,7 +1639,7 @@
 <translation id="6646456430109279404">Vigésima segunda</translation>
 <translation id="1961743941324393172">Vigésima tercera</translation>
 <translation id="9079035825546416393">Vigésima cuarta</translation>
-<translation id="1558531209852594808">¡Se han detectado caracteres no ASCII!</translation>
+<translation id="6980520267116175375">Caracteres inesperados detectados</translation>
 <translation id="442709594176931966">Ver mensajes original</translation>
 <translation id="2239252396088484499">Ver mensaje en codificación ASCII</translation>
 <translation id="2894654529758326923">Información</translation>
@@ -1893,6 +1889,14 @@
 <translation id="6700561332544287722">Requerir desbloqueo la próxima vez</translation>
 <translation id="5605360570977617291">¿Ocultar <ph name="CARD_NAME"/> de la página de inicio?</translation>
 <translation id="2721464457853369512">Tu saldo de <ph name="CARD_NAME"/> no cambia. Esto solo oculta la tarjeta de la página de inicio. Puedes volver a mostrarla en cualquier momento en Configuración, en Billetera.</translation>
+<translation id="1543259266592091784">Agregar fondos</translation>
+<translation id="6202621179510403111">Nueva tarjeta</translation>
+<translation id="2366365638711338487">Ganancias <ph name="DATE_BEGIN"/>(<ph name="DATE"/>)<ph name="DATE_END"/></translation>
+<translation id="4938547503015386493">Intereses + <ph name="AMOUNT"/> BAT de reembolso</translation>
+<translation id="5124185664922725208">Gastos</translation>
+<translation id="1591562245178063882">Este mes</translation>
+<translation id="2781977263564899470">Obtener tarjeta física</translation>
+<translation id="3388543273143324626">Usar en tiendas y cajeros automáticos</translation>
 <translation id="3155170474926428993">Selector de Tor</translation>
 <translation id="3745016858329272300">Información general</translation>
 <translation id="4045404575593562245">Eventos de control de Tor</translation>
@@ -2230,12 +2234,12 @@
 <translation id="7905602379229309187">El punto final está sobrecargado. Inténtalo de nuevo más tarde.</translation>
 <translation id="8151638057146502721">Configurar</translation>
 <translation id="999273441077650169">El modelo cambia dinámicamente para usar el mejor para la tarea.<ph name="LINK_BEFORE"/>Aprende más<ph name="LINK_AFTER"/></translation>
-<translation id="3852808100039989429">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de Qwen VL 30B, un modelo creado por Alibaba Cloud para ser de gran utilidad en multitud de situaciones. Qwen está alojado en los servidores de Brave a través de nuestra propia infraestructura segura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
+<translation id="8218534413919828549">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de Qwen 3.6 35B, un modelo creado por Alibaba Cloud para ser de gran utilidad en multitud de situaciones. Qwen está alojado en los servidores de Brave a través de nuestra propia infraestructura segura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de GLM-5.3 Flash, un modelo creado por Zhipu AI para ser de gran utilidad en multitud de situaciones. GLM-5.3 Flash está alojado mediante infraestructura segura de NEAR.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Hola, soy Leo. Soy un asistente de IA de Brave. Estoy impulsado por Claude Instant, un modelo creado por Anthropic para realizar tareas conversacionales y de procesamiento de texto. Claude Instant está alojado por Brave en nuestra propia infraestructura segura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Hola, me llamo Leo. Soy un asistente mediante IA de Brave. Funciono con tecnología de Claude Sonnet, un modelo creado por Anthropic para llevar a cabo tareas conversacionales y de procesamiento de texto. Claude Sonnet se aloja en los servidores de Brave mediante nuestra segura infraestructura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
-<translation id="6676306995311143470">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de Grok 4.6, el modelo de razonamiento de vanguardia de xAI en Amazon Bedrock Mantle. Grok 4.6 se ofrece a través de la infraestructura segura de AWS de Brave.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
-<translation id="2394656730986208060">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de GPT 5.6 Luna, el modelo rápido y de baja latencia de OpenAI en Amazon Bedrock Mantle. GPT 5.6 Luna se ofrece a través de la infraestructura segura de AWS de Brave.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
+<translation id="3934503473603661122">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de Grok 4.7, el modelo de razonamiento de vanguardia de xAI en Amazon Bedrock. Grok 4.7 se ofrece a través de la infraestructura segura de AWS de Brave.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
+<translation id="8983215701788462580">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de GPT Luna, el modelo rápido y de baja latencia de OpenAI en Amazon Bedrock. GPT Luna se ofrece a través de la infraestructura segura de AWS de Brave.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de GPT 5.6 Terra, el modelo de producción equilibrado de OpenAI en Amazon Bedrock Mantle. GPT 5.6 Terra se ofrece a través de la infraestructura segura de AWS de Brave.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de Mistral Large, un modelo creado por Mistral para ser de gran utilidad en multitud de situaciones. Mistral Large está alojado en los servidores de Brave a través de nuestra propia infraestructura segura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de Qwen 3.8 Flash Next, un modelo creado por Alibaba Cloud para ser de gran utilidad en multitud de situaciones. Qwen 3.8 Flash Next está alojado en los servidores de Brave a través de nuestra propia infraestructura segura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
@@ -2286,6 +2290,10 @@
 <translation id="3027575440738035995">Leo Premium brinda acceso a un conjunto más amplio de modelos de lenguaje para proporcionar respuestas más complejas y con más matices. <ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
 <translation id="8261506727792406068">Borrar</translation>
 <translation id="6574153208133461043">¿Seguro que quieres borrar esta conversación? Esta acción no se puede deshacer.</translation>
+<translation id="1020105790073039189">¿Cambiar a un modelo que pueda leer imágenes?</translation>
+<translation id="3797128260474242570"><ph name="CURRENT_MODEL"/> no puede leer imágenes, y tus archivos adjuntos necesitan procesamiento de imágenes. Para enviarlos, cambia esta conversación a <ph name="VISION_MODEL"/>. Recibirá toda la conversación, incluidos los mensajes anteriores. También puedes cancelar y elegir otro modelo que pueda leer imágenes. Si envías sin imágenes, Leo no podrá ver los archivos adjuntos.</translation>
+<translation id="830353068401992697">Cambiar y enviar</translation>
+<translation id="369110003363071587">Enviar sin imágenes</translation>
 <translation id="7488762544858401571">Editado</translation>
 <translation id="5604254791550001355">Editar indicación</translation>
 <translation id="8115786586976830777">Copiar indicación</translation>
@@ -2440,6 +2448,7 @@
 <translation id="3024277805447899099">Vista previa de la imagen</translation>
 <translation id="6671495933530132209">Copiar imagen</translation>
 <translation id="6864459304226931083">Descargar imagen</translation>
+<translation id="6323406350879995440">Abrir en una pestaña</translation>
 <translation id="6332876390231524389">Contenido de la pestaña actual</translation>
 <translation id="6397861830483632092">Pestañas abiertas…</translation>
 <translation id="802080272588201037">Marcadores…</translation>
@@ -2494,11 +2503,14 @@
 <translation id="4838375634693651776">Ejecutar código en un entorno aislado para ayudarte con tu consulta</translation>
 <translation id="6990975553143971265">Buscando en tu historial del navegador "<ph name="QUERY"/>"</translation>
 <translation id="8302511726757276645">Buscando en tu historial del navegador</translation>
+<translation id="6727762439034900202">Creando un espacio de trabajo</translation>
+<translation id="261799307673205052">Espacio de trabajo</translation>
 <translation id="8410699755320690690">Brave IA quiere buscar en tu historial de navegación. La búsqueda se ejecuta localmente en tu dispositivo, por lo que tu historial completo no se envía a ningún sitio. Solo los títulos, las URL y los pasajes de texto indexados de las páginas coincidentes se enviarán a Brave IA como parte de esta conversación.</translation>
 <translation id="4379566111233326721">Código:</translation>
 <translation id="3542130965673205258">Salida:</translation>
 <translation id="6911817209337314910">Generando algunas opciones para que elijas</translation>
 <translation id="5382076391290708074">Moviendo las pestañas</translation>
+<translation id="8717463977094156527">Permitir esto enviará la **URL** y el **título** de todas tus pestañas y grupos de pestañas a Brave AI, además de **breves extractos del texto de la página** en tus pestañas cuando estén disponibles desde tu índice de Búsqueda Semántica en el Historial, y permitirá que Brave AI reorganice tus pestañas. Este permiso se aplica solo a esta conversación.</translation>
 <translation id="3862123464576147769">Permitir esto enviará la <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> y el <ph name="TITLE_FORMAT_START"/>Título<ph name="TITLE_FORMAT_END"/> de todas tus Pestañas y Grupos de Pestañas a Brave AI, y permitirá que Brave AI las mueva. Este permiso se aplica solo a esta conversación.</translation>
 <translation id="396165714586708444">Investigación profunda</translation>
 <translation id="577747221882855891">Buscando: "<ph name="QUERY"/>"</translation>
@@ -2526,7 +2538,7 @@
 <translation id="7901376755618482277">Mostrar la sugerencia "Nuevo alias" en los campos de correo electrónico</translation>
 <translation id="6002159997868894136">Haz clic para copiar el alias</translation>
 <translation id="8105770564756958406">Usado por <ph name="DOMAINS"/></translation>
-<translation id="5006956315579221642">Crea hasta 5 alias de correo electrónico gratuitos para proteger tu dirección de correo real.</translation>
+<translation id="6776324888261353420">Crea hasta <ph name="MAX_ALIASES"/> alias de correo electrónico gratuitos para proteger tu dirección de correo real.</translation>
 <translation id="9046133327037621173">Nuevo alias de correo electrónico</translation>
 <translation id="3768606658230902536">Crea una dirección de correo electrónico aleatoria que se reenvíe a tu bandeja de entrada mientras mantienes tu correo personal privado.</translation>
 <translation id="4452721050684632493">Se alcanzó el límite de alias</translation>
@@ -2599,7 +2611,7 @@
 <translation id="6851426306697017546">Mostrar el reloj</translation>
 <translation id="4844370919312937270">Mostrar widget de búsqueda en pestañas nuevas</translation>
 <translation id="5088374130885640159">Con <ph name="REWARDS_LINK_BEGIN"/>Recompensas de Brave<ph name="REWARDS_LINK_END"/>, puedes ganar por ver anuncios en la página de nueva pestaña. <ph name="LEARN_MORE_LINK_BEGIN"/>Más información<ph name="LEARN_MORE_LINK_END"/>.</translation>
-<translation id="4100520468072294616">Mostrar anuncios en la página de nueva pestaña</translation>
+<translation id="7020410251711260841">Mostrar anuncios patrocinados</translation>
 <translation id="4983925687993168579">Estadísticas</translation>
 <translation id="5009354496127441090">Mostrar los sitios principales</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -2622,6 +2634,7 @@
 <translation id="8814357473522731680">Con la tecnología de</translation>
 <translation id="7143207342074048698">Conectando</translation>
 <translation id="1202549130170287307">Desconectando</translation>
+<translation id="4989542687859782284">No disponible</translation>
 <translation id="8941703009412168350">VPN DE BRAVE</translation>
 <translation id="6303294677342628402">Escudos</translation>
 <translation id="8458987127502506209">Activar escudos de Brave</translation>
@@ -2810,9 +2823,11 @@ Se han bloqueado <ph name="NUMBER"/> rastreadores, anuncios y otros elementos</t
 <translation id="6021669293402055982">VPN de Brave: desconectado</translation>
 <translation id="3541307549916475335">IU del panel de VPN de Brave</translation>
 <translation id="2325196879156848326">Error al establecer la conexión</translation>
+<translation id="6246488334766115273">Conexión no disponible</translation>
 <translation id="745054660363064771">No se puede establecer conexión con el servidor</translation>
 <translation id="3936826714240735937">Elegir otro servidor</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/> no ha podido establecer conexión con el servidor de <ph name="REGION_NAME"/>. Vuelva a intentarlo o pruebe con otro país.</translation>
+<translation id="4872940635040426686"><ph name="PRODUCT_NAME"/> no está disponible. Si el problema persiste, vuelve a instalar Brave o comunícate con nuestro equipo de soporte técnico.</translation>
 <translation id="1776533911621317363">Inicia tu prueba gratuita de 7 días</translation>
 <translation id="3357036723290257445">¿Ya ha contratado VPN de Brave?</translation>
 <translation id="8652175077544655965">Cerrar la configuración</translation>
@@ -2953,11 +2968,13 @@ Puede revertir los cambios y volver a usar WireGuard en cualquier momento en bra
 <translation id="4405566535206792621">Para cambiar tu contraseña, verifica tu dirección de correo electrónico.</translation>
 <translation id="3135333563420939059">Tu correo electrónico ha sido verificado. Establece una nueva contraseña para completar el cambio de tu contraseña.</translation>
 <translation id="4227581348172626540">Cancelar el cambio de contraseña</translation>
-<translation id="808894953321890993">Cambiar contraseña</translation>
 <translation id="7967687455715421528">No se ha podido cambiar la contraseña</translation>
 <translation id="7413006094063730650">Eliminar cuenta</translation>
 <translation id="4869737930995549965">Cerrar sesión</translation>
-<translation id="2902312830803030883">Más acciones</translation>
+<translation id="4424262960694990728">Acción requerida</translation>
+<translation id="847260521336960132">Detalle de la cuenta</translation>
+<translation id="5399593843842221768">Información personal sobre tu cuenta de Brave.</translation>
+<translation id="5771731269320499905">Detalle de la cuenta de Brave</translation>
 <translation id="5538654494923870167">Comienza con tu cuenta de Brave</translation>
 <translation id="1544145635547515689">Crear una cuenta de Brave</translation>
 <translation id="3828644479849256404">¿Ya tienes una cuenta? Inicia sesión</translation>
@@ -2973,6 +2990,7 @@ Puede revertir los cambios y volver a usar WireGuard en cualquier momento en bra
 <translation id="7114054701490058191">Las contraseñas no coinciden</translation>
 <translation id="4277028893293644418">Restablecer contraseña</translation>
 <translation id="9033485352495162741">Confirmación correcta. Ahora introduce la nueva contraseña que desees:</translation>
+<translation id="808894953321890993">Cambiar contraseña</translation>
 <translation id="1293857704520741614">Inicia sesión en tu cuenta</translation>
 <translation id="118617366439356381">¿Olvidaste tu contraseña?</translation>
 <translation id="5636406393070713097">Confirma el correo electrónico de tu cuenta de Brave y recibirás un código para restablecer tu contraseña. El código solo será válido durante 15 minutos.</translation>

@@ -220,7 +220,6 @@
 <translation id="9040069796107003510">Icône du programme de récompenses Brave</translation>
 <translation id="6333347122924254968">Afficher l’icône du programme de récompenses Brave dans la barre d’adresses</translation>
 <translation id="4393974575368329991">Barre d'outils de navigation inférieure</translation>
-<translation id="8727059712928806451">Activer la barre inférieure</translation>
 <translation id="1834226716203076292">Afficher une barre inférieure pour un accès rapide à l'accueil, aux favoris et à la recherche</translation>
 <translation id="1422686363939271829">Ce paramètre est désactivé lorsque la position de la barre d'adresse inférieure est sélectionnée</translation>
 <translation id="6587448235155023666">Vos changements prendront effet la prochaine fois que vous lancerez Brave</translation>
@@ -290,7 +289,7 @@
 <translation id="2569646144216067185">Nombre de mots : <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Mauvais code de sychronisation</translation>
 <translation id="8284063834901328650">Mauvaise synchronisation de code QR</translation>
-<translation id="859506441384380749">Ce code a été généré par une version obsolète de Brave. Commencez par mettre à jour l'autre appareil</translation>
+<translation id="4002014583969312635">Ce code semble avoir été créé sur un appareil exécutant une ancienne version de Brave. Veuillez passer à la dernière version de Brave sur l’autre appareil, puis créez un nouveau code de synchronisation.</translation>
 <translation id="3132642509209154999">Ce code a expiré. Veuillez en générer un nouveau depuis votre deuxième appareil, puis réessayer.</translation>
 <translation id="2859229680945501779">Ce code n'est pas valide. Veuillez vérifier que l'heure et le fuseau horaire sont définis correctement sur votre appareil.</translation>
 <translation id="3149880132460839085">Synchronisation de Brave</translation>
@@ -336,8 +335,6 @@
 <translation id="8185825081026121627">Gagnez des Basic Attention Token en visionnant des publicités du programme de récompenses Brave respectueuses de votre confidentialité.</translation>
 <translation id="5321518976657560663">Réinitialiser l'erreur</translation>
 <translation id="4114170343590425996">Une erreur s’est produite lors de la réinitialisation du programme de récompenses Brave. Veuillez relancer Brave et réessayer.</translation>
-<translation id="6417420737057016607">Publicités Brave</translation>
-<translation id="5611966874859284786">Afficher les notifications publicitaires lorsque Brave n'est pas utilisé</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Réinitialiser les données du programme de récompenses Brave…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Effacer les données liées aux publicités Brave…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Ajouter un favori</translation>
@@ -400,8 +397,9 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="4546260624932151782">Afficher les favoris</translation>
 <translation id="5313967007315987356">Ajouter un site</translation>
 <translation id="1773147648972887693">Afficher les sites fréquemment visités</translation>
-<translation id="752098910262610337">Afficher les raccourcis</translation>
 <translation id="7134741506051403308">Masquer le gadget logiciel</translation>
+<translation id="1247759249260562308">Modifier le favori</translation>
+<translation id="6387214885349500492">Épingler ce favori</translation>
 <translation id="7462178177755090262">Écran d’accueil</translation>
 <translation id="5365434987337264071">Onglet précédemment ouvert</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {Nouvel onglet après <ph name="HOURS_ONE"/> heure d'inactivité} other {Nouvel onglet après <ph name="HOURS_MANY"/> heures d'inactivité}}</translation>
@@ -976,6 +974,7 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="6365389672683343144">Votre abonnement VPN Brave peut protéger jusqu'à cinq appareils (Android, iOS ou ordinateur de bureau). Pour ce faire, il vous suffit d'associer votre abonnement Google Play à votre compte Brave.</translation>
 <translation id="6610899852831463073">Impossible d'activer la navigation sécurisée</translation>
 <translation id="7954263306665462056">La navigation sécurisée a été désactivée sur votre appareil. Pour l'activer, vérifiez que les services Google Play sont installés et à jour.</translation>
+<translation id="6417420737057016607">Publicités Brave</translation>
 <translation id="7748944510530490017">Réseaux principaux</translation>
 <translation id="2781668117338732220">Réseaux secondaires</translation>
 <translation id="282560918037172384">Réseaux de test</translation>

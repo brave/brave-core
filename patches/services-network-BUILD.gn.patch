@@ -1,5 +1,5 @@
 diff --git a/services/network/BUILD.gn b/services/network/BUILD.gn
-index 3603695f3e0c381c82589c7a7dfb4b6cfff83d59..ade4ca319ec9c37ccc1c5a57892622c15a10aaaa 100644
+index cdee37560eeff975afb2dd1798fbc93418e5cab6..2d711217c3db1f81c517c5451205264b41b75d69 100644
 --- a/services/network/BUILD.gn
 +++ b/services/network/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 3603695f3e0c381c82589c7a7dfb4b6cfff83d59..ade4ca319ec9c37ccc1c5a57892622c1
  import("//build/config/features.gni")
  import("//components/vrp_flags/features.gni")
  import("//mojo/public/tools/bindings/mojom.gni")
-@@ -397,6 +398,7 @@ component("network_service") {
+@@ -399,6 +400,7 @@ component("network_service") {
      "//third_party/zstd:decompress",
      "//url",
    ]

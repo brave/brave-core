@@ -1,8 +1,8 @@
 diff --git a/third_party/tflite/BUILD.gn b/third_party/tflite/BUILD.gn
-index b2e9f96c9c962c1c4a62448aa4c5f3b053b7d3ac..541569a087e63cc08cbc0e8f1a295fe7844ecae8 100644
+index 346b0505971ee58822f9cc6ff28633be7eea180d..89f9fbe88ad36e133d8c85ea645960eaaf2aa86c 100644
 --- a/third_party/tflite/BUILD.gn
 +++ b/third_party/tflite/BUILD.gn
-@@ -393,6 +393,7 @@ if (!use_litert_tflite) {
+@@ -400,6 +400,7 @@ if (!use_litert_tflite) {
        "//third_party/mediapipe/*",
        "//third_party/webrtc/modules/*",
      ]

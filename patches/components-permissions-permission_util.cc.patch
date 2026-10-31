@@ -1,5 +1,5 @@
 diff --git a/components/permissions/permission_util.cc b/components/permissions/permission_util.cc
-index 867fc205aaa787cb05c56f8c1fa6d63e2b2ed92f..6431623d047beb3c6f712bacf0a57d9b839bc793 100644
+index b47da08dde4ab059be8959e2c8c44576bc3e3fb4..12a79aa669f84c29cf8e77d88edd563f2b28972a 100644
 --- a/components/permissions/permission_util.cc
 +++ b/components/permissions/permission_util.cc
 @@ -84,6 +84,7 @@ constexpr const char* kIsFileURLHistogram =
@@ -18,7 +18,7 @@ index 867fc205aaa787cb05c56f8c1fa6d63e2b2ed92f..6431623d047beb3c6f712bacf0a57d9b
    }
  }
  
-@@ -590,6 +592,7 @@ ContentSettingsType PermissionUtil::PermissionTypeToContentSettingsTypeSafe(
+@@ -591,6 +593,7 @@ ContentSettingsType PermissionUtil::PermissionTypeToContentSettingsTypeSafe(
        return ContentSettingsType::LOOPBACK_NETWORK;
      case PermissionType::NUM:
        break;

@@ -222,7 +222,6 @@
 <translation id="9040069796107003510">Икона за Brave награди</translation>
 <translation id="6333347122924254968">Покажи ја иконата за Brave награди во адресната лента</translation>
 <translation id="4393974575368329991">Алатник за навигација на дното</translation>
-<translation id="8727059712928806451">Овозможи долна лента</translation>
 <translation id="1834226716203076292">Прикажи лента на дното за брз пристап до почетна, обележувачи и пребарување</translation>
 <translation id="1422686363939271829">Ова подесување е оневозможено кога е избрана позицијата на адресната лента на дното</translation>
 <translation id="6587448235155023666">Вашите промени ќе стапат во сила следниот пат кога ќе го рестартирате Brave</translation>
@@ -292,7 +291,7 @@
 <translation id="2569646144216067185">Број на зборови: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Погрешен код за синхронизација</translation>
 <translation id="8284063834901328650">Погрешен QR код за синхронизација</translation>
-<translation id="859506441384380749">Овој код е генериран од застарена верзија на Brave, прво надградете го вашиот друг уред</translation>
+<translation id="4002014583969312635">Изгледа дека овој код е создаден на уред со постара верзија на Brave. Ажурирајте ја на најновата верзија на Brave на вашиот друг уред, а потоа создадете нов код за синхронизација.</translation>
 <translation id="3132642509209154999">Овој код истече. Создајте нов на вашиот друг уред и обидете се повторно.</translation>
 <translation id="2859229680945501779">Овој код е невалиден. Проверете дали времето и временската зона се правилно поставени на вашиот уред.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
@@ -345,8 +344,6 @@
 <translation id="8185825081026121627">Заработете Основен токен за внимание гледајќи реклами кои ја зачувуваат вашата приватност.</translation>
 <translation id="5321518976657560663">Грешка при ресетирање</translation>
 <translation id="4114170343590425996">Се случи грешка при ресетирање на Brave награди. Ве молам, рестартирајте го Brave и обидете се повторно.</translation>
-<translation id="6417420737057016607">Brave реклами</translation>
-<translation id="5611966874859284786">Прикажи реклами во известувања кога Brave не се користи</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Ресетирај податоци за Brave награди…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Исчисти податоци за Brave реклами…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Додај обележувач</translation>
@@ -405,8 +402,9 @@
 <translation id="4546260624932151782">Прикажи омилени</translation>
 <translation id="5313967007315987356">Додај страница</translation>
 <translation id="1773147648972887693">Прикажи често посетувани</translation>
-<translation id="752098910262610337">Прикажи кратенки</translation>
 <translation id="7134741506051403308">Скриј виџет</translation>
+<translation id="1247759249260562308">Уреди омилено</translation>
+<translation id="6387214885349500492">Закачи го ова омилено</translation>
 <translation id="7462178177755090262">Почетен екран</translation>
 <translation id="5365434987337264071">Последно отворено јазиче</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {Ново јазиче по <ph name="HOURS_ONE"/> час неактивност} other {Ново јазиче по <ph name="HOURS_MANY"/> часови неактивност}}</translation>
@@ -991,6 +989,7 @@
 <translation id="6365389672683343144">Вашата Brave VPN претплата може да заштитува до 5 уреди, преку Android, iOS, и десктоп. Само поврзете ја вашата Google Play претплата со вашата Brave сметка.</translation>
 <translation id="6610899852831463073">Не можам да овозможам Безбедно Пребарување</translation>
 <translation id="7954263306665462056">Безбедно Пребарување е оневозможено на вашиот уред. За да го овозможите, осигурете се дека Google Play Services е инсталиран и ажуриран.</translation>
+<translation id="6417420737057016607">Brave реклами</translation>
 <translation id="7748944510530490017">Примарни мрежи</translation>
 <translation id="2781668117338732220">Секундарни мрежи</translation>
 <translation id="282560918037172384">Тест мрежи</translation>

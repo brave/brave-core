@@ -5,15 +5,12 @@
 
 package org.chromium.chrome.browser.dom_distiller;
 
-import android.app.Activity;
-
 import androidx.annotation.VisibleForTesting;
 
-import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
-import org.chromium.chrome.browser.tab.TabUtils;
 import org.chromium.components.messages.MessageDispatcher;
 import org.chromium.components.user_prefs.UserPrefs;
 
@@ -30,33 +27,24 @@ public class BraveReaderModeManager extends ReaderModeManager {
     @VisibleForTesting
     @Override
     boolean tryShowingPrompt(boolean resetRestorePrompt) {
-        if (mTab == null || mTab.getWebContents() == null) return false;
+        if (!isReaderForAccessibilityEnabled(mTab)) return false;
 
-        Profile profile = Profile.fromWebContents(mTab.getWebContents());
-        if (profile == null || !UserPrefs.get(profile).getBoolean(Pref.READER_FOR_ACCESSIBILITY)) {
-            return false;
-        }
-
-        // If it is regular tab, we pretend to be a custom tab to show the prompt if applicable.
-        spoofCustomTab(!mTab.isCustomTab() && !mTab.isIncognito());
-
-        boolean result = super.tryShowingPrompt(resetRestorePrompt);
-
-        // There is no need to spoof custom tab after showing the prompt.
-        spoofCustomTab(false);
-
-        return result;
+        return super.tryShowingPrompt(resetRestorePrompt);
     }
 
-    /*
-     * Whether we want to pretend to be a custom tab. Used here to avoid patch in the middle of `ReaderModeManager#tryShowingPrompt`.
+    /**
+     * Calls to {@link ReaderModeManager#shouldUseReaderModeMessages} are redirected here via
+     * bytecode. Regular tabs get the prompt too, rather than only custom tabs.
      */
-    void spoofCustomTab(boolean spoof) {
-        Activity activity = TabUtils.getActivity(mTab);
-        BraveActivity braveActivity =
-                activity instanceof BraveActivity ? (BraveActivity) activity : null;
-        if (braveActivity != null) {
-            braveActivity.spoofCustomTab(spoof);
-        }
+    public static boolean shouldUseReaderModeMessages(@Nullable Tab tab) {
+        if (ReaderModeManager.shouldUseReaderModeMessages(tab)) return true;
+        return tab != null && !tab.isIncognito() && isReaderForAccessibilityEnabled(tab);
+    }
+
+    private static boolean isReaderForAccessibilityEnabled(@Nullable Tab tab) {
+        if (tab == null || tab.getWebContents() == null) return false;
+
+        Profile profile = Profile.fromWebContents(tab.getWebContents());
+        return profile != null && UserPrefs.get(profile).getBoolean(Pref.READER_FOR_ACCESSIBILITY);
     }
 }

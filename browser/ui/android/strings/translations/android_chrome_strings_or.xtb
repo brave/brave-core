@@ -123,7 +123,6 @@
 <translation id="1432581352905426595">ସର୍ଚ୍ଚ ଇଞ୍ଜିନଗୁଡ଼ିକ ପରିଚାଳନା କରନ୍ତୁ</translation>
 <translation id="1435593198351412143">ସ୍ୱତଃ PDFଗୁଡ଼ିକୁ ଖୋଲନ୍ତୁ</translation>
 <translation id="1437543266176261764"><ph name="APP_NAME"/>ରେ ଚାଲୁଛି</translation>
-<translation id="1448440926884431741">ଆପଣଙ୍କ ଟ୍ରାକ କରାଯାଇଥିବା ପ୍ରଡକ୍ଟଗୁଡ଼ିକୁ ବୁକମାର୍କରେ ବ୍ୟବସ୍ଥିତ କରନ୍ତୁ</translation>
 <translation id="1452651021404174820">ଏକ ଡିଭାଇସ ବାଛନ୍ତୁ</translation>
 <translation id="1455845192930279203">ଆପଣ ଯେ କୌଣସି ପ୍ରକାରେ <ph name="DOWNLOAD_DOMAIN"/>ରୁ "<ph name="FILE_NAME"/>" (<ph name="FILE_SIZE"/>)କୁ ଡାଉନଲୋଡ କରିବାକୁ ଚାହୁଁଛନ୍ତି?</translation>
 <translation id="1460751212339734034">ସମୟ ବଞ୍ଚାନ୍ତୁ, କମ ଟାଇପ କରନ୍ତୁ</translation>
@@ -136,6 +135,7 @@
 <translation id="1485343711570311792"><ph name="NATIVE_APP_NAME"/>ରେ ଖୋଲନ୍ତୁ • <ph name="DEVICE_NAME"/>ରୁ</translation>
 <translation id="1495677929897281669">ଟାବ୍‌କୁ ଫେରନ୍ତୁ</translation>
 <translation id="1496514951988037011">ୟୁଜରନେମ</translation>
+<translation id="1498051468374914325">ଡେଭେଲପର ଟୁଲ କନସୋଲ ଖୋଲନ୍ତୁ</translation>
 <translation id="1501480321619201731">ଗୋଷ୍ଠୀ ଡିଲିଟ୍ କରନ୍ତୁ</translation>
 <translation id="1506061864768559482">ସର୍ଚ୍ଚ ଇଞ୍ଜିନ</translation>
 <translation id="1513352483775369820">ବୁକ୍‌ମାର୍କ ଏବଂ ୱେବ୍ ଇତିବୃତ୍ତି</translation>
@@ -143,6 +143,7 @@
 <translation id="4831439914611488655">ଇନକଗ୍ନିଟୋ ମୋଡରେ ଏକ ନୂଆ ୱିଣ୍ଡୋ ଖୋଲନ୍ତୁ</translation>
 <translation id="152204906462707884">ଆପଣଙ୍କ ବ୍ରାଉଜିଂ ଇତିହାସକୁ ଶୀଘ୍ର ଡିଲିଟ କରି ଆପଣଙ୍କ ଗୋପନୀୟତା ଉପରେ ଅଧିକ ନିୟନ୍ତ୍ରଣ ନିଅନ୍ତୁ</translation>
 <translation id="5840742727909553422">Braveର ନୂଆ ଭର୍ସନ ଉପଲବ୍ଧ ଅଛି</translation>
+<translation id="1537160738459068682">ଡେଭେଲପର ଟୁଲ ଏଲିମେଣ୍ଟ ଖୋଲନ୍ତୁ</translation>
 <translation id="1540012742443808215">ଠିକଣା ବାର ବର୍ତ୍ତମାନ ଶୀର୍ଷରେ ଅଛି</translation>
 <translation id="1543035591122163372"><ph name="DEVICE_TYPE"/>ରୁ ଆପଣଙ୍କ ପାସୱାର୍ଡ ଏବଂ ଆହୁରି ଅନେକ କିଛି ପାଇବାକୁ ସାଇନ ଇନ କରନ୍ତୁ</translation>
 <translation id="3748360913454941567">ପେମେଣ୍ଟ ପଦ୍ଧତି ଏବଂ ଠିକଣାଗୁଡ଼ିକୁ ଏନକ୍ରିପ୍ଟ କରାଯିବ ନାହିଁ। Braveରୁ ବ୍ରାଉଜିଂ ଇତିହାସ ସିଙ୍କ କରାଯିବ ନାହିଁ।
@@ -323,13 +324,14 @@
 <translation id="2297822946037605517">ଏହି ପୃଷ୍ଠାକୁ ସେୟାର୍ କରନ୍ତୁ</translation>
 <translation id="230115972905494466">କୌଣସି ସୁସଙ୍ଗତ ଡିଭାଇସ୍ ମିଳିଲା ନାହିଁ।</translation>
 <translation id="2305798319182970276">ଏକ ବଟନରେ ଟାପ କରି ଆପଣଙ୍କ ଇତିହାସକୁ ଡିଲିଟ କରନ୍ତୁ</translation>
+<translation id="2307420463693979699">ଏହି ସାଇଟ ପାଇଁ ହ୍ୟୁମାନ ଇଣ୍ଟରଫେସ ଡିଭାଇସ (HID)କୁ ଆକ୍ସେସ କରିବା ପାଇଁ <ph name="APP_NAME"/> ଅନୁମତି ଆବଶ୍ୟକ କରେ।</translation>
 <translation id="2316129865977710310">ନା, କରିବି ନାହିଁ</translation>
 <translation id="232137538351753795">ପଛକୁ ଫେରିବା ପାଇଁ ବାମ ଧାରରୁ ସ୍ୱାଇପ କରନ୍ତୁ</translation>
 <translation id="2323763861024343754">ସାଇଟ୍ ଷ୍ଟୋରେଜ୍</translation>
 <translation id="2327445548174191329"><ph name="DEVICE_NAME"/>ରୁ</translation>
 <translation id="232757965409810352">ଏହି ଭାବେ ପୃଷ୍ଠା ସେଭ କରନ୍ତୁ…</translation>
 <translation id="2328474416100889417">ସମସ୍ତେ ତୁରନ୍ତ "<ph name="GROUP_NAME"/>" ଟାବ ଗ୍ରୁପର ଆକ୍ସେସ ହରାଇବେ ଏବଂ ସମସ୍ତ ଆମନ୍ତ୍ରଣ ଲିଙ୍କ କାମ କରିବ ନାହିଁ</translation>
-<translation id="3096606216245789753">Braveରେ AI ମୋଡ ଆସିଯାଇଛି</translation>
+<translation id="2328773543844041445">ହୋଭରରେ ଟାବଗୁଡ଼ିକୁ ସ୍ୱତଃ ବିସ୍ତାର କରନ୍ତୁ</translation>
 <translation id="2330186936255788117">ଅଧିକ ବୁକମାର୍କ</translation>
 <translation id="2330243730505117832">"ଏକ ଡିଭାଇସ ବାଛନ୍ତୁ" ବନ୍ଦ ଅଛି।</translation>
 <translation id="2332515770639153015">ଉନ୍ନତ ସୁରକ୍ଷିତ ବ୍ରାଉଜିଂ ଚାଲୁ ଅଛି</translation>
@@ -602,7 +604,6 @@
 <translation id="4114256890962999877">ଆପଣଙ୍କ ପାସୱାର୍ଡଗୁଡ଼ିକୁ ଆକ୍ସେସ ଜାରି ରଖିବାକୁ, ସେଗୁଡ଼ିକୁ ଏବେ ଏକ୍ସପୋର୍ଟ କରନ୍ତୁ, Google Play ସେବାଗୁଡ଼ିକୁ ଅପଡେଟ କରନ୍ତୁ ଏବଂ ତା’ପରେ ସେଗୁଡ଼ିକୁ ପୁଣି Brave Password Managerକୁ ଇମ୍ପୋର୍ଟ କରନ୍ତୁ। <ph name="BEGIN_LINK"/>ସମ୍ପୂର୍ଣ୍ଣ ନିର୍ଦ୍ଦେଶାବଳୀ ଦେଖନ୍ତୁ<ph name="END_LINK"/>।</translation>
 <translation id="3435738964857648380">ସୁରକ୍ଷା</translation>
 <translation id="3435914367318771664">ନୂଆ ଗୋଷ୍ଠୀରେ ଟାବ ଯୋଗ କରନ୍ତୁ</translation>
-<translation id="3436118221454753036">AI ମୋଡକୁ ପଚାରନ୍ତୁ</translation>
 <translation id="3439276997620616816">ଆପଣ ଏଠାରେ ଆପଣଙ୍କ ବର୍ତ୍ତମାନର ଟାବଗୁଡ଼ିକ ପାଇବେ</translation>
 <translation id="3443221991560634068">ବର୍ତ୍ତମାନର ପୃଷ୍ଠାକୁ ରିଲୋଡ୍ କରନ୍ତୁ</translation>
 <translation id="3444179773590444986">ସାଇଟଗୁଡ଼ିକ ପାଇଁ ଗାଢ଼ା ଥିମ ବିଷୟରେ ମତାମତ ସେୟାର କରିବେ?</translation>
@@ -629,7 +630,6 @@
 <translation id="3524334353996115845">ଆପଣ ଏହା ଅଟନ୍ତି ବୋଲି <ph name="ORIGIN"/>କୁ ଯାଞ୍ଚ କରିବାକୁ ଦିଅନ୍ତୁ</translation>
 <translation id="3527085408025491307">ଫୋଲ୍ଡର୍</translation>
 <translation id="3542235761944717775"><ph name="KILOBYTES"/> KB ଉପଲବ୍ଧ ଅଛି</translation>
-<translation id="3547933853190131743">AI ମୋଡ ମାଧ୍ୟମରେ ସର୍ଚ୍ଚ କରନ୍ତୁ</translation>
 <translation id="719175600387583059">ପ୍ରିଲୋଡ କରାଯାଇଥିବା ପୃଷ୍ଠାଗୁଡ଼ିକ ଏନକ୍ରିପ୍ଟ କରାଯାଇଥିବା ଏବଂ ପୃଷ୍ଠାଗୁଡ଼ିକ ସହ ଲିଙ୍କ କରାଯାଉଥିବା ସାଇଟ କିମ୍ବା ଆପ ଏକ Brave ସାଇଟ କିମ୍ବା ଆପ ହୋଇଥିବା ଯୋଗୁଁ ଏହି ପୃଷ୍ଠାଗୁଡ଼ିକୁ ପ୍ରାଇଭେଟ ଭାବେ ପ୍ରିଲୋଡ କରାଯିବା ବେଳେ Brave ସର୍ଭରଗୁଡ଼ିକ ନୂଆ ସୂଚନା ପାଏ ନାହିଁ।</translation>
 <translation id="3549657413697417275">ଆପଣଙ୍କ ଇତିହାସ ସର୍ଚ୍ଚ କରନ୍ତୁ</translation>
 <translation id="3557336313807607643">ଯୋଗାଯୋଗରେ ଯୋଗ କରନ୍ତୁ</translation>
@@ -768,6 +768,7 @@
 <translation id="7268155614575494857">Brave Password Managerକୁ ଆପଣଙ୍କ ସାଇନ-ଇନ ସୂଚନା ସେଭ କରିବାରେ ସାହାଯ୍ୟ କରିବାକୁ ଏହି ସାଇଟ ପାଇଁ ଆପଣଙ୍କ ୟୁଜରନେମ ଯୋଗ କରନ୍ତୁ</translation>
 <translation id="4095146165863963773">ଆପ୍ ଡାଟା ଡିଲିଟ୍ କରିବେ କି?</translation>
 <translation id="4095483462103784441">ନୂଆ ଟାବ ଗ୍ରୁପ ତିଆରି କରନ୍ତୁ</translation>
+<translation id="2967753255515860650">Braveରେ ଆପଣଙ୍କ ୱାର୍କକୁ ସିକ୍ୟୁର କରିବା ପାଇଁ ଆପଣ Braveରେ ସାଇନ-ଇନ କରିଥିବା ସମୟରେ ଆପଣଙ୍କ ସଂସ୍ଥା କିଛି ନିର୍ଦ୍ଦିଷ୍ଟ ସୂଚନାକୁ ଭ୍ୟୁ କରିବା କିମ୍ବା ପରିଚାଳନା କରିବାକୁ ସକ୍ଷମ ହେବ</translation>
 <translation id="1523634703470981382">Brave Password Manager ଅପଡେଟ ଖୋଲା ଅଛି</translation>
 <translation id="4107207375883769436">ଆପଣଙ୍କ ସଂସ୍ଥା ଆପଣଙ୍କର ବ୍ରାଉଜିଂ ଇତିହାସ ଏବଂ ପାସୱାର୍ଡଗୁଡ଼ିକ ପରି ଆପଣଙ୍କ ୱାର୍କ ପ୍ରୋଫାଇଲରେ ବ୍ରାଉଜିଂ ଡାଟାକୁ ଦେଖିବା ଏବଂ ପରିଚାଳନା କରିବା ଆବଶ୍ୟକ କରିପାରେ</translation>
 <translation id="4113030288477039509">ଆପଣଙ୍କର ବ୍ୟବସ୍ଥାପକଙ୍କ ଦ୍ୱାରା ପରିଚାଳିତ</translation>
@@ -778,6 +779,7 @@
 <translation id="4136632885151622181"><ph name="TAB_TITLE"/>, ମଲ୍ଟିସିଲେକ୍ଟେଡ ପିନ ହୋଇଥିବା ରେକର୍ଡ କରୁଥିବା ଟାବ</translation>
 <translation id="4137746084635924146">ଡିଭାଇସର ବର୍ତ୍ତମାନର ଭାଷା</translation>
 <translation id="414128724510021958">ଡେସ୍କଟପ ସାଇଟଗୁଡ଼ିକ ଡିଫଲ୍ଟ ଭାବରେ ଅନୁରୋଧ କରାଯାଇଛି</translation>
+<translation id="4150837143272125910">ଏକ ଅପଡେଟ ଡାଉନଲୋଡ କରାଯାଇଛି</translation>
 <translation id="4162867837470729563">ସେୟାରିଂ ବିକଳ୍ପଗୁଡ଼ିକର ତାଲିକା ପୂର୍ଣ୍ଣ ସ୍କ୍ରିନରେ ଖୋଲିଛି।</translation>
 <translation id="4164642020717536140">ଦ୍ରୁତ ଏବଂ ସୁରକ୍ଷିତ ୱେବ ବ୍ରାଉଜିଂ</translation>
 <translation id="4165077084524712774">ଅଧିକ ଟୁଲ</translation>
@@ -983,7 +985,6 @@
 <translation id="1248710015876067820">Brave ଇନ୍‌ଷ୍ଟାନ୍‌ସଗୁଡ଼ିକର ଅସମର୍ଥିତ ସଂଖ୍ୟା।</translation>
 <translation id="8743324804589176795">ଆପଣଙ୍କର Brave ଆକାଉଣ୍ଟରେ କୌଣସି ସେଭ ହୋଇଥିବା ପାସୱାର୍ଡ ନାହିଁ</translation>
 <translation id="490375751687810070">ଭୂଲମ୍ଵ</translation>
-<translation id="4905823827770127520">ପୃଷ୍ଠାର ଏକ ଲିଙ୍କ୍ ଅନ୍ତର୍ଭୁକ୍ତ କରନ୍ତୁ</translation>
 <translation id="4910889077668685004">ପେମେଣ୍ଟ ଆପ୍ସ</translation>
 <translation id="4911042367886397055">ଆପଣଙ୍କୁ ପୁଣି ସ୍ୱାଗତ, <ph name="USER_NAME"/>!</translation>
 <translation id="4913169188695071480">ରିଫ୍ରେସ୍ କରିବା ବନ୍ଦ କରନ୍ତୁ</translation>
@@ -1070,6 +1071,7 @@
 <translation id="5233638681132016545">ନୂଆ ଟାବ</translation>
 <translation id="5235196193381275927">ସାଇନ୍-ଇନ୍ କରିବା ସମୟରେ କିଛି ତ୍ରୁଟି ହୋଇଛି</translation>
 <translation id="5246093389635966745">ଟୁଲବାର୍ ସର୍ଟକଟକୁ ଏଡିଟ୍ କରନ୍ତୁ</translation>
+<translation id="5257142004843671642">ସାଇଡ ପେନେଲକୁ ରିସାଇଜ କରନ୍ତୁ</translation>
 <translation id="5264813352784073502">ଗତ 24 ଘଣ୍ଟା</translation>
 <translation id="5267572070504076962">ବିପଦଜନକ ସାଇଟଗୁଡ଼ିକଠାରୁ ସୁରକ୍ଷା ପାଇବା ପାଇଁ ସୁରକ୍ଷିତ ବ୍ରାଉଜିଂକୁ ଚାଲୁ କରନ୍ତୁ</translation>
 <translation id="5273031377282080577">ଆପଣଙ୍କ ଆଡମିନିଷ୍ଟ୍ରେଟର ଏହି ସେଟିଂକୁ ପରିଚାଳନା କରନ୍ତି।</translation>
@@ -1203,6 +1205,7 @@
 <translation id="5848257610304005265"><ph name="APP_NAME"/> ମାଧ୍ୟମରେ PDF ଖୋଲିବେ?</translation>
 <translation id="5849288995120328556">ସେୟାର କରିବା ବନ୍ଦ କରିବେ?</translation>
 <translation id="5853623416121554550">ବିରତ ହୋଇଛି</translation>
+<translation id="5855375823365231964">ଏହି ପ୍ରୋଫାଇଲ ବିଷୟରେ</translation>
 <translation id="5855546874025048181">ରିଫାଇନ୍ କରନ୍ତୁ: <ph name="REFINE_TEXT"/></translation>
 <translation id="7858651286436688697"><ph name="TAB_TITLE"/>, ମଲ୍ଟିସିଲେକ୍ଟେଡ ରେକର୍ଡ କରୁଥିବା ଇନକଗ୍ନିଟୋ ଟାବ</translation>
 <translation id="5857447844686706637">କିଛି ତ୍ରୁଟି ହୋଇଛି। ମୂଲ୍ୟ ଟ୍ରାକ ଅପଡେଟ କରାଯାଇପାରିଲା ନାହିଁ।</translation>
@@ -1214,6 +1217,7 @@
 <translation id="5869522115854928033">ସଞ୍ଚିତ ପାସୱାର୍ଡସମୂହ</translation>
 <translation id="5870416898561279542">ଡୁପ୍ଲିକେଟ ଟାବ ଏବଂ ଗ୍ରୁପ କିମ୍ବା <ph name="DAYS_INACTIVE"/> ଦିନ ପାଇଁ ବ୍ୟବହାର କରାଯାଇନଥିବା ଟାବ ଏବଂ ଗ୍ରୁପଗୁଡ଼ିକୁ ଏଠାକୁ ମୁଭ କରାଯାଏ<ph name="AUTODELETE_SECTION"/>। ଆପଣ ଯେ କୌଣସି ସମୟରେ <ph name="DECLUTTER_SETTINGS_TITLE"/>ରେ ଏହାକୁ ପରିବର୍ତ୍ତନ କରିପାରିବେ।</translation>
 <translation id="2496394743292988533">ବିଜ୍ଞପ୍ତି <ph name="SEPARATOR"/> ଏହି ସାଇଟ ବିପଦଜନକ ହୋଇଥିବା ଯୋଗୁଁ Brave ଏହି ଅନୁମତିଗୁଡ଼ିକୁ କାଢ଼ି ଦେଇଛି</translation>
+<translation id="5895138241574237353">ପୁନଃଆରମ୍ଭ</translation>
 <translation id="5896944002928653773">ଏଣ୍ଟରପ୍ରାଇଜ ସିଗନାଲ ଅସ୍ୱୀକରଣ ବଟମ ସିଟ ବନ୍ଦ ଅଛି</translation>
 <translation id="5899667542927581604">କୌଣସି ପାସକୀ ସିଟ ବନ୍ଦ କରାଯାଇନାହିଁ</translation>
 <translation id="5907542076239273525"><ph name="FOLDER_NAME"/>ରେ ବୁକମାର୍କ ସେଭ କରାଯାଇଛି</translation>
@@ -1243,6 +1247,7 @@
 <translation id="6039379616847168523">ପରବର୍ତ୍ତୀ ଟାବ୍‌କୁ ଯାଆନ୍ତୁ</translation>
 <translation id="6040143037577758943">ବନ୍ଦ</translation>
 <translation id="604124094241169006">ସ୍ୱଚାଳିତ</translation>
+<translation id="6137715785312812573">Google Drive ପରି Search ସର୍ଭିସେସ ଏବଂ Brave Workspace ଆପ୍ସ ମଧ୍ୟରେ କନେକ୍ସନକୁ ପରିଚାଳନା କରନ୍ତୁ</translation>
 <translation id="6042308850641462728">ଅଧିକ</translation>
 <translation id="6047066316630165190">ଗ୍ରିଡ ଟାବ ସ୍ୱିଚର ଖୋଲନ୍ତୁ</translation>
 <translation id="604996488070107836">ଏକ ଅଜଣା ତ୍ରୁଟି ଯୋଗୁଁ <ph name="FILE_NAME"/> ଡାଉନ୍‌ଲୋଡ୍ ହୋଇପାରିଲା ନାହିଁ।</translation>
@@ -1403,6 +1408,7 @@
 <translation id="6565959834589222080">ୱାଇ-ଫାଇ ଉପଲବ୍ଧ ହେଲେ ଏହାକୁ ବ୍ୟବହାର କରାଯାଏ</translation>
 <translation id="657177046675873214">ଆପଣଙ୍କର ସମସ୍ତ ଡିଭାଇସରେ ଆପଣଙ୍କ ବୁକମାର୍କଗୁଡ଼ିକ ପାଇବାକୁ ସେଟିଂସରେ "ବୁକମାର୍କଗୁଡ଼ିକ" ଚାଲୁ କରନ୍ତୁ</translation>
 <translation id="6573096386450695060">ସର୍ବଦା ଅନୁମତି ଦିଅନ୍ତୁ</translation>
+<translation id="1571495184426713852">Braveର ଏକ ନୂଆ ଭର୍ସନ ଉପଲବ୍ଧ ଅଛି</translation>
 <translation id="658099107946526506">ଅବାଞ୍ଛିତ ଆକ୍ସେସକୁ ପ୍ରତିରୋଧ କରିବା ପାଇଁ ଏକ PIN ସହ ଆପଣଙ୍କ ପ୍ରାଇଭେଟ ବ୍ରାଉଜିଂକୁ ସୁରକ୍ଷିତ ରଖନ୍ତୁ</translation>
 <translation id="6583199322650523874">ସାମ୍ପ୍ରତିକ ପୃଷ୍ଠାକୁ ବୁକ୍‍ମାର୍କ କରନ୍ତୁ</translation>
 <translation id="6588043302623806746">ସୁରକ୍ଷିତ DNS ବ୍ୟବହାର କରନ୍ତୁ</translation>
@@ -1690,6 +1696,7 @@
 <translation id="3521275212779698128">Brave ଫାଇଣ୍ଡ୍ସ ଅପ୍ଟ-ଇନକୁ ସମ୍ପୂର୍ଣ୍ଣ ଭାବେ ଖୋଲାଯାଇଛି</translation>
 <translation id="649070405679044769">ଏପରି Braveରେ ସାଇନ୍ ଇନ୍ ହୋଇଛି</translation>
 <translation id="7612989789287281429">ଆପଣଙ୍କୁ ସାଇନ ଇନ କରାଯାଉଛି…</translation>
+<translation id="1523322630961631757">Braveକୁ ପରିଚାଳନା କରାଯାଏ</translation>
 <translation id="7619072057915878432">ନେଟ୍‌ୱାର୍କ ନଥିବା ଯୋଗୁଁ <ph name="FILE_NAME"/> ଡାଉନ୍‌ଲୋଡ୍ ହୋଇପାରିଲା ନାହିଁ।</translation>
 <translation id="7207456302801184289">Braveକୁ ସ୍ୱାଗତ୍‌</translation>
 <translation id="7628417132421583481">Password Managerକୁ ଯାଆନ୍ତୁ</translation>
@@ -1770,6 +1777,7 @@
 <translation id="6485598694371328620">Brave ସ୍ୱତଃ ବିଜ୍ଞପ୍ତିଗୁଡ଼ିକର ଅପବ୍ୟବହାର କରୁଥିବା କିମ୍ବା ଆପଣ ବର୍ତ୍ତମାନ ଭିଜିଟ କରିନଥିବା ସାଇଟଗୁଡ଼ିକରୁ ଅନୁମତିଗୁଡ଼ିକୁ କାଢ଼ି ଦିଏ</translation>
 <translation id="7934668619883965330">ଫାଇଲକୁ ଡାଉନଲୋଡ କରାଯାଇପାରିବ ନାହିଁ। ଫାଇଲ ଫର୍ମାଟ ସମର୍ଥିତ ନୁହେଁ।</translation>
 <translation id="7951102827450076904">ଡାଉନଲୋଡ କରାଯାଇଥିବା PDFଗୁଡ଼ିକୁ ସର୍ବଦା ଖୋଲନ୍ତୁ</translation>
+<translation id="7952148074468405586"><ph name="BEGIN_LINK"/>ଆପଣଙ୍କ ସଂସ୍ଥା ଭ୍ୟୁ କିମ୍ବା ପରିଚାଳନା କରିପାରୁଥିବା ସୂଚନା<ph name="END_LINK"/> ବିଷୟରେ ଅଧିକ ଜାଣନ୍ତୁ</translation>
 <translation id="7952479614398473176">ଏକ ନୂଆ ୱିଣ୍ଡୋ ଖୋଲିବା ପାଇଁ ସକ୍ରିୟ ୱିଣ୍ଡୋର ମୋଟ ସଂଖ୍ୟାକୁ <ph name="MAX_WINDOW_COUNT_MINUS_ONE"/> କିମ୍ବା ତାଠାରୁ କମ କରନ୍ତୁ।</translation>
 <translation id="7956713633345437162">ମୋବାଇଲ୍‍ ବୁକ୍‍ମାର୍କ</translation>
 <translation id="7957413488482743710">ଆପଣଙ୍କୁ ସମ୍ଭାବ୍ୟ ଠକାମୀରୁ ସୁରକ୍ଷିତ ରଖିବାରେ ସାହାଯ୍ୟ କରିବା ପାଇଁ ଏକ ଭର୍ଚୁଆଲ କାର୍ଡ ଆପଣଙ୍କ ପ୍ରକୃତ କାର୍ଡକୁ ଲୁଚାଇ ରଖିଥାଏ। <ph name="BEGIN_LINK1"/>ଭର୍ଚୁଆଲ କାର୍ଡଗୁଡ଼ିକ ବିଷୟରେ ଅଧିକ ଜାଣନ୍ତୁ<ph name="END_LINK1"/></translation>
@@ -1958,6 +1966,7 @@
 <translation id="860282621117673749">ମୂଲ୍ୟରେ ହ୍ରାସ ବିଷୟରେ ଆଲର୍ଟ</translation>
 <translation id="8611922158252451755">ଲିଙ୍କ ଥିବା ଯେ କୌଣସି ବ୍ୟକ୍ତି ସମସ୍ତ ଟାବକୁ ଏଡିଟ କରିପାରିବେ, ତେଣୁ ବୁଦ୍ଧିମତ୍ତାର ସହ ସେୟାର କରନ୍ତୁ। ଲିଙ୍କର ମିଆଦ 48 ଘଣ୍ଟାରେ ଶେଷ ହୁଏ।</translation>
 <translation id="5784514951651328424">ଆପଣଙ୍କ Brave ଆକାଉଣ୍ଟର <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> ରେ ଅନ୍ୟ ପ୍ରକାରର ବ୍ରାଉଜିଂ ଇତିବୃତ୍ତି ଥାଇପାରେ।</translation>
+<translation id="6089523089512126744">Brave Search AI ମୋଡ ଏବଂ କନେକ୍ଟ ହୋଇଥିବା ଆପ୍ସ</translation>
 <translation id="8626572875733549102"><ph name="LANGUAGE"/>ରେ ଅନୁବାଦ କରନ୍ତୁ</translation>
 <translation id="5601608515527024348">Brave ମେନୁ &gt; ସେଟିଂସ ଖୋଲନ୍ତୁ</translation>
 <translation id="8634050254805484913">ସୀମିତ ସ୍କ୍ରିନରେ ଲୁଚାଯାଇଛି</translation>
@@ -2049,13 +2058,13 @@
 <translation id="2656327481457116654">ଇନକଗ୍ନିଟୋ Brave ଟାବରେ ଖୋଲନ୍ତୁ</translation>
 <translation id="9010094279589497751">ଆପଣ ଆବଶ୍ୟକ କରିବା ସମୟରେ Geminiକୁ ଶୀଘ୍ର ଖୋଲନ୍ତୁ</translation>
 <translation id="9012585441087414258">ବିପଦଜନକ ପରି ଜଣାପଡ଼ୁଥିବା ସାଇଟ, ଡାଉନଲୋଡ ଏବଂ ଏକ୍ସଟେନସନଗୁଡ଼ିକଠାରୁ ସୁରକ୍ଷିତ ରଖେ। ଯଦି ଏକ ପୃଷ୍ଠା କିଛି ସନ୍ଦେହଜନକ କାର୍ଯ୍ୟ କରେ, ତେବେ URL ଏବଂ ପୃଷ୍ଠାର କିଛି ବିଷୟବସ୍ତୁ Brave ସୁରକ୍ଷିତ ବ୍ରାଉଜିଂକୁ ପଠାଯାଏ।</translation>
-<translation id="9014097371980259227">AI ମୋଡ ସହ ସର୍ଚ୍ଚ କରିବାରେ ଆପଣଙ୍କୁ ସାହାଯ୍ୟ କରିବା ପାଇଁ କିଛି ଟୁଲ ମୁଭ ହୋଇଛି</translation>
 <translation id="9015111999662965458">ଏହି ଡିଭାଇସକୁ ସୁରକ୍ଷିତ ଭାବରେ ବ୍ୟବହାର କରାଯାଇପାରୁଥିବା ସୁନିଶ୍ଚିତ କରିବାକୁ ଆପଣଙ୍କ ସଂସ୍ଥା ଏହାର ଅପରେଟିଂ ସିଷ୍ଟମ, ବ୍ରାଉଜର, ସେଟିଂସ ଏବଂ ଡିଭାଇସରେ କେଉଁ ସଫ୍ଟୱେର ଇନଷ୍ଟଲ ହୋଇଛି ସେ ବିଷୟରେ ସୂଚନା ଦେଖିବା ଆବଶ୍ୟକ କରିପାରେ</translation>
 <translation id="9019199799064251516">ଏକ କାର ପ୍ରୋଫାଇଲ ଲକ ବିନା ଜାରି ରଖିବେ?</translation>
 <translation id="9022774213089566801">ବାରମ୍ବାର ଭିଜିଟ୍ କରାଯାଉଥିବା</translation>
 <translation id="5687542525349822727">Braveକୁ ଆପଣଙ୍କ ଡିଫଲ୍ଟ ଭାବେ ସେଟ କରନ୍ତୁ</translation>
 <translation id="9027728231343310283"><ph name="SITE"/> ଅନଡୁ କରନ୍ତୁ</translation>
 <translation id="9035378196785279980">ଏଠାକୁ ମୁଭ କରନ୍ତୁ\u2026</translation>
+<translation id="9038316201889095704">ସେଭ ହୋଇନଥିବା ପରିବର୍ତ୍ତନଗୁଡ଼ିକ ଥିବା ସମୟରେ ପୃଷ୍ଠାରେ ଖୋଜନ୍ତୁକୁ ଅକ୍ଷମ କରାଯାଇଛି।</translation>
 <translation id="904146253922032365">ଟାବକୁ ଭର୍ଟିକାଲ ଭାବେ ଦେଖାଇବାକୁ ସ୍ପର୍ଶ କରି ଧରି ରଖନ୍ତୁ</translation>
 <translation id="9042893549633094279">ଗୋପନୀୟତା ଏବଂ ସୁରକ୍ଷା</translation>
 <translation id="1612219807314383628">Braveରେ ଏକ ସର୍ଚ୍ଚ ଶୀଘ୍ର ଆରମ୍ଭ କରନ୍ତୁ</translation>

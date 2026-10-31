@@ -11,3 +11,13 @@
 # This test hardcodes "GoogleUpdateIsMachine" in a non-easily-replaceable way,
 # when we would need "BraveUpdateIsMachine".
 -MiniInstallerConfigurationTest.IsSystemLevel
+
+# This test fails on CI because it runs under Admin account: the failure is due
+# to how the two SIDs are formatted, not because of the ACL.The test builds
+# expected_dir_dacl from token.User().ToSddlString(), which gives the full SID
+# (S-1-5-21-…-500). The actual DACL is read with SecurityDescriptor::ToSddl,
+# which goes through ConvertSecurityDescriptorToStringSecurityDescriptor. That
+# call abbreviates the built-in Administrator (RID 500) SID to the alias LA.
+# The actual DACL D:AI(A;OICIID;FA;;;LA) is therefore the same ACE as the
+# expected …;S-1-5-21-…-500).
+-InstallComponentTest.InstalledComponentInheritsDestinationRootAcl

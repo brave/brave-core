@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/global_features.h b/chrome/browser/global_features.h
-index 54372d6a8c317c8c38c154c64bd85f5306213d36..31ede6f38a390cf132fed16d29ddaa35f45f2c45 100644
+index 6fdfa2869523cdf2218bcdb6f7fd0365878b15f7..e6de3611cb2d07e7debc214b2b14c5bd0b14c9ef 100644
 --- a/chrome/browser/global_features.h
 +++ b/chrome/browser/global_features.h
-@@ -261,7 +261,12 @@ class GlobalFeatures {
-   }
+@@ -270,7 +270,12 @@ class GlobalFeatures {
+ #endif
  #endif
  
 +  BraveGlobalFeatures* brave_global_features() {

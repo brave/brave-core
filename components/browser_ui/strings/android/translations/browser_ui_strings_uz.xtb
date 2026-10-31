@@ -12,7 +12,6 @@
 <translation id="6670155282615872564">Bravedan maksimal foydalanish uchun quyidagi tavsiya etilgan amallarni bajaring</translation>
 <translation id="113098737392899175">Klaviatura ulanganda sahifalarni matn kursori bilan kezing</translation>
 <translation id="1148624853678088576">Tayyor!</translation>
-<translation id="738393714577080438">Parollarni Braveda saqlang</translation>
 <translation id="1178015372320901893">Mening yorliqlarim quyi ekrani</translation>
 <translation id="1178581264944972037">Pauza</translation>
 <translation id="1181037720776840403">Olib tashlash</translation>
@@ -54,6 +53,7 @@
 <translation id="1532175480576580256">Yorliqlarim quyi ekrani toʻliq hajmda ochilgan</translation>
 <translation id="1538031354170655462">Saytlar odatda givohnomani skanerlash yoki kontaktsiz toʻlov kabi atrofdagi teglar yoki qurilmalar bilan ishlashda yaqindagi simsiz aloqadan (NFC) foydalanadi</translation>
 <translation id="1547123415014299762">Tashqi cookie fayllariga ruxsat berilgan</translation>
+<translation id="1565353932454306569"><ph name="ORIGIN"/> – Butun ekran rejimidan chiqish uchun ekranning chap yoki oʻng chekkasini torting.</translation>
 <translation id="3665719978526894928">Brave V8 tizimidagi saytlar ishlashini tezlatish, Brave brauzerining hujumlardan himoyasini esa biroz pasaytirish</translation>
 <translation id="1593426485665524382">Yangi amallar ekranning yuqoriroq qismida joylashgan</translation>
 <translation id="1594521731409209842">Surat oʻlchamini oʻzgartirish uchun ekranni chimding</translation>
@@ -138,6 +138,7 @@
 <translation id="2315043854645842844">Tanlangan mijoz sertifikati eskirgan va operatsion tizim tomonidan qo‘llab-quvvatlanmaydi.</translation>
 <translation id="2347601491101454548">Yorliqlarim quyi ekrani yarim hajmda ochildi</translation>
 <translation id="2359808026110333948">Davom etish</translation>
+<translation id="2364212713469273030"><ph name="ORIGIN"/> – Butun ekrandan chiqish uchun tepadan pastga tortib, ekran chetini chapga yoki oʻngga suring.</translation>
 <translation id="904887679952026733">Brave tungi mavzudan foydalansa, saytlarga ham u tatbiq etiladi</translation>
 <translation id="2390272837142897736">Kattalashtirish</translation>
 <translation id="2397689164757137845">Ruxsat berildi • Aniq</translation>
@@ -227,7 +228,6 @@
 <translation id="3167868116600277716">Discover tasmasi</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> xotira band</translation>
 <translation id="3199078925536734975">Shu safar ruxsat berildi • Taxminiy</translation>
-<translation id="3208584281581115441">Hozir tekshirish</translation>
 <translation id="321187648315454507"><ph name="APP_NAME"/> sizga bildirishnomalar yuborishi uchun <ph name="BEGIN_LINK"/>Android sozlamalari<ph name="END_LINK"/> orqali bildirishnomalarni yoqing.</translation>
 <translation id="3223425961342298674">Joylashuv axborotiga kirishga ruxsat berilmagan</translation>
 <translation id="3227137524299004712">Mikrofon</translation>
@@ -284,7 +284,6 @@
 <translation id="381841723434055211">Telefon raqamlari</translation>
 <translation id="3823453485268218808">Shrift: Mono</translation>
 <translation id="3826050100957962900">Tashqi xizmatga kirish</translation>
-<translation id="3831065134033923230">Saqlangan parollarni tekshiring</translation>
 <translation id="3835233591525155343">Qurilmadan foydalanish</translation>
 <translation id="1799795508209440035">Brave cookie fayllarni bugundan yana bloklaydi</translation>
 <translation id="385051799172605136">Orqaga</translation>
@@ -292,7 +291,6 @@
 <translation id="9046306654872718870">Bosh sahifa uchun maxsus ranglar va rasmlarni tanlab, Braveni oʻzingizga moslang</translation>
 <translation id="389521680295183045">Saytlarga qurilmadan foydalanishga oid axborotlarni soʻrashga ruxsat berish</translation>
 <translation id="3895926599014793903">Hajmni majburiy o‘zgartirish funksiyasini yoqish</translation>
-<translation id="3903738175795615004">Butun ekrandan chiqish uchun tepadan pastga torting yoki Esc tugmasini bosing.</translation>
 <translation id="3905475044299942653">Koʻp bildirishnomalar kelishini toʻxtatadi</translation>
 <translation id="3922092564198021702">Telefonda sozlamalarni oching</translation>
 <translation id="3924858949939391676">Oʻqish rejimi yoqilgandan keyin havolalarni koʻrsatish</translation>
@@ -353,7 +351,6 @@
 <translation id="4479647676395637221">Kameradan foydalanishga ruxsat so‘ralsin (tavsiya etiladi)</translation>
 <translation id="4505788138578415521">URL manzil yoyildi</translation>
 <translation id="4522570452068850558">Tafsilotlar</translation>
-<translation id="4523472416386354622">Avval hisobga kiring</translation>
 <translation id="4529207923544043455">Tugallangan va tugallanmagan sozlash vazifalari roʻyxati aks etgan quyi ekran</translation>
 <translation id="4534723447064627427"><ph name="APP_NAME"/> mikrofondan foydalanishiga ruxsat berish uchun <ph name="BEGIN_LINK"/>Android sozlamalari<ph name="END_LINK"/> orqali mikrofonni yoqing.</translation>
 <translation id="4545694195887112015">Sozlash ekrani yopildi</translation>
@@ -366,7 +363,6 @@
 <translation id="4645575059429386691">Ota-onangiz tomonidan boshqariladi</translation>
 <translation id="4651224148644053314">Boshqa ranglar va parametrlar</translation>
 <translation id="4652266463001779298">Ruxsat berilmagan</translation>
-<translation id="4655846733459137112">Keyingi kirishda bu paroldan oson foydalanish uchun Ha tugmasini bosing</translation>
 <translation id="4663373278480897665">Kameradan foydalanish mumkin</translation>
 <translation id="4670064810192446073">Virtual reallik</translation>
 <translation id="5652778654712411580">Brauzer ilovasi ustiga bosib, Brave bandini tanlang</translation>
@@ -411,7 +407,6 @@
 <translation id="512938610812707830">Yangi varaq sahifasi koʻrinishining mavzular toʻplami pastki oynasi toʻliq balandlikda ochildi</translation>
 <translation id="5137460097045297858">Discover tasmasi quyi ekrani yarim hajmda ochildi</translation>
 <translation id="5139253256813381453">{PRICE_DROP_COUNT,plural, =1{Ochiq varaqlarda narx tushishi}other{Ochiq varaqlarda narx tushishi}}</translation>
-<translation id="5150048675001754041">Sayt va ilovalarga tez va oson kiring</translation>
 <translation id="5186036860380548585">Parametr ekranning yuqoriroq qismida joylashgan</translation>
 <translation id="5197729504361054390">Tanlangan kontaktlar <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> saytiga ulashiladi.</translation>
 <translation id="5198930230016462977">Yangi varaq sahifasini moslash quyi ekrani yopildi</translation>
@@ -421,7 +416,6 @@
 <translation id="5239623327352565343">Joylashuv axborotiga kirishga ruxsat berilgan</translation>
 <translation id="5246825184569358663">Bunda qurilmadagi cookie fayllar kabi barcha maʼlumotlar oʻchib ketadi va <ph name="DOMAIN"/> va uning barcha quyi saytlari ruxsatlari tiklanadi</translation>
 <translation id="5264323282659631142">Olib tashlash: <ph name="CHIP_LABEL"/></translation>
-<translation id="528192093759286357">To‘liq ekran rejimidan chiqish uchun ekranni tepadan pastga torting va “Orqaga” tugmasini bosing.</translation>
 <translation id="5286194356314741248">Qidiruv</translation>
 <translation id="5300589172476337783">Ko‘rsatish</translation>
 <translation id="5301954838959518834">OK</translation>
@@ -469,7 +463,6 @@
 <translation id="5804241973901381774">Ruxsatlar</translation>
 <translation id="5817042798620209981">Sayt axboroti, oynasi</translation>
 <translation id="5822675474983796325">Yangi varaq sahifasini moslash quyi ekrani toʻliq hajmda ochildi</translation>
-<translation id="4298364316773778595">Brave brauzerida parollarni saqlash uchun koʻrsatmali quyi ekran</translation>
 <translation id="5833899990800318936">Saytlarga JavaScript ishlatishni taqiqlash</translation>
 <translation id="583673505367439042">Saytlar qurilmangizdagi fayl yoki jildlarni tahrirlash uchun ruxsat soʻray oladi</translation>
 <translation id="5844448279347999754">Yoqilsa, saytlar klipborddagi rasm va matnlarni koʻrishga ruxsat soʻrashi mumkin. Oʻchirilsa, bunday fayllarni koʻra olmaydi.</translation>
@@ -507,7 +500,6 @@
 <translation id="6104860901391833523">Yoniq boʻlsa, saytlar tasvir ustida tasvir rejimiga avtomatik kirishi mumkin. Yoqilmasa, saytlar tasvir ustida tasvir rejimiga avtomatik kirolmaydi</translation>
 <translation id="6120483543004435978">Yoqilsa, saytlar qachon qurilmadan faol foydalanishingizni soʻrashi mumkin. Oʻchirilsa, saytlar bu maʼlumotlarni bila olmaydi.</translation>
 <translation id="5773142757282836623">Boshqa ilovalarda Brave takliflarini berkitish</translation>
-<translation id="4852158809106762963">Brave parolingizni saqlashni taklif qiladi</translation>
 <translation id="615886654739818377">Saytlarga barcha displeylardagi oynalarni boshqarish ruxsati berilmasin</translation>
 <translation id="6165508094623778733">Batafsil</translation>
 <translation id="6171020522141473435">Yoqilsa, saytlar Bluetooth qurilmalardan foydalanishni soʻrashi mumkin. Oʻchirilsa, bunday qurilmalardan foydalana olmaydi.</translation>
@@ -583,7 +575,6 @@
 <translation id="6980861169612950611">Sayt maʼlumotlari oʻchirilsinmi? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Qulayliklar</translation>
 <translation id="6991142177939282156">Ruxsat berilgan • Taxminiy axboroti ishlatilmoqda</translation>
-<translation id="6992014788289743568">Parollaringizni tekshirish orqali xavfsizlikni kuchaytiring va maʼlumotlaringizni xavfsiz saqlang</translation>
 <translation id="6992289844737586249">Mikrofondan foydalanishga ruxsat so‘ralsin (tavsiya etiladi)</translation>
 <translation id="7000754031042624318">Android sozlamalari orqali faolsizlantirilgan</translation>
 <translation id="7036823721811529709">Fonda tinglash</translation>
@@ -650,7 +641,6 @@ Kuchaytirilgan himoya boshqaruvida quyidagi Brave sozlamalari mavjud:</translati
 <translation id="775043444390799886">Ruxsatni bekor qilish</translation>
 <translation id="7758789811447313947">Binafsharang mavzu</translation>
 <translation id="7759147511335618829">MIDI boshqaruvi va qayta dasturlash</translation>
-<translation id="7771089277295008211">Parollarni saqlash boʻyicha koʻrsatmalar quyi ekrani yopildi</translation>
 <translation id="7781829728241885113">Kecha</translation>
 <translation id="7791543448312431591">Qo‘shish</translation>
 <translation id="780301667611848630">Kerak emas</translation>
@@ -667,7 +657,6 @@ Kuchaytirilgan himoya boshqaruvida quyidagi Brave sozlamalari mavjud:</translati
 <translation id="7940722705963108451">Menga eslatilsin</translation>
 <translation id="7948081750384205628"><ph name="SETTING_TITLE"/> haqida batafsil</translation>
 <translation id="7952708427581814389">Saytlar klipborddagi rasm va matnlarni koʻrishga ruxsat soʻray oladi</translation>
-<translation id="7958779728312669715">Parollarni saqlash boʻyicha koʻrsatmalar quyi ekrani toʻliq ochildi</translation>
 <translation id="798299424881500862">Apelsinrang mavzu</translation>
 <translation id="7986741934819883144">Kontaktni tanlang</translation>
 <translation id="7990211076305263060">Yoqilsa, saytlar mikrofondan foydalanishni soʻrashi mumkin. Oʻchirilsa, mikrofondan foydalana olmaydi.</translation>
@@ -762,7 +751,6 @@ Kuchaytirilgan himoya boshqaruvida quyidagi Brave sozlamalari mavjud:</translati
 <translation id="7532165358672313130">Keyin ochiladigan boshqa saytlar brauzerdan bu axborotni soʻrashi mumkin.</translation>
 <translation id="8899807382908246773">Asabga teguvchi reklamalar</translation>
 <translation id="8903921497873541725">Kattalashtirish</translation>
-<translation id="8919911527569629802">Istalgan saytga kiring</translation>
 <translation id="8921772741368021346"><ph name="POSITION"/> / <ph name="DURATION"/></translation>
 <translation id="8926389886865778422">Qayta so‘ralmasin</translation>
 <translation id="8926666909099850184">Telefonda NFC yoqilmagan. Uni <ph name="BEGIN_LINK"/>Android sozlamalari<ph name="END_LINK"/> orqali yoqing.</translation>
@@ -786,6 +774,7 @@ Kuchaytirilgan himoya boshqaruvida quyidagi Brave sozlamalari mavjud:</translati
 <translation id="9138217887606523162">Joriy zum: <ph name="ZOOM_LEVEL"/> %%</translation>
 <translation id="7359422048569205930">Brave oxirgi varaqlarni qurilmadagi ilovalar roʻyxati va qidiruv natijalarida chiqarishiga ruxsat bering. Buni istalgan vaqt Brave sozlamalarida faolsizlantirishingiz mumkin.</translation>
 <translation id="9162462602695099906">Bu sahifa xavfli</translation>
+<translation id="9172068157980844189">Bukmarklar panelini Sozlamalar &gt; Qiyofa sahifasidan yoqish mumkin</translation>
 <translation id="9182556968660520230">Saytlarga himoyalangan kontentni ijro qilishni taqiqlash</translation>
 <translation id="927148002081263046">Kontakt ulashish</translation>
 <translation id="947156494302904893">Siz ochadigan va real odam ekaningiz haqidagi axborotni tekshirishi mumkin saytlar</translation>

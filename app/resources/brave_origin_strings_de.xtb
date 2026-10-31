@@ -20,6 +20,7 @@
 <translation id="8541922081612557424">Über Brave</translation>
 <translation id="987734326276404793">Mit Brave Preis-Tracking-Benachrichtigungen auf dem Smartphone erhalten</translation>
 <translation id="1203500561924088507">Vielen Dank für die Installation. Du musst deinen Browser neu starten, bevor du <ph name="BUNDLE_NAME"/> verwenden kannst.</translation>
+<translation id="1213674046343558619">Ein <ph name="IMPORTANT_UPDATE"/> steht noch aus. Damit du sicher im Internet surfen kannst, wird Brave das nächste Mal aktualisiert, wenn du <ph name="IDLE_DURATION"/> lang inaktiv bist.</translation>
 <translation id="1232234696885483911">Wenn du die Bildersuche öffnest, werden der Seitentitel, die URL und der Inhalt, einschließlich PDFs, automatisch an den Server gesendet. <ph name="LEARN_MORE"/></translation>
 <translation id="1934377710648094656">Solange du angemeldet bist, kannst du deine Passwörter und weitere Daten aus deinem Brave‑Konto in Brave verwenden. Wenn du das ändern möchtest, rufe „Mein Konto in Brave“ auf.</translation>
 <translation id="583633806828413086">Gemini in Brave unter macOS in der Menüleiste anzeigen</translation>
@@ -221,6 +222,7 @@
 <translation id="3286538390144397061">Jetzt neu starten</translation>
 <translation id="2339258256897053758">Brave API-Schlüssel fehlen. Einige Funktionen von Brave sind deaktiviert.</translation>
 <translation id="8926637909431618259">Apps weiter im Hintergrund ausführen, wenn Brave geschlossen wird</translation>
+<translation id="8245661393996028021">Brave wird aktualisiert, wenn du nicht am Gerät bist</translation>
 <translation id="518125528057094977">Brave warnt dich, bevor eine Website über eine unsichere Verbindung geladen wird</translation>
 <translation id="8652321858775514885">Wenn du alle Brave-Fenster schließt, wirst du auf den meisten Websites abgemeldet – mit Ausnahme deines Brave-Kontos, falls du in Brave angemeldet bist. Wenn du möchtest, dass Websites dich wiedererkennen, <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="3352986031709923790">Rechte obere Ecke des Suchbereichs: rechts <ph name="RIGHT"/> %, oben <ph name="TOP"/> %</translation>
@@ -229,6 +231,7 @@
 <translation id="2645435784669275700">Brave OS</translation>
 <translation id="2297290224191497273">Zu bestehendem Brave-Profil wechseln?</translation>
 <translation id="3412460710772753638">Im Passwortmanager auf diesem Gerät</translation>
+<translation id="172368702860945706">Brave möchte ein Update durchführen</translation>
 <translation id="5079573433701109938">Wenn du auf deine Lesezeichen und andere Daten von <ph name="DEVICE"/> zugreifen möchtest, melde dich in Brave an</translation>
 <translation id="3438772217992559640">Diesen Tab mit der Bildersuche durchsuchen</translation>
 <translation id="2491221873705777076">Erweitertes Safe Browsing mit Brave auf deinem Smartphone nutzen</translation>
@@ -366,6 +369,7 @@
 <translation id="4877750182157975795">Mit Brave auf deinem <ph name="DEVICE_TYPE"/> kannst du auf alle deine Brave-Favoriten zugreifen</translation>
 <translation id="1204184037023366446">Brave benötigt eine Berechtigung für das Handtracking</translation>
 <translation id="5406591571925937375">Du hast diese Website in letzter Zeit nicht besucht. Brave hat „<ph name="PERMISSION_1"/>“, „<ph name="PERMISSION_2"/>“ und „<ph name="PERMISSION_3"/>“ entfernt.</translation>
+<translation id="3576895950897485019">In Brave anmelden</translation>
 <translation id="5174969993834422967">Normalerweise blockierst du Benachrichtigungen. Wenn du von dieser Website Benachrichtigungen erhalten möchtest, klicke auf das Benachrichtigungssymbol in der rechten Ecke der Adressleiste.</translation>
 <translation id="5174983315706567306">Nicht genügend Speicherplatz.</translation>
 <translation id="8157129267754368853">Brave-Konto muss noch einmal authentifiziert werden</translation>
@@ -374,6 +378,7 @@
 <translation id="5234764350956374838">Schließen</translation>
 <translation id="7690383309583926074">Mit der Brave App kannst du Passwörter unterwegs speichern</translation>
 <translation id="8586264863973514035">Starte Brave neu, um die Änderungen zu übernehmen</translation>
+<translation id="8127050479140582768">Wenn du diesen Tab an ein anderes Gerät senden möchtest, melde dich auf beiden Geräten in Brave an</translation>
 <translation id="5286907366254680517">Erkannt</translation>
 <translation id="7264453786974905915">Brave App herunterladen</translation>
 <translation id="7230006500876504868">Mit Brave suchen</translation>
@@ -737,6 +742,7 @@ Brave kann deine Einstellungen nicht wiederherstellen.</translation>
 <translation id="5128665650717824082">Brave for Testing kann nicht als Standardbrowser festgelegt werden.</translation>
 <translation id="3053208669360972929">Mit Brave von überall aus suchen</translation>
 <translation id="2433912322225810055">Die Erweiterung legt auch fest, welche Seite beim Start von Brave oder bei der Suche über die Omnibox angezeigt wird.</translation>
+<translation id="8789425457808164956">Wenn du diesen Tab an ein anderes Gerät senden möchtest, melde dich dort in Brave an</translation>
 <translation id="4100716194836114130">Dies ist dein persönlicher Brave-Browser</translation>
 <translation id="8712637175834984815">Ok</translation>
 <translation id="1419543648228375718">In Brave anmelden?</translation>

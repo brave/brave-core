@@ -1,8 +1,8 @@
 diff --git a/content/browser/preloading/prefetch/prefetch_features.cc b/content/browser/preloading/prefetch/prefetch_features.cc
-index 7fad3562c0673c6d2f89ca1eea807050859f4c92..890bef822ad918eca75c99027671a14559fd41a5 100644
+index fde3b20e88946d4a6f57f6515c8d2ed4ca49f536..c8213e61aadd894ad3ca92fa688e2759591408d8 100644
 --- a/content/browser/preloading/prefetch/prefetch_features.cc
 +++ b/content/browser/preloading/prefetch/prefetch_features.cc
-@@ -21,7 +21,7 @@ BASE_FEATURE(kPrefetchUseContentRefactor, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -19,7 +19,7 @@ const base::FeatureParam<int> kPrefetchReusableBodySizeLimit{
  
  BASE_FEATURE(kPrefetchNIKScope, base::FEATURE_DISABLED_BY_DEFAULT);
  
@@ -11,7 +11,7 @@ index 7fad3562c0673c6d2f89ca1eea807050859f4c92..890bef822ad918eca75c99027671a145
  
  constexpr base::FeatureParam<PrefetchClientHintsCrossSiteBehavior>::Option
      kPrefetchClientHintsCrossSiteBehaviorOptions[] = {
-@@ -48,7 +48,7 @@ BASE_FEATURE(kPrefetchNetworkPriorityForEmbedders,
+@@ -46,7 +46,7 @@ BASE_FEATURE(kPrefetchNetworkPriorityForEmbedders,
  BASE_FEATURE(kPrefetchBumpNetworkPriorityAfterBeingServed,
               base::FEATURE_ENABLED_BY_DEFAULT);
  

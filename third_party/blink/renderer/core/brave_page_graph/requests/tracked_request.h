@@ -7,7 +7,7 @@
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_REQUESTS_TRACKED_REQUEST_H_
 
 #include "base/containers/span.h"
-
+#include "base/memory/raw_ptr.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/page_graph_context.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/types.h"
 #include "third_party/blink/renderer/platform/crypto.h"
@@ -21,7 +21,7 @@ class GraphNode;
 class NodeResource;
 
 struct RequestInstance {
-  GraphNode* requester;
+  raw_ptr<GraphNode, UnprotectedInRelease> requester;
   const FrameId frame_id;
 };
 
@@ -67,14 +67,15 @@ class TrackedRequest {
     kSuccess,
   };
 
-  PageGraphContext* const page_graph_context_ = nullptr;
+  const raw_ptr<PageGraphContext, UnprotectedInRelease> page_graph_context_ =
+      nullptr;
 
   const InspectorId request_id_;
 
   blink::Vector<RequestInstance> request_instances_;
   blink::String resource_type_;
 
-  NodeResource* resource_ = nullptr;
+  raw_ptr<NodeResource, UnprotectedInRelease> resource_ = nullptr;
 
   std::optional<RequestStatus> request_status_;
 

@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/lifetime/browser_close_manager.h b/chrome/browser/lifetime/browser_close_manager.h
+index e5ec35a6b53c1c4c4aee2546b630fb0a8e25b4f8..eabcaf856bb1fc123804918ae9dbda4804631e75 100644
+--- a/chrome/browser/lifetime/browser_close_manager.h
++++ b/chrome/browser/lifetime/browser_close_manager.h
+@@ -26,6 +26,8 @@ class BrowserCloseManager : public base::RefCounted<BrowserCloseManager> {
+   // Starts closing all browser windows.
+   void StartClosingBrowsers();
+ 
++  static bool BrowserClosingStarted();
++
+  protected:
+   friend class base::RefCounted<BrowserCloseManager>;
+ 

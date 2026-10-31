@@ -113,6 +113,7 @@ source_set("unit_tests") {
     "//brave/components/resources:strings_grit",
     "//brave/components/vector_icons",
     "//chrome/browser/sharing_hub",
+    "//chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar",
     "//chrome/browser/ui/webui/util",
     "//chrome/test:test_support",
     "//components/prefs",

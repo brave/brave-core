@@ -433,7 +433,6 @@
 <translation id="412480955826088549">កំពុងទាញយកផ្នែក...</translation>
 <translation id="4894106830958548828">ខ្ញុំយល់ស្រប</translation>
 <translation id="2729085694451916573">ខ្សែសន្ទាបីរហុងឆ្តឈាប់ <ph name="PART_ONE"/>ភាងស្េ​ឧបឆុដេរេ​អ្រអម្តាកស្កេ<ph name="PART_ONE_END"/>អិក្ដោហ្រកែសំេ<ph name="PART_TWO"/>តាមិិនជាខ្ន់<ph name="PART_TWO_END"/></translation>
-<translation id="6705666103672654256">ការ​ស្វែងរក​និង​មាតិកា​ទំព័រ​របស់​អ្នក​ត្រូវបាន​ដំណើរការ​នៅលើ​ឧបករណ៍​នេះ។ គ្មាន​អ្វី​ត្រូវ​បាន​ផ្ញើ​ទៅ Brave ឬ​មើល​ឃើញ​ដោយ​អ្នកត្រួត​ពិនិត្យ​ដែល​ជា​មនុស្ស​ឡើយ។ នេះជាមុខងារពិសោធន៍ ហើយវានឹងមិនត្រឹមត្រូវជានិច្ចទេ។</translation>
 <translation id="7534079972563542000">Domainយ៉ាងអាចលោតបាន</translation>
 <translation id="4492298165410552103">ធ្វើឱ្យ Brave អាចប្រើ Unstoppable Domains បានឬគី?</translation>
 <translation id="5015092481905019948">Brave នឹងប្រើ <ph name="PROVIDER_NAME"/> ដើម្បីដោះស្រាយឈ្មោះដែន <ph name="DOMAIN_LIST"/> ដែលស្ថិតនៅលើ <ph name="DOMAIN_PROVIDER_NAME"/>។ Brave លាក់អាសយដ្ឋាន IP របស់អ្នក។ ប្រសិនបើអ្នកបើកជម្រើសនេះ <ph name="PROVIDER_NAME"/> នឹងឃើញថាមាននរណាម្នាក់កំពុងព្យាយាមចូលទៅកាន់ដែនទាំងនេះ ប៉ុន្តាមិនអាចឃើញព័ត៌មានផ្សេងទៀតបានឡើយ។ សូមមើល <ph name="PROVIDER_NAME"/> <ph name="BEGIN_PROVIDER_TOU_LINK"/>លក្ខខណ្ឌនៃការប្រើប្រាស់<ph name="END_PROVIDER_TOU_LINK"/> និង <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>គោលនយោបាយ bảo mật<ph name="END_PROVIDER_PRIVACY_LINK"/>។</translation>
@@ -801,8 +800,6 @@
 <translation id="223536150967420869">ទិញ</translation>
 <translation id="538450413584738399">ប្តូរ</translation>
 <translation id="6810855196544084176">ភ្ជាប់</translation>
-<translation id="3488255243387417752">លក់</translation>
-<translation id="5223034545851554347">អ្នកមិនមានគ្រប់ចំនួន <ph name="TOKEN_SYMBOL"/> ក្នុងគណនីនេះទេ។</translation>
 <translation id="6585419509320235293">ជ្រើសរើសទ្រព្យសកម្មសម្រាប់ផ្ញើ</translation>
 <translation id="1018742998826182079">ជ្រើសរើសទ្រព្យសកម្មសម្រាប់ផ្លាស់ប្តូរ</translation>
 <translation id="2791691551852500015">បញ្ចូលអាសយដ្ឋានអ្នកទៅទទួល</translation>
@@ -1319,7 +1316,6 @@
 <translation id="4312994183947987913">ទិញ/ដាក់ប្រាក់</translation>
 <translation id="5133421763709317473">រកមិនឃើញទ្រព្យសកម្មដែលផ្គូផ្គងនឹងការស្វែងរក ឬតម្រង</translation>
 <translation id="6423985584914773314">ជាអាសយដ្ឋាន FIL មិនត្រឹមត្រូវ</translation>
-<translation id="6153197326949684688">លក់ជាមួយ <ph name="OFFRAMP_PROVIDER"/></translation>
 <translation id="5795821518596541838">ដៃគួរប្រតិបដ្ឋិការណ៍</translation>
 <translation id="1916136859742693273">Brave Wallet ប្រើ Meld.io ដើម្បីជួយបង្ហាញនិងប្រមូលផ្តុំជាច្រើនក្រុមហ៊ុនcrypto សម្រាប់តំបន់របស់អ្នក។ យើងនឹងចែករំលែកពត័មានជាមួយ Meld.io ដើម្បីបញ្ចប់ប្រតិបត្តិការ រួមទាំងអាសយដ្ឋានកាបូបនិងលេខកូដប្រទេសរបស់អ្នក។ សម្រាប់ពត័មានបន្ថែម សូមអានលក្ខខ័ណ្ឌប្រើប្រាស់របស់ Meld។</translation>
 <translation id="245827814248186739">ខ្ញុំបានអាន និងយល់ព្រមទៅលើ <ph name="LINK_BEFORE"/>លក្ខខ័ណ្ឌប្រើប្រាស់របស់ Meld<ph name="LINK_AFTER"/></translation>
@@ -1635,7 +1631,7 @@
 <translation id="6646456430109279404">ទីប្រាំចំនួនពីរ</translation>
 <translation id="1961743941324393172">ទីសាមសាម</translation>
 <translation id="9079035825546416393">ទីបួនចំនួនបួន</translation>
-<translation id="1558531209852594808">ភស្តុតាង​ដែល​មិនមែន ASCII ត្រូវបាន​រកដឹង!</translation>
+<translation id="6980520267116175375">រកឃើញតួអក្សរដែលមិនរំពឹងទុក</translation>
 <translation id="442709594176931966">មើលសារដើម</translation>
 <translation id="2239252396088484499">មើលសារឱ្យនៅក្នុងការអាំងកូដខ្លះ ASCII</translation>
 <translation id="2894654529758326923">ព័ត៌មាន</translation>
@@ -1885,6 +1881,14 @@
 <translation id="6700561332544287722">តម្រូវឱ្យដោះសោនៅពេលក្រោយ</translation>
 <translation id="5605360570977617291">លាក់ <ph name="CARD_NAME"/> ពីទំព័រដើម?</translation>
 <translation id="2721464457853369512">សមតុល្យ <ph name="CARD_NAME"/> របស់អ្នកមិនផ្លាស់ប្ដូរទេ។ ការនេះគ្រាន់តែលាក់កាតពីទំព័រដើម។ អ្នកអាចបង្ហាញវាម្ដងទៀតនៅពេលណាក៏បាននៅក្នុងការកំណត់ ក្រោម Wallet។</translation>
+<translation id="1543259266592091784">បន្ថែមទុន</translation>
+<translation id="6202621179510403111">កាតថ្មី</translation>
+<translation id="2366365638711338487">ប្រាក់ចំណូល <ph name="DATE_BEGIN"/>(<ph name="DATE"/>)<ph name="DATE_END"/></translation>
+<translation id="4938547503015386493">ការប្រាក់ + ប្រាក់សងត្រឡប់ <ph name="AMOUNT"/> BAT</translation>
+<translation id="5124185664922725208">ការចំណាយ</translation>
+<translation id="1591562245178063882">ខែនេះ</translation>
+<translation id="2781977263564899470">ទទួលបានកាតរូបវន្ត</translation>
+<translation id="3388543273143324626">ប្រើនៅក្នុងហាង និងម៉ាស៊ីន ATM</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">ព័ត៌មានធម្មតា</translation>
 <translation id="4045404575593562245">ព្រឹត្តិនានាការត្រួតពិនិត្យ Tor</translation>
@@ -2219,12 +2223,12 @@
 <translation id="7905602379229309187">ចំណុចបញ្ចប់ត្រូវបានធ្លាក់ចុះ។ សូមព្យាយាមម្តងទៀតនៅពេលក្រោយ។</translation>
 <translation id="8151638057146502721">កំណត់រចនាសម្ព័ន្ធ</translation>
 <translation id="999273441077650169">ពណ៌គំរូមានលក្ខណៈតម្រូវឪ្យប្រើប្រាស់ល្អសម្រាប់ការងារ;<ph name="LINK_BEFORE"/>ស្វែងយល់បន្ថែម<ph name="LINK_AFTER"/></translation>
-<translation id="3852808100039989429">សួស្តី, ខ្ញុំ​ឈ្មោះ Leo។ ខ្ញុំ​ជា​អ្នក​ជំនួយ AI របស់ Brave។ ខ្ញុំ​ចាប់បាច់​ដោយ​កម្មវិធី​ម៉ូដែល Qwen VL 30B ដែល​បង្កើត​ដោយ​ក្រុមហ៊ុន Alibaba Cloud ដើម្បី​ធ្វើការ​ដោយ​ប្រសិទ្ធភាព និង​អាច​អនុវត្ត​ក្នុង​ករណី​ផ្សេងៗជា​ច្រើន។ Qwen ត្រូវ​បាន​ដាក់​បញ្ចូល​ដោយ Brave តាម​រយៈ​យ៉ាង​ទី​សុវត្ថិភាពផ្ទាល់​របស់​យើង។<ph name="LINK_BEFORE"/>ស្វែង​យល់​បន្ថែម<ph name="LINK_AFTER"/></translation>
+<translation id="8218534413919828549">សួស្តី, ខ្ញុំ​ឈ្មោះ Leo។ ខ្ញុំ​ជា​អ្នក​ជំនួយ AI របស់ Brave។ ខ្ញុំ​ចាប់បាច់​ដោយ​កម្មវិធី​ម៉ូដែល Qwen 3.6 35B ដែល​បង្កើត​ដោយ​ក្រុមហ៊ុន Alibaba Cloud ដើម្បី​ធ្វើការ​ដោយ​ប្រសិទ្ធភាព និង​អាច​អនុវត្ត​ក្នុង​ករណី​ផ្សេងៗជា​ច្រើន។ Qwen ត្រូវ​បាន​ដាក់​បញ្ចូល​ដោយ Brave តាម​រយៈ​យ៉ាង​ទី​សុវត្ថិភាពផ្ទាល់​របស់​យើង។<ph name="LINK_BEFORE"/>ស្វែង​យល់​បន្ថែម<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">សួស្តី, ខ្ញុំ​ឈ្មោះ Leo។ ខ្ញុំ​ជា​អ្នក​ជំនួយ AI របស់ Brave។ ខ្ញុំ​ចាប់បាច់​ដោយ​កម្មវិធី​ម៉ូដែល GLM-5.3 Flash ដែល​បង្កើត​ដោយ​ក្រុមហ៊ុន Zhipu AI ដើម្បី​ធ្វើការ​ដោយប្រសិទ្ធភាព និង​អាច​អនុវត្ត​ក្នុង​ករណី​ផ្សេងៗ​ជា​ច្រើន។ GLM-5.3 Flash ត្រូវ​បាន​ដាក់បញ្ចូល​ដោយ NEAR តាមរយៈ​យ៉ាង​ទី​សុវត្ថិភាព​របស់​ពួកគេ។<ph name="LINK_BEFORE"/>ស្វែង​យល់​បន្ថែម<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">សួស្តី ខ្ញុំឈ្មោះ Leo។ ខ្ញុំ​ជា​អ្នកជួយប្រើប្រាស់បច្ចេកវិទ្យា AI របស់ Brave។ ខ្ញុំ​ដំណើរការដោយ Claude Instant ដែលជារ៉ូបូតបង្កើតដោយ Anthropic សម្រាប់ជជែកនិងដំណើរការអត្ថបទ។ Claude Instant ត្រូវបានដាក់ឲ្យដំណើរការដោយ Brave តាមរយៈហេដ្ឋារចនាសម្ព័ន្ធសុវត្ថិភាពផ្ទាល់ខ្លួន។<ph name="LINK_BEFORE"/>ស្វែងយល់បន្ថែម<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">សួស្តី, ខ្ញុំ​ឈ្មោះ Leo។ ខ្ញុំ​ជា​អ្នក​ជំនួយ AI របស់ Brave។ ខ្ញុំ​ចាប់បាច់​ដោយ​កម្មវិធី​ម៉ូដែល Claude Sonnet ដែល​បង្កើត​ដោយ​ក្រុមហ៊ុន Anthropic ដើម្បី​បំពេញ​និង​ការ​បំពេញ​តាម​តម្រូវការ​ប្រារព្ធពិធី​និង​កិច្ចការ​ការ​ប្រើប្រាស់​ត្រាំ​ដែល​ខ្ញុំ​មាន។ Claude Sonnet ត្រូវ​បាន​ដាក់បញ្ចូល​ដោយ Brave តាម​រយៈ​យ៉ាង​ទី​សុវត្ថិភាព​ផ្ទាល់​របស់​យើង។<ph name="LINK_BEFORE"/>ស្វែង​យល់​បន្ថែម<ph name="LINK_AFTER"/></translation>
-<translation id="6676306995311143470">សួស្តី, ខ្ញុំ​ឈ្មោះ Leo។ ខ្ញុំ​ជា​អ្នក​ជំនួយ AI របស់ Brave។ ខ្ញុំ​ចាប់បាច់​ដោយ​កម្មវិធី​ម៉ូដែល Grok 4.6 ដែល​ជា​ម៉ូដែល​វែកញែក​ជួរមុខ​របស់ xAI នៅ​លើ Amazon Bedrock Mantle។ Grok 4.6 ត្រូវ​បាន​ផ្ដល់​ជូន​តាម​រយៈ​យ៉ាង​ទី​សុវត្ថិភាព AWS របស់ Brave។<ph name="LINK_BEFORE"/>ស្វែង​យល់​បន្ថែម<ph name="LINK_AFTER"/></translation>
-<translation id="2394656730986208060">សួស្តី, ខ្ញុំ​ឈ្មោះ Leo។ ខ្ញុំ​ជា​អ្នក​ជំនួយ AI របស់ Brave។ ខ្ញុំ​ចាប់បាច់​ដោយ​កម្មវិធី​ម៉ូដែល GPT 5.6 Luna ដែល​ជា​ម៉ូដែល​លឿន មាន​ភាព​យឺតយ៉ាវ​ទាប​របស់ OpenAI នៅ​លើ Amazon Bedrock Mantle។ GPT 5.6 Luna ត្រូវ​បាន​ផ្ដល់​ជូន​តាម​រយៈ​យ៉ាង​ទី​សុវត្ថិភាព AWS របស់ Brave។<ph name="LINK_BEFORE"/>ស្វែង​យល់​បន្ថែម<ph name="LINK_AFTER"/></translation>
+<translation id="3934503473603661122">សួស្តី, ខ្ញុំ​ឈ្មោះ Leo។ ខ្ញុំ​ជា​អ្នក​ជំនួយ AI របស់ Brave។ ខ្ញុំ​ចាប់បាច់​ដោយ​កម្មវិធី​ម៉ូដែល Grok 4.7 ដែលជាម៉ូដែលហេតុផលជាន់ខ្ពស់របស់ xAI នៅលើ Amazon Bedrock។ Grok 4.7 ត្រូវបានផ្ដល់ជូនតាមរយៈហេដ្ឋារចនាសម្ព័ន្ធ AWS ដ៏សុវត្ថិភាពរបស់ Brave។<ph name="LINK_BEFORE"/>ស្វែង​យល់​បន្ថែម<ph name="LINK_AFTER"/></translation>
+<translation id="8983215701788462580">សួស្តី, ខ្ញុំ​ឈ្មោះ Leo។ ខ្ញុំ​ជា​អ្នក​ជំនួយ AI របស់ Brave។ ខ្ញុំ​ចាប់បាច់​ដោយ​កម្មវិធី​ម៉ូដែល GPT Luna ដែលជាម៉ូដែលរហ័ស ប្រតិកម្មទាបរបស់ OpenAI នៅលើ Amazon Bedrock។ GPT Luna ត្រូវបានផ្ដល់ជូនតាមរយៈហេដ្ឋារចនាសម្ព័ន្ធ AWS ដ៏សុវត្ថិភាពរបស់ Brave។<ph name="LINK_BEFORE"/>ស្វែង​យល់​បន្ថែម<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">សួស្តី, ខ្ញុំ​ឈ្មោះ Leo។ ខ្ញុំ​ជា​អ្នក​ជំនួយ AI របស់ Brave។ ខ្ញុំ​ចាប់បាច់​ដោយ​កម្មវិធី​ម៉ូដែល GPT 5.6 Terra ដែល​ជា​ម៉ូដែល​ផលិតកម្ម​មាន​តុល្យភាព​របស់ OpenAI នៅ​លើ Amazon Bedrock Mantle។ GPT 5.6 Terra ត្រូវ​បាន​ផ្ដល់​ជូន​តាម​រយៈ​យ៉ាង​ទី​សុវត្ថិភាព AWS របស់ Brave។<ph name="LINK_BEFORE"/>ស្វែង​យល់​បន្ថែម<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">សួស្តី, ខ្ញុំ​ឈ្មោះ Leo។ ខ្ញុំ​ជា​អ្នក​ជំនួយ AI របស់ Brave។ ខ្ញុំ​ចាប់​បាច់​ដោយ​កម្មវិធី​ម៉ូដែល Mistral Large ដែល​បង្កើត​ដោយ​ក្រុមហ៊ុន Mistral ដើម្បី​ធ្វើការ​ដោយប្រសិទ្ធភាព និង​អាច​អនុវត្ត​ក្នុង​ករណី​ផ្សេងៗ​ជា​ច្រើន។ Mistral Large ត្រូវ​បាន​ដាក់បញ្ចូល​ដោយ Brave តាម​រយៈ​យ៉ាង​ទី​សុវត្ថិភាពផ្ទាល់​របស់​យើង។<ph name="LINK_BEFORE"/>ស្វែង​យល់​បន្ថែម<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">សួស្តី, ខ្ញុំ​ឈ្មោះ Leo។ ខ្ញុំ​ជា​អ្នក​ជំនួយ AI របស់ Brave។ ខ្ញុំ​ចាប់បាច់​ដោយ​កម្មវិធី​ម៉ូដែល Qwen 3.8 Flash Next ដែល​បង្កើត​ដោយ​ក្រុមហ៊ុន Alibaba Cloud ដើម្បី​ធ្វើការ​ដោយប្រសិទ្ធភាព និង​អាច​អនុវត្ត​ក្នុង​ករណី​ផ្សេងៗ​ជា​ច្រើន។ Qwen 3.8 Flash Next ត្រូវ​បាន​ដាក់បញ្ចូល​ដោយ Brave តាម​រយៈ​យ៉ាង​ទី​សុវត្ថិភាពផ្ទាល់​របស់​យើង។<ph name="LINK_BEFORE"/>ស្វែង​យល់​បន្ថែម<ph name="LINK_AFTER"/></translation>
@@ -2275,6 +2279,10 @@
 <translation id="3027575440738035995">Leo ពិសេសផ្តល់ដំណើរការម៉ូដែលភាសាវិស្តារដែលអាចអានចម្រាញ់ចម្លើយបានកាន់តែច្រើន។ <ph name="LINK_BEFORE"/>ស្វែងយល់បន្ត<ph name="LINK_AFTER"/></translation>
 <translation id="8261506727792406068">លុប</translation>
 <translation id="6574153208133461043">តើ​អ្នកប្រាកដ​ថា​អ្នក​ចង់លុបការសន្ទនានេះ​? សកម្មភាព​នេះ​មិនអាចត្រលប់វិញបានទេ។</translation>
+<translation id="1020105790073039189">ប្ដូរទៅម៉ូដែលដែលអាចអានរូបភាពបានឬ?</translation>
+<translation id="3797128260474242570"><ph name="CURRENT_MODEL"/> មិនអាចអានរូបភាពបានទេ ហើយឯកសារភ្ជាប់របស់អ្នកត្រូវការការដំណើរការរូបភាព។ ដើម្បីផ្ញើពួកវា សូមប្ដូរការសន្ទនានេះទៅ <ph name="VISION_MODEL"/>។ វានឹងទទួលបានការសន្ទនាទាំងមូល រួមទាំងសារមុនៗផងដែរ។ អ្នកក៏អាចបោះបង់ និងជ្រើសម៉ូដែលផ្សេងទៀតដែលអាចអានរូបភាពបាន។ ប្រសិនបើអ្នកផ្ញើដោយគ្មានរូបភាព Leo មិនអាចមើលឯកសារភ្ជាប់បានទេ។</translation>
+<translation id="830353068401992697">ប្ដូរ និងផ្ញើ</translation>
+<translation id="369110003363071587">ផ្ញើដោយគ្មានរូបភាព</translation>
 <translation id="7488762544858401571">បានកែតម្រូវ</translation>
 <translation id="5604254791550001355">កែប្រែសំណួរ</translation>
 <translation id="8115786586976830777">ចម្លងសំណួរ</translation>
@@ -2429,6 +2437,7 @@
 <translation id="3024277805447899099">មើលរូបភាពសាកល្បង</translation>
 <translation id="6671495933530132209">ចម្លងរូបភាព</translation>
 <translation id="6864459304226931083">ទាញយករូបភាព</translation>
+<translation id="6323406350879995440">បើកនៅក្នុងផ្ទាំង</translation>
 <translation id="6332876390231524389">ខ្លឹមសារលើផ្ទាំងបច្ចុប្បន្ន</translation>
 <translation id="6397861830483632092">បើកផ្ទាំង…</translation>
 <translation id="802080272588201037">របាចំណាំ…</translation>
@@ -2483,11 +2492,14 @@
 <translation id="4838375634693651776">កំពុងប្រតិបត្តិកូដក្នុងលំនៅដ្ឋានដើម្បីជួយក្នុងសំណួររបស់អ្នក</translation>
 <translation id="6990975553143971265">កំពុងស្វែងរកប្រវត្តិកម្មវិធីរុករករបស់អ្នកសម្រាប់ "<ph name="QUERY"/>"</translation>
 <translation id="8302511726757276645">កំពុងស្វែងរកប្រវត្តិកម្មវិធីរុករករបស់អ្នក</translation>
+<translation id="6727762439034900202">កំពុងបង្កើតកន្លែងធ្វើការ</translation>
+<translation id="261799307673205052">កន្លែងធ្វើការ</translation>
 <translation id="8410699755320690690">Brave AI ចង់ស្វែងរកប្រវត្តិការរុករករបស់អ្នក។ ការស្វែងរកដំណើរការនៅលើឧបករណ៍របស់អ្នកក្នុងតំបន់ ដូច្នេះប្រវត្តិពេញលេញរបស់អ្នកមិនត្រូវបានផ្ញើទៅកន្លែងណាមួយឡើយ។ មានតែចំណងជើងទំព័រដែលត្រូវគ្នា, URLs, និងអត្ថបទដែលបានធ្វើលិបិក្រមប៉ុណ្ណោះនឹងត្រូវបានផ្ញើទៅ Brave AI ជាផ្នែកមួយនៃការសន្ទនានេះ។</translation>
 <translation id="4379566111233326721">កូដ៖</translation>
 <translation id="3542130965673205258">ទិន្នផល:</translation>
 <translation id="6911817209337314910">កំពុងបង្កើតជម្រើសមួយចំនួនសម្រាប់អ្នកជ្រើសរើស</translation>
 <translation id="5382076391290708074">ផ្លាស់ប្តូរផ្ទាំងរបស់អ្នក</translation>
+<translation id="8717463977094156527">ការអនុញ្ញាតនេះនឹងផ្ញើ **URL** និង **ចំណងជើង** នៃផ្ទាំង និងក្រុមផ្ទាំងទាំងអស់របស់អ្នកទៅកាន់ Brave AI រួមជាមួយ **ផ្នែកខ្លីៗនៃអត្ថបទទំព័រ** នៅក្នុងផ្ទាំងរបស់អ្នកដែលមានពីសន្ទស្សន៍ Semantic History Search របស់អ្នក ហើយអនុញ្ញាតឱ្យ Brave AI ផ្លាស់ទីផ្ទាំងរបស់អ្នក។ ការអនុញ្ញាតនេះអនុវត្តតែចំពោះការសន្ទនានេះប៉ុណ្ណោះ។</translation>
 <translation id="3862123464576147769">ការអនុញ្ញាតនេះនឹងផ្ញើ <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> និង <ph name="TITLE_FORMAT_START"/>ចំណងជើង<ph name="TITLE_FORMAT_END"/> នៃផ្ទាំងរបស់អ្នកទាំងអស់ និងក្រុមផ្ទាំងទៅ Brave AI ហើយឱ្យ Brave AI ផ្លាស់ប្តូរពួកវា។ ការអនុញ្ញាតនេះអនុវត្តតែចំពោះការសន្ទនានេះប៉ុណ្ណោះ។</translation>
 <translation id="396165714586708444">ស្វែងរកស៊ីជម្រៅ</translation>
 <translation id="577747221882855891">ស្វែងរក៖ "<ph name="QUERY"/>"</translation>
@@ -2515,7 +2527,7 @@
 <translation id="7901376755618482277">បង្ហាញ​ដំបូន្មាន "ឈ្មោះក្លែងក្លាយថ្មី" នៅលើវាលអ៊ីមែល</translation>
 <translation id="6002159997868894136">ចុចដើម្បីចម្លងឈ្មោះ</translation>
 <translation id="8105770564756958406">បានប្រើដោយ <ph name="DOMAINS"/></translation>
-<translation id="5006956315579221642">បង្កើតឈ្មោះអ៊ីមែលឥតគិតថ្លៃរហូតដល់ 5 ដើម្បីការពារអាសយដ្ឋានអ៊ីមែលពិតប្រាកដរបស់អ្នក។</translation>
+<translation id="6776324888261353420">បង្កើតឈ្មោះអ៊ីមែលឥតគិតថ្លៃរហូតដល់ <ph name="MAX_ALIASES"/> ដើម្បីការពារអាសយដ្ឋានអ៊ីមែលពិតប្រាកដរបស់អ្នក។</translation>
 <translation id="9046133327037621173">ឈ្មោះអ៊ីមែលថ្មី</translation>
 <translation id="3768606658230902536">បង្កើតអាសយដ្ឋានអ៊ីមែលចៃដន្យដែលបញ្ជូនបន្តទៅប្រអប់សាររបស់អ្នក ខណៈពេលដែលរក្សាអ៊ីមែលផ្ទាល់ខ្លួនរបស់អ្នកជាឯកជន។</translation>
 <translation id="4452721050684632493">បានដល់ដែនកំណត់ alias</translation>
@@ -2588,7 +2600,7 @@
 <translation id="6851426306697017546">បង្ហាញនាឡិកា</translation>
 <translation id="4844370919312937270">បង្ហាញប្រអប់ស្វែងរកនៅក្នុងផ្ទាំងថ្មី</translation>
 <translation id="5088374130885640159">ជាមួយ <ph name="REWARDS_LINK_BEGIN"/>រង្វាន់ Brave<ph name="REWARDS_LINK_END"/>, អ្នកអាចរកប្រាក់បានសម្រាប់ការមើលការផ្សាយពាណិជ្ជកម្មទំព័រផ្ទាំងថ្មី។ <ph name="LEARN_MORE_LINK_BEGIN"/>ស្វែងយល់បន្ថែម<ph name="LEARN_MORE_LINK_END"/>។</translation>
-<translation id="4100520468072294616">បង្ហាញផ្ទាំងផ្សាយពាណិជ្ជកម្មទំព័រថ្មី</translation>
+<translation id="7020410251711260841">បង្ហាញការផ្សាយពាណិជ្ជកម្មដែលឧបត្ថម្ភ</translation>
 <translation id="4983925687993168579">ស្ថិតិ</translation>
 <translation id="5009354496127441090">បង្ហាញគេហទំព័រដែលពេញនិយម</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -2611,6 +2623,7 @@
 <translation id="8814357473522731680">ដំណើរការដោយ</translation>
 <translation id="7143207342074048698">កំពុងភ្ជាប់</translation>
 <translation id="1202549130170287307">កំពុង​ផ្ដាច់</translation>
+<translation id="4989542687859782284">មិនអាចប្រើបាន</translation>
 <translation id="8941703009412168350">ឧបករណ៍ VPN</translation>
 <translation id="6303294677342628402">ខែលការពារ</translation>
 <translation id="8458987127502506209">បើកខែលការពារ Brave</translation>
@@ -2798,9 +2811,11 @@
 <translation id="6021669293402055982">Brave VPN៖ បានផ្តាច់</translation>
 <translation id="3541307549916475335">ផ្ទាំង VPN Brave</translation>
 <translation id="2325196879156848326">ការភ្ជាប់ បានបរាជ័យ</translation>
+<translation id="6246488334766115273">ការភ្ជាប់មិនអាចប្រើបាន</translation>
 <translation id="745054660363064771">មិនអាច​ភ្ជាប់ទៅ​ទ្វេទីតាំងបានទេ</translation>
 <translation id="3936826714240735937">ជ្រើសរើសម៉ាស៊ីនបម្រើផ្សេង</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/> មិនអាចភ្ជាប់ទៅម៉ាស៊ីនបម្រើ <ph name="REGION_NAME"/> បានទេ។ សូមព្យាយាមម្តងទៀត ឬជ្រើសរើសប្រទេសផ្សេងទៀត។</translation>
+<translation id="4872940635040426686"><ph name="PRODUCT_NAME"/> មិនអាចប្រើបានទេ។ ប្រសិនបើបញ្ហានៅតែបន្ត សូមដំឡើង Brave ឡើងវិញ ឬទាក់ទងក្រុមជំនួយបច្ចេកទេសរបស់យើង។</translation>
 <translation id="1776533911621317363">ចាប់ផ្តើមការសាកល្បងឥតគិតថ្លៃរយៈពេល 7 ថ្ងៃរបស់អ្នក</translation>
 <translation id="3357036723290257445">បានទិញ Brave VPN រួចហើយ?</translation>
 <translation id="8652175077544655965">បិទការកំណត់</translation>
@@ -2928,11 +2943,13 @@
 <translation id="4405566535206792621">ដើម្បីផ្លាស់ប្តូរពាក្យសម្ងាត់របស់អ្នក សូមផ្ទៀងផ្ទាត់អាសយដ្ឋានអ៊ីមែលរបស់អ្នក។</translation>
 <translation id="3135333563420939059">អ៊ីមែលរបស់អ្នកត្រូវបានផ្ទៀងផ្ទាត់។ កំណត់ពាក្យសម្ងាត់ថ្មីដើម្បីបំពេញការផ្លាស់ប្តូរពាក្យសម្ងាត់របស់អ្នក។</translation>
 <translation id="4227581348172626540">បោះបង់ការផ្លាស់ប្តូរពាក្យសម្ងាត់</translation>
-<translation id="808894953321890993">ប្ដូរ​ពាក្យ​សម្ងាត់</translation>
 <translation id="7967687455715421528">មិនអាចផ្លាស់ប្តូរពាក្យសម្ងាត់បានទេ</translation>
 <translation id="7413006094063730650">លុបគណនី</translation>
 <translation id="4869737930995549965">ចាកចេញ</translation>
-<translation id="2902312830803030883">សកម្មភាពច្រើនទៀត</translation>
+<translation id="4424262960694990728">ត្រូវការសកម្មភាព</translation>
+<translation id="847260521336960132">ព័ត៌មានលម្អិតគណនី</translation>
+<translation id="5399593843842221768">ព័ត៌មានផ្ទាល់ខ្លួនអំពីគណនី Brave របស់អ្នក។</translation>
+<translation id="5771731269320499905">ព័ត៌មានលម្អិតគណនី Brave</translation>
 <translation id="5538654494923870167">ចាប់ផ្តើមជាមួយគណនី Brave របស់អ្នក</translation>
 <translation id="1544145635547515689">បង្កើតគណនី Brave</translation>
 <translation id="3828644479849256404">មានគណនីរួចហើយ? ចូល</translation>
@@ -2948,6 +2965,7 @@
 <translation id="7114054701490058191">ពាក្យសម្ងាត់មិនត្រូវគ្នា</translation>
 <translation id="4277028893293644418">កំណត់ពាក្យសម្ងាត់ឡើងវិញ</translation>
 <translation id="9033485352495162741">ការបញ្ជាក់ជោគជ័យ។ ឥឡូវនេះ សូមបញ្ចូលពាក្យសម្ងាត់ថ្មីដែលអ្នកចង់បាន៖</translation>
+<translation id="808894953321890993">ប្ដូរ​ពាក្យ​សម្ងាត់</translation>
 <translation id="1293857704520741614">ចូលទៅក្នុងគណនីរបស់អ្នក</translation>
 <translation id="118617366439356381">ភ្លេចពាក្យសម្ងាត់របស់អ្នកមែនទេ?</translation>
 <translation id="5636406393070713097">បញ្ជាក់អ៊ីមែលគណនី Brave របស់អ្នក ហើយបន្ទាប់មកអ្នកនឹងទទួលបានលេខកូដដើម្បីកំណត់ពាក្យសម្ងាត់របស់អ្នកឡើងវិញ។ លេខកូដនេះនឹងមានសុពលភាពតែ 15 នាទីប៉ុណ្ណោះ។</translation>

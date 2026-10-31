@@ -220,7 +220,6 @@
 <translation id="9040069796107003510">Піктограма Винагороди Brave</translation>
 <translation id="6333347122924254968">Показувати піктограму Винагороди Brave у панелі адреси</translation>
 <translation id="4393974575368329991">Нижня панель навігації</translation>
-<translation id="8727059712928806451">Увімкнути нижню панель</translation>
 <translation id="1834226716203076292">Показувати нижню панель для швидкого доступу до головної сторінки, закладок і пошуку</translation>
 <translation id="1422686363939271829">Ця опція вимкнена, якщо адресний рядок розміщено внизу</translation>
 <translation id="6587448235155023666">Ваші зміни застосуються після наступного перезапуску Brave</translation>
@@ -290,7 +289,7 @@
 <translation id="2569646144216067185">Кількість слів: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Невірний код синхронізації</translation>
 <translation id="8284063834901328650">Невірний QR-код синхронізації</translation>
-<translation id="859506441384380749">Цей код було згенеровано застарілою версією Brave, спочатку встановіть оновлення на іншому пристрої</translation>
+<translation id="4002014583969312635">Схоже, що цей код було створено на пристрої зі старою версією Brave. Оновіть Brave до найновішої версії на іншому пристрої, а потім створіть новий код синхронізації.</translation>
 <translation id="3132642509209154999">Термін дії цього коду минув. Згенеруйте новий код на іншому пристрої та повторіть спробу.</translation>
 <translation id="2859229680945501779">Цей код недійсний. Перевірте, чи правильно налаштовано час і часовий пояс на вашому пристрої.</translation>
 <translation id="3149880132460839085">Синхронізація Brave</translation>
@@ -336,8 +335,6 @@
 <translation id="8185825081026121627">Заробіть Basic Attention токен за перегляд приватної реклами Brave Rewards.</translation>
 <translation id="5321518976657560663">Помилка скидання</translation>
 <translation id="4114170343590425996">При скиданні нагород Brave виникла помилка. Будь ласка, перезапустіть Brave і спробуйте знову.</translation>
-<translation id="6417420737057016607">Реклама Brave</translation>
-<translation id="5611966874859284786">Показувати рекламні сповіщення, коли Brave не використовується</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Скидання даних Винагород Brave…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Очищення даних Реклами Brave…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Додати закладку</translation>
@@ -400,8 +397,9 @@
 <translation id="4546260624932151782">Показати обране</translation>
 <translation id="5313967007315987356">Додати сайт</translation>
 <translation id="1773147648972887693">Показати часто відвідувані</translation>
-<translation id="752098910262610337">Показати ярлики</translation>
 <translation id="7134741506051403308">Приховати віджет</translation>
+<translation id="1247759249260562308">Редагувати вибране</translation>
+<translation id="6387214885349500492">Закріпити цей обраний сайт</translation>
 <translation id="7462178177755090262">Початковий екран</translation>
 <translation id="5365434987337264071">Остання відкрита вкладка</translation>
 <translation id="6019856124237323989">{HOURS, plural,
@@ -979,6 +977,7 @@
 <translation id="6365389672683343144">За допомогою підписки на VPN від Brave можна захистити до 5 пристроїв на базі Android та iOS, а також ПК. Достатньо підключити підписку Google Play до облікового запису Brave.</translation>
 <translation id="6610899852831463073">Неможливо ввімкнути безпечний перегляд</translation>
 <translation id="7954263306665462056">Безпечний перегляд вимкнено на вашому пристрої. Щоб увімкнути його, переконайтеся, що на вашому пристрої встановлено останню версію сервісів Google Play.</translation>
+<translation id="6417420737057016607">Реклама Brave</translation>
 <translation id="7748944510530490017">Основні мережі</translation>
 <translation id="2781668117338732220">Додаткові мережі</translation>
 <translation id="282560918037172384">Тестові мережі</translation>

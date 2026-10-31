@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/setup/BUILD.gn b/chrome/installer/setup/BUILD.gn
-index 8967d1094ffe3d0e6bc5eb4bfe38e302e4ac26a6..ed1b874e775ab22c1d1b6d8590d30e3eae3465a3 100644
+index e7e695f652355604ceea7d9739dcb95f73769fad..8e4ba6244c59029ccc73d70920d3e46c943f4b59 100644
 --- a/chrome/installer/setup/BUILD.gn
 +++ b/chrome/installer/setup/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 8967d1094ffe3d0e6bc5eb4bfe38e302e4ac26a6..ed1b874e775ab22c1d1b6d8590d30e3e
  import("//build/buildflag_header.gni")
  import("//build/config/chrome_build.gni")
  import("//chrome/process_version_rc_template.gni")
-@@ -100,6 +101,7 @@ if (is_win) {
+@@ -105,6 +106,7 @@ if (is_win) {
        "wof_compression.cc",
        "wof_compression.h",
      ]
@@ -18,7 +18,7 @@ index 8967d1094ffe3d0e6bc5eb4bfe38e302e4ac26a6..ed1b874e775ab22c1d1b6d8590d30e3e
  
      public_deps = [
        "//base",
-@@ -127,6 +129,7 @@ if (is_win) {
+@@ -133,6 +135,7 @@ if (is_win) {
        "//third_party/zlib/google:zip",
        "//ui/base:fullscreen_win",
      ]
