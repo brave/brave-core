@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/predictors/loading_predictor_config.cc b/chrome/browser/predictors/loading_predictor_config.cc
-index a878c25f851187e0f79f507d4eb4bbe828850d2c..d0a088eb1fb08f4f3cdfd2bf9058ddfe09d86f66 100644
+index 367275e7435de7e5ddef1d621e7f313aa458156f..7fd4defa2afdc3c6e6fc0bd00357ae1d95a951f0 100644
 --- a/chrome/browser/predictors/loading_predictor_config.cc
 +++ b/chrome/browser/predictors/loading_predictor_config.cc
-@@ -13,6 +13,7 @@
+@@ -11,6 +11,7 @@
  namespace predictors {
  
  bool IsLoadingPredictorEnabled(Profile* profile) {

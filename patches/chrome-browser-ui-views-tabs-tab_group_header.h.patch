@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_group_header.h b/chrome/browser/ui/views/tabs/tab_group_header.h
-index b2e8fa354c47d7c1457183dd6048660ba9dda1b9..fe1dc093610715e265d089d92b116bb8a3ca1f56 100644
+index 539bafd78aad837f1d00433c8a7c1feefca59c85..1de021a9d7e99822e0eb80700412ff1e2b5b4ca5 100644
 --- a/chrome/browser/ui/views/tabs/tab_group_header.h
 +++ b/chrome/browser/ui/views/tabs/tab_group_header.h
 @@ -103,7 +103,7 @@ class TabGroupHeader : public TabSlotView,

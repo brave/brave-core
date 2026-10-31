@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/help/BUILD.gn b/chrome/browser/ui/webui/help/BUILD.gn
-index 17d8d3e2832c4d572054a7c866690703e9fe87a2..22cc75845696337ecbc070b1ded635fe66ab19bf 100644
+index 45aa60407f87a07de21eec49145ffd78db903903..f9db4fe46e956b47d38813693248a8fe0bcc6ddd 100644
 --- a/chrome/browser/ui/webui/help/BUILD.gn
 +++ b/chrome/browser/ui/webui/help/BUILD.gn
 @@ -8,6 +8,7 @@ source_set("help") {
@@ -10,7 +10,7 @@ index 17d8d3e2832c4d572054a7c866690703e9fe87a2..22cc75845696337ecbc070b1ded635fe
  
    if (is_chromeos) {
      sources = [
-@@ -49,7 +50,7 @@ source_set("help") {
+@@ -53,7 +54,7 @@ source_set("help") {
    }
  
    if (is_win) {

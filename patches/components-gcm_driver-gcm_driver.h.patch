@@ -1,8 +1,8 @@
 diff --git a/components/gcm_driver/gcm_driver.h b/components/gcm_driver/gcm_driver.h
-index 795bb6e9d7d91d0e443db3e8c2f28803e8803096..081331823aeaee3aeeb96e4a53e646ebfcaaf95c 100644
+index a3dbc5f3753347efebcae3a7b9a0c18e2bce4ace..4e82e584d2add07373f5f657058538c1af795318 100644
 --- a/components/gcm_driver/gcm_driver.h
 +++ b/components/gcm_driver/gcm_driver.h
-@@ -300,6 +300,8 @@ class GCMDriver {
+@@ -280,6 +280,8 @@ class GCMDriver {
                                      int interval_ms) = 0;
    virtual void RemoveHeartbeatInterval(const std::string& scope) = 0;
  

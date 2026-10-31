@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
-index a6e265da6e007857cea8a1ccaea3abfc16fd5459..61674609d93463ae4b4812bc6e05c56ee5cc7f75 100644
+index e225ddf50a20941115178213e300c4d8257bf5b8..7e49e2d3e4030fb267b83adde64b29598d16a2fe 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
-@@ -2020,7 +2020,7 @@ public class ToolbarManager
+@@ -2038,7 +2038,7 @@ public class ToolbarManager
          }
      }
  

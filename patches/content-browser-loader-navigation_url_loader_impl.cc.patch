@@ -1,8 +1,8 @@
 diff --git a/content/browser/loader/navigation_url_loader_impl.cc b/content/browser/loader/navigation_url_loader_impl.cc
-index 33267b7a0d4f90da9cd7262f4f4a969e225fed0b..e09dd72af87bd9c5547c323150d49997c93b1f03 100644
+index b6cca8069223bb37bbd11f49d70986112b398d5b..d93f5a97e51a4267222986716ddd9b70ae89cd8f 100644
 --- a/content/browser/loader/navigation_url_loader_impl.cc
 +++ b/content/browser/loader/navigation_url_loader_impl.cc
-@@ -700,7 +700,9 @@ void NavigationURLLoaderImpl::Start() {
+@@ -703,7 +703,9 @@ void NavigationURLLoaderImpl::Start() {
      // or be intercepted, so we just let it go here.
      std::string scheme = request_info_->common_params->url.GetScheme();
      if (std::ranges::contains(URLDataManagerBackend::GetWebUISchemes(),
@@ -13,7 +13,7 @@ index 33267b7a0d4f90da9cd7262f4f4a969e225fed0b..e09dd72af87bd9c5547c323150d49997
        FrameTreeNode* frame_tree_node =
            FrameTreeNode::GloballyFindByID(frame_tree_node_id_);
        CHECK(frame_tree_node);
-@@ -2218,6 +2220,13 @@ NavigationURLLoaderImpl::CreateTerminalNonNetworkLoaderFactory(
+@@ -2228,6 +2230,13 @@ NavigationURLLoaderImpl::CreateTerminalNonNetworkLoaderFactory(
      return factory_from_client;
    }
  

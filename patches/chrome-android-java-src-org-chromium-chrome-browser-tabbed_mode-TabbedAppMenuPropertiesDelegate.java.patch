@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate.java b/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate.java
-index 6d2f9de7c5418cc5e779efa826952b8e8f8c33a4..1b022b6e8e820504034caaad36a13beaf9aaa3ca 100644
+index 2b49c0e5b72039195c1ed85fc5730b27bddebc00..9fb95afa4c2b8f429723ad6262e771c13920307c 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate.java
-@@ -1543,7 +1543,7 @@ public class TabbedAppMenuPropertiesDelegate extends AppMenuPropertiesDelegateIm
+@@ -1559,7 +1559,7 @@ public class TabbedAppMenuPropertiesDelegate extends AppMenuPropertiesDelegateIm
          return new MVCListAdapter.ListItem(AppMenuHandler.AppMenuItemType.STANDARD, model);
      }
  

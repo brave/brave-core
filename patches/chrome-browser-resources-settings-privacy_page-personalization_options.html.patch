@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.html b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-index 055d7369c4f14f9dd2e374af6f2f350811a3dae3..c6ade4eb14a60e2e598c6195dcadfeea2d0c812d 100644
+index c7d5390b163e3a8064dd58c643031a951e964d80..8cc7edadd9abbd23ad0fd54db9df51ed9d4f647f 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.html
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.html
 @@ -5,6 +5,7 @@ import {RestartType} from '../relaunch_mixin_lit.js';

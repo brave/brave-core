@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/window_feature_controller/window_feature_controller.h b/chrome/browser/ui/window_feature_controller/window_feature_controller.h
-index 7c203d12c129f2a7b949c5ccb5144d04b175d58b..744490ea65c0e7df6980f68d131f18239d9fc24b 100644
+index 3e12ea5d95fe1e7a64f1bd19d959651359f9fda3..a72ee0a89ed255b7a83ab1b72018a3a6b3d3bd3b 100644
 --- a/chrome/browser/ui/window_feature_controller/window_feature_controller.h
 +++ b/chrome/browser/ui/window_feature_controller/window_feature_controller.h
 @@ -69,6 +69,9 @@ class WindowFeatureController {

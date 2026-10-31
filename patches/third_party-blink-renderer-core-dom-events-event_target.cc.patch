@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/dom/events/event_target.cc b/third_party/blink/renderer/core/dom/events/event_target.cc
-index 039df6e790d4ad67ca53f68b2f08736980e8272f..0d664166e7ac325c113b32cd9109b3cdaebb1fd4 100644
+index 82a0130f7b60ca6103faa4e0c0a512b7ccb66a6e..55c95e8d1a6a8e0fe73100ecb632dcc391c0a63d 100644
 --- a/third_party/blink/renderer/core/dom/events/event_target.cc
 +++ b/third_party/blink/renderer/core/dom/events/event_target.cc
-@@ -667,6 +667,7 @@ bool EventTarget::AddEventListenerInternal(
+@@ -668,6 +668,7 @@ bool EventTarget::AddEventListenerInternal(
        event_type, listener, options, &registered_listener);
    if (added) {
      CHECK(registered_listener);
@@ -10,7 +10,7 @@ index 039df6e790d4ad67ca53f68b2f08736980e8272f..0d664166e7ac325c113b32cd9109b3cd
      if (options.HasSignal()) {
        // Capture only the boolean that removeEventListener uses instead of the
        // temporary options object.
-@@ -804,6 +805,7 @@ bool EventTarget::RemoveEventListenerInternal(
+@@ -805,6 +806,7 @@ bool EventTarget::RemoveEventListenerInternal(
                                      &registered_listener)) {
      return false;
    }

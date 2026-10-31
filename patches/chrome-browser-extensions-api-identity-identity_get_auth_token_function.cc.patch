@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
-index 3ce3025d0ea372163c5663518027407e2d04a3ee..38639d280b6d7b875afa6d5b9b68427f3747ce6f 100644
+index 76436f87b7337cbea5b28ef5bbcb8e12cb1b3e9b..e6baec21ea5c4ede24e51f51b799a3db4779f2b3 100644
 --- a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
 +++ b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
 @@ -308,6 +308,10 @@ ExtensionFunction::ResponseAction IdentityGetAuthTokenFunction::Run() {
@@ -13,7 +13,7 @@ index 3ce3025d0ea372163c5663518027407e2d04a3ee..38639d280b6d7b875afa6d5b9b68427f
    base::OnceCallback next_step =
        base::BindOnce(&IdentityGetAuthTokenFunction::GetAuthTokenForAccount,
                       weak_ptr_factory_.GetWeakPtr(), gaia_id);
-@@ -533,12 +537,16 @@ void IdentityGetAuthTokenFunction::StartSigninFlow() {
+@@ -516,12 +520,16 @@ void IdentityGetAuthTokenFunction::StartSigninFlow() {
  void IdentityGetAuthTokenFunction::StartMintTokenFlow(
      IdentityMintRequestQueue::MintType type) {
  #if !BUILDFLAG(IS_CHROMEOS)

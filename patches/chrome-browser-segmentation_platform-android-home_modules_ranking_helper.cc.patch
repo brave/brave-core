@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/segmentation_platform/android/home_modules_ranking_helper.cc b/chrome/browser/segmentation_platform/android/home_modules_ranking_helper.cc
-index b0d8aaf5a1049995218a1625c03d7864014ba409..5a2759fa6b580120573ba7b64510f0f85efb063d 100644
+index 2d92fb22f27c48795b9f468cc28c2ccef7016c0e..e603072cb8429c0bea9bda47ed19f373f8a6aa4c 100644
 --- a/chrome/browser/segmentation_platform/android/home_modules_ranking_helper.cc
 +++ b/chrome/browser/segmentation_platform/android/home_modules_ranking_helper.cc
 @@ -50,6 +50,7 @@ static void JNI_HomeModulesRankingHelper_GetClassificationResult(
