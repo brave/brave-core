@@ -1,0 +1,17 @@
+diff --git a/net/cookies/test_cookie_access_delegate.h b/net/cookies/test_cookie_access_delegate.h
+index 0dacce582d2ce45c8bcf61fe0b31f970f947b086..279bf6ca3ebf1a3216dfc69a6340523630aa23af 100644
+--- a/net/cookies/test_cookie_access_delegate.h
++++ b/net/cookies/test_cookie_access_delegate.h
+@@ -58,6 +58,12 @@ class TestCookieAccessDelegate : public CookieAccessDelegate {
+       const std::string& site_for_cookies_scheme,
+       bool require_secure_origin);
+ 
++  bool ShouldUseEphemeralStorage(
++      const GURL& url,
++      const SiteForCookies& site_for_cookies,
++      base::optional_ref<const url::Origin> top_frame_origin)
++      const override;
++
+  private:
+   // Discard any leading dot in the domain string.
+   std::string GetKeyForDomainValue(const std::string& domain) const;

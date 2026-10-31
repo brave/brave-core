@@ -71,15 +71,6 @@
 -StorageAccessHeaderNetworkContextTest.RequestHeader_Active_TopLevelStorageAccess
 -StorageAccessHeaderRedirectNetworkContextTest.RetryThenRedirect/*
 
-# These tests crash because net::TestCookieAccessDelegate does not override
-# CookieAccessDelegate::ShouldUseEphemeralStorage(), whose base implementation
-# is NOTREACHED(). See chromium_src/net/cookies/cookie_access_delegate.cc.
-# This is a gap in Brave's test support, not intended behaviour, and is to be
-# fixed so these tests can be re-enabled.
-# https://github.com/brave/brave-browser/issues/60258
--All/RestrictedCookieManagerTest.ChangeNotificationIncludesAccessSemantics/*
--All/RestrictedCookieManagerTest.NoChangeNotificationForNonlegacyCookie/*
-
 # This test fails because Brave allows unpartitioned cookie access for a nonced
 # cookie partition key when the request is same-site with its top frame.
 # Brave's IsFullCookieAccessAllowed() override discards the upstream rejection
