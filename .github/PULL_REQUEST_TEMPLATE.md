@@ -19,24 +19,16 @@
 (1) applied automatically when some files are changed (see: https://github.com/brave/brave-core/blob/master/.github/labeler.yml)
 -->
 
-<!--
 ## Checklist:
 
-- Review design docs
-  [Browser design principles](https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/chrome_browser_design_principles.md)
-  [Style guide](https://chromium.googlesource.com/chromium/src/+/main/styleguide/c++/c++.md)
-  [Core principles](https://www.chromium.org/developers/core-principles/)
-- Ensure there are (tests)[https://www.chromium.org/developers/testing/]. Unit test as much as possible (including edge cases), but also include browser tests covering high level functionality.
-- Ensure that there are comments explaining what classes/methods are/do. The "why" is often more important than the "what" in comments. Also update any relevant docs (moving docs from wiki to brave-core if necessary).
-- Request security or other review (third-party libraries, rust code, etc...) if applicable [security/privacy review is needed](https://github.com/brave/brave-browser/wiki/Security-reviews) [other review](https://github.com/brave/reviews/issues/new/choose)
-  Also see [adding third-party libraries](https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/adding_to_third_party.md) for general guidelines on using third party code
-- Make sure there is a [ticket](https://github.com/brave/brave-browser/issues) for your issue
-- Use Github [auto-closing keywords](https://docs.github.com/en/github/managing-your-work-on-github/linking-a-pull-request-to-an-issue) in the PR description above
-- Write a good [PR/commit description](https://google.github.io/eng-practices/review/developer/cl-descriptions.html)
-- Squash any review feedback or "fixup" commits before merge, so that history is a record of what happened in the repo, not your PR
-- Add appropriate labels (`QA/Yes` or `QA/No`; `release-notes/include` or `release-notes/exclude`; `OS/...`) to the associated issue
-- Checked the PR locally:
-  * `pnpm run test brave_browser_tests`, `pnpm run test brave_unit_tests` [wiki](https://github.com/brave/brave-browser/wiki/Tests)
-  * `pnpm run presubmit` [wiki](https://github.com/brave/brave-browser/wiki/Presubmit-checks), `pnpm run gn_check`
-- Run `git rebase master` (if needed)
--->
+- [ ] Reviewed the relevant design docs: [Browser design principles](https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/chrome_browser_design_principles.md), [Style guide](https://chromium.googlesource.com/chromium/src/+/main/styleguide/c++/c++.md), [Core principles](https://www.chromium.org/developers/core-principles/)
+- [ ] Tests are included or updated: unit tests as much as possible (including edge cases), plus browser tests covering high level functionality ([wiki](https://www.chromium.org/developers/testing/))
+- [ ] Classes/methods have comments explaining what they are/do (the "why" is often more important than the "what"), and any relevant docs are updated
+- [ ] Security or other review requested if applicable (third-party libraries, rust code, etc): [security/privacy review](https://github.com/brave/brave-browser/wiki/Security-reviews), [other review](https://github.com/brave/reviews/issues/new/choose), [adding third-party libraries](https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/adding_to_third_party.md)
+- [ ] A [ticket](https://github.com/brave/brave-browser/issues) exists for this change and GitHub [auto-closing keywords](https://docs.github.com/en/github/managing-your-work-on-github/linking-a-pull-request-to-an-issue) are used in the PR description above
+- [ ] A good [PR/commit description](https://google.github.io/eng-practices/review/developer/cl-descriptions.html) is written
+- [ ] Review feedback and "fixup" commits are squashed before merge, so that history is a record of what happened in the repo
+- [ ] Appropriate labels (`QA/Yes` or `QA/No`; `release-notes/include` or `release-notes/exclude`; `OS/...`) are added to the associated issue
+- [ ] Checked the PR locally: `pnpm run test brave_browser_tests`, `pnpm run test brave_unit_tests` ([wiki](https://github.com/brave/brave-browser/wiki/Tests)), `pnpm run presubmit` ([wiki](https://github.com/brave/brave-browser/wiki/Presubmit-checks)), `pnpm run gn_check`
+- [ ] Ran `git rebase master` (if needed)
+- [ ] I did not use AI/LLM tooling to create this PR, or I have disclosed the AI tooling/model used below and verified its output
