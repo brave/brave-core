@@ -10,6 +10,8 @@
 #include <string>
 #include <string_view>
 
+#include "base/check.h"
+#include "base/check_deref.h"
 #include "base/json/json_writer.h"
 #include "base/time/time.h"
 #include "base/values.h"
@@ -94,17 +96,34 @@ struct Request {
 
   // Serializes a JSON request body to a JSON string.
   // Returns std::nullopt if the request body produces an empty dictionary.
-  static auto Serialize(const IsJSONRequestBody auto& request_body) {
+  static std::optional<std::string> Serialize(
+      const IsJSONRequestBody auto& request_body) {
     const base::DictValue dict = request_body.ToValue();
-    return !dict.empty() ? base::WriteJson(dict).value_or("")
-                         : std::optional<std::string>();
+    if (dict.empty()) {
+      return std::nullopt;
+    }
+
+    return CHECK_DEREF(base::WriteJson(dict));
   }
 
   // Serializes a Protobuf request body to a binary string.
   // Returns std::nullopt if the request body is empty (ByteSizeLong() == 0).
-  static auto Serialize(const IsProtobufRequestBody auto& request_body) {
-    return request_body.ByteSizeLong() ? request_body.SerializeAsString()
-                                       : std::optional<std::string>();
+  static std::optional<std::string> Serialize(
+      const IsProtobufRequestBody auto& request_body) {
+    // IsInitialized() is false only if a proto2 required field is unset, so
+    // this is a no-op for proto3. Protobuf itself merely DCHECKs it, so release
+    // builds would otherwise silently send an incomplete message. It must run
+    // before the empty check: unset required fields add nothing to
+    // ByteSizeLong(), so such a message would otherwise be sent with no body.
+    CHECK(request_body.IsInitialized());
+
+    if (!request_body.ByteSizeLong()) {
+      return std::nullopt;
+    }
+
+    std::string serialized;
+    CHECK(request_body.SerializeToString(&serialized));
+    return serialized;
   }
 };
 
