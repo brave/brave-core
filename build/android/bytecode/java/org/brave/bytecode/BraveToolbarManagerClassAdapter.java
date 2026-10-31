@@ -63,9 +63,6 @@ public class BraveToolbarManagerClassAdapter extends BraveClassVisitor {
         deleteField(sBraveToolbarManagerClassName, "mLayoutManager");
         makeProtectedField(sToolbarManagerClassName, "mLayoutManager");
 
-        deleteField(sBraveToolbarManagerClassName, "mOverlayPanelVisibilitySupplier");
-        makeProtectedField(sToolbarManagerClassName, "mOverlayPanelVisibilitySupplier");
-
         deleteField(sBraveToolbarManagerClassName, "mTabModelSelector");
         makeProtectedField(sToolbarManagerClassName, "mTabModelSelector");
 

@@ -40,8 +40,6 @@ public class BraveTabbedActivityClassAdapter extends BraveClassVisitor {
 
         makePublicMethod(sChromeTabbedActivityClassName, "hideOverview");
 
-        deleteMethod(sChromeTabbedActivityClassName, "supportsDynamicColors");
-
         makePublicMethod(sChromeTabbedActivityClassName, "maybeHandleUrlIntent");
         changeMethodOwner(
                 sChromeTabbedActivityClassName, "maybeHandleUrlIntent", sBraveActivityClassName);
