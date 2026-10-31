@@ -37,3 +37,13 @@ class ActionNeededException(Exception):
     def __init__(self, message: str):
         super().__init__(message)
         console.log(message)
+
+
+class RebaseNeededException(ActionNeededException):
+    """`rebase --dry-run` found that the rebase would change the branch.
+
+    Brockit exits with `EXIT_CODE` for it, so that scripts can tell it apart
+    from a failure.
+    """
+
+    EXIT_CODE = 2
