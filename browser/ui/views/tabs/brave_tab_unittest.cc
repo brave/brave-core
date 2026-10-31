@@ -668,6 +668,8 @@ TEST_F(BraveTabTest, TabMinWidthFloorPixels) {
   EXPECT_EQ(10, BraveTab::GetTabMinWidthForMode(
                     brave_tabs::TabMinWidthMode::kDefault, 10, 100));
   EXPECT_EQ(10, BraveTab::GetTabMinWidthForMode(
+                    brave_tabs::TabMinWidthMode::kSmall, 10, 100));
+  EXPECT_EQ(10, BraveTab::GetTabMinWidthForMode(
                     brave_tabs::TabMinWidthMode::kMinimum, 10, 100));
   EXPECT_EQ(76, BraveTab::GetTabMinWidthForMode(
                     brave_tabs::TabMinWidthMode::kMedium, 10, 100));
@@ -703,6 +705,43 @@ TEST_F(BraveTabTest,
   const int style_min_active = tab.tab_style()->GetMinimumActiveWidth(false);
   ASSERT_GT(style_min_active, 0);
 
+  controller.set_horizontal_scrolling_enabled(false);
+  const int min_inactive_off = tab.GetTabSizeInfo().min_inactive_width;
+
+  controller.set_horizontal_scrolling_enabled(true);
+  const int min_inactive_on = tab.GetTabSizeInfo().min_inactive_width;
+
+  EXPECT_EQ(min_inactive_on, (std::max)(min_inactive_off, style_min_active));
+}
+
+TEST_F(BraveTabTest,
+       GetTabSizeInfo_MinimumDoesNotBoostInactiveWidthWhenScrolling) {
+  FakeTabSlotController controller;
+  BraveTab tab(tabs::TabHandle(1), &controller);
+  tab.SetBoundsRect({0, 0, 240, 40});
+  views::test::RunScheduledLayout(&tab);
+
+  controller.set_tab_min_width_mode(brave_tabs::TabMinWidthMode::kMinimum);
+  controller.set_horizontal_scrolling_enabled(false);
+  const int min_inactive_off = tab.GetTabSizeInfo().min_inactive_width;
+
+  controller.set_horizontal_scrolling_enabled(true);
+  const int min_inactive_on = tab.GetTabSizeInfo().min_inactive_width;
+
+  EXPECT_EQ(min_inactive_on, min_inactive_off);
+}
+
+TEST_F(BraveTabTest,
+       GetTabSizeInfo_SmallRetainsInactiveWidthBoostWhenScrolling) {
+  FakeTabSlotController controller;
+  BraveTab tab(tabs::TabHandle(1), &controller);
+  tab.SetBoundsRect({0, 0, 240, 40});
+  views::test::RunScheduledLayout(&tab);
+
+  const int style_min_active = tab.tab_style()->GetMinimumActiveWidth(false);
+  ASSERT_GT(style_min_active, 0);
+
+  controller.set_tab_min_width_mode(brave_tabs::TabMinWidthMode::kSmall);
   controller.set_horizontal_scrolling_enabled(false);
   const int min_inactive_off = tab.GetTabSizeInfo().min_inactive_width;
 

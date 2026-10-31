@@ -755,9 +755,10 @@ TabSizeInfo BraveTab::GetTabSizeInfo() const {
   size_info.min_inactive_width = GetTabMinWidthForMode(
       mode, size_info.min_inactive_width, size_info.standard_width);
 
-  if (controller()->IsHorizontalScrollingEnabled()) {
-    // When horizontal scrollable tab strip is active (feature + pref), we
-    // can have wider inactive tabs.
+  if (mode != brave_tabs::TabMinWidthMode::kMinimum &&
+      controller()->IsHorizontalScrollingEnabled()) {
+    // Preserve the wider scrolling behavior for Small and the other modes.
+    // Explicit Minimum mode uses Chromium's ordinary inactive minimum.
     const int min_active_width = tab_style()->GetMinimumActiveWidth(false);
     size_info.min_inactive_width =
         std::max(size_info.min_inactive_width, min_active_width);
@@ -894,6 +895,8 @@ int BraveTab::GetTabMinWidthForMode(brave_tabs::TabMinWidthMode mode,
                                     int standard_width) {
   switch (mode) {
     case brave_tabs::TabMinWidthMode::kDefault:
+      return min_width;
+    case brave_tabs::TabMinWidthMode::kSmall:
       return min_width;
     case brave_tabs::TabMinWidthMode::kMinimum:
       return min_width;

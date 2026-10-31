@@ -72,10 +72,15 @@ inline constexpr char kAlwaysUseMiniAccentIcon[] =
 // the product default can change without migrating explicit user choices.
 enum class TabMinWidthMode {
   kDefault = 0,
-  kMinimum = 1,
+  // Value 1 was originally named kMinimum. Preserve its stored value and
+  // wider scrolling behavior; it is now exposed as "Small".
+  kSmall = 1,
   kMedium = 2,
   kLarge = 3,
   kFull = 4,
+  // The true minimum uses Chromium's ordinary inactive minimum even when
+  // horizontal scrolling is enabled.
+  kMinimum = 5,
 };
 
 void RegisterBraveProfilePrefs(PrefRegistrySimple* registry);
