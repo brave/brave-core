@@ -194,6 +194,16 @@ away all minor bumps in a branch down to a single one. This is useful when
 when running a cr branch, as it is common to have multiple minor daily bumps
 in a branch.
 
+To check whether a rebase is needed at all, without rebasing, pass `--dry-run`.
+It exits with 2 when the rebase would change the branch: the base moved on, or
+the plan would squash or drop commits (with the same flags as the rebase). It
+exits with 0 when it wouldn't, and with 1 on any error. Unlike
+`merge --dry-run`, `[WIP]` commits don't count.
+
+```sh
+tools/cr/brockit.py rebase --squash-minor-bumps --dry-run
+```
+
 ### `brockit.py merge`
 Merges a `cr` branch to the upstream branch, and pushes the result to the
 remote.
@@ -368,6 +378,7 @@ from exceptions import (
     ActionNeededException,
     BadOutcomeException,
     InvalidInputException,
+    RebaseNeededException,
 )
 from gh_cli import GhCli
 from git_status import GitStatus
@@ -1987,6 +1998,131 @@ def _solve_brave_ref(from_ref: str | None) -> str:
     )
 
 
+@dataclass(frozen=True)
+class RebasePlan:
+    """A branch's rebase plan as it stands, and as `brockit rebase` runs it.
+
+    Both cover `base..branch`: `current` without autosquash, `rewritten` with
+    it and the plan rewrites `brockit rebase` applies for its flags. Neither
+    touches the branch.
+    """
+
+    current: list[rebase.EntryLine]
+    rewritten: list[rebase.EntryLine]
+
+    @classmethod
+    def capture(
+        cls,
+        base: str,
+        branch: str,
+        *,
+        pinned_squashed: bool = False,
+        discard_recyclable: bool = False,
+    ) -> RebasePlan:
+        with tempfile.TemporaryDirectory() as tmp:
+            current = Path(tmp) / 'current'
+            rewritten = Path(tmp) / 'rewritten'
+            cls._capture_todo(base, branch, current, autosquash=False)
+            cls._capture_todo(base, branch, rewritten, autosquash=True)
+            rebase.rewrite_plan(
+                todo_file=rewritten,
+                pinned_squashed=pinned_squashed,
+                discard_recyclable=discard_recyclable,
+            )
+            return cls(cls._parse(current), cls._parse(rewritten))
+
+    @property
+    def changes(self) -> bool:
+        """Whether the rebase would squash, drop or reorder anything.
+
+        Comparing the `(command, hash)` sequence catches squashes/fixups (a
+        command other than `pick`), drops (a missing entry), and reordering
+        (pinned commits grouped to the top).
+        """
+        return [(e.command, e.hash) for e in self.current] != [
+            (e.command, e.hash) for e in self.rewritten
+        ]
+
+    def log_diff(self) -> None:
+        """Prints a syntax-highlighted diff between the two plans."""
+        diff = '\n'.join(
+            difflib.unified_diff(
+                [entry.out for entry in self.current],
+                [entry.out for entry in self.rewritten],
+                fromfile='current',
+                tofile='expected',
+                lineterm='',
+            )
+        )
+        console.print(
+            Padding(
+                Syntax(
+                    diff, 'diff', theme='ansi_dark', background_color='default'
+                ),
+                (0, 4),
+            )
+        )
+
+    @staticmethod
+    def _capture_todo(
+        base: str, branch: str, dest: Path, *, autosquash: bool
+    ) -> None:
+        """Captures the interactive rebase plan git would produce into `dest`.
+
+        Runs `git rebase --interactive` with a sequence editor that copies the
+        TODO to `dest` and then empties it, so git aborts with "nothing to do"
+        without touching the branch. `autosquash` toggles `--autosquash` /
+        `--no-autosquash` so the caller can capture both the raw plan and the
+        autosquash-arranged one.
+        """
+        editor = [
+            str(VPYTHON3_PATH),
+            __file__,
+            '--internal-rebase-capture-plan',
+            f'--internal-rebase-capture-dest={dest}',
+        ]
+        env = os.environ.copy()
+        env['GIT_SEQUENCE_EDITOR'] = shlex.join(editor)
+        rebase_args = ['rebase', '--interactive']
+        if autosquash:
+            # `--empty=drop` only matters alongside `--autosquash`, matching
+            # what `brockit rebase` runs; the raw baseline plan is captured
+            # without it.
+            rebase_args += ['--autosquash', '--empty=drop']
+        else:
+            rebase_args.append('--no-autosquash')
+        rebase_args += ['--onto', base, base, branch]
+        try:
+            repository.brave.run_git(*rebase_args, env=env)
+        except subprocess.CalledProcessError:
+            # Emptying the plan makes git abort with "nothing to do" (exit 1);
+            # that is the expected outcome of this dry run.
+            pass
+        finally:
+            # Safety net in case git left a rebase half-started. Errors when no
+            # rebase is in progress, which is the common case here.
+            try:
+                repository.brave.run_git('rebase', '--abort')
+            except subprocess.CalledProcessError:
+                pass
+
+        if not dest.exists():
+            raise BadOutcomeException('Failed to capture the rebase plan.')
+
+    @staticmethod
+    def _parse(todo_file: Path) -> list[rebase.EntryLine]:
+        """Parses a captured TODO file into `EntryLine`s.
+
+        Blank and comment lines are skipped.
+        """
+        entries: list[rebase.EntryLine] = []
+        for line in todo_file.read_bytes().decode('utf-8').splitlines():
+            entry = rebase.EntryLine.parse(line)
+            if entry is not None:
+                entries.append(entry)
+        return entries
+
+
 @dataclass
 class RebaseState:
     """What `brockit rebase --continue` needs to carry on with a rebase.
@@ -2107,6 +2243,7 @@ class Rebase(Task):
         recommit: bool = False,
         discard_regen_changes: bool = False,
         squash_minor_bumps: bool = False,
+        dry_run: bool = False,
     ) -> None:
         """Rebases the current branch onto the provided ref.
 
@@ -2140,7 +2277,18 @@ class Rebase(Task):
             squash_minor_bumps:
                 Squashes each pinned group of commits (e.g. the minor bumps)
                 into one, keeping the group's last commit message.
+            dry_run:
+                Rebases nothing, and raises `RebaseNeededException` if the
+                rebase would change the branch.
         """
+        if dry_run:
+            self._dry_run(
+                to_ref=to_ref,
+                recommit=recommit,
+                discard_regen_changes=discard_regen_changes,
+                squash_minor_bumps=squash_minor_bumps,
+            )
+            return
         if is_continuation or skip:
             state = RebaseState.load()
         else:
@@ -2153,6 +2301,50 @@ class Rebase(Task):
             )
         self._continue(state, skip=skip)
         self._report(state)
+
+    def _dry_run(
+        self,
+        *,
+        to_ref: str | None,
+        recommit: bool,
+        discard_regen_changes: bool,
+        squash_minor_bumps: bool,
+    ) -> None:
+        """Checks whether a rebase with these arguments would change anything.
+
+        It would when `to_ref` has moved past the branch's fork point, or when
+        the plan's rewrites (autosquash, `squash_minor_bumps`,
+        `discard_regen_changes`) change it. Unlike `merge --dry-run`, never-
+        merge commits such as `[WIP]` don't count: a rebase keeps them.
+        """
+        if repository.brave.is_rebase_in_progress():
+            raise InvalidInputException('A rebase is already in progress.')
+        branch = repository.brave.current_branch()
+        to_ref = _solve_brave_ref(to_ref)
+        if recommit:
+            raise RebaseNeededException(
+                f'{branch} needs a rebase: --recommit always rewrites it.'
+            )
+        base = repository.brave.run_git('merge-base', to_ref, 'HEAD')
+        if base != repository.brave.run_git('rev-parse', to_ref):
+            raise RebaseNeededException(
+                f'{branch} needs a rebase: {to_ref} has moved on since '
+                f'{base[:12]}.'
+            )
+        plan = RebasePlan.capture(
+            base,
+            branch,
+            pinned_squashed=squash_minor_bumps,
+            discard_recyclable=discard_regen_changes,
+        )
+        if plan.changes:
+            plan.log_diff()
+            raise RebaseNeededException(
+                f'{branch} needs a rebase: its plan would change.'
+            )
+        terminal.log_task(
+            f'[bold]✔️ [/] {branch} needs no rebase onto {to_ref}. (dry run)'
+        )
 
     def _start(
         self,
@@ -2561,9 +2753,9 @@ class Merge(Versioned):
 
         # The branch should be clean of dev-cycle commits (unsquashed minor
         # bumps, `fixup!`/`reassign!`/`drop!` markers, etc.).
-        plans = self._dry_run_rebase_plan_change(current_branch, upstream)
-        if plans is not None:
-            self._log_plan_diff(*plans)
+        plan = self._merge_plan(current_branch, upstream)
+        if plan.changes:
+            plan.log_diff()
             raise InvalidInputException(
                 f'{current_branch} is not ready to be merged.'
             )
@@ -2615,149 +2807,24 @@ class Merge(Versioned):
             f'[bold]✔️ [/] Merged {current_branch} into {upstream}.'
         )
 
-    def _dry_run_rebase_plan_change(
-        self, current_branch: str, upstream: str
-    ) -> tuple[list[str], list[str]] | None:
-        """Detects whether a squash-minor-bumps rebase would alter the branch.
+    def _merge_plan(self, current_branch: str, upstream: str) -> RebasePlan:
+        """The `--squash-minor-bumps` plan, as a merge-ready branch must have.
 
-        This performs a no-op interactive rebase (`--onto <base> <base>
-        <branch>`, where `<base>` is the merge-base with the upstream) to
-        capture the plan git would run, and compares it against the same plan
-        after brockit's `--squash-minor-bumps`. We also check for the presence
-        or WIPs and orphaned fixups, etc.
-
-        Returns a `(current_plan, rewritten_plan)` pair of TODO lines when a
-        change is detected, or `None` if the branch is ready to merge.
+        On top of what the rebase would squash, never-merge-tagged commits
+        (`[wip]`, `[DO NOT ...]`) and orphaned fixups are dropped from it, so
+        that they too make the plan change.
         """
         base = repository.brave.run_git('merge-base', upstream, 'HEAD')
-
-        with tempfile.TemporaryDirectory() as tmp:
-            identity = Path(tmp) / 'identity'
-            squashed = Path(tmp) / 'squashed'
-
-            self._capture_rebase_plan(
-                base, current_branch, identity, autosquash=False
-            )
-            self._capture_rebase_plan(
-                base, current_branch, squashed, autosquash=True
-            )
-
-            # `rewrite_plan` applies the same `--squash-minor-bumps` transform
-            # that `brockit rebase` would run over the captured plan.
-            rebase.rewrite_plan(todo_file=squashed, pinned_squashed=True)
-
-            identity_entries = self._parse_plan(identity)
-            squashed_entries = self._parse_plan(squashed)
-
-        # Dropping never-merge-tagged commits (`[wip]`, `[DO NOT ...]`) and
-        # orphaned fixups so that also fails validation.
-        squashed_entries = [
-            entry
-            for entry in squashed_entries
-            if not self._NEVER_MERGE_TAG_RE.search(entry.out)
-            and not entry.is_orphan
-        ]
-
-        # Comparing the `(command, hash)` sequence catches squashes/fixups (a
-        # command other than `pick`), drops (a missing entry), and reordering
-        # (pinned commits grouped to the top).
-        identity_seq = [
-            (entry.command, entry.hash) for entry in identity_entries
-        ]
-        squashed_seq = [
-            (entry.command, entry.hash) for entry in squashed_entries
-        ]
-        if identity_seq == squashed_seq:
-            return None
-        return (
-            [entry.out for entry in identity_entries],
-            [entry.out for entry in squashed_entries],
+        plan = RebasePlan.capture(base, current_branch, pinned_squashed=True)
+        return replace(
+            plan,
+            rewritten=[
+                entry
+                for entry in plan.rewritten
+                if not self._NEVER_MERGE_TAG_RE.search(entry.out)
+                and not entry.is_orphan
+            ],
         )
-
-    @staticmethod
-    def _log_plan_diff(
-        current_plan: list[str], rewritten_plan: list[str]
-    ) -> None:
-        """Prints a syntax-highlighted diff between the branch's current rebase
-        plan and the plan a `--squash-minor-bumps` rebase would produce.
-        """
-        diff = '\n'.join(
-            difflib.unified_diff(
-                current_plan,
-                rewritten_plan,
-                fromfile='current',
-                tofile='expected',
-                lineterm='',
-            )
-        )
-        console.print(
-            Padding(
-                Syntax(
-                    diff, 'diff', theme='ansi_dark', background_color='default'
-                ),
-                (0, 4),
-            )
-        )
-
-    def _capture_rebase_plan(
-        self, base: str, current_branch: str, dest: Path, *, autosquash: bool
-    ) -> None:
-        """Captures the interactive rebase plan git would produce into `dest`.
-
-        Runs `git rebase --interactive` with a sequence editor that copies the
-        TODO to `dest` and then empties it, so git aborts with "nothing to do"
-        without touching the branch. `autosquash` toggles `--autosquash` /
-        `--no-autosquash` so the caller can capture both the raw plan and the
-        autosquash-arranged one.
-        """
-        editor = [
-            str(VPYTHON3_PATH),
-            __file__,
-            '--internal-rebase-capture-plan',
-            f'--internal-rebase-capture-dest={dest}',
-        ]
-        env = os.environ.copy()
-        env['GIT_SEQUENCE_EDITOR'] = shlex.join(editor)
-        rebase_args = ['rebase', '--interactive']
-        if autosquash:
-            # `--empty=drop` only matters alongside `--autosquash`, matching
-            # what `brockit rebase` runs; the raw baseline plan is captured
-            # without it.
-            rebase_args += ['--autosquash', '--empty=drop']
-        else:
-            rebase_args.append('--no-autosquash')
-        rebase_args += ['--onto', base, base, current_branch]
-        try:
-            repository.brave.run_git(*rebase_args, env=env)
-        except subprocess.CalledProcessError:
-            # Emptying the plan makes git abort with "nothing to do" (exit 1);
-            # that is the expected outcome of this dry run.
-            pass
-        finally:
-            # Safety net in case git left a rebase half-started. Errors when no
-            # rebase is in progress, which is the common case here.
-            try:
-                repository.brave.run_git('rebase', '--abort')
-            except subprocess.CalledProcessError:
-                pass
-
-        if not dest.exists():
-            raise BadOutcomeException(
-                'Failed to capture the rebase plan for the merge pre-check.'
-            )
-
-    @staticmethod
-    def _parse_plan(todo_file: Path) -> list[rebase.EntryLine]:
-        """Parses a captured TODO file into `EntryLine`s.
-
-        Blank and comment lines are skipped.
-        """
-        entries: list[rebase.EntryLine] = []
-        for line in todo_file.read_bytes().decode('utf-8').splitlines():
-            entry = rebase.EntryLine.parse(line)
-            if entry is not None:
-                entries.append(entry)
-        return entries
 
 
 class _MarkChangeTask(Task):
@@ -3126,6 +3193,13 @@ def main():
         help='Squashes all the minor bumps in-between the the last version and the '
         'previous upstream ref.',
     )
+    rebase_parser.add_argument(
+        '--dry-run',
+        action='store_true',
+        help='Rebases nothing, and exits with 2 if the rebase would change\n'
+        'the branch (the base moved on, or the plan would squash or drop\n'
+        'commits), 0 if not, and 1 on errors.',
+    )
     resumption = rebase_parser.add_mutually_exclusive_group()
     resumption.add_argument(
         '--continue',
@@ -3389,6 +3463,7 @@ def main():
             ('--recommit', args.recommit),
             ('--discard-regen-changes', args.discard_regen_changes),
             ('--squash-minor-bumps', args.squash_minor_bumps),
+            ('--dry-run', args.dry_run),
         ):
             if value:
                 parser.error(
@@ -3428,6 +3503,7 @@ def main():
                 recommit=args.recommit,
                 discard_regen_changes=args.discard_regen_changes,
                 squash_minor_bumps=args.squash_minor_bumps,
+                dry_run=args.dry_run,
             )
         if args.command == 'regen':
             Regen(resolve_version_with_from_ref_arg()).run(dry_run=args.dry_run)
@@ -3477,6 +3553,8 @@ def main():
             console.print(Markdown(__doc__))
         if args.command == 'show':
             show(args)
+    except RebaseNeededException:
+        return RebaseNeededException.EXIT_CODE
     except (InvalidInputException, BadOutcomeException, ActionNeededException):
         return 1
 
