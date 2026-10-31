@@ -75,9 +75,6 @@ mojom::DefaultWallet GetDefaultSolanaWallet(PrefService* prefs);
 mojom::DefaultWallet GetDefaultCardanoWallet(PrefService* prefs);
 void SetDefaultBaseCurrency(PrefService* prefs, std::string_view currency);
 std::string GetDefaultBaseCurrency(PrefService* prefs);
-void SetDefaultBaseCryptocurrency(PrefService* prefs,
-                                  std::string_view cryptocurrency);
-std::string GetDefaultBaseCryptocurrency(PrefService* prefs);
 
 std::string GetEnsRegistryContractAddress(std::string_view chain_id);
 
