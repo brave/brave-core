@@ -10,12 +10,11 @@
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/brave_layout_provider.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
-#include "brave/browser/ui/views/frame/brave_contents_view_util.h"
+#include "brave/browser/ui/views/frame/split_view/brave_contents_container_outline.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view_mini_toolbar.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
-#include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/contents_capture_border_view.h"
@@ -26,35 +25,13 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_delegate.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
-#include "ui/color/color_provider.h"
 #include "ui/compositor/layer.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
+#include "ui/views/background.h"
 #include "ui/views/border.h"
 #include "ui/views/layout/layout_provider.h"
-
-namespace {
-
-// We dont' let this outline visible always but it sets mini toolbar's clip path
-// even it's hidden. We set mini toolbar's clip path from
-// BraveMultiContentsViewMiniToolbar.
-class BraveContentsContainerOutline : public ContentsContainerOutline {
-  METADATA_HEADER(BraveContentsContainerOutline, ContentsContainerOutline)
- public:
-  using ContentsContainerOutline::ContentsContainerOutline;
-  ~BraveContentsContainerOutline() override = default;
-
-  // ContentsContainerOutline:
-  void OnViewBoundsChanged(views::View* observed_view) override {
-    // Ignore chromium's mini toolbar path clipping.
-  }
-};
-
-BEGIN_METADATA(BraveContentsContainerOutline)
-END_METADATA
-
-}  // namespace
 
 // static
 BraveContentsContainerView* BraveContentsContainerView::From(
@@ -127,8 +104,6 @@ void BraveContentsContainerView::UpdateBorderAndOverlay(bool is_in_split,
   ContentsContainerView::UpdateBorderAndOverlay(is_in_split, is_active,
                                                 /*is_highlighted*/ false);
 
-  // Don't draw any borders from outline.
-  container_outline_->SetVisible(false);
   UpdateBorderRoundedCorners();
 
   if (!is_in_split && !for_web_panel_) {
@@ -139,24 +114,7 @@ void BraveContentsContainerView::UpdateBorderAndOverlay(bool is_in_split,
     } else {
       mini_toolbar_->SetVisible(false);
     }
-
-    // Not in split view: draw a subtle 1px outline instead of the
-    // active/inactive split borders below. GetCornerRadius() returns all-zero
-    // corners whenever rounded corners aren't applicable here (feature
-    // disabled or fullscreen-for-tab), which doubles as the signal for
-    // whether to draw the outline at all.
-    const auto outline_corner_radius(
-        GetCornerRadius(kRoundedCornersContentsOutlineThickness));
-    if (outline_corner_radius.IsEmpty()) {
-      SetBorder(nullptr);
-    } else {
-      SetBorder(BraveContentsViewUtil::CreateContentsOutlineBorder(
-          GetColorProvider(), outline_corner_radius));
-    }
-    return;
-  }
-
-  if (for_web_panel_) {
+  } else if (for_web_panel_) {
     // Hide toolbar when active.
     // When web panel is active, there is no UI in toolbar as
     // web panel's toolbar doesn't have menu button.
@@ -164,39 +122,53 @@ void BraveContentsContainerView::UpdateBorderAndOverlay(bool is_in_split,
     mini_toolbar_->SetVisible(!IsActive());
   }
 
-  // Draw active/inactive outlines around the contents areas and updates mini
-  // toolbar visibility.
-  const auto border_corner_radius(GetCornerRadius(kBorderThickness));
-  if (is_active) {
-    SetBorder(views::CreateBorderPainter(
-        views::Painter::CreateSolidRoundRectPainterWithVariableRadius(
-            GetColorProvider()->GetColor(
-                kColorBraveSplitViewActiveWebViewBorder),
-            border_corner_radius, gfx::Insets(), SkBlendMode::kSrc),
-        gfx::Insets(kBorderThickness)));
+  using Style = BraveContentsContainerOutline::Style;
+  Style style;
+  if (is_in_split || for_web_panel_) {
+    style = is_active ? Style::kSplitActive : Style::kSplitInactive;
+  } else if (contents_corner_radii_.IsEmpty()) {
+    // Empty radii mean rounded corners aren't applicable (feature disabled or
+    // fullscreen-for-tab), which outside of a split also means no outline. In a
+    // split the border is still drawn, just with square corners.
+    style = Style::kHidden;
   } else {
-    SetBorder(views::CreateBorderPainter(
-        views::Painter::CreateRoundRectWith1PxBorderPainter(
-            GetColorProvider()->GetColor(
-                kColorBraveSplitViewInactiveWebViewBorder),
-            GetColorProvider()->GetColor(kColorToolbar),
-            gfx::RoundedCornersF(border_corner_radius), SkBlendMode::kSrc,
-            /*anti_alias*/ true,
-            /*should_border_scale*/ true),
-        gfx::Insets(kBorderThickness)));
+    style = Style::kStandalone;
   }
+
+  // The border only reserves the inset that BraveContentsContainerOutline
+  // strokes the ring into. The background clears the area behind that ring:
+  // this view has no layer of its own, so a band nobody paints keeps whatever
+  // was last drawn there.
+  const int border_thickness =
+      BraveContentsContainerOutline::GetBorderThickness(style);
+  if (border_thickness) {
+    // The active style clears with its own border color, so the stroke's
+    // antialiased outer edge can't expose a toolbar colored hairline.
+    ui::ColorId fill_color_id = kColorToolbar;
+    if (style == Style::kSplitActive) {
+      fill_color_id = kColorBraveSplitViewActiveWebViewBorder;
+    }
+    SetBackground(views::CreateRoundedRectBackground(
+        fill_color_id, BraveContentsContainerOutline::GetOuterCornerRadii(
+                           style, contents_corner_radii_)));
+    SetBorder(views::CreateEmptyBorder(gfx::Insets(border_thickness)));
+  } else {
+    SetBackground(nullptr);
+    SetBorder(nullptr);
+  }
+
+  BraveContentsContainerOutline::From(container_outline_)
+      ->UpdateStyle(style, contents_corner_radii_);
 }
 
 void BraveContentsContainerView::UpdateBorderRoundedCorners() {
-  const auto contents_corner_radius(GetCornerRadius(/*border_thickness=*/0));
-
-  contents_view_->layer()->SetRoundedCornerRadius(contents_corner_radius);
-  contents_view_->holder()->SetNativeViewCornerRadii(contents_corner_radius);
-  contents_scrim_view_->SetRoundedCorners(contents_corner_radius);
+  contents_view_->layer()->SetRoundedCornerRadius(contents_corner_radii_);
+  contents_view_->holder()->SetNativeViewCornerRadii(contents_corner_radii_);
+  contents_scrim_view_->SetRoundedCorners(contents_corner_radii_);
 
   devtools_web_view_->holder()->SetNativeViewCornerRadii(
-      contents_corner_radius);
-  devtools_scrim_view_->SetRoundedCorners(contents_corner_radius);
+      contents_corner_radii_);
+  devtools_scrim_view_->SetRoundedCorners(contents_corner_radii_);
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   if (reader_mode_toolbar_) {
@@ -268,18 +240,6 @@ bool BraveContentsContainerView::IsTabFullscreen() const {
       ExclusiveAccessManager::From(browser_view_->browser());
   return exclusive_access_manager &&
          exclusive_access_manager->fullscreen_controller()->IsTabFullscreen();
-}
-
-gfx::RoundedCornersF BraveContentsContainerView::GetCornerRadius(
-    int border_thickness) const {
-  if (contents_corner_radii_.IsEmpty() || !border_thickness) {
-    return contents_corner_radii_;
-  }
-
-  return {contents_corner_radii_.upper_left() + border_thickness,
-          contents_corner_radii_.upper_right() + border_thickness,
-          contents_corner_radii_.lower_right() + border_thickness,
-          contents_corner_radii_.lower_left() + border_thickness};
 }
 
 BEGIN_METADATA(BraveContentsContainerView)

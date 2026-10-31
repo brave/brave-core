@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/frame/contents_container_outline.h b/chrome/browser/ui/views/frame/contents_container_outline.h
+index 3dd6c5cf3093b6ab68040a4b6d37395618f03730..fa466add7d826dca655e247fe168d5372690ee37 100644
+--- a/chrome/browser/ui/views/frame/contents_container_outline.h
++++ b/chrome/browser/ui/views/frame/contents_container_outline.h
+@@ -41,6 +41,7 @@ class ContentsContainerOutline : public views::View,
+   void UpdateState(bool is_active, bool is_highlighted);
+ 
+  private:
++  friend class BraveContentsContainerOutline;
+   void SetClipPath();
+ 
+   // views::View

@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Friend BraveContentsContainerOutline
+
+      Our subclass overrides OnPaint() to stroke Brave's own outline styles,
+      and needs the observed mini toolbar to decide whether the path detours
+      around it.
+    add_friend:
+      class_name: ContentsContainerOutline
+      friend_type: class BraveContentsContainerOutline

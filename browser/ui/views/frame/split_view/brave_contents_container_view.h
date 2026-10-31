@@ -6,7 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_SPLIT_VIEW_BRAVE_CONTENTS_CONTAINER_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_SPLIT_VIEW_BRAVE_CONTENTS_CONTAINER_VIEW_H_
 
-#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -58,13 +57,6 @@ class BraveContentsContainerView :
 #endif
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(SplitViewBrowserTest, BraveMultiContentsViewTest);
-
-  // |border_thickness| is added to the content corner radii to get the
-  // concentric outer radius for a border of that thickness; pass 0 for the
-  // content's own (unbordered) corner radii.
-  gfx::RoundedCornersF GetCornerRadius(int border_thickness) const;
-
   // True when this container should display its domain in the mini toolbar.
   bool ShouldAlwaysShowDomain() const;
 
