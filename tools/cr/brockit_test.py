@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 import argparse
+import itertools
 import os
 import subprocess
 import sys
@@ -1978,6 +1979,67 @@ class RebaseDryRunTest(unittest.TestCase):
         self.assertEqual(
             self._main(brockit.InvalidInputException('no upstream')), 1
         )
+
+
+class FetchChromiumDashVersionTest(unittest.TestCase):
+    """Tests for `fetch_chromium_dash_version`, and its retries."""
+
+    def setUp(self):
+        self.requests = 0
+
+    @staticmethod
+    def _reply(version: str | None = '158.0.8127.4', status: int = 200):
+        reply = MagicMock(status_code=status)
+        reply.json.return_value = [{'version': version}] if version else []
+        if status >= 400:
+            reply.raise_for_status.side_effect = brockit.requests.HTTPError(
+                f'{status}', response=reply
+            )
+        return reply
+
+    def _fetch(self, *replies):
+        """Fetches `beta` with ChromiumDash answering *replies* in order, and
+        a release for every request after them."""
+        answers = itertools.chain(replies, itertools.repeat(self._reply()))
+        with (
+            patch.object(
+                brockit.requests, 'get', side_effect=answers
+            ) as request,
+            patch.object(brockit.time, 'sleep') as sleep,
+        ):
+            try:
+                return brockit.fetch_chromium_dash_version('beta'), sleep
+            finally:
+                self.requests = request.call_count
+
+    def test_highest_version_across_platforms(self):
+        version, sleep = self._fetch(self._reply('158.0.8127.2'))
+        self.assertEqual(version, brockit.Version('158.0.8127.4'))
+        self.assertEqual(self.requests, 5)
+        sleep.assert_not_called()
+
+    def test_transient_failures_are_retried(self):
+        version, sleep = self._fetch(
+            brockit.requests.ConnectionError('reset'),
+            self._reply(status=503),
+        )
+        self.assertEqual(version, brockit.Version('158.0.8127.4'))
+        self.assertEqual([c.args[0] for c in sleep.call_args_list], [5, 10])
+
+    def test_a_reply_without_a_release_is_retried(self):
+        version, sleep = self._fetch(self._reply(version=None))
+        self.assertEqual(version, brockit.Version('158.0.8127.4'))
+        sleep.assert_called_once_with(5)
+
+    def test_gives_up_after_three_tries(self):
+        with self.assertRaises(brockit.BadOutcomeException):
+            self._fetch(*[brockit.requests.Timeout('slow')] * 3)
+        self.assertEqual(self.requests, 3)
+
+    def test_client_errors_are_not_retried(self):
+        with self.assertRaises(brockit.BadOutcomeException):
+            self._fetch(self._reply(status=404))
+        self.assertEqual(self.requests, 1)
 
 
 class ShowTest(unittest.TestCase):
