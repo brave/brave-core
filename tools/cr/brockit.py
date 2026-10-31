@@ -371,6 +371,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 from typing import ClassVar, NoReturn
 
 import conflict_resolution
@@ -2945,16 +2946,39 @@ def fetch_chromium_dash_version(channel: str) -> Version:
     """Fetches the highest latest version across all platforms for a channel.
 
     For the canary channel, the ASAN variant on Windows is also considered.
+    ChromiumDash fails now and then, so each request is tried 3 times, waiting
+    5 s, then 10 s, in between; a client error (4xx) isn't retried.
     """
 
     def _fetch(channel: str, target_platform: str) -> Version:
-        response = requests.get(
-            CHROMIUMDASH_LATEST_RELEASE.format(
-                channel=channel, platform=target_platform
-            ),
-            timeout=10,
+        url = CHROMIUMDASH_LATEST_RELEASE.format(
+            channel=channel, platform=target_platform
         )
-        return Version(response.json()[0].get('version'))
+        retries = 2
+        wait_s = 5
+        while True:
+            try:
+                response = requests.get(url, timeout=10)
+                response.raise_for_status()
+                return Version(response.json()[0]['version'])
+            # A failed request, or a reply without a release in it.
+            except (requests.RequestException, ValueError, LookupError) as e:
+                status = getattr(getattr(e, 'response', None), 'status_code', 0)
+                if retries == 0 or 400 <= status < 500:
+                    raise BadOutcomeException(
+                        f'Could not fetch the latest {channel} release for '
+                        f'{target_platform} from ChromiumDash: {e}'
+                    ) from e
+                logging.warning(
+                    'ChromiumDash failed for %s on %s (%s); retrying in %d s.',
+                    channel,
+                    target_platform,
+                    e,
+                    wait_s,
+                )
+                time.sleep(wait_s)
+                retries -= 1
+                wait_s *= 2
 
     platforms = ('Windows', 'Linux', 'Android', 'Mac', 'ios')
     versions = [_fetch(channel, platform) for platform in platforms]
