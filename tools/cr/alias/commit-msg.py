@@ -40,6 +40,11 @@
 #    https://chromium.googlesource.com/v8/v8/+/{hash}). A bare hash resolves
 #    against the Chromium checkout at `../`.
 #
+#    Each culprit is written as its full hash, however short the one given, and
+#    one that isn't a commit stops the commit. On a `cr<N>` branch, a Chromium
+#    culprit must also be in the branch's range: after the Chromium tag its
+#    upstream's `package.json` pins, up to the one HEAD's pins.
+#
 # 5. `issue` environment variable for "Resolves" links
 #
 #    The `issue` environment variable can be set to a comma-separated list of
@@ -68,6 +73,7 @@
 #   cp tools/cr/commit-msg.py .git/hooks/commit-msg
 #
 
+import json
 import os
 import sys
 import subprocess
@@ -108,6 +114,77 @@ def parse_culprit(culprit: str) -> tuple[str, str]:
     if separator:
         return repo, commit_hash
     return '', repo
+
+
+def _git(*args: str) -> subprocess.CompletedProcess:
+    return subprocess.run(
+        ['git', *args], capture_output=True, text=True, check=False
+    )
+
+
+def resolve_commit(git_dir: str, commit_hash: str) -> str | None:
+    """The full hash of `commit_hash` in `git_dir`, or None if it isn't one."""
+    result = _git(
+        '-C',
+        git_dir,
+        'rev-parse',
+        '--verify',
+        '--quiet',
+        f'{commit_hash}^{{commit}}',
+    )
+    return result.stdout.strip() if result.returncode == 0 else None
+
+
+def _chromium_tag(ref: str) -> str | None:
+    """The Chromium tag brave-core's `package.json` pins at `ref`."""
+    result = _git('show', f'{ref}:package.json')
+    if result.returncode:
+        return None
+    try:
+        return json.loads(result.stdout)['config']['projects']['chrome']['tag']
+    except (ValueError, KeyError, TypeError):
+        return None
+
+
+def culprit_range_problem(git_dir: str, full_hash: str) -> str | None:
+    """Says why a Chromium culprit is outside the branch's range, if it is.
+
+    On a `cr<N>` branch, an upstream culprit is a commit between the
+    Chromium tag its upstream (the base) pins, and the one HEAD pins. The
+    check is skipped, with a warning, when those tags can't be resolved.
+    """
+    upstream = _git('rev-parse', '--abbrev-ref', '@{upstream}')
+    if upstream.returncode:
+        return None
+    old, new = _chromium_tag(upstream.stdout.strip()), _chromium_tag('HEAD')
+    if not old or not new or old == new:
+        return None
+    for tag in (old, new):
+        if resolve_commit(git_dir, f'refs/tags/{tag}') is None:
+            print(
+                f"Warning: tag {tag} isn't in {git_dir}, so the culprit's "
+                'range is not checked.',
+                file=sys.stderr,
+            )
+            return None
+
+    def is_ancestor(ancestor: str, tag: str) -> bool:
+        return not _git(
+            '-C',
+            git_dir,
+            'merge-base',
+            '--is-ancestor',
+            ancestor,
+            f'refs/tags/{tag}',
+        ).returncode
+
+    if is_ancestor(full_hash, new) and not is_ancestor(full_hash, old):
+        return None
+    return (
+        f'Culprit {full_hash} is not in the branch\'s Chromium range, '
+        f'{old}..{new}. Commit without --culprit if no upstream change is to '
+        'blame.'
+    )
 
 
 def main():
@@ -173,21 +250,8 @@ def main():
     # These are the report links that are added to the commit message when
     # there's an upstream culprit.
     culprits = []
-    if os.getenv("culprit"):
-        culprits = [
-            parse_culprit(culprit)
-            for culprit in os.getenv("culprit").split(',')
-        ]
-    # Skip culprits whose hash is already present in the commit message.
-    culprits = [
-        (repo, commit_hash)
-        for repo, commit_hash in culprits
-        if commit_hash not in commit_message
-    ]
-
-    culprit_output = []
-    culprit_links = []
-    for repo, commit_hash in culprits:
+    for culprit in filter(None, (os.getenv("culprit") or '').split(',')):
+        repo, commit_hash = parse_culprit(culprit)
         if repo not in GOOGLESOURCE_URLS:
             known = ', '.join(sorted(r for r in GOOGLESOURCE_URLS if r))
             print(
@@ -195,6 +259,30 @@ def main():
                 file=sys.stderr,
             )
             return 1
+        git_dir = os.path.join('..', repo)
+        # Links and later checks need the full hash, whatever was passed.
+        full_hash = resolve_commit(git_dir, commit_hash)
+        if full_hash is None:
+            print(
+                f"Culprit '{commit_hash}' is not a commit in {git_dir}.",
+                file=sys.stderr,
+            )
+            return 1
+        if not repo and re.fullmatch(cr_branch_pattern, branch_name):
+            if problem := culprit_range_problem(git_dir, full_hash):
+                print(problem, file=sys.stderr)
+                return 1
+        culprits.append((repo, full_hash))
+    # Skip culprits already in the commit message, even as a short hash.
+    culprits = [
+        (repo, commit_hash)
+        for repo, commit_hash in culprits
+        if commit_hash[:7] not in commit_message
+    ]
+
+    culprit_output = []
+    culprit_links = []
+    for repo, commit_hash in culprits:
         git_dir = os.path.join('..', repo)
         culprit_output.append(
             subprocess.check_output(

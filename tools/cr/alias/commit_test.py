@@ -309,6 +309,83 @@ class TestCulpritLinks(unittest.TestCase):
         self.assertNotIn('Chromium changes:', msg)
         self.assertNotIn('Should not be inlined', msg)
 
+    def test_short_hash_is_written_in_full(self) -> None:
+        """A culprit given as a short hash links with the full one."""
+        repo = self._sandbox.repo
+        culprit_hash = self._commit_in('Upstream change', repo.chromium)
+        self._sandbox.stage_change()
+        result = self._sandbox.run_gc(
+            ['commit', '--culprit', culprit_hash[:9], '-m', 'Fix']
+        )
+        self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
+        self.assertIn(
+            f'chromium/src/+/{culprit_hash}\n',
+            self._sandbox.last_commit_message() + '\n',
+        )
+
+    def test_hash_that_is_not_a_commit_is_rejected(self) -> None:
+        """A culprit that doesn't resolve aborts the commit."""
+        self._sandbox.stage_change()
+        result = self._sandbox.run_gc(
+            ['commit', '--culprit', 'deadbeef1234', '-m', 'Fix']
+        )
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("Culprit 'deadbeef1234' is not a commit", result.stderr)
+
+    def _cr_branch(self, tag_both: bool = True) -> dict[str, str]:
+        """A `cr158` branch on `158.0.8127.4` whose upstream pins
+        `158.0.8127.2`, over a Chromium history of before, the old tag, in
+        range, the new tag, and after. Returns those commits by name."""
+        repo = self._sandbox.repo
+        git = repo._run_git_command
+        commits = {'before': self._commit_in('Before', repo.chromium)}
+        commits['old'] = self._commit_in('Old tag', repo.chromium)
+        git(['tag', '158.0.8127.2'], repo.chromium)
+        commits['in_range'] = self._commit_in('In range', repo.chromium)
+        commits['new'] = self._commit_in('New tag', repo.chromium)
+        if tag_both:
+            git(['tag', '158.0.8127.4'], repo.chromium)
+        commits['after'] = self._commit_in('After', repo.chromium)
+        repo.update_brave_version('158.0.8127.2')
+        git(['branch', 'base'], repo.brave)
+        git(['checkout', '-q', '-b', 'cr158'], repo.brave)
+        git(['branch', '--set-upstream-to=base'], repo.brave)
+        repo.update_brave_version('158.0.8127.4')
+        return commits
+
+    def _commit_with_culprit(self, culprit: str):
+        self._sandbox.stage_change(f'{culprit}\n')
+        return self._sandbox.run_gc(
+            ['commit', '--culprit', culprit, '-m', 'Fix']
+        )
+
+    def test_cr_branch_accepts_a_culprit_in_its_range(self) -> None:
+        commits = self._cr_branch()
+        for name in ('in_range', 'new'):
+            with self.subTest(name):
+                result = self._commit_with_culprit(commits[name])
+                self.assertEqual(
+                    result.returncode, 0, msg=f'stderr: {result.stderr}'
+                )
+
+    def test_cr_branch_rejects_a_culprit_outside_its_range(self) -> None:
+        commits = self._cr_branch()
+        for name in ('before', 'old', 'after'):
+            with self.subTest(name):
+                result = self._commit_with_culprit(commits[name])
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn(
+                    "not in the branch's Chromium range, "
+                    '158.0.8127.2..158.0.8127.4',
+                    result.stderr,
+                )
+
+    def test_range_is_not_checked_without_the_tags(self) -> None:
+        commits = self._cr_branch(tag_both=False)
+        result = self._commit_with_culprit(commits['after'])
+        self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
+        self.assertIn("tag 158.0.8127.4 isn't in", result.stderr)
+
 
 # ---------------------------------------------------------------------------
 # Tests: cmd_commit hook sanity check
