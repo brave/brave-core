@@ -1,0 +1,40 @@
+diff --git a/net/dns/host_resolver_manager.cc b/net/dns/host_resolver_manager.cc
+index ab286b869b864d0c8f4f7c6c98374f93d686a7f7..732ff7bef29b0a1e51ae9ed1dbdfe2f1e0b23517 100644
+--- a/net/dns/host_resolver_manager.cc
++++ b/net/dns/host_resolver_manager.cc
+@@ -929,6 +929,12 @@ HostCache::Entry HostResolverManager::ResolveLocally(
+   if (resolved)
+     return resolved.value();
+ 
++  if (IsOnionHostnameResolutionBlocked(job_key.resolve_context.get(),
++                                       job_key.host.GetHostname())) {
++    std::erase_if(*out_tasks,
++                  [](TaskType task) { return !IsLocalTask(task); });
++  }
++
+   // Do initial cache lookups.
+   while (!out_tasks->empty() && IsLocalTask(out_tasks->front())) {
+     TaskType task = out_tasks->front();
+@@ -987,6 +993,11 @@ HostCache::Entry HostResolverManager::ResolveLocally(
+     }
+   }
+ 
++  if (IsOnionHostnameResolutionBlocked(job_key.resolve_context.get(),
++                                       job_key.host.GetHostname())) {
++    return HostCache::Entry(ERR_NAME_NOT_RESOLVED,
++                            HostCache::Entry::SOURCE_UNKNOWN);
++  }
+   return HostCache::Entry(ERR_DNS_CACHE_MISS, HostCache::Entry::SOURCE_UNKNOWN);
+ }
+ 
+@@ -1152,6 +1163,10 @@ void HostResolverManager::StartBootstrapFollowup(
+     JobKey key,
+     HostCache* host_cache,
+     const NetLogWithSource& source_net_log) {
++  if (IsOnionHostnameResolutionBlocked(key.resolve_context.get(),
++                                       key.host.GetHostname())) {
++    return;
++  }
+   DCHECK_EQ(SecureDnsMode::kOff, key.secure_dns_mode);
+   DCHECK(host_cache);
+ 
