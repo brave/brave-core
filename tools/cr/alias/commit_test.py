@@ -167,19 +167,15 @@ class TestCommitIntegration(unittest.TestCase):
         self.assertIn('issues/999', msg)
 
     def test_fixup_commit_skips_hook_processing(self) -> None:
-        """fixup! commits bypass tag insertion (hook behaviour)."""
-        # First commit to have something to fixup.
+        """A plain fixup! commit goes through, and the hook leaves it alone."""
         self._sandbox.stage_change('v1\n')
         self._sandbox.run_gc(['commit', '-m', 'Base commit'])
         self._sandbox.stage_change('v2\n')
-        result = self._sandbox.run_gc(
-            ['commit', '--tagged', 'WIP', '-m', 'fixup! Base commit']
-        )
+        result = self._sandbox.run_gc(['commit', '-m', 'fixup! Base commit'])
         self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
-        msg = self._sandbox.last_commit_message()
-        # The hook skips fixup! commits — no tag should be added.
-        self.assertNotIn('[WIP]', msg)
-        self.assertTrue(msg.startswith('fixup!'))
+        self.assertEqual(
+            'fixup! Base commit', self._sandbox.last_commit_message()
+        )
 
     def test_empty_message_rejected(self) -> None:
         """A commit with only whitespace in the message is rejected."""
@@ -478,6 +474,122 @@ class TestCulpritLinks(unittest.TestCase):
         result = self._commit_with_culprit(commits['after'])
         self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
         self.assertIn("tag 158.0.8127.4 isn't in", result.stderr)
+
+
+# ---------------------------------------------------------------------------
+# Tests: where the hook bails out, and --force-commit-hook
+# ---------------------------------------------------------------------------
+
+
+class TestForceCommitHook(unittest.TestCase):
+    """`git cr commit` refuses where the hook would leave the message alone,
+    and `--force-commit-hook` runs it there anyway."""
+
+    _HINT = 'Pass --force-commit-hook'
+
+    def setUp(self) -> None:
+        self._sandbox = self.enterContext(_Sandbox())
+        self._sandbox.install_hook()
+        repo = self._sandbox.repo
+        repo._run_git_command(
+            [
+                'remote',
+                'add',
+                'origin',
+                'https://chromium.googlesource.com/chromium/src.git',
+            ],
+            repo.chromium,
+        )
+        self._culprit = repo.commit_empty('Upstream change', repo.chromium)
+
+    def _git(self, *args: str, env: dict[str, str] | None = None) -> None:
+        subprocess.run(
+            ['git', *args],
+            cwd=self._sandbox.root,
+            check=True,
+            capture_output=True,
+            text=True,
+            env={**os.environ, **_GIT_ENV_OVERRIDES, **(env or {})},
+        )
+
+    def _stop_rebase_on_cr158(self) -> None:
+        """A `cr158` branch whose rebase is stopped on its last commit."""
+        self._git('checkout', '-q', '-b', 'cr158')
+        self._sandbox.stage_change('to rebase\n')
+        self._git('commit', '--no-verify', '-q', '-m', 'To rebase')
+        editor = (
+            f'"{sys.executable}" -c "import pathlib, sys; '
+            'p = pathlib.Path(sys.argv[1]); '
+            "p.write_text(p.read_text().replace('pick', 'edit', 1))\""
+        )
+        self._git(
+            'rebase', '-q', '-i', 'HEAD~1', env={'GIT_SEQUENCE_EDITOR': editor}
+        )
+
+    def test_rebase_in_progress_is_refused(self) -> None:
+        self._stop_rebase_on_cr158()
+        self._sandbox.stage_change('during rebase\n')
+        result = self._sandbox.run_gc(['commit', '-m', 'Fix'])
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('a rebase is in progress', result.stderr)
+        self.assertIn(self._HINT, result.stderr)
+
+    def test_forced_during_rebase_tags_and_links(self) -> None:
+        self._stop_rebase_on_cr158()
+        self._sandbox.stage_change('during rebase\n')
+        result = self._sandbox.run_gc(
+            [
+                'commit',
+                '--force-commit-hook',
+                '--culprit',
+                self._culprit,
+                '-m',
+                'Fix',
+            ]
+        )
+        self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
+        msg = self._sandbox.last_commit_message()
+        self.assertTrue(msg.startswith('[cr158] Fix'), msg=msg)
+        self.assertIn(f'chromium/src/+/{self._culprit}', msg)
+
+    def test_cherry_pick_in_progress_is_refused(self) -> None:
+        (self._sandbox.root / '.git' / 'CHERRY_PICK_HEAD').write_text(
+            'HEAD\n', encoding='utf-8', newline=''
+        )
+        self._sandbox.stage_change()
+        result = self._sandbox.run_gc(['commit', '-m', 'Fix'])
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('a cherry-pick is in progress', result.stderr)
+
+    def test_fixup_with_hook_flags_is_refused(self) -> None:
+        self._sandbox.stage_change()
+        result = self._sandbox.run_gc(
+            ['commit', '--culprit', self._culprit, '-m', 'fixup! Add file.txt']
+        )
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('fixup!/amend!', result.stderr)
+        self.assertIn(self._HINT, result.stderr)
+
+    def test_forced_fixup_links_without_tags(self) -> None:
+        self._git('checkout', '-q', '-b', 'cr158')
+        self._sandbox.stage_change()
+        result = self._sandbox.run_gc(
+            [
+                'commit',
+                '--force-commit-hook',
+                '--tagged',
+                'WIP',
+                '--culprit',
+                self._culprit,
+                '-m',
+                'fixup! Add file.txt',
+            ]
+        )
+        self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
+        msg = self._sandbox.last_commit_message()
+        self.assertTrue(msg.startswith('fixup! Add file.txt'), msg=msg)
+        self.assertNotIn('[WIP]', msg)
+        self.assertIn(f'chromium/src/+/{self._culprit}', msg)
 
 
 # ---------------------------------------------------------------------------
