@@ -19,39 +19,13 @@ namespace brave_account::endpoint_client::detail {
 
 namespace {
 
-struct JSONRequestBodyNoToValue {
-  static constexpr char kName[] = "JSONRequestBodyNoToValue";
-};
-
-struct JSONRequestBodyStaticToValue {
-  static constexpr char kName[] = "JSONRequestBodyStaticToValue";
-  static base::DictValue ToValue();
-};
-
-struct JSONRequestBodyNonConstToValue {
-  static constexpr char kName[] = "JSONRequestBodyNonConstToValue";
-  base::DictValue ToValue();
-};
-
-struct JSONRequestBodyToValueWithWrongReturnType {
-  static constexpr char kName[] = "JSONRequestBodyToValueWithWrongReturnType";
-  std::string ToValue() const;
-};
-
-struct JSONRequestBodyToValueWithWrongParameterType {
-  static constexpr char kName[] =
-      "JSONRequestBodyToValueWithWrongParameterType";
-  base::DictValue ToValue(int) const;
+struct NotARequestBody {
+  static constexpr char kName[] = "NotARequestBody";
 };
 
 struct JSONRequestBodyValid {
   static constexpr char kName[] = "JSONRequestBodyValid";
   base::DictValue ToValue() const;
-};
-
-class ProtobufRequestBodyPrivateInheritance : google::protobuf::MessageLite {
- public:
-  static constexpr char kName[] = "ProtobufRequestBodyPrivateInheritance";
 };
 
 struct ProtobufRequestBodyValid : google::protobuf::MessageLite {
@@ -64,15 +38,12 @@ struct IsRequestBodyTestCase {
   static constexpr bool kSatisfiesConcept = SatisfiesConcept;
 };
 
-using IsRequestBodyTestCases = testing::Types<
-    IsRequestBodyTestCase<JSONRequestBodyNoToValue, false>,
-    IsRequestBodyTestCase<JSONRequestBodyStaticToValue, false>,
-    IsRequestBodyTestCase<JSONRequestBodyNonConstToValue, false>,
-    IsRequestBodyTestCase<JSONRequestBodyToValueWithWrongReturnType, false>,
-    IsRequestBodyTestCase<JSONRequestBodyToValueWithWrongParameterType, false>,
-    IsRequestBodyTestCase<JSONRequestBodyValid, true>,
-    IsRequestBodyTestCase<ProtobufRequestBodyPrivateInheritance, false>,
-    IsRequestBodyTestCase<ProtobufRequestBodyValid, true>>;
+// ToValue() and Protobuf edge cases are covered by has_to_value_unittest.cc
+// and is_protobuf_message_unittest.cc.
+using IsRequestBodyTestCases =
+    testing::Types<IsRequestBodyTestCase<NotARequestBody, false>,
+                   IsRequestBodyTestCase<JSONRequestBodyValid, true>,
+                   IsRequestBodyTestCase<ProtobufRequestBodyValid, true>>;
 
 struct IsRequestBodyTestCaseName {
   template <typename IsRequestBodyTestCase>

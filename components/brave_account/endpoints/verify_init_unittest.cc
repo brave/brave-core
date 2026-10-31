@@ -16,11 +16,6 @@
 
 namespace brave_account::endpoints {
 
-bool operator==(const VerifyInit::Response::SuccessBody& lhs,
-                const VerifyInit::Response::SuccessBody& rhs) {
-  return lhs.verification_token == rhs.verification_token;
-}
-
 namespace {
 
 using VerifyInitTestCase = EndpointTestCase<VerifyInit>;

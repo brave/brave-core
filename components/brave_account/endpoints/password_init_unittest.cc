@@ -16,12 +16,6 @@
 
 namespace brave_account::endpoints {
 
-bool operator==(const PasswordInit::Response::SuccessBody& lhs,
-                const PasswordInit::Response::SuccessBody& rhs) {
-  return lhs.serialized_response == rhs.serialized_response &&
-         lhs.verification_token == rhs.verification_token;
-}
-
 namespace {
 
 using PasswordInitTestCase = EndpointTestCase<PasswordInit>;
