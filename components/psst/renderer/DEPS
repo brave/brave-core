@@ -1,0 +1,8 @@
+include_rules = [
+  "+brave/gin",
+  "+content/public/renderer",
+  "+gin",
+  "+mojo/public",
+  "+third_party/blink/public",
+  "+v8/include",
+]
