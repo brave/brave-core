@@ -854,7 +854,31 @@ public class BrowserViewController: UIViewController {
   }
 
   @objc func appWillTerminateNotification() {
-    tabManager.saveAllTabs(synchronously: true)
+    persistSessionStateOnBackground()
+  }
+
+  /// Persists tabs, selection, window id, and browsing mode before suspend or termination.
+  public func persistSessionStateOnBackground(scene: UIScene? = nil) {
+    tabManager.persistSessionOnBackground()
+
+    if let tabId = tabManager.selectedTab?.id {
+      SessionTab.setSelected(tabId: tabId, synchronously: true)
+    }
+
+    Preferences.Privacy.lastSessionWindowId.value = windowId.uuidString
+
+    let isPrivate = privateBrowsingManager.isPrivateBrowsing
+    let sceneForPersistence = scene ?? currentScene
+    if let sceneForPersistence {
+      BrowserState.persistRememberedBrowsingMode(
+        isPrivate: isPrivate,
+        session: sceneForPersistence.session,
+        userActivity: sceneForPersistence.userActivity,
+        windowId: windowId.uuidString
+      )
+    } else {
+      BrowserState.persistRememberedBrowsingMode(isPrivate: isPrivate)
+    }
   }
 
   @objc private func tappedCollapsedURLBar() {
@@ -873,8 +897,6 @@ public class BrowserViewController: UIViewController {
     guard let scene = notification.object as? UIScene, scene == currentScene else {
       return
     }
-
-    tabManager.saveAllTabs()
 
     // If we are displaying a private tab, hide any elements in the tab that we wouldn't want shown
     // when the app is in the home switcher
@@ -1368,6 +1390,10 @@ public class BrowserViewController: UIViewController {
   private func setupTabs() {
     let noTabsAdded = self.tabManager.tabsForCurrentMode.isEmpty
 
+    if noTabsAdded && BrowserState.shouldRestorePrivateBrowsingMode(windowId: windowId) {
+      privateBrowsingManager.isPrivateBrowsing = true
+    }
+
     var tabToSelect: (any TabState)?
 
     if noTabsAdded {
@@ -1385,6 +1411,7 @@ public class BrowserViewController: UIViewController {
       }
     }
     self.tabManager.selectTab(tabToSelect)
+    self.tabManager.finishTabRestore()
 
     // Shred sites with a pending Auto Shred. Must run after tabs are restored.
     self.tabManager.forgetDataWithPendingShredOnStartup()
