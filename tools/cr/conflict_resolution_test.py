@@ -36,7 +36,8 @@ from test.fake_chromium_repo import DEFAULT_BRANCH, FakeChromiumRepo
 from test.fake_terminal import ConsoleCapture
 
 # The milestone tracker, and a file next to it the tracker rule leaves alone.
-TRACKER = 'tools/cr/M158_codehealth.md'
+TRACKER = 'tools/cr/codehealth/M158.md'
+OLD_TRACKER = 'tools/cr/M158_codehealth.md'
 NOT_A_TRACKER = 'tools/cr/README.md'
 
 # A Chromium source brave patches with a plaster, its plaster, and its patch.
@@ -526,16 +527,16 @@ class PlasterRuleTest(_RebaseStopTestCase):
 class CodeHealthTrackerRuleTest(_RebaseStopTestCase):
     """A tracker the base doesn't have is taken from the branch."""
 
-    def test_takes_the_branch_version_of_its_own_tracker(self):
+    def _takes_the_branch_version(self, tracker: str) -> None:
         """Rebasing the tracker's later commits without the one adding it is
         the simplest way to have a rebase stop on a tracker the base (here, the
         default branch) doesn't have."""
         self.git('checkout', '--quiet', '-b', 'feature')
         added = self.commit(
-            {TRACKER: '- [ ] one\n', NOT_A_TRACKER: 'one\n'}, 'Add a tracker'
+            {tracker: '- [ ] one\n', NOT_A_TRACKER: 'one\n'}, 'Add a tracker'
         )
-        self.commit({TRACKER: '- [x] one\n', NOT_A_TRACKER: 'two\n'}, 'Tick it')
-        self.commit({TRACKER: '- [x] one\n- [ ] two\n'}, 'Add an item')
+        self.commit({tracker: '- [x] one\n', NOT_A_TRACKER: 'two\n'}, 'Tick it')
+        self.commit({tracker: '- [x] one\n- [ ] two\n'}, 'Add an item')
         with self.assertRaises(subprocess.CalledProcessError):
             self.git('rebase', '--onto', DEFAULT_BRANCH, added)
         step = conflict_resolution.ConflictedStep.load()
@@ -544,10 +545,18 @@ class CodeHealthTrackerRuleTest(_RebaseStopTestCase):
 
         self.assertEqual(
             resolutions,
-            [Resolution(path=TRACKER, rule=Rule.CODEHEALTH_TRACKER)],
+            [Resolution(path=tracker, rule=Rule.CODEHEALTH_TRACKER)],
         )
-        self.assertEqual(self.read(TRACKER), '- [x] one\n- [ ] two\n')
+        self.assertEqual(self.read(tracker), '- [x] one\n- [ ] two\n')
         self.assertIn(NOT_A_TRACKER, self.conflicted())
+
+    def test_takes_the_branch_version_of_its_own_tracker(self):
+        self._takes_the_branch_version(TRACKER)
+
+    def test_takes_the_branch_version_at_the_old_tracker_path(self):
+        """Branches from before the trackers moved still edit them at
+        `tools/cr/M<N>_codehealth.md`."""
+        self._takes_the_branch_version(OLD_TRACKER)
 
     def test_leaves_a_tracker_the_base_has(self):
         step = self.stop_rebase(
