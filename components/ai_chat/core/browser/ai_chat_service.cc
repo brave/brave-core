@@ -551,7 +551,8 @@ void AIChatService::MaybeInitStorage() {
               [](scoped_refptr<AIChatSyncBackend> backend) {
                 backend->SetBridge(std::make_unique<AIChatSyncBridge>(
                     std::make_unique<syncer::ClientTagBasedDataTypeProcessor>(
-                        syncer::AI_CHAT_CONVERSATION, base::DoNothing())));
+                        syncer::AI_CHAT_CONVERSATION, base::DoNothing()),
+                    /*on_remote_changes_applied=*/base::DoNothing()));
               },
               sync_backend_));
     }

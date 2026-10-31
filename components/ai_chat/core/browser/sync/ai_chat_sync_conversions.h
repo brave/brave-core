@@ -134,6 +134,12 @@ mojom::ConversationPtr SpecificsToConversationMetadata(
 // receives the last_contents value for each AC where the sender provided
 // one; absent map entries mean the caller should preserve any existing
 // local text (forward-compat or omitted-for-sync).
+//
+// Precondition: |specifics| must already have been through
+// AIChatSyncBridge::RestoreOmittedFieldsFromLocal(). Fields the sender omitted
+// to fit the size budget have no mojom representation for "absent", so they
+// decode to the empty string — restoring them first is what keeps that from
+// wiping locally-present content.
 mojom::ConversationTurnPtr SpecificsToEntry(
     const sync_pb::AIChatConversationSpecifics& specifics,
     std::vector<mojom::AssociatedContentPtr>& associated_content,
