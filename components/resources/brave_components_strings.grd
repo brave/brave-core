@@ -932,6 +932,9 @@
         <part file="containers_strings.grdp" />
       </if>
       <part file="brave_origin_startup_strings.grdp" />
+      <if expr="not is_android">
+        <part file="brave_wrapped_strings.grdp" />
+      </if>
       <part file="../brave_account/resources/brave_account_strings.grdp" />
       <if expr="enable_psst">
         <part file="psst_ui_strings.grdp" />

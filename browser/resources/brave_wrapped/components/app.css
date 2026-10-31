@@ -1,0 +1,210 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+:root {
+  --wrapped-page-background: var(--leo-color-page-background);
+  --wrapped-text: var(--leo-color-text-primary);
+  --wrapped-text-muted: var(--leo-color-text-secondary);
+  --wrapped-hero-background: var(--leo-gradient-hero);
+  --wrapped-hero-text: var(--leo-color-white);
+  --wrapped-card-shadow: var(--leo-effect-elevation-05);
+  --wrapped-card-placeholder: var(--leo-color-container-highlight);
+  /* Nala's marketing font-display-primary-hero; browser tokens stop at 46px. */
+  --wrapped-stat-font:
+    600 120px/130px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, Helvetica, Arial, sans-serif;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--wrapped-page-background);
+  color: var(--wrapped-text);
+  font: var(--leo-font-large-regular);
+}
+
+.wrapped {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.progress {
+  padding: var(--leo-spacing-2xl) var(--leo-spacing-3xl) 0;
+}
+
+.slide {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 960px;
+  width: 100%;
+  margin: 0 auto;
+  padding: var(--leo-spacing-3xl) var(--leo-spacing-5xl);
+  box-sizing: border-box;
+  cursor: pointer;
+  animation: slide-in var(--leo-duration-l) var(--leo-easing-out);
+}
+
+.slide-share .slide {
+  cursor: default;
+  max-width: 1200px;
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--leo-spacing-2xl));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+h1 {
+  font: var(--leo-font-heading-display1);
+  margin: 0 0 var(--leo-spacing-xl);
+}
+
+p {
+  color: var(--wrapped-text-muted);
+  margin: 0 0 var(--leo-spacing-l);
+  max-width: 40em;
+}
+
+p.lead {
+  font: var(--leo-font-heading-h2);
+  color: var(--wrapped-text);
+}
+
+.logo {
+  --leo-icon-size: var(--leo-spacing-7xl);
+  margin-bottom: var(--leo-spacing-3xl);
+}
+
+.hero {
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-m);
+  margin-bottom: var(--leo-spacing-3xl);
+  padding: var(--leo-spacing-4xl) var(--leo-spacing-5xl);
+  border-radius: var(--leo-radius-xxl);
+  background: var(--wrapped-hero-background);
+  color: var(--wrapped-hero-text);
+  box-shadow: var(--wrapped-card-shadow);
+}
+
+.hero h2 {
+  font: var(--leo-font-heading-h1);
+  margin: 0;
+}
+
+.big-value {
+  display: grid;
+  font: var(--wrapped-stat-font);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.big-value > * {
+  grid-area: 1 / 1;
+}
+
+.big-value .sizer {
+  visibility: hidden;
+}
+
+.big-value .unit {
+  font: var(--leo-font-heading-display1);
+  margin-inline-start: var(--leo-spacing-l);
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--leo-spacing-2xl) var(--leo-spacing-3xl) var(--leo-spacing-3xl);
+}
+
+.nav > * {
+  flex: 0 0 auto;
+}
+
+.share {
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-6xl);
+}
+
+.card-preview {
+  flex: 0 0 auto;
+  width: min(40vh, 400px);
+  aspect-ratio: 4 / 5;
+  border-radius: var(--leo-radius-xxl);
+  overflow: hidden;
+  background: var(--wrapped-card-placeholder);
+  box-shadow: var(--wrapped-card-shadow);
+}
+
+.card-preview img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.share-actions h1 {
+  font: var(--leo-font-heading-display2);
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--leo-spacing-l);
+  margin-top: var(--leo-spacing-xl);
+}
+
+.privacy-note {
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+  margin-top: var(--leo-spacing-3xl);
+  font: var(--leo-font-large-semibold);
+  color: var(--wrapped-text);
+  --leo-icon-size: var(--leo-icon-m);
+}
+
+@media (max-width: 800px) {
+  .share {
+    flex-direction: column;
+    gap: var(--leo-spacing-3xl);
+  }
+
+  .big-value {
+    font: var(--leo-font-heading-display1);
+  }
+
+  .big-value .unit {
+    font: var(--leo-font-heading-h1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide {
+    animation: fade-in var(--leo-duration-xs);
+  }
+}

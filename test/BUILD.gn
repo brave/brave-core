@@ -1669,6 +1669,10 @@ test("brave_browser_tests") {
     deps += [ "//brave/browser/ui/webui/brave_education:browser_tests" ]
   }
 
+  if (!is_android) {
+    deps += [ "//brave/browser/ui/webui/brave_wrapped:browser_tests" ]
+  }
+
   if (is_android) {
     use_default_launcher = false
 

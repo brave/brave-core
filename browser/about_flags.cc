@@ -1210,6 +1210,14 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
           FEATURE_VALUE_TYPE(features::kBraveFilledBookmarkFolderIcon),        \
       },                                                                       \
       {                                                                        \
+          "brave-wrapped",                                                     \
+          "Brave Wrapped",                                                     \
+          "Enables brave://wrapped, a shareable summary of what Shields has "  \
+          "blocked over the lifetime of the profile",                          \
+          kOsDesktop,                                                          \
+          FEATURE_VALUE_TYPE(features::kBraveWrapped),                         \
+      },                                                                       \
+      {                                                                        \
           "brave-ntp-refresh-enabled",                                         \
           "New Tab Page refresh",                                              \
           "Enables the refreshed version of the New Tab Page",                 \

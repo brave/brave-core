@@ -23,7 +23,8 @@ bool IsURLAllowedInIncognitoBraveImpl(const GURL& url) {
   std::string_view host = url.host();
   if (host == kRewardsPageHost || host == chrome::kChromeUISyncInternalsHost ||
       host == chrome::kBraveUISyncHost || host == kAdblockHost ||
-      host == kWelcomeHost || host == kBraveGettingStartedHost) {
+      host == kWelcomeHost || host == kBraveGettingStartedHost ||
+      host == kBraveWrappedHost) {
     return false;
   }
 

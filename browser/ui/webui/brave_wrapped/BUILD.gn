@@ -1,0 +1,57 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+assert(!is_android)
+
+source_set("brave_wrapped") {
+  sources = [
+    "brave_wrapped_ui.cc",
+    "brave_wrapped_ui.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/browser/brave_stats:first_run_util",
+    "//brave/browser/resources/brave_wrapped:pack_js_resources",
+    "//brave/browser/resources/brave_wrapped:pack_static_resources",
+    "//brave/browser/ui:ui_features",
+    "//brave/components/brave_perf_predictor/common",
+    "//brave/components/constants",
+    "//brave/components/resources:strings_grit",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/profiles:profile",
+    "//components/prefs",
+    "//content/public/browser",
+    "//services/network/public/mojom",
+    "//ui/webui",
+    "//ui/webui/resources:resources_grit",
+  ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+
+  sources = [ "brave_wrapped_ui_browsertest.cc" ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/browser/ui:ui_features",
+    "//brave/components/brave_perf_predictor/common",
+    "//brave/components/constants",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui",
+    "//chrome/browser/ui:incognito_allowed_url",
+    "//chrome/test:test_support",
+    "//chrome/test:test_support_ui",
+    "//components/prefs",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//testing/gtest",
+    "//url",
+  ]
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+}
