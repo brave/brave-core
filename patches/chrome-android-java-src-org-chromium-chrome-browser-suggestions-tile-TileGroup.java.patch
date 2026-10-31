@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/TileGroup.java b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/TileGroup.java
-index 294b743da3c03427f7e417ddea639419fead0928..8a33c4b5293d08e6b1c1d42f4704827274d69f0b 100644
+index bfd336f98f222d71ad16015dfd502e6f201f8b26..45ad297f7853b026661180eca2dbc481fef139d4 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/TileGroup.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/TileGroup.java
-@@ -306,7 +306,7 @@ public class TileGroup implements MostVisitedSites.Observer {
+@@ -343,7 +343,7 @@ public class TileGroup implements MostVisitedSites.Observer {
              new TileSetupDelegate() {
                  @Override
                  public TileInteractionDelegate createInteractionDelegate(Tile tile, View view) {

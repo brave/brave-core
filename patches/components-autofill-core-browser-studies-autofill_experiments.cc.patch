@@ -1,8 +1,8 @@
 diff --git a/components/autofill/core/browser/studies/autofill_experiments.cc b/components/autofill/core/browser/studies/autofill_experiments.cc
-index 6ad038a33c17e322dff7eff33558470612bd0f9b..6a61c251457a16a16dcb2e067c0a0ba4b3cb4ec1 100644
+index 42c2979d0a5dc9b0d22b05a5fd26826a74a356ca..8afedd9f79672e47364de397dbab9aad4c0c9d59 100644
 --- a/components/autofill/core/browser/studies/autofill_experiments.cc
 +++ b/components/autofill/core/browser/studies/autofill_experiments.cc
-@@ -96,6 +96,9 @@ bool IsCreditCardUploadEnabled(
+@@ -95,6 +95,9 @@ bool IsCreditCardUploadEnabled(
      const std::string& user_country,
      AutofillMetrics::PaymentsSigninState signin_state_for_metrics,
      LogManager* log_manager) {

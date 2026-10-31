@@ -1,5 +1,5 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 271801af5323ad07e60e701d575e3f16b7d2f58f..3230061224f05a5f65824d3bc6b082560a381566 100644
+index e3e9d0318a10d0988fbb30cdc4bd38d372d4cf2e..7767e572f55d12b1d37692bb280b5258c4028d55 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -162,10 +162,12 @@ if (_is_default_toolchain) {
@@ -39,7 +39,7 @@ index 271801af5323ad07e60e701d575e3f16b7d2f58f..3230061224f05a5f65824d3bc6b08256
  
      deps += feed_deps
  
-@@ -902,6 +907,7 @@ if (_is_default_toolchain) {
+@@ -903,6 +908,7 @@ if (_is_default_toolchain) {
        "//components/supervised_user/core/browser:supervised_user_utils_enum_javagen",
        "//components/touch_to_search/core/browser:quick_action_category_enum_javagen",
      ]
@@ -47,7 +47,7 @@ index 271801af5323ad07e60e701d575e3f16b7d2f58f..3230061224f05a5f65824d3bc6b08256
  
      # From java_sources.gni.
      sources = chrome_java_sources
-@@ -1041,6 +1047,7 @@ if (_is_default_toolchain) {
+@@ -1054,6 +1060,7 @@ if (_is_default_toolchain) {
        "//components/segmentation_platform/internal:internal_java",
        "//components/visited_url_ranking/internal:internal_java",
      ]
@@ -55,7 +55,7 @@ index 271801af5323ad07e60e701d575e3f16b7d2f58f..3230061224f05a5f65824d3bc6b08256
  
      if (enable_extensions_core) {
        deps += [
-@@ -1841,6 +1848,7 @@ if (_is_default_toolchain) {
+@@ -1853,6 +1860,7 @@ if (_is_default_toolchain) {
        "java/res_chromium_base/mipmap-xxxhdpi/layered_app_icon_background.png",
        "java/res_chromium_base/values/channel_constants.xml",
      ]
@@ -63,7 +63,7 @@ index 271801af5323ad07e60e701d575e3f16b7d2f58f..3230061224f05a5f65824d3bc6b08256
  
      # Dep needed to ensure override works properly.
      deps = [ ":chrome_base_module_resources" ]
-@@ -1977,6 +1985,7 @@ if (_is_default_toolchain) {
+@@ -1989,6 +1997,7 @@ if (_is_default_toolchain) {
          ":${_variant}_locale_pak_assets",
          ":${_variant}_paks",
        ]
@@ -71,7 +71,7 @@ index 271801af5323ad07e60e701d575e3f16b7d2f58f..3230061224f05a5f65824d3bc6b08256
      }
    }
  
-@@ -2207,6 +2216,7 @@ if (_is_default_toolchain) {
+@@ -2232,6 +2241,7 @@ if (_is_default_toolchain) {
        "java/src/org/chromium/chrome/browser/services/gcm/InvalidationGcmUpstreamSender.java",
        "java/src/org/chromium/chrome/browser/tracing/TracingNotificationService.java",
      ]
@@ -79,7 +79,7 @@ index 271801af5323ad07e60e701d575e3f16b7d2f58f..3230061224f05a5f65824d3bc6b08256
      deps = [
        ":chrome_base_module_resources",
        "$google_play_services_package:google_firebase_firebase_messaging_java",
-@@ -2262,6 +2272,7 @@ if (_is_default_toolchain) {
+@@ -2286,6 +2296,7 @@ if (_is_default_toolchain) {
        "//third_party/androidx:androidx_annotation_annotation_experimental_java",
        "//third_party/androidx:androidx_browser_browser_java",
      ]
@@ -87,7 +87,7 @@ index 271801af5323ad07e60e701d575e3f16b7d2f58f..3230061224f05a5f65824d3bc6b08256
  
      # More deps for DFMs.
      if (enable_chrome_android_internal) {
-@@ -3162,6 +3173,7 @@ if (_is_default_toolchain) {
+@@ -2946,6 +2957,7 @@ if (_is_default_toolchain) {
        "java/src/org/chromium/chrome/browser/webapps/WebappRegistry.java",
        "java/src/org/chromium/chrome/browser/xr/scenecore/XrModuleBridge.java",
      ]

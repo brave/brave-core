@@ -1,5 +1,5 @@
 diff --git a/components/policy/resources/policy_templates.py b/components/policy/resources/policy_templates.py
-index be466c40692890a8b34f17d2fd3f3b5e5f2e85ba..4b40a313610fb13ba742cd4d8698536a0218da37 100755
+index 84b6587702556427598de34e5a62ce0560133316..7acaf725793ab9f0bc3f88d248a6e429b49f4102 100755
 --- a/components/policy/resources/policy_templates.py
 +++ b/components/policy/resources/policy_templates.py
 @@ -539,5 +539,6 @@ def main():
