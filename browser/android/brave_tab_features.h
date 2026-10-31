@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "chrome/browser/android/tab_features.h"
 
 class Profile;
@@ -62,6 +63,10 @@ class BraveTabFeatures : public TabFeatures_Chromium {
   // Finds the page's Brave News feeds. Null without Brave News or off the
   // record.
   std::unique_ptr<ContentsObservingTabFeature> brave_news_tab_helper_;
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  // Serves the wallet providers of the tab's frames.
+  std::unique_ptr<ContentsObservingTabFeature> brave_wallet_tab_helper_;
+#endif
 
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;
   std::unique_ptr<ai_chat::WebMcpInjector> web_mcp_injector_;

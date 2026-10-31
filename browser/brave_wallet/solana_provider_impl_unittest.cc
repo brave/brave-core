@@ -48,6 +48,8 @@
 #include "components/permissions/permission_manager.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/prefs/testing_pref_service.h"
+#include "components/tabs/public/mock_tab_interface.h"
+#include "components/tabs/public/tab_interface.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/browser_test_utils.h"
@@ -118,6 +120,7 @@ class SolanaProviderImplUnitTest : public testing::Test {
 
   void TearDown() override {
     provider_.reset();
+    brave_wallet_tab_helper_.reset();
     web_contents_.reset();
     profile_.SetPermissionControllerDelegate(nullptr);
     BraveWalletServiceDelegateImpl::SetActiveWebContentsForTesting(nullptr);
@@ -129,8 +132,12 @@ class SolanaProviderImplUnitTest : public testing::Test {
         content::TestWebContents::Create(browser_context(), nullptr);
     BraveWalletServiceDelegateImpl::SetActiveWebContentsForTesting(
         web_contents_.get());
-    brave_wallet::BraveWalletTabHelper::CreateForWebContents(
-        web_contents_.get());
+    ON_CALL(tab_, GetContents())
+        .WillByDefault(testing::Return(web_contents_.get()));
+    tabs::TabLookupFromWebContents::CreateForWebContents(web_contents_.get(),
+                                                         &tab_);
+    brave_wallet_tab_helper_ =
+        std::make_unique<brave_wallet::BraveWalletTabHelper>(tab_);
     brave_wallet_tab_helper()->SetSkipDelegateForTesting(true);
     permissions::PermissionRequestManager::CreateForWebContents(web_contents());
 
@@ -182,8 +189,7 @@ class SolanaProviderImplUnitTest : public testing::Test {
   content::TestWebContents* web_contents() { return web_contents_.get(); }
 
   brave_wallet::BraveWalletTabHelper* brave_wallet_tab_helper() {
-    return brave_wallet::BraveWalletTabHelper::FromWebContents(
-        web_contents_.get());
+    return brave_wallet_tab_helper_.get();
   }
 
   void Navigate(const GURL& url) {
@@ -514,6 +520,8 @@ class SolanaProviderImplUnitTest : public testing::Test {
  private:
   TestingPrefServiceSimple local_state_;
   std::unique_ptr<content::TestWebContents> web_contents_;
+  tabs::MockTabInterface tab_;
+  std::unique_ptr<brave_wallet::BraveWalletTabHelper> brave_wallet_tab_helper_;
   content::BrowserTaskEnvironment browser_task_environment_;
   content::TestWebContentsFactory factory_;
   TestingProfile profile_;

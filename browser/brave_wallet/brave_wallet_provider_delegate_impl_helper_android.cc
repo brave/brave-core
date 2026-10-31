@@ -11,6 +11,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "chrome/android/chrome_jni_headers/BraveWalletProviderDelegateImplHelper_jni.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 
@@ -72,8 +73,8 @@ static void JNI_BraveWalletProviderDelegateImplHelper_IsSolanaConnected(
     return;
   }
 
-  auto* tab_helper =
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents);
+  auto* tab_helper = brave_wallet::BraveWalletTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   if (!tab_helper) {
     base::android::RunBooleanCallbackAndroid(callback, false);
     return;

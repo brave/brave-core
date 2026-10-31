@@ -20,6 +20,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/network_session_configurator/common/network_switches.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -182,9 +183,9 @@ IN_PROC_BROWSER_TEST_F(WalletWatchAssetBrowserTest, UserApprovedRequest) {
                                   decimals_[i]),
                content::EXECUTE_SCRIPT_NO_RESOLVE_PROMISES));
     base::RunLoop().RunUntilIdle();
-    EXPECT_TRUE(
-        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-            ->IsShowingBubble());
+    EXPECT_TRUE(brave_wallet::BraveWalletTabHelper::From(
+                    tabs::TabInterface::MaybeGetFromContents(web_contents()))
+                    ->IsShowingBubble());
     brave_wallet_service()->NotifyAddSuggestTokenRequestsProcessed(
         true, {addresses_[i]});
   }
@@ -206,9 +207,9 @@ IN_PROC_BROWSER_TEST_F(WalletWatchAssetBrowserTest, UserRejectedRequest) {
                                   decimals_[i]),
                content::EXECUTE_SCRIPT_NO_RESOLVE_PROMISES));
     base::RunLoop().RunUntilIdle();
-    EXPECT_TRUE(
-        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-            ->IsShowingBubble());
+    EXPECT_TRUE(brave_wallet::BraveWalletTabHelper::From(
+                    tabs::TabInterface::MaybeGetFromContents(web_contents()))
+                    ->IsShowingBubble());
     brave_wallet_service()->NotifyAddSuggestTokenRequestsProcessed(
         false, {addresses_[i]});
   }

@@ -21,6 +21,7 @@
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
 #include "brave/components/misc_metrics/features.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -47,6 +48,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
@@ -272,6 +277,11 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
   drm_tab_helper_ = std::make_unique<BraveDrmTabHelper>(tab);
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  brave_wallet_tab_helper_ =
+      std::make_unique<brave_wallet::BraveWalletTabHelper>(tab);
 #endif
 
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)

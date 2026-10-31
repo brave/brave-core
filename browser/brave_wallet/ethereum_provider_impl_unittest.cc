@@ -54,6 +54,8 @@
 #include "components/permissions/permission_request_manager.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/testing_pref_service.h"
+#include "components/tabs/public/mock_tab_interface.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_web_contents_factory.h"
 #include "content/test/test_web_contents.h"
@@ -232,6 +234,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
 
   void TearDown() override {
     provider_.reset();
+    brave_wallet_tab_helper_.reset();
     web_contents_.reset();
     profile_.SetPermissionControllerDelegate(nullptr);
     BraveWalletServiceDelegateImpl::SetActiveWebContentsForTesting(nullptr);
@@ -498,12 +501,15 @@ class EthereumProviderImplUnitTest : public testing::Test {
   }
 
   void CreateBraveWalletTabHelper() {
-    brave_wallet::BraveWalletTabHelper::CreateForWebContents(
-        web_contents_.get());
+    ON_CALL(tab_, GetContents())
+        .WillByDefault(testing::Return(web_contents_.get()));
+    tabs::TabLookupFromWebContents::CreateForWebContents(web_contents_.get(),
+                                                         &tab_);
+    brave_wallet_tab_helper_ =
+        std::make_unique<brave_wallet::BraveWalletTabHelper>(tab_);
   }
   brave_wallet::BraveWalletTabHelper* brave_wallet_tab_helper() {
-    return brave_wallet::BraveWalletTabHelper::FromWebContents(
-        web_contents_.get());
+    return brave_wallet_tab_helper_.get();
   }
 
   void AddEthereumPermission(const mojom::AccountIdPtr& account_id) {
@@ -1000,6 +1006,8 @@ class EthereumProviderImplUnitTest : public testing::Test {
   TestingPrefServiceSimple local_state_;
   content::TestWebContentsFactory factory_;
   std::unique_ptr<content::TestWebContents> web_contents_;
+  tabs::MockTabInterface tab_;
+  std::unique_ptr<brave_wallet::BraveWalletTabHelper> brave_wallet_tab_helper_;
   base::ScopedTempDir temp_dir_;
   TestingProfile profile_;
 

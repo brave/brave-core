@@ -19,6 +19,7 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/network_session_configurator/common/network_switches.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -56,8 +57,8 @@ constexpr char kWaitForSignMessageResult[] = R"(
     }))";
 
 bool WaitForWalletBubble(content::WebContents* web_contents) {
-  auto* tab_helper =
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents);
+  auto* tab_helper = brave_wallet::BraveWalletTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   if (!tab_helper->IsShowingBubble()) {
     base::RunLoop run_loop;
     tab_helper->SetShowBubbleCallbackForTesting(run_loop.QuitClosure());
@@ -231,9 +232,9 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UnknownAddress) {
                              " '0xdeadbeef')"})));
     // Wait for EthereumProviderImpl::ContinueSignMessage
     base::RunLoop().RunUntilIdle();
-    EXPECT_FALSE(
-        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-            ->IsShowingBubble());
+    EXPECT_FALSE(brave_wallet::BraveWalletTabHelper::From(
+                     tabs::TabInterface::MaybeGetFromContents(web_contents()))
+                     ->IsShowingBubble());
     EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()").ExtractString(),
               l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
   }
@@ -253,9 +254,9 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, InvalidAddressParam) {
                                                      " '0xdeadbeef')"})));
     // Wait for EthereumProviderImpl::ContinueSignMessage
     base::RunLoop().RunUntilIdle();
-    EXPECT_FALSE(
-        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-            ->IsShowingBubble());
+    EXPECT_FALSE(brave_wallet::BraveWalletTabHelper::From(
+                     tabs::TabInterface::MaybeGetFromContents(web_contents()))
+                     ->IsShowingBubble());
     EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()").ExtractString(),
               l10n_util::GetStringUTF8(IDS_WALLET_REQUEST_PROCESSING_ERROR));
   }
@@ -277,9 +278,9 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, NoEthPermission) {
                              " '0xdeadbeef')"})));
     // Wait for EthereumProviderImpl::ContinueSignMessage
     base::RunLoop().RunUntilIdle();
-    EXPECT_FALSE(
-        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-            ->IsShowingBubble());
+    EXPECT_FALSE(brave_wallet::BraveWalletTabHelper::From(
+                     tabs::TabInterface::MaybeGetFromContents(web_contents()))
+                     ->IsShowingBubble());
     EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()").ExtractString(),
               l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
   }
