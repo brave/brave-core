@@ -349,6 +349,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #if BUILDFLAG(ENABLE_PSST)
 #include "brave/browser/psst/psst_log_receiver.h"
 #include "brave/browser/ui/webui/psst/brave_psst_dialog_ui.h"
+#include "brave/browser/ui/webui/psst/psst_internals_ui.h"
 #include "brave/components/psst/core/common/features.h"
 #include "brave/components/psst/core/common/psst_ui_common.mojom-shared.h"
 #endif
@@ -891,6 +892,8 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
 #if BUILDFLAG(ENABLE_PSST)
   registry.ForWebUI<psst::BravePsstDialogUI>()
       .Add<psst::mojom::PsstConsentFactory>();
+  registry.ForWebUI<psst::PsstInternalsUI>()
+      .Add<psst::mojom::PsstInternalsHandler>();
 #endif
 }
 

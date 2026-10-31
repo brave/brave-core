@@ -10,6 +10,8 @@
     <includes>
       <!-- WebUI Brave Psst Dialog resources -->
       <include name="IDR_BRAVE_PSST_DIALOG_HTML" file="ui/brave_psst_dialog.html" type="BINDATA" />
+      <!-- brave://psst-internals -->
+      <include name="IDR_PSST_INTERNALS_HTML" file="ui/psst_internals.html" type="BINDATA" />
     </includes>
   </release>
 </grit>
