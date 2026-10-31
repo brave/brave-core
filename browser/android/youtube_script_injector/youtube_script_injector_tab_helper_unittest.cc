@@ -5,7 +5,10 @@
 
 #include "brave/browser/android/youtube_script_injector/youtube_script_injector_tab_helper.h"
 
+#include <memory>
+
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
+#include "components/tabs/public/mock_tab_interface.h"
 #include "content/public/test/web_contents_tester.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -17,16 +20,24 @@ class YouTubeScriptInjectorTabHelperTest
  public:
   void SetUp() override {
     ChromeRenderViewHostTestHarness::SetUp();
-    YouTubeScriptInjectorTabHelper::CreateForWebContents(web_contents());
+    ON_CALL(tab_, GetContents()).WillByDefault(testing::Return(web_contents()));
+    helper_ = std::make_unique<YouTubeScriptInjectorTabHelper>(tab_);
   }
 
-  YouTubeScriptInjectorTabHelper* GetHelper() {
-    return YouTubeScriptInjectorTabHelper::FromWebContents(web_contents());
+  void TearDown() override {
+    helper_.reset();
+    ChromeRenderViewHostTestHarness::TearDown();
   }
+
+  YouTubeScriptInjectorTabHelper* GetHelper() { return helper_.get(); }
 
   void NavigateToURL(const GURL& url) {
     content::WebContentsTester::For(web_contents())->NavigateAndCommit(url);
   }
+
+ private:
+  tabs::MockTabInterface tab_;
+  std::unique_ptr<YouTubeScriptInjectorTabHelper> helper_;
 };
 
 TEST_F(YouTubeScriptInjectorTabHelperTest, InvalidOrEmptyUrl) {

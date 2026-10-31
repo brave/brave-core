@@ -67,6 +67,8 @@ class BraveTabFeatures : public TabFeatures_Chromium {
   // Serves the wallet providers of the tab's frames.
   std::unique_ptr<ContentsObservingTabFeature> brave_wallet_tab_helper_;
 #endif
+  // Enters fullscreen and Picture-in-Picture for YouTube videos.
+  std::unique_ptr<ContentsObservingTabFeature> youtube_script_injector_;
 
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;
   std::unique_ptr<ai_chat::WebMcpInjector> web_mcp_injector_;

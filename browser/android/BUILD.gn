@@ -89,6 +89,7 @@ source_set("tabs_impl") {
     ":tabs_public",
     "//base",
     "//brave/browser/ai_chat",
+    "//brave/browser/android/youtube_script_injector",
     "//brave/browser/image_metadata_stripper",
     "//brave/browser/misc_metrics:misc_metrics_impl",
     "//brave/browser/serp_metrics",
