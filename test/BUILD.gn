@@ -1132,7 +1132,7 @@ test("brave_browser_tests") {
     ]
   }
 
-  if (enable_email_aliases) {
+  if (enable_email_aliases && !is_android) {
     deps += [
       "//brave/browser/ui/email_aliases",
       "//brave/components/email_aliases:features",
@@ -1457,7 +1457,7 @@ test("brave_browser_tests") {
     ]
   }
 
-  if (enable_email_aliases) {
+  if (enable_email_aliases && !is_android) {
     deps += [ "//brave/browser/email_aliases:browser_tests" ]
   }
 
