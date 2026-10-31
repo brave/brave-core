@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 
+#include "base/check_op.h"
+#include "base/functional/bind.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 
 DEFINE_USER_DATA(FocusModeController);
@@ -35,17 +37,38 @@ void FocusModeController::RemoveObserver(Observer* observer) {
 }
 
 bool FocusModeController::IsEnabled() const {
-  return enabled_;
+  return enabled_ && suppress_count_ == 0;
 }
 
 void FocusModeController::SetEnabled(bool enabled) {
   if (enabled_ == enabled) {
     return;
   }
+  const bool was_enabled = IsEnabled();
   enabled_ = enabled;
-  observers_.Notify(&Observer::OnFocusModeToggled, enabled);
+  if (IsEnabled() != was_enabled) {
+    observers_.Notify(&Observer::OnFocusModeToggled, IsEnabled());
+  }
 }
 
 void FocusModeController::ToggleEnabled() {
   SetEnabled(!enabled_);
+}
+
+base::ScopedClosureRunner FocusModeController::Suppress() {
+  const bool was_enabled = IsEnabled();
+  ++suppress_count_;
+  if (was_enabled) {
+    observers_.Notify(&Observer::OnFocusModeToggled, false);
+  }
+  return base::ScopedClosureRunner(base::BindOnce(
+      &FocusModeController::EndSuppress, weak_factory_.GetWeakPtr()));
+}
+
+void FocusModeController::EndSuppress() {
+  CHECK_GT(suppress_count_, 0);
+  --suppress_count_;
+  if (IsEnabled()) {
+    observers_.Notify(&Observer::OnFocusModeToggled, true);
+  }
 }

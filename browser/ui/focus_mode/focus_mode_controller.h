@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_FOCUS_MODE_FOCUS_MODE_CONTROLLER_H_
 #define BRAVE_BROWSER_UI_FOCUS_MODE_FOCUS_MODE_CONTROLLER_H_
 
+#include "base/functional/callback_helpers.h"
+#include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 
@@ -40,10 +42,18 @@ class FocusModeController {
   void SetEnabled(bool enabled);
   void ToggleEnabled();
 
+  // Temporarily suppresses Focus Mode on this controller until the returned
+  // runner is destroyed. While suppressed, `IsEnabled()` returns false.
+  [[nodiscard]] base::ScopedClosureRunner Suppress();
+
  private:
+  void EndSuppress();
+
   base::ObserverList<Observer> observers_;
   bool enabled_ = false;
+  int suppress_count_ = 0;
   ui::ScopedUnownedUserData<FocusModeController> scoped_unowned_user_data_;
+  base::WeakPtrFactory<FocusModeController> weak_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_FOCUS_MODE_FOCUS_MODE_CONTROLLER_H_
