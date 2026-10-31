@@ -1077,6 +1077,17 @@ rebuild. `publish` appends what it did to the report itself (`## publish <N>`):
 what it picked, how far the base moved and whether it had a lift, the rebase and
 regen it ran, and whether it pushed.
 
+Once it has pushed, it ends that section with "To review": a GitHub link to each
+pushed commit the run wrote or changed, for a human to check. A commit counts
+when nothing GitHub had before the push has its diff, so rebasing alone doesn't
+make it count, but a fix, or a fixup squashed into it (a teammate's too), does.
+The commits Brockit writes itself (the version commit, "Update patches",
+"Updated strings", the `gnrt` run, "Apply-fixed" patches) are left out;
+"Conflict-resolved patches" isn't, as it holds the agent's resolutions. The
+report's own commit list (see [Report](#report)) still says what each fix
+answers, but its hashes go stale at the next rebase: the links to open are
+these.
+
 For a new milestone, which has no branch on GitHub yet, `publish` pushes it and
 runs `brockit update-version-issue`, which creates the version issue and a pull
 request against the base. It refuses a branch with no commits on top of its
@@ -1314,7 +1325,8 @@ you couldn't verify), and print it at the end. Include:
 - The bump range, and the branch range.
 - Each commit made, as `<sha> <subject> (culprit <short hash> | no culprit)`,
   with fixups listed under their target. For a fix picked from a newer branch,
-  add `(picked from origin/cr<M> <sha>)`.
+  add `(picked from origin/cr<M> <sha>)`. `publish` adds the links to review
+  once pushed (see [step 11](#11-publish)).
 - Each `--tagged=WIP` commit: the concern and the alternatives.
 - Issues found but left alone because the codehealth tracker covers them, and
   any test failures attributed to the environment or to flakiness.

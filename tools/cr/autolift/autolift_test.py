@@ -703,6 +703,103 @@ class PrepareFlowTest(unittest.TestCase):
         run.assert_not_called()
 
 
+class ReviewListTest(unittest.TestCase):
+    """`Publish._note_for_review`, on a real repository."""
+
+    def setUp(self):
+        self.dir = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, self.dir)
+        self._git('init', '-q', '-b', 'master')
+        self._git('config', 'user.email', 'a@b.c')
+        self._git('config', 'user.name', 'A')
+        self._git(
+            'remote', 'add', 'origin', 'git@github.com:brave/brave-core.git'
+        )
+        self._commit('base', 'base')
+        self._git('update-ref', 'refs/remotes/origin/master', 'HEAD')
+        self._git('checkout', '-q', '-b', 'cr158')
+        self._git('branch', '-q', '--set-upstream-to=origin/master')
+
+    def _git(self, *args: str) -> str:
+        return subprocess.run(
+            ['git', '-C', str(self.dir), *args],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+
+    def _commit(self, name: str, content: str, subject: str = '') -> str:
+        (self.dir / name).write_text(f'{content}\n')
+        self._git('add', name)
+        self._git('commit', '-q', '-m', subject or f'[cr158] Change {name}')
+        return self._git('rev-parse', 'HEAD')
+
+    def _review(self, pushed_over: str) -> list[str]:
+        brave = mock.MagicMock(root=self.dir)
+        brave.run_git.side_effect = lambda *args, no_trim=False: (
+            subprocess.run(
+                ['git', '-C', str(self.dir), *args],
+                check=True,
+                capture_output=True,
+                text=True,
+            ).stdout
+            if no_trim
+            else self._git(*args)
+        )
+        with mock.patch.object(autolift.repository, 'brave', brave):
+            publish = autolift.Publish(158)
+            publish._note_for_review(pushed_over)
+        return publish._notes
+
+    def test_lists_what_the_run_wrote_or_changed(self):
+        self._commit('kept', 'kept')
+        self._commit('changed', 'v1')
+        pushed_over = self._git('rev-parse', 'HEAD')
+        # The run's rebase rewrites every hash; only some diffs change.
+        self._git('reset', '-q', '--hard', 'origin/master')
+        self._commit('kept', 'kept')
+        changed = self._commit('changed', 'v2')
+        new = self._commit('fix', 'fix', '[cr158] Fix the build')
+        self._commit(
+            'patches',
+            'p',
+            'Update patches from Chromium 158.0.8127.2 to Chromium '
+            '158.0.8127.4.',
+        )
+        self._commit(
+            'version',
+            '158.0.8127.4',
+            'Update from Chromium 158.0.8127.2 to Chromium 158.0.8127.4.',
+        )
+        url = 'https://github.com/brave/brave-core/commit/'
+        self.assertEqual(
+            self._review(pushed_over),
+            [
+                'To review (2):',
+                f'  - [[cr158] Change changed]({url}{changed})',
+                f'  - [[cr158] Fix the build]({url}{new})',
+            ],
+        )
+
+    def test_new_branch_lists_all_but_brockit_commits(self):
+        only = self._commit('fix', 'fix', '[cr159] Fix the build')
+        self.assertEqual(
+            self._review(''),
+            [
+                'To review (1):',
+                '  - [[cr159] Fix the build]'
+                f'(https://github.com/brave/brave-core/commit/{only})',
+            ],
+        )
+
+    def test_nothing_changed(self):
+        self._commit('kept', 'kept')
+        pushed_over = self._git('rev-parse', 'HEAD')
+        self.assertEqual(
+            self._review(pushed_over), ['Nothing to review: no commit changed.']
+        )
+
+
 _START = '1' * 40
 _LANDED = '2' * 40
 _HEAD = '3' * 40
@@ -821,6 +918,8 @@ class PublishTest(unittest.TestCase):
             mock.patch.object(
                 autolift, 'chromium_mismatch', return_value=chromium_mismatch
             ),
+            # `ReviewListTest` covers it, on a real repository.
+            mock.patch.object(autolift.Publish, '_note_for_review'),
             mock.patch.dict(
                 autolift.os.environ,
                 {'GIT_CACHE_PATH': git_cache} if git_cache else {},

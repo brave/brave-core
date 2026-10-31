@@ -74,6 +74,7 @@ import sys
 
 import _boot  # noqa: F401  -- adds parent tools/cr to sys.path
 from exceptions import RebaseNeededException  # noqa: E402  -- after _boot
+import rebase  # noqa: E402  -- after _boot
 import repository  # noqa: E402  -- after _boot
 from versioning import (  # noqa: E402  -- after _boot
     Version,
@@ -796,6 +797,7 @@ class Publish:
         if not self._push(expected):
             return self.AGAIN
         self._note(f'Pushed {self.branch} over {expected[:12]}.')
+        self._note_for_review(expected)
         return 0
 
     def _note(self, message: str) -> None:
@@ -1005,7 +1007,83 @@ class Publish:
         if not self._push(''):
             return self.AGAIN
         self._note(f'Pushed the new {self.branch}.')
+        self._note_for_review('')
         return self._brockit('update-version-issue')
+
+    # Groups of `rebase.PINNED_GROUPS` whose commits Brockit writes itself.
+    # Conflict-resolved patches aren't among them: they hold the agent's
+    # resolutions.
+    _BROCKIT_GROUPS = frozenset({'version', 'plaster_reruns', 'gnrt'})
+
+    def _note_for_review(self, pushed_over: str) -> None:
+        """Notes the pushed commits the run wrote or changed, as URLs.
+
+        A commit counts when no commit GitHub had before the push
+        (`pushed_over`, '' for a new branch) has its diff: rebases change
+        hashes, but not diffs. So a squashed-in fixup counts, and a picked
+        teammate's commit doesn't. Commits Brockit writes itself don't count
+        either.
+        """
+        upstream = self._brave.run_git(
+            'rev-parse', '--abbrev-ref', '@{upstream}'
+        )
+        before = (
+            set(self._patch_ids(f'{upstream}..{pushed_over}').values())
+            if pushed_over
+            else set()
+        )
+        after = self._patch_ids(f'{upstream}..HEAD')
+        url = self._commit_url_base()
+        review = [
+            f'  - [{subject}]({url}{sha})'
+            for sha, subject in self._commits(f'{upstream}..HEAD')
+            if after.get(sha) not in before
+            and not self._written_by_brockit(subject)
+        ]
+        if review:
+            self._notes.append(f'To review ({len(review)}):')
+            self._notes.extend(review)
+        else:
+            self._notes.append('Nothing to review: no commit changed.')
+
+    @classmethod
+    def _written_by_brockit(cls, subject: str) -> bool:
+        return rebase.get_pinned_group_for_subject(
+            subject
+        ) in cls._BROCKIT_GROUPS or rebase.is_recyclable(subject)
+
+    def _commits(self, revision_range: str) -> list[tuple[str, str]]:
+        output = self._brave.run_git(
+            'log', '--reverse', '--format=%H%x00%s', revision_range
+        )
+        return [tuple(line.split('\x00', 1)) for line in output.splitlines()]
+
+    def _patch_ids(self, revision_range: str) -> dict[str, str]:
+        """`{commit: patch id}` for the commits of *revision_range*."""
+        diffs = self._brave.run_git(
+            'log', '-p', '--format=commit %H', revision_range, no_trim=True
+        )
+        output = subprocess.run(
+            ['git', 'patch-id', '--stable'],
+            cwd=self._brave.root,
+            input=diffs,
+            capture_output=True,
+            text=True,
+            check=True,
+        ).stdout
+        return {
+            commit: patch_id
+            for patch_id, commit in (
+                line.split() for line in output.splitlines()
+            )
+        }
+
+    def _commit_url_base(self) -> str:
+        """`https://github.com/<owner>/<repo>/commit/`, from the push URL."""
+        url = self._brave.run_git('remote', 'get-url', '--push', 'origin')
+        match = re.search(r'github\.com[:/]([^/]+/[^/]+?)(?:\.git)?/?$', url)
+        repo = match.group(1) if match else 'brave/brave-core'
+        return f'https://github.com/{repo}/commit/'
 
 
 def _cmd_publish(args: argparse.Namespace) -> int:
