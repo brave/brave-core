@@ -73,7 +73,13 @@ class NavigationRouterTests: XCTestCase {
       url: URL(string: "\(appScheme)://open-url?url=blah")!,
       isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
     )
-    XCTAssertEqual(badNav, NavigationPath.url(webURL: URL(string: "blah"), isPrivate: false))
+    XCTAssertNil(badNav)
+
+    let chromeNav = NavigationPath(
+      url: URL(string: "\(appScheme)://open-url?url=chrome%3A%2F%2Fwallet")!,
+      isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
+    )
+    XCTAssertNil(chromeNav)
   }
 
   func testSearchScheme() {

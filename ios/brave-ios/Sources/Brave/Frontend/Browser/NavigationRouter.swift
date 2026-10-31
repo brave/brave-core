@@ -56,7 +56,17 @@ public enum NavigationPath: Equatable {
       self = .deepLink(link)
     } else if urlString.starts(with: "\(scheme)://open-url") {
       let urlText = components.valueForQuery("url")
-      let url = URIFixup.getURL(urlText ?? "") ?? urlText?.asURL
+      let url: URL?
+      if let urlText, !urlText.isEmpty {
+        guard let resolvedURL = URIFixup.getURL(urlText) ?? urlText.asURL,
+          resolvedURL.isWebPage(includeDataURIs: false)
+        else {
+          return nil
+        }
+        url = resolvedURL
+      } else {
+        url = nil
+      }
       let isPrivate =
         Preferences.Privacy.privateBrowsingOnly.value
         ? true : Bool(components.valueForQuery("private") ?? "") ?? isPrivateBrowsing
