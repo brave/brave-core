@@ -94,6 +94,7 @@ extension BraveSyncAPI {
     Preferences.Chromium.syncHistoryEnabled.value = false
     Preferences.Chromium.syncPasswordsEnabled.value = FeatureList.kBraveSyncDefaultPasswords.enabled
     Preferences.Chromium.syncOpenTabsEnabled.value = false
+    Preferences.Chromium.syncPreferencesEnabled.value = false
 
     resetSync()
   }
@@ -115,6 +116,10 @@ extension BraveSyncAPI {
 
     if Preferences.Chromium.syncOpenTabsEnabled.value {
       syncProfileService.userSelectedTypes.update(with: .TABS)
+    }
+
+    if Preferences.Chromium.syncPreferencesEnabled.value {
+      syncProfileService.userSelectedTypes.update(with: .PREFERENCES)
     }
   }
 
