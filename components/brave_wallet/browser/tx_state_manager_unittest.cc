@@ -33,6 +33,7 @@
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/url_util.h"
 
 using base::test::ParseJson;
 using base::test::ParseJsonDict;
@@ -111,6 +112,9 @@ class TxStateManagerUnitTest : public testing::Test {
 };
 
 TEST_F(TxStateManagerUnitTest, ConvertFromAddress) {
+  url::ScopedSchemeRegistryForTests scoped_scheme_registry;
+  url::AddStandardScheme("brave", url::SCHEME_WITH_HOST);
+
   // Setup transaction.
   EthTxMeta meta(eth_account_id_, std::make_unique<EthTransaction>());
   meta.set_id("001");
@@ -148,6 +152,21 @@ TEST_F(TxStateManagerUnitTest, ConvertFromAddress) {
   EXPECT_TRUE(tx_state_manager_->ValueToTxMeta(legacy_value));
   EXPECT_EQ(eth_account_id_,
             tx_state_manager_->ValueToTxMeta(legacy_value)->from());
+
+  for (const char* origin_spec :
+       {"chrome://wallet", "chrome://wallet/", "brave://wallet/"}) {
+    SCOPED_TRACE(origin_spec);
+    auto legacy_wallet_tx = value->Clone();
+    legacy_wallet_tx.Set("origin", origin_spec);
+    auto legacy_wallet_meta =
+        tx_state_manager_->ValueToTxMeta(legacy_wallet_tx);
+    ASSERT_TRUE(legacy_wallet_meta);
+    EXPECT_FALSE(legacy_wallet_meta->dapp_origin());
+  }
+
+  auto unsupported_origin_tx = value->Clone();
+  unsupported_origin_tx.Set("origin", "chrome://settings/");
+  EXPECT_FALSE(tx_state_manager_->ValueToTxMeta(unsupported_origin_tx));
 }
 
 TEST_F(TxStateManagerUnitTest, TxOperations) {

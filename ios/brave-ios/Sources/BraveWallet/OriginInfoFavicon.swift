@@ -7,7 +7,7 @@ import BraveCore
 import DesignSystem
 import SwiftUI
 
-/// Displays the favicon for the OriginInfo, or the Brave Wallet logo for BraveWallet origin.
+/// Displays the favicon for a dApp origin, or a globe if it cannot be loaded.
 struct OriginInfoFavicon: View {
 
   let originInfo: BraveWallet.OriginInfo
@@ -17,26 +17,17 @@ struct OriginInfoFavicon: View {
 
   var body: some View {
     Group {
-      if originInfo.isBraveWalletOrigin {
-        Image("wallet-brave-icon", bundle: .module)
-          .resizable()
-          .aspectRatio(contentMode: .fit)
-          .padding(4)
-          .frame(maxWidth: .infinity, maxHeight: .infinity)
-          .background(Color(braveSystemName: .neutral20))
-      } else {
-        if let url = URL(string: originInfo.originSpec) {
-          FaviconReader(url: url) { image in
-            if let image = image {
-              Image(uiImage: image)
-                .resizable()
-            } else {
-              globeFavicon
-            }
+      if let url = URL(string: originInfo.originSpec) {
+        FaviconReader(url: url) { image in
+          if let image = image {
+            Image(uiImage: image)
+              .resizable()
+          } else {
+            globeFavicon
           }
-        } else {
-          globeFavicon
         }
+      } else {
+        globeFavicon
       }
     }
     .frame(width: min(faviconSize, maxFaviconSize), height: min(faviconSize, maxFaviconSize))

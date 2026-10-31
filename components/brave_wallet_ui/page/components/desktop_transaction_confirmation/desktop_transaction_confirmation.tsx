@@ -5,9 +5,6 @@
 
 import * as React from 'react'
 
-// utils
-import { getIsBraveWalletOrigin } from '../../../utils/string-utils'
-
 // selectors
 import { UISelectors } from '../../../common/selectors'
 
@@ -70,8 +67,8 @@ export function DesktopTransactionConfirmation() {
   }
 
   if (
-    pendingOrConfirmingTransaction?.originInfo
-    && getIsBraveWalletOrigin(pendingOrConfirmingTransaction.originInfo)
+    pendingOrConfirmingTransaction
+    && !pendingOrConfirmingTransaction.dappOriginInfo
   ) {
     return (
       <ConfirmationPopup isLoading={isLoadingPendingTransactions}>

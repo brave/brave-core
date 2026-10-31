@@ -11,7 +11,7 @@ import SwiftUI
 
 struct SaferSignTransactionContainerView: View {
   /// The OriginInfo that created the transaction
-  let originInfo: BraveWallet.OriginInfo?
+  let dappOriginInfo: BraveWallet.OriginInfo?
   /// The network the transaction belongs to
   let network: BraveWallet.NetworkInfo?
 
@@ -44,7 +44,7 @@ struct SaferSignTransactionContainerView: View {
     editGasFeeTapped: @escaping () -> Void,
     advancedSettingsTapped: @escaping () -> Void
   ) {
-    self.originInfo = parsedTransaction.transaction.originInfo
+    self.dappOriginInfo = parsedTransaction.transaction.dappOriginInfo
     self.network = parsedTransaction.network
     self.fromAccountInfo = parsedTransaction.fromAccountInfo
     if case .ethSwap(let details) = parsedTransaction.details {
@@ -86,37 +86,35 @@ struct SaferSignTransactionContainerView: View {
 
   private var originAndFavicon: some View {
     VStack {
-      if let originInfo = originInfo {
-        Group {
-          if originInfo.isBraveWalletOrigin {
-            Image(uiImage: UIImage(sharedNamed: "brave.logo")!)
-              .resizable()
-              .aspectRatio(contentMode: .fit)
-          } else {
-            if let url = URL(string: originInfo.originSpec) {
-              FaviconReader(url: url) { image in
-                if let image = image {
-                  Image(uiImage: image)
-                    .resizable()
-                    .scaledToFit()
-                } else {
-                  Circle()
-                    .stroke(Color(braveSystemName: .dividerStrong), lineWidth: pixelLength)
-                }
+      Group {
+        if let dappOriginInfo = dappOriginInfo {
+          if let url = URL(string: dappOriginInfo.originSpec) {
+            FaviconReader(url: url) { image in
+              if let image = image {
+                Image(uiImage: image)
+                  .resizable()
+                  .scaledToFit()
+              } else {
+                Circle()
+                  .stroke(Color(braveSystemName: .dividerStrong), lineWidth: pixelLength)
               }
-              .background(Color(braveSystemName: .neutral20))
-              .clipShape(RoundedRectangle(cornerRadius: 4))
             }
+            .background(Color(braveSystemName: .neutral20))
+            .clipShape(RoundedRectangle(cornerRadius: 4))
           }
+        } else {
+          Image(uiImage: UIImage(sharedNamed: "brave.logo")!)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
         }
-        .frame(width: min(faviconSize, maxFaviconSize), height: min(faviconSize, maxFaviconSize))
-
-        Text(originInfo: originInfo)
-          .foregroundColor(Color(braveSystemName: .textPrimary))
-          .font(.subheadline)
-          .multilineTextAlignment(.center)
-          .padding(.top, 8)
       }
+      .frame(width: min(faviconSize, maxFaviconSize), height: min(faviconSize, maxFaviconSize))
+
+      Text(originInfo: dappOriginInfo)
+        .foregroundColor(Color(braveSystemName: .textPrimary))
+        .font(.subheadline)
+        .multilineTextAlignment(.center)
+        .padding(.top, 8)
     }
   }
 

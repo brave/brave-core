@@ -24,6 +24,24 @@ FilTxMeta::FilTxMeta(const mojom::AccountIdPtr& from,
   set_from(std::move(from));
 }
 
+FilTxMeta::FilTxMeta(const mojom::AccountIdPtr& from,
+                     std::unique_ptr<FilTransaction> tx,
+                     const std::string& chain_id,
+                     mojom::SwapInfoPtr swap_info)
+    : TxMeta(from, chain_id, std::move(swap_info), std::nullopt),
+      tx_(std::move(tx)) {
+  DCHECK_EQ(from->coin, mojom::CoinType::FIL);
+}
+
+std::unique_ptr<FilTxMeta> FilTxMeta::MakeUnapproved(
+    const mojom::AccountIdPtr& from,
+    std::unique_ptr<FilTransaction> tx,
+    const std::string& chain_id,
+    mojom::SwapInfoPtr swap_info) {
+  return std::make_unique<FilTxMeta>(from, std::move(tx), chain_id,
+                                     std::move(swap_info));
+}
+
 FilTxMeta::~FilTxMeta() = default;
 
 bool FilTxMeta::operator==(const FilTxMeta& meta) const {
@@ -42,8 +60,8 @@ mojom::TransactionInfoPtr FilTxMeta::ToTransactionInfo() const {
       mojom::TxDataUnion::NewFilTxData(tx_->ToFilTxData()), status_,
       mojom::TransactionType::Other, std::vector<std::string>() /* tx_params */,
       std::vector<std::string>() /* tx_args */, created_time_, submitted_time_,
-      confirmed_time_, origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr,
-      chain_id_, tx_->ToFilTxData()->to, false, swap_info_.Clone(), nullptr);
+      confirmed_time_, MakeDappOriginInfo(dapp_origin_), chain_id_,
+      tx_->ToFilTxData()->to, false, swap_info_.Clone(), nullptr);
 }
 
 mojom::CoinType FilTxMeta::GetCoinType() const {

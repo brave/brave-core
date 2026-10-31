@@ -75,10 +75,7 @@ class CardanoTxManager : public TxManager,
       const std::optional<std::string>& chain_id) override;
 
   void ContinueAddUnapprovedTransaction(
-      const std::string& chain_id,
-      const mojom::AccountIdPtr& from,
-      const std::optional<url::Origin>& origin,
-      mojom::SwapInfoPtr swap_info,
+      std::unique_ptr<CardanoTxMeta> meta,
       AddUnapprovedCardanoTransactionCallback callback,
       base::expected<CardanoTransaction, std::string> cardano_transaction);
 

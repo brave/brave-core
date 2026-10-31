@@ -12,9 +12,11 @@
 #include <vector>
 
 #include "base/containers/span.h"
+#include "base/types/optional_ref.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "url/origin.h"
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 class PrefService;
@@ -122,6 +124,8 @@ std::string GetWeb3ClientVersion();
 std::string eTLDPlusOne(const url::Origin& origin);
 
 mojom::OriginInfoPtr MakeOriginInfo(const url::Origin& origin);
+mojom::OriginInfoPtr MakeDappOriginInfo(
+    base::optional_ref<const url::Origin> dapp_origin);
 
 // Hex string of random 32 bytes.
 std::string GenerateRandomHexString();

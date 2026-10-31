@@ -115,7 +115,7 @@ TEST(SolanaTxMetaUnitTest, ToTransactionInfo) {
   meta.set_tx_hash(
       "5VERv8NMvzbJMEkV8xnrLkEaWRtSz9CosKDYjCJjBRnbJLgp8uirBgmQpjKhoR4tjF3ZpRzr"
       "FmBV6UjKdiSZkQUW");
-  meta.set_origin(url::Origin::Create(GURL("https://test.brave.com/")));
+  meta.set_dapp_origin(url::Origin::Create(GURL("https://test.brave.com/")));
 
   mojom::TransactionInfoPtr ti = meta.ToTransactionInfo();
   EXPECT_EQ(ti->id, meta.id());
@@ -123,7 +123,7 @@ TEST(SolanaTxMetaUnitTest, ToTransactionInfo) {
   EXPECT_EQ(ti->from_account_id, meta.from());
   EXPECT_EQ(ti->tx_hash, meta.tx_hash());
   EXPECT_EQ(
-      ti->origin_info,
+      ti->dapp_origin_info,
       MakeOriginInfo(url::Origin::Create(GURL("https://test.brave.com/"))));
 
   EXPECT_EQ(meta.created_time(), ti->created_time);
@@ -214,7 +214,7 @@ TEST(SolanaTxMetaUnitTest, ToValue) {
   meta.set_tx_hash(
       "5VERv8NMvzbJMEkV8xnrLkEaWRtSz9CosKDYjCJjBRnbJLgp8uirBgmQpjKhoR4tjF3ZpRzr"
       "FmBV6UjKdiSZkQUW");
-  meta.set_origin(url::Origin::Create(GURL("https://test.brave.com/")));
+  meta.set_dapp_origin(url::Origin::Create(GURL("https://test.brave.com/")));
   meta.set_chain_id("0x66");
 
   base::DictValue value = meta.ToValue();

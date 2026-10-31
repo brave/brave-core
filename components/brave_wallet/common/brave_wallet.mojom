@@ -2480,7 +2480,7 @@ struct TransactionInfo {
   mojo_base.mojom.JSTime created_time;
   mojo_base.mojom.JSTime submitted_time;
   mojo_base.mojom.JSTime confirmed_time;
-  OriginInfo? origin_info;
+  OriginInfo? dapp_origin_info;
   string chain_id;
   // Currently only available for ETH and FIL
   // Represent effective recipient of the transaction

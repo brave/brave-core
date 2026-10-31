@@ -197,7 +197,7 @@ class SimulationServiceUnitTest : public testing::Test {
         "FmBV6UjKdiSZkQUW");
 
     if (origin) {
-      meta.set_origin(url::Origin::Create(GURL(*origin)));
+      meta.set_dapp_origin(url::Origin::Create(GURL(*origin)));
     }
 
     meta.set_chain_id(chain_id);

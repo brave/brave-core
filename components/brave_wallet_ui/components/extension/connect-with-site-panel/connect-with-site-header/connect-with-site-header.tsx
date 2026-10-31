@@ -115,10 +115,7 @@ export const ConnectWithSiteHeader = (props: Props) => {
                 textColor='secondary'
                 variant='small.regular'
               >
-                <CreateSiteOrigin
-                  originSpec={originInfo.originSpec}
-                  eTldPlusOne={originInfo.eTldPlusOne}
-                />
+                <CreateSiteOrigin originInfo={originInfo} />
               </SiteURLCentered>
             </Column>
           )}
@@ -150,10 +147,7 @@ export const ConnectWithSiteHeader = (props: Props) => {
                   variant='small.regular'
                   textAlign='left'
                 >
-                  <CreateSiteOrigin
-                    originSpec={originInfo.originSpec}
-                    eTldPlusOne={originInfo.eTldPlusOne}
-                  />
+                  <CreateSiteOrigin originInfo={originInfo} />
                 </SiteURL>
               </DomainTextContainer>
             </Row>
