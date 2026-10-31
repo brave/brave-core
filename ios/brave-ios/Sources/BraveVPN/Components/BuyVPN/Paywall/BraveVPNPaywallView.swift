@@ -115,7 +115,8 @@ public struct BraveVPNPaywallView: View {
           }
         }
 
-        dismiss()
+        // The presenter is responsible for dismissing the paywall before presenting the
+        // install profile screen
         installVPNProfile()
       }
     }
