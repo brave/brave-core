@@ -6,6 +6,9 @@
   <message name="IDS_HISTORY_ACTION_MENU_DESCRIPTION" desc="Text used to identify the history entry drop-down menu for screen readers">
     Actions
   </message>
+  <message name="IDS_HISTORY_ACTOR_FILTER_ALL_ACTORS" desc="The default option in the actor filter dropdown on the Brave history page that shows browsing history from all actors (both the user and AI assistants).">
+    All actors
+  </message>
   <message name="IDS_HISTORY_ACTOR_TASK_TOOLTIP" desc="This string indicates entries in Brave history that are the result of Gemini in Brave browsing while performing an auto browse task for the user. When users view their Brave history, this string appears as a tooltip on an auto browse history entry. This is a shortened version of the sentence: 'Auto browse worked on this task for you'. The tone should be short and telegraphic.">
     Auto browse task
   </message>
@@ -26,6 +29,12 @@
   </message>
   <message name="IDS_HISTORY_DELETE_SELECTED_ENTRIES_BUTTON" desc="Text for the button to delete selected history entries [Length: 16em].">
     Delete
+  </message>
+  <message name="IDS_HISTORY_DEVICE_FILTER_ALL_DEVICES" desc="The default option in the device filter dropdown on the Brave history page that shows browsing history from all synced devices.">
+    All devices
+  </message>
+  <message name="IDS_HISTORY_DEVICE_FILTER_LOCAL_DEVICE" desc="The option in the device filter on the Brave history page for the current local device.">
+    <ph name="DEVICE_NAME">$1<ex>Brave Phone</ex></ph> (this browser)
   </message>
   <message name="IDS_HISTORY_ENTRY_ACCESSIBILITY_DELETE" desc="Name for the accessibility action to delete a single history entry.">
     Delete
@@ -59,6 +68,9 @@
   </message>
   <message name="IDS_HISTORY_MORE_FROM_SITE" desc="Command in the history entry drop-down menu. Shows more history entries from the same site.">
     More from this site
+  </message>
+  <message name="IDS_HISTORY_NO_MATCHING_RESULTS" desc="Text shown on the Brave history page when no history entries match the current search query or applied filters.">
+    No results found
   </message>
   <message name="IDS_HISTORY_NO_RESULTS" desc="Text shown when no history entries are found.">
     Your browsing history appears here
@@ -121,6 +133,22 @@
   <message name="IDS_HISTORY_SEARCH_EMBEDDINGS_MATCH_RESULTS" desc="Used when plural/multiple results are found by history search powered by AI." translateable="false">
     best matches
   </message>
+  <!-- TODO(b/573481189): Make translatable when strings are finalized. -->
+  <message name="IDS_HISTORY_TIME_PERIOD_FILTER_ALL_TIME" desc="Option in the time period filter dropdown on the history page. Selecting it shows history from all time, i.e. no time period filtering is applied. This is the default option." translateable="false">
+    All time
+  </message>
+  <message name="IDS_HISTORY_TIME_PERIOD_FILTER_YESTERDAY" desc="Option in the time period filter dropdown on the history page. Selecting it shows only history from yesterday (the day before today)." translateable="false">
+    Yesterday
+  </message>
+  <message name="IDS_HISTORY_TIME_PERIOD_FILTER_EARLIER_THIS_WEEK" desc="Option in the time period filter dropdown on the history page. Selecting it shows only history from Monday of the current week up to now." translateable="false">
+    Earlier this week
+  </message>
+  <message name="IDS_HISTORY_TIME_PERIOD_FILTER_LAST_WEEK" desc="Option in the time period filter dropdown on the history page. Selecting it shows only history from the previous calendar week (Monday to Sunday)." translateable="false">
+    Last week
+  </message>
+  <message name="IDS_HISTORY_TIME_PERIOD_FILTER_TWO_WEEKS_AGO" desc="Option in the time period filter dropdown on the history page. Selecting it shows only history from the calendar week (Monday to Sunday) before the previous one." translateable="false">
+    2 weeks ago
+  </message>
   <message name="IDS_HISTORY_SHOW_HISTORY" desc="The show history menu in the app menu">
     &amp;Open history page
   </message>
@@ -143,6 +171,9 @@
   </message>
   <message name="IDS_HISTORY_SOURCE_FILTER_CHIP_USER" desc="This string is found on a chip that filters the history results when the user selects it; it sits next to its opposite filter: 'Auto browse' (browsing activity from an auto browse task). It is at the top of the Brave history page, where users can see their browsing history. This text is a noun and is short for the longer phrase 'Browsing history that YOU performed.' The tone should be short and telegraphic.">
     You
+  </message>
+  <message name="IDS_HISTORY_RESET_FILTERS" desc="Text used in the button to reset all applied history filters.">
+    Clear all
   </message>
   <message name="IDS_HISTORY_CLOSE_AND_RETURN_TO_PREFIX" desc="Text for the back-to-opener menu item. Format: Close and go back to &quot;[tab title]&quot;.">
     Close and go back to "<ph name="TAB_TITLE">$1</ph>"
@@ -306,66 +337,64 @@
   </message>
 
   <!-- Critical actions -->
-  <!-- TODO(b/538113758): Make translatable when strings are finalized. -->
-  <message name="IDS_HISTORY_SOURCE_FILTER_CHIP_ACTOR_GEMINI" desc="This string is found on a chip that filters the history results when the user selects it; it sits next to its opposite filter: 'You' (the user's browsing activity). It is at the top of the Brave history page, where users can see their browsing history when Gemini performs tasks." translateable="false">
+  <message name="IDS_HISTORY_SOURCE_FILTER_CHIP_ACTOR_GEMINI" desc="This string is found on a chip that filters the history results when the user selects it; it sits next to its opposite filter: 'You' (the user's browsing activity). It is at the top of the Brave history page, where users can see their browsing history when Gemini performs tasks.">
     Gemini
   </message>
-  <message name="IDS_HISTORY_ACTOR_TASK_TOOLTIP_GEMINI" desc="This string indicates entries in Brave history that are the result of Gemini in Brave browsing while performing a task for the user. When users view their Brave history, this string appears as a tooltip on a Gemini history entry." translateable="false">
-    Gemini task
-  </message>
-  <message name="IDS_HISTORY_REVIEW_GEMINI_ACTIVITY" desc="Command in the history entry drop-down menu. Opens Gemini Apps Activity page." translateable="false">
+  <message name="IDS_HISTORY_REVIEW_GEMINI_ACTIVITY" desc="Command in the history entry drop-down menu. Opens Gemini Apps Activity page.">
     Review Gemini activity
   </message>
-  <message name="IDS_HISTORY_GO_TO_GEMINI_CHAT" desc="Command in the history entry drop-down menu. Opens the Gemini conversation in split view." translateable="false">
+  <message name="IDS_HISTORY_GO_TO_GEMINI_CHAT" desc="Command in the history entry drop-down menu. Opens the Gemini conversation in split view.">
     Go to Gemini chat
   </message>
-  <message name="IDS_HISTORY_GO_TO_GEMINI_CHAT_ERROR" desc="Toast notification shown when opening Gemini chat fails." translateable="false">
+  <message name="IDS_HISTORY_GO_TO_GEMINI_CHAT_ERROR" desc="Toast notification shown when opening Gemini chat fails.">
     Couldn't open Gemini chat
   </message>
-  <message name="IDS_HISTORY_OTHER_FORMS_OF_HISTORY_GMA_AND_GAA_CRITICAL_ACTIONS" desc="The notification at the bottom of the history page indicating that deleting Brave browsing history will not delete other forms of history stored at Brave My Activity and Gemini Apps Activity, shown when critical actions are enabled." translateable="false">
+  <message name="IDS_HISTORY_OTHER_FORMS_OF_HISTORY_GMA_AND_GAA_CRITICAL_ACTIONS" desc="The notification at the bottom of the history page indicating that deleting Brave browsing history will not delete other forms of history stored at Brave My Activity and Gemini Apps Activity, shown when critical actions are enabled.">
     Your Brave sync chain may have other forms of browsing history at <ph name="BEGIN_LINK_GMA">&lt;a target="_blank" id="footerBraveMyActivityLink" href="$1"&gt;</ph>myactivity.google.com<ph name="END_LINK_GMA">&lt;/a&gt;</ph>, such as auto browse visits in your <ph name="BEGIN_LINK_GAA">&lt;a target="_blank" id="footerGeminiAppsActivityLink" href="$2"&gt;</ph>Gemini Apps Activity<ph name="END_LINK_GAA">&lt;/a&gt;</ph>
   </message>
-  <message name="IDS_HISTORY_GEMINI_KEY_BROWSING_ACTIONS_TITLE" desc="Tooltip text for the expand button on history items for Gemini actor visits." translateable="false">
+  <message name="IDS_HISTORY_GEMINI_KEY_BROWSING_ACTIONS_TITLE" desc="Tooltip text for the expand button on history items for Gemini actor visits.">
     Gemini key browsing actions
   </message>
-  <message name="IDS_HISTORY_CRITICAL_ACTION_LINKOUT_A11Y_LABEL" desc="Accessibility label for a critical action linkout icon in history item indicating the destination." translateable="false">
-    <ph name="DESTINATION">$1<ex>Contact info</ex></ph>, opens in a new tab
+  <message name="IDS_HISTORY_CRITICAL_ACTION_LINKOUT_A11Y_LABEL" desc="Accessibility label for a critical action linkout icon in history item indicating the destination.">
+    <ph name="DESTINATION">$1<ex>Go to contact info</ex></ph>, opens in a new tab
   </message>
-  <message name="IDS_HISTORY_CRITICAL_ACTION_PASSWORD_FILLED" desc="Label for password filled critical action in history item." translateable="false">
-    Password filled
+  <message name="IDS_HISTORY_CRITICAL_ACTION_PASSWORD_FILLED" desc="Label for password filled critical action in history item.">
+    Signed in using a Brave service like Password Manager
   </message>
-  <message name="IDS_HISTORY_CRITICAL_ACTION_PASSWORD_TOOLTIP" desc="Tooltip for password filled critical action in history item." translateable="false">
-    Saved passwords
+  <message name="IDS_HISTORY_CRITICAL_ACTION_PASSWORD_TOOLTIP" desc="Tooltip for password filled critical action in history item.">
+    Go to Brave Password Manager
   </message>
-  <message name="IDS_HISTORY_CRITICAL_ACTION_FORM_FILLED" desc="Label for form filled critical action in history item." translateable="false">
+  <message name="IDS_HISTORY_CRITICAL_ACTION_FORM_FILLED" desc="Label for form filled critical action in history item.">
     Contact info filled
   </message>
-  <message name="IDS_HISTORY_CRITICAL_ACTION_FORM_TOOLTIP" desc="Tooltip for form filled critical action in history item." translateable="false">
-    Contact info
+  <message name="IDS_HISTORY_CRITICAL_ACTION_FORM_TOOLTIP" desc="Tooltip for form filled critical action in history item.">
+    Go to contact info
   </message>
-  <message name="IDS_HISTORY_CRITICAL_ACTION_DOWNLOAD" desc="Label for download critical action in history item." translateable="false">
+  <message name="IDS_HISTORY_CRITICAL_ACTION_DOWNLOAD" desc="Label for download critical action in history item.">
     File downloaded
   </message>
-  <message name="IDS_HISTORY_CRITICAL_ACTION_DOWNLOAD_TOOLTIP" desc="Tooltip for download critical action in history item." translateable="false">
-    Downloads
+  <message name="IDS_HISTORY_CRITICAL_ACTION_DOWNLOAD_TOOLTIP" desc="Tooltip for download critical action in history item.">
+    Go to downloads
   </message>
-  <message name="IDS_HISTORY_CRITICAL_ACTION_SETTING_CHANGE" desc="Label for setting change critical action in history item." translateable="false">
-    Site settings modified
+  <message name="IDS_HISTORY_CRITICAL_ACTION_SETTING_CHANGE" desc="Label for setting change critical action in history item.">
+    Site settings changed
   </message>
-  <message name="IDS_HISTORY_CRITICAL_ACTION_SETTING_TOOLTIP" desc="Tooltip for setting change critical action in history item." translateable="false">
-    Site settings
+  <message name="IDS_HISTORY_CRITICAL_ACTION_SETTING_TOOLTIP" desc="Tooltip for setting change critical action in history item.">
+    Go to site settings
   </message>
-  <message name="IDS_HISTORY_CRITICAL_ACTION_FEDERATED_LOGIN" desc="Label for federated login critical action in history item." translateable="false">
+  <message name="IDS_HISTORY_CRITICAL_ACTION_FEDERATED_LOGIN" desc="Label for federated login critical action in history item.">
     Signed in with account
   </message>
-  <message name="IDS_HISTORY_CRITICAL_ACTION_FEDERATED_LOGIN_TOOLTIP" desc="Tooltip for federated login critical action in history item." translateable="false">
-    Account sign-in
+  <message name="IDS_HISTORY_CRITICAL_ACTION_FEDERATED_LOGIN_TOOLTIP" desc="Tooltip for federated login critical action in history item.">
+    Go to account sign-in
   </message>
+  <!-- TODO(b/538113758): Make the OTP and WebMCP strings below translatable
+       when they are finalized. -->
   <message name="IDS_HISTORY_CRITICAL_ACTION_CREDENTIALS_OTP" desc="Label for credentials OTP verification code critical action in history item." translateable="false">
     Verification code filled
   </message>
   <message name="IDS_HISTORY_CRITICAL_ACTION_CREDENTIALS_OTP_TOOLTIP" desc="Tooltip for credentials OTP verification code critical action in history item." translateable="false">
-    Verification codes
+    Go to verification codes
   </message>
   <message name="IDS_HISTORY_CRITICAL_ACTION_WEBMCP_TOOL" desc="Fallback label for WebMCP tool execution critical action in history item." translateable="false">
     Used website tool
@@ -374,18 +403,18 @@
     Used website tool: <ph name="TOOL_NAME">$1<ex>book_flight</ex></ph>
   </message>
   <message name="IDS_HISTORY_CRITICAL_ACTION_WEBMCP_TOOL_TOOLTIP" desc="Tooltip for WebMCP tool execution critical action in history item." translateable="false">
-    Website actions
+    See website actions
   </message>
-  <message name="IDS_HISTORY_CRITICAL_ACTION_APP_MENU_IPH_BODY" desc="Text shown in the IPH bubble attached to the Brave app menu teaching users where to view Gemini's auto browse actions." translateable="false">
+  <message name="IDS_HISTORY_CRITICAL_ACTION_APP_MENU_IPH_BODY" desc="Text shown in the IPH bubble attached to the Brave app menu teaching users where to view Gemini's auto browse actions.">
     In Brave history, you can see the key actions that Gemini completed while browsing for you
   </message>
-  <message name="IDS_HISTORY_CRITICAL_ACTION_APP_MENU_IPH_ACTION" desc="Button label on the app menu IPH bubble to navigate to Brave history." translateable="false">
+  <message name="IDS_HISTORY_CRITICAL_ACTION_APP_MENU_IPH_ACTION" desc="Button label on the app menu IPH bubble to navigate to Brave history.">
     Review key actions
   </message>
-  <message name="IDS_HISTORY_CRITICAL_ACTION_FILTER_CHIP_IPH_BODY" desc="Text shown in the IPH bubble attached to the Gemini filter chip on the Brave history page." translateable="false">
+  <message name="IDS_HISTORY_CRITICAL_ACTION_FILTER_CHIP_IPH_BODY" desc="Text shown in the IPH bubble attached to the Gemini filter chip on the Brave history page.">
     See the key actions that Gemini completed while browsing for you
   </message>
-  <message name="IDS_HISTORY_CRITICAL_ACTION_FILTER_CHIP_IPH_SCREENREADER" is_accessibility_with_no_ui="true" desc="Accessible screen reader text for the IPH bubble attached to the Gemini filter chip on the Brave history page." translateable="false">
+  <message name="IDS_HISTORY_CRITICAL_ACTION_FILTER_CHIP_IPH_SCREENREADER" is_accessibility_with_no_ui="true" desc="Accessible screen reader text for the IPH bubble attached to the Gemini filter chip on the Brave history page.">
     See the key actions that Gemini completed while browsing for you
   </message>
 
