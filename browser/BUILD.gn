@@ -88,7 +88,10 @@ source_set("core") {
            "//brave/ui/webui/custom_profile_image/buildflags",
          ]
   if (!is_android) {
-    deps += [ "//brave/browser/ui:brave_browser_header" ]
+    deps += [
+      "//brave/browser/ui:brave_browser_header",
+      "//brave/browser/ui/views/tabs:tree_tab_view_utils",
+    ]
   }
   if (enable_brave_custom_profile_image_webui) {
     deps += [ "//brave/browser/ui/webui/custom_profile_image" ]

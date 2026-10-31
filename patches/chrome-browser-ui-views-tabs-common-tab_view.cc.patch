@@ -1,0 +1,28 @@
+diff --git a/chrome/browser/ui/views/tabs/common/tab_view.cc b/chrome/browser/ui/views/tabs/common/tab_view.cc
+index 5292c13b13a551016bddf54ceb5928f9aeeff62a..538582c4f531670cbfa2018ff95c9a8e49b50fb4 100644
+--- a/chrome/browser/ui/views/tabs/common/tab_view.cc
++++ b/chrome/browser/ui/views/tabs/common/tab_view.cc
+@@ -365,6 +365,7 @@ TabView::TabView(TabCollectionNode* collection_node)
+ 
+   title_->SetProperty(views::kElementIdentifierKey, kVerticalTabTitleElementId);
+   SetProperty(views::kElementIdentifierKey, kTabElementId);
++  MaybeInitTreeToggleButton();
+   // Layout manager must be set after child views are created because the
+   // vertical layout stores pointers to those children.
+   SetLayoutManager(CreateTabViewLayout(orientation_));
+@@ -657,6 +658,7 @@ bool TabView::OnMousePressed(const ui::MouseEvent& event) {
+       controller->SelectTab(GetTabInterface(), GetGestureDetail(event));
+       base::RecordAction(base::UserMetricsAction("SwitchTab_Click"));
+     }
++    MaybeSelectTreeTabDescendants(event);
+     // Potentially start the drag for the mouse press.
+     // Follow-up mouse-movement events will update the drag controller and
+     // eventually kick off the drag-loop.
+@@ -1224,6 +1226,7 @@ void TabView::UpdateColors() {
+   title_->SetEnabledColor(colors.foreground_color);
+   close_button_->SetColors(colors);
+   alert_indicator_->OnParentTabButtonColorChanged();
++  UpdateTreeToggleButton();
+ 
+   UpdateBorder();
+ 

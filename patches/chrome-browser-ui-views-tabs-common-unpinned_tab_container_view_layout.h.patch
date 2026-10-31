@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/ui/views/tabs/common/unpinned_tab_container_view_layout.h b/chrome/browser/ui/views/tabs/common/unpinned_tab_container_view_layout.h
+index cc3f71c84985c0341f8f566f6e39419d8715f2b3..1d636b5885acbaf9235316effcd39800449831fb 100644
+--- a/chrome/browser/ui/views/tabs/common/unpinned_tab_container_view_layout.h
++++ b/chrome/browser/ui/views/tabs/common/unpinned_tab_container_view_layout.h
+@@ -60,6 +60,12 @@ class UnpinnedTabContainerViewLayout : public views::LayoutManagerBase {
+   std::optional<int> GetClosingModeOverrideWidth(
+       const UnpinnedTabContainerView* tab_container_view) const;
+ 
++  // Returns the indentation of |child| by its tree tab level.
++  // |available_width| is the width |child| would have without it.
++  int GetTreeTabIndent(const views::View* child, int available_width) const;
++  // Returns true if |child| is hidden by a collapsed tree tab ancestor.
++  bool IsInCollapsedTreeTabNode(const views::View* child) const;
++
+   const TabStripOrientation orientation_;
+ };
+ 

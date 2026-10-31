@@ -1,0 +1,32 @@
+diff --git a/chrome/browser/ui/views/tabs/common/tab_view_vertical_layout.cc b/chrome/browser/ui/views/tabs/common/tab_view_vertical_layout.cc
+index 6641560e2f254670b98975cfd02c81c3ed5ceea7..89bcd98e0073124f142992b96bf2598c2b1bf76a 100644
+--- a/chrome/browser/ui/views/tabs/common/tab_view_vertical_layout.cc
++++ b/chrome/browser/ui/views/tabs/common/tab_view_vertical_layout.cc
+@@ -42,6 +42,13 @@ void TabViewVerticalLayout::OnInstalled(views::View* host) {
+       TabChildConfig(TabView().title_, kTitleMinWidth, kDefaultPadding,
+                      /*align_leading=*/true,
+                      /*expand=*/true)};
++  if (TabView().tree_toggle_button_) {
++    tab_children_configs_.insert(
++        tab_children_configs_.begin(),
++        TabChildConfig(TabView().tree_toggle_button_, kIconDesignWidth,
++                       kDefaultPadding, /*align_leading=*/false,
++                       /*expand=*/false));
++  }
+ }
+ 
+ views::ProposedLayout TabViewVerticalLayout::CalculateProposedLayout(
+@@ -143,6 +150,13 @@ gfx::Rect TabViewVerticalLayout::GetChildBounds(const gfx::Rect& container,
+ 
+ bool TabViewVerticalLayout::IsChildVisible(const views::View* child_view,
+                                            const int width) const {
++  if (child_view == TabView().tree_toggle_button_) {
++    return TabView().ShouldShowTreeToggleButton();
++  }
++  if (child_view == TabView().close_button_ &&
++      TabView().ShouldShowTreeToggleButton()) {
++    return false;
++  }
+   if (child_view == TabView().title_) {
+     // Pinned titles should be visible in the expand on hover state when the
+     // width is sufficient to show the title.

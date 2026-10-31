@@ -1446,6 +1446,15 @@ void BraveTreeTabStripCollectionDelegate::
                   tree_tab_node_collection->MaybeRemoveTab(tab), *local_index);
             },
             [&](tabs::TabCollection* collection) {
+              if (tree_tab_node_collection->current_value_type() !=
+                      tabs::TreeTabNodeTabCollection::CurrentValueType::kTab &&
+                  collection ==
+                      tree_tab_node_collection->GetCurrentCollection()) {
+                // The node's own value, e.g. the group containing a moving
+                // split, always stays in the node.
+                return;
+              }
+
               auto recursive_tabs = collection->GetTabsRecursive();
               if (!recursive_tabs.empty() &&
                   std::ranges::all_of(recursive_tabs, [&](auto* tab) {

@@ -1,0 +1,39 @@
+diff --git a/chrome/browser/ui/views/tabs/common/root_tab_collection_node.h b/chrome/browser/ui/views/tabs/common/root_tab_collection_node.h
+index 90df0c9a3ad13cd055630f5add86038b695c8d41..67ea04439af659f91ee7bac56932d99f4406df1c 100644
+--- a/chrome/browser/ui/views/tabs/common/root_tab_collection_node.h
++++ b/chrome/browser/ui/views/tabs/common/root_tab_collection_node.h
+@@ -77,6 +77,34 @@ class RootTabCollectionNode : public TabCollectionNode,
+       std::optional<tab_groups::TabGroupId> new_focused_group_id,
+       std::optional<tab_groups::TabGroupId> old_focused_group_id) override;
+ 
++  // TabStripModelObserver (Brave):
++  void OnTreeTabChanged(const TreeTabChange& change) override;
++
++  struct TreeTabsSyncResult {
++    tabs::TabCollectionNodes added;
++    std::vector<tabs::TabCollectionNodeHandle> moved;
++    bool removed = false;
++  };
++  // Returns true if the view model should be synced with the collection
++  // hierarchy instead of applying a notification about |parent_handles|.
++  bool ShouldSyncWithTreeTabs(
++      const std::vector<tabs::TabCollection::Handle>& parent_handles);
++  void SyncWithTreeTabs();
++  void ScheduleSyncWithTreeTabs();
++  void SyncChildrenWithTreeTabs(TabCollectionNode* node,
++                                TreeTabsSyncResult& result);
++  void RemoveStaleChildren(TabCollectionNode* node,
++                           TreeTabsSyncResult& result);
++  // Returns true if any tab under |node_data| is already in the view
++  // model.
++  bool HasExistingDescendant(const tabs::ConstChildPtr& node_data);
++  bool IsInPinnedContainer(const TabCollectionNode* node);
++  // Expands collapsed tree tab ancestors of the active tab so that it's
++  // visible.
++  void ScheduleExpandActiveTabTreeAncestors();
++  bool tree_tabs_sync_pending_ = false;
++  bool expand_active_tab_tree_ancestors_pending_ = false;
++
+   void NotifyTabSelectionChanged(
+       const std::set<tabs::TabInterface*>& changed_tabs);
+ 

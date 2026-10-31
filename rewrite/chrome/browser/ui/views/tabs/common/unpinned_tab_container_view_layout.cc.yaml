@@ -1,0 +1,32 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Indent tree tabs by their level in UnpinnedTabContainerViewLayout::CalculateVerticalLayout().
+
+      Only when the tab strip is expanded, as there's no room for indentation
+      when collapsed.
+    regex:
+      re_pattern:
+        '(UnpinnedTabContainerViewLayout::CalculateVerticalLayout\(.*?for \(auto\* child : children\) \{\s*int x =.*?;\n)'
+      re_flags: [DOTALL]
+      replace: |
+        \1    if (collapse_state == tabs::VerticalTabStripCollapseState::kExpanded &&
+                size_bounds.width().is_bounded()) {
+              x += GetTreeTabIndent(
+                  child, size_bounds.width().value() - x - horizontal_padding);
+            }
+
+  - description: |-
+      Hide tree tabs whose ancestor is collapsed in UnpinnedTabContainerViewLayout::IsChildVisibleInContainer().
+    regex:
+      re_pattern:
+        '(UnpinnedTabContainerViewLayout::IsChildVisibleInContainer\(.*?if \(!CanBeVisible\(child\)\) \{\s*return false;\s*\}\n)'
+      re_flags: [DOTALL]
+      replace: |
+        \1  if (IsInCollapsedTreeTabNode(child)) {
+            return false;
+          }

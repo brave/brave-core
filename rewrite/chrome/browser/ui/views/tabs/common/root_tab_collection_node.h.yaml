@@ -1,0 +1,45 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Declare tree tab support of RootTabCollectionNode.
+
+      Brave's tree tab collection delegate restructures the collection
+      hierarchy without TabCollectionObserver notifications, and tree tab node
+      collections are not mirrored in the view model. So while tree tabs are on,
+      the view model is synced with the collection hierarchy instead of
+      applying each notification. Defined in chromium_src.
+    add_before_line:
+      line: 'void NotifyTabSelectionChanged('
+      code: |2
+          // TabStripModelObserver (Brave):
+          void OnTreeTabChanged(const TreeTabChange& change) override;
+
+          struct TreeTabsSyncResult {
+            tabs::TabCollectionNodes added;
+            std::vector<tabs::TabCollectionNodeHandle> moved;
+            bool removed = false;
+          };
+          // Returns true if the view model should be synced with the collection
+          // hierarchy instead of applying a notification about |parent_handles|.
+          bool ShouldSyncWithTreeTabs(
+              const std::vector<tabs::TabCollection::Handle>& parent_handles);
+          void SyncWithTreeTabs();
+          void ScheduleSyncWithTreeTabs();
+          void SyncChildrenWithTreeTabs(TabCollectionNode* node,
+                                        TreeTabsSyncResult& result);
+          void RemoveStaleChildren(TabCollectionNode* node,
+                                   TreeTabsSyncResult& result);
+          // Returns true if any tab under |node_data| is already in the view
+          // model.
+          bool HasExistingDescendant(const tabs::ConstChildPtr& node_data);
+          bool IsInPinnedContainer(const TabCollectionNode* node);
+          // Expands collapsed tree tab ancestors of the active tab so that it's
+          // visible.
+          void ScheduleExpandActiveTabTreeAncestors();
+          bool tree_tabs_sync_pending_ = false;
+          bool expand_active_tab_tree_ancestors_pending_ = false;
+

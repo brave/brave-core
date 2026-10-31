@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/ui/views/tabs/common/tab_collection_node.h b/chrome/browser/ui/views/tabs/common/tab_collection_node.h
+index 3f4024d6b91112236aaf57c8c30c482d7f5f809b..32c019a60771a22d6237edb73762637a85d6034d 100644
+--- a/chrome/browser/ui/views/tabs/common/tab_collection_node.h
++++ b/chrome/browser/ui/views/tabs/common/tab_collection_node.h
+@@ -197,6 +197,12 @@ class TabCollectionNode {
+   }
+ 
+  protected:
++  // Mirrors the children of |collection| with its tree tab node
++  // collections hoisted. Returns false if |collection| has no tree tab
++  // node child, in which case nothing is done.
++  bool MaybeInitializeTreeTabChildren(const tabs::TabCollection& collection);
++  bool MaybeDeinitializeTreeTabChildren(
++      const tabs::TabCollection& collection);
+   // Returns the pass key to be used by derived classes so that methods such as
+   // SetData may only be performed by a `TabCollectionNode`.
+   base::PassKey<TabCollectionNode> GetPassKey() const {
