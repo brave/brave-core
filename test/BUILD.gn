@@ -1636,6 +1636,7 @@ test("brave_browser_tests") {
     deps += [
       "//brave/browser/history_embeddings:browser_tests",
       "//brave/browser/speech:browser_tests",
+      "//brave/browser/ui/webui/local_ai:browser_tests",
     ]
   }
 
