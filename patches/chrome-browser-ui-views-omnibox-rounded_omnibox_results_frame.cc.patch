@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.cc b/chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.cc
-index c0187113de146c0618e3756dbaa176a8a61d1ec3..2b0c41031cb8ec258f05865197f4711856ffcff1 100644
+index 199b252f46501d07ff17018f87d215a88b88b2aa..844503353db873fdb9b99ee4bf287b0d1bc7bd06 100644
 --- a/chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.cc
 +++ b/chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.cc
 @@ -236,7 +236,7 @@ RoundedOmniboxResultsFrame::RoundedOmniboxResultsFrame(

@@ -1,5 +1,5 @@
 diff --git a/chrome/common/chrome_paths.cc b/chrome/common/chrome_paths.cc
-index 32d01c008e1341eb8142cd80e1c91afe7928ed42..e204fcf38420ad6e68d0800e037780f13f77b1b9 100644
+index 4448f86df86f764874539303e1c002e3c85f7e66..44806d28d2a3ce1a4eb11d29677aacf95e9a7c36 100644
 --- a/chrome/common/chrome_paths.cc
 +++ b/chrome/common/chrome_paths.cc
 @@ -547,7 +547,10 @@ void SetUsingDefaultUserDataDirectoryForTesting(

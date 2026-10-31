@@ -1,5 +1,5 @@
 diff --git a/tracing/tracing/metrics/system_health/loading_metric.html b/tracing/tracing/metrics/system_health/loading_metric.html
-index f20338b5b9f7b99b4404717cf661144ca0b3480f..01a805fb06c69cb751a5d621ba5ad9e5b2dcd4a3 100644
+index 4cce58fd6060579aef0aefb8b398beb2ab9221e7..2b5d3de527e9df853c2b876979175d506f25a4cf 100644
 --- a/tracing/tracing/metrics/system_health/loading_metric.html
 +++ b/tracing/tracing/metrics/system_health/loading_metric.html
 @@ -203,6 +203,7 @@ tr.exportTo('tr.metrics.sh', function() {

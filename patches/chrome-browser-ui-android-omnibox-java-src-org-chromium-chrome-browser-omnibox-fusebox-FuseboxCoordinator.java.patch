@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/fusebox/FuseboxCoordinator.java b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/fusebox/FuseboxCoordinator.java
-index e445988b4c070b1c085a16a95bee8523faab2df9..12b1db84faa7c2c5ef6e8575ebf672e0868cac78 100644
+index a9ee110912c110d497dcb9f2795c99709c2dc6bc..24b60e85f79699577d25e88bf46d9be8390e6010 100644
 --- a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/fusebox/FuseboxCoordinator.java
 +++ b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/fusebox/FuseboxCoordinator.java
-@@ -488,6 +488,9 @@ public class FuseboxCoordinator implements TemplateUrlServiceObserver {
+@@ -463,6 +463,9 @@ public class FuseboxCoordinator implements TemplateUrlServiceObserver {
      // TemplateUrlServiceObserver
      @Override
      public void onTemplateURLServiceChanged() {

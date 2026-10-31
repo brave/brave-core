@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.cc b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-index 184ae3e5bc4e2338553fb8aee789fb2b1b75c9b1..6786b260a7430d5a1889cc4c5b0ea88e33ee791c 100644
+index 80b0e24263170de768a6684c8aabf106018710e7..fdc6108459b804792e8d82666ac19a72351ab80c 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.cc
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-@@ -333,7 +333,7 @@ void ToolbarView::Init() {
+@@ -334,7 +334,7 @@ void ToolbarView::Init() {
    aura::WindowOcclusionTracker::ScopedPause pause_occlusion;
  #endif
  
@@ -11,7 +11,7 @@ index 184ae3e5bc4e2338553fb8aee789fb2b1b75c9b1..6786b260a7430d5a1889cc4c5b0ea88e
    std::unique_ptr<WebUILocationBar> webui_location_bar;
    if (features::IsWebUILocationBarEnabled() &&
        /* TODO(http://crbug.com/470042732): Figure out where we fit in other
-@@ -342,7 +342,7 @@ void ToolbarView::Init() {
+@@ -343,7 +343,7 @@ void ToolbarView::Init() {
        display_mode_ == DisplayMode::kNormal) {
      webui_location_bar = std::make_unique<WebUILocationBar>(browser_, this);
    } else {

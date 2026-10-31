@@ -1,5 +1,5 @@
 diff --git a/components/permissions/permission_uma_util.cc b/components/permissions/permission_uma_util.cc
-index 800c487cf76a6c6b0ce50aff351807ab64be6d18..7cad93bb17ae25b1a1b261db4f97e353c40c431d 100644
+index 7135d483b4e4bb900a2aa051b7bf854974d0df94..d542966198d494732a6bffa6a530021b82f31a81 100644
 --- a/components/permissions/permission_uma_util.cc
 +++ b/components/permissions/permission_uma_util.cc
 @@ -704,6 +704,7 @@ std::string GetPermissionStringForUma(

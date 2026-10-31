@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/download/chrome_download_manager_delegate.h b/chrome/browser/download/chrome_download_manager_delegate.h
-index 677db611b4936cfdaa397b5f7dccf02d01fcfcea..cb1d84a7231ce356f355d773b67c604a4f82d531 100644
+index ab23017a78615744a608d48192e673ad5aad8028..dcf8d081df1b177f769721db1aa14972e44ebb22 100644
 --- a/chrome/browser/download/chrome_download_manager_delegate.h
 +++ b/chrome/browser/download/chrome_download_manager_delegate.h
-@@ -301,6 +301,7 @@ class ChromeDownloadManagerDelegate
+@@ -306,6 +306,7 @@ class ChromeDownloadManagerDelegate
    raw_ptr<content::DownloadManager> download_manager_ = nullptr;
  
   private:
@@ -10,7 +10,7 @@ index 677db611b4936cfdaa397b5f7dccf02d01fcfcea..cb1d84a7231ce356f355d773b67c604a
    friend class base::RefCountedThreadSafe<ChromeDownloadManagerDelegate>;
    FRIEND_TEST_ALL_PREFIXES(ChromeDownloadManagerDelegateTest,
                             RequestConfirmation_Android);
-@@ -330,7 +331,7 @@ class ChromeDownloadManagerDelegate
+@@ -335,7 +336,7 @@ class ChromeDownloadManagerDelegate
  #endif
  
    // Internal gateways for ShouldCompleteDownload().
