@@ -23,6 +23,7 @@
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_menu_model_delegate.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/tabs/tab_strip_model_delegate.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/sessions/core/tab_restore_service.h"
@@ -112,6 +113,15 @@ void BraveTabMenuModel::Build(BrowserWindowInterface* browser_window,
       selected_tab_count);
   InsertItemAt(mute_site_index.value_or(GetItemCount()),
                TabStripModel::CommandToggleTabMuted, toggle_tab_mute_label);
+
+  // Web app windows already have upstream's "Copy URL".
+  if (!tab_strip_model->delegate()->IsForWebApp()) {
+    auto duplicate_index = GetIndexOfCommandId(TabStripModel::CommandDuplicate);
+    InsertItemAt(duplicate_index ? *duplicate_index + 1 : GetItemCount(),
+                 TabStripModel::CommandCopyLinks,
+                 l10n_util::GetPluralStringFUTF16(IDS_TAB_CXMENU_COPY_LINKS,
+                                                  selected_tab_count));
+  }
 
   AddItemWithStringId(TabStripModel::CommandRestoreTab,
                       GetRestoreTabCommandStringId());

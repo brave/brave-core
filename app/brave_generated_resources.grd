@@ -1094,6 +1094,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_TAB_CXMENU_CLOSE_DUPLICATE_TABS" desc="The label of the 'Close duplicate tabs' tab context menu item">
           Close duplicate tabs
         </message>
+        <message name="IDS_TAB_CXMENU_COPY_LINKS" desc="The label of the tab context menu item for copying the links of one or more tabs. [ICU Syntax]">
+          {NUM_TABS, plural, =1 {Copy link} other {Copy links}}
+        </message>
         <if expr="enable_containers">
           <message name="IDS_CXMENU_NO_CONTAINER" desc="The label of the 'No container' context menu item, indicating that the tab is not in any container" formatter_data="webui=Containers">
             No container
@@ -1139,6 +1142,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
         <message name="IDS_TAB_CXMENU_CLOSE_DUPLICATE_TABS" desc="The label of the 'Close duplicate tabs' tab context menu item">
           Close Duplicate Tabs
+        </message>
+        <message name="IDS_TAB_CXMENU_COPY_LINKS" desc="In Title Case: The label of the tab context menu item for copying the links of one or more tabs. [ICU Syntax]">
+          {NUM_TABS, plural, =1 {Copy Link} other {Copy Links}}
         </message>
         <if expr="enable_containers">
           <message name="IDS_CXMENU_NO_CONTAINER" desc="The label of the 'No container' context menu item, indicating that the tab is not in any container" formatter_data="webui=Containers">

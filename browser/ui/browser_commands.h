@@ -8,6 +8,7 @@
 
 #include <optional>
 
+#include "base/containers/span.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/containers/buildflags/buildflags.h"
@@ -130,6 +131,13 @@ bool HasDuplicatesOfActiveTab(BrowserWindowInterface* browser);
 void CloseDuplicatesOfActiveTab(BrowserWindowInterface* browser);
 bool HasAnyDuplicateTabs(BrowserWindowInterface* browser);
 void CloseAllDuplicateTabs(BrowserWindowInterface* browser);
+
+// Returns true if any of the tabs at |indices| has a URL to copy.
+bool CanCopyTabLinks(BrowserWindowInterface* browser,
+                     base::span<const int> indices);
+// Copies the sanitized URLs of the tabs at |indices|, one per line.
+void CopyTabLinks(BrowserWindowInterface* browser,
+                  base::span<const int> indices);
 bool CanCloseTabsToLeft(BrowserWindowInterface* browser);
 void CloseTabsToLeft(BrowserWindowInterface* browser);
 

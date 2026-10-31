@@ -1,8 +1,8 @@
 diff --git a/components/tabs/public/tab_context_menu_command.h b/components/tabs/public/tab_context_menu_command.h
-index 0ed448fdc4af775457097eeec2d12efaee1a5391..c9138a06459b77b8f467f48432143f89b16515ef 100644
+index 0ed448fdc4af775457097eeec2d12efaee1a5391..9d476c026d9ce0d266ab63bb820c60ba9921d15f 100644
 --- a/components/tabs/public/tab_context_menu_command.h
 +++ b/components/tabs/public/tab_context_menu_command.h
-@@ -39,6 +39,14 @@ enum TabContextMenuCommand {
+@@ -39,6 +39,15 @@ enum TabContextMenuCommand {
    CommandGlicSwitchToRecentConversation,
    CommandGlicUnshare,
    CommandToggleFocusGroup,
@@ -14,6 +14,7 @@ index 0ed448fdc4af775457097eeec2d12efaee1a5391..c9138a06459b77b8f467f48432143f89
 +  CommandCloseDuplicateTabs,
 +  CommandOpenInContainer,
 +  CommandRenameTab,
++  CommandCopyLinks,
  };
  // LINT.ThenChange(//tools/metrics/histograms/metadata/tab/histograms.xml:TabContextMenuCommand)
  

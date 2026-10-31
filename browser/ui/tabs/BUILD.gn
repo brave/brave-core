@@ -293,16 +293,23 @@ source_set("browser_tests") {
   sources = [ "brave_tab_menu_browsertest.cc" ]
 
   deps = [
+    "//brave/app:brave_generated_resources_grit",
     "//brave/browser/ui",
     "//brave/browser/ui/tabs:tabs_public",
     "//brave/components/containers/buildflags",
     "//brave/components/resources:strings_grit",
+    "//brave/components/url_sanitizer/core/browser",
+    "//brave/ui/base/clipboard/test:test_support",
+    "//chrome/browser",
     "//chrome/test:test_support",
     "//content/public/browser",
     "//content/test:test_support",
+    "//net:test_support",
     "//testing/gmock",
     "//testing/gtest",
     "//ui/base",
+    "//ui/base/clipboard",
+    "//ui/base/clipboard:clipboard_test_support",
     "//url",
   ]
 

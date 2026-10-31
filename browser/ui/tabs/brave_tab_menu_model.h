@@ -30,9 +30,9 @@ class BrowserWindowInterface;
 
 class BraveTabMenuModel : public TabMenuModel {
  public:
-  static_assert(TabStripModel::CommandRenameTab < IDC_OPEN_IN_CONTAINER_START,
+  static_assert(TabStripModel::CommandCopyLinks < IDC_OPEN_IN_CONTAINER_START,
                 "Container's menu commands must be after "
-                "TabStripModel::CommandRenameTab to avoid conflicts");
+                "TabStripModel::CommandCopyLinks to avoid conflicts");
 
   BraveTabMenuModel(ui::SimpleMenuModel::Delegate* delegate,
                     TabMenuModelDelegate* tab_menu_model_delegate,

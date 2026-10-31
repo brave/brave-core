@@ -22,6 +22,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/notreached.h"
 #include "base/path_service.h"
+#include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
@@ -82,6 +83,7 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/common/url_constants.h"
 #include "ui/base/clipboard/clipboard_buffer.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
 #include "ui/base/window_open_disposition.h"
@@ -982,6 +984,48 @@ void CloseAllDuplicateTabs(BrowserWindowInterface* browser) {
 
   tsm->CloseTabs(indices, TabCloseTypes::CLOSE_USER_GESTURE |
                               TabCloseTypes::CLOSE_CREATE_HISTORICAL_TAB);
+}
+
+bool CanCopyTabLinks(BrowserWindowInterface* browser,
+                     base::span<const int> indices) {
+  auto* tsm = browser->GetTabStripModel();
+  return std::ranges::any_of(indices, [tsm](int index) {
+    return tsm->GetWebContentsAt(index)->GetVisibleURL().is_valid();
+  });
+}
+
+void CopyTabLinks(BrowserWindowInterface* browser,
+                  base::span<const int> indices) {
+  auto* profile = browser->GetProfile();
+  auto* sanitizer =
+      brave::URLSanitizerServiceFactory::GetForBrowserContext(profile);
+  auto* tsm = browser->GetTabStripModel();
+
+  std::vector<std::string> urls;
+  for (int index : indices) {
+    const GURL& url = tsm->GetWebContentsAt(index)->GetVisibleURL();
+    if (!url.is_valid()) {
+      continue;
+    }
+    GURL copy_url = sanitizer->SanitizeURL(url);
+    // Internal pages are shown as brave://, as when copying from the omnibox.
+    if (copy_url.SchemeIs(content::kChromeUIScheme)) {
+      GURL::Replacements replacements;
+      replacements.SetSchemeStr(content::kBraveUIScheme);
+      copy_url = copy_url.ReplaceComponents(replacements);
+    }
+    urls.push_back(copy_url.spec());
+  }
+  if (urls.empty()) {
+    return;
+  }
+
+  ui::ScopedClipboardWriter scw(ui::ClipboardBuffer::kCopyPaste);
+  if (profile->IsOffTheRecord()) {
+    // Keep it out of the OS clipboard history and cloud clipboard sync.
+    scw.MarkAsOffTheRecord();
+  }
+  scw.WriteText(base::UTF8ToUTF16(base::JoinString(urls, "\n")));
 }
 
 bool CanCloseTabsToLeft(BrowserWindowInterface* browser) {

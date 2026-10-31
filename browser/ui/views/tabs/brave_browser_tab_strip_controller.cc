@@ -176,6 +176,13 @@ void BraveBrowserTabStripController::ExecuteContextMenuCommand(
     return;
   }
 
+  if (command_id == TabStripModel::CommandCopyLinks) {
+    auto* model = static_cast<BraveTabStripModel*>(model_.get());
+    brave::CopyTabLinks(GetBrowserWindowInterface(),
+                        model->GetTabIndicesForCommandAt(index));
+    return;
+  }
+
   BrowserTabStripController::ExecuteContextMenuCommand(tab, command_id,
                                                        event_flags);
 }
@@ -223,6 +230,12 @@ bool BraveBrowserTabStripController::IsContextMenuCommandEnabled(
 
   if (command_id == TabStripModel::CommandCloseDuplicateTabs) {
     return brave::HasDuplicatesOfActiveTab(GetBrowserWindowInterface());
+  }
+
+  if (command_id == TabStripModel::CommandCopyLinks) {
+    auto* model = static_cast<BraveTabStripModel*>(model_.get());
+    return brave::CanCopyTabLinks(GetBrowserWindowInterface(),
+                                  model->GetTabIndicesForCommandAt(index));
   }
 
   if (command_id == TabStripModel::CommandShowVerticalTabs) {
