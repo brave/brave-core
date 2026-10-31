@@ -824,7 +824,7 @@
 "wallet.selectedAccount" = "Избран акаунт";
 
 /* The label of the filter option that allows users to select which networks to filter assets by. Used in Portfolio/NFT filters and display settings. */
-"wallet.selectNetworksTitle" = "Избор на мрежи";
+"wallet.selectNetworksTitle" = "Избери мрежи";
 
 /* As in sending cryptocurrency to another account */
 "wallet.send" = "Изпращане";

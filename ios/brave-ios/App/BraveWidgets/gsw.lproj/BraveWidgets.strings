@@ -224,7 +224,7 @@
 "r2EI05-vQ8mZ1" = "Nur um sicherzugehen, Sie suchten nach «Leo-KI-Spracheingabe»?";
 
 /* (No Comment) */
-"r2EI05-vs094F" = "Nur, um sicherzugehen, du hast nach „Neuer privater Tab“ gesucht?";
+"r2EI05-vs094F" = "Nur, um sicherzugehen, du hast nach „Neuer privater Tab“?";
 
 /* (No Comment) */
 "r2EI05-XCyA8c" = "Nur, um sicherzugehen, du hast nach „Brave News“ gesucht?";
@@ -251,7 +251,7 @@
 "tNCrcE-crhbMy" = "Es gibt ${count} Optionen, die mit „Lesezeichen“ übereinstimmen.";
 
 /* (No Comment) */
-"tNCrcE-FGO5qW" = "Es gibt ${count} Optionen, die mit „Brave Playlist“ übereinstimmen.";
+"tNCrcE-FGO5qW" = "Es gibt ${count} Optionen, die mit „Brave-Playlist“ übereinstimmen.";
 
 /* (No Comment) */
 "tNCrcE-jXiFQY" = "Es gibt ${count} Optionen, die mit „Brave Wallet“ übereinstimmen.";
@@ -401,10 +401,10 @@
 "z517nu-crhbMy" = "Es gibt ${count} Optionen, die mit „Lesezeichen“ übereinstimmen.";
 
 /* (No Comment) */
-"z517nu-FGO5qW" = "Es gibt ${count} Optionen, die mit „Brave Playlist“ übereinstimmen.";
+"z517nu-FGO5qW" = "Es gibt ${count} Optionen, die mit „Brave-Playlist“ übereinstimmen.";
 
 /* (No Comment) */
-"z517nu-jXiFQY" = "Es gibt ${count} Optionen, die mit „Brave Wallet“ übereinstimmen.";
+"z517nu-jXiFQY" = "Es gibt ${count} Optionen, die mit „Brave-Wallet“ übereinstimmen.";
 
 /* (No Comment) */
 "z517nu-nthxSL" = "Es gibt ${count} Optionen, die mit „Downloads“ übereinstimmen.";
@@ -425,7 +425,7 @@
 "z517nu-vs094F" = "Es gibt ${count} Optionen, die mit „Neuer privater Tab“ übereinstimmen.";
 
 /* (No Comment) */
-"z517nu-XCyA8c" = "Es gibt ${count} Optionen, die mit „Brave News“ übereinstimmen.";
+"z517nu-XCyA8c" = "Es gibt ${count} Optionen, die mit „Brave-Nachrichten“ übereinstimmen.";
 
 /* (No Comment) */
 "z517nu-Y7TWy8" = "Es gibt ${count} Optionen, die mit „Suche“ übereinstimmen.";

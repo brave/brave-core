@@ -113,10 +113,10 @@
 "BraveShieldsGlobalControls" = "Controls globals";
 
 /* Shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfo" = "Emmagatzemar la informació de contacte per futurs informes d'error del lloc";
+"BraveShieldsSaveContactInfo" = "Desar informació de contacte per a futurs informes d'errors del lloc";
 
 /* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfoDescription" = "Si ens proporciones la teva informació de contacte, la guardarem de cara a futurs informes";
+"BraveShieldsSaveContactInfoDescription" = "Si introdueixes la teva informació de contacte, aquesta serà emmagatzemada per a futurs informes";
 
 /* No comment provided by engineer. */
 "BraveShieldsSiteBroken" = "Si aquest enllaç apareix trencat, prova de desactivar Escuts";

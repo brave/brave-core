@@ -131,7 +131,7 @@
 "vpn.installTitle" = "Asenna VPN";
 
 /* Button text to try free Brave VPN */
-"vpn.learnMore" = "Aloita 7 päivän kokeilujakso";
+"vpn.learnMore" = "Aloita 7 päivän ilmainen kokeilujakso";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "Uusiutuu kuukausittain";

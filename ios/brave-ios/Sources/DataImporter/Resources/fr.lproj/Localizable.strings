@@ -107,5 +107,5 @@
 "SyncImportFolderName" = "Favoris importés";
 
 /* An unknown error occurred during data importing. */
-"unknownError" = "Le fichier zip ne contient aucune donnée d’importation.";
+"unknownError" = "Le fichier zip ne contient aucune donnée d'importation.";
 

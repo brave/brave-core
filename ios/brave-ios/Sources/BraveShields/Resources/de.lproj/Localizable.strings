@@ -1,8 +1,8 @@
 /* The title of the screen explaining Brave Shields */
-"AboutBraveShields" = "Über Brave Shields";
+"AboutBraveShields" = "Über Brave Schutz";
 
 /* The body of the screen explaining Brave Shields */
-"AboutBraveShieldsBody" = "Websites nutzen häufig Cookies und Skripte, mit denen man dich und dein Gerät erkennen kann. Das Ziel ist dabei, deine Identität zu ermitteln und deine Aktivitäten im Internet auf jeder der von deiner besuchten Websites zu tracken.\n\nBrave blockiert dieses Tracking, damit du surfen kannst, ohne im Web getrackt zu werden.";
+"AboutBraveShieldsBody" = "Websites nutzen häufig Cookies und Skripte, mit denen man Sie und Ihr Gerät erkennen kann. Das Ziel ist dabei, Ihre Identität zu ermitteln und Ihre Aktivitäten im Internet auf jeder der von Ihnen besuchten Websites zu verfolgen.\n\nBrave blockiert dieses Tracking, damit Sie surfen können, ohne im Web beobachtet zu werden.";
 
 /* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
 "AddCustomFilterListDescription" = "Füge zusätzliche Listen hinzu, die von deiner vertrauenswürdigen Community erstellt und gepflegt werden.";
@@ -119,10 +119,10 @@
 "BraveShieldsSaveContactInfoDescription" = "Wenn du Kontaktinformationen angibst, werden diese für zukünftige Berichte gespeichert.";
 
 /* No comment provided by engineer. */
-"BraveShieldsSiteBroken" = "Wenn diese Website defekt erscheint, versuche es mit Shields down";
+"BraveShieldsSiteBroken" = "Wenn diese Website defekt erscheint, versuchen Sie es mit Shields down";
 
 /* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Brave Shields";
+"BraveShieldsStatusTitle" = "Brave Schutz";
 
 /* Context: The 'Down' in 'Brave Shields Down' */
 "BraveShieldsStatusValueDown" = "Down";
