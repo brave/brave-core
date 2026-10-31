@@ -10,6 +10,8 @@
 #include "brave/components/brave_wallet/ios/browser/wallet_page_handler_bridge.h"
 #include "brave/ios/browser/ui/webui/brave_wallet/wallet_page_handler_bridge_holder.h"
 #include "ios/web/public/web_state.h"
+#include "net/base/apple/url_conversions.h"
+#include "url/gurl.h"
 
 WalletPageHandler::WalletPageHandler(
     web::WebState* web_state,
@@ -56,4 +58,14 @@ void WalletPageHandler::ScanQRCode(ScanQRCodeCallback callback) {
   [bridge scanAddressQRCode:^(NSString* address) {
     std::move(*shared_callback).Run(base::SysNSStringToUTF8(address));
   }];
+}
+
+void WalletPageHandler::OpenTab(const GURL& url) {
+  if (!url.is_valid() || !url.SchemeIsHTTPOrHTTPS()) {
+    return;
+  }
+
+  id<WalletPageHandlerBridge> bridge =
+      brave_wallet::PageHandlerBridgeHolder::FromWebState(web_state_)->bridge();
+  [bridge openTab:net::NSURLWithGURL(url)];
 }
