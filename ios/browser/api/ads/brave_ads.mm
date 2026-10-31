@@ -54,7 +54,11 @@
 #include "brave/ios/browser/brave_ads/ads_service_impl_ios.h"
 #include "brave/ios/browser/brave_ads/virtual_pref_provider_delegate_ios.h"
 #include "build/build_config.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
+#include "components/variations/pref_names.h"
+#include "components/variations/service/variations_service.h"
+#include "components/variations/service/variations_service_utils.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/chrome/browser/shared/model/profile/profile_manager_ios.h"
@@ -100,6 +104,11 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   std::unique_ptr<brave_ads::VirtualPrefProvider> virtualPrefProvider;
   std::unique_ptr<brave_ads::HttpClient> httpClient;
   raw_ptr<brave_ads::AdsServiceImplIOS> adsService;
+  PrefChangeRegistrar variationsCountryRegistrar;
+  NSString* countryAdsResourceId;
+  NSString* languageAdsResourceId;
+  NSString* countryAdsResourceFolderName;
+  NSString* languageAdsResourceFolderName;
 }
 
 // TODO(https://github.com/brave/brave-browser/issues/33730): Unify Brave Ads
@@ -350,6 +359,28 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 - (void)initLocalStatePrefService {
   _localStatePrefService = GetApplicationContext()->GetLocalState();
   CHECK(_localStatePrefService);
+
+  // Re-register resources when the GeoIP country changes so that
+  // anti-targeting, conversion, and purchase-intent components are
+  // updated without requiring a browser restart.
+  variationsCountryRegistrar.Init(_localStatePrefService);
+  const auto __weak weakSelf = self;
+  variationsCountryRegistrar.Add(
+      variations::prefs::kVariationsCountry, base::BindRepeating(^{
+        const auto strongSelf = weakSelf;
+        if (!strongSelf) {
+          return;
+        }
+        NSLog(@"[ads-debug] kVariationsCountry pref changed, raw pref=%@ "
+              @"resolved variationsCountryCode=%@",
+              base::SysUTF8ToNSString(strongSelf->_localStatePrefService
+                                           ->GetString(variations::prefs::
+                                                            kVariationsCountry)),
+              [strongSelf variationsCountryCode]);
+        [strongSelf
+            registerAdsResourcesForCountryCode:[strongSelf
+                                                   variationsCountryCode]];
+      }));
 }
 
 #pragma mark - Component updater
@@ -371,6 +402,8 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 
   if (self.componentUpdaterMetadata == nil) {
     self.componentUpdaterMetadata = [[NSDictionary alloc] init];
+  } else {
+    [self migrateLegacyComponentUpdaterMetadata];
   }
 
   self.componentUpdaterRetryCount = 1;
@@ -426,6 +459,15 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   BLOG(1, @"Registering Brave Ads Resources Installer (%@) with id %@",
        languageCode, languageCodeAdsResourceId);
 
+  if (languageAdsResourceId &&
+      ![languageAdsResourceId isEqualToString:languageCodeAdsResourceId]) {
+    [self notifyDidUnregisterResourceComponent:languageAdsResourceId];
+    [self
+        purgeComponentUpdaterMetadataForFolderName:languageAdsResourceFolderName];
+  }
+  languageAdsResourceId = languageCodeAdsResourceId;
+  languageAdsResourceFolderName = isoLanguageCode;
+
   BLOG(1, @"Notifying ads resource observers");
 
   const auto __weak weakSelf = self;
@@ -445,7 +487,24 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   return YES;
 }
 
+- (NSString*)variationsCountryCode {
+  variations::VariationsService* const variationsService =
+      GetApplicationContext()->GetVariationsService();
+
+  std::string countryCode;
+  if (variationsService) {
+    countryCode = variationsService->GetLatestCountry();
+  }
+
+  if (countryCode.empty()) {
+    countryCode = variations::GetCurrentCountryCode(variationsService);
+  }
+
+  return base::SysUTF8ToNSString(base::ToUpperASCII(countryCode));
+}
+
 - (BOOL)registerAdsResourcesForCountryCode:(NSString*)countryCode {
+  NSLog(@"[ads-debug] registerAdsResourcesForCountryCode called with %@", countryCode);
   if (!countryCode) {
     return NO;
   }
@@ -456,12 +515,24 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   NSArray* countryCodeAdsResourceIds =
       [self.componentPaths allKeysForObject:isoCountryCode];
   if ([countryCodeAdsResourceIds count] == 0) {
+    NSLog(@"[ads-debug] %@ has no entry in componentPaths", isoCountryCode);
     return NO;
   }
 
   NSString* countryCodeAdsResourceId = [countryCodeAdsResourceIds firstObject];
   BLOG(1, @"Registering Brave Ads Resources Installer (%@) with id %@",
        countryCode, countryCodeAdsResourceId);
+  NSLog(@"[ads-debug] Registering Brave Ads Resources Installer (%@) with id %@",
+        countryCode, countryCodeAdsResourceId);
+
+  if (countryAdsResourceId &&
+      ![countryAdsResourceId isEqualToString:countryCodeAdsResourceId]) {
+    [self notifyDidUnregisterResourceComponent:countryAdsResourceId];
+    [self
+        purgeComponentUpdaterMetadataForFolderName:countryAdsResourceFolderName];
+  }
+  countryAdsResourceId = countryCodeAdsResourceId;
+  countryAdsResourceFolderName = isoCountryCode;
 
   BLOG(1, @"Notifying ads resource observers");
 
@@ -472,6 +543,8 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
                    if (!strongSelf) {
                      return;
                    }
+                   NSLog(@"[ads-debug] downloadAdsResource for %@ completed success=%d",
+                         isoCountryCode, success);
                    if (success) {
                      [strongSelf
                          notifyResourceComponentDidChange:@"1"
@@ -483,6 +556,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 }
 
 - (void)registerAdsResources {
+  NSLog(@"[ads-debug] registerAdsResources (startup) invoked");
   const auto currentLocale = [NSLocale currentLocale];
 
   if (![self registerAdsResourcesForLanguageCode:currentLocale.languageCode]) {
@@ -490,9 +564,9 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
          currentLocale.languageCode);
   }
 
-  if (![self registerAdsResourcesForCountryCode:currentLocale.countryCode]) {
-    BLOG(1, @"%@ not supported for ads resource installer",
-         currentLocale.countryCode);
+  NSString* const countryCode = [self variationsCountryCode];
+  if (![self registerAdsResourcesForCountryCode:countryCode]) {
+    BLOG(1, @"%@ not supported for ads resource installer", countryCode);
   }
 }
 
@@ -537,8 +611,9 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   const auto currentLocale = [NSLocale currentLocale];
   NSString* isoLanguageCode = [@"iso_639_1_"
       stringByAppendingString:[currentLocale.languageCode lowercaseString]];
-  NSString* isoCountryCode = [@"iso_3166_1_"
-      stringByAppendingString:[currentLocale.countryCode lowercaseString]];
+  NSString* const countryCode = [self variationsCountryCode];
+  NSString* isoCountryCode =
+      [@"iso_3166_1_" stringByAppendingString:[countryCode lowercaseString]];
 
   for (NSString* key in @[ isoLanguageCode, isoCountryCode ]) {
     BLOG(1, @"Checking %@ ads resource for updates", key);
@@ -690,8 +765,9 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
             continue;
           }
 
-          NSString* adsResourceComponentMetadataKey = [adsResourceId
-              stringByAppendingString:kAdsResourceComponentMetadataVersion];
+          NSString* adsResourceComponentMetadataKey = [NSString
+              stringWithFormat:@"%@.%@%@", folderName, adsResourceId,
+                                kAdsResourceComponentMetadataVersion];
           if (!adsResourceComponentMetadataKey) {
             continue;
           }
@@ -1599,6 +1675,62 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
     adsService->GetAdsClientNotifier()->NotifyResourceComponentDidChange(
         base::SysNSStringToUTF8(manifest_version), base::SysNSStringToUTF8(id));
   }
+}
+
+- (void)notifyDidUnregisterResourceComponent:(NSString*)id {
+  BLOG(1, @"Notifying unregistration of %@ ads resource component", id);
+  NSLog(@"[ads-debug] Notifying unregistration of %@ ads resource component", id);
+  if (adsService) {
+    adsService->GetAdsClientNotifier()->NotifyDidUnregisterResourceComponent(
+        base::SysNSStringToUTF8(id));
+  }
+}
+
+- (NSString*)adsResourceIdFromMetadataKey:(NSString*)key
+                                folderName:(NSString*)folderName {
+  NSString* idWithVersion = key;
+  if (folderName.length > 0 && [key hasPrefix:folderName]) {
+    idWithVersion = [key substringFromIndex:folderName.length];
+    if ([idWithVersion hasPrefix:@"."]) {
+      idWithVersion = [idWithVersion substringFromIndex:1];
+    }
+  }
+  if ([idWithVersion hasSuffix:kAdsResourceComponentMetadataVersion]) {
+    return [idWithVersion
+        substringToIndex:idWithVersion.length -
+                          kAdsResourceComponentMetadataVersion.length];
+  }
+  return idWithVersion;
+}
+
+- (void)removeCachedAdsResourceFileForMetadataKey:(NSString*)key
+                                        folderName:(NSString*)folderName {
+  NSString* adsResourceId =
+      [self adsResourceIdFromMetadataKey:key folderName:folderName];
+  [self.commonOps removeFileWithName:base::SysNSStringToUTF8(adsResourceId)];
+}
+
+- (void)migrateLegacyComponentUpdaterMetadata {
+  NSMutableDictionary* metadata = [[self componentUpdaterMetadata] mutableCopy];
+  for (NSString* key in [metadata.allKeys copy]) {
+    if (![key hasPrefix:@"iso_3166_1_"] && ![key hasPrefix:@"iso_639_1_"]) {
+      [self removeCachedAdsResourceFileForMetadataKey:key folderName:@""];
+      [metadata removeObjectForKey:key];
+    }
+  }
+  self.componentUpdaterMetadata = metadata;
+}
+
+- (void)purgeComponentUpdaterMetadataForFolderName:(NSString*)folderName {
+  NSMutableDictionary* metadata = [[self componentUpdaterMetadata] mutableCopy];
+  for (NSString* key in [metadata.allKeys copy]) {
+    if ([key hasPrefix:folderName]) {
+      [self removeCachedAdsResourceFileForMetadataKey:key
+                                            folderName:folderName];
+      [metadata removeObjectForKey:key];
+    }
+  }
+  self.componentUpdaterMetadata = metadata;
 }
 
 - (void)notifyRewardsWalletDidUpdate:(NSString*)paymentId
