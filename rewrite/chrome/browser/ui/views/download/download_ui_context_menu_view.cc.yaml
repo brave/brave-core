@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Disable the histogramming call.
+
+      The original code calls base::UmaHistogramEnumeration to record download
+      command executions. Brave-specific commands (COPY_DOWNLOAD_LINK) are not
+      defined in upstream's histogram enum, so recording them would be invalid.
+      This substitution compiles the call out with `#if 0` to bypass recording
+      for commands that may be outside the expected range. A `/* */` comment
+      would not work, as it would nest with the call's own `/*clicked=*/`.
+    regex:
+      re_pattern: '(\n\s*)(base::UmaHistogramEnumeration\(\s*"Download\.ContextMenuAction".*?\);)'
+      re_flags: [DOTALL]
+      replace: '\n#if 0\1\2\n#endif'
