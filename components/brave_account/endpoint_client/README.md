@@ -169,6 +169,29 @@ Client<LoginInit>::Send(
     }));
 ```
 
+`response.body` is `std::nullopt` when the response couldn't be turned into the
+declared body type. What counts as that depends on the body type:
+
+| Response body    | JSON          | proto2 (`required`) | proto3          |
+| ---------------- | ------------- | ------------------- | --------------- |
+| Empty            | `nullopt`     | `nullopt` (1)       | default message |
+| Malformed        | `nullopt`     | `nullopt`           | `nullopt`       |
+| Missing field    | `nullopt` (2) | `nullopt` (2)       | field defaulted |
+| Wrong field type | `nullopt`     | unknown field (3)   | unknown field   |
+| Unknown fields   | ignored       | ignored             | ignored         |
+
+1. Only if the message has at least one `required` field.
+2. Only for required fields (non-optional in the IDL, `required` in proto2);
+   optional fields may be absent (JSON) or are defaulted (proto2).
+3. A field whose wire type doesn't match is parsed as an unknown field, so it
+   yields `nullopt` only if that leaves a `required` field missing.
+
+JSON rejects missing required fields because the IDL-generated `FromValue()`
+does. To get the same behavior for a Protobuf body, declare the fields the
+response must contain as `required` (proto2, or `LEGACY_REQUIRED` field presence
+in editions). With proto3, which has no `required`, a body only guarantees that
+the response parsed: check `has_*()` on `optional` fields yourself.
+
 ---
 
 ### 3. Adding request headers and receiving response headers
