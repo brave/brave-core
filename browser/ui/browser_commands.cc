@@ -22,6 +22,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/notreached.h"
 #include "base/path_service.h"
+#include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
@@ -419,6 +420,23 @@ void CopyLinkWithStrictCleaning(BrowserWindowInterface* browser,
     scw.MarkAsOffTheRecord();
   }
   scw.WriteText(base::UTF8ToUTF16(final_url.spec()));
+}
+
+void CopyLinksOfTabs(BrowserWindowInterface* browser,
+                     const std::vector<int>& indices) {
+  auto* tab_strip_model = browser->GetTabStripModel();
+  std::vector<std::string> urls;
+  for (int index : indices) {
+    urls.push_back(
+        tab_strip_model->GetWebContentsAt(index)->GetVisibleURL().spec());
+  }
+
+  ui::ScopedClipboardWriter scw(ui::ClipboardBuffer::kCopyPaste);
+  if (browser->GetProfile()->IsOffTheRecord()) {
+    // Keep it out of the OS clipboard history and cloud clipboard sync.
+    scw.MarkAsOffTheRecord();
+  }
+  scw.WriteText(base::UTF8ToUTF16(base::JoinString(urls, "\n")));
 }
 
 void ToggleWindowTitleVisibilityForVerticalTabs(

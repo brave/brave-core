@@ -299,6 +299,7 @@ source_set("browser_tests") {
     "//testing/gmock",
     "//testing/gtest",
     "//ui/base",
+    "//ui/base/clipboard",
     "//url",
   ]
 
