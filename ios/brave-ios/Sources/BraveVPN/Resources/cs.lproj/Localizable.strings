@@ -131,7 +131,7 @@
 "vpn.installTitle" = "Instalace sítě VPN";
 
 /* Button text to try free Brave VPN */
-"vpn.learnMore" = "Spusťte 7denní zkušební verzi zdarma";
+"vpn.learnMore" = "Spustit 7denní zkušební verzi zdarma";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "Obnovuje se každý měsíc";

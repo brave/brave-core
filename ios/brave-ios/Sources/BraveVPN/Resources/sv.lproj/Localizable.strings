@@ -131,7 +131,7 @@
 "vpn.installTitle" = "Installera VPN";
 
 /* Button text to try free Brave VPN */
-"vpn.learnMore" = "Starta 7-dagars gratis provperiod";
+"vpn.learnMore" = "Starta 7 dagars gratis provperiod";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "Förnyas varje månad";

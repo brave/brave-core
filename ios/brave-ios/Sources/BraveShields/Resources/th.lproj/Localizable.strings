@@ -113,10 +113,10 @@
 "BraveShieldsGlobalControls" = "การควบคุมทั่วไป";
 
 /* Shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfo" = "บันทึกข้อมูลการติดต่อสำหรับการรายงานเว็บไซต์ที่เสียในอนาคต";
+"BraveShieldsSaveContactInfo" = "บันทึกข้อมูลการติดต่อสำหรับการรายงานเว็บไซต์เสียในอนาคต";
 
 /* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfoDescription" = "หากคุณให้ข้อมูลการติดต่อ ข้อมูลจะถูกบันทึกเพื่อใช้ในรายงานในอนาคต";
+"BraveShieldsSaveContactInfoDescription" = "หากคุณให้ข้อมูลการติดต่อ มันจะถูกบันทึกไว้สำหรับการรายงานในอนาคต";
 
 /* No comment provided by engineer. */
 "BraveShieldsSiteBroken" = "หากเว็บไซต์นี้ดูเหมือนมีปัญหา ให้ลองปิด Shields";

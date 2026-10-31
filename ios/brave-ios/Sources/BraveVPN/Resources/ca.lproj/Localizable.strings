@@ -131,7 +131,7 @@
 "vpn.installTitle" = "Instal·la la VPN";
 
 /* Button text to try free Brave VPN */
-"vpn.learnMore" = "Iniciar prova gratuïta de 7 dies";
+"vpn.learnMore" = "Inicia la prova gratuïta de 7 dies";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "Es renova mensualment";

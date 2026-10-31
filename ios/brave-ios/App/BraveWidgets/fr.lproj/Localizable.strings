@@ -1,6 +1,12 @@
 /* Title for Ask Brave shortcut. Brave is the company name and should not be translated */
 "widgets.askBrave" = "Demander à Brave";
 
+/* Description for the Ask Brave widget on 'add custom control' screen. Brave is the company name and should not be translated */
+"widgets.askBraveWidgetDescription" = "Posez une question à Brave.";
+
+/* Title for the Ask Brave widget on 'add custom control' screen. Brave is the company name and should not be translated */
+"widgets.askBraveWidgetTitle" = "Demander à Brave";
+
 /* Title for bookmarks menu item */
 "widgets.BookmarksMenuItem" = "Favoris";
 
@@ -12,6 +18,15 @@
 
 /* The name of the feature */
 "widgets.braveNews" = "Actualités Brave";
+
+/* Title for the Brave Search control. Brave is the company name and should not be translated */
+"widgets.braveSearch" = "le moteur de recherche Brave";
+
+/* Description for the Brave Search widget on 'add custom control' screen. Brave is the company name and should not be translated */
+"widgets.braveSearchWidgetDescription" = "Recherchez sur le web avec Brave.";
+
+/* Title for the Brave Search widget on 'add custom control' screen. Brave is the company name and should not be translated */
+"widgets.braveSearchWidgetTitle" = "le moteur de recherche Brave";
 
 /* Title for downloads menu item */
 "widgets.DownloadsMenuItem" = "Téléchargements";

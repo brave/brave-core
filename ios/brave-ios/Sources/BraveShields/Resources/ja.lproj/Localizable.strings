@@ -116,7 +116,7 @@
 "BraveShieldsSaveContactInfo" = "今後の破損サイト報告のため、連絡先情報を保存する";
 
 /* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfoDescription" = "連絡先情報を入力すると、今後の報告のために保存されます。";
+"BraveShieldsSaveContactInfoDescription" = "連絡先情報を入力すると、今後の報告のために保存されます";
 
 /* No comment provided by engineer. */
 "BraveShieldsSiteBroken" = "もしサイトに正しく表示されていない場合は、Shieldをオフにしてみてください";
