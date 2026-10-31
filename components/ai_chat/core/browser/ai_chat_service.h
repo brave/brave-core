@@ -513,6 +513,12 @@ class AIChatService : public KeyedService,
   mojo::RemoteSet<mojom::UntrustedServiceObserver>
       untrusted_service_observer_remotes_;
 
+  std::map<std::string, mojom::ConversationGenerationState>
+      conversation_generation_state_;
+  void NotifyConversationGenerationState(const std::string& uuid);
+  // Deletes a conversation without notifying the conversation list.
+  void EraseConversation(const std::string& id);
+
   mojo::Receiver<mojom::TabDataObserver> tab_data_observer_receiver_{this};
 
   // AIChatCredentialManager / Skus does not provide an event when
@@ -548,6 +554,8 @@ class AIChatService : public KeyedService,
   // can hand out a proxy delegate before the bridge itself exists; the bridge
   // is owned, accessed, and destroyed only on |db_task_runner_|.
   scoped_refptr<AIChatSyncBackend> sync_backend_;
+
+  bool IsConversationVisible(const std::string& uuid) const;
 
   base::WeakPtrFactory<AIChatService> weak_ptr_factory_{this};
 };

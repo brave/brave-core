@@ -19,6 +19,7 @@ import { useConversation } from '../../state/conversation_context'
 import Alert from '@brave/leo/react/alert'
 import Button from '@brave/leo/react/button'
 import { Link } from '$web-common/useRoute'
+import ProgressRing from '@brave/leo/react/progressRing'
 
 // The maximum number of workspaces shown in the recent workspaces section.
 const MAX_RECENT_WORKSPACES = 5
@@ -79,6 +80,8 @@ interface ItemState {
   // was started from outside the list), the main list item is used.
   editingItemKey: string | undefined
   setEditingItemKey: (key: string | undefined) => void
+  activeUuid: string | undefined
+  generationStateMap: Map<string, Mojom.ConversationGenerationState>
 }
 
 interface ConversationsListProps {
@@ -95,7 +98,6 @@ interface ConversationItemProps extends ConversationsListProps {
 
 function ConversationItem(props: ConversationItemProps) {
   const aiChatContext = useAIChat()
-  const conversationContext = useConversation()
   const { itemState } = props
 
   const { uuid } = props.conversation
@@ -137,7 +139,18 @@ function ConversationItem(props: ConversationItemProps) {
   const isEditing =
     aiChatContext.editingConversationId === uuid
     && (itemState.editingItemKey ?? uuid) === itemKey
-  const isActive = uuid === conversationContext.conversationUuid
+
+  const generationState = itemState.generationStateMap.get(uuid)
+
+  const isGenerating =
+    generationState === Mojom.ConversationGenerationState.kGenerating
+  const isCompletedNotViewed =
+    generationState === Mojom.ConversationGenerationState.kCompletedNotViewed
+
+  const isActive = uuid === itemState.activeUuid
+
+  const showGenerating = isGenerating && !isActive
+  const showCompleted = isCompletedNotViewed && !isActive
 
   return (
     <li>
@@ -167,6 +180,30 @@ function ConversationItem(props: ConversationItemProps) {
               {title}
             </div>
           </div>
+
+          {showGenerating && (
+            <span
+              className={styles.generatingIndicator}
+              aria-label={getLocale(S.AI_CHAT_CONVERSATION_LIST_GENERATING)}
+              title={getLocale(S.AI_CHAT_CONVERSATION_LIST_GENERATING)}
+              role='status'
+            >
+              <ProgressRing mode='indeterminate' />
+            </span>
+          )}
+          {showCompleted && (
+            <span
+              className={styles.completedIndicator}
+              aria-label={getLocale(
+                S.AI_CHAT_CONVERSATION_LIST_COMPLETED_NOT_VIEWED,
+              )}
+              title={getLocale(
+                S.AI_CHAT_CONVERSATION_LIST_COMPLETED_NOT_VIEWED,
+              )}
+              role='status'
+            />
+          )}
+
           {/* Stop propagation so clicks don't bubble to the Link and close the sidebar */}
           <div onClick={(e) => e.stopPropagation()}>
             <ButtonMenu
@@ -394,11 +431,22 @@ export default function ConversationsList(props: ConversationsListProps) {
   const [openOptionsMenuKey, setOpenOptionsMenuKey] = React.useState<string>()
   const [editingItemKey, setEditingItemKey] = React.useState<string>()
 
+  const generationStateMap =
+    aiChatContext.api.useConversationGenerationStateData()
+  const { selectedConversationId } = useActiveChat()
+  const conversationCtx = useConversation()
+  const { conversationUuid: contextConversationUuid } =
+    conversationCtx.api.useGetStateData()
+
+  const activeUuid = selectedConversationId || contextConversationUuid
+
   const itemState: ItemState = {
     openOptionsMenuKey,
     setOpenOptionsMenuKey,
     editingItemKey,
     setEditingItemKey,
+    activeUuid,
+    generationStateMap,
   }
 
   const startedNonTemporaryConversations = aiChatContext.conversations.filter(

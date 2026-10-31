@@ -73,9 +73,11 @@
 }
 
 .displayTitle {
+  align-items: center;
   border-radius: var(--leo-radius-m);
   cursor: pointer;
   display: flex;
+  gap: var(--leo-spacing-m);
   justify-content: space-between;
   padding: var(--leo-spacing-l) var(--leo-spacing-xl);
   position: relative;
@@ -252,4 +254,24 @@
   border: 1px solid var(--leo-color-icon-interactive);
   padding: 0 4px;
   background: var(--leo-color-container-background);
+}
+
+.generatingIndicator {
+  margin-left: auto;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+
+  leo-progressring {
+    --leo-progressring-size: 16px;
+  }
+}
+
+.completedIndicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--leo-color-icon-interactive);
+  margin-left: auto;
+  flex-shrink: 0;
 }
