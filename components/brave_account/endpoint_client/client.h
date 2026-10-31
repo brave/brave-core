@@ -91,7 +91,6 @@ class Client {
             request.network_traffic_annotation_tag));
     simple_url_loader->SetAllowHttpErrorResults(true);
     if (auto upload_data = request.Serialize()) {
-      CHECK(!upload_data->empty()) << "Failed to serialize request!";
       simple_url_loader->AttachStringForUpload(std::move(*upload_data),
                                                Request::ContentType());
     }
