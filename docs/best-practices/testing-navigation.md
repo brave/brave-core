@@ -4,6 +4,10 @@
 
 ## Same-Document Navigation
 
+**File Patterns:** `**/*{_unittest,_browsertest,_test}.{cc,mm}`,
+`**/test*/**/*.{cc,h,mm}`. C++ navigation tests; inspect test code with other
+filenames too.
+
 **DO NOT use `base::test::RunUntil()` polling for same-document (hash/fragment)
 navigations.**
 
@@ -40,6 +44,10 @@ observer.Wait();
 
 ## Avoid Hardcoded JavaScript Timeouts
 
+**File Patterns:** `**/*{_unittest,_browsertest,_test}.{cc,mm}`,
+`**/test*/**/*.{cc,h,mm}`. C++ navigation tests; inspect test code with other
+filenames too.
+
 **BAD:**
 
 ```cpp
@@ -63,6 +71,10 @@ ASSERT_TRUE(base::test::RunUntil([&]() {
 <a id="TN-003"></a>
 
 ## Wait for Page Distillation
+
+**File Patterns:** `**/*{_unittest,_browsertest,_test}.{cc,mm}`,
+`**/test*/**/*.{cc,h,mm}`. C++ navigation tests; inspect test code with other
+filenames too.
 
 When testing distilled content (Speedreader), always wait for distillation to
 complete:
