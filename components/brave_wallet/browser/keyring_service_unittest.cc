@@ -4492,7 +4492,7 @@ TEST_F(KeyringServiceUnitTest, ImportPolkadotAccount_NonRelayNetwork) {
       service.GetAllAccountsSync()->accounts, [](const auto& acc) {
         return acc->account_id->coin == mojom::CoinType::DOT;
       });
-  EXPECT_EQ(dot_accounts, 1u) << "Only the original HD account should exist";
+  EXPECT_EQ(dot_accounts, 1) << "Only the original HD account should exist";
 }
 
 TEST_F(KeyringServiceUnitTest, ImportPolkadotAccountFails_WrongPassword) {
@@ -4523,7 +4523,7 @@ TEST_F(KeyringServiceUnitTest, ImportPolkadotAccountFails_WrongPassword) {
       service.GetAllAccountsSync()->accounts, [](const auto& acc) {
         return acc->account_id->coin == mojom::CoinType::DOT;
       });
-  EXPECT_EQ(dot_accounts, 1u) << "Only the HD account; import must not add.";
+  EXPECT_EQ(dot_accounts, 1) << "Only the HD account; import must not add.";
 }
 
 TEST_F(KeyringServiceUnitTest, ImportPolkadotAccount) {
@@ -4565,7 +4565,7 @@ TEST_F(KeyringServiceUnitTest, ImportPolkadotAccount) {
   auto dot_accounts = std::ranges::count_if(all->accounts, [](const auto& acc) {
     return acc->account_id->coin == mojom::CoinType::DOT;
   });
-  EXPECT_GE(dot_accounts, 2u);
+  EXPECT_GE(dot_accounts, 2);
 
   auto pubkey = service.GetPolkadotPubKey(imported->account_id.Clone());
   ASSERT_TRUE(pubkey.has_value());
@@ -4610,7 +4610,7 @@ TEST_F(KeyringServiceUnitTest, ImportPolkadotAccountTestnet) {
       service.GetAllAccountsSync()->accounts, [](const auto& acc) {
         return acc->account_id->coin == mojom::CoinType::DOT;
       });
-  EXPECT_GE(dot_accounts, 2u);
+  EXPECT_GE(dot_accounts, 2);
 
   auto pubkey = service.GetPolkadotPubKey(imported->account_id.Clone());
   ASSERT_TRUE(pubkey.has_value());
