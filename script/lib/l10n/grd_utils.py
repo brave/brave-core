@@ -18,7 +18,9 @@ from lib.l10n.grd_string_replacements import (
     brave_strings_grd_replacements,
     default_replacements,
     fixup_replacements,
+    language_branding_replacements,
     main_text_only_replacements,
+    missing_descriptions,
 )
 from lib.l10n.validation import validate_tags_in_one_string
 
@@ -119,11 +121,24 @@ def write_xml_file_from_tree(string_path, xml_tree):
         f.write(transformed_content)
 
 
+def braveify_language_forms(node, lang):
+    """Replaces brand forms that only occur in the given locale"""
+    for pattern, to in language_branding_replacements.get(lang, []):
+        for elem in node.iter():
+            if elem.text:
+                elem.text = re.sub(pattern, to, elem.text)
+            if elem.tail:
+                elem.tail = re.sub(pattern, to, elem.tail)
+
+
 def braveify_grd_tree(source_xml_tree, branding_replacements_only):
     """Takes in a grd(p) tree and replaces all messages and comments with Brave
     wording"""
     for elem in source_xml_tree.xpath('//message'):
         generate_braveified_node(elem, False, branding_replacements_only)
+        description = missing_descriptions.get(elem.get('name'))
+        if description and not elem.get('desc'):
+            elem.set('desc', description)
     for elem in source_xml_tree.xpath('//comment()'):
         generate_braveified_node(elem, True, branding_replacements_only)
 
@@ -227,6 +242,11 @@ def update_xtbs_locally(grd_file_path, brave_source_root, only_for_lang):
         )
     }
 
+    xtb_langs = [
+        lang
+        for (lang, path) in xtb_files
+        if not only_for_lang or only_for_lang == lang
+    ]
     xtb_file_paths = [
         os.path.join(grd_base_path, path)
         for (lang, path) in xtb_files
@@ -249,6 +269,7 @@ def update_xtbs_locally(grd_file_path, brave_source_root, only_for_lang):
 
         for node in xml_tree.xpath('//translation'):
             generate_braveified_node(node, False, True)
+            braveify_language_forms(node, xtb_langs[idx])
             # Use our fp, when exists.
             old_fp = node.attrib['id']
             # It's possible for an xtb string to not be in our GRD.
@@ -259,6 +280,15 @@ def update_xtbs_locally(grd_file_path, brave_source_root, only_for_lang):
                 if new_fp != old_fp:
                     node.attrib['id'] = new_fp
                     # print(f'fp: {old_fp} -> {new_fp}')
+
+        # Chromium and Chrome variants of a string are separate messages that
+        # become identical after branding, so keep the first translation.
+        seen_ids = set()
+        for node in xml_tree.xpath('//translation'):
+            if node.attrib['id'] in seen_ids:
+                node.getparent().remove(node)
+            else:
+                seen_ids.add(node.attrib['id'])
 
         # Special treatment for brave_strings.grd
         if os.path.basename(grd_file_path) == 'brave_strings.grd':
@@ -388,6 +418,15 @@ def get_original_grd(src_root, grd_file_path):
             'android',
             'strings',
             'android_chrome_strings.grd',
+        )
+    if grd_file_name == 'android_ui_strings.grd':
+        return os.path.join(
+            src_root,
+            'ui',
+            'android',
+            'java',
+            'strings',
+            'android_ui_strings.grd',
         )
     if grd_file_name == 'android_chrome_tab_ui_strings.grd':
         return os.path.join(
