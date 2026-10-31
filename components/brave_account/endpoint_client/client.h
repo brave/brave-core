@@ -77,9 +77,10 @@ class Client {
     auto resource_request = std::make_unique<network::ResourceRequest>();
     resource_request->url = request.url_replacements.Apply(Endpoint::URL());
     resource_request->method = Request::Method();
-    resource_request->load_flags = net::LOAD_BYPASS_CACHE |
-                                   net::LOAD_DISABLE_CACHE |
-                                   net::LOAD_DO_NOT_SAVE_COOKIES;
+    resource_request->load_flags =
+        net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE;
+    // kOmit implies net::LOAD_DO_NOT_SAVE_COOKIES (deprecated) via
+    // URLRequest::set_disallow_credentials(); weaker modes save cookies again.
     resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
     if constexpr (base::is_instantiation<Request, WithHeaders>) {
       resource_request->headers = std::move(request.headers);
