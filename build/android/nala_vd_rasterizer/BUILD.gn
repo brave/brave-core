@@ -26,7 +26,7 @@ java_prebuilt("common_java") {
   enable_bytecode_checks = false
   deps = [
     "//third_party/android_deps:guava_java",
-    "//third_party/kotlin_stdlib:kotlin_stdlib_java",
+    "//third_party/android_deps:kotlin_stdlib_java",
   ]
 }
 
@@ -38,7 +38,7 @@ java_prebuilt("sdk_common_java") {
     ":common_java",
     ":layoutlib_api_java",
     "//third_party/android_deps:guava_java",
-    "//third_party/kotlin_stdlib:kotlin_stdlib_java",
+    "//third_party/android_deps:kotlin_stdlib_java",
   ]
 }
 
