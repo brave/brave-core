@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/notifications/notification_display_service_impl.cc b/chrome/browser/notifications/notification_display_service_impl.cc
-index f3a473c88a5553d508fdfc72b46cc9fb2cb91d4b..d6631531816429390c4b83f3774523e7ae5a1b12 100644
+index f3a473c88a5553d508fdfc72b46cc9fb2cb91d4b..d7d031cf6c20a164d6b21803e9029fcb19ab14a9 100644
 --- a/chrome/browser/notifications/notification_display_service_impl.cc
 +++ b/chrome/browser/notifications/notification_display_service_impl.cc
-@@ -124,6 +124,7 @@ NotificationDisplayServiceImpl::NotificationDisplayServiceImpl(Profile* profile)
-     }
- #endif
- #endif
-+    BRAVE_NOTIFICATION_DISPLAY_SERVICE_IMPL_CONSTRUCTOR;
-   }
- 
-   bridge_delegator_ = std::make_unique<NotificationPlatformBridgeDelegator>(
+@@ -71,6 +71,7 @@ NotificationDisplayServiceImpl::NotificationDisplayServiceImpl(Profile* profile)
+     : profile_(profile) {
+   // TODO(peter): Move these to the NotificationDisplayServiceFactory.
+   if (profile_) {
++    AddBraveNotificationHandlers(*this, *profile_);
+     AddNotificationHandler(
+         NotificationHandler::Type::WEB_NON_PERSISTENT,
+         std::make_unique<NonPersistentNotificationHandler>());
