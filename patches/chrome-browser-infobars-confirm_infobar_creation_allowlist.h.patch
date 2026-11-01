@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/infobars/confirm_infobar_creation_allowlist.h b/chrome/browser/infobars/confirm_infobar_creation_allowlist.h
+index feedb7c528f01478afe9ee5a554a471b5ae37b6b..c7bdfb76ac9812739ff432acccdd9c019504ca8a 100644
+--- a/chrome/browser/infobars/confirm_infobar_creation_allowlist.h
++++ b/chrome/browser/infobars/confirm_infobar_creation_allowlist.h
+@@ -60,6 +60,12 @@ class ConfirmInfoBarCreationAllowlist {
+   static PassKey GetPassKeyForTesting() { return PassKey(); }
+ 
+  private:
++  friend class BraveConfirmP3AInfoBarDelegate;
++  friend class RequestOTRInfoBarDelegate;
++  friend class SyncCannotRunInfoBarDelegate;
++  friend class brave_ads::CreativeSearchResultAdClickedInfoBarDelegate;
++  friend class ntp_background_images::NewTabTakeoverInfoBarDelegate;
++  friend class psst::PsstInfoBarDelegate;
+   // Centralized Framework:
+   friend class infobars::BrowserInfoBarManager;
+ 
