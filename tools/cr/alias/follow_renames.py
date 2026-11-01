@@ -169,8 +169,26 @@ def _repair_chromium_src(
 
     If no shadow file exists at chromium_src/old_chromium, this is a no-op.
     For moved files: updates the shadow #include line (C++ files) and
-    regenerates the include guard (.h files only).
+    regenerates the include guard (.h files only). A `.lit_mangler.ts` for the
+    old file moves along with it.
     """
+    old_mangler = (
+        repository.brave.root
+        / 'chromium_src'
+        / f'{old_chromium}.lit_mangler.ts'
+    )
+    if old_mangler.exists():
+        new_mangler = (
+            repository.brave.root
+            / 'chromium_src'
+            / f'{new_chromium}.lit_mangler.ts'
+        )
+        new_mangler.parent.mkdir(parents=True, exist_ok=True)
+        if no_git:
+            old_mangler.rename(new_mangler)
+        else:
+            terminal.run_git('mv', str(old_mangler), str(new_mangler))
+
     old_shadow = repository.brave.root / 'chromium_src' / old_chromium
     if not old_shadow.exists():
         return
