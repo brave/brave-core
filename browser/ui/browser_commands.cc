@@ -10,6 +10,7 @@
 #include <numeric>
 #include <stack>
 #include <string>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -906,6 +907,35 @@ void BringAllTabs(BrowserWindowInterface* browser) {
       BrowserWindow::FromBrowser(other)->Close();
     });
   }
+}
+
+bool CanSelectAllTabs(BrowserWindowInterface* browser) {
+  if (!browser) {
+    return false;
+  }
+  auto* model = browser->tab_strip_model();
+  if (!model || model->empty()) {
+    return false;
+  }
+  return model->selection_model().selected_tabs().size() <
+         static_cast<size_t>(model->count());
+}
+
+void SelectAllTabs(BrowserWindowInterface* browser) {
+  if (!browser) {
+    return;
+  }
+  auto* model = browser->tab_strip_model();
+  if (!model || model->empty()) {
+    return;
+  }
+  tabs::TabStripModelSelectionState new_selection = model->selection_model();
+  std::unordered_set<tabs::TabInterface*> all_tabs;
+  for (int i = 0; i < model->count(); ++i) {
+    all_tabs.insert(model->GetTabAtIndex(i));
+  }
+  new_selection.AppendTabsToSelection(all_tabs);
+  model->SetSelectionFromModel(std::move(new_selection));
 }
 
 bool HasDuplicatesOfActiveTab(BrowserWindowInterface* browser) {

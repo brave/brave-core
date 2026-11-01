@@ -143,6 +143,11 @@ void BraveBrowserTabStripController::ExecuteContextMenuCommand(
     return;
   }
 
+  if (command_id == TabStripModel::CommandSelectAllTabs) {
+    brave::SelectAllTabs(GetBrowserWindowInterface());
+    return;
+  }
+
   if (command_id == TabStripModel::CommandShowVerticalTabs) {
     brave::ToggleVerticalTabStrip(GetBrowserWindowInterface());
     BrowserView::GetBrowserViewForBrowser(GetBrowserWindowInterface())
@@ -209,6 +214,10 @@ bool BraveBrowserTabStripController::IsContextMenuCommandEnabled(
   if (command_id == TabStripModel::CommandBookmarkAllTabs) {
     return browser_defaults::bookmarks_enabled &&
            chrome::CanBookmarkAllTabs(GetBrowserWindowInterface());
+  }
+
+  if (command_id == TabStripModel::CommandSelectAllTabs) {
+    return brave::CanSelectAllTabs(GetBrowserWindowInterface());
   }
 
   if (command_id == TabStripModel::CommandToggleTabMuted) {

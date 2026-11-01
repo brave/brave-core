@@ -607,6 +607,8 @@ void BraveBrowserCommandController::UpdateCommandsForTabs() {
 
   UpdateCommandEnabled(IDC_WINDOW_BRING_ALL_TABS,
                        brave::CanBringAllTabs(&*browser_));
+  UpdateCommandEnabled(IDC_SELECT_ALL_TABS,
+                       brave::CanSelectAllTabs(&*browser_));
 }
 
 void BraveBrowserCommandController::UpdateCommandsForSend() {
@@ -936,6 +938,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_WINDOW_BRING_ALL_TABS:
       brave::BringAllTabs(&*browser_);
+      break;
+    case IDC_SELECT_ALL_TABS:
+      brave::SelectAllTabs(&*browser_);
       break;
     case IDC_NEW_SPLIT_VIEW: {
       chrome::NewSplitTab(base::to_address(browser_),

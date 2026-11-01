@@ -117,6 +117,8 @@ void BraveTabMenuModel::Build(BrowserWindowInterface* browser_window,
                       GetRestoreTabCommandStringId());
   AddItemWithStringId(TabStripModel::CommandBookmarkAllTabs,
                       IDS_TAB_CXMENU_BOOKMARK_ALL_TABS);
+  AddItemWithStringId(TabStripModel::CommandSelectAllTabs,
+                      IDS_TAB_CXMENU_SELECT_ALL_TABS);
 
   if (brave::CanBringAllTabs(browser_window)) {
     AddItemWithStringId(TabStripModel::CommandBringAllTabsToThisWindow,
