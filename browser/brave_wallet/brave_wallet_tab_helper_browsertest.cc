@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/memory/weak_ptr.h"
+#include "base/test/run_until.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -26,6 +27,7 @@
 #include "components/permissions/fake_usb_chooser_controller.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/visibility.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -309,6 +311,11 @@ IN_PROC_BROWSER_TEST_F(BraveWalletTabHelperBrowserTest, ShowPanelAfterDiscard) {
   tab_strip_model->ActivateTabAt(index);
   tab->GetContents()->GetController().LoadIfNecessary();
   navigation_observer.Wait();
+  // Wallet requests from a hidden tab are rejected, and the restored contents
+  // may only report itself visible after it loads.
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return tab->GetContents()->GetVisibility() == content::Visibility::VISIBLE;
+  }));
 
   base::RunLoop loop;
   tab_helper->SetShowBubbleCallbackForTesting(loop.QuitClosure());
