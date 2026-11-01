@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Skip the brandcode config fetch.
+
+      Brave doesn't use brandcoded reset settings, so the fetcher only runs
+      its callback, without a network request.
+    preempt_function_impl:
+      function_name: BrandcodeConfigFetcher::BrandcodeConfigFetcher
+      code: |-
+        ReportFetchSkipped(fetch_callback_);
+        return;
