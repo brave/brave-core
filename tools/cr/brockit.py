@@ -347,6 +347,16 @@ by `brockit.py rebase`.
 ```sh
 tools/cr/brockit.py drop <commit_hash>
 ```
+
+With `--revert`, the `drop!` commit also carries the revert of the change and
+of its `fixup!`/`amend!`/`squash!` commits, so the branch loses it right away,
+as with `git revert`; the next `brockit.py rebase` then removes them and the
+`drop!` commit together. If the revert conflicts with later commits, nothing is
+committed.
+
+```sh
+tools/cr/brockit.py drop --revert <commit_hash>
+```
 """
 
 from __future__ import annotations
@@ -2866,11 +2876,19 @@ class _MarkChangeTask(Task):
         commit, message = repository.brave.run_git(
             'log', '-1', change, '-s', '--format=%h %s'
         ).split(' ', 1)
+        body = self._stage(change)
         repository.brave.git_commit(
-            f"{self._prefix}{commit}! {message}",
-            allows_empty=True,
+            f"{self._prefix}{commit}! {message}"
+            + (f'\n\n{body}' if body else ''),
+            allows_empty=not repository.brave.has_staged_changes(),
             no_verify=True,
         )
+
+    def _stage(self, change: str) -> str | None:
+        """Stages what the marking commit carries, and returns its body. The
+        commit is empty by default."""
+        del change
+        return None
 
 
 class Reassign(_MarkChangeTask):
@@ -2891,10 +2909,66 @@ class Drop(_MarkChangeTask):
 
     This task is used to create a `drop!` commit, which gets picked up by the
     rebase engine, and causes the target change to be dropped during rebase.
+
+    With `revert`, the `drop!` commit also carries the revert of the target
+    and of its `fixup!`/`amend!`/`squash!` commits, so the branch loses the
+    change right away; the rebase then removes them all, which leaves the same
+    tree.
     """
 
-    def __init__(self):
+    _AUTOSQUASH = re.compile(r'(?:(?:fixup|amend|squash)! )+(.*)')
+
+    def __init__(self, revert: bool = False):
         super().__init__(DROP_COMMIT_MSG_PREFIX)
+        self._revert = revert
+
+    def _fixups(self, target: str) -> list[tuple[str, str]]:
+        """The target's autosquash commits on the branch, newest first, as
+        (hash, subject), matched as git's `--autosquash` does: by subject or
+        by a prefix of the target's hash. Message-only ones are left out, as
+        there is nothing to revert in them."""
+        subject = repository.brave.run_git('log', '-1', '--format=%s', target)
+        fixups = []
+        for line in repository.brave.run_git(
+            'log', '--format=%H %s', f'{target}..HEAD'
+        ).splitlines():
+            commit, _, fixup_subject = line.partition(' ')
+            match = self._AUTOSQUASH.fullmatch(fixup_subject)
+            if match is None:
+                continue
+            ref = match.group(1)
+            if ref != subject and not (
+                len(ref) >= 4 and target.startswith(ref)
+            ):
+                continue
+            if repository.brave.run_git(
+                'diff-tree', '--no-commit-id', '--name-only', '-r', commit
+            ):
+                fixups.append((commit, fixup_subject))
+        return fixups
+
+    def _stage(self, change: str) -> str | None:
+        if not self._revert:
+            return None
+        target = repository.brave.run_git('rev-parse', '--verify', change)
+        fixups = self._fixups(target)
+        try:
+            repository.brave.run_git(
+                'revert', '--no-commit', *(c for c, _ in fixups), target
+            )
+        except subprocess.CalledProcessError as e:
+            repository.brave.run_git('revert', '--abort')
+            raise InvalidInputException(
+                f'Reverting {target[:12]} conflicts with later changes, so '
+                'nothing was committed. Drop it without --revert, or revert '
+                f'it by hand.\n{(e.stderr or "").strip()}'
+            ) from e
+        body = f'This reverts commit {target}.'
+        if fixups:
+            body += '\n\nIt also reverts its fixups:\n' + '\n'.join(
+                f'{c[:12]} {s}' for c, s in fixups
+            )
+        return body
 
 
 class _RepinToolchainTask(Task):
@@ -3315,6 +3389,14 @@ def main():
     drop_parser.add_argument(
         'change', help='The commit reference to drop (hash, HEAD~N, etc.).'
     )
+    drop_parser.add_argument(
+        '--revert',
+        action='store_true',
+        help=(
+            'Also revert the change in the drop commit, so that it takes '
+            'effect now rather than at the next rebase.'
+        ),
+    )
 
     update_xcode_parser = subparsers.add_parser(
         'update-xcode-toolchain',
@@ -3539,7 +3621,7 @@ def main():
         if args.command == 'reassign':
             Reassign().run(change=args.change)
         if args.command == 'drop':
-            Drop().run(change=args.change)
+            Drop(revert=args.revert).run(change=args.change)
         if args.command == 'update-xcode-toolchain':
             _RepinToolchainTask(toolchain.XcodeToolchain()).run(
                 chromium_ref=args.to, culprit=args.culprit

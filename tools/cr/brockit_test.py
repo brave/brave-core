@@ -903,6 +903,82 @@ class MarkChangeTaskTest(unittest.TestCase):
         with self.assertRaises(brockit.InvalidInputException):
             brockit.Drop().execute(change='HEAD')
 
+    def test_drop_revert_carries_the_revert(self):
+        """`--revert` reverts the target in the `drop!` commit: the tree goes
+        back to before the target, even with later commits in between."""
+        short_hash = self._make_target('A change to drop')
+        full_hash = self._git('rev-parse', 'HEAD')
+        self.fake_chromium_src.write_and_stage_file(
+            'later.txt', 'later', self.brave
+        )
+        self.fake_chromium_src.commit('A later change', self.brave)
+
+        brockit.Drop(revert=True).execute(change=short_hash)
+
+        self.assertEqual(
+            self._git('log', '-1', '--format=%B').strip(),
+            f'drop!{short_hash}! A change to drop\n\n'
+            f'This reverts commit {full_hash}.',
+        )
+        self.assertEqual(
+            self._git('diff', '--name-only', f'{full_hash}~1', 'HEAD'),
+            'later.txt',
+        )
+        self.assertEqual(self._git('status', '--porcelain'), '')
+
+    def test_drop_revert_also_reverts_the_target_fixups(self):
+        """The target's `fixup!` commits are reverted with it; a
+        message-only `amend!` has nothing to revert and isn't listed."""
+        short_hash = self._make_target('A change to drop')
+        full_hash = self._git('rev-parse', 'HEAD')
+        self.fake_chromium_src.write_and_stage_file(
+            'foo.txt', 'fixed', self.brave
+        )
+        self.fake_chromium_src.commit('fixup! A change to drop', self.brave)
+        fixup = self._git('rev-parse', 'HEAD')
+        self._git(
+            'commit',
+            '-q',
+            '--allow-empty',
+            '-m',
+            'amend! A change to drop\n\nA better message',
+        )
+        self.fake_chromium_src.write_and_stage_file(
+            'later.txt', 'later', self.brave
+        )
+        self.fake_chromium_src.commit('A later change', self.brave)
+
+        brockit.Drop(revert=True).execute(change=short_hash)
+
+        self.assertEqual(
+            self._git('log', '-1', '--format=%B').strip(),
+            f'drop!{short_hash}! A change to drop\n\n'
+            f'This reverts commit {full_hash}.\n\n'
+            'It also reverts its fixups:\n'
+            f'{fixup[:12]} fixup! A change to drop',
+        )
+        self.assertEqual(
+            self._git('diff', '--name-only', f'{full_hash}~1', 'HEAD'),
+            'later.txt',
+        )
+        self.assertEqual(self._git('status', '--porcelain'), '')
+
+    def test_drop_revert_conflict_commits_nothing(self):
+        """A revert that conflicts with a later commit is aborted, and the
+        branch is left as it was."""
+        short_hash = self._make_target('A change to drop')
+        self.fake_chromium_src.write_and_stage_file(
+            'foo.txt', 'changed again', self.brave
+        )
+        self.fake_chromium_src.commit('A later change', self.brave)
+        head = self._git('rev-parse', 'HEAD')
+
+        with self.assertRaises(brockit.InvalidInputException):
+            brockit.Drop(revert=True).execute(change=short_hash)
+
+        self.assertEqual(self._git('rev-parse', 'HEAD'), head)
+        self.assertEqual(self._git('status', '--porcelain'), '')
+
 
 # The CI labels every PR opened by `GitHubIssue` must carry. They are stored
 # exactly as the command passes them to `gh` (i.e. wrapped in double quotes).
