@@ -85,8 +85,8 @@ The following steps will take place:
 5. Deleted patches will also cause the  *🚀Brockit!* to stop . The user is
    expected to provide separate commits for deleted patches, explaining the
    reason.
-6. Having resolved all conflicts. Restart *🚀Brockit!* with `--continue` and
-   other similar arguments you may want to keep.
+6. Having resolved all conflicts. Restart *🚀Brockit!* with `--continue` alone:
+   it carries on to the version, base and `--with-github` the lift started with.
 7. *🚀Brockit!* will pick up from where it stopped, possibly running
   `pnpm run update_patches`, staging all patches, and committing the under
   *Conflict-resolved patches from Chromium [from] to [to].*
@@ -681,9 +681,12 @@ class ContinuationFile:
     # The continuation data for the patches.
     apply_record: ApplyPatchesRecord | None = field(default=None)
 
+    # Whether the lift was started with `--with-github`.
+    with_github: bool = False
+
     @staticmethod
     def load(
-        target_version: Version,
+        target_version: Version | None = None,
         working_version: Version | None = None,
         check: bool = True,
     ) -> ContinuationFile | None:
@@ -695,7 +698,7 @@ class ContinuationFile:
         Args:
             target_version:
                 The target version for the upgrade process. Used to validate
-                the continuation file being loaded.
+                the continuation file being loaded, unless None.
             working_version:
                 The working version in the branch, used to validate the
                 continuation file being loaded.
@@ -712,7 +715,10 @@ class ContinuationFile:
 
         continuation = pickle.loads(VERSION_UPGRADE_FILE.read_bytes())
 
-        if continuation.target_version != target_version or (
+        if (
+            target_version is not None
+            and continuation.target_version != target_version
+        ) or (
             working_version is not None
             and continuation.working_version != working_version
         ):
@@ -1156,25 +1162,36 @@ class Upgrade(Versioned):
 
     def __init__(
         self,
-        target_version: Version,
+        target_version: Version | None,
         is_continuation: bool,
         base_version: Version | None = None,
     ):
-        if (base_version is None and not is_continuation) or (
-            base_version is not None and is_continuation
-        ):
-            # either it is a new upgrade, and a base version is provided, or it
-            # is a continuation and no base version is provided as it gets read
-            # from disk.
+        if is_continuation != (target_version is None and base_version is None):
+            # Either it is a new upgrade, and the target and base versions are
+            # provided, or it is a continuation, which reads them from disk.
             raise NotImplementedError()
 
         # Indicates that the upgrade is a continuation from a previous run.
         self.is_continuation = is_continuation
 
+        # Whether the continued lift was started with `--with-github`.
+        self.with_github = False
+
         # The last version the branch was in, that the update is being started
         # from
         self.working_version = None
         if self.is_continuation:
+            # The target is the tag the lift started with, as a label like
+            # `@latest-stable` may resolve to a newer one by now.
+            try:
+                continuation = ContinuationFile.load()
+            except FileNotFoundError as e:
+                raise InvalidInputException(
+                    f'{VERSION_UPGRADE_FILE} continuation file does not exist. '
+                    '(Are you sure you meant to pass [bold cyan]--continue[/]?)'
+                ) from e
+
+            target_version = continuation.target_version
             version_on_head = Version.from_git('HEAD')
             if target_version != version_on_head:
                 raise InvalidInputException(
@@ -1183,21 +1200,11 @@ class Upgrade(Versioned):
                     f'vs {version_on_head}'
                 )
 
-            # Loads the working version from the continuation file, because the
-            # current branch has already updated the working version to the
-            # target version.
-            try:
-                continuation = ContinuationFile.load(
-                    target_version=target_version
-                )
-            except FileNotFoundError as e:
-                raise InvalidInputException(
-                    f'{VERSION_UPGRADE_FILE} continuation file does not exist. '
-                    '(Are you sure you meant to pass [bold cyan]--continue[/]?)'
-                ) from e
-
+            # The working version comes from the continuation file, because the
+            # current branch has already updated it to the target version.
             self.working_version = continuation.working_version
             base_version = continuation.base_version
+            self.with_github = continuation.with_github
         else:
             self.working_version = Version.from_git('HEAD')
 
@@ -1896,6 +1903,7 @@ class Upgrade(Versioned):
                 working_version=self.working_version,
                 base_version=self.base_version,
                 recovered_toolchains=recovered_toolchains,
+                with_github=with_github,
             ).save()
 
         if with_github and not GhCli().is_logged_in():
@@ -3214,7 +3222,6 @@ def main():
     )
     lift_parser.add_argument(
         '--to',
-        required=True,
         help=(
             'The Chromium version to upgrade to (e.g. 147.0.7727.117),\n'
             'or one of the following labels:\n'
@@ -3234,7 +3241,10 @@ def main():
     lift_parser.add_argument(
         '--continue',
         action='store_true',
-        help='Resumes from manual patch conflict resolution.',
+        help=(
+            'Resumes from manual patch conflict resolution, with the target,\n'
+            'base and --with-github the lift started with.'
+        ),
         dest='is_continuation',
     )
     lift_parser.add_argument(
@@ -3554,11 +3564,6 @@ def main():
     if hasattr(args, 'infra_mode') and args.infra_mode:
         terminal.set_infra_mode()
 
-    if hasattr(args, 'from_ref'):
-        if args.command == 'lift' and args.is_continuation:
-            if args.from_ref is not None:
-                parser.error('Switch --from-ref not supported with --continue.')
-
     def resolve_version_with_from_ref_arg() -> Version:
         return Version.from_git(_solve_brave_ref(args.from_ref))
 
@@ -3577,30 +3582,35 @@ def main():
                     f'Switch {switch} not supported with {resumption}.'
                 )
 
-    if args.command == 'lift' and args.restart and args.is_continuation:
-        parser.error('--restart does not support --continue')
-    if args.command == 'lift' and args.ack_advisory and args.is_continuation:
-        parser.error('--ack-advisory does not support --continue')
+    if args.command == 'lift' and args.is_continuation:
+        for switch, value in (
+            ('--to', args.to),
+            ('--from-ref', args.from_ref),
+            ('--with-github', args.with_github),
+            ('--restart', args.restart),
+            ('--ack-advisory', args.ack_advisory),
+        ):
+            if value:
+                parser.error(f'Switch {switch} not supported with --continue.')
+    elif args.command == 'lift' and args.to is None:
+        parser.error('the following arguments are required: --to')
     try:
         if args.command == 'lift':
-            target = _fetch_chromium_tag(args.to)
-            if args.restart:
-                ReUpgrade(target).run()
-
-            if not args.is_continuation:
+            if args.is_continuation:
+                upgrade = Upgrade(None, is_continuation=True)
+                with_github = upgrade.with_github
+            else:
+                target = _fetch_chromium_tag(args.to)
+                if args.restart:
+                    ReUpgrade(target).run()
                 upgrade = Upgrade(
                     target,
-                    args.is_continuation,
-                    resolve_version_with_from_ref_arg(),
+                    is_continuation=False,
+                    base_version=resolve_version_with_from_ref_arg(),
                 )
-            else:
-                upgrade = Upgrade(
-                    _fetch_chromium_tag(args.to), args.is_continuation
-                )
+                with_github = args.with_github
 
-            upgrade.run(
-                with_github=args.with_github, ack_advisory=args.ack_advisory
-            )
+            upgrade.run(with_github=with_github, ack_advisory=args.ack_advisory)
         if args.command == 'rebase':
             Rebase().run(
                 is_continuation=args.is_continuation,
