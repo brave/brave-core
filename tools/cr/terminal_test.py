@@ -5,6 +5,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import unittest
+from unittest import mock
 
 from terminal import terminal
 
@@ -50,6 +51,30 @@ class TerminalStdinTest(unittest.TestCase):
     def test_stdin_rejected_in_interactive_mode(self):
         with self.assertRaises(ValueError):
             terminal.run(['cat'], interactive=True, stdin='data')
+
+
+class RunPnpmCommandTest(unittest.TestCase):
+    """`run_pnpm_command('init')` always syncs a clean, lean checkout."""
+
+    def _command(self, *cmd: str, infra_mode: bool = False) -> list[str]:
+        with (
+            mock.patch.object(terminal, 'infra_mode', infra_mode),
+            mock.patch.object(terminal, 'run') as run,
+        ):
+            terminal.run_pnpm_command(*cmd)
+        return run.call_args.args[0]
+
+    def test_init_forces_deletes_unused_deps_and_syncs_lean(self):
+        expected = ['pnpm', 'run', 'init', '--force', '-D', '--lean_sync']
+        self.assertEqual(expected, self._command('init'))
+        self.assertEqual(expected, self._command('init', infra_mode=True))
+
+    def test_other_commands_are_left_alone(self):
+        self.assertEqual(
+            ['pnpm', 'run', 'init', '--target_os=android'],
+            self._command('init', '--target_os=android'),
+        )
+        self.assertEqual(['pnpm', 'run', 'sync'], self._command('sync'))
 
 
 if __name__ == '__main__':
