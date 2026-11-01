@@ -59,7 +59,6 @@ WorkspacesBubbleView::WorkspacesBubbleView(views::View* anchor_view,
 
   const SessionID window_id = browser->GetSessionID();
   showing_workspace_ = service->GetWorkspaceForWindow(window_id);
-  const std::optional<base::Uuid>& showing = showing_workspace_;
 
   auto* workspaces_container =
       contents->AddChildView(std::make_unique<views::View>());
@@ -87,7 +86,7 @@ WorkspacesBubbleView::WorkspacesBubbleView(views::View* anchor_view,
                                 weak_factory_.GetWeakPtr()),
             // The unmanaged space is implicit: no menu to delete it.
             base::RepeatingClosure()));
-    unmanaged_row->SetSelected(!showing.has_value());
+    unmanaged_row->SetSelected(!showing_workspace_.has_value());
 
     workspaces_container->AddChildView(std::make_unique<views::Separator>());
   }
@@ -119,7 +118,7 @@ WorkspacesBubbleView::WorkspacesBubbleView(views::View* anchor_view,
                                   weak_factory_.GetWeakPtr(), workspace.id),
               base::BindRepeating(&WorkspacesBubbleView::OnDeleteClicked,
                                   weak_factory_.GetWeakPtr(), workspace.id)));
-      row->SetSelected(showing == workspace.id);
+      row->SetSelected(showing_workspace_ == workspace.id);
 
       // Only a workspace someone is currently looking at is out of reach.
       // One that is open but hidden is picked up by bringing its window
@@ -179,27 +178,24 @@ void WorkspacesBubbleView::OnSettingsClicked() {
   GetWidget()->Close();
 }
 
-void WorkspacesBubbleView::OnUnmanagedSelected() {
+WorkspaceService& WorkspacesBubbleView::service() const {
   auto* service =
       WorkspaceServiceFactory::GetForProfile(browser_->GetProfile());
   CHECK(service);
-  service->SwitchWindowToUnmanaged(browser_);
+  return *service;
+}
+
+void WorkspacesBubbleView::OnUnmanagedSelected() {
+  service().SwitchWindowToUnmanaged(browser_);
   GetWidget()->Close();
 }
 
 void WorkspacesBubbleView::OnWorkspaceSelected(const base::Uuid& id) {
-  auto* service =
-      WorkspaceServiceFactory::GetForProfile(browser_->GetProfile());
-  CHECK(service);
-  service->SwitchWindowToWorkspace(id, browser_);
+  service().SwitchWindowToWorkspace(id, browser_);
   GetWidget()->Close();
 }
 
 void WorkspacesBubbleView::OnDeleteClicked(const base::Uuid& id) {
-  auto* service =
-      WorkspaceServiceFactory::GetForProfile(browser_->GetProfile());
-  CHECK(service);
-
   // The bubble closes once the modal confirmation appears; binding the
   // service's WeakPtr directly to the member function makes the delete
   // independent of the bubble's lifetime and gets auto-cancellation for free.
@@ -210,7 +206,7 @@ void WorkspacesBubbleView::OnDeleteClicked(const base::Uuid& id) {
           .AddParagraph(ui::DialogModelLabel(
               l10n_util::GetStringUTF16(IDS_WORKSPACE_DELETE_CONFIRM_BODY)))
           .AddOkButton(base::BindOnce(&WorkspaceService::DeleteWorkspace,
-                                      service->GetWeakPtr(), id),
+                                      service().GetWeakPtr(), id),
                        ui::DialogModel::Button::Params()
                            .SetLabel(l10n_util::GetStringUTF16(
                                IDS_WORKSPACE_DELETE_CONFIRM_DELETE_BUTTON))

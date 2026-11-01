@@ -70,12 +70,12 @@ class BraveHorizontalTabStripRegionView : public HorizontalTabStripRegionView {
   bool ShouldShowHorizontalScrollButton() const;
   void OnWorkspacesButtonPressed();
 
-  raw_ptr<TabStripControlButton> tab_scroll_previous_button_ = nullptr;
-  raw_ptr<TabStripControlButton> tab_scroll_next_button_ = nullptr;
   // Shows the name of the workspace this window has open beside the icon.
   // Unmanaged windows show the icon alone.
   void UpdateWorkspaceButtonLabel();
 
+  raw_ptr<TabStripControlButton> tab_scroll_previous_button_ = nullptr;
+  raw_ptr<TabStripControlButton> tab_scroll_next_button_ = nullptr;
   raw_ptr<TabStripControlButton> workspaces_button_ = nullptr;
   base::CallbackListSubscription workspaces_changed_subscription_;
 

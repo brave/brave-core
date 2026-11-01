@@ -66,6 +66,9 @@ class WorkspacesTabStripButton : public TabStripControlButton {
     if (GetText().empty()) {
       return size;
     }
+    // Measured by hand rather than through GetLayoutManager(): this button
+    // keeps LabelButton's DelegatingLayoutManager, which does not report the
+    // label width here and collapses the button to the bare icon.
     size.Enlarge(label()->GetPreferredSize(views::SizeBounds()).width() +
                      GetImageLabelSpacing(),
                  0);

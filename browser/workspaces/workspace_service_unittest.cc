@@ -292,14 +292,16 @@ TEST_F(WorkspaceServiceTest, WriteAndReadRoundTrip) {
   auto read_backend = base::MakeRefCounted<sessions::CommandStorageBackend>(
       task_runner, workspace_path, kWorkspaceSessionType,
       /*encryptor=*/nullptr);
-  base::test::TestFuture<CommandList> read_future;
+  base::test::TestFuture<std::optional<CommandList>> read_future;
   task_runner->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&ReadWorkspaceFromDisk, workspace_path, read_backend),
       read_future.GetCallback());
 
   ASSERT_TRUE(read_future.Wait());
-  const auto& read_cmds = read_future.Get();
+  const auto& read_result = read_future.Get();
+  ASSERT_TRUE(read_result.has_value());
+  const CommandList& read_cmds = *read_result;
   ASSERT_EQ(read_cmds.size(), num_commands);
 
   // Verify content — not just count — survived the round-trip.
@@ -344,6 +346,34 @@ TEST_F(WorkspaceServiceTest,
                      workspace_path, std::move(backend), std::move(on_error)));
 
   EXPECT_TRUE(base::test::RunUntil([&] { return error_called; }));
+}
+
+// A workspace whose directory holds no session file reads back as empty
+// rather than as a failure, so an unsaved workspace is not mistaken for a
+// corrupt one.
+TEST_F(WorkspaceServiceTest, ReadFromDisk_MissingFileIsEmptyNotFailure) {
+  using CommandList = std::vector<std::unique_ptr<sessions::SessionCommand>>;
+
+  base::FilePath workspace_path =
+      service_->GetWorkspacePathForId(base::Uuid::GenerateRandomV4());
+  auto task_runner = base::ThreadPool::CreateSequencedTaskRunner(
+      {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+       base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
+  auto backend = base::MakeRefCounted<sessions::CommandStorageBackend>(
+      task_runner, workspace_path, kWorkspaceSessionType,
+      /*encryptor=*/nullptr);
+
+  base::test::TestFuture<std::optional<CommandList>> read_future;
+  task_runner->PostTaskAndReplyWithResult(
+      FROM_HERE,
+      base::BindOnce(&ReadWorkspaceFromDisk, workspace_path, backend),
+      read_future.GetCallback());
+
+  ASSERT_TRUE(read_future.Wait());
+  const auto& read_result = read_future.Get();
+  ASSERT_TRUE(read_result.has_value())
+      << "A workspace with nothing saved yet should not read as a failure";
+  EXPECT_TRUE(read_result->empty());
 }
 
 // ---- Factory tests ----------------------------------------------------------

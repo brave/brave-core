@@ -7,6 +7,8 @@
 #define BRAVE_BROWSER_WORKSPACES_WORKSPACE_UTILS_H_
 
 #include <memory>
+#include <optional>
+#include <string_view>
 #include <vector>
 
 #include "base/files/file_path.h"
@@ -41,16 +43,28 @@ void WriteWorkspaceToDisk(
 // Reads the session-command binary via |backend| and returns the raw commands.
 // Only does file I/O — callers must deserialize the commands into
 // SessionWindow objects on the UI thread (SessionID::NewUnique() is
-// sequence-checked to the UI thread).  Returns an empty vector on error.
+// sequence-checked to the UI thread).
+//
+// Returns nullopt when the workspace could not be read, which is not the same
+// as a workspace that has nothing stored yet: a caller that treats a failed
+// read as "empty" will happily save an empty window back over whatever is on
+// disk.  An empty vector means the workspace is genuinely empty.
 //
 // Must run on a background sequenced task runner.
-std::vector<std::unique_ptr<sessions::SessionCommand>> ReadWorkspaceFromDisk(
-    const base::FilePath& workspace_path,
-    scoped_refptr<sessions::CommandStorageBackend> backend);
+std::optional<std::vector<std::unique_ptr<sessions::SessionCommand>>>
+ReadWorkspaceFromDisk(const base::FilePath& workspace_path,
+                      scoped_refptr<sessions::CommandStorageBackend> backend);
+
+// Parses one entry of the workspace metadata dict, whose key is the
+// workspace's UUID. Returns nullopt when |key| is not a UUID or |value| is not
+// a workspace entry, which is how metadata written before workspaces were
+// keyed by UUID is discarded.
+std::optional<WorkspaceMetadata> WorkspaceMetadataFromDictEntry(
+    std::string_view key,
+    const base::Value& value);
 
 // Parses the workspace metadata dict stored under
 // kWorkspacesMetadataPref and returns a list sorted by modified_at descending.
-// Each key is a workspace UUID; entries with a non-UUID key are skipped.
 std::vector<WorkspaceMetadata> ListWorkspacesFromDict(
     const base::DictValue& dict);
 
