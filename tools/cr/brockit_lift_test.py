@@ -743,16 +743,20 @@ class LiftCleanRunTest(LiftTestCase):
         """The continuation file belongs at the brave root: `--continue` and
         `pnpm run update_patches` both look for it there, whatever directory
         brockit was invoked from."""
-        with self.env.upstream_release(MINOR_TARGET):
-            pass
-
-        self.env.run_lift(f'--to={MINOR_TARGET}')
-
         self.assertEqual(
             brockit.VERSION_UPGRADE_FILE.resolve(),
             (self.env.repo.brave / VERSION_UPGRADE_NAME).resolve(),
         )
-        self.assertTrue((self.env.repo.brave / VERSION_UPGRADE_NAME).exists())
+
+    def test_finished_lift_leaves_no_continuation_file(self):
+        """A leftover file reads as a lift in progress to
+        `update_patches`."""
+        with self.env.upstream_release(MINOR_TARGET):
+            pass
+
+        self.assert_succeeded(self.env.run_lift(f'--to={MINOR_TARGET}'))
+
+        self.assertFalse(self.env.has_continuation())
 
     def test_regenerated_files_land_in_their_own_commits(self):
         with self.env.upstream_release(MINOR_TARGET) as upstream:
@@ -851,13 +855,7 @@ class LiftCleanRunTest(LiftTestCase):
 
         self.env.run_lift(f'--to={MINOR_TARGET}')
 
-        # `.version_upgrade` aside, the branch is clean once a lift finishes.
-        status = [
-            line
-            for line in self.env.git('status', '--porcelain').splitlines()
-            if '.version_upgrade' not in line
-        ]
-        self.assertEqual(status, [])
+        self.assertEqual(self.env.git('status', '--porcelain'), '')
 
 
 class LiftOutputRenderingTest(LiftTestCase):
