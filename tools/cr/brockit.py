@@ -1847,6 +1847,7 @@ class Upgrade(Versioned):
 
         terminal.run_pnpm_command('chromium_rebase_l10n')
         self._save_rebased_l10n()
+        ContinuationFile.clear()
 
     def execute(self, with_github: bool, ack_advisory: bool):
         """Executes the upgrade process.
