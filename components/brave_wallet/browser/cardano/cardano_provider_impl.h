@@ -32,13 +32,12 @@ class CardanoProviderImpl final : public mojom::CardanoProvider,
   CardanoProviderImpl& operator=(const CardanoProviderImpl&) = delete;
   CardanoProviderImpl(BraveWalletService& brave_wallet_service,
                       BraveWalletProviderDelegateFactory delegate_factory,
-                      const url::Origin& origin);
+                      const url::Origin& dapp_origin);
   ~CardanoProviderImpl() override;
 
   // mojom::CardanoProvider
   void Enable(EnableCallback callback) override;
   void IsEnabled(IsEnabledCallback callback) override;
-
 
  private:
   enum class PermissionCheckResult {
@@ -67,22 +66,19 @@ class CardanoProviderImpl final : public mojom::CardanoProvider,
   void SelectedDappAccountChanged(mojom::CoinType coin,
                                   mojom::AccountInfoPtr account) override;
 
-  void RequestCardanoPermissions(EnableCallback callback,
-                                 const url::Origin& origin);
+  void RequestCardanoPermissions(EnableCallback callback);
 
   void OnRequestCardanoPermissions(
       EnableCallback callback,
-      const url::Origin& origin,
       mojom::RequestPermissionsError error,
       const std::optional<std::vector<std::string>>& allowed_accounts);
 
   raw_ref<BraveWalletService> brave_wallet_service_;
   BraveWalletProviderDelegateFactory delegate_factory_;
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
-  const url::Origin origin_;
+  const url::Origin dapp_origin_;
 
   EnableCallback pending_request_cardano_permissions_callback_;
-  url::Origin pending_request_cardano_permissions_origin_;
   bool wallet_page_shown_ = false;
 
   mojo::Receiver<mojom::KeyringServiceObserver> keyring_observer_receiver_{

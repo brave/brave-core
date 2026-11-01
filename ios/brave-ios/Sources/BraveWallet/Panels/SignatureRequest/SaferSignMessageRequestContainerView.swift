@@ -126,7 +126,7 @@ struct SaferSignMessageRequestContainerView: View {
   private var originAndFavicon: some View {
     VStack {
       Group {
-        if let url = URL(string: request.originInfo.originSpec) {
+        if let url = URL(string: request.dappOriginInfo.originSpec) {
           FaviconReader(url: url) { image in
             if let image = image {
               Image(uiImage: image)
@@ -143,7 +143,7 @@ struct SaferSignMessageRequestContainerView: View {
       }
       .frame(width: min(faviconSize, maxFaviconSize), height: min(faviconSize, maxFaviconSize))
 
-      Text(originInfo: request.originInfo)
+      Text(dappOriginInfo: request.dappOriginInfo)
         .foregroundColor(Color(braveSystemName: .textPrimary))
         .font(.subheadline)
         .multilineTextAlignment(.center)

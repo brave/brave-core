@@ -409,7 +409,7 @@ export const SignCardanoTxPanel = ({
         textColor='secondary'
         variant='xSmall.regular'
       >
-        <CreateSiteOrigin originInfo={selectedRequest.originInfo} />
+        <CreateSiteOrigin originInfo={selectedRequest.dappOriginInfo} />
       </URLText>
       <Tooltip
         text={signingAccount.address || ''}

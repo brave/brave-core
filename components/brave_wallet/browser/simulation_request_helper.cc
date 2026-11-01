@@ -23,7 +23,7 @@ namespace brave_wallet {
 
 namespace {
 
-base::DictValue GetMetadata(const mojom::OriginInfoPtr& dapp_origin_info) {
+base::DictValue GetMetadata(const mojom::DappOriginInfoPtr& dapp_origin_info) {
   base::DictValue metadata_object;
 
   if (dapp_origin_info) {
@@ -214,7 +214,7 @@ std::optional<std::string> EncodeScanTransactionParams(
   base::DictValue params;
   params.Set("transactions", std::move(transactions));
   params.Set("metadata",
-             GetMetadata(sign_sol_transactions_request.origin_info));
+             GetMetadata(sign_sol_transactions_request.dapp_origin_info));
   params.Set("userAccount", from_address);
 
   return GetJSON(base::Value(std::move(params)));

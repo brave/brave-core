@@ -440,7 +440,7 @@ export const mockFilInvalilAddresses: string[] = [
 
 export const mockSolDappSignTransactionRequest: //
 BraveWallet.SignSolTransactionsRequest = {
-  originInfo: {
+  dappOriginInfo: {
     originSpec: 'https://f40y4d.csb.app',
     eTldPlusOne: 'csb.app',
   },
@@ -598,7 +598,7 @@ SerializableTransactionInfo = {
 
 export const mockSolDappSignAllTransactionsRequest: //
 BraveWallet.SignSolTransactionsRequest = {
-  originInfo: {
+  dappOriginInfo: {
     originSpec: 'https://f40y4d.csb.app',
     eTldPlusOne: 'csb.app',
   },
@@ -705,7 +705,7 @@ BraveWallet.SignSolTransactionsRequest = {
 
 export const mockSignCardanoTransactionRequest: //
 BraveWallet.SignCardanoTransactionRequest = {
-  originInfo: {
+  dappOriginInfo: {
     originSpec: 'https://f40y4d.csb.app',
     eTldPlusOne: 'csb.app',
   },

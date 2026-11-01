@@ -5,15 +5,32 @@
 
 import * as React from 'react'
 
+// Types
+import { BraveWallet } from '../../../constants/types'
+
 // Components
 import { AddSuggestedTokenPanel } from './add_suggested_token_panel'
 import {
   WalletPanelStory, //
 } from '../../../stories/wrappers/wallet-panel-story-wrapper'
 
+// Mock Data
+import { mockUniswapOriginInfo } from '../../../stories/mock-data/mock-origin-info'
+import { mockBasicAttentionToken } from '../../../stories/mock-data/mock-asset-options'
+
+const mockSuggestToken: BraveWallet.AddSuggestTokenRequest = {
+  dappOriginInfo: mockUniswapOriginInfo,
+  token: mockBasicAttentionToken,
+}
+
 export const _AddSuggestedToken = {
   render: () => {
-    return <AddSuggestedTokenPanel />
+    return (
+      <AddSuggestedTokenPanel
+        suggestToken={mockSuggestToken}
+        requestsLength={1}
+      />
+    )
   },
 }
 

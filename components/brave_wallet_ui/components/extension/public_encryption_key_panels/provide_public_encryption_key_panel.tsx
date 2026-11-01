@@ -59,7 +59,7 @@ export function ProvidePublicEncryptionKeyPanel(props: Props) {
   const description = formatLocale(
     S.BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_DESCRIPTION,
     {
-      $1: <CreateSiteOrigin originInfo={payload.originInfo} />,
+      $1: <CreateSiteOrigin originInfo={payload.dappOriginInfo} />,
     },
   )
 

@@ -124,7 +124,7 @@ struct PendingTransactionView: View {
       .frame(width: min(faviconSize, maxFaviconSize), height: min(faviconSize, maxFaviconSize))
       .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
 
-      Text(originInfo: confirmationStore.dappOriginInfo)
+      Text(dappOriginInfo: confirmationStore.dappOriginInfo)
         .font(.subheadline)
         .foregroundColor(Color(braveSystemName: .textPrimary))
         .multilineTextAlignment(.center)
@@ -247,7 +247,7 @@ struct PendingTransactionView: View {
           toAccountAddress: confirmationStore.activeParsedTransaction.toAddress,
           toAccountName: confirmationStore.activeParsedTransaction.namedToAddress,
           isContractAddress: confirmationStore.isContractAddress,
-          originInfo: confirmationStore.dappOriginInfo,
+          dappOriginInfo: confirmationStore.dappOriginInfo,
           transactionType: transactionType,
           value: "\(confirmationStore.value) \(confirmationStore.symbol)",
           fiat: confirmationStore.fiat,

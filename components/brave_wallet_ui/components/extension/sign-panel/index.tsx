@@ -239,7 +239,7 @@ export const SignPanel = (props: Props) => {
         textColor='secondary'
         variant='xSmall.regular'
       >
-        <CreateSiteOrigin originInfo={selectedQueueData.originInfo} />
+        <CreateSiteOrigin originInfo={selectedQueueData.dappOriginInfo} />
       </URLText>
       <AccountNameText
         textColor='secondary'

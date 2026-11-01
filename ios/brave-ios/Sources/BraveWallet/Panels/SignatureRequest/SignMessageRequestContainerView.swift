@@ -27,7 +27,7 @@ struct SignMessageRequestContainerView: View {
       if let ethSiweData = store.currentRequest.request.signData.ethSiweData {
         SignInWithEthereumView(
           account: store.currentRequest.account,
-          originInfo: store.currentRequest.request.originInfo,
+          dappOriginInfo: store.currentRequest.request.dappOriginInfo,
           message: ethSiweData,
           action: handleAction(approved:)
         )

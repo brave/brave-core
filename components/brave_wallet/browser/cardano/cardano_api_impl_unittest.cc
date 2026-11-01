@@ -1593,7 +1593,7 @@ TEST_F(CardanoApiImplTest, SignTx) {
                                            mojom::CardanoKeyRole::kExternal, 1))
                    ->address_string;
 
-  EXPECT_EQ(request->origin_info->origin_spec, "https://brave.com");
+  EXPECT_EQ(request->dapp_origin_info->origin_spec, "https://brave.com");
   EXPECT_EQ(request->raw_tx_data, base::HexEncode(unsigned_tx_bytes));
 
   auto& api_signed_tx = future.Get<0>();
@@ -1813,7 +1813,7 @@ TEST_F(CardanoApiImplTest, SignTx_PartialSign) {
                                            mojom::CardanoKeyRole::kExternal, 1))
                    ->address_string;
 
-  EXPECT_EQ(request->origin_info->origin_spec, "https://brave.com");
+  EXPECT_EQ(request->dapp_origin_info->origin_spec, "https://brave.com");
   EXPECT_EQ(request->raw_tx_data, base::HexEncode(unsigned_tx_bytes));
 
   auto& api_signed_tx = future.Get<0>();

@@ -968,13 +968,14 @@ mojom::OriginInfoPtr MakeOriginInfo(const url::Origin& origin) {
   return mojom::OriginInfo::New(origin.Serialize(), eTLDPlusOne(origin));
 }
 
-mojom::OriginInfoPtr MakeDappOriginInfo(
+mojom::DappOriginInfoPtr MakeDappOriginInfo(
     base::optional_ref<const url::Origin> dapp_origin) {
   if (!dapp_origin) {
     return nullptr;
   }
   DCHECK(IsValidDappOrigin(*dapp_origin));
-  return MakeOriginInfo(*dapp_origin);
+  return mojom::DappOriginInfo::New(dapp_origin->Serialize(),
+                                    eTLDPlusOne(*dapp_origin));
 }
 
 std::string GenerateRandomHexString() {

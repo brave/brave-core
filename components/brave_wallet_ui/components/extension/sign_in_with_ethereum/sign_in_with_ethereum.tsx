@@ -216,17 +216,15 @@ export const SignInWithEthereum = (props: Props) => {
           </HeaderText>
         </Row>
 
-        {data.originInfo && (
-          <Row
-            justifyContent='flex-start'
-            padding='0px 10px 24px 10px'
-          >
-            <OriginInfoCard
-              origin={data.originInfo}
-              noBackground={true}
-            />
-          </Row>
-        )}
+        <Row
+          justifyContent='flex-start'
+          padding='0px 10px 24px 10px'
+        >
+          <OriginInfoCard
+            origin={data.dappOriginInfo}
+            noBackground={true}
+          />
+        </Row>
 
         <Column
           fullWidth={true}
@@ -267,7 +265,7 @@ export const SignInWithEthereum = (props: Props) => {
             <MessageText textColor='primary'>
               {getLocale(
                 S.BRAVE_WALLET_SIGN_IN_WITH_BRAVE_WALLET_MESSAGE,
-              ).replaceAll('$1', data.originInfo.eTldPlusOne)}
+              ).replaceAll('$1', data.dappOriginInfo.eTldPlusOne)}
             </MessageText>
             {hasMessageAndResource && (
               <Column

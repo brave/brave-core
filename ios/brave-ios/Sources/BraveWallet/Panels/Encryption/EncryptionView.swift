@@ -23,12 +23,12 @@ struct EncryptionView: View {
     case getEncryptionPublicKey(BraveWallet.GetEncryptionPublicKeyRequest)
     case decrypt(BraveWallet.DecryptRequest)
 
-    var originInfo: BraveWallet.OriginInfo {
+    var dappOriginInfo: BraveWallet.DappOriginInfo {
       switch self {
       case .getEncryptionPublicKey(let request):
-        return request.originInfo
+        return request.dappOriginInfo
       case .decrypt(let request):
-        return request.originInfo
+        return request.dappOriginInfo
       }
     }
   }
@@ -81,7 +81,7 @@ struct EncryptionView: View {
                 .foregroundColor(Color(braveSystemName: .textSecondary))
             }
           }
-          Text(originInfo: request.originInfo)
+          Text(dappOriginInfo: request.dappOriginInfo)
             .font(.caption)
             .foregroundColor(Color(braveSystemName: .textPrimary))
             .multilineTextAlignment(.center)
@@ -96,7 +96,7 @@ struct EncryptionView: View {
       Group {
         if case .getEncryptionPublicKey = request {
           ScrollView {
-            Text(originInfo: request.originInfo)
+            Text(dappOriginInfo: request.dappOriginInfo)
               + Text(" \(Strings.Wallet.getEncryptionPublicKeyRequestMessage)")
           }
           .padding(20)
@@ -245,7 +245,7 @@ struct EncryptionView: View {
 struct EncryptionView_Previews: PreviewProvider {
   static var previews: some View {
     let account = BraveWallet.AccountInfo.previewAccount
-    let originInfo = BraveWallet.OriginInfo(
+    let dappOriginInfo = BraveWallet.DappOriginInfo(
       originSpec: "https://example.com",
       eTldPlusOne: "example.com"
     )
@@ -253,14 +253,14 @@ struct EncryptionView_Previews: PreviewProvider {
       .getEncryptionPublicKey(
         .init(
           requestId: UUID().uuidString,
-          originInfo: originInfo,
+          dappOriginInfo: dappOriginInfo,
           accountId: account.accountId
         )
       ),
       .decrypt(
         .init(
           requestId: UUID().uuidString,
-          originInfo: originInfo,
+          dappOriginInfo: dappOriginInfo,
           accountId: account.accountId,
           unsafeMessage: "Secret message"
         )

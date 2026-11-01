@@ -10,8 +10,8 @@ import Strings
 import SwiftUI
 
 struct SaferSignTransactionContainerView: View {
-  /// The OriginInfo that created the transaction
-  let dappOriginInfo: BraveWallet.OriginInfo?
+  /// The origin details of dApp that created the transaction.
+  let dappOriginInfo: BraveWallet.DappOriginInfo?
   /// The network the transaction belongs to
   let network: BraveWallet.NetworkInfo?
 
@@ -110,7 +110,7 @@ struct SaferSignTransactionContainerView: View {
       }
       .frame(width: min(faviconSize, maxFaviconSize), height: min(faviconSize, maxFaviconSize))
 
-      Text(originInfo: dappOriginInfo)
+      Text(dappOriginInfo: dappOriginInfo)
         .foregroundColor(Color(braveSystemName: .textPrimary))
         .font(.subheadline)
         .multilineTextAlignment(.center)

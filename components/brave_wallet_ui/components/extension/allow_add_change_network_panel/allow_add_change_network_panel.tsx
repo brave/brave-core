@@ -99,9 +99,9 @@ export function AllowAddChangeNetworkPanel(props: Props) {
     useAcknowledgeSwitchChainRequestMutation()
 
   // computed from props
-  const originInfo = switchChainRequest
-    ? switchChainRequest.originInfo
-    : addChainRequest.originInfo
+  const dappOriginInfo = switchChainRequest
+    ? switchChainRequest.dappOriginInfo
+    : addChainRequest.dappOriginInfo
 
   // mutations
   const [acknowledgePendingAddChainRequest] =
@@ -172,7 +172,7 @@ export function AllowAddChangeNetworkPanel(props: Props) {
           height='100%'
           justifyContent='space-between'
         >
-          {originInfo && <OriginInfoCard origin={originInfo} />}
+          <OriginInfoCard origin={dappOriginInfo} />
           <Column
             padding='0px 16px'
             gap='8px'
