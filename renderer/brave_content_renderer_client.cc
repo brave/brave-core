@@ -126,7 +126,6 @@ void BraveContentRendererClient::
   ChromeContentRendererClient::
       SetRuntimeFeaturesDefaultsBeforeBlinkInitialization();
 
-  blink::WebRuntimeFeatures::EnableFledge(false);
   // Disable the fenced frames API; kFencedFrames is disabled browser-side.
   blink::WebRuntimeFeatures::EnableFencedFrames(false);
   // Disable topics APIs because kBrowsingTopics feature is disabled
@@ -159,7 +158,6 @@ void BraveContentRendererClient::
     blink::WebRuntimeFeatures::EnableFeatureFromString(
         "FileSystemAccessAPIExperimental", false);
   }
-  blink::WebRuntimeFeatures::EnableFeatureFromString("FledgeMultiBid", false);
   blink::WebRuntimeFeatures::EnableFeatureFromString("LanguageDetectionAPI",
                                                      false);
   blink::WebRuntimeFeatures::EnableFeatureFromString("PrivateStateTokens",
