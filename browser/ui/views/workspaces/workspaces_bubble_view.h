@@ -17,6 +17,7 @@
 #include "ui/views/view.h"
 
 class BrowserWindowInterface;
+class WorkspaceService;
 
 // Bubble that lists the saved workspaces ("spaces") for the active profile and
 // exposes actions to switch to, delete, or create one. The window's own
@@ -47,6 +48,10 @@ class WorkspacesBubbleView : public views::BubbleDialogDelegate {
   ~WorkspacesBubbleView() override;
 
  private:
+  // The service backing this bubble. The feature is enabled whenever the
+  // bubble exists, so this never returns null.
+  WorkspaceService& service() const;
+
   void OnNewSpaceClicked();
   void OnSettingsClicked();
   void OnUnmanagedSelected();

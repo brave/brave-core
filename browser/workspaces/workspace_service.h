@@ -9,6 +9,7 @@
 #include <map>
 #include <memory>
 #include <optional>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -149,12 +150,6 @@ class WorkspaceService : public KeyedService,
 
   // ---- Browser state (UI thread only) -------------------------------------
 
-  // Serializes |window|'s tabs and writes them to disk as workspace |id|,
-  // updating its tab count and modified time.  Does nothing if |id| is
-  // unknown.
-  void SaveWorkspaceFromWindow(const base::Uuid& id,
-                               BrowserWindowInterface* window);
-
   // Shows workspace |id|, hiding |from_window|.  If |id| already has a window
   // this just swaps visibility; otherwise a window is created and the
   // workspace is read off disk into it.  Does nothing if |id| is unknown or
@@ -172,14 +167,6 @@ class WorkspaceService : public KeyedService,
       const std::string& name,
       BrowserWindowInterface* from_window);
 
-  // Takes over shutdown when |window| is the last window on screen.  Returns
-  // true when the caller should refuse this close request: the service then
-  // closes every window itself, workspaces first.  SessionService keeps only
-  // the window that closes last, so this ordering is what decides whether
-  // "continue where you left off" restores the unmanaged tabs or a
-  // workspace's.
-  bool InterceptWindowClose(BrowserWindowInterface* window);
-
   base::WeakPtr<WorkspaceService> GetWeakPtr();
 
   // KeyedService:
@@ -192,14 +179,21 @@ class WorkspaceService : public KeyedService,
   void WillCloseAllTabs(TabStripModel* tab_strip_model) override;
 
  private:
+  // Serializes |window|'s tabs and writes them to disk as workspace |id|,
+  // updating its tab count and modified time.  Does nothing if |id| is
+  // unknown.
+  void SaveWorkspaceFromWindow(const base::Uuid& id,
+                               BrowserWindowInterface* window);
+
   // Records that |window| now shows |id| and starts watching its tab strip,
   // so the workspace can be saved before those tabs are torn down.
   void BindWorkspaceToWindow(const base::Uuid& id,
                              BrowserWindowInterface* window);
 
-  // Returns the window of this profile whose tab strip is |tab_strip_model|.
-  BrowserWindowInterface* FindWindowForTabStrip(
-      TabStripModel* tab_strip_model) const;
+  // As above, but for a window whose tabs have not been read off disk yet:
+  // saving it before the read lands would persist its placeholder tab.
+  void BindWorkspaceToWindowForRestore(const base::Uuid& id,
+                                       BrowserWindowInterface* window);
 
   // Opens a window for this profile sized and placed over |from_window|,
   // carrying a single new tab.  A window with an empty tab strip is not a
@@ -217,24 +211,25 @@ class WorkspaceService : public KeyedService,
   void DoFillWorkspaceWindow(
       base::Uuid id,
       SessionID window_id,
-      std::vector<std::unique_ptr<sessions::SessionCommand>> commands);
+      std::optional<std::vector<std::unique_ptr<sessions::SessionCommand>>>
+          commands);
 
   // Hides |from_window| and shows |to_window|, carrying the unmanaged-window
   // lineage across so a later switch back can find its way home.
   void SwapVisibleWindow(BrowserWindowInterface* from_window,
                          BrowserWindowInterface* to_window);
 
-  // True when no normal window of this profile other than |ignored| is on
-  // screen.  Pass nullptr to consider every window.
-  bool HasNoVisibleWindowsExcept(BrowserWindowInterface* ignored) const;
+  // True when every normal window of this profile other than |ignored| was
+  // put away by this service.  Pass nullptr to consider every window.
+  //
+  // Deliberately not a visibility check: a minimized window reads as not
+  // visible on macOS, and retiring one of those behind the person's back
+  // would lose their tabs.
+  bool HasOnlyPutAwayWindowsExcept(BrowserWindowInterface* ignored) const;
 
-  // Closes workspace windows and then unmanaged ones, skipping the close
-  // confirmation for both since the person already asked to quit.
-  void CloseAllWindowsInOrder();
-
-  // Saves every hidden workspace window and closes it, so that hidden windows
-  // never keep the browser running once the last visible one is gone.
-  void CloseHiddenWindows();
+  // Saves every window this service put away and closes it, so that windows
+  // nobody can see never keep the browser running.
+  void ClosePutAwayWindows();
 
   raw_ref<Profile> profile_;
   const base::FilePath workspaces_path_;
@@ -250,9 +245,15 @@ class WorkspaceService : public KeyedService,
   // points at the window the person actually started in.
   std::map<SessionID, SessionID> window_to_unmanaged_window_;
 
-  // Set once the service is driving shutdown, so the closes it issues are not
-  // mistaken for fresh close requests.
-  bool closing_all_windows_ = false;
+  // Windows this service hid in order to show another one. Tracked rather
+  // than inferred from IsVisible(), which is also false for windows the
+  // person merely minimized.
+  std::set<SessionID> put_away_windows_;
+
+  // Windows whose workspace is still being read off disk. They hold nothing
+  // but a placeholder tab until the read lands, so saving one would write
+  // that placeholder over the workspace.
+  std::set<SessionID> windows_awaiting_restore_;
 
   base::RepeatingClosureList workspaces_changed_callbacks_;
 
