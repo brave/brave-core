@@ -361,7 +361,6 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
 TEST(FeatureDefaultsTest, DisabledBlinkRuntimeEnabledFeatures) {
   // Please, keep alphabetized.
   const base::Feature* disabled_features[] = {
-      &blink::features::kAdInterestGroupAPI,
       &blink::features::kAIProofreadingAPI,
       &blink::features::kAIPromptAPI,
       &blink::features::kAIPromptAPIMultimodalInput,
@@ -371,9 +370,7 @@ TEST(FeatureDefaultsTest, DisabledBlinkRuntimeEnabledFeatures) {
       &blink::features::kControlledFrame,
       &blink::features::kExtensionScriptTagging,
       &blink::features::kFencedFramesRuntime,
-      &blink::features::kFledge,
       &blink::features::kLanguageDetectionAPI,
-      &blink::features::kParakeet,
       &blink::features::kPrerender2,
       &blink::features::kTranslationAPI,
       &blink::features::kUserMediaElement,

@@ -48,7 +48,6 @@ TEST(BraveRuntimeEnabledFeaturesTest, DisabledFlags) {
   // Please, keep alphabetized.
   ExpectRuntimeFlagsFollowBaseFeatures(
       {
-          RUNTIME_FLAG(AdInterestGroupAPI),
           RUNTIME_FLAG(AIPromptAPI),
           RUNTIME_FLAG(AIPromptAPIMultimodalInput),
           RUNTIME_FLAG(AIProofreadingAPI),
@@ -58,9 +57,7 @@ TEST(BraveRuntimeEnabledFeaturesTest, DisabledFlags) {
           RUNTIME_FLAG(ControlledFrame),
           RUNTIME_FLAG(ExtensionScriptTagging),
           RUNTIME_FLAG(FencedFrames),
-          RUNTIME_FLAG(Fledge),
           RUNTIME_FLAG(LanguageDetectionAPI),
-          RUNTIME_FLAG(Parakeet),
           RUNTIME_FLAG(Prerender2),
           RUNTIME_FLAG(TranslationAPI),
           RUNTIME_FLAG(UserMediaElement),
