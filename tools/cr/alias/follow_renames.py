@@ -38,6 +38,7 @@ import plaster
 from plaster import PlasterFile
 from terminal import console, terminal
 import repository
+from alias.base import ChangedFiles, format_files
 from alias.source_rewrite import (
     CPP_EXTENSIONS,
     compute_guard,
@@ -92,6 +93,7 @@ def cmd_follow_renames(args: list[str]) -> int:
     parsed = parser.parse_args(args)
 
     renames = _get_chromium_renames(parsed.ref_or_range)
+    changed = ChangedFiles() if renames and not parsed.no_format else None
 
     for old_chromium, new_chromium in renames:
         _repair_chromium_src(old_chromium, new_chromium, parsed.no_git)
@@ -101,23 +103,16 @@ def cmd_follow_renames(args: list[str]) -> int:
         update_references(old_chromium, new_chromium)
         _repair_patch_files(old_chromium, new_chromium, parsed.no_git)
 
-    if renames and not parsed.no_format:
-        _run_format()
+    if changed is not None:
+        _run_format(changed.since())
 
     console.log(f'[bold green]✔[/] {len(renames)} rename(s) processed')
     return 0
 
 
-def _run_format() -> None:
-    """Runs `pnpm run format` to clean up files touched by rename repairs.
-
-    Failures are downgraded to warnings: format must not block successful
-    rename processing.
-    """
-    try:
-        terminal.run_pnpm_command('format')
-    except (subprocess.CalledProcessError, FileNotFoundError) as e:
-        logging.warning('pnpm run format failed: %s', e)
+def _run_format(paths: list[str]) -> None:
+    """Formats the files the rename repairs changed, and no others."""
+    format_files(paths)
 
 
 def _get_chromium_renames(ref_or_range: str) -> list[_RenamePair]:

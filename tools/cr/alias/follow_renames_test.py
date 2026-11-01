@@ -13,6 +13,7 @@ from unittest.mock import patch
 
 import _boot  # noqa: F401
 import repository
+from alias.base import format_files
 from alias.follow_renames import (
     _collapse_renames,
     _get_chromium_renames,
@@ -687,6 +688,36 @@ class FormatTest(_Base):
         cmd_follow_renames([f'{before}..HEAD'])
 
         self._format_mock.assert_called_once()
+
+    def test_format_gets_only_the_files_the_renames_changed(self) -> None:
+        before = self._chromium_head()
+        self._chromium_commit('A/foo.h', '// src\n')
+        self._brave_commit(
+            'chromium_src/A/foo.h',
+            '#include <A/foo.h>  // IWYU pragma: export\n',
+        )
+        self._brave_commit('browser/user.cc', '#include "A/foo.h"\n')
+        # Uncommitted work the rename doesn't touch, as in a lift.
+        self._brave_commit('tracker.md', 'old\n')
+        self._brave_write('tracker.md', 'edited\n')
+        self._chromium_rename('A/foo.h', 'B/foo.h')
+
+        cmd_follow_renames([f'{before}..HEAD'])
+
+        (paths,) = self._format_mock.call_args.args
+        self.assertIn('chromium_src/B/foo.h', paths)
+        self.assertIn('browser/user.cc', paths)
+        self.assertNotIn('tracker.md', paths)
+        self.assertNotIn('chromium_src/A/foo.h', paths)
+
+    def test_format_files_passes_absolute_paths(self) -> None:
+        with patch('alias.base.terminal.run_pnpm_command') as run:
+            format_files([])
+            run.assert_not_called()
+            format_files(['browser/user.cc'])
+        run.assert_called_once_with(
+            'format', str(self._brave.resolve() / 'browser/user.cc')
+        )
 
     def test_format_skipped_with_no_format_flag(self) -> None:
         before = self._chromium_head()
