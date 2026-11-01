@@ -125,8 +125,9 @@ class DefineReach:
         """The defines whose reach changed, or that reach nothing; dead ones
         first."""
         brave = repository.brave.root
+        chromium_src = brave / 'chromium_src'
         overrides = {}
-        for path in sorted((brave / 'chromium_src').rglob('*')):
+        for path in sorted(chromium_src.rglob('*')):
             if path.suffix in _SUFFIXES and path.is_file():
                 text = path.read_bytes().decode('utf-8', 'replace')
                 included = [
@@ -136,7 +137,8 @@ class DefineReach:
                 ]
                 tokens = self.defines(text, included)
                 if tokens:
-                    overrides[str(path.relative_to(brave / 'chromium_src'))] = (
+                    # Git wants `/` in `tag:path`, also on Windows.
+                    overrides[path.relative_to(chromium_src).as_posix()] = (
                         tokens
                     )
         wanted = [

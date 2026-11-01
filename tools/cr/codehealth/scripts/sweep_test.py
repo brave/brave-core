@@ -7,9 +7,9 @@
 
 from __future__ import annotations
 
+import contextlib
 from dataclasses import dataclass, field
 from pathlib import Path
-import shutil
 import subprocess
 import tempfile
 from types import SimpleNamespace
@@ -229,8 +229,9 @@ class RangeDumpTest(unittest.TestCase):
         (self.root / path).write_text(text, encoding='utf-8', newline='')
 
     def setUp(self):
-        self.root = Path(tempfile.mkdtemp())
-        self.addCleanup(shutil.rmtree, self.root)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        self.root = Path(stack.enter_context(tempfile.TemporaryDirectory()))
         self._git('init', '-q', '-b', 'main')
         (self.root / 'a').mkdir()
         self._write(
@@ -307,8 +308,9 @@ class RangeDumpTest(unittest.TestCase):
 
 class SweepTest(unittest.TestCase):
     def setUp(self):
-        tmp = Path(tempfile.mkdtemp())
-        self.addCleanup(shutil.rmtree, tmp)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        tmp = Path(stack.enter_context(tempfile.TemporaryDirectory()))
         rules = tmp / 'rules/s'
         rules.mkdir(parents=True)
         (rules / 'COMMON_METADATA').write_text(

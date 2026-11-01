@@ -7,8 +7,8 @@
 
 from __future__ import annotations
 
+import contextlib
 from pathlib import Path
-import shutil
 import tempfile
 from types import SimpleNamespace
 import unittest
@@ -51,8 +51,9 @@ class FakeBrave:
 
 class CampaignIndexTest(unittest.TestCase):
     def setUp(self) -> None:
-        root = Path(tempfile.mkdtemp())
-        self.addCleanup(shutil.rmtree, root)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        root = Path(stack.enter_context(tempfile.TemporaryDirectory()))
         files = {
             'chromium_src/ios/foo_factory.mm': '#include "ios/foo_factory.h"\n',
             'chromium_src/ios/bar_factory.mm': (

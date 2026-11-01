@@ -9,7 +9,6 @@ from datetime import timedelta
 import io
 import os
 from pathlib import Path
-import shutil
 import subprocess
 import tempfile
 import unittest
@@ -733,8 +732,9 @@ class PrepareFlowTest(unittest.TestCase):
         return result, calls, run, target.read_text(encoding='utf-8').strip()
 
     def setUp(self):
-        self.run_root = Path(tempfile.mkdtemp())
-        self.addCleanup(shutil.rmtree, self.run_root)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        self.run_root = Path(stack.enter_context(tempfile.TemporaryDirectory()))
 
     def test_existing_branch_is_reset_and_rebased(self):
         result, calls, run, target = self._run(158, remote_exists=True)
@@ -1052,8 +1052,9 @@ class ReviewListTest(unittest.TestCase):
     """`Publish._note_for_review`, on a real repository."""
 
     def setUp(self):
-        self.dir = Path(tempfile.mkdtemp())
-        self.addCleanup(shutil.rmtree, self.dir)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        self.dir = Path(stack.enter_context(tempfile.TemporaryDirectory()))
         self._git('init', '-q', '-b', 'master')
         self._git('config', 'user.email', 'a@b.c')
         self._git('config', 'user.name', 'A')
@@ -1672,8 +1673,9 @@ _BASE_MOVED = '5' * 40
 
 class PublishTest(unittest.TestCase):
     def setUp(self):
-        self.run_root = Path(tempfile.mkdtemp())
-        self.addCleanup(shutil.rmtree, self.run_root)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        self.run_root = Path(stack.enter_context(tempfile.TemporaryDirectory()))
         self.calls = []
 
     def _publish(
@@ -1998,8 +2000,9 @@ class PublishTest(unittest.TestCase):
         self.assertFalse(any(c[0] == 'cache' for c in self.calls))
 
     def test_refreshes_the_git_cache_before_looking_and_pushing(self):
-        cache = tempfile.mkdtemp()
-        self.addCleanup(shutil.rmtree, cache)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        cache = stack.enter_context(tempfile.TemporaryDirectory())
         result, _ = self._publish(remote=_START, git_cache=cache)
         self.assertEqual(result, 0)
         populate = (
@@ -2318,8 +2321,9 @@ class LiftCommandTest(unittest.TestCase):
         package_range: str | None = None,
     ):
         if directory is None:
-            directory = Path(tempfile.mkdtemp())
-            self.addCleanup(shutil.rmtree, directory)
+            stack = contextlib.ExitStack()
+            self.addCleanup(stack.close)
+            directory = Path(stack.enter_context(tempfile.TemporaryDirectory()))
         if lift_to is not None:
             (directory / 'cr158').mkdir(exist_ok=True)
             (directory / 'cr158' / 'lift-target').write_text(f'{lift_to}\n')
