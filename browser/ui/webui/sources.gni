@@ -48,7 +48,7 @@ if (enable_brave_news && !is_android) {
       [ "//brave/browser/ui/webui/brave_news" ]
 }
 
-if (is_brave_origin_branded) {
+if (enable_brave_origin_startup) {
   brave_browser_ui_webui_configs_deps +=
       [ "//brave/browser/ui/webui/brave_origin_startup" ]
 }

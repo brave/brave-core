@@ -17,7 +17,7 @@
 #include "brave/browser/tor/tor_profile_manager.h"
 #endif
 
-#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+#if BUILDFLAG(ENABLE_BRAVE_ORIGIN_STARTUP)
 #include "brave/browser/ui/views/brave_origin/brave_origin_startup_view.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/platform_util.h"
@@ -111,7 +111,7 @@ void BraveStartupBrowserCreatorImpl::Launch(
 #undef Start
 #undef StartupBrowserCreatorImpl
 
-#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+#if BUILDFLAG(ENABLE_BRAVE_ORIGIN_STARTUP)
 namespace {
 
 // Concrete delegate that wires up the startup dialog to real browser services.
@@ -151,7 +151,7 @@ class StartupDialogDelegate : public BraveOriginStartupView::Delegate {
 };
 
 }  // namespace
-#endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+#endif  // BUILDFLAG(ENABLE_BRAVE_ORIGIN_STARTUP)
 
 // For Brave Origin branded builds, intercept Start() to show a purchase
 // validation dialog before any browser window or profile picker opens. Start()
@@ -163,7 +163,7 @@ bool StartupBrowserCreator::Start(const base::CommandLine& cmd_line,
                                   const base::FilePath& cur_dir,
                                   StartupProfileInfo profile_info,
                                   const Profiles& last_opened_profiles) {
-#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+#if BUILDFLAG(ENABLE_BRAVE_ORIGIN_STARTUP)
   if (BraveOriginStartupView::ShouldShowDialog(
           g_browser_process->local_state())) {
     // Capture first_run_tabs_ by value because `this` (the
@@ -195,7 +195,7 @@ bool StartupBrowserCreator::Start(const base::CommandLine& cmd_line,
   // No dialog needed, restore the Profiles menu immediately.
   BraveRestoreProfileMenu();
 #endif
-#endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+#endif  // BUILDFLAG(ENABLE_BRAVE_ORIGIN_STARTUP)
   return Start_ChromiumImpl(cmd_line, cur_dir, std::move(profile_info),
                             last_opened_profiles);
 }
@@ -209,11 +209,11 @@ void StartupBrowserCreator::ProcessCommandLineAlreadyRunning(
     const base::CommandLine& command_line,
     const base::FilePath& cur_dir,
     const StartupProfilePathInfo& profile_path_info) {
-#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+#if BUILDFLAG(ENABLE_BRAVE_ORIGIN_STARTUP)
   if (BraveOriginStartupView::IsShowing()) {
     return;
   }
-#endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+#endif  // BUILDFLAG(ENABLE_BRAVE_ORIGIN_STARTUP)
   ProcessCommandLineAlreadyRunning_ChromiumImpl(command_line, cur_dir,
                                                 profile_path_info);
 }

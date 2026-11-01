@@ -351,7 +351,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/psst/core/common/psst_ui_common.mojom-shared.h"
 #endif
 
-#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+#if BUILDFLAG(ENABLE_BRAVE_ORIGIN_STARTUP)
 #include "brave/browser/ui/webui/brave_origin_startup/brave_origin_startup_ui.h"
 #include "brave/components/brave_origin/mojom/brave_origin_startup.mojom.h"
 #endif
@@ -725,7 +725,7 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
 #endif  // !BUILDFLAG(IS_ANDROID)
   // End of BraveSettingsUI interfaces
 
-#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+#if BUILDFLAG(ENABLE_BRAVE_ORIGIN_STARTUP)
   registry.ForWebUI<BraveOriginStartupUI>()
       .Add<brave_origin::mojom::BraveOriginStartupHandler>();
 #endif

@@ -27,9 +27,11 @@ namespace brave_origin {
 
 namespace {
 
+#if !BUILDFLAG(BRAVE_ORIGIN_LOCAL_BUILD)
 constexpr char kOriginSkuHostnamePart[] = "origin";
 constexpr char kRemainingCredentialCount[] = "remaining_credential_count";
 constexpr char kExpiresAt[] = "expires_at";
+#endif
 
 // Helper function to check if a policy is controlled by BraveOrigin in a given
 // policy service
@@ -58,15 +60,18 @@ BraveOriginService::BraveOriginService(
       profile_id_(profile_id),
       profile_policy_service_(profile_policy_service),
       browser_policy_service_(browser_policy_service),
+#if !BUILDFLAG(BRAVE_ORIGIN_LOCAL_BUILD)
       // STAGING for unofficial builds; official builds always resolve to prod.
       origin_sku_domain_(brave_domains::GetServicesDomain(
           kOriginSkuHostnamePart,
           brave_domains::ServicesEnvironment::STAGING)),
+#endif
       delegate_(std::move(delegate)) {
   CHECK(local_state_);
   CHECK(profile_prefs_);
   CHECK(!profile_id_.empty());
 
+#if !BUILDFLAG(BRAVE_ORIGIN_LOCAL_BUILD)
 #if BUILDFLAG(IS_LINUX)
   // On Linux, treat free tier acceptance as a valid purchase so policies
   // are applied immediately at startup without waiting for the SKU check.
@@ -89,6 +94,7 @@ BraveOriginService::BraveOriginService(
   // Record whether Origin was enforcing policies in the previous session.
   startup_was_enforcing_ =
       local_state_->GetBoolean(kOriginPoliciesWereEnforced);
+#endif  // !BUILDFLAG(BRAVE_ORIGIN_LOCAL_BUILD)
 
   // Snapshot policy values at construction time so NeedsRestart() can
   // detect settings changes later.
@@ -102,10 +108,14 @@ BraveOriginService::BraveOriginService(
 BraveOriginService::~BraveOriginService() = default;
 
 void BraveOriginService::Shutdown() {
+#if !BUILDFLAG(BRAVE_ORIGIN_LOCAL_BUILD)
   weak_ptr_factory_.InvalidateWeakPtrs();
   skus_pref_registrar_.RemoveAll();
+#endif
   delegate_.reset();
+#if !BUILDFLAG(BRAVE_ORIGIN_LOCAL_BUILD)
   skus_service_.reset();
+#endif
   local_state_ = nullptr;
   profile_prefs_ = nullptr;
   profile_policy_service_ = nullptr;
@@ -180,6 +190,9 @@ std::optional<bool> BraveOriginService::GetPolicyValue(
 
 void BraveOriginService::CheckPurchaseState(
     base::OnceCallback<void(bool)> callback) {
+#if BUILDFLAG(BRAVE_ORIGIN_LOCAL_BUILD)
+  std::move(callback).Run(IsPurchased());
+#else
   if (!EnsureSkusConnected()) {
     std::move(callback).Run(IsPurchased());
     return;
@@ -189,6 +202,7 @@ void BraveOriginService::CheckPurchaseState(
       origin_sku_domain_,
       base::BindOnce(&BraveOriginService::OnCredentialSummary,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+#endif
 }
 
 bool BraveOriginService::IsPurchased() const {
@@ -201,6 +215,7 @@ bool BraveOriginService::NeedsRestart() const {
     return false;
   }
 
+#if !BUILDFLAG(BRAVE_ORIGIN_LOCAL_BUILD)
   // First purchase this session: policies are now enforced but weren't
   // in the previous session. startup_was_enforcing_ is read from the
   // persisted kOriginPoliciesWereEnforced pref (set by this service
@@ -208,12 +223,14 @@ bool BraveOriginService::NeedsRestart() const {
   if (manager->IsPurchased() && !startup_was_enforcing_) {
     return true;
   }
+#endif
 
   return manager->GetAllBrowserPolicies() != startup_browser_policies_ ||
          manager->GetAllProfilePolicies(profile_id_) !=
              startup_profile_policies_;
 }
 
+#if !BUILDFLAG(BRAVE_ORIGIN_LOCAL_BUILD)
 void BraveOriginService::OnSkusStateChanged() {
   // SKU credentials were updated (e.g. via the JS API on
   // account.brave.com). Re-check whether a purchase is now valid.
@@ -310,6 +327,7 @@ bool BraveOriginService::EnsureSkusConnected() {
   }
   return !!skus_service_;
 }
+#endif  // !BUILDFLAG(BRAVE_ORIGIN_LOCAL_BUILD)
 
 #if BUILDFLAG(IS_LINUX)
 void BraveOriginService::AcceptFreeTier() {

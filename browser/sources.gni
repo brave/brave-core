@@ -494,7 +494,7 @@ if (enable_brave_education) {
   brave_chrome_browser_deps += [ "//brave/browser/ui/webui/brave_education" ]
 }
 
-if (is_brave_origin_branded) {
+if (enable_brave_origin_startup) {
   brave_chrome_browser_deps += [
     "//brave/browser/ui/views/brave_origin",
     "//brave/browser/ui/webui/brave_origin_startup",

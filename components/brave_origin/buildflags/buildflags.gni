@@ -5,7 +5,13 @@
 
 declare_args() {
   is_brave_origin_branded = false
+  # Build the standalone desktop browser with local access to Origin policies.
+  brave_origin_local_build = false
 }
+
+assert(!brave_origin_local_build || is_brave_origin_branded,
+       "Local Origin builds require is_brave_origin_branded=true")
+enable_brave_origin_startup = is_brave_origin_branded && !brave_origin_local_build
 
 assert(!(is_brave_origin_branded && is_android),
        "Brave Origin branding is not supported on Android")

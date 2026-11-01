@@ -9,6 +9,7 @@
 #include "base/test/task_environment.h"
 #include "brave/components/brave_origin/brave_origin_policy_info.h"
 #include "brave/components/brave_origin/brave_origin_utils.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/brave_origin/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
@@ -140,6 +141,19 @@ TEST_F(BraveOriginPolicyManagerTest, Init_SetsInitializedState) {
   EXPECT_TRUE(manager->IsInitialized());
 }
 
+#if BUILDFLAG(BRAVE_ORIGIN_LOCAL_BUILD)
+TEST_F(BraveOriginPolicyManagerTest, LocalPoliciesRequireOnlyInitialization) {
+  auto* manager = BraveOriginPolicyManager::GetInstance();
+  EXPECT_FALSE(manager->IsPurchased());
+  InitializeManager();
+  EXPECT_TRUE(manager->IsPurchased());
+
+  manager->SetPurchased(true);
+  manager->SetPurchased(false);
+  EXPECT_FALSE(pref_service_.GetBoolean(kOriginPurchaseValidated));
+  EXPECT_TRUE(manager->IsPurchased());
+}
+#else
 TEST_F(BraveOriginPolicyManagerTest, SetPurchased_FalseKeepsPersistedPurchase) {
   InitializeManager();
   auto* manager = BraveOriginPolicyManager::GetInstance();
@@ -151,6 +165,7 @@ TEST_F(BraveOriginPolicyManagerTest, SetPurchased_FalseKeepsPersistedPurchase) {
   EXPECT_TRUE(pref_service_.GetBoolean(kOriginPurchaseValidated));
   EXPECT_TRUE(manager->IsPurchased());
 }
+#endif
 
 TEST_F(BraveOriginPolicyManagerTest, Init_NotifiesObservers) {
   TestObserver observer;

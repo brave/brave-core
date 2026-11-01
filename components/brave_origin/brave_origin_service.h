@@ -102,6 +102,7 @@ class BraveOriginService : public KeyedService {
   raw_ptr<policy::PolicyService> browser_policy_service_;
 
  private:
+#if !BUILDFLAG(BRAVE_ORIGIN_LOCAL_BUILD)
   void OnCredentialSummary(base::OnceCallback<void(bool)> callback,
                            skus::mojom::SkusResultPtr summary);
   void OnSkusStateChanged();
@@ -116,6 +117,7 @@ class BraveOriginService : public KeyedService {
   // Whether Origin policies were being enforced in the previous session.
   // Read from kOriginPoliciesWereEnforced pref at construction.
   bool startup_was_enforcing_;
+#endif
 
   // Snapshot of policy values at construction time, used to detect
   // settings changes that require a restart.
@@ -131,11 +133,13 @@ class BraveOriginService : public KeyedService {
   // Browser-layer delegate for actions like opening the settings page.
   std::unique_ptr<Delegate> delegate_;
 
+#if !BUILDFLAG(BRAVE_ORIGIN_LOCAL_BUILD)
   // Re-checks purchase state when SKU credentials change (e.g. after
   // the user completes a purchase on account.brave.com).
   PrefChangeRegistrar skus_pref_registrar_;
 
   base::WeakPtrFactory<BraveOriginService> weak_ptr_factory_{this};
+#endif
 };
 
 }  // namespace brave_origin

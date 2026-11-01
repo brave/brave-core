@@ -338,7 +338,7 @@ test("brave_unit_tests") {
     "//brave/components/brave_stats/browser",
   ]
 
-  if (is_brave_origin_branded) {
+  if (enable_brave_origin_startup) {
     deps += [
       "//brave/browser/ui/views/brave_origin:unit_tests",
       "//brave/browser/ui/webui/brave_origin_startup:unit_tests",
@@ -1428,7 +1428,7 @@ test("brave_browser_tests") {
     sources += [ "//brave/browser/ui/views/crash_report_permission_ask_dialog_browsertest.cc" ]
   }
 
-  if (is_brave_origin_branded) {
+  if (enable_brave_origin_startup) {
     deps += [ "//brave/browser/ui/views/brave_origin:browser_tests" ]
   }
 

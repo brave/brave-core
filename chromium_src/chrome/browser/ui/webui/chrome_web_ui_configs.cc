@@ -69,7 +69,7 @@
 #include "brave/browser/ui/webui/brave_education/brave_education_page_ui.h"
 #endif
 
-#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+#if BUILDFLAG(ENABLE_BRAVE_ORIGIN_STARTUP)
 #include "brave/browser/ui/webui/brave_origin_startup/brave_origin_startup_ui.h"
 #endif
 
@@ -171,7 +171,7 @@ void RegisterChromeWebUIConfigs() {
   map.AddWebUIConfig(std::make_unique<BraveEducationPageUIConfig>());
 #endif
 
-#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+#if BUILDFLAG(ENABLE_BRAVE_ORIGIN_STARTUP)
   map.AddWebUIConfig(std::make_unique<BraveOriginStartupUIConfig>());
 #endif
 

@@ -417,7 +417,7 @@ source_set("ui") {
     deps += [ "webui/brave_education" ]
   }
 
-  if (is_brave_origin_branded) {
+  if (enable_brave_origin_startup) {
     deps += [ "//brave/browser/ui/views/brave_origin" ]
   }
 

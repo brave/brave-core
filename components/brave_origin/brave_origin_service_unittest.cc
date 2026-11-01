@@ -119,11 +119,13 @@ class BraveOriginServiceTest : public testing::Test {
     auto* manager = BraveOriginPolicyManager::GetInstance();
     manager->Init(std::move(browser_policies), std::move(profile_policies),
                   &local_state_);
+#if !BUILDFLAG(BRAVE_ORIGIN_LOCAL_BUILD)
     // Set purchased state so IsBraveOriginPurchased() returns true when the
     // feature flag is enabled.
     manager->SetPurchased(true);
     // Simulate existing purchaser: pref was set in a previous session.
     local_state_.SetBoolean(kOriginPoliciesWereEnforced, true);
+#endif
 
     // Create the service with both policy services
     service_ = std::make_unique<BraveOriginService>(
@@ -543,8 +545,8 @@ TEST_F(BraveOriginServiceTest,
   // PendingRemote, so CheckPurchaseState should return the cached value.
   base::test::TestFuture<bool> result;
   service_->CheckPurchaseState(result.GetCallback());
-  EXPECT_FALSE(result.Get());
-  EXPECT_FALSE(service_->IsPurchased());
+  EXPECT_EQ(BUILDFLAG(BRAVE_ORIGIN_LOCAL_BUILD), result.Get());
+  EXPECT_EQ(BUILDFLAG(BRAVE_ORIGIN_LOCAL_BUILD), service_->IsPurchased());
 }
 
 TEST_F(BraveOriginServiceTest, NeedsRestart_NoChanges_ReturnsFalse) {
@@ -577,6 +579,32 @@ TEST_F(BraveOriginServiceTest, NeedsRestart_AfterRevert_ReturnsFalse) {
   EXPECT_FALSE(service_->NeedsRestart());
 }
 
+#if BUILDFLAG(BRAVE_ORIGIN_LOCAL_BUILD)
+TEST_F(BraveOriginServiceTest, LocalBuildNeverRequestsOriginCredentials) {
+  class NoPurchaseDelegate : public NullDelegate {
+   public:
+    mojo::PendingRemote<skus::mojom::SkusService> GetSkusService() override {
+      ADD_FAILURE() << "Local Origin must not request the SKU service";
+      return {};
+    }
+  };
+  service_.reset();
+  service_ = std::make_unique<BraveOriginService>(
+      &local_state_, &profile_prefs_, kTestProfileId,
+      &mock_profile_policy_service_, &mock_browser_policy_service_,
+      std::make_unique<NoPurchaseDelegate>());
+
+  base::DictValue changed_state;
+  changed_state.Set("test", "updated");
+  local_state_.SetDict(skus::prefs::kSkusState, std::move(changed_state));
+  base::test::TestFuture<bool> result;
+  service_->CheckPurchaseState(result.GetCallback());
+  EXPECT_TRUE(result.Get());
+  EXPECT_FALSE(service_->NeedsRestart());
+  EXPECT_FALSE(local_state_.GetBoolean(kOriginPurchaseValidated));
+  EXPECT_FALSE(local_state_.GetBoolean(kOriginPoliciesWereEnforced));
+}
+#else
 TEST_F(BraveOriginServiceTest, NeedsRestart_AfterFirstPurchase_ReturnsTrue) {
   // Simulate first-purchase: recreate service without enforcement pref.
   service_.reset();
@@ -921,6 +949,8 @@ TEST_F(BraveOriginServiceWithSkusTest,
   ASSERT_TRUE(base::test::RunUntil([&] { return delegate_called; }));
 #endif
 }
+
+#endif  // BUILDFLAG(BRAVE_ORIGIN_LOCAL_BUILD)
 
 // Test class for when BraveOrigin feature is disabled
 class BraveOriginServiceDisabledTest : public testing::Test {

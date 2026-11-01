@@ -5,7 +5,9 @@
 
 #include "brave/browser/brave_origin/brave_origin_service_factory.h"
 
+#include <memory>
 #include <string_view>
+#include <utility>
 
 #include "base/check_is_test.h"
 #include "base/containers/fixed_flat_map.h"
@@ -18,6 +20,7 @@
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_origin/brave_origin_policy_manager.h"
 #include "brave/components/brave_origin/brave_origin_service.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/brave_origin/profile_id.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
@@ -264,7 +267,9 @@ BraveOriginServiceFactory::BraveOriginServiceFactory()
     : ProfileKeyedServiceFactory(
           "BraveOriginService",
           ProfileSelections::BuildRedirectedInIncognito()) {
+#if !BUILDFLAG(BRAVE_ORIGIN_LOCAL_BUILD)
   DependsOn(skus::SkusServiceFactory::GetInstance());
+#endif
   // This factory owns the lazy initialization of `BraveOriginPolicyManager`
   // (in `BuildServiceInstanceForBrowserContext`). Mark the manager as
   // expected-to-be-initialized as soon as the factory is registered so that
@@ -305,11 +310,15 @@ BraveOriginServiceFactory::BuildServiceInstanceForBrowserContext(
                          g_browser_process->local_state());
   }
 
+  std::unique_ptr<BraveOriginService::Delegate> delegate;
+#if !BUILDFLAG(BRAVE_ORIGIN_LOCAL_BUILD)
+  delegate = std::make_unique<BraveOriginNavigationDelegate>(*profile);
+#endif
   std::string profile_id = GetProfileId(profile->GetPath());
   return std::make_unique<BraveOriginService>(
       g_browser_process->local_state(), profile->GetPrefs(), profile_id,
       GetPolicyServiceFromProfile(profile), GetBrowserPolicyService(),
-      std::make_unique<BraveOriginNavigationDelegate>(*profile));
+      std::move(delegate));
 }
 
 bool BraveOriginServiceFactory::ServiceIsCreatedWithBrowserContext() const {

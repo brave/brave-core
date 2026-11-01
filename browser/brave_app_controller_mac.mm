@@ -24,7 +24,7 @@
 #include "components/prefs/pref_member.h"
 #include "ui/base/l10n/l10n_util_mac.h"
 
-#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+#if BUILDFLAG(ENABLE_BRAVE_ORIGIN_STARTUP)
 #include "brave/browser/ui/views/brave_origin/brave_origin_startup_view.h"
 #endif
 
@@ -87,7 +87,7 @@ class TorPrefObserver : public BooleanPrefMember {
   NSMenuItem* _copyMenuItem;
   NSMenuItem* _copyCleanLinkMenuItem;
 
-#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+#if BUILDFLAG(ENABLE_BRAVE_ORIGIN_STARTUP)
   NSMenuItem* _profileMenuItem;  // Stashed while startup dialog is showing
   NSInteger _profileMenuIndex;   // Original position in the menu bar
 #endif
@@ -101,7 +101,7 @@ class TorPrefObserver : public BooleanPrefMember {
 }
 @end
 
-#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+#if BUILDFLAG(ENABLE_BRAVE_ORIGIN_STARTUP)
 void BraveRestoreProfileMenu() {
   auto* controller =
       static_cast<BraveAppController*>(AppController.sharedController);
@@ -111,7 +111,7 @@ void BraveRestoreProfileMenu() {
 
 @implementation BraveAppController
 
-#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+#if BUILDFLAG(ENABLE_BRAVE_ORIGIN_STARTUP)
 - (BOOL)canOpenNewBrowser {
   if (BraveOriginStartupView::IsShowing()) {
     return NO;
@@ -159,12 +159,12 @@ void BraveRestoreProfileMenu() {
     _profileMenuItem = nil;
   }
 }
-#endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+#endif  // BUILDFLAG(ENABLE_BRAVE_ORIGIN_STARTUP)
 
 - (void)mainMenuCreated {
   [super mainMenuCreated];
 
-#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+#if BUILDFLAG(ENABLE_BRAVE_ORIGIN_STARTUP)
   // Stash and remove the Profiles top-level menu. Profile switching, "Manage",
   // and "Add Profile" all open browser windows that bypass the startup dialog.
   // restoreProfileMenu re-inserts it. It is called from the startup completion
@@ -179,7 +179,7 @@ void BraveRestoreProfileMenu() {
       [mainMenu removeItem:profileMenu];
     }
   }
-#endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+#endif  // BUILDFLAG(ENABLE_BRAVE_ORIGIN_STARTUP)
 
   NSMenu* editMenu = [[[NSApp mainMenu] itemWithTag:IDC_EDIT_MENU] submenu];
   _copyMenuItem = [editMenu itemWithTag:IDC_CONTENT_CONTEXT_COPY];
@@ -371,13 +371,13 @@ void BraveRestoreProfileMenu() {
 }
 
 - (NSMenu*)applicationDockMenu:(NSApplication*)sender {
-#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+#if BUILDFLAG(ENABLE_BRAVE_ORIGIN_STARTUP)
   if (BraveOriginStartupView::IsShowing()) {
     // Return an empty dock menu while the startup dialog is showing.
     // The system always adds "Quit" automatically.
     return [[NSMenu alloc] initWithTitle:@""];
   }
-#endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+#endif  // BUILDFLAG(ENABLE_BRAVE_ORIGIN_STARTUP)
 
   auto* menu = [super applicationDockMenu:sender];
 

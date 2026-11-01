@@ -8,6 +8,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_origin/brave_origin_policy_info.h"
 #include "brave/components/brave_origin/brave_origin_policy_manager.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/brave_origin/features.h"
 #include "brave/components/brave_origin/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -53,8 +54,7 @@ TEST_F(BraveOriginUtilsTest,
   auto* manager = BraveOriginPolicyManager::GetInstance();
   manager->Init(BraveOriginPolicyMap(), BraveOriginPolicyMap(), &pref_service_);
 
-  // Feature enabled but not purchased should return false
-  EXPECT_FALSE(IsBraveOriginPurchased());
+  EXPECT_EQ(BUILDFLAG(BRAVE_ORIGIN_LOCAL_BUILD), IsBraveOriginPurchased());
 }
 
 TEST_F(BraveOriginUtilsTest, IsBraveOriginPurchased_FeatureEnabled_Purchased) {

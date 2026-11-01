@@ -14,7 +14,7 @@
 // * Manages logic to switch hotkey between copy and copy clean link item.
 // * Add "New Private Window with Tor" to the dock menu.
 @interface BraveAppController : AppController
-#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+#if BUILDFLAG(ENABLE_BRAVE_ORIGIN_STARTUP)
 - (void)restoreProfileMenu;
 #endif
 @end

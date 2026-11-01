@@ -9,6 +9,7 @@
 #include "base/logging.h"
 #include "base/no_destructor.h"
 #include "brave/components/brave_origin/brave_origin_utils.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/brave_origin/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -176,6 +177,9 @@ bool BraveOriginPolicyManager::IsExpectedToBeInitialized() const {
 }
 
 void BraveOriginPolicyManager::SetPurchased(bool purchased) {
+  if (BUILDFLAG(BRAVE_ORIGIN_LOCAL_BUILD)) {
+    return;
+  }
   if (is_purchased_ == purchased) {
     return;
   }
@@ -193,6 +197,10 @@ void BraveOriginPolicyManager::SetPurchased(bool purchased) {
 }
 
 bool BraveOriginPolicyManager::IsPurchased() const {
+  if (BUILDFLAG(BRAVE_ORIGIN_LOCAL_BUILD)) {
+    // Init() sets this before notifying policy providers for the first time.
+    return initialized_;
+  }
   if (is_purchased_) {
     return true;
   }

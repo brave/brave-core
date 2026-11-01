@@ -8,5 +8,9 @@ import("//build/buildflag_header.gni")
 
 buildflag_header("buildflags") {
   header = "buildflags.h"
-  flags = [ "IS_BRAVE_ORIGIN_BRANDED=$is_brave_origin_branded" ]
+  flags = [
+    "IS_BRAVE_ORIGIN_BRANDED=$is_brave_origin_branded",
+    "BRAVE_ORIGIN_LOCAL_BUILD=$brave_origin_local_build",
+    "ENABLE_BRAVE_ORIGIN_STARTUP=$enable_brave_origin_startup",
+  ]
 }
