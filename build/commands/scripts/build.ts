@@ -18,6 +18,7 @@ program
   .apply(buildOptions.supportGnArgs)
   .apply(buildOptions.supportGnGenOptions)
   .apply(buildOptions.supportNinjaOptions)
+  .apply(buildOptions.supportQuiet)
   // TODO(http://brave.dev/b/56449): Experimental implementation for integration
   // with our bots generator.
   .apply(supportBuilder)

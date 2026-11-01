@@ -6,3 +6,25 @@
 export const isTeamcity = process.env.TEAMCITY_VERSION !== undefined
 
 export const isCI = process.env.BUILD_ID !== undefined || isTeamcity
+
+// Matches depot_tools' `gclient_utils.AI_AGENT_ENV_VARS`.
+const AI_AGENT_ENV_VARS = [
+  'GEMINI_CLI',
+  'CLAUDECODE',
+  'ANTIGRAVITY_AGENT',
+  'CODEX_SANDBOX',
+  'CURSOR_AGENT',
+  'COPILOT_CLI',
+  'AI_AGENT',
+]
+
+export function activeAiAgentEnvVars(
+  env: NodeJS.ProcessEnv = process.env,
+): string[] {
+  return AI_AGENT_ENV_VARS.filter((name) => {
+    const value = env[name]
+    return (
+      value !== undefined && !['', '0', 'false'].includes(value.toLowerCase())
+    )
+  })
+}

@@ -46,41 +46,42 @@ export function allPatchStatus(
   allPatchStatus: PatchStatus[],
   patchGroupName: string,
 ) {
+  const successfulPatches = allPatchStatus.filter((p) => !p.error)
+  const failedPatches = allPatchStatus.filter((p) => p.error)
+  // The summary only matters once something failed.
+  const summaryLevel = failedPatches.length ? Log.Level.INFO : Log.Level.DETAIL
   if (!allPatchStatus.length) {
-    console.log(
+    Log.log(
+      summaryLevel,
       chalk.bold.italic(
         `There were no ${patchGroupName} code patch updates to apply.`,
       ),
     )
-  } else {
-    const successfulPatches: PatchStatus[] = []
-    const failedPatches: PatchStatus[] = []
-    for (const patchStatus of allPatchStatus) {
-      if (!patchStatus.error) {
-        successfulPatches.push(patchStatus)
-      } else {
-        failedPatches.push(patchStatus)
-      }
-    }
-    console.log(
-      chalk.bold(
-        `There were ${allPatchStatus.length} ${patchGroupName} code patch updates to apply.`,
-      ),
+    return
+  }
+  Log.log(
+    summaryLevel,
+    chalk.bold(
+      `There were ${allPatchStatus.length} ${patchGroupName} code patch updates to apply.`,
+    ),
+  )
+  if (successfulPatches.length) {
+    Log.log(
+      summaryLevel,
+      chalk.green(`${successfulPatches.length} successful patches:`),
     )
-    if (successfulPatches.length) {
-      console.log(
-        chalk.green(`${successfulPatches.length} successful patches:`),
-      )
-      successfulPatches.forEach(logPatchStatus)
-    }
-    if (failedPatches.length) {
-      console.log(chalk.red(`${failedPatches.length} failed patches:`))
-      failedPatches.forEach(logPatchStatus)
-    }
+    successfulPatches.forEach((p) => logPatchStatus(p, Log.Level.DETAIL))
+  }
+  if (failedPatches.length) {
+    console.log(chalk.red(`${failedPatches.length} failed patches:`))
+    failedPatches.forEach((p) => logPatchStatus(p, Log.Level.INFO))
   }
 }
 
-function logPatchStatus(patchStatus: PatchStatus) {
+function logPatchStatus(patchStatus: PatchStatus, level: Log.Level) {
+  if (!Log.isEnabledFor(level)) {
+    return
+  }
   const success = !patchStatus.error
   const statusColor = success ? chalk.green : chalk.red
   console.log(

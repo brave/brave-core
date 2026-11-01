@@ -28,6 +28,7 @@ jest.mock('./log.ts', () => ({
   warn: jest.fn(),
   status: jest.fn(),
   error: jest.fn(),
+  detail: jest.fn(),
 }))
 
 jest.mock('./chromiumFetch.ts', () => ({
@@ -237,7 +238,7 @@ describe('syncChromium', () => {
       syncInfoPath(),
       expectedSyncInfo(),
     )
-    expect(Log.status).toHaveBeenCalledWith('Chromium is now at aaa (HEAD)')
+    expect(Log.detail).toHaveBeenCalledWith('Chromium is now at aaa (HEAD)')
   })
 
   it('syncs when the last successful sync was for something else', () => {
@@ -253,7 +254,7 @@ describe('syncChromium', () => {
 
     expect(syncUtils.syncChromium({})).toBe(true)
 
-    expect(Log.status).toHaveBeenCalledWith('Chromium is now at [unknown]')
+    expect(Log.detail).toHaveBeenCalledWith('Chromium is now at [unknown]')
   })
 
   it('forces a sync when already up to date', () => {

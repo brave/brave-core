@@ -7,7 +7,7 @@ import os from 'node:os'
 import chalk from 'chalk'
 import logUpdate from 'log-update'
 import tsm from 'teamcity-service-messages'
-import { isTeamcity } from './ciDetect.ts'
+import { activeAiAgentEnvVars, isTeamcity } from './ciDetect.ts'
 
 export let divider: string
 function setLineLength() {
@@ -50,11 +50,28 @@ if (isTeamcity) {
   })
 }
 
+// As Python's `logging` levels: only messages at or above the level are
+// printed. TeamCity blocks are kept at any level, to keep the build log
+// structured.
+export const Level = {
+  DETAIL: 10,
+  INFO: 20,
+  WARNING: 30,
+  ERROR: 40,
+} as const
+export type Level = (typeof Level)[keyof typeof Level]
+
+let level: Level = Level.DETAIL
+
+export function isEnabledFor(messageLevel: Level) {
+  return messageLevel >= level
+}
+
 export function progressStart(message: string) {
   if (isTeamcity) {
     tsm.blockOpened({ name: message })
     progressScopes.push(message)
-  } else {
+  } else if (isEnabledFor(Level.DETAIL)) {
     console.log(progressStyle(`${message}...`))
   }
 }
@@ -63,7 +80,7 @@ export function progressFinish(message: string) {
   if (isTeamcity) {
     progressScopes.pop()
     tsm.blockClosed({ name: message })
-  } else {
+  } else if (isEnabledFor(Level.DETAIL)) {
     console.log(progressStyle(`...${message} done`))
   }
 }
@@ -89,7 +106,51 @@ export async function progressScopeAsync(
   }
 }
 
+// Resolves `--quiet`/`--no-quiet`, defaulting to quiet under an AI agent, as
+// siso does. Under an agent, the command's result is also said on exit, as
+// the little output left could otherwise be taken for a failure.
+export function setQuiet(
+  requested: boolean | undefined,
+  commandName: string,
+  env: NodeJS.ProcessEnv = process.env,
+) {
+  const agentEnvVars = requested === undefined ? activeAiAgentEnvVars(env) : []
+  const quiet = requested ?? agentEnvVars.length > 0
+  level = quiet ? Level.INFO : Level.DETAIL
+  if (!agentEnvVars.length) {
+    return
+  }
+  status(
+    `Detected AI agent env (${agentEnvVars.join(', ')}). Defaulting to `
+      + '--quiet to reduce context pollution. User-supplied --verbose or '
+      + '--no-quiet take precedence.',
+    true,
+  )
+  process.on('exit', (code) => {
+    console.log(
+      code === 0
+        ? `The ${commandName} command has finished successfully.`
+        : `The ${commandName} command has finished with an error.`,
+    )
+  })
+}
+
+export function log(messageLevel: Level, message: string) {
+  if (isEnabledFor(messageLevel)) {
+    console.log(message)
+  }
+}
+
+// A line only worth it to a person following along, such as one per file
+// handled.
+export function detail(message: string) {
+  log(Level.DETAIL, message)
+}
+
 export function status(message: string, alreadyStyled: boolean = false) {
+  if (!isEnabledFor(Level.INFO)) {
+    return
+  }
   if (isTeamcity) {
     tsm.progressMessage(message)
   } else {
@@ -98,6 +159,9 @@ export function status(message: string, alreadyStyled: boolean = false) {
 }
 
 export function error(message: string) {
+  if (!isEnabledFor(Level.ERROR)) {
+    return
+  }
   if (isTeamcity) {
     tsm.message({ text: message, status: 'ERROR' })
   } else {
@@ -106,6 +170,9 @@ export function error(message: string) {
 }
 
 export function warn(message: string) {
+  if (!isEnabledFor(Level.WARNING)) {
+    return
+  }
   if (isTeamcity) {
     tsm.message({ text: message, status: 'WARNING' })
   } else {
@@ -126,6 +193,9 @@ export function updateStatus(
 }
 
 export function command(dir: string | undefined, cmd: string, args: string[]) {
+  if (!isEnabledFor(Level.DETAIL)) {
+    return
+  }
   console.log(divider)
   if (dir) {
     console.log(cmdDirStyle(dir))

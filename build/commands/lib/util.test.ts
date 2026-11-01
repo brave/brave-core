@@ -16,6 +16,9 @@ import util, { prefixPatchPaths } from './util.ts'
 
 jest.mock('./log.ts', () => ({
   command: jest.fn(),
+  detail: jest.fn(),
+  Level: { DETAIL: 10, INFO: 20, WARNING: 30, ERROR: 40 },
+  isEnabledFor: jest.fn(() => true),
   status: jest.fn(),
   warn: jest.fn(),
   error: jest.fn(),
@@ -159,6 +162,7 @@ describe('util', () => {
     jest
       .mocked(Log.progressScopeAsync)
       .mockImplementation(async (_message, callable) => callable())
+    jest.mocked(Log.isEnabledFor).mockReturnValue(true)
   })
 
   afterEach(() => {
@@ -374,6 +378,19 @@ describe('util', () => {
         'exited with status',
         2,
         expect.anything(),
+      )
+    })
+
+    it('run names the failed command when quiet', () => {
+      jest.mocked(Log.isEnabledFor).mockReturnValue(false)
+      const args = [script('process.exit(2)')]
+      try {
+        expect(() => util.run(node, args)).toThrow('process.exit(1) called')
+      } finally {
+        jest.mocked(Log.isEnabledFor).mockReturnValue(true)
+      }
+      expect(consoleLog).toHaveBeenCalledWith(
+        `${node} ${args.join(' ')} exited with status 2`,
       )
     })
 
@@ -758,6 +775,16 @@ describe('util', () => {
         ).toContain('# Extra gn gen options: --ide=json')
       })
 
+      it('passes -q to gn when quiet', () => {
+        jest.mocked(Log.isEnabledFor).mockReturnValueOnce(false)
+        util.runGnGen(outputDir(), { is_asan: true })
+        expect(run).toHaveBeenCalledWith(
+          'gn',
+          ['gen', outputDir(), ...(isCI ? ['--check'] : []), '-q'],
+          config.defaultOptions,
+        )
+      })
+
       it('skips generating when nothing changed', () => {
         util.runGnGen(outputDir(), { is_asan: true })
         write(path.join(outputDir(), 'build.ninja'))
@@ -925,7 +952,7 @@ describe('util', () => {
       expect(mtime(original)).toBeGreaterThan(oldTime * 1000)
       expect(mtime(newer)).toBeGreaterThan(oldTime * 1000)
       expect(mtime(unsupported)).toBe(oldTime * 1000)
-      expect(consoleLog).toHaveBeenCalledWith(`${original} is touched.`)
+      expect(Log.detail).toHaveBeenCalledWith(`${original} is touched.`)
       expect(Log.progressFinish).toHaveBeenCalled()
     })
 
@@ -950,7 +977,7 @@ describe('util', () => {
 
       expect(fs.existsSync(gen)).toBe(false)
       expect(fs.existsSync(freshGen)).toBe(true)
-      expect(consoleLog).toHaveBeenCalledWith(`${gen} has been deleted.`)
+      expect(Log.detail).toHaveBeenCalledWith(`${gen} has been deleted.`)
     })
 
     it.each([
