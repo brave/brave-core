@@ -1,8 +1,8 @@
 diff --git a/extensions/common/extension_features.cc b/extensions/common/extension_features.cc
-index 22d664c36b4474c0bc5b3a3e76e5936709e98275..3ad558aaf67137061380f2f1eb025a5031ac4de8 100644
+index 9652d229fb1e836445e74c3e19a7b60887527216..a9169c041b358632bb9e1e7871a7305f6962a703 100644
 --- a/extensions/common/extension_features.cc
 +++ b/extensions/common/extension_features.cc
-@@ -28,7 +28,7 @@ BASE_FEATURE(kApiOdfsConfigPrivate, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -31,7 +31,7 @@ BASE_FEATURE(kApiOdfsConfigPrivate, base::FEATURE_ENABLED_BY_DEFAULT);
  
  BASE_FEATURE(kApiContextualTasksPrivate, base::FEATURE_DISABLED_BY_DEFAULT);
  
@@ -11,7 +11,7 @@ index 22d664c36b4474c0bc5b3a3e76e5936709e98275..3ad558aaf67137061380f2f1eb025a50
  
  BASE_FEATURE(kApiEnterpriseReportingPrivateOnDataMaskingRulesTriggered,
               base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -89,8 +89,8 @@ BASE_FEATURE(kWebRequestSecurityInfo, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -92,8 +92,8 @@ BASE_FEATURE(kWebRequestSecurityInfo, base::FEATURE_DISABLED_BY_DEFAULT);
  BASE_FEATURE(kWebRequestPerContextEventDispatch,
               base::FEATURE_ENABLED_BY_DEFAULT);
  

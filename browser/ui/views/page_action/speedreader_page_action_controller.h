@@ -43,9 +43,8 @@ class SpeedreaderPageActionController
   // speedreader::SpeedreaderTabHelper::Observer:
   void OnDistillStateUpdated() override;
 
-  // (Re-)observes |contents|' SpeedreaderTabHelper, since the tab's contents
-  // can be swapped out (e.g. tab discarding). Stops observing the previously
-  // attached helper, which may be about to be destroyed.
+  // (Re-)observes the tab's SpeedreaderTabHelper while the tab has
+  // |contents|, which can be swapped out (e.g. tab discarding).
   void AttachToTabHelper(content::WebContents* contents);
 
   void UpdatePageAction(content::WebContents* contents);

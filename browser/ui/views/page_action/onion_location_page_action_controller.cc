@@ -10,13 +10,17 @@
 #include "base/functional/bind.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/tor/tor_profile_manager.h"
+#include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/tor/onion_location_tab_helper.h"
+#include "brave/components/tor/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/ui/color/nala/nala_color_id.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
+#include "components/policy/core/common/policy_pref_names.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
@@ -56,6 +60,19 @@ void OnionLocationPageActionController::Init() {
             self->AttachToWebContents(new_contents);
             self->UpdatePageAction(new_contents);
           },
+          base::Unretained(this)));
+  // Mirrors the prefs TorProfileServiceFactory::IsTorDisabled() reads.
+  local_state_change_registrar_.Init(g_browser_process->local_state());
+  local_state_change_registrar_.Add(
+      tor::prefs::kTorDisabled,
+      base::BindRepeating(
+          &OnionLocationPageActionController::OnTorAvailabilityChanged,
+          base::Unretained(this)));
+  profile_pref_change_registrar_.Init(tab_->GetProfile()->GetPrefs());
+  profile_pref_change_registrar_.Add(
+      policy::policy_prefs::kIncognitoModeAvailability,
+      base::BindRepeating(
+          &OnionLocationPageActionController::OnTorAvailabilityChanged,
           base::Unretained(this)));
   AttachToWebContents(tab_->GetContents());
   UpdatePageAction(tab_->GetContents());
@@ -101,7 +118,10 @@ void OnionLocationPageActionController::UpdatePageAction(
   }
 
   auto* helper = tor::OnionLocationTabHelper::FromWebContents(contents);
-  if (!helper || !helper->should_show_icon()) {
+  // A location saved before Tor became unavailable, e.g. on a page restored
+  // from the back/forward cache, is not offered.
+  if (!helper || !helper->should_show_icon() ||
+      TorProfileServiceFactory::IsTorDisabled(contents->GetBrowserContext())) {
     ResetPageAction();
     return;
   }
@@ -158,6 +178,10 @@ void OnionLocationPageActionController::ResetPageAction() {
   page_action_controller_->ClearOverrideChipColors(kActionShowOnionLocation);
   page_action_controller_->ClearOverrideText(kActionShowOnionLocation);
   page_action_controller_->ClearOverrideTooltip(kActionShowOnionLocation);
+}
+
+void OnionLocationPageActionController::OnTorAvailabilityChanged() {
+  UpdatePageAction(tab_->GetContents());
 }
 
 void OnionLocationPageActionController::DidFinishNavigation(

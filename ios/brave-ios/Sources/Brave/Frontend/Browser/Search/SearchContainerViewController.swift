@@ -232,7 +232,7 @@ class SearchContainerViewController: UIViewController {
 
   /// Re-lays out the quick-search-engine row (e.g. after the settings screen is dismissed).
   func reloadSearchEngineLayout() {
-    searchController.layoutSearchEngineScrollView()
+    searchController.layoutQuickSearchView()
   }
 
   /// Drives the search results/suggestions for the current field text.

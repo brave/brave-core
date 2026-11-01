@@ -28,7 +28,7 @@ public abstract class BraveTabCollectionTabModelImplBase extends TabModelJniBrid
         }
         if (linkClicked(tab.getLaunchType())
                 && BraveTabUiFeatureUtilities.isBraveTabGroupsEnabled()
-                && isTabModelRestoredViaReflection()) {
+                && isTabStateInitialized()) {
             return true;
         }
         // Otherwise just call parent.
@@ -48,13 +48,5 @@ public abstract class BraveTabCollectionTabModelImplBase extends TabModelJniBrid
     /** Determine if a launch type is the result of linked being clicked. */
     private boolean linkClicked(@TabLaunchType int type) {
         return type == TabLaunchType.FROM_LINK || type == TabLaunchType.FROM_LONGPRESS_FOREGROUND;
-    }
-
-    private boolean isTabModelRestoredViaReflection() {
-        @Nullable Boolean isRestored =
-                (Boolean)
-                        BraveReflectionUtil.invokeMethod(
-                                TabCollectionTabModelImpl.class, this, "isTabModelRestored");
-        return isRestored != null && isRestored;
     }
 }

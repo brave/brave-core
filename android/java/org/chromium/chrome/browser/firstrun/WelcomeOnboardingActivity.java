@@ -5,6 +5,8 @@
 package org.chromium.chrome.browser.firstrun;
 
 import static org.chromium.build.NullUtil.assumeNonNull;
+import static org.chromium.chrome.browser.day_zero.DayZeroHelper.DAY_ZERO_VARIANT_Y;
+import static org.chromium.chrome.browser.day_zero.DayZeroHelper.DAY_ZERO_VARIANT_Z;
 import static org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser;
 import static org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils.setDefaultBrowser;
 
@@ -46,6 +48,7 @@ import org.chromium.chrome.browser.BraveConstants;
 import org.chromium.chrome.browser.BraveLocalState;
 import org.chromium.chrome.browser.brave_origin.BraveOriginDeepLinkHandler;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
+import org.chromium.chrome.browser.day_zero.DayZeroHelper;
 import org.chromium.chrome.browser.metrics.ChangeMetricsReportingStateCalledFrom;
 import org.chromium.chrome.browser.metrics.UmaSessionStats;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
@@ -105,8 +108,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
     private Guideline mSplashGuideline;
     private ViewPager2 mOnboardingPager;
 
-    private OnboardingStepAdapter mStepAdapter;
     private PageBounceAnimator mPageBounceAnimator;
+
+    private SpannableString mWdpLearnMore;
 
     private boolean mIsP3aManaged;
     private boolean mIsCrashReportingManaged;
@@ -273,15 +277,13 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
                         (textView) -> CustomTabActivity.showInfoPage(this, WDP_LINK));
         final String wdpText = getResources().getString(R.string.wdp_text);
 
-        final SpannableString wdpLearnMore =
+        mWdpLearnMore =
                 SpanApplier.applySpans(
                         wdpText,
                         new SpanInfo("<learn_more>", "</learn_more>", wdpLearnMoreClickableSpan));
 
         mOnboardingPager.setUserInputEnabled(false);
         mPageBounceAnimator = new PageBounceAnimator(mOnboardingPager);
-        mStepAdapter = new OnboardingStepAdapter(wdpLearnMore, this);
-        mOnboardingPager.setAdapter(mStepAdapter);
 
         mBraveSplash = findViewById(R.id.brave_splash);
         // Only the wide layout (tablets in any orientation and phones in landscape) declares the
@@ -301,27 +303,40 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
 
+        final String dayZeroVariant = getDayZeroVariant();
+
         mIsP3aManaged = BraveLocalState.get().isManagedPreference(BravePref.P3A_ENABLED);
         mIsCrashReportingManaged =
                 !PrivacyPreferencesManagerImpl.getInstance()
                         .isUsageAndCrashReportingPermittedByPolicy();
 
+        // If both settings are managed by policy, skip this page entirely.
+        final boolean skipMakeBraveBetter = mIsP3aManaged && mIsCrashReportingManaged;
+        final OnboardingStepAdapter stepAdapter =
+                new OnboardingStepAdapter(
+                        mWdpLearnMore,
+                        dayZeroVariant,
+                        skipMakeBraveBetter,
+                        mPageBounceAnimator,
+                        this);
+        mOnboardingPager.setAdapter(stepAdapter);
+
         if (!mIsCrashReportingManaged) {
             if (!mHasRestoredState) {
                 mCrashReportingChecked = getCrashReportingPreference();
             }
-            mStepAdapter.setCrashReportingChecked(mCrashReportingChecked);
+            stepAdapter.setCrashReportingChecked(mCrashReportingChecked);
         } else {
-            mStepAdapter.setCrashReportingManaged(true);
+            stepAdapter.setCrashReportingManaged(true);
         }
 
         if (!mIsP3aManaged) {
             if (!mHasRestoredState) {
                 mP3aChecked = getP3aPreference();
             }
-            mStepAdapter.setP3aChecked(mP3aChecked);
+            stepAdapter.setP3aChecked(mP3aChecked);
         } else {
-            mStepAdapter.setP3aManaged(true);
+            stepAdapter.setP3aManaged(true);
         }
         if (mSplashAnimationFinished) {
             if (mBraveSplashContainer != null) {
@@ -355,6 +370,22 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
         mCrashReportingChecked = state.getBoolean(KEY_CRASH_REPORTING_CHECKED);
         mP3aChecked = state.getBoolean(KEY_P3A_CHECKED);
         mHasRestoredState = true;
+    }
+
+    /**
+     * Returns the active Day Zero experiment variant, or {@link
+     * DayZeroHelper#DAY_ZERO_DEFAULT_VARIANT} when the stored one is unset or unknown to this
+     * build.
+     */
+    private String getDayZeroVariant() {
+        final String variant = DayZeroHelper.getDayZeroVariant();
+        // Filter out day zero variants different from X, Y, and Z.
+        if (DayZeroHelper.DAY_ZERO_VARIANT_X.equals(variant)
+                || DAY_ZERO_VARIANT_Y.equals(variant)
+                || DAY_ZERO_VARIANT_Z.equals(variant)) {
+            return variant;
+        }
+        return DayZeroHelper.DAY_ZERO_DEFAULT_VARIANT;
     }
 
     private void playAnimatedVectorDrawable() {
@@ -562,18 +593,6 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
     @Override
     public @BackPressResult int handleBackPress() {
         return BackPressResult.SUCCESS;
-    }
-
-    @Override
-    public void onRequestPageChange(final int position) {
-        if (position == 2) {
-            // If both settings are managed by policy, skip this page entirely
-            if (mIsP3aManaged && mIsCrashReportingManaged) {
-                finalStep();
-                return;
-            }
-        }
-        mPageBounceAnimator.animateToPosition(position);
     }
 
     @Override

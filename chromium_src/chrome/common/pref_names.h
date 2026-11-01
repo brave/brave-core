@@ -33,6 +33,11 @@ namespace brave_tabs {
 // collapsed.
 inline constexpr char kVerticalTabsHideCompletelyWhenCollapsed[] =
     "brave.tabs.vertical_tabs_hide_completely_when_collapsed";
+
+// A boolean specifying whether vertical tabs should be positioned on the right
+// side.
+inline constexpr char kVerticalTabsOnRight[] =
+    "brave.tabs.vertical_tabs_on_right";
 }  // namespace brave_tabs
 #endif  // !BUILDFLAG(IS_ANDROID)
 

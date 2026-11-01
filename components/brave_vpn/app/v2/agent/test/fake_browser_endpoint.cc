@@ -26,6 +26,10 @@ void FakeBrowserEndpoint::OnSelectedRegionChanged(mojom::VpnRegionPtr region) {
   selected_region_updates_.push_back(std::move(region));
 }
 
+void FakeBrowserEndpoint::OnAutoReconnectStateChanged(bool enabled) {
+  auto_reconnect_state_updates_.push_back(enabled);
+}
+
 void FakeBrowserEndpoint::OnSmartProxyRoutingStateChanged(bool enabled) {
   smart_proxy_routing_state_updates_.push_back(enabled);
 }

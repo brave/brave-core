@@ -17,6 +17,7 @@
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/constants/brave_paths.h"
+#include "build/build_config.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -29,11 +30,20 @@
 #include "components/policy/core/common/mock_configuration_policy_provider.h"
 #include "components/policy/core/common/policy_map.h"
 #include "components/policy/policy_constants.h"
+#include "components/tabs/public/tab_interface.h"
+#include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/test_navigation_observer.h"
 #include "net/dns/mock_host_resolver.h"
 #include "url/gurl.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "chrome/browser/resource_coordinator/lifecycle_unit_state.mojom.h"
+#include "chrome/browser/resource_coordinator/tab_lifecycle_unit_external.h"
+#include "chrome/browser/resource_coordinator/tab_lifecycle_unit_source.h"
+#endif
 
 namespace brave_shields {
 
@@ -96,20 +106,20 @@ class BraveShieldsWebContentsObserverBrowserTest : public InProcessBrowserTest {
   }
 
   std::vector<GURL> GetBlockedJsList() {
-    return brave_shields::BraveShieldsTabHelper::FromWebContents(
-               GetWebContents())
+    return brave_shields::BraveShieldsTabHelper::From(
+               tabs::TabInterface::MaybeGetFromContents(GetWebContents()))
         ->GetBlockedJsList();
   }
 
   std::vector<GURL> GetAllowedJsList() {
-    return brave_shields::BraveShieldsTabHelper::FromWebContents(
-               GetWebContents())
+    return brave_shields::BraveShieldsTabHelper::From(
+               tabs::TabInterface::MaybeGetFromContents(GetWebContents()))
         ->GetAllowedJsList();
   }
 
   void ClearAllResourcesList() {
-    return brave_shields::BraveShieldsTabHelper::FromWebContents(
-               GetWebContents())
+    return brave_shields::BraveShieldsTabHelper::From(
+               tabs::TabInterface::MaybeGetFromContents(GetWebContents()))
         ->ClearAllResourcesList();
   }
 
@@ -407,14 +417,16 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverBrowserTest,
    public:
     EmptyAdsBlocked(content::WebContents* tab, bool wait_for_empty)
         : tab_(tab), wait_for_empty_(wait_for_empty) {
-      auto* tab_helper = BraveShieldsTabHelper::FromWebContents(tab_);
+      auto* tab_helper = BraveShieldsTabHelper::From(
+          tabs::TabInterface::MaybeGetFromContents(tab_));
       observation_.Observe(tab_helper);
     }
 
     ~EmptyAdsBlocked() override = default;
 
     void OnResourcesChanged() override {
-      auto* tab_helper = BraveShieldsTabHelper::FromWebContents(tab_);
+      auto* tab_helper = BraveShieldsTabHelper::From(
+          tabs::TabInterface::MaybeGetFromContents(tab_));
       if (tab_helper->GetBlockedAdsList().empty() == wait_for_empty_) {
         run_loop_.Quit();
       }
@@ -466,7 +478,8 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverBrowserTest,
         FROM_HERE, run_loop.QuitClosure(), base::Seconds(1));
     run_loop.Run();
 
-    auto* tab_helper = BraveShieldsTabHelper::FromWebContents(GetWebContents());
+    auto* tab_helper = BraveShieldsTabHelper::From(
+        tabs::TabInterface::MaybeGetFromContents(GetWebContents()));
     EXPECT_EQ(0u, tab_helper->GetBlockedAdsList().size());
   }
 
@@ -474,9 +487,60 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverBrowserTest,
     // The synthetic variant: if straight is false positive.
     brave_shields::BraveShieldsWebContentsObserver::DispatchBlockedEvent(
         GURL("https://test-request.com"), a_page->GetGlobalFrameToken(), kAds);
-    auto* tab_helper = BraveShieldsTabHelper::FromWebContents(GetWebContents());
+    auto* tab_helper = BraveShieldsTabHelper::From(
+        tabs::TabInterface::MaybeGetFromContents(GetWebContents()));
     EXPECT_EQ(0u, tab_helper->GetBlockedAdsList().size());
   }
 }
+
+#if !BUILDFLAG(IS_ANDROID)
+// Doesn't reroute BraveShieldsHost receivers, which the discarded contents'
+// frames would leave behind in another tab's receiver set.
+class BraveShieldsTabHelperBrowserTest : public InProcessBrowserTest {
+ public:
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+    host_resolver()->AddRule("*", "127.0.0.1");
+    embedded_test_server()->ServeFilesFromDirectory(
+        base::PathService::CheckedGet(brave::DIR_TEST_DATA));
+    ASSERT_TRUE(embedded_test_server()->Start());
+  }
+};
+
+// Discarding a tab replaces its contents, but keeps its Shields state holder,
+// which must drop the old page's resources and follow the new contents.
+IN_PROC_BROWSER_TEST_F(BraveShieldsTabHelperBrowserTest,
+                       FollowsDiscardedContents) {
+  const GURL url = embedded_test_server()->GetURL("a.com", "/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), url, WindowOpenDisposition::NEW_BACKGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  TabStripModel* const tab_strip_model = browser()->tab_strip_model();
+  const int index = tab_strip_model->count() - 1;
+  tabs::TabInterface* const tab = tab_strip_model->GetTabAtIndex(index);
+  auto* const tab_helper = BraveShieldsTabHelper::From(tab);
+  ASSERT_TRUE(tab_helper);
+  tab_helper->HandleItemBlocked(kAds, "https://b.com/ad.js");
+  EXPECT_EQ(1, tab_helper->GetTotalBlockedCount());
+
+  auto* const lifecycle_unit =
+      resource_coordinator::TabLifecycleUnitSource::GetTabLifecycleUnitExternal(
+          tab->GetContents());
+  ASSERT_TRUE(lifecycle_unit);
+  ASSERT_TRUE(
+      lifecycle_unit->DiscardTab(::mojom::LifecycleUnitDiscardReason::URGENT));
+  EXPECT_EQ(tab_helper, BraveShieldsTabHelper::From(tab));
+  EXPECT_EQ(0, tab_helper->GetTotalBlockedCount());
+
+  // The reload's navigation reaches the helper through the new contents.
+  content::TestNavigationObserver navigation_observer(tab->GetContents());
+  tab_strip_model->ActivateTabAt(index);
+  tab->GetContents()->GetController().LoadIfNecessary();
+  tab_helper->HandleItemBlocked(kAds, "https://b.com/ad.js");
+  navigation_observer.Wait();
+  EXPECT_EQ(0, tab_helper->GetTotalBlockedCount());
+  EXPECT_EQ(url, tab_helper->GetCurrentSiteURL());
+}
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 }  // namespace brave_shields

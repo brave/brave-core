@@ -23,4 +23,9 @@ bool VerticalTabStripStateControllerImpl::ShouldHideCompletelyWhenCollapsed()
   ;
 }
 
+bool VerticalTabStripStateControllerImpl::IsVerticalTabOnRight() const {
+  return pref_service_->FindPreference(brave_tabs::kVerticalTabsOnRight) &&
+         pref_service_->GetBoolean(brave_tabs::kVerticalTabsOnRight);
+}
+
 }  // namespace tabs

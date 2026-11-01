@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/campaigns_database_table.h"
-#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/dayparts_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/geo_targets_database_table.h"
@@ -64,8 +64,8 @@ void Create(RunDBTransactionCallback callback) {
   table::Deposits deposits_database_table;
   deposits_database_table.Create(mojom_db_transaction);
 
-  table::CreativeSetConversions creative_set_conversion_database_table;
-  creative_set_conversion_database_table.Create(mojom_db_transaction);
+  table::CampaignConversions campaign_conversion_database_table;
+  campaign_conversion_database_table.Create(mojom_db_transaction);
 
   table::CreativeNotificationAds creative_notification_ads_database_table;
   creative_notification_ads_database_table.Create(mojom_db_transaction);

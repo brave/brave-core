@@ -131,17 +131,9 @@ extension BrowserViewController: TabDelegate {
           title: Strings.shareLinkActionTitle,
           image: UIImage(braveSystemNamed: "leo.share.macos")
         ) { _ in
-          // TODO: Find a way to add fixes brave-ios#3323 and brave-ios#2961 here:
-          // Normally we use `tab.temporaryDocument` for the downloaded file on the tab.
-          // `temporaryDocument` returns the downloaded file to disk on the current tab.
-          // Using a downloaded file url results in having functions like "Save to files" available.
-          // It also attaches the file (image, pdf, etc) and not the url to emails, slack, etc.
-          // Since this is **not** a tab but a standalone web view, the downloaded temporary file is **not** available.
-          // This results in the fixes for #3323 and #2961 not being included in this share scenario.
-          // This is not a regression, we simply never handled this scenario in both fixes.
-          // Some possibile fixes include:
-          // - Detect the file type and download it if necessary and don't rely on the `tab.temporaryDocument`.
-          // - Add custom "Save to file" functionality (needs investigation).
+          // The tab share sheet downloads the displayed document via `ShareableDocument` so that
+          // functions like "Save to Files" are available and the file is attached to emails, etc.
+          // A link is not the tab's displayed content so that path does not apply here.
           self.presentActivityViewController(
             url,
             tab: self.tabManager.selectedTab,
@@ -281,9 +273,11 @@ extension BrowserViewController: TabDelegate {
   public func tab(
     _ tab: some TabState,
     runJavaScriptAlertPanelWithMessage message: String,
-    pageURL: URL
+    pageURL: URL?
   ) async {
-    guard case let origin = pageURL.origin, !origin.isOpaque, tab === tabManager.selectedTab else {
+    guard tab === tabManager.selectedTab,
+      case (let origin, let title)? = javaScriptDialogOriginAndTitle(tab: tab, pageURL: pageURL)
+    else {
       return
     }
     await withCheckedContinuation { continuation in
@@ -291,6 +285,7 @@ extension BrowserViewController: TabDelegate {
         continuation.resume()
       }
       var messageAlert = MessageAlert(
+        title: title,
         message: message,
         origin: origin,
         completionHandler: completionHandler,
@@ -306,9 +301,11 @@ extension BrowserViewController: TabDelegate {
   public func tab(
     _ tab: some TabState,
     runJavaScriptConfirmPanelWithMessage message: String,
-    pageURL: URL
+    pageURL: URL?
   ) async -> Bool {
-    guard case let origin = pageURL.origin, !origin.isOpaque, tab === tabManager.selectedTab else {
+    guard tab === tabManager.selectedTab,
+      case (let origin, let title)? = javaScriptDialogOriginAndTitle(tab: tab, pageURL: pageURL)
+    else {
       return false
     }
     return await withCheckedContinuation { continuation in
@@ -316,6 +313,7 @@ extension BrowserViewController: TabDelegate {
         continuation.resume(returning: result)
       }
       var confirmAlert = ConfirmPanelAlert(
+        title: title,
         message: message,
         origin: origin,
         completionHandler: completionHandler,
@@ -332,9 +330,11 @@ extension BrowserViewController: TabDelegate {
     _ tab: some TabState,
     runJavaScriptConfirmPanelWithPrompt prompt: String,
     defaultText: String?,
-    pageURL: URL
+    pageURL: URL?
   ) async -> String? {
-    guard case let origin = pageURL.origin, !origin.isOpaque, tab === tabManager.selectedTab else {
+    guard tab === tabManager.selectedTab,
+      case (let origin, let title)? = javaScriptDialogOriginAndTitle(tab: tab, pageURL: pageURL)
+    else {
       return nil
     }
     return await withCheckedContinuation { continuation in
@@ -342,6 +342,7 @@ extension BrowserViewController: TabDelegate {
         continuation.resume(returning: result)
       }
       var textInputAlert = TextInputAlert(
+        title: title,
         message: prompt,
         origin: origin,
         completionHandler: completionHandler,
@@ -508,6 +509,23 @@ extension BrowserViewController {
       contentWorld: .defaultClient,
       asFunction: false
     )
+  }
+
+  /// Resolves the origin and title to use for a JavaScript dialog. A `nil` `pageURL` means the
+  /// dialog came from an embedded frame with an opaque origin, so it is attributed to the main
+  /// frame's origin but titled generically rather than displaying that origin.
+  private func javaScriptDialogOriginAndTitle(
+    tab: some TabState,
+    pageURL: URL?
+  ) -> (URLOrigin, String?)? {
+    if let pageURL {
+      let origin = pageURL.origin
+      return origin.isOpaque ? nil : (origin, origin.serialized)
+    }
+    guard let origin = tab.lastCommittedURL?.origin, !origin.isOpaque else {
+      return nil
+    }
+    return (origin, Strings.javaScriptDialogEmbeddedPageTitle)
   }
 
   func handleAlert<T: JSAlertInfo>(

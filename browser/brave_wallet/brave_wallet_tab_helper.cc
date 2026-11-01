@@ -24,6 +24,7 @@
 #include "components/permissions/permission_request.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/permissions/request_type.h"
+#include "components/tabs/public/tab_interface.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/global_routing_id.h"
 #include "content/public/browser/web_contents.h"
@@ -31,7 +32,6 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_wallet/wallet_bubble_manager_delegate.h"
-#include "components/tabs/public/tab_interface.h"
 #endif
 
 namespace brave_wallet {
@@ -45,17 +45,18 @@ std::unique_ptr<BraveWalletProviderDelegate> CreateDelegate(
                                                            host_id);
 }
 
-#if !BUILDFLAG(IS_ANDROID)
-bool IsWebContentsActive(content::WebContents& web_contents) {
-  auto* tab = tabs::TabInterface::MaybeGetFromContents(&web_contents);
-  return tab && tab->IsActivated();
-}
-#endif
-
 }  // namespace
 
-BraveWalletTabHelper::BraveWalletTabHelper(content::WebContents* web_contents)
-    : content::WebContentsUserData<BraveWalletTabHelper>(*web_contents) {}
+DEFINE_USER_DATA(BraveWalletTabHelper);
+
+// static
+BraveWalletTabHelper* BraveWalletTabHelper::From(tabs::TabInterface* tab) {
+  return tab ? Get(tab->GetUnownedUserDataHost()) : nullptr;
+}
+
+BraveWalletTabHelper::BraveWalletTabHelper(tabs::TabInterface& tab)
+    : tabs::ContentsObservingTabFeature(tab),
+      scoped_unowned_user_data_(tab.GetUnownedUserDataHost(), *this) {}
 
 BraveWalletTabHelper::~BraveWalletTabHelper() {
 #if !BUILDFLAG(IS_ANDROID)
@@ -89,7 +90,8 @@ void BraveWalletTabHelper::BindEthereumProvider(
     return;
   }
 
-  auto* tab_helper = BraveWalletTabHelper::FromWebContents(web_contents);
+  auto* tab_helper = BraveWalletTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   if (!tab_helper) {
     return;
   }
@@ -125,7 +127,8 @@ void BraveWalletTabHelper::BindSolanaProvider(
   content::WebContents* web_contents =
       content::WebContents::FromRenderFrameHost(frame_host);
 
-  auto* tab_helper = BraveWalletTabHelper::FromWebContents(web_contents);
+  auto* tab_helper = BraveWalletTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   if (!tab_helper) {
     return;
   }
@@ -165,7 +168,8 @@ void BraveWalletTabHelper::BindCardanoProvider(
   content::WebContents* web_contents =
       content::WebContents::FromRenderFrameHost(frame_host);
 
-  auto* tab_helper = BraveWalletTabHelper::FromWebContents(web_contents);
+  auto* tab_helper = BraveWalletTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   if (!tab_helper) {
     return;
   }
@@ -199,7 +203,8 @@ void BraveWalletTabHelper::BindPolkadotProvider(
   content::WebContents* web_contents =
       content::WebContents::FromRenderFrameHost(frame_host);
 
-  auto* tab_helper = BraveWalletTabHelper::FromWebContents(web_contents);
+  auto* tab_helper = BraveWalletTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   if (!tab_helper) {
     return;
   }
@@ -212,6 +217,26 @@ void BraveWalletTabHelper::BindPolkadotProvider(
                               frame_host->GetGlobalId()),
           origin),
       std::move(receiver));
+}
+
+void BraveWalletTabHelper::OnDiscardContents(
+    tabs::TabInterface* tab,
+    content::WebContents* old_contents,
+    content::WebContents* new_contents) {
+  // The providers, connections and bubble belong to the old contents' frames.
+#if !BUILDFLAG(IS_ANDROID)
+  if (IsShowingBubble()) {
+    CloseBubble();
+  }
+  wallet_bubble_manager_delegate_.reset();
+#endif  // !BUILDFLAG(IS_ANDROID)
+  ethereum_provider_receivers_.Clear();
+  solana_provider_receivers_.Clear();
+  cardano_provider_receivers_.Clear();
+  polkadot_provider_receivers_.Clear();
+  solana_connected_accounts_.clear();
+  tabs::ContentsObservingTabFeature::OnDiscardContents(tab, old_contents,
+                                                       new_contents);
 }
 
 void BraveWalletTabHelper::AddSolanaConnectedAccount(
@@ -248,11 +273,11 @@ void BraveWalletTabHelper::ShowBubbleImpl(GURL url) {
   // Dapp requests always use the bubble for this PoC. Contextual side panel
   // hosting is limited to the base wallet panel URL (no in-panel navigation).
   wallet_bubble_manager_delegate_ =
-      WalletBubbleManagerDelegate::MaybeCreate(&GetWebContents(), url);
+      WalletBubbleManagerDelegate::MaybeCreate(web_contents(), url);
   if (!wallet_bubble_manager_delegate_) {
     return;
   }
-  if (!IsWebContentsActive(GetWebContents())) {
+  if (!tab().IsActivated()) {
     return;
   }
   wallet_bubble_manager_delegate_->ShowBubble();
@@ -310,7 +335,7 @@ bool BraveWalletTabHelper::IsBubbleClosedForTesting() {
 
 GURL BraveWalletTabHelper::GetBubbleURL() {
   auto* manager =
-      permissions::PermissionRequestManager::FromWebContents(&GetWebContents());
+      permissions::PermissionRequestManager::FromWebContents(web_contents());
   if (!manager) {
     return GURL();
   }
@@ -372,7 +397,5 @@ GURL BraveWalletTabHelper::GetApproveBubbleURL() {
 }
 
 #endif  // !BUILDFLAG(IS_ANDROID)
-
-WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveWalletTabHelper);
 
 }  // namespace brave_wallet

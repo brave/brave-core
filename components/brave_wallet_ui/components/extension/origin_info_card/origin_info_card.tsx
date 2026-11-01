@@ -92,10 +92,7 @@ export const OriginInfoCard = (props: Props) => {
             textColor='tertiary'
             textAlign={orientation === 'horizontal' ? 'left' : undefined}
           >
-            <CreateSiteOrigin
-              originSpec={origin.originSpec}
-              eTldPlusOne={origin.eTldPlusOne}
-            />
+            <CreateSiteOrigin originInfo={origin} />
           </OriginUrl>
         )}
       </Column>

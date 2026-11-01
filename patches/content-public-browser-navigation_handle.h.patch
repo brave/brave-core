@@ -1,5 +1,5 @@
 diff --git a/content/public/browser/navigation_handle.h b/content/public/browser/navigation_handle.h
-index 52dcbe87c75cbd623a41c0038dfcb103d17d4ca0..c2f22edac5ec37367eee627fc3dcea99f44aabf0 100644
+index e692a94273d3a674a20c3b55c13aa53656a935a5..eb0c93f36ba399f9b9ae13275bb249b1956771e2 100644
 --- a/content/public/browser/navigation_handle.h
 +++ b/content/public/browser/navigation_handle.h
 @@ -980,6 +980,12 @@ class CONTENT_EXPORT NavigationHandle : public base::SupportsUserData {

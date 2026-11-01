@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 6651c4615932bdc8ef82e1fa4dc868ddfbfb0354..e8c3cc470c917f20ce97df7914fd4da0e802ef49 100644
+index 441c923aa427549fa90f88f78ae4ea5fb9833b02..287900883bfaf7277d7b5426ea3969e68e46dfc6 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -484,6 +484,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -492,6 +492,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
    // Deprecated 08/2026.
    registry->RegisterTimePref(kWaitingForMultiProfileForcedMigrationTimestamp,
                               base::Time());
@@ -10,7 +10,7 @@ index 6651c4615932bdc8ef82e1fa4dc868ddfbfb0354..e8c3cc470c917f20ce97df7914fd4da0
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -928,6 +929,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -944,6 +945,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
    // Deprecated 09/2026.
    registry->RegisterDictionaryPref(kSigninHasAcceptedManagementDialog);
    registry->RegisterBooleanPref(kFingerprintingProtectionEnabled, false);
@@ -18,7 +18,7 @@ index 6651c4615932bdc8ef82e1fa4dc868ddfbfb0354..e8c3cc470c917f20ce97df7914fd4da0
  }
  
  // This method should be periodically pruned of year+ old migrations.
-@@ -959,6 +961,7 @@ void MigrateObsoleteLocalStatePrefs(PrefService* prefs) {
+@@ -975,6 +977,7 @@ void MigrateObsoleteLocalStatePrefs(PrefService* prefs) {
  
    // Added 08/2026.
    prefs->ClearPref(kWaitingForMultiProfileForcedMigrationTimestamp);
@@ -26,7 +26,7 @@ index 6651c4615932bdc8ef82e1fa4dc868ddfbfb0354..e8c3cc470c917f20ce97df7914fd4da0
  }
  
  // This method should be periodically pruned of year+ old migrations.
-@@ -1013,6 +1016,7 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
+@@ -1029,6 +1032,7 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
    // Deprecated 09/2026.
    prefs->ClearPref(kSigninHasAcceptedManagementDialog);
    prefs->ClearPref(kFingerprintingProtectionEnabled);

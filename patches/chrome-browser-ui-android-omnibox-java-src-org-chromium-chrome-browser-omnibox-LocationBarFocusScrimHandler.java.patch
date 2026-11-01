@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/LocationBarFocusScrimHandler.java b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/LocationBarFocusScrimHandler.java
-index fdb8c2352410194d558f8d778af00509cf5c1266..b3527d9b210b15ca4c8e7275e6048ed6935c6008 100644
+index 845e7811de646f64d5d3068eb829ddc60369ac54..d13e1d415c9adb9f4a13be168f344cbe446a4402 100644
 --- a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/LocationBarFocusScrimHandler.java
 +++ b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/LocationBarFocusScrimHandler.java
-@@ -47,7 +47,6 @@ public class LocationBarFocusScrimHandler {
+@@ -73,7 +73,6 @@ public class LocationBarFocusScrimHandler {
      private final Context mContext;
      private final NonNullObservableSupplier<Integer> mTabStripHeightSupplier;
      private final Callback<Integer> mTabStripHeightChangeCallback;
@@ -10,7 +10,7 @@ index fdb8c2352410194d558f8d778af00509cf5c1266..b3527d9b210b15ca4c8e7275e6048ed6
      private final SettableNonNullObservableSupplier<Boolean> mScrimVisibilitySupplier =
              ObservableSuppliers.createNonNull(false);
  
-@@ -73,7 +72,6 @@ public class LocationBarFocusScrimHandler {
+@@ -99,7 +98,6 @@ public class LocationBarFocusScrimHandler {
              BottomControlsStacker bottomControlsStacker) {
          mScrimManager = scrimManager;
          mLocationBarDataProvider = locationBarDataProvider;
@@ -18,17 +18,17 @@ index fdb8c2352410194d558f8d778af00509cf5c1266..b3527d9b210b15ca4c8e7275e6048ed6
          mContext = context;
          Callback<Boolean> visibilityChangeCallbackWrapper =
                  visible -> {
-@@ -108,6 +106,7 @@ public class LocationBarFocusScrimHandler {
+@@ -134,6 +132,7 @@ public class LocationBarFocusScrimHandler {
                      mScrimModel.set(ScrimProperties.TOP_MARGIN, newHeight);
                  };
          mTabStripHeightSupplier.addSyncObserverAndPostIfNonNull(mTabStripHeightChangeCallback);
 +        mScrimModel.set(ScrimProperties.AFFECTS_NAVIGATION_BAR, true);
      }
  
- 
-@@ -129,9 +128,7 @@ public class LocationBarFocusScrimHandler {
-             scrimColor = mLightScrimColor;
-         }
+     /** Compute and apply property updates needed for accurate visual representation of scrim. */
+@@ -154,9 +153,7 @@ public class LocationBarFocusScrimHandler {
+                     default -> throw new IllegalStateException("Unhandled scrim state");
+                 };
          mScrimModel.set(ScrimProperties.BACKGROUND_COLOR, scrimColor);
 -        mScrimModel.set(
 -                ScrimProperties.BOTTOM_MARGIN,
@@ -36,4 +36,4 @@ index fdb8c2352410194d558f8d778af00509cf5c1266..b3527d9b210b15ca4c8e7275e6048ed6
 +        mScrimModel.set(ScrimProperties.BOTTOM_MARGIN, 0);
      }
  
-     /** Controls the visibility of scrim overlay. */
+     /** Returns the {@link ScrimState} the scrim should currently be drawn in. */

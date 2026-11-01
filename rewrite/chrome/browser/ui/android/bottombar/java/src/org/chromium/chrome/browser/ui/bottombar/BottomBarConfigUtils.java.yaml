@@ -5,19 +5,9 @@
 
 substitutions:
   - description: |-
-      Let the "Enable bottom bar" setting turn the bottom bar off.
-
-      Bails out ahead of upstream's conditions rather than joining them, so the
-      patch only ever adds a line and survives upstream editing them.
-
-      The bottom bar is the bottom navigation toolbar Brave has always had a
-      setting for, so it answers to the same switch. Kept in step with
-      ToolbarVariationUtils#isToolbarUiRefactorEnabled, which upstream pairs with
-      this by LINT.IfChange - the top toolbar has to keep the tab switcher and app
-      menu buttons whenever no bottom bar is there to carry them.
+      Default the bottom bar setting to Brave's prior bottom toolbar choices.
     regex:
       re_pattern: |-
-        (public static boolean isBottomBarEnabled\(Context context\) \{)
+        (ChromePreferenceKeys\.BOTTOM_BAR_ENABLED,\s*)(ChromeFeatureList\.sAndroidBottomBarDefaultUserEnabled\.getValue\(\))
       replace: |-
-        \1
-                if (!BraveBottomBarUserPrefs.isBottomBarEnabled()) return false;
+        \1BraveBottomBarUserPrefs.getDefaultUserEnabled(\2)

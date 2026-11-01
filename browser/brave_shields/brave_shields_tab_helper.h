@@ -11,33 +11,40 @@
 #include <vector>
 
 #include "base/containers/flat_set.h"
-#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
 #include "base/scoped_observation.h"
 #include "brave/components/brave_shields/core/common/brave_shields_panel.mojom.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
-#include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
+#include "chrome/browser/ui/tabs/contents_observing_tab_feature.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/favicon/core/favicon_driver_observer.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "content/public/browser/navigation_entry.h"
-#include "content/public/browser/web_contents_observer.h"
-#include "content/public/browser/web_contents_user_data.h"
+#include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 #include "url/gurl.h"
+
+namespace tabs {
+class TabInterface;
+}  // namespace tabs
 
 namespace brave_shields {
 
 class BraveShieldsSettingsService;
 
-// Per-tab class to manage Shields panel data
-class BraveShieldsTabHelper
-    : public content::WebContentsObserver,
-      public content::WebContentsUserData<BraveShieldsTabHelper>,
-      public content_settings::Observer,
-      public favicon::FaviconDriverObserver {
+// Per-tab class to manage Shields panel data. Owned by BraveTabFeatures.
+class BraveShieldsTabHelper : public tabs::ContentsObservingTabFeature,
+                              public content_settings::Observer,
+                              public favicon::FaviconDriverObserver {
  public:
+  DECLARE_USER_DATA(BraveShieldsTabHelper);
+
+  static BraveShieldsTabHelper* From(tabs::TabInterface* tab);
+
+  explicit BraveShieldsTabHelper(tabs::TabInterface& tab);
   BraveShieldsTabHelper(const BraveShieldsTabHelper&) = delete;
   BraveShieldsTabHelper& operator=(const BraveShieldsTabHelper&) = delete;
   ~BraveShieldsTabHelper() override;
@@ -84,7 +91,6 @@ class BraveShieldsTabHelper
   void SetCookieBlockMode(mojom::CookieBlockMode mode);
   void SetHttpsUpgradeMode(mojom::HttpsUpgradeMode mode);
   void SetIsNoScriptEnabled(bool is_enabled);
-  void EnforceSiteDataCleanup();
   void AllowScriptsOnce(const std::vector<std::string>& origins);
   void BlockAllowedScripts(const std::vector<std::string>& origins);
   void SetWebcompatEnabled(ContentSettingsType webcompat_settings_type,
@@ -96,20 +102,22 @@ class BraveShieldsTabHelper
   void RemoveObserver(Observer* obs);
   bool HasObserver(Observer* observer);
 
- private:
-  friend class content::WebContentsUserData<BraveShieldsTabHelper>;
+  base::WeakPtr<BraveShieldsTabHelper> GetWeakPtr();
 
+ private:
   struct RepeatedReloadsCounter {
     base::Time initial_reload_at;
     size_t reloads_count = 0;
   };
 
-  explicit BraveShieldsTabHelper(content::WebContents* web_contents);
-
   // content::WebContentsObserver
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
-  void WebContentsDestroyed() override;
+
+  // tabs::ContentsObservingTabFeature
+  void OnDiscardContents(tabs::TabInterface* tab,
+                         content::WebContents* old_contents,
+                         content::WebContents* new_contents) override;
 
   // content_settings::Observer
   void OnContentSettingChanged(
@@ -144,10 +152,10 @@ class BraveShieldsTabHelper
   const raw_ref<BraveShieldsSettingsService> brave_shields_settings_;
 
   PrefChangeRegistrar local_state_change_registrar_;
-  const raw_ptr<ephemeral_storage::EphemeralStorageService>
-      ephemeral_storage_service_;
 
-  WEB_CONTENTS_USER_DATA_KEY_DECL();
+  ui::ScopedUnownedUserData<BraveShieldsTabHelper> scoped_unowned_user_data_;
+
+  base::WeakPtrFactory<BraveShieldsTabHelper> weak_factory_{this};
 };
 
 }  // namespace brave_shields

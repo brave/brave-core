@@ -9,6 +9,7 @@
 
 #include "base/check.h"
 #include "base/feature_list.h"
+#include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/image_metadata_stripper/file_upload_controller.h"
 #include "brave/browser/misc_metrics/captcha_metrics.h"
 #include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
@@ -18,6 +19,9 @@
 #include "brave/browser/ui/sidebar/sidebar_tab_helper.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
 #include "brave/components/misc_metrics/features.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -31,6 +35,7 @@
 #include "chrome/browser/ui/thumbnails/thumbnail_tab_helper.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/tabs/public/tab_interface.h"
+#include "third_party/widevine/cdm/buildflags.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
 #include "brave/browser/brave_ads/creatives/search_result_ad/creative_search_result_ad_tab_helper.h"
@@ -39,6 +44,18 @@
 
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 #include "brave/browser/ui/geolocation/brave_geolocation_permission_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/brave_rewards/rewards_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_WIDEVINE)
+#include "brave/browser/widevine/brave_drm_tab_helper.h"
 #endif
 
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY)
@@ -79,6 +96,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/browser/ui/speedreader/speedreader_tab_helper.h"
 #include "brave/components/speedreader/common/features.h"
 #endif
 
@@ -87,6 +105,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/browser/brave_news/brave_news_tab_helper.h"
 #include "brave/browser/ui/views/page_action/brave_news_page_action_controller.h"
 #endif
 
@@ -170,6 +189,8 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
+  // Created before the page action controller, which observes it.
+  speedreader_tab_helper_ = speedreader::SpeedreaderTabHelper::MaybeCreate(tab);
   if (base::FeatureList::IsEnabled(
           speedreader::features::kSpeedreaderFeature) &&
       page_action_controller()->ActionExists(kActionShowSpeedreader)) {
@@ -208,6 +229,8 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
+  // Created before the page action controller, which observes it.
+  brave_news_tab_helper_ = BraveNewsTabHelper::MaybeCreate(tab);
   if (!profile->IsOffTheRecord() &&
       page_action_controller()->ActionExists(kActionShowBraveNews)) {
     brave_news_page_action_controller_ =
@@ -246,6 +269,22 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY)
   web_discovery_tab_helper_ =
       web_discovery::WebDiscoveryTabHelper::MaybeCreate(tab, *profile);
+#endif
+
+  brave_shields_tab_helper_ =
+      std::make_unique<brave_shields::BraveShieldsTabHelper>(tab);
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+  rewards_tab_helper_ = std::make_unique<brave_rewards::RewardsTabHelper>(tab);
+#endif
+
+#if BUILDFLAG(ENABLE_WIDEVINE)
+  drm_tab_helper_ = std::make_unique<BraveDrmTabHelper>(tab);
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  brave_wallet_tab_helper_ =
+      std::make_unique<brave_wallet::BraveWalletTabHelper>(tab);
 #endif
 
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)

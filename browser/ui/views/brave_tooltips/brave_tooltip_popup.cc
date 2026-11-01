@@ -302,7 +302,7 @@ const ui::decoration::ShadowDetails& BraveTooltipPopup::GetShadowDetails()
     const {
   return ui::decoration::ShadowDetails::Get(
       gfx::RoundedCornersF(kCornerRadius),
-      ui::Shadow::MakeShadowValues(kShadowElevation));
+      ui::decoration::Shadow::MakeShadowValues(kShadowElevation));
 }
 
 gfx::Insets BraveTooltipPopup::GetShadowMargin() const {

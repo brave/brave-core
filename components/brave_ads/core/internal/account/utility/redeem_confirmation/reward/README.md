@@ -20,6 +20,6 @@ Here's a breakdown of the process:
 8. The client reveals the original tokens by unblinding them.
 9. The client periodically redeems unblinded tokens, also known as payment tokens, with the server.
 
-This protocol is effective for maintaining anonymity and ensuring secure transactions. For a more detailed explanation, see the [challenge bypass ristretto test](../../common/challenge_bypass_ristretto/challenge_bypass_ristretto_test.cc).
+This protocol is effective for maintaining anonymity and ensuring secure transactions. For a more detailed explanation, see the [challenge bypass ristretto test](../../../../common/challenge_bypass_ristretto/challenge_bypass_ristretto_test.cc).
 
 Please add to it!

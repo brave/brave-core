@@ -19,6 +19,7 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/meld_integration_responses.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/meld_integration.mojom-forward.h"
 
@@ -38,8 +39,6 @@ base::flat_map<std::string, std::string> ParseOptionalMapOfStrings(
   return result;
 }
 
-// Meld's chainId is only cross-checked for EVM chains, as Meld's ids of other
-// chains don't follow Brave's format.
 std::optional<std::pair<brave_wallet::mojom::CoinType, std::string_view>>
 GetBraveChain(
     const brave_wallet::meld_integration_responses::CryptoCurrency& currency) {
@@ -49,6 +48,13 @@ GetBraveChain(
   }
 
   const auto& [coin, chain_id] = it->second;
+  if (coin == brave_wallet::mojom::CoinType::DOT &&
+      !brave_wallet::IsPolkadotEnabled()) {
+    return std::nullopt;
+  }
+
+  // Meld's chainId is only cross-checked for EVM chains, as Meld's ids of other
+  // chains don't follow Brave's format.
   if (coin == brave_wallet::mojom::CoinType::ETH && currency.chain_id) {
     uint64_t meld_chain_id = 0;
     if (!base::StringToUint64(*currency.chain_id, &meld_chain_id) ||
@@ -61,13 +67,13 @@ GetBraveChain(
 }
 
 // Meld may suffix currency codes with their chain code, e.g. "USDT_POLYGON".
-std::string GetCurrencySymbol(
-    const brave_wallet::meld_integration_responses::CryptoCurrency& currency) {
-  if (const auto symbol = base::RemoveSuffix(
-          currency.currency_code, base::StrCat({"_", currency.chain_code}))) {
+std::string GetCurrencySymbol(std::string_view currency_code,
+                              std::string_view chain_code) {
+  if (const auto symbol =
+          base::RemoveSuffix(currency_code, base::StrCat({"_", chain_code}))) {
     return std::string(*symbol);
   }
-  return currency.currency_code;
+  return std::string(currency_code);
 }
 
 }  //  namespace
@@ -227,13 +233,16 @@ std::optional<std::vector<mojom::MeldPaymentMethodPtr>> ParsePaymentMethods(
   // Parses results like this:
   // [
   //   {
-  //     "paymentMethod": "ACH",
-  //     "name": "ACH",
-  //     "paymentType": "BANK_TRANSFER",
-  //     "logos": {
-  //       "dark": "https://images-paymentMethod.meld.io/ACH/logo_dark.png",
-  //       "light": "https://images-paymentMethod.meld.io/ACH/logo_light.png"
-  //     }
+  //     "countryCode": "US",
+  //     "providerMethod": "card",
+  //     "method": "CREDIT_DEBIT_CARD",
+  //     "name": "Credit / Debit Card",
+  //     "type": "CARD",
+  //     "logo": {
+  //       "dark": "https://images-paymentMethod.meld.io/CARD/logo_dark.png",
+  //       "light": "https://images-paymentMethod.meld.io/CARD/logo_light.png"
+  //     },
+  //     "headlessSupported": false
   //   }
   // ]
   if (!json_value.is_list()) {
@@ -247,11 +256,11 @@ std::optional<std::vector<mojom::MeldPaymentMethodPtr>> ParsePaymentMethods(
       return std::nullopt;
     }
 
-    const auto& logos = payment_method_value->logos;
+    const auto& logo = payment_method_value->logo;
     auto pm = mojom::MeldPaymentMethod::New(
-        payment_method_value->payment_method, payment_method_value->name,
-        payment_method_value->payment_type, logos ? logos->dark : std::nullopt,
-        logos ? logos->light : std::nullopt);
+        payment_method_value->method, payment_method_value->name,
+        payment_method_value->type, logo ? logo->dark : std::nullopt,
+        logo ? logo->light : std::nullopt);
 
     payment_methods.emplace_back(std::move(pm));
   }
@@ -266,28 +275,29 @@ std::optional<std::vector<mojom::MeldPaymentMethodPtr>> ParsePaymentMethods(
 std::optional<std::vector<mojom::MeldFiatCurrencyPtr>> ParseFiatCurrencies(
     const base::Value& json_value) {
   // Parses results like this:
-  // [
-  //   {
-  //     "currencyCode": "AFN",
-  //     "name": "Afghani",
-  //     "symbolImageUrl": "https://images-currency.meld.io/fiat/AFN/symbol.png"
-  //   }
-  // ]
+  // {
+  //   "currencies": [
+  //     {
+  //       "currencyCode": "AFN",
+  //       "name": "Afghani",
+  //       "decimalPlaces": 2,
+  //       "type": "FIAT",
+  //       "symbol": "https://images-currency.meld.io/fiat/AFN/symbol.png"
+  //     }
+  //   ]
+  // }
 
-  if (!json_value.is_list()) {
+  const auto response =
+      meld_integration_responses::FiatCurrenciesResponse::FromValue(json_value);
+  if (!response) {
     return std::nullopt;
   }
-  std::vector<mojom::MeldFiatCurrencyPtr> fiat_currencies;
-  for (const auto& fc_item : json_value.GetList()) {
-    const auto fiat_currency_value =
-        meld_integration_responses::FiatCurrency::FromValue(fc_item);
-    if (!fiat_currency_value) {
-      return std::nullopt;
-    }
 
-    auto fc = mojom::MeldFiatCurrency::New(
-        fiat_currency_value->currency_code, fiat_currency_value->name,
-        fiat_currency_value->symbol_image_url);
+  std::vector<mojom::MeldFiatCurrencyPtr> fiat_currencies;
+  for (const auto& fiat_currency_value : response->currencies) {
+    auto fc = mojom::MeldFiatCurrency::New(fiat_currency_value.currency_code,
+                                           fiat_currency_value.name,
+                                           fiat_currency_value.symbol);
 
     fiat_currencies.emplace_back(std::move(fc));
   }
@@ -298,50 +308,52 @@ std::optional<std::vector<mojom::MeldFiatCurrencyPtr>> ParseFiatCurrencies(
 std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>> ParseCryptoCurrencies(
     const base::Value& json_value) {
   // Parses results like this:
-  // [
-  //   {
-  //     "currencyCode": "USDT_KCC",
-  //     "name": "#REF!",
-  //     "chainCode": "KCC",
-  //     "chainName": "KuCoin Community Chain",
-  //     "chainId": null,
-  //     "contractAddress": null,
-  //     "symbolImageUrl":
-  //     "https://images-currency.meld.io/crypto/USDT_KCC/symbol.png"
-  //   },
-  //   {
-  //     "currencyCode": "00",
-  //     "name": "00 Token",
-  //     "chainCode": "ETH",
-  //     "chainName": "Ethereum",
-  //     "chainId": "1",
-  //     "contractAddress": null,
-  //     "symbolImageUrl":
-  //     "https://images-currency.meld.io/crypto/00/symbol.png"
-  //   }
-  // ]
-  if (!json_value.is_list()) {
+  // {
+  //   "currencies": [
+  //     {
+  //       "currencyCode": "USDT_KCC",
+  //       "name": "#REF!",
+  //       "decimalPlaces": 6,
+  //       "type": "CRYPTO",
+  //       "chainCode": "KCC",
+  //       "chainId": null,
+  //       "contract": null,
+  //       "symbol":
+  //       "https://images-currency.meld.io/crypto/USDT_KCC/symbol.png"
+  //     },
+  //     {
+  //       "currencyCode": "00",
+  //       "name": "00 Token",
+  //       "decimalPlaces": 18,
+  //       "type": "CRYPTO",
+  //       "chainCode": "ETH",
+  //       "chainId": "1",
+  //       "contract": null,
+  //       "symbol": "https://images-currency.meld.io/crypto/00/symbol.png"
+  //     }
+  //   ]
+  // }
+  const auto response =
+      meld_integration_responses::CryptoCurrenciesResponse::FromValue(
+          json_value);
+  if (!response) {
     return std::nullopt;
   }
+
   std::vector<mojom::MeldCryptoCurrencyPtr> crypto_currencies;
-  for (const auto& cc_item : json_value.GetList()) {
-    const auto crypto_currency_value =
-        meld_integration_responses::CryptoCurrency::FromValue(cc_item);
-    if (!crypto_currency_value) {
-      return std::nullopt;
-    }
-    const auto brave_chain = GetBraveChain(*crypto_currency_value);
+  for (const auto& crypto_currency_value : response->currencies) {
+    const auto brave_chain = GetBraveChain(crypto_currency_value);
     if (!brave_chain) {
       continue;
     }
 
+    const auto& chain_code = crypto_currency_value.chain_code;
     auto cc = mojom::MeldCryptoCurrency::New(
         brave_chain->first, std::string(brave_chain->second),
-        GetCurrencySymbol(*crypto_currency_value),
-        crypto_currency_value->currency_code, crypto_currency_value->name,
-        crypto_currency_value->chain_code,
-        crypto_currency_value->contract_address,
-        crypto_currency_value->symbol_image_url);
+        GetCurrencySymbol(crypto_currency_value.currency_code, chain_code),
+        crypto_currency_value.currency_code, crypto_currency_value.name,
+        chain_code, crypto_currency_value.contract,
+        crypto_currency_value.symbol);
 
     crypto_currencies.emplace_back(std::move(cc));
   }
@@ -352,33 +364,32 @@ std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>> ParseCryptoCurrencies(
 std::optional<std::vector<mojom::MeldCountryPtr>> ParseCountries(
     const base::Value& json_value) {
   // Parses results like this:
-  // [
-  //   {
-  //     "countryCode": "AF",
-  //     "name": "Afghanistan",
-  //     "flagImageUrl": "https://images-country.meld.io/AF/flag.svg",
-  //     "regions": null
-  //   },
-  //   {
-  //     "countryCode": "AL",
-  //     "name": "Albania",
-  //     "flagImageUrl": "https://images-country.meld.io/AL/flag.svg",
-  //     "regions": null
-  //   }
-  // ]
-  if (!json_value.is_list()) {
+  // {
+  //   "countries": [
+  //     {
+  //       "countryCode": "AF",
+  //       "name": "Afghanistan",
+  //       "flag": "<emoji>",
+  //       "subdivisions": []
+  //     },
+  //     {
+  //       "countryCode": "AL",
+  //       "name": "Albania",
+  //       "flag": "<emoji>",
+  //       "subdivisions": []
+  //     }
+  //   ]
+  // }
+  const auto response =
+      meld_integration_responses::CountriesResponse::FromValue(json_value);
+  if (!response) {
     return std::nullopt;
   }
-  std::vector<mojom::MeldCountryPtr> countries;
-  for (const auto& country_item : json_value.GetList()) {
-    const auto country_value =
-        meld_integration_responses::Country::FromValue(country_item);
-    if (!country_value) {
-      return std::nullopt;
-    }
 
-    auto country = mojom::MeldCountry::New(country_value->country_code,
-                                           country_value->name);
+  std::vector<mojom::MeldCountryPtr> countries;
+  for (const auto& country_value : response->countries) {
+    auto country =
+        mojom::MeldCountry::New(country_value.country_code, country_value.name);
 
     countries.emplace_back(std::move(country));
   }

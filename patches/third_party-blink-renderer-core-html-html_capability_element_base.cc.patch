@@ -1,16 +1,17 @@
 diff --git a/third_party/blink/renderer/core/html/html_capability_element_base.cc b/third_party/blink/renderer/core/html/html_capability_element_base.cc
-index e255e68bf4e5b4a2481bb68a3caadd8e96acb660..77da8d58131918dc1d674d143b82e25342d6bc05 100644
+index a5f301bb9f1d278d02aa3a4402a664df918a8599..79df1f743ea8d9da82e9bc0c054b3666429d1552 100644
 --- a/third_party/blink/renderer/core/html/html_capability_element_base.cc
 +++ b/third_party/blink/renderer/core/html/html_capability_element_base.cc
-@@ -684,6 +684,11 @@ bool HTMLCapabilityElementBase::MaybeRegisterPageEmbeddedPermissionControl() {
-   embedded_permission_control_receiver_.Bind(
-       client.InitWithNewPipeAndPassReceiver(), GetTaskRunner());
-   CHECK(embedded_permission_control_receiver_.is_bound());
+@@ -705,6 +705,12 @@ bool HTMLCapabilityElementBase::MaybeRegisterPageEmbeddedPermissionControl() {
+     return false;
+   }
+ 
 +  if (descriptor->detail->which() ==
 +      mojom::blink::EmbeddedPermissionControlDescriptorExtension::Tag::
 +          kUserMedia) {
 +    return false;
 +  }
-   GetPermissionService()->RegisterPageEmbeddedPermissionControl(
-       mojo::Clone(permission_descriptors_), std::move(descriptor),
-       std::move(client));
++
+   mojo::PendingRemote<EmbeddedPermissionControlClient> client;
+   embedded_permission_control_receiver_.Bind(
+       client.InitWithNewPipeAndPassReceiver(), GetTaskRunner());

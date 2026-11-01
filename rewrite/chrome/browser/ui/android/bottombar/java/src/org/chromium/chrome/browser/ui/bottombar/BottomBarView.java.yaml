@@ -10,9 +10,6 @@ substitutions:
       Brave's bookmark button occupies the container upstream shares between Glic
       and AI Mode, so it has to resolve to it alongside them - BottomBarViewBinder
       looks the container up by the action id that owns the slot.
-    regex:
-      re_pattern: |-
-        ( *)(case ActionId\.AI_MODE:)
-      replace: |-
-        \1\2
-        \1case ActionId.BRAVE_BOOKMARK:
+    add_before_line:
+      line: 'return mExtraContainer;'
+      code: '            case ActionId.BRAVE_BOOKMARK:'

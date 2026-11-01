@@ -959,7 +959,7 @@
 "wallet.signCardanoTxRequestDetailsScriptDataHashLabel" = "Hash dos Dados do Script";
 
 /* The label displayed in details for Sign Cardano Transaction Request details panel beside/above the Token index. */
-"wallet.signCardanoTxRequestDetailsTokenLabel" = "Símbolo";
+"wallet.signCardanoTxRequestDetailsTokenLabel" = "Token";
 
 /* The section header displayed in details for Sign Cardano Transaction Request when the transaction includes a total collateral amount. */
 "wallet.signCardanoTxRequestDetailsTotalCollateralLabel" = "Garantia Total";

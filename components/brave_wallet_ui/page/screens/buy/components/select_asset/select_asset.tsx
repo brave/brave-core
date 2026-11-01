@@ -20,7 +20,7 @@ import {
 } from '../../../../../options/network-filter-options'
 
 // Queries
-import { useGetNetworksQuery } from '$wallet/common/slices/api.slice'
+import { useGetVisibleNetworksQuery } from '$wallet/common/slices/api.slice'
 
 // Types
 import { BraveWallet, MeldCryptoCurrency } from '../../../../../constants/types'
@@ -175,12 +175,16 @@ export const SelectAsset = (props: SelectAssetProps) => {
   )
 
   // Queries
-  const { data: networkList = [] } = useGetNetworksQuery()
+  const { data: networkList = [] } = useGetVisibleNetworksQuery()
 
   // Memos
   const assetsFilteredByNetwork = React.useMemo(() => {
+    const visibleChainIds = new Set(
+      networkList.map((network) => network.chainId),
+    )
+
     if (selectedNetworkFilter.chainId === AllNetworksOption.chainId) {
-      return assets
+      return assets.filter((asset) => visibleChainIds.has(asset.chainId))
     }
     return assets.filter(
       (asset) => asset.chainId === selectedNetworkFilter.chainId,

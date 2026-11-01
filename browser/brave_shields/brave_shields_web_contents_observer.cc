@@ -30,6 +30,7 @@
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/navigation_handle.h"
@@ -173,8 +174,8 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEventForWebContents(
   if (!web_contents) {
     return;
   }
-  auto* shields_data_ctrlr =
-      brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents);
+  auto* shields_data_ctrlr = brave_shields::BraveShieldsTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   // |shields_data_ctrlr| can be null if the |web_contents| is generated in
   // component layer - We don't attach any tab helpers in this case.
   if (!shields_data_ctrlr) {
@@ -190,8 +191,8 @@ void BraveShieldsWebContentsObserver::DispatchAllowedOnceEventForWebContents(
   if (!web_contents) {
     return;
   }
-  auto* shields_data_ctrlr =
-      brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents);
+  auto* shields_data_ctrlr = brave_shields::BraveShieldsTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   // |shields_data_ctrlr| can be null if the |web_contents| is generated in
   // component layer - We don't attach any tab helpers in this case.
   if (!shields_data_ctrlr) {
@@ -207,8 +208,8 @@ void BraveShieldsWebContentsObserver::
   if (!web_contents) {
     return;
   }
-  auto* shields_data_ctrlr =
-      brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents);
+  auto* shields_data_ctrlr = brave_shields::BraveShieldsTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   // |shields_data_ctrlr| can be null if the |web_contents| is generated in
   // component layer - We don't attach any tab helpers in this case.
   if (!shields_data_ctrlr) {

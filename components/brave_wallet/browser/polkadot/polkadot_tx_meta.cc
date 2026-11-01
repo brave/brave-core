@@ -13,7 +13,29 @@
 namespace brave_wallet {
 
 PolkadotTxMeta::PolkadotTxMeta() = default;
+
+PolkadotTxMeta::PolkadotTxMeta(const mojom::AccountIdPtr& from,
+                               PolkadotTransaction tx,
+                               const std::string& chain_id,
+                               mojom::SwapInfoPtr swap_info,
+                               std::optional<url::Origin> dapp_origin)
+    : TxMeta(from, chain_id, std::move(swap_info), std::move(dapp_origin)),
+      tx_(std::move(tx)) {
+  DCHECK_EQ(from->coin, mojom::CoinType::DOT);
+}
+
 PolkadotTxMeta::~PolkadotTxMeta() = default;
+
+std::unique_ptr<PolkadotTxMeta> PolkadotTxMeta::MakeUnapproved(
+    const mojom::AccountIdPtr& from,
+    PolkadotTransaction tx,
+    const std::string& chain_id,
+    mojom::SwapInfoPtr swap_info,
+    std::optional<url::Origin> dapp_origin) {
+  return std::make_unique<PolkadotTxMeta>(from, std::move(tx), chain_id,
+                                          std::move(swap_info),
+                                          std::move(dapp_origin));
+}
 
 base::DictValue PolkadotTxMeta::ToValue() const {
   auto dict = TxMeta::ToValue();
@@ -51,8 +73,8 @@ mojom::TransactionInfoPtr PolkadotTxMeta::ToTransactionInfo() const {
       status_, mojom::TransactionType::Other,
       std::vector<std::string>() /* tx_params */,
       std::vector<std::string>() /* tx_args */, created_time_, submitted_time_,
-      confirmed_time_, origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr,
-      chain_id_, "", false, swap_info_.Clone(), nullptr);
+      confirmed_time_, MakeDappOriginInfo(dapp_origin_), chain_id_, "", false,
+      swap_info_.Clone(), nullptr);
 }
 
 mojom::CoinType PolkadotTxMeta::GetCoinType() const {

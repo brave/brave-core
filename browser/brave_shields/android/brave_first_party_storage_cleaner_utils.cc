@@ -8,11 +8,14 @@
 #include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
 #include "brave/browser/brave_shields/android/jni_headers/BraveFirstPartyStorageCleanerUtils_jni.h"
-#include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
+#include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "chrome/browser/android/tab_android.h"
 #include "chrome/browser/profiles/profile.h"
+#include "content/public/browser/security_principal.h"
+#include "content/public/browser/site_instance.h"
+#include "content/public/browser/web_contents.h"
 
 namespace brave_shields {
 
@@ -32,14 +35,20 @@ static void JNI_BraveFirstPartyStorageCleanerUtils_CleanupTLDFirstPartyStorage(
     return;
   }
 
-  brave_shields::BraveShieldsTabHelper* brave_shields_tab_helper =
-      brave_shields::BraveShieldsTabHelper::GetOrCreateForWebContents(
-          web_contents);
-  if (!brave_shields_tab_helper) {
+  auto* site_instance = web_contents->GetSiteInstance();
+  CHECK(site_instance);
+
+  auto* ephemeral_storage_service =
+      EphemeralStorageServiceFactory::GetForContext(
+          web_contents->GetBrowserContext());
+  if (!ephemeral_storage_service) {
     return;
   }
 
-  brave_shields_tab_helper->EnforceSiteDataCleanup();
+  // Start manual cleanup.
+  ephemeral_storage_service->CleanupTLDFirstPartyStorage(
+      web_contents->GetLastCommittedURL(),
+      site_instance->GetSecurityPrincipal().GetStoragePartitionConfig(), true);
 }
 
 static void

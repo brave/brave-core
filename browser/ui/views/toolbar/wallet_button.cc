@@ -27,6 +27,7 @@
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -264,35 +265,38 @@ void WalletButton::UpdateImageAndText() {
 }
 
 void WalletButton::ShowWalletBubble() {
-  brave_wallet::BraveWalletTabHelper::FromWebContents(GetActiveWebContents())
+  brave_wallet::BraveWalletTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()))
       ->ShowBubble();
 }
 
 void WalletButton::ShowApproveWalletBubble() {
-  brave_wallet::BraveWalletTabHelper::FromWebContents(GetActiveWebContents())
+  brave_wallet::BraveWalletTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()))
       ->ShowApproveWalletBubble();
 }
 
 void WalletButton::CloseWalletBubble() {
-  brave_wallet::BraveWalletTabHelper::FromWebContents(GetActiveWebContents())
+  brave_wallet::BraveWalletTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()))
       ->CloseBubble();
 }
 
 bool WalletButton::IsShowingBubble() {
-  return brave_wallet::BraveWalletTabHelper::FromWebContents(
-             GetActiveWebContents())
+  return brave_wallet::BraveWalletTabHelper::From(
+             tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()))
       ->IsShowingBubble();
 }
 
 bool WalletButton::IsBubbleClosedForTesting() {
-  return brave_wallet::BraveWalletTabHelper::FromWebContents(
-             GetActiveWebContents())
+  return brave_wallet::BraveWalletTabHelper::From(
+             tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()))
       ->IsBubbleClosedForTesting();  // IN-TEST
 }
 
 views::Widget* WalletButton::GetBubbleWidgetForTesting() {
-  return brave_wallet::BraveWalletTabHelper::FromWebContents(
-             GetActiveWebContents())
+  return brave_wallet::BraveWalletTabHelper::From(
+             tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()))
       ->GetBubbleWidgetForTesting();  // IN-TEST
 }
 

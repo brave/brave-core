@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 238f8625e42d8703c72c266c36e32bbfb2113095..d1564ebb7e55fe04900ba5d600983b848c6984ee 100644
+index 1e352a02e9720c91917e329c22674fdd33451f4b..c83eee60b50e9bc3dbe6549d885d8e29b1f4dcea 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,45 +10,23 @@ index 238f8625e42d8703c72c266c36e32bbfb2113095..d1564ebb7e55fe04900ba5d600983b84
  import("//build/config/buildflags_paint_preview.gni")
  import("//build/config/chrome_build.gni")
  import("//build/config/compiler/compiler.gni")
-@@ -1512,6 +1513,7 @@ if (!is_android) {
-       ":ui",
+@@ -1109,6 +1110,7 @@ source_set("accelerator_table") {
+   sources = [ "accelerator_table.cc" ]
+   public_deps = [ "//ui/actions:actions_headers" ]
+   deps = [
++    "//brave/components/commander/common/buildflags",
+     "//build:branding_buildflags",
+     "//chrome/app:command_ids",
+     "//chrome/browser/ui/actions:command_id_to_action_id",
+@@ -1478,6 +1480,7 @@ if (!is_android) {
+       ":core",
        "//chrome/browser/ui/browser_window/internal",
      ]
 +    visibility += brave_chrome_browser_ui_browser_header_visibility
      public_deps = [
        ":browser_window_deleter",
        "//base",
-@@ -1568,6 +1570,7 @@ static_library("ui") {
-     ":simple_message_box_headers",
-     ":tab_dialogs",
-     ":tab_modal_confirm_dialog",
-+    "//brave/browser/ui",
-     "//chrome/browser:browser_public_dependencies",
-     "//chrome/browser/feedback",
-     "//chrome/browser/headless",
-@@ -1845,6 +1848,8 @@ static_library("ui") {
-     "//ui/strings",
-     "//ui/webui",
-   ]
-+  deps += brave_chrome_browser_ui_allow_circular_includes_from
-+  deps += brave_chrome_browser_ui_deps
- 
-   allow_circular_includes_from = [
-     # page_load_metrics's :impl includes headers from //chrome/browser/ui that
-@@ -1868,9 +1873,11 @@ static_library("ui") {
-     # - c/b/ui/views/frame/browser_view.h
-     "//chrome/browser/ui/views/file_system_access:impl",
-   ]
-+  allow_circular_includes_from +=
-+      brave_chrome_browser_ui_allow_circular_includes_from
- 
-   # Desktop-Android-only dependencies.
--  if (is_desktop_android) {
-+  if (is_desktop_android || (is_android && enable_extensions_core)) {
-     deps += [
-       "//chrome/browser/ui/android/extensions/side_panel/internal",
-       "//chrome/browser/ui/android/extensions/windowing/internal",
-@@ -4703,11 +4710,13 @@ static_library("ui") {
+@@ -1634,11 +1637,13 @@ if (!is_android) {
  group("ui_public_dependencies") {
    visibility = [ "//chrome/browser:browser_public_dependencies" ]
    public_deps = [

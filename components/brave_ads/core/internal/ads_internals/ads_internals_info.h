@@ -11,7 +11,7 @@
 
 #include "base/containers/flat_set.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 
 namespace brave_ads {
@@ -20,14 +20,14 @@ namespace brave_ads {
 // ads_internals_util.cc, passed by value/move between callbacks rather than
 // as ever-growing positional parameters.
 struct AdsInternalsInfo final {
-  CreativeSetConversionList creative_set_conversions;
-  // Which creative set IDs belong to each ad format, used to attach an "Ad
-  // Type" to each creative set conversion above (which, unlike an ad event,
+  CampaignConversionList campaign_conversions;
+  // Which campaign IDs belong to each ad format, used to attach an "Ad
+  // Type" to each campaign conversion above (which, unlike an ad event,
   // isn't itself tied to a specific ad format). There's no local database
   // table for search result ads to look up, so that format is inferred by
   // elimination: present in neither set below.
-  base::flat_set<std::string> notification_ad_creative_set_ids;
-  base::flat_set<std::string> new_tab_page_ad_creative_set_ids;
+  base::flat_set<std::string> notification_ad_campaign_ids;
+  base::flat_set<std::string> new_tab_page_ad_campaign_ids;
   AdEventList ad_events;
   base::ListValue confirmation_queue;
   base::ListValue payment_tokens;

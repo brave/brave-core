@@ -34,7 +34,8 @@ substitutions:
         quality = ToBraveOnDeviceSpeechQuality(quality);
 
   - description: |-
-      Ask before `install()` downloads Brave's model.
+      Cancel `install()` in Private, Tor and Guest profiles, and otherwise ask
+      before it downloads Brave's model.
 
       The prompt comes before upstream can start a download. Once the user
       allows it, `Install` runs again from the top, so every upstream check
@@ -47,6 +48,6 @@ substitutions:
     preempt_function_impl:
       function_name: OnDeviceSpeechRecognitionImpl::Install
       return_if: |-
-        MaybePromptForBraveOnDeviceSpeechModel(
+        MaybePromptOrCancelBraveOnDeviceSpeechInstall(
                 CanRenderFrameHostUseOnDeviceSpeechRecognition(),
                 weak_ptr_factory_.GetWeakPtr(), languages, quality, callback)

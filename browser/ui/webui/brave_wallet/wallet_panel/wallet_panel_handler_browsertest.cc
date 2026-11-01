@@ -22,6 +22,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/permissions/test/permission_request_observer.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
@@ -183,8 +184,8 @@ IN_PROC_BROWSER_TEST_F(WalletPanelHandlerBrowserTest,
   ASSERT_EQ(url::Origin::Create(main_frame_url_).Serialize(),
             GetDisplayedOriginSpec());
 
-  auto* tab_helper =
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents());
+  auto* tab_helper = brave_wallet::BraveWalletTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents()));
   ASSERT_TRUE(tab_helper);
   auto handler = CreateHandler();
 

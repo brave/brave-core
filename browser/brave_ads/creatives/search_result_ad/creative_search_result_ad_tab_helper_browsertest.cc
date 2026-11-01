@@ -126,11 +126,11 @@ mojom::CreativeSearchResultAdInfoPtr GenerateCreativeSearchResultAd(
   mojom_creative_ad->description = base::StrCat({"data-description", index});
   mojom_creative_ad->value = 0.5 + static_cast<double>(ad_index);
 
-  auto mojom_conversion = mojom::CreativeSetConversionInfo::New();
+  auto mojom_conversion = mojom::CampaignConversionInfo::New();
   mojom_conversion->url_pattern =
       base::StrCat({"data-conversion-url-pattern-value", index});
   mojom_conversion->observation_window = base::Days(ad_index);
-  mojom_creative_ad->creative_set_conversion = std::move(mojom_conversion);
+  mojom_creative_ad->campaign_conversion = std::move(mojom_conversion);
 
   return mojom_creative_ad;
 }

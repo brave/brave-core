@@ -1,0 +1,20 @@
+diff --git a/extensions/browser/api/cookies/cookies_api.h b/extensions/browser/api/cookies/cookies_api.h
+index d344638e303918176b586e04aeae658c14c033bc..e360e7f17cbbb1fb6a2951ec7cddb85523346c7e 100644
+--- a/extensions/browser/api/cookies/cookies_api.h
++++ b/extensions/browser/api/cookies/cookies_api.h
+@@ -50,6 +50,7 @@ class CookiesEventRouter : public BrowserContextLifetimeObserver {
+       content::BrowserContext& off_the_record_context) override;
+ 
+  private:
++  friend struct OnCookieChangeExposeForTesting;
+   FRIEND_TEST_ALL_PREFIXES(ExtensionApiTest, OTRReceiverMojoConnectionError);
+ 
+   // This helper class connects to the CookieMonster over Mojo, and relays Mojo
+@@ -259,6 +260,7 @@ class CookiesAPI : public BrowserContextKeyedAPI, public EventRouter::Observer {
+   }
+ 
+  private:
++  friend struct OnCookieChangeExposeForTesting;
+   friend class BrowserContextKeyedAPIFactory<CookiesAPI>;
+ 
+   raw_ptr<content::BrowserContext> browser_context_;

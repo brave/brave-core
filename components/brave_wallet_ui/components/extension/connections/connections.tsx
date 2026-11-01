@@ -52,6 +52,9 @@ export const Connections = () => {
   const { data: dappsAccounts } = useGetSelectedDappAccountsQuery()
 
   // Redux
+  const isPolkadotDappSupportEnabled = useSafeWalletSelector(
+    WalletSelectors.isPolkadotDappSupportEnabled,
+  )
   const isCardanoDappSupportEnabled = useSafeWalletSelector(
     WalletSelectors.isCardanoDappSupportEnabled,
   )
@@ -92,10 +95,7 @@ export const Connections = () => {
             isBold={false}
             textColor='tertiary'
           >
-            <CreateSiteOrigin
-              originSpec={activeOrigin.originSpec}
-              eTldPlusOne={activeOrigin.eTldPlusOne}
-            />
+            <CreateSiteOrigin originInfo={activeOrigin} />
           </DomainText>
         </DomainTextContainer>
         <Column
@@ -114,6 +114,12 @@ export const Connections = () => {
             <ConnectionSection
               coin={BraveWallet.CoinType.ADA}
               selectedAccountId={dappsAccounts?.adaAccountId}
+            />
+          )}
+          {isPolkadotDappSupportEnabled && dappsAccounts?.dotAccountId && (
+            <ConnectionSection
+              coin={BraveWallet.CoinType.DOT}
+              selectedAccountId={dappsAccounts?.dotAccountId}
             />
           )}
         </Column>

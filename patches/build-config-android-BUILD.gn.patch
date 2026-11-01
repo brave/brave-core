@@ -1,5 +1,5 @@
 diff --git a/build/config/android/BUILD.gn b/build/config/android/BUILD.gn
-index 5ba1536435d46bfad31cb75b0a1bbdfc57765232..914942c1dbf78377c0190e819ac8220b067ff20c 100644
+index 9cd92b1e64d848bba4464ffb107362ec611b29f0..defe2e11544e0217db1f4a321c4c974eb7b50a5a 100644
 --- a/build/config/android/BUILD.gn
 +++ b/build/config/android/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -7,10 +7,10 @@ index 5ba1536435d46bfad31cb75b0a1bbdfc57765232..914942c1dbf78377c0190e819ac8220b
  # found in the LICENSE file.
  
 +import("//brave/build/config/android/brave_compiler_ldflags.gni")
+ import("//build/config/android/config.gni")
  import("//build/config/android/rules.gni")
  import("//build/config/c++/c++.gni")
- import("//build/config/compiler/compiler.gni")
-@@ -54,6 +55,7 @@ config("compiler") {
+@@ -55,6 +56,7 @@ config("compiler") {
      # segments to be mapped adjacently, which breakpad relies on.
      "-Wl,-z,max-page-size=$_max_page_size",
    ]

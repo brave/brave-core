@@ -73,16 +73,15 @@ void CardanoTxManager::AddUnapprovedCardanoTransaction(
     }
   }
 
-  // We don't support Cardano dApps so far, so all transactions come from
-  // wallet origin.
-  std::optional<url::Origin> origin = std::nullopt;
+  auto meta = CardanoTxMeta::MakeUnapproved(
+      params->from, std::make_unique<CardanoTransaction>(), chain_id,
+      std::move(params->swap_info));
 
   cardano_wallet_service_->CreateCardanoTransaction(
       params->from.Clone(), *address_to, params->amount,
       params->sending_max_amount, std::move(token_to_send),
       base::BindOnce(&CardanoTxManager::ContinueAddUnapprovedTransaction,
-                     weak_factory_.GetWeakPtr(), chain_id, params->from.Clone(),
-                     origin, std::move(params->swap_info),
+                     weak_factory_.GetWeakPtr(), std::move(meta),
                      std::move(callback)));
 }
 
@@ -92,10 +91,7 @@ void CardanoTxManager::OnLatestHeightUpdated(const std::string& chain_id,
 }
 
 void CardanoTxManager::ContinueAddUnapprovedTransaction(
-    const std::string& chain_id,
-    const mojom::AccountIdPtr& from,
-    const std::optional<url::Origin>& origin,
-    mojom::SwapInfoPtr swap_info,
+    std::unique_ptr<CardanoTxMeta> meta,
     AddUnapprovedCardanoTransactionCallback callback,
     base::expected<CardanoTransaction, std::string> cardano_transaction) {
   if (!cardano_transaction.has_value()) {
@@ -103,21 +99,14 @@ void CardanoTxManager::ContinueAddUnapprovedTransaction(
     return;
   }
 
-  CardanoTxMeta meta(from, std::make_unique<CardanoTransaction>(
-                               std::move(cardano_transaction.value())));
-  meta.set_id(TxMeta::GenerateMetaID());
-  meta.set_origin(
-      origin.value_or(url::Origin::Create(GURL("chrome://wallet"))));
-  meta.set_created_time(base::Time::Now());
-  meta.set_status(mojom::TransactionStatus::Unapproved);
-  meta.set_chain_id(chain_id);
-  meta.set_swap_info(std::move(swap_info));
+  meta->set_tx(std::make_unique<CardanoTransaction>(
+      std::move(cardano_transaction.value())));
 
-  if (!tx_state_manager().AddOrUpdateTx(meta)) {
+  if (!tx_state_manager().AddOrUpdateTx(*meta)) {
     std::move(callback).Run(false, "", WalletInternalErrorMessage());
     return;
   }
-  std::move(callback).Run(true, meta.id(), "");
+  std::move(callback).Run(true, meta->id(), "");
 }
 
 void CardanoTxManager::ApproveTransaction(const std::string& tx_meta_id,

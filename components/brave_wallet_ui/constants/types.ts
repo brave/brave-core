@@ -177,6 +177,7 @@ export interface WalletState {
   isCardanoEnabled: boolean
   isCardanoDappSupportEnabled: boolean
   isPolkadotEnabled: boolean
+  isPolkadotDappSupportEnabled: boolean
   isCardStackUiEnabled: boolean
 }
 
@@ -394,6 +395,9 @@ export type TransactionPanelPayload = {
 
 export enum WalletRoutes {
   // index
+  Cards = '/cards',
+
+  // crypto index
   CryptoPage = '/crypto/:category/:id?',
 
   // onboarding
@@ -478,7 +482,9 @@ export enum WalletRoutes {
   // hardware wallet import modals
   AddHardwareAccountModalStart = '/crypto/accounts/add-account/hardware',
   AddHardwareAccountModal = '/crypto/accounts/add-account/hardware/:accountTypeName?',
-  RestoreAccountsModal = '/crypto/accounts/add-account/restore',
+
+  // unhide account modal
+  UnhideAccountsModal = '/crypto/accounts/add-account/unhide',
 
   // wallet backup
   Backup = '/crypto/backup-wallet',
@@ -645,6 +651,7 @@ export const DAppSupportedCoinTypes = [
   BraveWallet.CoinType.SOL,
   BraveWallet.CoinType.ETH,
   BraveWallet.CoinType.ADA,
+  BraveWallet.CoinType.DOT,
 ]
 
 export const CustomAssetSupportedCoinTypes = [

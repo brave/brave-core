@@ -1,5 +1,5 @@
 diff --git a/components/lens/lens_features.cc b/components/lens/lens_features.cc
-index b3792864d09fc51dc969a29c8bb40b56ed267afa..aa263c19c8c60b563dac1d116649c5f72b804ca7 100644
+index 52887f0b7b561891acb779750fd49afbcb5cbe0f..0ffa4c2df0738d1fd02f3b830854715147120de2 100644
 --- a/components/lens/lens_features.cc
 +++ b/components/lens/lens_features.cc
 @@ -16,17 +16,12 @@

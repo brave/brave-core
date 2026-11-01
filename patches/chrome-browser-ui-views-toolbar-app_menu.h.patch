@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/toolbar/app_menu.h b/chrome/browser/ui/views/toolbar/app_menu.h
-index e23cc845fade6fd3ff5248e1c1601e15d5dbaab9..b46bb92a0431ab6dbe32c6d924cd88e00521663c 100644
+index 875b2cc11c5b002c694f355dec8dbbfb09c6653f..6e28ea2e4dca9b7e75da269f34be98237c4ca0d0 100644
 --- a/chrome/browser/ui/views/toolbar/app_menu.h
 +++ b/chrome/browser/ui/views/toolbar/app_menu.h
 @@ -35,7 +35,7 @@ class MenuRunner;
@@ -33,7 +33,7 @@ index e23cc845fade6fd3ff5248e1c1601e15d5dbaab9..b46bb92a0431ab6dbe32c6d924cd88e0
        const gfx::Rect& anchor_screen_bounds,
        ui::mojom::MenuSourceType source_type = ui::mojom::MenuSourceType::kNone);
 @@ -143,6 +146,7 @@ class AppMenu final : public views::MenuDelegate,
-   views::View* GetZoomAppMenuViewForTest();
+   static views::View* GetZoomAppMenuViewForTest(views::MenuItemView* root);
  
   private:
 +  friend class BraveAppMenu;

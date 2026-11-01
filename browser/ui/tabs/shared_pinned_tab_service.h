@@ -9,6 +9,7 @@
 #include <memory>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "chrome/browser/profiles/profile_observer.h"
 #include "chrome/browser/ui/browser_window/public/browser_collection_observer.h"
@@ -82,6 +83,7 @@ class SharedPinnedTabService : public KeyedService,
   void OnTabPinnedStateChanged(tabs::TabInterface* tab, int index) override;
   void OnTabChangedAt(tabs::TabInterface* tab,
                       TabChangeType change_type) override;
+  void OnTabBlockedStateChanged(tabs::TabInterface* tab) override;
 
   // ProfileWillBeDestroyed;
   void OnProfileWillBeDestroyed(Profile* profile) override;
@@ -120,13 +122,13 @@ class SharedPinnedTabService : public KeyedService,
 
   raw_ptr<Profile> profile_;
 
-  base::flat_set<BrowserWindowInterface*> browsers_;
+  base::flat_set<raw_ptr<BrowserWindowInterface>> browsers_;
   raw_ptr<BrowserWindowInterface> last_active_browser_ = nullptr;
 
-  base::flat_set<BrowserWindowInterface*> closing_browsers_;
+  base::flat_set<raw_ptr<BrowserWindowInterface>> closing_browsers_;
   base::flat_set<std::unique_ptr<content::WebContents>>
       cached_shared_contentses_from_closing_browser_;
-  base::flat_set<BrowserWindowInterface*> in_tab_dragging_browsers_;
+  base::flat_set<raw_ptr<BrowserWindowInterface>> in_tab_dragging_browsers_;
 
   // This data is ordered in the actual pinned tab order.
   std::vector<PinnedTabData> pinned_tab_data_;

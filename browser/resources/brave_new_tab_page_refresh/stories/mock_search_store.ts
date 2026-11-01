@@ -3,7 +3,26 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import {
+  IconType,
+  SecondaryTextPlacement,
+  SuggestStyle,
+} from 'chrome://resources/mojo/components/omnibox/browser/suggest_template_info.mojom-webui.js'
 import { SearchActions, defaultSearchStore } from '../state/search_store'
+
+function suggestTemplate(primaryText: string, secondaryText: string) {
+  return {
+    primaryText: { text: primaryText, fragments: [], a11yText: null },
+    primaryTextClass: [],
+    secondaryText: { text: secondaryText, fragments: [], a11yText: null },
+    secondaryTextClass: [],
+    secondaryTextPlacement: SecondaryTextPlacement.kUnspecified,
+    image: null,
+    style: SuggestStyle.kUnspecified,
+    typeIcon: IconType.kIconTypeUnspecified,
+    fuseboxAction: null,
+  }
+}
 
 export function createSearchStore() {
   const store = defaultSearchStore()
@@ -86,26 +105,20 @@ export function createSearchStore() {
         searchMatches: [
           {
             allowedToBeDefaultMatch: false,
-            contents: 'contents 1',
-            description: 'description 1',
             iconUrl: '',
-            imageUrl: '',
+            suggestTemplate: suggestTemplate('contents 1', 'description 1'),
             destinationUrl: '',
           },
           {
             allowedToBeDefaultMatch: true,
-            contents: 'contents 2',
-            description: 'Ask Leo',
             iconUrl: '',
-            imageUrl: '',
+            suggestTemplate: suggestTemplate('contents 2', 'Ask Leo'),
             destinationUrl: '',
           },
           {
             allowedToBeDefaultMatch: true,
-            contents: query,
-            description: engine,
             iconUrl: '',
-            imageUrl: '',
+            suggestTemplate: suggestTemplate(query, engine),
             destinationUrl: '',
           },
         ],

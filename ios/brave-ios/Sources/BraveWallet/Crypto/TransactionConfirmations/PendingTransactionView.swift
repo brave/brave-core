@@ -98,38 +98,36 @@ struct PendingTransactionView: View {
 
   @ViewBuilder private var faviconAndOrigin: some View {
     VStack(spacing: 8) {
-      if let originInfo = confirmationStore.originInfo {
-        Group {
-          if originInfo.isBraveWalletOrigin {
-            Image("wallet-brave-icon", bundle: .module)
-              .resizable()
-              .aspectRatio(contentMode: .fit)
-              .padding(4)
-              .frame(maxWidth: .infinity, maxHeight: .infinity)
-              .background(Color(braveSystemName: .neutral20))
-          } else {
-            if let url = URL(string: originInfo.originSpec) {
-              FaviconReader(url: url) { image in
-                if let image = image {
-                  Image(uiImage: image)
-                    .resizable()
-                } else {
-                  globeFavicon
-                }
+      Group {
+        if let dappOriginInfo = confirmationStore.dappOriginInfo {
+          if let url = URL(string: dappOriginInfo.originSpec) {
+            FaviconReader(url: url) { image in
+              if let image = image {
+                Image(uiImage: image)
+                  .resizable()
+              } else {
+                globeFavicon
               }
-            } else {
-              globeFavicon
             }
+          } else {
+            globeFavicon
           }
+        } else {
+          Image("wallet-brave-icon", bundle: .module)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .padding(4)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color(braveSystemName: .neutral20))
         }
-        .frame(width: min(faviconSize, maxFaviconSize), height: min(faviconSize, maxFaviconSize))
-        .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
-
-        Text(originInfo: originInfo)
-          .font(.subheadline)
-          .foregroundColor(Color(braveSystemName: .textPrimary))
-          .multilineTextAlignment(.center)
       }
+      .frame(width: min(faviconSize, maxFaviconSize), height: min(faviconSize, maxFaviconSize))
+      .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
+
+      Text(originInfo: confirmationStore.dappOriginInfo)
+        .font(.subheadline)
+        .foregroundColor(Color(braveSystemName: .textPrimary))
+        .multilineTextAlignment(.center)
     }
     .accessibilityElement(children: .combine)
   }
@@ -249,7 +247,7 @@ struct PendingTransactionView: View {
           toAccountAddress: confirmationStore.activeParsedTransaction.toAddress,
           toAccountName: confirmationStore.activeParsedTransaction.namedToAddress,
           isContractAddress: confirmationStore.isContractAddress,
-          originInfo: confirmationStore.originInfo,
+          originInfo: confirmationStore.dappOriginInfo,
           transactionType: transactionType,
           value: "\(confirmationStore.value) \(confirmationStore.symbol)",
           fiat: confirmationStore.fiat,

@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Implement Brave's `NavigationManager::IsNativeRestoreInProgress()`
+
+      Brave adds it as a pure virtual, so without an override the fake is
+      abstract and upstream tests that instantiate it fail to compile.
+    add_to_public:
+      class_name: FakeNavigationManager
+      code: bool IsNativeRestoreInProgress() const override;

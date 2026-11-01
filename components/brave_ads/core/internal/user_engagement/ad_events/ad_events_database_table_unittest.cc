@@ -12,8 +12,8 @@
 #include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/conversions/test/creative_set_conversion_test_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_database_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/test/campaign_conversion_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_type.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/test/creative_notification_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/settings/test/settings_test_util.h"
@@ -209,12 +209,12 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, GetUnexpired) {
 }
 
 TEST_F(BraveAdsAdEventsDatabaseTableTest,
-       GetUnexpiredIfCreativeSetExistsInCreativeSetConversions) {
+       GetUnexpiredIfCampaignExistsInCampaignConversions) {
   // Arrange
   AdvanceClockTo(test::TimeFromUTCString("Tue, 19 Mar 2024 05:35"));
 
   // Ad event: Recorded on 19th March 2024. This ad event should be included
-  // because it has an associated creative set conversion.
+  // because it has an associated campaign conversion.
   const NotificationAdInfo ad =
       test::BuildNotificationAd(/*use_random_uuids=*/true);
   const AdEventInfo ad_event =
@@ -225,12 +225,12 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest,
   EXPECT_CALL(record_ad_event_callback, Run(/*success=*/true));
   database_table_.RecordEvent(ad_event, record_ad_event_callback.Get());
 
-  const CreativeSetConversionInfo creative_set_conversion =
-      test::BuildCreativeSetConversion(
-          ad.creative_set_id,
+  const CampaignConversionInfo campaign_conversion =
+      test::BuildCampaignConversion(
+          ad.campaign_id,
           /*url_pattern=*/"https://www.brave.com/signup/*",
           /*observation_window=*/base::Days(30));
-  database::SaveCreativeSetConversions({creative_set_conversion});
+  database::SaveCampaignConversions({campaign_conversion});
 
   // Move the clock forward to when the ad events expire.
   AdvanceClockBy(base::Days(90));
@@ -390,7 +390,7 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, GetUnexpiredForAdType) {
 }
 
 TEST_F(BraveAdsAdEventsDatabaseTableTest,
-       GetUnexpiredForAdTypeIfCreativeSetExistsInCreativeSetConversions) {
+       GetUnexpiredForAdTypeIfCampaignExistsInCampaignConversions) {
   // Arrange
   AdvanceClockTo(test::TimeFromUTCString("Tue, 19 Mar 2024 05:35"));
 
@@ -398,7 +398,7 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest,
   EXPECT_CALL(record_ad_event_callback, Run(/*success=*/true)).Times(2);
 
   // Ad event 1: Recorded on 19th March 2024. This ad event should be included
-  // because it has an associated creative set conversion.
+  // because it has an associated campaign conversion.
   const NotificationAdInfo ad_1 =
       test::BuildNotificationAd(/*use_random_uuids=*/true);
   const AdEventInfo ad_event_1 =
@@ -416,13 +416,13 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest,
                    /*created_at=*/test::Now());
   database_table_.RecordEvent(ad_event_2, record_ad_event_callback.Get());
 
-  // Associate a creative set conversion to both ad events.
-  const CreativeSetConversionInfo creative_set_conversion =
-      test::BuildCreativeSetConversion(
-          ad_1.creative_set_id,
+  // Associate a campaign conversion to both ad events.
+  const CampaignConversionInfo campaign_conversion =
+      test::BuildCampaignConversion(
+          ad_1.campaign_id,
           /*url_pattern=*/"https://www.brave.com/signup/*",
           /*observation_window=*/base::Days(30));
-  database::SaveCreativeSetConversions({creative_set_conversion});
+  database::SaveCampaignConversions({campaign_conversion});
 
   // Move the clock forward to when the ad events expire.
   AdvanceClockBy(base::Days(90));
@@ -518,7 +518,7 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeExpiredForNonRewardsUser) {
 }
 
 TEST_F(BraveAdsAdEventsDatabaseTableTest,
-       DoNotPurgeExpiredIfCreativeSetExistsInCreativeSetConversions) {
+       DoNotPurgeExpiredIfCampaignExistsInCampaignConversions) {
   // Arrange
   AdvanceClockTo(test::TimeFromUTCString("Tue, 19 Mar 2024 05:35"));
 
@@ -535,12 +535,12 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest,
 
   database_table_.RecordEvent(ad_event, result_callback.Get());
 
-  const CreativeSetConversionInfo creative_set_conversion =
-      test::BuildCreativeSetConversion(
-          ad.creative_set_id,
+  const CampaignConversionInfo campaign_conversion =
+      test::BuildCampaignConversion(
+          ad.campaign_id,
           /*url_pattern=*/"https://www.brave.com/signup/*",
           /*observation_window=*/base::Days(30));
-  database::SaveCreativeSetConversions({creative_set_conversion});
+  database::SaveCampaignConversions({campaign_conversion});
 
   // Move the clock forward to when the ad events expire.
   AdvanceClockBy(base::Days(90));

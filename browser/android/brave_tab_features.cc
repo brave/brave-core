@@ -9,11 +9,15 @@
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/ai_chat/tab_data_web_contents_observer.h"
 #include "brave/browser/ai_chat/web_mcp_injection/web_mcp_injector.h"
+#include "brave/browser/android/youtube_script_injector/youtube_script_injector_tab_helper.h"
 #include "brave/browser/image_metadata_stripper/file_upload_controller.h"
 #include "brave/browser/misc_metrics/captcha_metrics.h"
 #include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
 #include "brave/browser/serp_metrics/serp_metrics_tab_helper.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
 #include "brave/components/misc_metrics/features.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
@@ -21,14 +25,31 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
+#include "third_party/widevine/cdm/buildflags.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
 #include "brave/browser/brave_ads/creatives/search_result_ad/creative_search_result_ad_tab_helper.h"
 #include "brave/browser/brave_ads/tabs/ads_tab_helper.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/browser/brave_news/brave_news_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/brave_rewards/rewards_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
+#endif
+
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY)
 #include "brave/browser/web_discovery/web_discovery_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_WIDEVINE)
+#include "brave/browser/widevine/brave_drm_tab_helper.h"
 #endif
 
 namespace tabs {
@@ -77,6 +98,27 @@ BraveTabFeatures::BraveTabFeatures(content::WebContents* web_contents,
   web_discovery_tab_helper_ = web_discovery::WebDiscoveryTabHelper::MaybeCreate(
       tab_interface, *profile);
 #endif
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+  rewards_tab_helper_ =
+      std::make_unique<brave_rewards::RewardsTabHelper>(tab_interface);
+#endif
+
+#if BUILDFLAG(ENABLE_WIDEVINE)
+  drm_tab_helper_ = std::make_unique<BraveDrmTabHelper>(tab_interface);
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+  brave_news_tab_helper_ = BraveNewsTabHelper::MaybeCreate(tab_interface);
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  brave_wallet_tab_helper_ =
+      std::make_unique<brave_wallet::BraveWalletTabHelper>(tab_interface);
+#endif
+
+  youtube_script_injector_ =
+      std::make_unique<YouTubeScriptInjectorTabHelper>(tab_interface);
 }
 
 BraveTabFeatures::~BraveTabFeatures() = default;

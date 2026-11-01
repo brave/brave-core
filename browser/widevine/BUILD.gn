@@ -31,6 +31,8 @@ source_set("widevine") {
     "//components/pref_registry",
     "//components/prefs",
     "//components/subresource_filter/content/browser",
+    "//components/tabs:public",
+    "//components/update_client",
     "//components/vector_icons",
     "//content/public/browser",
     "//content/public/common",
@@ -39,12 +41,26 @@ source_set("widevine") {
     "//ui/base",
   ]
 
+  if (!is_android) {
+    deps += [
+      "//chrome/browser/ui/browser_window",
+      "//chrome/browser/ui/tabs:tab_strip",
+    ]
+  }
+
   public_deps = [
+    "//brave/components/brave_drm",
+    "//chrome/browser/ui/tabs:tabs_public",
+    "//components/component_updater",
     "//components/permissions",
+    "//content/public/browser",
+    "//ui/base/unowned_user_data",
     "//url",
   ]
 
   sources = [
+    "brave_drm_tab_helper.cc",
+    "brave_drm_tab_helper.h",
     "widevine_permission_request.cc",
     "widevine_permission_request.h",
     "widevine_utils.cc",
@@ -90,9 +106,11 @@ source_set("widevine_permission_android_unittest") {
     "//chrome/browser/profiles:profile",
     "//chrome/test:test_support",
     "//chrome/test/base:chrome_render_view_host_test_harness",
+    "//chrome/test/base:testing_browser_process",
     "//components/permissions",
     "//components/pref_registry",
     "//components/prefs",
+    "//components/tabs:test_support",
     "//content/public/browser",
     "//content/test:test_support",
     "//testing/gmock",
@@ -125,13 +143,13 @@ source_set("browser_tests") {
   if (toolkit_views) {
     sources += [ "widevine_permission_request_browsertest.cc" ]
     deps += [
+      "//brave/browser/ui",
       "//brave/browser/widevine",
       "//brave/components/tor/buildflags",
       "//brave/components/widevine:constants",
       "//chrome/browser",
       "//chrome/browser/profiles:profile",
       "//chrome/browser/ssl:cert_verifier_test_support",
-      "//chrome/browser/ui",
       "//chrome/browser/ui:browser_commands",
       "//chrome/common:constants",
       "//chrome/test:test_support_ui",

@@ -67,7 +67,6 @@ RegisterPolymerTemplateModifications({
       <settings-brave-tor-subpage
         id="tor"
         slot="view"
-        prefs="{{prefs}}"
         in-search-mode="[[inSearchMode_]]">
       </settings-brave-tor-subpage>
     </template>`)
@@ -76,7 +75,6 @@ RegisterPolymerTemplateModifications({
     viewManager.appendChild(html`<settings-brave-data-collection-subpage
       id="dataCollection"
       slot="view"
-      prefs="{{prefs}}"
       in-search-mode="[[inSearchMode_]]">
     </settings-brave-data-collection-subpage>`)
 

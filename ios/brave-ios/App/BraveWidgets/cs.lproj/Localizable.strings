@@ -1,6 +1,12 @@
 /* Title for Ask Brave shortcut. Brave is the company name and should not be translated */
 "widgets.askBrave" = "Zeptat se Brave";
 
+/* Description for the Ask Brave widget on 'add custom control' screen. Brave is the company name and should not be translated */
+"widgets.askBraveWidgetDescription" = "Zeptejte se Brave na otázku.";
+
+/* Title for the Ask Brave widget on 'add custom control' screen. Brave is the company name and should not be translated */
+"widgets.askBraveWidgetTitle" = "Zeptat se Brave";
+
 /* Title for bookmarks menu item */
 "widgets.BookmarksMenuItem" = "Záložky";
 
@@ -12,6 +18,15 @@
 
 /* The name of the feature */
 "widgets.braveNews" = "Zprávy Brave";
+
+/* Title for the Brave Search control. Brave is the company name and should not be translated */
+"widgets.braveSearch" = "Vyhledávání Brave";
+
+/* Description for the Brave Search widget on 'add custom control' screen. Brave is the company name and should not be translated */
+"widgets.braveSearchWidgetDescription" = "Prohledávejte web pomocí Brave.";
+
+/* Title for the Brave Search widget on 'add custom control' screen. Brave is the company name and should not be translated */
+"widgets.braveSearchWidgetTitle" = "Vyhledávání Brave";
 
 /* Title for downloads menu item */
 "widgets.DownloadsMenuItem" = "Stažené soubory";

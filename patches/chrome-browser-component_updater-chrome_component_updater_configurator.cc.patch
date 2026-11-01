@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/component_updater/chrome_component_updater_configurator.cc b/chrome/browser/component_updater/chrome_component_updater_configurator.cc
-index 744a905fa17d6f54d6e19c16292d7720d4ea5aa4..6d193e7d6cf7e74b0670108d21ace7cef4534521 100644
+index da79189b0448440f331916fc2869ca3ecbaca1a0..96dacded9bcbe53c2152ff0b3f79763145e79e23 100644
 --- a/chrome/browser/component_updater/chrome_component_updater_configurator.cc
 +++ b/chrome/browser/component_updater/chrome_component_updater_configurator.cc
-@@ -338,7 +338,10 @@ bool ChromeConfigurator::IsConnectionMetered() const {
+@@ -344,7 +344,10 @@ bool ChromeConfigurator::IsConnectionMetered() const {
  scoped_refptr<update_client::Configurator>
  MakeChromeComponentUpdaterConfigurator(const base::CommandLine* cmdline,
                                         PrefService* pref_service) {

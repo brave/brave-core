@@ -113,7 +113,7 @@
 "BraveShieldsGlobalControls" = "Controles globales";
 
 /* Shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfo" = "Almacena la información de contacto para futuros informes sobre sitios rotos";
+"BraveShieldsSaveContactInfo" = "Guardar información de contacto para futuros informes de sitios rotos";
 
 /* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
 "BraveShieldsSaveContactInfoDescription" = "Si proporcionas información de contacto, se almacenará para futuros informes";

@@ -641,9 +641,12 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"braveShowFullscreenReminder",
        IDS_SETTINGS_SHOW_FULLSCREEN_REMINDER_OPTION_LABEL},
 
+      // Referenced by the settings menu template in every build, thus added
+      // outside of the BUILDFLAG(ENABLE_AI_CHAT)
+      {"leoAssistant", IDS_SETTINGS_LEO_ASSISTANT},
+
 #if BUILDFLAG(ENABLE_AI_CHAT)
       // Leo Assistant Page
-      {"leoAssistant", IDS_SETTINGS_LEO_ASSISTANT},
       {"braveLeoAssistantShowIconOnToolbarLabel",
        IDS_SETTINGS_LEO_ASSISTANT_SHOW_ICON_ON_TOOLBAR_LABEL},
       {"braveLeoAssistantShowInContextMenuLabel",
@@ -939,10 +942,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_TOR_REQUEST_BRIDGE_DIALOG_ERROR},
       {"torSubmitDialogButton", IDS_SETTINGS_TOR_SUBMIT_DIALOG_BUTTON},
       {"torCancelDialogButton", IDS_SETTINGS_TOR_CANCEL_DIALOG_BUTTON},
-      {"onionOnlyInTorWindowsLabel",
-       IDS_SETTINGS_ONION_ONLY_IN_TOR_WINDOWS_TITLE},
-      {"onionOnlyInTorWindowsDesc",
-       IDS_SETTINGS_ONION_ONLY_IN_TOR_WINDOWS_DESC},
       {"widevineEnabledDesc", IDS_SETTINGS_ENABLE_WIDEVINE_DESC},
       {"restartNotice", IDS_SETTINGS_RESTART_NOTICE},
       {"relaunchButtonLabel", IDS_SETTINGS_RELAUNCH_BUTTON_LABEL},

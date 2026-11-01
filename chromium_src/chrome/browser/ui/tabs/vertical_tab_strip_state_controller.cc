@@ -12,4 +12,8 @@ bool VerticalTabStripStateController::ShouldHideCompletelyWhenCollapsed()
   return false;
 }
 
+bool VerticalTabStripStateController::IsVerticalTabOnRight() const {
+  return false;
+}
+
 }  // namespace tabs

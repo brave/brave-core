@@ -38,13 +38,6 @@ source_set("brave_stats") {
     "//brave/browser/brave_stats/switches.h",
   ]
 
-  if (enable_brave_stats_updater) {
-    sources += [
-      "//brave/browser/brave_stats/brave_stats_updater.cc",
-      "//brave/browser/brave_stats/brave_stats_updater.h",
-    ]
-  }
-
   public_deps = [
     "//brave/browser/brave_stats:buildflags",
     "//brave/browser/brave_stats:first_run_util",
@@ -73,12 +66,19 @@ source_set("brave_stats") {
     "//chrome/browser/profiles:profile",
     "//chrome/browser/profiles:profile_manager",
     "//chrome/browser/profiles:profile_util",
-    "//chrome/browser/ui",
     "//chrome/common",
     "//components/prefs",
     "//net",
     "//services/network/public/cpp",
   ]
+
+  if (enable_brave_stats_updater) {
+    sources += [
+      "//brave/browser/brave_stats/brave_stats_updater.cc",
+      "//brave/browser/brave_stats/brave_stats_updater.h",
+    ]
+    deps += [ "//chrome/browser/net" ]
+  }
 
   if (enable_brave_wallet) {
     deps += [

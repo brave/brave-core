@@ -279,6 +279,8 @@ class TabLocationView: UIView {
   private let placeholderLabel = UILabel().then {
     $0.text = Strings.tabToolbarSearchAddressPlaceholderText
     $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+    // Prevent placeholder from compressing toolbar buttons in locales with long text.
+    $0.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
     $0.isHidden = true
     $0.adjustsFontSizeToFitWidth = true
     $0.minimumScaleFactor = 0.5
@@ -353,6 +355,8 @@ class TabLocationView: UIView {
       $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
       trailingTabOptionsStackView.addArrangedSubview($0)
     }
+    walletButton.setContentCompressionResistancePriority(.required, for: .horizontal)
+    playlistButton.setContentCompressionResistancePriority(.required, for: .horizontal)
 
     urlDisplayLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
 

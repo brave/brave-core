@@ -19,6 +19,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExternalResource;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
@@ -29,6 +30,7 @@ import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.base.test.util.CommandLineFlags;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
+import org.chromium.chrome.browser.multiwindow.BraveMultiWindowTestUtils;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager.SnackbarController;
 
 /**
@@ -43,6 +45,16 @@ import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager.Snackbar
     BaseSwitches.DISABLE_NATIVE_INITIALIZATION
 })
 public class BraveSnackbarManagerNewTabTakeoverTest {
+    // Other tests in the sandbox may reset the store; the activity launch reads from it.
+    @Rule(order = Rule.DEFAULT_ORDER - 1)
+    public final ExternalResource mMultiInstanceStoreRule =
+            new ExternalResource() {
+                @Override
+                protected void before() {
+                    BraveMultiWindowTestUtils.ensureMultiInstanceStoreInitialized();
+                }
+            };
+
     @Rule
     public ActivityScenarioRule<ChromeTabbedActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(ChromeTabbedActivity.class);

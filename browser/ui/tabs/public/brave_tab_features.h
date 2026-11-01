@@ -10,6 +10,7 @@
 
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
@@ -164,6 +165,25 @@ class BraveTabFeatures : public TabFeatures {
       creative_search_result_ad_tab_helper_;
   // Offers and runs Web Discovery. Null without it or outside regular profiles.
   std::unique_ptr<ContentsObservingTabFeature> web_discovery_tab_helper_;
+  // Detects the Rewards creator of the page. Null without Brave Rewards.
+  std::unique_ptr<ContentsObservingTabFeature> rewards_tab_helper_;
+  // Finds the page's Brave News feeds. Null without Brave News or off the
+  // record. Declared before the page action controllers that observe it.
+  std::unique_ptr<ContentsObservingTabFeature> brave_news_tab_helper_;
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  // Serves the wallet providers of the tab's frames.
+  std::unique_ptr<ContentsObservingTabFeature> brave_wallet_tab_helper_;
+#endif
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  // Distills the page. Null when the Speedreader feature is off or the profile
+  // has no Speedreader service. Declared before the page action controller
+  // that observes it.
+  std::unique_ptr<ContentsObservingTabFeature> speedreader_tab_helper_;
+#endif
+  // Offers to enable Widevine when the page asks for it. Null without it.
+  std::unique_ptr<ContentsObservingTabFeature> drm_tab_helper_;
+  // Holds the Shields state for the page shown in the tab.
+  std::unique_ptr<ContentsObservingTabFeature> brave_shields_tab_helper_;
   // Records whether the page asked for high accuracy geolocation.
   std::unique_ptr<ContentsObservingTabFeature>
       geolocation_permission_tab_helper_;

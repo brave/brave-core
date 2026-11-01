@@ -102,14 +102,21 @@ class NavigationRouterTests: XCTestCase {
     Preferences.Privacy.privateBrowsingOnly.value = true
 
     let url = URL(string: "https://duckduckgo.com")!
-    let appURL = URL(string: "\(self.appScheme)://open-url?url=\(url.absoluteString.escape()!)")!
-    let path = NavigationPath(
-      url: appURL,
-      isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
-    )!
-
-    // Should inheritely be private by default
+    let escaped = url.absoluteString.escape()!
+    let openURL = URL(string: "\(appScheme)://open-url?url=\(escaped)")!
+    let path = NavigationPath(url: openURL, isPrivateBrowsing: false)!
     XCTAssertEqual(path, NavigationPath.url(webURL: url, isPrivate: true))
+
+    let forcedRegularURL = URL(string: "\(appScheme)://open-url?url=\(escaped)&private=false")!
+    let forcedPath = NavigationPath(url: forcedRegularURL, isPrivateBrowsing: false)!
+    XCTAssertEqual(forcedPath, NavigationPath.url(webURL: url, isPrivate: true))
+
+    XCTAssertTrue(
+      NavigationPath.effectiveIsPrivateBrowsing(
+        privateBrowsingOnly: true,
+        isPrivateBrowsing: false
+      )
+    )
   }
 
   func testNavigationPathAlreadyInPrivateBrowsingMode() {

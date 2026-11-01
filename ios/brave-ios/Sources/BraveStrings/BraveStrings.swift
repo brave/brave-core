@@ -493,6 +493,13 @@ extension Strings {
     value: "Suppress Alerts",
     comment: "Title of alert that seeks permission from user to suppress future JS alerts"
   )
+  public static let javaScriptDialogEmbeddedPageTitle = NSLocalizedString(
+    "JavaScriptDialogEmbeddedPageTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "An embedded page on this page",
+    comment: "Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe"
+  )
   public static let suppressAlertsActionMessage = NSLocalizedString(
     "SuppressAlertsActionMessage",
     tableName: "BraveShared",
@@ -6577,6 +6584,20 @@ extension Strings {
     bundle: .module,
     value: "Search \"%@\"",
     comment: "The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list."
+  )
+  public static let quickSearchAskLeoAccessibility = NSLocalizedString(
+    "quickSearchAskLeoAccessibility",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Ask Leo",
+    comment: "Accessibility title for a quick search button that performs Ask Leo with the input value"
+  )
+  public static let quickSearchEditAccessibility = NSLocalizedString(
+    "quickSearchEditAccessibility",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Edit Quick Search",
+    comment: "Accessibility title for button that opens edit screens for quick search engines."
   )
 }
 

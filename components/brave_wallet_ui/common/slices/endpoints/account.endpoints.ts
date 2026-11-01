@@ -126,6 +126,7 @@ export const accountEndpoints = ({
         ethAccountId: BraveWallet.AccountId | undefined
         solAccountId: BraveWallet.AccountId | undefined
         adaAccountId: BraveWallet.AccountId | undefined
+        dotAccountId: BraveWallet.AccountId | undefined
       },
       void
     >({
@@ -136,6 +137,7 @@ export const accountEndpoints = ({
             ethAccountId: allAccounts.ethDappSelectedAccount?.accountId,
             solAccountId: allAccounts.solDappSelectedAccount?.accountId,
             adaAccountId: allAccounts.adaDappSelectedAccount?.accountId,
+            dotAccountId: allAccounts.dotDappSelectedAccount?.accountId,
           },
         }
       },

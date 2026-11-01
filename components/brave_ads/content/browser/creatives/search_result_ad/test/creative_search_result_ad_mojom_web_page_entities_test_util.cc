@@ -88,14 +88,14 @@ class CreativeAdMojomWebPageEntitiesConstructor final {
         &mojom_entity->properties, kCreativeAdRewardsValuePropertyName,
         base::NumberToString(kCreativeAdRewardsValue));
 
-    // Creative set conversion.
+    // Campaign conversion.
     MaybeAddCreativeAdMojomProperty<std::string>(
-        &mojom_entity->properties, kCreativeSetConversionUrlPatternPropertyName,
-        kCreativeSetConversionUrlPattern);
+        &mojom_entity->properties, kCampaignConversionUrlPatternPropertyName,
+        kCampaignConversionUrlPattern);
     MaybeAddCreativeAdMojomProperty<int64_t>(
         &mojom_entity->properties,
-        kCreativeSetConversionObservationWindowPropertyName,
-        kCreativeSetConversionObservationWindow.InDays());
+        kCampaignConversionObservationWindowPropertyName,
+        kCampaignConversionObservationWindow.InDays());
 
     return mojom_entity;
   }

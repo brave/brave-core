@@ -239,11 +239,6 @@ public class BrowserViewController: UIViewController {
     return toolbar ?? topToolbar
   }
 
-  // Keep track of allowed `URLRequest`s from `webView(_:decidePolicyFor:decisionHandler:)` so
-  // that we can obtain the originating `URLRequest` when a `URLResponse` is received. This will
-  // allow us to re-trigger the `URLRequest` if the user requests a file to be downloaded.
-  var pendingRequests = [String: URLRequest]()
-
   let downloadQueue = DownloadQueue()
 
   private var cancellables: Set<AnyCancellable> = []
@@ -2328,6 +2323,12 @@ public class BrowserViewController: UIViewController {
     return super.preferredStatusBarStyle
   }
 
+  /// Align with Safari. Swipe in middle of horizontal edges will use stage
+  /// manager, otherwise edge swipes will use Brave back/forward actions
+  public override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge {
+    [.left, .right]
+  }
+
   func updateStatusBarOverlayColor() {
     if #available(iOS 26.0, *) {
       statusBarOverlay.backgroundColor = privateBrowsingManager.browserColors.chromeBackground
@@ -3176,6 +3177,19 @@ extension BrowserViewController {
   }
 
   public func submitSearchText(_ text: String, isBraveSearchPromotion: Bool = false) {
+    if FeatureList.kUseChromiumSearchEngines.enabled {
+      if let searchURL = templateURLSearchURL(
+        for: text,
+        isBraveSearchPromotion: isBraveSearchPromotion,
+        isWidgetSearchAttribution: tabManager.selectedTab?.widgetSearchTabHelper != nil
+      ) {
+        finishEditingAndSubmit(searchURL)
+      } else {
+        assertionFailure("Couldn't generate search URL: \(text)")
+      }
+      return
+    }
+
     var engine = profile.searchEngines.defaultEngine(
       forType: privateBrowsingManager.isPrivateBrowsing ? .privateMode : .standard
     )

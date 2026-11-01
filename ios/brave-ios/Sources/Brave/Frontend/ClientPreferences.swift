@@ -233,6 +233,10 @@ extension Preferences {
       key: "search.user-picked-private-dse-name",
       default: nil
     )
+    /// Ordered quick search item IDs. `nil` until migrated from `orderedEngines`.
+    static let quickSearchOrder = Option<[String]?>(key: "quick-search.order", default: nil)
+    /// Quick search item IDs the user has turned off.
+    static let quickSearchDisabled = Option<[String]?>(key: "quick-search.disabled", default: nil)
   }
 
   final public class BraveSearch {

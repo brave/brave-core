@@ -51,6 +51,7 @@ import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.search.ChromeBaseSearchIndexProvider;
 import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
+import org.chromium.chrome.browser.ui.bottombar.BottomBarConfigUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnPolicy;
 import org.chromium.chrome.browser.vpn.settings.VpnCalloutPreference;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
@@ -414,11 +415,19 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         setPreferenceOrder(PREF_BRAVE_LANGUAGES, ++displaySectionOrder);
 
         int passwordsAndAutofillSectionOrder = displaySectionOrder;
-        setPreferenceOrder(MainSettings.PREF_AUTOFILL_SECTION, ++passwordsAndAutofillSectionOrder);
-        setPreferenceOrder(PREF_PASSWORDS, ++passwordsAndAutofillSectionOrder);
-        setPreferenceOrder(MainSettings.PREF_AUTOFILL_OPTIONS, ++passwordsAndAutofillSectionOrder);
-        setPreferenceOrder(PREF_PAYMENT_METHODS, ++passwordsAndAutofillSectionOrder);
-        setPreferenceOrder(PREF_ADDRESSES, ++passwordsAndAutofillSectionOrder);
+        // MainSettings removes the separate autofill rows when the flag is on.
+        if (ChromeFeatureList.isEnabled(ChromeFeatureList.YOUR_SAVED_INFO_SETTINGS_PAGE_ANDROID)) {
+            setPreferenceOrder(
+                    MainSettings.PREF_AUTOFILL_AND_PASSWORDS, ++passwordsAndAutofillSectionOrder);
+        } else {
+            setPreferenceOrder(
+                    MainSettings.PREF_AUTOFILL_SECTION, ++passwordsAndAutofillSectionOrder);
+            setPreferenceOrder(PREF_PASSWORDS, ++passwordsAndAutofillSectionOrder);
+            setPreferenceOrder(
+                    MainSettings.PREF_AUTOFILL_OPTIONS, ++passwordsAndAutofillSectionOrder);
+            setPreferenceOrder(PREF_PAYMENT_METHODS, ++passwordsAndAutofillSectionOrder);
+            setPreferenceOrder(PREF_ADDRESSES, ++passwordsAndAutofillSectionOrder);
+        }
 
         int supportSectionOrder = passwordsAndAutofillSectionOrder;
         setPreferenceOrder(PREF_SUPPORT_SECTION, ++supportSectionOrder);
@@ -438,10 +447,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         }
         setPreferenceOrder(PREF_ABOUT_CHROME, ++aboutSectionOrder);
 
-        // We don't have home button on address bar at the moment.
-        if (!DeviceFormFactor.isTablet()
-                && !BottomToolbarConfiguration.isBraveBottomControlsEnabled()
-                && BottomToolbarConfiguration.isToolbarTopAnchored()) {
+        if (!shouldShowHomepagePreference()) {
             removePreferenceIfPresent(MainSettings.PREF_HOMEPAGE);
         }
 
@@ -452,6 +458,17 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         removePreferenceIfPresent(MainSettings.PREF_APPEARANCE);
 
         resortPreferenceScreenChildren();
+    }
+
+    /** Whether any toolbar carries a home button, which the homepage setting applies to. */
+    @VisibleForTesting
+    static boolean shouldShowHomepagePreference() {
+        // We don't have home button on address bar at the moment. The bottom bar always carries
+        // one, either itself or in the top toolbar.
+        return DeviceFormFactor.isTablet()
+                || BottomToolbarConfiguration.isBraveBottomControlsEnabled()
+                || BottomBarConfigUtils.isBottomBarEnabled(ContextUtils.getApplicationContext())
+                || BottomToolbarConfiguration.isToolbarBottomAnchored();
     }
 
     // PreferenceGroup (with orderingFromXml=false) only re-sorts its children list when
@@ -511,6 +528,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                         ? R.drawable.ic_browser_mobile_tabs_top
                         : R.drawable.ic_browser_mobile_tabs_bottom);
         updatePreferenceIcon(MainSettings.PREF_AUTOFILL_OPTIONS, R.drawable.ic_autofill);
+        updatePreferenceIcon(MainSettings.PREF_AUTOFILL_AND_PASSWORDS, R.drawable.ic_autofill);
         updatePreferenceIcon(PREF_TOOLBAR_SHORTCUT, R.drawable.ic_browser_customizable_shortcut);
     }
 

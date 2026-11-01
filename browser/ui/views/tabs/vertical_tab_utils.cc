@@ -56,13 +56,17 @@ bool IsVerticalTabToggleEnabled(BrowserWindowInterface* browser) {
 // Hooks declared (but not defined) in chromium_src overrides so that those
 // overrides don't need to depend on Brave targets. Resolved at link time.
 bool BraveIsInVerticalTabHotCorner(const gfx::PointF& point_in_screen,
-                                   BrowserView* browser_view) {
+                                   BrowserView* browser_view,
+                                   bool is_on_right) {
   auto* brave_browser_view = BraveBrowserView::From(browser_view);
   CHECK(brave_browser_view);
 
   gfx::RectF hot_corner(
       brave_browser_view->GetBoundingBoxInScreenForMouseOverHandling());
   constexpr int kHotCornerWidth = 16;
+  if (is_on_right) {
+    hot_corner.set_x(hot_corner.right() - kHotCornerWidth);
+  }
   hot_corner.set_width(kHotCornerWidth);
   return hot_corner.Contains(point_in_screen);
 }

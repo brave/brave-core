@@ -8,7 +8,7 @@ import 'chrome://resources/brave/leo.bundle.js'
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
-import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js'
+import {PrefServiceObserverMixin} from '/shared/settings/prefs2/pref_service_observer_mixin.js'
 import {Router} from '../router.js'
 import {loadTimeData} from '../i18n_setup.js'
 import {routes} from '../route.js';
@@ -19,7 +19,7 @@ import {BraveLeoAssistantBrowserProxy,
   from './brave_leo_assistant_browser_proxy.js'
 
 const BraveLeoAssistantPageBase =
-  WebUiListenerMixin(I18nMixin(PrefsMixin(PolymerElement)))
+  WebUiListenerMixin(I18nMixin(PrefServiceObserverMixin(PolymerElement)))
 
 /**
  * 'settings-brave-leo-assistant-page' is the settings page containing
@@ -41,6 +41,8 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
           value: false,
           notify: true,
         },
+        tabOrganizationEnabledPref_: Object,
+        historyEmbeddingsEnabledPref_: Object,
         isPremiumUser_: {
           type: Boolean,
           value: false,
@@ -64,6 +66,10 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
     }
 
     private declare isPremiumUser_: boolean
+    private declare tabOrganizationEnabledPref_:
+      chrome.settingsPrivate.PrefObject<boolean> | undefined
+    private declare historyEmbeddingsEnabledPref_:
+      chrome.settingsPrivate.PrefObject<boolean> | undefined
 
     declare isHistoryFeatureEnabled_: boolean
     declare isTabOrganizationFeatureEnabled_: boolean
@@ -80,6 +86,14 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
       if(window.confirm(message)) {
         this.browserProxy_.resetLeoData()
       }
+    }
+
+    override connectedCallback() {
+      super.connectedCallback()
+      this.mirrorPrefs({
+        'brave.ai_chat.tab_organization_enabled': 'tabOrganizationEnabledPref_',
+        'brave.history_embeddings_enabled': 'historyEmbeddingsEnabledPref_',
+      })
     }
 
     override ready () {

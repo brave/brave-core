@@ -24,6 +24,8 @@ class ThemeMetricsTest : public testing::Test {
  public:
   void SetUp() override {
     theme_service_ = ThemeServiceFactory::GetForProfile(&profile_);
+    // Avoid the Linux system (GTK) theme, which is present on desktop sessions.
+    theme_service_->UseDefaultTheme();
     theme_metrics_ = std::make_unique<ThemeMetrics>(theme_service_);
   }
 

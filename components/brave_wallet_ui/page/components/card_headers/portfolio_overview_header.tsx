@@ -10,7 +10,7 @@ import { useHistory } from 'react-router-dom'
 import { WalletRoutes } from '$wallet/constants/types'
 
 // Selectors
-import { UISelectors } from '$wallet/common/selectors'
+import { UISelectors, WalletSelectors } from '$wallet/common/selectors'
 
 // Components
 import { DefaultPanelHeader } from './default_panel_header'
@@ -19,7 +19,10 @@ import { DefaultPanelHeader } from './default_panel_header'
 import { getLocale } from '$web-common/locale'
 
 // Hooks
-import { useSafeUISelector } from '$wallet/common/hooks/use-safe-selector'
+import {
+  useSafeUISelector,
+  useSafeWalletSelector,
+} from '$wallet/common/hooks/use-safe-selector'
 
 // Styled Components
 import {
@@ -33,14 +36,23 @@ export const PortfolioOverviewHeader = () => {
   // UI Selectors (safe)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
   const isMobile = useSafeUISelector(UISelectors.isMobile)
+  const isCardStackUiEnabled = useSafeWalletSelector(
+    WalletSelectors.isCardStackUiEnabled,
+  )
 
   // Routing
   const history = useHistory()
+
+  // Methods
+  const onBackToCards = React.useCallback(() => {
+    history.push(WalletRoutes.Cards)
+  }, [history])
 
   return isPanel || isMobile ? (
     <DefaultPanelHeader
       expandRoute={WalletRoutes.PortfolioAssets}
       title={getLocale(S.BRAVE_WALLET_TOP_NAV_PORTFOLIO)}
+      onBack={isPanel && isCardStackUiEnabled ? onBackToCards : undefined}
     />
   ) : (
     <Row

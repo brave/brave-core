@@ -54,6 +54,8 @@
 #include "components/permissions/permission_request_manager.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/testing_pref_service.h"
+#include "components/tabs/public/mock_tab_interface.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_web_contents_factory.h"
 #include "content/test/test_web_contents.h"
@@ -232,6 +234,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
 
   void TearDown() override {
     provider_.reset();
+    brave_wallet_tab_helper_.reset();
     web_contents_.reset();
     profile_.SetPermissionControllerDelegate(nullptr);
     BraveWalletServiceDelegateImpl::SetActiveWebContentsForTesting(nullptr);
@@ -498,12 +501,15 @@ class EthereumProviderImplUnitTest : public testing::Test {
   }
 
   void CreateBraveWalletTabHelper() {
-    brave_wallet::BraveWalletTabHelper::CreateForWebContents(
-        web_contents_.get());
+    ON_CALL(tab_, GetContents())
+        .WillByDefault(testing::Return(web_contents_.get()));
+    tabs::TabLookupFromWebContents::CreateForWebContents(web_contents_.get(),
+                                                         &tab_);
+    brave_wallet_tab_helper_ =
+        std::make_unique<brave_wallet::BraveWalletTabHelper>(tab_);
   }
   brave_wallet::BraveWalletTabHelper* brave_wallet_tab_helper() {
-    return brave_wallet::BraveWalletTabHelper::FromWebContents(
-        web_contents_.get());
+    return brave_wallet_tab_helper_.get();
   }
 
   void AddEthereumPermission(const mojom::AccountIdPtr& account_id) {
@@ -1000,6 +1006,8 @@ class EthereumProviderImplUnitTest : public testing::Test {
   TestingPrefServiceSimple local_state_;
   content::TestWebContentsFactory factory_;
   std::unique_ptr<content::TestWebContents> web_contents_;
+  tabs::MockTabInterface tab_;
+  std::unique_ptr<brave_wallet::BraveWalletTabHelper> brave_wallet_tab_helper_;
   base::ScopedTempDir temp_dir_;
   TestingProfile profile_;
 
@@ -1863,43 +1871,6 @@ TEST_F(EthereumProviderImplUnitTest,
       tx_service()->GetTransactionInfoSync(mojom::CoinType::ETH, tx_meta_id);
   ASSERT_TRUE(tx_info);
   EXPECT_EQ(tx_info->tx_status, mojom::TransactionStatus::Unapproved);
-}
-
-TEST_F(EthereumProviderImplUnitTest,
-       DappEvmTransaction_NonWebOrigin_TxRejectedOnRevocation) {
-  // The tx-rejection sweep must fail closed for non-web origins: an EVM dapp
-  // transaction whose origin is neither http(s) nor a trusted wallet WebUI
-  // origin gets rejected when a permission revocation triggers the sweep.
-  CreateWallet();
-  auto account_0 = GetAccountUtils().EnsureEthAccount(0);
-  Navigate(GURL("https://brave.com"));
-  AddEthereumPermission(account_0->account_id);
-
-  auto tx_data =
-      mojom::TxData::New("0x1", "0x06", "0x09184e72a000", "0x0974",
-                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-                         "0x016345785d8a0000", std::vector<uint8_t>());
-  base::test::TestFuture<bool, const std::string&, const std::string&>
-      add_tx_future;
-  tx_service()->AddUnapprovedEvmDappTransaction(
-      std::move(tx_data), account_0->account_id.Clone(),
-      url::Origin::Create(GURL("chrome-extension://randomextensionid")), false,
-      add_tx_future.GetCallback());
-  auto [added, tx_meta_id, add_error] = add_tx_future.Take();
-  ASSERT_TRUE(added);
-  ASSERT_FALSE(tx_meta_id.empty());
-
-  auto tx_info =
-      tx_service()->GetTransactionInfoSync(mojom::CoinType::ETH, tx_meta_id);
-  ASSERT_TRUE(tx_info);
-  ASSERT_EQ(tx_info->tx_status, mojom::TransactionStatus::Unapproved);
-
-  ResetEthereumPermission(account_0->account_id);
-
-  tx_info =
-      tx_service()->GetTransactionInfoSync(mojom::CoinType::ETH, tx_meta_id);
-  ASSERT_TRUE(tx_info);
-  EXPECT_EQ(tx_info->tx_status, mojom::TransactionStatus::Rejected);
 }
 
 TEST_F(EthereumProviderImplUnitTest, SignMessageWithTypedDataStructure) {

@@ -34,3 +34,12 @@ substitutions:
     set_feature_flag_default_state:
       feature_name: kSessionRestoreInfobar
       value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: |-
+      Ship kEnterpriseReleaseNotes disabled.
+
+      Adds an app menu item linking to chromeenterprise.google release notes,
+      which is not relevant to Brave.
+    set_feature_flag_default_state:
+      feature_name: kEnterpriseReleaseNotes
+      value: base::FEATURE_DISABLED_BY_DEFAULT

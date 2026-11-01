@@ -408,7 +408,6 @@ IN_PROC_BROWSER_TEST_F(BraveTorWithCustomProfileBrowserTest, Incognito) {
   // disabled.
   EXPECT_FALSE(does_element_exist("torEnabled"));
   EXPECT_FALSE(is_element_enabled("useBridges"));
-  EXPECT_TRUE(is_element_enabled("onionOnlyInTorWindows"));
   EXPECT_TRUE(is_element_enabled("torSnowflake"));
 
   auto* tor_profile = OpenTorWindow();
@@ -439,7 +438,6 @@ IN_PROC_BROWSER_TEST_F(BraveTorWithCustomProfileBrowserTest, Incognito) {
   EXPECT_TRUE(does_element_exist("torEnabled"));
   EXPECT_TRUE(is_element_enabled("torEnabled"));
   EXPECT_TRUE(is_element_enabled("useBridges"));
-  EXPECT_TRUE(is_element_enabled("onionOnlyInTorWindows"));
   EXPECT_TRUE(is_element_enabled("torSnowflake"));
 }
 

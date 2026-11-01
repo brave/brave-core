@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/updater/BUILD.gn b/chrome/browser/updater/BUILD.gn
-index b9c442efe4805721eeb732eed905d4e4a668a7aa..441b3d417093ec1dac90978db7c5e5ecfb34c1f2 100644
+index f7bcb1e6b7a029333ea446092f86f2f39d2b0d85..1d1cfa470aad9dfe50400428a602eb3735adc4a0 100644
 --- a/chrome/browser/updater/BUILD.gn
 +++ b/chrome/browser/updater/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index b9c442efe4805721eeb732eed905d4e4a668a7aa..441b3d417093ec1dac90978db7c5e5ec
  import("//build/config/chrome_build.gni")
  import("//chrome/browser/buildflags.gni")
  
-@@ -76,6 +77,7 @@ source_set("updater") {
+@@ -77,6 +78,7 @@ source_set("updater") {
        ]
        frameworks = [ "OpenDirectory.framework" ]
      }

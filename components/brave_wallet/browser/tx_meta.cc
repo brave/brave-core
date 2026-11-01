@@ -10,11 +10,29 @@
 #include "base/uuid.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 
 namespace brave_wallet {
 
 TxMeta::TxMeta() = default;
 TxMeta::~TxMeta() = default;
+
+TxMeta::TxMeta(const mojom::AccountIdPtr& from,
+               const std::string& chain_id,
+               mojom::SwapInfoPtr swap_info,
+               std::optional<url::Origin> dapp_origin)
+    : id_(GenerateMetaID()),
+      from_(from.Clone()),
+      created_time_(base::Time::Now()),
+      chain_id_(chain_id),
+      swap_info_(std::move(swap_info)) {
+  set_dapp_origin(std::move(dapp_origin));
+}
+
+void TxMeta::set_dapp_origin(std::optional<url::Origin> dapp_origin) {
+  DCHECK(!dapp_origin || !dapp_origin->opaque());
+  dapp_origin_ = std::move(dapp_origin);
+}
 
 bool TxMeta::operator==(const TxMeta& meta) const {
   if (GetCoinType() != meta.GetCoinType()) {
@@ -25,7 +43,7 @@ bool TxMeta::operator==(const TxMeta& meta) const {
          created_time_ == meta.created_time_ &&
          submitted_time_ == meta.submitted_time_ &&
          confirmed_time_ == meta.confirmed_time_ && tx_hash_ == meta.tx_hash_ &&
-         origin_ == meta.origin_ && chain_id_ == meta.chain_id_ &&
+         dapp_origin_ == meta.dapp_origin_ && chain_id_ == meta.chain_id_ &&
          swap_info_ == meta.swap_info_;
 }
 
@@ -39,9 +57,9 @@ base::DictValue TxMeta::ToValue() const {
   dict.Set("submitted_time", base::TimeToValue(submitted_time_));
   dict.Set("confirmed_time", base::TimeToValue(confirmed_time_));
   dict.Set("tx_hash", tx_hash_);
-  if (origin_.has_value()) {
-    DCHECK(!origin_->opaque());
-    dict.Set("origin", origin_->GetURL().spec());
+  if (dapp_origin_) {
+    DCHECK(IsValidDappOrigin(*dapp_origin_));
+    dict.Set("origin", dapp_origin_->GetURL().spec());
   }
   dict.Set("coin", static_cast<int>(GetCoinType()));
   dict.Set("chain_id", chain_id_);

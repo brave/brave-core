@@ -38,7 +38,7 @@ namespace sidebar {
 // The web panel is backed by a pinned tab, so it must be closed before the
 // session service and the tab restore service snapshot the window. Otherwise
 // it comes back as an ordinary pinned tab on restore.
-void MaybeCloseWebPanel(BrowserWindowInterface* browser);
+void MaybeCloseWebPanelForShutdown(BrowserWindowInterface* browser);
 
 }  // namespace sidebar
 

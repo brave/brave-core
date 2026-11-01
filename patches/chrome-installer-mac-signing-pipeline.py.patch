@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mac/signing/pipeline.py b/chrome/installer/mac/signing/pipeline.py
-index 7aa84e2e9d94466bef37655f80b203815b96e470..48d4f2856f30076566a973aba1bcf8226ee563a3 100644
+index 9f639604a263fcbd60735cb25151a15d9d8a3a8a..24517859f02631d89caa93c44bee8ed683b10d5f 100644
 --- a/chrome/installer/mac/signing/pipeline.py
 +++ b/chrome/installer/mac/signing/pipeline.py
 @@ -783,6 +783,9 @@ async def sign_all(

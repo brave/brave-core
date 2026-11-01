@@ -11,7 +11,6 @@ brave_browser_cosmetic_filters_sources = [
 brave_browser_cosmetic_filters_deps = [
   "//base",
   "//brave/components/cosmetic_filters/common:mojom",
-  "//chrome/browser/ui",
   "//chrome/browser/ui/color:color_headers",
   "//third_party/blink/public/common",
 ]

@@ -13,7 +13,8 @@ import { PolymerElement } from
 
 import '//resources/cr_elements/md_select.css.js'
 
-import { PrefsMixin } from '/shared/settings/prefs/prefs_mixin.js'
+import { PrefService } from '/shared/settings/prefs2/pref_service.js'
+import { PrefServiceObserverMixin } from '/shared/settings/prefs2/pref_service_observer_mixin.js'
 
 import { BaseMixin } from '../base_mixin.js'
 import { SettingsToggleButtonElement } from
@@ -33,7 +34,7 @@ import { getTemplate } from './personalization.html.js'
 import {SettingsViewMixin} from '../settings_page/settings_view_mixin.js'
 
 const BraveLeoPersonalizationBase =
-  PrefsMixin(I18nMixin(BaseMixin(SettingsViewMixin(PolymerElement))))
+  PrefServiceObserverMixin(I18nMixin(BaseMixin(SettingsViewMixin(PolymerElement))))
 
 class BraveLeoPersonalization extends BraveLeoPersonalizationBase {
   static get is() {
@@ -52,6 +53,8 @@ class BraveLeoPersonalization extends BraveLeoPersonalizationBase {
         computed: 'computeIsPremiumUser_(premiumStatus_)'
       },
       defaultModelKeyPrefValue_: String,
+      tabOrganizationEnabledPref_: Object,
+      tabOrganizationModelKeyPref_: Object,
       models_: {
         type: Array,
       },
@@ -73,10 +76,23 @@ class BraveLeoPersonalization extends BraveLeoPersonalizationBase {
   declare isHistoryFeatureEnabled_: boolean
   declare isTabOrganizationFeatureEnabled_: boolean
   declare defaultModelKeyPrefValue_: string
+  private declare tabOrganizationEnabledPref_:
+    chrome.settingsPrivate.PrefObject<boolean> | undefined
+  private declare tabOrganizationModelKeyPref_:
+    chrome.settingsPrivate.PrefObject<string> | undefined
   declare models_: ModelWithSubtitle[]
   premiumStatus_: PremiumStatus = PremiumStatus.Unknown
   browserProxy_: BraveLeoAssistantBrowserProxy =
     BraveLeoAssistantBrowserProxyImpl.getInstance()
+
+  override connectedCallback() {
+    super.connectedCallback()
+    this.mirrorPrefs({
+      'brave.ai_chat.tab_organization_enabled': 'tabOrganizationEnabledPref_',
+      'brave.ai_chat.tab_organization_model_key':
+        'tabOrganizationModelKeyPref_',
+    })
+  }
 
   override ready() {
     super.ready()
@@ -166,7 +182,7 @@ class BraveLeoPersonalization extends BraveLeoPersonalizationBase {
   }
 
   private onTabOrganizationModelChange_(e: CustomEvent<{value: string}>) {
-    this.setPrefValue(
+    PrefService.getInstance().setPrefValue(
       'brave.ai_chat.tab_organization_model_key',
       e.detail.value)
   }

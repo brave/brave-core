@@ -16,7 +16,6 @@
 #include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
-#include "base/strings/string_util.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -24,7 +23,6 @@
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/browser/meld_integration_response_parser.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/json/json_helper.h"
 #include "net/base/url_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -85,6 +83,21 @@ GURL AppendFilterParams(
   }
 
   url = net::AppendQueryParameter(url, "statuses", kDefaultMeldStatuses);
+
+  return url;
+}
+
+// Brave's Meld integration only drives the on-ramp flow.
+constexpr char kCryptoOnrampCategory[] = "CRYPTO_ONRAMP";
+
+GURL MakeNetworkPartnerURL(
+    std::string_view path,
+    const base::flat_map<std::string, std::string>& params) {
+  GURL url = GURL(brave_wallet::kMeldRpcEndpoint).Resolve(path);
+  url = net::AppendQueryParameter(url, "category", kCryptoOnrampCategory);
+  for (const auto& [key, val] : params) {
+    url = net::AppendQueryParameter(url, key, val);
+  }
 
   return url;
 }
@@ -441,14 +454,10 @@ void MeldIntegrationService::OnParseCryptoQuotes(
 GURL MeldIntegrationService::GetPaymentMethodsURL(
     const std::string& country,
     const std::string& source_currency_code) {
-  return AppendFilterParams(
-      GURL(kMeldRpcEndpoint)
-          .Resolve("/service-providers/properties/payment-methods"),
+  return MakeNetworkPartnerURL(
+      "/network-partner/supported/payment-methods",
       base::flat_map<std::string, std::string>{
-          {"countries", country},
-          {"fiatCurrencies", source_currency_code},
-          {"includeServiceProviderDetails", "false"},
-          {"accountFilter", "false"}});
+          {"country", country}, {"currencyCode", source_currency_code}});
 }
 
 void MeldIntegrationService::GetPaymentMethods(
@@ -506,12 +515,9 @@ void MeldIntegrationService::OnParsePaymentMethods(
 
 // static
 GURL MeldIntegrationService::GetFiatCurrenciesURL() {
-  return AppendFilterParams(
-      GURL(kMeldRpcEndpoint)
-          .Resolve("/service-providers/properties/fiat-currencies"),
-      base::flat_map<std::string, std::string>{
-          {"includeServiceProviderDetails", "false"},
-          {"accountFilter", "false"}});
+  return MakeNetworkPartnerURL(
+      "/network-partner/supported/currencies",
+      base::flat_map<std::string, std::string>{{"type", "FIAT"}});
 }
 
 void MeldIntegrationService::GetFiatCurrencies(
@@ -567,22 +573,11 @@ void MeldIntegrationService::OnParseFiatCurrencies(
 
 // static
 GURL MeldIntegrationService::GetCryptoCurrenciesURL() {
-  std::vector<std::string_view> supported_chains;
-  supported_chains.reserve(kMeldSupportedChains.size());
-  for (const auto& [chain_code, brave_chain] : kMeldSupportedChains) {
-    if (brave_chain.first == mojom::CoinType::DOT && !IsPolkadotEnabled()) {
-      continue;
-    }
-    supported_chains.push_back(chain_code);
-  }
-
-  return AppendFilterParams(
-      GURL(kMeldRpcEndpoint)
-          .Resolve("/service-providers/properties/crypto-currencies"),
-      base::flat_map<std::string, std::string>{
-          {"cryptoChains", base::JoinString(supported_chains, ",")},
-          {"includeServiceProviderDetails", "false"},
-          {"accountFilter", "false"}});
+  // The network-partner API takes a single `network`, so unsupported chains are
+  // filtered out while parsing instead.
+  return MakeNetworkPartnerURL(
+      "/network-partner/supported/currencies",
+      base::flat_map<std::string, std::string>{{"type", "CRYPTO"}});
 }
 
 void MeldIntegrationService::GetCryptoCurrencies(
@@ -638,11 +633,8 @@ void MeldIntegrationService::OnParseCryptoCurrencies(
 
 // static
 GURL MeldIntegrationService::GetCountriesURL() {
-  return AppendFilterParams(
-      GURL(kMeldRpcEndpoint).Resolve("/service-providers/properties/countries"),
-      base::flat_map<std::string, std::string>{
-          {"includeServiceProviderDetails", "false"},
-          {"accountFilter", "false"}});
+  return MakeNetworkPartnerURL("/network-partner/supported/countries",
+                               base::flat_map<std::string, std::string>{});
 }
 
 void MeldIntegrationService::GetCountries(GetCountriesCallback callback) {

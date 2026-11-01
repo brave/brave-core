@@ -104,7 +104,13 @@ class KeyringService : public mojom::KeyringService {
   bool RestoreWalletSync(const std::string& mnemonic,
                          const std::string& password,
                          bool is_legacy_eth_seed_format);
+  void RecoverWallet(const std::string& mnemonic,
+                     const std::string& new_password,
+                     bool is_legacy_eth_seed_format,
+                     bool allow_imported_account_removal,
+                     RecoverWalletCallback callback) override;
   void Unlock(const std::string& password, UnlockCallback callback) override;
+  bool UnlockSync(const std::string& password);
   void Lock() override;
   void IsLocked(IsLockedCallback callback) override;
   void AddAccount(mojom::CoinType coin,
@@ -458,6 +464,16 @@ class KeyringService : public mojom::KeyringService {
                             const std::string& password,
                             bool is_legacy_eth_seed_format,
                             bool from_restore);
+  std::optional<std::string> GetDefaultEthAccountFromSeed(
+      const KeyringSeed& keyring_seed) const;
+  mojom::RecoverWalletResult RecoverWalletSync(
+      const std::string& mnemonic,
+      const std::string& new_password,
+      bool is_legacy_eth_seed_format,
+      bool allow_imported_account_removal);
+  bool ReEncryptWallet(const std::string& mnemonic,
+                       const std::string& new_password,
+                       bool is_legacy_eth_seed_format);
   void CreateKeyringInternal(mojom::KeyringId keyring_id,
                              const KeyringSeed& keyring_seed);
   bool IsKeyringEnabled(mojom::KeyringId keyring_id) const;

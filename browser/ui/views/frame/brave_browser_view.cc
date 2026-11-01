@@ -28,7 +28,6 @@
 #include "brave/browser/ui/page_info/features.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
-#include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
@@ -360,20 +359,35 @@ BraveBrowserView::BraveBrowserView(BrowserWindowInterface* browser)
   // Only normal window (tabbed) should have sidebar.
   const bool can_have_sidebar = sidebar::CanUseSidebar(browser_);
   if (can_have_sidebar) {
+    std::optional<size_t> sidebar_index;
+    if (tabs::IsUpstreamVerticalTabsForceEnabled() &&
+        vertical_tab_strip_region_view_) {
+      // As vertical tab strip could be drawn over atop the sidebar, we need to
+      // make sidebar the prior to the vertical tab strip for z-ordering.
+
+      auto vertical_tab_strip_region_view_index =
+          GetIndexOf(vertical_tab_strip_region_view_);
+      CHECK(vertical_tab_strip_region_view_index);
+      sidebar_index = *vertical_tab_strip_region_view_index;
+    }
+
     // Unretained() is safe: `this` owns `sidebar_container_view_` (added via
     // AddChildView), so the container cannot outlive the callback target.
-    sidebar_container_view_ =
-        AddChildView(std::make_unique<SidebarContainerView>(
+    sidebar_container_view_ = AddChildViewAt(
+        std::make_unique<SidebarContainerView>(
             browser_,
             base::BindRepeating(
                 &BraveBrowserView::OnSidebarControlViewVisibilityChanged,
-                base::Unretained(this))));
+                base::Unretained(this))),
+        sidebar_index.value_or(children().size()));
 
     side_panel_->SetResizeArea(
         std::make_unique<views::BraveSidePanelResizeArea>(side_panel_));
 
 #if defined(USE_AURA)
-    sidebar_host_view_ = AddChildView(std::make_unique<views::View>());
+    sidebar_host_view_ =
+        AddChildViewAt(std::make_unique<views::View>(),
+                       sidebar_index.value_or(children().size()));
 #endif
 
     pref_change_registrar_.Add(
@@ -630,8 +644,8 @@ void BraveBrowserView::UpdateReaderModeToolbar() {
     if (!web_contents) {
       return false;
     }
-    if (auto* th =
-            speedreader::SpeedreaderTabHelper::FromWebContents(web_contents)) {
+    if (auto* th = speedreader::SpeedreaderTabHelper::From(
+            tabs::TabInterface::MaybeGetFromContents(web_contents))) {
       return speedreader::IsDistilled(th->PageDistillState());
     }
     return false;
@@ -925,7 +939,7 @@ bool BraveBrowserView::MaybeUpdateDevtools(content::WebContents* web_contents) {
   // split tab is active when MultiContentsView shows split view now.
   // But, it could not when web panel is active and split view is opened
   // together. Early return to avoid crash from that.
-  if (IsWebPanelContents(web_contents) && IsInSplitView()) {
+  if (sidebar::IsWebPanelTab(browser_, web_contents) && IsInSplitView()) {
     return DevtoolsUIController::From(browser_)->UpdateDevtools(web_contents,
                                                                 false);
   }
@@ -946,7 +960,7 @@ bool BraveBrowserView::MaybeUpdateSplitView(
   // But, it could not when web panel is active and split view is opened
   // together. Early return to avoid crash from that. If |web_contents| is not
   // related with split tab, don't need to call base class' method.
-  if (IsWebPanelContents(web_contents) &&
+  if (sidebar::IsWebPanelTab(browser_, web_contents) &&
       multi_contents_view_->IsInSplitView()) {
     return false;
   }
@@ -1296,21 +1310,6 @@ void BraveBrowserView::HandleBrowserWindowMouseEvent(
     // handle mouse move events accordingly.
     region_view->HandleMouseMoveEvent(point_in_screen);
   }
-}
-
-bool BraveBrowserView::IsWebPanelContents(content::WebContents* contents) {
-  if (!sidebar::IsWebPanelFeatureEnabled() || !contents) {
-    return false;
-  }
-
-  if (auto* sidebar_controller = sidebar::SidebarController::From(browser_)) {
-    if (auto* web_panel_controller =
-            sidebar_controller->GetWebPanelController()) {
-      return web_panel_controller->panel_contents() == contents;
-    }
-  }
-
-  return false;
 }
 
 ClientFrameElementInfo BraveBrowserView::GetFrameElementInfo() const {

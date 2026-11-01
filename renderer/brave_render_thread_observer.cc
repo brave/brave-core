@@ -66,8 +66,7 @@ void BraveRenderThreadObserver::SetConfiguration(
 }
 
 bool BraveRenderThreadObserver::IsOnionAllowed() const {
-  return is_tor_process_ ||
-         !GetDynamicConfigParams()->onion_only_in_tor_windows;
+  return is_tor_process_;
 }
 
 bool BraveRenderThreadObserver::IsBackupResultsProcess() const {

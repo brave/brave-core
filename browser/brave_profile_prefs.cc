@@ -418,6 +418,10 @@ void RegisterProfilePrefsForMigration(
 
   // Added 10/2026.
   registry->RegisterBooleanPref(kMRUCyclingEnabled, false);
+
+#if BUILDFLAG(ENABLE_TOR)
+  tor::TorProfileService::RegisterProfilePrefsForMigration(registry);
+#endif
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {

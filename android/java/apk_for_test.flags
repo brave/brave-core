@@ -24,7 +24,6 @@
 -keep class org.chromium.chrome.browser.media.ui.ChromeMediaNotificationControllerDelegate { *; }
 -keep class org.chromium.chrome.browser.media.ui.MediaSessionTabHelper { *; }
 -keep class org.chromium.components.browser_ui.notifications.BraveForegroundServiceUtils { *; }
--keep class org.chromium.chrome.browser.media.ui.BraveMediaNotificationControllerDelegate { *; }
 -keep class org.chromium.chrome.browser.media.ui.BraveMediaSessionTabHelper { *; }
 
 -keep class org.chromium.chrome.browser.bookmarks.BookmarkBridge {
@@ -684,10 +683,12 @@
 -keep class org.chromium.chrome.browser.dom_distiller.ReaderModeManager {
     *** mTab;
     <init>(...);
+    *** shouldUseReaderModeMessages(...);
 }
 
 -keep class org.chromium.chrome.browser.dom_distiller.BraveReaderModeManager {
     <init>(...);
+    *** shouldUseReaderModeMessages(...);
 }
 
 -keep class org.chromium.chrome.browser.crash.ChromePureJavaExceptionReporter {

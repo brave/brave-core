@@ -72,6 +72,7 @@ source_set("sidebar_impl") {
     "//chrome/browser/profiles",
     "//chrome/browser/search",
     "//chrome/browser/search_engines",
+    "//chrome/browser/ui:browser_tabstrip",
     "//chrome/browser/ui:browser_window_header",
     "//chrome/browser/ui:singleton_tabs",
     "//chrome/browser/ui:ui_features",
@@ -121,7 +122,6 @@ source_set("test_support") {
     "//brave/browser/ui/views/frame/split_view",
     "//brave/browser/ui/views/sidebar",
     "//brave/components/sidebar/browser",
-    "//chrome/browser/ui",
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/side_panel:side_panel_views_dependent",
     "//chrome/browser/ui/tabs:tab_strip",
@@ -135,6 +135,8 @@ source_set("test_support") {
     "//ui/views",
     "//url",
   ]
+
+  deps = [ "//brave/browser/ui" ]
 }
 
 source_set("browser_tests") {
@@ -153,7 +155,9 @@ source_set("browser_tests") {
     "//base",
     "//base/i18n:test_support",
     "//brave/app:command_ids",
+    "//brave/browser/ui",
     "//brave/browser/ui/tabs:tabs_public",
+    "//brave/browser/ui/views:layout_provider",
     "//brave/browser/ui/views/frame",
     "//brave/browser/ui/views/frame/split_view",
     "//brave/browser/ui/views/frame/vertical_tabs",
@@ -172,7 +176,7 @@ source_set("browser_tests") {
     "//chrome/browser/profiles:profile",
     "//chrome/browser/search_engines",
     "//chrome/browser/sessions",
-    "//chrome/browser/ui",
+    "//chrome/browser/ui:browser_tabstrip",
     "//chrome/browser/ui:browser_window_header",
     "//chrome/browser/ui:layout_constants",
     "//chrome/browser/ui:ui_features",
@@ -231,12 +235,12 @@ source_set("interactive_ui_tests") {
     ":sidebar_impl",
     ":test_support",
     "//base",
+    "//brave/browser/ui",
     "//brave/browser/ui/views/frame",
     "//brave/browser/ui/views/frame/split_view",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/sidebar/browser",
     "//brave/components/sidebar/common",
-    "//chrome/browser/ui",
     "//chrome/browser/ui:browser_window_header",
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/tabs:tab_strip",
@@ -270,7 +274,6 @@ source_set("unit_tests") {
     "//brave/components/brave_talk/buildflags",
     "//brave/components/playlist/core/common/buildflags",
     "//brave/components/sidebar/browser",
-    "//chrome/browser/ui",
     "//chrome/test:test_support",
     "//components/prefs",
     "//components/sync_preferences:test_support",

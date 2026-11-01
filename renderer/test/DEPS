@@ -28,6 +28,12 @@ specific_include_rules = {
     "!content/public/browser/render_frame_host.h",
     "!content/public/browser/web_contents.h",
   ],
+  "translation_web_apis_browsertest\.cc": [
+    "!brave/components/constants/brave_paths.h",
+    "!chrome/browser/ui/browser.h",
+    "!chrome/browser/ui/tabs/tab_strip_model.h",
+    "!content/public/browser/web_contents.h",
+  ],
   "font_browsertest\.cc": [
     "!brave/components/constants/brave_paths.h",
   ],

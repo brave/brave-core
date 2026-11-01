@@ -2,7 +2,7 @@
 "AboutBraveShields" = "À propos des boucliers Brave";
 
 /* The body of the screen explaining Brave Shields */
-"AboutBraveShieldsBody" = "Les sites comprennent souvent des cookies et des scripts qui tentent de vous identifier et d’identifier votre appareil. Ils cherchent à savoir qui vous êtes et vous suivent sur le Web, traquant vos actions sur chaque site.\n\nBrave bloque cela pour que vous puissiez naviguer sans vous sentir épié.";
+"AboutBraveShieldsBody" = "Les sites comprennent souvent des cookies et des scripts qui tentent de vous identifier et d'identifier votre appareil. Ils cherchent à savoir qui vous êtes et vous suivent sur le Web, traquant vos actions sur chaque site.\n\nBrave bloque cela pour que vous puissiez naviguer sans vous sentir épié.";
 
 /* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
 "AddCustomFilterListDescription" = "Ajoutez des listes supplémentaires créées et maintenues par une communauté de confiance.";
@@ -44,10 +44,10 @@
 "AutoRedirectAMPPagesDescription" = "Toujours visiter les URL des pages originales (non AMP), au lieu des versions accélérées des pages mobiles de Google.";
 
 /* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
-"AutoRedirectTrackingURLs" = "Redirection automatique des URL de suivi";
+"AutoRedirectTrackingURLs" = "Rediriger automatiquement les URL de suivi";
 
 /* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
-"AutoRedirectTrackingURLsDescription" = "Active la prise en charge du contournement des URL de suivi de redirection de niveau supérieur.";
+"AutoRedirectTrackingURLsDescription" = "Activer la prise en charge du contournement des URL de suivi de redirection de niveau supérieur";
 
 /* A picker title for selecting a automatic shred setting option */
 "AutoShred" = "Suppression automatique";
@@ -56,7 +56,7 @@
 "AutoShredSectionTitle" = "Effacer automatiquement les données de navigation";
 
 /* Text for a button in a blocked page or a page not secure info screen that takes you back where you came from or back to home screen */
-"BackToSafetyButtonTitle" = "Retour en sécurité";
+"BackToSafetyButtonTitle" = "Retour à la sécurité";
 
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "Agressif";
@@ -74,10 +74,10 @@
 "blockMobileAnnoyances" = "Blocage des demandes d’installation d’applications";
 
 /* No comment provided by engineer. */
-"BlockScripts" = "Blocage des scripts";
+"BlockScripts" = "Bloquer les scripts";
 
 /* No comment provided by engineer. */
-"BlockScriptsDescription" = "Bloque JavaScript (certains sites risquent de ne pas fonctionner correctement)";
+"BlockScriptsDescription" = "Bloque JavaScript (certains sites risquent de ne pas fonctionner correctement).";
 
 /* Title for the brave player feature */
 "BravePlayer" = "Lecteur Brave";
@@ -110,13 +110,13 @@
 "BraveShieldsGlobalChangeButton" = "Modifier les paramètres généraux par défaut des Boucliers";
 
 /* No comment provided by engineer. */
-"BraveShieldsGlobalControls" = "Paramètres généraux";
+"BraveShieldsGlobalControls" = "Contrôles globaux";
 
 /* Shields panel toggle label that would save webcompat report contact info data when enabled. */
 "BraveShieldsSaveContactInfo" = "Enregistrement des informations de contact pour les rapports";
 
 /* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfoDescription" = "Si vous fournissez vos informations de contact, celles-ci seront conservées pour d’éventuels futurs rapports.";
+"BraveShieldsSaveContactInfoDescription" = "Si vous fournissez des coordonnées, elles seront enregistrées pour de futurs rapports.";
 
 /* No comment provided by engineer. */
 "BraveShieldsSiteBroken" = "Si ce site semble ne pas fonctionner correctement, essayez de désactiver les boucliers.";
@@ -230,13 +230,13 @@
 "FilterListURLTextFieldPlaceholder" = "Saisissez l’URL de la liste de filtres ici";
 
 /* No comment provided by engineer. */
-"FingerprintingProtection" = "Blocage du fingerprinting";
+"FingerprintingProtection" = "Bloquez les empreintes numériques";
 
 /* No comment provided by engineer. */
-"FingerprintingProtectionDescription" = "Empêche les sites de reconnaître facilement les caractéristiques uniques de votre appareil";
+"FingerprintingProtectionDescription" = "Empêche les sites de reconnaître facilement les caractéristiques uniques de votre appareil.";
 
 /* No comment provided by engineer. */
-"httpsEverywhereDescription" = "Ouvrir les sites en utilisant une connexion HTTPS sécurisée au lieu d’une connexion HTTP lorsque cela est possible.";
+"httpsEverywhereDescription" = "Ouvrir les sites en utilisant une connexion HTTPS sécurisée au lieu d'une connexion HTTP lorsque cela est possible.";
 
 /* The option the user can select to do strict https upgrading */
 "HttpsUpgradeLevelStrict" = "Strict";
@@ -248,7 +248,7 @@
 "ReportABrokenSite" = "Signaler une panne du site";
 
 /* A label for a text entry field where the user can provide additional details for a web-compatibility report */
-"ReportBrokenAdditionalDetails" = "Plus d’informations (facultatif)";
+"ReportBrokenAdditionalDetails" = "Plus de détails (facultatif)";
 
 /* A label for a text entry field where the user can provide additional details for a web-compatibility report */
 "reportBrokenAdditionalDetailsRequired" = "Détails supplémentaires";
@@ -257,7 +257,7 @@
 "reportBrokenCategory" = "Quel est le problème principal ?";
 
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
-"ReportBrokenContactMe" = "Mes coordonnées : (facultatif)";
+"ReportBrokenContactMe" = "Contactez-moi : (facultatif)";
 
 /* Contact info storing description */
 "ReportBrokenContactMeDescription" = "Si vous fournissez vos informations de contact, celles-ci seront conservées pour d’éventuels futurs rapports concernant l’indisponibilité des sites.";
@@ -272,7 +272,7 @@
 "ReportBrokenSiteBody1" = "Signalez aux équipes de Brave que ce site rencontre un dysfonctionnement :";
 
 /* This is the info text that is presented when a user is submitting a web-compatibility report. */
-"ReportBrokenSiteBody2" = "Remarque : Le rapport envoyé aux serveurs Brave comprendra l’adresse du site, le numéro de version de Brave, les paramètres des boucliers, le statut du VPN et les paramètres linguistiques.";
+"ReportBrokenSiteBody2" = "Remarque : le rapport envoyé aux serveurs Brave comprendra l'adresse du site, le numéro de version de Brave, les paramètres des boucliers, le statut du VPN et les paramètres linguistiques.";
 
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "Envoyer";
@@ -338,10 +338,10 @@
 "shields.trackersAdsAndMoreBlocked" = "traqueurs, publicités et autres contenus bloqués";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Paramètres généraux par défaut des boucliers Brave";
+"ShieldsDefaults" = "Réglages par défaut Brave Shields";
 
 /* Section footer for global shields defaults */
-"ShieldsDefaultsFooter" = "Réglages par défaut des boucliers pour les nouveaux sites. La modification de ces paramètres n’affectera pas les réglages que vous avez définis pour un site en particulier.";
+"ShieldsDefaultsFooter" = "Réglages par défaut des boucliers pour les nouveaux sites. La modification de ces paramètres n'affectera pas les réglages que vous avez définis pour un site en particulier.";
 
 /* No comment provided by engineer. */
 "ShieldsDownDisclaimer" = "Vous naviguez sur ce site sans protection de confidentialité de Brave. Ne fonctionne-t-il pas correctement lorsque les boucliers sont activés ?";
@@ -401,7 +401,7 @@
 "SiteIsNotSecure" = "Le site n’est pas sécurisé";
 
 /* No comment provided by engineer. */
-"SiteReportedBody" = "Merci d’avoir signalé aux développeurs de Brave que ce site ne fonctionne pas correctement. Nous allons faire de notre mieux pour corriger le problème !";
+"SiteReportedBody" = "Merci d'avoir signalé aux développeurs de Brave que ce site ne fonctionne pas correctement. Nous allons faire de notre mieux pour corriger le problème !";
 
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "Merci";

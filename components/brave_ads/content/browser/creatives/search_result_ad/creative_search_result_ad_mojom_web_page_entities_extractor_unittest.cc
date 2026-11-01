@@ -34,16 +34,16 @@ void VerifyRequiredMojomCreativeAdExpectations(
           GURL(test::kCreativeAdLandingPage), test::kCreativeAdHeadlineText,
           test::kCreativeAdDescription,
           ::testing::DoubleEq(test::kCreativeAdRewardsValue),
-          /*creative_set_conversion=*/::testing::_));
+          /*campaign_conversion=*/::testing::_));
 }
 
-void VerifyRequiredMojomCreativeSetConversionExpectations(
+void VerifyRequiredMojomCampaignConversionExpectations(
     const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad) {
   EXPECT_THAT(
-      mojom_creative_ad->creative_set_conversion->url_pattern,
-      ::testing::Optional(std::string(test::kCreativeSetConversionUrlPattern)));
-  EXPECT_EQ(mojom_creative_ad->creative_set_conversion->observation_window,
-            test::kCreativeSetConversionObservationWindow);
+      mojom_creative_ad->campaign_conversion->url_pattern,
+      ::testing::Optional(std::string(test::kCampaignConversionUrlPattern)));
+  EXPECT_EQ(mojom_creative_ad->campaign_conversion->observation_window,
+            test::kCampaignConversionObservationWindow);
 }
 
 }  // namespace
@@ -61,11 +61,11 @@ TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest, Extract) {
   const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad =
       creative_search_result_ads[0];
   ASSERT_TRUE(mojom_creative_ad);
-  ASSERT_TRUE(mojom_creative_ad->creative_set_conversion);
+  ASSERT_TRUE(mojom_creative_ad->campaign_conversion);
   EXPECT_EQ(test::kCreativeAdPlacementId, mojom_creative_ad->placement_id);
 
   VerifyRequiredMojomCreativeAdExpectations(mojom_creative_ad);
-  VerifyRequiredMojomCreativeSetConversionExpectations(mojom_creative_ad);
+  VerifyRequiredMojomCampaignConversionExpectations(mojom_creative_ad);
 }
 
 TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,
@@ -216,11 +216,11 @@ TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,
   const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad =
       creative_search_result_ads[0];
   ASSERT_TRUE(mojom_creative_ad);
-  ASSERT_TRUE(mojom_creative_ad->creative_set_conversion);
+  ASSERT_TRUE(mojom_creative_ad->campaign_conversion);
   EXPECT_EQ(test::kCreativeAdPlacementId, mojom_creative_ad->placement_id);
 
   VerifyRequiredMojomCreativeAdExpectations(mojom_creative_ad);
-  VerifyRequiredMojomCreativeSetConversionExpectations(mojom_creative_ad);
+  VerifyRequiredMojomCampaignConversionExpectations(mojom_creative_ad);
 }
 
 TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,
@@ -282,7 +282,7 @@ TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,
     // Invalid "data-conversion-observation-window-value".
     const std::vector<schema_org::mojom::EntityPtr> mojom_web_page_entities =
         test::CreativeSearchResultAdMojomWebPageEntitiesWithProperty(
-            kCreativeSetConversionObservationWindowPropertyName, /*value=*/"1");
+            kCampaignConversionObservationWindowPropertyName, /*value=*/"1");
 
     const std::vector<mojom::CreativeSearchResultAdInfoPtr>
         creative_search_result_ads =
@@ -316,7 +316,7 @@ TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,
   // Arrange
   const std::vector<schema_org::mojom::EntityPtr> mojom_web_page_entities =
       test::CreativeSearchResultAdMojomWebPageEntitiesWithProperty(
-          kCreativeSetConversionUrlPatternPropertyName, /*value=*/"");
+          kCampaignConversionUrlPatternPropertyName, /*value=*/"");
 
   // Act
   const std::vector<mojom::CreativeSearchResultAdInfoPtr>
@@ -329,18 +329,18 @@ TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,
   const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad =
       creative_search_result_ads[0];
   ASSERT_TRUE(mojom_creative_ad);
-  ASSERT_TRUE(mojom_creative_ad->creative_set_conversion);
-  EXPECT_FALSE(mojom_creative_ad->creative_set_conversion->url_pattern);
+  ASSERT_TRUE(mojom_creative_ad->campaign_conversion);
+  EXPECT_FALSE(mojom_creative_ad->campaign_conversion->url_pattern);
 }
 
 TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,
-     DoNotExtractIfMissingRequiredCreativeSetConversionProperties) {
-  static constexpr auto kRequiredCreativeSetConversionPropertyNames =
+     DoNotExtractIfMissingRequiredCampaignConversionProperties) {
+  static constexpr auto kRequiredCampaignConversionPropertyNames =
       std::to_array<std::string_view>(
-          {kCreativeSetConversionUrlPatternPropertyName,
-           kCreativeSetConversionObservationWindowPropertyName});
+          {kCampaignConversionUrlPatternPropertyName,
+           kCampaignConversionObservationWindowPropertyName});
 
-  for (auto property_name : kRequiredCreativeSetConversionPropertyNames) {
+  for (auto property_name : kRequiredCampaignConversionPropertyNames) {
     const std::vector<schema_org::mojom::EntityPtr> mojom_web_page_entities =
         test::CreativeSearchResultAdMojomWebPageEntities(
             /*excluded_property_names=*/{property_name});
@@ -356,7 +356,7 @@ TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,
     EXPECT_EQ(test::kCreativeAdPlacementId, mojom_creative_ad->placement_id);
 
     VerifyRequiredMojomCreativeAdExpectations(mojom_creative_ad);
-    EXPECT_FALSE(mojom_creative_ad->creative_set_conversion);
+    EXPECT_FALSE(mojom_creative_ad->campaign_conversion);
   }
 }
 

@@ -40,22 +40,18 @@ bool GetOnionLocation(const net::HttpResponseHeaders* headers,
 void OnionLocationNavigationThrottle::MaybeCreateAndAdd(
     content::NavigationThrottleRegistry& registry,
     bool is_tor_disabled,
-    bool is_tor_profile,
-    bool onion_only_in_tor_windows) {
-  if (is_tor_disabled) {
-    return;
-  }
+    bool is_tor_profile) {
   registry.AddThrottle(std::make_unique<OnionLocationNavigationThrottle>(
-      registry, is_tor_profile, onion_only_in_tor_windows));
+      registry, is_tor_disabled, is_tor_profile));
 }
 
 OnionLocationNavigationThrottle::OnionLocationNavigationThrottle(
     content::NavigationThrottleRegistry& registry,
-    bool is_tor_profile,
-    bool onion_only_in_tor_windows)
+    bool is_tor_disabled,
+    bool is_tor_profile)
     : content::NavigationThrottle(registry),
-      is_tor_profile_(is_tor_profile),
-      onion_only_in_tor_windows_(onion_only_in_tor_windows) {}
+      is_tor_disabled_(is_tor_disabled),
+      is_tor_profile_(is_tor_profile) {}
 
 OnionLocationNavigationThrottle::~OnionLocationNavigationThrottle() = default;
 
@@ -69,7 +65,8 @@ OnionLocationNavigationThrottle::WillProcessResponse() {
   std::string onion_location;
   // The webpage defining the Onion-Location header must not be an onionsite.
   // https://gitlab.torproject.org/tpo/applications/tor-browser-spec/-/raw/HEAD/proposals/100-onion-location-header.txt
-  if (headers && network::IsSuccessfulStatus(headers->response_code()) &&
+  if (!is_tor_disabled_ && headers &&
+      network::IsSuccessfulStatus(headers->response_code()) &&
       GetOnionLocation(headers, &onion_location) &&
       !net::IsOnion(navigation_handle()->GetURL()) &&
       // The webpage defining the Onion-Location header must be served over
@@ -111,17 +108,17 @@ OnionLocationNavigationThrottle::WillStartRequest() {
     const GURL& url = navigation_handle()->GetURL();
     if (url.SchemeIsHTTPOrHTTPS() && net::IsOnion(url)) {
       if (is_main_frame) {
-        OnionLocationTabHelper::SetOnionLocationByThrottle(
-            navigation_handle()->GetWebContents(), url,
-            navigation_handle()->GetInitiatorOrigin());
+        if (!is_tor_disabled_) {
+          OnionLocationTabHelper::SetOnionLocationByThrottle(
+              navigation_handle()->GetWebContents(), url,
+              navigation_handle()->GetInitiatorOrigin());
+        }
         return content::NavigationThrottle::BLOCK_REQUEST;
       }
-      if (onion_only_in_tor_windows_) {
-        // Subframes should use CANCEL_AND_IGNORE. BLOCK_REQUEST commits an
-        // error page that still reports the .onion URL as the last committed
-        // URL.
-        return content::NavigationThrottle::CANCEL_AND_IGNORE;
-      }
+      // Subframes should use CANCEL_AND_IGNORE. BLOCK_REQUEST commits an
+      // error page that still reports the .onion URL as the last committed
+      // URL.
+      return content::NavigationThrottle::CANCEL_AND_IGNORE;
     }
   }
   return content::NavigationThrottle::PROCEED;

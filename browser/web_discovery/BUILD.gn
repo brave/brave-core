@@ -45,7 +45,6 @@ source_set("impl") {
     "//brave/components/search_engines",
     "//chrome/browser/profiles",
     "//chrome/browser/search_engines",
-    "//chrome/browser/ui",
     "//components/infobars/content",
     "//components/infobars/core",
     "//components/prefs",
@@ -83,6 +82,7 @@ source_set("unit_tests") {
     "//chrome/browser",
     "//chrome/browser/prefs",
     "//chrome/test:test_support",
+    "//chrome/test/base:testing_browser_process",
     "//components/prefs",
     "//components/search_engines",
     "//components/sync_preferences:test_support",
@@ -106,7 +106,6 @@ source_set("browser_tests") {
     "//brave/components/search_engines",
     "//chrome/browser",
     "//chrome/browser/profiles:profile",
-    "//chrome/browser/ui",
     "//chrome/test:test_support",
     "//components/infobars/content",
     "//components/prefs",
@@ -122,6 +121,7 @@ source_set("browser_tests") {
     sources += [ "web_discovery_browsertest.cc" ]
     deps += [
       ":web_discovery",
+      "//brave/browser/ui",
       "//extensions:test_support",
       "//extensions/browser",
       "//extensions/common:common_constants",

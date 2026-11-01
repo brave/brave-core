@@ -234,7 +234,9 @@ extension UIViewController {
       }
 
       // Create PDF Activity
-      if let tab, tab.temporaryDocument == nil, tab.lastCommittedURL?.isWebPage() == true {
+      if let tab, !ShareableDocument.isShareable(tab),
+        tab.lastCommittedURL?.isWebPage() == true
+      {
         activities.append(
           BasicMenuActivity(
             activityType: .createPDF,

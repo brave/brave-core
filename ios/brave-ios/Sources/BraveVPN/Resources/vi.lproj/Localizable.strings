@@ -131,7 +131,7 @@
 "vpn.installTitle" = "Cài đặt VPN";
 
 /* Button text to try free Brave VPN */
-"vpn.learnMore" = "Bắt đầu dùng thử 7 ngày";
+"vpn.learnMore" = "Bắt đầu dùng thử miễn phí 7 ngày";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "Gia hạn mỗi tháng";

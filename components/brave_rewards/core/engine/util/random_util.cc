@@ -8,8 +8,9 @@
 #include "base/base64url.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "base/strings/string_view_util.h"
+#include "crypto/hash.h"
 #include "crypto/random.h"
-#include "crypto/sha2.h"
 
 namespace {
 
@@ -41,7 +42,8 @@ std::string GeneratePKCECodeVerifier() {
 }
 
 std::string GeneratePKCECodeChallenge(const std::string& code_verifier) {
-  return EncodeStringForPKCE(crypto::SHA256HashString(code_verifier));
+  return EncodeStringForPKCE(
+      std::string(base::as_string_view(crypto::hash::Sha256(code_verifier))));
 }
 
 }  // namespace brave_rewards::internal::util

@@ -17,7 +17,7 @@ from repository import Repository
 import repository
 
 
-def _plaster_path_for_patch(patch_path: Path) -> Path | None:
+def plaster_path_for_patch(patch_path: Path) -> Path | None:
     """Returns the path for a plaster file from a patch file path.
 
     Return None if no file is found.
@@ -28,7 +28,7 @@ def _plaster_path_for_patch(patch_path: Path) -> Path | None:
 
 def patch_has_plaster(patch_path: Path) -> bool:
     """Indicates whether a particular patch has a plaster file."""
-    return _plaster_path_for_patch(patch_path) is not None
+    return plaster_path_for_patch(patch_path) is not None
 
 
 @dataclass(frozen=True)
@@ -68,7 +68,7 @@ class Patchfile:
             )
         object.__setattr__(self, 'source', sources[0])
 
-        object.__setattr__(self, 'plaster', _plaster_path_for_patch(self.path))
+        object.__setattr__(self, 'plaster', plaster_path_for_patch(self.path))
 
     def get_repository_from_patch_name(self) -> Repository:
         """Gets the repository for the patch file."""

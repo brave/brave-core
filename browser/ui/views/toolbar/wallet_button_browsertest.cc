@@ -12,6 +12,7 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/test/test_browser_dialog.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "ui/views/test/button_test_api.h"
@@ -75,9 +76,11 @@ IN_PROC_BROWSER_TEST_F(WalletButtonButtonBrowserTest,
 
   auto* widget = wallet_button()->GetBubbleWidgetForTesting();
   ASSERT_TRUE(widget);
-  auto* web_contents = brave_wallet::BraveWalletTabHelper::FromWebContents(
-                           browser()->tab_strip_model()->GetActiveWebContents())
-                           ->GetBubbleWebContentsForTesting();
+  auto* web_contents =
+      brave_wallet::BraveWalletTabHelper::From(
+          tabs::TabInterface::MaybeGetFromContents(
+              browser()->tab_strip_model()->GetActiveWebContents()))
+          ->GetBubbleWebContentsForTesting();
   ASSERT_TRUE(web_contents);
 
   EXPECT_FALSE(web_contents->ShouldIgnoreInputEventsForTesting());

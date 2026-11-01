@@ -138,6 +138,11 @@ export class SettingsBraveClearBrowsingDataOnExitPageElement
    * Determines if a data type should be included in the lists
    */
   private shouldDataTypeBeIncluded_(datatype: BrowsingDataType): boolean {
+    // There's no on-exit pref for Skills.
+    if (datatype === BrowsingDataType.SKILLS) {
+      return false;
+    }
+
     // Skip browsing/download history for child accounts
     if (this.isChildAccount_ &&
       (datatype === BrowsingDataType.HISTORY ||

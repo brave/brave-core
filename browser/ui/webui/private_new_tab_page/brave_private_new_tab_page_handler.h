@@ -35,6 +35,14 @@ class BravePrivateNewTabPageHandler
     : public brave_private_new_tab::mojom::PageHandler,
       public TorLauncherObserver {
  public:
+  // Synchronous reads of what the page needs for its first paint, passed as
+  // load time data so it can render without waiting on mojo round trips.
+  static bool IsDisclaimerDismissed(Profile* profile);
+  // Whether a Tor window can't be opened from `profile`: Tor disabled by the
+  // user or policy, guest profiles, and incognito disabled or forced.
+  static bool IsTorDisabled(Profile* profile);
+  static bool IsTorConnected();
+
   BravePrivateNewTabPageHandler(
       Profile* profile,
       content::WebContents* web_contents,
@@ -52,9 +60,7 @@ class BravePrivateNewTabPageHandler
       mojo::PendingRemote<brave_private_new_tab::mojom::PrivateTabPage> page)
       override;
   void SetDisclaimerDismissed(bool dismissed) override;
-  void GetDisclaimerDismissed(GetDisclaimerDismissedCallback callback) override;
   void GetIsTorConnected(GetIsTorConnectedCallback callback) override;
-  void GetIsTorDisabled(GetIsTorDisabledCallback callback) override;
   void GoToBraveSearch(const std::string& input, bool open_new_tab) override;
   void GoToBraveSupport() override;
 

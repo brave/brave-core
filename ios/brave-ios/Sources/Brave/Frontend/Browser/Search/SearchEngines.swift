@@ -96,6 +96,7 @@ public class SearchEngines {
 
     await loadCustomEngines()
     orderedEngines = await getOrderedEngines()
+    migrateQuickSearchIfNeeded(engines: orderedEngines)
     loading.continuation.yield()
 
     recordSearchEngineP3A()
@@ -591,5 +592,28 @@ public class SearchEngines {
       }
     }()
     UmaHistogramEnumeration("Brave.Search.SwitchEngine", sample: answer)
+  }
+
+  func migrateQuickSearchIfNeeded(engines: [OpenSearchEngine]) {
+    guard Preferences.Search.quickSearchOrder.value == nil,
+      !engines.isEmpty
+    else { return }
+
+    var idsByShortName: [String: QuickSearchItemID] = [:]
+    for engine in engines {
+      guard idsByShortName[engine.shortName] == nil else {
+        Logger.module.warning("Duplicate search engine shortName during quick search migration")
+        continue
+      }
+      idsByShortName[engine.shortName] = QuickSearchItemID(engine: engine)
+    }
+
+    let legacyOrder = Preferences.Search.orderedEngines.value ?? engines.map(\.shortName)
+    Preferences.Search.quickSearchOrder.value =
+      legacyOrder.compactMap { idsByShortName[$0]?.rawValue }
+
+    Preferences.Search.quickSearchDisabled.value =
+      (Preferences.Search.disabledEngines.value ?? [])
+      .compactMap { idsByShortName[$0]?.rawValue }
   }
 }

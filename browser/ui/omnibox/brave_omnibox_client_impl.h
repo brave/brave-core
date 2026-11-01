@@ -43,6 +43,13 @@ class BraveOmniboxClientImpl : public ChromeOmniboxClient {
 
   const AutocompleteSchemeClassifier& GetSchemeClassifier() const override;
 
+  gfx::Image GetFaviconForDefaultSearchProvider(
+      FaviconFetchedCallback on_favicon_fetched) override;
+
+  gfx::Image GetFaviconForKeywordSearchProvider(
+      const TemplateURL* template_url,
+      FaviconFetchedCallback on_favicon_fetched) override;
+
   void OnURLOpenedFromOmnibox(OmniboxLog* log) override;
 
   void OnAutocompleteAccept(

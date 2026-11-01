@@ -2390,6 +2390,337 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetMetadata) {
   }
 }
 
+TEST_F(PolkadotSubstrateRpcUnitTest, GetSystemProperties) {
+  url_loader_factory_.ClearResponses();
+
+  const auto* chain_id = mojom::kPolkadotTestnet;
+  std::string testnet_url =
+      network_manager_
+          ->GetKnownChain(mojom::kPolkadotTestnet, mojom::CoinType::DOT)
+          ->rpc_endpoints.front()
+          .spec();
+
+  EXPECT_EQ(testnet_url, "https://polkadot-westend.wallet.brave.com/");
+
+  base::test::TestFuture<
+      base::expected<mojom::PolkadotChainPropertiesPtr, std::string>>
+      future;
+
+  {
+    // Successful RPC call, scalar token fields (Asset Hub Polkadot's shape).
+    polkadot_substrate_rpc_->GetSystemProperties(chain_id,
+                                                 future.GetCallback());
+
+    auto* reqs = url_loader_factory_.pending_requests();
+    ASSERT_TRUE(reqs);
+    ASSERT_EQ(reqs->size(), 1u);
+
+    auto const& req = reqs->at(0);
+    ASSERT_TRUE(req.request.request_body->elements());
+    auto const& element = req.request.request_body->elements()->at(0);
+
+    std::string expected_body = R"(
+      {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "system_properties",
+        "params": []
+      })";
+
+    EXPECT_EQ(base::test::ParseJsonDict(
+                  element.As<network::DataElementBytes>().AsStringPiece()),
+              base::test::ParseJsonDict(expected_body));
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "ss58Format": 0,
+          "tokenDecimals": 10,
+          "tokenSymbol": "DOT"
+        }
+      })");
+
+    auto properties = future.Take();
+    ASSERT_TRUE(properties.has_value());
+    ASSERT_TRUE((*properties)->ss58_format);
+    EXPECT_EQ((*properties)->ss58_format->val, 0u);
+    EXPECT_EQ((*properties)->token_decimals, std::vector<uint32_t>({10}));
+    EXPECT_EQ((*properties)->token_symbol, std::vector<std::string>({"DOT"}));
+  }
+
+  {
+    // Successful RPC call, array token fields (Acala's shape). Index 0 is the
+    // native token; the rest are retained in order.
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "ss58Format": 10,
+          "tokenDecimals": [12, 12, 10, 10],
+          "tokenSymbol": ["ACA", "AUSD", "DOT", "LDOT"]
+        }
+      })");
+
+    polkadot_substrate_rpc_->GetSystemProperties(chain_id,
+                                                 future.GetCallback());
+
+    auto properties = future.Take();
+    ASSERT_TRUE(properties.has_value());
+    ASSERT_TRUE((*properties)->ss58_format);
+    EXPECT_EQ((*properties)->ss58_format->val, 10u);
+    EXPECT_EQ((*properties)->token_decimals,
+              std::vector<uint32_t>({12, 12, 10, 10}));
+    EXPECT_EQ((*properties)->token_symbol,
+              std::vector<std::string>({"ACA", "AUSD", "DOT", "LDOT"}));
+  }
+
+  {
+    // Chains carry arbitrary extra keys in their properties map; they're
+    // ignored rather than failing the parse.
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "isEthereum": false,
+          "ss58Format": 42,
+          "ss58Prefix": 42,
+          "tokenDecimals": 12,
+          "tokenSymbol": "WND"
+        }
+      })");
+
+    polkadot_substrate_rpc_->GetSystemProperties(chain_id,
+                                                 future.GetCallback());
+
+    auto properties = future.Take();
+    ASSERT_TRUE(properties.has_value());
+    ASSERT_TRUE((*properties)->ss58_format);
+    EXPECT_EQ((*properties)->ss58_format->val, 42u);
+    EXPECT_EQ((*properties)->token_decimals, std::vector<uint32_t>({12}));
+    EXPECT_EQ((*properties)->token_symbol, std::vector<std::string>({"WND"}));
+  }
+
+  {
+    // Empty token arrays parse to empty vectors rather than failing.
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "ss58Format": 65535,
+          "tokenDecimals": [],
+          "tokenSymbol": []
+        }
+      })");
+
+    polkadot_substrate_rpc_->GetSystemProperties(chain_id,
+                                                 future.GetCallback());
+
+    auto properties = future.Take();
+    ASSERT_TRUE(properties.has_value());
+    ASSERT_TRUE((*properties)->ss58_format);
+    EXPECT_EQ((*properties)->ss58_format->val, 65535u);
+    EXPECT_TRUE((*properties)->token_decimals.empty());
+    EXPECT_TRUE((*properties)->token_symbol.empty());
+  }
+
+  {
+    // ss58 format missing is not an error.
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "tokenDecimals": 12,
+          "tokenSymbol": "HDX"
+        }
+      })");
+
+    polkadot_substrate_rpc_->GetSystemProperties(chain_id,
+                                                 future.GetCallback());
+
+    auto properties = future.Take();
+    ASSERT_TRUE(properties.has_value());
+    EXPECT_FALSE((*properties)->ss58_format);
+    EXPECT_EQ((*properties)->token_decimals, std::vector<uint32_t>({12}));
+    EXPECT_EQ((*properties)->token_symbol, std::vector<std::string>({"HDX"}));
+  }
+
+  {
+    // RPC error includes a message.
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "error": {"code": -32601, "message": "Method not found"}
+      })");
+
+    polkadot_substrate_rpc_->GetSystemProperties(chain_id,
+                                                 future.GetCallback());
+
+    auto properties = future.Take();
+    ASSERT_FALSE(properties.has_value());
+    EXPECT_EQ(properties.error(), "Method not found");
+  }
+
+  {
+    // RPC error has no message.
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "error": {"code": -32601}
+      })");
+
+    polkadot_substrate_rpc_->GetSystemProperties(chain_id,
+                                                 future.GetCallback());
+
+    auto properties = future.Take();
+    ASSERT_FALSE(properties.has_value());
+    EXPECT_EQ(properties.error(), WalletInternalErrorMessage());
+  }
+
+  {
+    // Error due to non-2XX response.
+    url_loader_factory_.AddResponse(testnet_url, "",
+                                    net::HTTP_INTERNAL_SERVER_ERROR);
+
+    polkadot_substrate_rpc_->GetSystemProperties(chain_id,
+                                                 future.GetCallback());
+
+    auto properties = future.Take();
+    ASSERT_FALSE(properties.has_value());
+    EXPECT_EQ(properties.error(), WalletInternalErrorMessage());
+  }
+
+  const struct {
+    std::string_view test_name;
+    std::string_view response;
+  } parse_error_cases[] = {
+      {"TokenFieldLengthMismatch", R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "ss58Format": 10,
+          "tokenDecimals": [12, 12, 10],
+          "tokenSymbol": ["ACA", "AUSD", "DOT", "LDOT"]
+        }
+      })"},
+      {"ResultExplicitlyNull", R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": null
+      })"},
+      {"ResultMissing", R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1
+      })"},
+      {"ResultNotADictionary", R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": 1234
+      })"},
+      {"Ss58FormatExceedsUint16", R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "ss58Format": 65536,
+          "tokenDecimals": 10,
+          "tokenSymbol": "DOT"
+        }
+      })"},
+      {"Ss58FormatNegative", R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "ss58Format": -1,
+          "tokenDecimals": 10,
+          "tokenSymbol": "DOT"
+        }
+      })"},
+      {"TokenDecimalsAbsent", R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "ss58Format": 0,
+          "tokenSymbol": "DOT"
+        }
+      })"},
+      // Neither an integer nor an integer array.
+      {"TokenDecimalsWrongType", R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "ss58Format": 0,
+          "tokenDecimals": "10",
+          "tokenSymbol": "DOT"
+        }
+      })"},
+      {"TokenDecimalsEntryNegative", R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "ss58Format": 0,
+          "tokenDecimals": [10, -1],
+          "tokenSymbol": ["DOT", "KSM"]
+        }
+      })"},
+      {"TokenSymbolAbsent", R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "ss58Format": 0,
+          "tokenDecimals": 10
+        }
+      })"},
+      // Neither a string nor a string array.
+      {"TokenSymbolWrongType", R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "ss58Format": 0,
+          "tokenDecimals": 10,
+          "tokenSymbol": 10
+        }
+      })"},
+  };
+
+  for (const auto& tc : parse_error_cases) {
+    SCOPED_TRACE(tc.test_name);
+
+    url_loader_factory_.AddResponse(testnet_url, tc.response);
+
+    polkadot_substrate_rpc_->GetSystemProperties(chain_id,
+                                                 future.GetCallback());
+
+    auto properties = future.Take();
+    ASSERT_FALSE(properties.has_value());
+    EXPECT_EQ(properties.error(), WalletParsingErrorMessage());
+  }
+}
+
 TEST_F(PolkadotSubstrateRpcUnitTest, DappParachainRpcUrls) {
   url_loader_factory_.ClearResponses();
 

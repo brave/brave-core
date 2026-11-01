@@ -46,10 +46,12 @@ interface Props {
   expandRoute?: WalletRoutes
   actionIconName?: string
   onClickActionButton?: () => void
+  onBack?: () => void
 }
 
 export const DefaultPanelHeader = (props: Props) => {
-  const { title, expandRoute, actionIconName, onClickActionButton } = props
+  const { title, expandRoute, actionIconName, onClickActionButton, onBack } =
+    props
 
   // UI Selectors (safe)
   const isMobile = useSafeUISelector(UISelectors.isMobile)
@@ -92,6 +94,11 @@ export const DefaultPanelHeader = (props: Props) => {
           justifyContent='flex-start'
           gap='12px'
         >
+          {onBack && (
+            <Button onClick={onBack}>
+              <SidePanelIcon name='arrow-left' />
+            </Button>
+          )}
           <Button onClick={onClickToggleNav}>
             <SidePanelIcon name='hamburger-menu' />
           </Button>
@@ -151,6 +158,11 @@ export const DefaultPanelHeader = (props: Props) => {
         width='unset'
         justifyContent='flex-start'
       >
+        {onBack && (
+          <Button onClick={onBack}>
+            <ButtonIcon name='arrow-left' />
+          </Button>
+        )}
         {!isMobile && expandRoute && (
           <Button onClick={onClickExpand}>
             <ButtonIcon name='expand' />

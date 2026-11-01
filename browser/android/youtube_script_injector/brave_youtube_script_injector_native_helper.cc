@@ -9,6 +9,7 @@
 #include "base/check.h"
 #include "brave/browser/android/youtube_script_injector/youtube_script_injector_tab_helper.h"
 #include "chrome/android/chrome_jni_headers/BraveYouTubeScriptInjectorNativeHelper_jni.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 
 namespace youtube_script_injector {
@@ -21,8 +22,8 @@ void JNI_BraveYouTubeScriptInjectorNativeHelper_SetFullscreen(
       content::WebContents::FromJavaWebContents(jweb_contents);
   DCHECK(web_contents);
 
-  YouTubeScriptInjectorTabHelper* helper =
-      YouTubeScriptInjectorTabHelper::FromWebContents(web_contents);
+  YouTubeScriptInjectorTabHelper* helper = YouTubeScriptInjectorTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   if (!helper) {
     return;
   }
@@ -38,8 +39,8 @@ jboolean JNI_BraveYouTubeScriptInjectorNativeHelper_IsPictureInPictureAvailable(
       content::WebContents::FromJavaWebContents(jweb_contents);
   DCHECK(web_contents);
 
-  YouTubeScriptInjectorTabHelper* helper =
-      YouTubeScriptInjectorTabHelper::FromWebContents(web_contents);
+  YouTubeScriptInjectorTabHelper* helper = YouTubeScriptInjectorTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   if (helper) {
     return helper->IsPictureInPictureAvailable();
   }

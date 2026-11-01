@@ -5,6 +5,9 @@
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/buildflags/buildflags.gni")
+import("//brave/components/brave_news/common/buildflags/buildflags.gni")
+import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
@@ -13,6 +16,7 @@ import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
+import("//third_party/widevine/cdm/widevine.gni")
 
 assert(is_win || is_mac || is_linux || is_chromeos || is_android)
 
@@ -36,6 +40,7 @@ source_set("tabs_public") {
 
   deps = [
     "//brave/components/brave_news/common/buildflags",
+    "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/brave_wayback_machine/buildflags",
     "//brave/components/containers/buildflags",
     "//brave/components/playlist/core/common/buildflags",
@@ -56,6 +61,7 @@ if (!is_android) {
 
     deps = [
       ":tabs_public",
+      "//brave/browser/brave_shields",
       "//brave/browser/drag_drop",
       "//brave/browser/image_metadata_stripper",
       "//brave/browser/misc_metrics:misc_metrics_impl",
@@ -69,6 +75,9 @@ if (!is_android) {
       "//brave/browser/ui/sidebar",
       "//brave/browser/ui/views/page_action",
       "//brave/components/brave_ads/buildflags",
+      "//brave/components/brave_news/common/buildflags",
+      "//brave/components/brave_rewards/core/buildflags",
+      "//brave/components/brave_wallet/common/buildflags",
       "//brave/components/image_metadata_stripper/common",
       "//brave/components/misc_metrics",
       "//brave/components/request_otr/common/buildflags",
@@ -87,6 +96,7 @@ if (!is_android) {
       "//chrome/browser/ui/tabs:tab_strip",
       "//chrome/browser/ui/thumbnails",
       "//components/prefs",
+      "//third_party/widevine/cdm:buildflags",
     ]
 
     if (enable_ai_chat) {
@@ -99,6 +109,26 @@ if (!is_android) {
 
     if (is_win || is_mac || is_linux) {
       deps += [ "//brave/browser/ui/geolocation" ]
+    }
+
+    if (enable_brave_rewards) {
+      deps += [ "//brave/browser/brave_rewards:tab_helper" ]
+    }
+
+    if (enable_widevine) {
+      deps += [ "//brave/browser/widevine" ]
+    }
+
+    if (enable_brave_news) {
+      deps += [ "//brave/browser/brave_news:tab_helper" ]
+    }
+
+    if (enable_brave_wallet) {
+      deps += [ "//brave/browser/brave_wallet:tab_helper" ]
+    }
+
+    if (enable_speedreader) {
+      deps += [ "//brave/browser/ui/speedreader" ]
     }
 
     if (enable_brave_ads) {
@@ -263,10 +293,10 @@ source_set("browser_tests") {
   sources = [ "brave_tab_menu_browsertest.cc" ]
 
   deps = [
+    "//brave/browser/ui",
     "//brave/browser/ui/tabs:tabs_public",
     "//brave/components/containers/buildflags",
     "//brave/components/resources:strings_grit",
-    "//chrome/browser/ui",
     "//chrome/test:test_support",
     "//content/public/browser",
     "//content/test:test_support",
@@ -287,6 +317,7 @@ source_set("browser_tests") {
     deps += [
       ":tab_menu",
       ":tab_model",
+      "//chrome/browser/ui:browser_tabstrip",
       "//chrome/browser/ui/tabs:tab_menu",
       "//chrome/browser/ui/views/frame:browser_view_header",
     ]

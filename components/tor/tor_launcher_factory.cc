@@ -13,6 +13,8 @@
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/no_destructor.h"
+#include "base/strings/strcat.h"
+#include "base/strings/to_string.h"
 #include "base/task/bind_post_task.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/tor/constants.h"
@@ -404,7 +406,7 @@ void TorLauncherFactory::OnTorEvent(
     const std::map<std::string, std::string>& extra) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   const std::string raw_event =
-      (*tor::kTorControlEventByEnum.find(event)).second + ": " + initial;
+      base::StrCat({base::ToString(event), ": ", initial});
   VLOG(3) << "TOR CONTROL: event " << raw_event;
   for (auto& observer : observers_) {
     observer.OnTorControlEvent(raw_event);

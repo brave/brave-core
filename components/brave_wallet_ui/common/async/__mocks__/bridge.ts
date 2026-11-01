@@ -28,6 +28,7 @@ import {
   mockEthAccount,
   mockFilecoinAccount,
   mockFilecoinMainnetNetwork,
+  mockPolkadotAccount,
   mockSolanaAccount,
   mockSolanaMainnetNetwork,
 } from '../../constants/mocks'
@@ -533,7 +534,7 @@ export class MockedWalletApiProxy {
         ethDappSelectedAccount: selectedAccount,
         solDappSelectedAccount: mockSolanaAccount,
         adaDappSelectedAccount: mockCardanoAccount,
-        dotDappSelectedAccount: undefined,
+        dotDappSelectedAccount: mockPolkadotAccount,
       }
       return { allAccounts }
     },
@@ -544,6 +545,9 @@ export class MockedWalletApiProxy {
     },
     validatePassword: async (password: string) => ({
       result: password === 'password',
+    }),
+    recoverWallet: async () => ({
+      result: BraveWallet.RecoverWalletResult.kSuccess,
     }),
     lock: () => {
       this.store?.dispatch(WalletActions.locked())

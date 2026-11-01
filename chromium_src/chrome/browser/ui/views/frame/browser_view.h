@@ -14,8 +14,7 @@
 
 #define BrowserViewLayoutDelegateImplOld \
   BrowserViewLayoutDelegateImplOld;      \
-  friend class BraveBrowserView;         \
-  virtual bool IsWebPanelContents(content::WebContents* contents)
+  friend class BraveBrowserView
 
 #define BrowserWindow BraveBrowserWindow
 #define BookmarkBarView BraveBookmarkBarView

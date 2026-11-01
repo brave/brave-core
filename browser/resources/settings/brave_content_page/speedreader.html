@@ -12,19 +12,19 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
   <settings-toggle-button
     class="cr-row first"
     id="speedreaderFeature"
-    pref="{{prefs.brave.speedreader.feature_enabled}}"
+    pref-key="brave.speedreader.feature_enabled"
     label="$i18n{speedreaderFeatureLabel}"
     sub-label="$i18n{speedreaderFeatureSubLabel}"
     learn-more-url="$i18n{speedreaderLearnMoreURL}"
-    hidden="[[isSpeedreaderFeatureManaged_(prefs.brave.speedreader.feature_enabled)]]">
+    hidden="[[isSpeedreaderFeatureManaged_(featureEnabledPref_)]]">
     learn-more-url="$i18n{speedreaderLearnMoreURL}">
   </settings-toggle-button>
 
-  <template is="dom-if" if="[[prefs.brave.speedreader.feature_enabled.value]]">
+  <template is="dom-if" if="[[featureEnabledPref_.value]]">
     <settings-toggle-button
       class="cr-row continuation"
       id="speedreaderEnabledForAllReadableSites"
-      pref="{{prefs.brave.speedreader.enabled_for_all_sites}}"
+      pref-key="brave.speedreader.enabled_for_all_sites"
       label="$i18n{speedreaderEnabledForAllReadableSitesLabel}"
       sub-label="$i18n{speedreaderEnabledForAllReadableSitesSubLabel}">
     </settings-toggle-button>

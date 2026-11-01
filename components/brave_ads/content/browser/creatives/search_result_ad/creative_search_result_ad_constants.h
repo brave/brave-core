@@ -34,10 +34,10 @@ inline constexpr char kCreativeAdDescriptionPropertyName[] = "data-description";
 inline constexpr char kCreativeAdRewardsValuePropertyName[] =
     "data-rewards-value";
 
-// Creative set conversion.
-inline constexpr char kCreativeSetConversionUrlPatternPropertyName[] =
+// Campaign conversion.
+inline constexpr char kCampaignConversionUrlPatternPropertyName[] =
     "data-conversion-url-pattern-value";
-inline constexpr char kCreativeSetConversionObservationWindowPropertyName[] =
+inline constexpr char kCampaignConversionObservationWindowPropertyName[] =
     "data-conversion-observation-window-value";
 
 }  // namespace brave_ads

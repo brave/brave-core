@@ -308,7 +308,7 @@ class BraveSearchTabHelper: TabObserver, TabPolicyDecider, BraveSearchMakeDefaul
         return
       }
 
-      var conversion: BraveAds.CreativeSetConversionInfo?
+      var conversion: BraveAds.CampaignConversionInfo?
       if let conversionUrlPatternValue = ad.conversionUrlPatternValue,
         let conversionObservationWindowValue = ad.conversionObservationWindowValue
       {
@@ -330,7 +330,7 @@ class BraveSearchTabHelper: TabObserver, TabPolicyDecider, BraveSearchMakeDefaul
         headlineText: ad.headlineText,
         description: ad.description,
         value: rewardsValue,
-        creativeSetConversion: conversion
+        campaignConversion: conversion
       )
 
       braveSearchResultAdManager.triggerSearchResultAdViewedEvent(

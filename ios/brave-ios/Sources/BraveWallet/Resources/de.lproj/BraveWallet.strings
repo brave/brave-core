@@ -1517,5 +1517,5 @@
 "wallet.web3SettingsEnableNFTDiscoveryFooter" = "Füge NFTs, die du besitzt, mithilfe von Drittanbieter-APS automatisch zu deinem Wallet hinzu. [Mehr erfahren](%@)";
 
 /* A description of an ZCash account, displayed in Accounts tab. */
-"wallet.zecAccountDescription" = "ZCash";
+"wallet.zecAccountDescription" = "Zcash";
 
