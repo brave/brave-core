@@ -851,6 +851,62 @@ class RewritePlanTest(unittest.TestCase):
 
         self.assertEqual(path.read_text(), 'pick aaa # [cr148] Feature A\n')
 
+    def test_squashed_drop_of_a_pinned_commit(self):
+        """A `drop!` of a commit in a pinned group removes it from the group,
+        rather than being discarded as orphaned, which would keep the target
+        and lose a `drop --revert`'s revert."""
+        path = self._todo(
+            'pick aaa # [cr158] Feature A\n'
+            'pick ccc # [cr158] Version CodeHealth tracker\n'
+            'pick ddd # [cr158] Version CodeHealth tracker\n'
+            'pick zzz # drop!ddd! [cr158] Version CodeHealth tracker\n'
+        )
+
+        rebase.rewrite_plan(todo_file=path, pinned_squashed=True)
+
+        self.assertEqual(
+            path.read_text(),
+            'pick ccc # [cr158] Version CodeHealth tracker\n'
+            'pick aaa # [cr158] Feature A\n',
+        )
+
+    def test_squashed_drop_of_a_pinned_group_first_commit(self):
+        """Dropping a group's first commit makes the next one its `pick`."""
+        path = self._todo(
+            'pick ccc # [cr158] Version CodeHealth tracker\n'
+            'pick ddd # [cr158] Version CodeHealth tracker\n'
+            'pick zzz # drop!ccc! [cr158] Version CodeHealth tracker\n'
+        )
+
+        rebase.rewrite_plan(todo_file=path, pinned_squashed=True)
+
+        self.assertEqual(
+            path.read_text(), 'pick ddd # [cr158] Version CodeHealth tracker\n'
+        )
+
+    def test_squashed_drop_removes_the_target_fixups(self):
+        """The `fixup`/`fixup -C`/`squash` lines git attached to the target go
+        with it, rather than squashing into the commit before it."""
+        path = self._todo(
+            'pick aaa # [cr148] Feature A\n'
+            'pick bbb # [cr148] Feature B\n'
+            'fixup ccc # fixup! [cr148] Feature B\n'
+            'fixup -C ddd # amend! [cr148] Feature B\n'
+            'squash eee # squash! [cr148] Feature B\n'
+            'pick fff # [cr148] Feature F\n'
+            'fixup ggg # fixup! [cr148] Feature F\n'
+            'pick zzz # drop!bbb! [cr148] Feature B\n'
+        )
+
+        rebase.rewrite_plan(todo_file=path, pinned_squashed=True)
+
+        self.assertEqual(
+            path.read_text(),
+            'pick aaa # [cr148] Feature A\n'
+            'pick fff # [cr148] Feature F\n'
+            'fixup ggg # fixup! [cr148] Feature F\n',
+        )
+
     def test_squashed_drop_falls_back_to_message_match(self):
         """A non-matching hash falls back to dropping the commit whose
         subject matches the drop's message."""

@@ -53,9 +53,9 @@ Commit categories formalised here (see `EntryType`):
 * REASSIGNMENT -- `reassign!<hash>!` commits authored by
   `brockit reassign`. Repositioned next to their target when
   `pinned_squashed=True`.
-* DROP -- `drop!<hash>!` commits authored by `brockit drop`. Both the
-  marker and its target are removed from the plan when
-  `pinned_squashed=True`.
+* DROP -- `drop!<hash>!` commits authored by `brockit drop`. The marker,
+  its target and the target's attached `fixup!`/`amend!`/`squash!` commits
+  are removed from the plan when `pinned_squashed=True`.
 * DEFAULT -- everything else.
 """
 
@@ -666,15 +666,48 @@ def rewrite_plan(
         all_others.insert(target_idx, reassign)
 
     def drop_with_target(drop: EntryLine) -> None:
-        """Removes the `drop` marker's target from the plan. The marker itself
-        is dropped by the caller -- it's never appended to `all_others`. An
-        orphaned drop is silently discarded, leaving the plan untouched."""
+        """Removes the `drop` marker's target from the plan, with the
+        autosquash markers git attached to it. The marker itself is dropped by
+        the caller -- it's never appended to `all_others`. An orphaned drop is
+        silently discarded, leaving the plan untouched."""
         target, target_idx = find_marker_target(drop, drop.drop_target_hash)
+        entries = all_others
         if target is None:
+            # A pinned commit (a `Version CodeHealth tracker`, say) sits in
+            # its group rather than in `all_others`.
+            entries, target_idx = find_pinned_target(drop)
+        if target_idx is None:
             logging.warning('Dropping orphaned drop: %s', drop.out.strip())
             return
 
-        del all_others[target_idx]
+        # Git places a target's `fixup`/`fixup -C`/`squash` lines right after
+        # it. Left behind, they would squash into the preceding commit, and an
+        # `amend!` would replace its message.
+        end = target_idx + 1
+        while end < len(entries) and entries[end].is_attached_autosquash:
+            end += 1
+        del entries[target_idx:end]
+        # A group's first commit is the one the rest squash into.
+        if entries is not all_others and entries and target_idx == 0:
+            entries[0].command = 'pick'
+
+    def find_pinned_target(
+        marker: EntryLine,
+    ) -> tuple[list[EntryLine], int | None]:
+        """A marker's target among the pinned groups, and its index there.
+        Only by hash: a group's commits share one subject, so the subject
+        can't tell them apart. Either side may be the shorter abbreviation."""
+        target_hash = marker.drop_target_hash
+        if not target_hash:
+            return all_others, None
+        for group in pinned_groups.values():
+            for index, entry in enumerate(group):
+                if not entry.is_attached_autosquash and (
+                    entry.hash.startswith(target_hash)
+                    or target_hash.startswith(entry.hash)
+                ):
+                    return group, index
+        return all_others, None
 
     for line in todo_file.read_bytes().decode('utf-8').splitlines():
         entry_line = EntryLine.parse(line)
