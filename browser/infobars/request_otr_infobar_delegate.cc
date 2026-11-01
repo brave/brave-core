@@ -8,8 +8,10 @@
 #include <memory>
 
 #include "base/check_op.h"
+#include "base/memory/ptr_util.h"
 #include "brave/components/request_otr/browser/request_otr_storage_tab_helper.h"
 #include "build/build_config.h"
+#include "chrome/browser/infobars/confirm_infobar_creation_allowlist.h"
 #include "chrome/browser/infobars/confirm_infobar_creator.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_resources.h"
@@ -27,8 +29,9 @@ using request_otr::RequestOTRStorageTabHelper;
 // static
 void RequestOTRInfoBarDelegate::Create(
     infobars::ContentInfoBarManager* infobar_manager) {
-  infobar_manager->AddInfoBar(
-      CreateConfirmInfoBar(std::unique_ptr<ConfirmInfoBarDelegate>(
+  infobar_manager->AddInfoBar(CreateConfirmInfoBar(
+      ConfirmInfoBarCreationAllowlist::GetPassKeyForMigration(),
+      base::WrapUnique<ConfirmInfoBarDelegate>(
           new RequestOTRInfoBarDelegate())));
 }
 

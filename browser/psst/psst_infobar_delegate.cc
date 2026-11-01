@@ -13,6 +13,7 @@
 #include "brave/components/psst/core/common/constants.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/ui/color/nala/nala_color_id.h"
+#include "chrome/browser/infobars/confirm_infobar_creation_allowlist.h"
 #include "chrome/browser/infobars/confirm_infobar_creator.h"
 #include "components/infobars/core/infobar.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -29,7 +30,9 @@ void PsstInfoBarDelegate::Create(infobars::InfoBarManager* infobar_manager,
   auto delegate = base::WrapUnique<PsstInfoBarDelegate>(
       new PsstInfoBarDelegate(std::move(on_accept_callback)));
 #if BUILDFLAG(IS_ANDROID)
-  infobar_manager->AddInfoBar(CreateConfirmInfoBar(std::move(delegate)));
+  infobar_manager->AddInfoBar(CreateConfirmInfoBar(
+      ConfirmInfoBarCreationAllowlist::GetPassKeyForMigration(),
+      std::move(delegate)));
 #else
   infobar_manager->AddInfoBar(CreatePsstInfoBar(std::move(delegate)));
 #endif  // BUILDFLAG(IS_ANDROID)

@@ -23,27 +23,13 @@
 #include "url/gurl.h"
 
 #if BUILDFLAG(IS_ANDROID)
+#include "chrome/browser/infobars/confirm_infobar_creation_allowlist.h"
 #include "chrome/browser/infobars/confirm_infobar_creator.h"
 #else  // BUILDFLAG(IS_ANDROID)
 #include "brave/browser/infobars/brave_confirm_infobar_creator.h"
 #endif  // BUILDFLAG(IS_ANDROID)
 
 namespace ntp_background_images {
-
-namespace {
-
-std::unique_ptr<infobars::InfoBar> CreateNewTabTakeoverInfoBar(
-    PrefService* prefs) {
-#if BUILDFLAG(IS_ANDROID)
-  return CreateConfirmInfoBar(
-      std::make_unique<NewTabTakeoverInfoBarDelegate>(prefs));
-#else   // BUILDFLAG(IS_ANDROID)
-  return CreateBraveConfirmInfoBar(
-      std::make_unique<NewTabTakeoverInfoBarDelegate>(prefs));
-#endif  // BUILDFLAG(IS_ANDROID)
-}
-
-}  // namespace
 
 // static
 void NewTabTakeoverInfoBarDelegate::MaybeDisplayAndIncrementCounter(
@@ -59,7 +45,14 @@ void NewTabTakeoverInfoBarDelegate::MaybeDisplayAndIncrementCounter(
 
   if (infobars::ContentInfoBarManager* infobar_manager =
           infobars::ContentInfoBarManager::FromWebContents(web_contents)) {
-    infobar_manager->AddInfoBar(CreateNewTabTakeoverInfoBar(prefs));
+#if BUILDFLAG(IS_ANDROID)
+    infobar_manager->AddInfoBar(CreateConfirmInfoBar(
+        ConfirmInfoBarCreationAllowlist::GetPassKeyForMigration(),
+        std::make_unique<NewTabTakeoverInfoBarDelegate>(prefs)));
+#else   // BUILDFLAG(IS_ANDROID)
+    infobar_manager->AddInfoBar(CreateBraveConfirmInfoBar(
+        std::make_unique<NewTabTakeoverInfoBarDelegate>(prefs)));
+#endif  // BUILDFLAG(IS_ANDROID)
   }
 }
 
