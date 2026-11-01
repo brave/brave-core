@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index e627f2be2491665c9b9c1a262a8283859ec5bb60..b081043bf674bb3a6514374c7475ecfcaff81e26 100644
+index 6ecb7f224a3c349c77d0e2da95a865a3850975c6..fa718c9f0e4b84dccc393fbb5333dadbf3883817 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
 @@ -185,6 +185,14 @@
@@ -17,16 +17,7 @@ index e627f2be2491665c9b9c1a262a8283859ec5bb60..b081043bf674bb3a6514374c7475ecfc
      // browser_process_read_access indicates the runtime feature state should be
      // readable in the browserprocess via RuntimeFeatureStateReadContext.
      // TODO(crbug.com/1377000): this feature does not support origin trial
-@@ -319,6 +327,8 @@
-     {
-       // Interest Group JS API/runtimeflag.
-       name: "AdInterestGroupAPI",
-+      brave_base_feature_overridden: true,
-+      base_feature_status: "disabled",
-       origin_trial_feature_name: "AdInterestGroupAPI",
-       implied_by: ["Fledge", "Parakeet"],
-       public: true,
-@@ -457,6 +467,8 @@
+@@ -461,6 +469,8 @@
      },
      {
        name: "AIPromptAPI",
@@ -35,7 +26,7 @@ index e627f2be2491665c9b9c1a262a8283859ec5bb60..b081043bf674bb3a6514374c7475ecfc
        public: true,
        status: {
          "Win": "stable",
-@@ -484,6 +496,8 @@
+@@ -488,6 +498,8 @@
      },
      {
        name: "AIPromptAPIMultimodalInput",
@@ -44,7 +35,7 @@ index e627f2be2491665c9b9c1a262a8283859ec5bb60..b081043bf674bb3a6514374c7475ecfc
        status: {
          "Win": "stable",
          "Mac": "stable",
-@@ -538,7 +552,8 @@
+@@ -542,7 +554,8 @@
        origin_trial_feature_name: "AIProofreaderAPI",
        origin_trial_os: ["win", "mac", "linux", "chromeos"],
        origin_trial_allows_third_party: true,
@@ -54,7 +45,7 @@ index e627f2be2491665c9b9c1a262a8283859ec5bb60..b081043bf674bb3a6514374c7475ecfc
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -553,7 +568,8 @@
+@@ -557,7 +570,8 @@
        origin_trial_feature_name: "AIRewriterAPI",
        origin_trial_os: ["win", "mac", "linux", "chromeos"],
        origin_trial_allows_third_party: true,
@@ -64,7 +55,7 @@ index e627f2be2491665c9b9c1a262a8283859ec5bb60..b081043bf674bb3a6514374c7475ecfc
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -562,6 +578,8 @@
+@@ -566,6 +580,8 @@
      },
      {
        name: "AISummarizationAPI",
@@ -73,7 +64,7 @@ index e627f2be2491665c9b9c1a262a8283859ec5bb60..b081043bf674bb3a6514374c7475ecfc
        status: {
          "Win": "stable",
          "Mac": "stable",
-@@ -596,7 +614,8 @@
+@@ -600,7 +616,8 @@
        origin_trial_feature_name: "AIWriterAPI",
        origin_trial_os: ["win", "mac", "linux", "chromeos"],
        origin_trial_allows_third_party: true,
@@ -83,7 +74,7 @@ index e627f2be2491665c9b9c1a262a8283859ec5bb60..b081043bf674bb3a6514374c7475ecfc
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -1423,7 +1442,7 @@
+@@ -1444,7 +1461,7 @@
        // objects that live on the compositor thread.
        // [1] https://drafts.csswg.org/css-animations-2/#timeline-triggers
        name: "CompositorTimelineTrigger",
@@ -92,7 +83,7 @@ index e627f2be2491665c9b9c1a262a8283859ec5bb60..b081043bf674bb3a6514374c7475ecfc
      },
      {
        name: "CompressionDictionaryTransport",
-@@ -1501,6 +1520,8 @@
+@@ -1522,6 +1539,8 @@
        // https://github.com/WICG/controlled-frame/blob/main/README.md for more
        // info.
        name: "ControlledFrame",
@@ -101,7 +92,7 @@ index e627f2be2491665c9b9c1a262a8283859ec5bb60..b081043bf674bb3a6514374c7475ecfc
        public: true,
        status: "stable",
      },
-@@ -2947,6 +2968,8 @@
+@@ -2992,6 +3011,8 @@
      },
      {
        name: "ExtensionScriptTagging",
@@ -110,7 +101,7 @@ index e627f2be2491665c9b9c1a262a8283859ec5bb60..b081043bf674bb3a6514374c7475ecfc
        public: true,
        status: "stable",
        base_feature: "ExtensionScriptTagging",
-@@ -3068,7 +3091,9 @@
+@@ -3113,7 +3134,9 @@
      },
      {
        name: "FencedFrames",
@@ -121,7 +112,7 @@ index e627f2be2491665c9b9c1a262a8283859ec5bb60..b081043bf674bb3a6514374c7475ecfc
        // This helps enable and expose the <fencedframe> element, but note that
        // blink::features::kFencedFrames must be enabled as well, as we require
        // the support of the browser process to fully enable the feature.
-@@ -3157,6 +3182,7 @@
+@@ -3209,6 +3232,7 @@
      {
        // In-development features for the File System Access API.
        name: "FileSystemAccessAPIExperimental",
@@ -129,7 +120,7 @@ index e627f2be2491665c9b9c1a262a8283859ec5bb60..b081043bf674bb3a6514374c7475ecfc
        status: "experimental",
      },
      {
-@@ -3171,6 +3197,7 @@
+@@ -3223,6 +3247,7 @@
      {
        // Non-OPFS File System Access API.
        name: "FileSystemAccessLocal",
@@ -137,16 +128,7 @@ index e627f2be2491665c9b9c1a262a8283859ec5bb60..b081043bf674bb3a6514374c7475ecfc
        status: {"default": "stable"},
      },
      {
-@@ -3298,6 +3325,8 @@
-     },
-     {
-       name: "Fledge",
-+      brave_base_feature_overridden: true,
-+      base_feature_status: "disabled",
-       public: true,
-     },
-     {
-@@ -4096,7 +4125,8 @@
+@@ -4096,7 +4121,8 @@
          "Android": "stable",
          "default": "",
        },
@@ -156,7 +138,7 @@ index e627f2be2491665c9b9c1a262a8283859ec5bb60..b081043bf674bb3a6514374c7475ecfc
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -4487,6 +4517,7 @@
+@@ -4486,6 +4512,7 @@
      // "experimental" is the support on other platforms.
      {
        name: "MiddleClickAutoscroll",
@@ -164,16 +146,7 @@ index e627f2be2491665c9b9c1a262a8283859ec5bb60..b081043bf674bb3a6514374c7475ecfc
        status: "test",
      },
      // Killswitch for crbug.com/40062462 fix.
-@@ -5014,6 +5045,8 @@
-     {
-       // PARAKEET ad serving runtime flag/JS API.
-       name: "Parakeet",
-+      brave_base_feature_overridden: true,
-+      base_feature_status: "disabled",
-       origin_trial_feature_name: "Parakeet",
-     },
-     {
-@@ -5234,6 +5267,8 @@
+@@ -5232,6 +5259,8 @@
        //
        // It also has some feature params defined throughout the codebase.
        name: "Prerender2",
@@ -182,7 +155,7 @@ index e627f2be2491665c9b9c1a262a8283859ec5bb60..b081043bf674bb3a6514374c7475ecfc
        status: "stable",
      },
      {
-@@ -5441,6 +5476,8 @@
+@@ -5433,6 +5462,8 @@
      // but we still keep this flag for future phase tests.
      {
        name: "ReduceUserAgentMinorVersion",
@@ -191,7 +164,7 @@ index e627f2be2491665c9b9c1a262a8283859ec5bb60..b081043bf674bb3a6514374c7475ecfc
        status: "stable",
      },
      {
-@@ -7004,7 +7041,8 @@
+@@ -6999,7 +7030,8 @@
          "ChromeOS": "stable",
          "default": "",
        },
@@ -201,7 +174,7 @@ index e627f2be2491665c9b9c1a262a8283859ec5bb60..b081043bf674bb3a6514374c7475ecfc
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -7181,6 +7219,8 @@
+@@ -7187,6 +7219,8 @@
      },
      {
        name: "UserMediaElement",
@@ -210,16 +183,7 @@ index e627f2be2491665c9b9c1a262a8283859ec5bb60..b081043bf674bb3a6514374c7475ecfc
        status: "stable",
        public: true,
      },
-@@ -8053,7 +8093,7 @@
-       // with its responseXML document.
-       // https://crbug.com/466303347
-       name: "XMLRustForNonXslt",
--      status: "stable",
-+      status: "experimental", // Brave: revert when crbug.com/578167868 is fixed.
-     },
-     {
-       name: "XMLSerializerConsistentDefaultNsDeclMatching",
-@@ -8085,5 +8125,10 @@
+@@ -8099,5 +8133,10 @@
        // crbug.com/435623334.
        name: "XSLTSpecialTrial",
      },
