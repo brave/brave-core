@@ -698,11 +698,8 @@ void AddBraveOmniboxPrivateThemeColorMixer(ui::ColorProvider* provider,
       kColorToolbarBackgroundSubtleEmphasis};
 
   mixer[kColorOmniboxResultsBackground] = {kPrivateFrame};
-  // mixer[kColorOmniboxTextDimmed] = {kColorOmniboxText};
   mixer[kColorOmniboxTextDimmed] = {
     ui::SetAlpha(kColorOmniboxText,0.9*255)};
-  SkColor debug_color = mixer.GetResultColor(kColorOmniboxTextDimmed);
-  // LOG(INFO)<<"Debug Color 0x"<<std::hex << debug_color;
   if (IsHighContrast()) {
     mixer[kColorOmniboxResultsBackground] = {
         color_utils::HSLShift(kPrivateFrame, {-1, -1, 0.45})};
