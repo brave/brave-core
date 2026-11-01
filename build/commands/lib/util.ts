@@ -844,20 +844,39 @@ const util = {
   },
 
   // Get the files that have been changed in the current diff with base branch.
-  getChangedFiles: (repoDir: string, base: string, skipLogging = false) => {
+  // `paths` (files or directories, relative to `repoDir`) limit the result to
+  // the changes under them.
+  getChangedFiles: (
+    repoDir: string,
+    base: string,
+    skipLogging = false,
+    paths: string[] = [],
+  ) => {
     const upstreamCommit = util
       .run('git', ['merge-base', 'HEAD', base], { cwd: repoDir, skipLogging })
       .stdout.toString()
       .trim()
 
     return util
-      .run('git', ['diff', '--name-only', '--diff-filter=d', upstreamCommit], {
-        cwd: repoDir,
-        skipLogging,
-      })
+      .run(
+        'git',
+        [
+          'diff',
+          '--name-only',
+          '--diff-filter=d',
+          upstreamCommit,
+          '--',
+          ...paths,
+        ],
+        {
+          cwd: repoDir,
+          skipLogging,
+        },
+      )
       .stdout.toString()
       .trim()
       .split('\n')
+      .filter(Boolean)
   },
 
   massRename: () => {
