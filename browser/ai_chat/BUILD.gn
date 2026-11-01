@@ -290,6 +290,9 @@ if (enable_brave_ai_chat_agent_profile) {
       "tools/target_test_util.h",
     ]
 
+    public_deps =
+        [ "//components/optimization_guide/proto:optimization_guide_proto" ]
+
     deps = [
       "//base",
       "//base/test:test_support",
