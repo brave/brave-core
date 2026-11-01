@@ -8,10 +8,12 @@
 #include <memory>
 #include <utility>
 
+#include "base/memory/ptr_util.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/p3a/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/infobars/confirm_infobar_creation_allowlist.h"
 #include "chrome/browser/infobars/confirm_infobar_creator.h"
 #include "chrome/grit/branded_strings.h"
 #include "components/infobars/content/content_infobar_manager.h"
@@ -36,8 +38,9 @@ void BraveConfirmP3AInfoBarDelegate::Create(
     }
   }
 
-  infobar_manager->AddInfoBar(
-      CreateConfirmInfoBar(std::unique_ptr<ConfirmInfoBarDelegate>(
+  infobar_manager->AddInfoBar(CreateConfirmInfoBar(
+      ConfirmInfoBarCreationAllowlist::GetPassKeyForMigration(),
+      base::WrapUnique<ConfirmInfoBarDelegate>(
           new BraveConfirmP3AInfoBarDelegate(local_state))));
 }
 

@@ -9,6 +9,7 @@
 
 #include "base/memory/ptr_util.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/infobars/confirm_infobar_creation_allowlist.h"
 #include "chrome/browser/infobars/confirm_infobar_creator.h"
 #include "components/infobars/core/infobar.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -17,8 +18,9 @@ namespace psst {
 // static
 void PsstInfoBarDelegate::Create(infobars::InfoBarManager* infobar_manager,
                                  AcceptCallback on_accept_callback) {
-  infobar_manager->AddInfoBar(
-      CreateConfirmInfoBar(base::WrapUnique<PsstInfoBarDelegate>(
+  infobar_manager->AddInfoBar(CreateConfirmInfoBar(
+      ConfirmInfoBarCreationAllowlist::GetPassKeyForMigration(),
+      base::WrapUnique<PsstInfoBarDelegate>(
           new PsstInfoBarDelegate(std::move(on_accept_callback)))));
 }
 
