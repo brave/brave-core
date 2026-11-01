@@ -87,6 +87,9 @@ jobs:
           git config gpg.program /usr/local/bin/gpg-sign
           git config commit.gpgsign true
 
+      - name: Install yarn
+        run: npm install -g yarn
+
       - name: Run Socket Fix
         env:
           GHSA_IDS: ${{ inputs.ghsa_ids }}
