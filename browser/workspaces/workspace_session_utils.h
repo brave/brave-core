@@ -25,20 +25,16 @@ std::vector<std::unique_ptr<sessions::SessionCommand>>
 SerializeWindowForWorkspace(BrowserWindowInterface* window,
                             WorkspaceMetadata& workspace);
 
-// Deserializes |commands| and appends the encoded tabs to |window|'s tab
-// strip, preserving pinned state, tab groups and navigation history.  Tabs
-// already in the window are left alone — the caller decides what becomes of
-// them.  Must be called on the UI thread.
+// Deserializes |commands| into |window|, preserving pinned state, tab groups
+// and navigation history.  |window| arrives holding the placeholder tab it was
+// created with; the saved tabs are appended after it and the placeholder is
+// then closed, in that order, because emptying a tab strip closes the window.
+// Must be called on the UI thread.
+//
+// A placeholder whose page runs a beforeunload handler can outlive this call,
+// since TabStripModel closes those asynchronously.
 void RestoreWorkspaceIntoWindow(
     BrowserWindowInterface* window,
     std::vector<std::unique_ptr<sessions::SessionCommand>> commands);
-
-// Closes the first |count| tabs of |window|.  Switching workspaces adds the
-// incoming tabs before retiring the outgoing ones, because emptying a tab
-// strip closes the window.
-//
-// A tab whose page runs a beforeunload handler can outlive this call, since
-// TabStripModel closes those asynchronously.
-void CloseLeadingTabs(BrowserWindowInterface* window, int count);
 
 #endif  // BRAVE_BROWSER_WORKSPACES_WORKSPACE_SESSION_UTILS_H_

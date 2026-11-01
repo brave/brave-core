@@ -20,7 +20,6 @@ source_set("impl") {
   deps = [
     ":workspaces",
     "//base",
-    "//chrome/browser/lifetime",
     "//chrome/browser/ui:browser_tabrestore",
     "//chrome/browser/ui:browser_tabstrip",
     "//chrome/browser/ui:unload_controller",

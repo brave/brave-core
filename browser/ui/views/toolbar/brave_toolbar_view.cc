@@ -839,12 +839,16 @@ void BraveToolbarView::UpdateWorkspaceButtonLabel() {
   auto* service =
       WorkspaceServiceFactory::GetForProfile(browser_->GetProfile());
   CHECK(service);
+  const std::u16string name = base::UTF8ToUTF16(
+      service->GetWorkspaceNameForWindow(browser_->GetSessionID()));
+  if (name == workspaces_button_->GetText()) {
+    return;
+  }
   // ToolbarButton keeps SetText() to itself; SetHighlight() is how callers
   // give it a label. Passing an empty string clears it back to the icon.
-  workspaces_button_->SetHighlight(
-      base::UTF8ToUTF16(
-          service->GetWorkspaceNameForWindow(browser_->GetSessionID())),
-      /*highlight_color=*/std::nullopt);
+  // Each call rebuilds the button's background and border, so it is worth
+  // skipping when nothing changed.
+  workspaces_button_->SetHighlight(name, /*highlight_color=*/std::nullopt);
 }
 
 void BraveToolbarView::OnWorkspacesButtonPressed() {
