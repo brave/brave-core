@@ -7,8 +7,8 @@
 
 from __future__ import annotations
 
+import contextlib
 from pathlib import Path
-import shutil
 import subprocess
 import tempfile
 from types import SimpleNamespace
@@ -108,8 +108,9 @@ class RunTest(unittest.TestCase):
         path.write_text(text, encoding='utf-8', newline='')
 
     def setUp(self) -> None:
-        root = Path(tempfile.mkdtemp())
-        self.addCleanup(shutil.rmtree, root)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        root = Path(stack.enter_context(tempfile.TemporaryDirectory()))
         chromium, brave = root / 'src', root / 'brave'
         (chromium / 'a').mkdir(parents=True)
         self._git(chromium, 'init', '-q', '-b', 'main')

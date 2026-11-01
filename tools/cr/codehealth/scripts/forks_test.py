@@ -9,7 +9,6 @@ from __future__ import annotations
 
 import contextlib
 from pathlib import Path
-import shutil
 import subprocess
 import tempfile
 from types import SimpleNamespace
@@ -53,8 +52,9 @@ _GREP = '\n'.join(
 
 class ForkIndexTest(unittest.TestCase):
     def setUp(self) -> None:
-        root = Path(tempfile.mkdtemp())
-        self.addCleanup(shutil.rmtree, root)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        root = Path(stack.enter_context(tempfile.TemporaryDirectory()))
         (root / 'chromium_src/chrome/browser').mkdir(parents=True)
         (root / 'chromium_src/chrome/browser/foo.cc').write_text(
             '#include <chrome/browser/foo.cc>\n', encoding='utf-8', newline=''

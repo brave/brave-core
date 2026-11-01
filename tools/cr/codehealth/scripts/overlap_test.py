@@ -7,9 +7,9 @@
 
 from __future__ import annotations
 
+import contextlib
 import json
 from pathlib import Path
-import shutil
 import tempfile
 import unittest
 
@@ -30,8 +30,9 @@ unrelated.cc
 
 class OverrideIndexTest(unittest.TestCase):
     def setUp(self):
-        root = Path(tempfile.mkdtemp())
-        self.addCleanup(shutil.rmtree, root)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        root = Path(stack.enter_context(tempfile.TemporaryDirectory()))
         for path, text in (
             ('chromium_src/chrome/a.cc', ''),
             ('chromium_src/chrome/BUILD.gn', ''),
