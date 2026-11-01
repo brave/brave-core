@@ -137,6 +137,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "base64"
 version = "0.22.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "bech32"
