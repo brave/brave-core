@@ -33,10 +33,6 @@ class PublicKeyWrapper {
 
 namespace variations {
 
-void VariationsSeedStore::SetSessionCountry(std::string_view country_code) {
-  seed_reader_writer_->SetSessionCountry(country_code);
-}
-
 // static
 const crypto::keypair::PublicKey& PublicKeyWrapper::GetPublicKey(
     const crypto::keypair::PublicKey& public_key) {
