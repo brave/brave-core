@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 0772e0c6b5cd4c0577f9d89ee0820fc7fc8d7c5f..4542cdee2cfcb442827908f9967b95354af28481 100644
+index 0772e0c6b5cd4c0577f9d89ee0820fc7fc8d7c5f..4c769eac5b3f0661c6acd981b1c6afb62782e71c 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -26,3 +26,15 @@ index 0772e0c6b5cd4c0577f9d89ee0820fc7fc8d7c5f..4542cdee2cfcb442827908f9967b9535
      public_deps = [
        ":browser_window_deleter",
        "//base",
+@@ -1515,9 +1518,11 @@ source_set("layout_constants") {
+ 
+   deps = [
+     "//base",
++    "//brave/browser/ui:brave_tab_prefs",
+     "//chrome/browser/ui:ui_features",
+     "//chrome/common:chrome_features",
+     "//components/omnibox/common",
++    "//components/prefs",
+     "//ui/base",
+     "//ui/base:features",
+   ]
