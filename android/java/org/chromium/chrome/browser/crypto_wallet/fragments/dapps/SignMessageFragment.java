@@ -205,7 +205,8 @@ public class SignMessageFragment extends WalletBottomSheetDialogFragment {
         mSignStep = needsSignRiskWarning(request.signData) ? SignStep.SIGN_RISK : SignStep.SIGN_TX;
         updateWarningLayoutForCurrentStep();
 
-        if (request.dappOriginInfo != null && URLUtil.isValidUrl(request.dappOriginInfo.originSpec)) {
+        if (request.dappOriginInfo != null
+                && URLUtil.isValidUrl(request.dappOriginInfo.originSpec)) {
             mWebSite.setText(Utils.geteTldSpanned(request.dappOriginInfo));
         } else {
             mWebSite.setText("");

@@ -188,7 +188,7 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
         items.add(account);
 
         if (mCurrentSignMessageRequest != null
-            && mCurrentSignMessageRequest.dappOriginInfo != null) {
+                && mCurrentSignMessageRequest.dappOriginInfo != null) {
             TwoLineItemRecyclerViewAdapter.TwoLineSingleText details =
                     new TwoLineItemRecyclerViewAdapter.TwoLineSingleText();
             String separator = System.getProperty(WalletConstants.LINE_SEPARATOR);

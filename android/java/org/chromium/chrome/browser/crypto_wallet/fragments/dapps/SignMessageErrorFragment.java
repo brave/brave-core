@@ -62,9 +62,9 @@ public class SignMessageErrorFragment extends WalletBottomSheetDialogFragment {
                             mCurrentSignMessageError = errors[0];
 
                             mTextViewUrl.setText(
-                                mCurrentSignMessageError.dappOriginInfo.originSpec);
+                                    mCurrentSignMessageError.dappOriginInfo.originSpec);
                             mTextViewHost.setText(
-                                mCurrentSignMessageError.dappOriginInfo.eTldPlusOne);
+                                    mCurrentSignMessageError.dappOriginInfo.eTldPlusOne);
                             mTextViewReason.setText(mCurrentSignMessageError.localizedErrMsg);
                         });
     }
