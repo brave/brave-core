@@ -342,6 +342,7 @@ if (is_android) {
     deps = [
       "//chrome/android/junit:chrome_junit_tests_helper",
       "//chrome/browser/ui/android/omnibox:java",
+      "//chrome/browser/ui/android/theme:java",
     ]
   }
 

@@ -24,6 +24,8 @@ import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.chrome.browser.browser_controls.BottomControlsStacker;
 import org.chromium.chrome.browser.browser_controls.BottomControlsStacker.LayerType;
+import org.chromium.chrome.browser.omnibox.styles.OmniboxResourceProvider;
+import org.chromium.chrome.browser.ui.theme.BrandedColorScheme;
 import org.chromium.components.browser_ui.widget.scrim.ScrimManager;
 import org.chromium.components.browser_ui.widget.scrim.ScrimProperties;
 import org.chromium.ui.modelutil.PropertyModel;
@@ -34,7 +36,6 @@ public class BraveLocationBarFocusScrimHandlerUnitTest {
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
     @Mock private Runnable mClickDelegate;
-    @Mock private LocationBarDataProvider mLocationBarDataProvider;
     @Mock private ScrimManager mScrimManager;
     @Mock private BottomControlsStacker mBottomControlsStacker;
 
@@ -51,7 +52,9 @@ public class BraveLocationBarFocusScrimHandlerUnitTest {
                         mScrimManager,
                         (visible) -> {},
                         ContextUtils.getApplicationContext(),
-                        mLocationBarDataProvider,
+                        new OmniboxResourceProvider(
+                                ContextUtils.getApplicationContext(),
+                                BrandedColorScheme.APP_DEFAULT),
                         mClickDelegate,
                         new View(ContextUtils.getApplicationContext()),
                         ObservableSuppliers.createNonNull(0),
