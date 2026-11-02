@@ -9,7 +9,7 @@
 #include "brave/components/misc_metrics/image_metadata_stripper_metrics.h"
 #include "components/prefs/pref_service.h"
 
-namespace image_metadata_stripper::metrics {
+namespace misc_metrics {
 
 int GetFbmdStrippedCountInLocalState(PrefService* local_state,
                                      std::string_view count_key) {
@@ -21,4 +21,4 @@ int GetFbmdStrippedCountInLocalState(PrefService* local_state,
   return fbmd->FindInt(count_key).value_or(0);
 }
 
-}  // namespace image_metadata_stripper::metrics
+}  // namespace misc_metrics

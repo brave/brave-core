@@ -10,7 +10,7 @@
 
 class PrefService;
 
-namespace image_metadata_stripper::metrics {
+namespace misc_metrics {
 
 // Reads an FBMD stripped count recorded in |local_state| for |count_key|
 // (kDownloadStrippedPrefKey or kUploadStrippedPrefKey). Returns 0 when nothing
@@ -18,6 +18,6 @@ namespace image_metadata_stripper::metrics {
 int GetFbmdStrippedCountInLocalState(PrefService* local_state,
                                      std::string_view count_key);
 
-}  // namespace image_metadata_stripper::metrics
+}  // namespace misc_metrics
 
 #endif  // BRAVE_COMPONENTS_MISC_METRICS_IMAGE_METADATA_STRIPPER_METRICS_TEST_UTIL_H_

@@ -7,14 +7,13 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/timer/wall_clock_timer.h"
-#include "brave/components/image_metadata_stripper/image_metadata_stripper.h"
+#include "brave/components/image_metadata_stripper/common/stripping_client.h"
 
 class PrefRegistrySimple;
 class PrefService;
 
-namespace image_metadata_stripper {
+namespace misc_metrics {
 
-namespace metrics {
 // This helps in respecting the 7 day boundary from the last time the
 // metrics was recorded. Metrics are recorded from inside the browser
 // process which keeps track of a weekly timer in-memory. So, if the
@@ -66,7 +65,7 @@ class ImageMetadataStripperMetrics {
   // Records that an image carrying the FBMD marker was seen. |client| selects
   // the download or the upload flow. Must be called on the sequence that owns
   // this reporter (the UI thread).
-  void RecordFbmd(StrippingClient client);
+  void RecordFbmd(image_metadata_stripper::StrippingClient client);
 
  private:
   // Reports histograms iff their corresponding count recorded in the
@@ -78,8 +77,6 @@ class ImageMetadataStripperMetrics {
   raw_ptr<PrefService> local_state_;
 };
 
-}  // namespace metrics
-
-}  // namespace image_metadata_stripper
+}  // namespace misc_metrics
 
 #endif  // BRAVE_COMPONENTS_MISC_METRICS_IMAGE_METADATA_STRIPPER_METRICS_H_

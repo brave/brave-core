@@ -11,12 +11,14 @@
 #include "base/test/metrics/histogram_tester.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "brave/components/image_metadata_stripper/image_metadata_stripper.h"
+#include "brave/components/image_metadata_stripper/common/stripping_client.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace image_metadata_stripper::metrics {
+namespace misc_metrics {
+
+using image_metadata_stripper::StrippingClient;
 
 class ImageMetadataStripperMetricsTest : public testing::Test {
  public:
@@ -209,4 +211,4 @@ TEST_F(ImageMetadataStripperMetricsTest, ClearsCountsAfterReporting) {
                                      1);
 }
 
-}  // namespace image_metadata_stripper::metrics
+}  // namespace misc_metrics
