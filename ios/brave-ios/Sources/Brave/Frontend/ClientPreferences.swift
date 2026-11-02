@@ -16,10 +16,12 @@ enum TabBarVisibility: Int, CaseIterable {
   case landscapeOnly
 }
 
-public enum TopSitesMode: Int, CaseIterable, Identifiable {
-  case none
-  case mostVisited
-  case favourite
+/// Raw values are spelled out so that reordering, inserting or renaming a case cannot remap
+/// already stored preferences, which is what broke the integer backed predecessor.
+public enum TopSitesMode: String, CaseIterable, Identifiable {
+  case none = "none"
+  case mostVisited = "most-visited"
+  case favourite = "favourite"
 
   public var id: Self { self }
 
@@ -338,16 +340,33 @@ extension Preferences {
       default: false
     )
 
-    /// Tells the app whether we should show Favourites in new tab page view controller
+    /// Whether favourites were shown in the new tab page.
+    ///
+    /// Superseded by `topSitesModeV2`, and only read by
+    /// `BraveProfileMigrations.migrateTopSitesModePreference()`.
     public static let showNewTabFavourites =
       Option<Bool>(key: "newtabpage.show-newtab-favourites", default: true)
 
-    /// Mode to display NTP tiles in NTP
+    /// Integer backed mode to display NTP tiles in NTP.
     ///
-    /// Defaults to favourites so the mode matches what the NTP renders for users who never picked
-    /// one. Most visited is an explicit choice until the NTP reads the mode itself.
-    public static let topSitesMode = Option<TopSitesMode>(
+    /// Superseded by `topSitesModeV2`, and only read by
+    /// `BraveProfileMigrations.migrateTopSitesModePreference()`. Deliberately kept as a raw
+    /// integer rather than a `TopSitesMode`, because a stored value means different things
+    /// depending on which release wrote it: 1.97.x and 1.98.x stored
+    /// `mostVisited = 0, favourite = 1, none = 2`, while 1.99.x inserted `none` at 0 and shifted
+    /// the rest, silently remapping every value already on disk.
+    public static let topSitesMode = Option<Int?>(
       key: "newtabpage.topsites-mode",
+      default: nil
+    )
+
+    /// Mode to display top sites in the new tab page.
+    ///
+    /// Uses a new key so that values written under either `topSitesMode` ordering are migrated
+    /// exactly once rather than reinterpreted, and stores string raw values so that editing the
+    /// `TopSitesMode` cases can never remap stored preferences again.
+    public static let topSitesModeV2 = Option<TopSitesMode>(
+      key: "newtabpage.topsites-mode-v2",
       default: .favourite
     )
   }

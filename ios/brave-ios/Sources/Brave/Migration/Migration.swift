@@ -31,7 +31,7 @@ public class BraveProfileMigrations {
     migrateMediaBackgroundingPreference()
     migrateBlockAllCookiesPreference()
     migrateDefaultWalletPreferences()
-    migrateShowNewFavoritesPreference()
+    migrateTopSitesModePreference()
     migrateSponsoredAdsEnabledPreference()
     migrateHTTPSUpgradeLevelPreference()
   }
@@ -176,15 +176,51 @@ public class BraveProfileMigrations {
     }
   }
 
-  private func migrateShowNewFavoritesPreference() {
-    Preferences.NewTabPage.showNewTabFavourites.migrate { value in
-      if value {
-        Preferences.NewTabPage.topSitesMode.value =
-          Favorite.hasFavorites ? TopSitesMode.favourite : TopSitesMode.mostVisited
-      } else {
-        Preferences.NewTabPage.topSitesMode.value = TopSitesMode.none
-      }
+  /// Migrates `topSitesMode` and `showNewTabFavourites` to `topSitesModeV2`.
+  private func migrateTopSitesModePreference() {
+    defer {
+      Preferences.NewTabPage.topSitesMode.removeStoredValue()
+      Preferences.NewTabPage.showNewTabFavourites.removeStoredValue()
     }
+    guard !Preferences.NewTabPage.topSitesModeV2.isRawValueStored else { return }
+    let showNewTabFavourites = Preferences.NewTabPage.showNewTabFavourites
+    if let mode = BraveProfileMigrations.topSitesMode(
+      forLegacyRawValue: Preferences.NewTabPage.topSitesMode.value,
+      showNewTabFavourites: showNewTabFavourites.isValueStored ? showNewTabFavourites.value : nil
+    ) {
+      Preferences.NewTabPage.topSitesModeV2.value = mode
+    }
+  }
+
+  /// The mode that the legacy top sites preferences represent, or `nil` when neither was stored
+  /// and `topSitesModeV2` should keep its default.
+  ///
+  /// Both legacy preferences only carry whether top sites were shown, not which source they drew
+  /// from: no release that wrote them could render most visited sites, so the NTP checked the
+  /// mode against `none` and nothing else.
+  ///
+  /// `showNewTabFavourites` wins when it is stored. 1.97.x is the only release where it was
+  /// settable, and the only value its NTP read, while the mode there was a launch time seed that
+  /// nothing read. Every release since removes it on first launch and makes the mode settable, so
+  /// a stored flag and a mode the user actually chose cannot coexist.
+  ///
+  /// A stored `mostVisited` is therefore the 1.97.x seed rather than a choice, and maps to
+  /// `favourite` to preserve what the user was looking at. `legacyNoneRawValue` is ambiguous: it
+  /// means `none` up to 1.98.x but `favourite` from 1.99.x. It is read as `none` to honour an
+  /// explicit opt out by the far larger release channel, which resets testers who picked
+  /// favourites.
+  static func topSitesMode(
+    forLegacyRawValue legacyRawValue: Int?,
+    showNewTabFavourites: Bool?
+  ) -> TopSitesMode? {
+    let legacyNoneRawValue = 2
+    if let showNewTabFavourites {
+      return showNewTabFavourites ? .favourite : TopSitesMode.none
+    }
+    if let legacyRawValue {
+      return legacyRawValue == legacyNoneRawValue ? TopSitesMode.none : .favourite
+    }
+    return nil
   }
 
   /// Migrates deprecated `backgroundMediaTypeRaw` to `kBraveAdsSponsoredEnabledPrefName`.
@@ -810,5 +846,21 @@ extension Preferences.Option {
 
   fileprivate var isValueStored: Bool {
     (container.object(forKey: key) as? ValueType) != nil
+  }
+
+  /// Removes any stored value from the container, leaving the in-memory value untouched. Only
+  /// appropriate for preferences that nothing reads once they have been migrated.
+  fileprivate func removeStoredValue() {
+    container.removeObject(forKey: key)
+  }
+}
+
+extension Preferences.Option where ValueType: RawRepresentable {
+  /// Whether a value is stored in the container.
+  ///
+  /// `isValueStored` cannot be used here: the container holds the raw value rather than a
+  /// `ValueType`, so the cast it performs never succeeds.
+  var isRawValueStored: Bool {
+    (container.object(forKey: key) as? ValueType.RawValue) != nil
   }
 }
