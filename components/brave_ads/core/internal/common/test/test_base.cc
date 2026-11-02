@@ -237,7 +237,7 @@ void TestBase::AdvanceClockTo(base::Time time) {
 }
 
 void TestBase::AdvanceClockToLocalMidnight() {
-  return AdvanceClockTo(Now().LocalMidnight() + base::Days(1));
+  return AdvanceClockTo(Now().NextLocalMidnight());
 }
 
 void TestBase::AdvanceClockToUTCMidnight() {
