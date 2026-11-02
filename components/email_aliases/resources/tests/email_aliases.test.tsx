@@ -12,10 +12,10 @@ import {
   AliasesUpdate,
   EmailAliasesServiceInterface,
   EmailAliasesServiceObserverInterface,
-} from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
+} from 'gen/brave/components/email_aliases/email_aliases.mojom-webui.js'
 
 // Mock the email aliases service
-class MockEmailAliasesService extends EmailAliasesServiceInterface {
+class MockEmailAliasesService implements EmailAliasesServiceInterface {
   private observer?: EmailAliasesServiceObserverInterface
 
   addObserver(observer: EmailAliasesServiceObserverInterface) {
@@ -73,12 +73,12 @@ const mockAliases = [
   {
     email: 'alias1@brave.com',
     note: 'Test Alias 1',
-    domains: undefined,
+    domains: null,
   },
   {
     email: 'alias2@brave.com',
     note: 'Test Alias 2',
-    domains: undefined,
+    domains: null,
   },
 ]
 
@@ -113,7 +113,7 @@ describe('ManagePageConnected', () => {
       {
         email: 'alias1@brave.com',
         note: 'Test Alias 1',
-        domains: undefined,
+        domains: null,
       },
     ])
 
@@ -128,17 +128,17 @@ describe('ManagePageConnected', () => {
       {
         email: 'alias1@brave.com',
         note: 'Test Alias 1',
-        domains: undefined,
+        domains: null,
       },
       {
         email: 'alias2@brave.com',
         note: 'Test Alias 2',
-        domains: undefined,
+        domains: null,
       },
       {
         email: 'alias3@brave.com',
         note: 'Test Alias 3',
-        domains: undefined,
+        domains: null,
       },
     ])
 
@@ -157,17 +157,17 @@ describe('ManagePageConnected', () => {
       {
         email: 'alias1@brave.com',
         note: 'Test Alias 1',
-        domains: undefined,
+        domains: null,
       },
       {
         email: 'alias2@brave.com',
         note: 'Test Alias 2',
-        domains: undefined,
+        domains: null,
       },
       {
         email: 'alias3@brave.com',
         note: 'Test Alias 3',
-        domains: undefined,
+        domains: null,
       },
     ])
 
@@ -182,7 +182,7 @@ describe('ManagePageConnected', () => {
       {
         email: 'alias2@brave.com',
         note: 'Test Alias 2',
-        domains: undefined,
+        domains: null,
       },
     ])
 
@@ -201,17 +201,17 @@ describe('ManagePageConnected', () => {
       {
         email: 'alias1@brave.com',
         note: 'Test Alias 1',
-        domains: undefined,
+        domains: null,
       },
       {
         email: 'alias2@brave.com',
         note: 'Test Alias 2',
-        domains: undefined,
+        domains: null,
       },
       {
         email: 'alias3@brave.com',
         note: 'Test Alias 3',
-        domains: undefined,
+        domains: null,
       },
     ])
 
@@ -226,17 +226,17 @@ describe('ManagePageConnected', () => {
       {
         email: 'alias3@brave.com',
         note: 'Test Alias 3',
-        domains: undefined,
+        domains: null,
       },
       {
         email: '2.alias@brave.com',
         note: 'Test Alias 2',
-        domains: undefined,
+        domains: null,
       },
       {
         email: 'alias1@brave.com',
         note: 'Test Alias 1',
-        domains: undefined,
+        domains: null,
       },
     ])
 
@@ -258,17 +258,17 @@ describe('ManagePageConnected', () => {
       {
         email: 'alias1@brave.com',
         note: 'Test Alias 1',
-        domains: undefined,
+        domains: null,
       },
       {
         email: 'alias2@brave.com',
         note: 'Test Alias 2',
-        domains: undefined,
+        domains: null,
       },
       {
         email: 'alias3@brave.com',
         note: 'Test Alias 3',
-        domains: undefined,
+        domains: null,
       },
     ])
 

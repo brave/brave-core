@@ -10,7 +10,7 @@ import {
   Alias,
   EmailAliasesServiceInterface,
   DEFAULT_MAX_ALIASES,
-} from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
+} from 'gen/brave/components/email_aliases/email_aliases.mojom-webui.js'
 import { clickLeoButton } from './test_utils'
 
 const MAX_ALIASES = DEFAULT_MAX_ALIASES

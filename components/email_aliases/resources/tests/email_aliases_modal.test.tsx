@@ -16,7 +16,7 @@ import {
   Alias,
   EmailAliasesServiceInterface,
   DEFAULT_MAX_ALIASES,
-} from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
+} from 'gen/brave/components/email_aliases/email_aliases.mojom-webui.js'
 
 const MAX_ALIASES = 5
 
@@ -232,8 +232,8 @@ describe('EmailAliasModal', () => {
   it('shows limit reached dialog in bubble mode without generating an alias', async () => {
     const atLimitAliases: Alias[] = Array.from({ length: 5 }, (_, i) => ({
       email: `alias-${i}@bravealias.com`,
-      note: undefined,
-      domains: undefined,
+      note: null,
+      domains: null,
     }))
 
     render(
@@ -282,7 +282,7 @@ describe('EmailAliasModal', () => {
     const atLimitAliases: Alias[] = Array.from({ length: 5 }, (_, i) => ({
       email: `alias-${i}@bravealias.com`,
       note: 'Existing Alias',
-      domains: undefined,
+      domains: null,
     }))
 
     const mockEditAlias: Alias = {
@@ -455,7 +455,7 @@ describe('EmailAliasModal', () => {
     await waitFor(() => {
       expect(mockEmailAliasesService.updateAlias).toHaveBeenCalledWith(
         'existing@brave.com',
-        { note: 'Existing Alias', active: undefined, domains: undefined },
+        { note: 'Existing Alias', active: null, domains: null },
       )
       expect(mockOnReturnToMain).toHaveBeenCalled()
     })
@@ -465,7 +465,7 @@ describe('EmailAliasModal', () => {
     {
       email: 'new@brave.com',
       note: 'New Alias',
-      domains: undefined,
+      domains: null,
     },
     {
       email: 'existing@brave.com',

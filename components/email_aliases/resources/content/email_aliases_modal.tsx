@@ -24,7 +24,7 @@ import styled from 'styled-components'
 import {
   Alias,
   EmailAliasesServiceInterface,
-} from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
+} from 'gen/brave/components/email_aliases/email_aliases.mojom-webui.js'
 import { EmailAliasLimitReached } from './email_alias_limit_reached'
 import './strings'
 
@@ -271,8 +271,8 @@ export const EmailAliasModal = ({
     try {
       await emailAliasesService.updateAlias(generateAliasResult.aliasEmail, {
         note: proposedNote,
-        active: editing ? undefined : true,
-        domains: undefined,
+        active: editing ? null : true,
+        domains: null,
       })
       onReturnToMain({
         type: EmailAliasModalResultType.AliasCreated,

@@ -10,7 +10,7 @@ import {
   EmailAliasesServiceInterface,
   EmailAliasesServiceObserverInterface,
   EmailAliasesServiceObserverRemote,
-} from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
+} from 'gen/brave/components/email_aliases/email_aliases.mojom-webui.js'
 
 export const demoData = {
   email: 'aguscr182@gmail.com',
@@ -18,7 +18,7 @@ export const demoData = {
     {
       email: 'horse.radish.record57@bravealias.com',
       note: 'Alias for all my newsletters',
-      domains: undefined,
+      domains: null,
     },
     {
       email: 'start.plane.division.laser42@bravealias.com',
@@ -28,7 +28,7 @@ export const demoData = {
     {
       email: 'racoon.pencil.test14@bravealias.com',
       note: 'Marketplace email for Facebook',
-      domains: undefined,
+      domains: null,
     },
   ],
 } satisfies { email: string; aliases: Alias[] }
@@ -75,7 +75,7 @@ export class StubEmailAliasesService implements EmailAliasesServiceInterface {
         getLocale(S.SETTINGS_EMAIL_ALIASES_UPDATE_ALIAS_ERROR),
       )
     }
-    const alias = { email: aliasEmail, note: note ?? '', domains: undefined }
+    const alias = { email: aliasEmail, note: note ?? '', domains: null }
     this.aliases.set(aliasEmail, alias)
     this.observers.forEach((observer) => {
       observer.onAliasesUpdated({
@@ -101,7 +101,6 @@ export class StubEmailAliasesService implements EmailAliasesServiceInterface {
     return Promise.resolve()
   }
 
-  // @ts-expect-error https://github.com/brave/brave-browser/issues/48960
   async generateAlias(): Promise<string> {
     await new Promise((resolve) => setTimeout(resolve, 1000))
     if (Math.random() < 1 / 3) {
