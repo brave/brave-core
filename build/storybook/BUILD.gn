@@ -63,7 +63,7 @@ group("storybook_deps") {
   if (enable_email_aliases) {
     deps += [
       "//brave/components/brave_account/mojom:mojom_ts__generator",
-      "//brave/components/email_aliases:mojom_js",
+      "//brave/components/email_aliases:mojom_ts__generator",
     ]
   }
 
