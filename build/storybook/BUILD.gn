@@ -76,6 +76,6 @@ group("storybook_deps") {
   }
 
   if (enable_speedreader) {
-    deps += [ "//brave/components/speedreader/common:mojom_js" ]
+    deps += [ "//brave/components/speedreader/common:mojom_ts__generator" ]
   }
 }
