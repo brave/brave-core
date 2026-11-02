@@ -19,8 +19,10 @@ public final class Domain: NSManagedObject, CRUD {
   @NSManaged public var blockedFromTopSites: Bool  // don't show ever on top sites
 
   // swift-format-ignore
+  @available(*, deprecated, message: "Use BraveShieldsTabHelper and/or content settings instead.")
   @NSManaged public var shield_allOff: NSNumber?
   // swift-format-ignore
+  @available(*, deprecated, message: "Use BraveShieldsTabHelper and/or content settings instead.")
   @NSManaged public var shield_adblockAndTp: NSNumber?
 
   // swift-format-ignore
@@ -28,8 +30,10 @@ public final class Domain: NSManagedObject, CRUD {
   @NSManaged public var shield_httpse: NSNumber?
 
   // swift-format-ignore
+  @available(*, deprecated, message: "Use BraveShieldsTabHelper and/or content settings instead.")
   @NSManaged public var shield_noScript: NSNumber?
   // swift-format-ignore
+  @available(*, deprecated, message: "Use BraveShieldsTabHelper and/or content settings instead.")
   @NSManaged public var shield_fpProtection: NSNumber?
   // swift-format-ignore
   @NSManaged public var shield_safeBrowsing: NSNumber?
@@ -47,10 +51,12 @@ public final class Domain: NSManagedObject, CRUD {
 
   /// A string version of the shield shred level
   // swift-format-ignore
+  @available(*, deprecated, message: "Use BraveShieldsTabHelper and/or content settings instead.")
   @NSManaged public var shield_shredLevel: String?
 
   /// A string version of the shield ad-block and tracking protection
   // swift-format-ignore
+  @available(*, deprecated, message: "Use BraveShieldsTabHelper and/or content settings instead.")
   @NSManaged public var shield_blockAdsAndTrackingLevel: String?
 
   private var urlComponents: URLComponents? {
@@ -118,34 +124,11 @@ public final class Domain: NSManagedObject, CRUD {
 
   // MARK: Shields
 
-  public class func allDomainsWithExplicitShieldLevel() -> [Domain]? {
-    Domain.all(
-      where: NSPredicate(format: "shield_blockAdsAndTrackingLevel != nil")
-    )
-  }
-
-  /// Returns all domains with a given `SiteShredLevel`s rawValue, or `nil`
-  /// for Domains with no shred level assigned.
-  class func allDomainsWithAutoShredLevel(
-    _ rawShredLevel: String?,
-    context: NSManagedObjectContext
-  ) -> [Domain]? {
-    let shredLevelPredicate: NSPredicate
-    if let rawShredLevel {
-      shredLevelPredicate = NSPredicate(
-        format: "shield_shredLevel == %@",
-        rawShredLevel
-      )
-    } else {
-      shredLevelPredicate = NSPredicate(format: "shield_shredLevel == nil")
-    }
-    return Domain.all(where: shredLevelPredicate, context: context)
-  }
-
   public static func clearInMemoryDomains() {
     Domain.deleteAll(predicate: nil, context: .new(inMemory: true))
   }
 
+  @available(*, deprecated, message: "Use BraveShieldsTabHelper and/or content settings instead.")
   @MainActor public class func allDomainsWithMigratableShieldLevel() -> [Domain]? {
     return Domain.all(
       where: NSPredicate(

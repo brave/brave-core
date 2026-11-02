@@ -529,7 +529,6 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
           rootViewController: LegacyShieldsPanelViewController(
             url: url,
             tab: selectedTab,
-            domain: Domain.getOrCreate(forUrl: url, persistent: !selectedTab.isPrivate),
             callback: shieldsPanelActionHandler
           )
         ),

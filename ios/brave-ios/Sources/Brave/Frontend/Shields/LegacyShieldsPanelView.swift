@@ -28,7 +28,6 @@ struct LegacyShieldsPanelView: View {
   @MainActor init(
     url: URL,
     tab: some TabState,
-    domain: Domain,
     isAdvancedControlsEnabled: Bool,
     callback: @escaping (ShieldsPanelAction) -> Void
   ) {
@@ -366,14 +365,12 @@ class LegacyShieldsPanelViewController: UIHostingController<LegacyShieldsPanelVi
   init(
     url: URL,
     tab: some TabState,
-    domain: Domain,
     isAdvancedControlsEnabled: Bool = true,
     callback: @escaping (ShieldsPanelAction) -> Void
   ) {
     let shieldsPanelView = LegacyShieldsPanelView(
       url: url,
       tab: tab,
-      domain: domain,
       isAdvancedControlsEnabled: isAdvancedControlsEnabled,
       callback: callback
     )

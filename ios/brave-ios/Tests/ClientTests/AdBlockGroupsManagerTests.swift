@@ -175,11 +175,7 @@ final class AdBlockGroupsManagerTests: XCTestCase {
     groupsManager.updateIfNeeded(resourcesInfo: resourcesInfo)
     groupsManager.update(fileInfo: standardFileInfo)
     await groupsManager.compileEnginesIfNeeded()
-
     let mainFrameURL = URL(string: "https://dev-pages.bravesoftware.com")!
-    _ = await MainActor.run {
-      return Domain.getOrCreate(forUrl: mainFrameURL, persistent: false)
-    }
 
     // Then
     // Should have certian script types

@@ -71,11 +71,6 @@ import WebKit
     }
   }
 
-  /// Return the domain for this current page passing any options needed for its persistance
-  @MainActor func domain(persistent: Bool) -> Domain {
-    return Domain.getOrCreate(forUrl: mainFrameURL, persistent: persistent)
-  }
-
   /// Return all the user script types for this page. The number of script types grows as more frames are loaded.
   @MainActor func makeUserScriptTypes(
     isPrivateBrowsing: Bool,

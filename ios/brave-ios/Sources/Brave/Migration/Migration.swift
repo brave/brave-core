@@ -25,6 +25,8 @@ public class BraveProfileMigrations {
     migrateDefaultUserAgentPreferences()
     migrateBlockPopupsPreferences()
     migrateSyncPasswordsDefault()
+    // TODO(https://github.com/brave/brave-browser/issues/61088)
+    // remove Shields migration code & CoreData attributes
     migrateShieldsToContentSettings()
     migrateYouTubeQualityPreference()
     migrateGPCPreference()
@@ -66,6 +68,7 @@ public class BraveProfileMigrations {
     Preferences.Shields.autoRedirectTrackingURLsDeprecated.value = nil
   }
 
+  @available(*, deprecated, message: "Use BraveShieldsTabHelper and/or content settings instead.")
   @MainActor public func migrateShieldsToContentSettings() {
     guard !Preferences.Shields.Migration.shieldsCoreDataToContentSettingsCompleted.value,
       let braveShieldsSettings = BraveShieldsSettingsServiceFactory.get(
@@ -397,6 +400,8 @@ public class Migration {
 extension Migration {
   /// Migrations that need to be run after data is loaded
   @MainActor public static func postDataLoadMigration() {
+    // TODO(https://github.com/brave/brave-browser/issues/61088)
+    // remove Shields migration code & CoreData attributes
     migrateShieldLevel()
     migratePlaylistLastPlayedDate()
   }
@@ -410,6 +415,7 @@ extension Migration {
   }
 
   /// Migrate the shield level from the previous on/off toggle to the new ShieldLevel picker
+  @available(*, deprecated, message: "Use BraveShieldsTabHelper and/or content settings instead.")
   @MainActor private static func migrateShieldLevel() {
     guard
       !Preferences.Migration

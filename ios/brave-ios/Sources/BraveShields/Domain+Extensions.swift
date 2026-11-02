@@ -8,6 +8,7 @@ import Foundation
 import Preferences
 
 extension Domain {
+  @available(*, deprecated, message: "Use BraveShieldsTabHelper and/or content settings instead.")
   @MainActor var areAllShieldsOff: Bool {
     return shield_allOff?.boolValue ?? false
   }
@@ -15,6 +16,7 @@ extension Domain {
   /// The shred level for this current domain
   ///
   /// When getting, it will return the global shred level if the domain level is not set
+  @available(*, deprecated, message: "Use BraveShieldsTabHelper and/or content settings instead.")
   @MainActor public var shredLevel: SiteShredLevel {
     get {
       guard let shredLevel = self.shield_shredLevel else {
@@ -29,6 +31,7 @@ extension Domain {
   }
 
   /// The shield level for this current domain (standard/aggressive/disabled).
+  @available(*, deprecated, message: "Use BraveShieldsTabHelper and/or content settings instead.")
   @MainActor var domainBlockAdsAndTrackingLevel: ShieldLevel {
     get {
       guard let level = self.shield_blockAdsAndTrackingLevel else {
@@ -43,12 +46,14 @@ extension Domain {
   }
 
   /// Moves data from the old `shield_adblockAndTp` to the new `shield_blockAdsAndTrackingLevel`
+  @available(*, deprecated, message: "Use BraveShieldsTabHelper and/or content settings instead.")
   @MainActor public func migrateShieldLevel() {
     guard let isEnabled = shield_adblockAndTp?.boolValue else { return }
     domainBlockAdsAndTrackingLevel = isEnabled ? .standard : .disabled
   }
 
   /// Whether or not a given shield should be enabled based on domain exceptions and the users global preference
+  @available(*, deprecated, message: "Use BraveShieldsTabHelper and/or content settings instead.")
   @MainActor func isShieldExpected(
     _ shield: BraveShield,
     considerAllShieldsOption: Bool
