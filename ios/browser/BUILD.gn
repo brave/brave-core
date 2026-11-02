@@ -23,7 +23,6 @@ group("browser") {
     "api/favicon",
     "api/features",
     "api/history",
-    "api/history/importer",
     "api/https_upgrades",
     "api/ipfs",
     "api/net",
