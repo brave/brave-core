@@ -431,6 +431,7 @@ class SettingsViewController: TableViewController, BraveAccountDialogOpenerBridg
 
   private func makeFeaturesSection() -> Static.Section {
     weak var spinner: SpinnerView?
+    let profile = braveCore.profile
 
     var section = Static.Section(
       header: .title(Strings.features),
@@ -444,18 +445,14 @@ class SettingsViewController: TableViewController, BraveAccountDialogOpenerBridg
                   profile: self.profile,
                   tabManager: self.tabManager,
                   feedDataSource: self.feedDataSource,
-                  debounceService: DebounceServiceFactory.get(privateMode: false),
-                  braveShieldsSettings: BraveShieldsSettingsServiceFactory.get(
-                    profile: braveCore.profile
-                  ),
+                  debounceService: DebounceServiceFactory.get(profile: profile),
+                  braveShieldsSettings: BraveShieldsSettingsServiceFactory.get(profile: profile),
                   braveCore: braveCore,
                   p3aUtils: p3aUtilities,
                   localState: localState,
                   rewards: rewards,
                   braveStats: braveCore.braveStats,
-                  webcompatReporterHandler: WebcompatReporter.ServiceFactory.get(
-                    privateMode: false
-                  ),
+                  webcompatReporterHandler: WebcompatReporter.ServiceFactory.get(profile: profile),
                   clearDataCallback: { [weak self] isLoading, isHistoryCleared in
                     guard let view = self?.navigationController?.view, view.window != nil else {
                       assertionFailure()

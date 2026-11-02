@@ -115,17 +115,18 @@ extension BrowserViewController: TabDelegate {
         copyAction.accessibilityLabel = "linkContextMenu.copyLink"
         actions.append(copyAction)
 
-        let copyCleanLinkAction = UIAction(
-          title: Strings.copyCleanLink,
-          image: UIImage(braveSystemNamed: "leo.copy.clean"),
-          handler: UIAction.deferredActionHandler { _ in
-            let service = URLSanitizerServiceFactory.get(privateMode: currentTab.isPrivate)
-            let cleanedURL = service?.sanitize(url: url) ?? url
-            UIPasteboard.general.url = cleanedURL
-          }
-        )
-        copyCleanLinkAction.accessibilityLabel = "linkContextMenu.copyCleanLink"
-        actions.append(copyCleanLinkAction)
+        if let service = URLSanitizerServiceFactory.get(profile: currentTab.profile) {
+          let copyCleanLinkAction = UIAction(
+            title: Strings.copyCleanLink,
+            image: UIImage(braveSystemNamed: "leo.copy.clean"),
+            handler: UIAction.deferredActionHandler { _ in
+              let cleanedURL = service.sanitize(url: url) ?? url
+              UIPasteboard.general.url = cleanedURL
+            }
+          )
+          copyCleanLinkAction.accessibilityLabel = "linkContextMenu.copyCleanLink"
+          actions.append(copyCleanLinkAction)
+        }
 
         let shareAction = UIAction(
           title: Strings.shareLinkActionTitle,

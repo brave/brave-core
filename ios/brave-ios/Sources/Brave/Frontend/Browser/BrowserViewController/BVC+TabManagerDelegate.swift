@@ -388,9 +388,7 @@ extension BrowserViewController: TabManagerDelegate {
 
     SnackBarTabHelper.from(tab: tab)?.delegate = self
 
-    tab.wallet?.walletKeyringService = BraveWallet.KeyringServiceFactory.get(
-      privateMode: tab.isPrivate
-    )
+    tab.wallet?.walletKeyringService = BraveWallet.KeyringServiceFactory.get(profile: tab.profile)
     updateTabsBarVisibility()
   }
 

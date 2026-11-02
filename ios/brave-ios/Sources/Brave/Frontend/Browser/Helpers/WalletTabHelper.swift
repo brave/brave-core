@@ -335,9 +335,7 @@ extension WalletTabHelper: BraveWalletProviderDelegate {
   }
 
   func showAccountCreation(_ coin: BraveWallet.CoinType, origin: URLOrigin) {
-    guard let tab else { return }
-    let privateMode = tab.isPrivate
-    guard let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: privateMode)
+    guard let tab, let keyringService = BraveWallet.KeyringServiceFactory.get(profile: tab.profile)
     else {
       return
     }
@@ -451,7 +449,7 @@ extension WalletTabHelper: BraveWalletEventsListener {
   func updateEthereumProperties() async {
     guard let tab, !tab.isPrivate,
       !FeatureList.kUseProfileWebViewConfiguration.enabled,
-      let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: false),
+      let keyringService = BraveWallet.KeyringServiceFactory.get(profile: tab.profile),
       tab.profile.prefs.integer(forPath: kDefaultEthereumWallet)
         != BraveWallet.DefaultWallet.none.rawValue
     else {

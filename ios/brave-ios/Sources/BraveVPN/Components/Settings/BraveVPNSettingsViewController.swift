@@ -92,7 +92,7 @@ class VPNSettingsViewModel {
 
   init(
     store: BraveStoreSDK,
-    skusService: (any SkusSkusService)? = Skus.SkusServiceFactory.get(privateMode: false),
+    skusService: (any SkusSkusService)?,
     calendar: Calendar = .autoupdatingCurrent
   ) {
     self.store = store

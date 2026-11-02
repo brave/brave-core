@@ -589,22 +589,21 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
 
   private func showGlobalShieldsSettings() {
     weak var spinner: SpinnerView?
+    let profile = profileController.profile
     let controller = UIHostingController(
       rootView: AdvancedShieldsSettingsView(
         settings: AdvancedShieldsSettings(
           profile: self.profile,
           tabManager: self.tabManager,
           feedDataSource: self.feedDataSource,
-          debounceService: DebounceServiceFactory.get(privateMode: false),
-          braveShieldsSettings: BraveShieldsSettingsServiceFactory.get(
-            profile: profileController.profile
-          ),
+          debounceService: DebounceServiceFactory.get(profile: profile),
+          braveShieldsSettings: BraveShieldsSettingsServiceFactory.get(profile: profile),
           braveCore: profileController,
           p3aUtils: braveCore.p3aUtils,
           localState: braveCore.localState,
           rewards: rewards,
           braveStats: profileController.braveStats,
-          webcompatReporterHandler: WebcompatReporter.ServiceFactory.get(privateMode: false),
+          webcompatReporterHandler: WebcompatReporter.ServiceFactory.get(profile: profile),
           clearDataCallback: { [weak self] isLoading, isHistoryCleared in
             guard let self else { return }
             guard let view = self.navigationController?.view, view.window != nil else {
@@ -1293,24 +1292,28 @@ extension BrowserViewController: UIContextMenuInteractionDelegate {
     let tab = tabManager.selectedTab
     guard let url = tab?.visibleURL?.displayURL else { return nil }
 
-    let children: [UIAction] = [
+    var children: [UIAction] = [
       UIAction(
         title: Strings.copyLinkActionTitle,
         image: UIImage(braveSystemNamed: "leo.copy"),
         handler: UIAction.deferredActionHandler { _ in
           UIPasteboard.general.url = url as URL
         }
-      ),
-      UIAction(
-        title: Strings.copyCleanLink,
-        image: UIImage(braveSystemNamed: "leo.copy.clean"),
-        handler: UIAction.deferredActionHandler { _ in
-          let service = URLSanitizerServiceFactory.get(privateMode: tab?.isPrivate ?? true)
-          let cleanedURL = service?.sanitize(url: url) ?? url
-          UIPasteboard.general.url = cleanedURL
-        }
-      ),
+      )
     ]
+
+    if let tab, let service = URLSanitizerServiceFactory.get(profile: tab.profile) {
+      children.append(
+        UIAction(
+          title: Strings.copyCleanLink,
+          image: UIImage(braveSystemNamed: "leo.copy.clean"),
+          handler: UIAction.deferredActionHandler { _ in
+            let cleanedURL = service.sanitize(url: url) ?? url
+            UIPasteboard.general.url = cleanedURL
+          }
+        )
+      )
+    }
 
     return UIMenu(options: .displayInline, children: children)
   }

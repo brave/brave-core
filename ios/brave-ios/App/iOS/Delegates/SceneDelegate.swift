@@ -533,9 +533,9 @@ extension SceneDelegate {
 
   private func refreshSKUsCredentials(in scene: UIWindowScene) {
     Task { @MainActor in
-      let isPrivateBrowsing =
-        scene.browserViewController?.privateBrowsingManager.isPrivateBrowsing == true
-      await Skus.SkusServiceFactory.get(privateMode: isPrivateBrowsing)?.refreshSkusCredentials()
+      if let profile = Self.profileState?.profile {
+        await Skus.SkusServiceFactory.get(profile: profile)?.refreshSkusCredentials()
+      }
     }
   }
 
