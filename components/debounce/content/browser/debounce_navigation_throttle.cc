@@ -25,6 +25,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
+#include "content/public/common/url_constants.h"
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -131,6 +132,14 @@ DebounceNavigationThrottle::MaybeRedirect() {
 
   GURL debounced_url;
   GURL original_url = navigation_handle()->GetURL();
+
+  // Do not debounce view-source: navigations. The user explicitly typed
+  // "view-source:" to inspect the page source; silently stripping it and
+  // rendering the destination would be unexpected and incorrect behavior.
+  // See https://github.com/brave/brave-browser/issues/60349
+  if (original_url.SchemeIs(content::kViewSourceScheme)) {
+    return NavigationThrottle::PROCEED;
+  }
 
   if (!debounce_service_->Debounce(original_url, &debounced_url)) {
     return NavigationThrottle::PROCEED;
