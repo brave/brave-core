@@ -3,7 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { stringifyContent, ContentNode, makeEdit } from './editable_content'
+import {
+  stringifyContent,
+  ContentNode,
+  createContentFromDOMNodes,
+  makeEdit,
+} from './editable_content'
 
 function createSkillNode(id: string, text: string): ContentNode {
   return {
@@ -55,6 +60,74 @@ describe('editable_content utilities', () => {
       ).toBe('Hello Alice!')
       expect(stringifyContent([])).toBe('')
       expect(stringifyContent(['', 'Hi', '', 'there', ''])).toBe('Hithere')
+    })
+  })
+
+  describe('createContentFromDOMNodes', () => {
+    const parseHTML = (html: string) => {
+      const editable = document.createElement('div')
+      editable.innerHTML = html
+      return createContentFromDOMNodes(editable)
+    }
+    const parseText = (html: string) => stringifyContent(parseHTML(html))
+
+    it('parses plain text', () => {
+      expect(parseHTML('Hello world')).toEqual(['Hello world'])
+    })
+
+    it('parses content nodes', () => {
+      expect(
+        parseHTML(
+          'Hi <span data-type="skill" data-id="1" data-text="/s">/s</span>!',
+        ),
+      ).toEqual(['Hi ', { type: 'skill', id: '1', text: '/s' }, '!'])
+    })
+
+    it('converts <br> to newlines', () => {
+      expect(parseText('a<br>b')).toBe('a\nb')
+      expect(parseText('a<br><br>b')).toBe('a\n\nb')
+    })
+
+    it('keeps an empty last line', () => {
+      expect(parseText('a<br><br>')).toBe('a\n')
+    })
+
+    it('reads text inside block elements', () => {
+      // WebKit wraps each line in a block when pasting multi-line text.
+      expect(parseText('<div>a</div><div>b</div>')).toBe('a\nb')
+      expect(parseText('a<div>b</div>')).toBe('a\nb')
+      expect(parseText('<div>a</div>b')).toBe('a\nb')
+      expect(parseText('<p>a</p><p>b</p>')).toBe('a\nb')
+    })
+
+    it('treats placeholder <br> in blocks as empty lines', () => {
+      expect(parseText('<div>a</div><div><br></div><div>b</div>')).toBe(
+        'a\n\nb',
+      )
+      expect(parseText('<div>a<br></div><div>b</div>')).toBe('a\nb')
+    })
+
+    it('collapses nested blocks', () => {
+      expect(parseText('<div><div>a</div></div><div>b</div>')).toBe('a\nb')
+    })
+
+    it('ignores empty text nodes after the last block', () => {
+      const editable = document.createElement('div')
+      editable.innerHTML = '<div>a</div><div>b</div>'
+      editable.appendChild(document.createTextNode(''))
+      expect(stringifyContent(createContentFromDOMNodes(editable))).toBe('a\nb')
+    })
+
+    it('reads content nodes inside blocks', () => {
+      expect(
+        parseHTML(
+          '<div>a</div><div><span data-type="skill" data-id="1" data-text="/s">/s</span> b</div>',
+        ),
+      ).toEqual(['a', '\n', { type: 'skill', id: '1', text: '/s' }, ' b'])
+    })
+
+    it('reads text inside unknown inline elements', () => {
+      expect(parseText('a<span>b</span>c')).toBe('abc')
     })
   })
 

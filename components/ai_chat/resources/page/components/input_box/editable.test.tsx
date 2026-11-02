@@ -332,4 +332,61 @@ describe('Editable component', () => {
 
     expect(onContentChange).toHaveBeenCalledWith(['Hi ', ' there'])
   })
+
+  it('reports content pasted as block elements', async () => {
+    const onContentChange = jest.fn()
+    const { container } = render(
+      <Editable
+        content={[]}
+        onContentChange={onContentChange}
+      />,
+    )
+    const editable = container.querySelector('[data-editor]')!
+    onContentChange.mockClear()
+
+    // WebKit wraps pasted lines in blocks, even in plaintext-only mode.
+    await act(() => {
+      editable.innerHTML = '<div>a</div><div>b</div>'
+    })
+
+    expect(onContentChange).toHaveBeenLastCalledWith(['a', '\n', 'b'])
+  })
+
+  it('trims a single trailing <br>', async () => {
+    const onContentChange = jest.fn()
+    const { container } = render(
+      <Editable
+        content={[]}
+        onContentChange={onContentChange}
+      />,
+    )
+    const editable = container.querySelector('[data-editor]')!
+    onContentChange.mockClear()
+
+    await act(() => {
+      editable.innerHTML = 'a<br>'
+    })
+
+    expect(editable.innerHTML).toBe('a')
+    expect(onContentChange).toHaveBeenLastCalledWith(['a'])
+  })
+
+  it('keeps the <br> pair for an empty last line', async () => {
+    const onContentChange = jest.fn()
+    const { container } = render(
+      <Editable
+        content={[]}
+        onContentChange={onContentChange}
+      />,
+    )
+    const editable = container.querySelector('[data-editor]')!
+    onContentChange.mockClear()
+
+    await act(() => {
+      editable.innerHTML = 'a<br><br>'
+    })
+
+    expect(editable.innerHTML).toBe('a<br><br>')
+    expect(onContentChange).toHaveBeenLastCalledWith(['a', '\n'])
+  })
 })

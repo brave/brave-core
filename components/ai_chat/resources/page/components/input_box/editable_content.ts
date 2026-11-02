@@ -56,22 +56,99 @@ export const assignContent = (el: HTMLElement, content: Content) => {
 }
 
 /**
+ * Elements which WebKit/Blink may wrap lines in when editing or pasting
+ * multi-line text into the editable (e.g. `<div>a</div><div>b</div>`).
+ */
+const BLOCK_TAGS = new Set(['DIV', 'P', 'LI'])
+
+const isBlockElement = (node: Node | null): node is HTMLElement =>
+  node?.nodeType === Node.ELEMENT_NODE
+  && BLOCK_TAGS.has((node as HTMLElement).tagName)
+
+/**
+ * A <br> which is the last child of a block (or the editable itself) only
+ * exists to give an empty line height, and doesn't represent a newline itself.
+ */
+const isPlaceholderBreak = (br: Node, editable: HTMLElement) => {
+  const parent = br.parentNode
+  if (parent !== editable && !isBlockElement(parent)) return false
+
+  let next = br.nextSibling
+  while (next?.nodeType === Node.TEXT_NODE && !next.textContent) {
+    next = next.nextSibling
+  }
+  return !next
+}
+
+/**
  * Parses the content from the editable element in a Content array.
- * Note: Content is reconscructed from the dataset of childNodes, so if there is
- * non serializable content, it will be lost.
+ * Note: Content is reconscructed from the dataset of content nodes, so if there
+ * is non serializable content, it will be lost. Line breaks (<br>) and block
+ * elements are converted to newlines.
  * @param editable The editable element
  * @returns The parsed content
  */
 export const createContentFromDOMNodes = (editable: HTMLElement): Content => {
   const content: Content = []
-  for (const child of editable.childNodes) {
-    if (child.nodeType === Node.TEXT_NODE) {
-      content.push(child.textContent ?? '')
-    } else if (child.nodeType === Node.ELEMENT_NODE) {
-      content.push({
-        ...(child as HTMLElement).dataset,
-      } as any)
+  // Whether the last thing emitted was the newline closing a block element.
+  let lastWasBlockEnd = false
+
+  const endsWithNewline = () => {
+    const last = content.findLast((c) => typeof c !== 'string' || c !== '')
+    return typeof last === 'string' && last.endsWith('\n')
+  }
+
+  const walk = (parent: Node) => {
+    for (const child of parent.childNodes) {
+      if (child.nodeType === Node.TEXT_NODE) {
+        const text = child.textContent ?? ''
+        content.push(text)
+        if (text) lastWasBlockEnd = false
+        continue
+      }
+
+      if (child.nodeType !== Node.ELEMENT_NODE) continue
+      const el = child as HTMLElement
+
+      if (el.dataset.type) {
+        content.push({ ...el.dataset } as any)
+        lastWasBlockEnd = false
+        continue
+      }
+
+      if (el.tagName === 'BR') {
+        if (!isPlaceholderBreak(el, editable)) {
+          content.push('\n')
+          lastWasBlockEnd = false
+        }
+        continue
+      }
+
+      if (!isBlockElement(el)) {
+        walk(el)
+        continue
+      }
+
+      // Blocks always start on a new line.
+      if (content.length && !endsWithNewline()) {
+        content.push('\n')
+      }
+      lastWasBlockEnd = false
+      walk(el)
+      // Nested blocks share a single closing newline.
+      if (!lastWasBlockEnd) {
+        content.push('\n')
+        lastWasBlockEnd = true
+      }
     }
+  }
+
+  walk(editable)
+
+  // The final block's closing newline doesn't start a new line.
+  if (lastWasBlockEnd) {
+    const index = content.findLastIndex((c) => c === '\n')
+    content.splice(index, 1)
   }
 
   return content.filter((c) => typeof c === 'string' || 'type' in c)
