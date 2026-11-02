@@ -26,19 +26,19 @@ struct SelectedBackground {
   string value;
 };
 
-struct SponsoredImageLogo {
+struct NewTabTakeoverLogo {
   string alt;
   string destination_url;
   string image_url;
 };
 
-struct SponsoredImageBackground {
+struct NewTabTakeoverBackground {
   string wallpaper_type;
   string wallpaper_id;
   string creative_instance_id;
   string campaign_id;
   string image_url;
-  SponsoredImageLogo? logo;
+  NewTabTakeoverLogo? logo;
   brave_ads.mojom.NewTabPageAdMetricType metric_type;
   bool should_auto_display_new_tab_takeover_disclosure;
 };
@@ -112,9 +112,9 @@ interface NewTabPageHandler {
   GetBackgroundsEnabled() => (bool enabled);
   SetBackgroundsEnabled(bool enabled) => ();
 
-  // Gets or sets whether the user has enabled sponsored background images.
-  GetSponsoredImagesEnabled() => (bool enabled);
-  SetSponsoredImagesEnabled(bool enabled) => ();
+  // Gets or sets whether the user has enabled New Tab Takeovers.
+  GetNewTabTakeoversEnabled() => (bool enabled);
+  SetNewTabTakeoversEnabled(bool enabled) => ();
 
   // Returns the current collection of Brave background images.
   GetBraveBackgrounds() => (array<BraveBackground> backgrounds);
@@ -125,9 +125,9 @@ interface NewTabPageHandler {
   // Returns the user-selected or default background.
   GetSelectedBackground() => (SelectedBackground? background);
 
-  // Returns sponsored image background info, if a sponsored image should be
+  // Returns New Tab Takeover background info, if a New Tab Takeover should be
   // displayed to the user.
-  GetSponsoredImageBackground() => (SponsoredImageBackground? background);
+  GetNewTabTakeoverBackground() => (NewTabTakeoverBackground? background);
 
   // Saves the provided background as the user's selected background.
   SelectBackground(SelectedBackground background) => ();
@@ -142,8 +142,8 @@ interface NewTabPageHandler {
   // backgrounds.
   RemoveCustomBackground(string background_url) => ();
 
-  // Notifies the browser that the user has clicked the sponsored image logo.
-  NotifySponsoredImageLogoClicked(string wallpaper_id,
+  // Notifies the browser that the user has clicked the New Tab Takeover logo.
+  NotifyNewTabTakeoverLogoClicked(string wallpaper_id,
                                   string creative_instance_id,
                                   string destination_url,
                                   brave_ads.mojom.NewTabPageAdMetricType metric_type) => ();

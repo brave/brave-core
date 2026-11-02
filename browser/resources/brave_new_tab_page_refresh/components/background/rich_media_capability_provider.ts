@@ -40,7 +40,7 @@ export function useRichMediaMessageHandler(
     (data: unknown) => {
       handleIncomingMessage(data, {
         notifyAdEvent(eventType) {
-          actions.notifySponsoredRichMediaEvent(eventType)
+          actions.notifyNewTabTakeoverRichMediaEvent(eventType)
         },
         openDestinationUrl() {
           if (destinationUrl) {

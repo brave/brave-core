@@ -73,28 +73,28 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
   void GetBackgroundsEnabled(GetBackgroundsEnabledCallback callback) override;
   void SetBackgroundsEnabled(bool enabled,
                              SetBackgroundsEnabledCallback callback) override;
-  void GetSponsoredImagesEnabled(
-      GetSponsoredImagesEnabledCallback callback) override;
-  void SetSponsoredImagesEnabled(
+  void GetNewTabTakeoversEnabled(
+      GetNewTabTakeoversEnabledCallback callback) override;
+  void SetNewTabTakeoversEnabled(
       bool enabled,
-      SetSponsoredImagesEnabledCallback callback) override;
+      SetNewTabTakeoversEnabledCallback callback) override;
   void GetBraveBackgrounds(GetBraveBackgroundsCallback callback) override;
   void GetCustomBackgrounds(GetCustomBackgroundsCallback callback) override;
   void GetSelectedBackground(GetSelectedBackgroundCallback callback) override;
-  void GetSponsoredImageBackground(
-      GetSponsoredImageBackgroundCallback callback) override;
+  void GetNewTabTakeoverBackground(
+      GetNewTabTakeoverBackgroundCallback callback) override;
   void SelectBackground(mojom::SelectedBackgroundPtr background,
                         SelectBackgroundCallback callback) override;
   void ShowCustomBackgroundChooser(
       ShowCustomBackgroundChooserCallback callback) override;
   void RemoveCustomBackground(const std::string& background_url,
                               RemoveCustomBackgroundCallback callback) override;
-  void NotifySponsoredImageLogoClicked(
+  void NotifyNewTabTakeoverLogoClicked(
       const std::string& wallpaper_id,
       const std::string& creative_instance_id,
       const std::string& destination_url,
       brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type,
-      NotifySponsoredImageLogoClickedCallback callback) override;
+      NotifyNewTabTakeoverLogoClickedCallback callback) override;
   void NotifyNewTabTakeoverDisclosureLearnMoreClicked(
       NotifyNewTabTakeoverDisclosureLearnMoreClickedCallback callback) override;
   void NotifyNewTabTakeoverDisclosureTooltipAutoDisplayed(
@@ -203,9 +203,9 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
   void ReportVPNWidgetUsage(ReportVPNWidgetUsageCallback callback) override;
 
  private:
-  void OnGetSponsoredImageBackground(
-      GetSponsoredImageBackgroundCallback callback,
-      mojom::SponsoredImageBackgroundPtr sponsored_background);
+  void OnGetNewTabTakeoverBackground(
+      GetNewTabTakeoverBackgroundCallback callback,
+      mojom::NewTabTakeoverBackgroundPtr new_tab_takeover_background);
 
   void OnCustomBackgroundsSelected(ShowCustomBackgroundChooserCallback callback,
                                    std::vector<base::FilePath> paths);

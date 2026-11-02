@@ -18,12 +18,12 @@ import { BackgroundPanel } from './background_panel'
 
 // The default $web-common/locale mock (see components/test/testSetup.ts)
 // echoes the string key back verbatim, which has no $1/$2 placeholders for
-// formatString to replace. Override just the sponsored images earning text
+// formatString to replace. Override just the New Tab Takeovers earning text
 // so it renders with its links as it would in production.
 jest.mock('$web-common/locale', () => ({
   getLocale: (key: string) => {
     if (key === 'NEW_TAB_SHOW_SPONSORED_IMAGES_EARNING_TEXT') {
-      return 'Earn by viewing sponsored images. $1Settings/$1 $2Learn more/$2.'
+      return 'Earn by viewing New Tab Takeovers. $1Settings/$1 $2Learn more/$2.'
     }
     return key
   },
@@ -37,7 +37,7 @@ function createBackgroundStore(
     initialized: true,
     backgroundsEnabled: true,
     backgroundsCustomizable: true,
-    sponsoredImagesEnabled: true,
+    newTabTakeoversEnabled: true,
     braveBackgrounds: [],
     customBackgrounds: [],
     selectedBackground: {
@@ -46,19 +46,19 @@ function createBackgroundStore(
     },
     backgroundRotateIndex: 0,
     backgroundRandomValue: 0,
-    sponsoredImageBackground: null,
+    newTabTakeoverBackground: null,
     sponsoredRichMediaBaseUrl: '',
     actions: {
       setBackgroundsEnabled() {},
-      setSponsoredImagesEnabled() {},
+      setNewTabTakeoversEnabled() {},
       selectBackground() {},
       async showCustomBackgroundChooser() {
         return false
       },
       async removeCustomBackground() {},
-      notifySponsoredImageLoadError() {},
-      notifySponsoredImageLogoClicked() {},
-      notifySponsoredRichMediaEvent() {},
+      notifyNewTabTakeoverLoadError() {},
+      notifyNewTabTakeoverLogoClicked() {},
+      notifyNewTabTakeoverRichMediaEvent() {},
       ...actions,
     },
     ...state,
@@ -103,10 +103,10 @@ function renderPanel(
 }
 
 describe('BackgroundPanel', () => {
-  it('should render the sponsored images description with a learn more link', () => {
+  it('should render the New Tab Takeovers description with a learn more link', () => {
     renderPanel({}, { rewardsFeatureEnabled: true, rewardsEnabled: false })
     expect(
-      screen.getByText('Earn by viewing sponsored images.', {
+      screen.getByText('Earn by viewing New Tab Takeovers.', {
         exact: false,
       }),
     ).toBeInTheDocument()
@@ -116,15 +116,15 @@ describe('BackgroundPanel', () => {
     )
   })
 
-  it('should update the sponsored images setting when its toggle changes', () => {
-    const setSponsoredImagesEnabled = jest.fn()
+  it('should update the New Tab Takeovers setting when its toggle changes', () => {
+    const setNewTabTakeoversEnabled = jest.fn()
     renderPanel(
-      { sponsoredImagesEnabled: false },
+      { newTabTakeoversEnabled: false },
       { rewardsFeatureEnabled: true, rewardsEnabled: false },
-      { setSponsoredImagesEnabled },
+      { setNewTabTakeoversEnabled },
     )
     screen.getByText('NEW_TAB_SHOW_SPONSORED_IMAGES_LABEL').click()
-    expect(setSponsoredImagesEnabled).toHaveBeenCalledWith(true)
+    expect(setNewTabTakeoversEnabled).toHaveBeenCalledWith(true)
   })
 
   it('should stop the learn more link click from reaching the toggle', () => {

@@ -11,7 +11,7 @@ import { Link } from '../common/link'
 import { getString } from '../../lib/strings'
 import {
   BraveBackground,
-  SponsoredImageBackground,
+  NewTabTakeoverBackground,
 } from '../../state/background_store'
 import {
   useCurrentBackground,
@@ -29,7 +29,7 @@ export function BackgroundCaption() {
       case 'brave':
         return <BraveBackgroundCredits background={currentBackground} />
       case 'sponsored-image':
-        return <SponsoredBackgroundLogo background={currentBackground} />
+        return <NewTabTakeoverBackgroundLogo background={currentBackground} />
       default:
         return null
     }
@@ -59,11 +59,13 @@ function BraveBackgroundCredits(props: BraveBackgroundCreditsProps) {
   )
 }
 
-interface SponsoredBackgroundLogoProps {
-  background: SponsoredImageBackground
+interface NewTabTakeoverBackgroundLogoProps {
+  background: NewTabTakeoverBackground
 }
 
-function SponsoredBackgroundLogo(props: SponsoredBackgroundLogoProps) {
+function NewTabTakeoverBackgroundLogo(
+  props: NewTabTakeoverBackgroundLogoProps,
+) {
   const actions = useBackgroundActions()
   const centerNttCtaButtonFeatureEnabled = useNewTabState(
     (s) => s.centerNttCtaButtonFeatureEnabled,
@@ -80,7 +82,7 @@ function SponsoredBackgroundLogo(props: SponsoredBackgroundLogoProps) {
           ? 'sponsored-logo centered-ntt-cta-button'
           : 'sponsored-logo'
       }
-      onClick={() => actions.notifySponsoredImageLogoClicked()}
+      onClick={() => actions.notifyNewTabTakeoverLogoClicked()}
       onContextMenu={(e) => e.preventDefault()}
     >
       <Icon name='launch' />
