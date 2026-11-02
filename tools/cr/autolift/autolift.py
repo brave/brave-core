@@ -1233,8 +1233,6 @@ class Publish:
         head = brave.run_git('rev-parse', 'HEAD')
         rebuild.touch()
         if not new and remote != expected:
-            # Recorded first: once the picks are done, `remote` is the lease.
-            self._state('synced').write_text(f'{remote}\n', encoding='utf-8')
             if returncode := self._pick_landed(expected, remote):
                 return returncode
             expected = remote
@@ -1257,6 +1255,8 @@ class Publish:
             return 0
         if not self._push(expected):
             return self.AGAIN
+        # A later publish in the same run builds on this push.
+        self._state('synced').write_text(f'{head}\n', encoding='utf-8')
         self._note(f'Pushed {self.branch} over {expected[:12]}.')
         self._note_for_review(expected)
         return 0
@@ -1346,6 +1346,9 @@ class Publish:
                 f'longer contains {expected[:12]}. Not pushing.'
             )
             return 1
+        # Recorded before picking: once the picks are done, `remote` is the
+        # lease. Not before the check, or a rerun would push over a rewrite.
+        self._state('synced').write_text(f'{remote}\n', encoding='utf-8')
         landed = brave.run_git(
             'log', '--reverse', '--format=%h %s', f'{expected}..{remote}'
         )
@@ -1467,6 +1470,9 @@ class Publish:
             return 1
         if not self._push(''):
             return self.AGAIN
+        self._state('synced').write_text(
+            f'{self._brave.run_git("rev-parse", "HEAD")}\n', encoding='utf-8'
+        )
         self._note(f'Pushed the new {self.branch}.')
         self._note_for_review('')
         return self._brockit('update-version-issue')

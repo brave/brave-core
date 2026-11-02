@@ -2032,6 +2032,32 @@ class PublishTest(unittest.TestCase):
         self.assertEqual(result, 1)
         self.assertFalse(any(c[0] == 'cherry-pick' for c in self.calls))
         self.assertEqual(self._pushes(), [])
+        # Nor on a rerun, which mustn't take the rewrite as the lease.
+        result, _ = self._publish(remote=_LANDED, rewritten=True, built=True)
+        self.assertEqual(result, 1)
+        self.assertEqual(self._pushes(), [])
+
+    def test_a_second_publish_pushes_over_the_first(self):
+        result, _ = self._publish(remote=_START)
+        self.assertEqual(result, 0)
+        self.calls.clear()
+        result, _ = self._publish(remote=_HEAD, head='newer')
+        self.assertEqual(result, 0)
+        self.assertFalse(any(c[0] == 'cherry-pick' for c in self.calls))
+        self.assertEqual(
+            self._pushes()[0][1], f'--force-with-lease=refs/heads/cr158:{_HEAD}'
+        )
+
+    def test_a_second_publish_of_a_new_branch_pushes_over_the_first(self):
+        result, _ = self._publish(remote=None, start=None)
+        self.assertEqual(result, 0)
+        self.calls.clear()
+        result, _ = self._publish(remote=_HEAD, head='newer', start=_BASE)
+        self.assertEqual(result, 0)
+        self.assertFalse(any(c[0] == 'cherry-pick' for c in self.calls))
+        self.assertEqual(
+            self._pushes()[0][1], f'--force-with-lease=refs/heads/cr158:{_HEAD}'
+        )
 
     def test_refuses_during_a_cherry_pick(self):
         result, _ = self._publish(remote=_LANDED, cherry_pick_stopped=True)
