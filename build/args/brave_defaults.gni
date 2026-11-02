@@ -18,3 +18,10 @@ enable_pseudolocales = false
 
 # Our copy of signature_generator.py doesn't support --ignore_missing_cert:
 ignore_missing_widevine_signing_cert = false
+
+# The cache only helps a later link of the same binary in the same out/
+# directory. Brave Release builders discard the workspace, and one link
+# already exceeds the 40 GiB cap, so the cache is written and pruned without
+# being reused. It can also make official builds non-deterministic
+# (crbug.com/1486045).
+thin_lto_enable_cache = false
