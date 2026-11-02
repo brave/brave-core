@@ -4057,6 +4057,35 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
   EXPECT_FALSE(TabDragController::IsActive());
 }
 
+// Detaching pinned tabs should not cause crash.
+// https://github.com/brave/brave-browser/issues/60340
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       DetachPinnedTab_PreservesPinnedState) {
+  SetTreeTabsEnabled(true);
+  AddTab();
+  tab_strip_model().SetTabPinned(0, true);
+  auto* pinned_tab = tab_strip_model().GetTabAtIndex(0);
+  auto* remaining_tab = tab_strip_model().GetTabAtIndex(1);
+  const auto remaining_node_id = GetTreeTabNodeIdForTab(remaining_tab);
+  tab_strip_model().ActivateTabAt(1);
+
+  auto detached = tab_strip_model().DetachTabsAndCollectionsForInsertion({0});
+  ASSERT_EQ(1u, detached.size());
+  auto* tab = std::get_if<std::unique_ptr<DetachedTab>>(&detached[0]);
+  ASSERT_TRUE(tab);
+  ASSERT_TRUE(*tab);
+  ASSERT_EQ(1, tab_strip_model().count());
+  EXPECT_EQ(remaining_tab, tab_strip_model().GetTabAtIndex(0));
+  EXPECT_EQ(remaining_node_id, GetTreeTabNodeIdForTab(remaining_tab));
+
+  tab_strip_model().InsertDetachedTabAt(0, std::move((*tab)->tab), ADD_PINNED);
+
+  EXPECT_EQ(2, tab_strip_model().count());
+  EXPECT_EQ(pinned_tab, tab_strip_model().GetTabAtIndex(0));
+  EXPECT_TRUE(tab_strip_model().IsTabPinned(0));
+  EXPECT_EQ(&pinned_collection(), pinned_tab->GetParentCollection());
+}
+
 // When detaching a parent tab together with its child into a new window, the
 // child must stay nested under the parent in the destination window.
 IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,

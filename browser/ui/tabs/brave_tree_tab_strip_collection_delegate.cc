@@ -1678,6 +1678,10 @@ void BraveTreeTabStripCollectionDelegate::PrepareTreeTabNodesForBatchDetach(
   const base::flat_set<tabs::TabInterface*> moving_tabs_set(moving_tabs.begin(),
                                                             moving_tabs.end());
   for (auto* moving_tab : base::Reversed(moving_tabs)) {
+    // Pinned tabs have no tree node to prepare.
+    if (IsTabInPinnedCollection(moving_tab)) {
+      continue;
+    }
     auto* moving_tab_tree_node = GetParentTreeNodeCollectionOfTab(moving_tab);
     MoveNonSelectedChildrenOfTreeTabNodeToParent(moving_tab_tree_node,
                                                  moving_tabs_set);
