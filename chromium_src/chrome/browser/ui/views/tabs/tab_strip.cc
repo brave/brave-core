@@ -112,7 +112,7 @@ bool TabStrip::IsInCollapsedTreeTabNode(
 }
 
 brave_tabs::TabMinWidthMode TabStrip::GetTabMinWidthMode() const {
-  return brave_tabs::TabMinWidthMode::kDefault;
+  return {};
 }
 
 bool TabStrip::IsHorizontalScrollingEnabled() const {
