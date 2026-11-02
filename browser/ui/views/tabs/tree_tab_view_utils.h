@@ -31,6 +31,36 @@ namespace tree_tab_view_utils {
 std::vector<std::reference_wrapper<const tabs::Child>> GetUnwrappedChildren(
     const tabs::TabCollection& collection);
 
+#if 0
+// Returns the parent of |item| (a tab or a collection) with tree tab node
+// collections unwrapped, i.e. the nearest ancestor that isn't a tree tab node
+// collection. Returns nullptr if |item| isn't in a hierarchy.
+const tabs::TabCollection* GetUnwrappedParent(const tabs::ConstChildPtr& item);
+
+// Returns the item that comes right before |item| among the unwrapped children
+// of its unwrapped parent, or nullopt if |item| is the first one.
+std::optional<tabs::ConstChildPtr> GetUnwrappedPredecessor(
+    const tabs::ConstChildPtr& item);
+
+// Returns true if |item| is in the hierarchy under |root|.
+bool IsInTabStrip(const tabs::TabCollection* root,
+                  const tabs::ConstChildPtr& item);
+
+// Returns the tabs of the tree tab node that |change| is about.
+std::vector<const tabs::TabInterface*> GetTabsOfTreeTabChange(
+    TabStripModel* model,
+    const TreeTabChange& change);
+
+// Returns the indentation for |view| (a TabView, TabGroupView or SplitTabView)
+// based on its tree tab level. |available_width| is the width |view| would
+// have without indentation.
+int GetTreeTabIndent(const views::View* view, int available_width);
+
+// Returns true if |view| (a TabView, TabGroupView or SplitTabView) is hidden
+// because one of its tree tab ancestors is collapsed.
+bool IsInCollapsedTreeTabNode(const views::View* view);
+#endif
+
 }  // namespace tree_tab_view_utils
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_TREE_TAB_VIEW_UTILS_H_

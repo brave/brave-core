@@ -19,6 +19,18 @@ if (enable_brave_tree_tabs) {
 
     public_deps = [ "//components/tabs:public" ]
   }
+
+  deps = [
+    "//base",
+    "//brave/browser/ui/tabs:tab_strip",
+    "//brave/browser/ui/tabs:tree_tab",
+    "//brave/components/tabs",
+    "//chrome/browser/ui:layout_constants",
+    "//chrome/browser/ui/tabs:tab_strip",
+    "//chrome/browser/ui/views/tabs/common",
+    "//chrome/browser/ui/views/tabs/common:impl",
+    "//ui/views",
+  ]
 }
 
 source_set("browser_tests") {
