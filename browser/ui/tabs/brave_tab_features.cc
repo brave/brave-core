@@ -102,6 +102,8 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/ui/views/page_action/onion_location_page_action_controller.h"
+#include "brave/components/tor/onion_location_tab_helper.h"
+#include "brave/components/tor/tor_tab_helper.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
@@ -220,6 +222,9 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
+  tor_tab_helper_ = tor::TorTabHelper::MaybeCreate(tab);
+  onion_location_tab_helper_ =
+      std::make_unique<tor::OnionLocationTabHelper>(tab);
   if (page_action_controller()->ActionExists(kActionShowOnionLocation)) {
     onion_location_page_action_controller_ =
         std::make_unique<page_actions::OnionLocationPageActionController>(

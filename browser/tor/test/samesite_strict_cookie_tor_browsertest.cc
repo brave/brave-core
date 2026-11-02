@@ -14,6 +14,7 @@
 #include "chrome/browser/ui/views/page_action/test_support/page_action_test_accessor.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
@@ -211,8 +212,8 @@ IN_PROC_BROWSER_TEST_F(
   EXPECT_EQ(nav_observer.last_net_error_code(), net::ERR_BLOCKED_BY_CLIENT);
   EXPECT_TRUE(web_contents->GetPrimaryMainFrame()->IsErrorDocument());
 
-  tor::OnionLocationTabHelper* helper =
-      tor::OnionLocationTabHelper::FromWebContents(web_contents);
+  tor::OnionLocationTabHelper* helper = tor::OnionLocationTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   ASSERT_TRUE(helper);
   EXPECT_TRUE(helper->should_show_icon());
   EXPECT_EQ(helper->onion_location(), onion_echo_url);

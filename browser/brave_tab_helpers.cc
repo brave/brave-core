@@ -23,7 +23,6 @@
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
-#include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/content_settings/page_specific_content_settings_delegate.h"
@@ -60,11 +59,6 @@
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
 #endif
 
-#if BUILDFLAG(ENABLE_TOR)
-#include "brave/components/tor/onion_location_tab_helper.h"
-#include "brave/components/tor/tor_tab_helper.h"
-#endif
-
 namespace brave {
 
 void AttachTabHelpers(content::WebContents* web_contents) {
@@ -98,11 +92,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 
   brave_perf_predictor::PerfPredictorTabHelper::CreateForWebContents(
       web_contents);
-
-#if BUILDFLAG(ENABLE_TOR)
-  tor::TorTabHelper::MaybeCreateForWebContents(web_contents);
-  tor::OnionLocationTabHelper::CreateForWebContents(web_contents);
-#endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
   if (playlist::IsPlaylistAllowed(

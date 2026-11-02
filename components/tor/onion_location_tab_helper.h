@@ -8,18 +8,28 @@
 
 #include <optional>
 
+#include "base/callback_list.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
-#include "content/public/browser/web_contents_user_data.h"
+#include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
+namespace tabs {
+class TabInterface;
+}  // namespace tabs
+
 namespace tor {
 
-class OnionLocationTabHelper
-    : public content::WebContentsUserData<OnionLocationTabHelper>,
-      public content::WebContentsObserver {
+// Holds the Onion-Location of the page shown in a tab. Owned by the tab's
+// features, and follows the tab's contents across discards.
+class OnionLocationTabHelper : public content::WebContentsObserver {
  public:
+  DECLARE_USER_DATA(OnionLocationTabHelper);
+
+  static OnionLocationTabHelper* From(tabs::TabInterface* tab);
+
+  explicit OnionLocationTabHelper(tabs::TabInterface& tab);
   OnionLocationTabHelper(const OnionLocationTabHelper&) = delete;
   OnionLocationTabHelper& operator=(const OnionLocationTabHelper&) = delete;
   ~OnionLocationTabHelper() override;
@@ -37,10 +47,7 @@ class OnionLocationTabHelper
       std::optional<url::Origin> initiator_origin = std::nullopt);
 
  private:
-  friend class content::WebContentsUserData<OnionLocationTabHelper>;
   friend class OnionLocationNavigationThrottle;
-
-  explicit OnionLocationTabHelper(content::WebContents* web_contents);
 
   static void SetOnionLocationByThrottle(
       content::WebContents* web_contents,
@@ -51,12 +58,17 @@ class OnionLocationTabHelper
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
 
+  void OnDiscardContents(tabs::TabInterface* tab,
+                         content::WebContents* old_contents,
+                         content::WebContents* new_contents);
+
   GURL throttle_reported_onion_location_;
   std::optional<url::Origin> throttle_reported_initiator_origin_;
   GURL onion_location_;
   std::optional<url::Origin> initiator_origin_;
 
-  WEB_CONTENTS_USER_DATA_KEY_DECL();
+  base::CallbackListSubscription will_discard_contents_subscription_;
+  ui::ScopedUnownedUserData<OnionLocationTabHelper> scoped_unowned_user_data_;
 };
 
 }  // namespace tor

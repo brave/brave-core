@@ -6,26 +6,31 @@
 #include "brave/components/tor/tor_tab_helper.h"
 
 #include "base/check.h"
+#include "base/functional/bind.h"
 #include "base/task/sequenced_task_runner.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_handle.h"
+#include "content/public/browser/web_contents.h"
 
 namespace tor {
 
-TorTabHelper::TorTabHelper(content::WebContents* web_contents)
-    : content::WebContentsObserver(web_contents),
-      content::WebContentsUserData<TorTabHelper>(*web_contents) {}
+TorTabHelper::TorTabHelper(tabs::TabInterface& tab)
+    : content::WebContentsObserver(tab.GetContents()),
+      will_discard_contents_subscription_(tab.RegisterWillDiscardContents(
+          base::BindRepeating(&TorTabHelper::OnDiscardContents,
+                              base::Unretained(this)))) {}
 
 TorTabHelper::~TorTabHelper() = default;
 
 // static
-void TorTabHelper::MaybeCreateForWebContents(
-    content::WebContents* web_contents) {
-  if (!web_contents->GetBrowserContext()->IsTor()) {
-    return;
+std::unique_ptr<TorTabHelper> TorTabHelper::MaybeCreate(
+    tabs::TabInterface& tab) {
+  if (!tab.GetContents()->GetBrowserContext()->IsTor()) {
+    return nullptr;
   }
-  TorTabHelper::CreateForWebContents(web_contents);
+  return std::make_unique<TorTabHelper>(tab);
 }
 
 void TorTabHelper::DidFinishNavigation(
@@ -49,6 +54,12 @@ void TorTabHelper::ReloadTab(content::WebContents* web_contents) {
   web_contents->GetController().Reload(content::ReloadType::NORMAL, false);
 }
 
-WEB_CONTENTS_USER_DATA_KEY_IMPL(TorTabHelper);
+void TorTabHelper::OnDiscardContents(tabs::TabInterface* tab,
+                                     content::WebContents* old_contents,
+                                     content::WebContents* new_contents) {
+  // A pending reload is for the old contents.
+  weak_ptr_factory_.InvalidateWeakPtrs();
+  Observe(new_contents);
+}
 
 }  // namespace tor

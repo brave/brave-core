@@ -14,6 +14,7 @@ import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
 import("//third_party/widevine/cdm/widevine.gni")
@@ -129,6 +130,10 @@ if (!is_android) {
 
     if (enable_speedreader) {
       deps += [ "//brave/browser/ui/speedreader" ]
+    }
+
+    if (enable_tor) {
+      deps += [ "//brave/components/tor" ]
     }
 
     if (enable_brave_ads) {
