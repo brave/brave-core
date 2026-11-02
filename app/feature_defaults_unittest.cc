@@ -43,6 +43,7 @@
 #include "components/omnibox/browser/aim_eligibility_service_features.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/one_time_tokens/core/common/one_time_token_features.h"
+#include "components/optimization_guide/core/delivery/prediction_model_component_configs.h"
 #include "components/optimization_guide/core/optimization_guide_features.h"
 #include "components/page_info/core/features.h"
 #include "components/passage_embeddings/core/passage_embeddings_features.h"
@@ -279,6 +280,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &omnibox::kRichAutocompletion,
       &omnibox::kStarterPackExpansion,
       &one_time_tokens::features::kGmailOtpRetrievalService,
+      &optimization_guide::kPredictionModelComponentDelivery,
       &optimization_guide::features::kOptimizationGuideFetchingForSRP,
       &optimization_guide::features::kOptimizationGuideModelExecution,
       &optimization_guide::features::kOptimizationHints,
