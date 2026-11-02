@@ -184,6 +184,10 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
 
   bool CreateSchema();
 
+  // Deletes a conversation entry, everything that belongs to it, and
+  // transitively each of its edits. Must be called within a transaction.
+  bool DeleteEntryAndOwnedRows(std::string_view conversation_entry_uuid);
+
   // The directory storing the database.
   const base::FilePath db_file_path_;
 
