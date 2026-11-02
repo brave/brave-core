@@ -83,7 +83,6 @@ brave_settings_ts_files = [
   "ad_block_only_mode_page/ad_block_only_mode_mixin.ts",
   "br/all_sites.ts",
   "br/about_page.ts",
-  "br/autofill_section.ts",
   "br/basic_page.ts",
   "br/config.ts",
   "br/cookies_page.ts",
