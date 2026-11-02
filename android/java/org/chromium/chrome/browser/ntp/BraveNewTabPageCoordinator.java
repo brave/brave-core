@@ -6,8 +6,7 @@
 package org.chromium.chrome.browser.ntp;
 
 import android.app.Activity;
-
-import androidx.annotation.DrawableRes;
+import android.graphics.drawable.Drawable;
 
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.build.annotations.Initializer;
@@ -190,8 +189,8 @@ public class BraveNewTabPageCoordinator extends NewTabPageCoordinator {
         }
 
         @Override
-        public @DrawableRes int getAiModeTileIconDrawableId() {
-            return mDelegate.getAiModeTileIconDrawableId();
+        public @Nullable Drawable getAiModeTileIconDrawable() {
+            return mDelegate.getAiModeTileIconDrawable();
         }
 
         @Override
