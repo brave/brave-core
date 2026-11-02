@@ -1,0 +1,39 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Stale: browser_window.h isn't actually desktop-Android-only, see the
+      next substitution.
+    regex:
+      re_pattern:
+        '// "chrome/browser/ui/browser_window" is available on desktop Android,
+        but not\s*// other Android builds\.\s*'
+      replace: ''
+
+  - description: |-
+      browser_window_interface.h's owning target,
+      //chrome/browser/ui/browser_window, isn't is_desktop_android-gated and
+      is already an unconditional dep of :test_support, so the include
+      guard (and its nogncheck) were never actually needed. Make it
+      unconditional now that AssociateWithBrowserWindow's body needs it on
+      all Android.
+    regex:
+      re_pattern:
+        '#if BUILDFLAG\(IS_DESKTOP_ANDROID\)\s*(#include
+        "chrome/browser/ui/browser_window/public/browser_window_interface\.h")\s*//\s*nogncheck\s*#endif'
+      replace: '\1'
+
+  - description: |-
+      Widen TestTabModel::AssociateWithBrowserWindow to all Android, matching
+      the production TabModelJniBridge equivalent (unconditional) and the
+      companion .h declaration.
+    regex:
+      re_pattern:
+        '#if BUILDFLAG\(IS_DESKTOP_ANDROID\)\s*(void
+        TestTabModel::AssociateWithBrowserWindow\(BrowserWindowInterface\*
+        browser\) \{.*?\})\s*#endif'
+      re_flags: [DOTALL]
+      replace: '\1'

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/extensions/BUILD.gn b/chrome/browser/ui/android/extensions/BUILD.gn
-index 9df3612a0ba5ce9db626eb0a5787c05f1101fe72..47039b5c02b4aba7e6933da9ae62542a9f31ab57 100644
+index eff2b9d25a300b911950531df03ebba5a66849a0..caab6cb335ef91df1b7b0231862b5cc14b8c9725 100644
 --- a/chrome/browser/ui/android/extensions/BUILD.gn
 +++ b/chrome/browser/ui/android/extensions/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 9df3612a0ba5ce9db626eb0a5787c05f1101fe72..47039b5c02b4aba7e6933da9ae62542a
  import("//build/config/android/config.gni")
  import("//build/config/android/rules.gni")
  import("//extensions/buildflags/buildflags.gni")
-@@ -141,6 +142,7 @@ android_library("java") {
+@@ -143,6 +144,7 @@ android_library("java") {
        "//extensions/common:java_features_srcjar",
      ]
      resources_package = "org.chromium.chrome.browser.ui.extensions"

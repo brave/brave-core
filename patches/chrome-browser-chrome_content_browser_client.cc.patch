@@ -2,8 +2,19 @@ diff --git a/chrome/browser/chrome_content_browser_client.cc b/chrome/browser/ch
 index 66fc9124dd5f7d90180c1711b8b6b7ed69afdb5b..7d00605812c06609e4bc1c6397290098a82c5c12 100644
 --- a/chrome/browser/chrome_content_browser_client.cc
 +++ b/chrome/browser/chrome_content_browser_client.cc
-@@ -9235,6 +9235,7 @@ base::FilePath ChromeContentBrowserClient::GetChildProcessPath(
- 
+@@ -6779,8 +6779,10 @@ void ChromeContentBrowserClient::AddChromeSchemeFactories(
+     content::WebContents* web_contents,
+     const extensions::Extension* extension,
+     ChromeContentBrowserClient::NonNetworkURLLoaderFactoryMap* factories) {
++#if BUILDFLAG(ENABLE_WEBUI_NTP)
+   Profile* profile =
+       Profile::FromBrowserContext(web_contents->GetBrowserContext());
++#endif  // BUILDFLAG(ENABLE_WEBUI_NTP)
+ #if BUILDFLAG(ENABLE_WEBUI_NTP)
+   InstantService* instant_service =
+       InstantServiceFactory::GetForProfile(profile);
+@@ -9235,6 +9237,7 @@ base::FilePath ChromeContentBrowserClient::GetChildProcessPath(
+
  bool ChromeContentBrowserClient::ShouldUseFirstPartyStorageKey(
      const url::Origin& origin) {
 +  if (BraveShouldUseFirstPartyStorageKey(origin)) return true;
