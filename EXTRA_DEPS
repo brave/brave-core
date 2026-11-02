@@ -51,9 +51,9 @@ extra_deps = {
         'condition': 'host_os == "linux"',
         'objects': [
             {
-                'object_name': 'node-v24.20.0-linux-x64.tar.gz',
-                'sha256sum': 'cd35e7faca55bf403f29e1b7fa96e634ba1b908e828ed21154132c6cd3b8d0ec',
-                'size_bytes': 58135797,
+                'object_name': 'node-v24.22.1-linux-x64.tar.gz',
+                'sha256sum': 'cfbbbe170c7a950212fcbda6f8cf3cca9b65e3212118b6399e909c6cd11c77cc',
+                'size_bytes': 58439704,
             },
         ],
     },
@@ -62,9 +62,9 @@ extra_deps = {
         'condition': 'host_os == "mac" and host_cpu == "x64"',
         'objects': [
             {
-                'object_name': 'node-v24.20.0-mac-x64.tar.gz',
-                'sha256sum': '2b4ec53f641374e90deb699ac400e063cf8f7319d2e0294df1cdb3c8cfef632c',
-                'size_bytes': 54171472,
+                'object_name': 'node-v24.22.1-mac-x64.tar.gz',
+                'sha256sum': '9facf5f0fa3fca7a7042072c2d6b3a32aec3e9fc7a27bcdde67eec10df3d1a21',
+                'size_bytes': 54530127,
             },
         ],
     },
@@ -73,9 +73,9 @@ extra_deps = {
         'condition': 'host_os == "mac" and host_cpu == "arm64"',
         'objects': [
             {
-                'object_name': 'node-v24.20.0-mac-arm64.tar.gz',
-                'sha256sum': '5b859181ef071cda2140ae91a56909d0a3358813e07048231f5baf8dd946f25b',
-                'size_bytes': 52970441,
+                'object_name': 'node-v24.22.1-mac-arm64.tar.gz',
+                'sha256sum': 'bebbb3d1e0a17323bccb94bf8b99fdeacd3ff1b2724a338f104af9fdd06459ab',
+                'size_bytes': 53207171,
             },
         ],
     },
@@ -84,9 +84,9 @@ extra_deps = {
         'condition': 'host_os == "win"',
         'objects': [
             {
-                'object_name': 'node-v24.20.0-win-x64.tar.gz',
-                'sha256sum': 'f37203567e92d0d7ba6da5c060ec22802a8d7eaa84b96e312af23ad48c5268e2',
-                'size_bytes': 38037729,
+                'object_name': 'node-v24.22.1-win-x64.tar.gz',
+                'sha256sum': 'a14b78390d07e3db08b73bd95f5643c2d3959be9c9729ee80393752a4cff6d6a',
+                'size_bytes': 38248350,
             },
         ],
     },
