@@ -10,9 +10,11 @@ import {
   browserProxyFactory as browserCommandProxyFactory,
   Command,
 } from 'chrome://resources/brave/brave_browser_command.mojom-webui.js'
-import { BraveEducationProxyImpl } from 'chrome://getting-started/brave_education_proxy.js'
 import type { BraveEducationAppElement } from 'chrome://getting-started/brave_education_app.js'
-import { PageCallbackRouter } from 'chrome://getting-started/brave_education.mojom-webui.js'
+import {
+  browserProxyFactory,
+  PageCallbackRouter,
+} from 'chrome://getting-started/brave_education.mojom-webui.js'
 import { assertEquals, assertFalse, assertTrue } from 'chrome://webui-test/chai_assert.js'
 import { TestMock } from 'chrome://webui-test/test_mock.js'
 import { eventToPromise, microtasksFinished } from 'chrome://webui-test/test_util.js'
@@ -29,7 +31,7 @@ suite('BraveEducationAppTest', () => {
   setup(() => {
     document.body.innerHTML = window.trustedTypes!.emptyHTML
     handler = new TestBraveEducationPageHandler()
-    BraveEducationProxyImpl.setInstance({
+    browserProxyFactory.setInstance({
       callbackRouter: new PageCallbackRouter(),
       handler,
     })
