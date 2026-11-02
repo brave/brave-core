@@ -5,16 +5,18 @@
 
 substitutions:
   - description: |
-      Handle TREE_NODE type in TabModel::UpdateProperties().
+      Handle TREE_NODE only when tree tabs are compiled in.
 
       A tree-tab node behaves like an unpinned tab for pinned/group/split
       state purposes, so it falls through with UNPINNED.
     regex:
       re_pattern: |-
-        (case TabCollection::Type::UNPINNED:)
+        (void TabModel::UpdateProperties\(\)[\s\S]*?case TabCollection::Type::UNPINNED:)
       replace: |-
         \1
+        #if BUILDFLAG(ENABLE_BRAVE_TREE_TABS)
               case TabCollection::Type::TREE_NODE:
+        #endif  // BUILDFLAG(ENABLE_BRAVE_TREE_TABS)
 
   - description: |
       Use BraveTabFeatures instead of TabFeatures.

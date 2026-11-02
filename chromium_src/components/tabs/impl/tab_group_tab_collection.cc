@@ -3,15 +3,16 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include "brave/components/tabs/buildflags/buildflags.h"
 #include "components/tabs/public/tab_collection.h"
 
 // Add TREE_NODE type to supported child collections in init list.
-#if !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_TREE_TABS)
 #define SPLIT SPLIT, TabCollection::Type::TREE_NODE
-#endif  // !BUILDFLAG(IS_ANDROID)
+#endif  // BUILDFLAG(ENABLE_BRAVE_TREE_TABS)
 
 #include <components/tabs/impl/tab_group_tab_collection.cc>
 
-#if !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_TREE_TABS)
 #undef SPLIT
-#endif  // !BUILDFLAG(IS_ANDROID)
+#endif  // BUILDFLAG(ENABLE_BRAVE_TREE_TABS)
