@@ -19,7 +19,8 @@ namespace local_ai {
 // network. See https://github.com/WICG/connection-allowlists.
 class NoNetworkConnectionAllowlistThrottle : public blink::URLLoaderThrottle {
  public:
-  // Returns a throttle if `url` is on the speech worker origin, or nullptr.
+  // Returns a throttle if `url` is on the speech worker origin and
+  // `network::features::kConnectionAllowlists` is enabled, or nullptr.
   static std::unique_ptr<blink::URLLoaderThrottle> MaybeCreateThrottleFor(
       const GURL& url);
 

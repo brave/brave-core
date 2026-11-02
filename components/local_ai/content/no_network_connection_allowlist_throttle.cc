@@ -6,10 +6,12 @@
 #include "brave/components/local_ai/content/no_network_connection_allowlist_throttle.h"
 
 #include "base/check.h"
+#include "base/feature_list.h"
 #include "brave/components/local_ai/core/url_constants.h"
 #include "content/public/common/url_constants.h"
 #include "net/http/http_response_headers.h"
 #include "services/network/public/cpp/connection_allowlist_parser.h"
+#include "services/network/public/cpp/features.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "url/gurl.h"
 
@@ -18,6 +20,11 @@ namespace local_ai {
 // static
 std::unique_ptr<blink::URLLoaderThrottle>
 NoNetworkConnectionAllowlistThrottle::MaybeCreateThrottleFor(const GURL& url) {
+  // With the feature off, the network service parses no allowlist, so the
+  // parsed headers this throttle sets would not match.
+  if (!base::FeatureList::IsEnabled(network::features::kConnectionAllowlists)) {
+    return nullptr;
+  }
   if (!url.SchemeIs(content::kChromeUIUntrustedScheme) ||
       url.host() != kOnDeviceSpeechRecognitionWorkerHost) {
     return nullptr;

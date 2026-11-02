@@ -6,9 +6,11 @@
 #include "brave/components/local_ai/content/no_network_connection_allowlist_throttle.h"
 
 #include "base/memory/scoped_refptr.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/components/local_ai/core/url_constants.h"
 #include "net/http/http_response_headers.h"
 #include "services/network/public/cpp/connection_allowlist.h"
+#include "services/network/public/cpp/features.h"
 #include "services/network/public/cpp/parsed_headers.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -49,6 +51,13 @@ TEST(NoNetworkConnectionAllowlistThrottleTest, NotCreatedForOtherOrigins) {
   https.SetSchemeStr("https");
   EXPECT_FALSE(NoNetworkConnectionAllowlistThrottle::MaybeCreateThrottleFor(
       WorkerUrl().ReplaceComponents(https)));
+}
+
+TEST(NoNetworkConnectionAllowlistThrottleTest, NotCreatedWhenFeatureDisabled) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndDisableFeature(network::features::kConnectionAllowlists);
+  EXPECT_FALSE(NoNetworkConnectionAllowlistThrottle::MaybeCreateThrottleFor(
+      WorkerUrl()));
 }
 
 TEST(NoNetworkConnectionAllowlistThrottleTest, AddsEmptyEnforcedAllowlist) {

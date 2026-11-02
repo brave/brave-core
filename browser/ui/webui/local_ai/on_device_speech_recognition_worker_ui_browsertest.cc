@@ -81,26 +81,30 @@ IN_PROC_BROWSER_TEST_F(OnDeviceSpeechRecognitionWorkerUIBrowserTest,
 
 // Worker scripts load with no WebContents, unlike the page. A worker does not
 // inherit the page's allowlist, so its script response must have one too.
+// A worker has no RenderFrameHost to read the allowlist from. Instead, the test
+// reads the histogram that content records when it enforces a worker's
+// allowlist.
 IN_PROC_BROWSER_TEST_F(OnDeviceSpeechRecognitionWorkerUIBrowserTest,
                        WorkerGetsEnforcedAllowlist) {
   const std::string worker_script = OrtWorkerScriptPath();
   ASSERT_FALSE(worker_script.empty());
 
-  base::HistogramTester histograms;
-  auto enforced_count = [&] {
-    return histograms.GetBucketCount(
-        network::kConnectionAllowlistTypeHistogram,
-        network::ConnectionAllowlistType::kEnforced);
-  };
-
   content::RenderFrameHost* rfh = NavigateToWorkerPage();
   ASSERT_TRUE(rfh);
-  EXPECT_EQ(1, enforced_count());
 
+  // Start after navigation, so that only the worker's sample is counted.
+  base::HistogramTester histograms;
   ASSERT_TRUE(content::ExecJs(
       rfh, content::JsReplace("(() => { window.worker = new Worker($1); })()",
                               worker_script)));
-  EXPECT_TRUE(base::test::RunUntil([&] { return enforced_count() == 2; }));
+
+  // ORT's worker glue does not reply to messages, so wait for the sample.
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return !histograms.GetAllSamples(network::kConnectionAllowlistTypeHistogram)
+                .empty();
+  }));
+  histograms.ExpectUniqueSample(network::kConnectionAllowlistTypeHistogram,
+                                network::ConnectionAllowlistType::kEnforced, 1);
 }
 
 }  // namespace local_ai
