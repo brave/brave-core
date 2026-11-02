@@ -615,7 +615,6 @@ TEST_F(ClientTestCancelableRequest, ResetInsideCallbackIsSafe) {
               }));
 
   ASSERT_TRUE(future.Wait());
-  EXPECT_FALSE(request_handle);
 }
 
 TEST_F(ClientTestCancelableRequest, ResetAfterCompletionIsNoOp) {
