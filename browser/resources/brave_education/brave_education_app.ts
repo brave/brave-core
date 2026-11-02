@@ -17,7 +17,7 @@ import type { Url } from 'chrome://resources/mojo/url/mojom/url.mojom-webui.js'
 
 import { getCss } from './brave_education_app.css.js'
 import { getHtml } from './brave_education_app.html.js'
-import { BraveEducationProxyImpl } from './brave_education_proxy.js'
+import { browserProxyFactory } from './brave_education.mojom-webui.js'
 
 enum EventType {
   BROWSER_COMMAND = 'browser-command',
@@ -74,7 +74,8 @@ export class BraveEducationAppElement extends CrLitElement {
   override connectedCallback() {
     super.connectedCallback()
 
-    BraveEducationProxyImpl.getInstance()
+    browserProxyFactory
+      .getInstance()
       .handler.getServerUrl()
       .then(({ url }: { url: Url }) => this.handleUrlResult_(url))
   }
