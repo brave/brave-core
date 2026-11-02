@@ -7,7 +7,7 @@ import * as React from 'react'
 import Dialog from '@brave/leo/react/dialog'
 import Button from '@brave/leo/react/button'
 
-import { SponsoredImageBackground } from '../../state/background_store'
+import { NewTabTakeoverBackground } from '../../state/background_store'
 import { useBackgroundState } from '../../context/background_context'
 import { useSearchActions } from '../../context/search_context'
 import { IframeBackground, IframeBackgroundHandle } from './iframe_background'
@@ -20,7 +20,7 @@ import {
 import { getString } from '../../lib/strings'
 
 interface Props {
-  background: SponsoredImageBackground
+  background: NewTabTakeoverBackground
 }
 
 export function RichMediaBackground(props: Props) {

@@ -20,11 +20,11 @@ function createMockNewTabPageProxy() {
   return {
     handler: {
       getBackgroundsEnabled: jest.fn().mockResolvedValue({ enabled: true }),
-      getSponsoredImagesEnabled: jest.fn().mockResolvedValue({ enabled: true }),
+      getNewTabTakeoversEnabled: jest.fn().mockResolvedValue({ enabled: true }),
       getBraveBackgrounds: jest.fn().mockResolvedValue({ backgrounds: [] }),
       getSelectedBackground: jest.fn().mockResolvedValue({ background: null }),
       getCustomBackgrounds: jest.fn().mockResolvedValue({ backgrounds: [] }),
-      getSponsoredImageBackground: jest
+      getNewTabTakeoverBackground: jest
         .fn()
         .mockResolvedValue({ background: null }),
     },
@@ -42,8 +42,8 @@ describe('createBackgroundStore', () => {
   let newTabPageProxy: ReturnType<typeof createMockNewTabPageProxy>
   let store: ReturnType<typeof createBackgroundStore>
 
-  async function simulateSponsoredImagesEnabledUpdate(enabled: boolean) {
-    newTabPageProxy.handler.getSponsoredImagesEnabled.mockResolvedValue({
+  async function simulateNewTabTakeoversEnabledUpdate(enabled: boolean) {
+    newTabPageProxy.handler.getNewTabTakeoversEnabled.mockResolvedValue({
       enabled,
     })
     newTabPageProxy.listeners.onBackgroundsUpdated()
@@ -65,19 +65,19 @@ describe('createBackgroundStore', () => {
     jest.useRealTimers()
   })
 
-  it('should update sponsoredImagesEnabled to false on a backgrounds update', async () => {
-    await simulateSponsoredImagesEnabledUpdate(false)
+  it('should update newTabTakeoversEnabled to false on a backgrounds update', async () => {
+    await simulateNewTabTakeoversEnabledUpdate(false)
 
-    expect(store.getState().sponsoredImagesEnabled).toBe(false)
+    expect(store.getState().newTabTakeoversEnabled).toBe(false)
   })
 
-  it('should update sponsoredImagesEnabled to true on a backgrounds update', async () => {
-    // Set to disabled state, since sponsoredImagesEnabled defaults to true.
-    await simulateSponsoredImagesEnabledUpdate(false)
-    expect(store.getState().sponsoredImagesEnabled).toBe(false)
+  it('should update newTabTakeoversEnabled to true on a backgrounds update', async () => {
+    // Set to disabled state, since newTabTakeoversEnabled defaults to true.
+    await simulateNewTabTakeoversEnabledUpdate(false)
+    expect(store.getState().newTabTakeoversEnabled).toBe(false)
 
-    await simulateSponsoredImagesEnabledUpdate(true)
+    await simulateNewTabTakeoversEnabledUpdate(true)
 
-    expect(store.getState().sponsoredImagesEnabled).toBe(true)
+    expect(store.getState().newTabTakeoversEnabled).toBe(true)
   })
 })

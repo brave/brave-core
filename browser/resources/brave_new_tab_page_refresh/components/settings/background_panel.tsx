@@ -31,7 +31,7 @@ import {
 
 import { style } from './background_panel.style'
 
-const sponsoredImageLearnMoreURL =
+const newTabTakeoverLearnMoreURL =
   'https://support.brave.app/hc/en-us/articles/35182999599501'
 
 export function BackgroundPanel() {
@@ -41,8 +41,8 @@ export function BackgroundPanel() {
   const backgroundsCustomizable = useBackgroundState(
     (s) => s.backgroundsCustomizable,
   )
-  const sponsoredImagesEnabled = useBackgroundState(
-    (s) => s.sponsoredImagesEnabled,
+  const newTabTakeoversEnabled = useBackgroundState(
+    (s) => s.newTabTakeoversEnabled,
   )
   const selectedBackground = useBackgroundState((s) => s.selectedBackground)
   const braveBackgrounds = useBackgroundState((s) => s.braveBackgrounds)
@@ -189,9 +189,9 @@ export function BackgroundPanel() {
         <Toggle
           className='toggle-row'
           size='small'
-          checked={sponsoredImagesEnabled}
+          checked={newTabTakeoversEnabled}
           onChange={({ checked }) => {
-            actions.setSponsoredImagesEnabled(checked)
+            actions.setNewTabTakeoversEnabled(checked)
           }}
         >
           <div className='label'>
@@ -215,7 +215,7 @@ export function BackgroundPanel() {
                       ),
                       $2: (content) => (
                         <Link
-                          url={sponsoredImageLearnMoreURL}
+                          url={newTabTakeoverLearnMoreURL}
                           openInNewTab
                         >
                           {content}

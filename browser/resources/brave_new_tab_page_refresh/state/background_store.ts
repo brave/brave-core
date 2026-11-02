@@ -12,7 +12,7 @@ import {
 
 import {
   BraveBackground,
-  SponsoredImageBackground,
+  NewTabTakeoverBackground,
   SelectedBackground,
   SelectedBackgroundType,
 } from 'gen/brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page.mojom.m.js'
@@ -21,7 +21,7 @@ export {
   BraveBackground,
   NewTabPageAdEventType,
   NewTabPageAdMetricType,
-  SponsoredImageBackground,
+  NewTabTakeoverBackground,
   SelectedBackgroundType,
 }
 
@@ -31,19 +31,19 @@ export type Background =
   | { type: 'custom'; imageUrl: string }
   | ({
       type: 'sponsored-image' | 'sponsored-rich-media'
-    } & SponsoredImageBackground)
+    } & NewTabTakeoverBackground)
 
 export interface BackgroundState {
   initialized: boolean
   backgroundsEnabled: boolean
   backgroundsCustomizable: boolean
-  sponsoredImagesEnabled: boolean
+  newTabTakeoversEnabled: boolean
   braveBackgrounds: BraveBackground[]
   customBackgrounds: string[]
   selectedBackground: SelectedBackground
   backgroundRotateIndex: number
   backgroundRandomValue: number
-  sponsoredImageBackground: SponsoredImageBackground | null
+  newTabTakeoverBackground: NewTabTakeoverBackground | null
   sponsoredRichMediaBaseUrl: string
   actions: BackgroundActions
 }
@@ -97,7 +97,7 @@ export function defaultBackgroundStore(): BackgroundStore {
     initialized: false,
     backgroundsEnabled: true,
     backgroundsCustomizable: true,
-    sponsoredImagesEnabled: true,
+    newTabTakeoversEnabled: true,
     braveBackgrounds: [],
     customBackgrounds: [],
     selectedBackground: {
@@ -106,32 +106,32 @@ export function defaultBackgroundStore(): BackgroundStore {
     },
     backgroundRotateIndex: 0,
     backgroundRandomValue: 0,
-    sponsoredImageBackground: null,
+    newTabTakeoverBackground: null,
     sponsoredRichMediaBaseUrl: '',
     actions: {
       setBackgroundsEnabled(enabled) {},
-      setSponsoredImagesEnabled(enabled) {},
+      setNewTabTakeoversEnabled(enabled) {},
       selectBackground(type, value) {},
       async showCustomBackgroundChooser() {
         return false
       },
       async removeCustomBackground(background) {},
-      notifySponsoredImageLoadError() {},
-      notifySponsoredImageLogoClicked() {},
-      notifySponsoredRichMediaEvent(type) {},
+      notifyNewTabTakeoverLoadError() {},
+      notifyNewTabTakeoverLogoClicked() {},
+      notifyNewTabTakeoverRichMediaEvent(type) {},
     },
   })
 }
 
 export interface BackgroundActions {
   setBackgroundsEnabled: (enabled: boolean) => void
-  setSponsoredImagesEnabled: (enabled: boolean) => void
+  setNewTabTakeoversEnabled: (enabled: boolean) => void
   selectBackground: (type: SelectedBackgroundType, value: string) => void
   showCustomBackgroundChooser: () => Promise<boolean>
   removeCustomBackground: (background: string) => Promise<void>
-  notifySponsoredImageLoadError: () => void
-  notifySponsoredImageLogoClicked: () => void
-  notifySponsoredRichMediaEvent: (type: NewTabPageAdEventType) => void
+  notifyNewTabTakeoverLoadError: () => void
+  notifyNewTabTakeoverLogoClicked: () => void
+  notifyNewTabTakeoverRichMediaEvent: (type: NewTabPageAdEventType) => void
 }
 
 function chooseRandom<T>(list: T[], randomValue: number): T | null {
@@ -164,7 +164,7 @@ export function getCurrentBackground(
     selectedBackground,
     backgroundRandomValue: randomValue,
     backgroundRotateIndex: rotateIndex,
-    sponsoredImageBackground,
+    newTabTakeoverBackground,
   } = state
 
   if (!initialized) {
@@ -175,13 +175,13 @@ export function getCurrentBackground(
     return defaultBackground
   }
 
-  if (sponsoredImageBackground) {
+  if (newTabTakeoverBackground) {
     return {
       type:
-        sponsoredImageBackground.wallpaperType === 'richMedia'
+        newTabTakeoverBackground.wallpaperType === 'richMedia'
           ? 'sponsored-rich-media'
           : 'sponsored-image',
-      ...sponsoredImageBackground,
+      ...newTabTakeoverBackground,
     }
   }
 

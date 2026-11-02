@@ -18,7 +18,7 @@ import { RewardsContext } from '../context/rewards_context'
 import { createNewTabStore } from './mock_new_tab_store'
 import {
   createBackgroundStore,
-  updateSponsoredBackground,
+  updateNewTabTakeoverBackground,
 } from './mock_background_store'
 import { createRewardsStore } from './mock_rewards_store'
 import { createSearchStore } from './mock_search_store'
@@ -28,7 +28,7 @@ import { createVpnStore } from './mock_vpn_store'
 import { App } from '../components/app'
 
 interface StorybookArgs {
-  sponsoredBackgroundType: 'none' | 'image' | 'rich'
+  newTabTakeoverBackgroundType: 'none' | 'image' | 'rich'
 }
 
 function StorybookApp(props: StorybookArgs) {
@@ -44,8 +44,11 @@ function StorybookApp(props: StorybookArgs) {
   }, [])
 
   React.useEffect(() => {
-    updateSponsoredBackground(stores.background, props.sponsoredBackgroundType)
-  }, [props.sponsoredBackgroundType])
+    updateNewTabTakeoverBackground(
+      stores.background,
+      props.newTabTakeoverBackgroundType,
+    )
+  }, [props.newTabTakeoverBackgroundType])
 
   return (
     <NewTabContext.Provider value={stores.newTab}>
@@ -73,7 +76,7 @@ export default {
 
 export const NewTabPage: StoryObj<typeof StorybookApp> = {
   argTypes: {
-    sponsoredBackgroundType: {
+    newTabTakeoverBackgroundType: {
       control: 'select',
       options: ['none', 'image', 'rich'],
     },

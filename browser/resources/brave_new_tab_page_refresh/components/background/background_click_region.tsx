@@ -30,7 +30,7 @@ export function BackgroundClickRegion() {
     <div data-css-scope={style.scope}>
       <Link
         url={url}
-        onClick={actions.notifySponsoredImageLogoClicked}
+        onClick={actions.notifyNewTabTakeoverLogoClicked}
         onContextMenu={(e) => e.preventDefault()}
       >
         <Icon name='launch' />
