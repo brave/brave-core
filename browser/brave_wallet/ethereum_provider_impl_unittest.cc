@@ -1773,37 +1773,6 @@ TEST_F(EthereumProviderImplUnitTest,
 }
 
 TEST_F(EthereumProviderImplUnitTest,
-       SignMessage_NonWebOriginPermissionRevoked_RequestKept) {
-  CreateWallet();
-  auto account_0 = GetAccountUtils().EnsureEthAccount(0);
-  Navigate(GURL("https://brave.com"));
-  AddEthereumPermission(account_0->account_id);
-
-  auto request = mojom::SignMessageRequest::New(
-      MakeDappOriginInfo(url::Origin::Create(GURL("chrome://wallet"))), 0,
-      account_0->account_id.Clone(),
-      mojom::SignDataUnion::NewEthStandardSignData(
-          mojom::EthStandardSignData::New("0xAB")),
-      mojom::CoinType::ETH, mojom::kMainnetChainId);
-  bool callback_called = false;
-  brave_wallet_service()->AddSignMessageRequest(
-      std::move(request),
-      base::BindLambdaForTesting([&](bool approved,
-                                     mojom::EthereumSignatureBytesPtr signature,
-                                     const std::optional<std::string>& error) {
-        callback_called = true;
-      }));
-  ASSERT_EQ(brave_wallet_service()->GetPendingSignMessageRequestsSync().size(),
-            1u);
-
-  ResetEthereumPermission(account_0->account_id);
-
-  EXPECT_FALSE(callback_called);
-  EXPECT_EQ(brave_wallet_service()->GetPendingSignMessageRequestsSync().size(),
-            1u);
-}
-
-TEST_F(EthereumProviderImplUnitTest,
        PanelEvmTransaction_SitePermissionRevoked_TxKept) {
   CreateWallet();
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);

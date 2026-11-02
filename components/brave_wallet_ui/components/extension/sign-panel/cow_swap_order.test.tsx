@@ -66,7 +66,7 @@ const mainnetWeth: BraveWallet.BlockchainToken = {
 const cowSwapSignRequest: BraveWallet.SignMessageRequest = {
   id: 0,
   accountId: mockEthAccount.accountId,
-  originInfo: mockOriginInfo,
+  dappOriginInfo: mockOriginInfo,
   coin: BraveWallet.CoinType.ETH,
   chainId: BraveWallet.MAINNET_CHAIN_ID,
   signData: {

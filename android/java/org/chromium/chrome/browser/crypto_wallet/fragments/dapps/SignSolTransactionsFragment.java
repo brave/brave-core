@@ -27,8 +27,8 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import org.chromium.brave_wallet.mojom.AccountId;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.CoinType;
+import org.chromium.brave_wallet.mojom.DappOriginInfo;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
-import org.chromium.brave_wallet.mojom.OriginInfo;
 import org.chromium.brave_wallet.mojom.SignSolTransactionsRequest;
 import org.chromium.brave_wallet.mojom.SolanaInstruction;
 import org.chromium.brave_wallet.mojom.SolanaTxData;
@@ -190,10 +190,10 @@ public class SignSolTransactionsFragment extends WalletBottomSheetDialogFragment
         updateNetwork(
                 mSignSolTransactionsRequest.chainId.coin,
                 mSignSolTransactionsRequest.chainId.chainId);
-        OriginInfo originInfo = mSignSolTransactionsRequest.originInfo;
-        if (originInfo != null && URLUtil.isValidUrl(originInfo.originSpec)) {
+        DappOriginInfo dappOriginInfo = mSignSolTransactionsRequest.dappOriginInfo;
+        if (dappOriginInfo != null && URLUtil.isValidUrl(dappOriginInfo.originSpec)) {
             mWebSite.setVisibility(View.VISIBLE);
-            mWebSite.setText(Utils.geteTldSpanned(originInfo));
+            mWebSite.setText(Utils.geteTldSpanned(dappOriginInfo));
         }
     }
 
