@@ -15,7 +15,7 @@ import {
   AliasesAccountUpdate,
   AliasesUpdate,
   EmailAliasesServiceObserverInterface,
-} from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
+} from 'gen/brave/components/email_aliases/email_aliases.mojom-webui.js'
 
 const makeLoggedOutAccountState = (): AccountState =>
   ({ loggedOut: {} }) as AccountState
@@ -73,7 +73,7 @@ describe('useEmailAliases', () => {
 
   it('applies alias list updates', () => {
     const aliases: Alias[] = [
-      { email: 'a@brave.com', note: 'n', domains: undefined },
+      { email: 'a@brave.com', note: 'n', domains: null },
     ]
     const { result } = renderHook(() => useEmailAliases(bindObserver))
     expect(lastObserver).toBeDefined()
