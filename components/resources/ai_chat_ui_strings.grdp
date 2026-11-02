@@ -942,6 +942,9 @@
   <message name="IDS_CHAT_UI_CONTENT_AGENT_WARNING_TEXT" desc="Warning message for content agent" formatter_data="webui=AiChat">
     Enabling AI to browse automatically for you may cause harmful, unintended consequences for your privacy, finances, and online communications. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
+  <message name="IDS_CHAT_UI_CONTENT_AGENT_CONTAINER_NAME" desc="Name of the container that keeps the AI's browsing for a conversation separate from the user's own cookies and site data. Shown in the tooltip and hover card of a tab the AI opened.">
+    Leo AI browsing
+  </message>
   <message name="IDS_CHAT_UI_PERMISSION_CHALLENGE_HEADER" desc="Heading for permission challenge" formatter_data="webui=AiChat">
     Security warning
   </message>

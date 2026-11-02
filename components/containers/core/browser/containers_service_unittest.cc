@@ -154,6 +154,21 @@ TEST_F(ContainersServiceTest, CreateAndPersistTemporaryContainer) {
                   container->background_color);
 }
 
+TEST_F(ContainersServiceTest, CreateAndPersistTemporaryContainer_WithName) {
+  auto container = service_->CreateAndPersistTemporaryContainer("Shared name");
+  auto other = service_->CreateAndPersistTemporaryContainer("Shared name");
+  ASSERT_TRUE(container);
+  ASSERT_TRUE(other);
+  EXPECT_TRUE(IsTemporaryContainerId(container->id));
+  EXPECT_EQ(container->name, "Shared name");
+
+  // A name shared with an existing container still creates a new one.
+  EXPECT_NE(container->id, other->id);
+  auto persisted = GetLocallyUsedContainerFromPrefs(prefs_, container->id);
+  ASSERT_TRUE(persisted);
+  EXPECT_EQ(persisted->name, "Shared name");
+}
+
 TEST_F(ContainersServiceTest, GetOrCreateTemporaryContainerByName) {
   // A synced container with the same name must not be returned: the caller
   // asked for a temporary container.
