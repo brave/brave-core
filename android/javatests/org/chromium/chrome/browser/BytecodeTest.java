@@ -1712,7 +1712,8 @@ public class BytecodeTest {
                         Runnable.class,
                         NonNullObservableSupplier.class,
                         Runnable.class,
-                        boolean.class));
+                        boolean.class,
+                        OmniboxResourceProvider.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator", // presubmit: ignore-long-line
