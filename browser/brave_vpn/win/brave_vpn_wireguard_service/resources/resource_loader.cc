@@ -9,8 +9,10 @@
 #include "base/check_op.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
-#include "base/i18n/rtl.h"
+#include "base/i18n/icu4c_tag_converter.h"
+#include "base/i18n/language_tag.h"
 #include "base/path_service.h"
+#include "third_party/icu/source/common/unicode/locid.h"
 #include "ui/base/resource/resource_bundle.h"
 
 namespace brave_vpn {
@@ -42,11 +44,18 @@ base::FilePath FindPakFilePath(const base::FilePath& assets_path,
   return FindPakFilePath(assets_path, "en-US");
 }
 
+std::string GetSystemLocale() {
+  // The service never sets `base::i18n::GetDefaultIcuLocale()`, which would
+  // stay "en-US": read the OS locale from ICU, as `l10n_util` does on Windows.
+  return std::string(base::i18n::IcuLocaleConverter::GetInstance()
+                         .ToLanguageTag(icu::Locale::getDefault())
+                         .tag_string());
+}
+
 void LoadLocaleResources() {
   base::FilePath assets_path;
   base::PathService::Get(base::DIR_ASSETS, &assets_path);
-  auto pak_path =
-      FindPakFilePath(assets_path, base::i18n::GetConfiguredLocale());
+  auto pak_path = FindPakFilePath(assets_path, GetSystemLocale());
   CHECK(base::PathExists(pak_path));
   ui::ResourceBundle::InitSharedInstanceWithPakPath(pak_path);
 }
