@@ -10,6 +10,7 @@
 #include <string>
 #include <utility>
 
+#include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/types/expected.h"
@@ -31,8 +32,7 @@ struct Response {
 
   // Builds a Response from the network result, HTTP response headers,
   // and optional response body. Body deserialization is only attempted
-  // when the network request succeeded, response headers are present,
-  // and a response body was provided.
+  // when the network request succeeded and response headers are present.
   static Response Deserialize(
       int net_error,
       const scoped_refptr<net::HttpResponseHeaders>& headers,
@@ -46,9 +46,8 @@ struct Response {
 
     response.status_code = headers->response_code();
 
-    if (!response_body) {
-      return response;
-    }
+    // SimpleURLLoader returns std::nullopt only on failure.
+    CHECK(response_body);
 
     if (network::IsSuccessfulStatus(*response.status_code)) {  // 2xx
       response.body = Deserialize<SuccessBody>(*response_body);
