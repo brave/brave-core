@@ -72,12 +72,12 @@ namespace brave_wallet {
 
 struct PendingAddChainRequest {
   mojom::AddChainRequestPtr request;
-  url::Origin origin;
+  url::Origin dapp_origin;
 };
 
 struct PendingSwitchChainRequest {
   mojom::SwitchChainRequestPtr switch_chain_request;
-  url::Origin origin;
+  url::Origin dapp_origin;
   base::Value switch_chain_id;
   mojom::EthereumProvider::RequestCallback switch_chain_callback;
 };
@@ -444,7 +444,7 @@ void JsonRpcService::FirePendingRequestCompleted(const std::string& chain_id,
 bool JsonRpcService::HasAddChainRequestFromOrigin(
     const url::Origin& origin) const {
   return std::ranges::any_of(add_chain_pending_requests_, [origin](auto& req) {
-    return req.second.origin == origin;
+    return req.second.dapp_origin == origin;
   });
 }
 
@@ -452,7 +452,7 @@ bool JsonRpcService::HasSwitchChainRequestFromOrigin(
     const url::Origin& origin) const {
   return std::ranges::any_of(
       pending_switch_chain_requests_,
-      [origin](auto& req) { return req.second.origin == origin; });
+      [origin](auto& req) { return req.second.dapp_origin == origin; });
 }
 
 void JsonRpcService::GetPendingAddChainRequests(
@@ -540,20 +540,21 @@ void JsonRpcService::OnEthChainIdValidated(
 
 std::string JsonRpcService::AddEthereumChainForOrigin(
     mojom::NetworkInfoPtr chain,
-    const url::Origin& origin) {
+    const url::Origin& dapp_origin) {
   auto chain_id = chain->chain_id;
   if (network_manager_->KnownChainExists(chain_id, mojom::CoinType::ETH) ||
       network_manager_->CustomChainExists(chain_id, mojom::CoinType::ETH)) {
     return l10n_util::GetStringUTF8(IDS_SETTINGS_WALLET_NETWORKS_EXISTS);
   }
-  if (origin.opaque() || add_chain_pending_requests_.contains(chain_id) ||
-      HasAddChainRequestFromOrigin(origin)) {
+  if (!IsValidDappOrigin(dapp_origin) ||
+      add_chain_pending_requests_.contains(chain_id) ||
+      HasAddChainRequestFromOrigin(dapp_origin)) {
     return l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR);
   }
 
-  add_chain_pending_requests_[chain_id].origin = origin;
-  add_chain_pending_requests_[chain_id].request =
-      mojom::AddChainRequest::New(MakeOriginInfo(origin), std::move(chain));
+  add_chain_pending_requests_[chain_id].dapp_origin = dapp_origin;
+  add_chain_pending_requests_[chain_id].request = mojom::AddChainRequest::New(
+      MakeDappOriginInfo(dapp_origin), std::move(chain));
   return "";
 }
 
@@ -2391,7 +2392,7 @@ void JsonRpcService::NotifySwitchChainRequestProcessed(
 
   if (approved) {
     if (!SetNetwork(pending_request.switch_chain_request->chain_id,
-                    mojom::CoinType::ETH, pending_request.origin)) {
+                    mojom::CoinType::ETH, pending_request.dapp_origin)) {
       std::move(callback).Run(mojom::EthereumProviderResponse::New(
           std::move(id),
           GetProviderErrorDictionary(
@@ -2419,7 +2420,7 @@ void JsonRpcService::NotifySwitchChainRequestProcessed(
 
 bool JsonRpcService::AddSwitchEthereumChainRequest(
     const std::string& chain_id,
-    const url::Origin& origin,
+    const url::Origin& dapp_origin,
     mojom::EthereumProvider::RequestCallback callback,
     base::Value id) {
   bool reject = false;
@@ -2435,7 +2436,7 @@ bool JsonRpcService::AddSwitchEthereumChainRequest(
   }
 
   // Already on the chain
-  if (GetChainIdSync(mojom::CoinType::ETH, origin) == chain_id) {
+  if (GetChainIdSync(mojom::CoinType::ETH, dapp_origin) == chain_id) {
     reject = false;
     std::move(callback).Run(mojom::EthereumProviderResponse::New(
         std::move(id), base::Value(), reject, "", false));
@@ -2443,7 +2444,7 @@ bool JsonRpcService::AddSwitchEthereumChainRequest(
   }
 
   // There can be only 1 request per origin
-  if (HasSwitchChainRequestFromOrigin(origin)) {
+  if (HasSwitchChainRequestFromOrigin(dapp_origin)) {
     base::Value formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
@@ -2456,8 +2457,8 @@ bool JsonRpcService::AddSwitchEthereumChainRequest(
   auto request_id = GenerateRandomHexString();
   auto& pending_request = pending_switch_chain_requests_[request_id];
   pending_request.switch_chain_request = mojom::SwitchChainRequest::New(
-      request_id, MakeOriginInfo(origin), chain_id);
-  pending_request.origin = origin;
+      request_id, MakeDappOriginInfo(dapp_origin), chain_id);
+  pending_request.dapp_origin = dapp_origin;
   pending_request.switch_chain_callback = std::move(callback);
   pending_request.switch_chain_id = std::move(id);
 

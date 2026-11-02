@@ -525,6 +525,8 @@ class BraveWalletServiceUnitTest : public testing::Test {
     return BlockchainRegistry::GetInstance();
   }
 
+  url::Origin GetOrigin() { return url::Origin::Create(GURL(kBraveUrl)); }
+
   void SetupWallet(KeyringService* keyring_service) {
     keyring_service->CreateWalletInternal(kMnemonicDivideCruise,
                                           kTestWalletPassword, false, false);
@@ -876,7 +878,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
                                          expected_token->decimals);
     mojom::AddSuggestTokenRequestPtr request =
         mojom::AddSuggestTokenRequest::New(
-            MakeOriginInfo(url::Origin::Create(GURL(kBraveUrl))),
+            MakeDappOriginInfo(url::Origin::Create(GURL(kBraveUrl))),
             suggested_token.Clone());
     base::RunLoop run_loop;
     base::RunLoop added_loop;
@@ -2378,8 +2380,7 @@ TEST_F(BraveWalletServiceUnitTest, OnGetImportInfo) {
 TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
   SetupWallet();
 
-  mojom::OriginInfoPtr origin_info =
-      MakeOriginInfo(url::Origin::Create(GURL("https://brave.com")));
+  auto origin_info = MakeDappOriginInfo(GetOrigin());
   auto expected_signature =
       mojom::EthereumSignatureBytes::New(std::vector<uint8_t>{1, 2, 3, 4, 5});
   // That should be hw account per test name.
@@ -2438,8 +2439,7 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
 TEST_F(BraveWalletServiceUnitTest, SignMessage) {
   SetupWallet();
 
-  mojom::OriginInfoPtr origin_info =
-      MakeOriginInfo(url::Origin::Create(GURL("https://brave.com")));
+  auto origin_info = MakeDappOriginInfo(GetOrigin());
   std::string expected_signature = std::string("0xSiGnEd");
   auto account_id = GetAccountUtils().EnsureEthAccount(0)->account_id.Clone();
   std::string domain = "{}";
@@ -2681,9 +2681,8 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestTokenRejectsUnreadableContract) {
   bool callback_ran = false;
   base::RunLoop run_loop;
   service_->AddSuggestTokenRequest(
-      mojom::AddSuggestTokenRequest::New(
-          MakeOriginInfo(url::Origin::Create(GURL(kBraveUrl))),
-          suggested.Clone()),
+      mojom::AddSuggestTokenRequest::New(MakeDappOriginInfo(GetOrigin()),
+                                         suggested.Clone()),
       base::BindLambdaForTesting(
           [&](mojom::EthereumProviderResponsePtr response) {
             callback_ran = true;
@@ -2718,8 +2717,7 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
   EXPECT_TRUE(GetPrefs()->HasPrefPath(kBraveWalletUserAssetsList));
   EXPECT_TRUE(GetPrefs()->HasPrefPath(kDefaultBaseCurrency));
   EXPECT_TRUE(GetPrefs()->HasPrefPath(kDefaultBaseCryptocurrency));
-  mojom::OriginInfoPtr origin_info =
-      MakeOriginInfo(url::Origin::Create(GURL("https://brave.com")));
+  auto origin_info = MakeDappOriginInfo(GetOrigin());
   auto account_id = GetAccountUtils().EnsureEthAccount(0)->account_id.Clone();
   std::string domain = "{}";
   std::string message = "0xAB";

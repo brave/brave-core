@@ -124,7 +124,7 @@ TEST(SolanaTxMetaUnitTest, ToTransactionInfo) {
   EXPECT_EQ(ti->tx_hash, meta.tx_hash());
   EXPECT_EQ(
       ti->dapp_origin_info,
-      MakeOriginInfo(url::Origin::Create(GURL("https://test.brave.com/"))));
+      MakeDappOriginInfo(url::Origin::Create(GURL("https://test.brave.com/"))));
 
   EXPECT_EQ(meta.created_time(), ti->created_time);
   EXPECT_EQ(meta.submitted_time(), ti->submitted_time);

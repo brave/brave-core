@@ -647,7 +647,7 @@ extension BraveWallet.TransactionInfo {
 extension BraveWallet.SignMessageRequest {
   static var previewRequest: BraveWallet.SignMessageRequest {
     .init(
-      originInfo: .init(originSpec: "https://app.uniswap.org", eTldPlusOne: "uniswap.org"),
+      dappOriginInfo: .init(originSpec: "https://app.uniswap.org", eTldPlusOne: "uniswap.org"),
       id: 1,
       accountId: BraveWallet.AccountInfo.previewAccount.accountId,
       signData: .init(

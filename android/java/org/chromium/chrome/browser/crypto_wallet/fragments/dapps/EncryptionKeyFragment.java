@@ -135,7 +135,7 @@ public class EncryptionKeyFragment extends BaseDAppsFragment implements View.OnC
         final String description =
                 getString(
                         R.string.brave_wallet_provide_encryption_key_description,
-                        Utils.geteTldHtmlString(request.originInfo));
+                        Utils.geteTldHtmlString(request.dappOriginInfo));
         mTvMessageDesc.setText(AndroidUtils.formatHTML(description));
     }
 
@@ -194,7 +194,7 @@ public class EncryptionKeyFragment extends BaseDAppsFragment implements View.OnC
                                 mTveTldPlusOne.setVisibility(View.VISIBLE);
                                 mTvMessageDecrypt.setVisibility(View.VISIBLE);
                                 mTveTldPlusOne.setText(
-                                        Utils.geteTldSpanned(mDecryptRequest.originInfo));
+                                        Utils.geteTldSpanned(mDecryptRequest.dappOriginInfo));
                                 mTvMessage.setText(
                                         R.string.brave_wallet_read_encrypted_message_title);
                                 mBtProvideAllow.setText(

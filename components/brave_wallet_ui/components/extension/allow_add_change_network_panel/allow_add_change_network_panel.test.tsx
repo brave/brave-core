@@ -133,7 +133,7 @@ describe('AllowAddChangeNetworkPanel', () => {
     await waitFor(() => {
       // Check if the origin is displayed
       expect(container).toHaveTextContent(
-        mockAddChainRequest.originInfo.eTldPlusOne,
+        mockAddChainRequest.dappOriginInfo.eTldPlusOne,
       )
 
       // In tests/Storybook, site favicons are unavailable so a placeholder

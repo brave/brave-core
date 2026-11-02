@@ -29,8 +29,8 @@ import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountId;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.CoinType;
+import org.chromium.brave_wallet.mojom.DappOriginInfo;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
-import org.chromium.brave_wallet.mojom.OriginInfo;
 import org.chromium.brave_wallet.mojom.SignDataUnion;
 import org.chromium.brave_wallet.mojom.SignMessageRequest;
 import org.chromium.brave_wallet.mojom.SiweMessage;
@@ -151,10 +151,10 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
                                 mBtSign.setOnClickListener(
                                         v -> notifySignMessageRequestProcessed(true));
                             }
-                            if (request.originInfo != null
-                                    && URLUtil.isValidUrl(request.originInfo.originSpec)) {
-                                mTvOrigin.setText(request.originInfo.eTldPlusOne);
-                                mTvUrl.setText(Utils.geteTldSpanned(request.originInfo));
+                            if (request.dappOriginInfo != null
+                                    && URLUtil.isValidUrl(request.dappOriginInfo.originSpec)) {
+                                mTvOrigin.setText(request.dappOriginInfo.eTldPlusOne);
+                                mTvUrl.setText(Utils.geteTldSpanned(request.dappOriginInfo));
                             } else {
                                 // Remove the previous request's origin.
                                 mTvOrigin.setText("");
@@ -187,7 +187,8 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
         account.imgData = accountId.address;
         items.add(account);
 
-        if (mCurrentSignMessageRequest != null && mCurrentSignMessageRequest.originInfo != null) {
+        if (mCurrentSignMessageRequest != null
+                && mCurrentSignMessageRequest.dappOriginInfo != null) {
             TwoLineItemRecyclerViewAdapter.TwoLineSingleText details =
                     new TwoLineItemRecyclerViewAdapter.TwoLineSingleText();
             String separator = System.getProperty(WalletConstants.LINE_SEPARATOR);
@@ -196,7 +197,7 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
             builder.append(
                     getString(
                             R.string.brave_wallet_sign_in_with_brave_wallet_message,
-                            mCurrentSignMessageRequest.originInfo.eTldPlusOne));
+                            mCurrentSignMessageRequest.dappOriginInfo.eTldPlusOne));
             builder.append(separator);
             builder.append(
                     AndroidUtils.createClickableSpanString(
@@ -250,13 +251,13 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
     private void updateFavIcon(final SignMessageRequest request) {
         // Remove the previous request's icon while this one loads.
         mIvFav.setImageDrawable(null);
-        final OriginInfo originInfo = request.originInfo;
-        if (originInfo == null || !URLUtil.isValidUrl(originInfo.originSpec)) {
+        final DappOriginInfo dappOriginInfo = request.dappOriginInfo;
+        if (dappOriginInfo == null || !URLUtil.isValidUrl(dappOriginInfo.originSpec)) {
             setAccountBlockies(request.accountId.address);
             return;
         }
         ImageLoader.fetchFavIcon(
-                originInfo.originSpec,
+                dappOriginInfo.originSpec,
                 false,
                 new WeakReference<>(getContext()),
                 bitmap -> {

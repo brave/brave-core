@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { skipToken } from '@reduxjs/toolkit/query'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
@@ -26,7 +25,6 @@ import useExplorer from '../../../common/hooks/explorer'
 import {
   useApproveOrDeclineTokenSuggestionMutation,
   useGetNetworkQuery,
-  useGetPendingTokenSuggestionRequestsQuery,
 } from '../../../common/slices/api.slice'
 
 // Styled Components
@@ -48,23 +46,22 @@ const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, {
   marginRight: 0,
 })
 
-export function AddSuggestedTokenPanel() {
-  // Queries
-  const {
-    data: suggestions = [],
-    isFetching: isFetchingSuggestions,
-    isLoading: isLoadingSuggestions,
-  } = useGetPendingTokenSuggestionRequestsQuery()
-  const suggestion: BraveWallet.AddSuggestTokenRequest | undefined =
-    suggestions[0]
-  const { origin, token } = suggestion || {}
+interface Props {
+  suggestToken: BraveWallet.AddSuggestTokenRequest
+  requestsLength: number
+}
+
+export function AddSuggestedTokenPanel(props: Props) {
+  const { suggestToken, requestsLength } = props
+
+  const { dappOriginInfo, token } = suggestToken
 
   const { data: tokensNetwork, isLoading: isFetchingTokensNetwork } =
-    useGetNetworkQuery(token ?? skipToken)
+    useGetNetworkQuery(token)
 
   // Computed
-  const isRefreshingSuggestions = isFetchingSuggestions || isLoadingSuggestions
-  const isFetching = isRefreshingSuggestions || isFetchingTokensNetwork
+  const isFetching = isFetchingTokensNetwork
+  const closePanel = requestsLength < 2
 
   // Mutations
   const [approveOrDeclineSuggestion] =
@@ -72,36 +69,26 @@ export function AddSuggestedTokenPanel() {
 
   // Methods
   const onAddToken = React.useCallback(async () => {
-    if (!token?.contractAddress || isRefreshingSuggestions) {
+    if (!token.contractAddress) {
       return
     }
     await approveOrDeclineSuggestion({
       approved: true,
       contractAddress: token.contractAddress,
-      closePanel: suggestions.length < 2,
+      closePanel,
     })
-  }, [
-    approveOrDeclineSuggestion,
-    token?.contractAddress,
-    suggestions.length,
-    isRefreshingSuggestions,
-  ])
+  }, [approveOrDeclineSuggestion, token.contractAddress, closePanel])
 
   const onCancel = React.useCallback(async () => {
-    if (!token?.contractAddress || isRefreshingSuggestions) {
+    if (!token.contractAddress) {
       return
     }
     await approveOrDeclineSuggestion({
       approved: false,
       contractAddress: token.contractAddress,
-      closePanel: suggestions.length < 2,
+      closePanel,
     })
-  }, [
-    approveOrDeclineSuggestion,
-    token?.contractAddress,
-    suggestions.length,
-    isRefreshingSuggestions,
-  ])
+  }, [approveOrDeclineSuggestion, token.contractAddress, closePanel])
 
   // Hooks
   const onClickViewOnBlockExplorer = useExplorer(tokensNetwork)
@@ -129,7 +116,7 @@ export function AddSuggestedTokenPanel() {
           height='100%'
           justifyContent='space-between'
         >
-          {origin && <OriginInfoCard origin={origin} />}
+          <OriginInfoCard origin={dappOriginInfo} />
           <Column
             width='100%'
             height='100%'
@@ -151,14 +138,14 @@ export function AddSuggestedTokenPanel() {
               ) : (
                 <AssetIconWithPlaceholder asset={token} />
               )}
-              {!isFetching && token ? (
+              {!isFetching ? (
                 <>
-                  <TokenName textColor='tertiary'>{token.name ?? ''}</TokenName>
+                  <TokenName textColor='tertiary'>{token.name}</TokenName>
                   <TokenDescription textColor='primary'>
                     {getLocale(
                       S.BRAVE_WALLET_PORTFOLIO_ASSET_NETWORK_DESCRIPTION,
                     )
-                      .replace('$1', token?.symbol ?? '')
+                      .replace('$1', token.symbol)
                       .replace('$2', tokensNetwork?.chainName ?? '')}
                   </TokenDescription>
                   <Tooltip
@@ -167,10 +154,10 @@ export function AddSuggestedTokenPanel() {
                     <ContractAddress
                       onClick={onClickViewOnBlockExplorer(
                         'token',
-                        token?.contractAddress,
+                        token.contractAddress,
                       )}
                     >
-                      {reduceAddress(token?.contractAddress ?? '')}
+                      {reduceAddress(token.contractAddress)}
                     </ContractAddress>
                   </Tooltip>
                 </>

@@ -47,6 +47,7 @@
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 // IDR_BRAVE_WALLET_SOLANA_WEB3_JS_FOR_TEST is excluded from Android build to
 // save space. Ensure this test is not build on Android. If it will be required
@@ -408,11 +409,9 @@ class SolanaProviderTest : public InProcessBrowserTest {
 
     host_resolver()->AddRule("*", "127.0.0.1");
 
-    https_server_for_files_.SetSSLConfig(
-        net::EmbeddedTestServer::CERT_TEST_NAMES);
     https_server_for_files_.ServeFilesFromDirectory(
         BraveWalletTestDataFolder());
-    ASSERT_TRUE(https_server_for_files()->Start());
+    https_server_for_files_.StartAcceptingConnections();
 
     brave_wallet_service()
         ->asset_ratio_service()
@@ -433,11 +432,21 @@ class SolanaProviderTest : public InProcessBrowserTest {
     InProcessBrowserTest::SetUpCommandLine(command_line);
     mock_cert_verifier_.SetUpCommandLine(command_line);
 
+    // CERT_TEST_NAMES covers a.test/b.test/etc so SNI validation succeeds
+    // once kHostResolverRules below maps them to this server's port.
+    https_server_for_files_.SetSSLConfig(
+        net::EmbeddedTestServer::CERT_TEST_NAMES);
+    ASSERT_TRUE(https_server_for_files_.InitializeAndListen());
+
     ASSERT_TRUE(https_server_for_rpc_.InitializeAndListen());
+
+    // The solana-mainnet.wallet.brave.com rule must come first: rules are
+    // matched in order and the wildcard rule would otherwise shadow it.
     command_line->AppendSwitchASCII(
         network::switches::kHostResolverRules,
         "MAP solana-mainnet.wallet.brave.com " +
-            https_server_for_rpc_.host_port_pair().ToString());
+            https_server_for_rpc_.host_port_pair().ToString() + ", MAP * " +
+            https_server_for_files_.host_port_pair().ToString());
   }
 
   void SetUpInProcessBrowserTestFixture() override {
@@ -552,9 +561,9 @@ class SolanaProviderTest : public InProcessBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  net::EmbeddedTestServer* https_server_for_files() {
-    return &https_server_for_files_;
-  }
+  url::Origin origin_a() { return url::Origin::Create(GURL("https://a.test")); }
+  url::Origin origin_b() { return url::Origin::Create(GURL("https://b.test")); }
+
   net::EmbeddedTestServer* https_server_for_rpc() {
     return &https_server_for_rpc_;
   }
@@ -846,8 +855,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectRequestInProgress) {
   auto account_0 = GetAccountUtils().EnsureSolAccount(0);
   SetSelectedAccount(account_0->account_id);
 
-  GURL url =
-      https_server_for_files()->GetURL("a.test", "/solana_provider.html");
+  GURL url = origin_a().GetURL().Resolve("/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   CallSolanaConnect(web_contents());
   const auto result = EvalJs(web_contents(), R"(
@@ -874,8 +882,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusAndPermission) {
   auto account_0 = GetAccountUtils().EnsureSolAccount(0);
   SetSelectedAccount(account_0->account_id);
 
-  GURL url =
-      https_server_for_files()->GetURL("a.test", "/solana_provider.html");
+  GURL url = origin_a().GetURL().Resolve("/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   RegisterSolDisconnect();
 
@@ -913,9 +920,9 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusAndPermission) {
   UserGrantPermission(true, account_0);
   ASSERT_TRUE(IsSolanaConnected(web_contents()));
 
-  ASSERT_TRUE(AddTabAtIndex(
-      1, https_server_for_files()->GetURL("b.test", "/solana_provider.html"),
-      ui::PAGE_TRANSITION_TYPED));
+  ASSERT_TRUE(
+      AddTabAtIndex(1, origin_b().GetURL().Resolve("/solana_provider.html"),
+                    ui::PAGE_TRANSITION_TYPED));
   ASSERT_EQ(browser()->tab_strip_model()->active_index(), 1);
   RegisterSolDisconnect();
   // connect for b.test
@@ -952,8 +959,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusWithDocumentChanged) {
   auto account_0 = GetAccountUtils().EnsureSolAccount(0);
   SetSelectedAccount(account_0->account_id);
 
-  GURL url =
-      https_server_for_files()->GetURL("a.test", "/solana_provider.html");
+  GURL url = origin_a().GetURL().Resolve("/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   ASSERT_FALSE(IsSolanaConnected(web_contents()));
@@ -980,8 +986,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusInIframes) {
   auto account_0 = GetAccountUtils().EnsureSolAccount(0);
   SetSelectedAccount(account_0->account_id);
 
-  GURL url = https_server_for_files()->GetURL("a.test",
-                                              "/iframe_solana_provider.html");
+  GURL url = origin_a().GetURL().Resolve("/iframe_solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   content::RenderFrameHost* main_frame = web_contents()->GetPrimaryMainFrame();
@@ -1013,8 +1018,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusInIframes) {
   // triggered by the below navigation in the second iframe, so the connection
   // remains.
 #if 0
-  GURL new_iframe_url =
-      https_server_for_files()->GetURL("a.test", "/solana_provider.html");
+  GURL new_iframe_url = origin_a().GetURL().Resolve("/solana_provider.html");
   // navigate first iframe away won't affect second iframe's connected status
   EXPECT_TRUE(
       NavigateIframeToURL(web_contents(), "test-iframe-0", new_iframe_url));
@@ -1033,8 +1037,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusInMultiFrames) {
   auto account_0 = GetAccountUtils().EnsureSolAccount(0);
   SetSelectedAccount(account_0->account_id);
 
-  GURL url =
-      https_server_for_files()->GetURL("a.test", "/solana_provider.html");
+  GURL url = origin_a().GetURL().Resolve("/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   ASSERT_FALSE(IsSolanaConnected(web_contents()));
@@ -1066,8 +1069,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignMessage) {
   auto account_0 = GetAccountUtils().EnsureSolAccount(0);
   SetSelectedAccount(account_0->account_id);
 
-  GURL url =
-      https_server_for_files()->GetURL("a.test", "/solana_provider.html");
+  GURL url = origin_a().GetURL().Resolve("/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   CallSolanaConnect(web_contents());
@@ -1100,8 +1102,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, GetPublicKey) {
   auto account_0 = GetAccountUtils().EnsureSolAccount(0);
   SetSelectedAccount(account_0->account_id);
 
-  GURL url =
-      https_server_for_files()->GetURL("a.test", "/solana_provider.html");
+  GURL url = origin_a().GetURL().Resolve("/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   constexpr char get_public_key_script[] =
@@ -1130,8 +1131,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
   auto account_1 = GetAccountUtils().EnsureSolAccount(1);
   SetSelectedAccount(account_0->account_id);
 
-  GURL url =
-      https_server_for_files()->GetURL("a.test", "/solana_provider.html");
+  GURL url = origin_a().GetURL().Resolve("/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   CallSolanaConnect(web_contents());
@@ -1149,8 +1149,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
   EXPECT_EQ(mojom::TransactionStatus::Unapproved, infos[0]->tx_status);
   EXPECT_EQ(mojom::TransactionType::SolanaDappSignAndSendTransaction,
             infos[0]->tx_type);
-  EXPECT_EQ(MakeOriginInfo(https_server_for_files()->GetOrigin("a.test")),
-            infos[0]->dapp_origin_info);
+  EXPECT_EQ(MakeDappOriginInfo(origin_a()), infos[0]->dapp_origin_info);
   const std::string tx1_id = infos[0]->id;
   RejectTransaction(tx1_id);
 
@@ -1187,8 +1186,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
   EXPECT_EQ(mojom::TransactionStatus::Unapproved, infos[tx2_index]->tx_status);
   EXPECT_EQ(mojom::TransactionType::SolanaDappSignAndSendTransaction,
             infos[tx2_index]->tx_type);
-  EXPECT_EQ(MakeOriginInfo(https_server_for_files()->GetOrigin("a.test")),
-            infos[tx2_index]->dapp_origin_info);
+  EXPECT_EQ(MakeDappOriginInfo(origin_a()), infos[tx2_index]->dapp_origin_info);
 
   ApproveTransaction(infos[tx2_index]->id);
 
@@ -1230,8 +1228,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
   EXPECT_EQ(mojom::TransactionStatus::Unapproved, infos[tx3_index]->tx_status);
   EXPECT_EQ(mojom::TransactionType::SolanaDappSignAndSendTransaction,
             infos[tx3_index]->tx_type);
-  EXPECT_EQ(MakeOriginInfo(https_server_for_files()->GetOrigin("a.test")),
-            infos[tx3_index]->dapp_origin_info);
+  EXPECT_EQ(MakeDappOriginInfo(origin_a()), infos[tx3_index]->dapp_origin_info);
 
   ApproveTransaction(tx3_id);
 
@@ -1294,8 +1291,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, AccountChangedEventAndReload) {
   auto account_1 = GetAccountUtils().EnsureSolAccount(1);
   SetSelectedAccount(account_0->account_id);
 
-  GURL url =
-      https_server_for_files()->GetURL("a.test", "/solana_provider.html");
+  GURL url = origin_a().GetURL().Resolve("/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   // connect account 1
@@ -1345,8 +1341,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectWithNonSelectedAccount) {
   auto account_1 = GetAccountUtils().EnsureSolAccount(1);
   SetSelectedAccount(account_0->account_id);
 
-  GURL url =
-      https_server_for_files()->GetURL("a.test", "/solana_provider.html");
+  GURL url = origin_a().GetURL().Resolve("/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   CallSolanaConnect(web_contents());
@@ -1384,8 +1379,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignTransaction) {
   auto account_1 = GetAccountUtils().EnsureSolAccount(1);
   SetSelectedAccount(account_0->account_id);
 
-  GURL url =
-      https_server_for_files()->GetURL("a.test", "/solana_provider.html");
+  GURL url = origin_a().GetURL().Resolve("/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   CallSolanaConnect(web_contents());
@@ -1454,8 +1448,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAllTransactions) {
   auto account_1 = GetAccountUtils().EnsureSolAccount(1);
   SetSelectedAccount(account_0->account_id);
 
-  GURL url =
-      https_server_for_files()->GetURL("a.test", "/solana_provider.html");
+  GURL url = origin_a().GetURL().Resolve("/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   CallSolanaConnect(web_contents());
@@ -1514,8 +1507,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {
   auto account_0 = GetAccountUtils().EnsureSolAccount(0);
   SetSelectedAccount(account_0->account_id);
 
-  GURL url =
-      https_server_for_files()->GetURL("a.test", "/solana_provider.html");
+  GURL url = origin_a().GetURL().Resolve("/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   // connect and accept
@@ -1602,16 +1594,14 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, NoCrashOnShortLivedIframes) {
   auto account_0 = GetAccountUtils().EnsureSolAccount(0);
   SetSelectedAccount(account_0->account_id);
 
-  GURL url =
-      https_server_for_files()->GetURL("a.test", "/short_lived_iframes.html");
+  GURL url = origin_a().GetURL().Resolve("/short_lived_iframes.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   ReloadAndWaitForLoadStop(browser());
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, CallViaProxy) {
   RestoreWallet();
-  GURL url =
-      https_server_for_files()->GetURL("a.test", "/solana_provider.html");
+  GURL url = origin_a().GetURL().Resolve("/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   EXPECT_TRUE(GetIsBraveWalletViaProxy());
@@ -1620,8 +1610,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, CallViaProxy) {
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, EventEmitter) {
   RestoreWallet();
-  GURL url =
-      https_server_for_files()->GetURL("a.test", "/solana_provider.html");
+  GURL url = origin_a().GetURL().Resolve("/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   for (const std::string& provider : {"window.solana", "window.braveSolana"}) {

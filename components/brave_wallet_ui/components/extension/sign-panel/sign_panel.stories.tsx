@@ -30,7 +30,7 @@ mockIPFSPath.url = ipftPath
 const signMessageData: BraveWallet.SignMessageRequest = {
   id: 0,
   accountId: mockEthAccount.accountId,
-  originInfo: mockOriginInfo,
+  dappOriginInfo: mockOriginInfo,
   coin: BraveWallet.CoinType.ETH,
   chainId: BraveWallet.MAINNET_CHAIN_ID,
   signData: {
@@ -99,7 +99,7 @@ export const _SignData = {
           accountIndex: 0,
           uniqueKey: '0x3f29A1da97149722eB09c526E4eAd698895b426_id',
         },
-        originInfo: mockOriginInfo,
+        dappOriginInfo: mockOriginInfo,
         coin: BraveWallet.CoinType.ETH,
         chainId: BraveWallet.MAINNET_CHAIN_ID,
         signData: {
@@ -155,7 +155,7 @@ export const _EthStandardSignRequest = {
     return renderSignRequest({
       id: 0,
       accountId: mockEthAccount.accountId,
-      originInfo: mockOriginInfo,
+      dappOriginInfo: mockOriginInfo,
       coin: BraveWallet.CoinType.ETH,
       chainId: BraveWallet.MAINNET_CHAIN_ID,
       signData: {
@@ -178,7 +178,7 @@ export const _EthTypedDataSignRequest = {
     return renderSignRequest({
       id: 0,
       accountId: mockEthAccount.accountId,
-      originInfo: mockOriginInfo,
+      dappOriginInfo: mockOriginInfo,
       coin: BraveWallet.CoinType.ETH,
       chainId: BraveWallet.MAINNET_CHAIN_ID,
       signData: {
@@ -211,7 +211,7 @@ export const _SolanaSignRequest = {
     return renderSignRequest({
       id: 0,
       accountId: mockSolanaAccount.accountId,
-      originInfo: mockOriginInfo,
+      dappOriginInfo: mockOriginInfo,
       coin: BraveWallet.CoinType.SOL,
       chainId: BraveWallet.SOLANA_MAINNET,
       signData: {
@@ -237,7 +237,7 @@ export const _CardanoSignRequest = {
     return renderSignRequest({
       id: 0,
       accountId: mockCardanoAccount.accountId,
-      originInfo: mockOriginInfo,
+      dappOriginInfo: mockOriginInfo,
       coin: BraveWallet.CoinType.ADA,
       chainId: BraveWallet.CARDANO_MAINNET,
       signData: {

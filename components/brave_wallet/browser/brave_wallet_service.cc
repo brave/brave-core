@@ -1380,12 +1380,12 @@ void BraveWalletService::DrainPendingRequestsWithoutPermission(
     DrainCallback drain_callback) {
   std::vector<typename PendingDeque::value_type> to_drain;
   for (auto it = pending_requests.begin(); it != pending_requests.end();) {
-    if (!it->request->origin_info) {
+    if (!it->request->dapp_origin_info) {
       ++it;
       continue;
     }
     auto origin =
-        url::Origin::Create(GURL(it->request->origin_info->origin_spec));
+        url::Origin::Create(GURL(it->request->dapp_origin_info->origin_spec));
     if (HasPermissionForPendingRequest(origin, get_account_id(*it))) {
       ++it;
       continue;
@@ -1772,19 +1772,19 @@ void BraveWalletService::AddGetPublicKeyRequest(
   pending_request.origin = origin;
   pending_request.encryption_public_key_request =
       mojom::GetEncryptionPublicKeyRequest::New(
-          request_id, MakeOriginInfo(origin), account_id.Clone());
+          request_id, MakeDappOriginInfo(origin), account_id.Clone());
   pending_request.encryption_public_key_callback = std::move(callback);
   pending_request.encryption_public_key_id = std::move(id);
 }
 
 void BraveWalletService::AddDecryptRequest(
     const mojom::AccountIdPtr& account_id,
-    const url::Origin& origin,
+    const url::Origin& dapp_origin,
     std::string unsafe_message,
     mojom::EthereumProvider::RequestCallback callback,
     base::Value id) {
   // There can be only 1 request per origin
-  if (HasPendingDecryptRequestForOrigin(origin)) {
+  if (HasPendingDecryptRequestForOrigin(dapp_origin)) {
     bool reject = true;
     base::Value formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kUserRejectedRequest,
@@ -1796,9 +1796,9 @@ void BraveWalletService::AddDecryptRequest(
 
   auto request_id = GenerateRandomHexString();
   auto& pending_request = pending_decrypt_requests_[request_id];
-  pending_request.origin = origin;
+  pending_request.origin = dapp_origin;
   pending_request.decrypt_request =
-      mojom::DecryptRequest::New(request_id, MakeOriginInfo(origin),
+      mojom::DecryptRequest::New(request_id, MakeDappOriginInfo(dapp_origin),
                                  account_id.Clone(), std::move(unsafe_message));
   pending_request.decrypt_callback = std::move(callback);
   pending_request.decrypt_id = std::move(id);

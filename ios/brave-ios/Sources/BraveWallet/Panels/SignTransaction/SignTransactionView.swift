@@ -279,12 +279,12 @@ struct SignTransactionView: View {
     currentRequest.account
   }
 
-  private var currentRequestOriginInfo: BraveWallet.OriginInfo {
+  private var currentRequestDappOriginInfo: BraveWallet.DappOriginInfo {
     switch currentRequest.request {
     case .solana(let request):
-      return request.originInfo
+      return request.dappOriginInfo
     case .cardano(let request):
-      return request.originInfo
+      return request.dappOriginInfo
     }
   }
 
@@ -333,7 +333,7 @@ struct SignTransactionView: View {
             }
             .foregroundColor(Color(braveSystemName: .textPrimary))
             .font(.callout)
-            Text(originInfo: currentRequestOriginInfo)
+            Text(dappOriginInfo: currentRequestDappOriginInfo)
               .foregroundColor(Color(braveSystemName: .textPrimary))
               .font(.subheadline)
               .multilineTextAlignment(.center)
@@ -546,7 +546,10 @@ struct SignTransaction_Previews: PreviewProvider {
       networkStore: .previewStore,
       requests: [
         BraveWallet.SignSolTransactionsRequest(
-          originInfo: .init(),
+          dappOriginInfo: .init(
+            originSpec: "https://app.uniswap.org",
+            eTldPlusOne: "uniswap.org"
+          ),
           id: 0,
           from: BraveWallet.AccountInfo.previewAccount.accountId,
           txDatas: [.init()],

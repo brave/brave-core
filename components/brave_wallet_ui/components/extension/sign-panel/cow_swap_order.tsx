@@ -135,7 +135,7 @@ export function SignCowSwapOrder(props: Props) {
 
       <HeaderTitle>{getLocale(S.BRAVE_WALLET_SWAP_REVIEW_HEADER)}</HeaderTitle>
 
-      <Origin originInfo={data.originInfo} />
+      <Origin originInfo={data.dappOriginInfo} />
 
       {!showDetails && (
         <SwapBase

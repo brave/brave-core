@@ -14,7 +14,7 @@ struct TransactionHeader: View {
   let toAccountAddress: String
   let toAccountName: String
   let isContractAddress: Bool
-  let originInfo: BraveWallet.OriginInfo?
+  let dappOriginInfo: BraveWallet.DappOriginInfo?
   let transactionType: String
   let value: String
   let fiat: String?
@@ -84,13 +84,11 @@ struct TransactionHeader: View {
           )
         )
       )
-      if let originInfo = originInfo {
-        Text(originInfo: originInfo)
-          .foregroundColor(Color(braveSystemName: .textPrimary))
-          .font(.subheadline)
-          .multilineTextAlignment(.center)
-          .padding(.top, 8)  // match vertical padding for tx type, value & fiat VStack
-      }
+      Text(dappOriginInfo: dappOriginInfo)
+        .foregroundColor(Color(braveSystemName: .textPrimary))
+        .font(.subheadline)
+        .multilineTextAlignment(.center)
+        .padding(.top, 8)  // match vertical padding for tx type, value & fiat VStack
       VStack(spacing: 4) {
         Text(transactionType)
           .font(.footnote)

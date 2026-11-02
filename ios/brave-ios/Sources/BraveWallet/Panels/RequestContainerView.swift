@@ -33,7 +33,7 @@ struct RequestContainerView<DismissContent: ToolbarContent>: View {
           case .addSuggestedToken(let request):
             AddSuggestedTokenView(
               token: request.token,
-              originInfo: request.origin,
+              dappOriginInfo: request.dappOriginInfo,
               cryptoStore: cryptoStore,
               onDismiss: onDismiss
             )

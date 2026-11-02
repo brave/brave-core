@@ -46,7 +46,7 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   SolanaProviderImpl(HostContentSettingsMap& host_content_settings_map,
                      BraveWalletService* brave_wallet_service,
                      std::unique_ptr<BraveWalletProviderDelegate> delegate,
-                     const url::Origin& origin);
+                     const url::Origin& dapp_origin);
   ~SolanaProviderImpl() override;
   SolanaProviderImpl(const SolanaProviderImpl&) = delete;
   SolanaProviderImpl& operator=(const SolanaProviderImpl&) = delete;
@@ -75,6 +75,8 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   FRIEND_TEST_ALL_PREFIXES(SolanaProviderImplUnitTest, GetDeserializedMessage);
   FRIEND_TEST_ALL_PREFIXES(SolanaProviderImplUnitTest,
                            ConnectWithNoSolanaAccount);
+
+  std::string GetCurrentChainId();
 
   bool IsAccountConnected(const mojom::AccountInfo& account);
   void OnConnect(
@@ -181,7 +183,7 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   base::ScopedObservation<HostContentSettingsMap, content_settings::Observer>
       host_content_settings_map_observation_{this};
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
-  const url::Origin origin_;
+  const url::Origin dapp_origin_;
   base::WeakPtrFactory<SolanaProviderImpl> weak_factory_;
 };
 

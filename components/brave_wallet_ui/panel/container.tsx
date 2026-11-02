@@ -280,7 +280,10 @@ function Container() {
     if (addTokenRequests.length) {
       return (
         <PanelWrapper>
-          <AddSuggestedTokenPanel />
+          <AddSuggestedTokenPanel
+            suggestToken={addTokenRequests[0]}
+            requestsLength={addTokenRequests.length}
+          />
         </PanelWrapper>
       )
     }

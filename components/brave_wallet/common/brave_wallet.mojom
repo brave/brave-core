@@ -1672,31 +1672,38 @@ struct NetworkInfo {
   array<KeyringId> supported_keyrings;
 };
 
+// Origin details for dApp-related requests. Always derived from an origin
+// satisfying `IsValidDappOrigin`, e.g. non-opaque and http/https.
+struct DappOriginInfo {
+  string origin_spec;
+  string e_tld_plus_one;
+};
+
 struct OriginInfo {
   string origin_spec;
   string e_tld_plus_one;
 };
 
 struct AddChainRequest {
-  OriginInfo origin_info;
+  DappOriginInfo dapp_origin_info;
   NetworkInfo network_info;
 };
 
 struct SwitchChainRequest {
   string request_id;
-  OriginInfo origin_info;
+  DappOriginInfo dapp_origin_info;
   string chain_id;
 };
 
 struct GetEncryptionPublicKeyRequest {
   string request_id;
-  OriginInfo origin_info;
+  DappOriginInfo dapp_origin_info;
   AccountId account_id;
 };
 
 struct DecryptRequest {
   string request_id;
-  OriginInfo origin_info;
+  DappOriginInfo dapp_origin_info;
   AccountId account_id;
   string unsafe_message;
 };
@@ -2480,7 +2487,7 @@ struct TransactionInfo {
   mojo_base.mojom.JSTime created_time;
   mojo_base.mojom.JSTime submitted_time;
   mojo_base.mojom.JSTime confirmed_time;
-  OriginInfo? dapp_origin_info;
+  DappOriginInfo? dapp_origin_info;
   string chain_id;
   // Currently only available for ETH and FIL
   // Represent effective recipient of the transaction
@@ -2902,7 +2909,7 @@ union SignDataUnion {
 };
 
 struct SignMessageRequest {
-  OriginInfo origin_info;
+  DappOriginInfo dapp_origin_info;
   int32 id;
   AccountId account_id;
   SignDataUnion sign_data;
@@ -2918,7 +2925,7 @@ enum SignMessageErrorType {
 
 struct SignMessageError {
   string id;
-  OriginInfo origin_info;
+  DappOriginInfo dapp_origin_info;
   SignMessageErrorType type;
   // Localized error message for UI display
   string localized_err_msg;
@@ -2927,7 +2934,7 @@ struct SignMessageError {
 };
 
 struct SignSolTransactionsRequest {
-  OriginInfo origin_info;
+  DappOriginInfo dapp_origin_info;
   int32 id;
   AccountId from_account_id;
   array<SolanaTxData> tx_datas;
@@ -2939,7 +2946,7 @@ struct SignCardanoTransactionRequest {
   int32 id;
 
   AccountId account_id;
-  OriginInfo origin_info;
+  DappOriginInfo dapp_origin_info;
   ChainId chain_id;
 
   string raw_tx_data;
@@ -2953,7 +2960,7 @@ enum ExternalWalletType {
 };
 
 struct AddSuggestTokenRequest {
-  OriginInfo origin;
+  DappOriginInfo dapp_origin_info;
   BlockchainToken token;
 };
 

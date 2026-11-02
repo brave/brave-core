@@ -36,12 +36,13 @@ extension Text {
     self = originText(origin, eTldPlusOne: eTldPlusOne)
   }
 
-  /// Creates a text view that displays a BraveWallet.OriginInfo, bolding the eTLD+1.
-  init(originInfo: BraveWallet.OriginInfo?) {
-    if let originInfo = originInfo {
-      self = originText(originInfo.originSpec, eTldPlusOne: originInfo.eTldPlusOne)
+  /// Creates a text view that displays a BraveWallet.DappOriginInfo, bolding the eTLD+1.
+  init(dappOriginInfo: BraveWallet.DappOriginInfo?) {
+    if let dappOriginInfo = dappOriginInfo {
+      self = originText(dappOriginInfo.originSpec, eTldPlusOne: dappOriginInfo.eTldPlusOne)
     } else {
       self = Text(Strings.Wallet.braveWallet)
     }
   }
+
 }

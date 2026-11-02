@@ -10,7 +10,7 @@ import SwiftUI
 /// Displays the favicon for a dApp origin, or a globe if it cannot be loaded.
 struct OriginInfoFavicon: View {
 
-  let originInfo: BraveWallet.OriginInfo
+  let originInfo: BraveWallet.DappOriginInfo
 
   @ScaledMetric var faviconSize: CGFloat = 48
   let maxFaviconSize: CGFloat = 96

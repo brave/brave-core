@@ -63,7 +63,7 @@ struct SignMessageRequestView: View {
             .foregroundColor(Color(braveSystemName: .textSecondary))
         }
       }
-      Text(originInfo: request.originInfo)
+      Text(dappOriginInfo: request.dappOriginInfo)
         .font(.caption)
         .foregroundColor(Color(braveSystemName: .textPrimary))
         .multilineTextAlignment(.center)

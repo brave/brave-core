@@ -414,7 +414,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
               }
               run_loop.Quit();
             }),
-        base::Value(), "", GetOrigin());
+        base::Value(), "");
     run_loop.Run();
     return allowed_accounts;
   }
@@ -879,7 +879,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
     auto requests = GetPendingGetEncryptionPublicKeyRequests();
     if (requests.size() > 0) {
       ASSERT_EQ(requests.size(), 1u);
-      EXPECT_EQ(requests[0]->origin_info, MakeOriginInfo(GetOrigin()));
+      EXPECT_EQ(requests[0]->dapp_origin_info, MakeDappOriginInfo(GetOrigin()));
       EXPECT_EQ(requests[0]->account_id,
                 GetAccountUtils().FindAccountIdByAddress(address));
       EXPECT_TRUE(brave_wallet_tab_helper()->IsShowingBubble());
@@ -898,7 +898,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
     *unsafe_message = "";
     base::RunLoop run_loop;
     provider_->Decrypt(
-        encrypted_data_json, address, GetOrigin(),
+        encrypted_data_json, address,
         base::BindLambdaForTesting(
             [&](mojom::EthereumProviderResponsePtr response) {
               if (response->formed_response.type() ==
@@ -919,7 +919,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
     auto requests = GetPendingDecryptRequests();
     if (requests.size() > 0) {
       ASSERT_EQ(requests.size(), 1u);
-      EXPECT_EQ(requests[0]->origin_info, MakeOriginInfo(GetOrigin()));
+      EXPECT_EQ(requests[0]->dapp_origin_info, MakeDappOriginInfo(GetOrigin()));
       EXPECT_EQ(requests[0]->account_id,
                 GetAccountUtils().FindAccountIdByAddress(address));
       EXPECT_TRUE(brave_wallet_tab_helper()->IsShowingBubble());
@@ -1497,7 +1497,7 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsNoPermission) {
                                          IDS_WALLET_USER_REJECTED_REQUEST));
             permission_callback_called = true;
           }),
-      base::Value(), "", GetOrigin());
+      base::Value(), "");
   browser_task_environment_.RunUntilIdle();
   EXPECT_TRUE(permission_callback_called);
 }
@@ -1520,7 +1520,7 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsNoWallet) {
             EXPECT_FALSE(error_message.empty());
             run_loop.Quit();
           }),
-      base::Value(), "", GetOrigin());
+      base::Value(), "");
   run_loop.Run();
 }
 
@@ -1573,7 +1573,7 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsWithAccounts) {
                                          IDS_WALLET_USER_REJECTED_REQUEST));
             run_loop.Quit();
           }),
-      base::Value(), "", GetOrigin());
+      base::Value(), "");
   run_loop.Run();
   // When CONTENT_SETTING_BLOCK is removed, previously granted permission works
   // again.
@@ -1609,7 +1609,7 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsLocked) {
             }
             run_loop.Quit();
           }),
-      base::Value(), "", GetOrigin());
+      base::Value(), "");
   // Wait for KeyringService::GetSelectedAccount called by
   // BraveWalletProviderDelegateImpl::GetAllowedAccounts
   browser_task_environment_.RunUntilIdle();
@@ -1770,37 +1770,6 @@ TEST_F(EthereumProviderImplUnitTest,
   }
   EXPECT_TRUE(
       brave_wallet_service()->GetPendingSignMessageRequestsSync().empty());
-}
-
-TEST_F(EthereumProviderImplUnitTest,
-       SignMessage_NonWebOriginPermissionRevoked_RequestKept) {
-  CreateWallet();
-  auto account_0 = GetAccountUtils().EnsureEthAccount(0);
-  Navigate(GURL("https://brave.com"));
-  AddEthereumPermission(account_0->account_id);
-
-  auto request = mojom::SignMessageRequest::New(
-      MakeOriginInfo(url::Origin::Create(GURL("chrome://wallet"))), 0,
-      account_0->account_id.Clone(),
-      mojom::SignDataUnion::NewEthStandardSignData(
-          mojom::EthStandardSignData::New("0xAB")),
-      mojom::CoinType::ETH, mojom::kMainnetChainId);
-  bool callback_called = false;
-  brave_wallet_service()->AddSignMessageRequest(
-      std::move(request),
-      base::BindLambdaForTesting([&](bool approved,
-                                     mojom::EthereumSignatureBytesPtr signature,
-                                     const std::optional<std::string>& error) {
-        callback_called = true;
-      }));
-  ASSERT_EQ(brave_wallet_service()->GetPendingSignMessageRequestsSync().size(),
-            1u);
-
-  ResetEthereumPermission(account_0->account_id);
-
-  EXPECT_FALSE(callback_called);
-  EXPECT_EQ(brave_wallet_service()->GetPendingSignMessageRequestsSync().size(),
-            1u);
 }
 
 TEST_F(EthereumProviderImplUnitTest,
@@ -1991,8 +1960,8 @@ TEST_F(EthereumProviderImplUnitTest, SigninWithEthereumError) {
     SignMessage(true, account_0->address, ToHex(siwe_message), &signature,
                 &error, &error_message);
     EXPECT_TRUE(brave_wallet_tab_helper()->IsShowingBubble());
-    EXPECT_EQ(GetSignMessageErrorQueueFront()->origin_info,
-              MakeOriginInfo(GetOrigin()));
+    EXPECT_EQ(GetSignMessageErrorQueueFront()->dapp_origin_info,
+              MakeDappOriginInfo(GetOrigin()));
     EXPECT_EQ(GetSignMessageErrorQueueFront()->type,
               invalid_case.siwe_err_type);
     EXPECT_EQ(GetSignMessageErrorQueueFront()->localized_err_msg,
@@ -3111,7 +3080,7 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthCoinbase) {
             }
             run_loop.Quit();
           }),
-      base::Value(), "", GetOrigin());
+      base::Value(), "");
   // Wait for KeyringService::GetSelectedAccount called by
   // BraveWalletProviderDelegateImpl::GetAllowedAccounts
   browser_task_environment_.RunUntilIdle();

@@ -17,12 +17,12 @@ struct SuggestedNetworkView: View {
   }
 
   var mode: Mode
-  var originInfo: BraveWallet.OriginInfo {
+  var dappOriginInfo: BraveWallet.DappOriginInfo {
     switch mode {
     case .addNetwork(let request):
-      return request.originInfo
+      return request.dappOriginInfo
     case .switchNetworks(let request):
-      return request.originInfo
+      return request.dappOriginInfo
     }
   }
   var cryptoStore: CryptoStore
@@ -95,7 +95,7 @@ struct SuggestedNetworkView: View {
   @ViewBuilder private var faviconAndOrigin: some View {
     VStack(spacing: 8) {
       Group {
-        if let url = URL(string: originInfo.originSpec) {
+        if let url = URL(string: dappOriginInfo.originSpec) {
           FaviconReader(url: url) { image in
             if let image = image {
               Image(uiImage: image)
@@ -110,7 +110,7 @@ struct SuggestedNetworkView: View {
       }
       .frame(width: min(faviconSize, maxFaviconSize), height: min(faviconSize, maxFaviconSize))
       .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
-      Text(originInfo: originInfo)
+      Text(dappOriginInfo: dappOriginInfo)
         .font(.subheadline)
         .foregroundColor(Color(braveSystemName: .textPrimary))
         .multilineTextAlignment(.center)
@@ -340,7 +340,10 @@ struct SuggestedNetworkView_Previews: PreviewProvider {
       SuggestedNetworkView(
         mode: .addNetwork(
           .init(
-            originInfo: .init(originSpec: "https://app.uniswap.org", eTldPlusOne: "uniswap.org"),
+            dappOriginInfo: .init(
+              originSpec: "https://app.uniswap.org",
+              eTldPlusOne: "uniswap.org"
+            ),
             networkInfo: .mockSepolia
           )
         ),
@@ -352,7 +355,7 @@ struct SuggestedNetworkView_Previews: PreviewProvider {
         mode: .switchNetworks(
           .init(
             requestId: UUID().uuidString,
-            originInfo: .init(
+            dappOriginInfo: .init(
               originSpec: "https://polygon.technology/",
               eTldPlusOne: "polygon.technology"
             ),
