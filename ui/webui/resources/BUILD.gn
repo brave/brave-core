@@ -60,8 +60,6 @@ if (include_lit) {
 
       # The browser_commands mojom and settings-specific css below are for
       # settings, which runs as a WebUI wherever polymer does.
-      ts_files += [ "js/brave_browser_command/brave_browser_command_proxy.ts" ]
-
       mojo_files = [ "$root_gen_dir/brave/ui/webui/resources/js/brave_browser_command/brave_browser_command.mojom-webui.ts" ]
       mojo_files_deps =
           [ "js/brave_browser_command:mojo_bindings_ts__generator" ]
