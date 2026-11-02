@@ -30,10 +30,6 @@ injectStyle(PasswordManagerSideBarElement, css`
     background: transparent !important;
   }
 
-  .cr-nav-menu-item iron-icon {
-    display: none !important;
-  }
-
   .cr-nav-menu-item cr-ripple {
     display: none !important;
   }
