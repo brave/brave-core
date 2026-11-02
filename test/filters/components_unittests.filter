@@ -23,8 +23,11 @@
 # Platform-independent, so it is filtered on all platforms.
 -MessagingBackendServiceImplTest.TestTabSelectionClearsAfterUnselectBasedOnConfiguration
 
-# These tests fail because we override Prefetch methods to do nothing.
+# These tests fail because we override Prefetch methods to do nothing, and
+# stub off `AffiliationServiceImpl::FetchChangePasswordURL` so it never fetches
+# (see rewrite/components/affiliations/core/browser/affiliation_service_impl.cc.yaml).
 -AffiliationServiceImplTest.*
+-All/WellKnownChangePasswordStateTest.FetchCallbackStoresPatternedChangePasswordUrlOverride/*
 
 # These tests fail because RankerURLFetcher::Request no longer performs a
 # real network fetch; it synchronously returns false and never invokes its
@@ -83,7 +86,8 @@
 -FeaturedSearchProviderTest.*
 
 # These tests fail because we stub out
-# optimization_guide::IsUserPermittedToFetchRemoteOptimizationGuide and
+# optimization_guide::IsUserPermittedToFetchRemoteOptimizationGuide,
+# optimization_guide::ShouldSkipGoogleApiKeyConfigurationCheck and
 # optimization_guide::features::IsModelDownloadingEnabled
 -All/OnDeviceModelServiceControllerBackgroundDownloadTest.Run/ConfigNotAvailableIfBackgroundDownloadEnabledAndAssetPending
 -HintsManagerFetchingTest.*
@@ -91,9 +95,11 @@
 -ModelBrokerClientTest.*
 -OnDeviceAssetManagerTest.*
 -OptimizationGuidePermissionsUtilTest.IsUserPermittedToFetchHintsDefaultUserAnonymousDataCollectionEnabled
+-OptimizationGuidePermissionsUtilTest.IsUserPermittedToFetchHintsRequiresGoogleChromeApiKey
 -PDPMetricsTest.TestFalseOptGuideResponseIsRecorded
 -PDPMetricsTest.TestPDPIsRecorded
 -PredictionManagerTest.*
+-PredictionModelDownloadManagerTest.ShouldFetchModelsRequiresGoogleChromeApiKey
 
 # These tests enable kPredictionModelComponentDelivery and expect a component
 # config, but we make optimization_guide::GetPredictionModelComponentConfig
@@ -105,7 +111,7 @@
 -PredictionModelComponentUpdateListenerTest.*
 
 # These tests fail because we disable commerce::kShoppingList
--All/ShoppingServiceTest.TestShoppingList*/*
+-ShoppingServiceTest.TestShoppingListEligible_CountryAndLocale_RegionLaunched
 
 # These tests fail because we override SyncAuthManager::DetermineAccountToUse.
 -SyncServiceImplStartupWithDetermineAccountTypeTest.StartupWithConsumerAccount
@@ -197,13 +203,22 @@
 # These tests fail because we override WalletHttpClientImpl.
 -WalletHttpClientImplTest.*
 
-# This tests fails because we disable safe browsing enhanced protection and
+# These tests fail because we disable safe browsing enhanced protection and
 # patch safe_browsing::IsEnhancedProtectionEnabled to return false
 -All/ClientSideDetectionServiceBaseLimitTest.AtPhishingReportLimitESB/*
 -All/ClientSideDetectionServiceBaseLimitTest.GetNumReportTestESB/*
 -All/ClientSideDetectionServiceBaseOnlyESBTest.TestReceivingImageClassifierUpdatesAfterResubscription/*
 -All/ClientSideDetectionServiceOnlyESBTest.TestReceivingImageClassifierUpdatesAfterResubscription/*
 -ClientSideDetectionHostBaseTest.*
+-ClientSideDetectionHostBaseVisualClassificationTest.BrowserSideImageEmbeddingEmptyResultRecordsFailed
+-ClientSideDetectionHostBaseVisualClassificationTest.BrowserSideImageEmbeddingRecaptureFailureStillSendsPing
+-ClientSideDetectionHostBaseVisualClassificationTest.BrowserSideImageEmbeddingRecapturesWithoutRetainedImage
+-ClientSideDetectionHostBaseVisualClassificationTest.BrowserSideImageEmbeddingUsesRetainedImage
+-ClientSideDetectionHostBaseVisualClassificationTest.BrowserSideImageEmbeddingWithoutScorerSkipsRecapture
+-ClientSideDetectionHostBaseVisualClassificationTest.CancelPendingRequestsDuringRecaptureDropsEmbedding
+-ClientSideDetectionHostBaseVisualClassificationTest.EnhancedProtectionUpgradesTriggerModelsToImageEmbeddingMatch
+-ClientSideDetectionHostBaseVisualClassificationTest.ScorerChangeDuringRecaptureDropsEmbedding
+-ClientSideDetectionServiceBaseScorerTest.ImageEmbeddingModelGatedOnEnhancedProtection
 -ClientSideDetectionServiceBaseTest.TestReceivingImageEmbedderUpdatesAfterResubscription
 -GetUserPopulationTest.PopulatesPopulation_WithoutSBERDeprecation
 -RealTimeUrlLookupServiceTest.TestCanSendRTSampleRequest_FeatureEnabled
@@ -228,8 +243,10 @@
 # These tests fail because we disable kAimEnabled.
 -AimEligibilityServiceTest.*
 
-# This test fails because we have a different set of regional search engines.
+# These tests fail because we have a different set of regional search engines.
 -RegionalCapabilitiesUtilsTest.GetPrepopulatedEngines
+-RegionalCapabilitiesUtilsTest.GetPrepopulatedEnginesInRegionalLists
+-TemplateURLPrepopulateDataTest.GetAllPrepopulatedEngines_ExcludesEnginesNotInRegionalLists
 
 # These tests fail because they use raw
 # TemplateURLPrepopulateData::kCurrentDataVersion to compare with the version
@@ -401,7 +418,7 @@
 -FeedbackUploaderDispatchTest.VariationHeaders
 -FeedbackUploaderDispatchTest.VariationHeadersForProductID
 -GetUserPopulationTest.PopulatesPopulation
--HashRealTimeUtilsTest.TestDetermineHashRealTimeSelection
+-HashRealTimeUtilsTest.TestDetermineHashRealTimeSelectionAndAreOhttpKeyFetchesEnabled
 -HistoryClustersServiceKeywordTest.*
 -HistoryURLProviderTest.DoesNotInlinePunycodeMatches
 -IdentityManagerBuilderTest.BuildIdentityManagerInitParameters
@@ -410,7 +427,7 @@
 -LocationBarModelUtilTest.GetSecurityVectorIconWithSecureLevel
 -MirrorTableMultilogin/AccountReconcilorTestMirrorMultilogin.TableRowTest/*
 -OhttpKeyServiceTest.AsyncFetch_PrefChanges_BackgroundHprtDisabled
--OhttpKeyServiceTest.GetOhttpKey_BackgroundLookupsForbidden
+-All/OhttpKeyServiceEsbTest.GetOhttpKey_EnhancedProtectionWithoutBackgroundLookups/0
 -OnDeviceModelAdaptationLoaderTest.*
 -OnDeviceModelComponentTest.*
 -OnDeviceModelServiceControllerTest.*
