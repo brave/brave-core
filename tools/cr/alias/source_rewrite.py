@@ -205,6 +205,8 @@ def update_references(old_path: Path, new_path: Path) -> None:
       _update_gn_references for the per-file-type rules)
     - BUILD.gn / .gni source-list entries in the ancestor chain of the old file
     - For moved .mojom files: derived generated-header paths
+    - For moved .java files: class references in .java files (see
+      _JavaClassRename)
 
     Skips directories in SEARCH_EXCLUDE_DIRS and files in
     SEARCH_EXCLUDE_EXTENSIONS.
@@ -237,8 +239,14 @@ def update_references(old_path: Path, new_path: Path) -> None:
                 (pat, r'\g<1>' + new_base + suffix + r'\g<2>')
             )
 
+    java_rename = _JavaClassRename.from_paths(old_path, new_path)
+
     for fpath in _walk_brave_core():
         ext = fpath.suffix.lower()
+        if ext == '.java':
+            if java_rename:
+                java_rename.rewrite_file(fpath)
+            continue
         do_includes = ext in _INCLUDE_EXTENSIONS
         do_comments = ext in _COMMENT_EXTENSIONS
         if not (do_includes or do_comments):
@@ -312,6 +320,91 @@ def _walk_brave_core() -> Iterator[Path]:
             yield fpath
 
 
+class _JavaClassRename:
+    """Rewrites references to a Java class whose source file moved.
+
+    Packages are derived from paths, assuming the package directories start
+    at the first `org` or `com` component, as they do throughout Chromium and
+    brave-core.
+    """
+
+    _PACKAGE_ROOTS = ('org', 'com')
+
+    def __init__(self, old_fqn: str, new_fqn: str) -> None:
+        self.old_package, _, self.old_name = old_fqn.rpartition('.')
+        self.new_package, _, self.new_name = new_fqn.rpartition('.')
+        self.new_fqn = new_fqn
+        # Matches both the dotted form (imports, qualified uses) and the
+        # slashed form (bytecode rewriter class names). The lookarounds stop
+        # `a.Foo` from matching `xa.Foo` or `a.FooBar`.
+        self._qualified_res = [
+            (
+                re.compile(
+                    r'(?<![\w.$/])'
+                    + re.escape(old_fqn.replace('.', sep))
+                    + r'\b'
+                ),
+                new_fqn.replace('.', sep),
+            )
+            for sep in ('.', '/')
+        ]
+        self._unqualified_re = re.compile(
+            r'(?<![\w.$])' + re.escape(self.old_name) + r'\b'
+        )
+
+    @classmethod
+    def from_paths(
+        cls, old_path: Path, new_path: Path
+    ) -> _JavaClassRename | None:
+        """Returns the rename for two .java paths, or None if not derivable."""
+        if old_path.suffix != '.java' or new_path.suffix != '.java':
+            return None
+        old_fqn = cls._fqn_for(old_path)
+        new_fqn = cls._fqn_for(new_path)
+        if not old_fqn or not new_fqn or old_fqn == new_fqn:
+            return None
+        return cls(old_fqn, new_fqn)
+
+    @classmethod
+    def _fqn_for(cls, path: Path) -> str | None:
+        parts = path.with_suffix('').parts
+        root = next(
+            (i for i, p in enumerate(parts) if p in cls._PACKAGE_ROOTS), None
+        )
+        return '.'.join(parts[root:]) if root is not None else None
+
+    def rewrite_file(self, path: Path) -> None:
+        """Rewrites qualified references, importing the class where needed."""
+        content = path.read_bytes().decode('utf-8')
+        new_content = content
+        for pattern, sub in self._qualified_res:
+            new_content = pattern.sub(sub, new_content)
+        new_content = self._import_into_old_package(new_content)
+        if new_content != content:
+            path.write_text(new_content, encoding='utf-8', newline='\n')
+
+    def _import_into_old_package(self, content: str) -> str:
+        """Adds an import to files that used the class from its own package.
+
+        Those files referenced it unqualified, so no import existed to
+        rewrite. The formatter sorts the import into place afterwards.
+        """
+        package = re.search(r'^package\s+([\w.]+)\s*;\n', content, re.MULTILINE)
+        if (
+            not package
+            or package.group(1) != self.old_package
+            or self.old_package == self.new_package
+            or f'import {self.new_fqn};' in content
+        ):
+            return content
+        body = content[package.end() :]
+        if not self._unqualified_re.search(body):
+            return content
+        if self.old_name != self.new_name:
+            body = self._unqualified_re.sub(self.new_name, body)
+        return content[: package.end()] + f'\nimport {self.new_fqn};\n' + body
+
+
 def _gn_token_re(prefix: str) -> re.Pattern[str]:
     """Returns a regex matching `"prefix` at a GN reference token boundary.
 
@@ -337,7 +430,7 @@ def _update_gn_references(old_path: Path, new_path: Path) -> None:
         basename.
       - .gni or non-BUILD.gn .gn -> single-file move: rewrite the exact
         quoted root reference `"//<old_path>"`.
-      - C++ source -> single-file move: rewrite the exact quoted root
+      - C++ or Java source -> single-file move: rewrite the exact quoted root
         reference `"//<old_path>"`.
       - Other -> no-op.
 
@@ -393,7 +486,11 @@ def _update_gn_references(old_path: Path, new_path: Path) -> None:
                     )
         return
 
-    if suffix not in _GN_EXTENSIONS and suffix not in CPP_EXTENSIONS:
+    if (
+        suffix not in _GN_EXTENSIONS
+        and suffix not in CPP_EXTENSIONS
+        and suffix != '.java'
+    ):
         return
 
     old_quoted = f'"//{old_path.as_posix()}"'
