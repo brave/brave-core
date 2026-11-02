@@ -5,10 +5,10 @@ HTTP endpoints.
 
 It centralizes and standardizes:
 
-- serializing strongly typed C++ request objects to JSON
+- serializing strongly typed C++ request objects to JSON or Protobuf
 - issuing requests via `network::SimpleURLLoader`
 - mapping HTTP status codes to typed success/error bodies
-- deserializing JSON responses into strongly typed C++ objects
+- deserializing JSON or Protobuf responses into strongly typed C++ objects
 - surfacing transport errors, HTTP status, and parse failures consistently
 
 ## Motivation
@@ -29,10 +29,17 @@ interface and enforces correctness guarantees through C++ `concept`s and
 
 ## Usage
 
-`Client<>` integrates with the JSON schema/IDL compiler, which auto-generates
-request and response types implementing `ToValue()` and `FromValue()`.
+Request and response bodies are either JSON or Protobuf; an endpoint uses one
+format for both.
 
-Hand-written types are supported, but the IDL workflow is recommended.
+- JSON request bodies implement `ToValue()`, and JSON response bodies implement
+  `FromValue()`. The JSON schema/IDL compiler generates such types; hand-written
+  ones are supported, but the IDL workflow is recommended.
+- Protobuf request and response bodies are message types derived from
+  `google::protobuf::MessageLite`.
+
+The examples below use JSON; Protobuf endpoints work the same way, with
+generated message types in place of the IDL ones.
 
 ---
 
@@ -111,9 +118,9 @@ using LoginInit = BraveEndpoint<
 }  // namespace brave_account::endpoints
 ```
 
-The `BraveEndpoint<>` template simplifies defining endpoints for Brave services.
-It uses `brave_domains::GetServicesDomain()` under the hood to automatically
-resolve the service domain to the correct environment.
+The `BraveEndpoint<>` `template` simplifies defining endpoints for Brave
+services. It uses `brave_domains::GetServicesDomain()` under the hood to
+automatically resolve the service domain to the correct environment.
 
 Non-official builds resolve to staging, so that local testing never writes to
 production. Official builds always resolve to production. Either way, the
@@ -145,8 +152,8 @@ only the declared response type is returned.
 LoginInit::Request request;
 request.network_traffic_annotation_tag =
     net::MutableNetworkTrafficAnnotationTag(kTrafficAnnotation);
-request.email = "user@example.com";
-request.serialized_ke1 = "0e85b8e68bd22965e15e...";
+request.body.email = "user@example.com";
+request.body.serialized_ke1 = "0e85b8e68bd22965e15e...";
 
 Client<LoginInit>::Send(
     url_loader_factory_, std::move(request),
@@ -169,6 +176,34 @@ Client<LoginInit>::Send(
     }));
 ```
 
+`response.body` is `std::nullopt` when:
+
+- the request failed (`net_error != net::OK`) or no response headers were
+  received,
+- no response body was received, or
+- the response body fails to parse into the declared type: JSON bodies via
+  `base::JSONReader` and `FromValue()`, Protobuf bodies via `ParseFromString()`.
+
+#### Per-request options
+
+`network_traffic_annotation_tag` is required (only tests may leave it unset).
+Requests also have:
+
+- `retry_options`: forwarded to `SimpleURLLoader::SetRetryOptions()`; defaults
+  to no retries.
+- `timeout_duration`: forwarded to `SimpleURLLoader::SetTimeoutDuration()`;
+  defaults to zero, i.e. no timeout.
+- `url_replacements`: overrides the host, path, and/or query of
+  `Endpoint::URL()` for this request.
+
+```cpp
+request.retry_options = {
+    .max_retries = 1,
+    .retry_mode = network::SimpleURLLoader::RETRY_ON_NETWORK_CHANGE};
+request.timeout_duration = base::Seconds(30);
+request.url_replacements.SetHost(hostname).SetPath("/v1/resource");
+```
+
 ---
 
 ### 3. Adding request headers and receiving response headers
@@ -180,8 +215,7 @@ safety applies.
 ```cpp
 // Request with headers
 WithHeaders<MyEndpoint::Request> request;
-request.headers.SetHeader(net::HttpRequestHeaders::kAuthorization,
-                          base::StrCat({"Bearer ", bearer_token}));
+request.headers.SetHeader("X-Custom-Header", "value");
 
 // Bearer tokens are common enough that there's a helper for them.
 SetBearerToken(request, bearer_token);
@@ -205,7 +239,7 @@ Client<MyEndpoint>::Send(
 ### 4. Cancelable requests
 
 By default, requests are non-cancelable. To make a request cancelable, use the
-`RequestCancelability::kCancelable` template parameter:
+`RequestCancelability::kCancelable` `template` parameter:
 
 ```cpp
 RequestHandle request_handle =
@@ -245,6 +279,10 @@ MockResponseFor<LoginInit>(test_url_loader_factory_,
                               return body;
                             }()});
 ```
+
+If the request sets `url_replacements`, pass the same value as the last argument
+to `MockResponseFor<>()` (and `MatchesEndpoint<>()` below), so the mock matches
+the URL that is actually requested.
 
 #### When an interceptor is required
 
