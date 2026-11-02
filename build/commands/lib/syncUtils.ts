@@ -188,7 +188,7 @@ function shouldUpdateChromium(
     || JSON.stringify(latestSyncInfo) !== JSON.stringify(expectedSyncInfo)
   if (needsUpdate) {
     const currentRef = util.getGitReadableLocalRef(config.srcDir)
-    console.log(
+    Log.detail(
       `Chromium repo ${chalk.blue.bold(
         'needs sync',
       )}.\n  target is ${chalk.italic(chromiumRef)} at commit ${
@@ -204,7 +204,7 @@ function shouldUpdateChromium(
       )}`,
     )
   } else {
-    console.log(
+    Log.detail(
       chalk.green.bold(
         `Chromium repo does not need sync as it is already ${chalk.italic(
           chromiumRef,
@@ -364,7 +364,7 @@ export function syncChromium(program: SyncOptions) {
   util.writeJSON(latestSyncInfoFilePath, expectedSyncInfo)
 
   const postSyncChromiumRef = util.getGitReadableLocalRef(config.srcDir)
-  Log.status(`Chromium is now at ${postSyncChromiumRef || '[unknown]'}`)
+  Log.detail(`Chromium is now at ${postSyncChromiumRef || '[unknown]'}`)
   return true
 }
 

@@ -12,6 +12,7 @@ import { spawnSync, type SpawnSyncReturns } from 'node:child_process'
 // eslint-disable-next-line import/default
 import prettier from 'prettier'
 
+import * as buildOptions from '../lib/buildOptions.ts'
 import config from '../lib/config.ts'
 import util from '../lib/util.ts'
 import * as Log from '../lib/log.ts'
@@ -46,6 +47,7 @@ program
     'format all files, not just the changed files.'
       + 'Only for prettier and mojom formatters.',
   )
+  .apply(buildOptions.supportQuiet)
   .action(runFormat)
 
 // Replace the first 4 lines of the diff output with the before/after
@@ -223,7 +225,7 @@ const runPrettier = async (
   files: string[],
   dryRun: boolean,
 ): Promise<string[]> => {
-  console.log('run prettier for', files.length, 'files')
+  Log.detail(`run prettier for ${files.length} files`)
   const ignorePath = path.join(config.braveCoreDir, '.prettierignore')
   if (!fs.existsSync(ignorePath)) {
     throw new Error(`${ignorePath} file not found`)

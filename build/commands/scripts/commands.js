@@ -60,6 +60,7 @@ program
     '--print-patch-failures-in-json',
     'Emits a JSON structure with a list of patch files that failed to apply',
   )
+  .apply(buildOptions.supportQuiet)
   .apply(buildOptions.supportBuildConfigArg)
   .action(applyPatches)
 
@@ -215,6 +216,7 @@ program
     '--no-plaster-check',
     'Allows regenerating patches, even for plaster managed sources.',
   )
+  .apply(buildOptions.supportQuiet)
   .action(updatePatches)
 
 program.command('mass_rename').action(util.massRename)

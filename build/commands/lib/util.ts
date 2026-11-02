@@ -109,7 +109,11 @@ async function applyPatches(printPatchFailuresInJson?: boolean) {
   // comes from `patches/.repositories.cfg`, the same file plaster reads.
   const allPatchStatus: Awaited<ReturnType<GitPatcher['applyPatches']>> = []
   for (const repo of getPatchedRepositories()) {
-    const patcher = new GitPatcher(repo.patchDir, repo.path)
+    const patcher = new GitPatcher(
+      repo.patchDir,
+      repo.path,
+      Log.isEnabledFor(Log.Level.DETAIL),
+    )
     const patchStatus = await patcher.applyPatches()
     // Log status for all patches. Entries are differentiated for logging by
     // naming each source the way the whole checkout sees it, rather than the
@@ -159,7 +163,7 @@ function updateFileUTimesIfOverrideIsNewer(original: string, override: string) {
   if (isOverrideNewer(original, override)) {
     const date = new Date()
     fs.utimesSync(original, date, date)
-    console.log(original + ' is touched.')
+    Log.detail(original + ' is touched.')
     return true
   }
   return false
@@ -169,7 +173,7 @@ function deleteFileIfOverrideIsNewer(original: string, override: string) {
   if (fs.existsSync(original) && isOverrideNewer(original, override)) {
     try {
       fs.unlinkSync(original)
-      console.log(original + ' has been deleted.')
+      Log.detail(original + ' has been deleted.')
       return true
     } catch (err) {
       console.error('Unable to delete file: ' + original + ' error: ', err)
@@ -224,6 +228,10 @@ const util = {
       if (!continueOnFail) {
         if (skipLogging) {
           console.log(cmd, args, 'exited with status', prog.status, cmdOptions)
+        } else if (!Log.isEnabledFor(Log.Level.DETAIL)) {
+          console.log(
+            `${cmd} ${args.join(' ')} exited with status ${prog.status}`,
+          )
         }
 
         console.log(prog.stdout && prog.stdout.toString())
@@ -526,6 +534,9 @@ const util = {
       const hasBuildArgsUpdated = util.writeGnBuildArgs(outputDir, buildArgs)
       const shouldCheck = isCI
       const internalOpts = shouldCheck ? ['--check'] : []
+      if (!Log.isEnabledFor(Log.Level.DETAIL)) {
+        internalOpts.push('-q')
+      }
 
       const shouldRunGnGen =
         config.force_gn_gen
@@ -652,6 +663,7 @@ const util = {
       ...targets,
       '-k',
       String(numCompileFailure),
+      ...(Log.isEnabledFor(Log.Level.DETAIL) ? [] : ['--quiet']),
       ...config.extraNinjaOpts,
     ]
 
