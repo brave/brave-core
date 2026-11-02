@@ -63,9 +63,15 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
-#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/new_tab_page_initializer.h"
 #include "brave/browser/ui/webui/brave_welcome_page/brave_welcome_page_prefs.h"
+
+// Defined in //brave/browser/ui:brave_tab_prefs, linked through
+// //brave/browser:core.
+namespace brave_tabs {
+void MigrateBraveProfilePrefs(PrefService* prefs);
+void MaybeApplyVerticalTabMigrationTestingOverride(PrefService* prefs);
+}  // namespace brave_tabs
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
