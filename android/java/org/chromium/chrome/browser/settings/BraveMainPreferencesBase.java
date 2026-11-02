@@ -425,17 +425,15 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         if (ChromeFeatureList.isEnabled(ChromeFeatureList.YOUR_SAVED_INFO_SETTINGS_PAGE_ANDROID)) {
             setPreferenceOrder(
                     MainSettings.PREF_AUTOFILL_AND_PASSWORDS, ++passwordsAndAutofillSectionOrder);
+            // Email Aliases stays a separate row, right below Autofill and passwords.
+            passwordsAndAutofillSectionOrder =
+                    arrangeEmailAliasesPreference(passwordsAndAutofillSectionOrder);
         } else {
             setPreferenceOrder(
                     MainSettings.PREF_AUTOFILL_SECTION, ++passwordsAndAutofillSectionOrder);
             setPreferenceOrder(PREF_PASSWORDS, ++passwordsAndAutofillSectionOrder);
-            if (mEmailAliasesController != null) {
-              setPreferenceOrder(
-                      BraveEmailAliasesSectionController.PREF_EMAIL_ALIASES,
-                      ++passwordsAndAutofillSectionOrder);
-            } else {
-              removePreferenceIfPresent(BraveEmailAliasesSectionController.PREF_EMAIL_ALIASES);
-            }
+            passwordsAndAutofillSectionOrder =
+                    arrangeEmailAliasesPreference(passwordsAndAutofillSectionOrder);
             setPreferenceOrder(
                     MainSettings.PREF_AUTOFILL_OPTIONS, ++passwordsAndAutofillSectionOrder);
             setPreferenceOrder(PREF_PAYMENT_METHODS, ++passwordsAndAutofillSectionOrder);
@@ -471,6 +469,22 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         removePreferenceIfPresent(MainSettings.PREF_APPEARANCE);
 
         resortPreferenceScreenChildren();
+    }
+
+    /**
+     * Places the Email Aliases row right after {@code previousOrder}, or removes it when Email
+     * Aliases is unavailable.
+     *
+     * @return The order of the last row placed.
+     */
+    private int arrangeEmailAliasesPreference(int previousOrder) {
+        if (mEmailAliasesController == null) {
+            removePreferenceIfPresent(BraveEmailAliasesSectionController.PREF_EMAIL_ALIASES);
+            return previousOrder;
+        }
+        setPreferenceOrder(
+                BraveEmailAliasesSectionController.PREF_EMAIL_ALIASES, ++previousOrder);
+        return previousOrder;
     }
 
     /** Whether any toolbar carries a home button, which the homepage setting applies to. */

@@ -41,8 +41,7 @@ class EmailAliasesSettingsUIAndroid
 
  private:
   // brave_account::mojom::DialogOpener:
-  void OpenDialog(const std::string& initiating_service_name,
-                  brave_account::mojom::DialogMode dialog_mode) override;
+  void OpenDialog(brave_account::mojom::DialogMode dialog_mode) override;
 
   // brave_account::mojom::DialogController:
   void CloseDialog() override;
