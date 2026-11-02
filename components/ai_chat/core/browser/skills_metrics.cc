@@ -153,8 +153,9 @@ void SkillsMetrics::NotifySkillChange() {
 }
 
 void SkillsMetrics::ReportWeeklySessions() {
-  base::Time today_midnight = base::Time::Now().LocalMidnight();
-  base::Time one_week_ago = today_midnight - base::Days(6);
+  const base::Time now = base::Time::Now();
+  base::Time today_midnight = now.LocalMidnight();
+  base::Time one_week_ago = now.LocalMidnightWithOffset(-6);
 
   auto prompt_count = skills_prompt_count_storage_.GetPeriodSumInTimeRange(
       one_week_ago, today_midnight);
