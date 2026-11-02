@@ -228,6 +228,17 @@ TEST_F(ContainersServiceTest, GetUsedContainerIds) {
   EXPECT_THAT(service_->GetUsedContainerIds(), testing::ElementsAre("used-id"));
 }
 
+TEST_F(ContainersServiceTest, IsContainerConfined) {
+  auto container = service_->CreateAndPersistTemporaryContainer();
+  auto other = service_->CreateAndPersistTemporaryContainer();
+  EXPECT_FALSE(service_->IsContainerConfined(container->id));
+
+  service_->SetContainerConfined(container->id);
+
+  EXPECT_TRUE(service_->IsContainerConfined(container->id));
+  EXPECT_FALSE(service_->IsContainerConfined(other->id));
+}
+
 TEST_F(ContainersServiceTest, GetUsedContainerIds_EmptyWhileDiscovering) {
   SetContainersToPrefs({}, prefs_);
   service_->MarkContainerUsed("orphan-id");
