@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/ui/views/toolbar/pinned_action_toolbar_button.cc b/chrome/browser/ui/views/toolbar/pinned_action_toolbar_button.cc
+index 31da4534bb1a311a8aefe694357eb93b4d6a6adb..188a53ca2aefa863237616031e51200ea2935bbd 100644
+--- a/chrome/browser/ui/views/toolbar/pinned_action_toolbar_button.cc
++++ b/chrome/browser/ui/views/toolbar/pinned_action_toolbar_button.cc
+@@ -244,6 +244,10 @@ void PinnedActionToolbarButton::OnMouseReleased(const ui::MouseEvent& event) {
+ }
+ 
+ void PinnedActionToolbarButton::UpdateIcon() {
++  if (HasIconEnabledColorsOverride() && action_engaged_) {
++    ToolbarButton::UpdateIcon();
++    return;
++  }
+   const std::optional<VectorIcons>& icons = GetVectorIcons();
+   // If the button is a cached permanent button the color provider will not be
+   // available.
