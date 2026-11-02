@@ -8,7 +8,7 @@ import {
   AccountState,
   Authentication,
   AuthenticationObserverCallbackRouter,
-} from 'gen/brave/components/brave_account/mojom/brave_account.mojom.m'
+} from 'gen/brave/components/brave_account/mojom/brave_account.mojom-webui.js'
 import {
   AliasesUpdate,
   AliasesAccountUpdate,

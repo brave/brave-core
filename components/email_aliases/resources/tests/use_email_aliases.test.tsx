@@ -9,7 +9,7 @@ import {
   isAccountLoggedIn,
   useEmailAliases,
 } from '../content/use_email_aliases'
-import type { AccountState } from 'gen/brave/components/brave_account/mojom/brave_account.mojom.m'
+import type { AccountState } from 'gen/brave/components/brave_account/mojom/brave_account.mojom-webui.js'
 import {
   Alias,
   AliasesAccountUpdate,
