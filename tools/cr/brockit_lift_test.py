@@ -45,6 +45,7 @@ import brockit
 import plaster
 import terminal
 import toolchain
+import versioning
 
 from test.fake_chromium_repo import (
     DEFAULT_BRANCH,
@@ -377,7 +378,7 @@ class LiftEnvironment:
 
         # The real pinslist file is used so the block brockit rewrites is the
         # one that ships.
-        pinslist = Path(brockit.PINSLIST_TIMESTAMP_FILE)
+        pinslist = Path(versioning.PINSLIST_TIMESTAMP_FILE)
         (brave / pinslist).parent.mkdir(parents=True, exist_ok=True)
         shutil.copy(
             Path(__file__).resolve().parents[2] / pinslist, brave / pinslist
@@ -707,7 +708,7 @@ class LiftCleanRunTest(LiftTestCase):
         self.assertTrue(version_commit)
         self.assertEqual(
             sorted(self.env.files_in(version_commit)),
-            sorted(['package.json', brockit.PINSLIST_TIMESTAMP_FILE]),
+            sorted(['package.json', versioning.PINSLIST_TIMESTAMP_FILE]),
         )
         # The tag brave is pinned to is the one that was lifted to, both in the
         # commit and in the working tree.
@@ -717,7 +718,7 @@ class LiftCleanRunTest(LiftTestCase):
         self.assertIn(
             '# Last updated:',
             self.env.git(
-                'show', f'{version_commit}:{brockit.PINSLIST_TIMESTAMP_FILE}'
+                'show', f'{version_commit}:{versioning.PINSLIST_TIMESTAMP_FILE}'
             ),
         )
 
@@ -2084,7 +2085,7 @@ class LiftRestartTest(LiftTestCase):
         # Anything committed on top of the pinslist file hides the version
         # commit `--restart` keys off.
         self.env.stage_file(
-            brockit.PINSLIST_TIMESTAMP_FILE, 'unrelated rewrite\n'
+            versioning.PINSLIST_TIMESTAMP_FILE, 'unrelated rewrite\n'
         )
         self.env.repo.commit('Rewrite the pinslist file', self.env.repo.brave)
 
@@ -2198,9 +2199,21 @@ class LiftToolchainAdvisoryTest(LiftTestCase):
         super().setUp()
         # Recovery kicks off a CI build and waits for it, which a test has no
         # business doing; the advisory is what is under test here.
-        patcher = patch.object(toolchain.WindowsToolchain, 'recover')
-        self.recover = patcher.start()
-        self.recover.return_value = False
+        patcher = patch.object(toolchain.WindowsToolchain, 'ensure_published')
+        self.ensure_published = patcher.start()
+        self.ensure_published.return_value = False
+        self.addCleanup(patcher.stop)
+        # The repin fetches the published toolchain index, so it only records
+        # the commits already in when it is called.
+        self.subjects_at_repin = []
+        patcher = patch.object(
+            toolchain.WindowsToolchain,
+            'repin',
+            side_effect=lambda *_: self.subjects_at_repin.append(
+                self.env.subjects()
+            ),
+        )
+        self.repin = patcher.start()
         self.addCleanup(patcher.stop)
 
     def _release_repinning_the_toolchain(self) -> str:
@@ -2261,14 +2274,55 @@ class LiftToolchainAdvisoryTest(LiftTestCase):
     def test_a_recovered_toolchain_raises_no_advisory(self):
         """When the toolchain could be built and repinned on the spot there is
         nothing left for the user to do, so the lift just carries on."""
-        self.recover.return_value = True
-        self._release_repinning_the_toolchain()
+        self.ensure_published.return_value = True
+        culprit = self._release_repinning_the_toolchain()
 
         run = self.env.run_lift(f'--to={MAJOR_TARGET}')
 
         self.assert_succeeded(run)
         self.assert_output_lacks(run, 'Pre-run advisory')
-        self.recover.assert_called_once()
+        self.ensure_published.assert_called_once()
+        self.repin.assert_called_once_with(
+            brockit.Version(MAJOR_TARGET), culprit
+        )
+        # The repin lands only after the version commit, so that one remains
+        # the first commit of the upgrade.
+        self.assertEqual(
+            self.subjects_at_repin,
+            [
+                [
+                    f'Update from Chromium {BASE_VERSION} to Chromium '
+                    f'{MAJOR_TARGET}.'
+                ]
+            ],
+        )
+
+    def test_ack_advisory_repins_a_toolchain_recovered_before(self):
+        """A toolchain recovered on the run that showed an advisory is still
+        repinned by the `--ack-advisory` run, which skips the checks."""
+        self.ensure_published.return_value = True
+        culprit = self._release_repinning_the_toolchain()
+        with (
+            patch.object(toolchain.XcodeToolchain, 'check') as xcode_check,
+            patch.object(
+                toolchain.XcodeToolchain, 'ensure_published', return_value=False
+            ),
+        ):
+            xcode_check.return_value = toolchain.ToolchainAdvisory(
+                description='Xcode has been updated.',
+                advice='Generate it.',
+                commit_hash='xcodeculprit',
+                commit_message='Roll Xcode',
+            )
+            self.env.run_lift(f'--to={MAJOR_TARGET}')
+        self.repin.assert_not_called()
+
+        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--ack-advisory')
+
+        self.assert_succeeded(run)
+        self.repin.assert_called_once_with(
+            brockit.Version(MAJOR_TARGET), culprit
+        )
 
     def test_ack_advisory_without_an_advisory_shown_is_rejected(self):
         """`--ack-advisory` is only meant for the run that follows an advisory,
@@ -2296,7 +2350,8 @@ class LiftToolchainAdvisoryTest(LiftTestCase):
 
         self.assert_succeeded(run)
         self.assert_output_lacks(run, 'Pre-run advisory')
-        self.recover.assert_not_called()
+        self.ensure_published.assert_not_called()
+        self.repin.assert_not_called()
 
 
 class LiftTargetLabelTest(LiftTestCase):
