@@ -85,14 +85,6 @@ substitutions:
       pattern: 'make_unique<InfoBarContainerView>'
       replace: 'make_unique<BraveInfoBarContainerView>'
 
-  - description:
-      'Create BraveBrowserViewLayoutDelegateImpl wherever BrowserView creates a
-      BrowserViewLayoutDelegateImpl.'
-    count: 0 # Every creation of it in this file wants Brave's subclass.
-    regex:
-      pattern: 'make_unique<BrowserViewLayoutDelegateImpl>'
-      replace: 'make_unique<BraveBrowserViewLayoutDelegateImpl>'
-
   - description: 'Create a BraveBookmarkBarView for the bookmark bar.'
     regex:
       pattern: 'std::make_unique<BookmarkBarView>('

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/frame/browser_view.cc b/chrome/browser/ui/views/frame/browser_view.cc
-index 7b568f6de760af21d6e9d2aa44415a7cef617c51..ecdff36d27b82fd789338c2f1c8698e17fa14bf4 100644
+index 7b568f6de760af21d6e9d2aa44415a7cef617c51..abbed133927f7b097af415cbd1a1d51975e909d2 100644
 --- a/chrome/browser/ui/views/frame/browser_view.cc
 +++ b/chrome/browser/ui/views/frame/browser_view.cc
 @@ -652,6 +652,10 @@ bool DoCutCopyPasteForWebContents(content::WebContents* contents,
@@ -68,15 +68,6 @@ index 7b568f6de760af21d6e9d2aa44415a7cef617c51..ecdff36d27b82fd789338c2f1c8698e1
    // Update various elements that are interested in knowing the current
    // WebContents.
  
-@@ -5142,7 +5159,7 @@ void BrowserView::AddedToWidget() {
-   // LINT.ThenChange(//chrome/browser/ui/views/frame/layout/browser_view_layout.h:BrowserViewLayoutViews)
- 
-   SetLayoutManager(BrowserViewLayout::CreateLayout(
--      std::make_unique<BrowserViewLayoutDelegateImpl>(*this), browser(),
-+      std::make_unique<BraveBrowserViewLayoutDelegateImpl>(*this), browser(),
-       std::move(layout_views)));
- 
-   EnsureFocusOrder();
 @@ -5378,7 +5395,7 @@ bool BrowserView::MaybeShowBookmarkBar(WebContents* contents) {
    if (!bookmark_bar_view_) {
      auto* factory = UIControllerFactory::From(browser_.get());
