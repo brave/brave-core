@@ -62,8 +62,8 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/base/page_transition_types.h"
-#include "ui/base/window_open_disposition.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -188,7 +188,8 @@ class TabSearchPageHandlerBrowserTest : public InProcessBrowserTest {
                           ui_test_utils::BrowserTestWaitFlags wait_flags =
                               ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP) {
     ui_test_utils::NavigateToURLWithDisposition(
-        browser, url, WindowOpenDisposition::kNewForegroundTab, wait_flags);
+        browser, url, ui::mojom::WindowOpenDisposition::kNewForegroundTab,
+        wait_flags);
     content::WebContents* web_contents =
         browser->tab_strip_model()->GetActiveWebContents();
     web_contents->UpdateTitleForEntry(

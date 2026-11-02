@@ -64,6 +64,7 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "third_party/skia/include/core/SkPath.h"
 #include "third_party/skia/include/core/SkRegion.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/compositor/layer.h"
 #include "ui/events/base_event_utils.h"
 #include "ui/events/event.h"
@@ -1034,7 +1035,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewReloadTest) {
     LoadObserver observer_0(GetWebContentsAt(0));
     LoadObserver observer_1(GetWebContentsAt(1));
 
-    chrome::Reload(browser(), WindowOpenDisposition::kCurrentTab);
+    chrome::Reload(browser(), ui::mojom::WindowOpenDisposition::kCurrentTab);
     content::WaitForLoadStop(GetWebContentsAt(0));
     content::WaitForLoadStop(GetWebContentsAt(1));
 
@@ -1055,7 +1056,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewReloadTest) {
     LoadObserver observer_1(GetWebContentsAt(1));
     LoadObserver observer_2(GetWebContentsAt(2));
 
-    chrome::Reload(browser(), WindowOpenDisposition::kCurrentTab);
+    chrome::Reload(browser(), ui::mojom::WindowOpenDisposition::kCurrentTab);
     content::WaitForLoadStop(GetWebContentsAt(0));
     content::WaitForLoadStop(GetWebContentsAt(1));
     content::WaitForLoadStop(GetWebContentsAt(2));
@@ -1072,7 +1073,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewReloadTest) {
     LoadObserver observer_1(GetWebContentsAt(1));
     LoadObserver observer_2(GetWebContentsAt(2));
 
-    chrome::Reload(browser(), WindowOpenDisposition::kCurrentTab);
+    chrome::Reload(browser(), ui::mojom::WindowOpenDisposition::kCurrentTab);
     content::WaitForLoadStop(GetWebContentsAt(0));
     content::WaitForLoadStop(GetWebContentsAt(1));
     content::WaitForLoadStop(GetWebContentsAt(2));
@@ -1091,7 +1092,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewReloadTest) {
     LoadObserver observer_1(GetWebContentsAt(1));
     LoadObserver observer_2(GetWebContentsAt(2));
 
-    chrome::Reload(browser(), WindowOpenDisposition::kCurrentTab);
+    chrome::Reload(browser(), ui::mojom::WindowOpenDisposition::kCurrentTab);
     content::WaitForLoadStop(GetWebContentsAt(0));
     content::WaitForLoadStop(GetWebContentsAt(1));
     content::WaitForLoadStop(GetWebContentsAt(2));

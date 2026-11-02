@@ -9,7 +9,7 @@
 #define AddNewContents                                                        \
   AddNewContents_ChromiumImpl(                                                \
       WebContents* source, std::unique_ptr<WebContents> new_contents,         \
-      const GURL& target_url, WindowOpenDisposition disposition,              \
+      const GURL& target_url, ui::mojom::WindowOpenDisposition disposition,   \
       const blink::mojom::WindowFeatures& window_features, bool user_gesture, \
       bool* was_blocked);                                                     \
   virtual WebContents* AddNewContents

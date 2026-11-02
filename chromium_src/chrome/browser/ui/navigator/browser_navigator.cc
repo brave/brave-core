@@ -32,8 +32,8 @@ void UpdateBraveScheme(NavigateParams* params) {
 
 void MaybeOverridePopupDisposition(NavigateParams* params) {
   if (base::FeatureList::IsEnabled(features::kForcePopupToBeOpenedAsTab) &&
-      params->disposition == WindowOpenDisposition::kNewPopup) {
-    params->disposition = WindowOpenDisposition::kNewForegroundTab;
+      params->disposition == ui::mojom::WindowOpenDisposition::kNewPopup) {
+    params->disposition = ui::mojom::WindowOpenDisposition::kNewForegroundTab;
   }
 }
 

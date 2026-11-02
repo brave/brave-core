@@ -33,6 +33,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/template_url.h"
 #include "components/search_engines/template_url_service.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/gfx/image/image.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -196,7 +197,7 @@ void BraveOmniboxClientImpl::OnURLOpenedFromOmnibox(OmniboxLog* log) {
 void BraveOmniboxClientImpl::OnAutocompleteAccept(
     const GURL& destination_url,
     TemplateURLRef::PostContent* post_content,
-    WindowOpenDisposition disposition,
+    ui::mojom::WindowOpenDisposition disposition,
     ui::PageTransition transition,
     omnibox::AutocompleteMatchType match_type,
     base::TimeTicks match_selection_timestamp,

@@ -8,6 +8,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "chrome/browser/ui/views/frame/browser_native_widget_mac.h"
+#include "ui/base/mojom/window_open_disposition.mojom-forward.h"
 
 class BrowserView;
 class BrowserWidget;
@@ -26,7 +27,7 @@ class BraveBrowserNativeWidgetMac : public BrowserNativeWidgetMac {
       remote_cocoa::mojom::ValidateUserInterfaceItemResult* result) override;
 
   bool ExecuteCommand(int32_t command,
-                      WindowOpenDisposition window_open_disposition,
+                      ui::mojom::WindowOpenDisposition window_open_disposition,
                       bool is_before_first_responder) override;
 
  private:

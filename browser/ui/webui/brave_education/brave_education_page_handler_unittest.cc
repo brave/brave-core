@@ -20,6 +20,7 @@
 #include "content/public/test/browser_task_environment.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 
 namespace brave_education {
 
@@ -32,7 +33,8 @@ class TestDelegate : public BraveBrowserCommandHandler::Delegate {
 
   ~TestDelegate() override = default;
 
-  void OpenURL(const GURL& url, WindowOpenDisposition disposition) override {
+  void OpenURL(const GURL& url,
+               ui::mojom::WindowOpenDisposition disposition) override {
     add_action_.Run("open-url: " + url.spec());
   }
 

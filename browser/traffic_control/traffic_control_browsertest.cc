@@ -45,8 +45,8 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/base/page_transition_types.h"
-#include "ui/base/window_open_disposition.h"
 #include "url/gurl.h"
 
 namespace traffic_control {
@@ -103,7 +103,7 @@ class TrafficControlBrowserTest : public InProcessBrowserTest {
   content::WebContents* NavigateExpectingReroute(const GURL& url) {
     const int initial_count = browser()->tab_strip_model()->count();
     content::OpenURLParams params(url, content::Referrer(),
-                                  WindowOpenDisposition::kCurrentTab,
+                                  ui::mojom::WindowOpenDisposition::kCurrentTab,
                                   ui::PAGE_TRANSITION_TYPED, false);
     browser()->OpenURL(params, /*navigation_handle_callback=*/{});
 
@@ -137,7 +137,7 @@ class TrafficControlBrowserTest : public InProcessBrowserTest {
       const containers::mojom::ContainerPtr& container) {
     // Match production OpenUrlInContainer: do not let Traffic Control override.
     NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
-    params.disposition = WindowOpenDisposition::kNewForegroundTab;
+    params.disposition = ui::mojom::WindowOpenDisposition::kNewForegroundTab;
     params.storage_partition_config = content::StoragePartitionConfig::Create(
         browser()->GetProfile(), containers::kContainersStoragePartitionDomain,
         container->id, browser()->GetProfile()->IsOffTheRecord());
@@ -146,7 +146,7 @@ class TrafficControlBrowserTest : public InProcessBrowserTest {
 
   void NavigateInCurrentTab(const GURL& url, ui::PageTransition transition) {
     content::OpenURLParams params(url, content::Referrer(),
-                                  WindowOpenDisposition::kCurrentTab,
+                                  ui::mojom::WindowOpenDisposition::kCurrentTab,
                                   transition, false);
     browser()->OpenURL(params, /*navigation_handle_callback=*/{});
   }
@@ -352,7 +352,7 @@ IN_PROC_BROWSER_TEST_F(TrafficControlBrowserTest, TemporaryContainer) {
   SetRules(std::move(rules));
 
   content::OpenURLParams params(TestUrl(), content::Referrer(),
-                                WindowOpenDisposition::kCurrentTab,
+                                ui::mojom::WindowOpenDisposition::kCurrentTab,
                                 ui::PAGE_TRANSITION_TYPED, false);
   browser()->OpenURL(params, /*navigation_handle_callback=*/{});
 

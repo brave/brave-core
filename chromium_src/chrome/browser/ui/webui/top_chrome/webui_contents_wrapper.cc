@@ -38,7 +38,7 @@ content::WebContents* WebUIContentsWrapper::Host::AddNewContents(
     content::WebContents* source,
     std::unique_ptr<content::WebContents> new_contents,
     const GURL& target_url,
-    WindowOpenDisposition disposition,
+    ui::mojom::WindowOpenDisposition disposition,
     const blink::mojom::WindowFeatures& window_features,
     bool user_gesture,
     bool* was_blocked) {
@@ -51,7 +51,7 @@ content::WebContents* WebUIContentsWrapper::AddNewContents(
     content::WebContents* source,
     std::unique_ptr<content::WebContents> new_contents,
     const GURL& target_url,
-    WindowOpenDisposition disposition,
+    ui::mojom::WindowOpenDisposition disposition,
     const blink::mojom::WindowFeatures& window_features,
     bool user_gesture,
     bool* was_blocked) {
@@ -63,7 +63,7 @@ content::WebContents* WebUIContentsWrapper::AddNewContents(
   }
   auto* contents = chrome::AddWebContents(
       browser_.get(), source, std::move(new_contents), target_url,
-      WindowOpenDisposition::kNewPopup, window_features,
+      ui::mojom::WindowOpenDisposition::kNewPopup, window_features,
       NavigateParams::WindowAction::kShowWindow, user_gesture);
   if (!contents) {
     return nullptr;

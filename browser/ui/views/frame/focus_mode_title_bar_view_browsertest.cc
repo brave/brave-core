@@ -26,7 +26,7 @@
 #include "net/test/embedded_test_server/default_handlers.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "ui/base/window_open_disposition.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/scoped_animation_duration_scale_mode.h"
 #include "ui/views/controls/label.h"
@@ -118,7 +118,7 @@ IN_PROC_BROWSER_TEST_F(FocusModeTitleBarViewBrowserTest, TitleBarWiring) {
   // Opening a new foreground tab updates the title bar to the new active tab.
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
       browser(), https_server_.GetURL("b.test", "/empty.html"),
-      WindowOpenDisposition::kNewForegroundTab,
+      ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_TAB |
           ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   EXPECT_TRUE(WaitForDomainToContain(u"b.test"));
