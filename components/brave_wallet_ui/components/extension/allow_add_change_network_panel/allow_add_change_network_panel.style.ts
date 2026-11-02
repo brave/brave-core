@@ -96,3 +96,9 @@ export const Card = styled(Column)`
   box-shadow: ${leo.effect.elevation['01']};
   overflow: hidden;
 `
+
+export const ButtonRow = styled(Row)`
+  & > leo-button {
+    flex: 1 1 0;
+  }
+`

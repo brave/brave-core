@@ -41,6 +41,7 @@ import {
   ArrowIconWrapper,
   ArrowIcon,
   Card,
+  ButtonRow,
 } from './allow_add_change_network_panel.style'
 import { Column, Row, VerticalDivider } from '../../shared/style'
 
@@ -345,9 +346,9 @@ export function AllowAddChangeNetworkPanel(props: Props) {
               </Button>
             )}
           </Column>
-          <Row
+          <ButtonRow
             padding='16px'
-            gap='8px'
+            gap='12px'
           >
             <Button
               kind='outline'
@@ -369,7 +370,7 @@ export function AllowAddChangeNetworkPanel(props: Props) {
                 ? getLocale(S.BRAVE_WALLET_ALLOW_CHANGE_NETWORK_BUTTON)
                 : getLocale(S.BRAVE_WALLET_ALLOW_ADD_NETWORK_BUTTON)}
             </Button>
-          </Row>
+          </ButtonRow>
         </Card>
       </Column>
       <BottomSheet
