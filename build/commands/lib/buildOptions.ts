@@ -6,6 +6,29 @@
 import { Argument, Command, Option } from 'commander'
 import './commanderApply.ts'
 import { collect, parseBoolean, parseInteger } from './commandsUtils.ts'
+import * as Log from './log.ts'
+
+export function supportQuiet<
+  Args extends any[],
+  Opts extends {},
+  GlobalOpts extends {},
+>(command: Command<Args, Opts, GlobalOpts>) {
+  return command
+    .option(
+      '--quiet',
+      'leave out output not needed to follow the result, and pass quiet '
+        + 'flags to depot_tools (the default under an AI agent)',
+    )
+    .option('--no-quiet', 'print all output, even under an AI agent')
+    .option('--verbose', 'print all output, even under an AI agent')
+    .hook('preAction', (_, actionCommand) => {
+      const { quiet, verbose } = actionCommand.opts() as {
+        quiet?: boolean
+        verbose?: boolean
+      }
+      Log.setQuiet(quiet ?? (verbose ? false : undefined), actionCommand.name())
+    })
+}
 
 export function supportBuildConfigArg<
   Args extends any[],
