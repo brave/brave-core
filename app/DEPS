@@ -87,6 +87,7 @@ specific_include_rules = {
     "+components/metrics/private_metrics/private_metrics_features.h",
     "+components/ntp_tiles/features.h",
     "+components/omnibox/browser/aim_eligibility_service_features.h",
+    "+components/optimization_guide/core/delivery/prediction_model_component_configs.h",
     "+components/passage_embeddings/core/passage_embeddings_features.h",
     "+components/password_manager/core/browser/features/password_features.h",
     "+components/personal_context/core/personal_context_features.h",
