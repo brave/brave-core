@@ -26,6 +26,7 @@ import org.chromium.chrome.browser.download.DownloadToolbarButtonState;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.omnibox.OmniboxStub;
+import org.chromium.chrome.browser.omnibox.styles.OmniboxResourceProvider;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
@@ -123,7 +124,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             Runnable onSigninTapped,
             NonNullObservableSupplier<DownloadToolbarButtonState> downloadButtonStateSupplier,
             Runnable onDownloadButtonClicked,
-            boolean suppressTabStripAtStart) {
+            boolean suppressTabStripAtStart,
+            OmniboxResourceProvider omniboxResourceProvider) {
         super(
                 controlContainer,
                 toolbarLayout,
@@ -172,7 +174,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 onSigninTapped,
                 downloadButtonStateSupplier,
                 onDownloadButtonClicked,
-                suppressTabStripAtStart);
+                suppressTabStripAtStart,
+                omniboxResourceProvider);
 
         mBraveToolbarLayout = toolbarLayout;
         mBraveMenuButtonCoordinator = browsingModeMenuButtonCoordinator;
