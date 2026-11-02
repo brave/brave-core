@@ -35,6 +35,7 @@
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
+#include "brave/browser/net/brave_onion_origin_header_client.h"
 #include "brave/browser/net/brave_proxying_url_loader_factory.h"
 #include "brave/browser/net/brave_proxying_web_socket.h"
 #include "brave/browser/net/features.h"
@@ -1349,6 +1350,22 @@ void BraveContentBrowserClient::WillCreateURLLoaderFactory(
   if (set_bypass_redirect_checks && bypass_redirect_checks) {
     std::move(set_bypass_redirect_checks).Run(*bypass_redirect_checks);
   }
+}
+
+content::ContentBrowserClient::WebSocketOptions
+BraveContentBrowserClient::GetWebSocketOptions(
+    content::RenderFrameHost* frame) {
+  auto options = ChromeContentBrowserClient::GetWebSocketOptions(frame);
+#if BUILDFLAG(ENABLE_TOR)
+  // Only .onion pages need their Origin rewritten. Shared and service workers
+  // have no frame, so their origin is not known here and they always get the
+  // client.
+  if (!frame || net::IsOnion(frame->GetLastCommittedOrigin())) {
+    options.header_client = brave::OnionOriginHeaderClient::Create(
+        std::move(options.header_client));
+  }
+#endif  // BUILDFLAG(ENABLE_TOR)
+  return options;
 }
 
 // Intercept frame and worker handshakes so they go through Brave's network

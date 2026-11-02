@@ -96,6 +96,7 @@ source_set("unit_tests") {
     "brave_block_safebrowsing_urls_unittest.cc",
     "brave_common_static_redirect_network_delegate_helper_unittest.cc",
     "brave_network_delegate_base_unittest.cc",
+    "brave_onion_origin_header_client_unittest.cc",
     "brave_proxying_url_loader_factory_unittest.cc",
     "brave_proxying_web_socket_unittest.cc",
     "brave_site_hacks_network_delegate_helper_unittest.cc",
