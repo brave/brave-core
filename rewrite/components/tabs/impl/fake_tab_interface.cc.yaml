@@ -17,7 +17,7 @@ substitutions:
       re_flags: [DOTALL]
       replace: |-
         \1
-        #if !BUILDFLAG(IS_ANDROID)
+        #if BUILDFLAG(ENABLE_BRAVE_TREE_TABS)
               case TabCollection::Type::TREE_NODE:
                 break;
-        #endif  // !BUILDFLAG(IS_ANDROID)
+        #endif  // BUILDFLAG(ENABLE_BRAVE_TREE_TABS)
