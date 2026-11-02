@@ -60,6 +60,7 @@
 #include "mojo/public/cpp/bindings/remote.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/webui/webui_util.h"
 #include "url/url_constants.h"
 
@@ -410,10 +411,10 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
 #if !BUILDFLAG(IS_ANDROID)
     BrowserWindowInterface* browser =
         ai_chat::GetBrowserForWebContents(web_ui_->GetWebContents());
-    browser->OpenURL(
-        {url, content::Referrer(), WindowOpenDisposition::kNewForegroundTab,
-         ui::PAGE_TRANSITION_LINK, false},
-        /*navigation_handle_callback=*/{});
+    browser->OpenURL({url, content::Referrer(),
+                      ui::mojom::WindowOpenDisposition::kNewForegroundTab,
+                      ui::PAGE_TRANSITION_LINK, false},
+                     /*navigation_handle_callback=*/{});
 #else
     // We handle open link different on Android as we need to close the chat
     // window because it's always full screen

@@ -18,6 +18,7 @@
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/infobar.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/views/vector_icons.h"
 
 // static
@@ -116,7 +117,7 @@ bool BraveSyncAccountDeletedInfoBarDelegate::Accept() {
 }
 
 bool BraveSyncAccountDeletedInfoBarDelegate::LinkClicked(
-    WindowOpenDisposition disposition) {
+    ui::mojom::WindowOpenDisposition disposition) {
   brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs());
   brave_sync_prefs.SetSyncAccountDeletedNoticePending(false);
   InfoBarDelegate::LinkClicked(disposition);

@@ -10,6 +10,7 @@
 #include "base/task/sequenced_task_runner.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 
 namespace ai_chat {
 
@@ -24,7 +25,7 @@ void AIChatFullPageLinkObserver::DidOpenRequestedURL(
     content::RenderFrameHost* source_render_frame_host,
     const GURL& url,
     const content::Referrer& referrer,
-    WindowOpenDisposition disposition,
+    ui::mojom::WindowOpenDisposition disposition,
     ui::PageTransition transition,
     bool started_from_context_menu,
     bool renderer_initiated) {
@@ -33,7 +34,7 @@ void AIChatFullPageLinkObserver::DidOpenRequestedURL(
   // leave the conversation visible where it is, so they must not move it, and
   // neither should a browser-driven open such as a context menu item.
   if (!renderer_initiated || started_from_context_menu ||
-      disposition != WindowOpenDisposition::kNewForegroundTab) {
+      disposition != ui::mojom::WindowOpenDisposition::kNewForegroundTab) {
     return;
   }
 

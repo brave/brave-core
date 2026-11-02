@@ -45,6 +45,7 @@
 #include "content/public/test/test_navigation_observer.h"
 #include "net/dns/mock_host_resolver.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/controls/button/checkbox.h"
 #include "ui/views/controls/label.h"
@@ -386,7 +387,7 @@ IN_PROC_BROWSER_TEST_F(ScriptTriggerWidevinePermissionRequestBrowserTest,
 
   // The bubble should be disappeared after reload.
   content::TestNavigationObserver observer(active_contents());
-  chrome::Reload(browser(), WindowOpenDisposition::kCurrentTab);
+  chrome::Reload(browser(), ui::mojom::WindowOpenDisposition::kCurrentTab);
   observer.Wait();
   EXPECT_FALSE(IsPermissionBubbleShown());
   ResetBubbleState();
@@ -468,7 +469,7 @@ IN_PROC_BROWSER_TEST_F(ScriptTriggerWidevinePermissionRequestBrowserTest,
                        MAYBE_SuggestPermissionAfterDiscard) {
   GURL url = https_server_.GetURL("a.com", "/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url, WindowOpenDisposition::kNewBackgroundTab,
+      browser(), url, ui::mojom::WindowOpenDisposition::kNewBackgroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   TabStripModel* const tab_strip_model = browser()->tab_strip_model();
   const int index = tab_strip_model->count() - 1;

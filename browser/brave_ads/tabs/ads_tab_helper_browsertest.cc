@@ -73,7 +73,7 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
-#include "ui/base/window_open_disposition.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"
 
@@ -864,7 +864,7 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest, NotifyDidCloseTab) {
 IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest, NotifyDidCloseTabWhenDiscarded) {
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL(url::kAboutBlankURL),
-      WindowOpenDisposition::kNewBackgroundTab,
+      ui::mojom::WindowOpenDisposition::kNewBackgroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   TabStripModel* const tab_strip_model = browser()->GetTabStripModel();
   content::WebContents* const web_contents =

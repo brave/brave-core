@@ -30,7 +30,6 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
-#include "ui/base/window_open_disposition.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/scoped_canvas.h"
 #include "ui/views/border.h"

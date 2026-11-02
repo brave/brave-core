@@ -33,8 +33,8 @@
 #include "content/public/test/browser_test_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/base/page_transition_types.h"
-#include "ui/base/window_open_disposition.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/common/features.h"
@@ -69,7 +69,7 @@ class BraveRealboxHandlerTest : public InProcessBrowserTest {
     AutocompleteMatch match;
     match.keyword = keyword;
     handler.omnibox_controller()->client()->OnAutocompleteAccept(
-        url, nullptr, WindowOpenDisposition::kCurrentTab,
+        url, nullptr, ui::mojom::WindowOpenDisposition::kCurrentTab,
         ui::PageTransition::PAGE_TRANSITION_TYPED,
         omnibox::AutocompleteMatchType::kSearchSuggest, base::TimeTicks::Now(),
         false, false, u"", match, match);

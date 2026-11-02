@@ -13,8 +13,8 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_controller.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/base/page_transition_types.h"
-#include "ui/base/window_open_disposition.h"
 #include "url/gurl.h"
 
 namespace brave_wallet {
@@ -71,11 +71,11 @@ void WalletPageHandler::OpenTab(const GURL& url) {
     return;
   }
 
-  wc->OpenURL(
-      content::OpenURLParams(url, content::Referrer(),
-                             WindowOpenDisposition::kNewForegroundTab,
-                             ui::PageTransition::PAGE_TRANSITION_LINK, false),
-      /*navigation_handle_callback=*/{});
+  wc->OpenURL(content::OpenURLParams(
+                  url, content::Referrer(),
+                  ui::mojom::WindowOpenDisposition::kNewForegroundTab,
+                  ui::PageTransition::PAGE_TRANSITION_LINK, false),
+              /*navigation_handle_callback=*/{});
 }
 
 }  // namespace brave_wallet

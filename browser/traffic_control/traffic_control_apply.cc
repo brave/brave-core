@@ -25,8 +25,8 @@
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/storage_partition_config.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/base/page_transition_types.h"
-#include "ui/base/window_open_disposition.h"
 
 namespace traffic_control {
 
@@ -193,9 +193,9 @@ void TrafficControlApplier::OpenUrl(
   NavigateParams params(
       browser_window_, url_,
       is_link ? ui::PAGE_TRANSITION_LINK : ui::PAGE_TRANSITION_TYPED);
-  params.disposition = source_was_active_
-                           ? WindowOpenDisposition::kNewForegroundTab
-                           : WindowOpenDisposition::kNewBackgroundTab;
+  params.disposition =
+      source_was_active_ ? ui::mojom::WindowOpenDisposition::kNewForegroundTab
+                         : ui::mojom::WindowOpenDisposition::kNewBackgroundTab;
   params.initiator_origin = initiator_origin_;
   if (container) {
     params.storage_partition_config = content::StoragePartitionConfig::Create(
