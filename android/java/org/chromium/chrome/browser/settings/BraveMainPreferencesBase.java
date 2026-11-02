@@ -420,13 +420,9 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         int passwordsAndAutofillSectionOrder = displaySectionOrder;
         setPreferenceOrder(
                 MainSettings.PREF_AUTOFILL_AND_PASSWORDS, ++passwordsAndAutofillSectionOrder);
-        if (mEmailAliasesController != null) {
-            setPreferenceOrder(
-                    BraveEmailAliasesSectionController.PREF_EMAIL_ALIASES,
-                    ++passwordsAndAutofillSectionOrder);
-        } else {
-            removePreferenceIfPresent(BraveEmailAliasesSectionController.PREF_EMAIL_ALIASES);
-        }
+        // Email Aliases stays a separate row, right below Autofill and passwords.
+        passwordsAndAutofillSectionOrder =
+                arrangeEmailAliasesPreference(passwordsAndAutofillSectionOrder);
 
         int supportSectionOrder = passwordsAndAutofillSectionOrder;
         setPreferenceOrder(PREF_SUPPORT_SECTION, ++supportSectionOrder);
@@ -457,6 +453,22 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         removePreferenceIfPresent(MainSettings.PREF_APPEARANCE);
 
         resortPreferenceScreenChildren();
+    }
+
+    /**
+     * Places the Email Aliases row right after {@code previousOrder}, or removes it when Email
+     * Aliases is unavailable.
+     *
+     * @return The order of the last row placed.
+     */
+    private int arrangeEmailAliasesPreference(int previousOrder) {
+        if (mEmailAliasesController == null) {
+            removePreferenceIfPresent(BraveEmailAliasesSectionController.PREF_EMAIL_ALIASES);
+            return previousOrder;
+        }
+        setPreferenceOrder(
+                BraveEmailAliasesSectionController.PREF_EMAIL_ALIASES, ++previousOrder);
+        return previousOrder;
     }
 
     /** Whether any toolbar carries a home button, which the homepage setting applies to. */

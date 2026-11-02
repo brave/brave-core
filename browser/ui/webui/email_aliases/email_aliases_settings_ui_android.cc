@@ -103,10 +103,9 @@ void EmailAliasesSettingsUIAndroid::BindInterface(
 }
 
 void EmailAliasesSettingsUIAndroid::OpenDialog(
-    const std::string& initiating_service_name,
     brave_account::mojom::DialogMode dialog_mode) {
   brave_account::OpenBraveAccountDialog(CHECK_DEREF(web_ui()->GetWebContents()),
-                                        initiating_service_name, dialog_mode);
+                                        dialog_mode);
 }
 
 void EmailAliasesSettingsUIAndroid::CloseDialog() {
