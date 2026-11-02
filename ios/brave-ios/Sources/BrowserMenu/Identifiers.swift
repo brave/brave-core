@@ -126,6 +126,13 @@ extension Action.Identifier {
     defaultRank: 1200,
     defaultVisibility: .hidden
   )
+  public static let pictureInPicture: Self = .init(
+    id: "PictureInPicture",
+    title: Strings.ActionTitles.pictureInPicture,
+    braveSystemImage: "leo.picture.in-picture",
+    defaultRank: 1250,
+    defaultVisibility: .hidden
+  )
   public static let toggleNightMode: Self = .init(
     id: "ToggleNightMode",
     title: Strings.NightMode.settingsTitle,
