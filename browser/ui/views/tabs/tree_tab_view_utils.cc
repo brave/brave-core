@@ -7,11 +7,14 @@
 
 #include <functional>
 #include <memory>
+#include <optional>
+#include <unordered_set>
+#include <utility>
 #include <variant>
 
+#include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "components/tabs/public/tab_collection.h"
 #if 0
-#include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/browser/ui/tabs/tree_tab_model.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
@@ -19,6 +22,7 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/tabs/tab_strip_model_selection_state.h"
 #include "chrome/browser/ui/views/tabs/common/split_tab_view.h"
 #include "chrome/browser/ui/views/tabs/common/tab_collection_node.h"
 #include "chrome/browser/ui/views/tabs/common/tab_group_view.h"
@@ -162,9 +166,7 @@ const tabs::TreeTabNode* GetTreeTabNodeForView(const views::View* view) {
   return node ? GetTreeTabNode(node->GetNodeData()) : nullptr;
 }
 
-<<<<<<< HEAD
 #endif
-=======
 const tabs::TreeTabNode* GetTreeTabNodeForTab(const tabs::TabInterface* tab) {
   return tab ? GetTreeTabNode(tabs::ConstChildPtr(tab)) : nullptr;
 }
@@ -178,7 +180,6 @@ BraveTabStripModel* GetBraveTabStripModel(const tabs::TabInterface* tab) {
                  : nullptr;
 }
 
->>>>>>> 138ffb726e4 (Add a collapse/expand button to tree tab parents in TabView)
 }  // namespace
 
 std::vector<std::reference_wrapper<const tabs::Child>> GetUnwrappedChildren(
@@ -296,6 +297,31 @@ void ToggleTreeTabNodeCollapsed(tabs::TabInterface* tab) {
     return;
   }
   model->SetTreeTabNodeCollapsed(node->id(), !node->collapsed());
+}
+
+void AddTreeTabDescendantsToSelection(tabs::TabInterface* tab) {
+  BraveTabStripModel* model = GetBraveTabStripModel(tab);
+  if (!model || !GetTreeTabNodeForTab(tab)) {
+    return;
+  }
+
+  // Only when |tab| is selected, e.g. not when the press deselected it.
+  const int index = model->GetIndexOfTab(tab);
+  if (index == TabStripModel::kNoTab || !model->IsTabSelected(index)) {
+    return;
+  }
+
+  std::unordered_set<tabs::TabInterface*> descendants;
+  for (int descendant_index : model->GetTreeTabDescendantIndices(index)) {
+    descendants.insert(model->GetTabAtIndex(descendant_index));
+  }
+  if (descendants.empty()) {
+    return;
+  }
+
+  tabs::TabStripModelSelectionState new_selection = model->selection_model();
+  new_selection.AppendTabsToSelection(descendants);
+  model->SetSelectionFromModel(std::move(new_selection));
 }
 
 }  // namespace tree_tab_view_utils

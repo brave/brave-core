@@ -10,7 +10,8 @@ substitutions:
       It must be created before the layout manager is installed, as the vertical
       layout stores pointers to the children.
     add_before_line:
-      line: '// Layout manager must be set after child views are created because the'
+      line:
+        '// Layout manager must be set after child views are created because the'
       code: |2-
           MaybeInitTreeToggleButton();
 
@@ -21,3 +22,18 @@ substitutions:
       line: 'alert_indicator_->OnParentTabButtonColorChanged();'
       code: |2-
           UpdateTreeToggleButton();
+
+  - description: |-
+      Select tree tab descendants in TabView::OnMousePressed() before
+      initializing the drag.
+
+      The drag reads the selection when it's initialized, so dragging a tree
+      tab parent moves its subtree.
+    regex:
+      re_pattern:
+        '(bool
+        TabView::OnMousePressed\(.*?\n)((?:\s*//[^\n]*\n)*\s*controller->GetDragHandler\(\)\.InitializeDrag\()'
+      re_flags: [DOTALL]
+      replace: |-
+        \1    MaybeSelectTreeTabDescendants(event);
+        \2

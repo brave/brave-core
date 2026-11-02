@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/common/tab_view.h b/chrome/browser/ui/views/tabs/common/tab_view.h
-index 70443037e2b8d5f68982a9de5e9f230d440211f2..d23bcf5b523a2ec75209b772de11eb36bf9933bb 100644
+index 70443037e2b8d5f68982a9de5e9f230d440211f2..881df43c9565c2e878a7c576b9108e861f63d74b 100644
 --- a/chrome/browser/ui/views/tabs/common/tab_view.h
 +++ b/chrome/browser/ui/views/tabs/common/tab_view.h
 @@ -124,6 +124,13 @@ class TabView : public views::View,
@@ -16,12 +16,15 @@ index 70443037e2b8d5f68982a9de5e9f230d440211f2..d23bcf5b523a2ec75209b772de11eb36
   private:
    friend class TabViewVerticalLayout;
    friend class TabViewHorizontalLayout;
-@@ -169,6 +176,10 @@ class TabView : public views::View,
+@@ -169,6 +176,13 @@ class TabView : public views::View,
        const gfx::Point& point,
        ui::mojom::MenuSourceType source_type) override;
  
 +  void MaybeInitTreeToggleButton();
 +  void OnTreeToggleButtonPressed();
++  // Adds tree tab descendants of this tab to the selection on a plain
++  // left mouse press, so that dragging it moves its subtree.
++  void MaybeSelectTreeTabDescendants(const ui::MouseEvent& event);
 +  raw_ptr<views::ImageButton> tree_toggle_button_ = nullptr;
 +
    void ResetCollectionNode();
