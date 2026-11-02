@@ -20,6 +20,7 @@
 #include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "url/gurl.h"
 
 #if BUILDFLAG(IS_ANDROID)
@@ -89,7 +90,7 @@ GURL NewTabTakeoverInfoBarDelegate::GetLinkURL() const {
 }
 
 bool NewTabTakeoverInfoBarDelegate::LinkClicked(
-    WindowOpenDisposition disposition) {
+    ui::mojom::WindowOpenDisposition disposition) {
   SuppressNewTabTakeoverInfobar(prefs_);
   ConfirmInfoBarDelegate::LinkClicked(disposition);
   // Return true to immediately close the infobar.

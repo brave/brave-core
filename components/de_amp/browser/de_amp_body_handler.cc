@@ -27,8 +27,8 @@
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/page_navigator.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/base/page_transition_types.h"
-#include "ui/base/window_open_disposition.h"
 
 namespace de_amp {
 
@@ -248,8 +248,8 @@ bool DeAmpBodyHandler::OpenCanonicalURL(const GURL& new_url) {
       new_url,
       content::Referrer::SanitizeForRequest(new_url, entry->GetReferrer()),
       contents->GetPrimaryMainFrame()->GetFrameTreeNodeId(),
-      WindowOpenDisposition::kCurrentTab, ui::PAGE_TRANSITION_CLIENT_REDIRECT,
-      is_renderer_initiated);
+      ui::mojom::WindowOpenDisposition::kCurrentTab,
+      ui::PAGE_TRANSITION_CLIENT_REDIRECT, is_renderer_initiated);
 
   params.initiator_origin = request_.request_initiator;
   params.user_gesture = request_.has_user_gesture;

@@ -37,6 +37,7 @@
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
 #include "net/dns/mock_host_resolver.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "url/gurl.h"
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -513,7 +514,7 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsTabHelperBrowserTest,
                        FollowsDiscardedContents) {
   const GURL url = embedded_test_server()->GetURL("a.com", "/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url, WindowOpenDisposition::kNewBackgroundTab,
+      browser(), url, ui::mojom::WindowOpenDisposition::kNewBackgroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   TabStripModel* const tab_strip_model = browser()->tab_strip_model();
   const int index = tab_strip_model->count() - 1;

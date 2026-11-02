@@ -12,6 +12,7 @@
 #include "services/network/public/mojom/network_context.mojom.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/blink/public/common/features.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 
 namespace {
 
@@ -44,7 +45,7 @@ class EphemeralStorageBlinkMemoryCacheBrowserTestBase
     )";
 
     auto* rfh = ui_test_utils::NavigateToURLWithDisposition(
-        browser, url, WindowOpenDisposition::kNewForegroundTab,
+        browser, url, ui::mojom::WindowOpenDisposition::kNewForegroundTab,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
     EXPECT_TRUE(
         content::ExecJs(content::ChildFrameAt(rfh, 0),

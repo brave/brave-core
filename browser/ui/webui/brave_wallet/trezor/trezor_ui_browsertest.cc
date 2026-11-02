@@ -13,6 +13,7 @@
 #include "content/public/test/test_navigation_observer.h"
 #include "net/dns/mock_host_resolver.h"
 #include "services/network/public/cpp/network_switches.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 
 namespace brave_wallet {
 
@@ -60,7 +61,7 @@ class TrezorUIBrowserTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(TrezorUIBrowserTest, CheckOpenerInPopup) {
   auto* trezor_bridge = ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL(kUntrustedTrezorURL),
-      WindowOpenDisposition::kNewForegroundTab,
+      ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   {

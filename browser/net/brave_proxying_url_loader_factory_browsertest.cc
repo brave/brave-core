@@ -31,6 +31,7 @@
 #include "services/network/public/mojom/url_loader.mojom.h"
 #include "services/network/public/mojom/url_loader_factory.mojom.h"
 #include "services/network/test/test_url_loader_client.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -154,7 +155,8 @@ IN_PROC_BROWSER_TEST_F(BraveProxyingURLLoaderFactoryBrowserTest,
       GURL("chrome-extension://" + extension_id() + "/callback.html?code=test");
 
   content::RenderFrameHost* rfh = ui_test_utils::NavigateToURLWithDisposition(
-      browser(), redirect_url, WindowOpenDisposition::kNewForegroundTab,
+      browser(), redirect_url,
+      ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_TRUE(rfh);
   content::WebContents* new_tab =

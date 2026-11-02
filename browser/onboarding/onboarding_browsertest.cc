@@ -35,7 +35,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
-#include "ui/base/window_open_disposition.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "url/gurl.h"
 
 class OnboardingBrowserTest : public InProcessBrowserTest {
@@ -84,7 +84,7 @@ class OnboardingBrowserTest : public InProcessBrowserTest {
   // again with a same-document navigation, which keeps the blocked count.
   // Returns once the tab's helper has considered the highlight for that load.
   void LoadPageWithBlockedAd(
-      WindowOpenDisposition disposition,
+      ui::mojom::WindowOpenDisposition disposition,
       base::Location location = base::Location::Current()) {
     SCOPED_TRACE(location.ToString());
     const GURL url = embedded_test_server()->GetURL("/title1.html");
@@ -123,8 +123,8 @@ class OnboardingBrowserTest : public InProcessBrowserTest {
                     }
                   }));
 
-    ASSERT_NO_FATAL_FAILURE(
-        LoadPageWithBlockedAd(WindowOpenDisposition::kNewForegroundTab));
+    ASSERT_NO_FATAL_FAILURE(LoadPageWithBlockedAd(
+        ui::mojom::WindowOpenDisposition::kNewForegroundTab));
     ASSERT_TRUE(highlight_future.Wait());
   }
 
@@ -168,8 +168,8 @@ IN_PROC_BROWSER_TEST_F(OnboardingBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(OnboardingBrowserTest,
                        DoesNotHighlightShieldsInBackgroundTab) {
-  ASSERT_NO_FATAL_FAILURE(
-      LoadPageWithBlockedAd(WindowOpenDisposition::kNewBackgroundTab));
+  ASSERT_NO_FATAL_FAILURE(LoadPageWithBlockedAd(
+      ui::mojom::WindowOpenDisposition::kNewBackgroundTab));
 
   EXPECT_TRUE(GetLastHighlightTime().is_null());
 }

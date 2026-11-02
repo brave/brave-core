@@ -45,6 +45,7 @@
 #include "net/dns/mock_host_resolver.h"
 #include "services/device/public/cpp/test/fake_hid_manager.h"
 #include "services/device/public/mojom/hid.mojom.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 
 namespace {
 
@@ -335,7 +336,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletTabHelperBrowserTest, ClosePopupsWithBubble) {
 IN_PROC_BROWSER_TEST_F(BraveWalletTabHelperBrowserTest, ShowPanelAfterDiscard) {
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
       browser(), https_server()->GetURL("c.com", "/popup.html"),
-      WindowOpenDisposition::kNewBackgroundTab,
+      ui::mojom::WindowOpenDisposition::kNewBackgroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   TabStripModel* const tab_strip_model = browser()->tab_strip_model();
   const int index = tab_strip_model->count() - 1;

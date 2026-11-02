@@ -25,6 +25,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "url/gurl.h"
 
 using brave_shields::ControlType;
@@ -213,7 +214,7 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, ProceedDoesNotAffectNewTabs) {
   // clicking "Proceed anyway" in the other tab is tab-specific.
   ui_test_utils::AllBrowserTabAddedWaiter new_tab;
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url, WindowOpenDisposition::kNewForegroundTab,
+      browser(), url, ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   new_tab.Wait();
   ASSERT_TRUE(IsShowingInterstitial());
@@ -252,7 +253,7 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, DontWarnAgainAndProceed) {
   // this domain and are now respecting that choice.
   ui_test_utils::AllBrowserTabAddedWaiter new_tab;
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url, WindowOpenDisposition::kNewForegroundTab,
+      browser(), url, ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   new_tab.Wait();
   ASSERT_FALSE(IsShowingInterstitial());
@@ -291,7 +292,7 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, NoFetch) {
   BlockDomainByURL(url);
   ui_test_utils::AllBrowserTabAddedWaiter new_tab;
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url, WindowOpenDisposition::kNewForegroundTab,
+      browser(), url, ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   new_tab.Wait();
 

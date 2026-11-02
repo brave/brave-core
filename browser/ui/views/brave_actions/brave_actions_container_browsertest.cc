@@ -44,6 +44,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_navigation_observer.h"
 #include "content/public/test/test_utils.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "url/gurl.h"
 
 using brave_rewards::RewardsTabHelper;
@@ -113,7 +114,7 @@ class BraveActionsContainerTest : public InProcessBrowserTest {
   tabs::TabInterface* AddForegroundTab() {
     EXPECT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
         browser(), GURL("about:blank"),
-        WindowOpenDisposition::kNewForegroundTab,
+        ui::mojom::WindowOpenDisposition::kNewForegroundTab,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
     return browser()->tab_strip_model()->GetActiveTab();
   }

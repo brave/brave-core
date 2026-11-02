@@ -36,6 +36,7 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 
@@ -81,7 +82,7 @@ class OpenTabSearchBrowserTest : public InProcessBrowserTest {
                  const GURL& url,
                  const std::string& title) {
     ui_test_utils::NavigateToURLWithDisposition(
-        target, url, WindowOpenDisposition::kNewForegroundTab,
+        target, url, ui::mojom::WindowOpenDisposition::kNewForegroundTab,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
     content::WebContents* contents =
         target->tab_strip_model()->GetActiveWebContents();
