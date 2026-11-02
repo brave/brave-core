@@ -174,6 +174,9 @@ void BraveLocationBarView::Update(content::WebContents* contents) {
   }
 
   LocationBarView::Update(contents);
+
+  // Base Update() no longer calls the virtual OnChanged().
+  UpdateBraveViews();
 }
 
 void BraveLocationBarView::OnOmniboxBlurred() {
@@ -206,9 +209,15 @@ void BraveLocationBarView::OnVisibleBoundsChanged() {
 }
 
 void BraveLocationBarView::OnChanged() {
-  auto hide_page_actions = ShouldHidePageActionIcons();
+  UpdateBraveViews();
+
+  // OnChanged calls Layout
+  LocationBarView::OnChanged();
+}
+
+void BraveLocationBarView::UpdateBraveViews() {
   if (brave_actions_) {
-    brave_actions_->SetShouldHide(hide_page_actions);
+    brave_actions_->SetShouldHide(ShouldHidePageActionIcons());
   }
 
   if (promotion_controller_) {
@@ -217,9 +226,6 @@ void BraveLocationBarView::OnChanged() {
         !ShouldChipOverrideLocationIcon() && !ShouldShowKeywordBubble();
     promotion_controller_->Show(show_button);
   }
-
-  // OnChanged calls Layout
-  LocationBarView::OnChanged();
 }
 
 std::vector<views::View*> BraveLocationBarView::GetRightMostTrailingViews() {
