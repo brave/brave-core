@@ -88,7 +88,7 @@ void BraveVpnMetrics::RecordAndroidBackgroundP3A(int64_t session_start_time_ms,
                                     static_cast<double>(session_end_time_ms))
                                     .LocalMidnight();
   for (base::Time day = session_start_time; day <= session_end_time;
-       day += base::Days(1)) {
+       day = day.NextLocalMidnight()) {
     bool is_last_day = day == session_end_time;
     // Call functions for each day in the last session to ensure
     // p3a_util functions produce the correct result

@@ -6,6 +6,7 @@
 #include "brave/components/brave_vpn/browser/brave_vpn_metrics.h"
 
 #include <memory>
+#include <utility>
 
 #include "base/test/metrics/histogram_tester.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
@@ -17,6 +18,11 @@
 
 #if BUILDFLAG(IS_MAC)
 #include "base/mac/mac_util.h"
+#endif
+
+#if BUILDFLAG(IS_ANDROID)
+#include "brave/components/brave_vpn/common/pref_names.h"
+#include "brave/components/time_period_storage/scoped_timezone_for_testing.h"
 #endif
 
 namespace brave_vpn {
@@ -200,6 +206,39 @@ TEST_F(BraveVpnMetricsTest, ConnectedDuration) {
   histogram_tester_.ExpectBucketCount(kVPNConnectedDurationHistogramName, 2,
                                       34);
 }
+#endif
+
+#if BUILDFLAG(IS_ANDROID)
+// Sessions from noon to noon two days later, across a 23-hour spring-forward
+// day and a 25-hour fall-back day in New York.
+class BraveVpnMetricsDstTest
+    : public BraveVpnMetricsTest,
+      public testing::WithParamInterface<std::pair<const char*, const char*>> {
+};
+
+TEST_P(BraveVpnMetricsDstTest, BackgroundSessionReachesItsLastDay) {
+  ScopedTimezoneForTesting scoped_timezone("America/New_York");
+  base::Time session_start;
+  base::Time session_end;
+  ASSERT_TRUE(base::Time::FromString(GetParam().first, &session_start));
+  ASSERT_TRUE(base::Time::FromString(GetParam().second, &session_end));
+  base::HistogramTester histogram_tester;
+
+  metrics_->RecordAndroidBackgroundP3A(
+      session_start.InMillisecondsSinceUnixEpoch(),
+      session_end.InMillisecondsSinceUnixEpoch());
+
+  EXPECT_EQ(local_state_.GetTime(prefs::kBraveVPNLastUseTime),
+            session_end.LocalMidnight());
+  histogram_tester.ExpectTotalCount(kNewUserReturningHistogramName, 1);
+  histogram_tester.ExpectTotalCount(kDaysInMonthUsedHistogramName, 1);
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    ,
+    BraveVpnMetricsDstTest,
+    testing::Values(std::pair{"7 Mar 2026 12:00:00", "9 Mar 2026 12:00:00"},
+                    std::pair{"31 Oct 2026 12:00:00", "2 Nov 2026 12:00:00"}));
 #endif
 
 #if BUILDFLAG(IS_WIN)
