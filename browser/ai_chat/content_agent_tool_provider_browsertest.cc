@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <string>
+#include <tuple>
 #include <vector>
 
 #include "base/files/file_path.h"
@@ -28,6 +29,7 @@
 #include "brave/components/ai_chat/core/common/test_utils.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/containers/buildflags/buildflags.h"
+#include "brave/components/traffic_control/buildflags/buildflags.h"
 #include "chrome/browser/actor/actor_keyed_service_factory.h"
 #include "chrome/browser/actor/actor_proto_conversion.h"
 #include "chrome/browser/actor/tab_observation_strategy.h"
@@ -60,6 +62,17 @@
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
+#if BUILDFLAG(ENABLE_TRAFFIC_CONTROL)
+#include "brave/browser/traffic_control/traffic_control_service_factory.h"
+#include "brave/components/containers/core/common/features.h"
+#include "brave/components/traffic_control/core/browser/pref_names.h"
+#include "brave/components/traffic_control/core/browser/traffic_control_service.h"
+#include "brave/components/traffic_control/core/browser/traffic_control_settings_handler.h"
+#include "brave/components/traffic_control/core/common/features.h"
+#include "brave/components/traffic_control/core/mojom/traffic_control.mojom.h"
+#include "components/prefs/pref_service.h"
+#endif  // BUILDFLAG(ENABLE_TRAFFIC_CONTROL)
 
 namespace ai_chat {
 
@@ -214,13 +227,35 @@ class ContentAgentToolProviderBrowserTest : public InProcessBrowserTest {
   }
 
   // Helper to find a tool by name
-  base::WeakPtr<Tool> FindToolByName(std::string_view name) {
-    for (auto& tool : tool_provider_->GetTools()) {
+  static base::WeakPtr<Tool> FindToolByName(
+      ContentAgentToolProvider& tool_provider,
+      std::string_view name) {
+    for (auto& tool : tool_provider.GetTools()) {
       if (tool && tool->Name() == name) {
         return tool;
       }
     }
     return nullptr;
+  }
+
+  // Navigates `tool_provider`'s tab to `url` using the navigation tool and
+  // returns the tool's output.
+  static std::tuple<Tool::ToolResult, Tool::ToolArtifacts> UseNavigationTool(
+      ContentAgentToolProvider& tool_provider,
+      const GURL& url) {
+    base::WeakPtr<Tool> navigation_tool =
+        FindToolByName(tool_provider, mojom::kNavigateToolName);
+    EXPECT_TRUE(navigation_tool);
+    if (!navigation_tool) {
+      return {};
+    }
+
+    base::DictValue input;
+    input.Set("website_url", url.spec());
+    base::test::TestFuture<Tool::ToolResult, Tool::ToolArtifacts> result_future;
+    navigation_tool->UseTool(*base::WriteJson(input),
+                             result_future.GetCallback());
+    return result_future.Take();
   }
 
   // Navigates the agent's tab to `url` using the navigation tool and returns
@@ -235,19 +270,7 @@ class ContentAgentToolProviderBrowserTest : public InProcessBrowserTest {
     // initializing.
     EXPECT_TRUE(GetToolProviderTabHandle().Get());
 
-    base::WeakPtr<Tool> navigation_tool =
-        FindToolByName(mojom::kNavigateToolName);
-    EXPECT_TRUE(navigation_tool);
-    if (!navigation_tool) {
-      return std::string();
-    }
-
-    base::DictValue input;
-    input.Set("website_url", url.spec());
-    base::test::TestFuture<Tool::ToolResult, Tool::ToolArtifacts> result_future;
-    navigation_tool->UseTool(*base::WriteJson(input),
-                             result_future.GetCallback());
-    auto [result, artifacts] = result_future.Take();
+    auto [result, artifacts] = UseNavigationTool(*tool_provider_, url);
     EXPECT_TRUE(artifacts.empty());
 
     const std::string page_content = GetContentBlocksText(result);
@@ -413,6 +436,20 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderMainProfileBrowserTest,
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CONTENT_AGENT_CONTAINER_NAME));
 }
 
+// The container is confined, so that Traffic Control leaves the agent's
+// navigations in it.
+IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderMainProfileBrowserTest,
+                       TaskTabContainerIsConfined) {
+  auto tool_provider = CreateMainProfileToolProvider();
+  tabs::TabHandle tab_handle = GetTabHandle(*tool_provider);
+  ASSERT_TRUE(tab_handle.Get());
+  const std::string container_id =
+      containers::GetContainerIdForWebContents(tab_handle.Get()->GetContents());
+  ASSERT_FALSE(container_id.empty());
+  EXPECT_TRUE(
+      GetMainProfileContainersService()->IsContainerConfined(container_id));
+}
+
 // A new task tab, after the user closes the previous one, stays in the
 // conversation's container rather than creating another.
 IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderMainProfileBrowserTest,
@@ -457,6 +494,93 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderMainProfileBrowserTest,
   EXPECT_TRUE(containers::IsTemporaryContainerId(other_container_id));
   EXPECT_NE(container_id, other_container_id);
 }
+
+#if BUILDFLAG(ENABLE_TRAFFIC_CONTROL)
+// Traffic Control reopens a navigation that matches a rule in the rule's
+// target. In a main profile, the agent's navigations must stay in its own tab
+// and container rather than escaping into storage the user is signed in with.
+class ContentAgentToolProviderTrafficControlBrowserTest
+    : public ContentAgentToolProviderMainProfileBrowserTest {
+ public:
+  ContentAgentToolProviderTrafficControlBrowserTest() {
+    traffic_control_feature_list_.InitWithFeatures(
+        /*enabled_features=*/{traffic_control::features::kTrafficControl,
+                              containers::features::kContainers},
+        /*disabled_features=*/{});
+  }
+
+  void SetUpOnMainThread() override {
+    ContentAgentToolProviderMainProfileBrowserTest::SetUpOnMainThread();
+    browser()->GetProfile()->GetPrefs()->SetBoolean(
+        traffic_control::prefs::kTrafficControlEnabled, true);
+  }
+
+ protected:
+  // Adds a rule, as the settings page does, routing `url`'s host to
+  // `container_id`, and checks that the rule matches `url`. An empty
+  // `container_id` routes it outside any container.
+  void AddRule(const GURL& url, std::string container_id) {
+    Profile* profile = browser()->GetProfile();
+    traffic_control::TrafficControlSettingsHandler handler(profile->GetPrefs());
+    base::test::TestFuture<
+        std::optional<traffic_control::mojom::RuleOperationError>>
+        future;
+    handler.AddRule(
+        traffic_control::mojom::TrafficRule::New(
+            /*id=*/std::string(), /*enabled=*/true,
+            traffic_control::mojom::Condition::New(std::string(url.host())),
+            traffic_control::mojom::Target::New(std::move(container_id),
+                                                /*temporary_container=*/false)),
+        future.GetCallback());
+    ASSERT_EQ(future.Take(), std::nullopt);
+    ASSERT_TRUE(
+        TrafficControlServiceFactory::GetForProfile(profile)->FindMatchingRule(
+            url));
+  }
+
+  // Navigates with the agent's navigation tool, and expects the page to load
+  // in the agent's tab and container, with no other tab opened for it.
+  void ExpectAgentNavigationStaysInItsContainer(const GURL& url) {
+    auto tool_provider = CreateMainProfileToolProvider();
+    tabs::TabHandle tab_handle = GetTabHandle(*tool_provider);
+    ASSERT_TRUE(tab_handle.Get());
+    const std::string container_id = containers::GetContainerIdForWebContents(
+        tab_handle.Get()->GetContents());
+    ASSERT_TRUE(containers::IsTemporaryContainerId(container_id));
+    TabStripModel* tab_strip =
+        tab_handle.Get()->GetBrowserWindowInterface()->GetTabStripModel();
+    const int tab_count = tab_strip->count();
+
+    UseNavigationTool(*tool_provider, url);
+
+    ASSERT_TRUE(tab_handle.Get()) << "The agent's tab was closed";
+    content::WebContents* contents = tab_handle.Get()->GetContents();
+    EXPECT_EQ(contents->GetLastCommittedURL(), url);
+    EXPECT_EQ(containers::GetContainerIdForWebContents(contents), container_id);
+    EXPECT_EQ(tab_strip->count(), tab_count);
+  }
+
+  base::test::ScopedFeatureList traffic_control_feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderTrafficControlBrowserTest,
+                       RuleToUserContainerDoesNotMoveAgentNavigation) {
+  auto user_containers = GetMainProfileContainersService()->GetContainers();
+  ASSERT_FALSE(user_containers.empty());
+  const GURL url = embedded_https_test_server().GetURL("/actor/blank.html");
+  ASSERT_NO_FATAL_FAILURE(AddRule(url, user_containers[0]->id));
+
+  ExpectAgentNavigationStaysInItsContainer(url);
+}
+
+IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderTrafficControlBrowserTest,
+                       RuleToNoContainerDoesNotMoveAgentNavigation) {
+  const GURL url = embedded_https_test_server().GetURL("/actor/blank.html");
+  ASSERT_NO_FATAL_FAILURE(AddRule(url, /*container_id=*/std::string()));
+
+  ExpectAgentNavigationStaysInItsContainer(url);
+}
+#endif  // BUILDFLAG(ENABLE_TRAFFIC_CONTROL)
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 // Test calling ExecuteActions on a closed tab is handled

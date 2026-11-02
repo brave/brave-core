@@ -294,6 +294,10 @@ const std::string& ContentAgentToolProvider::GetOrCreateContainerId() {
               ->CreateAndPersistTemporaryContainer(l10n_util::GetStringUTF8(
                   IDS_CHAT_UI_CONTENT_AGENT_CONTAINER_NAME))
               ->id;
+      // Keeps Traffic Control from reopening a URL the agent chose in another
+      // container, or in the user's own storage. Also covers any tab that
+      // inherits the container from the agent's tab.
+      containers_service->SetContainerConfined(container_id_);
     }
   }
   return container_id_;

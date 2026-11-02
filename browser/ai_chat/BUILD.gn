@@ -6,6 +6,7 @@
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/local_ai/buildflags/buildflags.gni")
+import("//brave/components/traffic_control/buildflags/buildflags.gni")
 import("//build/buildflag_header.gni")
 import("//pdf/features.gni")
 import("//printing/buildflags/buildflags.gni")
@@ -522,6 +523,7 @@ source_set("browser_tests") {
         "//brave/components/ai_chat/core/common:test_support",
         "//brave/components/brave_origin",
         "//brave/components/containers/buildflags",
+        "//brave/components/traffic_control/buildflags",
         "//chrome/browser/actor",
         "//chrome/browser/actor/ui",
         "//chrome/browser/ui:browser_window_header",
@@ -537,6 +539,17 @@ source_set("browser_tests") {
           "//brave/components/containers/core/mojom",
           "//brave/components/resources:strings_grit",
           "//ui/base",
+        ]
+      }
+
+      if (enable_traffic_control) {
+        deps += [
+          "//brave/browser/traffic_control",
+          "//brave/components/containers/core/common:features",
+          "//brave/components/traffic_control/core/browser",
+          "//brave/components/traffic_control/core/common",
+          "//brave/components/traffic_control/core/mojom",
+          "//components/prefs",
         ]
       }
 
