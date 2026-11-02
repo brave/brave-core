@@ -32,6 +32,7 @@
     "symbol_level": 1,
     "target_cpu": "x64",
     "target_os": "linux",
+    "thin_lto_enable_cache": false,
     "translate_genders": false,
     "use_debug_fission": true,
     "use_libfuzzer": false,
