@@ -24,3 +24,14 @@ substitutions:
       list_name: deps
       values:
         - //brave/components/commander/common/buildflags
+
+  - description: |-
+      layout_constants.cc chromium_src override reads the compact horizontal
+      tabs pref from local state and the toolbars small icons flag.
+    insert_into_list:
+      target: layout_constants
+      list_name: deps
+      values:
+        - //brave/browser/ui:brave_tab_prefs
+        - //brave/browser/ui:ui_features
+        - //components/prefs
