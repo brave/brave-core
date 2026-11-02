@@ -20,7 +20,8 @@ namespace brave {
 
 bool ShouldShowSidePanelHeader(SidePanelEntryId id) {
   return id == SidePanelEntryId::kReadingList ||
-         id == SidePanelEntryId::kBookmarks;
+         id == SidePanelEntryId::kBookmarks ||
+         id == SidePanelEntryId::kReadAnything;
 }
 
 gfx::RoundedCornersF GetPanelContentsRoundedCorners(

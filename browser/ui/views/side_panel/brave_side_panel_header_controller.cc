@@ -62,6 +62,9 @@ std::u16string GetEntryTitle(SidePanelEntry::Id id) {
     case SidePanelEntry::Id::kBookmarks:
       message_id = IDS_BOOKMARK_MANAGER_TITLE;
       break;
+    case SidePanelEntry::Id::kReadAnything:
+      message_id = IDS_READING_MODE_TITLE;
+      break;
     default:
       return std::u16string();
   }

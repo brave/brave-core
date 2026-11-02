@@ -17,6 +17,7 @@
 #include "brave/browser/ui/toolbar/app_menu_icons.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
@@ -42,6 +43,10 @@
 
 #if BUILDFLAG(ENABLE_COMMANDER)
 #include "brave/browser/ui/commander/commander_service.h"
+#endif
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/components/speedreader/common/features.h"
 #endif
 
 namespace {
@@ -431,15 +436,20 @@ void BraveAppMenuModel::RemoveUpstreamMenus() {
     }
   }
 
-  // Remove upstream's `Reading Mode` item as we have our own `Speed reader`.
-  // Also remove associated separator.
-  if (const auto index =
-          more_tools_model->GetIndexOfCommandId(IDC_SHOW_READING_MODE)) {
-    CHECK_EQ(ui::MenuModel::TYPE_SEPARATOR,
-             more_tools_model->GetTypeAt(*index + 1));
-    more_tools_model->RemoveItemAt(*index + 1);
-    more_tools_model->RemoveItemAt(*index);
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  if (base::FeatureList::IsEnabled(
+          speedreader::features::kSpeedreaderFeature)) {
+    // Remove upstream's `Reading Mode` item as we have our own `Speed reader`.
+    // Also remove associated separator.
+    if (const auto index =
+            more_tools_model->GetIndexOfCommandId(IDC_SHOW_READING_MODE)) {
+      CHECK_EQ(ui::MenuModel::TYPE_SEPARATOR,
+               more_tools_model->GetTypeAt(*index + 1));
+      more_tools_model->RemoveItemAt(*index + 1);
+      more_tools_model->RemoveItemAt(*index);
+    }
   }
+#endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 
   // Remove upstream's "Customize Chrome" menu item, as we plan to enhance this
   // feature before exposing it to users

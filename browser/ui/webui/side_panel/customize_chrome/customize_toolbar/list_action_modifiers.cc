@@ -19,6 +19,7 @@
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sharing_hub/sharing_hub_features.h"
 #include "chrome/browser/ui/webui/util/image_util.h"
@@ -52,6 +53,10 @@
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/components/speedreader/common/features.h"
+#endif
 
 namespace customize_chrome {
 
@@ -112,6 +117,12 @@ std::vector<ActionPtr> FilterUnsupportedChromiumActions(
     std::vector<ActionPtr> actions) {
   // Filter out unsupported Chromium actions.
   std::erase_if(actions, [](const ActionPtr& action) -> bool {
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+    if (action->id == ActionId::kShowReadAnything) {
+      return base::FeatureList::IsEnabled(
+          speedreader::features::kSpeedreaderFeature);
+    }
+#endif  // BUILDFLAG(ENABLE_SPEEDREADER)
     static constexpr auto kUnsupportedChromiumActions =
         base::MakeFixedFlatSet<ActionId>({
             ActionId::kShowPaymentMethods,
@@ -190,6 +201,12 @@ std::vector<ActionPtr> ApplyBraveSpecificModifications(
           std::ranges::find(actions, ActionId::kTaskManager, get_action_id);
       task_manager_it != actions.end()) {
     (*task_manager_it)->icon_url = get_icon_url(kLeoWindowTaskManagerIcon);
+  }
+
+  if (auto read_anything_it = std::ranges::find(
+          actions, ActionId::kShowReadAnything, get_action_id);
+      read_anything_it != actions.end()) {
+    (*read_anything_it)->icon_url = get_icon_url(kLeoProductSpeedreaderIcon);
   }
 
   // 3. Add Brave specific actions.

@@ -30,7 +30,9 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
 #include "chrome/browser/profiles/profile.h"
@@ -83,6 +85,10 @@
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
 #include "brave/browser/ui/email_aliases/email_aliases_controller.h"
 #include "brave/components/email_aliases/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/components/speedreader/common/features.h"
 #endif
 
 namespace {
@@ -715,6 +721,26 @@ void RenderViewContextMenu::AddSpellCheckServiceItem(ui::SimpleMenuModel* menu,
 
 void RenderViewContextMenu::AddAccessibilityLabelsServiceItem(bool is_checked) {
   // Suppress adding "Get image descriptions from Brave"
+}
+
+void RenderViewContextMenu::AppendReadAnythingItem() {
+  // Hide upstream's Reading Mode item when Speedreader is enabled (we have our
+  // own entry point); otherwise show it with the Speedreader icon.
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  if (base::FeatureList::IsEnabled(
+          speedreader::features::kSpeedreaderFeature)) {
+    return;
+  }
+#endif  // BUILDFLAG(ENABLE_SPEEDREADER)
+  RenderViewContextMenu_Chromium::AppendReadAnythingItem();
+  if (features::IsMenuSimplificationEnabled() &&
+      menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_OPEN_IN_READING_MODE)
+          .has_value()) {
+    menu_model_.SetIconForCommandId(
+        IDC_CONTENT_CONTEXT_OPEN_IN_READING_MODE,
+        ui::ImageModel::FromVectorIcon(kLeoProductSpeedreaderIcon,
+                                       ui::kColorMenuIcon, kTabMenuIconSize));
+  }
 }
 
 void RenderViewContextMenu::AppendDeveloperItems() {

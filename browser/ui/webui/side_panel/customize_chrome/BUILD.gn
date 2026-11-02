@@ -8,6 +8,7 @@ import("//brave/components/brave_news/common/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 
 source_set("customize_chrome") {
   sources = [
@@ -29,6 +30,7 @@ source_set("customize_chrome") {
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/constants",
     "//brave/components/resources:strings_grit",
+    "//brave/components/speedreader/common/buildflags",
     "//brave/components/vector_icons",
     "//chrome/app/vector_icons",
     "//chrome/browser/profiles:profile",
@@ -69,6 +71,10 @@ source_set("customize_chrome") {
       "//brave/browser/brave_vpn",
       "//brave/components/brave_vpn/common",
     ]
+  }
+
+  if (enable_speedreader) {
+    deps += [ "//brave/components/speedreader/common" ]
   }
 }
 
@@ -111,6 +117,7 @@ source_set("unit_tests") {
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/l10n/common:test_support",
     "//brave/components/resources:strings_grit",
+    "//brave/components/speedreader/common/buildflags",
     "//brave/components/vector_icons",
     "//chrome/browser/sharing_hub",
     "//chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar",
@@ -153,5 +160,9 @@ source_set("unit_tests") {
       "//brave/browser/brave_vpn",
       "//brave/components/brave_vpn/common",
     ]
+  }
+
+  if (enable_speedreader) {
+    deps += [ "//brave/components/speedreader/common" ]
   }
 }
