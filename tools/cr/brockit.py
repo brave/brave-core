@@ -2893,11 +2893,11 @@ class _MarkChangeTask(Task):
             no_verify=True,
         )
 
-    def _stage(self, change: str) -> str | None:
+    def _stage(self, change: str) -> str:
         """Stages what the marking commit carries, and returns its body. The
         commit is empty by default."""
         del change
-        return None
+        return ''
 
 
 class Reassign(_MarkChangeTask):
@@ -2956,9 +2956,9 @@ class Drop(_MarkChangeTask):
                 fixups.append((commit, fixup_subject))
         return fixups
 
-    def _stage(self, change: str) -> str | None:
+    def _stage(self, change: str) -> str:
         if not self._revert:
-            return None
+            return ''
         target = repository.brave.run_git('rev-parse', '--verify', change)
         fixups = self._fixups(target)
         try:
