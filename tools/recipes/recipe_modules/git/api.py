@@ -39,10 +39,6 @@ _DISABLE_AUTO_GC_CONFIG = (
     ('maintenance.auto', 'false'),
 )
 
-# What a branch, tag or ref name may look like. It must not start with `-`, so
-# that git never reads it as an option.
-_REF_RE = re.compile(r'[A-Za-z0-9_][A-Za-z0-9._/-]*')
-
 _COMMIT_RE = re.compile(r'[0-9a-fA-F]{40}')
 
 _HEADS = 'refs/heads/'
@@ -82,25 +78,25 @@ class GitRef:
         Args:
             ref: A fully-qualified ref (`refs/heads/main`, `refs/tags/v1`,
                 `refs/branch-heads/6834`) or a full commit hash. Bare names are
-                refused, as nothing tells a branch from a tag.
+                refused, as nothing tells a branch from a tag. The name itself
+                is left for git to validate where it is used.
 
         Raises:
-            ValueError: If *ref* is neither, or is not a plausible name.
+            ValueError: If *ref* is neither.
         """
-        if not _REF_RE.fullmatch(ref):
-            raise ValueError(f'invalid ref: {ref!r}')
         if _COMMIT_RE.fullmatch(ref):
             return cls(ref, RefKind.COMMIT)
+        # Requiring `refs/` also keeps git from reading *ref* as an option.
+        if not ref.startswith('refs/'):
+            raise ValueError(
+                f'ref must be fully qualified (refs/heads/..., refs/tags/...) '
+                f'or a commit hash: {ref!r}'
+            )
         if ref.startswith(_HEADS):
             return cls(ref, RefKind.HEAD)
         if ref.startswith(_TAGS):
             return cls(ref, RefKind.TAG)
-        if ref.startswith('refs/'):
-            return cls(ref, RefKind.OTHER)
-        raise ValueError(
-            f'ref must be fully qualified (refs/heads/..., refs/tags/...) or a '
-            f'commit hash: {ref!r}'
-        )
+        return cls(ref, RefKind.OTHER)
 
     @property
     def populate_ref(self) -> str | None:

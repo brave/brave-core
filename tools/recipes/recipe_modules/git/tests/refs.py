@@ -59,6 +59,10 @@ def RunSteps(api: DEPS):
     assert refs['head'].short_name == '1.80.x'
     assert refs['tag'].short_name == 'v1.80.100'
 
+    # The name itself is left to git, so any branch name it accepts passes.
+    for name in ('bootstrap+node', 'a,b=c', 'user@feature', 'x/-y', 'ß'):
+        assert parse(f'refs/heads/{name}').branch == name
+
     # A bare name, which nothing tells a branch from a tag, a name git would
     # read as an option, and a ref that is neither a branch nor a tag when a
     # name is wanted, are all refused.
