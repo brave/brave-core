@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/tabs/common/root_tab_collection_node.cc b/chrome/browser/ui/views/tabs/common/root_tab_collection_node.cc
+index c5c871f1984b3127760edf27559648b06d68ae26..1d847edc56be805d4adf4ddbfafcd9808127475a 100644
+--- a/chrome/browser/ui/views/tabs/common/root_tab_collection_node.cc
++++ b/chrome/browser/ui/views/tabs/common/root_tab_collection_node.cc
+@@ -195,6 +195,8 @@ void RootTabCollectionNode::OnTabStripModelChanged(
+       changed_tabs.insert(selection.new_tab);
+     }
+     on_active_tab_changed_callback_list_.Notify(selection.new_tab);
++    tree_tab_view_utils::ExpandCollapsedTreeTabAncestorsAsync(
++        selection.new_tab);
+   }
+ 
+   if (selection.selection_changed()) {

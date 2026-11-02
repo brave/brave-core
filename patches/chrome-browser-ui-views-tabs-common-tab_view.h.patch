@@ -1,4 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/common/tab_view.h b/chrome/browser/ui/views/tabs/common/tab_view.h
+<<<<<<< HEAD
 index 94398daa53be9e06c1345e1dca12ebcd0122ee17..62c9b508397e1adaf8e3c2111f4aff2f2ed71c66 100644
 --- a/chrome/browser/ui/views/tabs/common/tab_view.h
 +++ b/chrome/browser/ui/views/tabs/common/tab_view.h
@@ -7,6 +8,26 @@ index 94398daa53be9e06c1345e1dca12ebcd0122ee17..62c9b508397e1adaf8e3c2111f4aff2f
    views::BubbleBorder::Arrow GetAnchorPosition() const override;
  
 +  bool IsTabMuteIndicatorNotClickable() override;
+=======
+index 94398daa53be9e06c1345e1dca12ebcd0122ee17..a772a40cdedc06776d0f60acb4c785d8b507c6b1 100644
+--- a/chrome/browser/ui/views/tabs/common/tab_view.h
++++ b/chrome/browser/ui/views/tabs/common/tab_view.h
+@@ -125,6 +125,18 @@ class TabView : public views::View,
+   views::BubbleAnchor GetAnchor() override;
+   views::BubbleBorder::Arrow GetAnchorPosition() const override;
+ 
++  // Updates the tree tab toggle button for the current tree tab node.
++  void UpdateTreeToggleButton();
++  bool ShouldShowTreeToggleButton() const;
++  views::ImageButton* tree_toggle_button_for_testing() {
++    return tree_toggle_button_;
++  }
++
++ protected:
++  void MaybeInitTreeToggleButton();
++  void OnTreeToggleButtonPressed();
++  raw_ptr<views::ImageButton> tree_toggle_button_ = nullptr;
+>>>>>>> a1bd2843d6c (Add a collapse/expand button to tree tab parents in TabView)
 +
   private:
    friend class TabViewVerticalLayout;
