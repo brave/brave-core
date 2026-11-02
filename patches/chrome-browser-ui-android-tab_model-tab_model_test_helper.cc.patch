@@ -1,0 +1,31 @@
+diff --git a/chrome/browser/ui/android/tab_model/tab_model_test_helper.cc b/chrome/browser/ui/android/tab_model/tab_model_test_helper.cc
+index 5e26419b40b6b3ff563ce95faf497821c11c1cbf..e2447a195bfbadd35e87728b42a6274c6b9c77ce 100644
+--- a/chrome/browser/ui/android/tab_model/tab_model_test_helper.cc
++++ b/chrome/browser/ui/android/tab_model/tab_model_test_helper.cc
+@@ -40,11 +40,7 @@
+ #include "ui/gfx/range/range.h"
+ #include "url/gurl.h"
+ 
+-// "chrome/browser/ui/browser_window" is available on desktop Android, but not
+-// other Android builds.
+-#if BUILDFLAG(IS_DESKTOP_ANDROID)
+-#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"  // nogncheck
+-#endif
++#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+ 
+ TestTabModel::TestTabModel(Profile* profile,
+                            chrome::android::ActivityType activity_type,
+@@ -356,13 +352,11 @@ bool TestTabModel::IsClosingAllTabs() {
+   return false;
+ }
+ 
+-#if BUILDFLAG(IS_DESKTOP_ANDROID)
+ void TestTabModel::AssociateWithBrowserWindow(BrowserWindowInterface* browser) {
+   scoped_unowned_user_data_ =
+       std::make_unique<ui::ScopedUnownedUserData<TabListInterface>>(
+           browser->GetUnownedUserDataHost(), *this);
+ }
+-#endif
+ 
+ OwningTestTabModel::OwningTestTabModel(
+     Profile* profile,

@@ -16,6 +16,7 @@ source_set("manifest_v2") {
   ]
 
   deps = [
+    "//brave/components/constants",
     "//brave/components/constants:brave_service_key_helper",
     "//chrome/browser/extensions",
     "//chrome/browser/profiles",

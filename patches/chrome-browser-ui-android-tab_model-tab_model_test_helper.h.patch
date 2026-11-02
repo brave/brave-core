@@ -1,0 +1,16 @@
+diff --git a/chrome/browser/ui/android/tab_model/tab_model_test_helper.h b/chrome/browser/ui/android/tab_model/tab_model_test_helper.h
+index 647dfa4fe581d956e1aa8a881daf0e45a83eed1a..3a8bb213b2a710945d3a48f85d6ac3e418556d63 100644
+--- a/chrome/browser/ui/android/tab_model/tab_model_test_helper.h
++++ b/chrome/browser/ui/android/tab_model/tab_model_test_helper.h
+@@ -141,11 +141,7 @@ class TestTabModel : public TabModel {
+   bool IsThisTabListEditable() override;
+   bool IsClosingAllTabs() override;
+ 
+-// BrowserWindowInterface is available on desktop Android, but not other Android
+-// builds.
+-#if BUILDFLAG(IS_DESKTOP_ANDROID)
+   void AssociateWithBrowserWindow(BrowserWindowInterface* browser_window);
+-#endif
+ 
+  private:
+   // A fake value for the current number of tabs.
