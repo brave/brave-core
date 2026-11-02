@@ -80,7 +80,7 @@ overrides:
   # Scoped: ethers pins ws exactly, but jayson needs ws 7.x.
   'ethers>ws': '8.22.0'
   'fast-uri': '3.1.9'
-  'follow-redirects': '1.16.1'
+  'follow-redirects': '1.16.2'
   'handlebars': '4.7.10'
   'ip-address': '10.7.4'
   # Bumped instead of overriding stream-json, whose fixes only exist in 3.x --
