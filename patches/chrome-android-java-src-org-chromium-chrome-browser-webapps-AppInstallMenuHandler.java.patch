@@ -1,16 +1,18 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/webapps/AppInstallMenuHandler.java b/chrome/android/java/src/org/chromium/chrome/browser/webapps/AppInstallMenuHandler.java
-index 2e35b10bb657ba070bf8378da11fedfadfa6c5b9..807bac9ebd4340690cce208c2aadeea6b4073310 100644
+index 2e35b10bb657ba070bf8378da11fedfadfa6c5b9..ae59f8bad1fe21a51f81a34f82a2dfdfe7985ea4 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/webapps/AppInstallMenuHandler.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/webapps/AppInstallMenuHandler.java
-@@ -15,6 +15,7 @@ import org.chromium.base.Log;
+@@ -15,6 +15,9 @@ import org.chromium.base.Log;
  import org.chromium.build.annotations.NullMarked;
  import org.chromium.build.annotations.Nullable;
  import org.chromium.chrome.R;
++import org.chromium.base.BraveFeatureList;
++import org.chromium.chrome.browser.flags.ChromeFeatureList;
 +import org.chromium.components.embedder_support.util.UrlConstants;
  import org.chromium.chrome.browser.banners.AppMenuVerbiage;
  import org.chromium.chrome.browser.browserservices.TwaValidator;
  import org.chromium.chrome.browser.open_in_app.OpenInAppDelegate;
-@@ -83,7 +84,7 @@ public class AppInstallMenuHandler {
+@@ -83,7 +86,7 @@ public class AppInstallMenuHandler {
  
          @Nullable BottomSheetController controller =
                  BottomSheetControllerProvider.from(windowAndroid);
@@ -19,3 +21,20 @@ index 2e35b10bb657ba070bf8378da11fedfadfa6c5b9..807bac9ebd4340690cce208c2aadeea6
              // We have three options when this function fails. One is to abort the operation and do
              // nothing (by returning false), or we can make one of the two options of the Universal
              // Install dialog the default and go with that in case of errors. Since Install App is
+@@ -97,6 +100,16 @@ public class AppInstallMenuHandler {
+                     AppMenuVerbiage.APP_MENU_OPTION_INSTALL);
+         }
+ 
++        if (ChromeFeatureList.isEnabled(
++                BraveFeatureList.BRAVE_ANDROID_MERGE_INSTALL_PWA_AND_CREATE_SHORTCUT)) {
++            return doAddToHomescreen(
++                    activity,
++                    windowAndroid,
++                    modalDialogManager,
++                    currentTab,
++                    AppMenuVerbiage.APP_MENU_OPTION_ADD_TO_HOMESCREEN);
++        }
++
+         boolean webAppInstalled =
+                 WebappRegistry.getInstance().isAppInstalledForUrl(currentTab.getUrl());
+ 

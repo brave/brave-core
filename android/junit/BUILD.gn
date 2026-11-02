@@ -141,9 +141,21 @@ if (is_android) {
     sources = [
       "src/org/chromium/chrome/browser/BraveIntentHandlerUnitTest.java",
       "src/org/chromium/chrome/browser/BravePwaShortcutIconHelperTest.java",
+      "src/org/chromium/components/webapps/BraveAppInstallMenuHandlerTest.java",
     ]
 
-    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+    deps = [
+      "//base:unowned_user_data_java",
+      "//chrome/android:chrome_java",
+      "//chrome/android/junit:chrome_junit_tests_helper",
+      "//chrome/browser/tab:java",
+      "//components/browser_ui/bottomsheet/android:java",
+      "//components/webapps/browser/android:java",
+      "//content/public/android:content_java",
+      "//ui/android:ui_no_recycler_view_java",
+      "//url:gurl_java",
+      "//url:gurl_junit_test_support",
+    ]
   }
 
   robolectric_library(
