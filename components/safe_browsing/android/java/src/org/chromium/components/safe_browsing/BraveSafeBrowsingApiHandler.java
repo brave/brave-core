@@ -6,7 +6,6 @@
 package org.chromium.components.safe_browsing;
 
 import android.app.Activity;
-import android.content.pm.ApplicationInfo;
 import android.webkit.URLUtil;
 
 import com.google.android.gms.common.api.ApiException;
@@ -17,6 +16,7 @@ import com.google.android.gms.safetynet.SafetyNetStatusCodes;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
+import org.chromium.build.BuildConfig;
 import org.chromium.components.safe_browsing.BraveSafeBrowsingUtils.SafeBrowsingJavaResponseStatus;
 import org.chromium.components.safe_browsing.BraveSafeBrowsingUtils.SafeBrowsingJavaThreatType;
 import org.chromium.components.safe_browsing.SafeBrowsingApiHandler.LookupResult;
@@ -159,7 +159,7 @@ public class BraveSafeBrowsingApiHandler implements SafeBrowsingApiHandler {
                                                         apiException.getStatusCode())
                                                 + ", code: "
                                                 + apiException.getStatusCode();
-                                if (isDebuggable()) {
+                                if (BuildConfig.ENABLE_ASSERTS) {
                                     Log.d(TAG, error);
                                 }
                                 if (mBraveSafeBrowsingApiHandlerDelegate != null) {
@@ -198,7 +198,7 @@ public class BraveSafeBrowsingApiHandler implements SafeBrowsingApiHandler {
                             } else {
                                 // A different, unknown type of error occurred.
                                 String error = "Error: " + e.getMessage();
-                                if (isDebuggable()) {
+                                if (BuildConfig.ENABLE_ASSERTS) {
                                     Log.d(TAG, error);
                                 }
                                 if (mBraveSafeBrowsingApiHandlerDelegate != null) {
@@ -229,16 +229,6 @@ public class BraveSafeBrowsingApiHandler implements SafeBrowsingApiHandler {
         SafetyNet.getClient(ContextUtils.getApplicationContext()).shutdownSafeBrowsing();
         resetDelegate();
         mInitialized = false;
-    }
-
-    private boolean isDebuggable() {
-        if (mBraveSafeBrowsingApiHandlerDelegate == null) {
-            return false;
-        }
-
-        return 0
-                != (mBraveSafeBrowsingApiHandlerDelegate.getActivity().getApplicationInfo().flags
-                        & ApplicationInfo.FLAG_DEBUGGABLE);
     }
 
     private boolean isHttpsOrHttp(String uri) {
