@@ -12,6 +12,10 @@
 
 #include "components/tabs/public/tab_collection_types.h"
 
+namespace views {
+class View;
+}  // namespace views
+
 // Hooks for showing tree tabs in Chromium's tab strip views
 // (TabCollectionNode based, used by Chromium's vertical tabs). The chromium_src
 // overrides of those views forward-declare these instead of including this
@@ -32,26 +36,6 @@ namespace tree_tab_view_utils {
 std::vector<std::reference_wrapper<const tabs::Child>> GetUnwrappedChildren(
     const tabs::TabCollection& collection);
 
-#if 0
-// Returns the parent of |item| (a tab or a collection) with tree tab node
-// collections unwrapped, i.e. the nearest ancestor that isn't a tree tab node
-// collection. Returns nullptr if |item| isn't in a hierarchy.
-const tabs::TabCollection* GetUnwrappedParent(const tabs::ConstChildPtr& item);
-
-// Returns the item that comes right before |item| among the unwrapped children
-// of its unwrapped parent, or nullopt if |item| is the first one.
-std::optional<tabs::ConstChildPtr> GetUnwrappedPredecessor(
-    const tabs::ConstChildPtr& item);
-
-// Returns true if |item| is in the hierarchy under |root|.
-bool IsInTabStrip(const tabs::TabCollection* root,
-                  const tabs::ConstChildPtr& item);
-
-// Returns the tabs of the tree tab node that |change| is about.
-std::vector<const tabs::TabInterface*> GetTabsOfTreeTabChange(
-    TabStripModel* model,
-    const TreeTabChange& change);
-
 // Returns the indentation for |view| (a TabView, TabGroupView or SplitTabView)
 // based on its tree tab level. |available_width| is the width |view| would
 // have without indentation.
@@ -60,7 +44,6 @@ int GetTreeTabIndent(const views::View* view, int available_width);
 // Returns true if |view| (a TabView, TabGroupView or SplitTabView) is hidden
 // because one of its tree tab ancestors is collapsed.
 bool IsInCollapsedTreeTabNode(const views::View* view);
-#endif
 
 // Returns true if |tab| is directly wrapped by a tree tab node that has
 // descendants.
@@ -79,6 +62,9 @@ void ToggleTreeTabNodeCollapsed(tabs::TabInterface* tab);
 // Adds the tree tab descendants of |tab| to the selection if |tab| is
 // selected.
 void AddTreeTabDescendantsToSelection(tabs::TabInterface* tab);
+
+// Expands the collapsed tree tab ancestors of |tab| so that it's visible.
+void ExpandCollapsedTreeTabAncestors(const tabs::TabInterface* tab);
 
 }  // namespace tree_tab_view_utils
 

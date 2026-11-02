@@ -13,9 +13,7 @@
 #include <variant>
 
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
-#include "components/tabs/public/tab_collection.h"
-#if 0
-#include "brave/browser/ui/tabs/tree_tab_model.h"
+// #include "brave/browser/ui/tabs/tree_tab_model.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -32,7 +30,6 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/views/view.h"
 #include "ui/views/view_utils.h"
-#endif
 
 namespace tree_tab_view_utils {
 
@@ -69,71 +66,6 @@ void AppendUnwrappedChildren(
   }
 }
 
-#if 0
-// Returns the parent of |item| in the collection hierarchy.
-const tabs::TabCollection* GetRawParent(const tabs::ConstChildPtr& item) {
-  if (const auto* tab =
-          std::get_if<tabs::ConstDanglingUntriagedTabInterface>(&item)) {
-    return tab->get() ? tab->get()->GetParentCollection() : nullptr;
-  }
-  const tabs::TabCollection* collection =
-      std::get<tabs::ConstDanglingUntriagedTabCollection>(item);
-  return collection ? collection->GetParentCollection() : nullptr;
-}
-
-std::optional<size_t> GetRawIndex(const tabs::TabCollection& parent,
-                                  const tabs::ConstChildPtr& item) {
-  const auto& children = parent.GetChildren();
-  for (size_t i = 0; i < children.size(); ++i) {
-    if (const auto* child_collection =
-            std::get_if<std::unique_ptr<tabs::TabCollection>>(&children[i])) {
-      const auto* collection =
-          std::get_if<tabs::ConstDanglingUntriagedTabCollection>(&item);
-      if (collection && collection->get() == child_collection->get()) {
-        return i;
-      }
-    } else {
-      const auto* tab =
-          std::get_if<tabs::ConstDanglingUntriagedTabInterface>(&item);
-      if (tab &&
-          tab->get() == static_cast<const tabs::TabInterface*>(
-                            std::get<tabs::ScopedTab>(children[i]).get())) {
-        return i;
-      }
-    }
-  }
-  return std::nullopt;
-}
-
-std::optional<tabs::ConstChildPtr> GetLastItemForView(
-    const tabs::TabCollection& collection);
-
-// Returns the last item that |child| is mirrored as in the view model.
-template <typename Child>
-std::optional<tabs::ConstChildPtr> GetLastItemOfChild(const Child& child) {
-  if (const auto* child_collection =
-          std::get_if<std::unique_ptr<tabs::TabCollection>>(&child)) {
-    const tabs::TabCollection* ptr = child_collection->get();
-    if (ptr->type() == tabs::TabCollection::Type::TREE_NODE) {
-      return GetLastItemForView(*ptr);
-    }
-    return tabs::ConstChildPtr(ptr);
-  }
-  return tabs::ConstChildPtr(static_cast<const tabs::TabInterface*>(
-      std::get<tabs::ScopedTab>(child).get()));
-}
-
-std::optional<tabs::ConstChildPtr> GetLastItemForView(
-    const tabs::TabCollection& collection) {
-  const auto& children = collection.GetChildren();
-  for (size_t i = children.size(); i > 0; --i) {
-    if (auto item = GetLastItemOfChild(children[i - 1])) {
-      return item;
-    }
-  }
-  return std::nullopt;
-}
-
 // Returns the tree tab node directly wrapping |node_data| (a tab, group or
 // split). Returns nullptr if it's not wrapped by a tree tab node.
 const tabs::TreeTabNode* GetTreeTabNode(const tabs::ConstChildPtr& node_data) {
@@ -166,7 +98,6 @@ const tabs::TreeTabNode* GetTreeTabNodeForView(const views::View* view) {
   return node ? GetTreeTabNode(node->GetNodeData()) : nullptr;
 }
 
-#endif
 const tabs::TreeTabNode* GetTreeTabNodeForTab(const tabs::TabInterface* tab) {
   return tab ? GetTreeTabNode(tabs::ConstChildPtr(tab)) : nullptr;
 }
@@ -187,66 +118,6 @@ std::vector<std::reference_wrapper<const tabs::Child>> GetUnwrappedChildren(
   std::vector<std::reference_wrapper<const tabs::Child>> children;
   AppendUnwrappedChildren(collection, children);
   return children;
-}
-
-#if 0
-const tabs::TabCollection* GetUnwrappedParent(const tabs::ConstChildPtr& item) {
-  const tabs::TabCollection* parent = GetRawParent(item);
-  while (parent && parent->type() == tabs::TabCollection::Type::TREE_NODE) {
-    parent = parent->GetParentCollection();
-  }
-  return parent;
-}
-
-std::optional<tabs::ConstChildPtr> GetUnwrappedPredecessor(
-    const tabs::ConstChildPtr& item) {
-  tabs::ConstChildPtr current = item;
-  while (const tabs::TabCollection* parent = GetRawParent(current)) {
-    const std::optional<size_t> index = GetRawIndex(*parent, current);
-    if (!index) {
-      return std::nullopt;
-    }
-
-    const auto& children = parent->GetChildren();
-    for (size_t i = *index; i > 0; --i) {
-      if (auto previous = GetLastItemOfChild(children[i - 1])) {
-        return previous;
-      }
-    }
-
-    if (parent->type() != tabs::TabCollection::Type::TREE_NODE) {
-      return std::nullopt;
-    }
-    // The tree tab node is unwrapped. What comes before it comes before |item|
-    // as well.
-    current =
-        tabs::ConstChildPtr(static_cast<const tabs::TabCollection*>(parent));
-  }
-  return std::nullopt;
-}
-
-bool IsInTabStrip(const tabs::TabCollection* root,
-                  const tabs::ConstChildPtr& item) {
-  for (const tabs::TabCollection* parent = GetRawParent(item); parent;
-       parent = parent->GetParentCollection()) {
-    if (parent == root) {
-      return true;
-    }
-  }
-  return false;
-}
-
-std::vector<const tabs::TabInterface*> GetTabsOfTreeTabChange(
-    TabStripModel* model,
-    const TreeTabChange& change) {
-  if (change.type == TreeTabChange::kNodeWillBeDestroyed) {
-    return {};
-  }
-  TreeTabModel* tree_model =
-      static_cast<BraveTabStripModel*>(model)->tree_model();
-  const tabs::TreeTabNode* node =
-      tree_model ? tree_model->GetNode(change.id) : nullptr;
-  return node ? node->GetTabs() : std::vector<const tabs::TabInterface*>();
 }
 
 int GetTreeTabIndent(const views::View* view, int available_width) {
@@ -271,8 +142,6 @@ bool IsInCollapsedTreeTabNode(const views::View* view) {
   const tabs::TreeTabNode* node = GetTreeTabNodeForView(view);
   return node && node->GetClosestCollapsedAncestorId().has_value();
 }
-
-#endif  // 0
 
 bool HasTreeTabDescendants(const tabs::TabInterface* tab) {
   const tabs::TreeTabNode* node = GetTreeTabNodeForTab(tab);
@@ -322,6 +191,29 @@ void AddTreeTabDescendantsToSelection(tabs::TabInterface* tab) {
   tabs::TabStripModelSelectionState new_selection = model->selection_model();
   new_selection.AppendTabsToSelection(descendants);
   model->SetSelectionFromModel(std::move(new_selection));
+}
+
+void ExpandCollapsedTreeTabAncestors(const tabs::TabInterface* tab) {
+  if (!tab) {
+    return;
+  }
+
+  // |tab| could be in a split or a group wrapped by a tree tab node.
+  const tabs::TreeTabNodeTabCollection* tree_node_collection =
+      tabs::TreeTabNodeTabCollection::GetNearestTreeTabNodeCollection(tab);
+  BraveTabStripModel* model = GetBraveTabStripModel(tab);
+  if (!tree_node_collection || !model) {
+    return;
+  }
+
+  const tabs::TreeTabNode& node = tree_node_collection->node();
+  while (auto collapsed_ancestor = node.GetClosestCollapsedAncestorId()) {
+    model->SetTreeTabNodeCollapsed(*collapsed_ancestor, false);
+    if (node.GetClosestCollapsedAncestorId() == collapsed_ancestor) {
+      // Failed to expand.
+      return;
+    }
+  }
 }
 
 }  // namespace tree_tab_view_utils
