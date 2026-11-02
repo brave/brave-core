@@ -15,8 +15,8 @@
 #include "brave/components/sidebar/browser/sidebar_item.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
-#include "ui/base/window_open_disposition.h"
 
 class BrowserWindowInterface;
 class GURL;
@@ -63,9 +63,9 @@ class SidebarController : public SidebarService::Observer,
   // Called when the item at |index| is pressed by the user. Deactivates the
   // current panel if the item is already active.
   // |disposition| is only used for shortcut type items.
-  void OnItemPressed(
-      size_t index,
-      WindowOpenDisposition disposition = WindowOpenDisposition::kCurrentTab);
+  void OnItemPressed(size_t index,
+                     ui::mojom::WindowOpenDisposition disposition =
+                         ui::mojom::WindowOpenDisposition::kCurrentTab);
   void AddItemWithCurrentTab();
 
   // Called by BraveSidePanelCoordinator when a side panel entry is shown or

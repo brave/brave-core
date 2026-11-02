@@ -26,6 +26,7 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 
 namespace brave_rewards::test_util {
 
@@ -116,7 +117,7 @@ void NavigateToPublisherPage(BrowserWindowInterface* browser,
   DCHECK(browser && https_server);
   ui_test_utils::NavigateToURLWithDisposition(
       browser, GetUrl(https_server, publisher_key, path),
-      WindowOpenDisposition::kNewForegroundTab,
+      ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 }
 

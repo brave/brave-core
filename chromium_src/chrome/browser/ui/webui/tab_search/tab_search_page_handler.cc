@@ -37,8 +37,8 @@
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/base/page_transition_types.h"
-#include "ui/base/window_open_disposition.h"
 #include "url/origin.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -397,7 +397,7 @@ void TabSearchPageHandler::OpenLearnMorePage() {
 void TabSearchPageHandler::OpenURLInNewTab(const GURL& url) {
   NavigateParams params(Profile::FromWebUI(web_ui_), url,
                         ui::PageTransition::PAGE_TRANSITION_LINK);
-  params.disposition = WindowOpenDisposition::kNewForegroundTab;
+  params.disposition = ui::mojom::WindowOpenDisposition::kNewForegroundTab;
   Navigate(&params);
 }
 

@@ -84,7 +84,7 @@
 #include "content/public/browser/web_contents.h"
 #include "ui/base/clipboard/clipboard_buffer.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
-#include "ui/base/window_open_disposition.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/shell_dialogs/select_file_dialog.h"
 #include "ui/shell_dialogs/select_file_policy.h"
 #include "ui/shell_dialogs/selected_file_info.h"
@@ -1250,8 +1250,9 @@ bool MaybeAddTabAtInheritingActiveContainer(
 
   // Use Navigate directly to set storage_partition_config
   NavigateParams params(browser, url, ui::PAGE_TRANSITION_TYPED);
-  params.disposition = foreground ? WindowOpenDisposition::kNewForegroundTab
-                                  : WindowOpenDisposition::kNewBackgroundTab;
+  params.disposition =
+      foreground ? ui::mojom::WindowOpenDisposition::kNewForegroundTab
+                 : ui::mojom::WindowOpenDisposition::kNewBackgroundTab;
   params.tabstrip_index = index;
   params.group = group;
   if (pinned) {
@@ -1294,7 +1295,7 @@ void OpenUrlInContainer(BrowserWindowInterface* bwi,
 
   NavigateParams params(
       bwi, url, is_link ? ui::PAGE_TRANSITION_LINK : ui::PAGE_TRANSITION_TYPED);
-  params.disposition = WindowOpenDisposition::kNewForegroundTab;
+  params.disposition = ui::mojom::WindowOpenDisposition::kNewForegroundTab;
   params.initiator_origin = std::move(initiator_origin);
   params.started_from_context_menu = started_from_context_menu;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
@@ -1330,7 +1331,7 @@ void OpenUrlWithoutContainer(BrowserWindowInterface* bwi,
 
   NavigateParams params(
       bwi, url, is_link ? ui::PAGE_TRANSITION_LINK : ui::PAGE_TRANSITION_TYPED);
-  params.disposition = WindowOpenDisposition::kNewForegroundTab;
+  params.disposition = ui::mojom::WindowOpenDisposition::kNewForegroundTab;
   params.initiator_origin = std::move(initiator_origin);
   params.started_from_context_menu = started_from_context_menu;
   Navigate(&params);

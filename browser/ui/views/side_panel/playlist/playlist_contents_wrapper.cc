@@ -19,6 +19,7 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
 #include "third_party/blink/public/mojom/frame/fullscreen.mojom.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/views/widget/widget.h"
 
 PlaylistContentsWrapper::PlaylistContentsWrapper(
@@ -140,7 +141,7 @@ content::WebContents* PlaylistContentsWrapper::AddNewContents(
     content::WebContents* source,
     std::unique_ptr<content::WebContents> new_contents,
     const GURL& target_url,
-    WindowOpenDisposition disposition,
+    ui::mojom::WindowOpenDisposition disposition,
     const blink::mojom::WindowFeatures& window_features,
     bool user_gesture,
     bool* was_blocked) {

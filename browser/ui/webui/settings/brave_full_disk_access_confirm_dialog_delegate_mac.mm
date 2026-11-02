@@ -20,6 +20,7 @@
 #include "components/user_data_importer/common/importer_data_types.h"
 #include "content/public/browser/web_ui.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/base/ui_base_types.h"
 #include "url/gurl.h"
 
@@ -57,7 +58,7 @@ void FullDiskAccessConfirmDialogDelegate::OnAccepted() {
 }
 
 void FullDiskAccessConfirmDialogDelegate::OnLinkClicked(
-    WindowOpenDisposition disposition) {
+    ui::mojom::WindowOpenDisposition disposition) {
   const int target_index = browser_->GetTabStripModel()->active_index() + 1;
   // Add import help tab right after current settings tab.
   chrome::AddTabAt(browser_, GURL(kImportDataHelpURL), target_index,

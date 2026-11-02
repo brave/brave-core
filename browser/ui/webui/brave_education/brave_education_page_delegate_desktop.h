@@ -9,7 +9,7 @@
 #include "base/memory/raw_ref.h"
 #include "brave/browser/ui/webui/brave_browser_command/brave_browser_command_handler.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
-#include "ui/base/window_open_disposition.h"
+#include "ui/base/mojom/window_open_disposition.mojom-forward.h"
 #include "url/gurl.h"
 
 class BrowserWindowInterface;
@@ -24,7 +24,8 @@ class BraveEducationPageDelegateDesktop
       BrowserWindowInterface& window_interface);
   ~BraveEducationPageDelegateDesktop() override;
 
-  void OpenURL(const GURL& url, WindowOpenDisposition disposition) override;
+  void OpenURL(const GURL& url,
+               ui::mojom::WindowOpenDisposition disposition) override;
   void OpenRewardsPanel() override;
   void OpenVPNPanel() override;
 #if BUILDFLAG(ENABLE_AI_CHAT)

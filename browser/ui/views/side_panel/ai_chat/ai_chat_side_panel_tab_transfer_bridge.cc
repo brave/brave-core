@@ -27,8 +27,8 @@
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/buildflags/buildflags.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/base/page_transition_types.h"
-#include "ui/base/window_open_disposition.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/views/view_utils.h"
 #include "ui/views/widget/widget.h"
@@ -229,7 +229,7 @@ bool AIChatSidePanelTabTransferBridge::MoveSidePanelContentsToTab(
   // Insert the live contents into a new foreground tab; `Navigate` re-runs the
   // idempotent `AttachTabHelpers`.
   NavigateParams params(browser_, std::move(web_contents));
-  params.disposition = WindowOpenDisposition::kNewForegroundTab;
+  params.disposition = ui::mojom::WindowOpenDisposition::kNewForegroundTab;
   params.transition = ui::PAGE_TRANSITION_LINK;
   Navigate(&params);
 

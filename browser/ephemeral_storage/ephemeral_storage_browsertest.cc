@@ -48,6 +48,7 @@
 #include "net/test/embedded_test_server/request_handler_util.h"
 #include "services/network/public/cpp/network_switches.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 
 using content::RenderFrameHost;
 using content::WebContents;
@@ -315,7 +316,7 @@ EphemeralStorageBrowserTest::GetValuesFromFrames(WebContents* web_contents) {
 WebContents* EphemeralStorageBrowserTest::LoadURLInNewTab(GURL url) {
   ui_test_utils::AllBrowserTabAddedWaiter add_tab;
   EXPECT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url, WindowOpenDisposition::kNewForegroundTab,
+      browser(), url, ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   return add_tab.Wait();
 }

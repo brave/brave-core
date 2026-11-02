@@ -35,6 +35,7 @@
 #include "content/public/common/url_constants.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/metrics_proto/omnibox_event.pb.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 
 namespace {
 
@@ -169,7 +170,7 @@ void NewTabTakeoverUI::NavigateToUrl(const GURL& url) {
   // Set navigation as renderer initiated to open links in their app/PWA (if
   // installed).
   content::OpenURLParams params(
-      url, content::Referrer(), WindowOpenDisposition::kCurrentTab,
+      url, content::Referrer(), ui::mojom::WindowOpenDisposition::kCurrentTab,
       ui::PAGE_TRANSITION_LINK, /*is_renderer_initiated=*/true);
   params.user_gesture = true;
   params.initiator_origin = url::Origin();

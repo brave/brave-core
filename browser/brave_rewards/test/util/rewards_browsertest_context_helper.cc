@@ -17,6 +17,7 @@
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/test/browser_test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 
 namespace brave_rewards::test_util {
 
@@ -93,7 +94,7 @@ RewardsBrowserTestContextHelper::OpenSiteBanner() {
 void RewardsBrowserTestContextHelper::VisitPublisher(const GURL& url,
                                                      bool verified) {
   ui_test_utils::NavigateToURLWithDisposition(
-      browser_, url, WindowOpenDisposition::kNewForegroundTab,
+      browser_, url, ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // The minimum publisher duration when testing is 1 second (and the

@@ -37,6 +37,7 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "components/prefs/pref_service.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
@@ -141,8 +142,9 @@ bool SidebarController::IsWebPanelTab(
          web_panel_controller_->panel_contents() == contents;
 }
 
-void SidebarController::OnItemPressed(size_t index,
-                                      WindowOpenDisposition disposition) {
+void SidebarController::OnItemPressed(
+    size_t index,
+    ui::mojom::WindowOpenDisposition disposition) {
   CHECK_LT(index, sidebar_model_->GetAllSidebarItems().size());
   const auto& item = sidebar_model_->GetAllSidebarItems()[index];
 
@@ -176,8 +178,8 @@ void SidebarController::OnItemPressed(size_t index,
     return;
   }
 
-  if (disposition != WindowOpenDisposition::kCurrentTab) {
-    DCHECK_NE(WindowOpenDisposition::kUnknown, disposition);
+  if (disposition != ui::mojom::WindowOpenDisposition::kCurrentTab) {
+    DCHECK_NE(ui::mojom::WindowOpenDisposition::kUnknown, disposition);
     NavigateParams params(profile_, item.url,
                           ui::PAGE_TRANSITION_AUTO_BOOKMARK);
     params.disposition = disposition;
@@ -245,7 +247,7 @@ void SidebarController::IterateOrLoadAtActiveTab(const GURL& url) {
 
     // Load at current active tab if there is no tab that loaded |url|.
     auto params = GetSingletonTabNavigateParams(browser_, url);
-    params.disposition = WindowOpenDisposition::kCurrentTab;
+    params.disposition = ui::mojom::WindowOpenDisposition::kCurrentTab;
     Navigate(&params);
     return;
   }
@@ -269,7 +271,7 @@ void SidebarController::LoadAtTab(const GURL& url) {
     tab_strip_model_->ActivateTabAt(tab_index);
   } else {
     // Load on current tab.
-    params.disposition = WindowOpenDisposition::kCurrentTab;
+    params.disposition = ui::mojom::WindowOpenDisposition::kCurrentTab;
     Navigate(&params);
   }
 }

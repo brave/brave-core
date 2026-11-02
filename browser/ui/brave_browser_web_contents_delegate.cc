@@ -18,7 +18,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/url_constants.h"
 #include "third_party/blink/public/mojom/choosers/file_chooser.mojom.h"
-#include "ui/base/window_open_disposition.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -48,7 +48,7 @@ content::WebContents* BraveBrowserWebContentsDelegate::AddNewContents(
     content::WebContents* source,
     std::unique_ptr<content::WebContents> new_contents,
     const GURL& target_url,
-    WindowOpenDisposition disposition,
+    ui::mojom::WindowOpenDisposition disposition,
     const blink::mojom::WindowFeatures& window_features,
     bool user_gesture,
     bool* was_blocked) {
@@ -60,10 +60,10 @@ content::WebContents* BraveBrowserWebContentsDelegate::AddNewContents(
   // It'll be closed immediately right after navigation is routed to right
   // pane. By routing at SplitViewLinkNavigationThrottle, proper referrer/opener
   // could be set. These are set after navigation starts. So, can't get it here.
-  if (disposition == WindowOpenDisposition::kNewForegroundTab && source &&
-      user_gesture && new_contents.get() && !target_url.is_empty()) {
+  if (disposition == ui::mojom::WindowOpenDisposition::kNewForegroundTab &&
+      source && user_gesture && new_contents.get() && !target_url.is_empty()) {
     if (split_view::SetSplitTabIdForRedirect(source, new_contents.get())) {
-      disposition = WindowOpenDisposition::kNewBackgroundTab;
+      disposition = ui::mojom::WindowOpenDisposition::kNewBackgroundTab;
     }
   }
 

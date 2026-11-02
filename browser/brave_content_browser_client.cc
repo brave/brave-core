@@ -160,6 +160,7 @@
 #include "third_party/blink/public/mojom/webpreferences/web_preferences.mojom.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/webui/resources/cr_components/color_change_listener/color_change_listener.mojom.h"
 #include "url/origin.h"
 
@@ -1000,7 +1001,7 @@ bool BraveContentBrowserClient::CanCreateWindow(
     const GURL& target_url,
     const content::Referrer& referrer,
     const std::string& frame_name,
-    WindowOpenDisposition disposition,
+    ui::mojom::WindowOpenDisposition disposition,
     const blink::mojom::WindowFeatures& features,
     bool user_gesture,
     bool opener_suppressed,
