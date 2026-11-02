@@ -2043,6 +2043,33 @@ TEST_F(AIChatDatabaseSyncTest, ApplyRemoteEntryKeepsWorkspaceContent) {
   EXPECT_TRUE(data->associated_content.empty());
 }
 
+TEST_F(AIChatDatabaseSyncTest, GetConversationUuidForEntry) {
+  auto make_entry = [](std::string_view uuid) {
+    auto entry = mojom::ConversationTurn::New();
+    entry->uuid = std::string(uuid);
+    entry->character_type = mojom::CharacterType::HUMAN;
+    entry->action_type = mojom::ActionType::QUERY;
+    entry->text = "Hello";
+    entry->created_time = base::Time::Now();
+    return entry;
+  };
+
+  auto conv_a = mojom::Conversation::New();
+  conv_a->uuid = "conv-a";
+  ASSERT_TRUE(
+      db_->AddConversation(std::move(conv_a), {}, make_entry("entry-a1")));
+  ASSERT_TRUE(db_->AddConversationEntry("conv-a", make_entry("entry-a2")));
+  auto conv_b = mojom::Conversation::New();
+  conv_b->uuid = "conv-b";
+  ASSERT_TRUE(
+      db_->AddConversation(std::move(conv_b), {}, make_entry("entry-b1")));
+
+  EXPECT_EQ(db_->GetConversationUuidForEntry("entry-a1"), "conv-a");
+  EXPECT_EQ(db_->GetConversationUuidForEntry("entry-a2"), "conv-a");
+  EXPECT_EQ(db_->GetConversationUuidForEntry("entry-b1"), "conv-b");
+  EXPECT_EQ(db_->GetConversationUuidForEntry("no-such-entry"), std::nullopt);
+}
+
 // Test the migration for each version upgrade
 class AIChatDatabaseMigrationTest : public testing::Test,
                                     public testing::WithParamInterface<int> {

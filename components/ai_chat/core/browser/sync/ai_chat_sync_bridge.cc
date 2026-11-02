@@ -11,7 +11,9 @@
 #include <string>
 #include <string_view>
 #include <utility>
+#include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/strings/strcat.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 #include "brave/components/ai_chat/core/browser/sync/ai_chat_sync_conversions.h"
@@ -43,6 +45,36 @@ mojom::ConversationPtr FindSyncableConversation(AIChatDatabase& database,
     }
   }
   return nullptr;
+}
+
+// Maps each stored content row's UUID to its extracted text, so
+// EntryToSpecifics can serialize the associated page text (which the archive
+// keeps in |associated_content| as ContentArchive rows, separate from the
+// per-turn associated-content metadata).
+base::flat_map<std::string, std::string> ContentTextsFromArchive(
+    const mojom::ConversationArchive& archive) {
+  return base::MakeFlatMap<std::string, std::string>(
+      archive.associated_content, {},
+      [](const mojom::ContentArchivePtr& content) {
+        return std::pair(content->content_uuid, content->content);
+      });
+}
+
+// Serializes |entry| (with its associated content and page texts) and omits
+// oversized fields to fit the per-record sync budget. Returns nullopt when the
+// record is too large even after omission, in which case it must not be
+// committed.
+std::optional<sync_pb::AIChatConversationSpecifics> BuildCommittableEntry(
+    const std::string& conversation_uuid,
+    const mojom::ConversationTurn& entry,
+    const std::vector<mojom::AssociatedContentPtr>& associated_content,
+    const base::flat_map<std::string, std::string>& content_texts) {
+  auto specifics = EntryToSpecifics(conversation_uuid, entry,
+                                    associated_content, content_texts);
+  if (!FitEntryWithinSyncBudget(specifics.mutable_entry())) {
+    return std::nullopt;
+  }
+  return specifics;
 }
 
 }  // namespace
@@ -131,6 +163,8 @@ void AIChatSyncBridge::ForEachLocalEntity(
       continue;
     }
 
+    const auto content_texts = ContentTextsFromArchive(*archive);
+
     for (const auto& entry : archive->entries) {
       if (!entry->uuid) {
         continue;
@@ -139,13 +173,21 @@ void AIChatSyncBridge::ForEachLocalEntity(
       std::string entry_key =
           base::StrCat({kEntryStorageKeyPrefix, *entry->uuid});
 
+      // Ask whether the entry is wanted before serializing it — building the
+      // specifics gzips every compressible field, which is wasted on a
+      // re-merge where the predicate rejects everything already downloaded.
       if (!should_include(entry_key)) {
         continue;
       }
 
-      emit(std::move(entry_key),
-           CreateEntityDataFromSpecifics(EntryToSpecifics(
-               conversation->uuid, *entry, conversation->associated_content)));
+      auto specifics = BuildCommittableEntry(conversation->uuid, *entry,
+                                             conversation->associated_content,
+                                             content_texts);
+      if (!specifics) {
+        continue;
+      }
+
+      emit(std::move(entry_key), CreateEntityDataFromSpecifics(*specifics));
     }
   }
 }
@@ -227,30 +269,39 @@ std::unique_ptr<syncer::DataBatch> AIChatSyncBridge::GetDataForCommit(
       batch->Put(key, CreateEntityDataFromSpecifics(specifics));
     } else if (key.starts_with(kEntryStorageKeyPrefix)) {
       const std::string entry_uuid = key.substr(kEntryStorageKeyPrefix.size());
-      // Locate the parent conversation by scanning.
-      // TODO(https://github.com/brave/brave-browser/issues/53978): Optimize via
-      // indexing entry→conversation in the DB, or by creating a
-      // GetConversationEntry(uuid) method in AIChatDatabase.
-      for (const auto& conversation : database_->GetAllConversations()) {
-        if (conversation->temporary) {
-          continue;
-        }
-        auto archive = database_->GetConversationData(conversation->uuid);
-        if (!archive) {
-          continue;
-        }
-        auto it = std::ranges::find_if(
-            archive->entries, [&](const mojom::ConversationTurnPtr& entry) {
-              return entry->uuid && *entry->uuid == entry_uuid;
-            });
-        if (it == archive->entries.end()) {
-          continue;
-        }
-        auto specifics = EntryToSpecifics(conversation->uuid, **it,
-                                          conversation->associated_content);
-        batch->Put(key, CreateEntityDataFromSpecifics(specifics));
-        break;
+      auto conversation_uuid =
+          database_->GetConversationUuidForEntry(entry_uuid);
+      if (!conversation_uuid) {
+        continue;
       }
+      auto conversation =
+          FindSyncableConversation(*database_, *conversation_uuid);
+      if (!conversation) {
+        continue;
+      }
+      auto archive = database_->GetConversationData(*conversation_uuid);
+      if (!archive) {
+        continue;
+      }
+      auto it = std::ranges::find(archive->entries, entry_uuid,
+                                  &mojom::ConversationTurn::uuid);
+      if (it == archive->entries.end()) {
+        continue;
+      }
+      auto specifics = BuildCommittableEntry(*conversation_uuid, **it,
+                                             conversation->associated_content,
+                                             ContentTextsFromArchive(*archive));
+      if (!specifics) {
+        // The entry cannot be made to fit the per-record budget, so there is
+        // nothing to commit. Untrack it explicitly rather than leave it out of
+        // the batch, which the processor reports as a bridge bug
+        // (Sync.DataTypeOrphanMetadata.GetData). Untracking only forgets the
+        // entity in memory, so the persisted metadata is cleared too.
+        database_->ClearEntityMetadata(syncer::AI_CHAT_CONVERSATION, key);
+        change_processor()->UntrackEntityForStorageKey(key);
+        continue;
+      }
+      batch->Put(key, CreateEntityDataFromSpecifics(*specifics));
     }
   }
   return batch;
@@ -424,11 +475,19 @@ void AIChatSyncBridge::PutEntry(const std::string& conversation_uuid,
   if (it == archive->entries.end()) {
     return;
   }
-  auto specifics = EntryToSpecifics(conversation_uuid, **it,
-                                    conversation->associated_content);
+  auto specifics = BuildCommittableEntry(conversation_uuid, **it,
+                                         conversation->associated_content,
+                                         ContentTextsFromArchive(*archive));
+  if (!specifics) {
+    // Too large to commit even after omitting every omittable field, so there
+    // is nothing to Put. Leave the entity tracked: untracking one committed
+    // earlier would turn a later local delete into a no-op and strand the
+    // server's copy. GetDataForCommit() untracks it if a commit asks for it.
+    return;
+  }
   auto metadata_change_list = CreateMetadataChangeList();
   change_processor()->Put(base::StrCat({kEntryStorageKeyPrefix, entry_uuid}),
-                          CreateEntityDataFromSpecifics(specifics),
+                          CreateEntityDataFromSpecifics(*specifics),
                           metadata_change_list.get());
 }
 

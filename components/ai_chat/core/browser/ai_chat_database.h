@@ -70,6 +70,11 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   virtual std::vector<mojom::ConversationTurnPtr> GetConversationThreadEntries(
       std::string_view thread_uuid);
 
+  // Returns the uuid of the conversation owning |conversation_entry_uuid|, or
+  // nullopt if no such entry exists.
+  virtual std::optional<std::string> GetConversationUuidForEntry(
+      std::string_view conversation_entry_uuid);
+
   // Returns new ID for the provided entry and any provided associated content
   virtual bool AddConversation(mojom::ConversationPtr conversation,
                                std::vector<std::string> contents,
