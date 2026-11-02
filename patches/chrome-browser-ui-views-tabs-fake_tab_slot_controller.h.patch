@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/fake_tab_slot_controller.h b/chrome/browser/ui/views/tabs/fake_tab_slot_controller.h
-index 6921834b69a8a646d8d4b24aea0119461dc2edfe..43cdcbc43d2175182763ca78e5e74cbf15b08d71 100644
+index 6921834b69a8a646d8d4b24aea0119461dc2edfe..1e2d68efda16591c2b67be840efe29c60371a8d8 100644
 --- a/chrome/browser/ui/views/tabs/fake_tab_slot_controller.h
 +++ b/chrome/browser/ui/views/tabs/fake_tab_slot_controller.h
-@@ -102,6 +102,48 @@ class FakeTabSlotController : public TabSlotController {
+@@ -102,6 +102,47 @@ class FakeTabSlotController : public TabSlotController {
    BrowserWindowInterface* GetBrowserWindowInterface() override;
    TabGroup* GetTabGroup(const tab_groups::TabGroupId& group_id) const override;
  
@@ -44,8 +44,7 @@ index 6921834b69a8a646d8d4b24aea0119461dc2edfe..43cdcbc43d2175182763ca78e5e74cbf
 + protected:
 +  bool should_always_hide_close_button_ = false;
 +  bool can_close_tab_via_middle_button_click_ = true;
-+  brave_tabs::TabMinWidthMode tab_min_width_mode_ =
-+      brave_tabs::TabMinWidthMode::kDefault;
++  brave_tabs::TabMinWidthMode tab_min_width_mode_{};
 +  bool horizontal_scrolling_enabled_ = false;
 +
   private:
