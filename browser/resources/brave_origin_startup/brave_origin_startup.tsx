@@ -7,7 +7,7 @@ import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 import { App } from './components/app'
-import * as BraveOriginMojom from 'gen/brave/components/brave_origin/mojom/brave_origin_startup.mojom.m.js'
+import * as BraveOriginMojom from 'gen/brave/components/brave_origin/mojom/brave_origin_startup.mojom-webui.js'
 import { loadTimeData } from '$web-common/loadTimeData'
 import './strings'
 
