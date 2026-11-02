@@ -55,8 +55,7 @@ size_t FakeBatAdsServiceFactory::trigger_notification_ad_event_count() const {
   return bat_ads ? bat_ads->trigger_notification_ad_event_count() : 0U;
 }
 
-mojo::Remote<bat_ads::mojom::BatAdsService> FakeBatAdsServiceFactory::Launch()
-    const {
+mojo::Remote<bat_ads::mojom::BatAdsService> FakeBatAdsServiceFactory::Launch() {
   ++launch_count_;
 
   mojo::Remote<bat_ads::mojom::BatAdsService> bat_ads_service_remote;
@@ -71,6 +70,10 @@ mojo::Remote<bat_ads::mojom::BatAdsService> FakeBatAdsServiceFactory::Launch()
       bat_ads_service_remote.BindNewPipeAndPassReceiver());
 
   return bat_ads_service_remote;
+}
+
+void FakeBatAdsServiceFactory::Invalidate() {
+  ++invalidate_count_;
 }
 
 }  // namespace brave_ads::test

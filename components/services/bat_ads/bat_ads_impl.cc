@@ -23,6 +23,7 @@
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
 #include "brave/components/services/bat_ads/bat_ads_observer.h"
 #include "mojo/public/cpp/bindings/callback_helpers.h"
+#include "mojo/public/cpp/bindings/sync_call_restrictions.h"
 
 namespace bat_ads {
 
@@ -51,6 +52,12 @@ class BatAdsImpl::AdsInstance final {
   brave_ads::Ads* GetAds() { return ads_.get(); }
 
  private:
+  // TODO(https://github.com/brave/brave-browser/issues/29870): Get rid of
+  // scoped allow sync calls object when Brave Ads [Sync] mojom calls are
+  // refactored. mojo::ScopedAllowSyncCallForTesting is used to avoid patching
+  // of chromium sync_call_restrictions.h file.
+  mojo::ScopedAllowSyncCallForTesting scoped_allow_sync_call_;
+
   std::unique_ptr<BatAdsClientMojoBridge> bat_ads_client_mojo_proxy_;
   std::unique_ptr<brave_ads::Ads> ads_;
 };
