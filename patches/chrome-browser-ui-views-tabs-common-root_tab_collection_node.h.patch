@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/tabs/common/root_tab_collection_node.h b/chrome/browser/ui/views/tabs/common/root_tab_collection_node.h
+index 90df0c9a3ad13cd055630f5add86038b695c8d41..99040098cc931cc0e4bfe0d923d1e0fed339f931 100644
+--- a/chrome/browser/ui/views/tabs/common/root_tab_collection_node.h
++++ b/chrome/browser/ui/views/tabs/common/root_tab_collection_node.h
+@@ -53,6 +53,8 @@ class RootTabCollectionNode : public TabCollectionNode,
+   base::CallbackListSubscription RegisterOnActiveTabChangedCallback(
+       ActiveTabChangedCallback callback);
+ 
++  void OnTreeTabChanged(const TreeTabChange& change) override;
++
+  private:
+   using SelectionHandles = base::flat_set<tabs::TabHandle>;
+ 
