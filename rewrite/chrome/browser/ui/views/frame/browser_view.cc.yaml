@@ -5,19 +5,6 @@
 
 substitutions:
   - description: |-
-      Fail hit tests between views in different widgets.
-
-      With vertical tabs, the source and target views can be in different
-      widgets, and converting the point between them failed a DCHECK.
-    preempt_function_impl:
-      function_name: ConvertedHitTest
-      code: |-
-        if (!src->GetWidget() || !dst->GetWidget() ||
-            dst->GetWidget() != src->GetWidget()) {
-          return false;
-        }
-
-  - description: |-
       Keep a web panel's tab contents out of the contents view.
 
       A web panel's tab contents load in the web panel view (the third split
