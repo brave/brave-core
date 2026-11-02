@@ -13,7 +13,7 @@
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
-#include "brave/components/constants/pref_names.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "chrome/browser/interstitials/security_interstitial_page_test_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -31,6 +31,7 @@ using brave_shields::ControlType;
 using brave_shields::SetBraveShieldsEnabled;
 using brave_shields::SetCosmeticFilteringControlType;
 using brave_shields::features::kBraveDomainBlock;
+using brave_shields::prefs::kAdsBlocked;
 
 class DomainBlockTestBase : public AdBlockServiceTest {
  public:

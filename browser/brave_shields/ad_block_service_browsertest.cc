@@ -49,7 +49,6 @@
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/constants/brave_paths.h"
-#include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -127,6 +126,7 @@ using brave_shields::features::kBraveAdblockDefault1pBlocking;
 using brave_shields::features::kBraveAdblockProceduralFiltering;
 using brave_shields::features::kBraveAdblockScriptletDebugLogs;
 using brave_shields::features::kCosmeticFilteringJsPerformance;
+using brave_shields::prefs::kAdsBlocked;
 
 namespace {
 

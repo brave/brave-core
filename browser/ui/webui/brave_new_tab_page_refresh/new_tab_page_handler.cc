@@ -23,6 +23,7 @@
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
@@ -588,8 +589,9 @@ void NewTabPageHandler::SetShowShieldsStats(
 
 void NewTabPageHandler::GetShieldsStats(GetShieldsStatsCallback callback) {
   auto stats = mojom::ShieldsStats::New();
-  stats->ads_blocked = pref_service_->GetUint64(kAdsBlocked) +
-                       pref_service_->GetUint64(kTrackersBlocked);
+  stats->ads_blocked =
+      pref_service_->GetUint64(brave_shields::prefs::kAdsBlocked) +
+      pref_service_->GetUint64(brave_shields::prefs::kTrackersBlocked);
   stats->bandwidth_saved_bytes = pref_service_->GetUint64(
       brave_perf_predictor::prefs::kBandwidthSavedBytes);
   std::move(callback).Run(std::move(stats));

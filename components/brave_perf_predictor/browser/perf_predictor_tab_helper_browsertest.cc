@@ -12,8 +12,8 @@
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/constants/brave_paths.h"
-#include "brave/components/constants/pref_names.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -32,7 +32,8 @@ uint64_t getProfileBandwidthSaved(BrowserWindowInterface* browser) {
 }
 
 uint64_t getProfileAdsBlocked(BrowserWindowInterface* browser) {
-  return browser->GetProfile()->GetPrefs()->GetUint64(kAdsBlocked);
+  return browser->GetProfile()->GetPrefs()->GetUint64(
+      brave_shields::prefs::kAdsBlocked);
 }
 
 }  // namespace
