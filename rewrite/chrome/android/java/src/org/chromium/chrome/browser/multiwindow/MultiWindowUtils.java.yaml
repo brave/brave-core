@@ -1,0 +1,33 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Gate link navigation to a new window on Brave's multi-window preference.
+
+      Replaces the BraveMultiWindowUtilsClassAdapter redirect, which matched by
+      method name only and so also caught the private
+      isLinkNavigationToNewWindowSupported(Set<Integer>) overload added by
+      c934e7cc992b7.
+
+      Only the static methods are rewritten here. The instance ones,
+      isLinkNavigationToOtherWindowSupported() and isMoveToOtherWindowSupported(),
+      are gated by BraveMultiWindowUtils overrides instead.
+    regex:
+      re_pattern: |-
+        (public static boolean isLinkNavigationToNewWindowSupported\(\) \{)
+      replace: |-
+        \1
+                if (!BraveMultiWindowUtils.shouldEnableMultiWindows()) return false;
+
+  - description: |-
+      Gate link navigation to an incognito window on Brave's multi-window
+      preference.
+    regex:
+      re_pattern: |-
+        (public static boolean isLinkNavigationToIncognitoWindowSupported\(\) \{)
+      replace: |-
+        \1
+                if (!BraveMultiWindowUtils.shouldEnableMultiWindows()) return false;
