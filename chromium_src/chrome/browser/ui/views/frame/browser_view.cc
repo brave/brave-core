@@ -8,7 +8,6 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "brave/browser/ui/views/bookmarks/brave_bookmark_bar_view.h"
-#include "brave/browser/ui/views/frame/layout/brave_browser_view_layout_delegate_impl.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view_delegate_impl.h"
 #include "brave/browser/ui/views/infobars/brave_infobar_container_view.h"
