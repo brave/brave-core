@@ -358,32 +358,59 @@ See `docs/chrome/browser/ui/tabs/tree_tabs_architecture.md` and
 
 ### Reimplementation plan
 
-1. Add a new `TabCollection::Type::TREE_TAB_NODE` (and mirrored
-   `TabCollectionNode::Type`) on top of the **new, unified**
-   `BaseTabStripRegionView`/`TabCollectionNode` infra, following the same
-   `LINT.IfChange/ThenChange` discipline upstream uses for its own group/split
-   types, rather than layering purely inside `chromium_src`.
-2. Re-home rendering/indentation logic (currently in `brave_tab.cc` /
-   `brave_tab_strip.cc` / `brave_tab_container.cc`) onto upstream's new
-   orientation-aware painting code (`tab_view_vertical_layout.h`,
-   `vertical_tab_style_views.h`) instead of Brave's previous ad hoc paint
-   overrides.
-3. Re-verify `BraveTreeTabStripCollectionDelegate`'s interplay logic
-   (group/split wrapping, `MoveTabsIntoGroup`/`MoveTabsOutOfGroup`) against any
-   upstream changes to `TabGroupTabCollection`/`SplitTabCollection` manipulation
-   APIs.
-4. `TreeTabSessionManager`'s persistence format is storage-agnostic (generic
-   extra-data keys) and should port with minimal change — but confirm no key
-   collisions with upstream's own new session extra-data keys
-   (`vertical_tab_strip_collapsed`, `vertical_tab_strip_uncollapsed_width`).
-5. This is independent of horizontal-vs-vertical mode in principle (Tree Tabs
-   could theoretically apply to horizontal tabs too), but Brave currently only
-   surfaces it under vertical tabs UI — confirm whether that scoping is
-   intentional/required post-migration.
-6. **Coexistence gate:** since upstream has no Tree Tab analogue at all, backend
-   selection must keep a user on Brave's implementation whenever
-   `brave_tabs::kTreeTabsEnabled` is `true` for their profile, for as long as
-   this item remains unimplemented on the upstream backend.
+**Status (upstream backend):** implemented. The tree tab model
+(`TreeTabNodeTabCollection`, `TreeTabModel`,
+`BraveTreeTabStripCollectionDelegate`, `TreeTabSessionManager`) is reused as-is.
+`BraveTabStripModel` builds it when `kTreeTabsEnabled` and either Brave's or
+upstream's vertical tabs pref is on. On the view side:
+
+- Tree tab node collections are **unwrapped** in the `TabCollectionNode` view
+  model and get no view type of their own: their children take their place, so
+  upstream's views, layout and drag code keep seeing only tabs, groups and
+  splits. Groups and splits are as they are, and have no tree tab nodes inside.
+  The tree hierarchy is expressed by indentation only.
+- `TabCollectionNode` and `RootTabCollectionNode` don't know about tree tabs.
+  They read the hierarchy through a proxy instead of the collections:
+  `TabCollectionNode::Initialize()`/`Deinitialize()` walk
+  `GetUnwrappedChildren()`, and `RootTabCollectionNode` observes the root
+  collection through `UnwrappedTabCollectionObserver`. Once the strip has tree
+  tabs, the observer passes each change on as the unwrapped hierarchy is now:
+  the tabs and collections it's about (the unwrapped children of a tree tab node
+  collection) are added, moved or removed under their unwrapped parent, right
+  after the item before them. The root collection sends its changes once the
+  model is updated, so the current hierarchy is the final one.
+- The tree tab delegate moves tree tab node collections without collection
+  notifications. Those moves are reported by `TreeTabChange::kNodeReparented`,
+  for which the observer places the tabs of the moved subtree in a posted task.
+- `UnpinnedTabContainerViewLayout` indents tabs by tree level (expanded strip
+  only) and hides descendants of collapsed nodes. Pinned tabs are never in a
+  tree.
+- `TabView` has a collapse/expand button in the close button's slot, shown for
+  tabs with descendants when collapsed, hovered or active.
+- Pressing a tree parent selects its descendants, so dragging it moves the
+  subtree. The delegate's `MoveTabsRecursive` decides the resulting hierarchy.
+  Activating a tab hidden in a collapsed tree expands its ancestors.
+
+Upstream views are changed with plasters
+(`rewrite/chrome/browser/ui/views/tabs/common/`) that call hooks defined in
+`brave/browser/ui/views/tabs/tree_tab_view_utils.h` and
+`unwrapped_tab_collection_observer.h`. The `chromium_src` overrides only
+forward-declare those hooks, so the upstream targets don't depend on Brave
+targets. Tests: `upstream_tree_tabs_browsertest.cc`,
+`upstream_tree_tabs_interactive_uitest.cc`.
+
+Remaining:
+
+1. Show the tree toggle for groups and splits wrapped by a tree node. Brave's
+   own strip shows it on the group header.
+2. Session restore and Brave's tree tab session keys are unchanged, but not yet
+   verified on the upstream backend.
+3. Tree tabs are only surfaced under vertical tabs. Confirm whether that scoping
+   is intentional post-migration.
+4. **Coexistence gate:** backend selection keeps a user on Brave's
+   implementation whenever `brave_tabs::kTreeTabsEnabled` is `true`, until the
+   items above are done.
+5. Visual polish.
 
 ---
 
@@ -831,11 +858,8 @@ rather than maintaining a moving-target sync layer throughout.
    actually gated on it.
 5. **Left/right positioning** (§2) — moderate effort, touches layout/frame code
    but introduces no new data model.
-6. **Tree Tab** (§3) — largest effort; requires extending the new
-   `TabCollection`/`TabCollectionNode` type system and re-hosting rendering on
-   the unified orientation-aware tab painting code. Should be tackled last among
-   the feature-gap items, once the underlying view/collection replatform from
-   items 1-5 has landed and stabilized.
+6. **Tree Tab** (§3) — implemented on the upstream backend; see §3 for the
+   remaining items.
 7. **Preference/state sync scaffolding** (§1) — deliberately last. Once §2-§6
    above have closed the feature gaps and the upstream backend is a viable full
    replacement for a given user, build the continuous sync (or decide on a
