@@ -26,13 +26,13 @@ substitutions:
       replaced, so upstream tests that call setEnabledForTesting(true) still see
       Glic as enabled and keep passing.
 
-      The policy accessors (isDisabledByPolicy, isPolicyEnforced,
-      isProfileManaged and wasPreviouslyNotAllowed) are deliberately left alone:
-      they report why Glic is unavailable rather than whether it is, and nothing
-      reaches them once the accessors below answer false.
-    count: 6
+      The policy accessors (isDisabledByPolicy, isProfileManaged and
+      wasPreviouslyNotAllowed) are deliberately left alone: they report why Glic
+      is unavailable rather than whether it is, and nothing reaches them once
+      the accessors below answer false.
+    count: 8
     regex:
       re_pattern:
         'return
-        GlicEnablingJni\.get\(\)\.(isEnabledByFlags|isProfileEligible|isEnabledForProfile|isReadyForProfile|shouldShowSettingsPage|shouldShowWebActuationToggle)\([^)]*\);'
+        GlicEnablingJni\.get\(\)\.(isEnabledByFlags|isProfileEligible|isEnabledForProfile|isEnabledAndConsentForProfile|isReadyForProfile|shouldShowSettingsPage|shouldShowWebActuationToggle|shouldShowExperimentalTriggeringToggle)\([^)]*\);'
       replace: 'return false;'
