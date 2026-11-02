@@ -655,6 +655,10 @@ class PatchinfoBuilder:
         # `GIT_CONFIG_GLOBAL` is repointed at an empty file instead of
         # `~/.gitconfig`, and `GIT_CONFIG_NOSYSTEM` drops `/etc/gitconfig`. This
         # is done to prevent certain user tools from mangling the diff.
+        #
+        # No `--ignore-space-at-eol`: it hides newline-at-EOF changes, so
+        # appending to a source lacking a trailing newline yields a patch that
+        # glues the addition onto the last line when applied.
         content = self.target.repository.run_git(
             '-c',
             f'core.attributesFile={PLASTER_GITATTRIBUTES_PATH}',
@@ -666,7 +670,6 @@ class PatchinfoBuilder:
             '--dst-prefix=b/',
             '--default-prefix',
             '--full-index',
-            '--ignore-space-at-eol',
             self.source,
             no_trim=True,
             env={
