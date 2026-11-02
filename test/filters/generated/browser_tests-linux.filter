@@ -3380,6 +3380,9 @@
 # 1.3% flake rate over 30 days per LUCI Analysis (49001 passed, 53 failed, 605 flaky).
 -ContextualTasksBrowserTest.TopToolbarTest
 
+# 8.5% flake rate over 30 days per LUCI Analysis (5854 passed, 114 failed, 429 flaky).
+-ContextualTasksUiServiceRearchitectureEnabledTest.SidePanelWebViewOpenURLFromTab_ActivatedLinkClick_KeepsSidePanelOpen
+
 # 2.5% flake rate over 30 days per LUCI Analysis (48624 passed, 37 failed, 1232 flaky).
 -ControlledFramePermissionRequestTest.ClipboardReadWrite/FailsBecauseEmbedderDoesNotHavePermissionsPolicy
 
