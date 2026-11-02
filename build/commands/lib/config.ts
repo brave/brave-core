@@ -63,6 +63,8 @@ export class Config {
   gerritMirrorsUser: string | undefined
   gerritMirrorGitConfig: string
   leanSync: boolean
+  // `quiet` in .env: the `--quiet`/`--no-quiet` default, AI agent or not.
+  quiet: boolean | undefined
   gclientGlobalVars: Record<string, any>
   targetArch: string
   targetEnvironment: string | undefined
@@ -180,6 +182,7 @@ export class Config {
       '.gitconfig_gerrit_mirror_redirect',
     )
     this.leanSync = envConfig.getBoolean(['lean_sync'], false)
+    this.quiet = envConfig.getBoolean(['quiet'])
     this.gclientGlobalVars = envConfig.getMergedObject([
       'gclient',
       'global_vars',
