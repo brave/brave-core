@@ -7,6 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_COMMON_TAB_VIEW_H_
 
 #include "chrome/browser/ui/views/tabs/tab/alert_indicator_button.h"
+#include "ui/views/controls/button/image_button.h"
 
 // Adding a dummy implementation of `IsTabMuteIndicatorNotClickable`, as
 // we extended AlertIndicatorButton::Delegate.

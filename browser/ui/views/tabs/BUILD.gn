@@ -18,19 +18,22 @@ if (enable_brave_tree_tabs) {
     ]
 
     public_deps = [ "//components/tabs:public" ]
-  }
 
-  deps = [
-    "//base",
-    "//brave/browser/ui/tabs:tab_strip",
-    "//brave/browser/ui/tabs:tree_tab",
-    "//brave/components/tabs",
-    "//chrome/browser/ui:layout_constants",
-    "//chrome/browser/ui/tabs:tab_strip",
-    "//chrome/browser/ui/views/tabs/common",
-    "//chrome/browser/ui/views/tabs/common:impl",
-    "//ui/views",
-  ]
+    deps = [
+      "//base",
+      "//brave/app:brave_generated_resources_grit",
+      "//brave/browser/ui/tabs:tab_strip",
+      "//brave/browser/ui/tabs:tree_tab",
+      "//brave/components/tabs",
+      "//chrome/browser/ui:layout_constants",
+      "//chrome/browser/ui/browser_window",
+      "//chrome/browser/ui/tabs:tab_strip",
+      "//chrome/browser/ui/views/tabs/common",
+      "//chrome/browser/ui/views/tabs/common:impl",
+      "//ui/base",
+      "//ui/views",
+    ]
+  }
 }
 
 source_set("browser_tests") {

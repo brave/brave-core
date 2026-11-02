@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/views/tabs/common/tab_view.cc b/chrome/browser/ui/views/tabs/common/tab_view.cc
+index 61a57c1534a1fa5838350941f54ea5e1658f73cb..defb56314711097771f2230e9a19700f40146583 100644
+--- a/chrome/browser/ui/views/tabs/common/tab_view.cc
++++ b/chrome/browser/ui/views/tabs/common/tab_view.cc
+@@ -367,6 +367,7 @@ TabView::TabView(TabCollectionNode* collection_node)
+ 
+   title_->SetProperty(views::kElementIdentifierKey, kVerticalTabTitleElementId);
+   SetProperty(views::kElementIdentifierKey, kTabElementId);
++  MaybeInitTreeToggleButton();
+   // Layout manager must be set after child views are created because the
+   // vertical layout stores pointers to those children.
+   SetLayoutManager(CreateTabViewLayout(orientation_));
+@@ -1251,6 +1252,7 @@ void TabView::UpdateColors() {
+   title_->SetEnabledColor(colors.foreground_color);
+   close_button_->SetColors(colors);
+   alert_indicator_->OnParentTabButtonColorChanged();
++  UpdateTreeToggleButton();
+ 
+   UpdateBorder();
+ 

@@ -15,6 +15,8 @@
 #include "brave/browser/ui/tabs/tree_tab_model.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
+#include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/tabs/common/split_tab_view.h"
@@ -23,6 +25,7 @@
 #include "chrome/browser/ui/views/tabs/common/tab_view.h"
 #include "components/tabs/public/tab_collection.h"
 #include "components/tabs/public/tab_interface.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/views/view.h"
 #include "ui/views/view_utils.h"
 #endif
@@ -159,7 +162,23 @@ const tabs::TreeTabNode* GetTreeTabNodeForView(const views::View* view) {
   return node ? GetTreeTabNode(node->GetNodeData()) : nullptr;
 }
 
+<<<<<<< HEAD
 #endif
+=======
+const tabs::TreeTabNode* GetTreeTabNodeForTab(const tabs::TabInterface* tab) {
+  return tab ? GetTreeTabNode(tabs::ConstChildPtr(tab)) : nullptr;
+}
+
+// Tree tab nodes only exist with BraveTabStripModel.
+BraveTabStripModel* GetBraveTabStripModel(const tabs::TabInterface* tab) {
+  BrowserWindowInterface* browser =
+      tab ? const_cast<tabs::TabInterface*>(tab)->GetBrowserWindowInterface()
+          : nullptr;
+  return browser ? static_cast<BraveTabStripModel*>(browser->GetTabStripModel())
+                 : nullptr;
+}
+
+>>>>>>> 138ffb726e4 (Add a collapse/expand button to tree tab parents in TabView)
 }  // namespace
 
 std::vector<std::reference_wrapper<const tabs::Child>> GetUnwrappedChildren(
@@ -253,4 +272,30 @@ bool IsInCollapsedTreeTabNode(const views::View* view) {
 }
 
 #endif  // 0
+
+bool HasTreeTabDescendants(const tabs::TabInterface* tab) {
+  const tabs::TreeTabNode* node = GetTreeTabNodeForTab(tab);
+  return node && node->height() > 0;
+}
+
+bool IsTreeTabNodeCollapsed(const tabs::TabInterface* tab) {
+  const tabs::TreeTabNode* node = GetTreeTabNodeForTab(tab);
+  return node && node->collapsed();
+}
+
+std::u16string GetTreeTabToggleButtonLabel(const tabs::TabInterface* tab) {
+  return l10n_util::GetStringUTF16(IsTreeTabNodeCollapsed(tab)
+                                       ? IDS_TREE_TAB_EXPAND_BUTTON
+                                       : IDS_TREE_TAB_COLLAPSE_BUTTON);
+}
+
+void ToggleTreeTabNodeCollapsed(tabs::TabInterface* tab) {
+  const tabs::TreeTabNode* node = GetTreeTabNodeForTab(tab);
+  BraveTabStripModel* model = GetBraveTabStripModel(tab);
+  if (!node || !model) {
+    return;
+  }
+  model->SetTreeTabNodeCollapsed(node->id(), !node->collapsed());
+}
+
 }  // namespace tree_tab_view_utils

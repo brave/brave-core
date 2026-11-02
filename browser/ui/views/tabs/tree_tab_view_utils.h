@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_TABS_TREE_TAB_VIEW_UTILS_H_
 
 #include <functional>
+#include <string>
 #include <vector>
 
 #include "components/tabs/public/tab_collection_types.h"
@@ -60,6 +61,20 @@ int GetTreeTabIndent(const views::View* view, int available_width);
 // because one of its tree tab ancestors is collapsed.
 bool IsInCollapsedTreeTabNode(const views::View* view);
 #endif
+
+// Returns true if |tab| is directly wrapped by a tree tab node that has
+// descendants.
+bool HasTreeTabDescendants(const tabs::TabInterface* tab);
+
+// Returns true if |tab| is directly wrapped by a collapsed tree tab node.
+bool IsTreeTabNodeCollapsed(const tabs::TabInterface* tab);
+
+// Returns the tooltip and accessible name of the toggle button that collapses
+// or expands |tab|'s tree tab node.
+std::u16string GetTreeTabToggleButtonLabel(const tabs::TabInterface* tab);
+
+// Collapses or expands the tree tab node directly wrapping |tab|.
+void ToggleTreeTabNodeCollapsed(tabs::TabInterface* tab);
 
 }  // namespace tree_tab_view_utils
 
