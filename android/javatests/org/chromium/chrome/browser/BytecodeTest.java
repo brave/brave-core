@@ -2060,7 +2060,8 @@ public class BytecodeTest {
                         BottomBarHostManager.class,
                         VerticalTabsActionDelegate.class,
                         Supplier.class,
-                        Runnable.class));
+                        Runnable.class,
+                        BooleanSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkToolbar",
