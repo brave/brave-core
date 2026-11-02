@@ -179,8 +179,7 @@ Client<LoginInit>::Send(
 `response.body` is `std::nullopt` when:
 
 - the request failed (`net_error != net::OK`) or no response headers were
-  received,
-- no response body was received, or
+  received, or
 - the response body fails to parse into the declared type: JSON bodies via
   `base::JSONReader` and `FromValue()`, Protobuf bodies via `ParseFromString()`.
 
