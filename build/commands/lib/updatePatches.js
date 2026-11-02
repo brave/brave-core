@@ -37,7 +37,6 @@ async function getModifiedPaths(gitRepoPath, filter, onlyFiles) {
     '--ignore-submodules',
     '--diff-filter=M',
     '--numstat',
-    '--ignore-space-at-eol',
   ]
   const cmdOutput = await util.runAsync('git', modifiedDiffArgs, {
     cwd: gitRepoPath,
@@ -138,7 +137,8 @@ async function writePatchFiles(
       '--dst-prefix=b/',
       '--default-prefix',
       '--full-index',
-      '--ignore-space-at-eol',
+      // No `--ignore-space-at-eol`, as in plaster: it hides a newline added at
+      // the end of a file, which `git apply` then glues onto the last line.
       old,
     ]
     // Cancelling global git settings to make sure we get reproducible output

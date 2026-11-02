@@ -520,8 +520,9 @@ class LiftEnvironment:
 
     def upstream_source(self, source: str, repo: str = '') -> str:
         """The contents of a Chromium source at the synced commit."""
-        return self.git(
-            'show', f'HEAD:{source}', repo=self.repo.chromium / repo
+        # pylint: disable=protected-access
+        return self.repo._run_git_command(
+            ['show', f'HEAD:{source}'], self.repo.chromium / repo, strip=False
         )
 
     def resolve_conflict(
