@@ -75,9 +75,9 @@ def _to_alias_path(p: Path) -> str:
 # This script's path, in POSIX form for embedding in a git alias.
 _SCRIPT_PATH: str = _to_alias_path(Path(__file__).resolve())
 
-# `vpython3` invocation for the alias body. `VPYTHON3_PATH` is either a bare
-# `Path('vpython3')` (when depot_tools is on PATH) or an absolute path to the
-# vendored `vendor/depot_tools/vpython3` (when it isn't).
+# `vpython3` invocation for the alias body. `VPYTHON3_PATH` is either an
+# absolute path to the vendored `vendor/depot_tools/vpython3` (when present) or
+# a bare `Path('vpython3')` (falling back to depot_tools on PATH).
 _VPYTHON3_PATH: str = _to_alias_path(VPYTHON3_PATH)
 
 

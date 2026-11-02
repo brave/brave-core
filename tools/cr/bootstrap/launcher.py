@@ -168,12 +168,23 @@ def find_shim_target(tool: str) -> Shim:
 
 
 def _resolve_vpython3(checkout: Path) -> Path:
-    """Resolves `vpython3` either from path, or the one vendored."""
+    """Resolves `vpython3`, preferring the checkout's vendored depot_tools.
+
+    The vendored `vendor/depot_tools` self-updates in lockstep with the
+    checkout, so its `vpython3` understands the specs the checkout uses (e.g.
+    `vpython.toml`). A `vpython3` on `$PATH` may come from a stale or pinned
+    depot_tools that silently ignores those specs and runs the wrong Python, so
+    it is only used when the vendored copy is not present (e.g. before
+    bootstrap has deployed it).
+    """
+    name = 'vpython3.bat' if platform.system() == 'Windows' else 'vpython3'
+    vendored = checkout / 'vendor' / 'depot_tools' / name
+    if vendored.is_file():
+        return vendored
     found = shutil.which('vpython3')
     if found is not None:
         return Path(found)
-    name = 'vpython3.bat' if platform.system() == 'Windows' else 'vpython3'
-    return checkout / 'vendor' / 'depot_tools' / name
+    return vendored
 
 
 def _resolve_system_binary(

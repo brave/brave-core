@@ -193,6 +193,45 @@ class ResolveVpython3Test(unittest.TestCase):
         resolved = launcher._resolve_vpython3(Path('/home/dev/src/brave'))
         self.assertIn(resolved.name.lower(), ('vpython3', 'vpython3.bat'))
 
+    def _vendored(self, checkout: Path) -> Path:
+        name = 'vpython3.bat' if platform.system() == 'Windows' else 'vpython3'
+        return checkout / 'vendor' / 'depot_tools' / name
+
+    def test_prefers_vendored_over_path(self):
+        # pylint: disable=protected-access
+        # A stale depot_tools on $PATH must not shadow the checkout's own
+        # self-updating vendored copy.
+        with tempfile.TemporaryDirectory() as tmp:
+            checkout = Path(tmp)
+            vendored = self._vendored(checkout)
+            vendored.parent.mkdir(parents=True)
+            vendored.write_text('', encoding='utf-8')
+            with mock.patch.object(
+                launcher.shutil, 'which', return_value='/stale/vpython3'
+            ):
+                self.assertEqual(launcher._resolve_vpython3(checkout), vendored)
+
+    def test_falls_back_to_path_without_vendored(self):
+        # pylint: disable=protected-access
+        with tempfile.TemporaryDirectory() as tmp:
+            with mock.patch.object(
+                launcher.shutil, 'which', return_value='/on/path/vpython3'
+            ):
+                self.assertEqual(
+                    launcher._resolve_vpython3(Path(tmp)),
+                    Path('/on/path/vpython3'),
+                )
+
+    def test_returns_vendored_path_when_nothing_found(self):
+        # pylint: disable=protected-access
+        with tempfile.TemporaryDirectory() as tmp:
+            checkout = Path(tmp)
+            with mock.patch.object(launcher.shutil, 'which', return_value=None):
+                self.assertEqual(
+                    launcher._resolve_vpython3(checkout),
+                    self._vendored(checkout),
+                )
+
 
 class ResolveSystemBinaryTest(unittest.TestCase):
     """Exercises `launcher._resolve_system_binary`'s self-exclusion.
