@@ -1,0 +1,25 @@
+diff --git a/components/optimization_guide/core/delivery/prediction_model_component_configs.cc b/components/optimization_guide/core/delivery/prediction_model_component_configs.cc
+index 189ce91e85f8c3459a5f7c4e66790f24892d0649..e559710a593fc320d21113f0e1113a8fb5e4edc0 100644
+--- a/components/optimization_guide/core/delivery/prediction_model_component_configs.cc
++++ b/components/optimization_guide/core/delivery/prediction_model_component_configs.cc
+@@ -18,8 +18,8 @@
+ 
+ namespace optimization_guide {
+ 
+-BASE_FEATURE(kPredictionModelComponentDelivery,
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kPredictionModelComponentDelivery,
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ const base::FeatureParam<std::string> kPredictionModelTargets{
+     &kPredictionModelComponentDelivery, "targets", "20"};
+@@ -125,6 +125,9 @@ bool IsTargetEnabledForComponentDelivery(proto::OptimizationTarget target) {
+ 
+ std::optional<PredictionModelComponentConfig> GetPredictionModelComponentConfig(
+     proto::OptimizationTarget target) {
++  if ((true)) {
++    return std::nullopt;
++  }
+   if (!IsTargetEnabledForComponentDelivery(target)) {
+     return std::nullopt;
+   }
