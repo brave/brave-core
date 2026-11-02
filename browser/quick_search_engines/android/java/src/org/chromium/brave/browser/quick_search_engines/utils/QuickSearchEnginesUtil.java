@@ -182,7 +182,9 @@ public class QuickSearchEnginesUtil {
         List<TemplateUrl> templateUrls = service.getTemplateUrls();
         // Sort and filter unnecessary template URLs based on region
         SearchEngineAdapter.sortAndFilterUnnecessaryTemplateUrl(
-                templateUrls, defaultSearchEngine, regionalCapabilities.isInEeaCountry());
+                templateUrls,
+                defaultSearchEngine,
+                regionalCapabilities.isInSearchEngineChoiceScreenRegion());
         // Drop OpenSearch auto-discovered "recently visited" engines. User-added
         // custom engines (tracked by CustomSearchEnginesManager) are also non-
         // prepopulated but should be kept.
