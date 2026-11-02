@@ -299,8 +299,8 @@ MockResponseFor<LoginInit>(test_url_loader_factory_,
 ```
 
 If the request sets `url_replacements`, pass the same value as the last argument
-to `MockResponseFor<>()` (and `MatchesEndpoint<>()` below), so the mock matches
-the URL that is actually requested.
+to `MockResponseFor<>()`, so the mock matches the URL that is actually
+requested.
 
 #### When an interceptor is required
 
@@ -325,6 +325,9 @@ test_url_loader_factory_.SetInterceptor(
       }
     }));
 ```
+
+Like `MockResponseFor<>()`, `MatchesEndpoint<>()` takes the request's
+`url_replacements` as an optional last argument.
 
 #### Asserting on responses
 
