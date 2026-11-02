@@ -396,6 +396,74 @@ class ReferencesTest(_Base):
         self.assertIn('"//base/sub/foo.h"', content)
         self.assertNotIn('"//base/foo.h"', content)
 
+    _OLD_JAVA = 'chrome/android/java/src/org/chromium/chrome/browser/Mgr.java'
+    _NEW_JAVA = (
+        'chrome/android/java/src/org/chromium/chrome/browser/recent/Mgr.java'
+    )
+
+    def test_java_import_and_class_name_updated_on_java_rename(self) -> None:
+        """Imports, qualified uses and slashed names follow a moved class."""
+        before = self._chromium_head()
+        self._chromium_commit(self._OLD_JAVA, 'class Mgr {}\n')
+        self._brave_commit(
+            'android/junit/src/org/chromium/brave/UserTest.java',
+            (
+                'package org.chromium.brave;\n'
+                '\n'
+                'import org.chromium.chrome.browser.Mgr;\n'
+                'import org.chromium.chrome.browser.MgrFactory;\n'
+                '\n'
+                'class UserTest {\n'
+                '    org.chromium.chrome.browser.Mgr.Inner mInner;\n'
+                '    String mName = "org/chromium/chrome/browser/Mgr";\n'
+                '}\n'
+            ),
+        )
+        self._chromium_rename(self._OLD_JAVA, self._NEW_JAVA)
+
+        cmd_follow_renames([f'{before}..HEAD'])
+
+        content = (
+            self._brave / 'android/junit/src/org/chromium/brave/UserTest.java'
+        ).read_text(encoding='utf-8')
+        self.assertIn('import org.chromium.chrome.browser.recent.Mgr;', content)
+        self.assertIn('import org.chromium.chrome.browser.MgrFactory;', content)
+        self.assertIn('org.chromium.chrome.browser.recent.Mgr.Inner', content)
+        self.assertIn('"org/chromium/chrome/browser/recent/Mgr"', content)
+        self.assertNotIn('browser.Mgr;', content)
+
+    def test_java_import_added_for_same_package_user(self) -> None:
+        """A file in the class's old package gains an import for it."""
+        before = self._chromium_head()
+        self._chromium_commit(self._OLD_JAVA, 'class Mgr {}\n')
+        self._brave_commit(
+            'android/java/org/chromium/chrome/browser/BraveUser.java',
+            (
+                'package org.chromium.chrome.browser;\n'
+                '\n'
+                'class BraveUser {\n'
+                '    Mgr mMgr;\n'
+                '}\n'
+            ),
+        )
+        self._brave_commit(
+            'android/java/org/chromium/chrome/browser/BraveOther.java',
+            'package org.chromium.chrome.browser;\n\nclass BraveOther {}\n',
+        )
+        self._chromium_rename(self._OLD_JAVA, self._NEW_JAVA)
+
+        cmd_follow_renames([f'{before}..HEAD'])
+
+        java_dir = self._brave / 'android/java/org/chromium/chrome/browser'
+        self.assertIn(
+            'import org.chromium.chrome.browser.recent.Mgr;',
+            (java_dir / 'BraveUser.java').read_text(encoding='utf-8'),
+        )
+        self.assertNotIn(
+            'import',
+            (java_dir / 'BraveOther.java').read_text(encoding='utf-8'),
+        )
+
 
 # ---------------------------------------------------------------------------
 # Multiple renames in a single range
