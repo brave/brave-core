@@ -1,0 +1,20 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/multiwindow/MultiWindowUtils.java b/chrome/android/java/src/org/chromium/chrome/browser/multiwindow/MultiWindowUtils.java
+index 3519e4dfa5ad1cf8b1fcf8aa40717a16b75397bb..00246fb5d557c87057bdc13ed2debff07c03d225 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/multiwindow/MultiWindowUtils.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/multiwindow/MultiWindowUtils.java
+@@ -263,6 +263,7 @@ public class MultiWindowUtils implements ActivityStateListener {
+ 
+     /** Determines whether opening a URL in a new window should be allowed. */
+     public static boolean isLinkNavigationToNewWindowSupported() {
++        if (!BraveMultiWindowUtils.shouldEnableMultiWindows()) return false;
+         // Automotive is currently restricted to a single window.
+         if (DeviceInfo.isAutomotive()) return false;
+ 
+@@ -281,6 +282,7 @@ public class MultiWindowUtils implements ActivityStateListener {
+ 
+     /** Determines whether opening a URL in an incognito window should be allowed. */
+     public static boolean isLinkNavigationToIncognitoWindowSupported() {
++        if (!BraveMultiWindowUtils.shouldEnableMultiWindows()) return false;
+         // Automotive is currently restricted to a single window.
+         if (DeviceInfo.isAutomotive()) return false;
+         if (!IncognitoUtils.shouldOpenIncognitoAsWindow()) return false;

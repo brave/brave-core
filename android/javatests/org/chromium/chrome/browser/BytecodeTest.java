@@ -973,18 +973,6 @@ public class BytecodeTest {
                         boolean.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/multiwindow/MultiWindowUtils",
-                        "isLinkNavigationToNewWindowSupported",
-                        MethodModifier.STATIC,
-                        boolean.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/multiwindow/MultiWindowUtils",
-                        "isLinkNavigationToIncognitoWindowSupported",
-                        MethodModifier.STATIC,
-                        boolean.class));
-        Assert.assertTrue(
-                methodExists(
                         "org/chromium/components/browser_ui/site_settings/SiteSettingsCategory",
                         "contentSettingsType",
                         MethodModifier.STATIC,

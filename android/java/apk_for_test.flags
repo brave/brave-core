@@ -558,8 +558,6 @@
 -keep class org.chromium.chrome.browser.multiwindow.MultiWindowUtils {
     *** shouldShowManageWindowsMenu(...);
     *** isLinkNavigationToOtherWindowSupported(...);
-    *** isLinkNavigationToNewWindowSupported(...);
-    *** isLinkNavigationToIncognitoWindowSupported(...);
     *** isMoveToOtherWindowSupported(...);
     *** canEnterMultiWindowMode(...);
     <init>(...);
