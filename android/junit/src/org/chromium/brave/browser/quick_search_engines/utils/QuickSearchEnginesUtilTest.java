@@ -70,7 +70,7 @@ public class QuickSearchEnginesUtilTest {
 
         TemplateUrlServiceFactory.setInstanceForTesting(mTemplateUrlService);
         RegionalCapabilitiesServiceFactory.setInstanceForTesting(mRegionalCapabilities);
-        when(mRegionalCapabilities.isInEeaCountry()).thenReturn(false);
+        when(mRegionalCapabilities.isInSearchEngineChoiceScreenRegion()).thenReturn(false);
     }
 
     @After
