@@ -2,6 +2,9 @@ include_rules = [
   "+brave/components/local_ai/core",
   "+brave/components/restricted_web_contents_delegate",
   "+content/public/browser",
+  "+content/public/common",
   "+content/public/test",
+  "+net/http",
   "+services/network/public",
+  "+third_party/blink/public/common",
 ]
