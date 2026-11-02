@@ -384,7 +384,7 @@ const update = () => {
           !== util.calculateFileChecksum(destinationFile)
       ) {
         fs.copySync(sourceFile, destinationFile)
-        console.log(sourceFile + ' copied to ' + destinationFile)
+        Log.detail(sourceFile + ' copied to ' + destinationFile)
       }
     }
   }
@@ -432,7 +432,7 @@ const update = () => {
           && !braveOverwrittenFiles.has(untrackedChromiumPath)
         ) {
           fs.removeSync(untrackedChromiumPath)
-          console.log(`Deleted not listed file: ${untrackedChromiumPath}`)
+          Log.detail(`Deleted not listed file: ${untrackedChromiumPath}`)
         }
       }
     }
