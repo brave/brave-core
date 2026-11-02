@@ -14,7 +14,6 @@ import {RegisterPolymerComponentToIgnore} from 'chrome://resources/brave/polymer
 // customElements.define in their module, so we want to register to ignore the
 // component before the module is imported).
 
-RegisterPolymerComponentToIgnore('add-site-dialog')
 RegisterPolymerComponentToIgnore('settings-site-settings-page')
 RegisterPolymerComponentToIgnore('site-list')
 RegisterPolymerComponentToIgnore('site-list-entry')
