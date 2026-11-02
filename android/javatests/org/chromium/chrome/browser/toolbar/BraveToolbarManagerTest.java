@@ -33,7 +33,7 @@ import org.chromium.chrome.browser.search_engines.SearchEngineType;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.chrome.test.ChromeTabbedActivityTestRule;
-import org.chromium.chrome.test.util.NewTabPageTestUtils;
+import org.chromium.chrome.test.util.ChromeTabUtils;
 import org.chromium.components.omnibox.AutocompleteInput;
 import org.chromium.components.omnibox.OmniboxFocusReason;
 import org.chromium.components.search_engines.TemplateUrl;
@@ -77,7 +77,8 @@ public class BraveToolbarManagerTest {
     public void testAcceleratorInputIsIgnoredWhileGoogleNtpHubHides() throws TimeoutException {
         useGoogleAsDefaultSearchEngine();
         mActivityTestRule.loadUrl("chrome://newtab/");
-        NewTabPageTestUtils.waitForNtpLoaded(mActivityTestRule.getActivityTab());
+        // The NTP Stations expect upstream's NTP views, which Brave's NTP doesn't have.
+        ChromeTabUtils.waitForNtpLoaded(mActivityTestRule.getActivityTab());
 
         ThreadUtils.runOnUiThreadBlocking(mToolbarManager::endFuseboxInput);
         assertFalse(
