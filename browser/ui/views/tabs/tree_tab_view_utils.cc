@@ -8,17 +8,24 @@
 #include <algorithm>
 #include <functional>
 #include <memory>
+#include <optional>
+#include <unordered_set>
+#include <utility>
 #include <variant>
 
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/task/single_thread_task_runner.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
+#include "brave/browser/ui/tabs/tree_tab_model.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/tabs/tab_strip_model_selection_state.h"
+#include "chrome/browser/ui/tabs/tab_strip_user_gesture_details.h"
 #include "chrome/browser/ui/views/tabs/common/split_tab_view.h"
 #include "chrome/browser/ui/views/tabs/common/tab_collection_node.h"
 #include "chrome/browser/ui/views/tabs/common/tab_group_view.h"
@@ -130,6 +137,18 @@ BraveTabStripModel* GetBraveTabStripModel(tabs::TabInterface* tab) {
                  : nullptr;
 }
 
+// Adds the tabs at |descendant_indices| to the current selection.
+void SelectTreeTabDescendants(BraveTabStripModel* model,
+                              const std::vector<int>& descendant_indices) {
+  std::unordered_set<tabs::TabInterface*> descendants;
+  for (int descendant_index : descendant_indices) {
+    descendants.insert(model->GetTabAtIndex(descendant_index));
+  }
+  tabs::TabStripModelSelectionState new_selection = model->selection_model();
+  new_selection.AppendTabsToSelection(descendants);
+  model->SetSelectionFromModel(std::move(new_selection));
+}
+
 }  // namespace
 
 std::vector<std::reference_wrapper<const tabs::Child>> GetUnwrappedChildren(
@@ -232,6 +251,59 @@ void ExpandCollapsedTreeTabAncestorsAsync(tabs::TabInterface* tab) {
                        }
                      },
                      tab->GetHandle()));
+}
+
+void ActivateTabAndSelectTreeTabSubtree(
+    TabStripModel* tab_strip_model,
+    int index,
+    const TabStripUserGestureDetails& detail) {
+  auto* model = static_cast<BraveTabStripModel*>(tab_strip_model);
+  if (!model->tree_model()) {
+    model->ActivateTabAt(index, detail);
+    return;
+  }
+
+  // Consumed at most once, so that it can't leak into an unrelated later call
+  // (e.g. when a drag intervenes and the paired release never arrives).
+  tabs::TabInterface* tab = model->GetTabAtIndex(index);
+  const std::optional<tabs::TabHandle> selected_on_press =
+      model->TakeTreeTabSubtreeSelectedOnPress();
+
+  // Only a plain mouse click on a tree tab parent selects its subtree.
+  std::vector<int> descendant_indices;
+  if (detail.type == TabStripUserGestureDetails::GestureType::kMouse) {
+    descendant_indices = model->GetTreeTabDescendantIndices(index);
+  }
+
+  if (descendant_indices.empty()) {
+    model->ActivateTabAt(index, detail);
+    return;
+  }
+
+  // A mouse press calls this for a not-yet-selected tab, and a mouse release
+  // always does when no drag occurred. So this is a press if |tab| isn't
+  // selected yet. The selection is expanded on press so that a drag, which
+  // reads the selection when it starts, moves the subtree.
+  const bool is_press = !model->IsTabSelected(index);
+
+  // The release of the click that expanded the subtree on press isn't a second
+  // click, so it must not collapse the subtree. Otherwise, a click on a tab
+  // whose whole subtree is already selected collapses the selection to the tab.
+  const bool subtree_already_selected =
+      !is_press && selected_on_press != tab->GetHandle() &&
+      std::ranges::all_of(descendant_indices, [&](int descendant_index) {
+        return model->IsTabSelected(descendant_index);
+      });
+
+  model->ActivateTabAt(index, detail);
+  if (subtree_already_selected) {
+    return;
+  }
+
+  SelectTreeTabDescendants(model, descendant_indices);
+  if (is_press) {
+    model->SetTreeTabSubtreeSelectedOnPress(tab->GetHandle());
+  }
 }
 
 }  // namespace tree_tab_view_utils

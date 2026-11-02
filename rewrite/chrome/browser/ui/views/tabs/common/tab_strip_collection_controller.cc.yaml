@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Select tree tab descendants in TabStripCollectionController::SelectTab()
+      when activating a tab.
+
+      TabView calls SelectTab() on a mouse press of a not-yet-selected tab, and
+      on every plain mouse release. Expanding the selection here, before
+      the drag is initialized, makes dragging a tree tab parent move its
+      subtree, and a second click on it collapse the selection.
+    regex:
+      pattern: model_->ActivateTabAt(tab_index.value(), gesture_detail);
+      replace: |-
+        tree_tab_view_utils::ActivateTabAndSelectTreeTabSubtree(
+            model_, tab_index.value(), gesture_detail);
