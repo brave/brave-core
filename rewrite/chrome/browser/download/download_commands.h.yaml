@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Add Brave-specific commands to DownloadCommands::Command.
+
+      REMOVE_FROM_LIST removes the item from the list without deleting the file
+      (download shelf view). DELETE_LOCAL_FILE deletes the file from disk and
+      removes the item from the list (download bubble view). COPY_DOWNLOAD_LINK
+      copies the download link to the clipboard (DownloadUIContextMenuView).
+
+      The new entries are placed before kMaxValue, which is re-pointed to the
+      last of them, so that kMaxValue covers all of Brave's commands.
+    add_enum_entries:
+      enum_name: Command
+      max_value: kMaxValue
+      entries:
+        - REMOVE_FROM_LIST = 23
+        - DELETE_LOCAL_FILE = 24
+        - COPY_DOWNLOAD_LINK = 25

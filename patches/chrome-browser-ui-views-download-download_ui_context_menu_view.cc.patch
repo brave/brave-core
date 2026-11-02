@@ -1,0 +1,18 @@
+diff --git a/chrome/browser/ui/views/download/download_ui_context_menu_view.cc b/chrome/browser/ui/views/download/download_ui_context_menu_view.cc
+index 842a1e3552ac13d5291a833b27130a4f80137703..fb8353dd5f2ece098f1a31491539f699bea0c76c 100644
+--- a/chrome/browser/ui/views/download/download_ui_context_menu_view.cc
++++ b/chrome/browser/ui/views/download/download_ui_context_menu_view.cc
+@@ -89,11 +89,13 @@ void DownloadUiContextMenuView::OnMenuWillShow(ui::SimpleMenuModel* source) {
+ void DownloadUiContextMenuView::ExecuteCommand(int command_id,
+                                                int event_flags) {
+   if (!download_commands_executed_recorded_[command_id]) {
++#if 0
+     base::UmaHistogramEnumeration(
+         "Download.ContextMenuAction",
+         DownloadCommandToContextMenuAction(
+             static_cast<DownloadCommands::Command>(command_id),
+             /*clicked=*/true));
++#endif
+     download_commands_executed_recorded_[command_id] = true;
+   }
+ 
