@@ -8,7 +8,7 @@ import { getLocale } from '$web-common/locale'
 import { StubEmailAliasesService, demoData } from './utils/stubs'
 import { ManagePageConnected } from '../email_aliases'
 import { SignInPage } from '../content/email_aliases_manage_page'
-import { EmailAliasesServiceObserverInterface } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
+import { EmailAliasesServiceObserverInterface } from 'gen/brave/components/email_aliases/email_aliases.mojom-webui.js'
 import '../content/strings'
 
 const stubEmailAliasesServiceAccountReadyInstance =
