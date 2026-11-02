@@ -339,8 +339,13 @@
 # https://github.com/brave/brave-browser/issues/58147
 -PaymentHandlerWebFlowViewMandatoryUiEnabledTest.DialogClosedOnErrorAfterUserInteraction
 
-# Fails under Xvfb without a window manager: hiding the browser deactivates
-# the inactive bubble, which closes with kLostFocus and launches the survey.
+# These tests fail under Xvfb without a window manager. In
+# HatsSurveyNotTriggeredOnBrowserClose, hiding the browser deactivates the
+# inactive bubble, which closes with kLostFocus and launches the survey. In
+# CaptionButtonsFitTopAreaAndUpdateOnThemeChange, GetCustomFramePrefDefault()
+# turns custom frames off with no known WM, so there are no caption buttons
+# whose exclusion the test measures; it passes with openbox running.
+-LinuxNativeBrowserFrameViewTest.CaptionButtonsFitTopAreaAndUpdateOnThemeChange
 -ScheduledRestartHatsBrowserTest.HatsSurveyNotTriggeredOnBrowserClose
 
 # Tests below this point have not been diagnosed or had issues created yet.

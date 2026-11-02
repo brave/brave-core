@@ -7,9 +7,10 @@
 
 # GoogleGroupsManagerFactory is permanently disabled in chromium_src
 # (BuildServiceInstanceForBrowserContext/RegisterProfilePrefs are no-ops), so
-# the real GoogleGroupsManager this fixture constructs via a custom
+# the real GoogleGroupsManager these fixtures construct via a custom
 # TestingFactory crashes in every test (CHECK failed: unregistered pref
 # sync.dogfood_groups) during TestingProfile::Init.
+-AiOverlayDialogPageHandlerGeminiEnterpriseTest.*
 -AiOverlayDialogPageHandlerTest.*
 -GeicEnablingTest.GoogleGroupsFilterEnablesOnlyMatchingProfile
 
@@ -34,6 +35,7 @@
 -GlicButtonControllerTest.*
 -GlicEnablingAnchorEntryPointTestBase.*
 -GlicEnablingCombinedObserverTest.*
+-GlicEnablingGeicPolicyTest.*
 -GlicEnablingTrustFirstOnboardingTest.*
 -GlicMediaIntegrationTest.*
 -GlicMetricsFeaturesEnabledTest.*
@@ -42,11 +44,14 @@
 -GlicEnablingProfileReadyStateTestBase.*
 -GlicSplitButtonControllerTest.*
 -MultistepFilterServiceFactoryTest.*
+-OrganizerPanelControllerTest.CrossDeviceTabsMetricsRequireFeatureAndSignIn
+-OrganizerPanelControllerTest.IncognitoSkipsRecentlyClosedAndCrossDeviceMetrics
 -ProfilePickerTest.ComputeFirstRunSkipReasonPrecedence
 -ProfilePickerTest.ComputeFirstRunSkipReasonProfileAlreadySetUp
 -SigninUiUtilTest.*
 -SkillsUiTabController*Test.*_CallsInvoke*
 -SkillsUiTabController*Test.InvokeSkill_*
+-TabStripActionContainerActivityHubTest.*
 -TabStripActionContainerTest.Glic*
 -TabStripActionContainerTest.SeparatorVisibilityFollowsGlicButton
 -TabStripActionContainerWithToolbarButtonTest.SeparatorHiddenWhenToolbarButtonEnabled
@@ -56,6 +61,10 @@
 
 # These tests fail because we don't use kChromeUINewTabPageThirdPartyURL
 -All/PermissionSubscriptionGeolocationTest.SubscribeUnsubscribeForNewTabPage/*
+-BrowserInstantControllerTest.LooksUpTabListLazily
+-BrowserInstantControllerTest.ReloadsRemoteNtpInInstantProcess
+-BrowserInstantControllerTest.ReloadsWebUiNtpTabsOnDefaultSearchProviderChange
+-BrowserInstantControllerTest.SkipsTabsWithoutWebContents
 
 # These tests fail because:
 # 1. UPDATER_DEV_ENDPOINT is empty which leads to
@@ -160,8 +169,8 @@
 -AIWriterTest.*
 -AIWriterWithFeatureConfigTest.*
 -ActorSitePolicyTest.*
--ActorTaskListBubbleControllerTest.*
 -All/ChangePasswordFormFinderTest.*/*
+-All/IndigoPageActionControllerGeicTest.*/*
 -All/IndigoPageActionControllerTest.*/*
 -ChangePasswordFormFinderTest.*
 -ChromeComposeClientTest.*
@@ -181,6 +190,12 @@
 -ContextHubServiceFactoryTest.FallsBackToNoOpWhenTabContextSyncServiceMissing
 -ContextHubTabProviderDesktopTest.RemoveGroupFromTabstripIfOpen_ClosesTabs
 -ContextHubTabProviderDesktopTest.UngroupGroupFromTabstripIfOpen_UngroupsTabs
+-DictationPageEligibilityTest.EligibleHintAllowsPageContext
+-DictationPageEligibilityTest.HintWithoutMetadataBlocksPageContext
+-DictationPageEligibilityTest.IneligibleHintBlocksPageContext
+-DictationPageEligibilityTest.NoHintStatus
+-DictationPageEligibilityTest.RegistersOptimizationTypeOnInit
+-DictationPageEligibilityTest.SkipsRegistrationWhileDisabledByPolicy
 -DigitalIdentityLowRiskOriginsTest.*
 -ExecutionEngineUrlGatingTest.AllowIfDecisionUnknown
 -ExecutionEngineUrlGatingTest.AllowIfNotBlocked
@@ -193,6 +208,11 @@
 -ExecutionEngineUrlGatingTest.ShouldDeferNavigation_CrossOriginSensitiveBlocked
 -ExplainSelectionTriggerTest.RequestExplanationOptimizationGuide*
 -FindsTabHelperTest.TestOmniboxRecentSearchSuggestionCountThresholdMet
+-GlicActivityListBubbleControllerActivityHubTest.*
+-GlicActivityListBubbleControllerOsNotificationDisabledTest.ShowBubble_InactiveBrowserWindow_StartNotification_PanelShowing
+-GlicActivityListBubbleControllerTest.*
+-GlicSelectionObserverQuickAnswersDisabledTest.DoesNotQueryOptimizationGuideWhenFeatureDisabled
+-GlicSelectionObserverQuickAnswersTest.*
 -HistoryEmbeddingsHandlerTest.*
 -IndigoPageActionControllerLegacyTest.*
 -LoginStateCheckerTest.*
@@ -202,8 +222,7 @@
 -PersistentNotificationHandlerWithNotificationContentDetectionAndLoggingTest.ReportNotificationAsSafe
 -PersistentNotificationHandlerWithNotificationContentDetectionAndLoggingTest.ReportUnwarnedNotificationAsSpam
 -PersistentNotificationHandlerWithNotificationContentDetectionAndLoggingTest.ReportWarnedNotificationAsSpam
--QuickAnswersToolTest.ExecutesQuickAnswersModelWithExpectedRequest
--QuickAnswersToolTest.HandlesModelExecutionError
+-QuickAnswersToolTest.*
 -TtcMesClientTest.DiscardsAudioChunkWithPartialTrailingSample
 -TtcMesClientTest.ForwardsEmptyAudioChunk
 -TtcMesClientTest.ForwardsServerError
@@ -219,11 +238,26 @@
 # returns true whenever ThemeService::GetIsBaseline() is true (we replace the
 # baseline palette with grayscale), so key.user_color_source resolves to
 # kGrayscale instead of the kBaseline the tests expect for the non-system,
-# non-device-theme cases.
+# non-device-theme cases, and DevTools' userColorSource is "baseline-grayscale"
+# instead of "baseline-default".
 -ColorProviderTest.SystemThemeUsesNativeUserColor/Dark
+-ColorProviderTest.SystemThemeUsesNativeUserColor/DarkCacheThemePrefs
 -ColorProviderTest.SystemThemeUsesNativeUserColor/DarkHighContrast
+-ColorProviderTest.SystemThemeUsesNativeUserColor/DarkHighContrastCacheThemePrefs
 -ColorProviderTest.SystemThemeUsesNativeUserColor/Light
+-ColorProviderTest.SystemThemeUsesNativeUserColor/LightCacheThemePrefs
 -ColorProviderTest.SystemThemeUsesNativeUserColor/LightHighContrast
+-ColorProviderTest.SystemThemeUsesNativeUserColor/LightHighContrastCacheThemePrefs
+-DevToolsUIBindingsHostConfigTest.GetHostConfigUserColorSourceAutogeneratedTheme
+-DevToolsUIBindingsHostConfigTest.GetHostConfigUserColorSourceDefault
+-DevToolsUIBindingsHostConfigTest.GetHostConfigUserColorSourceDynamicUserColor
+-DevToolsUIBindingsHostConfigTest.GetHostConfigUserColorSourceGrayscaleAndReset
+-DevToolsUIBindingsHostConfigTest.GetHostConfigUserColorSourceOffTheRecordDefault
+-DevToolsUIBindingsHostConfigTest.GetHostConfigUserColorSourceOffTheRecordInheritsOriginalProfileTheme
+-DevToolsUIBindingsThemeTest.AutogeneratedAndVariantThemesNotifyColorThemeChanged
+-DevToolsUIBindingsThemeTest.OffTheRecordBindingsNotifyOriginalProfileThemeChanges
+-DevToolsUIBindingsThemeTest.OnThemeChangedDirectCallSendsSource
+-DevToolsUIBindingsThemeTest.ThemeServiceTransitionsNotifyColorThemeChanged
 
 # These tests fail because we disable kFirstPartySets.
 -DefaultFirstPartySetsPolicyServiceTest.*
@@ -261,8 +295,14 @@
 # This test is disabled as we have our own ink drop configs.
 -ToolbarInkDropUtilTest.ConfigureInkDropTest
 
+# These tests fail because our MdTextButton turns upstream's ink drop off and
+# the widget now relies on the upstream MdTextButton default (ON).
+-GlicSelectionWidgetTest.SmallChip
+-GlicSelectionWidgetTest.SmallChipBottom
+
 # Prerender is disabled
 -PrerenderManagerBasicRequirementTest.*
+-PrerenderManagerPageLoadAndTabSwitchAfterPaintTest.*
 -PrerenderManagerPrewarmRevalidateDisabledTest.PrewarmPageNotCreatedAgainWhenRevalidateDisabled
 -PrerenderManagerPrewarmTest.*
 -PrerenderManagerTest.*
@@ -349,10 +389,7 @@
 -AccountExtensionTrackerUnitTest.AccountExtensionTypeTransportMode
 -AccountExtensionTrackerUnitTest.AccountExtensionsRemovedWhenSignedOut
 -AccountExtensionTrackerUnitTest.ExtensionSyncDisabledWhileSignedIn
--AccountsPolicyManagerTest.ClearProfileWhenSigninAndSignoutNotAllowed
 -ActionAppMenuManagerTest.ProfileSubmenu
--ActorTaskListBubbleControllerTest.ShowBubble*
--ActorTaskListBubbleTest.*
 -All/DiceResponseHandlerParamTest.Signin*/*
 -All/EnclaveAuthenticatorRequestDelegateTest.BrowserProvidedPasskeysAvailable/*
 -All/EnclaveAuthenticatorRequestDelegateTest.BrowserProvidedPasskeysAvailableForSignedInUsers/*
@@ -387,6 +424,9 @@
 -ExtensionLocalDataBatchUploaderTest.TriggerLocalDataMigrationForItems
 -ExtensionSyncServiceTransportModeTest.AccountExtensionTypeChangesWithSync
 -ExtensionSyncServiceTransportModeTest.OnlySyncAccountExtensions
+-GlicActivityListBubbleActivityHubTest.*
+-GlicActivityListBubbleControllerTest.ShowBubble*
+-GlicActivityListBubbleTest.*
 -GuestUtilMultiInstanceTest.GetGlicGuestURLWithSignedInAccount_SessionIndex0_NoWebviewEnabled
 -NotebooksEligibilityServiceFactoryTest.FeatureEnabledCreatesService
 -NotebooksServiceFactoryTest.FeatureEnabledUsesRealService
@@ -397,6 +437,7 @@
 -PeopleHandlerWebOnlySigninTest.ChromeSigninUserAvailableOnWebSignin
 -ProfileDynamicMenuTest.BuildSyncSection_SignedInProfile
 -ProfileDynamicMenuTest.BuildSyncSection_SyncError
+-ProfileReportGeneratorTest.SignedInProfile
 -SendTabToSelfPromoBubbleViewTest.LoadsAccountAwareDesign
 -ShowPromoTest.*
 -SigninUtilHistorySyncOptinTest.*
@@ -454,6 +495,7 @@
 -DownloadWarningDesktopHatsUtilsTest.ProductSpecificData_EnhancedSafeBrowsing
 -EnhancedProtectionDownloadTest.*
 -ExtensionDataCollectionTest.*
+-ExtensionTelemetryServiceIsolatedModeTest.IsNeverEnabledForESB
 -ExternalAppRedirectCheckingTest.ShouldReportExternalAppRedirect
 -GeminiAntiscamProtectionServiceFactoryTest.*
 -GeminiAntiscamProtectionServiceTest.*
@@ -484,6 +526,7 @@
 # These fail because we override IdentityManager::GetAccountsInCookieJar
 -ContextualTasksUiTest.AccountInfo_WebSignedInWithFullName
 -ContextualTasksUiTest.GetContextualTasksLoadTimeData_IsSignedInReflectsCookieAndBrowserState
+-ContextualTasksUiTest.SignedInAccountCount_MultipleWebAccounts
 -SupervisedUserGoogleAuthNavigationThrottleTest.NavigationForPendingSignedInSupervisedUsers
 -SupervisedUserGoogleAuthNavigationThrottleTest.NavigationForPendingSignedInSupervisedUsersAllowsYouTubeInfrastructureInSubframes
 -SupervisedUserGoogleAuthNavigationThrottleTest.NavigationForValidSignedinSupervisedUsers
@@ -595,11 +638,19 @@
 -All/IncidentReportingServiceTest.*
 
 # This test times out because TaskEnvironment::FastForwardBy never returns.
--ActorTaskListBubbleControllerOsNotificationTest.ShowBubble_InactiveBrowserWindow_DoesNotShowBubble
+-GlicActivityListBubbleControllerOsNotificationTest.ShowBubble_InactiveBrowserWindow_DoesNotShowBubble
 -NotificationsEngagementServiceTest.EraseStaleEntries
 
 # This test fails because we stub out NetworkService::UpdateKeysPinList
 -PKIMetadataComponentInstallerKeyPinningTest.InstallComponentUpdatesPinningConfig
+
+# These tests fail because we override the pins generator to ignore the
+# caller's data in favour of Brave's, so the compiled-in unittest pins lack the
+# upstream test hosts. See rewrite/net/tools/
+# transport_security_state_generator/input_file_parsers.cc.yaml
+-PKIMetadataComponentInstallerKeyPinningTest.InstallComponentIncompatibleKPVersion
+-PKIMetadataComponentInstallerKeyPinningTest.InstallComponentInvalidKPProto
+-PKIMetadataComponentInstallerKeyPinningTest.InstallComponentKPListOlderThanBuiltIn
 
 # These tests are disabled because we hide the password card in
 # brave://settings/safetyCheck which also involves always returning a "safe"
@@ -795,7 +846,11 @@
 # These tests fail because we don't show the history sync promo
 -BrowsingHistoryHandlerHistorySyncPromoTest.ShouldShowHistoryPageHistorySyncPromo*/*
 
-# This test fails because we disable kDestroyProfileOnBrowserClose feature.
+# These tests fail because we disable kDestroyProfileOnBrowserClose feature.
+# They delete the profile and expect it to be destroyed, so TearDown() removes
+# an already-removed ProfileAttributesStorage entry (NOTREACHED).
+-AccountsPolicyManagerTest.ClearProfileWhenSigninAndSignoutNotAllowed
+-AccountsPolicyManagerTest.UserScopeBrowserSigninDisabledLogsDeleteProfileMetric
 -BookmarkDictImporterTest.FailsIfProfileIsDestroyed
 -ChromeContentVerifierTest.NonCfmChecksHashEvenWithForceFlag
 
@@ -842,6 +897,11 @@
 -PageActionViewTest.ChipStateUpdatesBackgroundColor
 -PageActionViewTest.ChipStateUpdatesForegroundColor
 
+# This test fails because we give tab strip control buttons the transparent
+# `kColorNewTabButtonCRBackgroundFrame*` backgrounds, so the scroll buttons
+# don't paint `kColorNewTabButtonBackgroundFrameInactive`.
+-TabScrollButtonContainerTest.ScrollButtonsHaveExpectedColorsWhenActiveAndInactive
+
 # These tests fail because we disable `blink::features::kAIRewriterAPI`
 -AIRewriterTest.*
 
@@ -849,12 +909,14 @@
 # registered.
 -ContextualSearchboxHandlerTest.QueryAutocomplete_NullBrowserWindowInterfaceDoesNotCrash
 -ContextualSearchboxHandlerTest.QueryAutocomplete_SetsLensInputs_InToolModes
+-ExecutePasteAndGoSchemeTest.FiltersClipboardSchemes/*
 -OmniboxComposeboxHandlerTest.OpenLensSearch
 -OmniboxContextMenuControllerSingleTabItemTest.*
 -OmniboxContextMenuControllerTest.*
 -OmniboxEditModelPopupTest.AiModeButtonClick*
 -OmniboxEditModelPopupTest.AimPopup*
 -OmniboxPopupHandlerTest.*
+-SecurityChipStateHelperTest.ExecutePasteAndGoUsesClientPageClassification
 -SmartTabSharingTest.QueryAutocomplete_*
 -WebuiOmniboxHandlerTabScopingTest.AddTabContext_ContextMenuDoesNotSetInvocationSource
 -WebuiOmniboxHandlerTabScopingTest.AddTabContext_CurrentTabChipSetsInvocationSource
@@ -922,9 +984,9 @@
 -ActorOneTimeTokenFillingServiceImplTest.ValidateFormFillingContext_FencedFrame_InsecureContext
 -SaasUsageNavigationObserverTest.DoNotReportFencedFrameNavigation
 
-# These tests enable kReplaceSyncPromos* via ScopedFeatureList and assert
-# the sign-in-promo behavior that Brave unconditionally disables,
-# brave-browser#58511
+# These tests assert the sign-in-promo behavior that Brave unconditionally
+# disables (some enable kReplaceSyncPromos* via ScopedFeatureList, others
+# expect it on by default), brave-browser#58511
 -All/AppMenuModelSigninPromoTest.SignedOut/1
 -All/HistorySyncOptinServiceTest.*
 -All/ManagedDataTypeErrorScreenServiceTest.*
@@ -933,8 +995,19 @@
 -ComputeProfileMenuAvatarButtonPromoInfoParamTest.NoPromoWhenRequirementsForPromoSetAndResolved/*
 -ComputeProfileMenuAvatarButtonPromoInfoParamTest.OnlySigninPromoIfNotSignedIn/*
 -ComputeProfileMenuAvatarButtonPromoInfoParamTest.PromoWhenRequirementsForPromoSet/*
--HistorySignInStateWatcherSyncToSigninTest.*
--HistorySignInStateWatcherTest.NullServices/WithSyncToSignin
+-HistorySignInStateWatcherTest.DisablingTabsSync
+-HistorySignInStateWatcherTest.DoesNotNotifyOnEnablingHistorySync
+-HistorySignInStateWatcherTest.HistorySyncDisabledByPolicy
+-HistorySignInStateWatcherTest.NotifiesOnChromeSignInWithoutHistoryAndTabsSync
+-HistorySignInStateWatcherTest.NotifiesOnEnablingHistorySync
+-HistorySignInStateWatcherTest.NotifiesOnEnablingTabsSync
+-HistorySignInStateWatcherTest.NotifiesOnSignOut
+-HistorySignInStateWatcherTest.NotifiesOnWebOnlySignIn
+-HistorySignInStateWatcherTest.NullServices
+-HistorySignInStateWatcherTest.SignInPendingCanOptInToTabsSync
+-HistorySignInStateWatcherTest.SyncDisabledByPolicy
+-HistorySignInStateWatcherTest.SyncingWithoutTabsSyncIsSyncDisabled
+-HistorySignInStateWatcherTest.TabsSyncDisabled
 -HistorySyncStateWhenTypeDisabledByUserTest.DisablingHistoryRelatedTypeDisablesHistorySync/*
 -PeopleHandlerWithReplaceSyncWithSigninUI.*
 -ProcessDiceHeaderDelegateImplTest.EnableSyncHeaderForPrimaryAccount
@@ -973,6 +1046,9 @@
 -RenderViewContextMenuPrefsTest.LensImageSearchIssuesGoogleLensPreconnect
 -RenderViewContextMenuPrefsTest.LensRegionSearchIssuesGoogleLensPreconnect
 
+# Lens is disabled
+-RenderViewContextMenuPrefsTest.GlicShareImageEligibility
+
 # As we reset VerticalTabs preference when it's not enabled via flags,
 # this test fails
 -TabMetricsProviderTest.LogsSessionStartMetrics
@@ -990,9 +1066,20 @@
 # title whereas we use "Private"
 -ActionAppMenuManagerTest.BlockActionsIncognitoNewTabTextOverride
 
-# This test fails because it expects "Google Password Manager" to appear in the
-# subtitle, but instead "Brave Password Manager" appears there
+# Brave's RenderViewContextMenu::InitMenu() classifies the selection with an
+# AutocompleteClassifier, whose SearchProvider DCHECKs on the TemplateURLService
+# this harness doesn't create.
+-ChromeWebContentsViewDelegateViewsClipboardTest.*
+
+# These tests fail because they expect "Google Password Manager" to appear in
+# the subtitle, but instead "Brave Password Manager" appears there
+-RemoteActorCredentialSharingImplTest.SearchOriginPlumbsSearchBrandingAndAgentParameters
 -RemoteActorSelectionDialogControllerTest.Properties*
+-RemoteActorSelectionDialogControllerTest.SetActorNameAndLearnMoreUrlOverrideDefaults
+
+# This test fails because we default omnibox::kAIModeSettings to -1 (AI Mode
+# disallowed), and it asserts the upstream default.
+-RemoteActorCredentialSharingImplTest.SearchManagedProfileWithSparkDisabled_AllowedWhenAimAllowed
 
 # These tests fail because of mismatch in location bar height (32 vs 34)
 -OmniboxPopupUITest.FullWebUIOmniboxLayoutHelperStandardMode
@@ -1091,7 +1178,7 @@
 -TabTest.*
 -TemplateURLServiceSyncTest.MergeConflictingPrepopulatedEngine
 -ThemeLocalDataBatchUploaderTest.*
--ThemeServiceTest.IsGrayscale
+-ThemeServiceTest.IsGrayscale/*
 -ThemeSyncableServiceTest.GetAllSyncDataForTesting_Extension
 -ThemeSyncableServiceTest.OnThemeChangeByUser_Extension
 -ThemeSyncableServiceTest.RestoreSystemThemeBitWhenChangeToCustomTheme
