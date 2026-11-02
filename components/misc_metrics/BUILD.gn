@@ -78,7 +78,7 @@ static_library("misc_metrics") {
 
   public_deps = [
     ":default_browser_monitor",
-    "//brave/components/image_metadata_stripper",
+    "//brave/components/image_metadata_stripper/common",
     "//brave/components/misc_metrics/common:mojom",
   ]
 }
@@ -123,7 +123,7 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
-    "//brave/components/image_metadata_stripper",
+    "//brave/components/image_metadata_stripper/common",
     "//brave/components/misc_metrics",
     "//brave/components/p3a_utils",
     "//brave/components/p3a_utils:test_support",

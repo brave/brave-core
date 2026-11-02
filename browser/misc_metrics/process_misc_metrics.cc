@@ -56,9 +56,8 @@ ProcessMiscMetrics::ProcessMiscMetrics(PrefService* local_state)
   if (base::FeatureList::IsEnabled(features::kCaptchaMetricsCollection)) {
     captcha_metrics_ = std::make_unique<CaptchaMetrics>(local_state);
   }
-  image_metadata_stripper_metrics_ = std::make_unique<
-      image_metadata_stripper::metrics::ImageMetadataStripperMetrics>(
-      local_state);
+  image_metadata_stripper_metrics_ =
+      std::make_unique<ImageMetadataStripperMetrics>(local_state);
   doh_metrics_ = std::make_unique<DohMetrics>(local_state);
   uptime_monitor_ = std::make_unique<UptimeMonitorImpl>(local_state);
   media_session_metrics_ = std::make_unique<MediaSessionMetricsImpl>(
@@ -113,7 +112,7 @@ CaptchaMetrics* ProcessMiscMetrics::captcha_metrics() {
   return captcha_metrics_.get();
 }
 
-image_metadata_stripper::metrics::ImageMetadataStripperMetrics*
+ImageMetadataStripperMetrics*
 ProcessMiscMetrics::image_metadata_stripper_metrics() {
   return image_metadata_stripper_metrics_.get();
 }
@@ -142,8 +141,7 @@ void ProcessMiscMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   TabMetrics::RegisterPrefs(registry);
 #endif
   CaptchaMetrics::RegisterPrefs(registry);
-  image_metadata_stripper::metrics::ImageMetadataStripperMetrics::RegisterPrefs(
-      registry);
+  ImageMetadataStripperMetrics::RegisterPrefs(registry);
   DohMetrics::RegisterPrefs(registry);
   MediaSessionMetricsImpl::RegisterPrefs(registry);
   UptimeMonitorImpl::RegisterPrefs(registry);

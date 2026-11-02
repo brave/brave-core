@@ -249,7 +249,7 @@ class BraveDownloadManagerDelegateBrowserTestBase : public PlatformBrowserTest {
   // Reads an FBMD stripped count recorded in local state for |count_key|
   // (kDownloadStrippedPrefKey or kUploadStrippedPrefKey).
   int GetFbmdStrippedCountInLocalState(std::string_view count_key) {
-    return image_metadata_stripper::metrics::GetFbmdStrippedCountInLocalState(
+    return misc_metrics::GetFbmdStrippedCountInLocalState(
         g_browser_process->local_state(), count_key);
   }
 
@@ -359,15 +359,15 @@ IN_PROC_BROWSER_TEST_F(BraveDownloadManagerDelegateBrowserTest,
                        NON_ANDROID_TEST(RecordsStrippedCountInLocalState)) {
   // Nothing recorded before the download.
   EXPECT_EQ(0, GetFbmdStrippedCountInLocalState(
-                   image_metadata_stripper::metrics::kDownloadStrippedPrefKey));
+                   misc_metrics::kDownloadStrippedPrefKey));
 
   DownloadAndExpectIptcStripping(kRealJpegImageAndJpegMimeFile,
                                  /*should_strip=*/true);
 
   EXPECT_EQ(1, GetFbmdStrippedCountInLocalState(
-                   image_metadata_stripper::metrics::kDownloadStrippedPrefKey));
+                   misc_metrics::kDownloadStrippedPrefKey));
   EXPECT_EQ(0, GetFbmdStrippedCountInLocalState(
-                   image_metadata_stripper::metrics::kUploadStrippedPrefKey));
+                   misc_metrics::kUploadStrippedPrefKey));
 }
 
 // Stripping runs for a .jpeg served with a non-image MIME type, but the fake
@@ -380,5 +380,5 @@ IN_PROC_BROWSER_TEST_F(
                                  /*should_strip=*/true);
 
   EXPECT_EQ(0, GetFbmdStrippedCountInLocalState(
-                   image_metadata_stripper::metrics::kDownloadStrippedPrefKey));
+                   misc_metrics::kDownloadStrippedPrefKey));
 }

@@ -16,7 +16,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 
-namespace image_metadata_stripper::metrics {
+namespace misc_metrics {
 
 namespace {
 
@@ -59,14 +59,15 @@ void ImageMetadataStripperMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterTimePref(kLastRecordedTimePref, {});
 }
 
-void ImageMetadataStripperMetrics::RecordFbmd(StrippingClient client) {
+void ImageMetadataStripperMetrics::RecordFbmd(
+    image_metadata_stripper::StrippingClient client) {
   const char* count_key = nullptr;
   switch (client) {
-    case StrippingClient::kDownloadManager:
+    case image_metadata_stripper::StrippingClient::kDownloadManager:
       count_key = kDownloadStrippedPrefKey;
       break;
-    case StrippingClient::kFileSelect:
-    case StrippingClient::kDragDrop:
+    case image_metadata_stripper::StrippingClient::kFileSelect:
+    case image_metadata_stripper::StrippingClient::kDragDrop:
       count_key = kUploadStrippedPrefKey;
       break;
   }
@@ -125,4 +126,4 @@ void ImageMetadataStripperMetrics::MaybeReport() {
   local_state_->ClearPref(kRootPrefKey);
 }
 
-}  // namespace image_metadata_stripper::metrics
+}  // namespace misc_metrics

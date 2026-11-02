@@ -191,7 +191,7 @@ void FileUploadController::OnStripped(
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   // Record the metrics. A non-null copy means the image carried FBMD metadata
-  // that was stripped;
+  // that was stripped.
   if (g_brave_browser_process &&
       g_brave_browser_process->process_misc_metrics() &&
       g_brave_browser_process->process_misc_metrics()
