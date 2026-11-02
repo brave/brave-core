@@ -2681,9 +2681,8 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestTokenRejectsUnreadableContract) {
   bool callback_ran = false;
   base::RunLoop run_loop;
   service_->AddSuggestTokenRequest(
-      mojom::AddSuggestTokenRequest::New(
-          MakeDappOriginInfo(url::Origin::Create(GURL(kBraveUrl))),
-          suggested.Clone()),
+      mojom::AddSuggestTokenRequest::New(MakeDappOriginInfo(GetOrigin()),
+                                         suggested.Clone()),
       base::BindLambdaForTesting(
           [&](mojom::EthereumProviderResponsePtr response) {
             callback_ran = true;

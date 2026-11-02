@@ -346,7 +346,10 @@ export class MockedWalletApiProxy {
     getPendingAddSuggestTokenRequests: async () => {
       return {
         requests: [
-          { origin: mockUniswapOriginInfo, token: mockBasicAttentionToken },
+          {
+            dappOriginInfo: mockUniswapOriginInfo,
+            token: mockBasicAttentionToken,
+          },
         ],
       }
     },
