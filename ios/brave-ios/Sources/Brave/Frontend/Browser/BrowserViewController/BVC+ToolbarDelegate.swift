@@ -593,12 +593,15 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
     let controller = UIHostingController(
       rootView: AdvancedShieldsSettingsView(
         settings: AdvancedShieldsSettings(
-          profile: self.profile,
+          profile: profile,
           tabManager: self.tabManager,
           feedDataSource: self.feedDataSource,
           debounceService: DebounceServiceFactory.get(profile: profile),
           braveShieldsSettings: BraveShieldsSettingsServiceFactory.get(profile: profile),
-          braveCore: profileController,
+          httpsUpgradeService: HttpsUpgradeServiceFactory.get(profile: profile),
+          historyAPI: profileController.historyAPI,
+          serpMetrics: SerpMetricsServiceFactory.get(profile: profile),
+          prefs: profile.prefs,
           p3aUtils: braveCore.p3aUtils,
           localState: braveCore.localState,
           rewards: rewards,
