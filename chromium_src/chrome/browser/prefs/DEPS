@@ -12,7 +12,7 @@ include_rules = [
   "+brave/components/brave_rewards/core/buildflags/buildflags.h",
   "+brave/components/brave_search/browser/backup_results_metrics.h",
   "+brave/components/brave_search_conversion/p3a.h",
-  "+brave/components/brave_shields/content/browser/ad_block_service.h",
+  "+brave/components/brave_shields/core/browser/ad_block_service.h",
   "+brave/components/brave_shields/core/browser/brave_shields_p3a.h",
   "+brave/components/brave_sync/brave_sync_prefs.h",
   "+brave/components/brave_talk/buildflags/buildflags.h",

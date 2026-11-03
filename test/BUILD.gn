@@ -62,6 +62,7 @@ static_library("test_support") {
     "//brave/components/brave_origin",
     "//brave/components/brave_shields/content/browser",
     "//brave/components/brave_shields/content/test:test_support",
+    "//brave/components/brave_shields/core/browser",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/tor/buildflags",
   ]

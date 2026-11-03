@@ -2,15 +2,33 @@ include_rules = [
   "+components/component_updater",
   "+components/content_settings/core",
   "+components/crx_file",
+  "+components/download/public/background_service",
   "+components/keyed_service/core/keyed_service.h",
   "+components/pref_registry",
   "+components/prefs",
   "+components/value_store",
   "+components/sync_preferences",
   "+crypto",
+  "+services/network/public/cpp/features.h",
+  "+third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h",
 ]
 
 specific_include_rules = {
+  "ad_block_custom_filters_provider\.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ],
+  "ad_block_engine\.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ],
+  "ad_block_localhost_filters_provider\.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ],
+  "ad_block_service\.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ],
+  "ad_block_subscription_filters_provider\.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ],
   "ad_block_filters_provider\.h": [
     "+third_party/rust/cxx/v1/cxx.h",
   ],

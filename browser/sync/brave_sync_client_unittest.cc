@@ -8,7 +8,7 @@
 #include "base/check.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/path_service.h"
-#include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
+#include "brave/components/brave_shields/core/browser/ad_block_subscription_service_manager.h"
 #include "brave/test/base/testing_brave_browser_process.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/browser/profiles/profile.h"
