@@ -31,6 +31,14 @@ export function createPsstInternalsApi() {
         prefetchWithArgs: [],
         placeholderData: [] as Mojom.PsstLogEntry[],
       }),
+
+      // Infobar counters and per-site PSST settings. Fetched once when the
+      // page loads — unlike `entries`, nothing pushes updates for this.
+      diagnosticsInfo: query({
+        query: () => handler.getDiagnosticsInfo().then((r) => r.info),
+        prefetchWithArgs: [],
+        placeholderData: null as Mojom.PsstDiagnosticsInfo | null,
+      }),
     },
 
     actions: {

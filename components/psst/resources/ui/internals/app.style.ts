@@ -19,10 +19,21 @@ export const style = scoped.css`
     margin: 0;
   }
 
-  .subtitle {
+  section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--leo-spacing-m);
+  }
+
+  section h2 {
+    font: var(--leo-font-heading-h4);
+    margin: 0;
+  }
+
+  .section-description {
     color: var(--leo-color-text-secondary);
     font: var(--leo-font-small-regular);
-    margin-top: var(--leo-spacing-s);
+    margin-top: calc(-1 * var(--leo-spacing-s));
   }
 
   .toolbar {
