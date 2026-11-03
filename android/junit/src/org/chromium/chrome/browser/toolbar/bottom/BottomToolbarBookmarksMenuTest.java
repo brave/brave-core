@@ -35,7 +35,8 @@ import org.robolectric.Robolectric;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowPopupMenu;
 
-import org.chromium.base.supplier.NullableObservableSupplier;
+import org.chromium.base.supplier.ObservableSuppliers;
+import org.chromium.base.supplier.SettableNullableObservableSupplier;
 import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.bookmarks.BookmarkManagerOpener;
@@ -52,11 +53,13 @@ public class BottomToolbarBookmarksMenuTest {
 
     @Rule public MockitoRule mMockitoRule = MockitoJUnit.rule();
 
-    @Mock private NullableObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
     @Mock private BookmarkModel mBookmarkModel;
     @Mock private LocationBarModel mLocationBarModel;
     @Mock private BookmarkManagerOpener mBookmarkManagerOpener;
     @Mock private Tab mTab;
+
+    private final SettableNullableObservableSupplier<BookmarkModel> mBookmarkModelSupplier =
+            ObservableSuppliers.createNullable();
 
     private Activity mActivity;
     private View mAnchor;
@@ -67,7 +70,7 @@ public class BottomToolbarBookmarksMenuTest {
         mActivity.setTheme(R.style.Theme_BrowserUI_DayNight);
         mAnchor = new View(mActivity);
 
-        when(mBookmarkModelSupplier.get()).thenReturn(mBookmarkModel);
+        mBookmarkModelSupplier.set(mBookmarkModel);
         when(mBookmarkModel.isEditBookmarksEnabled()).thenReturn(true);
         when(mLocationBarModel.getTab()).thenReturn(mTab);
     }
