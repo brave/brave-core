@@ -1,5 +1,5 @@
 diff --git a/ios/web/js_messaging/java_script_content_world.h b/ios/web/js_messaging/java_script_content_world.h
-index 06bad8e89372c1ce885ce849f32ed558f751cbe0..568895b814790adb825b749a909b1cb3f35e4863 100644
+index 06bad8e89372c1ce885ce849f32ed558f751cbe0..91b74e8f70a2453e0cc86b852f722bbd51af6856 100644
 --- a/ios/web/js_messaging/java_script_content_world.h
 +++ b/ios/web/js_messaging/java_script_content_world.h
 @@ -11,6 +11,7 @@
@@ -10,7 +10,7 @@ index 06bad8e89372c1ce885ce849f32ed558f751cbe0..568895b814790adb825b749a909b1cb3
  #import "base/memory/raw_ptr.h"
  #include "base/memory/weak_ptr.h"
  #import "ios/web/js_messaging/scoped_wk_script_message_handler.h"
-@@ -49,6 +50,15 @@ class JavaScriptContentWorld {
+@@ -49,6 +50,16 @@ class JavaScriptContentWorld {
    // Returns true if and only if `feature` has been added to this content world.
    bool HasFeature(const JavaScriptFeature* feature);
  
@@ -20,7 +20,8 @@ index 06bad8e89372c1ce885ce849f32ed558f751cbe0..568895b814790adb825b749a909b1cb3
 +      const std::string& handler_name);
 +
 + protected:
-+  base::flat_map<std::string, const JavaScriptFeature*>
++  base::flat_map<std::string,
++                 raw_ptr<const JavaScriptFeature, DanglingUntriaged>>
 +      prompt_replying_features_;
 +
   private:
