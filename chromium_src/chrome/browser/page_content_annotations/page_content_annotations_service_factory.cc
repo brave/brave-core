@@ -7,13 +7,22 @@
 // instead of the upstream feature flags, enabling the upstream page content
 // extraction pipeline when history embeddings is active.
 
-#include "components/history_embeddings/core/history_embeddings_features.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "components/page_content_annotations/core/page_content_annotations_features.h"
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/components/history_embeddings/core/history_embeddings_features.h"
+#endif
 
 namespace page_content_annotations::features {
 
 inline bool ShouldEnablePageContentAnnotations_Brave() {
-  return base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings);
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  return base::FeatureList::IsEnabled(
+      brave_history_embeddings::kHistoryEmbeddings);
+#else
+  return false;
+#endif
 }
 
 }  // namespace page_content_annotations::features

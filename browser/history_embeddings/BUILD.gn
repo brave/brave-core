@@ -168,7 +168,6 @@ source_set("browser_tests") {
     "//brave/components/local_ai/core",
     "//chrome/browser/autocomplete",
     "//chrome/browser/history",
-    "//chrome/browser/history_embeddings",
     "//chrome/browser/profiles",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui/tabs:tab_strip",

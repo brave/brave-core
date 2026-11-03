@@ -25,6 +25,8 @@ FeatureParameters& GetFeatureParametersMutable() {
 
 }  // namespace
 
+BASE_FEATURE(kHistoryEmbeddings, base::FEATURE_DISABLED_BY_DEFAULT);
+
 ////////////////////////////////////////////////////////////////////////////////
 
 const base::FeatureParam<int> kSearchQueryMinimumWordCount(
