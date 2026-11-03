@@ -1065,7 +1065,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   // Prepare test cases.
   struct TestCase {
     raw_ptr<RenderFrameHost> send = nullptr;
-    std::vector<RenderFrameHost*> expect_received;
+    std::vector<raw_ptr<RenderFrameHost>> expect_received;
   } const kTestCases[] = {
       {// Send from a.com main frame.
        .send = frames[site_a_tab1][0],
@@ -1103,7 +1103,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
     processed_rfhs.insert(test_case.send);
 
     // Expect broadcast message is received in these frames.
-    for (auto* rfh : test_case.expect_received) {
+    for (RenderFrameHost* rfh : test_case.expect_received) {
       SCOPED_TRACE(testing::Message()
                    << "WebContents URL: "
                    << content::WebContents::FromRenderFrameHost(rfh)
