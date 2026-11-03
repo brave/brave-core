@@ -68,6 +68,8 @@ public class TabUtils {
             LocationBarModel locationBarModel,
             BookmarkManagerOpener bookmarkManagerOpener) {
         boolean useDynamicColors = BraveDynamicColors.isDynamicColorsEnabled();
+        // The caller's context is the application context, which has no activity theme
+        // (dynamic colors) and follows the system night mode rather than Brave's theme.
         Context themedContext = view.getContext();
         Context wrapper =
                 new ContextThemeWrapper(
@@ -119,7 +121,8 @@ public class TabUtils {
             int tintColor =
                     useDynamicColors
                             ? MaterialColors.getColor(themedContext, R.attr.colorOnSurface, 0)
-                            : ContextCompat.getColor(context, R.color.bookmark_menu_text_color);
+                            : ContextCompat.getColor(
+                                    themedContext, R.color.bookmark_menu_text_color);
             tintIcon(addMenuItem.getIcon(), tintColor);
             tintIcon(editMenuItem.getIcon(), tintColor);
             tintIcon(viewMenuItem.getIcon(), tintColor);
