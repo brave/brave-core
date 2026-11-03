@@ -27,6 +27,7 @@
 #include "brave/components/brave_shields/core/browser/ad_block_default_resource_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_engine.h"
 #include "brave/components/brave_shields/core/browser/ad_block_engine_wrapper.h"
+#include "brave/components/brave_shields/core/browser/ad_block_request_type.h"
 #include "brave/components/brave_shields/core/browser/ad_block_resource_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_subscription_download_manager.h"
 #include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
@@ -34,7 +35,6 @@
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "url/gurl.h"
 
 namespace brave_shields {
@@ -59,7 +59,7 @@ adblock::BlockerResult ShouldStartRequest(AdBlockService* service,
                 ? wrapper->default_engine_for_testing()
                 : wrapper->additional_filters_engine_for_testing();
         out = block_engine.ShouldStartRequest(
-            GURL(url), blink::mojom::ResourceType::kScript,
+            GURL(url), AdBlockRequestType::kScript,
             url::Origin::Create(GURL("https://test.com")), "GET", false, false,
             false);
         run_loop.Quit();
