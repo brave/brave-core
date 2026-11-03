@@ -13,6 +13,7 @@
 #include "base/feature_list.h"
 #include "brave/browser/sessions/brave_session_keys.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
+#include "brave/components/tabs/public/brave_tab_strip_collection.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
 #include "brave/components/tabs/public/tree_tab_node_id.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
@@ -296,8 +297,8 @@ void TreeTabSessionManager::RestoreTreeTabNodeCollection(
     return;  // Already correctly nested (shouldn't happen, but guard anyway).
   }
 
-  auto* current_parent = tree_coll->GetParentCollection();
-  auto owned = current_parent->MaybeRemoveCollection(tree_coll);
-  parent_collection->AddCollection(std::move(owned),
-                                   parent_collection->ChildCount());
+  auto* contents_data =
+      static_cast<BraveTabStripModel*>(tab_strip_model_)->contents_data();
+  contents_data->MoveCollectionAndNotify(tree_coll, parent_collection,
+                                         parent_collection->ChildCount());
 }
