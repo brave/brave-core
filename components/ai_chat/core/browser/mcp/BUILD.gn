@@ -1,0 +1,96 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+
+assert(enable_ai_chat)
+
+static_library("mcp") {
+  visibility = [ ":unit_tests" ]
+
+  sources = [
+    "mcp_client.cc",
+    "mcp_client.h",
+    "mcp_endpoint_validator.cc",
+    "mcp_endpoint_validator.h",
+    "mcp_json_rpc.cc",
+    "mcp_json_rpc.h",
+    "mcp_streamable_http_transport.cc",
+    "mcp_streamable_http_transport.h",
+    "mcp_transport.cc",
+    "mcp_transport.h",
+    "mcp_types.cc",
+    "mcp_types.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/api_request_helper",
+    "//third_party/abseil-cpp:absl",
+    "//url",
+  ]
+
+  deps = [
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/version_info",
+    "//net",
+    "//net/traffic_annotation",
+    "//services/network/public/cpp",
+    "//third_party/icu",
+  ]
+}
+
+source_set("test_support") {
+  testonly = true
+  visibility = [ ":unit_tests" ]
+
+  sources = [
+    "mcp_http_test_base.cc",
+    "mcp_http_test_base.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//base/test:test_support",
+    "//mojo/public/cpp/system",
+    "//services/network:test_support",
+    "//services/network/public/mojom",
+    "//testing/gtest",
+  ]
+
+  deps = [
+    "//net",
+    "//services/network/public/cpp",
+    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "mcp_client_unittest.cc",
+    "mcp_endpoint_validator_unittest.cc",
+    "mcp_json_rpc_unittest.cc",
+    "mcp_streamable_http_transport_unittest.cc",
+    "mcp_types_unittest.cc",
+  ]
+
+  deps = [
+    ":mcp",
+    ":test_support",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/version_info",
+    "//mojo/public/cpp/system",
+    "//net",
+    "//services/network:test_support",
+    "//services/network/public/cpp",
+    "//services/network/public/mojom",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//url",
+  ]
+}
