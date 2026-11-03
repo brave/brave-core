@@ -1,3 +1,0 @@
-include_rules = [
-  "+brave/components/password_manager/core/browser/import/safari_password_importer.h"
-]
