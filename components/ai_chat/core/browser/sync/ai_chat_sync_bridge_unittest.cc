@@ -155,12 +155,34 @@ class UnreadableEditRevisionsAIChatDatabase : public AIChatDatabase {
   int read_count_ = 0;
 };
 
-// A database whose read of an entry with its edit revisions fails.
-class UnreadableEditedEntryAIChatDatabase : public AIChatDatabase {
+// A database whose reads of an entry, with or without its edit revisions, and
+// of its associated content texts fail.
+class UnreadableEntryAIChatDatabase : public AIChatDatabase {
  public:
   using AIChatDatabase::AIChatDatabase;
 
   std::optional<mojom::ConversationTurnPtr> GetConversationEntryWithEdits(
+      std::string_view conversation_entry_uuid) override {
+    return std::nullopt;
+  }
+
+  std::optional<mojom::ConversationTurnPtr> GetConversationEntryWithoutEdits(
+      std::string_view conversation_entry_uuid) override {
+    return std::nullopt;
+  }
+
+  std::optional<std::vector<std::string>> GetAssociatedContentTexts(
+      std::string_view conversation_entry_uuid) override {
+    return std::nullopt;
+  }
+};
+
+// A database whose read of an entry's associated content texts fails.
+class UnreadablePageTextsAIChatDatabase : public AIChatDatabase {
+ public:
+  using AIChatDatabase::AIChatDatabase;
+
+  std::optional<std::vector<std::string>> GetAssociatedContentTexts(
       std::string_view conversation_entry_uuid) override {
     return std::nullopt;
   }
@@ -402,9 +424,13 @@ class AIChatSyncBridgeTest : public testing::Test {
   // Adds a conversation whose single entry was edited once on this device, as
   // the edit is saved: the entry, asked a minute ago, holds the original text,
   // and its revision "edit-1", made now, holds what the user sees. Sync sends
-  // only the revision's content, under the entry's uuid.
-  void SeedEditedEntry(const std::string& conv_uuid,
-                       const std::string& entry_uuid) {
+  // only the revision's content, under the entry's uuid. |original_files| and
+  // |revision_files|, when given, are the files uploaded with each.
+  void SeedEditedEntry(
+      const std::string& conv_uuid,
+      const std::string& entry_uuid,
+      std::vector<mojom::UploadedFilePtr> original_files = {},
+      std::vector<mojom::UploadedFilePtr> revision_files = {}) {
     auto conv = mojom::Conversation::New();
     conv->uuid = conv_uuid;
     conv->title = "Local";
@@ -418,6 +444,12 @@ class AIChatSyncBridgeTest : public testing::Test {
     edit->uuid = "edit-1";
     edit->text = "Edited question";
     edit->created_time = base::Time::Now();
+    if (!original_files.empty()) {
+      entry->uploaded_files = std::move(original_files);
+    }
+    if (!revision_files.empty()) {
+      edit->uploaded_files = std::move(revision_files);
+    }
     entry->edits.emplace();
     entry->edits->push_back(std::move(edit));
     ASSERT_TRUE(db_->AddConversation(std::move(conv), {}, std::move(entry)));
@@ -471,6 +503,60 @@ class AIChatSyncBridgeTest : public testing::Test {
       }
     }
     return texts;
+  }
+
+  // Adds conversation "conv" whose single answer "entry" holds |completion|.
+  void SeedCompletion(const std::string& completion) {
+    auto conv = mojom::Conversation::New();
+    conv->uuid = "conv";
+    conv->title = "Local";
+    auto entry = mojom::ConversationTurn::New();
+    entry->uuid = "entry";
+    entry->character_type = mojom::CharacterType::ASSISTANT;
+    entry->action_type = mojom::ActionType::RESPONSE;
+    entry->created_time = base::Time::Now();
+    entry->events.emplace();
+    entry->events->push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New(completion)));
+    ASSERT_TRUE(db_->AddConversation(std::move(conv), {}, std::move(entry)));
+  }
+
+  // Returns an update to "entry" from another device, dated |modified_time|,
+  // whose completion the sender omitted to fit the size limit, sending the
+  // hash of |sender_completion| instead.
+  syncer::EntityChangeList MakeOmittedCompletionUpdate(
+      const std::string& sender_completion,
+      base::Time modified_time) {
+    syncer::EntityData data =
+        WithModifiedTime(MakeRemoteEntry("conv", "entry", ""), modified_time);
+    auto* remote =
+        data.specifics.mutable_ai_chat_conversation()->mutable_entry();
+    remote->set_character_type(
+        std::to_underlying(mojom::CharacterType::ASSISTANT));
+    remote->set_action_type(std::to_underlying(mojom::ActionType::RESPONSE));
+    auto* completion = remote->add_events()->mutable_completion();
+    WriteCompressibleString(sender_completion, completion);
+    OmitCompressibleString(completion);
+    syncer::EntityChangeList changes;
+    changes.push_back(
+        syncer::EntityChange::CreateUpdate("e:entry", std::move(data)));
+    return changes;
+  }
+
+  // Returns the completions of the single entry of |conv_uuid|.
+  std::vector<std::string> GetCompletions(const std::string& conv_uuid) {
+    auto archive = db_->GetConversationData(conv_uuid);
+    if (!archive || archive->entries.size() != 1u ||
+        !archive->entries[0]->events) {
+      return {};
+    }
+    std::vector<std::string> completions;
+    for (const auto& event : *archive->entries[0]->events) {
+      if (event->is_completion_event()) {
+        completions.push_back(event->get_completion_event()->completion);
+      }
+    }
+    return completions;
   }
 
   base::FilePath db_file_path() {
@@ -2419,8 +2505,8 @@ TEST_F(AIChatSyncBridgeTest, ApplyFailsWhenEditRevisionsCannotBeRead) {
 // read. Writing the record as it is would delete them, so the batch fails.
 TEST_F(AIChatSyncBridgeTest, ApplyFailsWhenEditedEntryCannotBeRead) {
   db_.reset();
-  db_ = std::make_unique<UnreadableEditedEntryAIChatDatabase>(db_file_path(),
-                                                              encryptor_);
+  db_ = std::make_unique<UnreadableEntryAIChatDatabase>(db_file_path(),
+                                                        encryptor_);
   CreateBridge();
   ASSERT_NO_FATAL_FAILURE(SeedEditedEntry("conv", "entry"));
   task_environment_.FastForwardBy(base::Minutes(2));
@@ -2599,6 +2685,285 @@ TEST_F(AIChatSyncBridgeTest, ApplyAddsNoRevisionForFieldsSyncDoesNotCarry) {
   ASSERT_TRUE(tool_use->artifacts);
   ASSERT_EQ(tool_use->artifacts->size(), 1u);
   EXPECT_EQ(tool_use->artifacts->at(0)->id, "artifact-1");
+}
+
+// A sender that omits a value to fit the size limit sends a hash of it
+// instead. This device's entry holds a completion with that hash, so the
+// newer record is written with it rather than with a blank completion.
+TEST_F(AIChatSyncBridgeTest, ApplyRestoresOmittedCompletion) {
+  ASSERT_NO_FATAL_FAILURE(SeedCompletion("The answer"));
+  CreateBridge();
+  task_environment_.FastForwardBy(base::Minutes(1));
+
+  ASSERT_FALSE(
+      bridge_
+          ->ApplyIncrementalSyncChanges(
+              bridge_->CreateMetadataChangeList(),
+              MakeOmittedCompletionUpdate("The answer", base::Time::Now()))
+          .has_value());
+
+  EXPECT_THAT(GetCompletions("conv"), ElementsAre("The answer"));
+  // The record was written, with its time.
+  EXPECT_THAT(db_->GetEntryModifiedTime("entry"),
+              IsModifiedAt(base::Time::Now()));
+}
+
+// The sender's completion differs from this device's, so the hash it sent
+// matches nothing here. This device's completion isn't put in its place, and
+// the omitted completion decodes as blank.
+TEST_F(AIChatSyncBridgeTest, ApplyDoesNotRestoreMismatchedCompletion) {
+  ASSERT_NO_FATAL_FAILURE(SeedCompletion("This device's answer"));
+  CreateBridge();
+  task_environment_.FastForwardBy(base::Minutes(1));
+
+  ASSERT_FALSE(bridge_
+                   ->ApplyIncrementalSyncChanges(
+                       bridge_->CreateMetadataChangeList(),
+                       MakeOmittedCompletionUpdate("The sender's answer",
+                                                   base::Time::Now()))
+                   .has_value());
+
+  EXPECT_THAT(GetCompletions("conv"), ElementsAre(""));
+}
+
+// A sender omits uploaded file bytes first, largest first, and then page text.
+// Page text is put back from the text of this device's associated content with
+// the same hash.
+TEST_F(AIChatSyncBridgeTest, ApplyRestoresOmittedPageText) {
+  auto conversation = mojom::Conversation::New();
+  conversation->uuid = "conv";
+  conversation->title = "Local";
+  conversation->associated_content.push_back(mojom::AssociatedContent::New(
+      "content", mojom::ContentType::PageContent, "Remote page", 1,
+      GURL("https://example.com/remote"), 100, "entry", false));
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry";
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+  entry->text = "Hello";
+  entry->created_time = base::Time::Now();
+  ASSERT_TRUE(db_->AddConversation(std::move(conversation), {"Page text"},
+                                   std::move(entry)));
+  CreateBridge();
+  task_environment_.FastForwardBy(base::Minutes(1));
+  syncer::EntityData data = WithModifiedTime(
+      MakeRemoteEntry("conv", "entry", "Hello"), base::Time::Now());
+  AddRemoteAssociatedContent(data, "content");
+  auto* page_text = data.specifics.mutable_ai_chat_conversation()
+                        ->mutable_entry()
+                        ->mutable_associated_content(0)
+                        ->mutable_last_contents();
+  WriteCompressibleString("Page text", page_text);
+  OmitCompressibleString(page_text);
+  syncer::EntityChangeList changes;
+  changes.push_back(
+      syncer::EntityChange::CreateUpdate("e:entry", std::move(data)));
+
+  ASSERT_FALSE(bridge_
+                   ->ApplyIncrementalSyncChanges(
+                       bridge_->CreateMetadataChangeList(), std::move(changes))
+                   .has_value());
+
+  auto archive = db_->GetConversationData("conv");
+  ASSERT_TRUE(archive);
+  ASSERT_EQ(archive->associated_content.size(), 1u);
+  EXPECT_EQ(archive->associated_content[0]->content_uuid, "content");
+  EXPECT_EQ(archive->associated_content[0]->content, "Page text");
+  EXPECT_THAT(db_->GetEntryModifiedTime("entry"),
+              IsModifiedAt(base::Time::Now()));
+}
+
+// A sender builds an edited entry's record from its latest revision, so the
+// hash of an omitted file is that of the revision's file, not of the entry's
+// original one. The file is put back from the latest revision, so the record
+// matches it and adds no revision.
+TEST_F(AIChatSyncBridgeTest, MergeFullSyncDataRestoresOmittedFileOfLatestEdit) {
+  std::vector<mojom::UploadedFilePtr> original_files;
+  original_files.push_back(
+      mojom::UploadedFile::New("original.png", 3, std::vector<uint8_t>{1, 2, 3},
+                               mojom::UploadedFileType::kImage, std::nullopt));
+  std::vector<mojom::UploadedFilePtr> revision_files;
+  revision_files.push_back(
+      mojom::UploadedFile::New("edit.png", 3, std::vector<uint8_t>{4, 5, 6},
+                               mojom::UploadedFileType::kImage, std::nullopt));
+  ASSERT_NO_FATAL_FAILURE(SeedEditedEntry(
+      "conv", "entry", std::move(original_files), std::move(revision_files)));
+  CreateBridge();
+  auto local = db_->GetConversationEntryWithEdits("entry");
+  ASSERT_TRUE(local && *local);
+  task_environment_.FastForwardBy(base::Minutes(1));
+  syncer::EntityData data;
+  auto* specifics = data.specifics.mutable_ai_chat_conversation();
+  *specifics = EntryToSpecifics("conv", **local, base::Time::Now(), {});
+  ASSERT_EQ(specifics->entry().uploaded_files_size(), 1);
+  OmitUploadedFileData(specifics->mutable_entry()->mutable_uploaded_files(0));
+  syncer::EntityChangeList changes;
+  changes.push_back(
+      syncer::EntityChange::CreateAdd("e:entry", std::move(data)));
+
+  ASSERT_FALSE(bridge_
+                   ->MergeFullSyncData(bridge_->CreateMetadataChangeList(),
+                                       std::move(changes))
+                   .has_value());
+
+  EXPECT_THAT(db_->GetEntryModifiedTime("entry"),
+              IsModifiedAt(base::Time::Now()));
+  auto applied = db_->GetConversationEntryWithEdits("entry");
+  ASSERT_TRUE(applied && *applied && (*applied)->edits);
+  ASSERT_EQ((*applied)->edits->size(), 1u);
+  const auto& files = (*applied)->edits->front()->uploaded_files;
+  ASSERT_TRUE(files);
+  ASSERT_EQ(files->size(), 1u);
+  EXPECT_EQ(files->front()->data, std::vector<uint8_t>({4, 5, 6}));
+}
+
+// Omitted values are put back before the record is compared with the latest
+// revision of an edited entry. So a record that omits a value it shares with
+// that revision matches it, and adds no revision.
+TEST_F(AIChatSyncBridgeTest,
+       ApplyAddsNoRevisionForOmittedValueOfLatestRevision) {
+  std::vector<mojom::ConversationEntryEventPtr> revision_events;
+  revision_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+      mojom::CompletionEvent::New("Edited answer")));
+  ASSERT_NO_FATAL_FAILURE(SeedEditedAnswer(std::move(revision_events), {}, {}));
+  CreateBridge();
+  auto local = db_->GetConversationEntryWithEdits("entry");
+  ASSERT_TRUE(local && *local);
+  task_environment_.FastForwardBy(base::Minutes(1));
+  syncer::EntityData data;
+  auto* specifics = data.specifics.mutable_ai_chat_conversation();
+  *specifics = EntryToSpecifics("conv", **local, base::Time::Now(), {});
+  ASSERT_EQ(specifics->entry().events_size(), 1);
+  OmitCompressibleString(
+      specifics->mutable_entry()->mutable_events(0)->mutable_completion());
+  syncer::EntityChangeList changes;
+  changes.push_back(
+      syncer::EntityChange::CreateUpdate("e:entry", std::move(data)));
+
+  ASSERT_FALSE(bridge_
+                   ->ApplyIncrementalSyncChanges(
+                       bridge_->CreateMetadataChangeList(), std::move(changes))
+                   .has_value());
+
+  EXPECT_THAT(db_->GetEntryModifiedTime("entry"),
+              IsModifiedAt(base::Time::Now()));
+  auto entry = db_->GetConversationEntryWithEdits("entry");
+  ASSERT_TRUE(entry && *entry && (*entry)->edits);
+  ASSERT_EQ((*entry)->edits->size(), 1u);
+  const auto& events = (*entry)->edits->at(0)->events;
+  ASSERT_TRUE(events);
+  ASSERT_EQ(events->size(), 1u);
+  EXPECT_EQ(events->at(0)->get_completion_event()->completion, "Edited answer");
+}
+
+// Putting back an omitted value needs this device's entry. If it can't be
+// read, the write would blank the value, so the batch fails instead.
+TEST_F(AIChatSyncBridgeTest, ApplyFailsWhenEntryWithOmittedValueCannotBeRead) {
+  db_.reset();
+  db_ = std::make_unique<UnreadableEntryAIChatDatabase>(db_file_path(),
+                                                        encryptor_);
+  CreateBridge();
+  ASSERT_NO_FATAL_FAILURE(SeedCompletion("The answer"));
+  task_environment_.FastForwardBy(base::Minutes(1));
+
+  auto error = bridge_->ApplyIncrementalSyncChanges(
+      bridge_->CreateMetadataChangeList(),
+      MakeOmittedCompletionUpdate("The answer", base::Time::Now()));
+  ASSERT_TRUE(error.has_value());
+  EXPECT_EQ(error->type(),
+            syncer::ModelError::Type::kAIChatFailedToApplyRemoteChange);
+  EXPECT_THAT(GetCompletions("conv"), ElementsAre("The answer"));
+  EXPECT_EQ(remote_changes_applied_count_, 0);
+}
+
+// Putting back an omitted value also needs the texts of the entry's
+// associated content. If they can't be read, the batch fails.
+TEST_F(AIChatSyncBridgeTest, ApplyFailsWhenPageTextsCannotBeRead) {
+  db_.reset();
+  db_ = std::make_unique<UnreadablePageTextsAIChatDatabase>(db_file_path(),
+                                                            encryptor_);
+  CreateBridge();
+  ASSERT_NO_FATAL_FAILURE(SeedCompletion("The answer"));
+  task_environment_.FastForwardBy(base::Minutes(1));
+
+  auto error = bridge_->ApplyIncrementalSyncChanges(
+      bridge_->CreateMetadataChangeList(),
+      MakeOmittedCompletionUpdate("The answer", base::Time::Now()));
+  ASSERT_TRUE(error.has_value());
+  EXPECT_EQ(error->type(),
+            syncer::ModelError::Type::kAIChatFailedToApplyRemoteChange);
+  EXPECT_THAT(GetCompletions("conv"), ElementsAre("The answer"));
+  EXPECT_EQ(remote_changes_applied_count_, 0);
+}
+
+// With no local entry there's nothing to put back, so a record that omits a
+// value is written without reading this device's entry or page texts. Any such
+// read would fail on this database.
+TEST_F(AIChatSyncBridgeTest, ApplyOfOmittedValueWithNoLocalEntryReadsNothing) {
+  db_.reset();
+  db_ = std::make_unique<UnreadableEntryAIChatDatabase>(db_file_path(),
+                                                        encryptor_);
+  CreateBridge();
+
+  ASSERT_FALSE(
+      bridge_
+          ->ApplyIncrementalSyncChanges(
+              bridge_->CreateMetadataChangeList(),
+              MakeOmittedCompletionUpdate("The answer", base::Time::Now()))
+          .has_value());
+
+  EXPECT_THAT(GetCompletions("conv"), ElementsAre(""));
+  EXPECT_THAT(last_affected_conversation_uuids_, ElementsAre("conv"));
+}
+
+// A record with the same time as this device's entry, or an older one, isn't
+// written, so an omitted value in it needs no reads. Any such read would fail
+// on this database.
+TEST_F(AIChatSyncBridgeTest,
+       ApplyOfSameOrOlderRecordWithOmittedValueReadsNothing) {
+  db_.reset();
+  db_ = std::make_unique<UnreadableEntryAIChatDatabase>(db_file_path(),
+                                                        encryptor_);
+  CreateBridge();
+  ASSERT_NO_FATAL_FAILURE(SeedCompletion("The answer"));
+
+  for (base::Time record_time :
+       {base::Time::Now(), base::Time::Now() - base::Minutes(1)}) {
+    ASSERT_FALSE(
+        bridge_
+            ->ApplyIncrementalSyncChanges(
+                bridge_->CreateMetadataChangeList(),
+                MakeOmittedCompletionUpdate("Another answer", record_time))
+            .has_value());
+  }
+
+  EXPECT_THAT(GetCompletions("conv"), ElementsAre("The answer"));
+  EXPECT_EQ(remote_changes_applied_count_, 0);
+}
+
+// A value of at least kSyncCompressionThresholdBytes is gzipped when it's put
+// back into the record, and must decode to the same value.
+TEST_F(AIChatSyncBridgeTest, ApplyRestoresOmittedValueThatIsGzipped) {
+  std::string answer;
+  for (int i = 0; i < 100; ++i) {
+    answer += "The answer, at length. ";
+  }
+  sync_pb::AIChatCompressibleString probe;
+  WriteCompressibleString(answer, &probe);
+  ASSERT_TRUE(probe.has_gzipped());
+  ASSERT_NO_FATAL_FAILURE(SeedCompletion(answer));
+  CreateBridge();
+  task_environment_.FastForwardBy(base::Minutes(1));
+
+  ASSERT_FALSE(bridge_
+                   ->ApplyIncrementalSyncChanges(
+                       bridge_->CreateMetadataChangeList(),
+                       MakeOmittedCompletionUpdate(answer, base::Time::Now()))
+                   .has_value());
+
+  EXPECT_THAT(GetCompletions("conv"), ElementsAre(answer));
+  EXPECT_THAT(db_->GetEntryModifiedTime("entry"),
+              IsModifiedAt(base::Time::Now()));
 }
 
 }  // namespace

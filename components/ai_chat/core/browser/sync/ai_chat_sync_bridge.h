@@ -203,13 +203,16 @@ class AIChatSyncBridge : public syncer::DataTypeSyncBridge {
   //   |kept_local_copies|.
   // - When both have the same time, or neither has one, they're the same
   //   version, and nothing is written.
+  // Before an entry record is decoded, each value its sender omitted to fit
+  // the size limit is put back from this device's copy of the entry, when
+  // that copy holds a value with the hash the sender sent.
   // An entry written over keeps this device's edit revisions, and the record's
   // content becomes its latest revision. |edited_entry_uuids| is the batch's
   // snapshot of the entries that have revisions.
   // A record this device can't store because of its own content (it doesn't
   // decode, for example it comes from a newer client, or its associated
   // content would collide) is skipped: retrying it would fail the same way
-  // every time. Returns false when the local copy's time or edit revisions
+  // every time. Returns false when the local copy's time, entry or page texts
   // can't be read, or the database fails to store a good record.
   [[nodiscard]] bool ApplyRemoteRecord(
       const sync_pb::AIChatConversationSpecifics& specifics,
