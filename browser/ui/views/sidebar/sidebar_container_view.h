@@ -68,7 +68,6 @@ class SidebarContainerView : public sidebar::Sidebar,
 
   // Show sidebar if the hot corner contains |point_in_screen|.
   void ShowSidebarOnMouseOver(const gfx::PointF& point_in_screen);
-  void UpdateBorder();
 
   // Sidebar overrides:
   void SetSidebarShowOption(

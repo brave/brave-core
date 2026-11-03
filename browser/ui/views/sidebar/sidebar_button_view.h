@@ -20,7 +20,10 @@ class SidebarButtonView : public views::LabelButton {
   static constexpr int kDefaultIconSize = 20;
   // External, meaning favicons for bookmarked pages
   static constexpr int kExternalIconSize = 18;
-  // Vertical space between sidebar buttons
+  // Vertical space between sidebar buttons. Horizontally it is padding inside
+  // the button instead: the highlight path is inset by it, so it is also what
+  // gives the focus ring room to draw without being clipped by the sidebar's
+  // mask-to-bounds layers (see the static_assert in the .cc).
   static constexpr int kMargin = 4;
 
   explicit SidebarButtonView(const std::u16string& accessible_name);

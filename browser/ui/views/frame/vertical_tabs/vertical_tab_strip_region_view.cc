@@ -678,14 +678,32 @@ gfx::Size BraveVerticalTabStripRegionView::GetMinimumSize() const {
   // If minumum size changes during the floating, it could affect
   // contents size. It could cause contents area flickering.
   // Append same border width to |size|.
+  //
+  // This must match the inset UpdateBorder() installs, because the host view
+  // sized from here is what the sidebar is positioned against. When the
+  // sidebar is on the same side, UpdateBorder() keeps the full margin rather
+  // than overlapping into the contents margin, so don't subtract it here
+  // either -- otherwise the host ends up narrower than the strip and the
+  // strip overflows onto the sidebar, clipping its focus rings.
   if (BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
-          browser_)) {
+          browser_) &&
+      !IsSidebarOnSameSide()) {
     size.Enlarge(-(tabs::kMarginForVerticalTabContainers / 2), 0);
   } else {
     size.Enlarge(kBorderThickness, 0);
   }
 
   return size;
+}
+
+bool BraveVerticalTabStripRegionView::IsSidebarOnSameSide() const {
+  if (sidebar_side_.GetPrefName().empty()) {
+    return false;
+  }
+
+  const bool is_on_right =
+      !vertical_tab_on_right_.GetPrefName().empty() && *vertical_tab_on_right_;
+  return sidebar_side_.GetValue() == is_on_right;
 }
 
 void BraveVerticalTabStripRegionView::Layout(PassKey) {
@@ -1016,7 +1034,7 @@ void BraveVerticalTabStripRegionView::UpdateBorder() {
   // between it and the web_contents.
   bool is_on_right =
       !vertical_tab_on_right_.GetPrefName().empty() && *vertical_tab_on_right_;
-  bool sidebar_on_same_side = sidebar_side_.GetValue() == is_on_right;
+  bool sidebar_on_same_side = IsSidebarOnSameSide();
 
   gfx::Insets border_insets;
   if (is_on_right) {

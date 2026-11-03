@@ -188,7 +188,7 @@ class BraveBrowserView : public BrowserView,
 
   void UpdateRoundedCornersUI();
   void UpdateVerticalTabStripBorder();
-  void UpdateSidebarBorder();
+  void UpdateSidePanelBorder();
 
   // Re-applies the side panel border so the content corner radii track the
   // sidebar control view's visibility. Wired as SidebarContainerView's

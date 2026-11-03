@@ -75,8 +75,6 @@ class SidebarControlView : public views::View,
 
   bool IsItemReorderingInProgress() const;
   bool IsBubbleWidgetVisible() const;
-  void SetSidebarOnLeft(bool sidebar_on_left);
-  void UpdateBorder();
 
  private:
   friend class sidebar::SidebarBrowserTest;
@@ -89,7 +87,6 @@ class SidebarControlView : public views::View,
   void UpdateItemAddButtonState();
   void UpdateSettingsButtonState();
 
-  bool sidebar_on_left_ = true;
   raw_ptr<Delegate> delegate_ = nullptr;
   raw_ptr<BrowserWindowInterface> browser_ = nullptr;
   raw_ptr<SidebarItemsScrollView> sidebar_items_view_ = nullptr;

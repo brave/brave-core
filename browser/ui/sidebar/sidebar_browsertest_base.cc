@@ -157,8 +157,7 @@ SidePanel* SidebarBrowserTest::GetSidePanel() {
 }
 
 bool SidebarBrowserTest::IsSidebarUIOnLeft() const {
-  return GetSidebarContainerView()->sidebar_on_left_ &&
-         GetSidebarControlView()->sidebar_on_left_;
+  return GetSidebarContainerView()->sidebar_on_left();
 }
 
 void SidebarBrowserTest::ShowSidebar() {

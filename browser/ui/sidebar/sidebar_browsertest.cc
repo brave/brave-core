@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <atomic>
 #include <optional>
+#include <string_view>
 
 #include "base/check.h"
 #include "base/functional/bind.h"
@@ -95,6 +96,7 @@
 #include "net/test/embedded_test_server/http_request.h"
 #include "testing/gmock/include/gmock/gmock-matchers.h"
 #include "testing/gmock/include/gmock/gmock.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/ui_base_features.h"
 #include "ui/compositor/layer.h"
 #include "ui/display/screen.h"
@@ -105,9 +107,12 @@
 #include "ui/gfx/animation/animation.h"
 #include "ui/gfx/animation/animation_test_api.h"
 #include "ui/gfx/geometry/point.h"
+#include "ui/gfx/geometry/rect_conversions.h"
+#include "ui/gfx/geometry/rect_f.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/views/animation/ink_drop.h"
 #include "ui/views/layout/layout_provider.h"
+#include "ui/views/view.h"
 #include "ui/views/view_utils.h"
 #include "ui/views/widget/widget_utils.h"
 
@@ -2009,11 +2014,12 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
       EXPECT_EQ(1, side_panel->GetInsets().left())
           << "rounded: 1px gap on the content-facing side, reserved for the "
              "outline (the content view otherwise owns its margin)";
-      EXPECT_EQ(kRoundedCornersContentsViewMargin +
-                    kRoundedCornersContentsOutlineThickness,
+      // The sidebar is visible here, so it sits between the panel and the
+      // window edge and supplies the outer margin itself.
+      ASSERT_TRUE(GetSidebarContainerView()->IsSidebarVisible());
+      EXPECT_EQ(kRoundedCornersContentsOutlineThickness,
                 side_panel->GetInsets().right())
-          << "rounded: outer-side gap matches main content (margin + outline "
-             "thickness)";
+          << "rounded, sidebar visible: outer-side gap is just the outline";
     } else {
       EXPECT_EQ(1, side_panel->GetInsets().left())
           << "plain: 1px separator on the content-facing side";
@@ -2093,11 +2099,11 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PanelBorderInsetsFollowAlignment) {
       EXPECT_EQ(1, content_side)
           << "rounded: 1px gap on the content-facing side, reserved for the "
              "outline (the content view otherwise owns its margin)";
-      EXPECT_EQ(kRoundedCornersContentsViewMargin +
-                    kRoundedCornersContentsOutlineThickness,
-                outer_side)
-          << "rounded: outer-side gap matches main content (margin + outline "
-             "thickness)";
+      // The sidebar is visible here, so it sits between the panel and the
+      // window edge and supplies the outer margin itself.
+      ASSERT_TRUE(GetSidebarContainerView()->IsSidebarVisible());
+      EXPECT_EQ(kRoundedCornersContentsOutlineThickness, outer_side)
+          << "rounded, sidebar visible: outer-side gap is just the outline";
     } else {
       EXPECT_EQ(1, content_side)
           << "plain: 1px separator on the content-facing side";
@@ -2415,15 +2421,18 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
 // via the panel's border -- there's no separate overlay view anymore):
 //   * with rounded corners off, the border is a plain 1px separator, no extra
 //     top/inner gap is reserved, and
-//   * with rounded corners on, the border reserves the wider outer/bottom
-//     margin plus a slim 1px gap on the top/inner edges (where the
-//     header/content would otherwise be flush with the panel edge), so the
-//     outline has room to show on all four sides.
+//   * with rounded corners on, the border reserves a slim 1px gap on the
+//     top/inner edges (where the header/content would otherwise be flush with
+//     the panel edge) so the outline has room to show on all four sides, and
+//     the outer edge reserves either the slim gap or the wider window margin
+//     depending on whether the sidebar is between the panel and the window
+//     edge (see brave::GetPanelOuterEdgeMargin()).
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PanelRoundedOutline) {
   auto* panel_ui = SidePanelUI::From(browser());
   auto* side_panel = browser_view()->side_panel();
   side_panel->DisableAnimationsForTesting();
   auto* prefs = browser()->GetProfile()->GetPrefs();
+  auto* service = SidebarServiceFactory::GetForProfile(browser()->GetProfile());
 
   // Open the panel with rounded corners off: a plain separator, no top gap.
   prefs->SetBoolean(kWebViewRoundedCorners, false);
@@ -2440,10 +2449,13 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PanelRoundedOutline) {
 
       << "no rounded corners: no top gap reserved for an outline";
 
-  // Turn rounded corners on: the border reserves the outer/bottom margin plus
-  // a 1px gap on the top and content-facing (inner) edges.
+  // Turn rounded corners on: the border reserves a 1px gap on the top and
+  // content-facing (inner) edges. The sidebar is visible here, so it sits
+  // between the panel and the window edge and supplies the outer gap itself
+  // through its buttons' padding -- the panel only needs the outline there.
   prefs->SetBoolean(kWebViewRoundedCorners, true);
   RunScheduledLayouts();
+  ASSERT_TRUE(GetSidebarContainerView()->IsSidebarVisible());
   {
     const gfx::Insets insets = side_panel->GetInsets();
     constexpr int kOutlineThickness = 1;
@@ -2451,12 +2463,22 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PanelRoundedOutline) {
         << "rounded corners: 1px top gap reserved for the outline";
     EXPECT_EQ(kOutlineThickness, insets.left())
         << "rounded corners: 1px content-facing gap reserved for the outline";
-    EXPECT_EQ(kRoundedCornersContentsViewMargin +
-                  kRoundedCornersContentsOutlineThickness,
-              insets.right())
-        << "rounded corners: outer-side gap matches main content (margin + "
-           "outline thickness)";
+    EXPECT_EQ(kRoundedCornersContentsOutlineThickness, insets.right())
+        << "sidebar visible: outer-side gap is just the outline, since the "
+           "sidebar supplies the margin";
   }
+
+  // Hide the sidebar: the panel's outer edge now faces the window chrome
+  // directly, so it reserves the full margin to align with the main content.
+  service->SetSidebarShowOption(SidebarService::ShowSidebarOption::kShowNever);
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !GetSidebarContainerView()->IsSidebarVisible(); }));
+  RunScheduledLayouts();
+  EXPECT_EQ(kRoundedCornersContentsViewMargin +
+                kRoundedCornersContentsOutlineThickness,
+            side_panel->GetInsets().right())
+      << "sidebar hidden: outer-side gap matches main content (margin + "
+         "outline thickness)";
 
   // Disabling rounded corners drops the extra top/inner gap again.
   prefs->SetBoolean(kWebViewRoundedCorners, false);
@@ -2512,17 +2534,14 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarItemHighlightState) {
   EXPECT_EQ(views::InkDropState::ACTIVATED, ink_drop->GetTargetInkDropState());
 }
 
-// Verify that SidebarControlView::UpdateBorder() applies a negative inset on
-// the content-facing side equal to -kRoundedCornersContentsViewMargin when
-// rounded corners is on, so the control view overlaps the margin already owned
-// by the contents/panel and avoids a double gap. When rounded corners is off
-// the margin is 0, so the border insets are all zero.
-//
-// Also verifies the relationship between kSidebarButtonSize, kMargin, and the
-// control view's preferred width: the FlexLayout adds border insets to the max
-// child width, so a negative border shrinks the preferred width by the overlap
-// margin.
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ControlViewBorderOverlapGap) {
+// The control view clips to its layer bounds (see
+// SidebarContainerView::AddChildViews), so it must never be laid out narrower
+// than its children or the overhang is silently cut off. Its width is the
+// button width in every rounded-corners / alignment combination, and no border
+// is installed: the gap toward the contents is supplied by the buttons' own
+// horizontal padding plus a zeroed contents margin on the sidebar side.
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
+                       ControlViewWidthIgnoresRoundedCorners) {
   auto* prefs = browser()->GetProfile()->GetPrefs();
   auto* control_view = GetSidebarControlView();
   const int button_width =
@@ -2531,45 +2550,131 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ControlViewBorderOverlapGap) {
   // Default: sidebar on right (kSidePanelHorizontalAlignment = true).
   ASSERT_FALSE(IsSidebarUIOnLeft());
 
-  // Rounded corners off: no overlap needed, all insets should be zero and the
-  // control view's preferred width equals exactly the button width.
-  prefs->SetBoolean(kWebViewRoundedCorners, false);
-  RunScheduledLayouts();
-  {
-    const gfx::Insets insets = control_view->GetBorder()->GetInsets();
-    EXPECT_EQ(0, insets.left()) << "rounded corners off: no left inset";
-    EXPECT_EQ(0, insets.right()) << "rounded corners off: no right inset";
-    EXPECT_EQ(button_width, control_view->GetPreferredSize().width())
-        << "no border: control view preferred width equals button width";
-  }
+  for (const bool rounded_corners : {false, true}) {
+    for (const bool on_left : {false, true}) {
+      SCOPED_TRACE(absl::StrFormat("rounded_corners=%d on_left=%d",
+                                   rounded_corners, on_left));
 
-  // Rounded corners on, sidebar on right: content-facing side is left, so the
-  // left inset should be -kRoundedCornersContentsViewMargin. The negative
-  // border reduces the preferred width by the overlap margin.
+      prefs->SetBoolean(kWebViewRoundedCorners, rounded_corners);
+      prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, !on_left);
+      RunScheduledLayouts();
+      ASSERT_EQ(on_left, IsSidebarUIOnLeft());
+
+      EXPECT_FALSE(control_view->GetBorder())
+          << "no border should be installed on the control view";
+      EXPECT_EQ(button_width, control_view->GetPreferredSize().width())
+          << "control view must stay as wide as its buttons";
+    }
+  }
+}
+
+// Regression test for https://github.com/brave/brave-browser/issues/59817: the
+// focus ring around sidebar items was cut off when the vertical tab strip was
+// on the same side as the sidebar, because the strip's host view was sized 3px
+// narrower than the strip itself and the strip painted the difference over the
+// sidebar's edge. Covers both halves of that:
+//   * the strip and the sidebar must not overlap, and
+//   * every button must stay inside the layers that clip it
+//     (SidebarControlView and SidebarItemsScrollView both mask to bounds), so
+//     the focus ring it paints stays whole.
+// Swept over every sidebar/strip side combination, since only the same-side
+// ones put chrome on both of the sidebar's edges at once.
+//
+// Only the horizontal extent is checked: the items contents view is
+// deliberately offset vertically when scrolled, so vertical overflow is by
+// design.
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarButtonsStayWithinClipBounds) {
+  auto* prefs = browser()->GetProfile()->GetPrefs();
   prefs->SetBoolean(kWebViewRoundedCorners, true);
-  RunScheduledLayouts();
-  {
-    const gfx::Insets insets = control_view->GetBorder()->GetInsets();
-    EXPECT_EQ(-kRoundedCornersContentsViewMargin, insets.left())
-        << "sidebar on right: left inset overlaps into content margin";
-    EXPECT_EQ(0, insets.right());
-    EXPECT_EQ(button_width - kRoundedCornersContentsViewMargin,
-              control_view->GetPreferredSize().width())
-        << "rounded corners on: preferred width narrows by the overlap margin";
-  }
 
-  // Flip to left-aligned: content-facing side becomes right.
-  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
-  RunScheduledLayouts();
-  ASSERT_TRUE(IsSidebarUIOnLeft());
-  {
-    const gfx::Insets insets = control_view->GetBorder()->GetInsets();
-    EXPECT_EQ(0, insets.left());
-    EXPECT_EQ(-kRoundedCornersContentsViewMargin, insets.right())
-        << "sidebar on left: right inset overlaps into content margin";
-    EXPECT_EQ(button_width - kRoundedCornersContentsViewMargin,
-              control_view->GetPreferredSize().width())
-        << "rounded corners on: preferred width narrows by the overlap margin";
+  brave::ToggleVerticalTabStrip(browser());
+  ASSERT_TRUE(
+      VerticalTabController::From(browser())->ShouldShowBraveVerticalTabs());
+
+  auto* control_view = GetSidebarControlView();
+  auto* scroll_view = GetSidebarItemsScrollView(controller());
+  auto items_contents_view = GetSidebarItemsContentsView(controller());
+
+  // Reports the full geometry on failure: knowing which view is too narrow and
+  // by how much is what pins down a clip like this.
+  auto expect_horizontally_inside = [](views::View* child, views::View* clipper,
+                                       std::string_view what) {
+    gfx::RectF rect(child->GetLocalBounds());
+    views::View::ConvertRectToTarget(child, clipper, &rect);
+    const gfx::Rect bounds = gfx::ToEnclosingRect(rect);
+    const gfx::Rect clip = clipper->GetLocalBounds();
+    const std::string detail = absl::StrFormat(
+        "%s: bounds=%s in clip=%s (child %s pref=%s, clipper %s pref=%s)", what,
+        bounds.ToString(), clip.ToString(), child->GetClassName(),
+        child->GetPreferredSize().ToString(), clipper->GetClassName(),
+        clipper->GetPreferredSize().ToString());
+    // Host containment is the proxy for the focus ring fitting. The ring's own
+    // view bounds are deliberately the host outset by
+    // `halo_thickness + kFocusRingOutset`, so they always exceed the host and
+    // are not a useful thing to assert; what it paints is the highlight path
+    // (inset by SidebarButtonView::kMargin) outset by the same budget, which
+    // lands exactly on the host bounds. So a host that fits has a ring that
+    // fits -- with zero slack, hence the static_assert on kMargin.
+    EXPECT_GE(bounds.x(), clip.x()) << "overhangs on the left -- " << detail;
+    EXPECT_LE(bounds.right(), clip.right())
+        << "overhangs on the right -- " << detail;
+  };
+
+  for (const bool sidebar_on_left : {false, true}) {
+    for (const bool vtab_on_right : {false, true}) {
+      SCOPED_TRACE(absl::StrFormat("sidebar_on_left=%d vtab_on_right=%d",
+                                   sidebar_on_left, vtab_on_right));
+
+      prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, !sidebar_on_left);
+      prefs->SetBoolean(brave_tabs::kVerticalTabsOnRight, vtab_on_right);
+      RunScheduledLayouts();
+      ASSERT_EQ(sidebar_on_left, IsSidebarUIOnLeft());
+      ASSERT_TRUE(GetSidebarContainerView()->IsSidebarVisible());
+
+      SCOPED_TRACE(absl::StrFormat(
+          "container=%s control=%s scroll=%s items_contents=%s",
+          GetSidebarContainerView()->bounds().ToString(),
+          control_view->bounds().ToString(), scroll_view->bounds().ToString(),
+          items_contents_view->bounds().ToString()));
+
+      for (views::View* child : control_view->children()) {
+        if (child->GetVisible()) {
+          expect_horizontally_inside(child, control_view, "control view child");
+        }
+      }
+
+      ASSERT_FALSE(items_contents_view->children().empty());
+      for (views::View* item : items_contents_view->children()) {
+        if (item->GetVisible()) {
+          expect_horizontally_inside(item, scroll_view, "sidebar item");
+        }
+      }
+
+      // The sidebar and the vertical tab strip must abut, not overlap. An
+      // overlap lets the strip paint over the sidebar's edge, covering its
+      // focus ring -- indistinguishable from a clip on screen, and the actual
+      // cause of #59817. Screen coordinates sidestep the stored-vs-mirrored
+      // distinction.
+      //
+      // Check the strip *container*, not the host: the container sizes itself
+      // from the region view's preferred width while the sidebar is positioned
+      // against the host's, so only the container reveals the overflow.
+      const gfx::Rect sidebar_screen =
+          GetSidebarContainerView()->GetBoundsInScreen();
+      const gfx::Rect vtab_host_screen =
+          GetVerticalTabsContainer()->GetBoundsInScreen();
+      const gfx::Rect vtab_strip_screen =
+          browser_view()
+              ->vertical_tab_strip_container_view()
+              ->GetBoundsInScreen();
+      EXPECT_FALSE(sidebar_screen.Intersects(vtab_host_screen))
+          << "sidebar " << sidebar_screen.ToString()
+          << " overlaps vertical tab host " << vtab_host_screen.ToString();
+      EXPECT_FALSE(sidebar_screen.Intersects(vtab_strip_screen))
+          << "sidebar " << sidebar_screen.ToString()
+          << " overlaps vertical tab strip " << vtab_strip_screen.ToString()
+          << " (host " << vtab_host_screen.ToString() << ")";
+    }
   }
 }
 

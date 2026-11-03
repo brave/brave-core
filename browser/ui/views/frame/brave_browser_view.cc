@@ -1100,7 +1100,7 @@ void BraveBrowserView::UpdateRoundedCornersUI() {
   // Update various UI that can be affected by rounded corners. The contents
   // corner radii themselves are applied by the layout.
   UpdateVerticalTabStripBorder();
-  UpdateSidebarBorder();
+  UpdateSidePanelBorder();
   InvalidateLayout();
 }
 
@@ -1112,14 +1112,10 @@ void BraveBrowserView::UpdateVerticalTabStripBorder() {
   }
 }
 
-void BraveBrowserView::UpdateSidebarBorder() {
+void BraveBrowserView::UpdateSidePanelBorder() {
   if (side_panel_) {
     side_panel_->SetRoundedBorderEnabled(
         ShouldUseBraveWebViewRoundedCornersForContents(browser_));
-  }
-
-  if (sidebar_container_view_) {
-    sidebar_container_view_->UpdateBorder();
   }
 }
 

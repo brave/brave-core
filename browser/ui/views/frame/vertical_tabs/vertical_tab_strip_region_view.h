@@ -176,6 +176,13 @@ class BraveVerticalTabStripRegionView : public views::View,
   void OnHideComopletelyWhenCollapsedPrefChanged();
   void OnShowToggleButtonPrefChanged();
 
+  // True when the sidebar sits on the same side as the vertical tab strip, in
+  // which case the sidebar is between the strip and the web contents. Both
+  // UpdateBorder() and GetMinimumSize() must agree on this: the former decides
+  // whether the strip overlaps the contents margin, the latter sizes the host
+  // view, and a disagreement makes the strip overflow onto the sidebar.
+  bool IsSidebarOnSameSide() const;
+
   bool IsFloatingVerticalTabsEnabled() const;
   bool IsFloatingEnabledForBrowserFullscreen() const;
   bool IsFloatingEnabledForBrowserMode() const;

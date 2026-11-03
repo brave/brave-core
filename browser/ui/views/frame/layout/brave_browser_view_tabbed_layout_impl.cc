@@ -680,13 +680,6 @@ void BraveBrowserViewTabbedLayoutImpl::InsetContentsContainerBounds(
     return;
   }
 
-  // In rounded corners mode, we need to include a little margin so we have
-  // somewhere to draw the shadow.
-  int contents_margin_for_rounded_corners =
-      delegate().ShouldUseBraveWebViewRoundedCornersForContents()
-          ? delegate().GetRoundedCornersWebViewMargin()
-          : 0;
-
   // Due to vertical tab's padding(tabs::kMarginForVerticalTabContainers), we
   // can see some space between vertical tab and contents. However, If we don't
   // have margin from contents, vertical tab side contents shadow isn't visible.
@@ -722,13 +715,13 @@ void BraveBrowserViewTabbedLayoutImpl::InsetContentsContainerBounds(
     return;
   }
 
-  // If sidebar UI is only shown, contents container should have margin
-  // based on sidebar's position because sidebar UI itself has padding always.
-  // The contents container doesn't need the full margin on the sidebar side.
+  // The sidebar control view's buttons carry their own horizontal padding
+  // (SidebarButtonView::kMargin), so it already supplies the gap on the side
+  // facing the contents. Adding a contents margin there too would double it.
   if (IsSidebarLeading()) {
-    contents_margins.set_left(contents_margin_for_rounded_corners);
+    contents_margins.set_left(0);
   } else {
-    contents_margins.set_right(contents_margin_for_rounded_corners);
+    contents_margins.set_right(0);
   }
   contents_container_bounds.Inset(contents_margins);
   contents_layout->bounds = contents_container_bounds;
