@@ -59,10 +59,7 @@ const Glow = styled.div`
   pointer-events: none;
 `
 
-// The Figma texture is black at 50% opacity. Masking with it paints the dots
-// in the active palette's shade 30 (primitive-private-window-30 /
-// primitive-tor-window-30) without editing the asset. The SVG stretches
-// (preserveAspectRatio="none") so the grain covers the whole page.
+// Masking recolors the black dots with the active window palette.
 const Texture = styled.div`
   position: absolute;
   inset: 0;
@@ -76,8 +73,6 @@ const Texture = styled.div`
   mask-mode: alpha;
 `
 
-// Positioned layers paint above in-flow content, so the page sits in its own
-// stacking context above the texture and the glow.
 const Foreground = styled.div`
   position: relative;
   z-index: 1;
