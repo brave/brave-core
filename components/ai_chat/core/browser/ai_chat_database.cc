@@ -93,17 +93,19 @@ void BindModifiedTime(sql::Statement& statement, int index, base::Time time) {
   }
 }
 
-// Reads the result of a query for one row's modified_time. Returns nullopt
-// when the query fails, and the null time when there is no such row.
-std::optional<base::Time> ReadModifiedTime(sql::Statement& statement) {
+// Reads the result of a query for one row's modified_time, then whether the
+// row is a sync stub. Returns nullopt when the query fails.
+std::optional<AIChatDatabase::ModifiedTime> ReadModifiedTime(
+    sql::Statement& statement) {
   if (!statement.Step()) {
     if (!statement.Succeeded()) {
       return std::nullopt;
     }
-    return base::Time();
+    return AIChatDatabase::ModifiedTime();
   }
   // A NULL column reads as 0, which is the null time.
-  return statement.ColumnTime(0);
+  return AIChatDatabase::ModifiedTime{.exists = !statement.ColumnBool(1),
+                                      .time = statement.ColumnTime(0)};
 }
 
 bool MigrateFrom1To2(sql::Database* db) {
@@ -646,7 +648,8 @@ AIChatDatabase::GetConversationUuidForAssociatedContent(
   return statement.ColumnString(0);
 }
 
-std::optional<base::Time> AIChatDatabase::GetConversationModifiedTime(
+std::optional<AIChatDatabase::ModifiedTime>
+AIChatDatabase::GetConversationModifiedTime(
     std::string_view conversation_uuid) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!LazyInit()) {
@@ -654,22 +657,23 @@ std::optional<base::Time> AIChatDatabase::GetConversationModifiedTime(
   }
 
   static constexpr char kQuery[] =
-      "SELECT modified_time FROM conversation WHERE uuid=?";
+      "SELECT modified_time, is_sync_stub FROM conversation WHERE uuid=?";
   sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE, kQuery));
   CHECK(statement.is_valid());
   statement.BindString(0, conversation_uuid);
   return ReadModifiedTime(statement);
 }
 
-std::optional<base::Time> AIChatDatabase::GetEntryModifiedTime(
-    std::string_view conversation_entry_uuid) {
+std::optional<AIChatDatabase::ModifiedTime>
+AIChatDatabase::GetEntryModifiedTime(std::string_view conversation_entry_uuid) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!LazyInit()) {
     return std::nullopt;
   }
 
+  // Only a conversation can be a stub.
   static constexpr char kQuery[] =
-      "SELECT modified_time FROM conversation_entry WHERE uuid=?";
+      "SELECT modified_time, 0 FROM conversation_entry WHERE uuid=?";
   sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE, kQuery));
   CHECK(statement.is_valid());
   statement.BindString(0, conversation_entry_uuid);
@@ -2377,6 +2381,8 @@ bool AIChatDatabase::ApplyRemoteEntry(
   // row that ApplyRemoteConversationMetadata fills in when the metadata
   // record arrives. Until then the stub is hidden from GetAllConversations(),
   // so it can't be shown, replied to, or uploaded with placeholder metadata.
+  // GetConversationModifiedTime() reports a stub as no row, so the metadata
+  // record is always written over it.
   static constexpr char kInsertStubConversationQuery[] =
       "INSERT OR IGNORE INTO conversation"
       "  (uuid, title, model_key, total_tokens, trimmed_tokens, is_sync_stub)"

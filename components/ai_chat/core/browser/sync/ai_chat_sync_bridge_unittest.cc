@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <map>
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -15,6 +16,8 @@
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/callback_helpers.h"
+#include "base/run_loop.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
@@ -23,6 +26,7 @@
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/sync/protocol/ai_chat_specifics.pb.h"
 #include "components/os_crypt/async/browser/test_utils.h"
+#include "components/sync/model/conflict_resolution.h"
 #include "components/sync/model/data_batch.h"
 #include "components/sync/model/metadata_batch.h"
 #include "components/sync/model/metadata_change_list.h"
@@ -51,6 +55,12 @@ using testing::UnorderedElementsAre;
 MATCHER_P(HasModifiedTime, time, "") {
   return GetModifiedTimeFromSpecifics(arg->specifics.ai_chat_conversation()) ==
          time;
+}
+
+// Matches the result of AIChatDatabase::GetConversationModifiedTime() or
+// GetEntryModifiedTime() for a row whose modified time is |time|.
+MATCHER_P(IsModifiedAt, time, "") {
+  return arg && arg->exists && arg->time == time;
 }
 
 // Stands in for the processor recording a local Put() or Delete() in its
@@ -111,6 +121,36 @@ class FailingAIChatDatabase : public AIChatDatabase {
   int writes_remaining_;
 };
 
+// A database whose modified time reads fail.
+class UnreadableTimesAIChatDatabase : public AIChatDatabase {
+ public:
+  using AIChatDatabase::AIChatDatabase;
+
+  std::optional<ModifiedTime> GetConversationModifiedTime(
+      std::string_view conversation_uuid) override {
+    return std::nullopt;
+  }
+
+  std::optional<ModifiedTime> GetEntryModifiedTime(
+      std::string_view conversation_entry_uuid) override {
+    return std::nullopt;
+  }
+};
+
+// Returns |data|, a conversation metadata or entry record, carrying |time| as
+// its modified time.
+syncer::EntityData WithModifiedTime(syncer::EntityData data, base::Time time) {
+  auto* specifics = data.specifics.mutable_ai_chat_conversation();
+  const int64_t micros = time.ToDeltaSinceWindowsEpoch().InMicroseconds();
+  if (specifics->has_conversation()) {
+    specifics->mutable_conversation()->set_modified_time_windows_epoch_micros(
+        micros);
+  } else {
+    specifics->mutable_entry()->set_modified_time_windows_epoch_micros(micros);
+  }
+  return data;
+}
+
 // A conversation metadata record, as another device would send it.
 syncer::EntityData MakeRemoteConversation(const std::string& uuid,
                                           const std::string& title) {
@@ -165,8 +205,7 @@ class AIChatSyncBridgeTest : public testing::Test {
  public:
   void SetUp() override {
     CHECK(temp_directory_.CreateUniqueTempDir());
-    db_ = std::make_unique<AIChatDatabase>(
-        db_file_path(), os_crypt_async::GetTestEncryptorForTesting());
+    db_ = std::make_unique<AIChatDatabase>(db_file_path(), encryptor_);
   }
 
   void TearDown() override {
@@ -205,10 +244,61 @@ class AIChatSyncBridgeTest : public testing::Test {
   // |writes_before_failure| of them, then creates the bridge over it.
   void CreateBridgeWithFailingDatabase(int writes_before_failure) {
     db_.reset();
-    db_ = std::make_unique<FailingAIChatDatabase>(
-        db_file_path(), os_crypt_async::GetTestEncryptorForTesting(),
-        writes_before_failure);
+    db_ = std::make_unique<FailingAIChatDatabase>(db_file_path(), encryptor_,
+                                                  writes_before_failure);
     CreateBridge();
+  }
+
+  // Replaces the database with one whose modified time reads fail, then
+  // creates the bridge over it.
+  void CreateBridgeWithUnreadableTimes() {
+    db_.reset();
+    db_ = std::make_unique<UnreadableTimesAIChatDatabase>(db_file_path(),
+                                                          encryptor_);
+    CreateBridge();
+  }
+
+  // Stands in for a browser restart: a new bridge and processor, over the same
+  // database file opened again, now without failures.
+  void RestartWithWorkingDatabase() {
+    mock_processor_ = nullptr;
+    bridge_.reset();
+    db_.reset();
+    db_ = std::make_unique<AIChatDatabase>(db_file_path(), encryptor_);
+    CreateBridge();
+  }
+
+  // Returns this device's records for |storage_keys| as remote changes, as the
+  // server sends them back once this device has uploaded them.
+  syncer::EntityChangeList GetLocalRecordsAsRemoteChanges(
+      std::vector<std::string> storage_keys) {
+    syncer::EntityChangeList changes;
+    auto batch = bridge_->GetDataForCommit(std::move(storage_keys));
+    while (batch->HasNext()) {
+      auto [key, data] = batch->Next();
+      changes.push_back(syncer::EntityChange::CreateAdd(key, std::move(*data)));
+    }
+    return changes;
+  }
+
+  // Runs the tasks already posted to this sequence, such as the one that sends
+  // the local copies ApplyIncrementalSyncChanges() kept.
+  void RunPostedTasks() {
+    base::RunLoop run_loop;
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, run_loop.QuitClosure());
+    run_loop.Run();
+  }
+
+  // Returns the title of the listed conversation |uuid|, or nullopt when it
+  // isn't listed.
+  std::optional<std::string> GetConversationTitle(const std::string& uuid) {
+    for (const auto& conversation : db_->GetAllConversations()) {
+      if (conversation->uuid == uuid) {
+        return conversation->title;
+      }
+    }
+    return std::nullopt;
   }
 
   // Returns the metadata changes the processor makes before it hands a batch
@@ -288,6 +378,10 @@ class AIChatSyncBridgeTest : public testing::Test {
   base::test::TaskEnvironment task_environment_{
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};
   base::ScopedTempDir temp_directory_;
+  // Shared by every database the test opens, so each can read what another
+  // wrote.
+  scoped_refptr<os_crypt_async::Encryptor> encryptor_ =
+      os_crypt_async::GetTestEncryptorForTesting();
   std::unique_ptr<AIChatDatabase> db_;
   std::unique_ptr<AIChatSyncBridge> bridge_;
   raw_ptr<syncer::MockDataTypeLocalChangeProcessor> mock_processor_ = nullptr;
@@ -892,8 +986,9 @@ TEST_F(AIChatSyncBridgeTest, ApplyIncrementalSyncChangesStoresRecordTime) {
                        bridge_->CreateMetadataChangeList(), std::move(changes))
                    .has_value());
 
-  EXPECT_EQ(db_->GetConversationModifiedTime("conv"), conversation_time);
-  EXPECT_EQ(db_->GetEntryModifiedTime("entry"), entry_time);
+  EXPECT_THAT(db_->GetConversationModifiedTime("conv"),
+              IsModifiedAt(conversation_time));
+  EXPECT_THAT(db_->GetEntryModifiedTime("entry"), IsModifiedAt(entry_time));
 }
 
 // Whenever a Merge/Apply batch actually changes the local DB, the bridge
@@ -1321,12 +1416,17 @@ TEST_F(AIChatSyncBridgeTest,
   entry->created_time = base::Time::Now();
   ASSERT_TRUE(db_->AddConversationEntry("local-conv", std::move(entry)));
 
+  // Changed on another device after this device's copies.
+  task_environment_.FastForwardBy(base::Minutes(1));
   syncer::EntityChangeList changes = MakeConversationAdd("written-conv");
   changes.push_back(syncer::EntityChange::CreateUpdate(
-      "c:local-conv", MakeRemoteConversation("local-conv", "Renamed")));
+      "c:local-conv",
+      WithModifiedTime(MakeRemoteConversation("local-conv", "Renamed"),
+                       base::Time::Now())));
   changes.push_back(syncer::EntityChange::CreateUpdate(
       "e:" + entry_uuid,
-      MakeRemoteEntry("local-conv", entry_uuid, "From remote")));
+      WithModifiedTime(MakeRemoteEntry("local-conv", entry_uuid, "From remote"),
+                       base::Time::Now())));
   ASSERT_TRUE(bridge_
                   ->ApplyIncrementalSyncChanges(
                       bridge_->CreateMetadataChangeList(), std::move(changes))
@@ -1342,6 +1442,42 @@ TEST_F(AIChatSyncBridgeTest,
   bridge_->OnConversationEntryAdded("local-conv", "entry-2");
 }
 
+// A local update skipped after a failed batch was made after the batch's
+// change, so it's newer. The next start downloads the batch again, keeps the
+// local update and sends it.
+TEST_F(AIChatSyncBridgeTest, SkippedLocalUpdateIsSentAfterRestart) {
+  CreateBridgeWithFailingDatabase(0);
+  AddTestConversation("conv", "Title");
+  task_environment_.FastForwardBy(base::Minutes(1));
+  const base::Time remote_time = base::Time::Now();
+  auto make_batch = [&] {
+    syncer::EntityChangeList changes;
+    changes.push_back(syncer::EntityChange::CreateUpdate(
+        "c:conv",
+        WithModifiedTime(MakeRemoteConversation("conv", "Renamed remotely"),
+                         remote_time)));
+    return changes;
+  };
+  ASSERT_TRUE(bridge_
+                  ->ApplyIncrementalSyncChanges(
+                      bridge_->CreateMetadataChangeList(), make_batch())
+                  .has_value());
+  task_environment_.FastForwardBy(base::Minutes(1));
+  ASSERT_TRUE(db_->UpdateConversationTitle("conv", "Renamed locally"));
+  EXPECT_CALL(*mock_processor_, Put).Times(0);
+  bridge_->OnConversationModified("conv");
+
+  RestartWithWorkingDatabase();
+  EXPECT_CALL(*mock_processor_,
+              Put("c:conv", HasModifiedTime(base::Time::Now()), _));
+  ASSERT_FALSE(bridge_
+                   ->ApplyIncrementalSyncChanges(
+                       bridge_->CreateMetadataChangeList(), make_batch())
+                   .has_value());
+  RunPostedTasks();
+  EXPECT_EQ(GetConversationTitle("conv"), "Renamed locally");
+}
+
 // A local delete after a failed batch is still sent and saved, even for a
 // record the batch didn't write. Saving the tombstone at the batch's version
 // is right, since the delete came after the remote change.
@@ -1349,9 +1485,16 @@ TEST_F(AIChatSyncBridgeTest, LocalDeleteAfterFailedBatchIsSent) {
   CreateBridgeWithFailingDatabase(0);
   const std::string entry_uuid = AddTestConversation("conv", "Title");
 
-  syncer::EntityChangeList changes = MakeConversationAdd("conv");
+  // Changed on another device after this device's copies.
+  task_environment_.FastForwardBy(base::Minutes(1));
+  syncer::EntityChangeList changes;
   changes.push_back(syncer::EntityChange::CreateUpdate(
-      "e:" + entry_uuid, MakeRemoteEntry("conv", entry_uuid, "From remote")));
+      "c:conv", WithModifiedTime(MakeRemoteConversation("conv", "Remote"),
+                                 base::Time::Now())));
+  changes.push_back(syncer::EntityChange::CreateUpdate(
+      "e:" + entry_uuid,
+      WithModifiedTime(MakeRemoteEntry("conv", entry_uuid, "From remote"),
+                       base::Time::Now())));
   ASSERT_TRUE(bridge_
                   ->ApplyIncrementalSyncChanges(
                       bridge_->CreateMetadataChangeList(), std::move(changes))
@@ -1369,9 +1512,8 @@ TEST_F(AIChatSyncBridgeTest, LocalDeleteAfterFailedBatchIsSent) {
               ElementsAre(Pair("c:conv", _), Pair("e:" + entry_uuid, _)));
 }
 
-// After a first-sync merge fails, first sync runs again on the next start and
-// applies the server's records over this device's, so no local update is sent
-// this session.
+// After a first-sync merge fails, first sync runs again on the next start, so
+// no local update is sent this session.
 TEST_F(AIChatSyncBridgeTest, LocalUpdateAfterFailedMergeIsSkipped) {
   CreateBridgeWithFailingDatabase(0);
   const std::string entry_uuid = AddTestConversation("local-conv", "Title");
@@ -1384,6 +1526,659 @@ TEST_F(AIChatSyncBridgeTest, LocalUpdateAfterFailedMergeIsSkipped) {
 
   bridge_->OnConversationModified("local-conv");
   bridge_->OnConversationEntryModified("local-conv", entry_uuid);
+}
+
+// A local update skipped after a failed first-sync merge is newer than the
+// server's copy, so the next start's merge keeps it and sends it.
+TEST_F(AIChatSyncBridgeTest, SkippedLocalUpdateIsSentByTheNextMerge) {
+  CreateBridgeWithFailingDatabase(0);
+  const std::string entry_uuid = AddTestConversation("local-conv", "Title");
+  const base::Time added = base::Time::Now();
+  // The server holds this device's conversation as first uploaded, and one
+  // from another device.
+  auto make_server_records = [&] {
+    syncer::EntityChangeList changes = MakeConversationAdd("remote-conv");
+    changes.push_back(syncer::EntityChange::CreateAdd(
+        "c:local-conv",
+        WithModifiedTime(MakeRemoteConversation("local-conv", "Title"),
+                         added)));
+    return changes;
+  };
+  ASSERT_TRUE(bridge_
+                  ->MergeFullSyncData(bridge_->CreateMetadataChangeList(),
+                                      make_server_records())
+                  .has_value());
+  task_environment_.FastForwardBy(base::Minutes(1));
+  ASSERT_TRUE(db_->UpdateConversationTitle("local-conv", "Renamed"));
+  EXPECT_CALL(*mock_processor_, Put).Times(0);
+  bridge_->OnConversationModified("local-conv");
+
+  RestartWithWorkingDatabase();
+  EXPECT_CALL(*mock_processor_,
+              Put("c:local-conv", HasModifiedTime(base::Time::Now()), _));
+  EXPECT_CALL(*mock_processor_, Put("e:" + entry_uuid, _, _));
+  ASSERT_FALSE(bridge_
+                   ->MergeFullSyncData(bridge_->CreateMetadataChangeList(),
+                                       make_server_records())
+                   .has_value());
+  EXPECT_EQ(GetConversationTitle("local-conv"), "Renamed");
+  EXPECT_EQ(GetConversationTitle("remote-conv"), "Remote");
+}
+
+// A conversation renamed while AI Chat sync was off wasn't sent, so the
+// server's copy is older. A first-sync merge keeps the rename and sends it,
+// with its sync metadata saved along with the batch's. The entry the server
+// already holds at the same time is left alone and not sent again.
+TEST_F(AIChatSyncBridgeTest, MergeKeepsRenameTheServerLacks) {
+  const std::string entry_uuid = AddTestConversation("conv", "Title");
+  CreateBridge();
+  syncer::EntityChangeList server_records =
+      GetLocalRecordsAsRemoteChanges({"c:conv", "e:" + entry_uuid});
+  task_environment_.FastForwardBy(base::Minutes(1));
+  ASSERT_TRUE(db_->UpdateConversationTitle("conv", "Renamed"));
+
+  EXPECT_CALL(*mock_processor_,
+              Put("c:conv", HasModifiedTime(base::Time::Now()), _))
+      .WillOnce(RecordLocalChangeMetadata());
+  EXPECT_CALL(*mock_processor_, Put("e:" + entry_uuid, _, _)).Times(0);
+  ASSERT_FALSE(bridge_
+                   ->MergeFullSyncData(bridge_->CreateMetadataChangeList(),
+                                       std::move(server_records))
+                   .has_value());
+
+  EXPECT_EQ(GetConversationTitle("conv"), "Renamed");
+  EXPECT_EQ(remote_changes_applied_count_, 0);
+  syncer::MetadataBatch saved;
+  ASSERT_TRUE(db_->GetAllSyncMetadata(&saved));
+  EXPECT_THAT(saved.GetAllMetadata(),
+              ElementsAre(Pair("c:conv", HasServerVersion(1))));
+}
+
+// An entry edited while AI Chat sync was off keeps its edit through a
+// first-sync merge, with no revision added, and is sent. The conversation's
+// metadata, which the server already holds at the same time, isn't sent again.
+TEST_F(AIChatSyncBridgeTest, MergeKeepsEntryEditTheServerLacks) {
+  const std::string entry_uuid = AddTestConversation("conv", "Title");
+  CreateBridge();
+  syncer::EntityChangeList server_records =
+      GetLocalRecordsAsRemoteChanges({"c:conv", "e:" + entry_uuid});
+
+  // An edit is saved as the entry again, with the edit as its revision.
+  task_environment_.FastForwardBy(base::Minutes(1));
+  auto archive = db_->GetConversationData("conv");
+  ASSERT_TRUE(archive);
+  ASSERT_EQ(archive->entries.size(), 1u);
+  auto edited = archive->entries[0]->Clone();
+  auto edit = edited->Clone();
+  edit->uuid = "edit-1";
+  edit->text = "Hello, edited";
+  edit->created_time = base::Time::Now();
+  edited->edits.emplace();
+  edited->edits->push_back(std::move(edit));
+  ASSERT_TRUE(db_->DeleteConversationEntry(entry_uuid));
+  ASSERT_TRUE(db_->AddConversationEntry("conv", std::move(edited)));
+
+  EXPECT_CALL(*mock_processor_,
+              Put("e:" + entry_uuid, HasModifiedTime(base::Time::Now()), _));
+  EXPECT_CALL(*mock_processor_, Put("c:conv", _, _)).Times(0);
+  ASSERT_FALSE(bridge_
+                   ->MergeFullSyncData(bridge_->CreateMetadataChangeList(),
+                                       std::move(server_records))
+                   .has_value());
+
+  archive = db_->GetConversationData("conv");
+  ASSERT_TRUE(archive);
+  ASSERT_EQ(archive->entries.size(), 1u);
+  ASSERT_TRUE(archive->entries[0]->edits);
+  ASSERT_EQ(archive->entries[0]->edits->size(), 1u);
+  EXPECT_EQ(archive->entries[0]->edits->at(0)->text, "Hello, edited");
+  EXPECT_EQ(remote_changes_applied_count_, 0);
+}
+
+// Associated content cleared while AI Chat sync was off, by clearing browsing
+// data, stays cleared through a first-sync merge, and the entry is sent. The
+// conversation's metadata isn't sent again.
+TEST_F(AIChatSyncBridgeTest, MergeKeepsAssociatedContentClearTheServerLacks) {
+  auto conversation = mojom::Conversation::New();
+  conversation->uuid = "conv";
+  conversation->title = "Title";
+  conversation->associated_content.push_back(mojom::AssociatedContent::New(
+      "content", mojom::ContentType::PageContent, "Page title", 1,
+      GURL("https://example.com"), 100, "entry", false));
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry";
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+  entry->text = "Hello";
+  entry->created_time = base::Time::Now();
+  ASSERT_TRUE(db_->AddConversation(std::move(conversation), {"Page text"},
+                                   std::move(entry)));
+  CreateBridge();
+  syncer::EntityChangeList server_records =
+      GetLocalRecordsAsRemoteChanges({"c:conv", "e:entry"});
+  task_environment_.FastForwardBy(base::Minutes(1));
+  ASSERT_TRUE(db_->DeleteAssociatedWebContent(std::nullopt, std::nullopt));
+
+  EXPECT_CALL(*mock_processor_,
+              Put("e:entry", HasModifiedTime(base::Time::Now()), _));
+  EXPECT_CALL(*mock_processor_, Put("c:conv", _, _)).Times(0);
+  ASSERT_FALSE(bridge_
+                   ->MergeFullSyncData(bridge_->CreateMetadataChangeList(),
+                                       std::move(server_records))
+                   .has_value());
+
+  // Clearing leaves no page text, url or title.
+  auto archive = db_->GetConversationData("conv");
+  ASSERT_TRUE(archive);
+  EXPECT_TRUE(archive->associated_content.empty());
+  auto conversations = db_->GetAllConversations();
+  ASSERT_EQ(conversations.size(), 1u);
+  ASSERT_EQ(conversations[0]->associated_content.size(), 1u);
+  EXPECT_EQ(conversations[0]->associated_content[0]->url, GURL());
+  EXPECT_EQ(conversations[0]->associated_content[0]->title, "");
+  EXPECT_EQ(remote_changes_applied_count_, 0);
+}
+
+// An entry that grew past the size limit can't be sent, so another device may
+// still edit its older version. That edit is older than the local entry, which
+// is kept. It still can't be sent, so nothing is Put, and it stays tracked.
+TEST_F(AIChatSyncBridgeTest, ApplyKeepsNewerEntryTooLargeToCommit) {
+  const base::Time remote_time = base::Time::Now();
+  task_environment_.FastForwardBy(base::Minutes(1));
+  CreateBridge();
+  ASSERT_NO_FATAL_FAILURE(AddEntryTooLargeToCommit("conv", "entry-1"));
+  syncer::EntityChangeList changes;
+  changes.push_back(syncer::EntityChange::CreateUpdate(
+      "e:entry-1",
+      WithModifiedTime(MakeRemoteEntry("conv", "entry-1", "From remote"),
+                       remote_time)));
+
+  EXPECT_CALL(*mock_processor_, Put).Times(0);
+  EXPECT_CALL(*mock_processor_, UntrackEntityForStorageKey).Times(0);
+  ASSERT_FALSE(bridge_
+                   ->ApplyIncrementalSyncChanges(
+                       bridge_->CreateMetadataChangeList(), std::move(changes))
+                   .has_value());
+  RunPostedTasks();
+
+  auto archive = db_->GetConversationData("conv");
+  ASSERT_TRUE(archive);
+  ASSERT_EQ(archive->entries.size(), 1u);
+  EXPECT_EQ(archive->entries[0]->text, "Hello");
+  EXPECT_EQ(remote_changes_applied_count_, 0);
+}
+
+// A first-sync merge of this device's own records, as when AI Chat sync is
+// turned off and on again, finds the same times, so it writes nothing, sends
+// nothing and names no conversation. Any write would fail on this database.
+TEST_F(AIChatSyncBridgeTest, MergeOfSameVersionsWritesNothing) {
+  CreateBridgeWithFailingDatabase(0);
+  const std::string entry_uuid = AddTestConversation("conv", "Title");
+  syncer::EntityChangeList own_records =
+      GetLocalRecordsAsRemoteChanges({"c:conv", "e:" + entry_uuid});
+  ASSERT_EQ(own_records.size(), 2u);
+
+  EXPECT_CALL(*mock_processor_, Put).Times(0);
+  ASSERT_FALSE(bridge_
+                   ->MergeFullSyncData(bridge_->CreateMetadataChangeList(),
+                                       std::move(own_records))
+                   .has_value());
+  EXPECT_EQ(remote_changes_applied_count_, 0);
+}
+
+// Rows saved before records carried a time have none, and new entries don't
+// give their conversation one, so such a conversation can stay untimed. Every
+// change sync compares moves the time, so two untimed copies are the same
+// version: a merge of this device's own untimed records writes nothing and
+// names no conversation. Any write after the two that store the records would
+// fail on this database.
+TEST_F(AIChatSyncBridgeTest, MergeOfUntimedSameVersionsWritesNothing) {
+  CreateBridgeWithFailingDatabase(2);
+  auto conversation = mojom::Conversation::New();
+  conversation->uuid = "conv";
+  conversation->title = "Title";
+  ASSERT_TRUE(db_->ApplyRemoteConversationMetadata(std::move(conversation),
+                                                   base::Time()));
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry";
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+  entry->text = "Hello";
+  entry->created_time = base::Time::Now();
+  ASSERT_TRUE(
+      db_->ApplyRemoteEntry("conv", std::move(entry), base::Time(), {}, {}));
+  syncer::EntityChangeList own_records =
+      GetLocalRecordsAsRemoteChanges({"c:conv", "e:entry"});
+  ASSERT_EQ(own_records.size(), 2u);
+
+  EXPECT_CALL(*mock_processor_, Put).Times(0);
+  ASSERT_FALSE(bridge_
+                   ->MergeFullSyncData(bridge_->CreateMetadataChangeList(),
+                                       std::move(own_records))
+                   .has_value());
+  EXPECT_EQ(remote_changes_applied_count_, 0);
+}
+
+// A record changed on another device after this device's copy is written
+// over it, and nothing is sent back.
+TEST_F(AIChatSyncBridgeTest, ApplyWritesNewerRemoteRecord) {
+  const std::string entry_uuid = AddTestConversation("conv", "Title");
+  CreateBridge();
+  task_environment_.FastForwardBy(base::Minutes(1));
+  const base::Time remote_time = base::Time::Now();
+  syncer::EntityChangeList changes;
+  changes.push_back(syncer::EntityChange::CreateUpdate(
+      "c:conv",
+      WithModifiedTime(MakeRemoteConversation("conv", "Remote"), remote_time)));
+  changes.push_back(syncer::EntityChange::CreateUpdate(
+      "e:" + entry_uuid,
+      WithModifiedTime(MakeRemoteEntry("conv", entry_uuid, "From remote"),
+                       remote_time)));
+
+  EXPECT_CALL(*mock_processor_, Put).Times(0);
+  ASSERT_FALSE(bridge_
+                   ->ApplyIncrementalSyncChanges(
+                       bridge_->CreateMetadataChangeList(), std::move(changes))
+                   .has_value());
+  RunPostedTasks();
+
+  EXPECT_EQ(GetConversationTitle("conv"), "Remote");
+  auto archive = db_->GetConversationData("conv");
+  ASSERT_TRUE(archive);
+  ASSERT_EQ(archive->entries.size(), 1u);
+  EXPECT_EQ(archive->entries[0]->text, "From remote");
+  EXPECT_THAT(last_affected_conversation_uuids_, ElementsAre("conv"));
+}
+
+// A record without a time, as from a local copy saved before records carried
+// one, counts as the oldest. It loses to a local copy that has a time, which
+// is sent instead.
+TEST_F(AIChatSyncBridgeTest, UntimedRecordLosesToTimedLocalCopy) {
+  AddTestConversation("conv", "Local");
+  CreateBridge();
+  syncer::EntityChangeList changes;
+  changes.push_back(syncer::EntityChange::CreateUpdate(
+      "c:conv", MakeRemoteConversation("conv", "Remote")));
+
+  ASSERT_FALSE(bridge_
+                   ->ApplyIncrementalSyncChanges(
+                       bridge_->CreateMetadataChangeList(), std::move(changes))
+                   .has_value());
+  EXPECT_CALL(*mock_processor_, Put("c:conv", _, _));
+  RunPostedTasks();
+
+  EXPECT_EQ(GetConversationTitle("conv"), "Local");
+  EXPECT_EQ(remote_changes_applied_count_, 0);
+}
+
+// The notification names only the conversations a batch wrote to. A record no
+// newer than the local copy writes nothing, so its conversation isn't named.
+TEST_F(AIChatSyncBridgeTest, NotifiesOnlyConversationsWithNewerRecords) {
+  AddTestConversation("older-conv", "Local");
+  AddTestConversation("same-conv", "Local");
+  AddTestConversation("newer-conv", "Local");
+  const base::Time local_time = base::Time::Now();
+  CreateBridge();
+  syncer::EntityChangeList changes;
+  changes.push_back(syncer::EntityChange::CreateUpdate(
+      "c:older-conv",
+      WithModifiedTime(MakeRemoteConversation("older-conv", "Remote"),
+                       local_time - base::Minutes(1))));
+  changes.push_back(syncer::EntityChange::CreateUpdate(
+      "c:same-conv",
+      WithModifiedTime(MakeRemoteConversation("same-conv", "Remote"),
+                       local_time)));
+  changes.push_back(syncer::EntityChange::CreateUpdate(
+      "c:newer-conv",
+      WithModifiedTime(MakeRemoteConversation("newer-conv", "Remote"),
+                       local_time + base::Minutes(1))));
+
+  ASSERT_FALSE(bridge_
+                   ->ApplyIncrementalSyncChanges(
+                       bridge_->CreateMetadataChangeList(), std::move(changes))
+                   .has_value());
+
+  EXPECT_EQ(remote_changes_applied_count_, 1);
+  EXPECT_THAT(last_affected_conversation_uuids_, ElementsAre("newer-conv"));
+}
+
+// The processor counts a Put() made while it applies remote changes, and means
+// to forbid it. So a local copy ApplyIncrementalSyncChanges() keeps is sent,
+// with its own time, once that has returned, and its sync metadata is saved
+// straight away.
+TEST_F(AIChatSyncBridgeTest, KeptLocalCopyIsSentAfterTheIncrementalApply) {
+  const std::string entry_uuid = AddTestConversation("conv", "Local");
+  const base::Time local_time = base::Time::Now();
+  CreateBridge();
+  syncer::EntityChangeList changes;
+  changes.push_back(syncer::EntityChange::CreateUpdate(
+      "c:conv", WithModifiedTime(MakeRemoteConversation("conv", "Remote"),
+                                 local_time - base::Minutes(1))));
+  changes.push_back(syncer::EntityChange::CreateUpdate(
+      "e:" + entry_uuid,
+      WithModifiedTime(MakeRemoteEntry("conv", entry_uuid, "From remote"),
+                       local_time - base::Minutes(1))));
+
+  EXPECT_CALL(*mock_processor_, Put).Times(0);
+  ASSERT_FALSE(bridge_
+                   ->ApplyIncrementalSyncChanges(
+                       bridge_->CreateMetadataChangeList(), std::move(changes))
+                   .has_value());
+  testing::Mock::VerifyAndClearExpectations(mock_processor_.get());
+
+  EXPECT_CALL(*mock_processor_, Put("c:conv", HasModifiedTime(local_time), _))
+      .WillOnce(RecordLocalChangeMetadata());
+  EXPECT_CALL(*mock_processor_,
+              Put("e:" + entry_uuid, HasModifiedTime(local_time), _))
+      .WillOnce(RecordLocalChangeMetadata());
+  RunPostedTasks();
+
+  syncer::MetadataBatch saved;
+  ASSERT_TRUE(db_->GetAllSyncMetadata(&saved));
+  EXPECT_THAT(saved.GetAllMetadata(),
+              ElementsAre(Pair("c:conv", _), Pair("e:" + entry_uuid, _)));
+}
+
+// A kept local copy is sent only if sync can still take it when its task
+// runs: not once the database is detached, or sync has stopped tracking.
+TEST_F(AIChatSyncBridgeTest, KeptLocalCopyIsNotSentOnceSyncCannotTakeIt) {
+  AddTestConversation("conv", "Local");
+  const base::Time older = base::Time::Now() - base::Minutes(1);
+  CreateBridge();
+  auto make_changes = [&] {
+    syncer::EntityChangeList changes;
+    changes.push_back(syncer::EntityChange::CreateUpdate(
+        "c:conv",
+        WithModifiedTime(MakeRemoteConversation("conv", "Remote"), older)));
+    return changes;
+  };
+  EXPECT_CALL(*mock_processor_, Put).Times(0);
+
+  ASSERT_FALSE(bridge_
+                   ->ApplyIncrementalSyncChanges(
+                       bridge_->CreateMetadataChangeList(), make_changes())
+                   .has_value());
+  bridge_->ClearDatabase();
+  RunPostedTasks();
+
+  bridge_->SetDatabase(db_.get());
+  ASSERT_FALSE(bridge_
+                   ->ApplyIncrementalSyncChanges(
+                       bridge_->CreateMetadataChangeList(), make_changes())
+                   .has_value());
+  ON_CALL(*mock_processor_, IsTrackingMetadata())
+      .WillByDefault(testing::Return(false));
+  RunPostedTasks();
+}
+
+// A record changed locally between ApplyIncrementalSyncChanges() and the task
+// that sends its kept copy is sent by that change, with its new time, and not
+// again by the task with the time it was kept with.
+TEST_F(AIChatSyncBridgeTest, KeptLocalCopyChangedLocallySinceIsNotSentAgain) {
+  AddTestConversation("conv", "Local");
+  CreateBridge();
+  syncer::EntityChangeList changes;
+  changes.push_back(syncer::EntityChange::CreateUpdate(
+      "c:conv", WithModifiedTime(MakeRemoteConversation("conv", "Remote"),
+                                 base::Time::Now() - base::Minutes(1))));
+  ASSERT_FALSE(bridge_
+                   ->ApplyIncrementalSyncChanges(
+                       bridge_->CreateMetadataChangeList(), std::move(changes))
+                   .has_value());
+
+  task_environment_.FastForwardBy(base::Minutes(1));
+  ASSERT_TRUE(db_->UpdateConversationTitle("conv", "Renamed"));
+  EXPECT_CALL(*mock_processor_,
+              Put("c:conv", HasModifiedTime(base::Time::Now()), _));
+  bridge_->OnConversationModified("conv");
+  RunPostedTasks();
+}
+
+// A newer remote record written between ApplyIncrementalSyncChanges() and the
+// task that sends a kept copy of it replaces that copy, so nothing is sent.
+TEST_F(AIChatSyncBridgeTest, KeptLocalCopyReplacedByNewerRecordIsNotSent) {
+  AddTestConversation("conv", "Local");
+  const base::Time local_time = base::Time::Now();
+  CreateBridge();
+  syncer::EntityChangeList older;
+  older.push_back(syncer::EntityChange::CreateUpdate(
+      "c:conv", WithModifiedTime(MakeRemoteConversation("conv", "Older"),
+                                 local_time - base::Minutes(1))));
+  ASSERT_FALSE(bridge_
+                   ->ApplyIncrementalSyncChanges(
+                       bridge_->CreateMetadataChangeList(), std::move(older))
+                   .has_value());
+  syncer::EntityChangeList newer;
+  newer.push_back(syncer::EntityChange::CreateUpdate(
+      "c:conv", WithModifiedTime(MakeRemoteConversation("conv", "Newer"),
+                                 local_time + base::Minutes(1))));
+  ASSERT_FALSE(bridge_
+                   ->ApplyIncrementalSyncChanges(
+                       bridge_->CreateMetadataChangeList(), std::move(newer))
+                   .has_value());
+
+  EXPECT_CALL(*mock_processor_, Put).Times(0);
+  RunPostedTasks();
+  EXPECT_EQ(GetConversationTitle("conv"), "Newer");
+}
+
+// A batch that fails at a record before the task that sends its kept copy
+// runs leaves the processor holding that batch's version of the record, so
+// the kept copy is skipped like any other local update to it.
+TEST_F(AIChatSyncBridgeTest, KeptLocalCopyIsNotSentAfterALaterBatchFailsAtIt) {
+  CreateBridgeWithFailingDatabase(0);
+  AddTestConversation("conv", "Local");
+  const base::Time local_time = base::Time::Now();
+  syncer::EntityChangeList older;
+  older.push_back(syncer::EntityChange::CreateUpdate(
+      "c:conv", WithModifiedTime(MakeRemoteConversation("conv", "Older"),
+                                 local_time - base::Minutes(1))));
+  ASSERT_FALSE(bridge_
+                   ->ApplyIncrementalSyncChanges(
+                       bridge_->CreateMetadataChangeList(), std::move(older))
+                   .has_value());
+  syncer::EntityChangeList newer;
+  newer.push_back(syncer::EntityChange::CreateUpdate(
+      "c:conv", WithModifiedTime(MakeRemoteConversation("conv", "Newer"),
+                                 local_time + base::Minutes(1))));
+  ASSERT_TRUE(bridge_
+                  ->ApplyIncrementalSyncChanges(
+                      bridge_->CreateMetadataChangeList(), std::move(newer))
+                  .has_value());
+
+  EXPECT_CALL(*mock_processor_, Put).Times(0);
+  RunPostedTasks();
+}
+
+// A batch that fails downloads again on the next start, which compares its
+// records again. So a local copy kept before the failure isn't sent.
+TEST_F(AIChatSyncBridgeTest, KeptLocalCopyIsNotSentWhenTheBatchFails) {
+  CreateBridgeWithFailingDatabase(0);
+  AddTestConversation("local-conv", "Local");
+  syncer::EntityChangeList changes;
+  changes.push_back(syncer::EntityChange::CreateUpdate(
+      "c:local-conv",
+      WithModifiedTime(MakeRemoteConversation("local-conv", "Remote"),
+                       base::Time::Now() - base::Minutes(1))));
+  changes.push_back(syncer::EntityChange::CreateAdd(
+      "c:remote-conv", MakeRemoteConversation("remote-conv", "Remote")));
+
+  EXPECT_CALL(*mock_processor_, Put).Times(0);
+  ASSERT_TRUE(bridge_
+                  ->ApplyIncrementalSyncChanges(
+                      bridge_->CreateMetadataChangeList(), std::move(changes))
+                  .has_value());
+  RunPostedTasks();
+}
+
+// The processor calls ResolveConflict() when a remote change arrives for a
+// record this device has changed but not yet committed. kUseRemote drops that
+// commit and passes the record to ApplyIncrementalSyncChanges(), so it's
+// returned only when that would write the record.
+TEST_F(AIChatSyncBridgeTest, ResolveConflictKeepsTheNewerCopy) {
+  const std::string entry_uuid = AddTestConversation("conv", "Title");
+  const std::string entry_key = "e:" + entry_uuid;
+  const base::Time local_time = base::Time::Now();
+  const base::Time older = local_time - base::Minutes(1);
+  const base::Time newer = local_time + base::Minutes(1);
+  auto untimed = mojom::Conversation::New();
+  untimed->uuid = "untimed-conv";
+  ASSERT_TRUE(
+      db_->ApplyRemoteConversationMetadata(std::move(untimed), base::Time()));
+  CreateBridge();
+  auto conversation = [](base::Time time) {
+    return WithModifiedTime(MakeRemoteConversation("conv", "Remote"), time);
+  };
+  auto entry = [&](base::Time time) {
+    return WithModifiedTime(MakeRemoteEntry("conv", entry_uuid, "Remote"),
+                            time);
+  };
+
+  EXPECT_EQ(bridge_->ResolveConflict("c:conv", conversation(older)),
+            syncer::ConflictResolution::kUseLocal);
+  EXPECT_EQ(bridge_->ResolveConflict("c:conv", conversation(local_time)),
+            syncer::ConflictResolution::kUseLocal);
+  EXPECT_EQ(bridge_->ResolveConflict("c:conv", conversation(base::Time())),
+            syncer::ConflictResolution::kUseLocal);
+  EXPECT_EQ(bridge_->ResolveConflict("c:conv", conversation(newer)),
+            syncer::ConflictResolution::kUseRemote);
+
+  EXPECT_EQ(bridge_->ResolveConflict(entry_key, entry(older)),
+            syncer::ConflictResolution::kUseLocal);
+  EXPECT_EQ(bridge_->ResolveConflict(entry_key, entry(local_time)),
+            syncer::ConflictResolution::kUseLocal);
+  EXPECT_EQ(bridge_->ResolveConflict(entry_key, entry(base::Time())),
+            syncer::ConflictResolution::kUseLocal);
+  EXPECT_EQ(bridge_->ResolveConflict(entry_key, entry(newer)),
+            syncer::ConflictResolution::kUseRemote);
+
+  // Two untimed copies are the same version.
+  EXPECT_EQ(
+      bridge_->ResolveConflict(
+          "c:untimed-conv", MakeRemoteConversation("untimed-conv", "Remote")),
+      syncer::ConflictResolution::kUseLocal);
+  // A remote delete carries no time, and loses to the local change.
+  EXPECT_EQ(bridge_->ResolveConflict("c:conv", syncer::EntityData()),
+            syncer::ConflictResolution::kUseLocal);
+  // With no local copy, the remote one is applied.
+  EXPECT_EQ(bridge_->ResolveConflict("c:other",
+                                     MakeRemoteConversation("other", "Remote")),
+            syncer::ConflictResolution::kUseRemote);
+}
+
+// ResolveConflict() can't report a failed read of the local time, so it
+// passes the record on to ApplyIncrementalSyncChanges(), which reads again. The
+// remote copy is older, so a successful read would have kept the local one.
+TEST_F(AIChatSyncBridgeTest,
+       ResolveConflictUsesRemoteWhenLocalTimeCannotBeRead) {
+  CreateBridgeWithUnreadableTimes();
+  AddTestConversation("conv", "Title");
+
+  EXPECT_EQ(
+      bridge_->ResolveConflict(
+          "c:conv", WithModifiedTime(MakeRemoteConversation("conv", "Remote"),
+                                     base::Time::Now() - base::Minutes(1))),
+      syncer::ConflictResolution::kUseRemote);
+}
+
+// The local copy's time decides whether a record is written over it, so a
+// failed read of that time fails the batch rather than writing.
+TEST_F(AIChatSyncBridgeTest,
+       ApplyIncrementalSyncChangesFailsWhenLocalTimeCannotBeRead) {
+  CreateBridgeWithUnreadableTimes();
+  AddTestConversation("conv", "Title");
+  syncer::EntityChangeList changes;
+  changes.push_back(syncer::EntityChange::CreateUpdate(
+      "c:conv", WithModifiedTime(MakeRemoteConversation("conv", "Remote"),
+                                 base::Time::Now() + base::Minutes(1))));
+
+  auto error = bridge_->ApplyIncrementalSyncChanges(
+      bridge_->CreateMetadataChangeList(), std::move(changes));
+  ASSERT_TRUE(error.has_value());
+  EXPECT_EQ(error->type(),
+            syncer::ModelError::Type::kAIChatFailedToApplyRemoteChange);
+  EXPECT_EQ(GetConversationTitle("conv"), "Title");
+  EXPECT_EQ(remote_changes_applied_count_, 0);
+}
+
+TEST_F(AIChatSyncBridgeTest, MergeFullSyncDataFailsWhenLocalTimeCannotBeRead) {
+  CreateBridgeWithUnreadableTimes();
+  const std::string entry_uuid = AddTestConversation("conv", "Title");
+  syncer::EntityChangeList changes;
+  changes.push_back(syncer::EntityChange::CreateAdd(
+      "e:" + entry_uuid,
+      WithModifiedTime(MakeRemoteEntry("conv", entry_uuid, "From remote"),
+                       base::Time::Now() + base::Minutes(1))));
+
+  auto error = bridge_->MergeFullSyncData(bridge_->CreateMetadataChangeList(),
+                                          std::move(changes));
+  ASSERT_TRUE(error.has_value());
+  EXPECT_EQ(error->type(),
+            syncer::ModelError::Type::kAIChatFailedToApplyRemoteChange);
+  auto archive = db_->GetConversationData("conv");
+  ASSERT_TRUE(archive);
+  ASSERT_EQ(archive->entries.size(), 1u);
+  EXPECT_EQ(archive->entries[0]->text, "Hello");
+  EXPECT_EQ(remote_changes_applied_count_, 0);
+}
+
+// An entry can arrive before its conversation's metadata record, in the same
+// batch or a separate one, and is then held in a hidden stub conversation. A
+// stub counts as no local copy, so the metadata record fills it in whatever
+// time the record carries, including none.
+TEST_F(AIChatSyncBridgeTest, MetadataRecordFillsInStubWhateverItsTime) {
+  CreateBridge();
+  const base::Time remote_time = base::Time::Now() - base::Hours(1);
+
+  syncer::EntityChangeList same_batch;
+  same_batch.push_back(syncer::EntityChange::CreateAdd(
+      "e:entry-a",
+      WithModifiedTime(MakeRemoteEntry("conv-a", "entry-a", "Hello"),
+                       remote_time)));
+  same_batch.push_back(syncer::EntityChange::CreateAdd(
+      "c:conv-a", WithModifiedTime(MakeRemoteConversation("conv-a", "Title A"),
+                                   remote_time)));
+  ASSERT_FALSE(bridge_
+                   ->MergeFullSyncData(bridge_->CreateMetadataChangeList(),
+                                       std::move(same_batch))
+                   .has_value());
+
+  for (const std::string suffix : {"b", "c"}) {
+    // The records for conversation c carry no time.
+    const base::Time time = suffix == "b" ? remote_time : base::Time();
+    syncer::EntityChangeList entry_batch;
+    entry_batch.push_back(syncer::EntityChange::CreateAdd(
+        "e:entry-" + suffix,
+        WithModifiedTime(
+            MakeRemoteEntry("conv-" + suffix, "entry-" + suffix, "Hello"),
+            time)));
+    ASSERT_FALSE(
+        bridge_
+            ->ApplyIncrementalSyncChanges(bridge_->CreateMetadataChangeList(),
+                                          std::move(entry_batch))
+            .has_value());
+    syncer::EntityChangeList metadata_batch;
+    metadata_batch.push_back(syncer::EntityChange::CreateAdd(
+        "c:conv-" + suffix,
+        WithModifiedTime(
+            MakeRemoteConversation("conv-" + suffix, "Title " + suffix),
+            time)));
+    ASSERT_FALSE(
+        bridge_
+            ->ApplyIncrementalSyncChanges(bridge_->CreateMetadataChangeList(),
+                                          std::move(metadata_batch))
+            .has_value());
+  }
+
+  EXPECT_EQ(GetConversationTitle("conv-a"), "Title A");
+  EXPECT_EQ(GetConversationTitle("conv-b"), "Title b");
+  EXPECT_EQ(GetConversationTitle("conv-c"), "Title c");
+  EXPECT_THAT(db_->GetConversationModifiedTime("conv-a"),
+              IsModifiedAt(remote_time));
+  EXPECT_THAT(db_->GetConversationModifiedTime("conv-b"),
+              IsModifiedAt(remote_time));
+  EXPECT_THAT(db_->GetConversationModifiedTime("conv-c"),
+              IsModifiedAt(base::Time()));
 }
 
 }  // namespace

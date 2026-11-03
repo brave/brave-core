@@ -18,7 +18,9 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
+#include "base/time/time.h"
 #include "components/sync/model/data_type_sync_bridge.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 namespace sync_pb {
@@ -94,6 +96,10 @@ class AIChatSyncBridge : public syncer::DataTypeSyncBridge {
   std::string GetStorageKey(
       const syncer::EntityData& entity_data) const override;
   bool IsEntityDataValid(const syncer::EntityData& entity_data) const override;
+  // Keeps whichever copy changed last, as ApplyIncrementalSyncChanges() does.
+  syncer::ConflictResolution ResolveConflict(
+      const std::string& storage_key,
+      const syncer::EntityData& remote_data) const override;
   sync_pb::EntitySpecifics TrimAllSupportedFieldsFromRemoteSpecifics(
       const sync_pb::EntitySpecifics& entity_specifics) const override;
   void ApplyDisableSyncChanges(std::unique_ptr<syncer::MetadataChangeList>
@@ -120,6 +126,10 @@ class AIChatSyncBridge : public syncer::DataTypeSyncBridge {
   }
 
  private:
+  // The records whose local copy ApplyRemoteChanges() kept because it's newer
+  // than the remote one: each storage key, with the local copy's modified time.
+  using KeptLocalCopies = absl::flat_hash_map<std::string, base::Time>;
+
   // Forwards a sync model error to the change processor. Bound as a WeakPtr
   // callback for the metadata store's error reporting.
   void ReportError(const syncer::ModelError& error);
@@ -131,13 +141,27 @@ class AIChatSyncBridge : public syncer::DataTypeSyncBridge {
       base::FunctionRef<void(std::string, std::unique_ptr<syncer::EntityData>)>
           emit);
 
-  // Emits a Put for the conversation metadata of |uuid|. No-op for temporary
-  // or unknown conversations.
-  void PutConversationMetadata(const std::string& uuid);
+  // Puts each of |kept_local_copies| still stored with the time it was kept
+  // with, so the server catches up. Posted by ApplyIncrementalSyncChanges() to
+  // run once it has returned.
+  void PutKeptLocalCopies(KeptLocalCopies kept_local_copies);
+
+  // Emits a Put for the conversation metadata of |uuid|, sending
+  // |modified_time| and recording its sync metadata in |metadata_change_list|.
+  // No-op for temporary or unknown conversations. Requires a database.
+  void PutConversationMetadata(
+      const std::string& uuid,
+      base::Time modified_time,
+      syncer::MetadataChangeList& metadata_change_list);
   // Emits a Put for the single entry |entry_uuid| belonging to
-  // |conversation_uuid|. No-op when the conversation is temporary or unknown.
+  // |conversation_uuid|, sending |modified_time| and recording its sync
+  // metadata in |metadata_change_list|. No-op when the conversation is
+  // temporary or unknown, or the entry can't fit the per-record size limit.
+  // Requires a database.
   void PutEntry(const std::string& conversation_uuid,
-                const std::string& entry_uuid);
+                const std::string& entry_uuid,
+                base::Time modified_time,
+                syncer::MetadataChangeList& metadata_change_list);
 
   // Returns a change list that writes straight to the database's sync metadata
   // table. Requires a database.
@@ -154,27 +178,38 @@ class AIChatSyncBridge : public syncer::DataTypeSyncBridge {
       std::unique_ptr<syncer::MetadataChangeList> metadata_change_list);
 
   // Writes |changes|, a batch from the server, to the database, and runs
-  // |on_remote_changes_applied_| for the conversations it touched. Returns
-  // false when a record fails to write. The batch's metadata changes are then
-  // dropped, so it downloads again on the next start, and local updates to the
-  // records from the failed one on are skipped for the rest of the session.
+  // |on_remote_changes_applied_| for the conversations it touched. Adds the
+  // records whose local copy it kept to |kept_local_copies|, for the caller to
+  // send. Returns false when a record fails to apply. The batch's metadata
+  // changes are then dropped, so it downloads again on the next start, and
+  // local updates to the records from the failed one on are skipped for the
+  // rest of the session.
   [[nodiscard]] bool ApplyRemoteChanges(
       const syncer::EntityChangeList& changes,
-      syncer::MetadataChangeList& metadata_change_list);
+      syncer::MetadataChangeList& metadata_change_list,
+      KeptLocalCopies& kept_local_copies);
 
   // Whether a local update to |storage_key| must not reach the processor,
   // because a batch failed; see |storage_keys_skipping_local_puts_|.
   bool ShouldSkipLocalPut(const std::string& storage_key) const;
 
-  // Writes |specifics|, an added or updated record from the server, to the
-  // database, and inserts the conversation it wrote to into
-  // |affected_conversation_uuids|. A record this device can't store because of
-  // its own content (it doesn't decode, for example it comes from a newer
-  // client, or its associated content would collide) is skipped: retrying it
-  // would fail the same way every time. Returns false only when the database
-  // fails to store a good record.
+  // Handles |specifics|, an added or updated record from the server, by
+  // keeping whichever copy changed last, by the modified time each carries:
+  // - When |specifics| is newer, or there is no local copy (a stub
+  //   conversation counts as none), it's written to the database, and the
+  //   conversation it wrote to is inserted into |affected_conversation_uuids|.
+  // - When the local copy is newer, it's kept and added to
+  //   |kept_local_copies|.
+  // - When both have the same time, or neither has one, they're the same
+  //   version, and nothing is written.
+  // A record this device can't store because of its own content (it doesn't
+  // decode, for example it comes from a newer client, or its associated
+  // content would collide) is skipped: retrying it would fail the same way
+  // every time. Returns false when the local copy's time can't be read, or the
+  // database fails to store a good record.
   [[nodiscard]] bool ApplyRemoteRecord(
       const sync_pb::AIChatConversationSpecifics& specifics,
+      KeptLocalCopies& kept_local_copies,
       base::flat_set<std::string>& affected_conversation_uuids);
 
   // Deletes the record |storage_key| names, and inserts its conversation into
@@ -205,14 +240,16 @@ class AIChatSyncBridge : public syncer::DataTypeSyncBridge {
   // calling the bridge, and keeps them after the failure. A local update to
   // one of those records would save that version with its own metadata, so the
   // next start would take the remote change as already received and drop it.
-  // Local updates to them are therefore skipped for the rest of the session,
-  // and the next start applies the remote change over them. A local delete
-  // still goes through: saving the tombstone at the batch's version is right,
-  // since the delete came after the remote change.
+  // Local updates to them are therefore skipped for the rest of the session.
+  // The next start downloads the remote change again and keeps the newer
+  // copy, so a skipped local update, made after the remote change, is kept and
+  // sent then. A local delete still goes through: saving the tombstone at the
+  // batch's version is right, since the delete came after the remote change.
   absl::flat_hash_set<std::string> storage_keys_skipping_local_puts_;
 
   // Set when a first-sync merge fails, to skip every local update for the
-  // rest of the session. First sync runs again on the next start.
+  // rest of the session. First sync runs again on the next start, and sends a
+  // local update made since, which is newer than the server's copy.
   bool skip_all_local_puts_ = false;
 
   SEQUENCE_CHECKER(sequence_checker_);
