@@ -18,7 +18,7 @@ const Form = styled.form<{ isEmpty: boolean }>`
   box-sizing: border-box;
   padding: ${leo.spacing.m} ${leo.spacing.m} ${leo.spacing.m} ${leo.spacing.xl};
   background: var(--window-surface);
-  border-radius: ${leo.radius.xl};
+  border-radius: ${leo.radius.full};
   cursor: text;
 
   /* The input drops its own outline, so the whole field carries the ring. */
