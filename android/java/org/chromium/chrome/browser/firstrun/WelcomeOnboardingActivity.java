@@ -5,6 +5,7 @@
 package org.chromium.chrome.browser.firstrun;
 
 import static org.chromium.build.NullUtil.assumeNonNull;
+import static org.chromium.chrome.browser.day_zero.DayZeroHelper.DAY_ZERO_VARIANT_X;
 import static org.chromium.chrome.browser.day_zero.DayZeroHelper.DAY_ZERO_VARIANT_Y;
 import static org.chromium.chrome.browser.day_zero.DayZeroHelper.DAY_ZERO_VARIANT_Z;
 import static org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser;
@@ -380,7 +381,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
     private String getDayZeroVariant() {
         final String variant = DayZeroHelper.getDayZeroVariant();
         // Filter out day zero variants different from X, Y, and Z.
-        if (DayZeroHelper.DAY_ZERO_VARIANT_X.equals(variant)
+        if (DAY_ZERO_VARIANT_X.equals(variant)
                 || DAY_ZERO_VARIANT_Y.equals(variant)
                 || DAY_ZERO_VARIANT_Z.equals(variant)) {
             return variant;
