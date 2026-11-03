@@ -338,6 +338,7 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
   ///   - initialText: The text to seed the input field with (the current URL or search query).
   ///   - pasted: Whether the `initialText` was pasted (avoids highlighting the whole entry).
   ///   - search: Whether `initialText` should be treated as a search query.
+  @MainActor
   func presentSearchInput(initialText: String?, pasted: Bool, search: Bool) {
     if let searchContainer {
       // Already editing - just seed the existing input (e.g. from a QR scan) and refocus.
@@ -347,10 +348,15 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
     }
 
     let isPrivate = tabManager.selectedTab?.isPrivate ?? false
+    let tabProfile =
+      tabManager.selectedTab?.profile
+      ?? (isPrivate ? profileController.profile.offTheRecordProfile : profileController.profile)
     let container = SearchContainerViewController(
       tabManager: tabManager,
       bookmarkManager: bookmarkManager,
       historyAPI: profileController.historyAPI,
+      autocompleteClassifier: AutocompleteClassifierFactory.get(profile: tabProfile),
+      urlSanitizerService: URLSanitizerServiceFactory.get(profile: tabProfile),
       searchEngines: profile.searchEngines,
       tileSource: TopSitesTileSource(
         mostVisitedSites: privateBrowsingManager.isPrivateBrowsing ? nil : mostVisitedSites,

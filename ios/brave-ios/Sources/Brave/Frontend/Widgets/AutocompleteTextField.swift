@@ -40,6 +40,8 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
   private var autocompleteTextLabel: UILabel?
   private var hideCursor: Bool = false
   private let privateBrowsingManager: PrivateBrowsingManager
+  private let autocompleteClassifier: (any AutocompleteClassifier)?
+  private let urlSanitizerService: (any URLSanitizerService)?
 
   var isSelectionActive: Bool {
     return autocompleteTextLabel != nil
@@ -83,9 +85,17 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
     }
   }
 
-  init(privateBrowsingManager: PrivateBrowsingManager) {
+  init(
+    privateBrowsingManager: PrivateBrowsingManager,
+    autocompleteClassifier: (any AutocompleteClassifier)?,
+    urlSanitizerService: (any URLSanitizerService)?
+  ) {
     self.privateBrowsingManager = privateBrowsingManager
+    self.autocompleteClassifier = autocompleteClassifier
+    self.urlSanitizerService = urlSanitizerService
+
     super.init(frame: .zero)
+
     self.semanticContentAttribute = .forceLeftToRight
     self.textAlignment = .left
 
@@ -341,13 +351,17 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
     else {
       return nil
     }
-    if let match = LegacyAutocompleteClassifier.classify(text),
+    if let match = autocompleteClassifier?.classify(
+      text,
+      inKeywordMode: false,
+      allowExactKeywordMatch: false,
+      pageClassification: .other
+    )?.match,
       match.type != .searchWhatYouTyped,
-      let service = URLSanitizerServiceFactory.get(
-        privateMode: privateBrowsingManager.isPrivateBrowsing
-      )
+      let urlSanitizerService,
+      let destinationURL = match.destinationURL
     {
-      let cleanedURL = service.sanitize(url: match.destinationURL) ?? match.destinationURL
+      let cleanedURL = urlSanitizerService.sanitize(url: destinationURL) ?? destinationURL
       let copyCleanLinkAction = UIAction(
         title: Strings.copyCleanLink,
         image: UIImage(braveSystemNamed: "leo.copy.clean"),
