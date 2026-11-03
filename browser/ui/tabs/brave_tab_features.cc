@@ -55,6 +55,10 @@
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+#include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
+#endif
+
 #if BUILDFLAG(ENABLE_WIDEVINE)
 #include "brave/browser/widevine/brave_drm_tab_helper.h"
 #endif
@@ -205,13 +209,14 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+  wayback_machine_tab_helper_ = BraveWaybackMachineTabHelper::MaybeCreate(tab);
   if (page_action_controller()->ActionExists(kActionShowWaybackMachine)) {
     wayback_machine_page_action_controller_ =
         std::make_unique<page_actions::WaybackMachinePageActionController>(
             tab, *page_action_controller());
     wayback_machine_page_action_controller_->Init();
   }
-#endif
+#endif  // BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   if (page_action_controller()->ActionExists(kActionShowPlaylistPageAction)) {
