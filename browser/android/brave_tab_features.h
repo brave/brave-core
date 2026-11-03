@@ -18,6 +18,10 @@ class TabDataWebContentsObserver;
 class WebMcpInjector;
 }  // namespace ai_chat
 
+namespace brave_perf_predictor {
+class PerfPredictorTabHelper;
+}  // namespace brave_perf_predictor
+
 namespace content {
 class WebContents;
 }  // namespace content
@@ -67,6 +71,9 @@ class BraveTabFeatures : public TabFeatures_Chromium {
   // Serves the wallet providers of the tab's frames.
   std::unique_ptr<ContentsObservingTabFeature> brave_wallet_tab_helper_;
 #endif
+  // Estimates the bandwidth that Shields saves.
+  std::unique_ptr<brave_perf_predictor::PerfPredictorTabHelper>
+      perf_predictor_tab_helper_;
   // Enters fullscreen and Picture-in-Picture for YouTube videos.
   std::unique_ptr<ContentsObservingTabFeature> youtube_script_injector_;
 
