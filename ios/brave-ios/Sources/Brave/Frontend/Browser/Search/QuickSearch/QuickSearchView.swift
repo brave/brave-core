@@ -8,9 +8,8 @@ import SwiftUI
 
 struct QuickSearchView: View {
   var isAiChatAvailable: Bool
-  var items: [OpenSearchEngine]
-  var onAiChat: () -> Void
-  var onSelection: (OpenSearchEngine) -> Void
+  var items: [QuickSearchItem]
+  var onSelection: (QuickSearchItem) -> Void
   var onOpenMore: () -> Void
 
   @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -21,46 +20,48 @@ struct QuickSearchView: View {
     horizontalSizeClass == .regular ? 16 : 0
   }
 
-  var body: some View {
-    HStack(spacing: 0) {
-      if isAiChatAvailable {
-        Button {
-          onAiChat()
-        } label: {
-          Label(
-            String(
-              format: Strings.searchEngineFormatText,
-              Strings.quickSearchAskLeoAccessibility
-            ),
-            braveSystemImage: "leo.product.brave-leo"
-          )
-          .labelStyle(.iconOnly)
+  @ViewBuilder
+  private func quickSearchButton(_ item: QuickSearchItem) -> some View {
+    switch item.id {
+    case .aiChat:
+      Button {
+        onSelection(item)
+      } label: {
+        item.icon
           .font(.system(size: 20))
           .foregroundStyle(.white)
           .frame(width: 28.0, height: 28.0)
           .background(LinearGradient(braveSystemName: .iconsActive), in: .rect(cornerRadius: 8))
           .padding(8)
           .contentShape(.rect)
-        }
-        .padding(.trailing, 8)
       }
+      .accessibilityLabel(item.accessibilityTitle)
+    case .engine, .customEngine, .braveVertical:
+      Button {
+        onSelection(item)
+      } label: {
+        item.icon
+          .resizable()
+          .scaledToFit()
+          .frame(width: 28.0, height: 28.0)
+          .clipShape(.rect(cornerRadius: 8))
+          .padding(8)
+          .contentShape(.rect)
+      }
+      .accessibilityLabel(item.accessibilityTitle)
+    }
+  }
+
+  var body: some View {
+    HStack(spacing: 0) {
+      if isAiChatAvailable {
+        quickSearchButton(.init(source: .aiChat))
+      }
+
       ScrollView(.horizontal, showsIndicators: false) {
         HStack(spacing: engineSpacing) {
-          ForEach(items, id: \.shortName) { item in
-            Button {
-              onSelection(item)
-            } label: {
-              Image(uiImage: item.image)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 28.0, height: 28.0)
-                .clipShape(.rect(cornerRadius: 8))
-                .padding(8)
-                .contentShape(.rect)
-            }
-            .accessibilityLabel(
-              String(format: Strings.searchEngineFormatText, item.shortName)
-            )
+          ForEach(items) { item in
+            quickSearchButton(item)
           }
         }
       }
@@ -79,7 +80,9 @@ struct QuickSearchView: View {
           .frame(width: 48)
         }
       }
+
       Spacer()
+
       Button {
         onOpenMore()
       } label: {

@@ -49,38 +49,37 @@ class SearchSuggestionDataSource {
 
   let searchEngines: SearchEngines?
 
-  var quickSearchEngines: [OpenSearchEngine] {
+  private var defaultEngine: OpenSearchEngine? {
+    searchEngines?.defaultEngine(forType: isPrivate ? .privateMode : .standard)
+  }
+
+  var quickSearchItems: [QuickSearchItem] {
     guard let searchEngines else { return [] }
-    var quickSearchEngines = searchEngines.quickSearchEngines
-    let searchEngineType: DefaultEngineType = isPrivate ? .privateMode : .standard
-    if let defaultEngine = searchEngines.defaultEngine(forType: searchEngineType),
-      !quickSearchEngines.contains(where: { $0.engineID == defaultEngine.engineID })
-    {
-      quickSearchEngines.insert(defaultEngine, at: 0)
+    var items = searchEngines.quickSearchEngines.map {
+      QuickSearchItem(source: .engine($0))
     }
-    return quickSearchEngines
+    if let defaultEngine {
+      let defaultID = QuickSearchItemID(engine: defaultEngine)
+      guard !items.contains(where: { $0.id == defaultID }) else { return items }
+      items.insert(QuickSearchItem(source: .engine(defaultEngine)), at: 0)
+    }
+    return items
   }
 
   // If the user only has a single quick search engine, it is also their default one.
   // In that case, we count it as if there are no quick suggestions to show
   // Unless Default Search Engine is different than Quick Search Engine
   var hasQuickSearchEngines: Bool {
-    let isDefaultEngineQuickEngine =
-      searchEngines?.defaultEngine(forType: isPrivate ? .privateMode : .standard)?
-      .engineID
-      == quickSearchEngines.first?.engineID
-
-    if quickSearchEngines.count == 1 {
-      return !isDefaultEngineQuickEngine
+    let items = quickSearchItems
+    if items.count == 1 {
+      return items.first?.id != defaultEngine.map(QuickSearchItemID.init(engine:))
     }
-
-    return quickSearchEngines.count > 1
+    return items.count > 1
   }
 
   var braveSearchPromotionAvailable: Bool {
     guard Preferences.Review.launchCount.value > 1,
-      searchEngines?.defaultEngine(forType: isPrivate ? .privateMode : .standard)?
-        .shortName != OpenSearchEngine.EngineNames.brave,
+      defaultEngine?.shortName != OpenSearchEngine.EngineNames.brave,
       let braveSearchPromotionLaunchDate = Preferences.BraveSearch.braveSearchPromotionLaunchDate
         .value,
       Preferences.BraveSearch.braveSearchPromotionCompletionState.value
