@@ -12,9 +12,8 @@ substitutions:
       isLinkNavigationToNewWindowSupported(Set<Integer>) overload added by
       c934e7cc992b7.
 
-      Only the static methods are rewritten here. The instance ones,
-      isLinkNavigationToOtherWindowSupported() and isMoveToOtherWindowSupported(),
-      are gated by BraveMultiWindowUtils overrides instead.
+      isMoveToOtherWindowSupported() is still gated by a BraveMultiWindowUtils
+      override instead.
     regex:
       re_pattern: |-
         (public static boolean isLinkNavigationToNewWindowSupported\(\) \{)
@@ -31,3 +30,25 @@ substitutions:
       replace: |-
         \1
                 if (!BraveMultiWindowUtils.shouldEnableMultiWindows()) return false;
+
+  - description: |-
+      Gate link navigation to another window on Brave's multi-window preference,
+      keeping the upstream answer reachable.
+
+      Replaces the BraveMultiWindowUtils override of this method. The gate cannot
+      go straight into the body, because shouldShowEnableWindow() needs the
+      ungated answer to decide whether to offer the preference at all: gating it
+      too would hide the Appearance row on SDK 29-31 non-Samsung whenever the
+      preference is off, leaving no way of turning multi-window back on. So the
+      guard goes into a wrapper and the upstream body is left untouched under a
+      second name.
+    regex:
+      re_pattern: |-
+        public boolean (isLinkNavigationToOtherWindowSupported)\(Activity activity\) \{
+      replace: |-
+        public boolean \g<1>(Activity activity) {
+                if (!BraveMultiWindowUtils.shouldEnableMultiWindows()) return false;
+                return \g<1>ChromiumImpl(activity);
+            }
+
+            public boolean \g<1>ChromiumImpl(Activity activity) {

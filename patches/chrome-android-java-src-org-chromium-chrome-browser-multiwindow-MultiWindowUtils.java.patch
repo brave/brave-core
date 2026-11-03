@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/multiwindow/MultiWindowUtils.java b/chrome/android/java/src/org/chromium/chrome/browser/multiwindow/MultiWindowUtils.java
-index 3519e4dfa5ad1cf8b1fcf8aa40717a16b75397bb..00246fb5d557c87057bdc13ed2debff07c03d225 100644
+index 3519e4dfa5ad1cf8b1fcf8aa40717a16b75397bb..ab4ec3353aacfa7aa0ec71b86ac8a8c54a053f1e 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/multiwindow/MultiWindowUtils.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/multiwindow/MultiWindowUtils.java
 @@ -263,6 +263,7 @@ public class MultiWindowUtils implements ActivityStateListener {
@@ -18,3 +18,15 @@ index 3519e4dfa5ad1cf8b1fcf8aa40717a16b75397bb..00246fb5d557c87057bdc13ed2debff0
          // Automotive is currently restricted to a single window.
          if (DeviceInfo.isAutomotive()) return false;
          if (!IncognitoUtils.shouldOpenIncognitoAsWindow()) return false;
+@@ -299,6 +301,11 @@ public class MultiWindowUtils implements ActivityStateListener {
+      * @param activity The current activity that is the source of the URL.
+      */
+     public boolean isLinkNavigationToOtherWindowSupported(Activity activity) {
++        if (!BraveMultiWindowUtils.shouldEnableMultiWindows()) return false;
++        return isLinkNavigationToOtherWindowSupportedChromiumImpl(activity);
++    }
++
++    public boolean isLinkNavigationToOtherWindowSupportedChromiumImpl(Activity activity) {
+         // Automotive is currently restricted to a single window.
+         if (DeviceInfo.isAutomotive()) return false;
+ 
