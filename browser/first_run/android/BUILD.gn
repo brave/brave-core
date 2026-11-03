@@ -32,6 +32,7 @@ android_resources("java_resources") {
     "java/res/drawable/ic_brave_brand.xml",
     "java/res/drawable/ic_brave_splash.xml",
     "java/res/drawable/ic_brave_splash_animated.xml",
+    "java/res/drawable/onboarding_appearance_customizer.xml",
     "java/res/drawable/onboarding_bottom_rounded_corners.xml",
     "java/res/drawable/onboarding_card_background.xml",
     "java/res/drawable/onboarding_illustration.xml",
