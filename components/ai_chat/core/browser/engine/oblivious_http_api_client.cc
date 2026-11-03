@@ -110,6 +110,7 @@ ObliviousHttpAPIClient::InnerClient::BindChunkReceiver() {
 
 void ObliviousHttpAPIClient::InnerClient::OnCompleted(
     network::mojom::ObliviousHttpCompletionResultPtr response) {
+  sse_parser_.Flush();
   switch (response->which()) {
     case network::mojom::ObliviousHttpCompletionResult::Tag::kNetError:
       pending_outer_response_code_ = response->get_net_error();
@@ -148,7 +149,12 @@ void ObliviousHttpAPIClient::InnerClient::OnBodyChunk(
 void ObliviousHttpAPIClient::InnerClient::OnSSEEvent(
     api_request_helper::ValueOrError result) {
   if (!chunk_callback_.is_null() && result.has_value()) {
+    // The callback may clear all queries, deleting `this`.
+    base::WeakPtr<InnerClient> weak_this = weak_ptr_factory_.GetWeakPtr();
     chunk_callback_.Run(std::move(result.value()));
+    if (!weak_this) {
+      return;
+    }
   }
 }
 

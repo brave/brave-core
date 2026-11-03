@@ -130,7 +130,7 @@ class ObliviousHttpAPIClientUnitTest : public testing::Test,
 
   void EmitChunk(const std::string& content) {
     EmitRawChunk(absl::StrFormat(
-        "data: {\"choices\":[{\"delta\":{\"content\":\"%s\"}}]}\n", content));
+        "data: {\"choices\":[{\"delta\":{\"content\":\"%s\"}}]}\n\n", content));
   }
 
   void CompleteWithInnerResponse(int response_code, std::string body) {
@@ -289,6 +289,23 @@ TEST_F(ObliviousHttpAPIClientUnitTest,
 }
 
 TEST_F(ObliviousHttpAPIClientUnitTest,
+       PerformRequest_Streaming_DeliversFinalEventWithoutBlankLine) {
+  PerformRequest(/*enable_data_received_callback=*/true);
+
+  EmitChunk("part1");
+  EmitRawChunk("data: {\"choices\":[{\"delta\":{\"content\":\"part2\"}}]}\n");
+
+  CompleteWithInnerResponse(net::HTTP_OK, "");
+  auto result = future_.Take();
+
+  ASSERT_EQ(2u, received_chunks_.size());
+  ASSERT_TRUE(received_chunks_[1].event->is_completion_event());
+  EXPECT_EQ("part2",
+            received_chunks_[1].event->get_completion_event()->completion);
+  ASSERT_TRUE(result.has_value());
+}
+
+TEST_F(ObliviousHttpAPIClientUnitTest,
        PerformRequest_Streaming_SkipsMalformedChunks) {
   PerformRequest(/*enable_data_received_callback=*/true);
 
@@ -380,14 +397,14 @@ TEST_F(ObliviousHttpAPIClientUnitTest,
       "\"id\":\"call_abc\","
       "\"function\":{\"name\":\"web_context_search\","
       "\"arguments\":\"{\\\"query\\\":\\\"brave browser\\\"}\"}"
-      "}]}}]}\n");
+      "}]}}]}\n\n");
 
   // Emit a nearai server tool result for the same tool call.
   EmitRawChunk(
       "data: {\"choices\":[{\"delta\":{\"nearai_tool_result\":{"
       "\"tool_call_id\":\"call_abc\","
       "\"output\":\"Brave is a privacy-focused browser.\""
-      "}}}]}\n");
+      "}}}]}\n\n");
 
   CompleteWithInnerResponse(net::HTTP_OK, "");
   ASSERT_TRUE(future_.Wait());

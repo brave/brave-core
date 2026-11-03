@@ -10,12 +10,14 @@
 #include <optional>
 #include <string>
 #include <string_view>
+#include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/time/time.h"
 #include "base/types/expected.h"
 #include "base/values.h"
@@ -23,7 +25,13 @@
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/cpp/simple_url_loader_stream_consumer.h"
+#include "services/network/public/mojom/url_response_head.mojom-forward.h"
 #include "url/gurl.h"
+
+namespace net {
+class HttpResponseHeaders;
+struct RedirectInfo;
+}  // namespace net
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -71,7 +79,10 @@ class APIRequestResult {
   // `net::Error` code
   int error_code() const { return error_code_; }
   // Actual url requested. May differ from original request url in case of
-  // redirects happened.
+  // redirects happened. For a request aborted at a cross-origin redirect (see
+  // `APIRequestOptions::same_origin_redirects_only`), the url it was
+  // redirected to. Net also reports `net::ERR_UNSAFE_REDIRECT` for a redirect
+  // to a scheme it won't follow, leaving this the url that redirected.
   GURL final_url() const { return final_url_; }
 
  private:
@@ -87,8 +98,33 @@ class APIRequestResult {
 struct APIRequestOptions {
   bool auto_retry_on_network_change = false;
   bool enable_cache = false;
+  // When exceeded, the request is aborted and the result has error code
+  // `net::ERR_INSUFFICIENT_RESOURCES`. The result keeps the response's HTTP
+  // status, so check `error_code()` and not only `Is2XXResponseCode()`. For
+  // `RequestSSE()`, events received but whose JSON is still being parsed when
+  // the limit is crossed are not delivered. -1u means unbounded.
   size_t max_body_size = -1u;
   std::optional<base::TimeDelta> timeout;
+  // A redirect to another origin, which would also receive any
+  // `Authorization` header, aborts with `net::ERR_UNSAFE_REDIRECT`.
+  bool same_origin_redirects_only = false;
+};
+
+// What is known about a response once its headers arrive.
+struct ResponseStartedInfo {
+  ResponseStartedInfo();
+  ResponseStartedInfo(const ResponseStartedInfo&);
+  ResponseStartedInfo& operator=(const ResponseStartedInfo&);
+  ResponseStartedInfo(ResponseStartedInfo&&) noexcept;
+  ResponseStartedInfo& operator=(ResponseStartedInfo&&) noexcept;
+  ~ResponseStartedInfo();
+
+  GURL final_url;
+  // -1 if unknown.
+  int64_t content_length = -1;
+  std::string mime_type;
+  // Names are lowercase, as in `APIRequestResult::headers()`.
+  base::flat_map<std::string, std::string> headers;
 };
 
 using ValueOrError = base::expected<base::Value, std::string>;
@@ -103,8 +139,7 @@ class APIRequestHelper {
       base::RepeatingCallback<void(ValueOrError result)>;
   using ResultCallback = base::OnceCallback<void(APIRequestResult)>;
   using ResponseStartedCallback =
-      base::OnceCallback<void(const std::string& url,
-                              const int64_t content_length)>;
+      base::OnceCallback<void(const ResponseStartedInfo& info)>;
   using ResponseConversionCallback =
       base::OnceCallback<std::optional<std::string>(
           const std::string& raw_response)>;
@@ -161,6 +196,17 @@ class APIRequestHelper {
     // return).
     bool MaybeParseErrorBody();
 
+    // Rejects a redirect to another origin.
+    void OnRedirect(const GURL& url_before_redirect,
+                    const net::RedirectInfo& redirect_info,
+                    const network::mojom::URLResponseHead& response_head,
+                    std::vector<std::string>* removed_headers);
+
+    // Cancels the request and sends a failed result. Deletes `this`.
+    void Abort(int error_code,
+               const net::HttpResponseHeaders* headers,
+               GURL url);
+
     std::unique_ptr<network::SimpleURLLoader> url_loader_;
     raw_ptr<APIRequestHelper> api_request_helper_;
 
@@ -178,6 +224,15 @@ class APIRequestHelper {
     // Buffer for accumulating error response body chunks across OnDataReceived
     // calls. Parsed in OnComplete via MaybeParseErrorBody.
     std::string error_body_buffer_;
+
+    // Limit on streamed body bytes; -1u means unbounded.
+    size_t max_body_size_ = -1u;
+    size_t body_bytes_received_ = 0;
+
+    // Captured at response start for results of requests aborted before
+    // completion, since `url_loader_` only exposes them once finished.
+    GURL final_url_;
+    scoped_refptr<net::HttpResponseHeaders> response_headers_;
 
     const scoped_refptr<base::SequencedTaskRunner> task_runner_;
 

@@ -13,8 +13,12 @@
 #include <vector>
 
 #include "base/byte_size.h"
+#include "base/containers/flat_map.h"
 #include "base/containers/span.h"
+#include "base/functional/callback_helpers.h"
 #include "base/run_loop.h"
+#include "base/strings/strcat.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool/thread_pool_instance.h"
 #include "base/test/bind.h"
@@ -24,12 +28,14 @@
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "mojo/public/cpp/system/data_pipe.h"
+#include "mojo/public/cpp/system/data_pipe_utils.h"
 #include "net/base/load_flags.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_response_headers.h"
 #include "net/http/http_status_code.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
+#include "net/url_request/redirect_info.h"
 #include "services/network/public/cpp/url_loader_completion_status.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
@@ -60,6 +66,27 @@ std::optional<std::string> ConversionCallback(
     const std::string& raw_response) {
   EXPECT_EQ(expected_raw_response, raw_response);
   return converted_response;
+}
+
+std::string StatusLine(net::HttpStatusCode status) {
+  return base::StrCat({"HTTP/1.1 ", base::NumberToString(status), " ",
+                       net::GetHttpReasonPhrase(status)});
+}
+
+network::mojom::URLResponseHeadPtr CreateResponseHead(
+    const std::string& mime_type,
+    const base::flat_map<std::string, std::string>& headers) {
+  auto head = network::mojom::URLResponseHead::New();
+  head->headers = base::MakeRefCounted<net::HttpResponseHeaders>("");
+  head->headers->ReplaceStatusLine(StatusLine(net::HTTP_OK));
+  if (!mime_type.empty()) {
+    head->headers->SetHeader("Content-Type", mime_type);
+    head->mime_type = mime_type;
+  }
+  for (const auto& [name, value] : headers) {
+    head->headers->SetHeader(name, value);
+  }
+  return head;
 }
 }  // namespace
 
@@ -182,6 +209,42 @@ class ApiRequestHelperUnitTest : public testing::Test {
                   ->at(index)
                   .client.is_connected();
     }));
+  }
+
+  void AddResponse(
+      const GURL& url,
+      std::string_view body,
+      const std::string& mime_type,
+      const base::flat_map<std::string, std::string>& headers = {}) {
+    url_loader_factory_.AddResponse(
+        url, CreateResponseHead(mime_type, headers), body,
+        network::URLLoaderCompletionStatus(net::OK));
+  }
+
+  // Serves `url` with a 307 to `target`, then `body` from `target`.
+  void AddRedirectedResponse(const GURL& url,
+                             const GURL& target,
+                             std::string_view body,
+                             const std::string& mime_type) {
+    net::RedirectInfo redirect_info;
+    redirect_info.status_code = net::HTTP_TEMPORARY_REDIRECT;
+    redirect_info.new_method = "POST";
+    redirect_info.new_url = target;
+    auto redirect_head = network::mojom::URLResponseHead::New();
+    redirect_head->headers = base::MakeRefCounted<net::HttpResponseHeaders>(
+        StatusLine(net::HTTP_TEMPORARY_REDIRECT));
+    redirect_head->headers->SetHeader("Location", target.spec());
+    network::TestURLLoaderFactory::Redirects redirects;
+    redirects.emplace_back(redirect_info, std::move(redirect_head));
+    url_loader_factory_.AddResponse(
+        url, CreateResponseHead(mime_type, {}), body,
+        network::URLLoaderCompletionStatus(net::OK), std::move(redirects));
+  }
+
+  APIRequestOptions SameOriginOnly() {
+    APIRequestOptions options;
+    options.same_origin_redirects_only = true;
+    return options;
   }
 
  protected:
@@ -571,6 +634,331 @@ TEST_F(ApiRequestHelperUnitTest, SSERetryDropsAbandonedAttemptEvents) {
   EXPECT_EQ(result_future.Take().error_code(), net::OK);
   ASSERT_EQ(events.size(), 1u);
   EXPECT_EQ(events[0], ParseJson(R"({"attempt":2})"));
+}
+
+TEST_F(ApiRequestHelperUnitTest, ResponseStartedCallbackReceivesMimeType) {
+  const GURL url("http://localhost/");
+  // An empty mime type means the response has no Content-Type.
+  for (const char* mime_type : {"text/event-stream", "application/json", ""}) {
+    SCOPED_TRACE(mime_type);
+    AddResponse(url, "{}", mime_type);
+
+    base::test::TestFuture<ResponseStartedInfo> started_future;
+    base::test::TestFuture<APIRequestResult> result_future;
+    api_request_helper_->RequestSSE(
+        "POST", url, "", "application/json", base::DoNothing(),
+        result_future.GetCallback(), {}, {},
+        started_future.GetCallback<const ResponseStartedInfo&>());
+    EXPECT_EQ(started_future.Get().final_url, url);
+    EXPECT_EQ(started_future.Get().mime_type, mime_type);
+    EXPECT_TRUE(result_future.Wait());
+  }
+}
+
+TEST_F(ApiRequestHelperUnitTest, ResponseStartedCallbackReceivesHeaders) {
+  const GURL url("http://localhost/");
+  // Streamed so that the response starts long before it completes.
+  base::test::TestFuture<ResponseStartedInfo> started_future;
+  base::test::TestFuture<APIRequestResult> result_future;
+  api_request_helper_->RequestSSE(
+      "POST", url, "", "application/json", base::DoNothing(),
+      result_future.GetCallback(), {}, {},
+      started_future.GetCallback<const ResponseStartedInfo&>());
+  ASSERT_EQ(url_loader_factory_.NumPending(), 1);
+  auto* pending_request = url_loader_factory_.GetPendingRequest(0);
+  mojo::ScopedDataPipeProducerHandle producer;
+  mojo::ScopedDataPipeConsumerHandle consumer;
+  ASSERT_EQ(mojo::CreateDataPipe(1024, producer, consumer), MOJO_RESULT_OK);
+  pending_request->client->OnReceiveResponse(
+      CreateResponseHead("text/event-stream", {{"X-Session-Id", "s-1"}}),
+      std::move(consumer), std::nullopt);
+
+  const ResponseStartedInfo& info = started_future.Get();
+  EXPECT_EQ(info.headers.at("x-session-id"), "s-1");
+  EXPECT_EQ(info.headers.at("content-type"), "text/event-stream");
+  EXPECT_FALSE(result_future.IsReady());
+}
+
+TEST_F(ApiRequestHelperUnitTest, SameOriginRedirectIsFollowed) {
+  const GURL url("https://api.example.com/v1");
+  const GURL target("https://api.example.com/v1/");
+  AddRedirectedResponse(url, target, R"({"a":1})", "application/json");
+  base::test::TestFuture<APIRequestResult> request_future;
+  api_request_helper_->Request("POST", url, "{}", "application/json",
+                               request_future.GetCallback(), {},
+                               SameOriginOnly());
+  APIRequestResult result = request_future.Take();
+  EXPECT_EQ(result.error_code(), net::OK);
+  EXPECT_EQ(result.final_url(), target);
+  EXPECT_EQ(result.value_body(), ParseJson(R"({"a":1})"));
+
+  AddRedirectedResponse(url, target, "data: {\"a\":1}\n\n",
+                        "text/event-stream");
+  std::vector<base::Value> events;
+  base::test::TestFuture<APIRequestResult> sse_future;
+  api_request_helper_->RequestSSE(
+      "POST", url, "{}", "application/json",
+      base::BindLambdaForTesting([&](ValueOrError value) {
+        ASSERT_TRUE(value.has_value());
+        events.push_back(std::move(*value));
+      }),
+      sse_future.GetCallback(), {}, SameOriginOnly());
+  result = sse_future.Take();
+  EXPECT_EQ(result.error_code(), net::OK);
+  EXPECT_EQ(result.final_url(), target);
+  ASSERT_EQ(events.size(), 1u);
+  EXPECT_EQ(events[0], ParseJson(R"({"a":1})"));
+}
+
+TEST_F(ApiRequestHelperUnitTest, CrossOriginRedirectAborts) {
+  const GURL url("https://api.example.com/v1");
+  for (const char* target_spec :
+       {"https://evil.example.com/v1", "http://api.example.com/v1",
+        "https://api.example.com:8443/v1"}) {
+    SCOPED_TRACE(target_spec);
+    const GURL target(target_spec);
+    AddRedirectedResponse(url, target, R"({"a":1})", "application/json");
+    base::test::TestFuture<APIRequestResult> request_future;
+    api_request_helper_->Request("POST", url, "{}", "application/json",
+                                 request_future.GetCallback(), {},
+                                 SameOriginOnly());
+    APIRequestResult result = request_future.Take();
+    EXPECT_EQ(result.error_code(), net::ERR_UNSAFE_REDIRECT);
+    EXPECT_EQ(result.response_code(), net::HTTP_TEMPORARY_REDIRECT);
+    EXPECT_EQ(result.final_url(), target);
+    EXPECT_TRUE(result.value_body().is_none());
+
+    AddRedirectedResponse(url, target, "data: {\"a\":1}\n\n",
+                          "text/event-stream");
+    base::test::TestFuture<APIRequestResult> sse_future;
+    api_request_helper_->RequestSSE(
+        "POST", url, "{}", "application/json",
+        base::BindRepeating([](ValueOrError) { ADD_FAILURE(); }),
+        sse_future.GetCallback(), {}, SameOriginOnly(),
+        base::BindOnce([](const ResponseStartedInfo&) { ADD_FAILURE(); }));
+    result = sse_future.Take();
+    EXPECT_EQ(result.error_code(), net::ERR_UNSAFE_REDIRECT);
+    EXPECT_EQ(result.final_url(), target);
+  }
+  // Nothing is delivered after the abort.
+  EXPECT_TRUE(base::test::RunUntil(
+      [&]() { return url_loader_factory_.NumPending() == 0; }));
+}
+
+TEST_F(ApiRequestHelperUnitTest, CrossOriginRedirectFollowedByDefault) {
+  const GURL url("https://api.example.com/v1");
+  const GURL target("https://other.example.com/v1");
+  AddRedirectedResponse(url, target, R"({"a":1})", "application/json");
+  base::test::TestFuture<APIRequestResult> future;
+  api_request_helper_->Request("POST", url, "{}", "application/json",
+                               future.GetCallback());
+  APIRequestResult result = future.Take();
+  EXPECT_EQ(result.error_code(), net::OK);
+  EXPECT_EQ(result.final_url(), target);
+}
+
+TEST_F(ApiRequestHelperUnitTest, SSEDeliversFinalEventWithoutBlankLine) {
+  const GURL url("http://localhost/");
+  AddResponse(url, "data: {\"a\":1}\n\ndata: {\"b\":2}\n", "text/event-stream");
+
+  std::vector<base::Value> events;
+  base::test::TestFuture<APIRequestResult> result_future;
+  api_request_helper_->RequestSSE(
+      "POST", url, "", "application/json",
+      base::BindLambdaForTesting([&](ValueOrError result) {
+        ASSERT_TRUE(result.has_value());
+        events.push_back(std::move(*result));
+      }),
+      result_future.GetCallback(), {}, {});
+  EXPECT_TRUE(result_future.Take().Is2XXResponseCode());
+
+  ASSERT_EQ(events.size(), 2u);
+  EXPECT_EQ(events[0], ParseJson(R"({"a":1})"));
+  EXPECT_EQ(events[1], ParseJson(R"({"b":2})"));
+}
+
+TEST_F(ApiRequestHelperUnitTest, SSEParsesOpenAIStyleStream) {
+  const GURL url("http://localhost/");
+  AddResponse(
+      url,
+      ": keepalive\r\n\r\n"
+      "data: {\"object\":\"chat.completion.chunk\",\"choices\":[{"
+      "\"delta\":{\"role\":\"assistant\",\"content\":\"Hel\"}}]}\r\n\r\n"
+      ": keepalive\r\n\r\n"
+      "data: {\"object\":\"chat.completion.chunk\",\"choices\":[{"
+      "\"delta\":{\"content\":\"lo\"},\"finish_reason\":\"stop\"}]}"
+      "\r\n\r\n"
+      "data: [DONE]\r\n\r\n",
+      "text/event-stream");
+
+  std::vector<std::string> contents;
+  base::test::TestFuture<APIRequestResult> result_future;
+  api_request_helper_->RequestSSE(
+      "POST", url, "", "application/json",
+      base::BindLambdaForTesting([&](ValueOrError result) {
+        ASSERT_TRUE(result.has_value());
+        const base::ListValue* choices = result->GetDict().FindList("choices");
+        ASSERT_TRUE(choices && !choices->empty());
+        const std::string* content =
+            (*choices)[0].GetDict().FindStringByDottedPath("delta.content");
+        ASSERT_TRUE(content);
+        contents.push_back(*content);
+      }),
+      result_future.GetCallback(), {}, {});
+  APIRequestResult result = result_future.Take();
+  EXPECT_EQ(result.error_code(), net::OK);
+  EXPECT_EQ(result.response_code(), net::HTTP_OK);
+  EXPECT_EQ(contents, std::vector<std::string>({"Hel", "lo"}));
+}
+
+TEST_F(ApiRequestHelperUnitTest, SSEResultHasResponseHeaders) {
+  const GURL url("http://localhost/");
+  AddResponse(url, "data: {\"a\":1}\n\n", "text/event-stream",
+              {{"X-Session-Id", "session-1"}});
+
+  base::test::TestFuture<APIRequestResult> result_future;
+  api_request_helper_->RequestSSE("POST", url, "", "application/json",
+                                  base::DoNothing(),
+                                  result_future.GetCallback(), {}, {});
+  APIRequestResult result = result_future.Take();
+  EXPECT_EQ(result.response_code(), net::HTTP_OK);
+  EXPECT_EQ(result.error_code(), net::OK);
+  ASSERT_TRUE(result.headers().contains("x-session-id"));
+  EXPECT_EQ(result.headers().at("x-session-id"), "session-1");
+}
+
+TEST_F(ApiRequestHelperUnitTest, SSEMaxBodySizeAbortsStream) {
+  const GURL url("http://localhost/");
+  const std::string first_event = "data: {\"a\":1}\n\n";
+  APIRequestOptions options;
+  options.max_body_size = first_event.size() + 1;
+
+  std::vector<base::Value> events;
+  base::test::TestFuture<APIRequestResult> result_future;
+  api_request_helper_->RequestSSE(
+      "POST", url, "", "application/json",
+      base::BindLambdaForTesting([&](ValueOrError result) {
+        ASSERT_TRUE(result.has_value());
+        events.push_back(std::move(*result));
+      }),
+      result_future.GetCallback(), {}, options);
+
+  // Respond via a data pipe so the body arrives in separate chunks.
+  ASSERT_EQ(url_loader_factory_.NumPending(), 1);
+  auto* pending_request = url_loader_factory_.GetPendingRequest(0);
+  mojo::ScopedDataPipeProducerHandle producer;
+  mojo::ScopedDataPipeConsumerHandle consumer;
+  ASSERT_EQ(mojo::CreateDataPipe(1024, producer, consumer), MOJO_RESULT_OK);
+  pending_request->client->OnReceiveResponse(
+      CreateResponseHead("text/event-stream", {}), std::move(consumer),
+      std::nullopt);
+
+  ASSERT_TRUE(mojo::BlockingCopyFromString(first_event, producer));
+  ASSERT_TRUE(base::test::RunUntil([&]() { return events.size() == 1u; }));
+  EXPECT_FALSE(result_future.IsReady());
+
+  // Crosses the limit, so the complete event in this chunk is not delivered.
+  ASSERT_TRUE(mojo::BlockingCopyFromString("data: {\"b\":2}\n\n", producer));
+  APIRequestResult result = result_future.Take();
+  EXPECT_EQ(result.error_code(), net::ERR_INSUFFICIENT_RESOURCES);
+  EXPECT_EQ(result.response_code(), net::HTTP_OK);
+  EXPECT_TRUE(result.value_body().is_none());
+
+  // The request is cancelled.
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !pending_request->client.is_connected(); }));
+
+  WaitForPendingParses();
+  EXPECT_EQ(events.size(), 1u);
+}
+
+TEST_F(ApiRequestHelperUnitTest, SSEMaxBodySizeAbortsErrorBody) {
+  const GURL url("http://localhost/");
+  const std::string body = R"({"error":{"type":1234,"message":"bad"}})";
+  SetInterceptor("POST", url, body, false, net::HTTP_BAD_REQUEST,
+                 "application/json");
+  APIRequestOptions options;
+  options.max_body_size = body.size() - 1;
+
+  base::test::TestFuture<APIRequestResult> result_future;
+  api_request_helper_->RequestSSE(
+      "POST", url, "", "application/json",
+      base::BindRepeating([](ValueOrError) { ADD_FAILURE(); }),
+      result_future.GetCallback(), {}, options);
+  APIRequestResult result = result_future.Take();
+  EXPECT_EQ(result.error_code(), net::ERR_INSUFFICIENT_RESOURCES);
+  EXPECT_EQ(result.response_code(), net::HTTP_BAD_REQUEST);
+  EXPECT_TRUE(result.value_body().is_none());
+}
+
+TEST_F(ApiRequestHelperUnitTest, NonSSEMaxBodySizeAbortsRequest) {
+  const GURL url("http://localhost/");
+  const std::string body = R"({"key":"value"})";
+  AddResponse(url, body, "application/json");
+  APIRequestOptions options;
+  options.max_body_size = body.size() - 1;
+
+  base::test::TestFuture<APIRequestResult> result_future;
+  api_request_helper_->RequestSSE(
+      "POST", url, "", "application/json",
+      base::BindRepeating([](ValueOrError) { ADD_FAILURE(); }),
+      result_future.GetCallback(), {}, options);
+  APIRequestResult result = result_future.Take();
+  EXPECT_EQ(result.error_code(), net::ERR_INSUFFICIENT_RESOURCES);
+  EXPECT_EQ(result.response_code(), net::HTTP_OK);
+}
+
+TEST_F(ApiRequestHelperUnitTest, MaxBodySizeAllowsBodyAtLimit) {
+  const GURL url("http://localhost/");
+  const std::string body = "data: {\"a\":1}\n\n";
+  for (const char* mime_type : {"text/event-stream", "application/json"}) {
+    SCOPED_TRACE(mime_type);
+    AddResponse(url, body, mime_type);
+    APIRequestOptions options;
+    options.max_body_size = body.size();
+
+    size_t data_count = 0;
+    base::test::TestFuture<APIRequestResult> result_future;
+    api_request_helper_->RequestSSE(
+        "POST", url, "", "application/json",
+        base::BindLambdaForTesting([&](ValueOrError result) {
+          EXPECT_TRUE(result.has_value());
+          ++data_count;
+        }),
+        result_future.GetCallback(), {}, options);
+    APIRequestResult result = result_future.Take();
+    EXPECT_EQ(result.error_code(), net::OK);
+    EXPECT_EQ(result.response_code(), net::HTTP_OK);
+    EXPECT_EQ(data_count, 1u);
+  }
+}
+
+// Nothing is delivered after a data callback destroys the helper. Using the
+// deleted handler after the callback is only reported under ASan.
+TEST_F(ApiRequestHelperUnitTest, DestroyHelperFromDataCallback) {
+  const GURL url("http://localhost/");
+  for (const char* mime_type : {"text/event-stream", "text/plain"}) {
+    SCOPED_TRACE(mime_type);
+    AddResponse(url, "data: {\"a\":1}\n\ndata: {\"b\":2}\n\n", mime_type);
+
+    auto helper = std::make_unique<APIRequestHelper>(
+        net::NetworkTrafficAnnotationTag(TRAFFIC_ANNOTATION_FOR_TESTS),
+        base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
+            &url_loader_factory_));
+    size_t data_count = 0;
+    helper->RequestSSE("POST", url, "", "application/json",
+                       base::BindLambdaForTesting([&](ValueOrError) {
+                         ++data_count;
+                         helper.reset();
+                       }),
+                       base::BindOnce([](APIRequestResult) { ADD_FAILURE(); }),
+                       {}, {});
+    ASSERT_TRUE(base::test::RunUntil([&]() { return data_count > 0; }));
+    // So that a second delivery would be seen.
+    WaitForPendingParses();
+    EXPECT_EQ(data_count, 1u);
+    EXPECT_FALSE(helper);
+  }
 }
 
 }  // namespace api_request_helper
