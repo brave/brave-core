@@ -64,7 +64,7 @@ private class BraveRewardsSettingsViewModel: ObservableObject {
   @MainActor
   func resetRewards() async {
     // Reset the rewards profile the same way desktop does: delete the rewards
-    // database and clear all rewards preferences.
+    // database, clear all rewards preferences and clear ads data.
     if let rewardsAPI = rewards.rewardsAPI {
       await withCheckedContinuation { continuation in
         rewardsAPI.completeReset { _ in
@@ -72,6 +72,7 @@ private class BraveRewardsSettingsViewModel: ObservableObject {
         }
       }
       isWalletInitialized = rewardsAPI.isInitialized
+      await rewards.clearAdsData()
     }
   }
 }
