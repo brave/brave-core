@@ -23,17 +23,20 @@ substitutions:
       Honour Brave's "show undo when tabs closed" preference.
 
       With the preference off there is no snackbar left to dismiss, so the
-      closures must be committed here or the tabs stay pending forever.
+      closures must be committed here or the tabs stay pending forever. The
+      entry is out of the queue and not tracked as shown, so the commits
+      cannot change its remaining tabs.
 
-      Anchored on the method signature alone, so upstream edits to the
-      preconditions below it cannot break this.
+      Anchored after the empty-entry early return, so an empty entry still
+      returns before any commit.
     regex:
       re_pattern: |-
-        (private void showUndoBar\(UndoClosureSnapshot snapshot\) \{\n)
+        (private void showUndoBar\(UndoBarEntry entry\) \{\n.*?\n        \}\n)
+      re_flags: [DOTALL]
       replace: |
         \1        if (!ChromeSharedPreferences.getInstance()
                         .readBoolean(BravePreferenceKeys.SHOW_UNDO_WHEN_TABS_CLOSED, true)) {
-                    for (int tabId : snapshot.tabIds()) {
+                    for (@TabId int tabId : entry.mRemainingTabIds) {
                         commitTabClosure(tabId);
                     }
                     return;
