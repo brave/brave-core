@@ -82,7 +82,7 @@ class TopSitesTileSource: NSObject {
       Logger.module.error("Favorites fetch error")
     }
 
-    Preferences.NewTabPage.topSitesModeV2.observe(from: self)
+    Preferences.NewTabPage.topSitesMode.observe(from: self)
     updateMostVisitedObservation()
     updateTiles()
   }
@@ -96,7 +96,7 @@ class TopSitesTileSource: NSObject {
   /// The chosen mode after private browsing rules are applied: private browsing shows nothing
   /// unless the user has chosen favorites.
   private var mode: TopSitesMode {
-    var mode = Preferences.NewTabPage.topSitesModeV2.value
+    var mode = Preferences.NewTabPage.topSitesMode.value
     if !FeatureList.kTopsitesEnabled.enabled, mode == .mostVisited {
       mode = .favourite
     }
@@ -157,7 +157,7 @@ extension TopSitesTileSource: MostVisitedSitesObserver {
 
 extension TopSitesTileSource: PreferencesObserver {
   func preferencesDidChange(for key: String) {
-    guard key == Preferences.NewTabPage.topSitesModeV2.key else { return }
+    guard key == Preferences.NewTabPage.topSitesMode.key else { return }
     updateMostVisitedObservation()
     updateTiles()
   }

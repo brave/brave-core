@@ -33,12 +33,12 @@ class MigrationTests: XCTestCase {
   }
 }
 
-/// The legacy `newtabpage.topsites-mode` raw values, as written by each release.
+/// The raw values stored under `newtabpage.topsites-mode`, as written by each release.
 ///
 /// 1.99.x inserted `none` at 0 and shifted the rest, so the same integer means different things
 /// depending on which release stored it. Spelled out here so that the expectations below describe
 /// what a device actually has on disk.
-private enum LegacyRawValue {
+private enum DeprecatedRawValue {
   /// Seeded at launch by 1.97.x, and written by 1.98.x for a mode neither could render.
   static let mostVisitedUpTo198 = 0
   static let favouriteUpTo198 = 1
@@ -53,8 +53,7 @@ private enum LegacyRawValue {
 class TopSitesModeMigrationTests: XCTestCase {
 
   private var container: UserDefaults { Preferences.defaultContainer }
-  private var key: String { Preferences.NewTabPage.topSitesModeV2.key }
-  private var legacyKey: String { Preferences.NewTabPage.topSitesMode.key }
+  private var key: String { Preferences.NewTabPage.topSitesMode.key }
 
   override func setUp() {
     super.setUp()
@@ -66,12 +65,10 @@ class TopSitesModeMigrationTests: XCTestCase {
     super.tearDown()
   }
 
-  /// Clears the stored values and the in-memory values of the long lived `Option` singletons.
+  /// Clears the stored value and the in-memory value of the long lived `Option` singleton.
   private func resetPreferences() {
-    Preferences.NewTabPage.topSitesModeV2.reset()
-    Preferences.NewTabPage.topSitesMode.value = nil
+    Preferences.NewTabPage.topSitesMode.reset()
     container.removeObject(forKey: key)
-    container.removeObject(forKey: legacyKey)
   }
 
   // MARK: - Stored representation
@@ -85,7 +82,7 @@ class TopSitesModeMigrationTests: XCTestCase {
   }
 
   func testStoresAndReadsBackStringRawValues() {
-    Preferences.NewTabPage.topSitesModeV2.value = .mostVisited
+    Preferences.NewTabPage.topSitesMode.value = .mostVisited
 
     XCTAssertEqual(container.string(forKey: key), "most-visited")
     XCTAssertEqual(
@@ -106,20 +103,20 @@ class TopSitesModeMigrationTests: XCTestCase {
   /// The migration skips devices that already have a value, which it cannot determine with
   /// `isValueStored` because the container holds the raw value rather than a `TopSitesMode`.
   func testIsRawValueStoredReflectsTheContainer() {
-    XCTAssertFalse(Preferences.NewTabPage.topSitesModeV2.isRawValueStored)
+    XCTAssertFalse(Preferences.NewTabPage.topSitesMode.isRawValueStored)
 
-    Preferences.NewTabPage.topSitesModeV2.value = TopSitesMode.none
+    Preferences.NewTabPage.topSitesMode.value = TopSitesMode.none
 
-    XCTAssertTrue(Preferences.NewTabPage.topSitesModeV2.isRawValueStored)
+    XCTAssertTrue(Preferences.NewTabPage.topSitesMode.isRawValueStored)
   }
 
-  // MARK: - topSitesMode(forLegacyRawValue:showNewTabFavourites:)
+  // MARK: - topSitesMode(forDeprecatedRawValue:showNewTabFavourites:)
 
   /// The reported bug: favourites on 1.97.x, then an upgrade forced most visited sites.
-  func testLegacyFavouriteMapsToFavourites() {
+  func testDeprecatedFavouriteMapsToFavourites() {
     XCTAssertEqual(
       BraveProfileMigrations.topSitesMode(
-        forLegacyRawValue: LegacyRawValue.favouriteUpTo198,
+        forDeprecatedRawValue: DeprecatedRawValue.favouriteUpTo198,
         showNewTabFavourites: nil
       ),
       .favourite
@@ -129,39 +126,39 @@ class TopSitesModeMigrationTests: XCTestCase {
   /// A fresh 1.97.x install seeded `mostVisited`, because launch happens before any favourite can
   /// exist, and adding favourites afterwards never reseeded it. No release that wrote this value
   /// could render most visited sites, so favourites is what the user was looking at.
-  func testLegacyMostVisitedMapsToFavourites() {
+  func testDeprecatedMostVisitedMapsToFavourites() {
     XCTAssertEqual(
       BraveProfileMigrations.topSitesMode(
-        forLegacyRawValue: LegacyRawValue.mostVisitedUpTo198,
+        forDeprecatedRawValue: DeprecatedRawValue.mostVisitedUpTo198,
         showNewTabFavourites: nil
       ),
       .favourite
     )
   }
 
-  func testLegacyNoneMapsToNone() {
+  func testDeprecatedNoneMapsToNone() {
     XCTAssertEqual(
       BraveProfileMigrations.topSitesMode(
-        forLegacyRawValue: LegacyRawValue.noneUpTo198,
+        forDeprecatedRawValue: DeprecatedRawValue.noneUpTo198,
         showNewTabFavourites: nil
       ),
       TopSitesMode.none
     )
   }
 
-  func testUnrecognizedLegacyRawValueMapsToFavourites() {
+  func testUnrecognizedDeprecatedRawValueMapsToFavourites() {
     XCTAssertEqual(
-      BraveProfileMigrations.topSitesMode(forLegacyRawValue: 7, showNewTabFavourites: nil),
+      BraveProfileMigrations.topSitesMode(forDeprecatedRawValue: 7, showNewTabFavourites: nil),
       .favourite
     )
   }
 
   /// The flag wins: 1.97.x is the only release where it was settable, and the mode there was an
   /// unread launch seed. Reading the seed instead discarded an explicit opt out.
-  func testShowNewTabFavouritesTakesPrecedenceOverLegacyMode() {
+  func testShowNewTabFavouritesTakesPrecedenceOverDeprecatedMode() {
     XCTAssertEqual(
       BraveProfileMigrations.topSitesMode(
-        forLegacyRawValue: LegacyRawValue.mostVisitedUpTo198,
+        forDeprecatedRawValue: DeprecatedRawValue.mostVisitedUpTo198,
         showNewTabFavourites: false
       ),
       TopSitesMode.none
@@ -170,14 +167,14 @@ class TopSitesModeMigrationTests: XCTestCase {
 
   func testShowNewTabFavouritesEnabledMapsToFavourites() {
     XCTAssertEqual(
-      BraveProfileMigrations.topSitesMode(forLegacyRawValue: nil, showNewTabFavourites: true),
+      BraveProfileMigrations.topSitesMode(forDeprecatedRawValue: nil, showNewTabFavourites: true),
       .favourite
     )
   }
 
   func testShowNewTabFavouritesDisabledMapsToNone() {
     XCTAssertEqual(
-      BraveProfileMigrations.topSitesMode(forLegacyRawValue: nil, showNewTabFavourites: false),
+      BraveProfileMigrations.topSitesMode(forDeprecatedRawValue: nil, showNewTabFavourites: false),
       TopSitesMode.none
     )
   }
@@ -187,7 +184,7 @@ class TopSitesModeMigrationTests: XCTestCase {
   /// everyone who never flipped that switch.
   func testNothingStoredMapsToNothing() {
     XCTAssertNil(
-      BraveProfileMigrations.topSitesMode(forLegacyRawValue: nil, showNewTabFavourites: nil)
+      BraveProfileMigrations.topSitesMode(forDeprecatedRawValue: nil, showNewTabFavourites: nil)
     )
   }
 
@@ -199,7 +196,7 @@ class TopSitesModeMigrationTests: XCTestCase {
   func testTesterWhoPickedFavouritesIsResetToNone() {
     XCTAssertEqual(
       BraveProfileMigrations.topSitesMode(
-        forLegacyRawValue: LegacyRawValue.favouriteFrom199,
+        forDeprecatedRawValue: DeprecatedRawValue.favouriteFrom199,
         showNewTabFavourites: nil
       ),
       TopSitesMode.none
@@ -209,7 +206,7 @@ class TopSitesModeMigrationTests: XCTestCase {
   func testTesterWhoPickedMostVisitedIsResetToFavourites() {
     XCTAssertEqual(
       BraveProfileMigrations.topSitesMode(
-        forLegacyRawValue: LegacyRawValue.mostVisitedFrom199,
+        forDeprecatedRawValue: DeprecatedRawValue.mostVisitedFrom199,
         showNewTabFavourites: nil
       ),
       .favourite
@@ -219,7 +216,7 @@ class TopSitesModeMigrationTests: XCTestCase {
   func testTesterWhoTurnedTopSitesOffGetsThemBack() {
     XCTAssertEqual(
       BraveProfileMigrations.topSitesMode(
-        forLegacyRawValue: LegacyRawValue.noneFrom199,
+        forDeprecatedRawValue: DeprecatedRawValue.noneFrom199,
         showNewTabFavourites: nil
       ),
       .favourite

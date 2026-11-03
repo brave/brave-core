@@ -176,49 +176,49 @@ public class BraveProfileMigrations {
     }
   }
 
-  /// Migrates `topSitesMode` and `showNewTabFavourites` to `topSitesModeV2`.
+  /// Migrates the deprecated top sites preferences to `Preferences.NewTabPage.topSitesMode`.
   private func migrateTopSitesModePreference() {
-    defer {
-      Preferences.NewTabPage.topSitesMode.removeStoredValue()
-      Preferences.NewTabPage.showNewTabFavourites.removeStoredValue()
-    }
-    guard !Preferences.NewTabPage.topSitesModeV2.isRawValueStored else { return }
-    let showNewTabFavourites = Preferences.NewTabPage.showNewTabFavourites
-    if let mode = BraveProfileMigrations.topSitesMode(
-      forLegacyRawValue: Preferences.NewTabPage.topSitesMode.value,
-      showNewTabFavourites: showNewTabFavourites.isValueStored ? showNewTabFavourites.value : nil
-    ) {
-      Preferences.NewTabPage.topSitesModeV2.value = mode
-    }
+    // Collect before the guard so that the deprecated keys are always cleared, even on devices
+    // that already have a mode and skip the write.
+    var deprecatedRawValue: Int?
+    var showNewTabFavourites: Bool?
+    Preferences.DeprecatedPreferences.topSitesMode.migrate { deprecatedRawValue = $0 }
+    Preferences.DeprecatedPreferences.showNewTabFavourites.migrate { showNewTabFavourites = $0 }
+    guard !Preferences.NewTabPage.topSitesMode.isRawValueStored,
+      let mode = BraveProfileMigrations.topSitesMode(
+        forDeprecatedRawValue: deprecatedRawValue,
+        showNewTabFavourites: showNewTabFavourites
+      )
+    else { return }
+    Preferences.NewTabPage.topSitesMode.value = mode
   }
 
-  /// The mode that the legacy top sites preferences represent, or `nil` when neither was stored
-  /// and `topSitesModeV2` should keep its default.
+  /// The mode that the deprecated top sites preferences represent, or `nil` when neither was
+  /// stored and `Preferences.NewTabPage.topSitesMode` should keep its default.
   ///
-  /// Both legacy preferences only carry whether top sites were shown, not which source they drew
-  /// from: no release that wrote them could render most visited sites, so the NTP checked the
-  /// mode against `none` and nothing else.
+  /// Both deprecated preferences only carry whether top sites were shown, not which source they
+  /// drew from: no release that wrote them could render most visited sites, so the new tab page
+  /// checked the mode against `none` and nothing else.
   ///
   /// `showNewTabFavourites` wins when it is stored. 1.97.x is the only release where it was
-  /// settable, and the only value its NTP read, while the mode there was a launch time seed that
-  /// nothing read. Every release since removes it on first launch and makes the mode settable, so
-  /// a stored flag and a mode the user actually chose cannot coexist.
+  /// settable, and the only value its new tab page read, while the mode there was a launch time
+  /// seed that nothing read. Every release since removes it on first launch and makes the mode
+  /// settable, so a stored flag and a mode the user actually chose cannot coexist.
   ///
   /// A stored `mostVisited` is therefore the 1.97.x seed rather than a choice, and maps to
-  /// `favourite` to preserve what the user was looking at. `legacyNoneRawValue` is ambiguous: it
-  /// means `none` up to 1.98.x but `favourite` from 1.99.x. It is read as `none` to honour an
-  /// explicit opt out by the far larger release channel, which resets testers who picked
-  /// favourites.
+  /// `favourite` to preserve what the user was looking at. `none` is ambiguous: it means `none`
+  /// up to 1.98.x but `favourite` from 1.99.x. It is read as `none` to honour an explicit opt out
+  /// by the far larger release channel, which resets testers who picked favourites.
   static func topSitesMode(
-    forLegacyRawValue legacyRawValue: Int?,
+    forDeprecatedRawValue deprecatedRawValue: Int?,
     showNewTabFavourites: Bool?
   ) -> TopSitesMode? {
-    let legacyNoneRawValue = 2
     if let showNewTabFavourites {
       return showNewTabFavourites ? .favourite : TopSitesMode.none
     }
-    if let legacyRawValue {
-      return legacyRawValue == legacyNoneRawValue ? TopSitesMode.none : .favourite
+    if let deprecatedRawValue {
+      return deprecatedRawValue == DeprecatedTopSitesMode.none.rawValue
+        ? TopSitesMode.none : .favourite
     }
     return nil
   }
@@ -433,6 +433,17 @@ private enum DeprecatedYoutubeHighQualityPreference: String {
   case off
 }
 
+/// The raw values stored under `newtabpage.topsites-mode`.
+///
+/// 1.99.x inserted `none` at 0 and shifted the rest while reusing the key, so the same integer
+/// means different things depending on which release wrote it. These are the values as written up
+/// to 1.98.x.
+private enum DeprecatedTopSitesMode: Int {
+  case mostVisited = 0
+  case favourite = 1
+  case none = 2
+}
+
 private enum DeprecatedBackgroundMediaType: Int {
   case defaultImages = 0
   case sponsoredImages = 1
@@ -466,6 +477,24 @@ extension Preferences {
     static let backgroundSponsoredImages = Option<Bool>(
       key: "newtabpage.background-sponsored-images",
       default: true
+    )
+
+    /// Whether favourites were shown in the new tab page.
+    ///
+    /// 1.97.x is the only release where this was settable, and the only value its new tab page
+    /// read. Superseded by `topSitesMode`.
+    static let showNewTabFavourites = Option<Bool>(
+      key: "newtabpage.show-newtab-favourites",
+      default: true
+    )
+
+    /// Mode to display tiles in the new tab page.
+    ///
+    /// Superseded by `Preferences.NewTabPage.topSitesMode`, which uses a different key because
+    /// values stored here are ambiguous. See `DeprecatedTopSitesMode`.
+    static let topSitesMode = Option<Int>(
+      key: "newtabpage.topsites-mode",
+      default: DeprecatedTopSitesMode.favourite.rawValue
     )
 
     /// Used to specify the type of background media to display.
@@ -846,12 +875,6 @@ extension Preferences.Option {
 
   fileprivate var isValueStored: Bool {
     (container.object(forKey: key) as? ValueType) != nil
-  }
-
-  /// Removes any stored value from the container, leaving the in-memory value untouched. Only
-  /// appropriate for preferences that nothing reads once they have been migrated.
-  fileprivate func removeStoredValue() {
-    container.removeObject(forKey: key)
   }
 }
 

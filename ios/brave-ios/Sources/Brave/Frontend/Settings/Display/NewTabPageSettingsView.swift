@@ -15,7 +15,7 @@ struct NewTabPageSettingsView: View {
 
   @ObservedObject private var backgroundImages = Preferences.NewTabPage.backgroundImages
   @ObservedObject private var showNewTabPrivacyHub = Preferences.NewTabPage.showNewTabPrivacyHub
-  @ObservedObject private var topSitesModeSelection = Preferences.NewTabPage.topSitesModeV2
+  @ObservedObject private var topSitesModeSelection = Preferences.NewTabPage.topSitesMode
 
   @Bindable private var isSponsoredAdsEnabled: PrefBackedBoolean
 
