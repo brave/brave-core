@@ -431,6 +431,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/adaptive/BraveLeoButtonController.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/adaptive/BraveWalletButtonController.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BookmarksButton.java",
+  "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarBookmarksMenu.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarConfiguration.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarVariationManager.java",
