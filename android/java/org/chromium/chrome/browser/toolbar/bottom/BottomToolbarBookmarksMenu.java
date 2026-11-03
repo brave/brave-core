@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.toolbar.bottom;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,7 +15,6 @@ import android.widget.PopupMenu;
 import androidx.annotation.ColorInt;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
-import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuCompat;
 
@@ -36,8 +34,6 @@ import org.chromium.chrome.browser.theme.BraveDynamicColors;
 import org.chromium.chrome.browser.toolbar.LocationBarModel;
 import org.chromium.components.bookmarks.BookmarkId;
 
-import java.lang.reflect.Field;
-
 /** Long-press menu of the bottom toolbar's Bookmarks button. */
 @NullMarked
 public class BottomToolbarBookmarksMenu {
@@ -47,8 +43,8 @@ public class BottomToolbarBookmarksMenu {
 
     /**
      * Shows the menu anchored to {@code view}. Colors are resolved from the anchor's context: the
-     * caller's context is the application context, which has no activity theme (dynamic colors)
-     * and follows the system night mode rather than Brave's theme.
+     * caller's context is the application context, which has no activity theme (dynamic colors) and
+     * follows the system night mode rather than Brave's theme.
      */
     public static void show(
             View view,
@@ -62,22 +58,7 @@ public class BottomToolbarBookmarksMenu {
 
         PopupMenu popup = new PopupMenu(wrapper, view);
         popup.getMenuInflater().inflate(R.menu.bookmark_tab_menu, popup.getMenu());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            popup.setForceShowIcon(true);
-        } else {
-            try {
-                Field[] fields = popup.getClass().getDeclaredFields();
-                for (Field field : fields) {
-                    if ("mPopup".equals(field.getName())) {
-                        MenuPopupHelper menuPopupHelper = (MenuPopupHelper) field.get(popup);
-                        menuPopupHelper.setForceShowIcon(true);
-                        break;
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        popup.setForceShowIcon(true);
 
         Tab currentTab = locationBarModel.getTab();
         BookmarkModel bookmarkModel = bookmarkModelSupplier.get();
@@ -146,9 +127,7 @@ public class BottomToolbarBookmarksMenu {
                                             bookmarkModel.getUserBookmarkIdForTab(currentTab);
                                     if (bookmarkId != null) {
                                         bookmarkManagerOpener.startEditActivity(
-                                                activityFinal,
-                                                currentTab.getProfile(),
-                                                bookmarkId);
+                                                activityFinal, currentTab.getProfile(), bookmarkId);
                                     }
                                 });
                         return true;

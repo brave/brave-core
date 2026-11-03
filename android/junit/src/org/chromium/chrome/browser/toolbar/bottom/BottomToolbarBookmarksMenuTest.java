@@ -75,12 +75,14 @@ public class BottomToolbarBookmarksMenuTest {
     @Test
     public void testPopupMenuStyle_dynamicColors_usesDynamicStyle() {
         assertEquals(
-                R.style.BookmarkTabPopupMenuDynamic, BottomToolbarBookmarksMenu.getPopupMenuStyle(true));
+                R.style.BookmarkTabPopupMenuDynamic,
+                BottomToolbarBookmarksMenu.getPopupMenuStyle(true));
     }
 
     @Test
     public void testPopupMenuStyle_noDynamicColors_usesDefaultStyle() {
-        assertEquals(R.style.BookmarkTabPopupMenu, BottomToolbarBookmarksMenu.getPopupMenuStyle(false));
+        assertEquals(
+                R.style.BookmarkTabPopupMenu, BottomToolbarBookmarksMenu.getPopupMenuStyle(false));
     }
 
     @Test
@@ -124,8 +126,7 @@ public class BottomToolbarBookmarksMenuTest {
         Integer tint = BottomToolbarBookmarksMenu.getIconTint(nightContext, false, true);
 
         assertEquals(
-                ContextCompat.getColor(nightContext, R.color.bookmark_menu_text_color),
-                (int) tint);
+                ContextCompat.getColor(nightContext, R.color.bookmark_menu_text_color), (int) tint);
         assertEquals(NIGHT_ICON_COLOR, (int) tint);
     }
 
@@ -180,10 +181,7 @@ public class BottomToolbarBookmarksMenuTest {
 
     private Menu showMenu() {
         BottomToolbarBookmarksMenu.show(
-                mAnchor,
-                mBookmarkModelSupplier,
-                mLocationBarModel,
-                mBookmarkManagerOpener);
+                mAnchor, mBookmarkModelSupplier, mLocationBarModel, mBookmarkManagerOpener);
         PopupMenu popup = ShadowPopupMenu.getLatestPopupMenu();
         assertNotNull(popup);
         return popup.getMenu();
