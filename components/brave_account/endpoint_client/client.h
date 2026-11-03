@@ -80,6 +80,7 @@ class Client {
     // kOmit implies net::LOAD_DO_NOT_SAVE_COOKIES (deprecated) via
     // URLRequest::set_disallow_credentials(); weaker modes save cookies again.
     resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
+    resource_request->redirect_mode = request.redirect_mode;
     if constexpr (base::is_instantiation<Request, WithHeaders>) {
       resource_request->headers = std::move(request.headers);
     }

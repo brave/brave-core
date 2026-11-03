@@ -29,6 +29,7 @@
 #include "net/base/net_errors.h"
 #include "net/http/http_status_code.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
+#include "services/network/public/mojom/fetch_api.mojom.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
@@ -614,6 +615,25 @@ TEST_F(BraveVpnApiClientRequestBodyTest,
       base::JSONReader::ReadDict(*sent_body, base::JSON_PARSE_RFC);
   ASSERT_TRUE(parsed);
   EXPECT_EQ(*parsed->FindString("multihop-exit-region"), "disabled");
+}
+
+TEST_F(BraveVpnApiClientRequestBodyTest, FollowsRedirects) {
+  std::optional<network::mojom::RedirectMode> redirect_mode;
+  url_loader_factory_.SetInterceptor(
+      base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
+        redirect_mode = request.redirect_mode;
+      }));
+
+  MockResponseFor<endpoints::GetTimezonesForRegions>(
+      url_loader_factory_,
+      endpoints::GetTimezonesForRegions::Response{
+          .net_error = net::OK,
+          .status_code = net::HTTP_OK,
+          .body = base::ok(endpoints::RawJsonResponseBody{.json = "{}"})});
+
+  std::ignore = CallClientApi(&BraveVpnApiClient::GetTimezonesForRegions);
+
+  EXPECT_EQ(redirect_mode, network::mojom::RedirectMode::kFollow);
 }
 
 }  // namespace brave_vpn::v2

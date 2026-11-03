@@ -20,6 +20,7 @@
 #include "brave/components/brave_account/endpoint_client/url_replacements.h"
 #include "net/http/http_request_headers.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
+#include "services/network/public/mojom/fetch_api.mojom.h"
 
 namespace brave_account::endpoint_client::detail {
 
@@ -77,6 +78,8 @@ struct Request {
 
   Body body;
   net::MutableNetworkTrafficAnnotationTag network_traffic_annotation_tag;
+  network::mojom::RedirectMode redirect_mode =
+      network::mojom::RedirectMode::kError;
   RetryOptions retry_options;
   base::TimeDelta timeout_duration;
   UrlReplacements url_replacements;

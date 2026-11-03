@@ -188,6 +188,11 @@ Client<LoginInit>::Send(
 `network_traffic_annotation_tag` is required (only tests may leave it unset).
 Requests also have:
 
+- `redirect_mode`: forwarded to `network::ResourceRequest::redirect_mode`;
+  defaults to `kError`, so the network service fails a redirect with
+  `net::ERR_FAILED`. With `kFollow`, the headers set on the request (e.g. bearer
+  tokens) and, unless the redirect changes the method, the body are sent to the
+  redirect target, even if it is another origin.
 - `retry_options`: forwarded to `SimpleURLLoader::SetRetryOptions()`; defaults
   to no retries.
 - `timeout_duration`: forwarded to `SimpleURLLoader::SetTimeoutDuration()`;
