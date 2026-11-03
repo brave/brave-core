@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/frame/browser_native_widget_aura_linux.h b/chrome/browser/ui/views/frame/browser_native_widget_aura_linux.h
+index af54ef1271cf4bf9e0d74f7791a45e6b37c68356..4ea5ce26982de8f22beba1557448232ae10437e0 100644
+--- a/chrome/browser/ui/views/frame/browser_native_widget_aura_linux.h
++++ b/chrome/browser/ui/views/frame/browser_native_widget_aura_linux.h
+@@ -44,6 +44,7 @@ class BrowserNativeWidgetAuraLinux : public BrowserNativeWidgetAura {
+   void ClientDestroyedWidget() override;
+ 
+  private:
++  friend class BraveVideoOverlayWindowViews;
+   FRIEND_TEST_ALL_PREFIXES(BrowserNativeWidgetAuraLinuxTest, UseCustomFrame);
+ 
+   // The identity of the window for the window manager. See
