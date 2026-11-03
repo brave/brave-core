@@ -21,7 +21,9 @@ substitutions:
         UrlConstants.CHROME_SCHEME.equals(currentTab.getUrl().getScheme())) ||
         \3'
 
-  - description: 'Skip the Install/Create shortcut bottom sheet and add to Home screen directly.'
+  - description:
+      'Skip the Install/Create shortcut bottom sheet and add to Home screen
+      directly.'
     regex:
       pattern: |-
         boolean webAppInstalled =
