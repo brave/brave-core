@@ -2212,6 +2212,76 @@ TEST_F(AIChatDatabaseSyncTest, GetConversationEntryWithEdits) {
   }
 }
 
+TEST_F(AIChatDatabaseSyncTest, GetConversationEntryWithoutEdits) {
+  auto edited = CreateQueryEntry("edited-entry");
+  edited->text = "Original";
+  auto edit = CreateQueryEntry("edit-1");
+  edit->text = "Revised";
+  edit->created_time = base::Time::Now() + base::Minutes(1);
+  edited->edits.emplace();
+  edited->edits->push_back(std::move(edit));
+  auto conversation = mojom::Conversation::New();
+  conversation->uuid = "conv";
+  ASSERT_TRUE(
+      db_->AddConversation(std::move(conversation), {}, std::move(edited)));
+  auto plain_entry = CreateQueryEntry("plain-entry");
+  plain_entry->text = "Plain";
+  ASSERT_TRUE(db_->AddConversationEntry("conv", std::move(plain_entry)));
+
+  auto plain = db_->GetConversationEntryWithoutEdits("plain-entry");
+  ASSERT_TRUE(plain && *plain);
+  EXPECT_EQ((*plain)->text, "Plain");
+  EXPECT_FALSE((*plain)->edits);
+
+  // An edited entry comes back as its original row alone.
+  auto entry = db_->GetConversationEntryWithoutEdits("edited-entry");
+  ASSERT_TRUE(entry && *entry);
+  EXPECT_EQ((*entry)->text, "Original");
+  EXPECT_FALSE((*entry)->edits);
+
+  // An edit row isn't itself an entry, so it reads as no such entry.
+  for (std::string_view uuid : {"edit-1", "no-such-entry"}) {
+    auto missing = db_->GetConversationEntryWithoutEdits(uuid);
+    ASSERT_TRUE(missing);
+    EXPECT_FALSE(*missing);
+  }
+}
+
+TEST_F(AIChatDatabaseSyncTest, GetAssociatedContentTexts) {
+  auto make_content = [](std::string_view uuid, std::string_view entry_uuid) {
+    auto content = mojom::AssociatedContent::New();
+    content->uuid = std::string(uuid);
+    content->content_type = mojom::ContentType::PageContent;
+    content->title = "Page";
+    content->url = GURL("https://example.com");
+    content->conversation_turn_uuid = std::string(entry_uuid);
+    return content;
+  };
+  auto conversation = mojom::Conversation::New();
+  conversation->uuid = "conv";
+  conversation->associated_content.push_back(
+      make_content("content-1", "entry-1"));
+  conversation->associated_content.push_back(
+      make_content("content-2", "entry-1"));
+  conversation->associated_content.push_back(
+      make_content("content-3", "entry-1"));
+  conversation->associated_content.push_back(
+      make_content("content-4", "entry-2"));
+  ASSERT_TRUE(db_->AddConversation(std::move(conversation),
+                                   {"Page one", "Page two", "", "Page four"},
+                                   CreateQueryEntry("entry-1")));
+  ASSERT_TRUE(db_->AddConversationEntry("conv", CreateQueryEntry("entry-2")));
+
+  // Content with no text is left out.
+  EXPECT_THAT(
+      db_->GetAssociatedContentTexts("entry-1"),
+      testing::Optional(testing::UnorderedElementsAre("Page one", "Page two")));
+  EXPECT_THAT(db_->GetAssociatedContentTexts("entry-2"),
+              testing::Optional(testing::ElementsAre("Page four")));
+  EXPECT_THAT(db_->GetAssociatedContentTexts("no-such-entry"),
+              testing::Optional(testing::IsEmpty()));
+}
+
 // No such row reads as no row, not as a failed read.
 TEST_F(AIChatDatabaseSyncTest, MissingRowHasNullModifiedTime) {
   EXPECT_THAT(db_->GetConversationModifiedTime("no-such-conv"), IsNoRow());

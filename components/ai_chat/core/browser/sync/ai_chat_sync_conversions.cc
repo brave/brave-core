@@ -76,9 +76,9 @@ void OmitUploadedFileData(sync_pb::AIChatUploadedFile* file) {
 std::optional<std::string> ReadCompressibleString(
     const sync_pb::AIChatCompressibleString& in) {
   if (in.has_omitted_content_hash()) {
-    // The sender omitted this field to fit the record budget; the caller
-    // restores it from a local copy with identical content or preserves the
-    // existing local value.
+    // The sender omitted this field to fit the record budget. The sync bridge
+    // puts back a local copy with the same hash before decoding, so one
+    // still omitted here has none, and decodes as blank.
     return std::nullopt;
   }
   if (in.has_gzipped()) {
@@ -125,8 +125,8 @@ void WriteAssociatedContent(const mojom::AssociatedContent& content,
   }
   proto->set_content_type(std::to_underlying(content.content_type));
   proto->set_content_used_percentage(content.content_used_percentage);
-  // When |last_contents| is absent the receiver preserves any local text for
-  // this UUID; we do not need to set the field at all.
+  // With no |last_contents|, the field is left unset, and the receiver writes
+  // the text as blank.
   if (last_contents) {
     WriteCompressibleString(*last_contents, proto->mutable_last_contents());
   }
@@ -346,6 +346,16 @@ std::vector<std::string> ReadCompressibleStrings(
   return out;
 }
 
+// Decodes |in| for a mojom string that can't be absent, so a value that can't
+// be read decodes as "". That includes a value the sender omitted to fit the
+// size limit, which is right only because the sync bridge first puts back
+// each omitted value this device holds a copy of. An omitted value still here
+// has no local copy with the sender's hash.
+std::string ReadCompressibleStringOrEmpty(
+    const sync_pb::AIChatCompressibleString& in) {
+  return ReadCompressibleString(in).value_or(std::string());
+}
+
 // Parses a URL read from the wire. Returns nullopt when it doesn't parse,
 // since such a URL can't be stored: GURL::spec(), which the database writes
 // use, refuses an invalid URL unless it's empty.
@@ -388,7 +398,7 @@ mojom::ToolUseEventPtr ProtoToToolUse(
   tool_use->tool_name = proto.tool_name();
   tool_use->id = proto.id();
   tool_use->arguments_json =
-      ReadCompressibleString(proto.arguments_json()).value_or(std::string());
+      ReadCompressibleStringOrEmpty(proto.arguments_json());
   tool_use->is_server_result = proto.is_server_result();
   if (!proto.output().empty()) {
     std::vector<mojom::ContentBlockPtr> blocks;
@@ -399,10 +409,8 @@ mojom::ToolUseEventPtr ProtoToToolUse(
       switch (block_proto.content_case()) {
         case sync_pb::AIChatContentBlock::kTextContentBlock:
           blocks.push_back(mojom::ContentBlock::NewTextContentBlock(
-              mojom::TextContentBlock::New(
-                  ReadCompressibleString(
-                      block_proto.text_content_block().text())
-                      .value_or(std::string()))));
+              mojom::TextContentBlock::New(ReadCompressibleStringOrEmpty(
+                  block_proto.text_content_block().text()))));
           break;
         case sync_pb::AIChatContentBlock::kImageContentBlock: {
           auto image_url =
@@ -430,8 +438,7 @@ mojom::ToolUseEventPtr ProtoToToolUse(
     tool_use->artifacts = base::ToVector(proto.artifacts(), [](const auto& a) {
       auto artifact = mojom::ToolArtifact::New();
       artifact->type = a.type();
-      artifact->content_json =
-          ReadCompressibleString(a.content_json()).value_or(std::string());
+      artifact->content_json = ReadCompressibleStringOrEmpty(a.content_json());
       return artifact;
     });
   }
@@ -443,8 +450,8 @@ mojom::ConversationEntryEventPtr ProtoToEntryEvent(
   switch (proto.event_case()) {
     case sync_pb::AIChatEntryEventProto::kCompletion:
       return mojom::ConversationEntryEvent::NewCompletionEvent(
-          mojom::CompletionEvent::New(ReadCompressibleString(proto.completion())
-                                          .value_or(std::string())));
+          mojom::CompletionEvent::New(
+              ReadCompressibleStringOrEmpty(proto.completion())));
     case sync_pb::AIChatEntryEventProto::kSearchQueries:
       return mojom::ConversationEntryEvent::NewSearchQueriesEvent(
           mojom::SearchQueriesEvent::New(
@@ -458,8 +465,8 @@ mojom::ConversationEntryEventPtr ProtoToEntryEvent(
       return mojom::ConversationEntryEvent::NewInlineSearchEvent(
           mojom::InlineSearchEvent::New(
               proto.inline_search().query(),
-              ReadCompressibleString(proto.inline_search().results_json())
-                  .value_or(std::string())));
+              ReadCompressibleStringOrEmpty(
+                  proto.inline_search().results_json())));
     case sync_pb::AIChatEntryEventProto::kToolUse:
       // Null when the tool output holds a content block this client doesn't
       // know, as from a newer sender, or can't store. Like an unknown event,
@@ -522,8 +529,8 @@ mojom::UploadedFilePtr ProtoToUploadedFile(
   }
   file->type = type.value();
   // Only populate bytes when the sender actually shipped them. When the sender
-  // omitted them (the oneof holds omitted_data_hash instead), leave |data|
-  // empty so the caller can restore any existing local bytes.
+  // omitted them (the oneof holds omitted_data_hash instead), and the sync
+  // bridge held no copy to put back, |data| is left empty.
   if (proto.has_data()) {
     file->data = base::ToVector(base::as_byte_span(proto.data()));
   }
@@ -534,9 +541,9 @@ mojom::UploadedFilePtr ProtoToUploadedFile(
 // Populates |associated_content| from the entry's associated_content field
 // (each tagged with the entry UUID) and, when provided, |associated_content_
 // texts| with the last_contents value for each AC the sender included. An AC
-// with omitted last_contents is intentionally left out of the texts map so the
-// caller preserves any existing local text. Returns false, rejecting the entry,
-// when an item fails to decode or two items share a uuid.
+// whose last_contents is absent, or omitted and not put back, is left out of
+// the texts map, and the sync bridge writes its text as blank. Returns false,
+// rejecting the entry, when an item fails to decode or two items share a uuid.
 bool ReadAssociatedContentFromEntry(
     const sync_pb::AIChatConversationSpecifics_Entry& proto,
     std::vector<mojom::AssociatedContentPtr>& associated_content,
@@ -574,22 +581,24 @@ bool ReadAssociatedContentFromEntry(
 // One category of omittable field. A pass invokes |visit| for every
 // AIChatCompressibleString it covers; FitEntryWithinSyncBudget omits a whole
 // category at a time, and ForEachOmittableString runs every pass so that the
-// restore side sees the same fields.
-using OmissionPass = void (*)(sync_pb::AIChatConversationSpecifics_Entry*,
-                              CompressibleStringVisitor);
+// restore side sees the same fields. A pass only reads |entry|, so that a
+// const record can be walked too; RunPassOnMutableEntry() lets a caller change
+// the values it visits.
+using OmissionPass = void (*)(const sync_pb::AIChatConversationSpecifics_Entry&,
+                              ConstCompressibleStringVisitor);
 
-void VisitEachString(google::protobuf::RepeatedPtrField<
-                         sync_pb::AIChatCompressibleString>* strings,
-                     CompressibleStringVisitor visit) {
-  std::ranges::for_each(*strings, visit);
+void VisitEachString(const google::protobuf::RepeatedPtrField<
+                         sync_pb::AIChatCompressibleString>& strings,
+                     ConstCompressibleStringVisitor visit) {
+  std::ranges::for_each(strings, visit);
 }
 
 void VisitEachPageContent(
-    google::protobuf::RepeatedPtrField<sync_pb::AIChatWebSource>* sources,
-    CompressibleStringVisitor visit) {
-  for (auto& source : *sources) {
+    const google::protobuf::RepeatedPtrField<sync_pb::AIChatWebSource>& sources,
+    ConstCompressibleStringVisitor visit) {
+  for (const auto& source : sources) {
     if (source.has_page_content()) {
-      visit(*source.mutable_page_content());
+      visit(source.page_content());
     }
   }
 }
@@ -598,120 +607,121 @@ void VisitEachPageContent(
 // and text both appear here as well as at the event level, so three passes
 // share this walk.
 void ForEachToolOutputBlock(
-    sync_pb::AIChatConversationSpecifics_Entry* entry,
-    base::FunctionRef<void(sync_pb::AIChatContentBlock&)> visit) {
-  for (auto& event : *entry->mutable_events()) {
+    const sync_pb::AIChatConversationSpecifics_Entry& entry,
+    base::FunctionRef<void(const sync_pb::AIChatContentBlock&)> visit) {
+  for (const auto& event : entry.events()) {
     if (!event.has_tool_use()) {
       continue;
     }
-    for (auto& block : *event.mutable_tool_use()->mutable_output()) {
+    for (const auto& block : event.tool_use().output()) {
       visit(block);
     }
   }
 }
 
 void VisitAssociatedContentTexts(
-    sync_pb::AIChatConversationSpecifics_Entry* entry,
-    CompressibleStringVisitor visit) {
-  for (auto& content : *entry->mutable_associated_content()) {
+    const sync_pb::AIChatConversationSpecifics_Entry& entry,
+    ConstCompressibleStringVisitor visit) {
+  for (const auto& content : entry.associated_content()) {
     if (content.has_last_contents()) {
-      visit(*content.mutable_last_contents());
+      visit(content.last_contents());
     }
   }
 }
 
-void VisitUploadedFileTexts(sync_pb::AIChatConversationSpecifics_Entry* entry,
-                            CompressibleStringVisitor visit) {
-  for (auto& file : *entry->mutable_uploaded_files()) {
+void VisitUploadedFileTexts(
+    const sync_pb::AIChatConversationSpecifics_Entry& entry,
+    ConstCompressibleStringVisitor visit) {
+  for (const auto& file : entry.uploaded_files()) {
     if (file.has_extracted_text()) {
-      visit(*file.mutable_extracted_text());
+      visit(file.extracted_text());
     }
   }
 }
 
-void VisitInlineSearchResults(sync_pb::AIChatConversationSpecifics_Entry* entry,
-                              CompressibleStringVisitor visit) {
-  for (auto& event : *entry->mutable_events()) {
+void VisitInlineSearchResults(
+    const sync_pb::AIChatConversationSpecifics_Entry& entry,
+    ConstCompressibleStringVisitor visit) {
+  for (const auto& event : entry.events()) {
     if (event.has_inline_search() && event.inline_search().has_results_json()) {
-      visit(*event.mutable_inline_search()->mutable_results_json());
+      visit(event.inline_search().results_json());
     }
   }
 }
 
 void VisitWebSourcePageContents(
-    sync_pb::AIChatConversationSpecifics_Entry* entry,
-    CompressibleStringVisitor visit) {
-  for (auto& event : *entry->mutable_events()) {
+    const sync_pb::AIChatConversationSpecifics_Entry& entry,
+    ConstCompressibleStringVisitor visit) {
+  for (const auto& event : entry.events()) {
     if (event.has_web_sources()) {
-      VisitEachPageContent(event.mutable_web_sources()->mutable_sources(),
-                           visit);
+      VisitEachPageContent(event.web_sources().sources(), visit);
     }
   }
-  ForEachToolOutputBlock(entry, [visit](sync_pb::AIChatContentBlock& block) {
+  ForEachToolOutputBlock(entry, [visit](
+                                    const sync_pb::AIChatContentBlock& block) {
     if (block.has_web_sources_content_block()) {
-      VisitEachPageContent(
-          block.mutable_web_sources_content_block()->mutable_sources(), visit);
+      VisitEachPageContent(block.web_sources_content_block().sources(), visit);
     }
   });
 }
 
-void VisitToolOutputTexts(sync_pb::AIChatConversationSpecifics_Entry* entry,
-                          CompressibleStringVisitor visit) {
-  ForEachToolOutputBlock(entry, [visit](sync_pb::AIChatContentBlock& block) {
-    if (block.has_text_content_block() &&
-        block.text_content_block().has_text()) {
-      visit(*block.mutable_text_content_block()->mutable_text());
-    }
-  });
+void VisitToolOutputTexts(
+    const sync_pb::AIChatConversationSpecifics_Entry& entry,
+    ConstCompressibleStringVisitor visit) {
+  ForEachToolOutputBlock(entry,
+                         [visit](const sync_pb::AIChatContentBlock& block) {
+                           if (block.has_text_content_block() &&
+                               block.text_content_block().has_text()) {
+                             visit(block.text_content_block().text());
+                           }
+                         });
 }
 
-void VisitToolArguments(sync_pb::AIChatConversationSpecifics_Entry* entry,
-                        CompressibleStringVisitor visit) {
-  for (auto& event : *entry->mutable_events()) {
+void VisitToolArguments(const sync_pb::AIChatConversationSpecifics_Entry& entry,
+                        ConstCompressibleStringVisitor visit) {
+  for (const auto& event : entry.events()) {
     if (event.has_tool_use() && event.tool_use().has_arguments_json()) {
-      visit(*event.mutable_tool_use()->mutable_arguments_json());
+      visit(event.tool_use().arguments_json());
     }
   }
 }
 
 void VisitWebSourceRichResults(
-    sync_pb::AIChatConversationSpecifics_Entry* entry,
-    CompressibleStringVisitor visit) {
-  for (auto& event : *entry->mutable_events()) {
+    const sync_pb::AIChatConversationSpecifics_Entry& entry,
+    ConstCompressibleStringVisitor visit) {
+  for (const auto& event : entry.events()) {
     if (event.has_web_sources()) {
-      VisitEachString(event.mutable_web_sources()->mutable_rich_results(),
-                      visit);
+      VisitEachString(event.web_sources().rich_results(), visit);
     }
   }
-  ForEachToolOutputBlock(entry, [visit](sync_pb::AIChatContentBlock& block) {
+  ForEachToolOutputBlock(entry, [visit](
+                                    const sync_pb::AIChatContentBlock& block) {
     if (block.has_web_sources_content_block()) {
-      VisitEachString(
-          block.mutable_web_sources_content_block()->mutable_rich_results(),
-          visit);
+      VisitEachString(block.web_sources_content_block().rich_results(), visit);
     }
   });
 }
 
 void VisitToolArtifactContents(
-    sync_pb::AIChatConversationSpecifics_Entry* entry,
-    CompressibleStringVisitor visit) {
-  for (auto& event : *entry->mutable_events()) {
+    const sync_pb::AIChatConversationSpecifics_Entry& entry,
+    ConstCompressibleStringVisitor visit) {
+  for (const auto& event : entry.events()) {
     if (!event.has_tool_use()) {
       continue;
     }
-    for (auto& artifact : *event.mutable_tool_use()->mutable_artifacts()) {
+    for (const auto& artifact : event.tool_use().artifacts()) {
       if (artifact.has_content_json()) {
-        visit(*artifact.mutable_content_json());
+        visit(artifact.content_json());
       }
     }
   }
 }
 
-void VisitCompletions(sync_pb::AIChatConversationSpecifics_Entry* entry,
-                      CompressibleStringVisitor visit) {
-  for (auto& event : *entry->mutable_events()) {
+void VisitCompletions(const sync_pb::AIChatConversationSpecifics_Entry& entry,
+                      ConstCompressibleStringVisitor visit) {
+  for (const auto& event : entry.events()) {
     if (event.has_completion()) {
-      visit(*event.mutable_completion());
+      visit(event.completion());
     }
   }
 }
@@ -752,10 +762,28 @@ bool FitsWithinBudget(const sync_pb::AIChatConversationSpecifics_Entry& entry) {
   return entry.ByteSizeLong() <= kSyncMaxRecordBytes;
 }
 
+// Runs |pass| over |entry|, letting |visit| change each value. A pass only
+// reads, so each value it visits is part of |entry|, which is mutable.
+void RunPassOnMutableEntry(OmissionPass pass,
+                           sync_pb::AIChatConversationSpecifics_Entry* entry,
+                           CompressibleStringVisitor visit) {
+  pass(*entry, [visit](const sync_pb::AIChatCompressibleString& value) {
+    visit(const_cast<sync_pb::AIChatCompressibleString&>(value));
+  });
+}
+
 }  // namespace
 
 void ForEachOmittableString(sync_pb::AIChatConversationSpecifics_Entry* entry,
                             CompressibleStringVisitor visit) {
+  for (OmissionPass pass : kOmissionPasses) {
+    RunPassOnMutableEntry(pass, entry, visit);
+  }
+}
+
+void ForEachOmittableString(
+    const sync_pb::AIChatConversationSpecifics_Entry& entry,
+    ConstCompressibleStringVisitor visit) {
   for (OmissionPass pass : kOmissionPasses) {
     pass(entry, visit);
   }
@@ -796,17 +824,21 @@ bool FitEntryWithinSyncBudget(
     if (FitsWithinBudget(*entry)) {
       return true;
     }
-    pass(entry, [](sync_pb::AIChatCompressibleString& value) {
-      // Skip fields that are absent or that a previous pass already omitted;
-      // re-omitting would hash the empty string over the original hash. An
-      // explicitly-empty raw string is skipped too: ReadCompressibleString()
-      // reports that as a value rather than an omission, and replacing it with
-      // a hash would both lose that distinction and cost more bytes than the
-      // empty string it replaced.
-      if (value.has_gzipped() || (value.has_raw() && !value.raw().empty())) {
-        OmitCompressibleString(&value);
-      }
-    });
+    RunPassOnMutableEntry(pass, entry,
+                          [](sync_pb::AIChatCompressibleString& value) {
+                            // Skip fields that are absent or that a previous
+                            // pass already omitted; re-omitting would hash the
+                            // empty string over the original hash. An
+                            // explicitly-empty raw string is skipped too:
+                            // ReadCompressibleString() reports that as a value
+                            // rather than an omission, and replacing it with a
+                            // hash would both lose that distinction and cost
+                            // more bytes than the empty string it replaced.
+                            if (value.has_gzipped() ||
+                                (value.has_raw() && !value.raw().empty())) {
+                              OmitCompressibleString(&value);
+                            }
+                          });
   }
 
   if (FitsWithinBudget(*entry)) {

@@ -91,6 +91,21 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   virtual std::optional<mojom::ConversationTurnPtr>
   GetConversationEntryWithEdits(std::string_view conversation_entry_uuid);
 
+  // Returns the entry |conversation_entry_uuid| without its edit revisions, as
+  // GetConversationEntryWithEdits() does otherwise. It reads the entry's row by
+  // its primary key alone, so for an entry known to have no revisions it
+  // avoids that method's scan of every entry, since nothing is indexed on
+  // editing_entry_uuid.
+  virtual std::optional<mojom::ConversationTurnPtr>
+  GetConversationEntryWithoutEdits(std::string_view conversation_entry_uuid);
+
+  // Returns the page text of each piece of associated content that belongs to
+  // the entry |conversation_entry_uuid| and has one, or nullopt if the read
+  // failed. A value that fails to decrypt reads as blank. Nothing is indexed on
+  // the entry uuid, so this scans the associated_content table.
+  virtual std::optional<std::vector<std::string>> GetAssociatedContentTexts(
+      std::string_view conversation_entry_uuid);
+
   // Returns the uuids of every entry that has edit revisions, or nullopt if the
   // read failed. Nothing is indexed on editing_entry_uuid, so callers that
   // would otherwise ask per entry should ask once and test against the result.

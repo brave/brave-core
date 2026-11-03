@@ -65,8 +65,8 @@ void WriteCompressibleString(std::string_view value,
 
 // Omits |out|'s value, replacing it with a hash of its current content (see
 // AIChatCompressibleString::omitted_content_hash). The receiver restores the
-// value from a local copy that hashes identically, or preserves any existing
-// local value.
+// value from a local copy that hashes identically. Without one, the value
+// decodes as blank.
 void OmitCompressibleString(sync_pb::AIChatCompressibleString* out);
 
 // Omits |file|'s raw bytes, replacing them with a hash of their content (see
@@ -78,9 +78,10 @@ void OmitUploadedFileData(sync_pb::AIChatUploadedFile* file);
 // Reads a value from |in|. Returns std::nullopt when there is no usable value
 // to apply, for any of three reasons: the value was omitted for sync
 // (restore-from-local signal), gzip decompression failed, or no value was set
-// at all. Callers treat all three the same way — leave the target field unset
-// and preserve any existing local value. Returns an empty string (not nullopt)
-// when the field was set to an empty raw string.
+// at all. Decoding treats all three the same way: the target field is left
+// unset, or empty when it can't be absent, so an omitted value that wasn't
+// restored first decodes as blank. Returns an empty string (not nullopt) when
+// the field was set to an empty raw string.
 std::optional<std::string> ReadCompressibleString(
     const sync_pb::AIChatCompressibleString& in);
 
@@ -95,6 +96,12 @@ using CompressibleStringVisitor =
     base::FunctionRef<void(sync_pb::AIChatCompressibleString&)>;
 void ForEachOmittableString(sync_pb::AIChatConversationSpecifics_Entry* entry,
                             CompressibleStringVisitor visit);
+// The same walk, for reading a const |entry|.
+using ConstCompressibleStringVisitor =
+    base::FunctionRef<void(const sync_pb::AIChatCompressibleString&)>;
+void ForEachOmittableString(
+    const sync_pb::AIChatConversationSpecifics_Entry& entry,
+    ConstCompressibleStringVisitor visit);
 
 // Drops long-text and binary fields from |entry| (replacing each with a
 // content hash so the receiver can restore it from a byte-identical local
@@ -119,8 +126,7 @@ sync_pb::AIChatConversationSpecifics ConversationMetadataToSpecifics(
 // filtered to only the items that belong to this entry.
 // |associated_content_texts| holds the optional extracted text for each AC,
 // keyed by AC UUID; entries without a text in the map have their last_contents
-// field left absent on the wire so the receiver preserves any existing local
-// text.
+// field left absent on the wire, and the receiver writes their text as blank.
 sync_pb::AIChatConversationSpecifics EntryToSpecifics(
     const std::string& conversation_uuid,
     const mojom::ConversationTurn& entry,
@@ -144,8 +150,12 @@ mojom::ConversationPtr SpecificsToConversationMetadata(
 // entry's associated_content field, each tagged with this entry's UUID via
 // |conversation_turn_uuid|. When non-null, |associated_content_texts|
 // receives the last_contents value for each AC where the sender provided
-// one; absent map entries mean the caller should preserve any existing
-// local text (forward-compat or omitted-for-sync).
+// one; an AC with no map entry, because its text was absent or omitted, gets
+// a blank text when the sync bridge writes it.
+// A value the sender omitted to fit the size limit decodes as blank, since
+// most such fields can't be absent in mojom. A caller that holds a copy of the
+// entry puts the omitted values back into |specifics| first, as the sync
+// bridge does.
 mojom::ConversationTurnPtr SpecificsToEntry(
     const sync_pb::AIChatConversationSpecifics& specifics,
     std::vector<mojom::AssociatedContentPtr>& associated_content,

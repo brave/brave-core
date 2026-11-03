@@ -676,6 +676,57 @@ AIChatDatabase::GetConversationEntryWithEdits(
   return std::move(entries.front());
 }
 
+std::optional<mojom::ConversationTurnPtr>
+AIChatDatabase::GetConversationEntryWithoutEdits(
+    std::string_view conversation_entry_uuid) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return std::nullopt;
+  }
+
+  // An edit row has an editing_entry_uuid, so GetConversationEntries() returns
+  // nothing for one, as GetConversationEntryWithEdits() does.
+  sql::Statement statement(GetDB().GetCachedStatement(
+      SQL_FROM_HERE,
+      absl::StrFormat(kConversationEntriesQueryTemplate, "uuid=?")));
+  CHECK(statement.is_valid());
+  statement.BindString(0, conversation_entry_uuid);
+
+  auto entries = GetConversationEntries(statement);
+  if (!statement.Succeeded()) {
+    return std::nullopt;
+  }
+  if (entries.empty()) {
+    return mojom::ConversationTurnPtr();
+  }
+  return std::move(entries.front());
+}
+
+std::optional<std::vector<std::string>>
+AIChatDatabase::GetAssociatedContentTexts(
+    std::string_view conversation_entry_uuid) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return std::nullopt;
+  }
+
+  static constexpr char kQuery[] =
+      "SELECT last_contents FROM associated_content"
+      " WHERE conversation_entry_uuid=? AND last_contents IS NOT NULL";
+  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE, kQuery));
+  CHECK(statement.is_valid());
+  statement.BindString(0, conversation_entry_uuid);
+
+  std::vector<std::string> texts;
+  while (statement.Step()) {
+    texts.push_back(DecryptColumnToString(statement, 0));
+  }
+  if (!statement.Succeeded()) {
+    return std::nullopt;
+  }
+  return texts;
+}
+
 std::optional<base::flat_set<std::string>>
 AIChatDatabase::GetEditedEntryUuids() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);

@@ -6,6 +6,7 @@
 #include "brave/components/ai_chat/core/browser/sync/ai_chat_sync_bridge.h"
 
 #include <algorithm>
+#include <cstdint>
 #include <memory>
 #include <optional>
 #include <string>
@@ -18,6 +19,7 @@
 #include "base/containers/map_util.h"
 #include "base/containers/to_vector.h"
 #include "base/functional/bind.h"
+#include "base/hash/hash.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/task/sequenced_task_runner.h"
@@ -36,6 +38,7 @@
 #include "components/sync/model/mutable_data_batch.h"
 #include "components/sync/model/sync_metadata_store_change_list.h"
 #include "components/sync/protocol/entity_data.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 namespace ai_chat {
@@ -141,6 +144,91 @@ bool IsSameLocalCopy(const std::optional<AIChatDatabase::ModifiedTime>& local,
   return local && local->exists && local->time == kept_time;
 }
 
+// Whether the sender left any of |entry|'s values out of the record to fit the
+// size limit, sending a hash of each instead.
+bool HasOmittedValues(const sync_pb::AIChatConversationSpecifics_Entry& entry) {
+  bool omitted = std::ranges::any_of(
+      entry.uploaded_files(), [](const sync_pb::AIChatUploadedFile& file) {
+        return file.has_omitted_data_hash();
+      });
+  ForEachOmittableString(
+      entry, [&omitted](const sync_pb::AIChatCompressibleString& value) {
+        omitted |= value.has_omitted_content_hash();
+      });
+  return omitted;
+}
+
+// Returns, keyed by hash, each value this device holds that a sender may omit
+// from the record of |local_entry|: the values of the entry's latest revision,
+// and |page_texts|, the texts of its associated content.
+absl::flat_hash_map<uint32_t, std::string> BuildLocalContentByHash(
+    const mojom::ConversationTurn& local_entry,
+    std::vector<std::string> page_texts) {
+  absl::flat_hash_map<uint32_t, std::string> content_by_hash;
+  auto remember = [&content_by_hash](std::string value) {
+    if (!value.empty()) {
+      const uint32_t hash = base::PersistentHash(value);
+      content_by_hash.try_emplace(hash, std::move(value));
+    }
+  };
+
+  // Built into a record as a sender builds it, which takes an edited entry's
+  // values from its latest revision, so they're the values the sender hashed.
+  // No conversation uuid or time is given, because neither is an omittable
+  // value.
+  const auto local_specifics =
+      EntryToSpecifics(std::string(), local_entry, base::Time(), {});
+  ForEachOmittableString(
+      local_specifics.entry(),
+      [&remember](const sync_pb::AIChatCompressibleString& value) {
+        if (auto plaintext = ReadCompressibleString(value)) {
+          remember(std::move(*plaintext));
+        }
+      });
+  for (const auto& file : local_specifics.entry().uploaded_files()) {
+    remember(file.data());
+  }
+  for (auto& text : page_texts) {
+    remember(std::move(text));
+  }
+  return content_by_hash;
+}
+
+// A sender that omits a value to fit the size limit sends a hash of it in its
+// place. Puts back into |remote_entry| each omitted value that has the same
+// hash as a value of |local_entry|, this device's copy of the entry, or of
+// |page_texts|, the texts of its associated content. Matching by hash rather
+// than by position puts back only the value the sender had, since the two
+// copies can differ, and most values are in events and lists, which have no
+// identity to match by. A value with no match stays omitted.
+void RestoreOmittedFieldsFromLocal(
+    const mojom::ConversationTurn& local_entry,
+    std::vector<std::string> page_texts,
+    sync_pb::AIChatConversationSpecifics_Entry& remote_entry) {
+  const auto content_by_hash =
+      BuildLocalContentByHash(local_entry, std::move(page_texts));
+  ForEachOmittableString(
+      &remote_entry,
+      [&content_by_hash](sync_pb::AIChatCompressibleString& value) {
+        if (!value.has_omitted_content_hash()) {
+          return;
+        }
+        if (const std::string* local = base::FindOrNull(
+                content_by_hash, value.omitted_content_hash())) {
+          WriteCompressibleString(*local, &value);
+        }
+      });
+  for (auto& file : *remote_entry.mutable_uploaded_files()) {
+    if (!file.has_omitted_data_hash()) {
+      continue;
+    }
+    if (const std::string* local =
+            base::FindOrNull(content_by_hash, file.omitted_data_hash())) {
+      file.set_data(*local);
+    }
+  }
+}
+
 // Whether |remote_entry|, decoded from a record, has the content of the latest
 // revision of |local_entry|, an entry with edit revisions. |local_entry| is
 // built into a record the way a sender builds it, and decoded again, so both
@@ -162,21 +250,14 @@ bool HasLatestRevisionContent(const mojom::ConversationTurn& local_entry,
 // Sync sends an edited entry as its latest revision alone, under the original
 // entry's uuid, so writing |remote_entry| as it is would delete this device's
 // edit revisions, including the original text. Returns the entry to write
-// instead: this device's entry with its revisions, plus |remote_entry| as a new
-// latest revision unless it matches the latest one. |remote_time| is the time
-// the record carries. Returns |remote_entry| when the local entry has no
-// revisions, and nullopt when it can't be read.
-std::optional<mojom::ConversationTurnPtr> WithLocalEditHistory(
-    AIChatDatabase& database,
+// instead: |local|, this device's entry with its revisions, plus |remote_entry|
+// as a new latest revision unless it matches the latest one. |remote_time| is
+// the time the record carries. Returns |remote_entry| when |local| is null or
+// has no revisions.
+mojom::ConversationTurnPtr WithLocalEditHistory(
+    mojom::ConversationTurnPtr local,
     mojom::ConversationTurnPtr remote_entry,
     base::Time remote_time) {
-  auto read = database.GetConversationEntryWithEdits(*remote_entry->uuid);
-  if (!read) {
-    return std::nullopt;
-  }
-  mojom::ConversationTurnPtr local = std::move(*read);
-  // The batch's snapshot of edited entries can be out of date: a tombstone in
-  // the same batch may have deleted the entry since.
   if (!local || !local->edits || local->edits->empty()) {
     return remote_entry;
   }
@@ -756,43 +837,79 @@ bool AIChatSyncBridge::ApplyRemoteRecord(
     return true;
   }
 
-  // TODO(https://github.com/brave/brave-browser/issues/53978): before decoding,
-  // put back from the local entry the values the sender omitted for size. An
-  // omitted value decodes as blank, so until then the write blanks it. For an
-  // edited entry, the blank also counts as a change from the latest revision,
-  // so it's added as a new revision.
-  std::vector<mojom::AssociatedContentPtr> associated_content;
-  base::flat_map<std::string, std::string> associated_content_texts;
-  auto entry = SpecificsToEntry(specifics, associated_content,
-                                &associated_content_texts);
-  if (!entry) {
+  if (!specifics.has_entry()) {
     return true;
   }
+  const sync_pb::AIChatConversationSpecifics_Entry& remote_entry =
+      specifics.entry();
+  const std::string& conversation_uuid = remote_entry.conversation_uuid();
 
   // An associated content uuid is unique across conversations, but
   // AIChatDatabase::AddOrUpdateAssociatedContent() updates only a row in the
   // same conversation, so a uuid another conversation holds would collide on
   // insert. A failed lookup reads as no owner, which leaves the write to report
-  // any collision.
-  const std::string& conversation_uuid = specifics.entry().conversation_uuid();
-  for (const auto& content : associated_content) {
+  // any collision. Only the uuids matter, so this comes before the local reads.
+  for (const auto& content : remote_entry.associated_content()) {
     auto owner =
-        database_->GetConversationUuidForAssociatedContent(content->uuid);
+        database_->GetConversationUuidForAssociatedContent(content.uuid());
     if (owner && *owner != conversation_uuid) {
       return true;
     }
   }
 
-  // Only an entry the batch's snapshot names has revisions to keep, so the
-  // others are written without reading the local entry.
-  if (edited_entry_uuids.contains(*entry->uuid)) {
-    auto with_history =
-        WithLocalEditHistory(*database_, std::move(entry), modified_time);
-    if (!with_history) {
+  // Read this device's entry only when the record omits a value or the
+  // snapshot says the entry has revisions, and once for both uses. With no
+  // local entry, as when a tombstone in the same batch deleted it, there is
+  // nothing to read. A failed read fails the batch, even for a record that
+  // would then be skipped as undecodable.
+  const bool has_omitted_values = HasOmittedValues(remote_entry);
+  const bool has_revisions = edited_entry_uuids.contains(remote_entry.uuid());
+  mojom::ConversationTurnPtr local_entry;
+  if (local->exists && (has_omitted_values || has_revisions)) {
+    // Reading revisions scans every entry, since nothing is indexed on
+    // editing_entry_uuid, so an entry without them is read by its uuid alone.
+    auto read =
+        has_revisions
+            ? database_->GetConversationEntryWithEdits(remote_entry.uuid())
+            : database_->GetConversationEntryWithoutEdits(remote_entry.uuid());
+    if (!read) {
+      // Taking the failed read for no local entry would let the write blank
+      // omitted values and delete revisions.
       return false;
     }
-    entry = std::move(*with_history);
+    local_entry = std::move(*read);
   }
+
+  // An omitted value decodes as blank, so the values the sender omitted are
+  // put back, into a copy of the record, before it's decoded.
+  std::optional<sync_pb::AIChatConversationSpecifics> specifics_copy;
+  if (has_omitted_values && local_entry) {
+    // This scans the associated_content table, but only for a newer record
+    // that omits a value and has a local entry.
+    auto page_texts = database_->GetAssociatedContentTexts(remote_entry.uuid());
+    if (!page_texts) {
+      return false;
+    }
+    specifics_copy.emplace(specifics);
+    RestoreOmittedFieldsFromLocal(*local_entry, std::move(*page_texts),
+                                  *specifics_copy->mutable_entry());
+  }
+
+  // TODO(https://github.com/brave/brave-browser/issues/53978): an omitted value
+  // with no local match (changed here since, or only in an earlier revision)
+  // still decodes as blank, so the write blanks it. For an edited entry, the
+  // blank also counts as a change from the latest revision, so it's added as a
+  // new revision.
+  std::vector<mojom::AssociatedContentPtr> associated_content;
+  base::flat_map<std::string, std::string> associated_content_texts;
+  auto entry = SpecificsToEntry(specifics_copy ? *specifics_copy : specifics,
+                                associated_content, &associated_content_texts);
+  if (!entry) {
+    return true;
+  }
+
+  entry = WithLocalEditHistory(std::move(local_entry), std::move(entry),
+                               modified_time);
 
   std::vector<std::string> contents = base::ToVector(
       associated_content, [&](const mojom::AssociatedContentPtr& content) {
