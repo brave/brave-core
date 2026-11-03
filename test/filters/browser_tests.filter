@@ -69,8 +69,6 @@
 -ContextualTasksExtensionMessagingAbaSearchJourneysTest.RegisterAimThreadForPromo
 -ContextualTasksExtensionMessagingAbaSearchJourneysTest.RegisterAimThreadForPromoWithoutJourney
 -DevToolsTest.TestOpenSearchResultsInNewTab
--ExtensionControllingSearchExplicitChoiceParamsBrowserTest.NewExtensionOrPreviousGoogleSearch
--ExtensionControllingSearchExplicitChoiceParamsBrowserTest.PrepopulatedSearches
 -ExtensionControllingSearchExplicitChoiceParamsBrowserTest.PrimaryAndSecondarySearchesFetchDistinctIcons
 -ExtensionControllingSearchExplicitChoiceParamsBrowserTest.PrimarySearchIsExtensionInPrepopulatedList
 -ExtensionControllingSearchExplicitChoiceParamsBrowserTest.SecondarySearchIsPrepopulatedNonExtension
@@ -150,8 +148,6 @@
 -ExecutionEngine*BrowserTest.*
 -ExplainSuggestionBrowserTest.AcceptingFreRecordsConsentAndUnblocksExplanation
 -ExplainSuggestionBrowserTest.GetExplanation
--HistoryEmbeddingsKillSwitchBrowserTest.NoCrashAfterKillSwitch
--HistoryEmbeddingsRestrictedSigninBrowserTest.SearchDoesNotReceiveAnswerForRestrictedSignin
 -IndigoContextMenuSnoozePromoBrowserTest.*
 -LoadingPredictorExtensionBrowserTest.PrefetchBlockedByExtension
 -LoadingPredictorExtensionBrowserTest.PrefetchObservedByExtension
@@ -2016,10 +2012,6 @@
 # return false (disables creation of PageContentAnnotationsService and
 # PageContentExtractionService)
 -All/PageContentAnnotationsServiceContentExtraction*Test*.*/*
--HistoryEmbeddingsBrowserTest.*
--HistoryEmbeddingsWithLowAggregationBrowserTest.PassageContextSelectionLimitedByWordCount
--HistoryEmbeddingsWithUrlFilterBrowserTest.DoesNotFilterUrlNotOnBlocklist
--HistoryEmbeddingsWithUrlFilterBrowserTest.FilterUrlOnBlocklist
 -PageContentAnnotationsService*.*
 -All/PageContentCacheDiscardBrowserTest.*/*
 -PageContentCacheBrowserTest.*
@@ -2108,10 +2100,6 @@
 
 # This test fails because we show brave://welcome page on first run
 -StartupBrowserCreatorTriggeredResetFirstRunTest.TestTriggeredResetDoesNotShowWithFirstRunURLs
-
-# These tests fail because we change the default for TOP_LEVEL_STORAGE_ACCESS
-# to CONTENT_SETTING_BLOCK.
--TopLevelStorageExemptionReasonMetricTest.TestMetricResults/*
 
 # This seems to be an upstream bug. This test crashes in
 # extensions::WebViewGuest::FrameNameChanged. The crash happens because the JS
