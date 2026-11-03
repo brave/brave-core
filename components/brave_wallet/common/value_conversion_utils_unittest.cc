@@ -132,6 +132,18 @@ TEST(ValueConversionUtilsUnitTest, ParseEip3085Payload) {
         ParseEip3085Payload(base::test::ParseJson(R"([])"));
     ASSERT_FALSE(chain);
   }
+  // Chain ID 0 would make legacy transactions unprotected (no EIP-155
+  // replay protection); reject it like upstream wallets do.
+  {
+    mojom::NetworkInfoPtr chain =
+        ParseEip3085Payload(base::test::ParseJson(R"({"chainId": "0x0"})"));
+    ASSERT_FALSE(chain);
+  }
+  {
+    mojom::NetworkInfoPtr chain = ParseEip3085Payload(
+        base::test::ParseJson(R"({"chainId": "0x00000000"})"));
+    ASSERT_FALSE(chain);
+  }
 }
 
 TEST(ValueConversionUtilsUnitTest, ValueToNetworkInfoTest) {
