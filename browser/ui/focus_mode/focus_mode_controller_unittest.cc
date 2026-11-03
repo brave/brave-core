@@ -127,3 +127,105 @@ TEST(FocusModeControllerTest, NotifiesAllRegisteredObservers) {
   controller.RemoveObserver(&observer_a);
   controller.RemoveObserver(&observer_b);
 }
+
+TEST(FocusModeControllerTest, SuppressWhileEnabledDisablesAndRestores) {
+  ui::UnownedUserDataHost user_data_host;
+  FocusModeController controller(user_data_host);
+  controller.SetEnabled(true);
+
+  TestObserver observer;
+  controller.AddObserver(&observer);
+
+  {
+    auto suppression = controller.Suppress();
+    EXPECT_FALSE(controller.IsEnabled());
+    EXPECT_EQ(1, observer.call_count());
+    EXPECT_FALSE(observer.last_enabled());
+  }
+
+  EXPECT_TRUE(controller.IsEnabled());
+  EXPECT_EQ(2, observer.call_count());
+  EXPECT_TRUE(observer.last_enabled());
+
+  controller.RemoveObserver(&observer);
+}
+
+TEST(FocusModeControllerTest, SuppressWhileDisabledDoesNotNotify) {
+  ui::UnownedUserDataHost user_data_host;
+  FocusModeController controller(user_data_host);
+  TestObserver observer;
+  controller.AddObserver(&observer);
+
+  {
+    auto suppression = controller.Suppress();
+    EXPECT_FALSE(controller.IsEnabled());
+    EXPECT_EQ(0, observer.call_count());
+  }
+
+  EXPECT_FALSE(controller.IsEnabled());
+  EXPECT_EQ(0, observer.call_count());
+
+  controller.RemoveObserver(&observer);
+}
+
+TEST(FocusModeControllerTest, NestedSuppressionRestoresOnlyWhenAllReleased) {
+  ui::UnownedUserDataHost user_data_host;
+  FocusModeController controller(user_data_host);
+  controller.SetEnabled(true);
+
+  TestObserver observer;
+  controller.AddObserver(&observer);
+
+  auto suppression_a = controller.Suppress();
+  EXPECT_FALSE(controller.IsEnabled());
+  EXPECT_EQ(1, observer.call_count());
+  EXPECT_FALSE(observer.last_enabled());
+
+  auto suppression_b = controller.Suppress();
+  EXPECT_FALSE(controller.IsEnabled());
+  EXPECT_EQ(1, observer.call_count());
+
+  suppression_a.RunAndReset();
+  EXPECT_FALSE(controller.IsEnabled());
+  EXPECT_EQ(1, observer.call_count());
+
+  suppression_b.RunAndReset();
+  EXPECT_TRUE(controller.IsEnabled());
+  EXPECT_EQ(2, observer.call_count());
+  EXPECT_TRUE(observer.last_enabled());
+
+  controller.RemoveObserver(&observer);
+}
+
+TEST(FocusModeControllerTest, ToggleWhileSuppressedAppliesOnRelease) {
+  ui::UnownedUserDataHost user_data_host;
+  FocusModeController controller(user_data_host);
+  TestObserver observer;
+  controller.AddObserver(&observer);
+
+  {
+    auto suppression = controller.Suppress();
+    controller.ToggleEnabled();
+    EXPECT_FALSE(controller.IsEnabled());
+    EXPECT_EQ(0, observer.call_count());
+  }
+
+  EXPECT_TRUE(controller.IsEnabled());
+  EXPECT_EQ(1, observer.call_count());
+  EXPECT_TRUE(observer.last_enabled());
+
+  {
+    auto suppression = controller.Suppress();
+    EXPECT_EQ(2, observer.call_count());
+    EXPECT_FALSE(observer.last_enabled());
+
+    controller.ToggleEnabled();
+    EXPECT_FALSE(controller.IsEnabled());
+    EXPECT_EQ(2, observer.call_count());
+  }
+
+  EXPECT_FALSE(controller.IsEnabled());
+  EXPECT_EQ(2, observer.call_count());
+
+  controller.RemoveObserver(&observer);
+}
