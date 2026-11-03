@@ -27,6 +27,9 @@ import org.mockito.junit.MockitoRule;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+import org.chromium.chrome.browser.tab.TabRestoreEntryId;
+import org.chromium.chrome.browser.tabmodel.TabClosingSource;
+import org.chromium.chrome.browser.tabmodel.TabList;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tabmodel.undo.UndoClosureSnapshot;
@@ -101,13 +104,22 @@ public class BraveUndoBarControllerTest {
 
     private static UndoClosureSnapshot twoClosedTabs() {
         return UndoClosureSnapshot.forTabModel(
-                List.of(
-                        new UndoClosureSnapshot.ClosedTab(TAB_ID_1, "Tab 1", /* groupId= */ null),
-                        new UndoClosureSnapshot.ClosedTab(TAB_ID_2, "Tab 2", /* groupId= */ null)),
+                List.of(closedTab(TAB_ID_1, "Tab 1"), closedTab(TAB_ID_2, "Tab 2")),
                 Collections.emptyMap(),
-                Collections.emptySet(),
-                Collections.emptySet(),
                 /* isTabGroupSyncEnabled= */ false,
-                /* isAllTabs= */ false);
+                /* isAllTabs= */ false,
+                TabRestoreEntryId.INVALID_TAB_RESTORE_ENTRY_ID,
+                TabClosingSource.UNKNOWN,
+                /* undoRunnable= */ null);
+    }
+
+    private static UndoClosureSnapshot.ClosedTab closedTab(int id, String title) {
+        return new UndoClosureSnapshot.ClosedTab(
+                id,
+                title,
+                /* groupId= */ null,
+                /* modelIndex= */ TabList.INVALID_TAB_INDEX,
+                /* pinned= */ false,
+                /* wasSelected= */ false);
     }
 }
