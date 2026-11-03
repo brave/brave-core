@@ -132,6 +132,13 @@ function AdvancedControlsContent() {
     if (getSiteSettings) getSiteSettings()
   }
 
+  const handleBlockAllNewWindowsEnabledChange = (detail: { checked: boolean }) => {
+    getPanelBrowserAPI().dataHandler.setBlockAllNewWindowsEnabled(
+      detail.checked
+    )
+    if (getSiteSettings) getSiteSettings()
+  }
+
   const getEnforcedDescription = () => {
     if (!siteSettings?.scriptsBlockedOverrideStatus) {
       return getLocale('braveShieldsScriptsBlockedOverridden')
@@ -162,6 +169,9 @@ function AdvancedControlsContent() {
   const isTorProfile = loadTimeData.getBoolean('isTorProfile')
   const isBraveForgetFirstPartyStorageFeatureEnabled = loadTimeData.getBoolean(
     'isBraveForgetFirstPartyStorageFeatureEnabled'
+  )
+  const isBlockAllNewWindowsFeatureEnabled = loadTimeData.getBoolean(
+    'isBlockAllNewWindowsFeatureEnabled'
   )
   const isEnforced =
     siteSettings?.scriptsBlockedOverrideStatus?.overrideSource !== undefined
@@ -305,6 +315,18 @@ function AdvancedControlsContent() {
               aria-label={getLocale('braveShieldsFingerprintingBlockedStd')}
               onChange={handleForgetFirstPartyStorageEnabledChange}
               checked={siteSettings?.isForgetFirstPartyStorageEnabled}
+              size='small'
+              disabled={siteBlockInfo?.isBraveShieldsManaged}
+            />
+          </label>
+        </S.ControlGroup>}
+        {isBlockAllNewWindowsFeatureEnabled && <S.ControlGroup>
+          <label>
+            <span>{getLocale('braveShieldsBlockAllNewWindows')}</span>
+            <Toggle
+              aria-label={getLocale('braveShieldsBlockAllNewWindows')}
+              onChange={handleBlockAllNewWindowsEnabledChange}
+              checked={siteSettings?.isBlockAllNewWindowsEnabled}
               size='small'
               disabled={siteBlockInfo?.isBraveShieldsManaged}
             />

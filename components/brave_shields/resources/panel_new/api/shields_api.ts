@@ -53,6 +53,7 @@ export interface LoadTimeState {
   showStrictFingerprintingMode: boolean
   isWebcompatExceptionsServiceEnabled: boolean
   isBraveForgetFirstPartyStorageFeatureEnabled: boolean
+  isBlockAllNewWindowsFeatureEnabled: boolean
   repeatedReloadsDetected: boolean
 }
 
@@ -149,6 +150,14 @@ export function createShieldsApi(opts: {
             })
           },
         },
+        setBlockAllNewWindowsEnabled: {
+          mutationResponse: () => undefined,
+          onMutate: ([enabled]: [boolean]) => {
+            api.getSiteSettings.update({
+              isBlockAllNewWindowsEnabled: enabled,
+            })
+          },
+        },
         setWebcompatEnabled: {
           mutationResponse: () => undefined,
           onMutate: ([feature, enabled]: [ContentSettingsType, boolean]) => {
@@ -226,6 +235,9 @@ export function createShieldsApi(opts: {
       ),
       isBraveForgetFirstPartyStorageFeatureEnabled: state(
         loadTimeState.isBraveForgetFirstPartyStorageFeatureEnabled,
+      ),
+      isBlockAllNewWindowsFeatureEnabled: state(
+        loadTimeState.isBlockAllNewWindowsFeatureEnabled,
       ),
       repeatedReloadsDetected: state(loadTimeState.repeatedReloadsDetected),
     },

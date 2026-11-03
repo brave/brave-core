@@ -59,6 +59,7 @@ export function AdvancedSettings(props: Props) {
       <FingerprintingControls showDetails={props.showFingerprintingDetails} />
       <CookieBlockControls />
       <ForgetFirstPartyStorageControls />
+      <BlockAllNewWindowsControls />
       <BlockElementsControls />
     </div>
   )
@@ -386,6 +387,35 @@ function ForgetFirstPartyStorageControls() {
           size='small'
           onChange={(event) => {
             api.setForgetFirstPartyStorageEnabled([event.checked])
+          }}
+        />
+      </div>
+      <div />
+    </div>
+  )
+}
+
+function BlockAllNewWindowsControls() {
+  const api = useShieldsApi()
+  const { data: siteSettings } = api.useGetSiteSettings()
+  const { data: siteBlockInfo } = api.useGetSiteBlockInfo()
+  const featureEnabled = api.useIsBlockAllNewWindowsFeatureEnabledData()
+
+  if (!featureEnabled || !siteBlockInfo || !siteSettings) {
+    return null
+  }
+
+  return (
+    <div>
+      <Icon name='window-tab-new' />
+      <div className='toggle'>
+        {getString('BRAVE_SHIELDS_BLOCK_ALL_NEW_WINDOWS_LABEL')}
+        <Toggle
+          checked={siteSettings.isBlockAllNewWindowsEnabled}
+          disabled={siteBlockInfo.isBraveShieldsManaged}
+          size='small'
+          onChange={(event) => {
+            api.setBlockAllNewWindowsEnabled([event.checked])
           }}
         />
       </div>

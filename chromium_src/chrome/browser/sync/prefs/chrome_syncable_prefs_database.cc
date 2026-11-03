@@ -46,12 +46,21 @@ enum {
   kProfileContentSettingsPartitionedExceptionsFingerprintingV2 = 300027,
   kProfileContentSettingsPartitionedExceptionsBraveShields = 300028,
   kProfileContentSettingsPartitionedExceptionsBraveSpeedreader = 300029,
+  kProfileContentSettingsExceptionsBraveBlockAllNewWindows = 300030,
+  kProfileDefaultContentSettingValuesBraveBlockAllNewWindows = 300031,
+  kProfileContentSettingsPartitionedExceptionsBraveBlockAllNewWindows = 300032,
 };
 }  // namespace brave_syncable_prefs_ids
 
 const auto& BraveSyncablePreferences() {
   static constexpr auto kBraveSyncablePrefsAllowList = base::MakeFixedFlatMap<
       std::string_view, sync_preferences::SyncablePrefMetadata>({
+      {"profile.content_settings.exceptions.braveBlockAllNewWindows",
+       {brave_syncable_prefs_ids::
+            kProfileContentSettingsExceptionsBraveBlockAllNewWindows,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kMergeableDict,
+        sync_preferences::WriteBehavior::kWriteToBoth}},
       {"profile.content_settings.exceptions.braveShields",
        {brave_syncable_prefs_ids::kProfileContentSettingsExceptionsBraveShields,
         syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
@@ -107,6 +116,12 @@ const auto& BraveSyncablePreferences() {
        {brave_syncable_prefs_ids::kProfileContentSettingsExceptionsTrackers,
         syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
         sync_preferences::MergeBehavior::kMergeableDict,
+        sync_preferences::WriteBehavior::kWriteToBoth}},
+      {"profile.default_content_setting_values.braveBlockAllNewWindows",
+       {brave_syncable_prefs_ids::
+            kProfileDefaultContentSettingValuesBraveBlockAllNewWindows,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kNone,
         sync_preferences::WriteBehavior::kWriteToBoth}},
       {"profile.default_content_setting_values.braveShields",
        {brave_syncable_prefs_ids::
@@ -164,6 +179,13 @@ const auto& BraveSyncablePreferences() {
        {brave_syncable_prefs_ids::kProfileDefaultContentSettingValuesTrackers,
         syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
         sync_preferences::MergeBehavior::kNone,
+        sync_preferences::WriteBehavior::kWriteToBoth}},
+      {"profile.content_settings.partitioned_exceptions."
+       "braveBlockAllNewWindows",
+       {brave_syncable_prefs_ids::
+            kProfileContentSettingsPartitionedExceptionsBraveBlockAllNewWindows,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kMergeableDict,
         sync_preferences::WriteBehavior::kWriteToBoth}},
       {"profile.content_settings.partitioned_exceptions.braveShields",
        {brave_syncable_prefs_ids::

@@ -88,6 +88,7 @@ export default {
             overrideSource: ContentSettingSource.kNone,
           },
           isForgetFirstPartyStorageEnabled: false,
+          isBlockAllNewWindowsEnabled: false,
           webcompatSettings: {}
         },
         viewType: ViewType.Main

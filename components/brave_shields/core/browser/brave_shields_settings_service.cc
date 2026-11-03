@@ -269,6 +269,29 @@ void BraveShieldsSettingsService::SetForgetFirstPartyStorageEnabled(
   MaybeRecordShieldsUsageP3A(kChangedPerSiteShields, local_state_);
   RecordForgetFirstPartySetting(&*host_content_settings_map_);
 }
+
+bool BraveShieldsSettingsService::GetBlockAllNewWindowsEnabled(
+    const GURL& url) {
+  return host_content_settings_map_->GetContentSetting(
+             url, url, ContentSettingsType::BRAVE_BLOCK_ALL_NEW_WINDOWS) ==
+         CONTENT_SETTING_BLOCK;
+}
+
+void BraveShieldsSettingsService::SetBlockAllNewWindowsEnabled(
+    bool is_enabled,
+    const GURL& url) {
+  auto primary_pattern = content_settings::CreateDomainPattern(url);
+  if (!primary_pattern.IsValid()) {
+    return;
+  }
+
+  host_content_settings_map_->SetContentSettingCustomScope(
+      primary_pattern, ContentSettingsPattern::Wildcard(),
+      ContentSettingsType::BRAVE_BLOCK_ALL_NEW_WINDOWS,
+      is_enabled ? CONTENT_SETTING_BLOCK : CONTENT_SETTING_ALLOW);
+
+  MaybeRecordShieldsUsageP3A(kChangedPerSiteShields, local_state_);
+}
 #endif
 
 void BraveShieldsSettingsService::SetDefaultAutoShredMode(

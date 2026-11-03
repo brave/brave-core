@@ -59,6 +59,7 @@ const mockSiteSettings: SiteSettings = {
   httpsUpgradeMode: HttpsUpgradeMode.STANDARD_MODE,
   isNoscriptEnabled: false,
   isForgetFirstPartyStorageEnabled: false,
+  isBlockAllNewWindowsEnabled: false,
   scriptsBlockedOverrideStatus: {
     status: ContentSetting.BLOCK,
     overrideSource: ContentSettingSource.kNone,
@@ -91,6 +92,7 @@ function createMockDataHandler(): Closable<DataHandlerInterface> {
     setBraveShieldsAdBlockOnlyModeEnabled(isEnabled) {},
     setBraveShieldsAdBlockOnlyModePromptDismissed() {},
     setForgetFirstPartyStorageEnabled(isEnabled) {},
+    setBlockAllNewWindowsEnabled(isEnabled) {},
     setWebcompatEnabled(webcompatSettingsType, enable) {},
     allowScriptsOnce(origins) {},
     blockAllowedScripts(origins) {},
@@ -142,6 +144,7 @@ export function createMockShieldsAPI() {
       showStrictFingerprintingMode: true,
       isWebcompatExceptionsServiceEnabled: true,
       isBraveForgetFirstPartyStorageFeatureEnabled: true,
+      isBlockAllNewWindowsFeatureEnabled: true,
       repeatedReloadsDetected: false,
     },
   })

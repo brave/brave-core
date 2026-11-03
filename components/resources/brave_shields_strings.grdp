@@ -236,6 +236,10 @@
     Clears cookies and other site data when you close a site
   </message>
 
+  <message name="IDS_BRAVE_SHIELDS_BLOCK_ALL_NEW_WINDOWS_LABEL" desc="Shields panel toggle label that blocks every new window or tab the site tries to open, including ones triggered by a click." formatter_data="webui=BraveShields">
+    Block all new windows
+  </message>
+
   <message name="IDS_BRAVE_SHIELDS_SAVE_CONTACT_INFO_LABEL" desc="Shields panel toggle label that would save webcompat report contact info data when enabled.">
     Store contact information for future broken site reports
   </message>

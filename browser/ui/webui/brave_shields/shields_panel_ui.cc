@@ -70,6 +70,10 @@ ShieldsPanelUI::ShieldsPanelUI(content::WebUI* web_ui)
                      base::FeatureList::IsEnabled(
                          net::features::kBraveForgetFirstPartyStorage));
 
+  source->AddBoolean("isBlockAllNewWindowsFeatureEnabled",
+                     base::FeatureList::IsEnabled(
+                         brave_shields::features::kBlockAllNewWindows));
+
   source->AddBoolean(
       "isWebcompatExceptionsServiceEnabled",
       base::FeatureList::IsEnabled(

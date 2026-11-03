@@ -42,6 +42,9 @@ function createBrowserShieldsApi() {
       isBraveForgetFirstPartyStorageFeatureEnabled: loadTimeData.getBoolean(
         'isBraveForgetFirstPartyStorageFeatureEnabled',
       ),
+      isBlockAllNewWindowsFeatureEnabled: loadTimeData.getBoolean(
+        'isBlockAllNewWindowsFeatureEnabled',
+      ),
       repeatedReloadsDetected: hasReloadsDetectedFlag(),
     },
   })

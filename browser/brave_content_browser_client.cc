@@ -68,6 +68,7 @@
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/content/browser/domain_block_navigation_throttle.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
@@ -1004,6 +1005,27 @@ bool BraveContentBrowserClient::CanCreateWindow(
     bool user_gesture,
     bool opener_suppressed,
     bool* no_javascript_access) {
+  // Per-site Shields setting: block every page-opened window, including
+  // click-triggered popups that Chrome's popup blocker allows.
+  if (base::FeatureList::IsEnabled(
+          brave_shields::features::kBlockAllNewWindows) &&
+      opener_top_level_frame_url.SchemeIsHTTPOrHTTPS()) {
+    if (content::WebContents* web_contents =
+            content::WebContents::FromRenderFrameHost(opener)) {
+      HostContentSettingsMap* map =
+          HostContentSettingsMapFactory::GetForProfile(
+              web_contents->GetBrowserContext());
+      if (brave_shields::IsBraveShieldsEnabled(map,
+                                               opener_top_level_frame_url) &&
+          map->GetContentSetting(
+              opener_top_level_frame_url, opener_top_level_frame_url,
+              ContentSettingsType::BRAVE_BLOCK_ALL_NEW_WINDOWS) ==
+              CONTENT_SETTING_BLOCK) {
+        return false;
+      }
+    }
+  }
+
   // Check base implementation first
   bool can_create_window = ChromeContentBrowserClient::CanCreateWindow(
       opener, opener_url, opener_top_level_frame_url, source_origin,

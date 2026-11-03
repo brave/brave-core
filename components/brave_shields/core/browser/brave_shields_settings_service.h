@@ -59,6 +59,8 @@ class BraveShieldsSettingsService : public KeyedService {
 #if !BUILDFLAG(IS_IOS)
   bool GetForgetFirstPartyStorageEnabled(const GURL& url);
   void SetForgetFirstPartyStorageEnabled(bool is_enabled, const GURL& url);
+  bool GetBlockAllNewWindowsEnabled(const GURL& url);
+  void SetBlockAllNewWindowsEnabled(bool is_enabled, const GURL& url);
 #endif
 
   void SetDefaultAutoShredMode(mojom::AutoShredMode mode);
