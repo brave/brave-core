@@ -34,11 +34,8 @@ public class BraveMultiWindowUtils extends MultiWindowUtils {
                 || MultiWindowUtils.canEnterMultiWindowMode();
     }
 
-    public static boolean shouldShowManageWindowsMenu() {
-        return shouldEnableMultiWindows() && MultiWindowUtils.shouldShowManageWindowsMenu();
-    }
-
-    // Unlike shouldShowManageWindowsMenu(), doesn't depend on the current window count.
+    // Unlike MultiWindowUtils.shouldShowManageWindowsMenu(), doesn't depend on the current window
+    // count.
     public static boolean isWindowManagerAvailable() {
         return shouldEnableMultiWindows() && !MultiWindowUtils.isWindowManagerDeprecated();
     }

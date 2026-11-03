@@ -94,7 +94,6 @@ public class BraveClassAdapter {
         chain = new BraveMostVisitedTilesMediatorClassAdapter(chain);
         chain = new BraveMultiInstanceManagerApi31ClassAdapter(chain);
         chain = new BraveMultiInstanceOrchestratorImplClassAdapter(chain);
-        chain = new BraveMultiWindowUtilsClassAdapter(chain);
         chain = new BraveNewBackgroundTabAnimationDataClassAdapter(chain);
         chain = new BraveNewTabPageClassAdapter(chain);
         chain = new BraveNewTabPageCoordinatorClassAdapter(chain);

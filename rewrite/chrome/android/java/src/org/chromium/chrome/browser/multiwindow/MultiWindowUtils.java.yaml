@@ -5,16 +5,35 @@
 
 substitutions:
   - description: |-
+      Make the process-wide instance Brave's subclass.
+
+      BraveMultiWindowUtils overrides isLinkNavigationToOtherWindowSupported()
+      and isMoveToOtherWindowSupported() to gate them on Brave's multi-window
+      preference, so getInstance() has to hand out the subclass for those
+      overrides to be reached.
+
+      ClassInitializationDeadlock has to be suppressed because the static
+      initializer now names a subclass of the class being initialized. The
+      hazard is not new: BraveMultiWindowUtilsClassAdapter's redirectConstructor
+      produced exactly this bytecode, errorprone just ran on the source before
+      the rewriter and never saw it. Lazy initialization in getInstance() would
+      remove it, but sInstance is also read directly inside
+      getOpenInOtherWindowActivity(), and the clinit is what makes publication
+      thread-safe today.
+    regex:
+      re_pattern: |-
+        private (static MultiWindowUtils sInstance = new )MultiWindowUtils\(\)
+      replace: |-
+        @SuppressWarnings("ClassInitializationDeadlock")
+            private \1BraveMultiWindowUtils()
+
+  - description: |-
       Gate link navigation to a new window on Brave's multi-window preference.
 
       Replaces the BraveMultiWindowUtilsClassAdapter redirect, which matched by
       method name only and so also caught the private
       isLinkNavigationToNewWindowSupported(Set<Integer>) overload added by
       c934e7cc992b7.
-
-      Only the static methods are rewritten here. The instance ones,
-      isLinkNavigationToOtherWindowSupported() and isMoveToOtherWindowSupported(),
-      are gated by BraveMultiWindowUtils overrides instead.
     regex:
       re_pattern: |-
         (public static boolean isLinkNavigationToNewWindowSupported\(\) \{)
@@ -28,6 +47,27 @@ substitutions:
     regex:
       re_pattern: |-
         (public static boolean isLinkNavigationToIncognitoWindowSupported\(\) \{)
+      replace: |-
+        \1
+                if (!BraveMultiWindowUtils.shouldEnableMultiWindows()) return false;
+
+  - description: |-
+      Gate opening a new window adjacently on Brave's multi-window preference.
+
+      Only this call site is rewritten, not canEnterMultiWindowMode() itself:
+      BraveMultiWindowUtils.shouldShowEnableWindow() calls it to decide whether
+      to offer the preference, and gating that would hide the only way of
+      turning multi-window back on.
+    regex:
+      re_pattern: |-
+        (openAdjacently =[^;]*?)canEnterMultiWindowMode\(\)
+      replace: '\1BraveMultiWindowUtils.canEnterMultiWindowMode()'
+
+  - description: |-
+      Gate the manage windows menu on Brave's multi-window preference.
+    regex:
+      re_pattern: |-
+        (public static boolean shouldShowManageWindowsMenu\(\) \{)
       replace: |-
         \1
                 if (!BraveMultiWindowUtils.shouldEnableMultiWindows()) return false;

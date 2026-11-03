@@ -555,18 +555,6 @@
     <init>(...);
 }
 
--keep class org.chromium.chrome.browser.multiwindow.MultiWindowUtils {
-    *** shouldShowManageWindowsMenu(...);
-    *** isLinkNavigationToOtherWindowSupported(...);
-    *** isMoveToOtherWindowSupported(...);
-    *** canEnterMultiWindowMode(...);
-    <init>(...);
-}
-
--keep class org.chromium.chrome.browser.multiwindow.BraveMultiWindowUtils {
-    public <init>(...);
-}
-
 -keep class org.chromium.chrome.browser.notifications.permissions.NotificationPermissionRationaleDialogController {
     public <init>(...);
 }

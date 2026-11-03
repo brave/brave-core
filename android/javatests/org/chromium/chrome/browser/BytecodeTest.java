@@ -445,7 +445,6 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/bookmarks/BookmarkUiPrefs"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/multiwindow/MultiInstanceManagerApi31"));
-        Assert.assertTrue(classExists("org/chromium/chrome/browser/multiwindow/MultiWindowUtils"));
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragment")); // presubmit: ignore-long-line
@@ -943,33 +942,6 @@ public class BytecodeTest {
                         MethodModifier.REGULAR,
                         boolean.class,
                         int.class,
-                        boolean.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/multiwindow/MultiWindowUtils",
-                        "isLinkNavigationToOtherWindowSupported",
-                        MethodModifier.REGULAR,
-                        boolean.class,
-                        Activity.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/multiwindow/MultiWindowUtils",
-                        "isMoveToOtherWindowSupported",
-                        MethodModifier.REGULAR,
-                        boolean.class,
-                        Activity.class,
-                        TabModelSelector.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/multiwindow/MultiWindowUtils",
-                        "canEnterMultiWindowMode",
-                        MethodModifier.STATIC,
-                        boolean.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/multiwindow/MultiWindowUtils",
-                        "shouldShowManageWindowsMenu",
-                        MethodModifier.STATIC,
                         boolean.class));
         Assert.assertTrue(
                 methodExists(
@@ -1797,10 +1769,6 @@ public class BytecodeTest {
                         MonotonicObservableSupplier.class,
                         MenuOrKeyboardActionController.class,
                         Supplier.class));
-        Assert.assertTrue(
-                constructorsMatch(
-                        "org/chromium/chrome/browser/multiwindow/MultiWindowUtils",
-                        "org/chromium/chrome/browser/multiwindow/BraveMultiWindowUtils"));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/feed/FeedSurfaceMediator",
