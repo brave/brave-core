@@ -29,6 +29,7 @@ import {
   makeBraveWalletServiceObserver,
   makeBraveWalletServiceTokenObserver,
 } from '../common/wallet_api_proxy_observers'
+import { resolveIsSidePanel } from '../utils/is_side_panel'
 
 const store = configureStore({
   reducer: {
@@ -43,11 +44,10 @@ const store = configureStore({
     ui: {
       ...defaultUIState,
       isPanel: true,
-      // Bubble and side panel share the same WebUI host; side panel uses
-      // ?isSidePanel=true (see kBraveUIWalletSidePanelURL).
-      isSidePanel:
-        new URLSearchParams(window.location.search).get('isSidePanel')
-        === 'true',
+      // Bubble and side panel share the same WebUI host. Side panel boots with
+      // ?isSidePanel=true; persist via sessionStorage so SPA navigations and
+      // walletReset reloads do not drop the marker.
+      isSidePanel: resolveIsSidePanel(),
     },
   },
   middleware: (getDefaultMiddleware) =>
