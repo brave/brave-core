@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/frame/layout/browser_view_tabbed_layout_impl.cc b/chrome/browser/ui/views/frame/layout/browser_view_tabbed_layout_impl.cc
-index 389c6f8c6e66768cb20a960f11ba620c7516f44b..15519835488a0e406c2571d991171274b16df399 100644
+index 7764d4a4728973dc075efb308daa3d67ba2e10b6..1dd6746edc16bf2e99d0c318882ccd8e110607bb 100644
 --- a/chrome/browser/ui/views/frame/layout/browser_view_tabbed_layout_impl.cc
 +++ b/chrome/browser/ui/views/frame/layout/browser_view_tabbed_layout_impl.cc
-@@ -764,7 +764,7 @@ BrowserViewTabbedLayoutImpl::CalculateProposedLayout(
+@@ -824,7 +824,7 @@ BrowserViewTabbedLayoutImpl::CalculateProposedLayout(
    }
  
    BrowserLayoutParams params = layout_data_->revised_params;
@@ -10,4 +10,4 @@ index 389c6f8c6e66768cb20a960f11ba620c7516f44b..15519835488a0e406c2571d991171274
 +  bool needs_exclusion = !delegate().ShouldShowVerticalTabs();
    const HorizontalLayout& horizontal_layout = layout_data_->horizontal_layout;
  
-   if (IsParentedTo(views().organizer_tray, views().browser_view)) {
+   const int target_organizer_width =

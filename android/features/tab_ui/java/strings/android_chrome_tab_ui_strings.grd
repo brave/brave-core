@@ -718,10 +718,16 @@
         Tab groups
       </message>
       <message name="IDS_ACCESSIBILITY_COLLAPSE_VERTICAL_TABS" desc="Content description for the button to collapse the vertical tabs rail.">
-        Collapse Tabs
+        Collapse tabs
       </message>
       <message name="IDS_ACCESSIBILITY_EXPAND_VERTICAL_TABS" desc="Content description for the button to expand the vertical tabs rail.">
-        Expand Tabs
+        Expand tabs
+      </message>
+      <message name="IDS_ACCESSIBILITY_RESIZE_VERTICAL_TAB_RAIL" desc="Content description for the handle on the inner edge of the vertical tabs rail that the user drags to resize the rail.">
+        Resize vertical tab rail
+      </message>
+      <message name="IDS_VERTICAL_TABS_TAB_SEARCH" desc="Tooltip of the tab search button in the vertical tabs rail, also shown as the label next to the button while the rail is temporarily expanded because the mouse is hovering over it.">
+        Tab search
       </message>
       <message name="IDS_TAB_GROUPS_CREATED_AGO_NOW" desc="A subtitle on a row for a tab group. Explains the group was created less than a minute ago.">
         Created just now

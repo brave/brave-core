@@ -220,7 +220,6 @@
 <translation id="9040069796107003510">Brave Rewards 圖示</translation>
 <translation id="6333347122924254968">在網址列顯示 Brave 獎勵圖示</translation>
 <translation id="4393974575368329991">底部導覽工具列</translation>
-<translation id="8727059712928806451">啟用底部工具列</translation>
 <translation id="1834226716203076292">顯示底部列，以快速存取首頁、書籤和搜尋</translation>
 <translation id="1422686363939271829">選取底部位址列位置時，此設定會停用</translation>
 <translation id="6587448235155023666">所有變更將在你下次重啟 Brave 時生效</translation>
@@ -290,7 +289,7 @@
 <translation id="2569646144216067185">字數：<ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">錯誤的同步代碼</translation>
 <translation id="8284063834901328650">錯誤的同步 QR code</translation>
-<translation id="859506441384380749">此代碼由已淘汰的 Brave 版本產生，請先升級您的其他裝置</translation>
+<translation id="4002014583969312635">此代碼似乎是使用執行舊版 Brave 的裝置所建立的。請在您的其他裝置上將 Brave 更新至最新版本，然後建立新的同步代碼。</translation>
 <translation id="3132642509209154999">此代碼已過期，請在其他裝置上產生新的代碼，然後再試一次。</translation>
 <translation id="2859229680945501779">此程式碼無效。請確認您的裝置已正確設定時間和時區。</translation>
 <translation id="3149880132460839085">Brave 同步</translation>
@@ -336,8 +335,6 @@
 <translation id="8185825081026121627">查看保護使用者隱私的 Brave 獎賞廣告，賺取基本注意力通證 (BAT) 獎勵。</translation>
 <translation id="5321518976657560663">重設錯誤</translation>
 <translation id="4114170343590425996">重設 Brave 獎賞時發生問題，請重新啟動 Brave，然後再試。</translation>
-<translation id="6417420737057016607">Brave 廣告</translation>
-<translation id="5611966874859284786">不使用 Brave 時顯示通知廣告</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>重設 Brave Rewards 資料…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>清除 Brave Ads 資料…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">新增書籤</translation>
@@ -400,8 +397,9 @@
 <translation id="4546260624932151782">顯示最愛</translation>
 <translation id="5313967007315987356">新增網站</translation>
 <translation id="1773147648972887693">顯示經常造訪</translation>
-<translation id="752098910262610337">顯示捷徑</translation>
 <translation id="7134741506051403308">隱藏小工具</translation>
+<translation id="1247759249260562308">編輯我的最愛</translation>
+<translation id="6387214885349500492">釘選此我的最愛</translation>
 <translation id="7462178177755090262">開啟畫面</translation>
 <translation id="5365434987337264071">上次開啟的分頁</translation>
 <translation id="6019856124237323989">{HOURS, plural,
@@ -979,6 +977,7 @@
 <translation id="6365389672683343144">您的 Brave VPN 訂閱最多可以保護 5 部裝置，無論是 Android、iOS 或桌上型電腦都不成問題。只要將您的 Google Play 訂閱項目連結至您的 Brave 帳戶即可。</translation>
 <translation id="6610899852831463073">無法啟用安全瀏覽</translation>
 <translation id="7954263306665462056">您的裝置已停用安全瀏覽。若要啟用，請確保 Google Play 服務已安裝且保持最新版本。</translation>
+<translation id="6417420737057016607">Brave 廣告</translation>
 <translation id="7748944510530490017">主要網路</translation>
 <translation id="2781668117338732220">次要網路</translation>
 <translation id="282560918037172384">測試網路</translation>

@@ -24,7 +24,7 @@
   }
 </style>
 <template is="dom-if" if="[[shouldShowPrivateSearchProvider_(
-    prefs.default_search_provider_data.template_url_data)]]">
+    defaultSearchProviderPref_)]]">
   <div class="settings-box">
     <div class="default-search-engine flex">
       $i18n{privateSearchEnginesSiteSearchEngineHeading}
@@ -63,17 +63,17 @@
 <template is="dom-if" if="[[shouldShowSearchSuggestToggle_()]]" restamp>
   <settings-toggle-button id="searchSuggestToggle"
       class="hr"
-      pref="{{prefs.search.suggest_enabled}}"
+      pref-key="search.suggest_enabled"
       label="$i18n{searchSuggestLabel}"
       sub-label="$i18n{searchSuggestDesc}">
   </settings-toggle-button>
 </template>
 <if expr="enable_web_discovery">
   <template is="dom-if" if="[[!isPrefManaged_(
-      prefs.brave.web_discovery_enabled)]]" restamp>
+      webDiscoveryEnabledPref_)]]" restamp>
     <settings-toggle-button id="webDiscoveryEnabledExtension"
         class="cr-row"
-        pref="{{prefs.brave.web_discovery_enabled}}"
+        pref-key="brave.web_discovery_enabled"
         label="$i18n{braveWebDiscoveryLabel}"
         sub-label="$i18n{braveWebDiscoverySubLabel}"
         learn-more-url="$i18n{webDiscoveryLearnMoreURL}">

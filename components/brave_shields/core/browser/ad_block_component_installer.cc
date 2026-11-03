@@ -17,7 +17,7 @@
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/crx_file/id_util.h"
-#include "crypto/sha2.h"
+#include "crypto/hash.h"
 
 using brave_component_updater::BraveOnDemandUpdater;
 
@@ -29,7 +29,7 @@ class AdBlockComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {
  public:
   AdBlockComponentInstallerPolicy(
-      base::span<const uint8_t, crypto::kSHA256Length> component_hash,
+      base::span<const uint8_t, crypto::hash::kSha256Size> component_hash,
       const std::string& component_name,
       OnComponentReadyCallback callback);
   ~AdBlockComponentInstallerPolicy() override;
@@ -60,11 +60,11 @@ class AdBlockComponentInstallerPolicy
  private:
   const std::string component_name_;
   OnComponentReadyCallback ready_callback_;
-  std::array<uint8_t, crypto::kSHA256Length> component_hash_;
+  std::array<uint8_t, crypto::hash::kSha256Size> component_hash_;
 };
 
 AdBlockComponentInstallerPolicy::AdBlockComponentInstallerPolicy(
-    base::span<const uint8_t, crypto::kSHA256Length> component_hash,
+    base::span<const uint8_t, crypto::hash::kSha256Size> component_hash,
     const std::string& component_name,
     OnComponentReadyCallback callback)
     : component_name_(component_name), ready_callback_(callback) {
@@ -175,7 +175,7 @@ void RegisterAdBlockFilterListCatalogComponent(
 
 void RegisterAdBlockFiltersComponent(
     component_updater::ComponentUpdateService* cus,
-    base::span<const uint8_t, crypto::kSHA256Length>
+    base::span<const uint8_t, crypto::hash::kSha256Size>
         component_public_key_sha256,
     const std::string& component_name,
     OnComponentReadyCallback callback) {

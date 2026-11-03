@@ -23,6 +23,7 @@
 <translation id="8541922081612557424">Braveৰ বিষয়ে</translation>
 <translation id="987734326276404793">আপোনাৰ ফ’নত Braveৰ জৰিয়তে মূল্য ট্ৰেকিঙৰ সতৰ্কবাৰ্তা পাওক</translation>
 <translation id="1203500561924088507">ইনষ্টল কৰাৰ বাবে ধন্যবাদ। আপুনি <ph name="BUNDLE_NAME"/> ব্যৱহাৰ কৰাৰ পূৰ্বে আপোনাৰ ব্ৰাউজাৰটো ৰিষ্টাৰ্ট কৰিবই লাগিব।</translation>
+<translation id="1213674046343558619">এটা <ph name="IMPORTANT_UPDATE"/> বাকী আছে। আপোনাৰ ব্ৰাউজিং সুৰক্ষিত কৰি ৰাখিবলৈ, আপুনি <ph name="IDLE_DURATION"/>ৰ বাবে নিষ্ক্ৰিয় হৈ থাকিলে Brave আপডে’ট হ’ব।</translation>
 <translation id="1232234696885483911">আপুনি প্ৰতিচ্ছবিৰ সন্ধান খুলিলে, PDFসমূহকে ধৰি পৃষ্ঠাখনৰ শিৰোনাম, URL আৰু সমল স্বয়ংক্ৰিয়ভাৱে ছাৰ্ভাৰলৈ পঠিওৱা হ’ব। <ph name="LEARN_MORE"/></translation>
 <translation id="1934377710648094656">আপুনি ছাইন ইন হৈ থকাৰ সময়ত, আপুনি Braveত আপোনাৰ Brave একাউণ্টৰ পৰা আপোনাৰ পাছৱৰ্ড আৰু অধিক ব্যৱহাৰ কৰিব পাৰে। এইটো সলনি কৰিবলৈ, “Braveত আপোনাৰ একাউণ্ট”লৈ যাওক।</translation>
 <translation id="583633806828413086">Macৰ মেনু বাৰত Braveত Gemini দেখুৱাওক</translation>
@@ -230,6 +231,7 @@
 <translation id="3286538390144397061">এতিয়াই ৰিষ্টাৰ্ট কৰক</translation>
 <translation id="2339258256897053758">Brave API চাবিসমূহ নাই। Braveৰ কিছুমান কাৰ্যক্ষতা অক্ষম কৰা হ’ব।</translation>
 <translation id="8926637909431618259">Brave বন্ধ কৰাৰ পিছতো নেপথ্যত এপ্‌সমূহ চলি থাকিবলৈ দিয়ক</translation>
+<translation id="8245661393996028021">আপুনি আঁতৰি থকাৰ সময়ত Brave আপডে’ট হ’ব</translation>
 <translation id="518125528057094977">Braveএ কোনো অসুৰক্ষিত সংযোগ ব্যৱহাৰ কৰি যিকোনো ছাইট ল’ড কৰাৰ পূৰ্বে আপোনাক সতৰ্ক কৰিব</translation>
 <translation id="8652321858775514885">আপুনি আটাইবোৰ Brave ৱিণ্ড’ বন্ধ কৰিলে আপোনাক বেছিভাগ ছাইটৰ পৰা ছাইন আউট কৰোৱা হ’ব, কিন্তু আপুনি যদি Braveত ছাইন ইন হৈ থাকে তেন্তে আপোনাক Brave একাউণ্টৰ পৰা ছাইন আউট নহয়। ছাইটসমূহক আপোনাক মনত ৰাখিবলৈ দিয়াৰ বাবে, <ph name="SETTINGS_LINK"/>।</translation>
 <translation id="3352986031709923790">সন্ধান এলেকাৰ ওপৰৰ সোঁফালৰ কোণ: <ph name="RIGHT"/>% সোঁফালে, <ph name="TOP"/>% ওপৰলৈ</translation>
@@ -238,6 +240,7 @@
 <translation id="2645435784669275700">ChromeOS</translation>
 <translation id="2297290224191497273">পূৰ্বে থকা Brave প্ৰ'ফাইলটোলৈ যাব নেকি?</translation>
 <translation id="3412460710772753638">এই ডিভাইচটোত Password Managerত</translation>
+<translation id="172368702860945706">Braveএ আপডে’ট কৰিব বিচাৰে</translation>
 <translation id="5079573433701109938"><ph name="DEVICE"/>ৰ পৰা আপোনাৰ বুকমাৰ্ক আৰু অধিক পাবলৈ, Braveত ছাইন ইন কৰক</translation>
 <translation id="3438772217992559640">প্ৰতিচ্ছবিৰ সন্ধানৰ জৰিয়তে এই টেবটো সন্ধান কৰক</translation>
 <translation id="2491221873705777076">আপোনাৰ ফ’নত Braveৰ জৰিয়তে বৰ্ধিত সুৰক্ষিত ব্ৰাউজিঙৰ সুবিধাটো সম্প্ৰসাৰিত কৰক</translation>
@@ -380,6 +383,7 @@
 <translation id="4877750182157975795">আপোনাৰ <ph name="DEVICE_TYPE"/>ত Braveৰ জৰিয়তে আপোনাৰ আটাইবোৰ Braveৰ প্ৰিয় বস্তু এক্সেছ কৰক</translation>
 <translation id="1204184037023366446">আপোনাৰ হাত ট্ৰেক কৰিবলৈ Braveক অনুমতিৰ প্ৰয়োজন</translation>
 <translation id="5406591571925937375">আপুনি শেহতীয়াকৈ চোৱা নাই। Braveএ <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, <ph name="PERMISSION_3"/> আঁতৰাইছে।</translation>
+<translation id="3576895950897485019">Braveত ছাইন ইন কৰক</translation>
 <translation id="5174969993834422967">আপুনি সাধাৰণতে জাননীসমূহ অৱৰোধ কৰে। এই ছাইটটোৱে আপোনাক জাননী দিবলৈ দিবৰ বাবে, আপোনাৰ অৱস্থানৰ দণ্ডডালৰ সোঁফালৰ কোণত থকা জাননীৰ চিহ্নটোত ক্লিক কৰক।</translation>
 <translation id="5174983315706567306">ডিস্কত পৰ্যাপ্ত ঠাই নাই।</translation>
 <translation id="8157129267754368853">Brave একাউণ্টৰ বাবে পুনৰ বিশ্বাসযোগ্যতা প্ৰমাণীকৰণৰ আৱশ্যক</translation>
@@ -389,6 +393,7 @@
 <translation id="1069969567644851798">Braveৰ ইনক’&amp;গনিট’ ৱিণ্ড’ত লিংকটো খোলক</translation>
 <translation id="7690383309583926074">অন্য কামৰ মাজতো পাছৱৰ্ড ছেভ কৰিবলৈ Brave এপ্‌টো ডাউনল’ড কৰক</translation>
 <translation id="8586264863973514035">আপুনি কৰা সলনি কার্যসমূহ প্ৰযোজ্য কৰিবলৈ Brave পুনৰ লঞ্চ কৰক</translation>
+<translation id="8127050479140582768">অন্য এটা ডিভাইচলৈ এই টেবটো পঠিয়াবলৈ, দুয়োটা ডিভাইচতে Braveত ছাইন ইন কৰক</translation>
 <translation id="5286907366254680517">চিনাক্ত কৰা হৈছে</translation>
 <translation id="7264453786974905915">Brave এপ্‌টো লাভ কৰক</translation>
 <translation id="5994282802285556682">ইনক’গনিট’ ম’ডত ব্ৰাউজ কৰাৰ সময়ত, Braveএ কোনো অসুৰক্ষিত সংযোগ ব্যৱহাৰ কৰি এটা ছাইট ল’ড কৰাৰ পূৰ্বে আপোনাক সতৰ্ক কৰিব</translation>
@@ -757,6 +762,7 @@ Braveএ আপোনাৰ ছেটিংসমূহ পুনৰুদ্ধ
 <translation id="5128665650717824082">Brave for Testing আপোনাৰ ডিফ’ল্ট ব্ৰাউজাৰ কৰিব নোৱাৰি।</translation>
 <translation id="3053208669360972929">যিকোনো ঠাইৰ পৰা Braveৰ জৰিয়তে সন্ধান কৰক</translation>
 <translation id="2433912322225810055">এইটোৱে আপুনি Braveৰ ব্যৱহাৰ আৰম্ভ কৰিলে বা Omniboxৰ পৰা সন্ধান কৰিলে কি পৃষ্ঠা খোল খাব সেয়া নিয়ন্ত্ৰণ কৰে।</translation>
+<translation id="8789425457808164956">অন্য এটা ডিভাইচলৈ এই টেবটো পঠিয়াবলৈ, তাত Braveত ছাইন ইন কৰক</translation>
 <translation id="4100716194836114130">এইটো আপোনাৰ Brave</translation>
 <translation id="8712637175834984815">বুজি পালোঁ</translation>
 <translation id="1419543648228375718">Braveত ছাইন ইন কৰিবনে?</translation>

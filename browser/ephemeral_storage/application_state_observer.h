@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 
 #if BUILDFLAG(IS_ANDROID)
@@ -75,7 +76,7 @@ class ApplicationStateObserver
   void NotifyApplicationBecameActive();
   void NotifyApplicationBecameInactive();
 
-  std::vector<Observer*> observers_;
+  std::vector<raw_ptr<Observer>> observers_;
 
 #if !BUILDFLAG(IS_ANDROID)
   bool has_notified_active_ = false;

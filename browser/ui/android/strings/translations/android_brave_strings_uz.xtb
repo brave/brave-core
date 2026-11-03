@@ -220,7 +220,6 @@
 <translation id="9040069796107003510">Brave Rewards belgisi</translation>
 <translation id="6333347122924254968">Manzil satrida Brave Rewards belgisini ko‘rsatish</translation>
 <translation id="4393974575368329991">Pastki navigatsion panel</translation>
-<translation id="8727059712928806451">Pastki panelni yoqish</translation>
 <translation id="1834226716203076292">Bosh sahifa, xatcho'plar va qidiruvga tez kirish uchun pastki panelni ko'rsatish</translation>
 <translation id="1422686363939271829">Bu sozlama pastki manzil paneli tanlanganda o‘chiriladi</translation>
 <translation id="6587448235155023666">O‘zgartirishlaringiz Brave qayta ishga tushirilgandan keyin kuchga kiradi</translation>
@@ -290,7 +289,7 @@
 <translation id="2569646144216067185">Soʻzlar soni: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Noto‘g‘ri sync kodi</translation>
 <translation id="8284063834901328650">Noto‘g‘ri sync QR kodeksi</translation>
-<translation id="859506441384380749">Bu kod Brave'ning eskirgan versiyasi tomonidan yaratilgan, avval boshqa qurilmangizni yangilang</translation>
+<translation id="4002014583969312635">Koʻrinishidan bu kod Brave brauzerining eskiroq versiyasida ishlovchi qurilmada yaratilgan. Iltimos, boshqa qurilmangizda Brave brauzerining eng soʻnggi versiyasiga yangilang va yangi sinxronlash kodini yarating.</translation>
 <translation id="3132642509209154999">Bu kodning muddati tugagan. Boshqa qurilmangizda yangisini yarating va qayta urining.</translation>
 <translation id="2859229680945501779">Bu kod notoʻgʻri. Qurilmangizda vaqt va vaqt mintaqasi toʻgʻri sozlanganini tekshiring.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
@@ -343,8 +342,6 @@ Quyida ko'rsatilgan sinxronizatsiya zanjiri kod so'zlarini kiriting.</translatio
 <translation id="8185825081026121627">Maxfiylikni saqlaydigan Brave Mukofoti reklamalarini ko'rish orqali Basic Attention Token ishlab oling.</translation>
 <translation id="5321518976657560663">Qayta o'rnatish xatosi</translation>
 <translation id="4114170343590425996">Brave Mukofotlarini tiklashda xatolik yuz berdi. Iltimos, Braveʼni qayta ishga tushiring va qayta urinib koʼring.</translation>
-<translation id="6417420737057016607">Brave reklamalari</translation>
-<translation id="5611966874859284786">Brave foydalanilmayotganda bildirishnoma reklamalarini ko'rsatish</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Brave Mukofotlari maʼlumotlarini qayta tiklash…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/> Brave Ads maʼlumotlarini tozalash… <ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Bukmark qoʻshish</translation>
@@ -407,8 +404,9 @@ Buni qilishga ishonchingiz komilmi?</translation>
 <translation id="4546260624932151782">Sevimlilarni koʻrsatish</translation>
 <translation id="5313967007315987356">Sayt qoʻshish</translation>
 <translation id="1773147648972887693">Tez-tez tashrif buyuriladiganlarni koʻrsatish</translation>
-<translation id="752098910262610337">Tezkor tugmalarni koʻrsatish</translation>
 <translation id="7134741506051403308">Vidjetni yashirish</translation>
+<translation id="1247759249260562308">Sevimlini tahrirlash</translation>
+<translation id="6387214885349500492">Bu sevimlini mahkamlash</translation>
 <translation id="7462178177755090262">Ochilish ekrani</translation>
 <translation id="5365434987337264071">Oxirgi ochilgan tab</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {Faolliksiz <ph name="HOURS_ONE"/> soatdan so‘ng yangi tab ochiladi} other {Faolliksiz <ph name="HOURS_MANY"/> soatdan so‘ng yangi tab ochiladi}}</translation>
@@ -995,6 +993,7 @@ Dastlab yanada koʻproq maʼlumot baham koʻrsangiz, bizning yordam xizmatimiz m
 <translation id="6365389672683343144">Brave VPN obunasi Android, iOS va stol ustida 5 tagacha qurilmani himoya qilishi mumkin. GCP obunasini Brave hisobi bilan bog'lang.</translation>
 <translation id="6610899852831463073">Xavfsiz ko'rish yoqib bo'linmadi</translation>
 <translation id="7954263306665462056">Inqirozga qarshi ko'rish qurilmangizda oʻchirilgan. Uni yoqish uchun, Google Play xizmatlari oʻrnatilishi va yangilanganligiga ishonch hosil qiling.</translation>
+<translation id="6417420737057016607">Brave reklamalari</translation>
 <translation id="7748944510530490017">Asosiy Tarmoqlar</translation>
 <translation id="2781668117338732220">Ikkinchi Tarmoqlar</translation>
 <translation id="282560918037172384">Sinov Tarmoqlar</translation>

@@ -12,7 +12,6 @@
 <translation id="6670155282615872564">Para aproveitar o Brave ao máximo, use as configurações sugeridas abaixo.</translation>
 <translation id="113098737392899175">Acessar páginas com um cursor de texto quando um teclado está conectado</translation>
 <translation id="1148624853678088576">Está tudo pronto!</translation>
-<translation id="738393714577080438">Salvar senhas no Brave</translation>
 <translation id="1178015372320901893">Página inferior "Meus atalhos"</translation>
 <translation id="1178581264944972037">Pausar</translation>
 <translation id="1181037720776840403">Remover</translation>
@@ -54,6 +53,7 @@
 <translation id="1532175480576580256">A página inferior "Meus atalhos" está aberta no tamanho máximo</translation>
 <translation id="1538031354170655462">Os sites geralmente usam a comunicação a curta distância (NFC) para trabalhar com tags ou dispositivos nas proximidades, como a leitura de crachás ou o pagamento por aproximação</translation>
 <translation id="1547123415014299762">Cookies de terceiros são permitidos</translation>
+<translation id="1565353932454306569"><ph name="ORIGIN"/>: arraste pela parte lateral da tela para sair do modo de tela cheia.</translation>
 <translation id="3665719978526894928">Tornar os sites mais rápidos com o mecanismo V8 do Brave, mas deixar o navegador um pouco menos resistente a ataques</translation>
 <translation id="1593426485665524382">Novas ações disponíveis perto da parte de cima da tela</translation>
 <translation id="1594521731409209842">Faça o gesto de pinça na tela para redimensionar a foto</translation>
@@ -138,6 +138,7 @@
 <translation id="2315043854645842844">A seleção de certificado do cliente não é compatível com o sistema operacional.</translation>
 <translation id="2347601491101454548">A página inferior "Meus atalhos" está aberta na metade da altura</translation>
 <translation id="2359808026110333948">Continuar</translation>
+<translation id="2364212713469273030"><ph name="ORIGIN"/>: arraste pela parte de cima da tela e deslize a borda esquerda ou direita para sair da tela cheia.</translation>
 <translation id="904887679952026733">Aplicar o tema escuro para sites, quando possível, ao usar o tema escuro no Brave</translation>
 <translation id="2390272837142897736">Aumentar zoom</translation>
 <translation id="2397689164757137845">Ativada • Exata</translation>
@@ -190,7 +191,7 @@
 <translation id="2802908157808345702">Não permitir que os sites exibam pop-ups e usem redirecionamentos</translation>
 <translation id="5801312978029568377">Agora, o Brave mostra suas guias recentes na lista de apps e nos resultados da pesquisa do dispositivo. É possível desativar essa opção a qualquer momento nas configurações do Brave.</translation>
 <translation id="2822354292072154809">Tem certeza de que quer redefinir todas as permissões de site para <ph name="CHOSEN_OBJECT_NAME"/>?</translation>
-<translation id="7298052657381934345">Você já pode aproveitar tudo o que o Brave tem a oferecer no seu dispositivo.</translation>
+<translation id="7298052657381934345">Aproveite o que o Brave tem a oferecer.</translation>
 <translation id="2850913818900871965">Solicitar versão para dispositivos móveis</translation>
 <translation id="2870560284913253234">Site</translation>
 <translation id="2874939134665556319">Faixa anterior</translation>
@@ -227,7 +228,6 @@
 <translation id="3167868116600277716">Feed do Discover</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> de dados armazenados</translation>
 <translation id="3199078925536734975">Permitido desta vez • Aproximado</translation>
-<translation id="3208584281581115441">Confirmar agora</translation>
 <translation id="321187648315454507">Para permitir que o app <ph name="APP_NAME"/> envie notificações, também é necessário ativá-las nas <ph name="BEGIN_LINK"/>configurações do Android<ph name="END_LINK"/>.</translation>
 <translation id="3223425961342298674">Acesso à localização não permitido</translation>
 <translation id="3227137524299004712">Microfone</translation>
@@ -284,7 +284,6 @@
 <translation id="381841723434055211">Números de telefone</translation>
 <translation id="3823453485268218808">Fonte Mono</translation>
 <translation id="3826050100957962900">Login de terceiros</translation>
-<translation id="3831065134033923230">Verificar as senhas salvas</translation>
 <translation id="3835233591525155343">Uso do seu dispositivo</translation>
 <translation id="1799795508209440035">O Brave vai bloquear os cookies novamente hoje</translation>
 <translation id="385051799172605136">Voltar</translation>
@@ -292,7 +291,6 @@
 <translation id="9046306654872718870">Deixe o Brave do seu jeito com cores e imagens personalizadas na sua página inicial</translation>
 <translation id="389521680295183045">Os sites podem pedir para saber quando você está usando o dispositivo ativamente</translation>
 <translation id="3895926599014793903">Forçar zoom</translation>
-<translation id="3903738175795615004">Para sair da tela cheia, arraste a parte de cima da tela ou pressione a tecla Esc.</translation>
 <translation id="3905475044299942653">Parar muitas notificações</translation>
 <translation id="3922092564198021702">No smartphone, acesse as Configurações.</translation>
 <translation id="3924858949939391676">Mostrar links quando o Modo de Leitura estiver ativado</translation>
@@ -353,7 +351,6 @@
 <translation id="4479647676395637221">Perguntar antes de permitir que sites usem sua câmera (recomendado)</translation>
 <translation id="4505788138578415521">URL expandido</translation>
 <translation id="4522570452068850558">Saiba mais</translation>
-<translation id="4523472416386354622">Fazer login para começar</translation>
 <translation id="4529207923544043455">A página inferior está mostrando as tarefas concluídas e pendentes na lista de configurações</translation>
 <translation id="4534723447064627427">Para permitir que o app <ph name="APP_NAME"/> acesse seu microfone, também é preciso ativá-lo nas <ph name="BEGIN_LINK"/>configurações do Android<ph name="END_LINK"/>.</translation>
 <translation id="4545694195887112015">A página de configurações foi fechada</translation>
@@ -366,7 +363,6 @@
 <translation id="4645575059429386691">Gerenciado pelos seus pais</translation>
 <translation id="4651224148644053314">Mais cores e opções</translation>
 <translation id="4652266463001779298">Sem permissão</translation>
-<translation id="4655846733459137112">Toque em Sim para facilitar o uso dessa senha na próxima vez que você fizer login</translation>
 <translation id="4663373278480897665">Câmera permitida</translation>
 <translation id="4670064810192446073">Realidade virtual</translation>
 <translation id="5652778654712411580">Toque em "App de navegação" e em "Brave"</translation>
@@ -411,7 +407,6 @@
 <translation id="512938610812707830">A página inferior de coleções de temas para a página "Nova guia" está aberta no tamanho máximo</translation>
 <translation id="5137460097045297858">A página inferior do feed do Discover está aberta na metade da altura</translation>
 <translation id="5139253256813381453">{PRICE_DROP_COUNT,plural, =1{Redução no preço nas guias abertas}one{Redução no preço nas guias abertas}other{Reduções nos preços nas guias abertas}}</translation>
-<translation id="5150048675001754041">Faça login em sites e apps com rapidez e facilidade</translation>
 <translation id="5186036860380548585">Opção disponível perto da parte superior da tela</translation>
 <translation id="5197729504361054390">Os contatos selecionados serão compartilhados com <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
 <translation id="5198930230016462977">A página inferior "Personalizar 'Nova guia'" está aberta</translation>
@@ -421,7 +416,6 @@
 <translation id="5239623327352565343">Acesso à localização permitido</translation>
 <translation id="5246825184569358663">Essa ação vai excluir todos os dados locais, incluindo cookies, e redefinir todas as permissões de <ph name="DOMAIN"/> e sites relacionados</translation>
 <translation id="5264323282659631142">Remover "<ph name="CHIP_LABEL"/>"</translation>
-<translation id="528192093759286357">Arraste a partir da parte superior e toque no botão "Voltar" para sair da tela cheia.</translation>
 <translation id="5286194356314741248">Verificando</translation>
 <translation id="5300589172476337783">Mostrar</translation>
 <translation id="5301954838959518834">Ok, entendi</translation>
@@ -469,7 +463,6 @@
 <translation id="5804241973901381774">Permissões</translation>
 <translation id="5817042798620209981">Caixa de diálogo de informações do site</translation>
 <translation id="5822675474983796325">A página inferior "Personalizar 'Nova guia'" está aberta no tamanho máximo</translation>
-<translation id="4298364316773778595">Página inferior com instruções para salvar senhas no Brave</translation>
 <translation id="5833899990800318936">Não permitir que os sites usem JavaScript</translation>
 <translation id="583673505367439042">Os sites podem pedir para editar arquivos e pastas no dispositivo</translation>
 <translation id="5844448279347999754">Quando essa configuração está ativada, os sites podem pedir para acessar texto e imagens na sua área de transferência. Quando está desativada, os sites não podem acessar texto e imagens na sua área de transferência.</translation>
@@ -507,7 +500,6 @@
 <translation id="6104860901391833523">Quando essa opção está ativada, os sites podem entrar no modo picture-in-picture automaticamente. Quando está desativada, os sites não podem entrar no modo picture-in-picture automaticamente.</translation>
 <translation id="6120483543004435978">Quando essa configuração está ativada, os sites podem pedir para saber quando você está usando o dispositivo ativamente. Quando está desativada, os sites não conseguem saber quando você está usando o dispositivo ativamente.</translation>
 <translation id="5773142757282836623">Ocultar sugestões do Brave em outros apps</translation>
-<translation id="4852158809106762963">O Brave vai oferecer a opção de salvar sua senha</translation>
 <translation id="615886654739818377">Não permitir que os sites gerenciem janelas em todas as telas</translation>
 <translation id="6165508094623778733">Saiba mais</translation>
 <translation id="6171020522141473435">Quando essa configuração está ativada, os sites podem pedir para usar dispositivos Bluetooth. Quando está desativada, os sites não podem usar dispositivos Bluetooth.</translation>
@@ -583,7 +575,6 @@
 <translation id="6980861169612950611">Excluir dados do site? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Acessibilidade</translation>
 <translation id="6991142177939282156">Permitida • Usando aproximada</translation>
-<translation id="6992014788289743568">Verifique as senhas para aumentar a segurança e proteger seus dados</translation>
 <translation id="6992289844737586249">Perguntar antes de permitir que sites usem o microfone (recomendado)</translation>
 <translation id="7000754031042624318">Desativada nas configurações do Android</translation>
 <translation id="7036823721811529709">Ouvir em segundo plano</translation>
@@ -650,7 +641,6 @@ A Proteção Avançada controla estas configurações do Brave:</translation>
 <translation id="775043444390799886">Revogar permissão</translation>
 <translation id="7758789811447313947">Tema violeta</translation>
 <translation id="7759147511335618829">Controle e reprogramação de dispositivos MIDI</translation>
-<translation id="7771089277295008211">A página inferior com instruções para salvar senhas foi fechada</translation>
 <translation id="7781829728241885113">Ontem</translation>
 <translation id="7791543448312431591">Adicionar</translation>
 <translation id="780301667611848630">Agora não</translation>
@@ -667,7 +657,6 @@ A Proteção Avançada controla estas configurações do Brave:</translation>
 <translation id="7940722705963108451">Lembrar</translation>
 <translation id="7948081750384205628">Saiba mais sobre <ph name="SETTING_TITLE"/></translation>
 <translation id="7952708427581814389">Os sites podem pedir para acessar texto e imagens na sua área de transferência</translation>
-<translation id="7958779728312669715">A página inferior com instruções para salvar senhas foi aberta por completo</translation>
 <translation id="798299424881500862">Tema laranja</translation>
 <translation id="7986741934819883144">Selecione um contato</translation>
 <translation id="7990211076305263060">Quando essa configuração está ativada, os sites podem pedir para usar o microfone. Quando está desativada, os sites não podem usar o microfone.</translation>
@@ -762,7 +751,6 @@ A Proteção Avançada controla estas configurações do Brave:</translation>
 <translation id="7532165358672313130">Conforme você navega, eles podem verificar com o navegador e o site visitado anteriormente que você é uma pessoa real</translation>
 <translation id="8899807382908246773">Anúncios invasivos</translation>
 <translation id="8903921497873541725">Aumentar zoom</translation>
-<translation id="8919911527569629802">Faça login em qualquer site</translation>
 <translation id="8921772741368021346"><ph name="POSITION"/> / <ph name="DURATION"/></translation>
 <translation id="8926389886865778422">Não perguntar novamente</translation>
 <translation id="8926666909099850184">A NFC está desativada neste dispositivo. Ative-a nas <ph name="BEGIN_LINK"/>configurações do Android<ph name="END_LINK"/>.</translation>
@@ -786,6 +774,7 @@ A Proteção Avançada controla estas configurações do Brave:</translation>
 <translation id="9138217887606523162">O zoom atual está em <ph name="ZOOM_LEVEL"/>%%</translation>
 <translation id="7359422048569205930">Permita que o Brave mostre suas guias recentes na lista de apps e nos resultados da pesquisa do dispositivo. É possível desativar essa opção a qualquer momento nas configurações do Brave.</translation>
 <translation id="9162462602695099906">Esta página é perigosa</translation>
+<translation id="9172068157980844189">Você pode ativar a barra de favoritos em Configurações &gt; Aparência</translation>
 <translation id="9182556968660520230">Não permitir que os sites reproduzam conteúdo protegido</translation>
 <translation id="927148002081263046">Compartilhar um contato</translation>
 <translation id="947156494302904893">Os sites que você visita podem verificar que você é uma pessoa real, e não um bot</translation>

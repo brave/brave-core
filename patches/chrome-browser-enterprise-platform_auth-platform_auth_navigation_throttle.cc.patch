@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/enterprise/platform_auth/platform_auth_navigation_throttle.cc b/chrome/browser/enterprise/platform_auth/platform_auth_navigation_throttle.cc
-index 8209ebdad6162a25b29fa576291bef88a36af344..19c4f1bc0c233a6f729846a519046bb39b131a29 100644
+index 70d38d2aacbc6f103c238505c0eac559f183cf6d..26ddf2d385fd65b677a3a72a7bdde3c79bca8dcb 100644
 --- a/chrome/browser/enterprise/platform_auth/platform_auth_navigation_throttle.cc
 +++ b/chrome/browser/enterprise/platform_auth/platform_auth_navigation_throttle.cc
 @@ -14,6 +14,7 @@ namespace enterprise_auth {

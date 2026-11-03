@@ -1,0 +1,28 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Give the mock download item a default full path.
+
+      Brave's DELETE_LOCAL_FILE quick action reads the download's full path.
+    preempt_function_impl:
+      function_name: SetUp
+      code: |2-
+          ON_CALL(download_item_, GetFullPath())
+              .WillByDefault(
+                  ReturnRefOfCopy(base::FilePath(FILE_PATH_LITERAL("foo/bar.cc"))));
+
+  - description: |-
+      Expect Brave's DELETE_LOCAL_FILE quick action last.
+
+      Brave appends DELETE_LOCAL_FILE to the quick actions of a completed
+      download.
+    regex:
+      pattern: 'ASSERT_EQ(row_view()->info().quick_actions().size(), 2u);'
+      replace: |-
+        ASSERT_EQ(row_view()->info().quick_actions().size(), 3u);
+          ASSERT_EQ(row_view()->info().quick_actions().back().command,
+                    DownloadCommands::DELETE_LOCAL_FILE);

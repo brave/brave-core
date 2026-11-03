@@ -19,7 +19,7 @@
 #include "base/strings/string_view_util.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/test/task_environment.h"
-#include "crypto/sha2.h"
+#include "crypto/hash.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_rewards::internal {
@@ -50,7 +50,7 @@ class RewardsHashPrefixStoreTest : public testing::Test {
                                std::vector<std::string_view> values) {
     std::vector<std::string> hash_values;
     for (auto& value : values) {
-      std::string hash = crypto::SHA256HashString(value);
+      std::string hash(base::as_string_view(crypto::hash::Sha256(value)));
       hash.resize(prefix_size);
       hash_values.push_back(std::move(hash));
     }

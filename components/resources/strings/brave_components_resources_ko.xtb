@@ -433,7 +433,6 @@
 <translation id="412480955826088549">구성 요소를 다운로드하는 중...</translation>
 <translation id="4894106830958548828">이해했습니다</translation>
 <translation id="2729085694451916573"><ph name="PART_ONE"/>자리표시자<ph name="PART_ONE_END"/>테스트 문자열. <ph name="PART_TWO"/>자세히 알아보기<ph name="PART_TWO_END"/></translation>
-<translation id="6705666103672654256">검색어 및 페이지 콘텐츠는 이 기기에서 처리됩니다. Brave로 전송되거나 사람이 검토하는 정보는 없습니다. 이 기능은 실험적 기능이며 항상 정확하지는 않을 수 있습니다.</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Brave에서 Unstoppable Domains 지원을 활성화할까요?</translation>
 <translation id="5015092481905019948">Brave는 <ph name="PROVIDER_NAME"/>를 사용하여 <ph name="DOMAIN_PROVIDER_NAME"/>에 있는 <ph name="DOMAIN_LIST"/> 도메인 이름을 해석합니다. Brave는 귀하의 IP 주소를 숨깁니다. 이 기능을 활성화하면 누군가 이들 도메인을 방문하려고 한다는 사실을 <ph name="PROVIDER_NAME"/>가 볼 수 있지만 다른 정보는 볼 수 없습니다. <ph name="PROVIDER_NAME"/> <ph name="BEGIN_PROVIDER_TOU_LINK"/>이용 약관<ph name="END_PROVIDER_TOU_LINK"/> 및 <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>개인정보 보호정책<ph name="END_PROVIDER_PRIVACY_LINK"/>을 참조하세요.</translation>
@@ -809,8 +808,6 @@
 <translation id="223536150967420869">구매</translation>
 <translation id="538450413584738399">스왑(Swap)</translation>
 <translation id="6810855196544084176">브리지</translation>
-<translation id="3488255243387417752">판매</translation>
-<translation id="5223034545851554347">이 계정에 <ph name="TOKEN_SYMBOL"/>가 부족합니다.</translation>
 <translation id="6585419509320235293">보낼 자산 선택</translation>
 <translation id="1018742998826182079">스왑할 자산 선택</translation>
 <translation id="2791691551852500015">수신자 주소 입력</translation>
@@ -1327,7 +1324,6 @@
 <translation id="4312994183947987913">구입/입금</translation>
 <translation id="5133421763709317473">검색어 또는 필터와 일치하는 자산 없음</translation>
 <translation id="6423985584914773314">유효한 FIL 주소 아님</translation>
-<translation id="6153197326949684688"><ph name="OFFRAMP_PROVIDER"/>로 판매</translation>
 <translation id="5795821518596541838">트랜잭션 파트너</translation>
 <translation id="1916136859742693273">Brave 월렛은 Meld.io를 사용하여 해당 지역의 다양한 암호화폐 공급자를 모아서 표시합니다. 당사는 월렛 주소와 국가 코드를 비롯하여 트랜잭션을 완료하기 위해 Meld.io와 정보를 공유합니다. 자세한 내용은 Meld의 이용약관을 참조하시기 바랍니다.</translation>
 <translation id="245827814248186739"><ph name="LINK_BEFORE"/>Meld의 이용약관<ph name="LINK_AFTER"/>을 읽었으며 이에 동의합니다</translation>
@@ -1643,7 +1639,7 @@
 <translation id="6646456430109279404">스물두 번째</translation>
 <translation id="1961743941324393172">스물세 번째</translation>
 <translation id="9079035825546416393">스물네 번째</translation>
-<translation id="1558531209852594808">비ASCII 문자가 감지되었습니다!</translation>
+<translation id="6980520267116175375">예기치 않은 문자가 감지되었습니다</translation>
 <translation id="442709594176931966">원본 메시지 보기</translation>
 <translation id="2239252396088484499">메시지를 ASCII 인코딩으로 보기</translation>
 <translation id="2894654529758326923">정보</translation>
@@ -1893,6 +1889,14 @@
 <translation id="6700561332544287722">다음에 잠금 해제 필요</translation>
 <translation id="5605360570977617291">홈에서 <ph name="CARD_NAME"/>을(를) 숨기시겠어요?</translation>
 <translation id="2721464457853369512"><ph name="CARD_NAME"/> 잔액은 변경되지 않습니다. 이 작업은 홈에서 카드만 숨깁니다. 설정의 지갑에서 언제든지 다시 표시할 수 있습니다.</translation>
+<translation id="1543259266592091784">자금 추가</translation>
+<translation id="6202621179510403111">새 카드</translation>
+<translation id="2366365638711338487">수익 <ph name="DATE_BEGIN"/>(<ph name="DATE"/>)<ph name="DATE_END"/></translation>
+<translation id="4938547503015386493">이자 + <ph name="AMOUNT"/> BAT 캐시백</translation>
+<translation id="5124185664922725208">지출</translation>
+<translation id="1591562245178063882">이번 달</translation>
+<translation id="2781977263564899470">실물 카드 받기</translation>
+<translation id="3388543273143324626">매장 및 ATM에서 사용</translation>
 <translation id="3155170474926428993">Tor 런처</translation>
 <translation id="3745016858329272300">일반 정보</translation>
 <translation id="4045404575593562245">Tor 제어 이벤트</translation>
@@ -2230,12 +2234,12 @@
 <translation id="7905602379229309187">현재 엔드포인트에 과부하가 걸렸습니다. 나중에 다시 시도하세요.</translation>
 <translation id="8151638057146502721">구성</translation>
 <translation id="999273441077650169">최고의 작업을 위해 동적으로 모델을 변경합니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
-<translation id="3852808100039989429">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 알리바바 클라우드에서 개발한 Qwen VL 30B 모델을 기반으로 구동됩니다. Qwen은 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="8218534413919828549">안녕하세요, 저는 레오예요. 저는 Brave의 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 알리바바 클라우드에서 개발한 Qwen 3.6 35B 모델을 기반으로 구동됩니다. Qwen은 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">안녕하세요, 저는 레오예요. 저는 Brave가 제공하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 Zhipu AI에서 개발한 GLM-5.3 Flash 모델을 기반으로 구동됩니다. GLM-5.3 Flash는 자체 검증 가능한 안전한 인프라를 통해 NEAR에서 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, 대화문과 텍스트 처리 성능을 제공하기 위해 앤쓰라픽에서 개발한 클로드 인스턴트 모델을 기반으로 구동됩니다. 클로드 인스턴트는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, 대화문과 텍스트 처리 성능을 제공하기 위해 앤쓰라픽에서 개발한 클로드 소네트 모델을 기반으로 구동됩니다. 클로드 소네트는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
-<translation id="6676306995311143470">안녕하세요, 저는 레오예요. 저는 Brave의 AI 어시스턴트로, Amazon Bedrock Mantle에서 제공되는 xAI의 최첨단 추론 모델인 Grok 4.6을 기반으로 구동됩니다. Grok 4.6은 Brave의 안전한 AWS 인프라를 통해 제공됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
-<translation id="2394656730986208060">안녕하세요, 저는 레오예요. 저는 Brave의 AI 어시스턴트로, Amazon Bedrock Mantle에서 제공되는 OpenAI의 빠르고 낮은 지연 시간의 모델인 GPT 5.6 Luna를 기반으로 구동됩니다. GPT 5.6 Luna는 Brave의 안전한 AWS 인프라를 통해 제공됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="3934503473603661122">안녕하세요, 저는 레오예요. 저는 Brave의 AI 어시스턴트로, Amazon Bedrock에서 제공되는 xAI의 최첨단 추론 모델인 Grok 4.7을 기반으로 구동됩니다. Grok 4.7은 Brave의 안전한 AWS 인프라를 통해 제공됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="8983215701788462580">안녕하세요, 저는 레오예요. 저는 Brave의 AI 어시스턴트로, Amazon Bedrock에서 제공되는 OpenAI의 빠르고 낮은 지연 시간의 모델인 GPT Luna를 기반으로 구동됩니다. GPT Luna는 Brave의 안전한 AWS 인프라를 통해 제공됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">안녕하세요, 저는 레오예요. 저는 Brave의 AI 어시스턴트로, Amazon Bedrock Mantle에서 제공되는 OpenAI의 균형 잡힌 프로덕션 모델인 GPT 5.6 Terra를 기반으로 구동됩니다. GPT 5.6 Terra는 Brave의 안전한 AWS 인프라를 통해 제공됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 Mistral에서 개발한 Mistral Large 모델을 기반으로 구동됩니다. Mistral Large는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 Alibaba Cloud에서 개발한 Qwen 3.8 Flash Next 모델을 기반으로 구동됩니다. Qwen 3.8 Flash Next는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
@@ -2286,6 +2290,10 @@
 <translation id="3027575440738035995">레오 프리미엄은 더욱 다양한 언어 모델 세트를 활용하여 맥락을 더 잘 이해한 사람 같은 답변을 합니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="8261506727792406068">삭제</translation>
 <translation id="6574153208133461043">이 대화를 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.</translation>
+<translation id="1020105790073039189">이미지를 읽을 수 있는 모델로 전환하시겠어요?</translation>
+<translation id="3797128260474242570"><ph name="CURRENT_MODEL"/>은(는) 이미지를 읽을 수 없으며, 첨부 파일에는 이미지 처리가 필요합니다. 첨부 파일을 보내려면 이 대화를 <ph name="VISION_MODEL"/>(으)로 전환하세요. 이전 메시지를 포함한 전체 대화가 전달됩니다. 취소하고 이미지를 읽을 수 있는 다른 모델을 선택할 수도 있습니다. 이미지 없이 보내면 레오가 첨부 파일을 볼 수 없습니다.</translation>
+<translation id="830353068401992697">전환 후 보내기</translation>
+<translation id="369110003363071587">이미지 없이 보내기</translation>
 <translation id="7488762544858401571">편집됨</translation>
 <translation id="5604254791550001355">프롬프트 편집</translation>
 <translation id="8115786586976830777">프롬프트 복사</translation>
@@ -2440,6 +2448,7 @@
 <translation id="3024277805447899099">이미지 미리보기</translation>
 <translation id="6671495933530132209">이미지 복사</translation>
 <translation id="6864459304226931083">이미지 다운로드</translation>
+<translation id="6323406350879995440">탭에서 열기</translation>
 <translation id="6332876390231524389">현재 탭 내용</translation>
 <translation id="6397861830483632092">탭 열기…</translation>
 <translation id="802080272588201037">북마크…</translation>
@@ -2494,11 +2503,14 @@
 <translation id="4838375634693651776">샌드박스에서 코드를 실행하여 쿼리를 지원하는 중</translation>
 <translation id="6990975553143971265">브라우저 기록에서 "<ph name="QUERY"/>" 검색 중</translation>
 <translation id="8302511726757276645">브라우저 기록 검색 중</translation>
+<translation id="6727762439034900202">워크스페이스 생성 중</translation>
+<translation id="261799307673205052">워크스페이스</translation>
 <translation id="8410699755320690690">Brave AI가 브라우징 기록을 검색하려고 합니다. 검색은 기기에서 로컬로 실행되므로 전체 기록이 어디에도 전송되지 않습니다. 일치하는 페이지의 제목, URL, 인덱싱된 텍스트 구절만 이 대화의 일부로 Brave AI에 전송됩니다.</translation>
 <translation id="4379566111233326721">코드:</translation>
 <translation id="3542130965673205258">출력:</translation>
 <translation id="6911817209337314910">선택할 수 있는 옵션을 생성하는 중</translation>
 <translation id="5382076391290708074">탭 이동 중</translation>
+<translation id="8717463977094156527">이 작업을 허용하면 모든 탭과 탭 그룹의 **URL**과 **제목**이 Brave AI로 전송되며, 시맨틱 기록 검색 색인에서 가능한 경우 탭 내 페이지 텍스트의 **짧은 발췌문**도 함께 전송되고, Brave AI가 탭을 이동할 수 있게 됩니다. 이 권한은 이 대화에만 적용됩니다.</translation>
 <translation id="3862123464576147769">이를 허용하면 모든 탭 및 탭 그룹의 <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/>과 <ph name="TITLE_FORMAT_START"/>제목<ph name="TITLE_FORMAT_END"/>이 Brave AI로 전송되고 Brave AI가 탭을 이동할 수 있습니다. 이 권한은 이 대화에만 적용됩니다.</translation>
 <translation id="396165714586708444">심층 연구</translation>
 <translation id="577747221882855891">검색 중: "<ph name="QUERY"/>"</translation>
@@ -2526,7 +2538,7 @@
 <translation id="7901376755618482277">이메일 필드에 "새 별칭" 힌트 표시</translation>
 <translation id="6002159997868894136">클릭하여 별명 복사</translation>
 <translation id="8105770564756958406"><ph name="DOMAINS"/> 에서 사용됨</translation>
-<translation id="5006956315579221642">실제 이메일 주소를 보호하기 위해 최대 5개의 무료 이메일 별명을 만드세요.</translation>
+<translation id="6776324888261353420">실제 이메일 주소를 보호하기 위해 최대 <ph name="MAX_ALIASES"/>개의 무료 이메일 별명을 만드세요.</translation>
 <translation id="9046133327037621173">새 이메일 별명</translation>
 <translation id="3768606658230902536">개인 이메일을 비공개로 유지하면서 받은 편지함으로 전달되는 무작위 이메일 주소를 생성하세요.</translation>
 <translation id="4452721050684632493">별칭 한도 도달</translation>
@@ -2599,7 +2611,7 @@
 <translation id="6851426306697017546">시계 표시</translation>
 <translation id="4844370919312937270">새 탭에 검색 위젯 표시</translation>
 <translation id="5088374130885640159"><ph name="REWARDS_LINK_BEGIN"/>Brave 리워드<ph name="REWARDS_LINK_END"/>를 통해, 새 탭 페이지 광고를 시청하여 수익을 올릴 수 있습니다. <ph name="LEARN_MORE_LINK_BEGIN"/>자세히 알아보기<ph name="LEARN_MORE_LINK_END"/>.</translation>
-<translation id="4100520468072294616">새 탭 페이지 광고 표시</translation>
+<translation id="7020410251711260841">스폰서 광고 표시</translation>
 <translation id="4983925687993168579">통계</translation>
 <translation id="5009354496127441090">인기 사이트 표시</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -2622,6 +2634,7 @@
 <translation id="8814357473522731680">제공 -</translation>
 <translation id="7143207342074048698">연결 중</translation>
 <translation id="1202549130170287307">연결 해제 중</translation>
+<translation id="4989542687859782284">사용 불가</translation>
 <translation id="8941703009412168350">BRAVE VPN</translation>
 <translation id="6303294677342628402">보호</translation>
 <translation id="8458987127502506209">Brave Shields 활성화</translation>
@@ -2810,9 +2823,11 @@
 <translation id="6021669293402055982">Brave VPN: 연결 해제됨</translation>
 <translation id="3541307549916475335">Brave VPN 패널 UI</translation>
 <translation id="2325196879156848326">연결 실패</translation>
+<translation id="6246488334766115273">연결 사용 불가</translation>
 <translation id="745054660363064771">서버에 연결할 수 없음</translation>
 <translation id="3936826714240735937">다른 서버 선택</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/>이 <ph name="REGION_NAME"/> 서버에 연결할 수 없습니다. 다시 시도하거나 다른 국가를 선택하세요.</translation>
+<translation id="4872940635040426686"><ph name="PRODUCT_NAME"/>을(를) 사용할 수 없습니다. 문제가 지속되면 Brave를 다시 설치하거나 기술 지원팀에 문의하세요.</translation>
 <translation id="1776533911621317363">7일 무료 평가판 시작</translation>
 <translation id="3357036723290257445">Brave VPN을 이미 구매하셨습니까?</translation>
 <translation id="8652175077544655965">설정 닫기</translation>
@@ -2953,11 +2968,13 @@ Brave에는 VPN 연결에서 DNS 쿼리가 생성되는 방식을 필터링하�
 <translation id="4405566535206792621">비밀번호를 변경하려면 이메일 주소를 인증해 주세요.</translation>
 <translation id="3135333563420939059">이메일이 인증되었습니다. 비밀번호 변경을 완료하려면 새 비밀번호를 설정하세요.</translation>
 <translation id="4227581348172626540">비밀번호 변경 취소</translation>
-<translation id="808894953321890993">비밀번호 변경</translation>
 <translation id="7967687455715421528">비밀번호를 변경할 수 없음</translation>
 <translation id="7413006094063730650">계정 삭제</translation>
 <translation id="4869737930995549965">로그아웃</translation>
-<translation id="2902312830803030883">추가 작업</translation>
+<translation id="4424262960694990728">조치 필요</translation>
+<translation id="847260521336960132">계정 세부정보</translation>
+<translation id="5399593843842221768">Brave 계정에 대한 개인 정보입니다.</translation>
+<translation id="5771731269320499905">Brave 계정 세부정보</translation>
 <translation id="5538654494923870167">Brave 계정으로 시작하기</translation>
 <translation id="1544145635547515689">Brave 계정 만들기</translation>
 <translation id="3828644479849256404">이미 계정이 있습니까? 로그인</translation>
@@ -2973,6 +2990,7 @@ Brave에는 VPN 연결에서 DNS 쿼리가 생성되는 방식을 필터링하�
 <translation id="7114054701490058191">비밀번호가 일치하지 않습니다</translation>
 <translation id="4277028893293644418">비밀번호 재설정</translation>
 <translation id="9033485352495162741">확인에 성공했습니다. 이제 원하는 새 비밀번호를 입력하세요:</translation>
+<translation id="808894953321890993">비밀번호 변경</translation>
 <translation id="1293857704520741614">계정에 로그인</translation>
 <translation id="118617366439356381">비밀번호를 잊으셨나요?</translation>
 <translation id="5636406393070713097">Brave 계정 이메일을 확인하시면 비밀번호를 재설정할 수 있는 코드를 받게 됩니다. 코드는 15분 동안만 유효합니다.</translation>

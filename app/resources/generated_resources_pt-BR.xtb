@@ -13,6 +13,7 @@
 <translation id="1005274289863221750">Usar microfone e câmera</translation>
 <translation id="1005333234656240382">Ativar a depuração do adb?</translation>
 <translation id="1005671386794704751">Rosa</translation>
+<translation id="1005692418949452963">Desfocar</translation>
 <translation id="1005919400326853998">Conferir os detalhes do certificado de <ph name="CERT_NAME"/> em uma nova caixa de diálogo</translation>
 <translation id="1006033052970139968">O acesso ao microfone é concedido a apps e sites com essa permissão e serviços do sistema</translation>
 <translation id="1006873397406093306">Esta extensão pode ler e alterar seus dados em sites. É possível controlar a quais sites a extensão terá acesso.</translation>
@@ -141,6 +142,7 @@ Verifique suas senhas a qualquer momento no <ph name="GOOGLE_PASSWORD_MANAGER"/>
 <translation id="1090541560108055381">Antes de parear, confira se é mostrado o mesmo código nos dois dispositivos</translation>
 <translation id="1093457606523402488">Redes visíveis</translation>
 <translation id="1093645050124056515">ctrl + alt + seta para baixo</translation>
+<translation id="1094158807129647987">Perguntar sobre "<ph name="SELECTION"/>"</translation>
 <translation id="1095398697303758108">Pressione Ctrl duas vezes para usar o preenchimento automático aprimorado</translation>
 <translation id="1676423917671990874">Gerenciador de senhas do Brave na Web</translation>
 <translation id="1097016918605049747">Não foi possível traduzir esta página</translation>
@@ -159,6 +161,7 @@ Verifique suas senhas a qualquer momento no <ph name="GOOGLE_PASSWORD_MANAGER"/>
 <translation id="1109482864356262001">Recursos que precisam de sensores de movimento ou de luz não vão funcionar</translation>
 <translation id="1110155001042129815">Aguarde</translation>
 <translation id="1110965959145884739">Escolha quais idiomas serão instalados no dispositivo. Os arquivos de idioma são compartilhados entre os usuários para economizar espaço em disco. <ph name="BEGIN_LINK_LEARN_MORE"/>Saiba mais<ph name="END_LINK_LEARN_MORE"/></translation>
+<translation id="111168944932507021">Focar no grupo de guias</translation>
 <translation id="1112227834592480032">Selecione o botão do Google Lens e depois clique e arraste sobre um problema</translation>
 <translation id="1112420131909513020">A guia em segundo plano está usando o Bluetooth</translation>
 <translation id="1112998165730922436">A transmissão foi pausada</translation>
@@ -263,6 +266,7 @@ Verifique suas senhas a qualquer momento no <ph name="GOOGLE_PASSWORD_MANAGER"/>
 <translation id="1177863135347784049">Personalizado</translation>
 <translation id="1178093605842850860">Com permissão para ler e mudar este site</translation>
 <translation id="1178357842179817577">Protege você contra sites, downloads e extensões que podem ser perigosos</translation>
+<translation id="2130013283534074693"><ph name="BEGIN_BOLD"/>As guias são compartilhadas para deixar as respostas mais relevantes.<ph name="END_BOLD"/> O Brave usa o conteúdo e o URL da sua guia aberta quando você inicia uma nova conversa. Você pode mudar essa configuração a qualquer momento.</translation>
 <translation id="1178581264944972037">Pausar</translation>
 <translation id="117916940443676133">Sua chave de segurança não está protegida com um PIN. Para gerenciar dados de login, crie um PIN primeiro.</translation>
 <translation id="1179400851034021914">O IBAN é inválido</translation>
@@ -277,6 +281,7 @@ Verifique suas senhas a qualquer momento no <ph name="GOOGLE_PASSWORD_MANAGER"/>
 <translation id="1190155014618058972">Criar combinação de teclas personalizada</translation>
 <translation id="11901918071949011">{NUM_FILES,plural, =1{Acessar um arquivo armazenado no seu computador}one{Acessar # arquivos armazenados no seu computador.}other{Acessar # arquivos armazenados no seu computador}}</translation>
 <translation id="1190706173655543975">Políticas de aplicativos da Microsoft</translation>
+<translation id="1191683799345917508">Desativar som do site de cima</translation>
 <translation id="119330003005586565">Páginas lidas</translation>
 <translation id="1193927020065025187">O site pode estar tentando enganar você para que permita notificações invasivas</translation>
 <translation id="11947597112837849">e-mail</translation>
@@ -429,6 +434,7 @@ Verifique suas senhas a qualquer momento no <ph name="GOOGLE_PASSWORD_MANAGER"/>
 <translation id="8924889016671958409">Para garantir que você sempre possa usar as senhas na sua Conta do Brave, confirme sua identidade</translation>
 <translation id="1308105352527684175">Talvez você não consiga acessar alguns conteúdos</translation>
 <translation id="1311092170520822848">Este site está controlando os leitores de cartão inteligente conectados ao seu dispositivo e, possivelmente, os cartões disponíveis a eles</translation>
+<translation id="131112175593356748">Mostrar alguns</translation>
 <translation id="131112695174432497">Os dados que afetam a personalização de anúncios são excluídos</translation>
 <translation id="1092870157695460112">Conheça a proteção reforçada e tenha o nível mais alto de segurança para downloads do Brave</translation>
 <translation id="1312298796781107732">{NUM_TABS,plural, =1{Corrija a guia que está deixando o navegador mais lento}one{Corrija a guia que está deixando o navegador mais lento}other{Corrija as guias que estão deixando o navegador mais lento}}</translation>
@@ -695,6 +701,7 @@ Verifique suas senhas a qualquer momento no <ph name="GOOGLE_PASSWORD_MANAGER"/>
 <translation id="1535753739390684432">Ouvir um texto específico lido em voz alta. Primeiro, selecione o ícone do recurso Selecionar para Ouvir na parte de baixo da tela e depois destaque o texto.</translation>
 <translation id="1536754031901697553">Desconectando…</translation>
 <translation id="1536883206862903762">Isso vai desativar as extensões e redefinir as configurações para os padrões seguros. Guias, arquivos e cookies serão preservados. <ph name="LINK_BEGIN"/>Saiba mais<ph name="LINK_END"/></translation>
+<translation id="1492280160841369791"><ph name="BEGIN_BOLD_1"/>As guias são compartilhadas para deixar as respostas mais relevantes.<ph name="END_BOLD_1"/> O Brave usa o conteúdo e o URL da sua guia aberta quando você inicia uma nova conversa. Você pode mudar essa configuração a qualquer momento. <ph name="BEGIN_BOLD_2"/>A privacidade e segurança dos dados da sua organização ficam garantidas.<ph name="END_BOLD_2"/> Isso não será usado para aprimorar os modelos de IA generativa.</translation>
 <translation id="1537254971476575106">Lupa de tela cheia</translation>
 <translation id="1538808328818992871">Precisa ter pelo menos <ph name="MIN_LENGTH"/> caracteres</translation>
 <translation id="1539248305642687917">Não permitir que os sites substituam a entrada do teclado</translation>
@@ -721,6 +728,7 @@ Verifique suas senhas a qualquer momento no <ph name="GOOGLE_PASSWORD_MANAGER"/>
 <translation id="1552752544932680961">Gerenciar extensão</translation>
 <translation id="1553538517812678578">ilimitado</translation>
 <translation id="1553947773881524342"><ph name="LINK_BEGIN"/>Saiba mais<ph name="LINK_END"/> sobre o Microsoft 365 no seu Chromebook.</translation>
+<translation id="1554343363646356023">Nova janela &amp;isolada</translation>
 <translation id="1554640914375980459">Piscar a tela ao receber notificações. Tenha cuidado com as notificações com flash se você tiver sensibilidade à luz.</translation>
 <translation id="1555130319947370107">Azul</translation>
 <translation id="1556127816860282890">A atividade em segundo plano e alguns efeitos visuais, como a rolagem suave, podem ser limitados</translation>
@@ -750,6 +758,7 @@ Verifique suas senhas a qualquer momento no <ph name="GOOGLE_PASSWORD_MANAGER"/>
 <translation id="1572139610531470719"><ph name="WINDOW_TITLE"/> (visitante)</translation>
 <translation id="1572266655485775982">Ativar Wi-Fi</translation>
 <translation id="1573127087832371028">Descreva o problema</translation>
+<translation id="6338836562866434461">Usar este atalho fora do Brave</translation>
 <translation id="1574335334663388774">A versão <ph name="APP_VERSION"/> do app <ph name="APP_NAME"/> já está instalada neste dispositivo</translation>
 <translation id="1575741822946219011">Idiomas e entradas</translation>
 <translation id="1576594961618857597">Avatar branco padrão</translation>
@@ -861,7 +870,6 @@ Verifique suas senhas a qualquer momento no <ph name="GOOGLE_PASSWORD_MANAGER"/>
 <translation id="1656528038316521561">Opacidade do plano de fundo</translation>
 <translation id="4711067597921221305">Ajudar o <ph name="PRODUCT_NAME"/> a melhorar enviando automaticamente estatísticas de uso e relatórios de problemas ao Brave.</translation>
 <translation id="1657937299377480641">Para fazer login novamente e ter acesso a recursos educacionais, peça permissão a um dos responsáveis</translation>
-<translation id="1657952527687824398">Focar no Grupo de Guias</translation>
 <translation id="1658424621194652532">Esta página está acessando seu microfone.</translation>
 <translation id="1660405268563702784">Atualização disponível para <ph name="APP_NAME"/></translation>
 <translation id="1661996889489595105">{NUM_TABS,plural, =1{Corrija a guia que está deixando o navegador mais lento}one{Corrija a guia que está deixando o navegador mais lento}other{Corrija as guias que estão deixando o navegador mais lento}}</translation>
@@ -936,6 +944,7 @@ Verifique suas senhas a qualquer momento no <ph name="GOOGLE_PASSWORD_MANAGER"/>
 <translation id="1708563369218024896">Nenhum coletor de dados selecionado. Selecione pelo menos um coletor de dados.</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (código: <ph name="ID_PH"/>)</translation>
 <translation id="1708839673480942471">Gerenciar notificações de apps, o modo "Não perturbe" e ícones de apps</translation>
+<translation id="1708971471914925330">Ativar som do site à esquerda</translation>
 <translation id="1708979186656821319">Não mostrar quando os downloads terminarem</translation>
 <translation id="1709085899471866534">Saiba rapidamente quando as guias estão inativas. Você pode desativar esse novo visual a qualquer momento nas configurações.</translation>
 <translation id="1709106626015023981"><ph name="WIDTH"/> x <ph name="HEIGHT"/> (nativo)</translation>
@@ -987,7 +996,6 @@ Verifique suas senhas a qualquer momento no <ph name="GOOGLE_PASSWORD_MANAGER"/>
 <translation id="1753905327828125965">Mais visitados</translation>
 <translation id="1755601632425835748">Tamanho do texto</translation>
 <translation id="1756963401828337401">Escolha uma tela para capturar</translation>
-<translation id="1758845021884209593">Usar atalho em apps do SO</translation>
 <translation id="1761402971842586829"><ph name="BUTTON_NAME"/> remapeado para <ph name="REMAPPING_OPTION"/>.</translation>
 <translation id="1761845175367251960">Contas de <ph name="NAME"/></translation>
 <translation id="176272781006230109">sugestões de compras</translation>
@@ -1035,6 +1043,7 @@ Verifique suas senhas a qualquer momento no <ph name="GOOGLE_PASSWORD_MANAGER"/>
 <translation id="1790976235243700817">Remover acesso</translation>
 <translation id="1791662854739702043">Instalado</translation>
 <translation id="1792619191750875668">Exibição estendida</translation>
+<translation id="1793048658013002380"><ph name="TOOLTIP_TEXT"/> (<ph name="KEYBOARD_SHORTCUT"/>)</translation>
 <translation id="1794212650797661990">Ocultar senha de <ph name="DOMAIN"/></translation>
 <translation id="1794791083288629568">Envie um feedback para nos ajudar a corrigir esse problema.</translation>
 <translation id="1795214765651529549">Usar "Clássico"</translation>
@@ -1519,6 +1528,7 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="2165177462441582039">Escolha por quanto tempo o destaque deve permanecer em cada item</translation>
 <translation id="2166369534954157698">Jane quer LP, fax, CD, giz, TV e bom whisky.</translation>
 <translation id="2168036794078614559">Denúncia feita</translation>
+<translation id="2168735174585029637">Dê um novo visual transparente às suas guias</translation>
 <translation id="2169062631698640254">Fazer login assim mesmo</translation>
 <translation id="217120844667431680">Aproveite o Modo IA</translation>
 <translation id="2173302385160625112">Verifique sua conexão com a Internet</translation>
@@ -1557,7 +1567,6 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="2198712775285959645">Editar</translation>
 <translation id="2199298570273670671">Erro</translation>
 <translation id="2879288960033380959">Para acessar o histórico dos seus outros dispositivos, faça login e sincronize esse registro e as guias com <ph name="EMAIL"/>. Você também terá acesso a senhas e muito mais em todos os seus aparelhos. É possível parar a sincronização a qualquer momento nas configurações. Com base no histórico, o Brave pode personalizar a Pesquisa e outros serviços para você.</translation>
-<translation id="2798272130984183944">Escolha se o Brave vai usar modelos de IA executados diretamente no seu dispositivo</translation>
 <translation id="2200094388063410062">E-mail</translation>
 <translation id="2200781749203116929">Registros do sistema ChromeOS</translation>
 <translation id="2202391868799679245">Ativar o atalho do teclado</translation>
@@ -1580,6 +1589,7 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="2215070081105889450">Para compartilhar áudio, compartilhe uma guia ou tela</translation>
 <translation id="2217208085547223783">Confiança</translation>
 <translation id="2218019600945559112">Mouse e touchpad</translation>
+<translation id="2218116022473625437">Nas configurações, você pode desativar o destaque de texto, modificar a voz e mudar a aparência da página.</translation>
 <translation id="2218515861914035131">Colar como texto sem formatação</translation>
 <translation id="2219007152108311874">Perguntar sempre</translation>
 <translation id="2220529011494928058">Informar um problema</translation>
@@ -1667,6 +1677,7 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="2278562042389100163">Abrir janela do navegador</translation>
 <translation id="2280486287150724112">Margem direta</translation>
 <translation id="228059581448666199">Clicar com o botão esquerdo do mouse</translation>
+<translation id="2281511031159517364">Para enviar links entre dispositivos, faça login com a mesma conta.</translation>
 <translation id="2282146716419988068">Processo de GPU</translation>
 <translation id="228293613124499805">A maioria dos sites que você visita provavelmente salva dados no seu dispositivo, muitas vezes para melhorar a experiência ao salvar suas preferências ou as informações que você compartilha com o site. Recomendamos manter essa configuração ativada.</translation>
 <translation id="2283599456633275070">Viagem</translation>
@@ -1699,7 +1710,6 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="2300383962156589922">Personalizar e controlar o app <ph name="APP_NAME"/></translation>
 <translation id="2300434721407965566">Para de carregar em 80% para aumentar a vida útil da bateria.</translation>
 <translation id="2301382460326681002">O diretório raiz da extensão é inválido.</translation>
-<translation id="2301402091755573488">Guia compartilhada</translation>
 <translation id="2304820083631266885">Planeta</translation>
 <translation id="2305202347479035002">Como funciona</translation>
 <translation id="2306794767168143227">Salvar no <ph name="BRAND"/> deste dispositivo</translation>
@@ -1718,6 +1728,7 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="2322622365472107569">Horário de término: <ph name="TIME"/></translation>
 <translation id="2323018538045954000">Redes Wi-Fi salvas</translation>
 <translation id="2323685460575935191">Ocultar botões de rolagem</translation>
+<translation id="2325004050205455346">Histórico recente</translation>
 <translation id="2325444234681128157">Lembrar senha</translation>
 <translation id="2326188115274135041">Confirme o PIN para ativar o desbloqueio automático</translation>
 <translation id="932658359823557793">Esta não é uma Conta do Brave. Os itens salvos no Brave não ficarão disponíveis em outros dispositivos.</translation>
@@ -1887,6 +1898,7 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="2457246892030921239"><ph name="APP_NAME"/> deseja copiar arquivos de <ph name="VOLUME_NAME"/>.</translation>
 <translation id="2457842160081795172">No canal <ph name="CHANNEL_NAME"/></translation>
 <translation id="2458379781610688953">Atualize a conta, <ph name="EMAIL"/></translation>
+<translation id="5926798067502023280">As guias são compartilhadas para deixar as respostas mais relevantes. O Brave usa o conteúdo e o URL da sua guia aberta quando você inicia uma nova conversa. Você pode mudar essa configuração a qualquer momento. A privacidade e a segurança dos dados da sua organização ficam garantidas. Isso não será usado para aprimorar os modelos de IA generativa.</translation>
 <translation id="2459703812219683497">Código de ativação detectado</translation>
 <translation id="2459706890611560967">Retomar transmissão da guia para <ph name="DEVICE_NAME"/></translation>
 <translation id="245979889539926662">Compartilhar uma captura de tela</translation>
@@ -1995,7 +2007,6 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="252513908494776481">Pergunte sobre esta guia</translation>
 <translation id="2525746158911982776">Falha na atualização por falta de espaço de armazenamento no sistema.</translation>
 <translation id="2525842906387880861">Você não verá mais sugestões nesta página</translation>
-<translation id="2526346836766369775">Nova &amp;guia isolada</translation>
 <translation id="2526590354069164005">Área de trabalho</translation>
 <translation id="2526619973349913024">Verificar atualizações</translation>
 <translation id="2527167509808613699">Qualquer tipo de conexão</translation>
@@ -2019,7 +2030,7 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="2541706104884128042">Nova hora de dormir definida</translation>
 <translation id="2542050502251273923">Configura o nível de depuração do gerenciador de conexão de rede e outros serviços usando ff_debug.</translation>
 <translation id="254274314549093389">Resultado da atualização: <ph name="OUTCOMES"/></translation>
-<translation id="2543780089903485983">{NUM_SUB_APP_INSTALLS,plural, =1{As permissões concedidas a <ph name="APP_NAME"/> também serão dadas para este app. <ph name="MANAGE_LINK"/>}one{As permissões concedidas a <ph name="APP_NAME"/> também serão dadas para este app. <ph name="MANAGE_LINK"/>}other{As permissões concedidas a <ph name="APP_NAME"/> também serão dadas para estes apps. <ph name="MANAGE_LINK"/>}}</translation>
+<translation id="2543780089903485983">{NUM_SUB_APP_INSTALLS,plural, =1{As permissões concedidas a <ph name="APP_NAME"/> também serão dadas para esse app. <ph name="MANAGE_LINK"/>}one{As permissões concedidas a <ph name="APP_NAME"/> também serão dadas para esse app. <ph name="MANAGE_LINK"/>}other{As permissões concedidas a <ph name="APP_NAME"/> também serão dadas para esses apps. <ph name="MANAGE_LINK"/>}}</translation>
 <translation id="2544352060595557290">Esta guia</translation>
 <translation id="2546302722632337735">Não permitir que os sites usem identificadores para abrir conteúdo protegido</translation>
 <translation id="2546991196809436099">Aumente o zoom para ampliar os itens na tela. Use Pesquisa + Ctrl + M para ativar e desativar a lupa.</translation>
@@ -2075,7 +2086,7 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="2024721991200132064">Novo Brave disponível</translation>
 <translation id="2599048253926156421">Nome de usuário copiado para a área de transferência</translation>
 <translation id="2600631204638174747">{NUM_SITES,plural, =1{1 extensão não segura foi desativada}one{{NUM_SITES} extensão não segura foi desativada}other{{NUM_SITES} extensões não seguras foram desativadas}}</translation>
-<translation id="2603121359676416582">Para esta página</translation>
+<translation id="2603656971249947488">Barra de guias</translation>
 <translation id="2604129989323098489">Os sites geralmente pedem informações sobre as telas para poderem abrir e posicionar as janelas de maneira inteligente, por exemplo, mostrando documentos ou conteúdo em tela cheia lado a lado</translation>
 <translation id="2604255671529671813">Erro de conexão da rede</translation>
 <translation id="2604805099836652105">Formulário de endereço de <ph name="ADDRESS_LABEL"/> preenchido.</translation>
@@ -2133,6 +2144,7 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="2636266464805306348">Títulos de janelas</translation>
 <translation id="2637313651144986786">Pesquisar guias…</translation>
 <translation id="2637400434494156704">PIN incorreto. Você tem apenas uma tentativa restante.</translation>
+<translation id="2637852492915204064">Fechar pesquisa em todas as guias</translation>
 <translation id="263796568413910992">Pergunte ao <ph name="SEARCH_ENGINE_NAME"/> ou digite um URL</translation>
 <translation id="2640299212685523844">Usar GTK</translation>
 <translation id="264083724974021997">Conecte-se ao seu smartphone - Caixa de diálogo</translation>
@@ -2212,6 +2224,7 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="2701960282717219666">Endereço MAC da rede</translation>
 <translation id="2702720509009999256">Confira sua conexão de Internet e escolha "Tentar de novo" ou "Abrir no editor básico" para usar as opções limitadas de edição e visualização.</translation>
 <translation id="2702801445560668637">Lista de Leitura</translation>
+<translation id="2703151507515080771">{NUM_TABS,plural, =1{Desfocar guia}one{Desfocar guia}other{Desfocar guias}}</translation>
 <translation id="270414148003105978">Redes móveis</translation>
 <translation id="2704184184447774363">Assinatura de documentos da Microsoft</translation>
 <translation id="2704606927547763573">Copiado</translation>
@@ -2262,6 +2275,7 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="2731971182069536520">Na próxima vez que você reiniciar o dispositivo, o administrador fará uma atualização única que excluirá seus dados locais.</translation>
 <translation id="2733248615007838252">O botão "Gostei" envia feedback informando que você gostou desses resultados.</translation>
 <translation id="27349076983469322">Plano de fundo claro</translation>
+<translation id="2735081931800992557">Ler e mostrar arquivos PDF</translation>
 <translation id="2735712963799620190">Programar</translation>
 <translation id="2737363922397526254">Recolher...</translation>
 <translation id="2737719817922589807">Favoritos e listas</translation>
@@ -2303,6 +2317,7 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="2756754491396884324">Bloquear e sair do grupo?</translation>
 <translation id="2756936198272359372">Bloquear o uso do JavaScript</translation>
 <translation id="2757161511365746634">Ver impressora</translation>
+<translation id="2757292392033317957">Ativar Som do Site à Direita</translation>
 <translation id="2757338480560142065">A senha que você está salvando precisa corresponder à usada em <ph name="WEBSITE"/></translation>
 <translation id="2761632996810146912"><ph name="HASHTAG_SETTINGS"/> Nenhum resultado da pesquisa por "<ph name="SEARCH_QUERY"/>"</translation>
 <translation id="2762441749940182211">Câmera bloqueada</translation>
@@ -2317,7 +2332,6 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="2767077837043621282">Não foi possível atualizar o Chromebook. Tente novamente mais tarde.</translation>
 <translation id="2767127727915954024"><ph name="ORIGIN"/> poderá editar <ph name="FILENAME"/> até que você feche todas as guias desse site</translation>
 <translation id="2769174155451290427">Imagem enviada</translation>
-<translation id="2769715732905083104">Focar no grupo de guias</translation>
 <translation id="2770082596325051055">Pausar <ph name="FILE_NAME"/></translation>
 <translation id="2770465223704140727">Remover da lista</translation>
 <translation id="2770690685823456775">Exportar suas senhas para outra pasta</translation>
@@ -2390,6 +2404,7 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="282230978681804245">O perfil é gerenciado por sua organização, que pode ver algumas informações, incluindo:</translation>
 <translation id="2822551631199737692">Câmera em uso</translation>
 <translation id="2822634587701817431">Encolher / Expandir</translation>
+<translation id="2824892374426974106">Fazer perguntas sobre</translation>
 <translation id="2824942875887026017">O <ph name="IDS_SHORT_PRODUCT_NAME"/> está usando as configurações de proxy do seu administrador</translation>
 <translation id="2825200993288778739">Crie ou adicione da biblioteca de habilidades</translation>
 <translation id="282525059261716597">Linha de comando:</translation>
@@ -2594,7 +2609,6 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="2984727013951557074">O arquivo ainda está sendo sincronizado com o Google Drive.</translation>
 <translation id="5706997116413643454">Tenha suas chaves de acesso neste dispositivo com o Gerenciador de Senhas do Brave</translation>
 <translation id="2985476671756533899">{NUM_SUB_APPS,plural, =1{<ph name="APP_NAME"/> desinstalou um app}one{<ph name="APP_NAME"/> desinstalou # app}other{<ph name="APP_NAME"/> desinstalou # apps}}</translation>
-<translation id="2987777176328481585">{NUM_TABS,plural, =1{Focar na guia}one{Focar em # guia}other{Focar em # guias}}</translation>
 <translation id="2988018669686457659">Renderizador reserva</translation>
 <translation id="2988328607561082373">Você não está reutilizando senhas</translation>
 <translation id="2989123969927553766">Aceleração de rolagem do mouse</translation>
@@ -2623,6 +2637,7 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="3001144475369593262">Contas de crianças</translation>
 <translation id="3001614333383288217">{COUNT,plural, =0{Nenhuma tecla personalizada}=1{1 tecla personalizada}one{{COUNT} tecla personalizada}other{{COUNT} teclas personalizadas}}</translation>
 <translation id="3002864108328203174">Página inferior do Gemini na metade do tamanho.</translation>
+<translation id="300311730636583518">Fazer perguntas sobre</translation>
 <translation id="3003144360685731741">Redes preferidas</translation>
 <translation id="4014744802831415408">Trabalhando na sua tarefa do app do Gemini no Brave. Verifique se há mais atualizações no Brave</translation>
 <translation id="5730179015008010982">Os URLs que você acessa são enviados ao Brave para prever quais sites você pode visitar em seguida e para mostrar mais informações sobre a página atual</translation>
@@ -2754,6 +2769,7 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="3094521107841754472">O preço mudou de <ph name="PREVIOUS_PRICE"/> para <ph name="CURRENT_PRICE"/>.</translation>
 <translation id="3095871294753148861">Favoritos, senhas e outros dados de navegação são sincronizados com a conta principal.</translation>
 <translation id="5953727807257924988">Seus apps e suas configurações serão sincronizados em todos os dispositivos ChromeOS Flex conectados à sua Conta do Brave. Para gerenciar quais dados do navegador são salvos na sua conta, acesse as <ph name="LINK_BEGIN"/>configurações do Brave<ph name="LINK_END"/>.</translation>
+<translation id="3099754485438181407">Teste o novo estilo nas configurações. Você pode voltar para o visual clássico quando quiser.</translation>
 <translation id="3101126716313987672">Diminuir iluminação</translation>
 <translation id="3101709781009526431">Data e hora</translation>
 <translation id="3102309003841389927">Revisar a atualização do logotipo</translation>
@@ -2844,7 +2860,6 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="3166443275568926403">Desempenho e estado da bateria</translation>
 <translation id="3167446923957429259">Mova a boca para a esquerda</translation>
 <translation id="3167562202484086668">Excluir todos os dados do <ph name="BRAND"/></translation>
-<translation id="3169504125849131369">Abrir configurações do Windows</translation>
 <translation id="3175067642577044620">Corpo</translation>
 <translation id="3175862692832442091">Floresta</translation>
 <translation id="3176347586396987181">Use a tecla “z” para tocar em um botão do mouse e pressionar</translation>
@@ -2928,6 +2943,7 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="323262942975422760">Mais opções para editar ou excluir <ph name="ENTITY_INSTANCE_LABEL"/>, <ph name="ENTITY_INSTANCE_SUBLABEL"/></translation>
 <translation id="3232754137068452469">App da Web</translation>
 <translation id="3233271424239923319">Fazer backup de apps e arquivos do Linux</translation>
+<translation id="3233577317461669428">Nenhum outro dispositivo encontrado</translation>
 <translation id="3234251228180563751">O nome de usuário tem mais de 1.000 caracteres</translation>
 <translation id="3234978181857588512">Salvar no dispositivo</translation>
 <translation id="3237871032310650497">Excluir dados particionados do site <ph name="SITE_NAME"/> em <ph name="PARTITION_SITE_NAME"/>?</translation>
@@ -2964,6 +2980,7 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="3257733480216378006">Permitir <ph name="EXTENSIONS_REQUESTING_ACCESS_COUNT"/>?</translation>
 <translation id="325797067711573598">Download suspeito bloqueado</translation>
 <translation id="3261090393424563833">Aumentar taxa</translation>
+<translation id="3261798996834477302">Ativar Som do Site de Baixo</translation>
 <translation id="3261832505033014216">Chave de acesso de <ph name="USER_EMAIL"/></translation>
 <translation id="3262261769033093854">Não permitir que os sites capturem e usem a entrada do mouse</translation>
 <translation id="2255934964289231599">Como essa conta é gerenciada por <ph name="DOMAIN"/>, sua Conta do Brave não vai ser desconectada. Seus favoritos, histórico, senhas e outras configurações não serão mais sincronizados. No entanto, os dados sincronizados anteriormente vão continuar armazenados na sua conta e poderão ser gerenciados no <ph name="BEGIN_LINK"/>Painel do Brave<ph name="END_LINK"/>.</translation>
@@ -3002,7 +3019,6 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="3292966601422448005">As permissões concedidas para <ph name="APP_NAME"/> também serão dadas aos apps instalados por ele.</translation>
 <translation id="3293080634164207409">Adicionar guias</translation>
 <translation id="329324683265785818">Iniciar/pausar, atalho do teclado k</translation>
-<translation id="3293644607209440645">Enviar esta página</translation>
 <translation id="3294437725009624529">Visitante</translation>
 <translation id="3294686910656423119">Estatísticas de uso e relatórios de erros</translation>
 <translation id="3295241308788901889">Transmitindo uma guia</translation>
@@ -3046,6 +3062,7 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="3320957378743864387">Não pode oferecer ajuda para escrever</translation>
 <translation id="3321460131042519426">Ativar quebra de palavra</translation>
 <translation id="3321494112580110651">Sua impressora não está listada?</translation>
+<translation id="3321512411079201586">&amp;Isolado</translation>
 <translation id="3321776060736518525">De <ph name="APP_URL"/></translation>
 <translation id="3323288183237359315">Instalar no Edge</translation>
 <translation id="3323521181261657960">Bônus! Você ganhou mais tempo de tela</translation>
@@ -3115,6 +3132,7 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="3379268272734690">Deserto</translation>
 <translation id="3382737653173267704">Mostrar família</translation>
 <translation id="338323348408199233">Bloquear tráfego sem VPN</translation>
+<translation id="3384827779079384219">{NUM_TABS,plural, =1{Focar em guia}one{Focar em guia}other{Focar em guias}}</translation>
 <translation id="3385053436247851142">Fazer login com a Microsoft</translation>
 <translation id="3385092118218578224"><ph name="DISPLAY_ZOOM"/>%</translation>
 <translation id="578264744718841969">O recurso de precisão da localização fornece dados mais exatos para apps e serviços. Para isso ocorrer, o Brave processa periodicamente as informações sobre sensores e sinais do seu dispositivo e, com isso, contribui para a localização de sinais sem fio. Essas informações são usadas sem identificação de usuário para aprimorar a precisão e os serviços que usam a localização. Além disso, esses dados são usados para melhorar, fornecer e manter os Serviços do Brave, com base em interesses legítimos próprios e de terceiros, para atender às necessidades dos usuários.</translation>
@@ -3133,6 +3151,7 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="3390740059150071453">Olhar para a esquerda</translation>
 <translation id="404326254653176440">Brave Document Analysis</translation>
 <translation id="3394072120086516913">O PC está conectado a uma rede com fio e o dispositivo de transmissão está no Wi-Fi</translation>
+<translation id="3394561494170561143">Nova &amp;guia isolada</translation>
 <translation id="3394850431319394743">Com permissão para usar identificadores para abrir conteúdo protegido</translation>
 <translation id="339722927132407568">Congela</translation>
 <translation id="3399432415385675819">As notificações serão desativadas</translation>
@@ -3316,7 +3335,6 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="3527473647192919613">Nova Janela Isolada</translation>
 <translation id="3528498924003805721">Alvos dos atalhos</translation>
 <translation id="35296112145429559">Fixar botões de rolagem</translation>
-<translation id="3530919970074558307">Desfocar grupo</translation>
 <translation id="3531070080754387701">O Microsoft 365 não pode abrir o arquivo <ph name="FILE_NAMES"/> nesta pasta</translation>
 <translation id="3531883061432162622">Encontre sua Lista de leitura e seus favoritos em Favoritos e Listas</translation>
 <translation id="3532521178906420528">Conectando à rede…</translation>
@@ -3377,6 +3395,7 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="3575224072358507281">Coletar os resultados da medição da rede e do endereço IP para o Measurement Lab, de acordo com a Política de Privacidade (measurementlab.net/privacy).</translation>
 <translation id="3576324189521867626">Instalação concluída</translation>
 <translation id="3577036603268648505">Mais segurança on-line</translation>
+<translation id="3577178956237526436">Ativar som do site à esquerda</translation>
 <translation id="3577473026931028326">Algo deu errado. Tente novamente.</translation>
 <translation id="3577487026101678864">Sincronização de arquivos ativada</translation>
 <translation id="3578230582111850125">selecione o texto para perguntar ao Gemini</translation>
@@ -3385,6 +3404,7 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="3582057310199111521">Inserida em um fraudulento e encontrada em uma violação de dados</translation>
 <translation id="3582299299336701326">Escureça telas claras e clareie as escuras. Pressione as teclas Pesquisa + Ctrl + H para ativar e desativar a inversão de cores.</translation>
 <translation id="3584169441612580296">Ler e alterar fotos, músicas e outras mídias do seu computador</translation>
+<translation id="358562596990359723">Fechar pesquisa em todas as guias</translation>
 <translation id="3586741240886978899">Você usou neste site</translation>
 <translation id="3586806079541226322">Não é possível abrir o arquivo</translation>
 <translation id="3586931643579894722">Ocultar detalhes</translation>
@@ -3524,6 +3544,7 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="3685598397738512288">Preferências de USB do Linux</translation>
 <translation id="3686108296937784939">Atalhos da minha organização</translation>
 <translation id="3687359570564207338">{NUM_SITES,plural, =1{1 senha comprometida encontrada}one{{NUM_SITES} senha comprometida encontrada}other{{NUM_SITES} senhas comprometidas encontradas}}</translation>
+<translation id="3687463694814266645">Reordenar</translation>
 <translation id="3687598459967813435">Sempre permitir notificações de <ph name="WEBSITE"/></translation>
 <translation id="3688507211863392146">Realizar gravações em arquivos e pastas que você abre no aplicativo</translation>
 <translation id="3688526734140524629">Mudar de canal</translation>
@@ -3623,6 +3644,7 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="374124333420280219">Detalhes do app:</translation>
 <translation id="3741510433331996336">Reinicie o dispositivo para concluir a atualização</translation>
 <translation id="3742235229730461951">Layout de teclado coreano</translation>
+<translation id="3743737928354166561">Ativar Som do Site de Cima</translation>
 <translation id="3743842571276656710">Digite o PIN para parear com o dispositivo <ph name="DEVICE_NAME"/></translation>
 <translation id="3744219658596020825">Suas senhas não foram importadas</translation>
 <translation id="3745306754941902605">Cozinha</translation>
@@ -3663,6 +3685,7 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="3771294271822695279">Arquivos de vídeo</translation>
 <translation id="3771721161825963003">Mostrar guias verticalmente</translation>
 <translation id="3771851622616482156">Sua conta será desconectada deste site, inclusive nas guias abertas</translation>
+<translation id="3772951945682043324">Nenhuma guia fechada recentemente</translation>
 <translation id="3774059845329307709">Número de série</translation>
 <translation id="3774166835015494435">Fotos e notificações recentes</translation>
 <translation id="3775432569830822555">Certificado de servidor SSL</translation>
@@ -3730,6 +3753,7 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="3812525830114410218">Certificado inválido</translation>
 <translation id="883304095704384301">Se você não encontrar o que está procurando, acesse a <ph name="BEGIN_LINK_CHROMIUM"/>Ajuda do Brave<ph name="END_LINK_CHROMIUM"/></translation>
 <translation id="3813358687923336574">Idioma usado para traduzir páginas e nas Respostas rápidas</translation>
+<translation id="3815509884387832993">Ouça esta página como se fosse um podcast com a reprodução com IA usando o botão Ativar Reprodução com IA na barra de ferramentas do Modo de Leitura</translation>
 <translation id="3815668647912194650">Mantenha esse grupo para adicionar guias mais tarde ou saia dele se não quiser mais ter acesso.</translation>
 <translation id="8338457030135232378">Cores do Brave</translation>
 <translation id="3817524650114746564">Abre as configurações de proxy do computador</translation>
@@ -4112,6 +4136,7 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="4109135793348361820">Mover janela para <ph name="USER_NAME"/> (<ph name="USER_EMAIL"/>)</translation>
 <translation id="4110485659976215879">Restaurar aviso</translation>
 <translation id="4112194537011183136"><ph name="DEVICE_NAME"/> (off-line)</translation>
+<translation id="4112282889480354965">Extensões e habilidades</translation>
 <translation id="4113743276555482284">Senha do arquivo</translation>
 <translation id="1423132677367459502">Você está vendo arquivos sugeridos para voltar de forma simples à sua atividade mais recente no Google Drive.
         <ph name="BREAK"/>
@@ -4254,7 +4279,6 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="4241140145060464825">Conteúdo do app</translation>
 <translation id="4241224519481557898">Categoria</translation>
 <translation id="4242245038391716252">Baixado pela extensão: &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
-<translation id="4242344119782070019">Agora você pode expandir as guias ao passar o cursor sobre elas. Para ativar essa função, clique com o botão direito aqui.</translation>
 <translation id="4242533952199664413">Abrir configurações</translation>
 <translation id="4242825475818569385"><ph name="BEGIN_LINK"/>Seu navegador e seu perfil são gerenciados<ph name="END_LINK"/> por <ph name="DOMAIN"/></translation>
 <translation id="424315890655130736">Digite a senha longa</translation>
@@ -4263,6 +4287,7 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="4244238649050961491">Encontrar mais apps para usar com a stylus</translation>
 <translation id="4246980464509998944">Outros comentários:</translation>
 <translation id="4248401726442101648">Nenhuma câmera conectada</translation>
+<translation id="4248996886292862765">Desativar som do site à esquerda</translation>
 <translation id="4249116869350613769">Economia de bateria</translation>
 <translation id="4249373718504745892">Esta página foi impedida de acessar sua câmera e seu microfone.</translation>
 <translation id="7099712982135840550">Personalize o Brave turbinado com IA</translation>
@@ -4290,6 +4315,7 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="4263824086525632">Aurora boreal</translation>
 <translation id="4265096510956307240">Confirme sua identidade</translation>
 <translation id="4265301768135164545">Também é possível configurar um perfil de eSIM <ph name="BEGIN_LINK"/>manualmente<ph name="END_LINK"/></translation>
+<translation id="4265517943561857930">Ativar som do site de cima</translation>
 <translation id="426564820080660648">Para verificar se há atualizações, utilize Ethernet, Wi-Fi ou a rede de dados móveis.</translation>
 <translation id="426652736638196239">O IBAN vai ser salvo apenas neste dispositivo</translation>
 <translation id="4266679478228765574">A remoção de pastas interromperá o compartilhamento, mas não excluirá os arquivos.</translation>
@@ -4418,7 +4444,6 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="4360738659108163902">Clicar com o botão direito do mouse</translation>
 <translation id="4361745360460842907">Abrir como guia</translation>
 <translation id="4362459470237309049">Use a tecla “.” para soltar um botão do mouse</translation>
-<translation id="4362871358537270439">Mostrar guias de outros dispositivos no painel lateral</translation>
 <translation id="4363262124589131906">Os novos arquivos da seção Meu Drive deixarão de ser sincronizados automaticamente com este Chromebook</translation>
 <translation id="4364129298304269786">Os sites podem usar um serviço de proteção de conteúdo para reproduzir mídias protegidas por direitos autorais</translation>
 <translation id="4364327530094270451">Melão</translation>
@@ -4483,9 +4508,9 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="4405580203042711503">Nova guia abaixo</translation>
 <translation id="4405781821077215583">Aumente ou diminua os itens na tela, incluindo o texto</translation>
 <translation id="4406308048672435032">Você pode deixar essa guia inativa ou atualizar a página para ver a lista completa de novo</translation>
-<translation id="4406881185911439342">Focar grupo</translation>
 <translation id="4406883609789734330">Legenda Instantânea</translation>
 <translation id="4406963243402726564">Há dados não salvos</translation>
+<translation id="4408595563209996725">{NUM_TABS,plural, =1{Desfocar guia}one{Desfocar guia}other{Desfocar guias}}</translation>
 <translation id="4408599188496843485">A&amp;juda</translation>
 <translation id="4409340274650920844">{NUM_APPS,plural,offset:2 =1{O administrador pode gravar sua tela com o app <ph name="APP0_NAME"/>. Você vai receber uma notificação quando a gravação começar.}=2{O administrador pode gravar sua tela com os apps <ph name="APP0_NAME"/> e <ph name="APP1_NAME"/>. Você vai receber uma notificação quando a gravação começar.}=3{O administrador pode gravar sua tela com os apps <ph name="APP0_NAME"/>, <ph name="APP1_NAME"/> e mais 1. Você vai receber uma notificação quando a gravação começar.}one{O administrador pode gravar sua tela com os apps <ph name="APP0_NAME"/>, <ph name="APP1_NAME"/> e mais #. Você vai receber uma notificação quando a gravação começar.}other{O administrador pode gravar sua tela com os apps <ph name="APP0_NAME"/>, <ph name="APP1_NAME"/> e mais #. Você vai receber uma notificação quando a gravação começar.}}</translation>
 <translation id="4409697491990005945">Margens</translation>
@@ -4732,7 +4757,6 @@ Para gerenciar as configurações dessa conta, instale o app Family Link no seu 
 <translation id="4610493438923139095">Não confiável</translation>
 <translation id="4610637590575890427">Você quis ir a <ph name="SITE"/>?</translation>
 <translation id="4611619000650855880">Quando o botão esquerdo do mouse estiver selecionado, use a tecla “/” para clicar duas vezes</translation>
-<translation id="4612841084470706111">Dar acesso a todos os sites solicitados.</translation>
 <translation id="4613271546271159013">Uma extensão alterou a página exibida quando uma nova guia é aberta.</translation>
 <translation id="461613135510474570">Sentença</translation>
 <translation id="461661862154729886">Fonte de energia</translation>
@@ -5109,7 +5133,6 @@ Use Ctrl + Alt + Diminuir brilho para diminuir o zoom.</translation>
 <translation id="4884987973312178454">6x</translation>
 <translation id="4885692421645694729">Esta extensão não tem nenhum acesso extra a sites</translation>
 <translation id="4887424188275796356">Abrir com o Visualizador do sistema</translation>
-<translation id="488785315393301722">Mostrar detalhes</translation>
 <translation id="488862352499217187">Criar pasta</translation>
 <translation id="4888715715847020167">acesse as configurações</translation>
 <translation id="4888899258150891194">Memória do CppGC</translation>
@@ -5150,6 +5173,7 @@ Use Ctrl + Alt + Diminuir brilho para diminuir o zoom.</translation>
 <translation id="4913573660390710463">Acesse o pacote de aplicativos da web com recursos avançados. <ph name="BEGIN_LINK_LEARN_MORE"/>Saiba mais<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="4913695564084524048">Não foi possível encontrar dados do app</translation>
 <translation id="4915961947098019832">Permitir a exibição de imagens</translation>
+<translation id="4916140032692201190">&amp;Traduzir seleção</translation>
 <translation id="4918021164741308375"><ph name="ORIGIN"/> deseja se comunicar com a extensão "<ph name="EXTENSION_NAME"/>"</translation>
 <translation id="4918086044614829423">Aceitar</translation>
 <translation id="4918762404810341788">Copiar e abrir</translation>
@@ -5203,6 +5227,7 @@ Use Ctrl + Alt + Diminuir brilho para diminuir o zoom.</translation>
 <translation id="4956593309300508411">Parar de compartilhar?</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="4958009531430054995">Salvar em uma pasta apenas neste dispositivo?</translation>
+<translation id="4958931830785526368">Desativar som do site de baixo</translation>
 <translation id="2664072612040204002">As senhas são salvas na sua Conta do Brave para que você possa usá-las em qualquer dispositivo</translation>
 <translation id="4959581970694896608">Personalizar as respostas do Gemini</translation>
 <translation id="4960020053211143927">Indisponível em alguns apps</translation>
@@ -5304,6 +5329,7 @@ Use Ctrl + Alt + Diminuir brilho para diminuir o zoom.</translation>
 <translation id="5039804452771397117">Permitir</translation>
 <translation id="5040262127954254034">Privacidade</translation>
 <translation id="5040823038948176460">Mais configurações de conteúdo</translation>
+<translation id="5041178465403838363">Perguntar sobre "<ph name="SELECTION"/>"</translation>
 <translation id="1773373699515552474">App Brave</translation>
 <translation id="504194357571315770">Ação necessária</translation>
 <translation id="5043807571255634689">A assinatura de <ph name="SUBSCRIPTION_NAME"/> será removida apenas deste dispositivo. Para fazer mudanças na sua assinatura, entre em contato com o provedor. <ph name="LINK_BEGIN"/>Saiba mais<ph name="LINK_END"/></translation>
@@ -5572,12 +5598,13 @@ Use Ctrl + Alt + Diminuir brilho para diminuir o zoom.</translation>
 <translation id="5246282308050205996"><ph name="APP_NAME"/> travou. Clique neste balão para reiniciar o aplicativo.</translation>
 <translation id="5247051749037287028">Nome de exibição (opcional)</translation>
 <translation id="5247243947166567755">Selecionar <ph name="BOOKMARK_TITLE"/></translation>
+<translation id="5020151688261063547">Pergunte o que quiser, onde estiver, com o Gemini no Brave</translation>
 <translation id="5248934139541843042">Ver organizador</translation>
 <translation id="5249624017678798539">O navegador travou antes do término do download.</translation>
 <translation id="5249818097095743806">Use sua chave de segurança</translation>
 <translation id="5250372599208556903">O <ph name="SEARCH_ENGINE_NAME"/> usa sua localização para que você tenha acesso a conteúdo local. É possível alterar isso em <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="5254233580564156835">Uso da memória: <ph name="MEMORY_USAGE"/></translation>
-<translation id="5254678337198156877">Esses dados do app serão compartilhados entre o "<ph name="APP_NAME"/>" e os apps instalados.</translation>
+<translation id="5254678337198156877">Esses dados do app serão compartilhados entre "<ph name="APP_NAME"/>" e os apps instalados por ele.</translation>
 <translation id="5255726914791076208">Quando você edita a chave de acesso, sua conta de <ph name="RP_ID"/> não muda.</translation>
 <translation id="5256174546894739043">Perguntar quando um site quiser acompanhar suas mãos</translation>
 <translation id="52566111838498928">Carregando fontes…</translation>
@@ -5658,7 +5685,6 @@ Use Ctrl + Alt + Diminuir brilho para diminuir o zoom.</translation>
 <translation id="5311304534597152726">Login como</translation>
 <translation id="5312746996236433535">espelhar tela</translation>
 <translation id="5313967007315987356">Adicionar site</translation>
-<translation id="531500736198839473">{NUM_TABS,plural, =1{Focar na Guia}one{Focar em # Guia}other{Focar em # Guias}}</translation>
 <translation id="5315738755890845852">Chave extra: <ph name="ERROR_LINE"/></translation>
 <translation id="5317780077021120954">Salvar</translation>
 <translation id="5317781812114905957">Instruções</translation>
@@ -5689,6 +5715,7 @@ Use Ctrl + Alt + Diminuir brilho para diminuir o zoom.</translation>
 <translation id="5344128444027639014"><ph name="BATTERY_PERCENTAGE"/>% (direito)</translation>
 <translation id="534449933710420173">Pasta sem nome</translation>
 <translation id="5345916423802287046">Iniciar app ao fazer login</translation>
+<translation id="5346059693449184483">No que você está pensando agora?</translation>
 <translation id="5350116201946341974">Extravagante</translation>
 <translation id="535123479159372765">Texto copiado de outro dispositivo</translation>
 <translation id="5352257124367865087">Gerenciar permissões de sites</translation>
@@ -5735,6 +5762,7 @@ Use Ctrl + Alt + Diminuir brilho para diminuir o zoom.</translation>
 <translation id="5392864580775235956">Adicione e edite uma imagem</translation>
 <translation id="5393330235977997602">Opções de PIN</translation>
 <translation id="5393761864111565424">{COUNT,plural, =1{Link}one{# link}other{# links}}</translation>
+<translation id="5394400188854257119">5 minutos</translation>
 <translation id="5394529681046491727">Wi-Fi Direct</translation>
 <translation id="5395353843367783642">Salvando na sua conta…</translation>
 <translation id="5397656531674854099">Use seus grupos de guias no celular</translation>
@@ -5834,7 +5862,6 @@ Você pode atribuir vários interruptores a essa ação.</translation>
 <translation id="5463348003600590648">Desativar sugestões</translation>
 <translation id="5463625433003343978">Localizando dispositivos…</translation>
 <translation id="5463856536939868464">Menu contendo favoritos ocultos</translation>
-<translation id="5465214111614807935">Nova Janela &amp;Isolada</translation>
 <translation id="5466374726908360271">Colar e pesquisar “<ph name="SEARCH_TERMS"/>”</translation>
 <translation id="5466721587278161554">Seus grupos de guias são salvos na barra de favoritos e no menu de apps e atualizados em todos os dispositivos conectados quando a sincronização está ativada</translation>
 <translation id="5467207440419968613">Bloqueados: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/></translation>
@@ -5930,6 +5957,7 @@ Você pode atribuir vários interruptores a essa ação.</translation>
 <translation id="5533001281916885985"><ph name="SITE_NAME"/> quer</translation>
 <translation id="5533343601674003130">Serviço de PDF</translation>
 <translation id="5535769176698670170">Trocar com a visualização de cima</translation>
+<translation id="5536642445914063887">Trocar de perfil</translation>
 <translation id="5537725057119320332">Transmitir</translation>
 <translation id="5541091577812545428">A senha não foi alterada</translation>
 <translation id="5542132724887566711">Perfil</translation>
@@ -6113,6 +6141,7 @@ Não exponha nenhuma informação confidencial.</translation>
 <translation id="5691772641933328258">Impressão digital não reconhecida</translation>
 <translation id="5693255400847650006">Microfone em uso</translation>
 <translation id="5693806089748511108">Suas habilidades</translation>
+<translation id="5694689722959820210">Criar grupo de guias</translation>
 <translation id="5695046252726616755">Pressione "Enter" ou a barra de espaço para ver mais opções.</translation>
 <translation id="5695184138696833495">ADB de apps Android no Linux</translation>
 <translation id="5696143504434933566">Denunciar abuso de "<ph name="EXTENSION_NAME"/>"</translation>
@@ -6151,6 +6180,7 @@ Não exponha nenhuma informação confidencial.</translation>
 <translation id="5724723163580775373">Foco grande</translation>
 <translation id="5725112283692663422">Enviar feedback sobre a página "Criar um tema com IA"</translation>
 <translation id="5727728807527375859">Extensões, aplicativos e temas podem danificar o seu computador. Você quer mesmo continuar?</translation>
+<translation id="5538728979139612034">As guias são compartilhadas para deixar as respostas mais relevantes. O Brave usa o conteúdo e o URL da sua guia aberta quando você inicia uma nova conversa. Você pode mudar essa configuração a qualquer momento.</translation>
 <translation id="2628630689312565278">Serviços do Brave vinculados</translation>
 <translation id="5729712731028706266">&amp;Visualizar</translation>
 <translation id="5731247495086897348">&amp;Colar e ir</translation>
@@ -6207,7 +6237,6 @@ Não exponha nenhuma informação confidencial.</translation>
 <translation id="5776571780337000608">Com este app, é possível abrir e editar arquivos com suporte usando o navegador de arquivos ou outros apps. Para controlar quais arquivos são abertos nesse app por padrão, <ph name="BEGIN_LINK"/>aprenda a definir os apps padrão no seu dispositivo<ph name="END_LINK"/>.</translation>
 <translation id="6676231621615806698">Abra o Brave</translation>
 <translation id="5778491106820461378">Acesse <ph name="LINK_BEGIN"/>Configurações<ph name="LINK_END"/> para gerenciar as Contas do Brave conectadas. As permissões concedidas a sites e apps podem ser aplicadas a todas as contas. Se você não quer que sites ou apps tenham acesso às informações da sua conta, faça login no <ph name="DEVICE_TYPE"/> como visitante.</translation>
-<translation id="5779636902585836564">&amp;Traduzir</translation>
 <translation id="5780011244986845107">A pasta selecionada contém arquivos confidenciais. Tem certeza de que quer conceder acesso permanente de leitura nessa pasta ao "<ph name="APP_NAME"/>"?</translation>
 <translation id="5780973441651030252">Prioridade do processo</translation>
 <translation id="5781120434102258025">Mover os dados da sua conta escolar para a pessoal</translation>
@@ -6275,7 +6304,6 @@ Não exponha nenhuma informação confidencial.</translation>
 <translation id="5828181959764767444">Pôr do sol</translation>
 <translation id="5828545842856466741">Adicionar perfil…</translation>
 <translation id="5828633471261496623">Imprimindo...</translation>
-<translation id="5829137022934788067">Quero saber mais sobre esta seleção</translation>
 <translation id="5829214552954466783">Compartilhar <ph name="CREDENTIAL_TYPE"/> para o nome de usuário <ph name="USER_EMAIL"/></translation>
 <translation id="5829544019044013776">Suas formas de pagamento na Carteira do Brave</translation>
 <translation id="5830512293931520102">Sua senha é criptografada e nunca é vista por ninguém</translation>
@@ -6345,6 +6373,7 @@ Não exponha nenhuma informação confidencial.</translation>
 <translation id="5868822853313956582">Seguir as cores do dispositivo</translation>
 <translation id="5869029295770560994">Ok, entendi</translation>
 <translation id="5869522115854928033">Senhas salvas</translation>
+<translation id="5869611709939872766">Olá, <ph name="FIRST_NAME"/>! No que você está pensando?</translation>
 <translation id="5870155679953074650">Falhas graves</translation>
 <translation id="587234395549708302">Limpar favoritos?</translation>
 <translation id="587502357434914765">Selecionar na tela</translation>
@@ -6518,6 +6547,7 @@ Não exponha nenhuma informação confidencial.</translation>
 <translation id="6006484371116297560">Clássico</translation>
 <translation id="6007053304250788613">Apenas uma tela pode ser excluída no modo espelho</translation>
 <translation id="6007240208646052708">A pesquisa por voz no seu idioma não está disponível.</translation>
+<translation id="6007858579659393165">As guias têm um novo visual transparente</translation>
 <translation id="2626511583221319874">Quando ativado, o Brave Tradutor oferece a tradução de sites para seu idioma preferido. Ele também pode traduzir sites automaticamente.</translation>
 <translation id="6011193465932186973">Impressão digital</translation>
 <translation id="6011308810877101166">Melhorar as sugestões de pesquisa</translation>
@@ -6957,6 +6987,7 @@ Não exponha nenhuma informação confidencial.</translation>
 <translation id="6356893102071098867">Confirme se você escolheu a conta certa</translation>
 <translation id="6357305427698525450">Alguns links com suporte ainda serão abertos no app <ph name="APP_NAME"/> ou <ph name="APP_NAME_2"/>.</translation>
 <translation id="6357750620525943720">Outros identificadores estáveis (por exemplo, Hashes ou UUIDs)</translation>
+<translation id="6357830294871526418">Guias em outros dispositivos</translation>
 <translation id="6358884629796491903">Dragão</translation>
 <translation id="6359640073754977254">Rolar até a última guia</translation>
 <translation id="6361850914223837199">Detalhes do erro:</translation>
@@ -6973,6 +7004,7 @@ Não exponha nenhuma informação confidencial.</translation>
 <translation id="6370021412472292592">Não foi possível carregar o manifesto.</translation>
 <translation id="6370551072524410110">pesquisar + shift + backspace</translation>
 <translation id="637135143619858508">Espaçadas</translation>
+<translation id="6372413553057593904">Guia inativa em "<ph name="WINDOW_TITLE"/>"</translation>
 <translation id="6374077068638737855">Iceweasel</translation>
 <translation id="6374469231428023295">Repetir</translation>
 <translation id="3816315808514424202">Depois de dezembro de 2022, não vai mais ser possível abrir as versões antigas dos apps do Brave em dispositivos Linux. Entre em contato com seu administrador para instalar uma nova versão ou remover esse app.</translation>
@@ -6981,7 +7013,6 @@ Não exponha nenhuma informação confidencial.</translation>
 <translation id="6379228010899751161">Confirme sua identidade para sempre poder usar as senhas na sua conta <ph name="ACCOUNT_EMAIL"/></translation>
 <translation id="6379827283296619736">Não, continuar trabalhando neste perfil</translation>
 <translation id="6380618366311601172">O Gemini não vai conseguir concluir tarefas que exigem login em <ph name="DOMAIN"/>.</translation>
-<translation id="6383321659284013430">Nova Janela &amp;Isolada</translation>
 <translation id="6383382161803538830">O modo de leitura não está disponível nesta página</translation>
 <translation id="638418309848716977">Links compatíveis</translation>
 <translation id="6384275966486438344">Alterar suas configurações de pesquisa para: <ph name="SEARCH_HOST"/></translation>
@@ -7007,7 +7038,6 @@ Não exponha nenhuma informação confidencial.</translation>
 <translation id="6400360390396538896">Sempre no site <ph name="ORIGIN"/></translation>
 <translation id="6400714103322134861">Desfocar do grupo de guias</translation>
 <translation id="6401118106417399952">O EID do seu dispositivo é <ph name="EID_NUMBER"/>, e o número de série é <ph name="SERIAL_NUMBER"/>. Esses números podem ser usados para ativar o serviço.</translation>
-<translation id="8789425457808164956">Para enviar esta guia a outro dispositivo, faça login no Brave no outro aparelho</translation>
 <translation id="6402042774506839496">Para saber o motivo, entre em contato com o desenvolvedor do app.</translation>
 <translation id="6402921224457714577">Sites podem pedir para controlar e reprogramar seus dispositivos MIDI</translation>
 <translation id="6404511346730675251">Editar favorito</translation>
@@ -7017,6 +7047,7 @@ Não exponha nenhuma informação confidencial.</translation>
 <translation id="6406708970972405507">Configurações: <ph name="SECTION_TITLE"/></translation>
 <translation id="6407398811519202484">Com permissão para salvar dados no dispositivo</translation>
 <translation id="6408118934673775994">Ler e alterar seus dados em <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/> e <ph name="WEBSITE_3"/></translation>
+<translation id="640980925764810750"><ph name="MENU_ITEM"/>...</translation>
 <translation id="6410257289063177456">Arquivos de imagem</translation>
 <translation id="6410328738210026208">Mudar de canal e executar PowerWash</translation>
 <translation id="6410390304316730527">O "Navegação segura" protege contra invasores que podem levar você a fazer algo perigoso, como instalar um software malicioso ou revelar informações pessoais como senhas, números de telefone ou cartões de crédito. Se desativá-lo, tenha cuidado ao navegar em sites desconhecidos ou com má reputação.</translation>
@@ -7104,7 +7135,6 @@ Não exponha nenhuma informação confidencial.</translation>
 <translation id="6472893788822429178">Mostrar botão "Página inicial"</translation>
 <translation id="6473315466413288899">Selecione uma opção</translation>
 <translation id="6199773995438617867">Ver mais no Brave Agenda</translation>
-<translation id="6474401088838630457">Pergunte ao Gemini sobre isso</translation>
 <translation id="6474498546677193336">Não foi possível cancelar o compartilhamento porque um aplicativo está usando a pasta. O compartilhamento da pasta será cancelado assim que o Linux for desligado.</translation>
 <translation id="6474884162850599008">Desconectar a conta do Google Drive</translation>
 <translation id="6476482583633999078">Velocidade da fala</translation>
@@ -7286,6 +7316,7 @@ Há # outras senhas comprometidas. O Gerenciador de senhas do Brave recomenda qu
 <translation id="661266467055912436">Melhora a segurança para você e para todos na Web.</translation>
 <translation id="6613231539539868591">Dados mantidos</translation>
 <translation id="6613267708691765962">Procurando malware...</translation>
+<translation id="6614219106064338118">Iniciar chat</translation>
 <translation id="6615455863669487791">Exibir</translation>
 <translation id="5146630705831894319">Oferecer o uso do Brave Tradutor para sites e PDFs em outros idiomas</translation>
 <translation id="6618013221808317456">Não permitir que os sites usem a otimização de JavaScript</translation>
@@ -7296,7 +7327,6 @@ Há # outras senhas comprometidas. O Gerenciador de senhas do Brave recomenda qu
 <translation id="6619801788773578757">Adicionar aplicativo em quiosque</translation>
 <translation id="6619990499523117484">Confirme seu PIN</translation>
 <translation id="808383181727223557">Pergunte ao Brave ou digite um URL</translation>
-<translation id="8127050479140582768">Para enviar esta guia a outro dispositivo, faça login no Brave nos dois aparelhos</translation>
 <translation id="6622980291894852883">Continuar bloqueando imagens</translation>
 <translation id="6624036901798307345">No modo tablet, toque no botão da barra de ferramentas do contador de guias para abrir a nova barra de guias com miniaturas de cada uma.</translation>
 <translation id="6624538059730609162">Fechar visualização à direita</translation>
@@ -7339,6 +7369,7 @@ Há # outras senhas comprometidas. O Gerenciador de senhas do Brave recomenda qu
 <translation id="6651762277693024112">É executada automaticamente toda vez que você acessa este site</translation>
 <translation id="6654509035557065241">Preferir esta rede</translation>
 <translation id="6655190889273724601">Modo do desenvolvedor</translation>
+<translation id="6656413384508017053">{NUM_TABS,plural, =1{Focar em guia}one{Focar em guia}other{Focar em guias}}</translation>
 <translation id="6657180931610302174">Adicionar nome de usuário?</translation>
 <translation id="6657240842932274095">Permitir que serviços do sistema usem sua localização?</translation>
 <translation id="6657585470893396449">Senha</translation>
@@ -7420,7 +7451,7 @@ Há # outras senhas comprometidas. O Gerenciador de senhas do Brave recomenda qu
 <translation id="6715735940363172819">Os sites não podem usar seu microfone</translation>
 <translation id="6716049856796700977">Nada pode usar seu local. No entanto, seu local ainda poderá ficar visível para apps e sites usando seu endereço IP. <ph name="LINK_BEGIN"/>Saiba mais<ph name="LINK_END"/></translation>
 <translation id="671868032356459320">Escopo do atualizador: <ph name="OUTCOMES"/></translation>
-<translation id="6718728708077839052">Gerenciar permissões do app principal</translation>
+<translation id="6718728708077839052">Gerenciar permissões do app principal.</translation>
 <translation id="671928215901716392">Bloquear tela</translation>
 <translation id="6719839880830057298">Upload de arquivo concluído</translation>
 <translation id="6720077015462788541">Salve e use suas senhas em todos os dispositivos</translation>
@@ -7608,6 +7639,7 @@ Há # outras senhas comprometidas. O Gerenciador de senhas do Brave recomenda qu
 <translation id="6845231585063669905">De A a Z</translation>
 <translation id="6846178040388691741"><ph name="EXTENSION_NAME"/> quer imprimir <ph name="FILE_NAME"/> com <ph name="PRINTER_NAME"/>.</translation>
 <translation id="6846843854964504403">Redefinição de segurança</translation>
+<translation id="6846861364742126526">Use o microfone para conversar com o Gemini. Seus dados não são usados para aprimorar os modelos de IA generativa.</translation>
 <translation id="6847125920277401289">Liberar espaço para continuar</translation>
 <translation id="6850286078059909152">Cor do texto</translation>
 <translation id="6850925512806464982">Todos vão perder imediatamente o acesso a esse grupo de guias, e ele será excluído de todos os dispositivos</translation>
@@ -7635,7 +7667,6 @@ Há # outras senhas comprometidas. O Gerenciador de senhas do Brave recomenda qu
 <translation id="686609795364435700">Silencioso</translation>
 <translation id="686664946474413495">Temperatura da cor</translation>
 <translation id="6867086642466184030">Outros apps estão configurados para abrir os mesmos links que <ph name="APP_NAME"/>. Esta ação impedirá que <ph name="APP_NAME_2"/>, <ph name="APP_NAME_3"/>, <ph name="APP_NAME_4"/> e <ph name="NUMBER_OF_OTHER_APPS"/> outros apps abram links compatíveis.</translation>
-<translation id="6868206169573555318">Reiniciar para atualizar</translation>
 <translation id="686831807558000905">Não fazer login</translation>
 <translation id="686839242150793617">Permitido entrar no modo picture-in-picture automaticamente</translation>
 <translation id="6868734951249611611">Clique com o botão direito do mouse aqui e selecione "Mostrar guias verticalmente"</translation>
@@ -7770,6 +7801,7 @@ Há # outras senhas comprometidas. O Gerenciador de senhas do Brave recomenda qu
 <translation id="6972754398087986839">Vamos começar</translation>
 <translation id="697312151395002334">Permitir o envio de pop-ups e o uso de redirecionamentos</translation>
 <translation id="5351075736722780148">Se o Brave também for seu mecanismo de pesquisa padrão, você vai receber sugestões melhores e relevantes para o contexto</translation>
+<translation id="6975703659587052829">atualização de segurança importante</translation>
 <translation id="6978121630131642226">Mecanismos de pesquisa</translation>
 <translation id="6979041727349121225">Economia de energia</translation>
 <translation id="6979044105893951891">Iniciar e sair de Sessões de Visitante gerenciadas</translation>
@@ -7905,6 +7937,7 @@ Há # outras senhas comprometidas. O Gerenciador de senhas do Brave recomenda qu
 <translation id="7077751457066325012">Acessar e personalizar atalhos do teclado</translation>
 <translation id="7078120482318506217">Todas as redes</translation>
 <translation id="708060913198414444">C&amp;opiar endereço do áudio</translation>
+<translation id="7082399760770275009">Abrir configurações do Windows</translation>
 <translation id="7082568314107259011">A rede <ph name="NETWORK_NAME"/> é gerenciada pelo seu administrador</translation>
 <translation id="7082850163410901674">As notificações estão desativadas nos Ajustes do Sistema do Mac</translation>
 <translation id="7083729794572207131">Os sites geralmente pedem para instalar apps da Web para melhorar sua experiência</translation>
@@ -8037,7 +8070,6 @@ Há # outras senhas comprometidas. O Gerenciador de senhas do Brave recomenda qu
 <translation id="7188508872042490670">Dados do site no dispositivo</translation>
 <translation id="7188755083797868960">Abra o modo de leitura com mais rapidez usando um atalho. Pressione Alt + Shift + R para ativar/desativar o modo de leitura.</translation>
 <translation id="7189234443051076392">Verifique se há espaço suficiente no seu dispositivo</translation>
-<translation id="7189558282078169397">Guias de outros dispositivos</translation>
 <translation id="7189965711416741966">Impressão digital registrada.</translation>
 <translation id="7190921792980745354">Bloquear <ph name="MEMBER_FULL_NAME"/>?</translation>
 <translation id="7191063546666816478">Alguns links com suporte ainda serão abertos no app <ph name="APP_NAME"/>, <ph name="APP_NAME_2"/>, <ph name="APP_NAME_3"/> e em <ph name="NUMBER_OF_OTHER_APPS"/> outros apps.</translation>
@@ -8080,6 +8112,7 @@ Há # outras senhas comprometidas. O Gerenciador de senhas do Brave recomenda qu
 <translation id="7219473482981809164">Há vários perfis disponíveis para download. Selecione aqueles de que você quer fazer o download antes de continuar.</translation>
 <translation id="7220019174139618249">Não é possível exportar senhas para "<ph name="FOLDER"/>"</translation>
 <translation id="722099540765702221">Fonte de carga</translation>
+<translation id="7221301072025277667">Ativar som do site à direita</translation>
 <translation id="7221869452894271364">Recarregar esta página</translation>
 <translation id="7222232353993864120">Endereço de e-mail</translation>
 <translation id="7222335051802562841">Concluir atualização</translation>
@@ -8144,6 +8177,7 @@ Há # outras senhas comprometidas. O Gerenciador de senhas do Brave recomenda qu
 <translation id="7273110280511444812">Conectado pela última vez em <ph name="DATE"/></translation>
 <translation id="7273894023751806510">Sempre impedir que <ph name="HOST"/> controle e reprograme seus dispositivos MIDI</translation>
 <translation id="727441411541283857"><ph name="PERCENTAGE"/>% - <ph name="TIME"/> até completar a carga</translation>
+<translation id="7274453646377524248">Todas as guias e janelas abertas serão reabertas automaticamente.</translation>
 <translation id="7275950084263610253">Tem permissão para acessar outros dispositivos na sua rede local</translation>
 <translation id="727595954130325265">Comprar agora</translation>
 <translation id="727952162645687754">Erro no download</translation>
@@ -8255,7 +8289,7 @@ Há # outras senhas comprometidas. O Gerenciador de senhas do Brave recomenda qu
 <translation id="1157542461575402889">Os sites que você visita, incluindo o Brave, são responsáveis por determinar como responder a essa solicitação. Dependendo das leis da sua região, os sites podem responder limitando a venda e o compartilhamento dos seus dados ou o uso deles para anúncios personalizados.</translation>
 <translation id="7360257054721917104">Mostrando os espaços de trabalho e modelos salvos. Pressione Tab para navegar.</translation>
 <translation id="7360333718677093875">seletor de emojis</translation>
-<translation id="7360460316021916328">Escolha uma janela</translation>
+<translation id="7360460316021916328">Escolher janela</translation>
 <translation id="7361297102842600584">Clique com o botão direito do mouse para executar o plug-in <ph name="PLUGIN_NAME"/></translation>
 <translation id="7362387053578559123">Os sites podem pedir para se conectar a dispositivos Bluetooth</translation>
 <translation id="7363349185727752629">Um guia das suas escolhas de privacidade</translation>
@@ -8332,6 +8366,7 @@ Há # outras senhas comprometidas. O Gerenciador de senhas do Brave recomenda qu
 <translation id="7408080603962564527">Ele vai ficar visível para outras pessoas</translation>
 <translation id="740810853557944681">Adicionar um servidor de impressão</translation>
 <translation id="7409549334477097887">Muito grande</translation>
+<translation id="740957773517302609">Desativar Som do Site à Direita</translation>
 <translation id="7409599290172516453">Fotos recentes</translation>
 <translation id="7409735910987429903">Os sites podem exibir pop-ups para mostrar anúncios ou usar redirecionamentos para levar até sites que talvez você não queira acessar</translation>
 <translation id="7409854300652085600">Favoritos importados.</translation>
@@ -8473,7 +8508,7 @@ Há # outras senhas comprometidas. O Gerenciador de senhas do Brave recomenda qu
 <translation id="3521876507143058298">Sugestões para você com base na sua <ph name="BEGIN_LINK_GOOGLE_ACTIVITY"/>atividade no Brave<ph name="END_LINK_GOOGLE_ACTIVITY"/></translation>
 <translation id="7514365320538308">Baixar</translation>
 <translation id="7514417110442087199">Adicionar atribuição</translation>
-<translation id="7515139121338932179">Use o seletor de janelas do sistema para compartilhar uma</translation>
+<translation id="7515139121338932179">Use o seletor de janelas do sistema para compartilhar</translation>
 <translation id="751523031290522286">O app <ph name="APP_NAME"/> está bloqueado pelo administrador. Você precisa pedir permissão para usá-lo.</translation>
 <translation id="7515839311973675282">Este aplicativo será instalado no seu dispositivo</translation>
 <translation id="7515998400212163428">Android</translation>
@@ -8716,6 +8751,7 @@ Isso pode incluir informações sobre softwares instalados, arquivos, seu navega
 <translation id="7702463352133825032">Parar de transmitir para <ph name="DEVICE_NAME"/></translation>
 <translation id="7704305437604973648">Tarefa</translation>
 <translation id="7705085181312584869">Me ajude a escrever</translation>
+<translation id="7705230242432916648">Ouça esta página como se fosse um podcast com a reprodução com IA</translation>
 <translation id="7705276765467986571">Não foi possível carregar o modelo do favorito.</translation>
 <translation id="7705334495398865155">Coloque o ID do seu hardware (BSSID) em ordem aleatória para evitar que outras pessoas rastreiem este dispositivo.</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -8745,6 +8781,7 @@ Isso pode incluir informações sobre softwares instalados, arquivos, seu navega
 <translation id="7721258531237831532">Adicione um perfil à sua organização</translation>
 <translation id="7724603315864178912">Recortar</translation>
 <translation id="7726288096350730168">Excluir deste dispositivo</translation>
+<translation id="7726299524691842087">Ativar som do site de baixo</translation>
 <translation id="7726391492136714301">Veja notificações e apps do smartphone</translation>
 <translation id="7727898923446098954">Guia oculta</translation>
 <translation id="7728089752992902596">{NUM_TABS,plural, =1{Pausar guia}one{Pausar guia}other{Pausar guias}}</translation>
@@ -8925,6 +8962,7 @@ Pressione um interruptor ou tecla atribuídos para remover a atribuição.</tran
 <translation id="7871691770940645922">Tela virtual em braille</translation>
 <translation id="787268756490971083">Desativado</translation>
 <translation id="7872758299142009420">Excesso de grupos aninhados: <ph name="ERROR_LINE"/></translation>
+<translation id="7875512939198436953">Atualizar quando eu estiver ausente</translation>
 <translation id="7876027585589532670">Não é possível editar o atalho</translation>
 <translation id="7876243839304621966">Remover tudo</translation>
 <translation id="7877126887274043657">Corrigir problema de &amp;sincronização</translation>
@@ -8974,6 +9012,7 @@ Pressione um interruptor ou tecla atribuídos para remover a atribuição.</tran
 <translation id="8104490283194542948">Para acessar suas guias do <ph name="DEVICE"/>, faça login e sincronize o histórico. Você também terá acesso a senhas e muito mais em todos os seus aparelhos. É possível parar a sincronização a qualquer momento nas configurações. Com base no histórico, o Brave pode personalizar a Pesquisa e outros serviços para você.</translation>
 <translation id="7914399737746719723">App instalado</translation>
 <translation id="7915457674565721553">Conecte-se à Internet para configurar os controles da família</translation>
+<translation id="7915478442339169507">Permitir acesso ao site</translation>
 <translation id="7916364730877325865">Sua organização não permite ativar a sincronização com esta conta</translation>
 <translation id="791698251820376781">Sua organização não permite que você faça login</translation>
 <translation id="7918928051723770926">Tarefa concluída</translation>
@@ -9005,7 +9044,7 @@ Pressione um interruptor ou tecla atribuídos para remover a atribuição.</tran
 <translation id="7933518760693751884">Para salvar uma página para depois, clique no ícone "Adicionar aos favoritos"</translation>
 <translation id="7933634003144813719">Gerenciar pastas compartilhadas</translation>
 <translation id="7935072572536724392">Falha na mudança automática de senha</translation>
-<translation id="7936195481975600746">Use o seletor de telas do sistema para compartilhar uma</translation>
+<translation id="7936195481975600746">Use o seletor de telas do sistema para compartilhar</translation>
 <translation id="7937809006412909895">Como coletar dados de diagnóstico</translation>
 <translation id="7938881824185772026">Labs</translation>
 <translation id="793923212791838">Não é possível usar seu dispositivo com este site</translation>
@@ -9249,6 +9288,7 @@ Mantenha a sua chave de arquivo em um local seguro. Você precisará dela para c
 <translation id="810185532889603849">Cor personalizada</translation>
 <translation id="8101987792947961127">Powerwash obrigatório na próxima reinicialização</translation>
 <translation id="8102139037507939978">Remover informações de identificação pessoal de system_logs.txt.</translation>
+<translation id="8103484184517840583">Sair do Modo IA</translation>
 <translation id="810362914482827094">Pesquisar senhas de acesso</translation>
 <translation id="8104088837833760645">Baixar o perfil do eSIM</translation>
 <translation id="8104388155778519213">Compartilhe o que está na tela com o Google Lens</translation>
@@ -9377,8 +9417,9 @@ Mantenha a sua chave de arquivo em um local seguro. Você precisará dela para c
 <translation id="8205478243727418828">acesso rápido + seta para baixo</translation>
 <translation id="820568752112382238">Sites mais visitados</translation>
 <translation id="8206267832882844324">Editar observação</translation>
-<translation id="8206713788440472560">Escolha uma tela</translation>
+<translation id="8206713788440472560">Escolher tela</translation>
 <translation id="8206745257863499010">Chorinho</translation>
+<translation id="8206764473369122992">Desativar Som do Site à Esquerda</translation>
 <translation id="8206859287963243715">Celular</translation>
 <translation id="8207386708156457998">Para pesquisar em um site ou mecanismo de pesquisa específico, digite o atalho correspondente na barra de endereço, seguido da tecla selecionada</translation>
 <translation id="8207404892907560325">Escolha uma chave de acesso</translation>
@@ -9390,6 +9431,7 @@ Mantenha a sua chave de arquivo em um local seguro. Você precisará dela para c
 <translation id="8212601853154459483">Este perfil é gerenciado por <ph name="PROFILE_MANAGER"/>, e você precisa criar outro para a conta <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="8212792694174629011">Nenhum perfil foi encontrado. Tente ler o QR code usando a câmera do dispositivo ou digite o código de ativação enviado pela operadora.</translation>
 <translation id="8214489666383623925">Abrir arquivo...</translation>
+<translation id="8214771296778317256">Escolha aqui o estilo de guia de sua preferência</translation>
 <translation id="8215129063232901118">Acessar as funcionalidades do smartphone no seu <ph name="DEVICE_TYPE"/></translation>
 <translation id="8217212468862726597">Destacar ponteiro</translation>
 <translation id="8217399928341212914">Continuar a bloquear downloads automáticos de vários arquivos</translation>
@@ -9643,6 +9685,7 @@ Mantenha a sua chave de arquivo em um local seguro. Você precisará dela para c
 <translation id="8410133743809404768">Você pode pesquisar na barra de endereço usando "@history", assim como na página "Histórico"</translation>
 <translation id="8411043186249152291">tela cheia</translation>
 <translation id="8412136526970428322">Permitidos: <ph name="PERMISSION"/> e mais <ph name="COUNT"/></translation>
+<translation id="4079543638040839237">Sujeito aos <ph name="BEGIN_LINK1"/>Termos do Brave<ph name="END_LINK1"/> e ao <ph name="BEGIN_LINK2"/>Aviso de Privacidade dos Apps do Gemini<ph name="END_LINK2"/>.</translation>
 <translation id="5348884013239264115">Protege contra extensões, sites e downloads perigosos. Quando você acessa um site, o Brave envia ao Brave apenas uma parte ofuscada do URL por um servidor de privacidade que oculta seu endereço IP. Se um site fizer algo suspeito, o URL completo e partes do conteúdo da página também serão enviados.</translation>
 <translation id="8414396119627470038">Fazer login em <ph name="SITE_ETLD_PLUS_ONE"/> com <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/></translation>
 <translation id="8415120635186642416">Pesquise sobre qualquer assunto</translation>
@@ -9653,6 +9696,7 @@ Mantenha a sua chave de arquivo em um local seguro. Você precisará dela para c
 <translation id="8418675848396538775">Adicionar o <ph name="LANGUAGE_NAME"/></translation>
 <translation id="8419098111404128271">Resultados de pesquisa para "<ph name="SEARCH_TEXT"/>"</translation>
 <translation id="8419144699778179708">Exclui o histórico, inclusive da caixa de pesquisa</translation>
+<translation id="8419145215916772468">Desativar Som do Site de Cima</translation>
 <translation id="8420308167132684745">Editar entradas do dicionário</translation>
 <translation id="8422748173858722634">IMEI</translation>
 <translation id="8422787418163030046">Bandeja ausente</translation>
@@ -9730,6 +9774,7 @@ Mantenha a sua chave de arquivo em um local seguro. Você precisará dela para c
 <translation id="8477241577829954800">Substituído</translation>
 <translation id="8477384620836102176">&amp;Geral</translation>
 <translation id="8477446666255316832">Faça login mais rápido na próxima vez</translation>
+<translation id="8477548388161793571">&amp;Traduzir Seleção</translation>
 <translation id="8478346767369317046">Trabalho</translation>
 <translation id="8479176401914456949">Código inválido. Tente novamente.</translation>
 <translation id="8480869669560681089">Dispositivo desconhecido de <ph name="VENDOR_NAME"/></translation>
@@ -9832,6 +9877,7 @@ Mantenha a sua chave de arquivo em um local seguro. Você precisará dela para c
 <translation id="8561565784790166472">Prossiga com cautela</translation>
 <translation id="8561853412914299728"><ph name="TAB_TITLE"/> <ph name="EMOJI_PLAYING"/></translation>
 <translation id="8563043098557365232">Permitido apenas para serviços do sistema</translation>
+<translation id="8563898784671745643">Desativar Som do Site de Baixo</translation>
 <translation id="8564220755011656606">Não é possível acessar o microfone</translation>
 <translation id="8565021320663436446">Remover <ph name="MEMBER_FULL_NAME"/>?</translation>
 <translation id="8566916288687510520">Nova senha recebida</translation>
@@ -9943,12 +9989,14 @@ Mantenha a sua chave de arquivo em um local seguro. Você precisará dela para c
 <translation id="8652400352452647993">Erro de extensão de pacote</translation>
 <translation id="8654151524613148204">O arquivo é muito grande para seu computador administrar.</translation>
 <translation id="8655295600908251630">Canal</translation>
+<translation id="8656101380279383244">Focar no grupo de guias</translation>
 <translation id="8656888282555543604">Ativar registro de braille</translation>
 <translation id="8657393004602556571">Quer descartar o feedback?</translation>
 <translation id="8657542881463614516">Use um gesto de deslizar para navegar entre as páginas</translation>
 <translation id="865857184419171576">Traduzir legendas para o</translation>
 <translation id="865936634714975126">Adicione um parâmetro de consulta ao URL para selecionar tipos no carregamento da página. Exemplo: chrome://device-log/?types=Bluetooth,USB</translation>
 <translation id="8659609431223166673">Janela movida para baixo</translation>
+<translation id="8659989922244828718">Atualização programada</translation>
 <translation id="1488895872893658122">Você está vendo sua agenda para navegar com facilidade até o próximo evento no Calendário do Outlook.
        <ph name="BREAK"/>
        <ph name="BREAK"/>
@@ -10105,6 +10153,7 @@ Mantenha a sua chave de arquivo em um local seguro. Você precisará dela para c
 <translation id="8766796754185931010">Kotoeri</translation>
 <translation id="8767069439158587614">Mostrar todas as pesquisas por "<ph name="QUERY_CLUSTER_NAME"/>"</translation>
 <translation id="4570609078116869893">Atualizar automaticamente o Brave para todos os usuários</translation>
+<translation id="8767731819450513349">Desativar som do site à direita</translation>
 <translation id="8768049274922835860">Todos</translation>
 <translation id="8768559850883798245">Ativar a expansão automática das guias</translation>
 <translation id="8769047324653576116">Sua organização precisa de informações sobre o dispositivo para que ele possa ser usado com o perfil dela.
@@ -10124,6 +10173,7 @@ Isso pode incluir informações sobre softwares instalados, arquivos, seu navega
 <translation id="1732768497619250086">Ver descrições de imagens do Brave</translation>
 <translation id="8780443667474968681">A pesquisa por voz foi desativada.</translation>
 <translation id="8781834595282316166">Nova guia no grupo</translation>
+<translation id="878190123554258638"><ph name="SHORTCUT_TITLE"/>. Use as setas para a esquerda e para a direita para mover o atalho. Pressione Enter ou Esc para concluir.</translation>
 <translation id="8781980678064919987">Desligar quando a tampa estiver fechada</translation>
 <translation id="8783171585655659524">Incluir captura de tela</translation>
 <translation id="8785622406424941542">Stylus</translation>
@@ -10289,7 +10339,7 @@ Isso pode incluir informações sobre softwares instalados, arquivos, seu navega
 <translation id="4805806622840861220">Reiniciar o Brave</translation>
 <translation id="8915307125957890427">Clique com o botão direito do mouse em uma guia e selecione as opções "Adicionar guia ao grupo" e "Novo grupo"</translation>
 <translation id="8915370057835397490">Carregando sugestão</translation>
-<translation id="8917490105272468696">Sim</translation>
+<translation id="8917490105272468696">Ativar</translation>
 <translation id="8918637186205009138"><ph name="DEVICE_TYPE"/> de <ph name="GIVEN_NAME"/></translation>
 <translation id="8918900204934259333">Instalando o app…</translation>
 <translation id="891931289445130855">Excluir dados e permissões</translation>
@@ -10344,7 +10394,6 @@ Isso pode incluir informações sobre softwares instalados, arquivos, seu navega
 <translation id="8960208913905765425">Conversão de unidades das Respostas rápidas</translation>
 <translation id="8960638196855923532">Agora, você pode ver notificações e apps do seu smartphone</translation>
 <translation id="8962051932294470566">Só é possível compartilhar um arquivo por vez. Tente novamente quando a transferência atual for concluída.</translation>
-<translation id="8962083179518285172">Ocultar detalhes</translation>
 <translation id="8962863356073277855">O formato do URL precisa ser https://www.example.com</translation>
 <translation id="8962918469425892674">Este site está usando sensores de luz ou movimento.</translation>
 <translation id="8963117664422609631">Acessar as configurações do site</translation>
@@ -10385,7 +10434,7 @@ Isso pode incluir informações sobre softwares instalados, arquivos, seu navega
 <translation id="8986362086234534611">Esquecer</translation>
 <translation id="5713638588895952380">Envia estatísticas de uso e relatórios de erros ao Brave automaticamente</translation>
 <translation id="8987321822984361516">Navegador gerenciado por uma organização, perfil gerenciado por <ph name="PROFILE_DOMAIN"/></translation>
-<translation id="8987736167266086032">Continue de onde você parou</translation>
+<translation id="8987736167266086032">Continue de onde parou</translation>
 <translation id="8987927404178983737">Mês</translation>
 <translation id="8989359959810288806">Atualizar status do tethering</translation>
 <translation id="8989779557457435460">Compartilhar a guia atual por padrão</translation>
@@ -10617,6 +10666,7 @@ Isso pode incluir informações sobre softwares instalados, arquivos, seu navega
 <translation id="9154194610265714752">Atualizado</translation>
 <translation id="915485121129452731">Tablet com caneta</translation>
 <translation id="9155344700756733162">Desmarcar cor</translation>
+<translation id="9155515662479003830">Você pode voltar para o estilo clássico a qualquer momento, basta acessar as configurações</translation>
 <translation id="9157096865782046368">0,8 segundo</translation>
 <translation id="9157697743260533322">Falha ao configurar atualizações automáticas para todos os usuários (erro de inicialização de simulação: <ph name="ERROR_NUMBER"/>)</translation>
 <translation id="9157915340203975005">A porta da impressora está aberta</translation>
@@ -10652,6 +10702,7 @@ Isso pode incluir informações sobre softwares instalados, arquivos, seu navega
 <translation id="9180847522826713506">Para conferir sua senha ou adicionar uma observação sobre ela, clique no ícone de chave</translation>
 <translation id="9183302530794969518">Google Docs</translation>
 <translation id="918352324374649435">{COUNT,plural, =1{App}one{# app}other{# apps}}</translation>
+<translation id="9185698642371842814">Perguntar no Modo IA</translation>
 <translation id="9186743636216815027">{NUM_APPS,plural,offset:2 =1{O administrador pode gravar sua tela com o app <ph name="APP0_NAME"/>. Você não vai receber uma notificação quando a gravação começar.}=2{O administrador pode gravar sua tela com os apps <ph name="APP0_NAME"/> e <ph name="APP1_NAME"/>. Você não vai receber uma notificação quando a gravação começar.}=3{O administrador pode gravar sua tela com os apps <ph name="APP0_NAME"/>, <ph name="APP1_NAME"/> e mais 1. Você não vai receber uma notificação quando a gravação começar.}one{O administrador pode gravar sua tela com os apps <ph name="APP0_NAME"/>, <ph name="APP1_NAME"/> e mais #. Você não vai receber uma notificação quando a gravação começar.}other{O administrador pode gravar sua tela com os apps <ph name="APP0_NAME"/>, <ph name="APP1_NAME"/> e mais #. Você não vai receber uma notificação quando a gravação começar.}}</translation>
 <translation id="9187967020623675250">As teclas não correspondem. Pressione qualquer tecla para <ph name="RESPONSE"/>.</translation>
 <translation id="9188142767272053574">Ativar isolamento de processos</translation>
@@ -10763,6 +10814,7 @@ Isso pode incluir informações sobre softwares instalados, arquivos, seu navega
 <translation id="978146274692397928">A largura da pontuação inicial é inteira</translation>
 <translation id="978978324795544535">Toque duas vezes em um item, mantenha-o pressionado após o segundo toque e arraste o item para movê-lo</translation>
 <translation id="981121421437150478">Off-line</translation>
+<translation id="981383875218593510">Defina essa configuração como Moderno para testar o novo visual transparente das guias.</translation>
 <translation id="982083952953998237">Adicionar restrições</translation>
 <translation id="98235653036850093">Olá, <ph name="PROFILE_NAME"/></translation>
 <translation id="983192555821071799">Fechar todas as guias</translation>
@@ -10790,6 +10842,7 @@ Isso pode incluir informações sobre softwares instalados, arquivos, seu navega
 <translation id="658539216370629794">Abrir link em janela &amp;privada</translation>
 <translation id="7074309040324179036">Abrir o link em uma janela privada do &amp;</translation>
 <translation id="1432267168815937878">Abrir link na Janela &amp;Privada</translation>
+<translation id="8597996272812351573">&amp;Privado</translation>
 <translation id="7035919852657206332">Nova aba privada</translation>
 <translation id="8428257636009471988">Visite a loja virtual</translation>
 <translation id="6395403722585816044">Download feito no modo anônimo</translation>

@@ -220,7 +220,6 @@
 <translation id="9040069796107003510">Aikoni ya Tuzo za Brave</translation>
 <translation id="6333347122924254968">Onyesha ikoni ya Brave Rewards kwenye upau wa anwani</translation>
 <translation id="4393974575368329991">Upau wa chini wa usafiri</translation>
-<translation id="8727059712928806451">Washa upau wa chini</translation>
 <translation id="1834226716203076292">Onyesha upau wa chini kwa ufikiaji wa haraka wa nyumbani, alamisho na utafutaji</translation>
 <translation id="1422686363939271829">Mpangilio huu umezimwa wakati nafasi ya chini ya upau wa anwani imechaguliwa</translation>
 <translation id="6587448235155023666">Mabadiliko yako yatatekelezwa utakapofungua upya Brave</translation>
@@ -290,7 +289,7 @@
 <translation id="2569646144216067185">Idadi ya maneno <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Msimbo wa kusawazisha si sahihi</translation>
 <translation id="8284063834901328650">Msimbo wa QR wa kusawazisha si sahihi</translation>
-<translation id="859506441384380749">Msimbo huu ulizalishwa na toleo la zamani la Brave, tafadhali weka toleo jipya kwenye kifaa chako kingine kwanza</translation>
+<translation id="4002014583969312635">Inaonekana kuwa msimbo huu uliundwa kwenye kifaa kinachoendesha toleo la zamani la Brave. Tafadhali sasisha hadi toleo jipya zaidi la Brave kwenye kifaa chako kingine, kisha unda msimbo mpya wa kusawazisha.</translation>
 <translation id="3132642509209154999">Muda wa matumizi ya msimbo huu umeisha. Tafadhali zalisha mpya kwenye kifaa chako kingine na ujaribu tena.</translation>
 <translation id="2859229680945501779">Msimbo huu ni batili. Tafadhali hakikisha kwamba wakati na ukanda wa saa umewekwa kwa usahihi kwenye kifaa chako.</translation>
 <translation id="3149880132460839085">Brave Kuoanisha</translation>
@@ -336,8 +335,6 @@
 <translation id="8185825081026121627">Pata Basic Attention Token kwa kutazama matangazo ya Brave Rewards yanayodumisha faragha.</translation>
 <translation id="5321518976657560663">Hitilafu ya Kuweka Upya</translation>
 <translation id="4114170343590425996">Hitilafu imetokea wakati wa kuweka upya Zawadi za Brave. Tafadhali fungua upya Brave kisha ujaribu tena.</translation>
-<translation id="6417420737057016607">Matangazo ya Brave</translation>
-<translation id="5611966874859284786">Onyesha matangazo ya arifa wakati Brave haitumiki</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Weka upya data ya Zawadi za Brave…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Futa data ya Matangazo ya Brave…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Ongeza Alamisho</translation>
@@ -400,8 +397,9 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="4546260624932151782">Onyesha vipendwa</translation>
 <translation id="5313967007315987356">Ongeza tovuti</translation>
 <translation id="1773147648972887693">Onyesha zinazotembelewa mara kwa mara</translation>
-<translation id="752098910262610337">Onyesha njia mkato</translation>
 <translation id="7134741506051403308">Ficha wijeti</translation>
+<translation id="1247759249260562308">Hariri kipendwa</translation>
+<translation id="6387214885349500492">Bandika kipendwa hiki</translation>
 <translation id="7462178177755090262">Skrini ya Kufungua</translation>
 <translation id="5365434987337264071">Kichupo kilichokuwa wazi mwisho</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {Kichupo kipya baada ya <ph name="HOURS_ONE"/> saa ya kutotumika} other {Kichupo kipya baada ya <ph name="HOURS_MANY"/> saa za kutotumika}}</translation>
@@ -976,6 +974,7 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="6365389672683343144">Usajili wako wa VPN ya Brave unaweza kulinda hadi vifaa 5 kwenye Android, iOS na eneo-kazi la kompyuta. Unganisha tu usajili wako wa Google Play kwenye akaunti yako ya Brave.</translation>
 <translation id="6610899852831463073">Haiwezi kuwezesha Kuvinjari Salama</translation>
 <translation id="7954263306665462056">Kuvinjari Salama kumezimwa katika kifaa chako. Ili kuuwezesha, hakikisha kwamba Huduma za Google Play zimesakinishwa na kwamba zimesasishwa.</translation>
+<translation id="6417420737057016607">Matangazo ya Brave</translation>
 <translation id="7748944510530490017">Mitandao ya Msingi</translation>
 <translation id="2781668117338732220">Mitandao Mbadala</translation>
 <translation id="282560918037172384">Jaribu Mitandao</translation>

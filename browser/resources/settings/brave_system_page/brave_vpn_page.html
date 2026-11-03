@@ -9,10 +9,10 @@
 
   <settings-section
     page-title="$i18n{vpnPageTitle}">
-    <settings-vpn-page prefs="{{prefs}}">
+    <settings-vpn-page>
 
       <settings-toggle-button id="toggleWireguardButton"
-        pref="{{prefs.brave.brave_vpn.wireguard_enabled}}"
+        pref-key="brave.brave_vpn.wireguard_enabled"
         label="$i18n{useWireguardLabel}"
         sub-label="[[toggleWireguardSubLabel_]]"
         disabled="[[braveVpnConnected_]]">

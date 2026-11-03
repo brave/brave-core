@@ -7,7 +7,8 @@
 
 namespace component_updater {
 
-TEST_F(PKIMetadataComponentInstallerTest,
+#if BUILDFLAG(CHROME_KEY_PINNING_SUPPORTED)
+TEST_F(PKIMetadataComponentInstallerKeyPinningTest,
        InstallComponentUpdatesPinningIsDisabled) {
   // Initialize the network service.
   content::GetNetworkService();
@@ -28,5 +29,6 @@ TEST_F(PKIMetadataComponentInstallerTest,
   EXPECT_EQ(pinsets.size(), 0u);
   EXPECT_EQ(host_pins.size(), 0u);
 }
+#endif  // BUILDFLAG(CHROME_KEY_PINNING_SUPPORTED)
 
 }  // namespace component_updater

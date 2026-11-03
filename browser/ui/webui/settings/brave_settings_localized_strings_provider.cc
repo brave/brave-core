@@ -637,9 +637,12 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"braveShowFullscreenReminder",
        IDS_SETTINGS_SHOW_FULLSCREEN_REMINDER_OPTION_LABEL},
 
+      // Referenced by the settings menu template in every build, thus added
+      // outside of the BUILDFLAG(ENABLE_AI_CHAT)
+      {"leoAssistant", IDS_SETTINGS_LEO_ASSISTANT},
+
 #if BUILDFLAG(ENABLE_AI_CHAT)
       // Leo Assistant Page
-      {"leoAssistant", IDS_SETTINGS_LEO_ASSISTANT},
       {"braveLeoAssistantShowIconOnToolbarLabel",
        IDS_SETTINGS_LEO_ASSISTANT_SHOW_ICON_ON_TOOLBAR_LABEL},
       {"braveLeoAssistantShowInContextMenuLabel",

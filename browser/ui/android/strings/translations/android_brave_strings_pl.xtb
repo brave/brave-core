@@ -220,7 +220,6 @@
 <translation id="9040069796107003510">Ikona nagród Brave</translation>
 <translation id="6333347122924254968">Pokaż ikonę Nagród Brave w pasku adresu</translation>
 <translation id="4393974575368329991">Pasek nawigacji na dole</translation>
-<translation id="8727059712928806451">Włącz dolny pasek</translation>
 <translation id="1834226716203076292">Wyświetlaj dolny pasek zapewniający szybki dostęp do strony głównej, zakładek i wyszukiwania</translation>
 <translation id="1422686363939271829">To ustawienie jest wyłączone, gdy wybrana jest dolna pozycja paska adresu</translation>
 <translation id="6587448235155023666">Zmiany zostaną zastosowane po ponownym uruchomieniu Brave</translation>
@@ -290,7 +289,7 @@
 <translation id="2569646144216067185">Liczba słów: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Nieprawidłowy kod synchronizacji</translation>
 <translation id="8284063834901328650">Nieprawidłowy kod QR synchronizacji</translation>
-<translation id="859506441384380749">Ten kod został wygenerowany przy użyciu przestarzałej wersji Brave. Zaktualizuj najpierw inne urządzenie.</translation>
+<translation id="4002014583969312635">Wygląda na to, że ten kod został utworzony na urządzeniu ze starszą wersją aplikacji Brave. Zaktualizuj Brave do najnowszej wersji na innym urządzeniu, a następnie utwórz nowy kod synchronizacji.</translation>
 <translation id="3132642509209154999">Ten kod wygasł. Wygeneruj nowy kod na innym urządzeniu i ponów próbę.</translation>
 <translation id="2859229680945501779">Ten kod jest nieprawidłowy. Sprawdź, czy godzina i strefa czasowa są skonfigurowane prawidłowo na Twoim urządzeniu.</translation>
 <translation id="3149880132460839085">Synchronizacja Brave</translation>
@@ -336,8 +335,6 @@
 <translation id="8185825081026121627">Zdobądź token Basic Atenttion Token (BAT) za wyświetlanie reklam Brave chroniących Twoją prywatność.</translation>
 <translation id="5321518976657560663">Błąd resetowania</translation>
 <translation id="4114170343590425996">Podczas resetowania nagród Brave wystąpił błąd. Zrestartuj Brave i spróbuj ponownie.</translation>
-<translation id="6417420737057016607">Reklamy Brave</translation>
-<translation id="5611966874859284786">Pokazuj powiadominia reklamowe, kiedy Brave nie jest używana</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Zresetuj dane nagród Brave…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Wyczyść dane platformy Brave Ads…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Dodaj zakładkę</translation>
@@ -400,8 +397,9 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="4546260624932151782">Pokaż ulubione</translation>
 <translation id="5313967007315987356">Dodaj stronę</translation>
 <translation id="1773147648972887693">Pokaż często odwiedzane</translation>
-<translation id="752098910262610337">Pokaż skróty</translation>
 <translation id="7134741506051403308">Ukryj widżet</translation>
+<translation id="1247759249260562308">Edytuj ulubione</translation>
+<translation id="6387214885349500492">Przypnij ten ulubiony element</translation>
 <translation id="7462178177755090262">Ekran startowy</translation>
 <translation id="5365434987337264071">Ostatnia otwarta karta</translation>
 <translation id="6019856124237323989">{HOURS, plural,
@@ -979,6 +977,7 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="6365389672683343144">Twoja subskrypcja połączenia VPN Brave może chronić do 5 urządzeń stacjonarnych lub z systemami Android oraz iOS. Wystarczy, że połączysz swoją subskrypcję Google Play z kontem Brave.</translation>
 <translation id="6610899852831463073">Nie można włączyć Bezpiecznego przeglądania</translation>
 <translation id="7954263306665462056">Funkcja Bezpiecznego przeglądania została wyłączona na Twoim urządzeniu. W celu jej ponownego włączenia upewnij się, że Usługi Google Play są zainstalowane i aktualne.</translation>
+<translation id="6417420737057016607">Reklamy Brave</translation>
 <translation id="7748944510530490017">Sieci główne</translation>
 <translation id="2781668117338732220">Sieci pomocnicze</translation>
 <translation id="282560918037172384">Sieci testowe</translation>

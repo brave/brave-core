@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/history_embeddings/BUILD.gn b/chrome/browser/history_embeddings/BUILD.gn
-index ac768392d48010c724bab3de6b4b547df9ed1972..8696aeaad0f49dec38dac359e308bd0797748c4a 100644
+index 03aaa66774d2a8c17f6eb99c2bb075804fa321bb..db2aa19600778059d91a159b9378148793231e64 100644
 --- a/chrome/browser/history_embeddings/BUILD.gn
 +++ b/chrome/browser/history_embeddings/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index ac768392d48010c724bab3de6b4b547df9ed1972..8696aeaad0f49dec38dac359e308bd07
  import("//components/optimization_guide/features.gni")
  
  source_set("history_embeddings") {
-@@ -61,6 +62,7 @@ source_set("impl") {
+@@ -60,6 +61,7 @@ source_set("impl") {
      "//ui/base",
      "//url",
    ]

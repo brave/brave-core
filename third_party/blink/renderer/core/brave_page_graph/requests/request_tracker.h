@@ -10,6 +10,7 @@
 #include <string>
 #include <utility>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/ref_counted.h"
 #include "base/time/time.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/page_graph_context.h"
@@ -90,7 +91,8 @@ class RequestTracker {
   scoped_refptr<const TrackedRequestRecord> ReturnTrackingRecord(
       const InspectorId request_id);
 
-  PageGraphContext* const page_graph_context_ = nullptr;
+  const raw_ptr<PageGraphContext, UnprotectedInRelease> page_graph_context_ =
+      nullptr;
 
   // This structure is just included for debugging, to make sure the
   // assumptions built into this request tracking system (e.g. that

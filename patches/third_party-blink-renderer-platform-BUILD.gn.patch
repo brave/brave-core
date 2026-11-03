@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/platform/BUILD.gn b/third_party/blink/renderer/platform/BUILD.gn
-index 6101076273a181fea07fe49ade81946eca6a9b69..21a01094dd9ff99c03174a94b46bc7a904cc36bc 100644
+index 0adcb6894f30356c933d6f77b5a9f6e4723ea6b7..f488d77ab0314a69beeca69eb4e262fee503a202 100644
 --- a/third_party/blink/renderer/platform/BUILD.gn
 +++ b/third_party/blink/renderer/platform/BUILD.gn
-@@ -1695,6 +1695,7 @@ component("platform") {
+@@ -1755,6 +1755,7 @@ component("platform") {
      "widget/widget_base_client.h",
      "windows_keyboard_codes.h",
    ]
@@ -10,15 +10,15 @@ index 6101076273a181fea07fe49ade81946eca6a9b69..21a01094dd9ff99c03174a94b46bc7a9
  
    sources -= blink_platform_avx_files
  
-@@ -1821,6 +1822,7 @@ component("platform") {
+@@ -1882,6 +1883,7 @@ component("platform") {
      "//ui/gfx",
      "//ui/native_theme/features",
    ]
 +  public_deps += brave_blink_renderer_platform_public_deps
    deps = [
-     ":rustfft_ffi",
-     "fonts:font_format_bindings",
-@@ -1883,6 +1885,7 @@ component("platform") {
+     ":character_property_data",
+     ":font_rust_support",
+@@ -1943,6 +1945,7 @@ component("platform") {
      "//ui/gl:buildflags",
      "//ui/native_theme",
    ]
@@ -26,7 +26,7 @@ index 6101076273a181fea07fe49ade81946eca6a9b69..21a01094dd9ff99c03174a94b46bc7a9
  
    if (has_zstd_compression) {
      deps += [
-@@ -2004,6 +2007,7 @@ component("platform") {
+@@ -2064,6 +2067,7 @@ component("platform") {
  
    configs -= [ "//build/config/compiler:default_symbols" ]
    configs += blink_symbols_config

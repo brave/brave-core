@@ -334,9 +334,7 @@ std::string TorControl::SetEventsCmd() {
   std::ostringstream cmds;
   cmds << "SETEVENTS";
   for (const auto& entry : async_events_) {
-    const auto& found = kTorControlEventByEnum.find(entry.first);
-    DCHECK(found != kTorControlEventByEnum.end());
-    cmds << " " << (*found).second;
+    cmds << " " << entry.first;
   }
   return cmds.str();
 }

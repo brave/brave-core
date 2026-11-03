@@ -146,7 +146,10 @@ class BraveTemplateURLPrepopulateDataTest : public testing::Test {
  protected:
   base::test::SingleThreadTaskEnvironment task_environment_;
   search_engines::SearchEnginesTestEnvironment search_engines_test_environment_;
-  std::vector<const PrepopulatedEngine*> brave_prepopulated_engines_;
+  // Points at static engine data, and is exposed as a
+  // `base::span<const PrepopulatedEngine* const>`.
+  RAW_PTR_EXCLUSION std::vector<const PrepopulatedEngine*>
+      brave_prepopulated_engines_;
 };
 
 // Verifies that the set of all prepopulate data doesn't contain entries with

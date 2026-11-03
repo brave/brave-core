@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/base/SplitChromeApplication.java b/chrome/android/java/src/org/chromium/chrome/browser/base/SplitChromeApplication.java
-index a15feaf0ce35e1e53fbafa247de83c653aeab2d2..36b5cb3998dfb28e4b3552477128dcaf2d0996d6 100644
+index 938908a9694bf0ca28e22d8d778c3682edbc4ff7..2fde602bca90437e68b4c5a910a33b73b5b31289 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/base/SplitChromeApplication.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/base/SplitChromeApplication.java
-@@ -213,7 +213,7 @@ public class SplitChromeApplication extends SplitCompatApplication {
+@@ -219,7 +219,7 @@ public class SplitChromeApplication extends SplitCompatApplication {
              // fieldtrial_testing_config.json.
              ContextUtils.sDoFeatureListInitHookForTesting =
                      InitializeFeatureList::initializeFeatureList;

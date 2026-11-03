@@ -33,7 +33,7 @@ void RegisterNTPSponsoredImagesComponentCallback(
 
 NTPSponsoredImagesComponentInstallerPolicy::
     NTPSponsoredImagesComponentInstallerPolicy(
-        base::span<const uint8_t, crypto::kSHA256Length> public_key_sha256,
+        base::span<const uint8_t, crypto::hash::kSha256Size> public_key_sha256,
         const std::string& component_name,
         ComponentReadyCallback callback)
     : component_name_(component_name), ready_callback_(std::move(callback)) {
@@ -101,7 +101,7 @@ bool NTPSponsoredImagesComponentInstallerPolicy::IsBraveComponent() const {
 
 void RegisterNTPSponsoredImagesComponent(
     component_updater::ComponentUpdateService* component_update_service,
-    base::span<const uint8_t, crypto::kSHA256Length> public_key_sha256,
+    base::span<const uint8_t, crypto::hash::kSha256Size> public_key_sha256,
     const std::string& component_name,
     ComponentReadyCallback callback) {
   if (!component_update_service ||

@@ -5,6 +5,7 @@
 
 #include "brave/components/web_discovery/browser/background_credential_helper.h"
 
+#include <array>
 #include <utility>
 
 #include "base/base64.h"
@@ -15,7 +16,7 @@
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/web_discovery/browser/anonymous_credentials/lib.rs.h"
 #include "brave/components/web_discovery/browser/rsa.h"
-#include "crypto/sha2.h"
+#include "crypto/hash.h"
 #include "third_party/rust/cxx/v1/cxx.h"
 
 namespace web_discovery {
@@ -63,7 +64,8 @@ class BackgroundCredentialHelperImpl : public BackgroundCredentialHelper {
       std::string pre_challenge) override {
     base::AssertLongCPUWorkAllowed();
     CHECK(rsa_private_key_);
-    auto challenge = crypto::SHA256Hash(base::as_byte_span(pre_challenge));
+    std::array<uint8_t, crypto::hash::kSha256Size> challenge =
+        crypto::hash::Sha256(pre_challenge);
 
     auto join_result = anonymous_credentials_manager_->start_join(
         base::SpanToRustSlice(challenge));

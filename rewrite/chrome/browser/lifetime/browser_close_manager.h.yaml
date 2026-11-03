@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Expose whether closing all browsers is in progress
+
+      `BraveBrowser` skips its window closing confirmation while the
+      application is quitting.
+    add_to_public:
+      class_name: BrowserCloseManager
+      code: static bool BrowserClosingStarted();

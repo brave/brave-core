@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_ui_controller/BUILD.gn b/chrome/browser/ui/browser_ui_controller/BUILD.gn
-index 344499fdcf9facf2789c003ab60dfd2339ef654d..5a0684d641dd8144bf037ce42d583f64f2e77b6a 100644
+index 6ea2a379145cb3973e67545f8667ab00be09d251..a5e640e45a7da23ee075ba0081edc8c44944d7bc 100644
 --- a/chrome/browser/ui/browser_ui_controller/BUILD.gn
 +++ b/chrome/browser/ui/browser_ui_controller/BUILD.gn
-@@ -27,6 +27,7 @@ source_set("impl") {
+@@ -24,6 +24,7 @@ source_set("impl") {
  
    deps = [
      "//base",

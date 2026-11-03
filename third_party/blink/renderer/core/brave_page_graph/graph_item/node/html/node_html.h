@@ -6,6 +6,7 @@
 #ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_HTML_NODE_HTML_H_
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_HTML_NODE_HTML_H_
 
+#include "base/memory/raw_ptr.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/graph_node.h"
 #include "third_party/blink/renderer/platform/wtf/casting.h"
 
@@ -45,7 +46,7 @@ class NodeHTML : public GraphNode {
 
  private:
   const blink::DOMNodeId dom_node_id_;
-  NodeHTMLElement* parent_node_;
+  raw_ptr<NodeHTMLElement, UnprotectedInRelease> parent_node_;
   bool is_deleted_;
 };
 

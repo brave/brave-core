@@ -57,6 +57,7 @@ source_set("ai_chat") {
     "//chrome/browser/ui/navigator",
     "//chrome/browser/ui/select_file_policy",
     "//chrome/browser/ui/webui:favicon_source",
+    "//chrome/browser/ui/webui:theme_source",
     "//components/favicon/core",
     "//components/favicon_base",
     "//components/history_embeddings/content",
@@ -82,7 +83,6 @@ source_set("ai_chat") {
       "//chrome/browser/ui/tabs:tab_model",
       "//chrome/browser/ui/tabs:tab_strip",
       "//chrome/browser/ui/thumbnails",
-      "//chrome/browser/ui/webui:theme_source",
       "//chrome/browser/ui/webui/top_chrome",
       "//chrome/browser/ui/webui/util",
     ]
@@ -151,7 +151,6 @@ source_set("browser_tests") {
     "//brave/components/ai_chat/core/common/mojom",
     "//brave/components/constants",
     "//chrome/browser/profiles:profile",
-    "//chrome/browser/ui",
     "//chrome/test",
     "//chrome/test:test_support",
     "//chrome/test/base:chrome_test_utils",

@@ -236,7 +236,7 @@ gfx::Size BraveTabContainer::CalculatePreferredSize(
     // When closing trailing tabs, the last tab's current bottom could be
     // greater than ideal bounds bottom. Note that closing tabs are not in
     // tabs_view_model_ so we have to check again here.
-    for (auto* tab : closing_tabs_) {
+    for (Tab* tab : closing_tabs_) {
       height = std::max(height, tab->bounds().bottom());
     }
   }
@@ -736,11 +736,13 @@ void BraveTabContainer::Layout(PassKey) {
 
   // We don't need to layout if the height is 0 as it's invisible.
   if (scroll_direction == views::LayoutOrientation::kVertical && !height()) {
+    UpdateAccessibleTabIndicesIfNeeded();
     return;
   }
 
   // If size hasn't changed since last layout, no need to relayout tabs.
   if (last_layout_size_ == size()) {
+    UpdateAccessibleTabIndicesIfNeeded();
     return;
   }
 

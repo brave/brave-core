@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/updater/chrome_update_client_config.h b/chrome/browser/extensions/updater/chrome_update_client_config.h
-index 98fb9c80045a8eeaebc64532d949d1a2de615176..49bb38701c4b24b189d1bf64007bafe23f22bdb0 100644
+index 7ad0fd9e907812340ab7cece03edc0b27b1e46cc..d00b5d76eb56111ea1a3aa02733a8002b9e94627 100644
 --- a/chrome/browser/extensions/updater/chrome_update_client_config.h
 +++ b/chrome/browser/extensions/updater/chrome_update_client_config.h
-@@ -92,6 +92,7 @@ class ChromeUpdateClientConfig : public update_client::Configurator {
+@@ -93,6 +93,7 @@ class ChromeUpdateClientConfig : public update_client::Configurator {
    bool IsConnectionMetered() const override;
  
   protected:

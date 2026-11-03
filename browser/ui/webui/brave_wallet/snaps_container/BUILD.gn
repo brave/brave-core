@@ -39,6 +39,7 @@ source_set("browser_tests") {
     ":snaps_container",
     "//base/test:test_support",
     "//brave/browser/brave_wallet",
+    "//brave/browser/ui:brave_browser_header",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:test_support",
     "//brave/components/brave_wallet/common",

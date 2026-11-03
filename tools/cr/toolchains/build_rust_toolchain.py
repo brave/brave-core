@@ -215,7 +215,6 @@ TOOLCHAIN_BUCKET_URL = (
 SUPPORTED_PLATFORM_CONDITIONS = {
     'linux-x64': 'host_os == "linux"',
     'mac-arm64': 'host_os == "mac" and host_cpu == "arm64"',
-    'mac': 'host_os == "mac" and host_cpu == "x64"',
     'win': 'host_os == "win"',
 }
 
@@ -229,7 +228,6 @@ SUPPORTED_PLATFORM_CONDITIONS = {
 PLATFORM_PREFIX_TO_CHROMIUM_HOST_OS = {
     'linux-x64': 'Linux_x64',
     'mac-arm64': 'Mac_arm64',
-    'mac': 'Mac',
     'win': 'Win',
 }
 

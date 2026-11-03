@@ -164,11 +164,11 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
 <settings-toggle-button id="userMemoryEnabled"
     icon="database"
-    pref="{{prefs.brave.ai_chat.user_memory_enabled}}"
+    pref-key="brave.ai_chat.user_memory_enabled"
     label="$i18n{braveLeoAssistantUserMemoryEnabledLabel}">
 </settings-toggle-button>
 
-<template is="dom-if" if="[[prefs.brave.ai_chat.user_memory_enabled.value]]" restamp>
+<template is="dom-if" if="[[userMemoryEnabledPref_.value]]" restamp>
   <div class="list-container">
     <div class="search-container">
       <leo-input

@@ -1,5 +1,5 @@
 diff --git a/build/util/android_chrome_version.py b/build/util/android_chrome_version.py
-index e1d83ce9ac2f96c053e3d9e6017dd5ed1ebaddbb..1585917f699d58f1e13047850ca6762827822ebb 100755
+index 3dde8dffb3a8b7dc42f42d1b45eee18690b9e7ea..ddb2c5d614c4ea1560d40421fba479547db62674 100755
 --- a/build/util/android_chrome_version.py
 +++ b/build/util/android_chrome_version.py
 @@ -236,6 +236,7 @@ def _GetAbisToDigitMask(build_number, patch_number):

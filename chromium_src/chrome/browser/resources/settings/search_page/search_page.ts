@@ -9,128 +9,15 @@ import '../brave_search_engines_page/normal_search_engine_list_dialog.js'
 // import it itself -- it relies on whoever registers it to also pull this in.
 import '../brave_search_engines_page/private_search_engine_list_dialog.js'
 
-import { CrSettingsPrefs } from '/shared/settings/prefs/prefs_types.js'
-import type { SettingsPrefsElement } from '/shared/settings/prefs/prefs.js'
 import type { Route } from '../router.js'
 
-import { loadTimeData } from '../i18n_setup.js'
 import { routes } from '../route.js'
 import { Router } from '../router.js'
 import {
   SettingsSearchPageElement as SettingsSearchPageElementChromium
 } from './search_page-chromium.js'
 
-// Declaration-merge the Brave-only member onto the upstream class type so the
-// lit_mangler-injected template (typed with `this: SettingsSearchPageElement`
-// via the upstream search_page.html.ts import) type-checks.
-declare module './search_page-chromium.js' {
-  interface SettingsSearchPageElement {
-    bravePrefs_: { [key: string]: unknown }|undefined
-    onPrefsChanged_: (e: Event) => void
-    onBravePrefsChanged_: (e: Event) => void
-  }
-}
-
-// Detail of Polymer's `<property>-changed` notification event. `path` is only
-// present when a sub-path of the property changed.
-interface PolymerNotifyDetail {
-  path?: string
-  value: unknown
-}
-
-// Finds the global settings-prefs singleton, which lives in settings-ui's
-// shadow root. Needed because settings-brave-search-page still uses the
-// classic PrefsMixin, which requires the whole prefs tree to be handed to it
-// as a property, and the now-Lit search page has no `prefs` property of its
-// own to forward.
-function getPrefsElement(): SettingsPrefsElement|null {
-  return document.querySelector('settings-ui')
-             ?.shadowRoot?.querySelector('settings-prefs') ?? null
-}
-
 class SettingsSearchPageElement extends SettingsSearchPageElementChromium {
-  static override get properties() {
-    return {
-      ...super.properties,
-      bravePrefs_: { type: Object },
-    }
-  }
-
-  // Left undefined until real prefs arrive, so the lit_mangler-injected
-  // template (see the companion search_page.html.ts override) can gate
-  // rendering settings-brave-search-page on it: that element's children are
-  // still Polymer and bind to specific pref paths (e.g. `pref="{{prefs.foo}}"`)
-  // via the classic PrefsMixin, which logs a "Pref error [not found]" console
-  // error the instant they connect with an empty/incomplete `prefs` object.
-  override accessor bravePrefs_: { [key: string]: unknown }|undefined =
-      undefined
-
-  // settings-brave-search-page is Polymer and writes prefs through the classic
-  // PrefsMixin, which mutates the shared prefs object in place and relies on a
-  // two-way `prefs="{{prefs}}"` binding to notify settings-prefs, the only
-  // thing that calls settingsPrivate.setPref(). `.prefs` above is a one-way
-  // Lit binding, so that notification stops here: the toggles look like they
-  // work (the shared object did change) but nothing is written to the profile
-  // and the values are lost on restart. Replay the notification on the
-  // singleton, which holds the very same object, so its `prefs.*` observer
-  // runs. Polymer dirty-checks the path, so this can't echo back.
-  override onBravePrefsChanged_ = (e: Event) => {
-    const {path} = (e as CustomEvent<PolymerNotifyDetail>).detail
-    if (path) {
-      getPrefsElement()?.notifyPath(path)
-    }
-  }
-
-  // The other direction: pref changes coming from the browser (a rejected
-  // setPref(), policy, another settings tab) reach settings-prefs but can't
-  // cross back into the Polymer subtree on their own -- reassigning
-  // bravePrefs_ is a no-op for Lit, since it's the same object reference.
-  override onPrefsChanged_ = (e: Event) => {
-    const prefsElement = getPrefsElement()
-    if (!prefsElement?.prefs) {
-      return
-    }
-    this.bravePrefs_ = prefsElement.prefs
-    const {path} = (e as CustomEvent<PolymerNotifyDetail>).detail
-    if (path) {
-      this.shadowRoot?.querySelector('settings-brave-search-page')
-          ?.notifyPath(path)
-    }
-  }
-
-  override connectedCallback() {
-    // The `...super.properties` spread above makes Lit re-run
-    // createProperty() for this inherited property against this prototype.
-    // Finding no own accessor here, Lit gives it a disconnected one, so the
-    // upstream field initializer's value never reaches it -- it reads back
-    // permanently undefined, starving the upstream willUpdate() check that
-    // computes searchPageTitle_ (the page title never renders). Can't fix
-    // with a field redeclaration: that gives this protected member a new
-    // declaring class, same issue as onOpenDialogButtonClick_ below. Assign
-    // it explicitly instead, before super.connectedCallback() (which reads
-    // it synchronously to pick a search-engines fetch path).
-    this.searchSettingsUpdateEnabled_ =
-        loadTimeData.getBoolean('searchSettingsUpdate')
-
-    super.connectedCallback()
-
-    const prefsElement = getPrefsElement()
-    if (!prefsElement) {
-      console.error(`[Settings] Couldn't find the settings-prefs singleton`)
-      return
-    }
-    CrSettingsPrefs.initialized.then(() => {
-      this.bravePrefs_ = prefsElement.prefs
-    })
-    prefsElement.addEventListener('prefs-changed', this.onPrefsChanged_)
-  }
-
-  override disconnectedCallback() {
-    super.disconnectedCallback()
-    getPrefsElement()?.removeEventListener(
-        'prefs-changed', this.onPrefsChanged_)
-  }
-
   override currentRouteChanged(newRoute: Route, oldRoute?: Route) {
     super.currentRouteChanged(newRoute, oldRoute)
     this.showSearchEngineListDialog_ = newRoute === routes.DEFAULT_SEARCH

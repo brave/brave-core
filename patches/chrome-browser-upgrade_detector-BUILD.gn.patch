@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/upgrade_detector/BUILD.gn b/chrome/browser/upgrade_detector/BUILD.gn
+index dc1ae9d4abfc38b5df51f9436094a0385f2fd106..a52192041b93660d1d67f01a7b2696eda5d575b5 100644
+--- a/chrome/browser/upgrade_detector/BUILD.gn
++++ b/chrome/browser/upgrade_detector/BUILD.gn
+@@ -132,6 +132,7 @@ source_set("impl") {
+       "get_installed_version_mac.mm",
+     ]
+     deps += [ "//chrome/browser/updater" ]
++    deps += [ "//brave/browser/updater:buildflags" ]
+   }
+ 
+   if (is_linux) {

@@ -20,6 +20,7 @@
 <translation id="8541922081612557424">关于 Brave</translation>
 <translation id="987734326276404793">在手机上使用 Brave 接收价格跟踪提醒</translation>
 <translation id="1203500561924088507">感谢您完成安装。您必须重启浏览器才能使用 <ph name="BUNDLE_NAME"/>。</translation>
+<translation id="1213674046343558619">有一项<ph name="IMPORTANT_UPDATE"/>待安装。为了确保您的浏览安全，Brave 将在您下次连续 <ph name="IDLE_DURATION"/>无操作后更新。</translation>
 <translation id="1232234696885483911">当您打开图片搜索功能时，系统会自动将网页标题、网址和内容（包括 PDF 文件）发送给服务器。<ph name="LEARN_MORE"/></translation>
 <translation id="1934377710648094656">登录后，您可以在 Brave 中使用 Brave 账号中的密码等信息。如需更改此设置，请前往“设置 Brave 账号”。</translation>
 <translation id="583633806828413086">在 Mac 菜单栏中显示 Brave 中的 Gemini</translation>
@@ -221,6 +222,7 @@
 <translation id="3286538390144397061">立即重新启动</translation>
 <translation id="2339258256897053758">缺少 Brave API 密钥，因此 Brave 的部分功能将无法使用。</translation>
 <translation id="8926637909431618259">关闭 Brave 后继续运行后台应用</translation>
+<translation id="8245661393996028021">Brave 将在您离开时更新</translation>
 <translation id="518125528057094977">Brave 会在使用不安全的连接加载网站前向您发出警告</translation>
 <translation id="8652321858775514885">关闭所有 Brave 窗口后，您将会从大多数网站退出账号；但如果您已登录 Brave，则您的 Brave 账号不会退出。若要让网站记住您，请<ph name="SETTINGS_LINK"/>。</translation>
 <translation id="3352986031709923790">搜索区域的右上角：右侧 <ph name="RIGHT"/>%，顶部 <ph name="TOP"/>%</translation>
@@ -229,6 +231,7 @@
 <translation id="2645435784669275700">Brave 操作系统</translation>
 <translation id="2297290224191497273">切换到现有的 Brave 个人资料？</translation>
 <translation id="3412460710772753638">在此设备上的密码管理工具中更新</translation>
+<translation id="172368702860945706">Brave 需要更新</translation>
 <translation id="5079573433701109938">如需获取<ph name="DEVICE"/>中的书签等内容，请登录 Brave</translation>
 <translation id="3438772217992559640">使用图片搜索功能搜索此标签页</translation>
 <translation id="2491221873705777076">借助 Brave 在手机上使用增强型安全浏览功能</translation>
@@ -367,6 +370,7 @@
 <translation id="4877750182157975795"><ph name="DEVICE_TYPE"/> 版 Brave 在手，所有常用 Brave 服务触手可及</translation>
 <translation id="1204184037023366446">Brave 需要获得权限，才能跟踪您的手部动作</translation>
 <translation id="5406591571925937375">您近期未访问过该网站，因此 Brave 撤消了该网站的<ph name="PERMISSION_1"/>权限、<ph name="PERMISSION_2"/>权限和<ph name="PERMISSION_3"/>权限。</translation>
+<translation id="3576895950897485019">登录 Brave</translation>
 <translation id="5174969993834422967">您通常会屏蔽通知。要允许此网站向您发送通知，请点击位置栏右侧的通知图标。</translation>
 <translation id="5174983315706567306">磁盘可用空间不足。</translation>
 <translation id="8157129267754368853">Brave 账号需要重新验证身份</translation>
@@ -375,6 +379,7 @@
 <translation id="5234764350956374838">关闭</translation>
 <translation id="7690383309583926074">下载 Brave 应用，随时随地保存密码</translation>
 <translation id="8586264863973514035">要想应用您的更改，请重新启动 Brave</translation>
+<translation id="8127050479140582768">若要将此标签页发送到另一设备，请在这两部设备上都登录 Brave</translation>
 <translation id="5286907366254680517">检测到</translation>
 <translation id="7264453786974905915">获取 Brave 应用</translation>
 <translation id="7230006500876504868">使用 Brave 搜索</translation>
@@ -707,7 +712,7 @@ Brave 无法恢复您的设置。</translation>
 <translation id="5592122595094519401">请更新 Brave，以便继续使用 Brave 账号 <ph name="ACCOUNT_EMAIL"/> 中的 Brave 数据</translation>
 <translation id="2569754604093464025">若要接收后续 Brave 更新，您需使用 Windows 10 或更高版本。此计算机目前使用的是 Windows 8。</translation>
 <translation id="8362914115861174987">目标语言</translation>
-<translation id="8367705492654390392">有问题，尽管问</translation>
+<translation id="8367705492654390392">尽情提问</translation>
 <translation id="7296197595428914424">如需获取您所有设备上的密码等信息，请登录 Brave。登录后，该密码将保存到您的 Brave 账号。</translation>
 <translation id="9098234372282930719">然后，您需要重启 Brave。</translation>
 <translation id="1327729221471951979">Brave 建议您移除它。<ph name="BEGIN_LINK"/>详细了解受支持的扩展程序<ph name="END_LINK"/></translation>
@@ -738,6 +743,7 @@ Brave 无法恢复您的设置。</translation>
 <translation id="5128665650717824082">您无法将 Brave for Testing 设为默认浏览器。</translation>
 <translation id="3053208669360972929">随时随地使用 Brave 搜索</translation>
 <translation id="2433912322225810055">它还能够控制您启动Brave后或通过多功能框进行搜索时系统显示的页面。</translation>
+<translation id="8789425457808164956">若要将此标签页发送到另一设备，请在该设备上登录 Brave</translation>
 <translation id="4100716194836114130">这是您的专属Brave</translation>
 <translation id="8712637175834984815">知道了</translation>
 <translation id="1419543648228375718">登录 Brave？</translation>

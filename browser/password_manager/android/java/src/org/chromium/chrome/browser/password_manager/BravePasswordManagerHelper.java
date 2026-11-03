@@ -53,9 +53,13 @@ public class BravePasswordManagerHelper extends PasswordManagerHelper {
                     Class.forName(
                                     "org.chromium.chrome.browser.password_manager.settings.PasswordSettings") // presubmit: ignore-long-line
                             .asSubclass(Fragment.class);
-            context.startActivity(
-                    SettingsNavigationFactory.createSettingsNavigation()
-                            .createSettingsIntent(context, passwordSettingsClass, fragmentArgs));
+            // Keep the back stack so back returns to the page that opened passwords.
+            SettingsNavigationFactory.createSettingsNavigation(context)
+                    .startSettings(
+                            context,
+                            passwordSettingsClass,
+                            fragmentArgs,
+                            /* addToBackStack= */ true);
         } catch (Exception e) {
             Log.e(TAG, "showPasswordSettings: ", e);
         }

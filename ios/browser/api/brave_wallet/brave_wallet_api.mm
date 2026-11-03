@@ -90,7 +90,7 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
   url::Origin committed_origin([origin underlyingOrigin]);
 
   auto provider = std::make_unique<brave_wallet::EthereumProviderImpl>(
-      ios::HostContentSettingsMapFactory::GetForProfile(profile),
+      ios::HostContentSettingsMapFactory::GetForProfile(profile).get(),
       brave_wallet_service,
       std::make_unique<brave_wallet::BraveWalletProviderDelegateBridge>(
           delegate),
@@ -119,7 +119,7 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
   }
 
   auto* host_content_settings_map =
-      ios::HostContentSettingsMapFactory::GetForProfile(profile);
+      ios::HostContentSettingsMapFactory::GetForProfile(profile).get();
   if (!host_content_settings_map) {
     return nil;
   }

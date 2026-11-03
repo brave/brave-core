@@ -1,0 +1,21 @@
+diff --git a/net/url_request/redirect_util.cc b/net/url_request/redirect_util.cc
+index 383c331864da535646e1241535cb1eecbd93817a..49fd96a817d82afef872f9835fd88096bd3fafa3 100644
+--- a/net/url_request/redirect_util.cc
++++ b/net/url_request/redirect_util.cc
+@@ -25,6 +25,7 @@ void RedirectUtil::UpdateHttpRequest(
+     const std::optional<net::HttpRequestHeaders>& modified_headers,
+     HttpRequestHeaders* request_headers,
+     bool* should_clear_upload) {
++  [&]() -> void {
+   DCHECK(request_headers);
+   DCHECK(should_clear_upload);
+ 
+@@ -92,6 +93,8 @@ void RedirectUtil::UpdateHttpRequest(
+ 
+   if (modified_headers)
+     request_headers->MergeFrom(modified_headers.value());
++  }();
++  MaybeCapReferrer(removed_headers, redirect_info);
+ }
+ 
+ // static

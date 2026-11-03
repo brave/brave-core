@@ -433,7 +433,6 @@
 <translation id="412480955826088549">正在下载组件...</translation>
 <translation id="4894106830958548828">我理解</translation>
 <translation id="2729085694451916573"><ph name="PART_ONE"/>预留位置<ph name="PART_ONE_END"/>的测试字串。 <ph name="PART_TWO"/>了解更多<ph name="PART_TWO_END"/></translation>
-<translation id="6705666103672654256">您的搜索和页面内容在此设备上处理。不会发送任何内容给 Brave 或被人工审核员看到。这是一项实验性功能,不一定每次都能正确处理。</translation>
 <translation id="7534079972563542000">不可阻挡的域名</translation>
 <translation id="4492298165410552103">是否在 Brave 中启用对不可阻挡域的支持？</translation>
 <translation id="5015092481905019948">Brave 将使用 <ph name="PROVIDER_NAME"/> 來解析 <ph name="DOMAIN_PROVIDER_NAME"/> 上的 <ph name="DOMAIN_LIST"/> 域名。Brave 将隐藏你的 IP 地址。如果你啟用这项功能，<ph name="PROVIDER_NAME"/> 只会看到有人正在尝试访这些域，不会看到其他资料。请查阅 <ph name="PROVIDER_NAME"/> 的<ph name="BEGIN_PROVIDER_TOU_LINK"/>使用条款<ph name="END_PROVIDER_TOU_LINK"/>和<ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>隐私权政策<ph name="END_PROVIDER_PRIVACY_LINK"/>。</translation>
@@ -809,8 +808,6 @@
 <translation id="223536150967420869">购买</translation>
 <translation id="538450413584738399">交换</translation>
 <translation id="6810855196544084176">桥接</translation>
-<translation id="3488255243387417752">卖出</translation>
-<translation id="5223034545851554347">您这个帐户里的<ph name="TOKEN_SYMBOL"/>余额不足。</translation>
 <translation id="6585419509320235293">选择要发送的资产</translation>
 <translation id="1018742998826182079">选择要交换的资产</translation>
 <translation id="2791691551852500015">输入收件人地址</translation>
@@ -1327,7 +1324,6 @@
 <translation id="4312994183947987913">购买/存款</translation>
 <translation id="5133421763709317473">未找到与搜索词或过滤器匹配的资产</translation>
 <translation id="6423985584914773314">此 FIL 地址无效</translation>
-<translation id="6153197326949684688">以<ph name="OFFRAMP_PROVIDER"/>出售</translation>
 <translation id="5795821518596541838">交易合作伙伴</translation>
 <translation id="1916136859742693273">Brave 钱包使用 Meld.io 来帮助汇总和显示您所在地区的各种加密货币提供商。我们会与 Meld.io 共享信息以完成交易，包括您的钱包地址和国家代码。如需了解更多信息，请参阅 Meld 的使用条款。</translation>
 <translation id="245827814248186739">我已阅读并同意 <ph name="LINK_BEFORE"/>Meld 的使用条款<ph name="LINK_AFTER"/></translation>
@@ -1643,7 +1639,7 @@
 <translation id="6646456430109279404">二十秒</translation>
 <translation id="1961743941324393172">第 23 个</translation>
 <translation id="9079035825546416393">第 24 个</translation>
-<translation id="1558531209852594808">检测到非 ASCII 字符！</translation>
+<translation id="6980520267116175375">检测到意外字符</translation>
 <translation id="442709594176931966">查看原始消息</translation>
 <translation id="2239252396088484499">查看以 ASCII 编码编写的消息</translation>
 <translation id="2894654529758326923">信息</translation>
@@ -1893,6 +1889,14 @@
 <translation id="6700561332544287722">下次需要解锁</translation>
 <translation id="5605360570977617291">从主页隐藏 <ph name="CARD_NAME"/>？</translation>
 <translation id="2721464457853369512">您的 <ph name="CARD_NAME"/> 余额保持不变。这仅会从主页隐藏该卡片。您随时可以在“设置”的“钱包”下重新显示它。</translation>
+<translation id="1543259266592091784">添加资金</translation>
+<translation id="6202621179510403111">新卡</translation>
+<translation id="2366365638711338487">收益 <ph name="DATE_BEGIN"/>(<ph name="DATE"/>)<ph name="DATE_END"/></translation>
+<translation id="4938547503015386493">利息 + <ph name="AMOUNT"/> BAT 返现</translation>
+<translation id="5124185664922725208">支出</translation>
+<translation id="1591562245178063882">本月</translation>
+<translation id="2781977263564899470">获取实体卡</translation>
+<translation id="3388543273143324626">在商店和 ATM 中使用</translation>
 <translation id="3155170474926428993">Tor 启动器</translation>
 <translation id="3745016858329272300">基本信息</translation>
 <translation id="4045404575593562245">Tor 控制活动</translation>
@@ -2230,12 +2234,12 @@ other {# 个来源}
 <translation id="7905602379229309187">端点当前过载。请稍后再试。</translation>
 <translation id="8151638057146502721">配置</translation>
 <translation id="999273441077650169">模型会动态变化以使用最适合任务的模型。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
-<translation id="3852808100039989429">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Qwen VL 30B 提供支持，这是一个由阿里巴巴云创建的模型，性能卓越，适用于多种用例。Qwen 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="8218534413919828549">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Qwen 3.6 35B 提供支持，这是一个由阿里巴巴云创建的模型，性能卓越，适用于多种用例。Qwen 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">嗨，我是 Leo。我是由 Brave 提供的 AI 助手。我由 GLM-5.3 Flash 提供支持，这是一个由 Zhipu AI 创建的模型，性能卓越，适用于多种用例。GLM-5.3 Flash 通过他们自己的可验证私密安全基础设施由 NEAR 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">您好，我是 Leo。是 Brave 提供的 AI 助手，由 Anthropic 创建的 Claude Instant 模型驱动⸺该模型可处理对话及文本任务。Claude Instant 由 Brave 自有安全基础架构托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Claude Sonnet 提供支持，这是一个由 Anthropic 创建的模型，用于支持对话和文本处理任务。Claude Sonnet 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
-<translation id="6676306995311143470">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Grok 4.6 提供支持，这是 xAI 在 Amazon Bedrock Mantle 上的前沿推理模型。Grok 4.6 通过 Brave 安全的 AWS 基础设施提供服务。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
-<translation id="2394656730986208060">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 GPT 5.6 Luna 提供支持，这是 OpenAI 在 Amazon Bedrock Mantle 上的快速、低延迟模型。GPT 5.6 Luna 通过 Brave 安全的 AWS 基础设施提供服务。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="3934503473603661122">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Grok 4.7 提供支持，这是 xAI 在 Amazon Bedrock 上的前沿推理模型。Grok 4.7 通过 Brave 的安全 AWS 基础设施提供服务。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="8983215701788462580">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 GPT Luna 提供支持，这是 OpenAI 在 Amazon Bedrock 上的快速、低延迟模型。GPT Luna 通过 Brave 的安全 AWS 基础设施提供服务。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 GPT 5.6 Terra 提供支持，这是 OpenAI 在 Amazon Bedrock Mantle 上的均衡生产模型。GPT 5.6 Terra 通过 Brave 安全的 AWS 基础设施提供服务。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Mistral Large 提供支持，这是一个由 Mistral 创建的模型，性能卓越，适用于多种用例。Mistral Large 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Qwen 3.8 Flash Next 提供支持，这是一个由阿里巴巴云创建的模型，性能卓越，适用于多种用例。Qwen 3.8 Flash Next 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
@@ -2286,6 +2290,10 @@ other {# 个来源}
 <translation id="3027575440738035995">Leo 高级版可访问扩展的语言模型集，以获得更加细致入微的答复。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="8261506727792406068">删除</translation>
 <translation id="6574153208133461043">您确定要删除此对话吗？此操作无法撤销。</translation>
+<translation id="1020105790073039189">切换到可以读取图片的模型？</translation>
+<translation id="3797128260474242570"><ph name="CURRENT_MODEL"/> 无法读取图片，而您的附件需要图像处理。要发送它们，请将此对话切换到 <ph name="VISION_MODEL"/>。它将接收整个对话，包括之前的消息。您也可以取消并选择另一个可以读取图片的模型。如果您不带图片发送，Leo 将无法看到这些附件。</translation>
+<translation id="830353068401992697">切换并发送</translation>
+<translation id="369110003363071587">不带图片发送</translation>
 <translation id="7488762544858401571">已编辑</translation>
 <translation id="5604254791550001355">编辑提示</translation>
 <translation id="8115786586976830777">复制提示</translation>
@@ -2440,6 +2448,7 @@ other {# 个来源}
 <translation id="3024277805447899099">预览图片</translation>
 <translation id="6671495933530132209">复制图片</translation>
 <translation id="6864459304226931083">下载图片</translation>
+<translation id="6323406350879995440">在标签页中打开</translation>
 <translation id="6332876390231524389">当前标签页内容</translation>
 <translation id="6397861830483632092">打开标签…</translation>
 <translation id="802080272588201037">书签…</translation>
@@ -2494,11 +2503,14 @@ other {# 个来源}
 <translation id="4838375634693651776">正在沙盒中执行代码以帮助解答您的问题</translation>
 <translation id="6990975553143971265">正在您的浏览器历史记录中搜索“<ph name="QUERY"/>”</translation>
 <translation id="8302511726757276645">正在搜索您的浏览器历史记录</translation>
+<translation id="6727762439034900202">正在创建工作区</translation>
+<translation id="261799307673205052">工作区</translation>
 <translation id="8410699755320690690">Brave AI 想要搜索您的浏览历史记录。搜索在您的设备本地运行，因此您的完整历史记录不会发送到任何地方。只有匹配页面的标题、URL 和已编入索引的文本段落会作为本对话的一部分发送给 Brave AI。</translation>
 <translation id="4379566111233326721">代码：</translation>
 <translation id="3542130965673205258">输出：</translation>
 <translation id="6911817209337314910">正在为您生成一些选项供您选择</translation>
 <translation id="5382076391290708074">移动你的标签页</translation>
+<translation id="8717463977094156527">允许此操作将向 Brave AI 发送您所有标签页和标签组的 **URL** 和 **标题**，以及您标签页中可从语义历史搜索索引获取的 **页面文本的简短摘录**，并允许 Brave AI 移动您的标签页。此权限仅适用于此对话。</translation>
 <translation id="3862123464576147769">允许此操作将向 Brave AI 发送所有标签页和标签页组的 <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> 和 <ph name="TITLE_FORMAT_START"/>标题<ph name="TITLE_FORMAT_END"/>，并允许 Brave AI 移动它们。此权限仅适用于此对话。</translation>
 <translation id="396165714586708444">深度研究</translation>
 <translation id="577747221882855891">正在搜索："<ph name="QUERY"/>"</translation>
@@ -2526,7 +2538,7 @@ other {# 个来源}
 <translation id="7901376755618482277">在电子邮件字段上显示“新建别名”提示</translation>
 <translation id="6002159997868894136">点击复制别名</translation>
 <translation id="8105770564756958406">使用于 <ph name="DOMAINS"/></translation>
-<translation id="5006956315579221642">创建最多 5 个免费电子邮件别名以保护您的真实电子邮件地址。</translation>
+<translation id="6776324888261353420">创建最多 <ph name="MAX_ALIASES"/> 个免费电子邮件别名以保护您的真实电子邮件地址。</translation>
 <translation id="9046133327037621173">新电子邮件别名</translation>
 <translation id="3768606658230902536">创建一个随机电子邮件地址，该地址会转发到您的收件箱，同时将您的个人电子邮件地址保密。</translation>
 <translation id="4452721050684632493">已达到别名上限</translation>
@@ -2599,7 +2611,7 @@ other {# 个来源}
 <translation id="6851426306697017546">显示时钟</translation>
 <translation id="4844370919312937270">在新标签页中显示搜索小部件</translation>
 <translation id="5088374130885640159">通过 <ph name="REWARDS_LINK_BEGIN"/>Brave 奖励<ph name="REWARDS_LINK_END"/>，您可以通过查看新标签页广告来赚取收益。<ph name="LEARN_MORE_LINK_BEGIN"/>了解更多<ph name="LEARN_MORE_LINK_END"/>。</translation>
-<translation id="4100520468072294616">显示新标签页广告</translation>
+<translation id="7020410251711260841">显示赞助广告</translation>
 <translation id="4983925687993168579">统计</translation>
 <translation id="5009354496127441090">显示常用网站</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -2622,6 +2634,7 @@ other {# 个来源}
 <translation id="8814357473522731680">技术支持</translation>
 <translation id="7143207342074048698">正在连接</translation>
 <translation id="1202549130170287307">正在断开连接</translation>
+<translation id="4989542687859782284">不可用</translation>
 <translation id="8941703009412168350">BRAVE VPN</translation>
 <translation id="6303294677342628402">盾牌</translation>
 <translation id="8458987127502506209">启用 Brave 盾牌</translation>
@@ -2810,9 +2823,11 @@ other {# 个来源}
 <translation id="6021669293402055982">Brave VPN：已断开连接</translation>
 <translation id="3541307549916475335">Brave VPN 面板 UI</translation>
 <translation id="2325196879156848326">连接失败</translation>
+<translation id="6246488334766115273">连接不可用</translation>
 <translation id="745054660363064771">无法连接到服务器</translation>
 <translation id="3936826714240735937">选择另一个服务器</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/>无法连接至<ph name="REGION_NAME"/>服务器。请重试或选择其他国家。</translation>
+<translation id="4872940635040426686"><ph name="PRODUCT_NAME"/> 不可用。如果问题仍然存在，请重新安装 Brave 或联系我们的技术支持团队。</translation>
 <translation id="1776533911621317363">开始您的 7 天免费试用</translation>
 <translation id="3357036723290257445">已经购买 Brave VPN?</translation>
 <translation id="8652175077544655965">关闭设置</translation>
@@ -2952,11 +2967,13 @@ Brave 有一个帮助服务，通过过滤在 VPN 连接上进行 DNS 查询的�
 <translation id="4405566535206792621">为了更改您的密码，请验证您的电子邮件地址。</translation>
 <translation id="3135333563420939059">您的电子邮件已验证。设置新密码以完成密码更改。</translation>
 <translation id="4227581348172626540">取消密码更改</translation>
-<translation id="808894953321890993">更改密码</translation>
 <translation id="7967687455715421528">无法更改密码</translation>
 <translation id="7413006094063730650">删除账户</translation>
 <translation id="4869737930995549965">退出登录</translation>
-<translation id="2902312830803030883">更多操作</translation>
+<translation id="4424262960694990728">需要操作</translation>
+<translation id="847260521336960132">账户详细信息</translation>
+<translation id="5399593843842221768">有关您 Brave 账户的个人信息。</translation>
+<translation id="5771731269320499905">Brave 账户详细信息</translation>
 <translation id="5538654494923870167">开始使用您的 Brave 账户</translation>
 <translation id="1544145635547515689">创建 Brave 账户</translation>
 <translation id="3828644479849256404">已有账户？登录</translation>
@@ -2972,6 +2989,7 @@ Brave 有一个帮助服务，通过过滤在 VPN 连接上进行 DNS 查询的�
 <translation id="7114054701490058191">密码不匹配</translation>
 <translation id="4277028893293644418">重置密码</translation>
 <translation id="9033485352495162741">确认成功。现在输入您想要的新密码：</translation>
+<translation id="808894953321890993">更改密码</translation>
 <translation id="1293857704520741614">登录到您的账户</translation>
 <translation id="118617366439356381">忘记密码？</translation>
 <translation id="5636406393070713097">确认您的 Brave 账户电子邮件，您将收到一个重置密码的验证码。该验证码仅在 15 分钟内有效。</translation>

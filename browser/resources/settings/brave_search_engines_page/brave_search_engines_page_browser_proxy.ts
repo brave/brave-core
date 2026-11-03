@@ -8,15 +8,15 @@ import type {SearchEngine} from '../search_page/search_engines_browser_proxy.js'
 
 export interface BraveSearchEnginesPageBrowserProxy {
   getPrivateSearchEnginesList(): Promise<SearchEngine[]>
-  setDefaultPrivateSearchEngine(modelIndex: number): void
+  setDefaultPrivateSearchEngine(id: string): void
 }
 
 export class BraveSearchEnginesPageBrowserProxyImpl implements BraveSearchEnginesPageBrowserProxy {
   getPrivateSearchEnginesList() {
     return sendWithPromise<SearchEngine[]>('getPrivateSearchEnginesList')
   }
-  setDefaultPrivateSearchEngine(modelIndex: number) {
-    chrome.send('setDefaultPrivateSearchEngine', [modelIndex])
+  setDefaultPrivateSearchEngine(id: string) {
+    chrome.send('setDefaultPrivateSearchEngine', [id])
   }
   static getInstance() {
     return instance || (instance = new BraveSearchEnginesPageBrowserProxyImpl())
