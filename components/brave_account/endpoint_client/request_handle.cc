@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_account/endpoint_client/request_handle.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/check.h"
@@ -13,28 +14,35 @@
 #include "base/task/sequenced_task_runner.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 
-namespace brave_account::endpoint_client::detail {
+namespace brave_account::endpoint_client {
 
-RequestHandleDeleter::RequestHandleDeleter() = default;
+RequestHandle::RequestHandle() = default;
 
-RequestHandleDeleter::RequestHandleDeleter(RequestHandleDeleter&&) = default;
+RequestHandle::RequestHandle(RequestHandle&&) = default;
 
-RequestHandleDeleter& RequestHandleDeleter::operator=(RequestHandleDeleter&&) =
-    default;
+RequestHandle& RequestHandle::operator=(RequestHandle&&) = default;
 
-RequestHandleDeleter::~RequestHandleDeleter() = default;
+RequestHandle::~RequestHandle() = default;
 
-void RequestHandleDeleter::operator()(void* ptr) const {
-  if (!ptr) {
-    return;
-  }
+RequestHandle::RequestHandle(
+    std::unique_ptr<network::SimpleURLLoader> loader,
+    scoped_refptr<base::SequencedTaskRunner> task_runner)
+    : loader_(loader.release(), Deleter(std::move(task_runner))) {}
 
-  CHECK(CHECK_DEREF(task_runner_).RunsTasksInCurrentSequence());
-  delete static_cast<network::SimpleURLLoader*>(ptr);
-}
-
-RequestHandleDeleter::RequestHandleDeleter(
+RequestHandle::Deleter::Deleter(
     scoped_refptr<base::SequencedTaskRunner> task_runner)
     : task_runner_(std::move(task_runner)) {}
 
-}  // namespace brave_account::endpoint_client::detail
+RequestHandle::Deleter::Deleter(Deleter&&) = default;
+
+RequestHandle::Deleter& RequestHandle::Deleter::operator=(Deleter&&) = default;
+
+RequestHandle::Deleter::~Deleter() = default;
+
+void RequestHandle::Deleter::operator()(
+    network::SimpleURLLoader* loader) const {
+  CHECK(CHECK_DEREF(task_runner_).RunsTasksInCurrentSequence());
+  delete loader;
+}
+
+}  // namespace brave_account::endpoint_client

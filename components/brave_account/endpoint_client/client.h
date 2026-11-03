@@ -153,9 +153,8 @@ class Client {
       CHECK(!simple_url_loader);
     } else {
       CHECK(simple_url_loader);
-      return RequestHandle(simple_url_loader.release(),
-                           detail::RequestHandleDeleter(
-                               base::SequencedTaskRunner::GetCurrentDefault()));
+      return RequestHandle(std::move(simple_url_loader),
+                           base::SequencedTaskRunner::GetCurrentDefault());
     }
   }
 };

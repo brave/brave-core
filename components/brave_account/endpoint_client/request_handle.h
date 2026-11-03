@@ -15,43 +15,54 @@ namespace base {
 class SequencedTaskRunner;
 }  // namespace base
 
+namespace network {
+class SimpleURLLoader;
+}  // namespace network
+
 namespace brave_account::endpoint_client {
 
-template <IsEndpoint>
-class Client;
-
-namespace detail {
-
-// Deletes the RequestHandle's SimpleURLLoader inline, so cancellation is
-// synchronous. CHECKs that this happens on the sequence that issued the
-// request, the only one the loader may be touched from.
-class RequestHandleDeleter {
+// RequestHandle is intentionally opaque: it hides the managed SimpleURLLoader
+// to prevent direct API access. Callers can only hold, move, or reset the
+// handle to cancel a request, and only Client<> can create a non-empty one.
+class RequestHandle {
  public:
-  RequestHandleDeleter();
+  RequestHandle();
 
-  RequestHandleDeleter(RequestHandleDeleter&&);
-  RequestHandleDeleter& operator=(RequestHandleDeleter&&);
+  RequestHandle(RequestHandle&&);
+  RequestHandle& operator=(RequestHandle&&);
 
-  ~RequestHandleDeleter();
+  ~RequestHandle();
 
-  void operator()(void* ptr) const;
+  void reset() { loader_.reset(); }
 
  private:
   template <IsEndpoint>
-  friend class ::brave_account::endpoint_client::Client;
+  friend class Client;
 
-  explicit RequestHandleDeleter(
-      scoped_refptr<base::SequencedTaskRunner> task_runner);
+  // Deletes the RequestHandle's SimpleURLLoader inline, so cancellation is
+  // synchronous. CHECKs that this happens on the sequence that issued the
+  // request, the only one the loader may be touched from.
+  class Deleter {
+   public:
+    explicit Deleter(
+        scoped_refptr<base::SequencedTaskRunner> task_runner = nullptr);
 
-  scoped_refptr<base::SequencedTaskRunner> task_runner_;
+    Deleter(Deleter&&);
+    Deleter& operator=(Deleter&&);
+
+    ~Deleter();
+
+    void operator()(network::SimpleURLLoader* loader) const;
+
+   private:
+    scoped_refptr<base::SequencedTaskRunner> task_runner_;
+  };
+
+  RequestHandle(std::unique_ptr<network::SimpleURLLoader> loader,
+                scoped_refptr<base::SequencedTaskRunner> task_runner);
+
+  std::unique_ptr<network::SimpleURLLoader, Deleter> loader_;
 };
-
-}  // namespace detail
-
-// RequestHandle is intentionally opaque: it hides the managed SimpleURLLoader
-// to prevent direct API access. Callers should only be able to hold, move, or
-// reset the handle to cancel a request - hence the type erasure.
-using RequestHandle = std::unique_ptr<void, detail::RequestHandleDeleter>;
 
 }  // namespace brave_account::endpoint_client
 

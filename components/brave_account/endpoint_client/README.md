@@ -249,8 +249,8 @@ RequestHandle request_handle =
 request_handle.reset();  // cancels the request
 ```
 
-`RequestHandle` is a type-erased `std::unique_ptr<>` to the underlying
-`network::SimpleURLLoader`.
+`RequestHandle` is an opaque, move-only owner of the underlying
+`network::SimpleURLLoader`, so callers can only hold, move, or reset it.
 
 Destroying the handle cancels the request **synchronously**: the response
 callback can't run afterwards, since `SimpleURLLoader` guarantees that a loader
