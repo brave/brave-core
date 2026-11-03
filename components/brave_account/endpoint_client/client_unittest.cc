@@ -708,6 +708,26 @@ TEST(ClientTestMaxBodySize, ExceedingItFailsWithInsufficientResources) {
   EXPECT_THAT(future.Take(), ResponseEq(expected_response));
 }
 
+TEST(ClientTestResponseHeaders, NotSetWithoutStatusCode) {
+  base::test::TaskEnvironment task_environment;
+  network::TestURLLoaderFactory test_url_loader_factory;
+
+  MockResponseFor<JSONEndpoint>(
+      test_url_loader_factory,
+      {.net_error = net::OK, .status_code = net::HTTP_OK});
+
+  JSONEndpoint::Request request;
+  request.max_body_size = 1;
+
+  base::test::TestFuture<WithHeaders<JSONEndpoint::Response>> future;
+  Client<JSONEndpoint>::Send(test_url_loader_factory.GetSafeWeakWrapper(),
+                             std::move(request), future.GetCallback());
+
+  WithHeaders<JSONEndpoint::Response> expected_response;
+  expected_response.net_error = net::ERR_INSUFFICIENT_RESOURCES;
+  EXPECT_THAT(future.Take(), ResponseEq(expected_response));
+}
+
 TEST_P(ClientTestRetryOptions, Retry) {
   const auto& test_case = GetParam();
 
