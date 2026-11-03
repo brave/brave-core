@@ -1836,8 +1836,7 @@ extension TabManager: NSFetchedResultsControllerDelegate {
       }
       tabsForDomain.forEach { tab in
         Task { @MainActor in
-          let privateMode = privateBrowsingManager.isPrivateBrowsing
-          guard let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: privateMode)
+          guard let keyringService = BraveWallet.KeyringServiceFactory.get(profile: tab.profile)
           else {
             return
           }

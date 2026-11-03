@@ -43,12 +43,9 @@ extension UIViewController {
     var activities = [UIActivity]()
 
     // Copy Clean URL Activity
-    if !url.isLocal, !InternalURL.isValid(url: url), !url.isInternalURL(for: .readermode) {
+    if let tab, !url.isLocal, !InternalURL.isValid(url: url), !url.isInternalURL(for: .readermode) {
       let cleanedURL =
-        URLSanitizerServiceFactory.get(
-          privateMode: tab?.isPrivate ?? true
-        )?.sanitize(url: url) ?? url
-
+        URLSanitizerServiceFactory.get(profile: tab.profile)?.sanitize(url: url) ?? url
       activities.append(
         BasicMenuActivity(
           activityType: .copyCleanLink,

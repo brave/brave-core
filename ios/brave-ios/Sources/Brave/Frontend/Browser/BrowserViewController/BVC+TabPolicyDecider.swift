@@ -357,7 +357,7 @@ extension BrowserViewController {
     // Lets get the redirect chain.
     // Then we simply get all elements up until the user allows us to redirect
     // (i.e. appropriate settings are enabled for that redirect rule)
-    if let debounceService = DebounceServiceFactory.get(privateMode: tab.isPrivate),
+    if let debounceService = DebounceServiceFactory.get(profile: tab.profile),
       debounceService.isEnabled,
       let lastCommittedURL = tab.lastCommittedURL,
       lastCommittedURL.baseDomain != requestURL.baseDomain

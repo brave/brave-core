@@ -61,7 +61,7 @@ public class BraveProfileMigrations {
     else {
       return
     }
-    let debounceService = DebounceServiceFactory.get(privateMode: false)
+    let debounceService = DebounceServiceFactory.get(profile: profileController.profile)
     debounceService?.isEnabled = isDebounceEnabled
     Preferences.Shields.autoRedirectTrackingURLsDeprecated.value = nil
   }
