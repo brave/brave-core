@@ -144,8 +144,8 @@ class Client {
 
   // Depending on |C|, either verifies that ownership of |simple_url_loader| has
   // already been transferred (non-cancelable case), or wraps the loader in a
-  // RequestHandle that safely deletes it on its owning sequence when the handle
-  // is reset (cancelable case).
+  // RequestHandle that deletes it - cancelling the request - when the handle is
+  // reset (cancelable case).
   template <RequestCancelability C>
   static auto MaybeMakeHandle(
       std::unique_ptr<network::SimpleURLLoader>& simple_url_loader) {

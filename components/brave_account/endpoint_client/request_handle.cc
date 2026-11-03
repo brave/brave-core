@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/location.h"
+#include "base/check_deref.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/task/sequenced_task_runner.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -25,11 +25,12 @@ RequestHandleDeleter& RequestHandleDeleter::operator=(RequestHandleDeleter&&) =
 RequestHandleDeleter::~RequestHandleDeleter() = default;
 
 void RequestHandleDeleter::operator()(void* ptr) const {
-  if (ptr) {
-    CHECK(task_runner_);
-    task_runner_->DeleteSoon(FROM_HERE,
-                             static_cast<network::SimpleURLLoader*>(ptr));
+  if (!ptr) {
+    return;
   }
+
+  CHECK(CHECK_DEREF(task_runner_).RunsTasksInCurrentSequence());
+  delete static_cast<network::SimpleURLLoader*>(ptr);
 }
 
 RequestHandleDeleter::RequestHandleDeleter(
