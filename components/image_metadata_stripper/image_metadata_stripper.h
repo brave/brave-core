@@ -7,18 +7,9 @@
 #define BRAVE_COMPONENTS_IMAGE_METADATA_STRIPPER_IMAGE_METADATA_STRIPPER_H_
 
 #include "base/files/file_path.h"
+#include "brave/components/image_metadata_stripper/common/stripping_client.h"
 
 namespace image_metadata_stripper {
-
-// The client requesting to strip the image metadata.
-enum class StrippingClient {
-  // Download flow.
-  kDownloadManager,
-  // Upload flow.
-  kFileSelect,
-  // Files dropped onto a page.
-  kDragDrop,
-};
 
 // Returns true if |file_path| names an image format we support stripping
 // metadata from. Only the file extension is looked at.
