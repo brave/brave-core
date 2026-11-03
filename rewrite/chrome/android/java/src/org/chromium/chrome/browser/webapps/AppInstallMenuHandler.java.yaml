@@ -4,13 +4,11 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: 'Add imports for UrlConstants and feature flags.'
+  - description: 'Add import for UrlConstants.'
     regex:
       pattern: 'import org.chromium.chrome.R;'
       replace: |-
         import org.chromium.chrome.R;
-        import org.chromium.base.BraveFeatureList;
-        import org.chromium.chrome.browser.flags.ChromeFeatureList;
         import org.chromium.components.embedder_support.util.UrlConstants;
 
   - description: |
@@ -28,14 +26,5 @@ substitutions:
       pattern: |-
         boolean webAppInstalled =
       replace: |-
-        if (ChromeFeatureList.isEnabled(
-                        BraveFeatureList.BRAVE_ANDROID_MERGE_INSTALL_PWA_AND_CREATE_SHORTCUT)) {
-                    return doAddToHomescreen(
-                            activity,
-                            windowAndroid,
-                            modalDialogManager,
-                            currentTab,
-                            AppMenuVerbiage.APP_MENU_OPTION_ADD_TO_HOMESCREEN);
-                }
-
+        if (BraveAppInstallMenuHandlerUtils.shouldAddToHomescreenOnly()) return doAddToHomescreen(activity, windowAndroid, modalDialogManager, currentTab, AppMenuVerbiage.APP_MENU_OPTION_ADD_TO_HOMESCREEN);
                 boolean webAppInstalled =
