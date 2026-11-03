@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShared
 import Shared
 import Web
 
@@ -40,7 +41,7 @@ public class HistoryTabHelper: TabObserver {
       !url.isInternalURL(for: .readermode)
     else { return }
     guard !tab.isPrivate else { return }
-    historyAPI.add(url: url, title: tab.title ?? "", dateAdded: Date())
+    historyAPI.addHistory(HistoryNode(url: url, title: tab.title ?? "", dateAdded: Date()))
   }
 
   // MARK: - TabObserver
