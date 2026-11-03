@@ -6,7 +6,6 @@
 #include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 
 #include "brave/components/local_ai/buildflags/buildflags.h"
-#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/history_embeddings/core/history_embeddings_features.h"
