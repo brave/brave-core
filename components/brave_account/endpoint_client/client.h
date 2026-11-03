@@ -11,7 +11,6 @@
 #include <optional>
 #include <string>
 #include <utility>
-#include <variant>
 
 #include "base/check.h"
 #include "base/check_deref.h"
@@ -21,7 +20,6 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/types/is_instantiation.h"
-#include "base/types/to_address.h"
 #include "brave/components/brave_account/endpoint_client/is_endpoint.h"
 #include "brave/components/brave_account/endpoint_client/maybe_strip_with_headers.h"
 #include "brave/components/brave_account/endpoint_client/request_handle.h"
@@ -98,24 +96,40 @@ class Client {
     simple_url_loader->SetRetryOptions(request.retry_options.max_retries,
                                        request.retry_options.retry_mode);
     simple_url_loader->SetTimeoutDuration(request.timeout_duration);
-    simple_url_loader->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
+
+    auto* simple_url_loader_ptr = simple_url_loader.get();
+    // How the response callback holds the loader.
+    // Cancelable: `RequestHandle` owns the loader, so `base::Unretained<>()`
+    // binds a non-owning pointer to it, which can't dangle when the callback
+    // runs, since only the loader runs the callback.
+    // Non-cancelable: `base::Owned<>()` transfers ownership to the callback;
+    // the loader is deleted when the callback is.
+    auto bound_simple_url_loader = [&] {
+      if constexpr (C == RequestCancelability::kCancelable) {
+        return base::Unretained(simple_url_loader_ptr);
+      } else {
+        return base::Owned(std::move(simple_url_loader));
+      }
+    }();
+
+    simple_url_loader_ptr->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
         url_loader_factory.get(),
         base::BindOnce(OnResponse<Response>, std::move(callback),
-                       MaybeMoveLoader<C>(simple_url_loader)));
+                       std::move(bound_simple_url_loader)));
 
-    return MaybeMakeHandle<C>(simple_url_loader);
+    if constexpr (C == RequestCancelability::kCancelable) {
+      return RequestHandle(std::move(simple_url_loader),
+                           base::SequencedTaskRunner::GetCurrentDefault());
+    }
   }
 
  private:
   template <typename Response>
-  static void OnResponse(
-      base::OnceCallback<void(Response)> callback,
-      std::variant<std::unique_ptr<network::SimpleURLLoader>,
-                   network::SimpleURLLoader*> simple_url_loader_ptr,
-      std::optional<std::string> response_body) {
-    const network::SimpleURLLoader& simple_url_loader = CHECK_DEREF(
-        std::visit([](const auto& ptr) { return base::to_address(ptr); },
-                   simple_url_loader_ptr));
+  static void OnResponse(base::OnceCallback<void(Response)> callback,
+                         const network::SimpleURLLoader* simple_url_loader_ptr,
+                         std::optional<std::string> response_body) {
+    const network::SimpleURLLoader& simple_url_loader =
+        CHECK_DEREF(simple_url_loader_ptr);
 
     auto* response_info = simple_url_loader.ResponseInfo();
     auto headers = response_info ? response_info->headers : nullptr;
@@ -127,35 +141,6 @@ class Client {
     }
 
     std::move(callback).Run(std::move(response));
-  }
-
-  // Depending on |C|, either takes ownership of (moves out) |simple_url_loader|
-  // (non-cancelable case), or returns a raw pointer to the loader (cancelable
-  // case).
-  template <RequestCancelability C>
-  static auto MaybeMoveLoader(
-      std::unique_ptr<network::SimpleURLLoader>& simple_url_loader) {
-    if constexpr (C == RequestCancelability::kNonCancelable) {
-      return std::move(simple_url_loader);
-    } else {
-      return simple_url_loader.get();
-    }
-  }
-
-  // Depending on |C|, either verifies that ownership of |simple_url_loader| has
-  // already been transferred (non-cancelable case), or wraps the loader in a
-  // RequestHandle that deletes it - cancelling the request - when the handle is
-  // reset (cancelable case).
-  template <RequestCancelability C>
-  static auto MaybeMakeHandle(
-      std::unique_ptr<network::SimpleURLLoader>& simple_url_loader) {
-    if constexpr (C == RequestCancelability::kNonCancelable) {
-      CHECK(!simple_url_loader);
-    } else {
-      CHECK(simple_url_loader);
-      return RequestHandle(std::move(simple_url_loader),
-                           base::SequencedTaskRunner::GetCurrentDefault());
-    }
   }
 };
 
