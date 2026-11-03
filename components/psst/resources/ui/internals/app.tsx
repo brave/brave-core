@@ -18,6 +18,7 @@ import {
   sourceNames,
 } from './log_entry_format'
 import { LogTable } from './log_table'
+import { WebsiteSettingsTable } from './website_settings_table'
 import { style } from './app.style'
 
 const kAnyFilter = 'any'
@@ -25,6 +26,8 @@ const kAnyFilter = 'any'
 export function App({ api }: { api: PsstInternalsApi }) {
   // The mojom module is untyped JS, so annotate what comes back from it.
   const entries: Mojom.PsstLogEntry[] = api.useEntries().data ?? []
+  const diagnosticsInfo: Mojom.PsstDiagnosticsInfo | null =
+    api.useDiagnosticsInfo().data ?? null
   const [search, setSearch] = React.useState('')
   const [minLevel, setMinLevel] = React.useState<string>(kAnyFilter)
   const [source, setSource] = React.useState<string>(kAnyFilter)
@@ -55,102 +58,125 @@ export function App({ api }: { api: PsstInternalsApi }) {
     <div data-css-scope={style.scope}>
       <header>
         <h1>PSST Internals</h1>
-        <div className='subtitle'>
-          Brave keeps diagnostic entries for the Privacy Settings Tuning flow in
-          memory only and clears them when the browser exits.
-        </div>
       </header>
 
-      <div className='toolbar'>
-        <Input
-          className='search'
-          placeholder='Filter messages'
-          value={search}
-          onInput={(e) => setSearch(e.value)}
-        >
-          <Icon
-            name='search'
-            slot='left-icon'
-          />
-        </Input>
+      <section>
+        <h2>Website Settings</h2>
+        <div className='section-description'>
+          Per-site consent decisions, user identifiers, and infobar interactions
+          that Brave stores to drive the Privacy Settings Tuning flow. This data
+          persists across browser restarts.
+        </div>
 
-        <Dropdown
-          className='level-filter'
-          value={minLevel}
-          onChange={(e) => setMinLevel(e.value!)}
-        >
-          <span slot='label'>Min level</span>
-          <leo-option value={kAnyFilter}>All levels</leo-option>
-          {[...levelNames].map(([level, name]) => (
-            <leo-option
-              key={level}
-              value={String(level)}
-            >
-              {name} and above
-            </leo-option>
-          ))}
-        </Dropdown>
+        <div className='count'>
+          The Infobar shown {diagnosticsInfo?.infobarShownCount ?? 0} and
+          declined {diagnosticsInfo?.infobarDeclineCount ?? 0} times.
+        </div>
 
-        <Dropdown
-          className='source-filter'
-          value={source}
-          onChange={(e) => setSource(e.value!)}
-        >
-          <span slot='label'>Source</span>
-          <leo-option value={kAnyFilter}>All sources</leo-option>
-          {[...sourceNames].map(([value, name]) => (
-            <leo-option
-              key={value}
-              value={String(value)}
-            >
-              {name}
-            </leo-option>
-          ))}
-        </Dropdown>
+        <WebsiteSettingsTable
+          entries={diagnosticsInfo?.websiteSettings ?? []}
+        />
+      </section>
 
-        <Button
-          kind='outline'
-          size='small'
-          onClick={() =>
-            navigator.clipboard.writeText(formatEntriesForClipboard(filtered))
-          }
-        >
-          <Icon
-            name='copy'
-            slot='icon-before'
-          />
-          Copy
-        </Button>
+      <section>
+        <h2>Log Entries</h2>
+        <div className='section-description'>
+          Diagnostic entries emitted while the Privacy Settings Tuning flow
+          runs. Brave keeps these in memory only and clears them when the
+          browser exits.
+        </div>
 
-        <Button
-          kind='outline'
-          size='small'
-          onClick={api.clear}
-        >
-          <Icon
-            name='trash'
-            slot='icon-before'
-          />
-          Clear
-        </Button>
+        <div className='toolbar'>
+          <Input
+            className='search'
+            placeholder='Filter messages'
+            value={search}
+            onInput={(e) => setSearch(e.value)}
+          >
+            <Icon
+              name='search'
+              slot='left-icon'
+            />
+          </Input>
 
-        <Toggle
-          className='live-tail'
-          checked={liveTail}
-          onChange={(e) => setLiveTail(e.checked)}
-        >
-          <span slot='label'>Follow</span>
-        </Toggle>
-      </div>
+          <Dropdown
+            className='level-filter'
+            value={minLevel}
+            onChange={(e) => setMinLevel(e.value!)}
+          >
+            <span slot='label'>Min level</span>
+            <leo-option value={kAnyFilter}>All levels</leo-option>
+            {[...levelNames].map(([level, name]) => (
+              <leo-option
+                key={level}
+                value={String(level)}
+              >
+                {name} and above
+              </leo-option>
+            ))}
+          </Dropdown>
 
-      <div className='count'>
-        Showing {filtered.length} of {entries.length} entries
-      </div>
+          <Dropdown
+            className='source-filter'
+            value={source}
+            onChange={(e) => setSource(e.value!)}
+          >
+            <span slot='label'>Source</span>
+            <leo-option value={kAnyFilter}>All sources</leo-option>
+            {[...sourceNames].map(([value, name]) => (
+              <leo-option
+                key={value}
+                value={String(value)}
+              >
+                {name}
+              </leo-option>
+            ))}
+          </Dropdown>
 
-      <LogTable
-        entries={filtered}
-        liveTail={liveTail}
-      />
+          <Button
+            kind='outline'
+            size='small'
+            onClick={() =>
+              navigator.clipboard.writeText(formatEntriesForClipboard(filtered))
+            }
+          >
+            <Icon
+              name='copy'
+              slot='icon-before'
+            />
+            Copy
+          </Button>
+
+          <Button
+            kind='outline'
+            size='small'
+            onClick={api.clear}
+          >
+            <Icon
+              name='trash'
+              slot='icon-before'
+            />
+            Clear
+          </Button>
+
+          <Toggle
+            className='live-tail'
+            checked={liveTail}
+            onChange={(e) => setLiveTail(e.checked)}
+          >
+            <span slot='label'>Follow</span>
+          </Toggle>
+        </div>
+
+        <div className='count'>
+          Showing {filtered.length} of {entries.length} entries
+        </div>
+
+        <LogTable
+          entries={filtered}
+          liveTail={liveTail}
+        />
+      </section>
     </div>
   )
 }

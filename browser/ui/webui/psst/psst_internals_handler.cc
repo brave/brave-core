@@ -9,6 +9,9 @@
 
 #include "base/functional/bind.h"
 #include "base/time/time.h"
+#include "brave/components/psst/core/browser/pref_names.h"
+#include "brave/components/psst/core/browser/psst_settings_service.h"
+#include "components/prefs/pref_service.h"
 
 namespace psst {
 
@@ -18,8 +21,13 @@ constexpr base::TimeDelta kFlushDelay = base::Milliseconds(250);
 
 }  // namespace
 
-PsstInternalsHandler::PsstInternalsHandler(PsstLogService* log_service)
-    : log_service_(log_service) {
+PsstInternalsHandler::PsstInternalsHandler(
+    PsstLogService* log_service,
+    PsstSettingsService* settings_service,
+    PrefService* prefs)
+    : log_service_(log_service),
+      settings_service_(settings_service),
+      prefs_(prefs) {
   if (log_service_) {
     log_observation_.Observe(log_service_);
   }
@@ -46,6 +54,31 @@ void PsstInternalsHandler::Clear() {
   if (log_service_) {
     log_service_->Clear();
   }
+}
+
+void PsstInternalsHandler::GetDiagnosticsInfo(
+    GetDiagnosticsInfoCallback callback) {
+  auto info = mojom::PsstDiagnosticsInfo::New();
+  if (prefs_) {
+    info->infobar_shown_count =
+        prefs_->GetInteger(prefs::kPsstInfobarShownCounter);
+    info->infobar_decline_count =
+        prefs_->GetInteger(prefs::kPsstInfobarDeclineCounter);
+  }
+  if (settings_service_) {
+    for (const auto& [site, settings] :
+         settings_service_->GetAllPsstWebsitesSettings()) {
+      auto entry = mojom::PsstWebsiteSettingsEntry::New();
+      entry->site = site;
+      entry->consent_status =
+          static_cast<mojom::ConsentStatus>(settings.consent_status);
+      entry->script_version = settings.script_version;
+      entry->user_id = settings.user_id;
+      entry->uids_to_perform = settings.uids_to_perform;
+      info->website_settings.push_back(std::move(entry));
+    }
+  }
+  std::move(callback).Run(std::move(info));
 }
 
 void PsstInternalsHandler::OnPsstLogEntryAdded(
