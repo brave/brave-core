@@ -15,6 +15,7 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "base/containers/flat_set.h"
 #include "base/containers/map_util.h"
 #include "base/containers/span.h"
 #include "base/containers/to_vector.h"
@@ -345,6 +346,17 @@ std::vector<std::string> ReadCompressibleStrings(
   return out;
 }
 
+// Parses a URL read from the wire. Returns nullopt when it doesn't parse,
+// since such a URL can't be stored: GURL::spec(), which the database writes
+// use, refuses an invalid URL unless it's empty.
+std::optional<GURL> ReadUrl(const std::string& spec) {
+  GURL url(spec);
+  if (!url.is_valid() && !url.possibly_invalid_spec().empty()) {
+    return std::nullopt;
+  }
+  return url;
+}
+
 mojom::WebSourcePtr ProtoToWebSource(const sync_pb::AIChatWebSource& proto) {
   auto source = mojom::WebSource::New();
   source->title = proto.title();
@@ -392,11 +404,16 @@ mojom::ToolUseEventPtr ProtoToToolUse(
                       block_proto.text_content_block().text())
                       .value_or(std::string()))));
           break;
-        case sync_pb::AIChatContentBlock::kImageContentBlock:
+        case sync_pb::AIChatContentBlock::kImageContentBlock: {
+          auto image_url =
+              ReadUrl(block_proto.image_content_block().image_url());
+          if (!image_url) {
+            return nullptr;
+          }
           blocks.push_back(mojom::ContentBlock::NewImageContentBlock(
-              mojom::ImageContentBlock::New(
-                  GURL(block_proto.image_content_block().image_url()))));
+              mojom::ImageContentBlock::New(std::move(*image_url))));
           break;
+        }
         case sync_pb::AIChatContentBlock::kWebSourcesContentBlock:
           blocks.push_back(mojom::ContentBlock::NewWebSourcesContentBlock(
               ProtoToWebSourcesContentBlock(
@@ -444,8 +461,14 @@ mojom::ConversationEntryEventPtr ProtoToEntryEvent(
               ReadCompressibleString(proto.inline_search().results_json())
                   .value_or(std::string())));
     case sync_pb::AIChatEntryEventProto::kToolUse:
-      return mojom::ConversationEntryEvent::NewToolUseEvent(
-          ProtoToToolUse(proto.tool_use()));
+      // Null when the tool output holds a content block this client doesn't
+      // know, as from a newer sender, or can't store. Like an unknown event,
+      // that rejects the entry.
+      if (auto tool_use = ProtoToToolUse(proto.tool_use())) {
+        return mojom::ConversationEntryEvent::NewToolUseEvent(
+            std::move(tool_use));
+      }
+      return nullptr;
     case sync_pb::AIChatEntryEventProto::EVENT_NOT_SET:
       // Variant not known by this client or not set
       return nullptr;
@@ -459,7 +482,12 @@ mojom::AssociatedContentPtr ProtoToAssociatedContent(
   content->uuid = proto.uuid();
   content->title = proto.title();
   if (proto.has_url()) {
-    content->url = GURL(proto.url());
+    auto url = ReadUrl(proto.url());
+    if (!url) {
+      DVLOG(1) << "Rejecting associated content with an invalid url";
+      return nullptr;
+    }
+    content->url = std::move(*url);
   }
   auto content_type =
       mojo::ConvertIntToMojoEnum<mojom::ContentType>(proto.content_type());
@@ -507,11 +535,23 @@ mojom::UploadedFilePtr ProtoToUploadedFile(
 // (each tagged with the entry UUID) and, when provided, |associated_content_
 // texts| with the last_contents value for each AC the sender included. An AC
 // with omitted last_contents is intentionally left out of the texts map so the
-// caller preserves any existing local text.
+// caller preserves any existing local text. Returns false, rejecting the entry,
+// when an item fails to decode or two items share a uuid.
 bool ReadAssociatedContentFromEntry(
     const sync_pb::AIChatConversationSpecifics_Entry& proto,
     std::vector<mojom::AssociatedContentPtr>& associated_content,
     base::flat_map<std::string, std::string>* associated_content_texts) {
+  // The uuid is the associated_content table's primary key, and
+  // AIChatDatabase::AddOrUpdateAssociatedContent() reads the stored uuids once
+  // before writing any, so a uuid repeated within one entry would be inserted
+  // twice and fail the write every time the entry is applied.
+  const auto uuids = base::MakeFlatSet<std::string_view>(
+      proto.associated_content(), {},
+      &sync_pb::AIChatAssociatedContentProto::uuid);
+  if (uuids.size() != static_cast<size_t>(proto.associated_content_size())) {
+    return false;
+  }
+
   for (const auto& content_proto : proto.associated_content()) {
     mojom::AssociatedContentPtr content_item =
         ProtoToAssociatedContent(content_proto, proto.uuid());
