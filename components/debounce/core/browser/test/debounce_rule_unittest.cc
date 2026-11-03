@@ -476,6 +476,16 @@ TEST(DebounceRuleUnitTest, RejectUrlsWithoutValidEtldPlusOne) {
   }
 }
 
+// A host with any number of trailing dots must share its eTLD+1 with the bare
+// host, or it misses the rules keyed on it.
+TEST(DebounceRuleUnitTest, GetETLDForDebounceIgnoresTrailingDots) {
+  EXPECT_EQ("example.com", DebounceRule::GetETLDForDebounce("example.com"));
+  EXPECT_EQ("example.com", DebounceRule::GetETLDForDebounce("example.com."));
+  EXPECT_EQ("example.com", DebounceRule::GetETLDForDebounce("example.com.."));
+  EXPECT_EQ("example.com",
+            DebounceRule::GetETLDForDebounce("www.example.com..."));
+}
+
 // Test redirect_url_template with a single capture group (y2u.be-like case).
 TEST(DebounceRuleUnitTest, RedirectUrlBasic) {
   const std::string contents = R"json(

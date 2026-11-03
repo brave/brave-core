@@ -50,13 +50,10 @@ const int64_t kMaxMemoryPerRegexPattern = 2 << 11;
 // Also cap the length of regex pattern to be extra safe
 const int64_t kMaxLengthRegexPattern = 200;
 
-// Removes trailing dot from |host_piece| if any.
+// Removes trailing dots from |host_piece| if any.
 // Copied from extensions/common/url_pattern.cc
 std::string_view CanonicalizeHostForMatching(std::string_view host_piece) {
-  if (host_piece.ends_with('.')) {
-    host_piece.remove_suffix(1);
-  }
-  return host_piece;
+  return base::TrimString(host_piece, ".", base::TRIM_TRAILING);
 }
 
 // Extract the host from |url| using a simple parsing algorithm

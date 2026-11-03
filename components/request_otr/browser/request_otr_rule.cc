@@ -13,6 +13,7 @@
 
 #include "base/json/json_reader.h"
 #include "base/logging.h"
+#include "base/strings/string_util.h"
 #include "base/types/expected.h"
 #include "base/values.h"
 #include "extensions/common/url_pattern.h"
@@ -26,13 +27,10 @@ namespace {
 constexpr char kInclude[] = "include";
 constexpr char kExclude[] = "exclude";
 
-// Removes trailing dot from |host_piece| if any.
+// Removes trailing dots from |host_piece| if any.
 // Copied from extensions/common/url_pattern.cc
 std::string_view CanonicalizeHostForMatching(std::string_view host_piece) {
-  if (host_piece.ends_with('.')) {
-    host_piece.remove_suffix(1);
-  }
-  return host_piece;
+  return base::TrimString(host_piece, ".", base::TRIM_TRAILING);
 }
 
 }  // namespace

@@ -55,7 +55,10 @@ source_set("browser") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "request_otr_p3a_unittest.cc" ]
+  sources = [
+    "request_otr_p3a_unittest.cc",
+    "request_otr_rule_unittest.cc",
+  ]
 
   deps = [
     "//base",
