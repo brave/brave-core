@@ -15,7 +15,6 @@ import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.multiwindow.MultiInstanceManager.PersistedInstanceType;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
-import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 
 import java.util.Collections;
 import java.util.List;
@@ -43,13 +42,6 @@ public class BraveMultiWindowUtils extends MultiWindowUtils {
     @Override
     public boolean isLinkNavigationToOtherWindowSupported(Activity activity) {
         return shouldEnableMultiWindows() && super.isLinkNavigationToOtherWindowSupported(activity);
-    }
-
-    @Override
-    public boolean isMoveToOtherWindowSupported(
-            Activity activity, TabModelSelector tabModelSelector) {
-        return shouldEnableMultiWindows()
-                && super.isMoveToOtherWindowSupported(activity, tabModelSelector);
     }
 
     public static boolean canEnterMultiWindowMode() {

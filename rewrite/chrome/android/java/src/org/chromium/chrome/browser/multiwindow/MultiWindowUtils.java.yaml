@@ -52,6 +52,20 @@ substitutions:
                 if (!BraveMultiWindowUtils.shouldEnableMultiWindows()) return false;
 
   - description: |-
+      Gate moving a tab to another window on Brave's multi-window preference.
+
+      Replaces the BraveMultiWindowUtils override of this method. Nothing in
+      Brave calls it for the ungated answer, so the guard can live in the
+      upstream body; the sibling isLinkNavigationToOtherWindowSupported() still
+      needs its override, because shouldShowEnableWindow() reads it raw.
+    regex:
+      re_pattern: |-
+        (public boolean isMoveToOtherWindowSupported\(\s+Activity activity, TabModelSelector tabModelSelector\) \{)
+      replace: |-
+        \1
+                if (!BraveMultiWindowUtils.shouldEnableMultiWindows()) return false;
+
+  - description: |-
       Gate opening a new window adjacently on Brave's multi-window preference.
 
       Only this call site is rewritten, not canEnterMultiWindowMode() itself:

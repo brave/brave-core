@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/multiwindow/MultiWindowUtils.java b/chrome/android/java/src/org/chromium/chrome/browser/multiwindow/MultiWindowUtils.java
-index 3519e4dfa5ad1cf8b1fcf8aa40717a16b75397bb..44b71f676ca2778d394dd5f3d938f1c2dd7e818c 100644
+index 3519e4dfa5ad1cf8b1fcf8aa40717a16b75397bb..4b7eeba96045fac6c38cff006a11a158ab9f7f0f 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/multiwindow/MultiWindowUtils.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/multiwindow/MultiWindowUtils.java
 @@ -123,7 +123,8 @@ public class MultiWindowUtils implements ActivityStateListener {
@@ -28,7 +28,15 @@ index 3519e4dfa5ad1cf8b1fcf8aa40717a16b75397bb..44b71f676ca2778d394dd5f3d938f1c2
          // Automotive is currently restricted to a single window.
          if (DeviceInfo.isAutomotive()) return false;
          if (!IncognitoUtils.shouldOpenIncognitoAsWindow()) return false;
-@@ -557,7 +560,7 @@ public class MultiWindowUtils implements ActivityStateListener {
+@@ -334,6 +337,7 @@ public class MultiWindowUtils implements ActivityStateListener {
+      */
+     public boolean isMoveToOtherWindowSupported(
+             Activity activity, TabModelSelector tabModelSelector) {
++        if (!BraveMultiWindowUtils.shouldEnableMultiWindows()) return false;
+         // Not supported on automotive devices.
+         if (DeviceInfo.isAutomotive()) return false;
+ 
+@@ -557,7 +561,7 @@ public class MultiWindowUtils implements ActivityStateListener {
  
          if (isMultiInstanceApi31Enabled()) {
              boolean openAdjacently =
@@ -37,7 +45,7 @@ index 3519e4dfa5ad1cf8b1fcf8aa40717a16b75397bb..44b71f676ca2778d394dd5f3d938f1c2
                              && shouldOpenInAdjacentWindow(sourceActivity, isIncognito);
  
              Intent intent =
-@@ -668,6 +671,7 @@ public class MultiWindowUtils implements ActivityStateListener {
+@@ -668,6 +672,7 @@ public class MultiWindowUtils implements ActivityStateListener {
       * @return Whether the app menu 'Manage windows' should be shown.
       */
      public static boolean shouldShowManageWindowsMenu() {
