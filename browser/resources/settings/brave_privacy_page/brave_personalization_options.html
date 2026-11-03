@@ -9,22 +9,6 @@
   }
 </style>
 <!-- <if expr="enable_local_ai"> -->
-<template is="dom-if" if="[[isSemanticHistorySearchAvailable_]]">
-  <settings-toggle-button id="semanticHistorySearchEnabled"
-      class="cr-row"
-      icon="history"
-      pref-key="brave.history_embeddings_enabled"
-      label="$i18n{semanticHistorySearchLabel}"
-      sub-label="$i18n{semanticHistorySearchSubLabel}"
-      learn-more-url="$i18n{semanticHistorySearchLearnMoreURL}">
-    <template is="dom-if" if="[[shouldShowRestartSemanticHistorySearch_(
-        semanticHistorySearchPref_.value)]]">
-      <cr-button on-click="restartBrowser_" slot="more-actions">
-        $i18n{restart}
-      </cr-button>
-    </template>
-  </settings-toggle-button>
-</template>
 <template is="dom-if" if="[[isOnDeviceSpeechModelAvailable_]]">
   <settings-toggle-button id="onDeviceSpeechModelEnabled"
       class="cr-row"

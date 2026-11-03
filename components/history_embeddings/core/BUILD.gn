@@ -22,10 +22,9 @@ static_library("core") {
     "vector_database.h",
   ]
 
-  public_deps = [ "//components/history_embeddings/core" ]
+  public_deps = [ "//base" ]
 
   deps = [
-    "//base",
     "//brave/components/history_embeddings/proto:history_embeddings_proto",
     "//components/history/core/browser",
     "//components/keyed_service/core",

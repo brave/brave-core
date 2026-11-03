@@ -41,8 +41,6 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
           value: false,
           notify: true,
         },
-        tabOrganizationEnabledPref_: Object,
-        historyEmbeddingsEnabledPref_: Object,
         isPremiumUser_: {
           type: Boolean,
           value: false,
@@ -57,23 +55,13 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
           value: () => loadTimeData.getBoolean(
             'isTabOrganizationFeatureEnabled')
         },
-        isHistoryEmbeddingsFeatureEnabled_: {
-          type: Boolean,
-          value: () => loadTimeData.getBoolean(
-            'isHistoryEmbeddingsFeatureEnabled')
-        },
       }
     }
 
     private declare isPremiumUser_: boolean
-    private declare tabOrganizationEnabledPref_:
-      chrome.settingsPrivate.PrefObject<boolean> | undefined
-    private declare historyEmbeddingsEnabledPref_:
-      chrome.settingsPrivate.PrefObject<boolean> | undefined
 
     declare isHistoryFeatureEnabled_: boolean
     declare isTabOrganizationFeatureEnabled_: boolean
-    declare isHistoryEmbeddingsFeatureEnabled_: boolean
     declare leoAssistantShowOnToolbar_: boolean
     premiumStatus_: PremiumStatus = PremiumStatus.Unknown
     browserProxy_: BraveLeoAssistantBrowserProxy =
@@ -86,14 +74,6 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
       if(window.confirm(message)) {
         this.browserProxy_.resetLeoData()
       }
-    }
-
-    override connectedCallback() {
-      super.connectedCallback()
-      this.mirrorPrefs({
-        'brave.ai_chat.tab_organization_enabled': 'tabOrganizationEnabledPref_',
-        'brave.history_embeddings_enabled': 'historyEmbeddingsEnabledPref_',
-      })
     }
 
     override ready () {
@@ -151,10 +131,6 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
 
     openManageAccountPage_() {
       window.open(this.manageUrl_, "_self", "noopener noreferrer")
-    }
-
-    openHistorySettings_() {
-      Router.getInstance().navigateTo(routes.PRIVACY)
     }
 
     openTabOrganizationLearnMore_() {

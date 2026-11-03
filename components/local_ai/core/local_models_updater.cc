@@ -12,7 +12,6 @@
 #include <string>
 #include <vector>
 
-#include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "base/memory/raw_ptr.h"
@@ -24,7 +23,6 @@
 #include "brave/components/local_ai/core/pref_names.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
-#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "components/update_client/update_client.h"
@@ -43,6 +41,10 @@ constexpr uint8_t kPublicKeySHA256[32] = {
     0x54, 0x78, 0x1d, 0x83, 0xf4, 0xc3, 0xeb, 0x6d, 0x70, 0xb6};
 static_assert(std::size(kPublicKeySHA256) == crypto::hash::kSha256Size,
               "Wrong hash length");
+
+// The models only served History Embeddings, which upstream removed, so no
+// feature needs them and the registrar removes any already downloaded.
+bool g_models_needed_for_testing = false;
 
 // Keeps the component registration in sync with the `kBraveLocalAIEnabled`
 // master switch, which Brave Origin can flip long after startup.
@@ -89,7 +91,7 @@ class LocalModelsComponentRegistrar {
     const PrefService* local_state = pref_change_registrar_.prefs();
     return cus_ && local_state &&
            local_state->GetBoolean(prefs::kBraveLocalAIEnabled) &&
-           base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings);
+           g_models_needed_for_testing;
   }
 
   void Sync() {
@@ -279,6 +281,10 @@ void ManageLocalModelsComponentRegistration(
     component_updater::ComponentUpdateService* cus,
     PrefService* local_state) {
   LocalModelsComponentRegistrar::GetInstance()->Start(cus, local_state);
+}
+
+void SetLocalModelsNeededForTesting(bool needed) {
+  g_models_needed_for_testing = needed;
 }
 
 void ShutdownLocalModelsComponentRegistration() {

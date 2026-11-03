@@ -14,13 +14,10 @@
 #include "base/feature_list.h"
 #include "base/functional/callback.h"
 #include "base/metrics/field_trial_params.h"
-#include "components/history_embeddings/core/history_embeddings_features.h"
 
 namespace brave_history_embeddings {
 
-// Upstream still defines this feature. A second `BASE_FEATURE` with the
-// same name would fail `FeatureList::CheckFeatureIdentity`.
-using history_embeddings::kHistoryEmbeddings;
+BASE_DECLARE_FEATURE(kHistoryEmbeddings);
 
 // Contains feature configuration state. Can be set using Finch or overridden
 // for testing. Prefer to use this struct instead of feature parameters
