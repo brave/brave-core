@@ -151,6 +151,8 @@ class AdBlockService {
   AdBlockDefaultResourceProvider* default_resource_provider();
   AdBlockCustomFiltersProvider* custom_filters_provider();
   AdBlockCustomResourceProvider* custom_resource_provider();
+  AdBlockFiltersProviderManager* filters_provider_manager();
+  AdBlockFilterListCatalogProvider* filter_list_catalog_provider();
 
   // Call a callback on the task runner with the engine wrapper
   void AsyncCall(base::OnceCallback<void(AdBlockEngineWrapper* wrapper)> task) {
@@ -225,11 +227,6 @@ class AdBlockService {
   AdBlockComponentFiltersProvider* default_filters_provider() {
     DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
     return default_filters_provider_.get();
-  }
-
-  AdBlockFiltersProviderManager* filters_provider_manager() {
-    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-    return filters_provider_manager_.get();
   }
 
   raw_ptr<PrefService> local_state_;

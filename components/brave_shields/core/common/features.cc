@@ -83,6 +83,8 @@ BASE_FEATURE(kBraveShieldsContentSettingsIOS, base::FEATURE_ENABLED_BY_DEFAULT);
 // When enabled, will display debug menu for adblock features in the Shields
 // panel.
 BASE_FEATURE(kBraveIOSDebugAdblock, base::FEATURE_DISABLED_BY_DEFAULT);
+// When enabled, iOS uses the shared AdBlockService to manage filter lists.
+BASE_FEATURE(kBraveIOSSharedAdBlockService, base::FEATURE_DISABLED_BY_DEFAULT);
 // When enabled, will farble navigator.plugins.
 BASE_FEATURE(kBraveIOSEnableFarblingPlugins, base::FEATURE_ENABLED_BY_DEFAULT);
 // When enabled, show Strict (aggressive) fingerprinting mode in Brave Shields.

@@ -13,6 +13,8 @@
 #include "brave/ios/browser/brave_account/brave_account_service_factory_ios.h"
 #include "brave/ios/browser/brave_ads/ads_service_factory_ios.h"
 #include "brave/ios/browser/brave_origin/brave_origin_service_factory.h"
+#include "brave/ios/browser/brave_shields/ad_block_service_factory.h"
+#include "brave/ios/browser/brave_shields/ad_block_subscription_download_manager_factory.h"
 #include "brave/ios/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/ios/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/ios/browser/debounce/debounce_service_factory+private.h"
@@ -36,6 +38,8 @@ void EnsureProfileKeyedServiceFactoriesBuilt() {
   serp_metrics::SerpMetricsServiceFactoryIOS::GetInstance();
   brave_favicon::BraveIOSFaviconLoaderFactory::GetInstance();
   brave_origin::BraveOriginServiceFactory::GetInstance();
+  brave_shields::AdBlockServiceFactory::GetInstance();
+  brave_shields::AdBlockSubscriptionDownloadManagerFactory::GetInstance();
   brave_shields::BraveShieldsSettingsServiceFactory::GetInstance();
   brave_wallet::BraveWalletServiceFactory::GetInstance();
   skus::SkusServiceFactory::GetInstance();

@@ -14,8 +14,8 @@
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_origin/brave_origin_prefs.h"
 #include "brave/components/brave_rewards/core/pref_registry.h"
+#include "brave/components/brave_shields/core/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
-#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -143,24 +143,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   brave_shields::RegisterShieldsP3ALocalPrefs(registry);
   brave_origin::RegisterLocalStatePrefs(registry);
 
-  // brave_shields
-  // Note this can be removed when we use the entire
-  // `brave_shields:AdBlockService` And we can call its
-  // `RegisterPrefsForAdBlockService`
-  registry->RegisterDictionaryPref(
-      brave_shields::prefs::kAdBlockRegionalFilters);
-  registry->RegisterDictionaryPref(
-      brave_shields::prefs::kAdBlockListSubscriptions);
-  registry->RegisterBooleanPref(
-      brave_shields::prefs::kAdBlockCheckedAllDefaultRegions, false);
-  registry->RegisterBooleanPref(
-      brave_shields::prefs::kAdBlockCheckedDefaultRegion, false);
-  registry->RegisterBooleanPref(brave_shields::prefs::kFBEmbedControlType,
-                                true);
-  registry->RegisterBooleanPref(brave_shields::prefs::kTwitterEmbedControlType,
-                                true);
-  registry->RegisterBooleanPref(brave_shields::prefs::kLinkedInEmbedControlType,
-                                false);
+  brave_shields::RegisterPrefsForAdBlockService(registry);
 
   // Override the default value for crash reporting
   registry->SetDefaultPrefValue(

@@ -186,6 +186,14 @@ const flags_ui::FeatureEntry::FeatureVariation
           FEATURE_VALUE_TYPE(brave_shields::features::kBraveIOSDebugAdblock),  \
       },                                                                       \
       {                                                                        \
+          "ios-shared-adblock-service",                                        \
+          "Enable shared AdBlockService",                                      \
+          "Use the cross-platform AdBlockService to manage filter lists",      \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kBraveIOSSharedAdBlockService),         \
+      },                                                                       \
+      {                                                                        \
           "ios-farble-plugins",                                                \
           "Enable Farbling Plugins",                                           \
           "Enable Farbling plugins when enabled globally / per-domain",        \

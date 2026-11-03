@@ -1,0 +1,12 @@
+diff --git a/ios/chrome/browser/download/model/background_service/background_download_service_factory.cc b/ios/chrome/browser/download/model/background_service/background_download_service_factory.cc
+index de5bb05a88cf51af1cbe154986518383627aee07..4d5025ce12d69eedfe4204a2e24f13d687d34faf 100644
+--- a/ios/chrome/browser/download/model/background_service/background_download_service_factory.cc
++++ b/ios/chrome/browser/download/model/background_service/background_download_service_factory.cc
+@@ -71,6 +71,7 @@ BackgroundDownloadServiceFactory::BuildServiceInstanceFor(
+   clients->insert(std::make_pair(
+       download::DownloadClient::OPTIMIZATION_GUIDE_PREDICTION_MODELS,
+       std::move(prediction_model_download_client)));
++  BRAVE_BACKGROUND_DOWNLOAD_SERVICE_FACTORY_BUILD_SERVICE_INSTANCE_FOR
+ 
+   return BuildServiceWithClients(profile, std::move(clients));
+ }

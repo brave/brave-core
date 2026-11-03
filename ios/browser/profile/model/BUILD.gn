@@ -20,6 +20,7 @@ source_set("keyed_service_factories") {
     "//brave/ios/browser/brave_ads",
     "//brave/ios/browser/brave_origin",
     "//brave/ios/browser/brave_shields",
+    "//brave/ios/browser/brave_shields:ad_block_service",
     "//brave/ios/browser/brave_wallet",
     "//brave/ios/browser/debounce",
     "//brave/ios/browser/favicon",
