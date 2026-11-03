@@ -1291,6 +1291,115 @@ TEST(AIChatSyncConversionsTest, SpecificsToEntryRejectsWorkspaceContent) {
   EXPECT_TRUE(rebuilt_content.empty());
 }
 
+// AIChatDatabase::AddOrUpdateAssociatedContent() would insert a repeated uuid
+// twice and fail on the primary key, so the entry is rejected instead.
+TEST(AIChatSyncConversionsTest,
+     SpecificsToEntryRejectsRepeatedAssociatedContentUuid) {
+  sync_pb::AIChatConversationSpecifics specifics;
+  auto* entry = specifics.mutable_entry();
+  entry->set_uuid("entry");
+  entry->set_conversation_uuid("conv");
+  entry->set_character_type(std::to_underlying(mojom::CharacterType::HUMAN));
+  entry->set_action_type(std::to_underlying(mojom::ActionType::QUERY));
+  for (const char* uuid : {"content-1", "content-2"}) {
+    auto* content = entry->add_associated_content();
+    content->set_uuid(uuid);
+    content->set_content_type(
+        std::to_underlying(mojom::ContentType::PageContent));
+  }
+  {
+    // Control: distinct uuids decode, so the rejection is due to the repeat
+    // alone.
+    std::vector<mojom::AssociatedContentPtr> control_content;
+    ASSERT_TRUE(SpecificsToEntry(specifics, control_content));
+    ASSERT_EQ(control_content.size(), 2u);
+  }
+  entry->mutable_associated_content(1)->set_uuid("content-1");
+
+  std::vector<mojom::AssociatedContentPtr> rebuilt_content;
+  EXPECT_FALSE(SpecificsToEntry(specifics, rebuilt_content));
+  EXPECT_TRUE(rebuilt_content.empty());
+}
+
+// A content block this client doesn't know, as from a newer sender, decodes as
+// unset. A tool use event can't be stored without its output, so the entry is
+// rejected rather than written with a null event.
+TEST(AIChatSyncConversionsTest, SpecificsToEntryRejectsUnknownToolOutputBlock) {
+  sync_pb::AIChatConversationSpecifics specifics;
+  auto* entry = specifics.mutable_entry();
+  entry->set_uuid("entry");
+  entry->set_conversation_uuid("conv");
+  entry->set_character_type(
+      std::to_underlying(mojom::CharacterType::ASSISTANT));
+  entry->set_action_type(std::to_underlying(mojom::ActionType::RESPONSE));
+  auto* tool_use = entry->add_events()->mutable_tool_use();
+  tool_use->set_tool_name("tool");
+  tool_use->set_id("tool-1");
+  tool_use->add_output()->mutable_text_content_block()->mutable_text()->set_raw(
+      "output");
+  {
+    // Control: a known block decodes, so the rejection is due to the unknown
+    // block alone.
+    std::vector<mojom::AssociatedContentPtr> control_content;
+    ASSERT_TRUE(SpecificsToEntry(specifics, control_content));
+  }
+  tool_use->add_output();
+
+  std::vector<mojom::AssociatedContentPtr> rebuilt_content;
+  EXPECT_FALSE(SpecificsToEntry(specifics, rebuilt_content));
+}
+
+// A URL that doesn't parse can't be stored, since GURL::spec() refuses an
+// invalid URL unless it's empty. So the entry is rejected, while an empty URL
+// is still accepted.
+TEST(AIChatSyncConversionsTest,
+     SpecificsToEntryRejectsInvalidAssociatedContentUrl) {
+  sync_pb::AIChatConversationSpecifics specifics;
+  auto* entry = specifics.mutable_entry();
+  entry->set_uuid("entry");
+  entry->set_conversation_uuid("conv");
+  entry->set_character_type(std::to_underlying(mojom::CharacterType::HUMAN));
+  entry->set_action_type(std::to_underlying(mojom::ActionType::QUERY));
+  auto* content = entry->add_associated_content();
+  content->set_uuid("content");
+  content->set_content_type(
+      std::to_underlying(mojom::ContentType::PageContent));
+  content->set_url("");
+  {
+    std::vector<mojom::AssociatedContentPtr> control_content;
+    ASSERT_TRUE(SpecificsToEntry(specifics, control_content));
+    ASSERT_EQ(control_content.size(), 1u);
+  }
+  content->set_url("https://example.com:port/");
+
+  std::vector<mojom::AssociatedContentPtr> rebuilt_content;
+  EXPECT_FALSE(SpecificsToEntry(specifics, rebuilt_content));
+  EXPECT_TRUE(rebuilt_content.empty());
+}
+
+TEST(AIChatSyncConversionsTest, SpecificsToEntryRejectsInvalidToolImageUrl) {
+  sync_pb::AIChatConversationSpecifics specifics;
+  auto* entry = specifics.mutable_entry();
+  entry->set_uuid("entry");
+  entry->set_conversation_uuid("conv");
+  entry->set_character_type(
+      std::to_underlying(mojom::CharacterType::ASSISTANT));
+  entry->set_action_type(std::to_underlying(mojom::ActionType::RESPONSE));
+  auto* tool_use = entry->add_events()->mutable_tool_use();
+  tool_use->set_tool_name("tool");
+  tool_use->set_id("tool-1");
+  auto* image = tool_use->add_output()->mutable_image_content_block();
+  image->set_image_url("https://example.com/image.png");
+  {
+    std::vector<mojom::AssociatedContentPtr> control_content;
+    ASSERT_TRUE(SpecificsToEntry(specifics, control_content));
+  }
+  image->set_image_url("https://example.com:port/");
+
+  std::vector<mojom::AssociatedContentPtr> rebuilt_content;
+  EXPECT_FALSE(SpecificsToEntry(specifics, rebuilt_content));
+}
+
 TEST(AIChatSyncConversionsTest, EntryRoundTripSkillAndNearVerification) {
   auto entry = mojom::ConversationTurn::New();
   entry->uuid = "entry-skill";
