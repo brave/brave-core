@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_REQUEST_H_
 #define BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_REQUEST_H_
 
+#include <cstddef>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -20,6 +21,7 @@
 #include "brave/components/brave_account/endpoint_client/url_replacements.h"
 #include "net/http/http_request_headers.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
+#include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/fetch_api.mojom.h"
 
 namespace brave_account::endpoint_client::detail {
@@ -77,6 +79,8 @@ struct Request {
   std::optional<std::string> Serialize() const { return Serialize(body); }
 
   Body body;
+  std::optional<std::size_t> max_body_size =
+      network::SimpleURLLoader::kMaxBoundedStringDownloadSize;
   net::MutableNetworkTrafficAnnotationTag network_traffic_annotation_tag;
   network::mojom::RedirectMode redirect_mode =
       network::mojom::RedirectMode::kError;

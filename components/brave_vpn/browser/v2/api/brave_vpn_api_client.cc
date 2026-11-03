@@ -243,6 +243,7 @@ void BraveVpnApiClient::CreateSupportTicket(
 void BraveVpnApiClient::GetServerRegions(RawJsonCallback callback,
                                          const std::string& region_precision) {
   auto request = MakeRequest<GetServerRegions::Request>();
+  request.max_body_size = std::nullopt;
   request.url_replacements.SetPath(
       base::StrCat({GetServerRegions::URL().path(), "/", region_precision}));
 
