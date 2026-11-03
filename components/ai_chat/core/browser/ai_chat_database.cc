@@ -648,6 +648,57 @@ AIChatDatabase::GetConversationUuidForAssociatedContent(
   return statement.ColumnString(0);
 }
 
+std::optional<mojom::ConversationTurnPtr>
+AIChatDatabase::GetConversationEntryWithEdits(
+    std::string_view conversation_entry_uuid) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return std::nullopt;
+  }
+
+  // Of these rows, only the entry itself can have no editing_entry_uuid, so
+  // GetConversationEntries() returns at most that one, with the others
+  // attached as its edits.
+  sql::Statement statement(GetDB().GetCachedStatement(
+      SQL_FROM_HERE, absl::StrFormat(kConversationEntriesQueryTemplate,
+                                     "uuid=? OR editing_entry_uuid=?")));
+  CHECK(statement.is_valid());
+  statement.BindString(0, conversation_entry_uuid);
+  statement.BindString(1, conversation_entry_uuid);
+
+  auto entries = GetConversationEntries(statement);
+  if (!statement.Succeeded()) {
+    return std::nullopt;
+  }
+  if (entries.empty()) {
+    return mojom::ConversationTurnPtr();
+  }
+  return std::move(entries.front());
+}
+
+std::optional<base::flat_set<std::string>>
+AIChatDatabase::GetEditedEntryUuids() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return std::nullopt;
+  }
+
+  static constexpr char kQuery[] =
+      "SELECT DISTINCT editing_entry_uuid FROM conversation_entry"
+      " WHERE editing_entry_uuid IS NOT NULL";
+  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE, kQuery));
+  CHECK(statement.is_valid());
+
+  std::vector<std::string> uuids;
+  while (statement.Step()) {
+    uuids.push_back(statement.ColumnString(0));
+  }
+  if (!statement.Succeeded()) {
+    return std::nullopt;
+  }
+  return base::flat_set<std::string>(std::move(uuids));
+}
+
 std::optional<AIChatDatabase::ModifiedTime>
 AIChatDatabase::GetConversationModifiedTime(
     std::string_view conversation_uuid) {

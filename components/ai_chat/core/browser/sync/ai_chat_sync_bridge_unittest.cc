@@ -14,6 +14,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/flat_set.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/callback_helpers.h"
 #include "base/run_loop.h"
@@ -132,6 +133,34 @@ class UnreadableTimesAIChatDatabase : public AIChatDatabase {
   }
 
   std::optional<ModifiedTime> GetEntryModifiedTime(
+      std::string_view conversation_entry_uuid) override {
+    return std::nullopt;
+  }
+};
+
+// A database whose read of the entries that have edit revisions fails, and
+// which counts those reads.
+class UnreadableEditRevisionsAIChatDatabase : public AIChatDatabase {
+ public:
+  using AIChatDatabase::AIChatDatabase;
+
+  std::optional<base::flat_set<std::string>> GetEditedEntryUuids() override {
+    ++read_count_;
+    return std::nullopt;
+  }
+
+  int read_count() const { return read_count_; }
+
+ private:
+  int read_count_ = 0;
+};
+
+// A database whose read of an entry with its edit revisions fails.
+class UnreadableEditedEntryAIChatDatabase : public AIChatDatabase {
+ public:
+  using AIChatDatabase::AIChatDatabase;
+
+  std::optional<mojom::ConversationTurnPtr> GetConversationEntryWithEdits(
       std::string_view conversation_entry_uuid) override {
     return std::nullopt;
   }
@@ -368,6 +397,80 @@ class AIChatSyncBridgeTest : public testing::Test {
     ASSERT_TRUE(db_->UpdateEntityMetadata(syncer::AI_CHAT_CONVERSATION,
                                           "e:" + entry_uuid,
                                           sync_pb::EntityMetadata()));
+  }
+
+  // Adds a conversation whose single entry was edited once on this device, as
+  // the edit is saved: the entry, asked a minute ago, holds the original text,
+  // and its revision "edit-1", made now, holds what the user sees. Sync sends
+  // only the revision's content, under the entry's uuid.
+  void SeedEditedEntry(const std::string& conv_uuid,
+                       const std::string& entry_uuid) {
+    auto conv = mojom::Conversation::New();
+    conv->uuid = conv_uuid;
+    conv->title = "Local";
+    auto entry = mojom::ConversationTurn::New();
+    entry->uuid = entry_uuid;
+    entry->character_type = mojom::CharacterType::HUMAN;
+    entry->action_type = mojom::ActionType::QUERY;
+    entry->text = "Original question";
+    entry->created_time = base::Time::Now() - base::Minutes(1);
+    auto edit = entry->Clone();
+    edit->uuid = "edit-1";
+    edit->text = "Edited question";
+    edit->created_time = base::Time::Now();
+    entry->edits.emplace();
+    entry->edits->push_back(std::move(edit));
+    ASSERT_TRUE(db_->AddConversation(std::move(conv), {}, std::move(entry)));
+  }
+
+  // Adds conversation "conv" whose single answer "entry" was edited once on
+  // this device: the entry holds the original completion, and its revision
+  // "edit-1" holds |revision_events|. |associated_content| and |contents| are
+  // the conversation's.
+  void SeedEditedAnswer(
+      std::vector<mojom::ConversationEntryEventPtr> revision_events,
+      std::vector<mojom::AssociatedContentPtr> associated_content,
+      std::vector<std::string> contents) {
+    auto conv = mojom::Conversation::New();
+    conv->uuid = "conv";
+    conv->title = "Local";
+    conv->associated_content = std::move(associated_content);
+    auto entry = mojom::ConversationTurn::New();
+    entry->uuid = "entry";
+    entry->character_type = mojom::CharacterType::ASSISTANT;
+    entry->action_type = mojom::ActionType::RESPONSE;
+    entry->created_time = base::Time::Now() - base::Minutes(1);
+    entry->events.emplace();
+    entry->events->push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New("Original answer")));
+    auto edit = mojom::ConversationTurn::New();
+    edit->uuid = "edit-1";
+    edit->character_type = mojom::CharacterType::ASSISTANT;
+    edit->action_type = mojom::ActionType::RESPONSE;
+    edit->created_time = base::Time::Now();
+    edit->events = std::move(revision_events);
+    entry->edits.emplace();
+    entry->edits->push_back(std::move(edit));
+    ASSERT_TRUE(db_->AddConversation(std::move(conv), std::move(contents),
+                                     std::move(entry)));
+  }
+
+  // Returns the texts of the single entry of |conv_uuid|: the entry's own,
+  // then each of its revisions' in order.
+  std::vector<std::string> GetEntryAndRevisionTexts(
+      const std::string& conv_uuid) {
+    auto archive = db_->GetConversationData(conv_uuid);
+    if (!archive || archive->entries.size() != 1u) {
+      return {};
+    }
+    const auto& entry = archive->entries[0];
+    std::vector<std::string> texts = {entry->text};
+    if (entry->edits) {
+      for (const auto& edit : *entry->edits) {
+        texts.push_back(edit->text);
+      }
+    }
+    return texts;
   }
 
   base::FilePath db_file_path() {
@@ -2179,6 +2282,323 @@ TEST_F(AIChatSyncBridgeTest, MetadataRecordFillsInStubWhateverItsTime) {
               IsModifiedAt(remote_time));
   EXPECT_THAT(db_->GetConversationModifiedTime("conv-c"),
               IsModifiedAt(base::Time()));
+}
+
+// Sync sends an edited entry as its latest revision alone, so writing a newer
+// record from another device as it is would delete this device's revisions,
+// including the original text. The record's content is added as a new latest
+// revision instead, dated when it changed on the other device.
+TEST_F(AIChatSyncBridgeTest, ApplyKeepsLocalEditHistory) {
+  ASSERT_NO_FATAL_FAILURE(SeedEditedEntry("conv", "entry"));
+  CreateBridge();
+  task_environment_.FastForwardBy(base::Minutes(1));
+  const base::Time remote_time = base::Time::Now();
+  task_environment_.FastForwardBy(base::Minutes(1));
+  syncer::EntityChangeList changes;
+  changes.push_back(syncer::EntityChange::CreateUpdate(
+      "e:entry",
+      WithModifiedTime(MakeRemoteEntry("conv", "entry", "Revised elsewhere"),
+                       remote_time)));
+
+  ASSERT_FALSE(bridge_
+                   ->ApplyIncrementalSyncChanges(
+                       bridge_->CreateMetadataChangeList(), std::move(changes))
+                   .has_value());
+
+  EXPECT_THAT(
+      GetEntryAndRevisionTexts("conv"),
+      ElementsAre("Original question", "Edited question", "Revised elsewhere"));
+  auto entry = db_->GetConversationEntryWithEdits("entry");
+  ASSERT_TRUE(entry && *entry && (*entry)->edits);
+  ASSERT_EQ((*entry)->edits->size(), 2u);
+  EXPECT_EQ((*entry)->edits->at(0)->uuid, "edit-1");
+  EXPECT_EQ((*entry)->edits->at(1)->created_time, remote_time);
+  EXPECT_THAT(db_->GetEntryModifiedTime("entry"), IsModifiedAt(remote_time));
+  EXPECT_THAT(last_affected_conversation_uuids_, ElementsAre("conv"));
+}
+
+// An entry saved before records carried a time has none, so a record with any
+// time is written over it, even a time before the entry's latest revision. The
+// record's revision is then dated just after that revision, so that it's the
+// latest.
+TEST_F(AIChatSyncBridgeTest, ApplyDatesRevisionAfterLocalOnes) {
+  ASSERT_NO_FATAL_FAILURE(SeedEditedEntry("conv", "entry"));
+  auto local = db_->GetConversationEntryWithEdits("entry");
+  ASSERT_TRUE(local && *local && (*local)->edits);
+  const base::Time local_revision_time = (*local)->edits->back()->created_time;
+  ASSERT_TRUE(
+      db_->ApplyRemoteEntry("conv", std::move(*local), base::Time(), {}, {}));
+  ASSERT_THAT(db_->GetEntryModifiedTime("entry"), IsModifiedAt(base::Time()));
+  CreateBridge();
+  syncer::EntityChangeList changes;
+  changes.push_back(syncer::EntityChange::CreateUpdate(
+      "e:entry",
+      WithModifiedTime(MakeRemoteEntry("conv", "entry", "Revised elsewhere"),
+                       local_revision_time - base::Seconds(30))));
+
+  ASSERT_FALSE(bridge_
+                   ->ApplyIncrementalSyncChanges(
+                       bridge_->CreateMetadataChangeList(), std::move(changes))
+                   .has_value());
+
+  EXPECT_THAT(
+      GetEntryAndRevisionTexts("conv"),
+      ElementsAre("Original question", "Edited question", "Revised elsewhere"));
+  auto entry = db_->GetConversationEntryWithEdits("entry");
+  ASSERT_TRUE(entry && *entry && (*entry)->edits);
+  ASSERT_EQ((*entry)->edits->size(), 2u);
+  EXPECT_EQ((*entry)->edits->at(1)->created_time,
+            local_revision_time + base::Microseconds(1));
+}
+
+// A first-sync merge, as when AI Chat sync is turned off and on again, can
+// bring a record that's newer than this device's entry but has the content of
+// its latest revision, as when another device changed only the entry's
+// associated content. The revisions are kept, and none is added.
+TEST_F(AIChatSyncBridgeTest, MergeFullSyncDataDoesNotDuplicateLocalEdits) {
+  ASSERT_NO_FATAL_FAILURE(SeedEditedEntry("conv", "entry"));
+  CreateBridge();
+  auto local = db_->GetConversationEntryWithEdits("entry");
+  ASSERT_TRUE(local && *local);
+  task_environment_.FastForwardBy(base::Minutes(2));
+  syncer::EntityData data;
+  *data.specifics.mutable_ai_chat_conversation() =
+      EntryToSpecifics("conv", **local, base::Time::Now(), {});
+  syncer::EntityChangeList changes;
+  changes.push_back(
+      syncer::EntityChange::CreateAdd("e:entry", std::move(data)));
+
+  ASSERT_FALSE(bridge_
+                   ->MergeFullSyncData(bridge_->CreateMetadataChangeList(),
+                                       std::move(changes))
+                   .has_value());
+
+  EXPECT_THAT(GetEntryAndRevisionTexts("conv"),
+              ElementsAre("Original question", "Edited question"));
+  // The record was written, with its time.
+  EXPECT_THAT(db_->GetEntryModifiedTime("entry"),
+              IsModifiedAt(base::Time::Now()));
+}
+
+// Without the snapshot of which entries have edit revisions, an entry's
+// revisions would look absent and the write would delete them, so the batch
+// fails instead.
+TEST_F(AIChatSyncBridgeTest, ApplyFailsWhenEditRevisionsCannotBeRead) {
+  db_.reset();
+  db_ = std::make_unique<UnreadableEditRevisionsAIChatDatabase>(db_file_path(),
+                                                                encryptor_);
+  CreateBridge();
+  ASSERT_NO_FATAL_FAILURE(SeedEditedEntry("conv", "entry"));
+  task_environment_.FastForwardBy(base::Minutes(2));
+  auto make_changes = [] {
+    syncer::EntityChangeList changes;
+    changes.push_back(syncer::EntityChange::CreateAdd(
+        "e:entry",
+        WithModifiedTime(MakeRemoteEntry("conv", "entry", "Revised elsewhere"),
+                         base::Time::Now())));
+    return changes;
+  };
+
+  auto merge_error = bridge_->MergeFullSyncData(
+      bridge_->CreateMetadataChangeList(), make_changes());
+  ASSERT_TRUE(merge_error.has_value());
+  EXPECT_EQ(merge_error->type(),
+            syncer::ModelError::Type::kAIChatFailedToApplyRemoteChange);
+  auto apply_error = bridge_->ApplyIncrementalSyncChanges(
+      bridge_->CreateMetadataChangeList(), make_changes());
+  ASSERT_TRUE(apply_error.has_value());
+  EXPECT_EQ(apply_error->type(),
+            syncer::ModelError::Type::kAIChatFailedToApplyRemoteChange);
+
+  EXPECT_THAT(GetEntryAndRevisionTexts("conv"),
+              ElementsAre("Original question", "Edited question"));
+  EXPECT_EQ(remote_changes_applied_count_, 0);
+}
+
+// The snapshot names the entry, but the entry with its revisions can't be
+// read. Writing the record as it is would delete them, so the batch fails.
+TEST_F(AIChatSyncBridgeTest, ApplyFailsWhenEditedEntryCannotBeRead) {
+  db_.reset();
+  db_ = std::make_unique<UnreadableEditedEntryAIChatDatabase>(db_file_path(),
+                                                              encryptor_);
+  CreateBridge();
+  ASSERT_NO_FATAL_FAILURE(SeedEditedEntry("conv", "entry"));
+  task_environment_.FastForwardBy(base::Minutes(2));
+  syncer::EntityChangeList changes;
+  changes.push_back(syncer::EntityChange::CreateUpdate(
+      "e:entry",
+      WithModifiedTime(MakeRemoteEntry("conv", "entry", "Revised elsewhere"),
+                       base::Time::Now())));
+
+  auto error = bridge_->ApplyIncrementalSyncChanges(
+      bridge_->CreateMetadataChangeList(), std::move(changes));
+  ASSERT_TRUE(error.has_value());
+  EXPECT_EQ(error->type(),
+            syncer::ModelError::Type::kAIChatFailedToApplyRemoteChange);
+  EXPECT_THAT(GetEntryAndRevisionTexts("conv"),
+              ElementsAre("Original question", "Edited question"));
+  EXPECT_EQ(remote_changes_applied_count_, 0);
+}
+
+// The processor calls ApplyIncrementalSyncChanges() with no changes after
+// every commit, and a first sync can bring none. Neither reads which entries
+// have edit revisions.
+TEST_F(AIChatSyncBridgeTest, ApplyOfEmptyBatchDoesNotReadEditRevisions) {
+  db_.reset();
+  auto database = std::make_unique<UnreadableEditRevisionsAIChatDatabase>(
+      db_file_path(), encryptor_);
+  const UnreadableEditRevisionsAIChatDatabase* edit_revisions_database =
+      database.get();
+  db_ = std::move(database);
+  CreateBridge();
+
+  EXPECT_FALSE(
+      bridge_
+          ->ApplyIncrementalSyncChanges(bridge_->CreateMetadataChangeList(),
+                                        syncer::EntityChangeList())
+          .has_value());
+  EXPECT_FALSE(bridge_
+                   ->MergeFullSyncData(bridge_->CreateMetadataChangeList(),
+                                       syncer::EntityChangeList())
+                   .has_value());
+  EXPECT_EQ(edit_revisions_database->read_count(), 0);
+}
+
+// A batch can hold a tombstone for a conversation, then a record for one of
+// its edited entries, as when another device changed the entry while a third
+// deleted the conversation. The batch's snapshot still names the entry, but
+// the tombstone deleted it with its revisions, so the record is written as it
+// is, into a hidden stub conversation.
+TEST_F(AIChatSyncBridgeTest, ApplyWritesRecordForEditedEntryTheBatchDeleted) {
+  ASSERT_NO_FATAL_FAILURE(SeedEditedEntry("conv", "entry"));
+  CreateBridge();
+  task_environment_.FastForwardBy(base::Minutes(1));
+  syncer::EntityChangeList changes;
+  changes.push_back(
+      syncer::EntityChange::CreateDelete("c:conv", syncer::EntityData()));
+  changes.push_back(syncer::EntityChange::CreateUpdate(
+      "e:entry",
+      WithModifiedTime(MakeRemoteEntry("conv", "entry", "Revised elsewhere"),
+                       base::Time::Now())));
+
+  ASSERT_FALSE(bridge_
+                   ->ApplyIncrementalSyncChanges(
+                       bridge_->CreateMetadataChangeList(), std::move(changes))
+                   .has_value());
+
+  EXPECT_THAT(GetEntryAndRevisionTexts("conv"),
+              ElementsAre("Revised elsewhere"));
+  EXPECT_EQ(GetConversationTitle("conv"), std::nullopt);
+}
+
+// Keeping the edit history writes the entry again from this device's copy, so
+// a revision's events must come through it. Workspace content, which sync
+// never carries, is kept by the database's write itself, and is checked here
+// so that keeping the history can't lose it.
+TEST_F(AIChatSyncBridgeTest, ApplyKeepsEditedEntryEventsAndWorkspaceContent) {
+  std::vector<mojom::ConversationEntryEventPtr> revision_events;
+  revision_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+      mojom::CompletionEvent::New("Edited answer")));
+  revision_events.push_back(
+      mojom::ConversationEntryEvent::NewSearchQueriesEvent(
+          mojom::SearchQueriesEvent::New(std::vector<std::string>{"query"})));
+  std::vector<mojom::AssociatedContentPtr> content;
+  content.push_back(mojom::AssociatedContent::New(
+      "workspace", mojom::ContentType::Workspace, "Workspace", 1,
+      GURL("https://workspace.test"), 100, "entry", false));
+  ASSERT_NO_FATAL_FAILURE(SeedEditedAnswer(
+      std::move(revision_events), std::move(content), {"Workspace text"}));
+  CreateBridge();
+  task_environment_.FastForwardBy(base::Minutes(1));
+  syncer::EntityData data =
+      WithModifiedTime(MakeRemoteEntry("conv", "entry", ""), base::Time::Now());
+  auto* remote = data.specifics.mutable_ai_chat_conversation()->mutable_entry();
+  remote->set_character_type(
+      std::to_underlying(mojom::CharacterType::ASSISTANT));
+  remote->set_action_type(std::to_underlying(mojom::ActionType::RESPONSE));
+  remote->add_events()->mutable_completion()->set_raw("Revised elsewhere");
+  syncer::EntityChangeList changes;
+  changes.push_back(
+      syncer::EntityChange::CreateUpdate("e:entry", std::move(data)));
+
+  ASSERT_FALSE(bridge_
+                   ->ApplyIncrementalSyncChanges(
+                       bridge_->CreateMetadataChangeList(), std::move(changes))
+                   .has_value());
+
+  auto entry = db_->GetConversationEntryWithEdits("entry");
+  ASSERT_TRUE(entry && *entry && (*entry)->events && (*entry)->edits);
+  ASSERT_EQ((*entry)->events->size(), 1u);
+  EXPECT_EQ((*entry)->events->at(0)->get_completion_event()->completion,
+            "Original answer");
+  ASSERT_EQ((*entry)->edits->size(), 2u);
+  const auto& kept_events = (*entry)->edits->at(0)->events;
+  ASSERT_TRUE(kept_events);
+  ASSERT_EQ(kept_events->size(), 2u);
+  EXPECT_EQ(kept_events->at(0)->get_completion_event()->completion,
+            "Edited answer");
+  EXPECT_THAT(kept_events->at(1)->get_search_queries_event()->search_queries,
+              ElementsAre("query"));
+  const auto& added_events = (*entry)->edits->at(1)->events;
+  ASSERT_TRUE(added_events);
+  ASSERT_EQ(added_events->size(), 1u);
+  EXPECT_EQ(added_events->at(0)->get_completion_event()->completion,
+            "Revised elsewhere");
+
+  auto conversations = db_->GetAllConversations();
+  ASSERT_EQ(conversations.size(), 1u);
+  ASSERT_EQ(conversations[0]->associated_content.size(), 1u);
+  EXPECT_EQ(conversations[0]->associated_content[0]->content_type,
+            mojom::ContentType::Workspace);
+  auto archive = db_->GetConversationData("conv");
+  ASSERT_TRUE(archive);
+  ASSERT_EQ(archive->associated_content.size(), 1u);
+  EXPECT_EQ(archive->associated_content[0]->content, "Workspace text");
+}
+
+// A field sync doesn't carry, such as a tool artifact's id, is in this
+// device's latest revision but never in a record. So it isn't a difference: a
+// newer record with that revision's content adds no revision, and the local
+// revision keeps the field.
+TEST_F(AIChatSyncBridgeTest, ApplyAddsNoRevisionForFieldsSyncDoesNotCarry) {
+  std::vector<mojom::ToolArtifactPtr> artifacts;
+  artifacts.push_back(
+      mojom::ToolArtifact::New("artifact-1", "chart", R"({"x": 1})"));
+  std::vector<mojom::ConversationEntryEventPtr> revision_events;
+  revision_events.push_back(
+      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+          "chart_tool", "tool-1", R"({"a": 1})", std::nullopt,
+          std::move(artifacts), nullptr, false)));
+  ASSERT_NO_FATAL_FAILURE(SeedEditedAnswer(std::move(revision_events), {}, {}));
+  CreateBridge();
+  auto local = db_->GetConversationEntryWithEdits("entry");
+  ASSERT_TRUE(local && *local);
+  task_environment_.FastForwardBy(base::Minutes(1));
+  syncer::EntityData data;
+  *data.specifics.mutable_ai_chat_conversation() =
+      EntryToSpecifics("conv", **local, base::Time::Now(), {});
+  syncer::EntityChangeList changes;
+  changes.push_back(
+      syncer::EntityChange::CreateUpdate("e:entry", std::move(data)));
+
+  ASSERT_FALSE(bridge_
+                   ->ApplyIncrementalSyncChanges(
+                       bridge_->CreateMetadataChangeList(), std::move(changes))
+                   .has_value());
+
+  // The record was written, with its time.
+  EXPECT_THAT(db_->GetEntryModifiedTime("entry"),
+              IsModifiedAt(base::Time::Now()));
+  auto entry = db_->GetConversationEntryWithEdits("entry");
+  ASSERT_TRUE(entry && *entry && (*entry)->edits);
+  ASSERT_EQ((*entry)->edits->size(), 1u);
+  const auto& events = (*entry)->edits->at(0)->events;
+  ASSERT_TRUE(events);
+  ASSERT_EQ(events->size(), 1u);
+  const auto& tool_use = events->at(0)->get_tool_use_event();
+  ASSERT_TRUE(tool_use->artifacts);
+  ASSERT_EQ(tool_use->artifacts->size(), 1u);
+  EXPECT_EQ(tool_use->artifacts->at(0)->id, "artifact-1");
 }
 
 }  // namespace
