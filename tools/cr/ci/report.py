@@ -9,6 +9,7 @@ from __future__ import annotations
 from collections.abc import Callable
 
 from ci import github
+from ci.actions import ActionsCi
 from ci.failures import CheckFailures, FailedBuild
 from ci.jenkins import JenkinsCi
 from ci.teamcity import TeamCityCi, build_id
@@ -19,13 +20,14 @@ def collect(
     *,
     jenkins: Callable[[], JenkinsCi] = JenkinsCi.from_config,
     teamcity: Callable[[], TeamCityCi] = TeamCityCi,
+    actions: Callable[[], ActionsCi] = ActionsCi,
 ) -> list[CheckFailures]:
     """The failed builds behind each of `checks`' failed checks.
 
     A check whose builds can't be read (no credentials, a CI system this
     package doesn't read) is still listed, with why.
     """
-    clients: dict[str, JenkinsCi | TeamCityCi] = {}
+    clients: dict[str, JenkinsCi | TeamCityCi | ActionsCi] = {}
     result = []
     for check in checks.in_state(github.State.FAILURE):
         builds: list[FailedBuild] = []
@@ -36,6 +38,9 @@ def collect(
                 builds = client.failed_builds(build_id(check.url))
             elif check.system == 'jenkins':
                 client = clients.setdefault('jenkins', jenkins())
+                builds = client.failed_builds(check.url)
+            elif check.system == 'actions':
+                client = clients.setdefault('actions', actions())
                 builds = client.failed_builds(check.url)
             else:
                 error = f'{check.system or "unknown"} checks are not read'

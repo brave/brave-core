@@ -47,9 +47,12 @@ class Check:
 
     @property
     def system(self) -> str:
-        """`jenkins` or `teamcity` for the CI systems this package reads,
-        otherwise the URL's host."""
-        host = urllib.parse.urlparse(self.url).hostname or ''
+        """`jenkins`, `teamcity` or `actions` (a GitHub Actions job) for the
+        CI systems this package reads, otherwise the URL's host."""
+        parsed = urllib.parse.urlparse(self.url)
+        host = parsed.hostname or ''
+        if host == 'github.com' and '/actions/runs/' in parsed.path:
+            return 'actions'
         return {JENKINS_HOST: 'jenkins', TEAMCITY_HOST: 'teamcity'}.get(
             host, host
         )

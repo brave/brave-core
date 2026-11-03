@@ -14,11 +14,12 @@ Subcommands:
         their problems, failed tests, and the end of the failed step's log.
     rerun URL [--wipe-workspace]
         Queues the build at URL (a check's link) again. For TeamCity, an
-        aggregate reruns its failed dependencies. `--wipe-workspace` is for
+        aggregate reruns its failed dependencies; for GitHub Actions, the job
+        reruns with the jobs that depend on it. `--wipe-workspace` is for
         Jenkins only.
 
 Jenkins reads `~/.jenkins.json`; TeamCity goes through the `teamcity` CLI and
-its login.
+its login; GitHub Actions goes through `gh` and its login.
 """
 
 from __future__ import annotations
@@ -29,6 +30,7 @@ import sys
 
 import _boot  # noqa: F401  -- adds parent tools/cr to sys.path
 from ci import failures, github, report  # noqa: E402  -- after _boot
+from ci.actions import ActionsCi  # noqa: E402  -- after _boot
 from ci.jenkins import JenkinsCi  # noqa: E402  -- after _boot
 from ci.teamcity import TeamCityCi, build_id  # noqa: E402  -- after _boot
 
@@ -73,8 +75,13 @@ def _cmd_rerun(args: argparse.Namespace) -> int:
             args.url, wipe_workspace=args.wipe_workspace
         )
         print(f'Queued {args.url.rstrip("/").rsplit("/", 1)[0]} again.')
+    elif ActionsCi.is_job_url(args.url):
+        if args.wipe_workspace:
+            print('--wipe-workspace is for Jenkins only.')
+            return 1
+        print(ActionsCi().rerun(args.url))
     else:
-        print(f'Not a Jenkins or TeamCity build: {args.url}')
+        print(f'Not a Jenkins, TeamCity or GitHub Actions build: {args.url}')
         return 1
     return 0
 

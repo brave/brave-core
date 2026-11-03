@@ -16,6 +16,7 @@ _TEAMCITY = 'https://teamcity.brave.com:443/buildConfiguration/X_Aggregate/7'
 _JENKINS = (
     'https://ci.brave.com/job/brave-core-build-pr-windows-x64/job/PR-1/2/'
 )
+_ACTIONS = 'https://github.com/brave/brave-core/actions/runs/3/job/4'
 _BUILD = FailedBuild('X_Build', 'https://tc/8', 'Exit code 1', Kind.BUILD)
 
 
@@ -29,6 +30,7 @@ class CollectTest(unittest.TestCase):
                 Check('tc', State.FAILURE, _TEAMCITY),
                 Check('jenkins', State.FAILURE, _JENKINS),
                 Check('socket', State.FAILURE, 'https://socket.dev'),
+                Check('security', State.FAILURE, _ACTIONS),
                 Check('green', State.SUCCESS, _TEAMCITY),
                 Check('running', State.PENDING, _JENKINS),
             ),
@@ -37,17 +39,26 @@ class CollectTest(unittest.TestCase):
         teamcity.failed_builds.return_value = [_BUILD]
         jenkins = mock.Mock()
         jenkins.failed_builds.side_effect = RuntimeError('no access')
+        actions = mock.Mock()
+        actions.failed_builds.return_value = [_BUILD]
 
         found = report.collect(
-            checks, jenkins=lambda: jenkins, teamcity=lambda: teamcity
+            checks,
+            jenkins=lambda: jenkins,
+            teamcity=lambda: teamcity,
+            actions=lambda: actions,
         )
 
         teamcity.failed_builds.assert_called_once_with(7)
         jenkins.failed_builds.assert_called_once_with(_JENKINS)
-        self.assertEqual([c.check for c in found], ['tc', 'jenkins', 'socket'])
+        actions.failed_builds.assert_called_once_with(_ACTIONS)
+        self.assertEqual(
+            [c.check for c in found], ['tc', 'jenkins', 'socket', 'security']
+        )
         self.assertEqual(found[0].builds, (_BUILD,))
         self.assertEqual(found[1].error, 'RuntimeError: no access')
         self.assertEqual(found[2].error, 'socket.dev checks are not read')
+        self.assertEqual(found[3].builds, (_BUILD,))
 
 
 if __name__ == '__main__':

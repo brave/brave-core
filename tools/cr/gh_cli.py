@@ -65,6 +65,11 @@ class GhCli:
             return None
         return f'origin/{base_ref}'
 
+    def api(self, path: str, *, method: str = 'GET') -> str:
+        """The body `gh api` returns for `path`, e.g.
+        `repos/<owner>/<repo>/actions/jobs/<id>`, redirects followed."""
+        return self._run(['api', '--method', method, path]).stdout
+
     def view_pr(self, pr: int | str, *, repo: str, fields: str) -> dict:
         """The `fields` (comma-separated JSON fields) of pull request `pr`, a
         number or a branch, in `repo`."""
