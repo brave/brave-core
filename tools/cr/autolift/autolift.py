@@ -1879,8 +1879,8 @@ def _fixture_ancestors(
     return ancestors
 
 
-# A name where a fixture goes: `class X`, `TEST_F(X,`, `IN_PROC_BROWSER_TEST_P(X,`
-# or `INSTANTIATE_TEST_SUITE_P(Prefix, X,`.
+# A name where a fixture goes: `class X`, `TEST_F(X,`,
+# `IN_PROC_BROWSER_TEST_P(X,` or `INSTANTIATE_TEST_SUITE_P(Prefix, X,`.
 _FIXTURE_NAME = re.compile(
     r'\b(?:class|struct)\s+(\w+)'
     r'|\bINSTANTIATE_\w+\(\s*\w*\s*,\s*(\w+)'

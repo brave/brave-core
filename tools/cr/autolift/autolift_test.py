@@ -1471,7 +1471,7 @@ class TestLeadsTest(unittest.TestCase):
             'test/filters/browser_tests.filter': '-FirstPartySets/*\n'
             '-BgFetchBrowserTest.*\n'
         }
-        (lead,) = autolift.test_leads(
+        leads = autolift.test_leads(
             ['BgFetchCorsBrowserTest.Fetches'],
             '',
             filters,
@@ -1479,6 +1479,8 @@ class TestLeadsTest(unittest.TestCase):
                 'BgFetchCorsBrowserTest': ('BgFetchBrowserTest', 'Base')
             },
         )
+        self.assertEqual(len(leads), 1)
+        lead = leads[0]
         self.assertEqual(lead.filters, ())
         self.assertEqual(
             lead.inherited,
@@ -1493,7 +1495,7 @@ class TestLeadsTest(unittest.TestCase):
         filters = {
             'test/filters/unit_tests.filter': '-All/WithLowEntropy*Source.*\n'
         }
-        (lead,) = autolift.test_leads(
+        leads = autolift.test_leads(
             ['All/WithLimitedEntropySource.Works/0'],
             '',
             filters,
@@ -1503,10 +1505,12 @@ class TestLeadsTest(unittest.TestCase):
                 )
             },
         )
+        self.assertEqual(len(leads), 1)
         self.assertEqual(
-            lead.renamed,
+            leads[0].renamed,
             (
-                'test/filters/unit_tests.filter:1: -All/WithLowEntropy*Source.* '
+                'test/filters/unit_tests.filter:1: '
+                '-All/WithLowEntropy*Source.* '
                 f'(`WithLowEntropyRandomSource` in {"c" * 12})',
             ),
         )
