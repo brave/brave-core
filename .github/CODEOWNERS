@@ -49,8 +49,13 @@ chromium_src/net/tools/transport_security_state_generator/input_file_parsers.cc 
 
 # Tor
 browser/tor/ @brave/tor-reviewers
+browser/resources/settings/brave_tor_page/ @brave/tor-reviewers
+browser/search_engines/tor_window_search_engine_provider_service.* @brave/tor-reviewers
+browser/ui/views/page_action/onion_location_page_action_controller* @brave/tor-reviewers
 browser/ui/webui/tor_internals_ui.* @brave/tor-reviewers
 browser/ui/webui/settings/brave_tor*.* @brave/tor-reviewers
+components/definitions/torInternals.d.ts @brave/tor-reviewers
+components/services/tor/ @brave/tor-reviewers
 components/tor/ @brave/tor-reviewers
 net/proxy_resolution/ @brave/tor-reviewers
 
