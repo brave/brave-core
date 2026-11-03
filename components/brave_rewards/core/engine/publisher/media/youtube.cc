@@ -226,6 +226,9 @@ std::string YouTube::GetPublisherKeyFromUrl(const std::string& path) {
 
   auto params = base::SplitString(id, "?", base::TRIM_WHITESPACE,
                                   base::SPLIT_WANT_NONEMPTY);
+  if (params.empty()) {
+    return std::string();
+  }
 
   return params[0];
 }
@@ -286,6 +289,9 @@ std::string YouTube::GetUserFromUrl(const std::string& path) {
 
   auto params = base::SplitString(id, "?", base::TRIM_WHITESPACE,
                                   base::SPLIT_WANT_NONEMPTY);
+  if (params.empty()) {
+    return std::string();
+  }
 
   return params[0];
 }
