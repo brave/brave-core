@@ -38,7 +38,7 @@ BraveSearchMakeDefaultJavaScriptFeature::
               FeatureScript::ReinjectionBehavior::kInjectOncePerWindow,
               FeatureScript::PlaceholderReplacementsCallback(),
               web::OriginFilter::kBraveSearch)},
-          /*dependent_feature=*/{},
+          /*dependent_features=*/{},
           web::OriginFilter::kBraveSearch) {}
 
 BraveSearchMakeDefaultJavaScriptFeature::
