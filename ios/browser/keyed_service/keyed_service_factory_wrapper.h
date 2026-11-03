@@ -30,7 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// the same service regardless of private mode, or you may receive `nil` if
 /// the service you requested does not support private browsing.
 + (nullable ResultType)getForPrivateMode:(bool)isPrivateBrowsing
-    NS_SWIFT_NAME(get(privateMode:)) NS_REQUIRES_SUPER NS_SWIFT_UI_ACTOR;
+    NS_SWIFT_NAME(get(privateMode:)) NS_REQUIRES_SUPER NS_SWIFT_UI_ACTOR
+    DEPRECATED_MSG_ATTRIBUTE("Use +getForProfile:");
 
 /// Obtain the desired service based on the profile
 ///
