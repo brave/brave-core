@@ -17,6 +17,7 @@
 #include "brave/components/playlist/content/browser/playlist_service.h"
 #include "brave/components/playlist/content/browser/playlist_tab_helper_observer.h"
 #include "brave/components/playlist/core/common/pref_names.h"
+#include "components/tabs/public/tab_interface.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
@@ -26,27 +27,39 @@
 
 namespace playlist {
 
+DEFINE_USER_DATA(PlaylistTabHelper);
+
 // static
-void PlaylistTabHelper::CreateForWebContents(content::WebContents* web_contents,
-                                             PlaylistService* service) {
-  content::WebContentsUserData<PlaylistTabHelper>::CreateForWebContents(
-      web_contents, service);
-  PlaylistMediaHandler::CreateForWebContents(
-      web_contents, base::BindRepeating(&PlaylistService::OnMediaDetected,
-                                        service->GetWeakPtr()));
+PlaylistTabHelper* PlaylistTabHelper::From(tabs::TabInterface* tab) {
+  return tab ? Get(tab->GetUnownedUserDataHost()) : nullptr;
 }
 
-PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,
+// static
+std::unique_ptr<PlaylistTabHelper> PlaylistTabHelper::Create(
+    tabs::TabInterface& tab,
+    PlaylistService* service) {
+  PlaylistMediaHandler::CreateForWebContents(
+      tab.GetContents(), base::BindRepeating(&PlaylistService::OnMediaDetected,
+                                             service->GetWeakPtr()));
+  return std::make_unique<PlaylistTabHelper>(tab, service);
+}
+
+PlaylistTabHelper::PlaylistTabHelper(tabs::TabInterface& tab,
                                      PlaylistService* service)
-    : WebContentsUserData(*contents), service_(service) {
+    : tab_(tab),
+      service_(service),
+      will_discard_contents_subscription_(tab.RegisterWillDiscardContents(
+          base::BindRepeating(&PlaylistTabHelper::OnDiscardContents,
+                              base::Unretained(this)))),
+      scoped_unowned_user_data_(tab.GetUnownedUserDataHost(), *this) {
   CHECK(service_);
 
-  Observe(contents);
+  Observe(tab.GetContents());
   service_->AddObserver(playlist_observer_receiver_.BindNewPipeAndPassRemote());
 
   playlist_enabled_.Init(
       kPlaylistEnabledPref,
-      user_prefs::UserPrefs::Get(contents->GetBrowserContext()),
+      user_prefs::UserPrefs::Get(tab.GetContents()->GetBrowserContext()),
       base::BindRepeating(&PlaylistTabHelper::OnPlaylistEnabledPrefChanged,
                           weak_ptr_factory_.GetWeakPtr()));
 }
@@ -55,6 +68,10 @@ PlaylistTabHelper::~PlaylistTabHelper() {
   for (auto& observer : observers_) {
     observer.PlaylistTabHelperWillBeDestroyed();
   }
+}
+
+content::WebContents& PlaylistTabHelper::GetWebContents() const {
+  return *tab_->GetContents();
 }
 
 void PlaylistTabHelper::AddObserver(PlaylistTabHelperObserver* observer) {
@@ -361,13 +378,24 @@ void PlaylistTabHelper::OnAddedItems(
 void PlaylistTabHelper::OnPlaylistEnabledPrefChanged() {
   if (*playlist_enabled_) {
     // It's okay to call Observe() repeatedly.
-    Observe(&GetWebContents());
+    Observe(tab_->GetContents());
   } else {
     Observe(nullptr);
     ResetFoundItems();
   }
 }
 
-WEB_CONTENTS_USER_DATA_KEY_IMPL(PlaylistTabHelper);
+void PlaylistTabHelper::OnDiscardContents(tabs::TabInterface* tab,
+                                          content::WebContents* old_contents,
+                                          content::WebContents* new_contents) {
+  PlaylistMediaHandler::CreateForWebContents(
+      new_contents, base::BindRepeating(&PlaylistService::OnMediaDetected,
+                                        service_->GetWeakPtr()));
+  ResetSavedItems();
+  ResetFoundItems();
+  if (*playlist_enabled_) {
+    Observe(new_contents);
+  }
+}
 
 }  // namespace playlist

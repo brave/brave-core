@@ -15,6 +15,7 @@
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -45,8 +46,8 @@ IN_PROC_BROWSER_TEST_F(PlaylistActiveTabTrackerBrowserTest,
   ASSERT_FALSE(tracker->ShouldShowAddMediaFromPageUI());
 
   // When playlist tab helper has found media
-  auto* tab_helper =
-      playlist::PlaylistTabHelper::FromWebContents(active_web_contents);
+  auto* tab_helper = playlist::PlaylistTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(active_web_contents));
   ASSERT_TRUE(tab_helper);
 
   std::vector<playlist::mojom::PlaylistItemPtr> items;
@@ -83,8 +84,8 @@ IN_PROC_BROWSER_TEST_F(PlaylistActiveTabTrackerBrowserTest,
   // should be invoked with |true| argument.
   {
     auto* first_contents = browser()->tab_strip_model()->GetWebContentsAt(0);
-    auto* tab_helper =
-        playlist::PlaylistTabHelper::FromWebContents(first_contents);
+    auto* tab_helper = playlist::PlaylistTabHelper::From(
+        tabs::TabInterface::MaybeGetFromContents(first_contents));
     ASSERT_TRUE(tab_helper);
     std::vector<playlist::mojom::PlaylistItemPtr> found_items;
     found_items.push_back(playlist::mojom::PlaylistItem::New());
@@ -116,8 +117,8 @@ IN_PROC_BROWSER_TEST_F(PlaylistActiveTabTrackerBrowserTest,
   std::unique_ptr<playlist::PlaylistActiveTabTracker> tracker =
       std::make_unique<playlist::PlaylistActiveTabTracker>(
           GetActiveWebContents(), callback.Get());
-  auto* tab_helper =
-      playlist::PlaylistTabHelper::FromWebContents(GetActiveWebContents());
+  auto* tab_helper = playlist::PlaylistTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()));
 
   ASSERT_TRUE(tab_helper);
   std::vector<playlist::mojom::PlaylistItemPtr> found_items;
