@@ -59,12 +59,9 @@ service creation, so changes take effect on restart.
 Because of that, the gate reads the setting through
 [`BraveHistoryEmbeddingsStatus`](brave_history_embeddings_status.h), which
 captures it as profile user data at profile setup — so the value the services
-were built with is available for the rest of the session. Both consumers of that
-value read it from `loadTimeData`: the settings page shows its "Relaunch" button
-while the toggle differs from it, and brave://history swaps upstream's
-`enableHistoryEmbeddings` for it
-([`chromium_src/.../history_ui.cc`](../../chromium_src/chrome/browser/ui/webui/history/history_ui.cc))
-so the semantic search input appears only once there is an index behind it.
+were built with is available for the rest of the session. The settings page
+reads it from `loadTimeData`, and shows its "Relaunch" button while the toggle
+differs from it.
 
 ## Model delivery + `EmbedderMetadataUpdated`
 
@@ -151,10 +148,6 @@ utility through the standard `LoadModels` mojo call.
   `PassageEmbedderImpl::BuildExecutionTask` (via a
   `BRAVE_PASSAGE_EMBEDDER_IMPL_BUILD_EXECUTION_TASK` macro), so the sandboxed
   utility runs EmbeddingGemma on LiteRT instead of upstream's TFLite executor.
-
-- **`chromium_src/chrome/browser/ui/webui/history/history_ui.cc`** — Swaps
-  brave://history's `enableHistoryEmbeddings` for the session-captured value, so
-  the semantic search input tracks the index rather than the live pref.
 
 - **`chromium_src/chrome/browser/page_content_annotations/`** — Factory
   overrides for `PageContentAnnotationsService`, `PageContentExtractionService`,
