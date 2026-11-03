@@ -15,10 +15,7 @@ import {
   WalletState,
   WalletInitializedPayload,
 } from '../../constants/types'
-import {
-  DefaultBaseCryptocurrencyChanged,
-  DefaultBaseCurrencyChanged,
-} from '../constants/action_types'
+import { DefaultBaseCurrencyChanged } from '../constants/action_types'
 
 const defaultState: WalletState = {
   hasInitialized: false,
@@ -59,10 +56,6 @@ export const WalletAsyncActions = {
   defaultBaseCurrencyChanged: createAction<DefaultBaseCurrencyChanged>(
     'defaultBaseCurrencyChanged',
   ), // refreshWalletInfo
-  defaultBaseCryptocurrencyChanged:
-    createAction<DefaultBaseCryptocurrencyChanged>(
-      'defaultBaseCryptocurrencyChanged',
-    ),
   refreshNetworksAndTokens: createAction('refreshNetworksAndTokens'),
   refreshBalancesAndPriceHistory: createAction(
     'refreshBalancesAndPriceHistory',

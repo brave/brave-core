@@ -104,13 +104,6 @@
       menu-options="[[currency_list_]]">
     </settings-dropdown-menu>
   </div>
-  <div class="settings-box">
-    <div class="start">$i18n{defaultBaseCryptocurrencyDesc}</div>
-    <settings-dropdown-menu id="defaultBaseCryptocurrencyType"
-      pref-key="brave.wallet.default_base_cryptocurrency"
-      menu-options="[[cryptocurrency_list_]]">
-    </settings-dropdown-menu>
-  </div>
   <div class="settings-box" hidden="[[!isTransactionSimulationsFeatureEnabled]]">
     <div class="start">$i18nRaw{transactionSimulationDesc}</div>
     <settings-dropdown-menu id="transactionSimulationOptInStatus"

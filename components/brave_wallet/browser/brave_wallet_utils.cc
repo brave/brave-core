@@ -652,15 +652,6 @@ std::string GetDefaultBaseCurrency(PrefService* prefs) {
   return prefs->GetString(kDefaultBaseCurrency);
 }
 
-void SetDefaultBaseCryptocurrency(PrefService* prefs,
-                                  std::string_view cryptocurrency) {
-  prefs->SetString(kDefaultBaseCryptocurrency, cryptocurrency);
-}
-
-std::string GetDefaultBaseCryptocurrency(PrefService* prefs) {
-  return prefs->GetString(kDefaultBaseCryptocurrency);
-}
-
 std::string GetEnsRegistryContractAddress(std::string_view chain_id) {
   std::string chain_id_lower = base::ToLowerASCII(chain_id);
   DCHECK_EQ(chain_id_lower, mojom::kMainnetChainId);
