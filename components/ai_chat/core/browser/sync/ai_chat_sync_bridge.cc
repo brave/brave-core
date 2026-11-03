@@ -17,14 +17,17 @@
 #include "base/containers/flat_set.h"
 #include "base/containers/map_util.h"
 #include "base/containers/to_vector.h"
+#include "base/functional/bind.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 #include "brave/components/ai_chat/core/browser/sync/ai_chat_sync_conversions.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/sync/protocol/ai_chat_specifics.pb.h"
 #include "components/sync/base/deletion_origin.h"
+#include "components/sync/model/conflict_resolution.h"
 #include "components/sync/model/data_type_local_change_processor.h"
 #include "components/sync/model/metadata_batch.h"
 #include "components/sync/model/model_error.h"
@@ -86,8 +89,54 @@ std::optional<sync_pb::AIChatConversationSpecifics> BuildCommittableEntry(
 // Returns the modified time to send with a local record. A failed read sends
 // none, so the record counts as the oldest and can't overwrite another device's
 // copy that has a time.
-base::Time TimeToSend(const std::optional<base::Time>& modified_time) {
-  return modified_time.value_or(base::Time());
+base::Time TimeToSend(
+    const std::optional<AIChatDatabase::ModifiedTime>& modified_time) {
+  return modified_time ? modified_time->time : base::Time();
+}
+
+// Reads the modified time of this device's copy of the record |specifics|.
+// Returns nullopt when the read fails.
+std::optional<AIChatDatabase::ModifiedTime> ReadLocalModifiedTime(
+    AIChatDatabase& database,
+    const sync_pb::AIChatConversationSpecifics& specifics) {
+  switch (specifics.kind_case()) {
+    case sync_pb::AIChatConversationSpecifics::kConversation:
+      return database.GetConversationModifiedTime(
+          specifics.conversation().uuid());
+    case sync_pb::AIChatConversationSpecifics::kEntry:
+      return database.GetEntryModifiedTime(specifics.entry().uuid());
+    case sync_pb::AIChatConversationSpecifics::KIND_NOT_SET:
+      return AIChatDatabase::ModifiedTime();
+  }
+}
+
+// Which copy of a record changed last: the one in a remote change, or this
+// device's.
+enum class NewerCopy {
+  kRemote,
+  kSameVersion,
+  kLocal,
+};
+
+// Compares a remote record, which carries |remote_time|, with this device's
+// copy, |local|. With no local copy, including a stub conversation, the remote
+// one is newer. A null time is unknown and counts as the oldest. Two null times
+// are the same version: every change sync compares moves the time, so both are
+// the record as it was before records carried a time.
+NewerCopy FindNewerCopy(base::Time remote_time,
+                        const AIChatDatabase::ModifiedTime& local) {
+  if (!local.exists || remote_time > local.time) {
+    return NewerCopy::kRemote;
+  }
+  return remote_time == local.time ? NewerCopy::kSameVersion
+                                   : NewerCopy::kLocal;
+}
+
+// Whether |local|, read again when a kept local copy is about to be sent, is
+// still the copy kept with |kept_time|. A failed read counts as not.
+bool IsSameLocalCopy(const std::optional<AIChatDatabase::ModifiedTime>& local,
+                     base::Time kept_time) {
+  return local && local->exists && local->time == kept_time;
 }
 
 }  // namespace
@@ -237,19 +286,24 @@ std::optional<syncer::ModelError> AIChatSyncBridge::MergeFullSyncData(
     return std::nullopt;
   }
 
-  if (!ApplyRemoteChanges(entity_data, *metadata_change_list)) {
-    // First sync runs again on the next start and applies the server's records
-    // over this device's, so no local update is sent this session.
+  KeptLocalCopies kept_local_copies;
+  if (!ApplyRemoteChanges(entity_data, *metadata_change_list,
+                          kept_local_copies)) {
+    // First sync runs again on the next start, so no local update is sent
+    // this session. That merge keeps a local update made since, which is
+    // newer than the server's copy, and sends it then.
     skip_all_local_puts_ = true;
     return syncer::ModelError(
         FROM_HERE, syncer::ModelError::Type::kAIChatFailedToApplyRemoteChange);
   }
 
   // Track which storage keys we already have from remote so we don't
-  // re-upload them.
+  // re-upload them, except where ApplyRemoteChanges() kept this device's
+  // copy because it's newer.
   absl::flat_hash_set<std::string> remote_storage_keys;
   for (const auto& change : entity_data) {
-    if (change->type() != syncer::EntityChange::ACTION_DELETE) {
+    if (change->type() != syncer::EntityChange::ACTION_DELETE &&
+        !kept_local_copies.contains(change->storage_key())) {
       remote_storage_keys.insert(change->storage_key());
     }
   }
@@ -283,12 +337,27 @@ std::optional<syncer::ModelError> AIChatSyncBridge::ApplyIncrementalSyncChanges(
 
   // The processor also calls this with metadata changes alone, for example
   // after every commit. Those are saved like any other batch's.
-  if (!ApplyRemoteChanges(entity_changes, *metadata_change_list)) {
+  KeptLocalCopies kept_local_copies;
+  if (!ApplyRemoteChanges(entity_changes, *metadata_change_list,
+                          kept_local_copies)) {
     return syncer::ModelError(
         FROM_HERE, syncer::ModelError::Type::kAIChatFailedToApplyRemoteChange);
   }
 
   ApplyMetadataChanges(std::move(metadata_change_list));
+
+  // The processor counts a Put() made while it applies remote changes
+  // (Sync.LocalChangeDuringRemoteUpdate) and means to make it a CHECK, so the
+  // local copies kept are sent once this returns. A crash before that task
+  // runs leaves them unsent until they change again, since the batch's
+  // metadata is already saved. Normal shutdown still runs the task, because
+  // the database's task runner blocks shutdown.
+  if (!kept_local_copies.empty()) {
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindOnce(&AIChatSyncBridge::PutKeptLocalCopies,
+                                  weak_ptr_factory_.GetWeakPtr(),
+                                  std::move(kept_local_copies)));
+  }
   return std::nullopt;
 }
 
@@ -401,6 +470,38 @@ bool AIChatSyncBridge::IsEntityDataValid(
   return false;
 }
 
+syncer::ConflictResolution AIChatSyncBridge::ResolveConflict(
+    const std::string& storage_key,
+    const syncer::EntityData& remote_data) const {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  // A tombstone carries no time, so the local change wins, as in the default
+  // implementation. With no database, there is no local time to compare.
+  if (remote_data.is_deleted() || !database_) {
+    return DataTypeSyncBridge::ResolveConflict(storage_key, remote_data);
+  }
+
+  // The processor asks only when this device has a change it hasn't committed
+  // yet. kUseRemote drops that commit and passes the record to
+  // ApplyIncrementalSyncChanges(), so the answer follows what that does with
+  // the record. For a newer local copy it would only queue the copy again. For
+  // the same version it would write nothing, and the local change, such as new
+  // token counts, would never be sent.
+  const auto& specifics = remote_data.specifics.ai_chat_conversation();
+  auto local = ReadLocalModifiedTime(*database_, specifics);
+  if (!local) {
+    // ApplyIncrementalSyncChanges() then reads again, and fails the batch if
+    // it can't.
+    return syncer::ConflictResolution::kUseRemote;
+  }
+  switch (FindNewerCopy(GetModifiedTimeFromSpecifics(specifics), *local)) {
+    case NewerCopy::kRemote:
+      return syncer::ConflictResolution::kUseRemote;
+    case NewerCopy::kSameVersion:
+    case NewerCopy::kLocal:
+      return syncer::ConflictResolution::kUseLocal;
+  }
+}
+
 sync_pb::EntitySpecifics
 AIChatSyncBridge::TrimAllSupportedFieldsFromRemoteSpecifics(
     const sync_pb::EntitySpecifics& entity_specifics) const {
@@ -425,10 +526,13 @@ void AIChatSyncBridge::ApplyDisableSyncChanges(
 
 void AIChatSyncBridge::OnConversationAdded(const std::string& uuid) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (!change_processor()->IsTrackingMetadata()) {
+  if (!database_ || !change_processor()->IsTrackingMetadata() ||
+      ShouldSkipLocalPut(base::StrCat({kConversationStorageKeyPrefix, uuid}))) {
     return;
   }
-  PutConversationMetadata(uuid);
+  PutConversationMetadata(
+      uuid, TimeToSend(database_->GetConversationModifiedTime(uuid)),
+      *CreateMetadataStoreChangeList());
 }
 
 void AIChatSyncBridge::OnConversationModified(const std::string& uuid) {
@@ -465,10 +569,13 @@ void AIChatSyncBridge::OnConversationEntryAdded(
     const std::string& conversation_uuid,
     const std::string& entry_uuid) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (!change_processor()->IsTrackingMetadata()) {
+  if (!database_ || !change_processor()->IsTrackingMetadata() ||
+      ShouldSkipLocalPut(base::StrCat({kEntryStorageKeyPrefix, entry_uuid}))) {
     return;
   }
-  PutEntry(conversation_uuid, entry_uuid);
+  PutEntry(conversation_uuid, entry_uuid,
+           TimeToSend(database_->GetEntryModifiedTime(entry_uuid)),
+           *CreateMetadataStoreChangeList());
 }
 
 void AIChatSyncBridge::OnConversationEntryModified(
@@ -491,7 +598,8 @@ void AIChatSyncBridge::OnConversationEntryDeleted(
 
 bool AIChatSyncBridge::ApplyRemoteChanges(
     const syncer::EntityChangeList& changes,
-    syncer::MetadataChangeList& metadata_change_list) {
+    syncer::MetadataChangeList& metadata_change_list,
+    KeptLocalCopies& kept_local_copies) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   base::flat_set<std::string> affected_conversation_uuids;
   for (auto it = changes.begin(); it != changes.end(); ++it) {
@@ -501,7 +609,7 @@ bool AIChatSyncBridge::ApplyRemoteChanges(
             ? ApplyRemoteTombstone(change->storage_key(),
                                    affected_conversation_uuids)
             : ApplyRemoteRecord(change->data().specifics.ai_chat_conversation(),
-                                affected_conversation_uuids);
+                                kept_local_copies, affected_conversation_uuids);
     if (!ok) {
       // Leave the batch unsaved, so it downloads again on the next start.
       // The records from this one on weren't written, so a local update must
@@ -527,11 +635,34 @@ bool AIChatSyncBridge::ShouldSkipLocalPut(
 
 bool AIChatSyncBridge::ApplyRemoteRecord(
     const sync_pb::AIChatConversationSpecifics& specifics,
+    KeptLocalCopies& kept_local_copies,
     base::flat_set<std::string>& affected_conversation_uuids) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  auto local = ReadLocalModifiedTime(*database_, specifics);
+  if (!local) {
+    // Taking the failed read for no local copy would write the record over a
+    // local copy that may be newer.
+    return false;
+  }
   // Stored as the record's own time, not the time it arrived. Otherwise this
   // device's copy would look newer than the server's.
   const base::Time modified_time = GetModifiedTimeFromSpecifics(specifics);
+  switch (FindNewerCopy(modified_time, *local)) {
+    case NewerCopy::kRemote:
+      break;
+    case NewerCopy::kSameVersion:
+      // Already stored, as when this device's own records come back in a
+      // first-sync merge. Token counts don't move a conversation's time, so
+      // token counts changed alone on another device end here too. They're
+      // written with that device's next rename or model change, and otherwise
+      // update with this device's next reply.
+      return true;
+    case NewerCopy::kLocal:
+      // Kept, and sent by the caller so the server catches up.
+      kept_local_copies.emplace(GetStorageKeyFromSpecifics(specifics),
+                                local->time);
+      return true;
+  }
 
   if (auto conversation = SpecificsToConversationMetadata(specifics)) {
     std::string uuid = conversation->uuid;
@@ -628,28 +759,64 @@ void AIChatSyncBridge::NotifyRemoteChangesApplied(
   }
 }
 
-void AIChatSyncBridge::PutConversationMetadata(const std::string& uuid) {
-  std::string storage_key = base::StrCat({kConversationStorageKeyPrefix, uuid});
-  if (!database_ || ShouldSkipLocalPut(storage_key)) {
+void AIChatSyncBridge::PutKeptLocalCopies(KeptLocalCopies kept_local_copies) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!database_ || !change_processor()->IsTrackingMetadata()) {
     return;
   }
+  auto metadata_change_list = CreateMetadataStoreChangeList();
+  for (const auto& [storage_key, modified_time] : kept_local_copies) {
+    if (ShouldSkipLocalPut(storage_key)) {
+      continue;
+    }
+    // A local change or a newer remote record may have replaced the copy
+    // since it was kept. A local change sends itself, and a remote record
+    // needn't be sent back, so only a copy that is still the one kept is
+    // sent.
+    if (auto uuid =
+            base::RemovePrefix(storage_key, kConversationStorageKeyPrefix)) {
+      if (IsSameLocalCopy(database_->GetConversationModifiedTime(*uuid),
+                          modified_time)) {
+        PutConversationMetadata(std::string(*uuid), modified_time,
+                                *metadata_change_list);
+      }
+    } else if (auto entry_uuid =
+                   base::RemovePrefix(storage_key, kEntryStorageKeyPrefix)) {
+      if (!IsSameLocalCopy(database_->GetEntryModifiedTime(*entry_uuid),
+                           modified_time)) {
+        continue;
+      }
+      if (auto conversation_uuid =
+              database_->GetConversationUuidForEntry(*entry_uuid)) {
+        PutEntry(*conversation_uuid, std::string(*entry_uuid), modified_time,
+                 *metadata_change_list);
+      }
+    }
+  }
+}
+
+void AIChatSyncBridge::PutConversationMetadata(
+    const std::string& uuid,
+    base::Time modified_time,
+    syncer::MetadataChangeList& metadata_change_list) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto conversation = FindSyncableConversation(*database_, uuid);
   if (!conversation) {
     return;
   }
-  auto specifics = ConversationMetadataToSpecifics(
-      *conversation, TimeToSend(database_->GetConversationModifiedTime(uuid)));
-  auto metadata_change_list = CreateMetadataStoreChangeList();
-  change_processor()->Put(storage_key, CreateEntityDataFromSpecifics(specifics),
-                          metadata_change_list.get());
+  auto specifics =
+      ConversationMetadataToSpecifics(*conversation, modified_time);
+  change_processor()->Put(base::StrCat({kConversationStorageKeyPrefix, uuid}),
+                          CreateEntityDataFromSpecifics(specifics),
+                          &metadata_change_list);
 }
 
-void AIChatSyncBridge::PutEntry(const std::string& conversation_uuid,
-                                const std::string& entry_uuid) {
-  std::string storage_key = base::StrCat({kEntryStorageKeyPrefix, entry_uuid});
-  if (!database_ || ShouldSkipLocalPut(storage_key)) {
-    return;
-  }
+void AIChatSyncBridge::PutEntry(
+    const std::string& conversation_uuid,
+    const std::string& entry_uuid,
+    base::Time modified_time,
+    syncer::MetadataChangeList& metadata_change_list) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto conversation = FindSyncableConversation(*database_, conversation_uuid);
   if (!conversation) {
     return;
@@ -663,10 +830,9 @@ void AIChatSyncBridge::PutEntry(const std::string& conversation_uuid,
   if (it == archive->entries.end()) {
     return;
   }
-  auto specifics = BuildCommittableEntry(
-      conversation_uuid, **it,
-      TimeToSend(database_->GetEntryModifiedTime(entry_uuid)),
-      conversation->associated_content, ContentTextsFromArchive(*archive));
+  auto specifics = BuildCommittableEntry(conversation_uuid, **it, modified_time,
+                                         conversation->associated_content,
+                                         ContentTextsFromArchive(*archive));
   if (!specifics) {
     // Too large to commit even after omitting every omittable field, so there
     // is nothing to Put. Leave the entity tracked: untracking one committed
@@ -674,10 +840,9 @@ void AIChatSyncBridge::PutEntry(const std::string& conversation_uuid,
     // server's copy. GetDataForCommit() untracks it if a commit asks for it.
     return;
   }
-  auto metadata_change_list = CreateMetadataStoreChangeList();
-  change_processor()->Put(storage_key,
+  change_processor()->Put(base::StrCat({kEntryStorageKeyPrefix, entry_uuid}),
                           CreateEntityDataFromSpecifics(*specifics),
-                          metadata_change_list.get());
+                          &metadata_change_list);
 }
 
 }  // namespace ai_chat

@@ -37,12 +37,25 @@
 #include "sql/meta_table.h"
 #include "sql/statement.h"
 #include "sql/test/test_helpers.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace ai_chat {
 
 namespace {
+
+// Matches the result of GetConversationModifiedTime() or
+// GetEntryModifiedTime() for a row whose modified time is |time|.
+MATCHER_P(IsModifiedAt, time, "") {
+  return arg && arg->exists && arg->time == time;
+}
+
+// Matches the result of GetConversationModifiedTime() or
+// GetEntryModifiedTime() for no such row, or a stub conversation.
+MATCHER(IsNoRow, "") {
+  return arg && !arg->exists;
+}
 
 // Every table whose rows belong to a single conversation_entry row.
 constexpr auto kEntryChildTables = std::to_array<const char*>({
@@ -1777,8 +1790,10 @@ TEST_F(AIChatDatabaseSyncTest, ApplyRemoteEntryCreatesStubConversation) {
                                     make_entry("entry-2", "Second entry"),
                                     base::Time(), {}, {}));
 
-  // The stub isn't listed until its metadata record arrives.
+  // The stub isn't listed until its metadata record arrives. It reads as no
+  // row, so sync writes that record over it, whatever time the record carries.
   EXPECT_TRUE(db_->GetAllConversations().empty());
+  EXPECT_THAT(db_->GetConversationModifiedTime("orphan-conv"), IsNoRow());
 
   auto data = db_->GetConversationData("orphan-conv");
   ASSERT_TRUE(data);
@@ -2133,10 +2148,10 @@ TEST_F(AIChatDatabaseSyncTest, GetConversationUuidForAssociatedContent) {
             std::nullopt);
 }
 
-// No such row reads as the null time, not as a failed read.
+// No such row reads as no row, not as a failed read.
 TEST_F(AIChatDatabaseSyncTest, MissingRowHasNullModifiedTime) {
-  EXPECT_EQ(db_->GetConversationModifiedTime("no-such-conv"), base::Time());
-  EXPECT_EQ(db_->GetEntryModifiedTime("no-such-entry"), base::Time());
+  EXPECT_THAT(db_->GetConversationModifiedTime("no-such-conv"), IsNoRow());
+  EXPECT_THAT(db_->GetEntryModifiedTime("no-such-entry"), IsNoRow());
 }
 
 TEST_F(AIChatDatabaseSyncTest, ConversationChangesSetModifiedTime) {
@@ -2144,23 +2159,27 @@ TEST_F(AIChatDatabaseSyncTest, ConversationChangesSetModifiedTime) {
   conversation->uuid = "conv";
   ASSERT_TRUE(db_->AddConversation(std::move(conversation), {},
                                    CreateQueryEntry("entry-1")));
-  EXPECT_EQ(db_->GetConversationModifiedTime("conv"), base::Time::Now());
+  EXPECT_THAT(db_->GetConversationModifiedTime("conv"),
+              IsModifiedAt(base::Time::Now()));
 
   task_environment_.FastForwardBy(base::Minutes(1));
   ASSERT_TRUE(db_->UpdateConversationTitle("conv", "Renamed"));
-  EXPECT_EQ(db_->GetConversationModifiedTime("conv"), base::Time::Now());
+  EXPECT_THAT(db_->GetConversationModifiedTime("conv"),
+              IsModifiedAt(base::Time::Now()));
 
   task_environment_.FastForwardBy(base::Minutes(1));
   ASSERT_TRUE(db_->UpdateConversationModelKey("conv", "model-x"));
   const base::Time model_changed = base::Time::Now();
-  EXPECT_EQ(db_->GetConversationModifiedTime("conv"), model_changed);
+  EXPECT_THAT(db_->GetConversationModifiedTime("conv"),
+              IsModifiedAt(model_changed));
 
   // Each new entry saves the model again, and token counts change with every
   // reply. Neither should make this copy newer than another device's rename.
   task_environment_.FastForwardBy(base::Minutes(1));
   ASSERT_TRUE(db_->UpdateConversationModelKey("conv", "model-x"));
   ASSERT_TRUE(db_->UpdateConversationTokenInfo("conv", 100, 10));
-  EXPECT_EQ(db_->GetConversationModifiedTime("conv"), model_changed);
+  EXPECT_THAT(db_->GetConversationModifiedTime("conv"),
+              IsModifiedAt(model_changed));
 
   auto conversations = db_->GetAllConversations();
   ASSERT_EQ(conversations.size(), 1u);
@@ -2173,13 +2192,15 @@ TEST_F(AIChatDatabaseSyncTest, AddConversationEntrySetsModifiedTime) {
   conversation->uuid = "conv";
   ASSERT_TRUE(db_->AddConversation(std::move(conversation), {},
                                    CreateQueryEntry("entry-1")));
-  EXPECT_EQ(db_->GetEntryModifiedTime("entry-1"), base::Time::Now());
+  EXPECT_THAT(db_->GetEntryModifiedTime("entry-1"),
+              IsModifiedAt(base::Time::Now()));
 
   task_environment_.FastForwardBy(base::Minutes(1));
   ASSERT_TRUE(db_->AddConversationEntry("conv", CreateQueryEntry("entry-2")));
-  EXPECT_EQ(db_->GetEntryModifiedTime("entry-2"), base::Time::Now());
-  EXPECT_EQ(db_->GetEntryModifiedTime("entry-1"),
-            base::Time::Now() - base::Minutes(1));
+  EXPECT_THAT(db_->GetEntryModifiedTime("entry-2"),
+              IsModifiedAt(base::Time::Now()));
+  EXPECT_THAT(db_->GetEntryModifiedTime("entry-1"),
+              IsModifiedAt(base::Time::Now() - base::Minutes(1)));
 
   // An edit is saved by removing the entry and adding it back with the edit.
   // Sync sends the edited entry under the original entry's uuid, so that's
@@ -2190,7 +2211,8 @@ TEST_F(AIChatDatabaseSyncTest, AddConversationEntrySetsModifiedTime) {
   edited->edits->push_back(CreateQueryEntry("edit-1"));
   ASSERT_TRUE(db_->DeleteConversationEntry("entry-1"));
   ASSERT_TRUE(db_->AddConversationEntry("conv", std::move(edited)));
-  EXPECT_EQ(db_->GetEntryModifiedTime("entry-1"), base::Time::Now());
+  EXPECT_THAT(db_->GetEntryModifiedTime("entry-1"),
+              IsModifiedAt(base::Time::Now()));
 }
 
 TEST_F(AIChatDatabaseSyncTest, AssociatedContentChangesSetEntryModifiedTime) {
@@ -2213,29 +2235,31 @@ TEST_F(AIChatDatabaseSyncTest, AssociatedContentChangesSetEntryModifiedTime) {
   task_environment_.FastForwardBy(base::Minutes(1));
   ASSERT_TRUE(
       db_->AddOrUpdateAssociatedContent("conv", make_content(), {"page text"}));
-  EXPECT_EQ(db_->GetEntryModifiedTime("entry-1"), added);
+  EXPECT_THAT(db_->GetEntryModifiedTime("entry-1"), IsModifiedAt(added));
 
   task_environment_.FastForwardBy(base::Minutes(1));
   ASSERT_TRUE(db_->AddOrUpdateAssociatedContent("conv", make_content(),
                                                 {"updated page text"}));
-  EXPECT_EQ(db_->GetEntryModifiedTime("entry-1"), base::Time::Now());
+  EXPECT_THAT(db_->GetEntryModifiedTime("entry-1"),
+              IsModifiedAt(base::Time::Now()));
 
   task_environment_.FastForwardBy(base::Minutes(1));
   auto changed_title = make_content();
   changed_title[0]->title = "new title";
   ASSERT_TRUE(db_->AddOrUpdateAssociatedContent(
       "conv", std::move(changed_title), {"updated page text"}));
-  EXPECT_EQ(db_->GetEntryModifiedTime("entry-1"), base::Time::Now());
+  EXPECT_THAT(db_->GetEntryModifiedTime("entry-1"),
+              IsModifiedAt(base::Time::Now()));
 
   task_environment_.FastForwardBy(base::Minutes(1));
   ASSERT_TRUE(db_->DeleteAssociatedWebContent(std::nullopt, std::nullopt));
   const base::Time cleared = base::Time::Now();
-  EXPECT_EQ(db_->GetEntryModifiedTime("entry-1"), cleared);
+  EXPECT_THAT(db_->GetEntryModifiedTime("entry-1"), IsModifiedAt(cleared));
 
   // Nothing is left to clear.
   task_environment_.FastForwardBy(base::Minutes(1));
   ASSERT_TRUE(db_->DeleteAssociatedWebContent(std::nullopt, std::nullopt));
-  EXPECT_EQ(db_->GetEntryModifiedTime("entry-1"), cleared);
+  EXPECT_THAT(db_->GetEntryModifiedTime("entry-1"), IsModifiedAt(cleared));
 }
 
 TEST_F(AIChatDatabaseSyncTest, UpdateToolUseEventSetsEntryModifiedTime) {
@@ -2262,12 +2286,12 @@ TEST_F(AIChatDatabaseSyncTest, UpdateToolUseEventSetsEntryModifiedTime) {
   task_environment_.FastForwardBy(base::Minutes(1));
   ASSERT_TRUE(db_->UpdateToolUseEvent("entry-1", 0, tool_use_with_output()));
   const base::Time updated = base::Time::Now();
-  EXPECT_EQ(db_->GetEntryModifiedTime("entry-1"), updated);
+  EXPECT_THAT(db_->GetEntryModifiedTime("entry-1"), IsModifiedAt(updated));
 
   // An update that matches no stored event changes nothing.
   task_environment_.FastForwardBy(base::Minutes(1));
   ASSERT_TRUE(db_->UpdateToolUseEvent("entry-1", 5, tool_use_with_output()));
-  EXPECT_EQ(db_->GetEntryModifiedTime("entry-1"), updated);
+  EXPECT_THAT(db_->GetEntryModifiedTime("entry-1"), IsModifiedAt(updated));
 }
 
 TEST_F(AIChatDatabaseSyncTest,
@@ -2278,12 +2302,14 @@ TEST_F(AIChatDatabaseSyncTest,
   conversation->uuid = "conv";
   ASSERT_TRUE(
       db_->ApplyRemoteConversationMetadata(conversation->Clone(), record_time));
-  EXPECT_EQ(db_->GetConversationModifiedTime("conv"), record_time);
+  EXPECT_THAT(db_->GetConversationModifiedTime("conv"),
+              IsModifiedAt(record_time));
 
   // A record without a time leaves none.
   ASSERT_TRUE(db_->ApplyRemoteConversationMetadata(std::move(conversation),
                                                    base::Time()));
-  EXPECT_EQ(db_->GetConversationModifiedTime("conv"), base::Time());
+  EXPECT_THAT(db_->GetConversationModifiedTime("conv"),
+              IsModifiedAt(base::Time()));
 }
 
 TEST_F(AIChatDatabaseSyncTest, ApplyRemoteEntryStoresRecordTime) {
@@ -2305,12 +2331,12 @@ TEST_F(AIChatDatabaseSyncTest, ApplyRemoteEntryStoresRecordTime) {
   };
   ASSERT_TRUE(db_->ApplyRemoteEntry("conv", make_entry(), record_time,
                                     make_content(), {"page text"}));
-  EXPECT_EQ(db_->GetEntryModifiedTime("entry-1"), record_time);
+  EXPECT_THAT(db_->GetEntryModifiedTime("entry-1"), IsModifiedAt(record_time));
 
   // A record without a time leaves none.
   ASSERT_TRUE(db_->ApplyRemoteEntry("conv", make_entry(), base::Time(),
                                     make_content(), {"page text"}));
-  EXPECT_EQ(db_->GetEntryModifiedTime("entry-1"), base::Time());
+  EXPECT_THAT(db_->GetEntryModifiedTime("entry-1"), IsModifiedAt(base::Time()));
 }
 
 // Test the migration for each version upgrade
@@ -2810,16 +2836,19 @@ TEST_P(AIChatDatabaseMigrationTest,
 
   // Rows from before the columns existed have no time, which sync treats as
   // the oldest.
-  EXPECT_EQ(db_->GetConversationModifiedTime(kConversationUuid), base::Time());
-  EXPECT_EQ(db_->GetEntryModifiedTime(kEntryUuid), base::Time());
+  EXPECT_THAT(db_->GetConversationModifiedTime(kConversationUuid),
+              IsModifiedAt(base::Time()));
+  EXPECT_THAT(db_->GetEntryModifiedTime(kEntryUuid),
+              IsModifiedAt(base::Time()));
 
   // The migrated columns hold the time of a local change.
   ASSERT_TRUE(db_->UpdateConversationTitle(kConversationUuid, "Renamed"));
-  EXPECT_EQ(db_->GetConversationModifiedTime(kConversationUuid),
-            base::Time::Now());
+  EXPECT_THAT(db_->GetConversationModifiedTime(kConversationUuid),
+              IsModifiedAt(base::Time::Now()));
   ASSERT_TRUE(db_->AddConversationEntry(kConversationUuid,
                                         CreateQueryEntry("new-entry")));
-  EXPECT_EQ(db_->GetEntryModifiedTime("new-entry"), base::Time::Now());
+  EXPECT_THAT(db_->GetEntryModifiedTime("new-entry"),
+              IsModifiedAt(base::Time::Now()));
 }
 
 }  // namespace ai_chat

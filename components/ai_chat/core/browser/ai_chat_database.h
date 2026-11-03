@@ -81,19 +81,27 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   virtual std::optional<std::string> GetConversationUuidForAssociatedContent(
       std::string_view content_uuid);
 
+  // What GetConversationModifiedTime() and GetEntryModifiedTime() return.
+  struct ModifiedTime {
+    // False when there is no such row, and for a stub conversation, which
+    // only holds synced entries until its metadata record arrives.
+    bool exists = false;
+    // Null, meaning the oldest, when no time is recorded, as for rows saved
+    // before this was added.
+    base::Time time;
+  };
+
   // These return when a conversation's title or model, or an entry's content,
   // last changed. Sync sends the time with each record, so a receiver can tell
   // which of two copies is newer. Local writes set it to the current time, and
   // ApplyRemoteConversationMetadata() and ApplyRemoteEntry() store the time
   // the record carries. Token count updates don't move it. An edit moves the
-  // time of the entry it edits, which is the record sync sends. A null time,
-  // meaning the oldest, is returned when no time is recorded, as for rows
-  // saved before this was added, or when there is no such row. nullopt is
+  // time of the entry it edits, which is the record sync sends. nullopt is
   // returned when the read fails, so that it can't be taken for a missing row
   // or time.
-  virtual std::optional<base::Time> GetConversationModifiedTime(
+  virtual std::optional<ModifiedTime> GetConversationModifiedTime(
       std::string_view conversation_uuid);
-  virtual std::optional<base::Time> GetEntryModifiedTime(
+  virtual std::optional<ModifiedTime> GetEntryModifiedTime(
       std::string_view conversation_entry_uuid);
 
   // Returns new ID for the provided entry and any provided associated content
