@@ -31,6 +31,7 @@ VISIT(brave_fields);
     VISIT(model_key);                                                      \
     VISIT(total_tokens);                                                   \
     VISIT(trimmed_tokens);                                                 \
+    VISIT(modified_time_windows_epoch_micros);                             \
   }                                                                        \
   VISIT_PROTO_FIELDS(                                                      \
       const sync_pb::AIChatConversationSpecifics_Entry& proto) {           \
@@ -49,6 +50,7 @@ VISIT(brave_fields);
     VISIT_REP(uploaded_files);                                             \
     VISIT(skill);                                                          \
     VISIT(near_verification_status);                                       \
+    VISIT(modified_time_windows_epoch_micros);                             \
   }                                                                        \
   VISIT_PROTO_FIELDS(const sync_pb::AIChatSkillEntry& proto) {             \
     VISIT(shortcut);                                                       \
