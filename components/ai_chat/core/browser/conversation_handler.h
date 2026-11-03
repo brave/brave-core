@@ -548,6 +548,9 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnEngineCompletionComplete(const std::optional<std::string>& thread_uuid,
                                   EngineConsumer::GenerationResult result);
   void OnTitleGenerated(EngineConsumer::GenerationResult result);
+  // Asks for a title once the tool loop is idle. Sends only the opening
+  // human/assistant pair, and only once per conversation.
+  void MaybeGenerateConversationTitle();
   void CompleteGeneration(const std::optional<std::string>& thread_uuid,
                           bool success);
   // Schedules a retry for a connection issue if eligible. Returns true if a
@@ -692,6 +695,10 @@ class ConversationHandler : public mojom::ConversationHandler,
   // Whether further assistant responses should be appended to the last or
   // created in a new sibling ConversationEntry.
   bool needs_new_entry_ = false;
+
+  // Set when a client-side title request is sent so later turns do not send
+  // another.
+  bool conversation_title_requested_ = false;
 
   bool is_print_preview_fallback_requested_ = false;
 

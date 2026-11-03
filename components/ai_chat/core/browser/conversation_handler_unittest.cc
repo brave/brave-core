@@ -6563,6 +6563,173 @@ TEST_F(ConversationHandlerUnitTest,
 }
 
 TEST_F(ConversationHandlerUnitTest,
+       SubmitHumanConversationEntry_TitleGenerationAfterToolUse) {
+  // A client-side tool adds a follow-up assistant entry, so the title request
+  // has to wait until that loop is idle and send only the opening pair. The
+  // title API rejects any other history shape.
+  conversation_handler_->associated_content_manager()->ClearContent();
+
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  testing::NiceMock<MockConversationHandlerObserver> observer;
+  observer.Observe(conversation_handler_.get());
+
+  // Runs immediately, so the handler continues the loop and adds a second
+  // assistant entry before the conversation is idle.
+  auto tool =
+      std::make_unique<NiceMock<MockTool>>("weather_tool", "Get weather");
+  tool->set_requires_user_interaction_before_handling(false);
+  ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
+    std::vector<base::WeakPtr<Tool>> tools;
+    tools.push_back(tool->GetWeakPtr());
+    return tools;
+  });
+
+  // Engine requires client-side titles. Request progress still starts and
+  // finishes around the tool loop; the title callback is not part of it.
+  EXPECT_CALL(*engine, RequiresClientSideTitleGeneration())
+      .WillRepeatedly(testing::Return(true));
+  EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(testing::AtLeast(1));
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .Times(testing::AtLeast(1));
+
+  base::RunLoop run_loop;
+  testing::Sequence seq;
+  // Held until after the loop so the title response arrives later, the same
+  // way an async network reply would.
+  EngineConsumer::GenerationCompletedCallback stored_title_callback;
+  size_t history_size_at_title_request = 0;
+
+  // First assistant turn names the tool instead of answering, so a title
+  // request here would include a history shape the title API rejects.
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("Ok, going to check...")),
+                    std::nullopt));
+              }),
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewToolUseEvent(
+                        mojom::ToolUseEvent::New("weather_tool", "tool_id_1",
+                                                 "{\"location\":\"New York\"}",
+                                                 std::nullopt, std::nullopt,
+                                                 nullptr, false)),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+              })));
+
+  // Tool output is sent back, which starts the follow-up assistant turn.
+  EXPECT_CALL(*tool, UseTool(StrEq("{\"location\":\"New York\"}"), _))
+      .InSequence(seq)
+      .WillOnce(testing::WithArg<1>([](Tool::UseToolCallback callback) {
+        std::move(callback).Run(
+            CreateContentBlocksForText("Weather in New York: 72°F"), {});
+      }));
+
+  // Follow-up answer ends the tool loop. The conversation is idle only after
+  // this completes.
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("It's 72F in New York.")),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [&run_loop](
+                  EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+                run_loop.QuitWhenIdle();
+              })));
+
+  // Title is requested only after the follow-up answer, and only with the
+  // opening human/assistant pair. The full history is already 3 entries.
+  EXPECT_CALL(*engine,
+              GenerateConversationTitle(
+                  _,
+                  HistoryTextsAre(std::vector<std::string>{
+                      "What's the weather in New York?",
+                      "Ok, going to check..."}),
+                  _))
+      .InSequence(seq)
+      .WillOnce(testing::WithArg<2>(
+          [this, &stored_title_callback, &history_size_at_title_request](
+              EngineConsumer::GenerationCompletedCallback callback) {
+            // The assistant request is already finished, so the title call
+            // does not keep it in progress.
+            EXPECT_FALSE(conversation_handler_->IsRequestInProgress());
+            history_size_at_title_request =
+                conversation_handler_->GetConversationHistory().size();
+            stored_title_callback = std::move(callback);
+          }));
+
+  // Fired when the stored title callback runs, after the loop is idle.
+  EXPECT_CALL(observer,
+              OnConversationTitleChanged(_, StrEq("Weather in New York")))
+      .Times(1);
+
+  conversation_handler_->SubmitHumanConversationEntry(
+      "What's the weather in New York?", std::nullopt);
+  run_loop.Run();
+
+  // Three entries were already stored (question, tool turn, answer) when the
+  // title was requested. Deliver the title now that the loop has finished.
+  EXPECT_EQ(history_size_at_title_request, 3u);
+  std::move(stored_title_callback)
+      .Run(base::ok(EngineConsumer::GenerationResultData(
+          mojom::ConversationEntryEvent::NewConversationTitleEvent(
+              mojom::ConversationTitleEvent::New("Weather in New York")),
+          std::nullopt)));
+
+  testing::Mock::VerifyAndClearExpectations(engine);
+
+  // A later turn must not send another title request.
+  base::RunLoop second_loop;
+  EXPECT_CALL(*engine, RequiresClientSideTitleGeneration())
+      .WillRepeatedly(testing::Return(true));
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(testing::WithArg<7>(
+          [&second_loop](EngineConsumer::GenerationCompletedCallback callback) {
+            std::move(callback).Run(
+                base::ok(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("Tomorrow will be 70F.")),
+                    std::nullopt)));
+            second_loop.QuitWhenIdle();
+          }));
+  EXPECT_CALL(*engine, GenerateConversationTitle).Times(0);
+
+  conversation_handler_->SubmitHumanConversationEntry("What about tomorrow?",
+                                                      std::nullopt);
+  second_loop.Run();
+
+  // Opening pair, the tool follow-up, then the second question and answer.
+  EXPECT_EQ(conversation_handler_->GetConversationHistory().size(), 5u);
+}
+
+TEST_F(ConversationHandlerUnitTest,
        SubmitHumanConversationEntry_AssistantResponseFailure) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeatureWithParameters(
