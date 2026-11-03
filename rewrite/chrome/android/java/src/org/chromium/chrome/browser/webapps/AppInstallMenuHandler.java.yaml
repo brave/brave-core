@@ -24,9 +24,10 @@ substitutions:
   - description:
       'Skip the Install/Create shortcut bottom sheet and add to Home screen
       directly.'
-    regex:
-      pattern: |-
-        boolean webAppInstalled =
-      replace: |-
-        if (BraveAppInstallMenuHandlerUtils.shouldAddToHomescreenOnly()) return doAddToHomescreen(activity, windowAndroid, modalDialogManager, currentTab, AppMenuVerbiage.APP_MENU_OPTION_ADD_TO_HOMESCREEN);
-                boolean webAppInstalled =
+    add_before_line:
+      line: 'boolean webAppInstalled ='
+      code:
+        '        if
+        (BraveAppInstallMenuHandlerUtils.shouldAddToHomescreenOnly()) return
+        doAddToHomescreen(activity, windowAndroid, modalDialogManager,
+        currentTab, AppMenuVerbiage.APP_MENU_OPTION_ADD_TO_HOMESCREEN);'

@@ -6,7 +6,5 @@
 substitutions:
   - description: 'Open Home screen shortcuts in a standalone webapp.'
     regex:
-      re_pattern:
-        '(AddToLauncherWithSkBitmap\(\s*web_contents,
-        )(\*\(params\.shortcut_info\))'
-      replace: '\1BraveMaybeStandalone(\2)'
+      pattern: 'ShortcutHelper::AddToLauncherWithSkBitmap('
+      replace: 'BraveAddToLauncherWithSkBitmap('
