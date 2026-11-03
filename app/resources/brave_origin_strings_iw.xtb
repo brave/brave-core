@@ -20,6 +20,7 @@
 <translation id="8541922081612557424">‏על Brave</translation>
 <translation id="987734326276404793">‏רוצה לקבל התראות על מעקב מחירים באמצעות Brave בטלפון?</translation>
 <translation id="1203500561924088507">תודה שהתקנת. עליך להפעיל מחדש את הדפדפן לפני השימוש ב-<ph name="BUNDLE_NAME"/>.</translation>
+<translation id="1213674046343558619">‏יש <ph name="IMPORTANT_UPDATE"/> בהמתנה. כדי לשמור על בטיחות הגלישה, Brave יתעדכן בפעם הבאה שלא תהיה פעילות במשך <ph name="IDLE_DURATION"/>.</translation>
 <translation id="1232234696885483911">‏כשפותחים את חיפוש התמונות, כותרת הדף, כתובת ה-URL והתוכן שלו, כולל קובצי PDF, נשלחים באופן אוטומטי לשרת. <ph name="LEARN_MORE"/></translation>
 <translation id="1934377710648094656">‏אחרי הכניסה לחשבון, אפשר להשתמש בסיסמאות ובפרטים נוספים מחשבון Brave ב-Brave. כדי לשנות את האפשרות הזאת, כדאי לעבור אל "החשבון שלך ב-Brave".</translation>
 <translation id="583633806828413086">‏הצגת Gemini ב-Brave בסרגל התפריטים של Mac</translation>
@@ -42,7 +43,7 @@
 <translation id="141901961143729572">כאן אפשר לשתף את המחשבות שלך</translation>
 <translation id="3880714039086599943">‏כדי לשתף את החלון, צריך לאפשר הקלטת מסך ב-Brave בקטע "הגדרות המערכת".</translation>
 <translation id="1586284627848250203">‏קבלת עזרה לגבי Brave for Testing</translation>
-<translation id="6741861636851880121">‏כדי לקבל גישה למידע השמור ולנתונים נוספים מתוך <ph name="DEVICE"/>, צריך להיכנס ל-Brave</translation>
+<translation id="6741861636851880121">‏כדי לקבל גישה למידע השמור ולנתונים נוספים מתוך <ph name="DEVICE"/>, צריך להתחבר ל-Brave</translation>
 <translation id="1497802159252041924">שגיאת התקנה: <ph name="INSTALL_ERROR"/></translation>
 <translation id="1518627427551567882">הדף הזה מוגן</translation>
 <translation id="5147525139567260139">‏שיתוף כרטיסיית Brave</translation>
@@ -186,7 +187,7 @@
 <translation id="7611046016537686219">{count,plural, =1{‏‫Brave צריך לאמת את הזהות שלך לפני שאפשר יהיה לשמור חלק מהנתונים בחשבון Brave ולהשתמש בהם בכל המכשירים שלך. אם תתבצע יציאה מהחשבון, הנתונים האלה יימחקו (פריט אחד).}one{‏‫Brave צריך לאמת את הזהות שלך לפני שאפשר יהיה לשמור חלק מהנתונים בחשבון Brave ולהשתמש בהם בכל המכשירים שלך. אם תתבצע יציאה מהחשבון, הנתונים האלה יימחקו ({count} פריטים).}two{‏‫Brave צריך לאמת את הזהות שלך לפני שאפשר יהיה לשמור חלק מהנתונים בחשבון Brave ולהשתמש בהם בכל המכשירים שלך. אם תתבצע יציאה מהחשבון, הנתונים האלה יימחקו ({count} פריטים).}other{‏‫Brave צריך לאמת את הזהות שלך לפני שאפשר יהיה לשמור חלק מהנתונים בחשבון Brave ולהשתמש בהם בכל המכשירים שלך. אם תתבצע יציאה מהחשבון, הנתונים האלה יימחקו ({count} פריטים).}}</translation>
 <translation id="4202995875619419215">‏פתיחה של <ph name="URL"/> בכרטיסייה חדשה ב-Brave.</translation>
 <translation id="1266825212217391702">‏חידושים בתחום ה-AI, כמו מיומנויות, נשמרים בחשבון שלך ב-Brave ומנוהלים בנפרד מסנכרון Brave</translation>
-<translation id="5459594001857520297">‏כדי לקבל גישה לתוספים ולנתונים נוספים בכל המכשירים, צריך להיכנס ל-Brave</translation>
+<translation id="5459594001857520297">‏כדי לקבל גישה לתוספים ולנתונים נוספים מכל המכשירים, צריך להתחבר ל-Brave</translation>
 <translation id="8880183781256147665">‏מתבצעת הוספה ל-Brave...</translation>
 <translation id="3038232873781883849">בהמתנה להתקנה…</translation>
 <translation id="3045032126857188731">שפת התרגום: <ph name="LANGUAGE"/></translation>
@@ -197,7 +198,7 @@
 <translation id="7918740962659365265">‏עזרה בשיפור Brave על ידי שליחת <ph name="UMA_LINK"/> ודוחות קריסה אל Brave</translation>
 <translation id="6828757829023033545">‏עם אפליקציית Brave אפשר ליהנות מתכונות הבטיחות של Brave בכל מקום</translation>
 <translation id="2332543193474246254">{NUM_DEVICES,plural, =0{‏תוסף אחד לפחות ל-Brave ניגש להתקן USB אחד}=1{‏תוסף אחד לפחות ל-Brave ניגש להתקן USB אחד}one{‏תוסף אחד לפחות ל-Brave ניגש ל-# התקני USB}two{‏תוסף אחד לפחות ל-Brave ניגש ל-# התקני USB}other{‏תוסף אחד לפחות ל-Brave ניגש ל-# התקני USB}}</translation>
-<translation id="3924086216508892728">‏כדי לקבל גישה לרשימת הקריאה ולנתונים נוספים מתוך <ph name="DEVICE"/>, צריך להיכנס ל-Brave</translation>
+<translation id="3924086216508892728">‏כדי לקבל גישה לרשימת הקריאה ולנתונים נוספים מתוך <ph name="DEVICE"/>, צריך להתחבר ל-Brave</translation>
 <translation id="3700405816184340252">‏ההיסטוריה ב-Brave</translation>
 <translation id="7365690458036015383">‏המתקין לא הצליח לבטל את דחיסת הארכיון. יש להוריד שוב את Brave.</translation>
 <translation id="310459126943037700">סיום המשימות נכשל.</translation>
@@ -216,10 +217,11 @@
 <translation id="1651639704310627074">‏בהמשך, תוצג לך שאלה ב-Brave אם להשתמש במידע השמור כדי למלא בשבילך טפסים באופן אוטומטי</translation>
 <translation id="2585240446624043880">‏Brave אינו יכול לקרוא ולכתוב בספריית הנתונים שלו: <ph name="USER_DATA_DIRECTORY"/></translation>
 <translation id="8414435293910785169">‏עם Brave ב-iOS, אפשר לקחת את הכלים שמבוססים על Brave AI איתך לכל מקום.</translation>
-<translation id="7474458067542595245">‏כדי לקבל גישה לתוספים ולנתונים נוספים מתוך <ph name="DEVICE"/>, צריך להיכנס ל-Brave</translation>
+<translation id="7474458067542595245">‏כדי לקבל גישה לתוספים ולנתונים נוספים מתוך <ph name="DEVICE"/>, צריך להתחבר ל-Brave</translation>
 <translation id="3286538390144397061">הפעל מחדש כעת</translation>
 <translation id="2339258256897053758">‏המפתחות של Brave API חסרים. פונקציונליות מסוימת של Brave תהיה מושבתת.</translation>
 <translation id="8926637909431618259">‏המשך הפעלת יישומים ברקע כאשר Brave סגור</translation>
+<translation id="8245661393996028021">‏‫Brave יתעדכן כשלא תהיה פעילות</translation>
 <translation id="518125528057094977">‏Brave יציג אזהרה לפני טעינת אתר כלשהו באמצעות חיבור לא מאובטח</translation>
 <translation id="8652321858775514885">‏אם סוגרים את כל החלונות של Brave, מתבצעת יציאה מהחשבון ברוב האתרים, אבל לא מחשבון Brave, אם נכנסת אליו ב-Brave. כדי לאפשר לאתרים לזכור אותך, <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="3352986031709923790">‏הפינה הימנית העליונה של אזור החיפוש: ‎<ph name="RIGHT"/>%‎ מימין, ‎<ph name="TOP"/>%‎ מלמעלה</translation>
@@ -228,7 +230,8 @@
 <translation id="2645435784669275700">ChromeOS</translation>
 <translation id="2297290224191497273">‏לעבור לפרופיל קיים של Brave?</translation>
 <translation id="3412460710772753638">עדכון במנהל הסיסמאות במכשיר הזה</translation>
-<translation id="5079573433701109938">‏כדי לקבל גישה לסימניות ולנתונים נוספים מתוך <ph name="DEVICE"/>, צריך להיכנס ל-Brave</translation>
+<translation id="172368702860945706">‏‫Brave רוצה להתעדכן</translation>
+<translation id="5079573433701109938">‏כדי לקבל גישה לסימניות ולנתונים נוספים מתוך <ph name="DEVICE"/>, צריך להתחבר ל-Brave</translation>
 <translation id="3438772217992559640">חיפוש בכרטיסייה בעזרת "חיפוש תמונות"</translation>
 <translation id="2491221873705777076">‏רוצה להרחיב את הגרסה המשופרת של גלישה בטוחה ב-Brave בטלפון?</translation>
 <translation id="7304389940068374923">‏‫Brave מבצע התאמה אישית…</translation>
@@ -259,7 +262,7 @@
 
           **הצעת שאלות:** יצירת רשימה של 3-5 שאלות מעוררות מחשבה שהמשתמש יכול לשאול כדי להבין טוב יותר את צילום המסך. לפחות שאלה אחת צריכה להתייחס באופן ספציפי לאובייקט חזותי, לעיצוב שלו או למיקום שלו.</translation>
 <translation id="6899774208752247219"><ph name="PAGE_TITLE"/> - Brave Origin</translation>
-<translation id="2715414892112164725">‏כדי לקבל גישה לסימניות ולנתונים נוספים בכל המכשירים שלך, צריך להיכנס ל-Brave</translation>
+<translation id="2715414892112164725">‏כדי לקבל גישה לסימניות ולנתונים נוספים מכל המכשירים שלך, צריך להתחבר ל-Brave</translation>
 <translation id="3885770153807205175">הכלי לבחירת שפה</translation>
 <translation id="6315734375101223238">‏התאמה אישית וניהול של Brave נחוצה פעולה שלך - יש ללחוץ לקבלת פרטים נוספים.</translation>
 <translation id="7130675370997202556">‏יש ללחוץ על השם שלך כדי לפתוח את Brave ולהתחיל לגלוש.</translation>
@@ -267,7 +270,7 @@
 <translation id="4920958997042285125">‏המשתמש <ph name="EXISTING_USER"/> כבר מחובר לפרופיל Brave הזה. כדי להפריד בין פעילויות גלישה, Brave יכול ליצור עבורך פרופיל משלך.</translation>
 <translation id="3941890832296813527">שגיאת התקנה: שם הקובץ של מנהל ההתקנה לא תקין או לא נתמך.</translation>
 <translation id="8090497651549769448">‏Brave מנסה להעתיק את הסיסמאות. כדי לאפשר למערכת לעשות זאת, יש להזין את הסיסמה שלך ל-Windows.</translation>
-<translation id="794644331787250140">‏כדי לקבל גישה למידע השמור ולנתונים נוספים בכל המכשירים, צריך להיכנס ל-Brave</translation>
+<translation id="794644331787250140">‏כדי לקבל גישה למידע השמור ולנתונים נוספים בכל המכשירים, צריך להתחבר ל-Brave</translation>
 <translation id="4256965182800026277">‏הסיסמאות, אמצעי התשלום והכתובות ששמרת בחשבון שלך ב-Brave יוסרו מהמכשיר הזה. כדי להשתמש בהם שוב ב-Brave, צריך להיכנס שוב לחשבון.</translation>
 <translation id="395904275706073188">לא ניתן לקרוא דפים מוגנים. כדאי לנסות דף אחר.</translation>
 <translation id="4194619960643453552">‏איך מערכת Brave שומרת על האבטחה שלך</translation>
@@ -354,7 +357,7 @@
 <translation id="711601904575862069">‏הפעלה מחדש לצורך עדכון &amp;Brave</translation>
 <translation id="4918086044614829423">אישור</translation>
 <translation id="4918844574251943176">התמונה הועתקה</translation>
-<translation id="1762888370864318972">‏כדי לקבל גישה לרשימת הקריאה ולנתונים נוספים בכל המכשירים, צריך להיכנס ל-Brave</translation>
+<translation id="1762888370864318972">‏כדי לקבל גישה לרשימת הקריאה ולנתונים נוספים מכל המכשירים, צריך להתחבר ל-Brave</translation>
 <translation id="8797356639448065696">‏Brave נמצא במצב רקע.</translation>
 <translation id="1895567721497166950">‏אפשר ללחוץ כדי לסגור את תיבת הדו-שיח של הכניסה ל-Brave</translation>
 <translation id="2692971232706994729">‏באמצעות פרופילים ב-Brave, אפשר להפריד את כל הפריטים ב-Brave. אפשר ליצור פרופילים שמיועדים לחברים ולבני משפחה או פרופילים נפרדים לעבודה ולבילויים בשעות הפנאי.</translation>
@@ -365,6 +368,7 @@
 <translation id="4877750182157975795">‏עם Brave במכשיר <ph name="DEVICE_TYPE"/> אפשר להשתמש בכל הפריטים של Brave שמעניינים אותך</translation>
 <translation id="1204184037023366446">‏צריך לתת ל-Brave הרשאה כדי לעקוב אחרי תנועות הידיים</translation>
 <translation id="5406591571925937375">‏לא נכנסת לאתר הזה בזמן האחרון. ההרשאות "<ph name="PERMISSION_1"/>", "<ph name="PERMISSION_2"/>" ו"<ph name="PERMISSION_3"/>" הוסרו על ידי Brave.</translation>
+<translation id="3576895950897485019">‏כניסה אל Brave</translation>
 <translation id="5174969993834422967">הבחירה שלך היא בדרך כלל לחסום התראות. כדי לאפשר לאתר הזה להציג התראות, יש ללחוץ על סמל ההתראה בפינה השמאלית של סרגל המיקום.</translation>
 <translation id="5174983315706567306">אין מספיק מקום בכונן.</translation>
 <translation id="8157129267754368853">‏נדרש אימות מחדש לחשבון Brave</translation>
@@ -373,6 +377,7 @@
 <translation id="5234764350956374838">סגירה</translation>
 <translation id="7690383309583926074">‏כדי לשמור סיסמאות תוך כדי תנועה, צריך להוריד את אפליקציית Brave</translation>
 <translation id="8586264863973514035">‏כדי להחיל את השינויים שביצעת, יש להפעיל מחדש את Brave</translation>
+<translation id="8127050479140582768">‏כדי לשלוח את הכרטיסייה הזו למכשיר אחר, צריך להתחבר ל-Brave בשני המכשירים</translation>
 <translation id="5286907366254680517">זוהתה</translation>
 <translation id="7264453786974905915">‏הורדת אפליקציית Brave</translation>
 <translation id="7230006500876504868">‏חיפוש באמצעות Brave</translation>
@@ -736,6 +741,7 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="5128665650717824082">‏לא ניתן להגדיר את Brave for Testing כדפדפן ברירת המחדל.</translation>
 <translation id="3053208669360972929">‏חיפוש באמצעות Brave מכל מקום</translation>
 <translation id="2433912322225810055">‏הגדרה זו גם קובעת איזה דף מוצג כשמפעילים את Brave או מבצעים חיפוש מסרגל הכתובות.</translation>
+<translation id="8789425457808164956">‏כדי לשלוח את הכרטיסייה הזו למכשיר אחר, צריך להתחבר בו ל-Brave</translation>
 <translation id="4100716194836114130">‏זהו ה-Brave שלך</translation>
 <translation id="8712637175834984815">הבנתי</translation>
 <translation id="1419543648228375718">‏להיכנס אל Brave?</translation>
@@ -777,7 +783,7 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="7055223246119657449">‏‫Brave חסם את ההורדה הזו כי קובץ הארכיון כולל קבצים אחרים שעלולים להסתיר תוכנות זדוניות</translation>
 <translation id="8341362078156319636">‏רוצה לסנכרן את הסיסמאות, הסימניות וההיסטוריה שלך באופן מושלם בין המכשירים? כדי להשתמש בקלות בתכונות המוכרות והאהובות, צריך לעדכן את דפדפן ברירת המחדל ל-Brave. לגישה מהירה, Brave יוצמד לסרגל האפליקציות.</translation>
 <translation id="8965179855019347124">‏רוצה להשתמש בכלי ה-AI הטובים ביותר של Brave? כשאפליקציית Brave מותקנת בטלפון שלך זה אפשרי</translation>
-<translation id="7591043002129819267">‏כדי לקבל גישה לסיסמאות ולנתונים נוספים מתוך <ph name="DEVICE"/>, צריך להיכנס ל-Brave</translation>
+<translation id="7591043002129819267">‏כדי לקבל גישה לסיסמאות ולנתונים נוספים מתוך <ph name="DEVICE"/>, צריך להתחבר ל-Brave</translation>
 <translation id="9049928023195059068">‏כניסה אל Brave כשנכנסים לשירותי Brave אחרים</translation>
 <translation id="4561046754724442504">‏Brave נסגר באופן אוטומטי</translation>
 <translation id="5173820533850252773">‏Brave אינו מעודכן</translation>

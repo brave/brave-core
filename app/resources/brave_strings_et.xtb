@@ -20,6 +20,7 @@
 <translation id="8541922081612557424">Teave Bravei kohta</translation>
 <translation id="987734326276404793">Hinnajälgimise märguanded Braveiga telefonis</translation>
 <translation id="1203500561924088507">Täname teid installimise eest. Enne brauseri <ph name="BUNDLE_NAME"/> kasutamist peate selle taaskäivitama.</translation>
+<translation id="1213674046343558619"><ph name="IMPORTANT_UPDATE"/> on ootel. Sirvimise turvalisuse tagamiseks värskendatakse Bravei järgmine kord, kui olete <ph name="IDLE_DURATION"/> inaktiivne.</translation>
 <translation id="1232234696885483911">Kui avate pildiotsingu, saadetakse lehe pealkiri, URL ja sisu (sh PDF-id) automaatselt serverisse. <ph name="LEARN_MORE"/></translation>
 <translation id="1934377710648094656">Kui olete sisse logitud, siis saate Braveis kasutada oma paroole ja oma Brave'i konto teisi võimalusi. Selle muutmiseks avage valik „Teie konto Braveis“.</translation>
 <translation id="583633806828413086">Kuva Gemini Braveis Maci menüüribal</translation>
@@ -222,6 +223,7 @@
 <translation id="3286538390144397061">Taaskäivitada kohe</translation>
 <translation id="2339258256897053758">Brave API võtmed on puudu. Teatud Bravei funktsioonid keelatakse.</translation>
 <translation id="8926637909431618259">Jätka taustarakenduste käitamist pärast Bravei sulgemist</translation>
+<translation id="8245661393996028021">Braveit värskendatakse, kui olete eemal.</translation>
 <translation id="518125528057094977">Brave hoiatab teid enne mis tahes saidi laadimist ebaturvalise ühenduse kaudu</translation>
 <translation id="8652321858775514885">Kõikide Bravei akende sulgemise korral logitakse teid välja enamikust saitidest, v.a Brave’i kontolt, kui olete Braveis sisse logitud. Kui soovite lubada saitidel ennast meelde jätta, <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="3352986031709923790">otsinguala parem ülanurk: <ph name="RIGHT"/>% paremal, <ph name="TOP"/>% üleval</translation>
@@ -230,6 +232,7 @@
 <translation id="2645435784669275700">Chrome OS</translation>
 <translation id="2297290224191497273">Kas lülituda olemasolevale Bravei profiilile?</translation>
 <translation id="3412460710772753638">Selle seadme paroolihalduris</translation>
+<translation id="172368702860945706">Brave soovib värskendada</translation>
 <translation id="5079573433701109938">Seadmes <ph name="DEVICE"/> oma järjehoidjatele ja muule sisule juurdepääsemiseks logige sisse Bravei.</translation>
 <translation id="3438772217992559640">Otsi sellelt vahelehelt pildiotsinguga</translation>
 <translation id="2491221873705777076">Laiendage Braveiga telefonis täiustatud ohutut sirvimist</translation>
@@ -367,6 +370,7 @@
 <translation id="4877750182157975795">Pääsege seadmes <ph name="DEVICE_TYPE"/> kõigile oma Brave'i lemmikutele juurde Braveiga.</translation>
 <translation id="1204184037023366446">Brave vajab teie käeliigutuste jälgimiseks luba</translation>
 <translation id="5406591571925937375">Te pole hiljuti külastanud. Brave eemaldas load <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, <ph name="PERMISSION_3"/>.</translation>
+<translation id="3576895950897485019">Logige Bravei sisse</translation>
 <translation id="5174969993834422967">Tavaliselt blokeerite märguanded. Kui soovite lubada sellel saidil endale märguandeid saata, klõpsake oma asukoha lüliti paremas nurgas märguande ikoonil.</translation>
 <translation id="5174983315706567306">Pole piisavalt kettaruumi.</translation>
 <translation id="8157129267754368853">Bravei konto vajab uuesti autentimist</translation>
@@ -375,6 +379,7 @@
 <translation id="5234764350956374838">Loobu</translation>
 <translation id="7690383309583926074">Hankige Bravei rakendus, et liikvel olles paroole salvestada</translation>
 <translation id="8586264863973514035">Muudatuste rakendamiseks käivitage Brave uuesti</translation>
+<translation id="8127050479140582768">Selle vahelehe saatmiseks teise seadmesse logige mõlemas seadmes Bravei sisse.</translation>
 <translation id="5286907366254680517">Tuvastatud</translation>
 <translation id="7264453786974905915">Hankige Bravei rakendus</translation>
 <translation id="7230006500876504868">Otsige Braveiga</translation>
@@ -738,6 +743,7 @@ Brave ei saa teie seadeid taastada.</translation>
 <translation id="5128665650717824082">Brauserit Brave for Testing ei saa teie vaikebrauseriks määrata.</translation>
 <translation id="3053208669360972929">Braveiga kõikjalt otsimine</translation>
 <translation id="2433912322225810055">Lisaks juhib see seda, mis leht kuvatakse Bravei käivitamisel või omnikastikeses otsingu tegemisel.</translation>
+<translation id="8789425457808164956">Selle vahelehe saatmiseks teise seadmesse logige teises seadmes Bravei sisse.</translation>
 <translation id="4100716194836114130">See on teie Brave</translation>
 <translation id="8712637175834984815">Selge</translation>
 <translation id="1419543648228375718">Kas logida Bravei sisse?</translation>

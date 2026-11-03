@@ -433,7 +433,6 @@
 <translation id="412480955826088549">Đang tải xuống Thành phần...</translation>
 <translation id="4894106830958548828">Tôi hiểu</translation>
 <translation id="2729085694451916573">Test string for <ph name="PART_ONE"/>place holders<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Learn more<ph name="PART_TWO_END"/></translation>
-<translation id="6705666103672654256">Các tìm kiếm và nội dung trang của bạn được xử lý trên thiết bị này. Không có gì được gửi đến Brave hoặc được người đánh giá xem. Đây là tính năng thử nghiệm và sẽ không phải lúc nào cũng chính xác.</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Bật hỗ trợ Unstoppable Domains trong Brave?</translation>
 <translation id="5015092481905019948">Brave sẽ sử dụng <ph name="PROVIDER_NAME"/> để giải quyết tên miền <ph name="DOMAIN_LIST"/> trên <ph name="DOMAIN_PROVIDER_NAME"/>. Brave ẩn địa chỉ IP của bạn. Nếu bạn bật tính năng này thì <ph name="PROVIDER_NAME"/> sẽ thấy ai đó đang cố truy cập những miền này chứ không phải gì khác. Xem<ph name="BEGIN_PROVIDER_TOU_LINK"/>điều khoản sử dụng<ph name="END_PROVIDER_TOU_LINK"/> và <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>chính sách quyền riêng tư<ph name="END_PROVIDER_PRIVACY_LINK"/> của <ph name="PROVIDER_NAME"/>.</translation>
@@ -809,8 +808,6 @@
 <translation id="223536150967420869">Mua</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="6810855196544084176">Cầu nối</translation>
-<translation id="3488255243387417752">Bán</translation>
-<translation id="5223034545851554347">Bạn không có đủ <ph name="TOKEN_SYMBOL"/> trong tài khoản này.</translation>
 <translation id="6585419509320235293">Chọn tài sản để gửi</translation>
 <translation id="1018742998826182079">Chọn tài sản để hoán đổi</translation>
 <translation id="2791691551852500015">Nhập địa chỉ người nhận</translation>
@@ -1327,7 +1324,6 @@
 <translation id="4312994183947987913">Mua/Ký quỹ</translation>
 <translation id="5133421763709317473">Không tìm thấy tài sản nào phù hợp với tìm kiếm hoặc bộ lọc</translation>
 <translation id="6423985584914773314">Không phải là địa chỉ FIL hợp lệ</translation>
-<translation id="6153197326949684688">Bán với <ph name="OFFRAMP_PROVIDER"/></translation>
 <translation id="5795821518596541838">Đối tác giao dịch</translation>
 <translation id="1916136859742693273">Brave Wallet sử dụng Meld.io để giúp tổng hợp và đưa ra các lựa chọn nhà cung cấp tiền điện tử khác nhau cho khu vực của bạn. Chúng tôi sẽ chia sẻ thông tin với Meld.io để hoàn tất giao dịch, bao gồm địa chỉ ví và mã quốc gia của bạn. Để biết thêm thông tin, vui lòng đọc điều khoản sử dụng của Meld.</translation>
 <translation id="245827814248186739">Tôi đã đọc và đồng ý với <ph name="LINK_BEFORE"/>Điều khoản sử dụng của Meld<ph name="LINK_AFTER"/></translation>
@@ -1643,7 +1639,7 @@
 <translation id="6646456430109279404">Hai mươi hai</translation>
 <translation id="1961743941324393172">Hai mươi ba</translation>
 <translation id="9079035825546416393">Hai mươi tư</translation>
-<translation id="1558531209852594808">Đã phát hiện các ký tự không phải ASCII!</translation>
+<translation id="6980520267116175375">Đã phát hiện các ký tự không mong muốn</translation>
 <translation id="442709594176931966">Xem tin nhắn gốc</translation>
 <translation id="2239252396088484499">Xem tin nhắn ở dạng mã hóa ASCII</translation>
 <translation id="2894654529758326923">Thông tin</translation>
@@ -1893,6 +1889,14 @@
 <translation id="6700561332544287722">Yêu cầu mở khóa vào lần sau</translation>
 <translation id="5605360570977617291">Ẩn <ph name="CARD_NAME"/> khỏi màn hình chính?</translation>
 <translation id="2721464457853369512">Số dư <ph name="CARD_NAME"/> của bạn không thay đổi. Việc này chỉ ẩn thẻ khỏi màn hình chính. Bạn có thể hiển thị lại bất cứ lúc nào trong phần Cài đặt, mục Ví.</translation>
+<translation id="1543259266592091784">Thêm tiền</translation>
+<translation id="6202621179510403111">Thẻ mới</translation>
+<translation id="2366365638711338487">Thu nhập <ph name="DATE_BEGIN"/>(<ph name="DATE"/>)<ph name="DATE_END"/></translation>
+<translation id="4938547503015386493">Lãi + <ph name="AMOUNT"/> BAT hoàn tiền</translation>
+<translation id="5124185664922725208">Chi tiêu</translation>
+<translation id="1591562245178063882">Tháng này</translation>
+<translation id="2781977263564899470">Nhận thẻ vật lý</translation>
+<translation id="3388543273143324626">Sử dụng tại cửa hàng và máy ATM</translation>
 <translation id="3155170474926428993">Trình chạy Tor</translation>
 <translation id="3745016858329272300">Thông tin Chung</translation>
 <translation id="4045404575593562245">Sự kiện Kiểm soát Tor</translation>
@@ -2230,12 +2234,12 @@
 <translation id="7905602379229309187">Điểm cuối hiện đang quá tải. Vui lòng thử lại sau.</translation>
 <translation id="8151638057146502721">Cấu hình</translation>
 <translation id="999273441077650169">Mô hình thay đổi động để sử dụng mô hình tốt nhất cho tác vụ này.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
-<translation id="3852808100039989429">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Qwen VL 30B, một mô hình được tạo ra bởi Alibaba Cloud để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. Qwen được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
+<translation id="8218534413919828549">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Qwen 3.6 35B, một mô hình được tạo ra bởi Alibaba Cloud để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. Qwen được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi GLM-5.3 Flash, một mô hình được tạo ra bởi Zhipu AI để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. GLM-5.3 Flash được NEAR lưu trữ thông qua cơ sở hạ tầng bảo mật riêng của họ có thể xác minh.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Xin chào, tôi là Leo. Tôi là trợ lý AI của Brave. Tôi được cung cấp bởi Claude Instant, một mô hình do Anthropic phát triển để xử lý hội thoại và văn bản. Claude Instant được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật riêng.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Claude Sonnet, một mô hình được tạo ra bởi Anthropic để hỗ trợ các công việc đàm thoại và xử lý văn bản. Claude Sonnet được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
-<translation id="6676306995311143470">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Grok 4.6, mô hình suy luận tiên tiến của xAI trên Amazon Bedrock Mantle. Grok 4.6 được phục vụ thông qua cơ sở hạ tầng AWS bảo mật của Brave.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
-<translation id="2394656730986208060">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi GPT 5.6 Luna, mô hình nhanh, độ trễ thấp của OpenAI trên Amazon Bedrock Mantle. GPT 5.6 Luna được phục vụ thông qua cơ sở hạ tầng AWS bảo mật của Brave.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
+<translation id="3934503473603661122">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Grok 4.7, mô hình suy luận tiên tiến của xAI trên Amazon Bedrock. Grok 4.7 được phục vụ thông qua cơ sở hạ tầng AWS bảo mật của Brave.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
+<translation id="8983215701788462580">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi GPT Luna, mô hình nhanh, độ trễ thấp của OpenAI trên Amazon Bedrock. GPT Luna được phục vụ thông qua cơ sở hạ tầng AWS bảo mật của Brave.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi GPT 5.6 Terra, mô hình sản xuất cân bằng của OpenAI trên Amazon Bedrock Mantle. GPT 5.6 Terra được phục vụ thông qua cơ sở hạ tầng AWS bảo mật của Brave.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Mistral Large, một mô hình được tạo ra bởi Mistral để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. Mistral Large được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Qwen 3.8 Flash Next, một mô hình được tạo ra bởi Alibaba Cloud để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. Qwen 3.8 Flash Next được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
@@ -2286,6 +2290,10 @@
 <translation id="3027575440738035995">Leo Premium cung cấp quyền truy cập vào bộ mô hình ngôn ngữ mở rộng để có được sắc thái câu trả lời thậm chí còn lớn hơn. <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="8261506727792406068">Xóa</translation>
 <translation id="6574153208133461043">Bạn có chắc muốn xóa cuộc trò chuyện này? Hành động này không thể hoàn tác.</translation>
+<translation id="1020105790073039189">Chuyển sang mô hình có thể đọc hình ảnh?</translation>
+<translation id="3797128260474242570"><ph name="CURRENT_MODEL"/> không thể đọc hình ảnh, và các tệp đính kèm của bạn cần xử lý hình ảnh. Để gửi chúng, hãy chuyển cuộc trò chuyện này sang <ph name="VISION_MODEL"/>. Nó sẽ nhận toàn bộ cuộc trò chuyện, bao gồm cả các tin nhắn trước đó. Bạn cũng có thể hủy và chọn một mô hình khác có thể đọc hình ảnh. Nếu bạn gửi mà không có hình ảnh, Leo sẽ không thể xem các tệp đính kèm.</translation>
+<translation id="830353068401992697">Chuyển và gửi</translation>
+<translation id="369110003363071587">Gửi không kèm hình ảnh</translation>
 <translation id="7488762544858401571">Đã sửa</translation>
 <translation id="5604254791550001355">Chỉnh sửa câu lệnh</translation>
 <translation id="8115786586976830777">Sao chép câu lệnh</translation>
@@ -2440,6 +2448,7 @@
 <translation id="3024277805447899099">Xem trước ảnh</translation>
 <translation id="6671495933530132209">Sao chép ảnh</translation>
 <translation id="6864459304226931083">Tải ảnh xuống</translation>
+<translation id="6323406350879995440">Mở trong tab</translation>
 <translation id="6332876390231524389">Nội dung thẻ hiện tại</translation>
 <translation id="6397861830483632092">Mở các tab…</translation>
 <translation id="802080272588201037">Dấu trang…</translation>
@@ -2494,11 +2503,14 @@
 <translation id="4838375634693651776">Chạy mã trong môi trường sandbox để hỗ trợ giải đáp thắc mắc của bạn</translation>
 <translation id="6990975553143971265">Đang tìm kiếm lịch sử trình duyệt của bạn cho "<ph name="QUERY"/>"</translation>
 <translation id="8302511726757276645">Đang tìm kiếm lịch sử trình duyệt của bạn</translation>
+<translation id="6727762439034900202">Đang tạo một không gian làm việc</translation>
+<translation id="261799307673205052">Không gian làm việc</translation>
 <translation id="8410699755320690690">Brave AI muốn tìm kiếm lịch sử duyệt web của bạn. Việc tìm kiếm chạy cục bộ trên thiết bị của bạn, do đó toàn bộ lịch sử của bạn không được gửi đi đâu. Chỉ có tiêu đề, URL và các đoạn văn bản được lập chỉ mục của các trang phù hợp sẽ được gửi đến Brave AI như một phần của cuộc trò chuyện này.</translation>
 <translation id="4379566111233326721">Mã:</translation>
 <translation id="3542130965673205258">Đầu ra:</translation>
 <translation id="6911817209337314910">Đưa ra một số lựa chọn để bạn tham khảo</translation>
 <translation id="5382076391290708074">Di chuyển các thẻ của bạn xung quanh</translation>
+<translation id="8717463977094156527">Cho phép điều này sẽ gửi **URL** và **Tiêu đề** của tất cả Thẻ và Nhóm Thẻ của bạn cho Brave AI, cộng với **các đoạn trích ngắn của nội dung văn bản trang** trong các Thẻ của bạn nếu có từ chỉ mục Tìm kiếm Lịch sử Ngữ nghĩa của bạn, và cho phép Brave AI di chuyển các Thẻ của bạn. Quyền này chỉ áp dụng cho cuộc trò chuyện này.</translation>
 <translation id="3862123464576147769">Cho phép điều này sẽ gửi <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> và <ph name="TITLE_FORMAT_START"/>Tiêu đề<ph name="TITLE_FORMAT_END"/> của tất cả các Thẻ và Nhóm Thẻ của bạn đến Brave AI, và cho phép Brave AI di chuyển chúng xung quanh. Quyền này chỉ áp dụng cho cuộc trò chuyện này.</translation>
 <translation id="396165714586708444">Nghiên cứu Sâu</translation>
 <translation id="577747221882855891">Tìm kiếm: "<ph name="QUERY"/>"</translation>
@@ -2526,7 +2538,7 @@
 <translation id="7901376755618482277">Hiển thị gợi ý "Bí danh mới" trên các trường email</translation>
 <translation id="6002159997868894136">Bấm để sao chép bí danh</translation>
 <translation id="8105770564756958406">Được sử dụng bởi <ph name="DOMAINS"/></translation>
-<translation id="5006956315579221642">Tạo tối đa 5 bí danh email miễn phí để bảo vệ địa chỉ email thực của bạn.</translation>
+<translation id="6776324888261353420">Tạo tối đa <ph name="MAX_ALIASES"/> bí danh email miễn phí để bảo vệ địa chỉ email thực của bạn.</translation>
 <translation id="9046133327037621173">Bí danh email mới</translation>
 <translation id="3768606658230902536">Tạo địa chỉ email ngẫu nhiên chuyển tiếp đến hộp thư đến của bạn và giữ bí mật email cá nhân của bạn.</translation>
 <translation id="4452721050684632493">Đã đạt đến giới hạn bí danh</translation>
@@ -2599,7 +2611,7 @@
 <translation id="6851426306697017546">Hiển thị đồng hồ</translation>
 <translation id="4844370919312937270">Hiển thị tiện ích tìm kiếm trong thẻ mới</translation>
 <translation id="5088374130885640159">Với <ph name="REWARDS_LINK_BEGIN"/>Phần thưởng Brave<ph name="REWARDS_LINK_END"/>, bạn có thể có thu nhập khi xem quảng cáo trên trang thẻ mới. <ph name="LEARN_MORE_LINK_BEGIN"/>Tìm hiểu thêm<ph name="LEARN_MORE_LINK_END"/>.</translation>
-<translation id="4100520468072294616">Hiển thị quảng cáo trên trang thẻ mới</translation>
+<translation id="7020410251711260841">Hiển thị Quảng cáo được Tài trợ</translation>
 <translation id="4983925687993168579">Thống kê</translation>
 <translation id="5009354496127441090">Hiển thị các trang hàng đầu</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -2622,6 +2634,7 @@
 <translation id="8814357473522731680">Được hỗ trợ bởi</translation>
 <translation id="7143207342074048698">Đang kết nối</translation>
 <translation id="1202549130170287307">Đang ngắt kết nối</translation>
+<translation id="4989542687859782284">Không khả dụng</translation>
 <translation id="8941703009412168350">BRAVE VPN</translation>
 <translation id="6303294677342628402">Lá chắn</translation>
 <translation id="8458987127502506209">Bật Lá chắn Brave</translation>
@@ -2810,9 +2823,11 @@
 <translation id="6021669293402055982">Brave VPN: Ngắt kết nối</translation>
 <translation id="3541307549916475335">Brave VPN Panel UI</translation>
 <translation id="2325196879156848326">Kết nối không thành công</translation>
+<translation id="6246488334766115273">Kết nối không khả dụng</translation>
 <translation id="745054660363064771">Không thể kết nối với máy chủ</translation>
 <translation id="3936826714240735937">Chọn một máy chủ khác</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/> không thể kết nối đến máy chủ <ph name="REGION_NAME"/>. Vui lòng thử lại hoặc chọn quốc gia khác.</translation>
+<translation id="4872940635040426686"><ph name="PRODUCT_NAME"/> không khả dụng. Nếu sự cố vẫn tiếp diễn, vui lòng cài đặt lại Brave hoặc liên hệ với đội ngũ hỗ trợ kỹ thuật của chúng tôi.</translation>
 <translation id="1776533911621317363">Bắt đầu dùng thử miễn phí 7 ngày</translation>
 <translation id="3357036723290257445">Đã mua Brave VPN?</translation>
 <translation id="8652175077544655965">Đóng cài đặt</translation>
@@ -2953,11 +2968,13 @@ Chúng tôi sẽ giúp bạn kết nối!</translation>
 <translation id="4405566535206792621">Để thay đổi mật khẩu của bạn, vui lòng xác minh địa chỉ email của bạn.</translation>
 <translation id="3135333563420939059">Email của bạn đã được xác minh. Hãy đặt mật khẩu mới để hoàn tất việc thay đổi mật khẩu.</translation>
 <translation id="4227581348172626540">Hủy thay đổi mật khẩu</translation>
-<translation id="808894953321890993">Thay đổi mật khẩu</translation>
 <translation id="7967687455715421528">Không thể thay đổi mật khẩu</translation>
 <translation id="7413006094063730650">Xóa tài khoản</translation>
 <translation id="4869737930995549965">Đăng xuất</translation>
-<translation id="2902312830803030883">Thêm hành động</translation>
+<translation id="4424262960694990728">Yêu cầu hành động</translation>
+<translation id="847260521336960132">Chi tiết tài khoản</translation>
+<translation id="5399593843842221768">Thông tin cá nhân về tài khoản Brave của bạn.</translation>
+<translation id="5771731269320499905">Chi tiết tài khoản Brave</translation>
 <translation id="5538654494923870167">Bắt đầu với tài khoản Brave của bạn</translation>
 <translation id="1544145635547515689">Tạo tài khoản Brave</translation>
 <translation id="3828644479849256404">Đã có tài khoản? Đăng nhập</translation>
@@ -2973,6 +2990,7 @@ Chúng tôi sẽ giúp bạn kết nối!</translation>
 <translation id="7114054701490058191">Mật khẩu không khớp</translation>
 <translation id="4277028893293644418">Đặt lại mật khẩu</translation>
 <translation id="9033485352495162741">Xác nhận thành công. Bây giờ hãy nhập mật khẩu mới bạn muốn:</translation>
+<translation id="808894953321890993">Thay đổi mật khẩu</translation>
 <translation id="1293857704520741614">Đăng nhập vào tài khoản của bạn</translation>
 <translation id="118617366439356381">Quên mật khẩu?</translation>
 <translation id="5636406393070713097">Xác nhận email tài khoản Brave của bạn và bạn sẽ nhận được một mã để đặt lại mật khẩu. Mã này chỉ có hiệu lực trong 15 phút.</translation>

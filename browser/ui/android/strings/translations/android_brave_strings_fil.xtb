@@ -220,7 +220,6 @@
 <translation id="9040069796107003510">Icon ng Brave Rewards</translation>
 <translation id="6333347122924254968">Ipakita ang icon ng Mga Reward ng Brave sa address bar</translation>
 <translation id="4393974575368329991">Toolbar ng navigation sa ibaba</translation>
-<translation id="8727059712928806451">I-enable ang bottom bar</translation>
 <translation id="1834226716203076292">Magpakita ng bottom bar para sa mabilis na pag-access sa home, bookmarks, at search</translation>
 <translation id="1422686363939271829">Naka-disable ang setting na ito kapag pinili ang posisyon ng address bar sa ibaba</translation>
 <translation id="6587448235155023666">Magkakabisa ang iyong mga pagbabago sa susunod na ilunsad mong muli ang Brave</translation>
@@ -290,7 +289,7 @@
 <translation id="2569646144216067185">Bilang ng salita: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Mali ang sync code</translation>
 <translation id="8284063834901328650">Mali ang sync QR code</translation>
-<translation id="859506441384380749">Ang code na ito ay binuo ng hindi na ginagamit na bersyon ng Brave, paki-upgrade muna ang iba mong device</translation>
+<translation id="4002014583969312635">Mukhang ang code na ito ay ginawa sa isang device na nagpapatakbo ng mas lumang bersyon ng Brave. Pakibago sa pinakabagong bersyon ng Brave sa iyong kabilang device, at pagkatapos ay gumawa ng bagong sync code.</translation>
 <translation id="3132642509209154999">Nag-expire na ang code. Bumuo ng bago sa iba mong device at subukan ulit.</translation>
 <translation id="2859229680945501779">Ang code na ito ay hindi wasto. Pakitingnan kung ang oras at timezone ay nakaset nang tama sa iyong device.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
@@ -336,8 +335,6 @@
 <translation id="8185825081026121627">Magkaroon ng Basic Attention Token sa pamamagitan ng pagtingin sa mga ad na nagpapanatili sa privacy sa Brave Rewards.</translation>
 <translation id="5321518976657560663">Error sa Pag-reset</translation>
 <translation id="4114170343590425996">Nagka-error sa pag-reset sa Brave Rewards. Pakilunsad muli ang Brave at subukang muli.</translation>
-<translation id="6417420737057016607">Mga Patalastas sa Brave</translation>
-<translation id="5611966874859284786">Nagpapakita ng mga ad ng notification kapag hindi ginagamit ang Brave</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>I-reset ang data ng Mga Rewards ng Brave…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>I-clear ang data ng Mga Brave Ad…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Idagdag ng Bookmark</translation>
@@ -400,8 +397,9 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="4546260624932151782">Ipakita ang mga paborito</translation>
 <translation id="5313967007315987356">Magdagdag ng site</translation>
 <translation id="1773147648972887693">Ipakita ang madalas na binibisita</translation>
-<translation id="752098910262610337">Ipakita ang mga shortcut</translation>
 <translation id="7134741506051403308">Itago ang widget</translation>
+<translation id="1247759249260562308">I-edit ang paborito</translation>
+<translation id="6387214885349500492">I-pin ang paboritong ito</translation>
 <translation id="7462178177755090262">Pambungad na Screen</translation>
 <translation id="5365434987337264071">Huling binuksang tab</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {Bagong tab matapos ang <ph name="HOURS_ONE"/> oras ng kawalang-aktibidad} other {Bagong tab matapos ang <ph name="HOURS_MANY"/> oras ng kawalang-aktibidad}}</translation>
@@ -970,6 +968,7 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="6365389672683343144">Kayang protektahan ng subscription mo sa Brave VPN ang hanggang 5 device, sa Android, iOS, at desktop. I-link lang ang subscription mo sa Google Play sa Brave account mo.</translation>
 <translation id="6610899852831463073">Hindi ma-enable ang Ligtas na Pagba-browse</translation>
 <translation id="7954263306665462056">Na-disable ang Ligtas na Pagba-browse sa iyong device. Para ma-enable ito, tiyaking naka-install ang Google Play Services at na-update ito.</translation>
+<translation id="6417420737057016607">Mga Patalastas sa Brave</translation>
 <translation id="7748944510530490017">Mga Pangunahing Network</translation>
 <translation id="2781668117338732220">Mga Pangalawang Network</translation>
 <translation id="282560918037172384">I-test and Mga Network</translation>

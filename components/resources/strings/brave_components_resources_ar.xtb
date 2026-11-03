@@ -433,7 +433,6 @@
 <translation id="412480955826088549">جاري تحميل المكون ...</translation>
 <translation id="4894106830958548828">أفهم</translation>
 <translation id="2729085694451916573">سلسلة اختبار لـ <ph name="PART_ONE"/>العناصر النائبة<ph name="PART_ONE_END"/><ph name="PART_TWO"/>معرفة المزيد<ph name="PART_TWO_END"/></translation>
-<translation id="6705666103672654256">تتم معالجة عمليات البحث ومحتويات الصفحة على هذا الجهاز. لا يتم إرسال أي شيء إلى Brave ولا يراه المراجعون البشريون. هذه ميزة تجريبية ولن تكون صحيحة دائمًا.</translation>
 <translation id="7534079972563542000">النطاقات التي لا يمكن إيقافها</translation>
 <translation id="4492298165410552103">هل تريد تمكين دعم النطاقات التي لا يمكن إيقافها في Brave؟</translation>
 <translation id="5015092481905019948">سيستخدم متصفح Brave <ph name="PROVIDER_NAME"/> لحل أسماء نطاقات <ph name="DOMAIN_LIST"/> على<ph name="DOMAIN_PROVIDER_NAME"/>. يُخفي متصفح Brave عنوان IP الخاص بك. إذا قمت بتمكين هذه الميزة، فإن <ph name="PROVIDER_NAME"/> سيلاحظ أن شخصًا ما يحاول زيارة هذه النطاقات لكن لا شيء آخر. راجع شروط استخدام <ph name="BEGIN_PROVIDER_TOU_LINK"/><ph name="END_PROVIDER_TOU_LINK"/> <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>وسياسة الخصوصية<ph name="END_PROVIDER_PRIVACY_LINK"/>.</translation>
@@ -811,8 +810,6 @@
 <translation id="223536150967420869">شراء</translation>
 <translation id="538450413584738399">تبديل</translation>
 <translation id="6810855196544084176">كوبري</translation>
-<translation id="3488255243387417752">بيع</translation>
-<translation id="5223034545851554347">ليس لديك ما يكفي من <ph name="TOKEN_SYMBOL"/> في هذا الحساب.</translation>
 <translation id="6585419509320235293">حدد قيمة المساهمة لإرسالها</translation>
 <translation id="1018742998826182079">حدد قيمة المساهمة للتبديل</translation>
 <translation id="2791691551852500015">أدخل عنوان المستلم</translation>
@@ -1330,7 +1327,6 @@
 <translation id="4312994183947987913">شراء/إيداع</translation>
 <translation id="5133421763709317473">لم يتم العثور على أصول مطابقة للبحث أو التصفية</translation>
 <translation id="6423985584914773314">ليس عنوان FIL صالح</translation>
-<translation id="6153197326949684688">بيع باستخدام <ph name="OFFRAMP_PROVIDER"/></translation>
 <translation id="5795821518596541838">شريك المعاملات</translation>
 <translation id="1916136859742693273">تستخدم محفظة Brave موقع Meld.io للمساعدة على جمع وإظهار مختلف مزودي العملات الرقمية لمنطقتك. سنشارك معلومات مع موقع Meld.io لإكمال المعاملات، بما في ذلك عنوان محفظتك ورمز بلدك. للمزيد من المعلومات، يُرجى قراءة شروط استخدام Meld.</translation>
 <translation id="245827814248186739">قرأت وأوافق على <ph name="LINK_BEFORE"/> شروط استخدام Meld<ph name="LINK_AFTER"/></translation>
@@ -1646,7 +1642,7 @@
 <translation id="6646456430109279404">الثاني والعشرون</translation>
 <translation id="1961743941324393172">الثالث والعشرون</translation>
 <translation id="9079035825546416393">الرابع والعشرون</translation>
-<translation id="1558531209852594808">تم اكتشاف أحرف بخلاف ASCII!</translation>
+<translation id="6980520267116175375">تم اكتشاف أحرف غير متوقعة</translation>
 <translation id="442709594176931966">عرض الرسالة الأصلية</translation>
 <translation id="2239252396088484499">عرض الرسالة بترميز ASCII</translation>
 <translation id="2894654529758326923">معلومات</translation>
@@ -1896,6 +1892,14 @@
 <translation id="6700561332544287722">طلب فتح القفل في المرة القادمة</translation>
 <translation id="5605360570977617291">إخفاء <ph name="CARD_NAME"/> من الصفحة الرئيسية؟</translation>
 <translation id="2721464457853369512">رصيد <ph name="CARD_NAME"/> الخاص بك لم يتغير. هذا يخفي البطاقة فقط من الصفحة الرئيسية. يمكنك إظهارها مرة أخرى في أي وقت في الإعدادات، ضمن المحفظة.</translation>
+<translation id="1543259266592091784">إضافة أموال</translation>
+<translation id="6202621179510403111">بطاقة جديدة</translation>
+<translation id="2366365638711338487">الأرباح <ph name="DATE_BEGIN"/>(<ph name="DATE"/>)<ph name="DATE_END"/></translation>
+<translation id="4938547503015386493">الفائدة + <ph name="AMOUNT"/> BAT استرداد نقدي</translation>
+<translation id="5124185664922725208">الإنفاق</translation>
+<translation id="1591562245178063882">هذا الشهر</translation>
+<translation id="2781977263564899470">احصل على بطاقة فعلية</translation>
+<translation id="3388543273143324626">استخدمها في المتاجر وأجهزة الصراف الآلي</translation>
 <translation id="3155170474926428993">مشغِّل تور</translation>
 <translation id="3745016858329272300">معلومات عامة</translation>
 <translation id="4045404575593562245">أحداث تحكم تور</translation>
@@ -2233,12 +2237,12 @@
 <translation id="7905602379229309187">نقطة النهاية محملة فوق طاقتها حاليًا. يرجى المحاولة مرة أخرى لاحقًا.</translation>
 <translation id="8151638057146502721">إعداد</translation>
 <translation id="999273441077650169">يتغير النموذج ديناميكيًا لاستخدام الأفضل للمهمة.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
-<translation id="3852808100039989429">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Qwen VL 30B، وهو نموذج تم إنشاؤه من طرف Alibaba Cloud ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Qwen من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="8218534413919828549">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Qwen 3.6 35B، وهو نموذج تم إنشاؤه من طرف Alibaba Cloud ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Qwen من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة GLM-5.3 Flash، وهو نموذج تم إنشاؤه من طرف Zhipu AI ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة GLM-5.3 Flash من خلال البنية التحتية الآمنة المتحققة من صحتها الخاصة بـ NEAR.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">مرحبًا، أنا ليو. أنا مساعد ذكي من Brave. أعمل بواسطة Claude Instant، نموذج طورته Anthropic لأداء مهام المحادثة ومعالجة النصوص. يتم تشغيل Claude Instant عبر بنية Brave التحتية الآمنة الخاصة.<ph name="LINK_BEFORE"/>اعرف المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Claude Sonnet، وهو نموذج تم إنشاؤه بواسطة Anthropic لتشغيل المهام الحوارية ومعالجة النصوص. يتم استضافة Claude Sonnet من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
-<translation id="6676306995311143470">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Grok 4.6، نموذج التفكير المتطور من xAI على Amazon Bedrock Mantle. يتم تقديم Grok 4.6 من خلال البنية التحتية الآمنة لـ AWS الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
-<translation id="2394656730986208060">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة GPT 5.6 Luna، نموذج OpenAI السريع ومنخفض زمن الاستجابة على Amazon Bedrock Mantle. يتم تقديم GPT 5.6 Luna من خلال البنية التحتية الآمنة لـ AWS الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="3934503473603661122">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Grok 4.7، نموذج التفكير المتطور من xAI على Amazon Bedrock. يتم تقديم Grok 4.7 من خلال البنية التحتية الآمنة لـ AWS الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="8983215701788462580">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة GPT Luna، نموذج OpenAI السريع ومنخفض زمن الاستجابة على Amazon Bedrock. يتم تقديم GPT Luna من خلال البنية التحتية الآمنة لـ AWS الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة GPT 5.6 Terra، نموذج OpenAI المتوازن للإنتاج على Amazon Bedrock Mantle. يتم تقديم GPT 5.6 Terra من خلال البنية التحتية الآمنة لـ AWS الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Mistral Large، وهو نموذج تم إنشاؤه من طرف Mistral ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Mistral Large من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Qwen 3.8 Flash Next، وهو نموذج تم إنشاؤه من طرف Alibaba Cloud ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Qwen 3.8 Flash Next من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
@@ -2289,6 +2293,10 @@
 <translation id="3027575440738035995">يوفر Leo Premium إمكانية الوصول إلى مجموعات موسعة من نماذج اللغات للحصول على إجابات أكثر دقة. <ph name="LINK_BEFORE"/>لمزيد من المعلومات<ph name="LINK_AFTER"/></translation>
 <translation id="8261506727792406068">حذف</translation>
 <translation id="6574153208133461043">هل أنت متأكد من أنك تريد حذف هذه المحادثة؟ لا يمكن التراجع عن هذا الإجراء.</translation>
+<translation id="1020105790073039189">هل تريد التبديل إلى نموذج يمكنه قراءة الصور؟</translation>
+<translation id="3797128260474242570">لا يمكن لـ <ph name="CURRENT_MODEL"/> قراءة الصور، ومرفقاتك تحتاج إلى معالجة الصور. لإرسالها، قم بتبديل هذه المحادثة إلى <ph name="VISION_MODEL"/>. سيتلقى المحادثة بأكملها، بما في ذلك الرسائل السابقة. يمكنك أيضًا الإلغاء واختيار نموذج آخر يمكنه قراءة الصور. إذا أرسلت بدون صور، فلن يتمكن Leo من رؤية المرفقات.</translation>
+<translation id="830353068401992697">التبديل والإرسال</translation>
+<translation id="369110003363071587">الإرسال بدون صور</translation>
 <translation id="7488762544858401571">مُحرّر</translation>
 <translation id="5604254791550001355">تعديل الطلب</translation>
 <translation id="8115786586976830777">نسخ الطلب</translation>
@@ -2443,6 +2451,7 @@
 <translation id="3024277805447899099">معاينة الصورة</translation>
 <translation id="6671495933530132209">نسخ الصورة</translation>
 <translation id="6864459304226931083">تنزيل الصورة</translation>
+<translation id="6323406350879995440">الفتح في علامة تبويب</translation>
 <translation id="6332876390231524389">محتويات علامة التبويب الحالية</translation>
 <translation id="6397861830483632092">فتح علامات التبويب…</translation>
 <translation id="802080272588201037">الإشارات المرجعية…</translation>
@@ -2497,11 +2506,14 @@
 <translation id="4838375634693651776">تنفيذ الكود في صندوق رمل للمساعدة في استعلامك</translation>
 <translation id="6990975553143971265">البحث في سجل المتصفح عن "<ph name="QUERY"/>"</translation>
 <translation id="8302511726757276645">البحث في سجل المتصفح</translation>
+<translation id="6727762439034900202">جارٍ إنشاء مساحة عمل</translation>
+<translation id="261799307673205052">مساحة العمل</translation>
 <translation id="8410699755320690690">يريد Brave AI البحث في سجل التصفح الخاص بك. يتم إجراء البحث محليًا على جهازك، لذا لا يتم إرسال سجلك الكامل إلى أي مكان. سيتم إرسال عناوين الصفحات المطابقة وعناوين URL ومقاطع النص المفهرسة فقط إلى Brave AI كجزء من هذه المحادثة.</translation>
 <translation id="4379566111233326721">الكود:</translation>
 <translation id="3542130965673205258">الناتج:</translation>
 <translation id="6911817209337314910">إنشاء بعض الخيارات لتختار من بينها</translation>
 <translation id="5382076391290708074">نقل علامات التبويب الخاصة بك</translation>
+<translation id="8717463977094156527">سيؤدي السماح بهذا إلى إرسال **عنوان URL** و**العنوان** لجميع علامات التبويب ومجموعات علامات التبويب الخاصة بك إلى Brave AI، بالإضافة إلى **مقتطفات قصيرة من نص الصفحة** في علامات التبويب الخاصة بك حيثما كانت متوفرة من فهرس البحث الدلالي في السجل، والسماح لـ Brave AI بنقل علامات التبويب الخاصة بك. ينطبق هذا الإذن على هذه المحادثة فقط.</translation>
 <translation id="3862123464576147769">السماح بهذا سيرسل <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> و <ph name="TITLE_FORMAT_START"/>العنوان<ph name="TITLE_FORMAT_END"/> لجميع علامات التبويب والمجموعات الخاصة بك إلى Brave AI، والسماح لـ Brave AI بنقلها حول. ينطبق هذا الإذن فقط على هذه المحادثة.</translation>
 <translation id="396165714586708444">البحث العميق</translation>
 <translation id="577747221882855891">البحث عن: "<ph name="QUERY"/>"</translation>
@@ -2529,7 +2541,7 @@
 <translation id="7901376755618482277">عرض تلميح "اسم مستعار جديد" في حقول البريد الإلكتروني</translation>
 <translation id="6002159997868894136">اضغط لنسخ الاسم المستعار</translation>
 <translation id="8105770564756958406">يُستعمل بواسطة <ph name="DOMAINS"/></translation>
-<translation id="5006956315579221642">أنشئ ما يصل إلى 5 معرّفات بريد إلكتروني بديلة مجانية لحماية عنوان بريدك الإلكتروني الحقيقي.</translation>
+<translation id="6776324888261353420">أنشئ ما يصل إلى <ph name="MAX_ALIASES"/> معرّفات بريد إلكتروني بديلة مجانية لحماية عنوان بريدك الإلكتروني الحقيقي.</translation>
 <translation id="9046133327037621173">معرّف بريد إلكتروني جديد</translation>
 <translation id="3768606658230902536">أنشئ عنوان بريد إلكتروني عشوائي يعيد التوجيه إلى صندوق الوارد الخاص بك مع الحفاظ على خصوصية بريدك الإلكتروني الشخصي.</translation>
 <translation id="4452721050684632493">تم الوصول إلى حد الأسماء المستعارة</translation>
@@ -2602,7 +2614,7 @@
 <translation id="6851426306697017546">عرض الساعة</translation>
 <translation id="4844370919312937270">إظهار أداة البحث في علامات التبويب الجديدة</translation>
 <translation id="5088374130885640159">مع <ph name="REWARDS_LINK_BEGIN"/>مكافآت Brave<ph name="REWARDS_LINK_END"/>، يمكنك الربح عند رؤية إعلانات صفحة التبويب الجديدة. <ph name="LEARN_MORE_LINK_BEGIN"/>معرفة المزيد<ph name="LEARN_MORE_LINK_END"/>.</translation>
-<translation id="4100520468072294616">عرض إعلانات صفحة التبويب الجديدة</translation>
+<translation id="7020410251711260841">إظهار الإعلانات الدعائية</translation>
 <translation id="4983925687993168579">الإحصائيات</translation>
 <translation id="5009354496127441090">عرض أفضل المواقع</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -2625,6 +2637,7 @@
 <translation id="8814357473522731680">مشغل بواسطة</translation>
 <translation id="7143207342074048698">اتصال</translation>
 <translation id="1202549130170287307">قطع الاتصال</translation>
+<translation id="4989542687859782284">غير متوفر</translation>
 <translation id="8941703009412168350">BRAVE VPN</translation>
 <translation id="6303294677342628402">طرق الحماية</translation>
 <translation id="8458987127502506209">تمكين دروع حماية  Brave</translation>
@@ -2813,9 +2826,11 @@
 <translation id="6021669293402055982">Brave VPN: غير متصل</translation>
 <translation id="3541307549916475335">واجهة مستخدم لوحة Brave VPN</translation>
 <translation id="2325196879156848326">فشل الاتصال</translation>
+<translation id="6246488334766115273">الاتصال غير متوفر</translation>
 <translation id="745054660363064771">لا يمكن الاتصال بالخادم</translation>
 <translation id="3936826714240735937">اختر خادمًا آخر</translation>
 <translation id="2606728814652041300">تعذّر على<ph name="PRODUCT_NAME"/> الاتصال بخادم <ph name="REGION_NAME"/> يُرجى المحاولة مرة أخرى أو اختيار دولة أخرى.</translation>
+<translation id="4872940635040426686"><ph name="PRODUCT_NAME"/> غير متوفر. إذا استمرت المشكلة، فيرجى إعادة تثبيت Brave أو التواصل مع فريق الدعم الفني لدينا.</translation>
 <translation id="1776533911621317363">ابدأ نسختك التجريبية المجانية لمدة 7 أيام</translation>
 <translation id="3357036723290257445">هل اشتريت Brave VPN بالفعل؟</translation>
 <translation id="8652175077544655965">إغلاق الإعدادات</translation>
@@ -2954,11 +2969,13 @@
 <translation id="4405566535206792621">لتغيير كلمة مرورك، يُرجى التحقق من عنوان بريدك الإلكتروني.</translation>
 <translation id="3135333563420939059">تم التحقق من بريدك الإلكتروني. عيّن كلمة مرور جديدة لإكمال تغيير كلمة المرور.</translation>
 <translation id="4227581348172626540">إلغاء تغيير كلمة المرور</translation>
-<translation id="808894953321890993">تغيير كلمة المرور</translation>
 <translation id="7967687455715421528">يتعذّر تغيير كلمة المرور</translation>
 <translation id="7413006094063730650">حذف الحساب</translation>
 <translation id="4869737930995549965">تسجيل الخروج</translation>
-<translation id="2902312830803030883">المزيد من الإجراءات</translation>
+<translation id="4424262960694990728">إجراء مطلوب</translation>
+<translation id="847260521336960132">تفاصيل الحساب</translation>
+<translation id="5399593843842221768">معلومات شخصية حول حساب Brave الخاص بك.</translation>
+<translation id="5771731269320499905">تفاصيل حساب Brave</translation>
 <translation id="5538654494923870167">ابدأ باستخدام حسابك على Brave</translation>
 <translation id="1544145635547515689">إنشاء حساب Brave</translation>
 <translation id="3828644479849256404">هل لديك حساب بالفعل؟ سجّل الدخول</translation>
@@ -2974,6 +2991,7 @@
 <translation id="7114054701490058191">كلمات المرور غير متطابقة</translation>
 <translation id="4277028893293644418">إعادة تعيين كلمة المرور</translation>
 <translation id="9033485352495162741">تم التأكيد بنجاح. الآن أدخل كلمة المرور الجديدة التي تريدها:</translation>
+<translation id="808894953321890993">تغيير كلمة المرور</translation>
 <translation id="1293857704520741614">سجّل الدخول إلى حسابك</translation>
 <translation id="118617366439356381">هل نسيت كلمة المرور؟</translation>
 <translation id="5636406393070713097">أكّد البريد الإلكتروني لحسابك على Brave وستتلقى بعد ذلك رمزًا لإعادة تعيين كلمة المرور. سيكون الرمز صالحًا لمدة 15 دقيقة فقط.</translation>

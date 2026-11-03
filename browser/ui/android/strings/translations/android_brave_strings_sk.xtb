@@ -220,7 +220,6 @@
 <translation id="9040069796107003510">Ikona Brave Rewards</translation>
 <translation id="6333347122924254968">Zobraziť ikonu odmien Brave v paneli s adresou</translation>
 <translation id="4393974575368329991">Spodný navigačný panel</translation>
-<translation id="8727059712928806451">Povoliť spodný panel</translation>
 <translation id="1834226716203076292">Zobraziť spodný panel pre rýchly prístup k domovskej stránke, záložkám a vyhľadávaniu</translation>
 <translation id="1422686363939271829">Toto nastavenie je vypnuté, keď je vybratá spodná pozícia adresného riadka</translation>
 <translation id="6587448235155023666">Zmeny vašich nastavení sa prejavia pri ďalšom spustení prehliadača Brave</translation>
@@ -290,7 +289,7 @@
 <translation id="2569646144216067185">Počet slov: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Zlý synchronizačný kód</translation>
 <translation id="8284063834901328650">Zlý synchronizačný QR kód</translation>
-<translation id="859506441384380749">Tento kód bol vygenerovaný zastaranou verziou Brave, aktualizujte najskôr svoje zariadenie</translation>
+<translation id="4002014583969312635">Zdá sa, že kód bol vytvorený na zariadení so starou verziou prehliadača Brave. Aktualizujte prehliadač Brave na najnovšiu verziu na svojom zariadení a následne vytvorte nový synchronizačný kód.</translation>
 <translation id="3132642509209154999">Platnosť kódu vypršala. Vygenerujte na svojom zariadení nový kód a skúste to znova.</translation>
 <translation id="2859229680945501779">Tento kód je neplatný. Skontrolujte, či je vo vašom zariadení správne nastavený čas a časové pásmo.</translation>
 <translation id="3149880132460839085">Synchronizácia Brave</translation>
@@ -336,8 +335,6 @@
 <translation id="8185825081026121627">Získajte základný token pozornosti za zobrazovanie reklám rešpektujúcich ochranu súkromia pre Odmeny Brave.</translation>
 <translation id="5321518976657560663">Resetovať chybu</translation>
 <translation id="4114170343590425996">Pri resetovaní Brave odmien sa vyskytla chyba. Znova spustite prehliadač Brave a skúste to znova.</translation>
-<translation id="6417420737057016607">Reklamy Brave</translation>
-<translation id="5611966874859284786">Zobrazovať reklamy s upozornením, keď sa Brave nepoužíva</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Obnoviť údaje o Brave Rewards…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Vymazať údaje o reklamách Brave…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Pridať záložku</translation>
@@ -400,8 +397,9 @@ Naozaj chcete pokračovať?</translation>
 <translation id="4546260624932151782">Zobraziť obľúbené</translation>
 <translation id="5313967007315987356">Pridať web</translation>
 <translation id="1773147648972887693">Zobraziť</translation>
-<translation id="752098910262610337">Zobraziť skratky</translation>
 <translation id="7134741506051403308">Skryť miniaplikáciu</translation>
+<translation id="1247759249260562308">Upraviť obľúbené</translation>
+<translation id="6387214885349500492">Pripnúť túto obľúbenú položku</translation>
 <translation id="7462178177755090262">Úvodná obrazovka</translation>
 <translation id="5365434987337264071">Posledná otvorená karta</translation>
 <translation id="6019856124237323989">{HOURS, plural,
@@ -979,6 +977,7 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="6365389672683343144">Predplatné Brave VPN môže chrániť až 5 zariadení so systémom Android, iOS a počítač. Stačí prepojiť predplatné Google Play s účtom Brave.</translation>
 <translation id="6610899852831463073">Nepodarilo sa aktivovať Bezpečné prehliadanie</translation>
 <translation id="7954263306665462056">Bezpečné prehliadanie je vo vašom zariadení deaktivované. Ak ho chcete aktivovať, uistite sa, že máte nainštalované a aktualizované služby Google Play.</translation>
+<translation id="6417420737057016607">Reklamy Brave</translation>
 <translation id="7748944510530490017">Primárne siete</translation>
 <translation id="2781668117338732220">Sekundárne siete</translation>
 <translation id="282560918037172384">Testovacie Siete</translation>

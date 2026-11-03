@@ -22,6 +22,7 @@
 <translation id="8541922081612557424">Brave 정보</translation>
 <translation id="987734326276404793">휴대전화에서 Brave으로 가격 추적 알림을 받으세요</translation>
 <translation id="1203500561924088507">설치해 주셔서 감사합니다. <ph name="BUNDLE_NAME"/>을(를) 사용하려면 브라우저를 다시 시작해야 합니다.</translation>
+<translation id="1213674046343558619"><ph name="IMPORTANT_UPDATE"/>가 대기 중입니다. 안전한 탐색을 위해 다음에 <ph name="IDLE_DURATION"/> 동안 비활성 상태가 되면 Brave이 업데이트됩니다.</translation>
 <translation id="1232234696885483911">이미지 검색을 열면 페이지 제목, URL, PDF를 포함한 콘텐츠가 서버로 자동 전송됩니다. <ph name="LEARN_MORE"/></translation>
 <translation id="1934377710648094656">로그인한 상태로 Brave에서 Brave 계정의 비밀번호 등을 사용할 수 있습니다. 이 설정을 변경하려면 'Brave의 내 계정'으로 이동하세요.</translation>
 <translation id="583633806828413086">Mac 메뉴 바에 Brave의 Gemini 표시</translation>
@@ -223,6 +224,7 @@
 <translation id="3286538390144397061">지금 다시 시작</translation>
 <translation id="2339258256897053758">Brave API 키가 누락되었습니다. Brave의 일부 기능이 사용 중지됩니다.</translation>
 <translation id="8926637909431618259">Brave 종료 후에도 백그라운드 앱을 계속 실행</translation>
+<translation id="8245661393996028021">사용자가 자리를 비우면 Brave이 업데이트됩니다</translation>
 <translation id="518125528057094977">Brave에서 안전하지 않은 연결을 사용해 사이트를 로드하기 전에 경고를 표시합니다.</translation>
 <translation id="8652321858775514885">Brave에 로그인한 경우 Brave 계정을 제외한 모든 Brave 창을 닫으면 대부분의 사이트에서 로그아웃됩니다. 사이트에서 나를 기억하도록 하려면 <ph name="SETTINGS_LINK"/>하세요.</translation>
 <translation id="3352986031709923790">검색 영역의 오른쪽 상단: 오른쪽 <ph name="RIGHT"/>%, 상단 <ph name="TOP"/>%</translation>
@@ -231,6 +233,7 @@
 <translation id="2645435784669275700">ChromeOS</translation>
 <translation id="2297290224191497273">기존 Brave 프로필로 전환하시겠습니까?</translation>
 <translation id="3412460710772753638">기기의 비밀번호 관리자에 업데이트합니다.</translation>
+<translation id="172368702860945706">Brave 업데이트 필요</translation>
 <translation id="5079573433701109938"><ph name="DEVICE"/>에서 북마크 등을 사용하려면 Brave에 로그인하세요</translation>
 <translation id="3438772217992559640">이미지 검색으로 이 탭 검색</translation>
 <translation id="2491221873705777076">휴대전화에서 Brave으로 향상된 세이프 브라우징을 확장하세요</translation>
@@ -368,6 +371,7 @@
 <translation id="4877750182157975795"><ph name="DEVICE_TYPE"/>에서 Brave으로 즐겨 사용하는 모든 Brave 서비스에 액세스하세요.</translation>
 <translation id="1204184037023366446">Brave에서 손 추적 기능을 사용하려면 권한이 필요합니다.</translation>
 <translation id="5406591571925937375">최근에 사이트를 방문하지 않았습니다. Brave에서 <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, <ph name="PERMISSION_3"/> 권한을 삭제했습니다.</translation>
+<translation id="3576895950897485019">Brave에 로그인</translation>
 <translation id="5174969993834422967">기본적으로 알림을 차단하는 중입니다. 이 사이트의 알림을 허용하려면 위치 표시줄의 오른쪽 모서리에 있는 알림 아이콘을 클릭하세요.</translation>
 <translation id="5174983315706567306">디스크 공간이 충분하지 않습니다.</translation>
 <translation id="8157129267754368853">Brave 계정에 재인증이 필요함</translation>
@@ -376,6 +380,7 @@
 <translation id="5234764350956374838">닫기</translation>
 <translation id="7690383309583926074">이동 중에도 비밀번호를 저장하려면 Brave 앱을 다운로드하세요</translation>
 <translation id="8586264863973514035">변경사항을 적용하려면 Brave을 다시 실행하세요.</translation>
+<translation id="8127050479140582768">이 탭을 다른 기기로 보내려면 두 기기 모두에서 Brave에 로그인하세요.</translation>
 <translation id="5286907366254680517">감지됨</translation>
 <translation id="7264453786974905915">Brave 앱 다운로드</translation>
 <translation id="7230006500876504868">Brave으로 검색</translation>
@@ -739,6 +744,7 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="5128665650717824082">Brave for Testing을 기본 브라우저로 설정할 수 없습니다.</translation>
 <translation id="3053208669360972929">어디서나 Brave으로 검색하세요</translation>
 <translation id="2433912322225810055">또한 Brave을 시작하거나 검색주소창에서 검색할 때 표시되는 페이지를 설정합니다.</translation>
+<translation id="8789425457808164956">이 탭을 다른 기기로 보내려면 해당 기기에서 Brave에 로그인하세요.</translation>
 <translation id="4100716194836114130">나만의 Brave</translation>
 <translation id="8712637175834984815">확인</translation>
 <translation id="1419543648228375718">Brave에 로그인하시겠습니까?</translation>

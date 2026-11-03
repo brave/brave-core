@@ -22,6 +22,7 @@
 <translation id="8541922081612557424">Brave-ის შესახებ</translation>
 <translation id="987734326276404793">მიიღეთ თქვენს ტელეფონში ფასების მეთვალყურის გაფრთხილებები Brave-ის მეშვეობით</translation>
 <translation id="1203500561924088507">გმადლობთ დაინსტალირებისთვის. <ph name="BUNDLE_NAME"/>-ის გამოყენებამდე თქვენი ბრაუზერი უნდა გადატვირთოთ.</translation>
+<translation id="1213674046343558619"><ph name="IMPORTANT_UPDATE"/> მოლოდინის რეჟიმშია. დათვალიერების უსაფრთხოების დასაცავად Brave განახლდება, როდესაც <ph name="IDLE_DURATION"/> განმავლობაში უმოქმედო იქნებით.</translation>
 <translation id="1232234696885483911">სურათების ძიების გახსნისას გვერდის სათაური, URL და კონტენტი, PDF-ების ჩათვლით, ავტომატურად გაიგზავნება სერვერზე. <ph name="LEARN_MORE"/></translation>
 <translation id="1934377710648094656">როცა შესული ხართ, Brave-ში შეგიძლიათ გამოიყენოთ თქვენი პაროლები და სხვა კონტენტი თქვენი Brave ანგარიშიდან. ამ პარამეტრის შესაცვლელად გახსენით „თქვენი ანგარიში Brave-ში“.</translation>
 <translation id="583633806828413086">Gemini-ს ჩვენება Brave-ში Mac-ის მენიუს ზოლში</translation>
@@ -224,6 +225,7 @@
 <translation id="3286538390144397061">გადატვირთეთ ახლა</translation>
 <translation id="2339258256897053758">Brave API გასაღები გამოტოვებულია. Brave-ის ზოგიერთი ფუნქცია გამორთული იქნება.</translation>
 <translation id="8926637909431618259">ფონური პროგრამების გაშვების გაგრძელება, როდესაც Brave იხურება</translation>
+<translation id="8245661393996028021">Brave განახლდება, როცა გასული იქნებით</translation>
 <translation id="518125528057094977">Brave გაგაფრთხილებთ ნებისმიერი საიტის დაუცველი კავშირის გამოყენებით ჩატვირთვამდე</translation>
 <translation id="8652321858775514885">Brave-ის ყველა ფანჯრის დახურვისას სისტემიდან გამოხვალთ საიტების უმეტესობაზე, გამონაკლისია თქვენი Brave ანგარიში, თუ მასში შესული ხართ Brave-იდან. ვებსაიტებმა რომ დაგიმახსოვროთ, <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="3352986031709923790">ძიების არეალის ზედა მარჯვენა კუთხე: მარჯვნივ <ph name="RIGHT"/>%, ზემოთ <ph name="TOP"/>%</translation>
@@ -232,6 +234,7 @@
 <translation id="2645435784669275700">ChromeOS</translation>
 <translation id="2297290224191497273">გსურთ არსებულ Brave პროფილზე გადართვა?</translation>
 <translation id="3412460710772753638">პაროლების მმართველში ამ მოწყობილობაზე</translation>
+<translation id="172368702860945706">Brave-ს სურს განახლება</translation>
 <translation id="5079573433701109938"><ph name="DEVICE"/>-დან თქვენი სანიშნეებისა და სხვა კონტენტის მისაღებად გაიარეთ ავტორიზაცია Brave-ში</translation>
 <translation id="3438772217992559640">ამ ჩანართში ძიება სურათების ძიებით</translation>
 <translation id="2491221873705777076">გაახანგრძლივეთ გაძლიერებული Safe Browsing Brave-ით თქვენს ტელეფონში</translation>
@@ -369,6 +372,7 @@
 <translation id="4877750182157975795">მიიღეთ წვდომა Brave-ის ყველა რჩეულზე Brave-ის მეშვეობით თქვენს <ph name="DEVICE_TYPE"/>-ზე</translation>
 <translation id="1204184037023366446">Brave-ს სჭირდება ნებართვა თქვენი ხელების მოძრაობაზე თვალის მისადევნებლად</translation>
 <translation id="5406591571925937375">ბოლო დროს არ ყოფილხართ. Brave-მა ამოშალა <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> და <ph name="PERMISSION_3"/>.</translation>
+<translation id="3576895950897485019">შედით Brave-ში</translation>
 <translation id="5174969993834422967">როგორც წესი, თქვენ ბლოკავთ შეტყობინებებს. ამ საიტისგან შეტყობინებების მისაღებად დააწკაპუნეთ მდებარეობის ზოლის მარჯვენა კუთხეში მდებარე ხატულას.</translation>
 <translation id="5174983315706567306">სივრცე დისკზე საკმარისი არ არის.</translation>
 <translation id="8157129267754368853">Brave ანგარიში საჭიროებს ხელახლა ავტორიზაციას</translation>
@@ -377,6 +381,7 @@
 <translation id="5234764350956374838">გაუქმება</translation>
 <translation id="7690383309583926074">ჩამოტვირთეთ Brave აპი, რომ შეინახოთ პაროლები ნებისმიერი ადგილიდან</translation>
 <translation id="8586264863973514035">ცვლილებების მისასადაგებლად ხელახლა გაუშვით Brave</translation>
+<translation id="8127050479140582768">ეს ჩანართი სხვა მოწყობილობაზე რომ გაგზავნოთ, შედით Brave-ში ორივე მოწყობილობიდან</translation>
 <translation id="5286907366254680517">ამოცნობილია</translation>
 <translation id="7264453786974905915">Brave აპის ჩამოტვირთვა</translation>
 <translation id="7230006500876504868">Brave-ით ძიება</translation>
@@ -740,6 +745,7 @@ Brave ვერ შეძლებს თქვენი პარამეტ�
 <translation id="5128665650717824082">Brave for Testing ვერ გახდება თქვენი ნაგულისხმევი ბრაუზერი.</translation>
 <translation id="3053208669360972929">მოიძიეთ Brave-ით ნებისმიერი ადგილიდან</translation>
 <translation id="2433912322225810055">იგი ასევე აკონტროლებს, თუ რომელი გვერდი გამოჩნდება Brave-ის გაშვებისას ან Omnibox-ში ძიების დროს.</translation>
+<translation id="8789425457808164956">ეს ჩანართი სხვა მოწყობილობაზე რომ გაგზავნოთ, შედით იქიდან Brave-ში</translation>
 <translation id="4100716194836114130">ეს არის თქვენი Brave</translation>
 <translation id="8712637175834984815">კარგი</translation>
 <translation id="1419543648228375718">გსურთ, შეხვიდეთ Brave-ში?</translation>
