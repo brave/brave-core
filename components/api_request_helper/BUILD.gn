@@ -23,6 +23,8 @@ static_library("api_request_helper") {
     "//services/network/public/cpp",
     "//url",
   ]
+
+  deps = [ "//net" ]
 }
 
 source_set("unit_tests") {

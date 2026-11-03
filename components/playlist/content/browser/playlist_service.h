@@ -214,7 +214,7 @@ class PlaylistService : public KeyedService,
       mojo::PendingRemote<mojom::PlaylistStreamingObserver> observer) override;
   void ClearAllQueries() override;
   void CancelQuery(const std::string& query_id) override;
-  void OnResponseStarted(const std::string& url, const int64_t content_length);
+  void OnResponseStarted(const api_request_helper::ResponseStartedInfo& info);
   void OnDataReceived(api_request_helper::ValueOrError result);
   void OnDataComplete(api_request_helper::APIRequestResult result);
 
