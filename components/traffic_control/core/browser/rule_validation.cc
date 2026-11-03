@@ -5,7 +5,6 @@
 
 #include "brave/components/traffic_control/core/browser/rule_validation.h"
 
-#include <string>
 #include <string_view>
 
 #include "base/strings/string_split.h"
@@ -18,11 +17,7 @@ namespace traffic_control {
 namespace {
 
 bool IsValidUrlFilterLine(std::string_view filter) {
-  url_matcher::util::FilterComponents components;
-  return url_matcher::util::FilterToComponents(
-      std::string(filter), &components.scheme, &components.host,
-      &components.match_subdomains, &components.port, &components.path,
-      &components.query);
+  return url_matcher::util::FilterToComponents(filter).has_value();
 }
 
 }  // namespace

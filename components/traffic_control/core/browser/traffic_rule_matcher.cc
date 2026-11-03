@@ -7,7 +7,6 @@
 
 #include <optional>
 #include <set>
-#include <string>
 #include <string_view>
 #include <utility>
 
@@ -49,11 +48,9 @@ void TrafficRuleMatcher::Rebuild(std::vector<mojom::TrafficRulePtr> rules) {
         continue;
       }
 
-      url_matcher::util::FilterComponents components;
-      if (!url_matcher::util::FilterToComponents(
-              std::string(line), &components.scheme, &components.host,
-              &components.match_subdomains, &components.port, &components.path,
-              &components.query)) {
+      std::optional<url_matcher::util::FilterComponents> components =
+          url_matcher::util::FilterToComponents(line);
+      if (!components) {
         LOG(ERROR) << "Invalid traffic control URL filter: " << line;
         continue;
       }
@@ -61,9 +58,7 @@ void TrafficRuleMatcher::Rebuild(std::vector<mojom::TrafficRulePtr> rules) {
       const base::MatcherStringPattern::ID pattern_id =
           pattern_id_to_rule_index_.size();
       all_conditions.push_back(url_matcher::util::CreateConditionSet(
-          url_matcher_.get(), pattern_id, components.scheme, components.host,
-          components.match_subdomains, components.port, components.path,
-          components.query, /*allow=*/true));
+          url_matcher_.get(), pattern_id, *components));
       pattern_id_to_rule_index_.push_back(rule_index);
     }
   }
