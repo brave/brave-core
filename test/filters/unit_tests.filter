@@ -272,11 +272,9 @@
 -FirstPartySetsPolicyServiceFactoryTest.OffTheRecordProfile_DistinctAndDisabled
 -FirstPartySetsPolicyServiceTest.*
 
-# These tests fail because we change the default for (TOP_LEVEL_)STORAGE_ACCESS
-# to CONTENT_SETTING_BLOCK.
+# This test fails because we change the default for STORAGE_ACCESS to
+# CONTENT_SETTING_BLOCK.
 -HostContentSettingsMapTest.DeleteStorageAccessRwsGrantsOnStartup
--TopLevelStorageAccessPermissionContextAPIWithFirstPartySetsTest.ImplicitGrant_AutograntedWithinFPS
--TopLevelStorageAccessPermissionContextAPIWithFirstPartySetsTest.ImplicitGrant_CrossSiteFrameQueryStillAsk
 
 
 # This test fails because tab_next_close_button->GetBoundsInScreen().Contains(tab_center)
