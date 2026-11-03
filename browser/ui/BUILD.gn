@@ -31,6 +31,7 @@ import("//brave/components/traffic_control/buildflags/buildflags.gni")
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//brave/ui/webui/custom_profile_image/buildflags/buildflags.gni")
 import("//build/config/features.gni")
+import("//build/config/ozone.gni")
 import("//chrome/common/features.gni")
 import("//components/gcm_driver/config.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
@@ -923,7 +924,9 @@ source_set("ui") {
 
       deps += [
         "//chrome/browser/ui/views/frame:browser_frame_view_layout_linux_native",
+        "//chrome/browser/ui/views/frame:browser_native_widget_aura_linux",
         "//chrome/browser/ui/views/frame:browser_view_header",
+        "//chrome/browser/ui/views/frame:browser_widget",
       ]
 
       public_deps +=
@@ -1790,6 +1793,22 @@ source_set("browser_tests") {
 
     if (enable_brave_custom_profile_image_webui) {
       deps += [ "//brave/browser/ui/views/profiles:browser_tests" ]
+    }
+
+    if (is_linux && ozone_platform_x11) {
+      sources +=
+          [ "views/overlay/brave_video_overlay_window_views_browsertest.cc" ]
+
+      deps += [
+        "//chrome/browser/ui/views/overlay",
+        "//chrome/browser/ui/web_applications/test:test_support_ui",
+        "//chrome/browser/web_applications:web_applications_test_support",
+        "//net:test_support",
+        "//ui/aura",
+        "//ui/gfx/x",
+        "//ui/ozone",
+        "//ui/views",
+      ]
     }
   }
 }
