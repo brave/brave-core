@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index 8f5b96aa1c0f80b24f48312e7547738186416fce..3cd61a418bcb48cd594ab54676b96de5440cface 100644
+index 8f5b96aa1c0f80b24f48312e7547738186416fce..cc80776962409aecd4496dc836d8bc7ce111b05d 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
 @@ -319,6 +319,7 @@
@@ -178,6 +178,15 @@ index 8f5b96aa1c0f80b24f48312e7547738186416fce..3cd61a418bcb48cd594ab54676b96de5
        status: "stable",
        public: true,
      },
+@@ -7800,7 +7815,7 @@
+       // with its responseXML document.
+       // https://crbug.com/466303347
+       name: "XMLRustForNonXslt",
+-      status: "stable",
++      status: "experimental", // Brave: revert when crbug.com/578167868 is fixed.
+     },
+     {
+       name: "XMLSerializerConsistentDefaultNsDeclMatching",
 @@ -7833,5 +7848,10 @@
        // crbug.com/435623334.
        name: "XSLTSpecialTrial",
