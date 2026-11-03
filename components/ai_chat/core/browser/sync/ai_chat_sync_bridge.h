@@ -180,10 +180,11 @@ class AIChatSyncBridge : public syncer::DataTypeSyncBridge {
   // Writes |changes|, a batch from the server, to the database, and runs
   // |on_remote_changes_applied_| for the conversations it touched. Adds the
   // records whose local copy it kept to |kept_local_copies|, for the caller to
-  // send. Returns false when a record fails to apply. The batch's metadata
-  // changes are then dropped, so it downloads again on the next start, and
-  // local updates to the records from the failed one on are skipped for the
-  // rest of the session.
+  // send. Returns false when a record fails to apply, or when the entries
+  // that have edit revisions can't be read. The batch's metadata changes are
+  // then dropped, so it downloads again on the next start, and local updates
+  // to the records from the failed one on are skipped for the rest of the
+  // session.
   [[nodiscard]] bool ApplyRemoteChanges(
       const syncer::EntityChangeList& changes,
       syncer::MetadataChangeList& metadata_change_list,
@@ -202,13 +203,17 @@ class AIChatSyncBridge : public syncer::DataTypeSyncBridge {
   //   |kept_local_copies|.
   // - When both have the same time, or neither has one, they're the same
   //   version, and nothing is written.
+  // An entry written over keeps this device's edit revisions, and the record's
+  // content becomes its latest revision. |edited_entry_uuids| is the batch's
+  // snapshot of the entries that have revisions.
   // A record this device can't store because of its own content (it doesn't
   // decode, for example it comes from a newer client, or its associated
   // content would collide) is skipped: retrying it would fail the same way
-  // every time. Returns false when the local copy's time can't be read, or the
-  // database fails to store a good record.
+  // every time. Returns false when the local copy's time or edit revisions
+  // can't be read, or the database fails to store a good record.
   [[nodiscard]] bool ApplyRemoteRecord(
       const sync_pb::AIChatConversationSpecifics& specifics,
+      const base::flat_set<std::string>& edited_entry_uuids,
       KeptLocalCopies& kept_local_copies,
       base::flat_set<std::string>& affected_conversation_uuids);
 

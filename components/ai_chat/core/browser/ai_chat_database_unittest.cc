@@ -21,6 +21,7 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/time/time.h"
@@ -2146,6 +2147,69 @@ TEST_F(AIChatDatabaseSyncTest, GetConversationUuidForAssociatedContent) {
             "conv-b");
   EXPECT_EQ(db_->GetConversationUuidForAssociatedContent("no-such-content"),
             std::nullopt);
+}
+
+TEST_F(AIChatDatabaseSyncTest, GetEditedEntryUuids) {
+  EXPECT_THAT(db_->GetEditedEntryUuids(),
+              testing::Optional(testing::IsEmpty()));
+
+  auto make_edited_entry = [](std::string_view uuid, size_t edit_count) {
+    auto entry = CreateQueryEntry(uuid);
+    entry->edits.emplace();
+    for (size_t i = 0; i < edit_count; ++i) {
+      entry->edits->push_back(CreateQueryEntry(
+          base::StrCat({uuid, "-edit-", base::NumberToString(i)})));
+    }
+    return entry;
+  };
+  auto conv_a = mojom::Conversation::New();
+  conv_a->uuid = "conv-a";
+  ASSERT_TRUE(db_->AddConversation(std::move(conv_a), {},
+                                   make_edited_entry("edited-twice", 2)));
+  ASSERT_TRUE(db_->AddConversationEntry("conv-a", CreateQueryEntry("plain")));
+  auto conv_b = mojom::Conversation::New();
+  conv_b->uuid = "conv-b";
+  ASSERT_TRUE(db_->AddConversation(std::move(conv_b), {},
+                                   make_edited_entry("edited-once", 1)));
+
+  // Each edited entry is listed once, whatever its number of revisions.
+  EXPECT_THAT(
+      db_->GetEditedEntryUuids(),
+      testing::Optional(testing::ElementsAre("edited-once", "edited-twice")));
+}
+
+TEST_F(AIChatDatabaseSyncTest, GetConversationEntryWithEdits) {
+  auto edited = CreateQueryEntry("edited-entry");
+  edited->text = "Original";
+  auto edit = CreateQueryEntry("edit-1");
+  edit->text = "Revised";
+  edit->created_time = base::Time::Now() + base::Minutes(1);
+  edited->edits.emplace();
+  edited->edits->push_back(std::move(edit));
+  auto conversation = mojom::Conversation::New();
+  conversation->uuid = "conv";
+  ASSERT_TRUE(
+      db_->AddConversation(std::move(conversation), {}, std::move(edited)));
+  ASSERT_TRUE(
+      db_->AddConversationEntry("conv", CreateQueryEntry("plain-entry")));
+
+  auto entry = db_->GetConversationEntryWithEdits("edited-entry");
+  ASSERT_TRUE(entry && *entry);
+  EXPECT_EQ((*entry)->text, "Original");
+  ASSERT_TRUE((*entry)->edits);
+  ASSERT_EQ((*entry)->edits->size(), 1u);
+  EXPECT_EQ((*entry)->edits->at(0)->text, "Revised");
+
+  // An unedited entry comes back with no revisions. An edit row isn't itself
+  // an entry, so it reads as no such entry.
+  auto plain = db_->GetConversationEntryWithEdits("plain-entry");
+  ASSERT_TRUE(plain && *plain);
+  EXPECT_FALSE((*plain)->edits);
+  for (std::string_view uuid : {"edit-1", "no-such-entry"}) {
+    auto missing = db_->GetConversationEntryWithEdits(uuid);
+    ASSERT_TRUE(missing);
+    EXPECT_FALSE(*missing);
+  }
 }
 
 // No such row reads as no row, not as a failed read.

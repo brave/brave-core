@@ -22,9 +22,11 @@
 #include "base/strings/string_util.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
+#include "base/uuid.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 #include "brave/components/ai_chat/core/browser/sync/ai_chat_sync_conversions.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/sync/protocol/ai_chat_specifics.pb.h"
 #include "components/sync/base/deletion_origin.h"
 #include "components/sync/model/conflict_resolution.h"
@@ -137,6 +139,64 @@ NewerCopy FindNewerCopy(base::Time remote_time,
 bool IsSameLocalCopy(const std::optional<AIChatDatabase::ModifiedTime>& local,
                      base::Time kept_time) {
   return local && local->exists && local->time == kept_time;
+}
+
+// Whether |remote_entry|, decoded from a record, has the content of the latest
+// revision of |local_entry|, an entry with edit revisions. |local_entry| is
+// built into a record the way a sender builds it, and decoded again, so both
+// sides hold only what sync carries: a field it doesn't carry, such as a tool
+// artifact's id, can't count as a difference. The decoded entries are compared
+// rather than the records, because a record's gzipped fields can differ for
+// the same text.
+bool HasLatestRevisionContent(const mojom::ConversationTurn& local_entry,
+                              const mojom::ConversationTurn& remote_entry) {
+  // The decoded entry holds no conversation uuid, modified time or associated
+  // content, so none is given.
+  std::vector<mojom::AssociatedContentPtr> associated_content;
+  auto synced_local = SpecificsToEntry(
+      EntryToSpecifics(std::string(), local_entry, base::Time(), {}),
+      associated_content);
+  return synced_local && synced_local->Equals(remote_entry);
+}
+
+// Sync sends an edited entry as its latest revision alone, under the original
+// entry's uuid, so writing |remote_entry| as it is would delete this device's
+// edit revisions, including the original text. Returns the entry to write
+// instead: this device's entry with its revisions, plus |remote_entry| as a new
+// latest revision unless it matches the latest one. |remote_time| is the time
+// the record carries. Returns |remote_entry| when the local entry has no
+// revisions, and nullopt when it can't be read.
+std::optional<mojom::ConversationTurnPtr> WithLocalEditHistory(
+    AIChatDatabase& database,
+    mojom::ConversationTurnPtr remote_entry,
+    base::Time remote_time) {
+  auto read = database.GetConversationEntryWithEdits(*remote_entry->uuid);
+  if (!read) {
+    return std::nullopt;
+  }
+  mojom::ConversationTurnPtr local = std::move(*read);
+  // The batch's snapshot of edited entries can be out of date: a tombstone in
+  // the same batch may have deleted the entry since.
+  if (!local || !local->edits || local->edits->empty()) {
+    return remote_entry;
+  }
+
+  // |remote_entry| holds a revision's content, so the local entry, which holds
+  // the original text, is kept with its revisions. A record whose content
+  // matches the latest revision adds none, as when another device changed only
+  // the entry's associated content.
+  if (!HasLatestRevisionContent(*local, *remote_entry)) {
+    // Revisions are ordered by created time, and |remote_entry| has the
+    // original entry's. So it's dated when it changed on the sending device,
+    // or just after the latest local revision if that's later, to sort last.
+    // Otherwise the next record would be compared with the wrong revision.
+    remote_entry->created_time =
+        std::max(remote_time,
+                 local->edits->back()->created_time + base::Microseconds(1));
+    remote_entry->uuid = base::Uuid::GenerateRandomV4().AsLowercaseString();
+    local->edits->push_back(std::move(remote_entry));
+  }
+  return local;
 }
 
 }  // namespace
@@ -601,29 +661,50 @@ bool AIChatSyncBridge::ApplyRemoteChanges(
     syncer::MetadataChangeList& metadata_change_list,
     KeptLocalCopies& kept_local_copies) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  // The processor calls with no changes after every commit. Those need no
+  // reads.
+  if (changes.empty()) {
+    return true;
+  }
+
+  // Read once for the batch: editing_entry_uuid has no index, so asking for
+  // each record would add a scan of the whole table to every record, and a
+  // first sync applies every record. A failed read fails the batch at its
+  // first record: taken for "no revisions", it would let the writes delete
+  // them.
+  const std::optional<base::flat_set<std::string>> edited_entry_uuids =
+      database_->GetEditedEntryUuids();
   base::flat_set<std::string> affected_conversation_uuids;
-  for (auto it = changes.begin(); it != changes.end(); ++it) {
-    const auto& change = *it;
-    const bool ok =
-        change->type() == syncer::EntityChange::ACTION_DELETE
-            ? ApplyRemoteTombstone(change->storage_key(),
-                                   affected_conversation_uuids)
-            : ApplyRemoteRecord(change->data().specifics.ai_chat_conversation(),
-                                kept_local_copies, affected_conversation_uuids);
-    if (!ok) {
-      // Leave the batch unsaved, so it downloads again on the next start.
-      // The records from this one on weren't written, so a local update must
-      // not save their new versions either.
-      metadata_change_list.DropAllChanges();
-      for (; it != changes.end(); ++it) {
-        storage_keys_skipping_local_puts_.insert((*it)->storage_key());
+  // The first change not written, which is end() once all are.
+  auto it = changes.begin();
+  if (edited_entry_uuids) {
+    for (; it != changes.end(); ++it) {
+      const auto& change = *it;
+      const bool ok = change->type() == syncer::EntityChange::ACTION_DELETE
+                          ? ApplyRemoteTombstone(change->storage_key(),
+                                                 affected_conversation_uuids)
+                          : ApplyRemoteRecord(
+                                change->data().specifics.ai_chat_conversation(),
+                                *edited_entry_uuids, kept_local_copies,
+                                affected_conversation_uuids);
+      if (!ok) {
+        break;
       }
-      NotifyRemoteChangesApplied(std::move(affected_conversation_uuids));
-      return false;
+    }
+  }
+
+  const bool failed = it != changes.end();
+  if (failed) {
+    // Leave the batch unsaved, so it downloads again on the next start.
+    // The records from the failed one on weren't written, so a local update
+    // must not save their new versions either.
+    metadata_change_list.DropAllChanges();
+    for (; it != changes.end(); ++it) {
+      storage_keys_skipping_local_puts_.insert((*it)->storage_key());
     }
   }
   NotifyRemoteChangesApplied(std::move(affected_conversation_uuids));
-  return true;
+  return !failed;
 }
 
 bool AIChatSyncBridge::ShouldSkipLocalPut(
@@ -635,6 +716,7 @@ bool AIChatSyncBridge::ShouldSkipLocalPut(
 
 bool AIChatSyncBridge::ApplyRemoteRecord(
     const sync_pb::AIChatConversationSpecifics& specifics,
+    const base::flat_set<std::string>& edited_entry_uuids,
     KeptLocalCopies& kept_local_copies,
     base::flat_set<std::string>& affected_conversation_uuids) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -674,6 +756,11 @@ bool AIChatSyncBridge::ApplyRemoteRecord(
     return true;
   }
 
+  // TODO(https://github.com/brave/brave-browser/issues/53978): before decoding,
+  // put back from the local entry the values the sender omitted for size. An
+  // omitted value decodes as blank, so until then the write blanks it. For an
+  // edited entry, the blank also counts as a change from the latest revision,
+  // so it's added as a new revision.
   std::vector<mojom::AssociatedContentPtr> associated_content;
   base::flat_map<std::string, std::string> associated_content_texts;
   auto entry = SpecificsToEntry(specifics, associated_content,
@@ -696,10 +783,17 @@ bool AIChatSyncBridge::ApplyRemoteRecord(
     }
   }
 
-  // TODO(https://github.com/brave/brave-browser/issues/53978): carry this
-  // device's edit revisions, and the values the sender omitted for size, over
-  // from the local entry. The write replaces the whole entry, so until then
-  // both are lost.
+  // Only an entry the batch's snapshot names has revisions to keep, so the
+  // others are written without reading the local entry.
+  if (edited_entry_uuids.contains(*entry->uuid)) {
+    auto with_history =
+        WithLocalEditHistory(*database_, std::move(entry), modified_time);
+    if (!with_history) {
+      return false;
+    }
+    entry = std::move(*with_history);
+  }
+
   std::vector<std::string> contents = base::ToVector(
       associated_content, [&](const mojom::AssociatedContentPtr& content) {
         const std::string* text =

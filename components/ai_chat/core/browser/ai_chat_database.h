@@ -11,6 +11,7 @@
 #include <string_view>
 #include <vector>
 
+#include "base/containers/flat_set.h"
 #include "base/gtest_prod_util.h"
 #include "base/sequence_checker.h"
 #include "base/thread_annotations.h"
@@ -80,6 +81,20 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   // |content_uuid|, or nullopt if there is no such content or the read failed.
   virtual std::optional<std::string> GetConversationUuidForAssociatedContent(
       std::string_view content_uuid);
+
+  // Returns the entry |conversation_entry_uuid| with its edit revisions
+  // attached, or null if there is no such entry. Reads only that entry, unlike
+  // GetConversationData(). Returns nullopt only when reading the rows of the
+  // entry and its revisions fails. A failed read of their events or files, or
+  // a value that fails to decrypt, isn't reported: it reads as missing or
+  // blank.
+  virtual std::optional<mojom::ConversationTurnPtr>
+  GetConversationEntryWithEdits(std::string_view conversation_entry_uuid);
+
+  // Returns the uuids of every entry that has edit revisions, or nullopt if the
+  // read failed. Nothing is indexed on editing_entry_uuid, so callers that
+  // would otherwise ask per entry should ask once and test against the result.
+  virtual std::optional<base::flat_set<std::string>> GetEditedEntryUuids();
 
   // What GetConversationModifiedTime() and GetEntryModifiedTime() return.
   struct ModifiedTime {
