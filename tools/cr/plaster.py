@@ -5938,7 +5938,7 @@ def apply(args):
             if skip_up_to_date and not plaster_file.needs_apply():
                 logging.debug('Up-to-date, skipping: %s', plaster_file.path)
                 continue
-            console.log(f'Applying plaster file: {plaster_file.path}')
+            logging.info('Applying plaster file: %s', plaster_file.path)
             plaster_file.apply()
     return 0
 
@@ -6203,17 +6203,40 @@ def main():
     parser.add_argument(
         '--verbose', action='store_true', help='Enable verbose logging'
     )
+    quiet_help = (
+        'Report only warnings and errors (the default under an AI agent).'
+    )
+    parser.add_argument(
+        '-q',
+        '--quiet',
+        action=argparse.BooleanOptionalAction,
+        default=None,
+        help=quiet_help,
+    )
     parser.add_argument(
         '--infra-mode', action='store_true', help='Enable infra mode'
     )
     subparsers = parser.add_subparsers(dest='command', required=True)
+
+    # Also accepts `--quiet` after the command name. `SUPPRESS` keeps the
+    # subcommand from resetting a `--quiet` given ahead of it.
+    common_parser = argparse.ArgumentParser(add_help=False)
+    common_parser.add_argument(
+        '-q',
+        '--quiet',
+        action=argparse.BooleanOptionalAction,
+        default=argparse.SUPPRESS,
+        help=quiet_help,
+    )
 
     commands: dict[str, tuple[argparse.ArgumentParser, str]] = {}
 
     def add_command(
         name: str, summary: str, **kwargs
     ) -> argparse.ArgumentParser:
-        command_parser = subparsers.add_parser(name, help=summary, **kwargs)
+        command_parser = subparsers.add_parser(
+            name, help=summary, parents=[common_parser], **kwargs
+        )
         commands[name] = (command_parser, summary)
         return command_parser
 
@@ -6252,12 +6275,36 @@ def main():
     if hasattr(args, 'infra_mode') and args.infra_mode:
         terminal.set_infra_mode()
 
+    quiet = args.quiet
+    agent_env_vars = []
+    if quiet is None and not is_verbose():
+        # Imported here so that tools importing this module are unaffected.
+        sys.path.append(
+            str(Path(__file__).resolve().parents[2] / 'vendor' / 'depot_tools')
+        )
+        import gclient_utils  # pylint: disable=import-outside-toplevel,import-error
+
+        agent_env_vars = gclient_utils.GetAiAgentEnvVars()
+        quiet = bool(agent_env_vars)
+    if quiet:
+        level = logging.WARNING
+    elif is_verbose():
+        level = logging.DEBUG
+    else:
+        level = logging.INFO
     logging.basicConfig(
-        level=logging.DEBUG if is_verbose() else logging.INFO,
+        level=level,
         format='%(message)s',
         handlers=[IncendiaryErrorHandler()],
         force=True,
     )
+    if agent_env_vars:
+        logging.warning(
+            'Detected AI agent env (%s). Defaulting to --quiet to reduce '
+            'context pollution. User-supplied --verbose or --no-quiet take '
+            'precedence.',
+            ', '.join(agent_env_vars),
+        )
 
     try:
         return args.func(args)
