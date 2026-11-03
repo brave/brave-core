@@ -32,8 +32,6 @@
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/constants/brave_paths.h"
-#include "brave/components/history_embeddings/test/fake_history_embeddings_search.h"
-#include "brave/components/local_ai/core/pref_names.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -49,7 +47,6 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
-#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "components/keyed_service/core/service_access_type.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_controller.h"
@@ -81,8 +78,6 @@ constexpr char kBarDotComTitle2[] = "bar.com 2";
 
 constexpr char kTopic[] = "topic";
 constexpr char kTopic2[] = "topic2";
-
-constexpr char kPassage[] = "an excerpt of the page's text";
 
 }  // namespace
 
@@ -447,270 +442,38 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerBrowserTest, GetFocusTabs) {
   run_loop2.Run();
 }
 
-// Turns on everything `IsHistoryEmbeddingsEnabledForProfile` needs except the
-// profile pref, which tests set themselves.
-class TabSearchPageHandlerHistoryEmbeddingsBrowserTest
-    : public TabSearchPageHandlerBrowserTest {
- public:
-  TabSearchPageHandlerHistoryEmbeddingsBrowserTest() {
-    scoped_features_.InitAndEnableFeature(
-        history_embeddings::kHistoryEmbeddings);
-  }
-
- private:
-  base::test::ScopedFeatureList scoped_features_;
-};
-
-// End-to-end coverage of `SearchTabsByContent`: open-tab GURLs are resolved
-// to URLIDs through `HistoryService::QueryUrlIds`, the URL-id filter is
-// forwarded to `Search()`, and the scored rows are mapped back to tab
-// handles.
-using TabSearchPageHandlerSearchTabsByContentBrowserTest =
-    TabSearchPageHandlerHistoryEmbeddingsBrowserTest;
-
-IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerSearchTabsByContentBrowserTest,
-                       SearchTabsByContent) {
-  // `IsHistoryEmbeddingsEnabledForProfile` also requires the Brave-owned pref.
+// Page excerpts came from the history embeddings index, which upstream
+// removed, so even with the page-content opt-in on, the tab organization
+// engine gets no passages.
+IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerBrowserTest,
+                       GetSuggestedTopicsSendsNoPassages) {
   profile1()->GetPrefs()->SetBoolean(
-      local_ai::prefs::kBraveHistoryEmbeddingsEnabled, true);
+      ai_chat::prefs::kBraveAIChatTabOrganizationSendPageContent, true);
 
   AppendTabWithTitle(browser(),
                      https_server()->GetURL("foo.com", "/empty.html"),
                      kFooDotComTitle1);
+
+  auto* mock_engine = SetMockTabOrganizationEngine();
+  std::vector<ai_chat::Tab> sent_tabs;
+  EXPECT_CALL(*mock_engine, GetSuggestedTopics(_, _))
+      .WillOnce(testing::DoAll(
+          testing::SaveArg<0>(&sent_tabs),
+          base::test::RunOnceCallback<1>(std::vector<std::string>{kTopic})));
+
+  TestGetSuggestedTopics({kTopic}, nullptr);
+
+  ASSERT_EQ(sent_tabs.size(), 1u);
+  EXPECT_TRUE(sent_tabs[0].passages.empty());
+}
+
+IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerBrowserTest,
+                       SearchTabsByContentFindsNothing) {
   AppendTabWithTitle(browser(),
-                     https_server()->GetURL("bar.com", "/empty.html"),
-                     kBarDotComTitle1);
-
-  const int foo_tab_id =
-      browser()->tab_strip_model()->GetTabAtIndex(1)->GetHandle().raw_value();
-  const int bar_tab_id =
-      browser()->tab_strip_model()->GetTabAtIndex(2)->GetHandle().raw_value();
-  const GURL foo_url =
-      browser()->tab_strip_model()->GetTabAtIndex(1)->GetContents()->GetURL();
-  const GURL bar_url =
-      browser()->tab_strip_model()->GetTabAtIndex(2)->GetContents()->GetURL();
-
-  // Wait until both URLs are indexed in history so QueryUrlIds returns
-  // non-zero IDs for them. `AppendTabWithTitle` waits for load stop but the
-  // history record is added on a separate task.
-  history::HistoryService* history_service =
-      HistoryServiceFactory::GetForProfile(profile1(),
-                                           ServiceAccessType::EXPLICIT_ACCESS);
-  ASSERT_TRUE(history_service);
-  // Add the navigated URLs to history synchronously so the URLIDs are ready
-  // by the time `SearchTabsByContent` runs `QueryUrlIds`.
-  history_service->AddPage(foo_url, base::Time::Now(), /*context_id=*/0,
-                           /*nav_entry_id=*/0, /*referrer=*/GURL(),
-                           history::RedirectList(), ui::PAGE_TRANSITION_LINK,
-                           history::SOURCE_BROWSED,
-                           history::VisitResponseCodeCategory::kNot404,
-                           /*did_replace_entry=*/false);
-  history_service->AddPage(bar_url, base::Time::Now(), /*context_id=*/0,
-                           /*nav_entry_id=*/0, /*referrer=*/GURL(),
-                           history::RedirectList(), ui::PAGE_TRANSITION_LINK,
-                           history::SOURCE_BROWSED,
-                           history::VisitResponseCodeCategory::kNot404,
-                           /*did_replace_entry=*/false);
-
-  base::CancelableTaskTracker tracker;
-  const auto query_url_id = [&](const GURL& url) -> history::URLID {
-    base::test::TestFuture<history::QueryURLResult> future;
-    history_service->QueryURL(url, future.GetCallback(), &tracker);
-    const auto result = future.Take();
-    return result.success ? result.row.id() : 0;
-  };
-  const history::URLID foo_url_id = query_url_id(foo_url);
-  const history::URLID bar_url_id = query_url_id(bar_url);
-  ASSERT_NE(foo_url_id, 0);
-  ASSERT_NE(bar_url_id, 0);
-
-  ai_chat::FakeHistoryEmbeddingsSearch fake;
-  fake.SetScoredRows({
-      ai_chat::FakeHistoryEmbeddingsSearch::MakeRow(
-          bar_url_id, bar_url, base::UTF8ToUTF16(std::string(kBarDotComTitle1)),
-          base::Time::Now(), /*score=*/0.9f),
-      ai_chat::FakeHistoryEmbeddingsSearch::MakeRow(
-          foo_url_id, foo_url, base::UTF8ToUTF16(std::string(kFooDotComTitle1)),
-          base::Time::Now(), /*score=*/0.7f),
-  });
-  handler()->SetEmbeddingsSearchForTesting(fake.GetWeakPtr());
+                     https_server()->GetURL("foo.com", "/empty.html"),
+                     kFooDotComTitle1);
 
   base::test::TestFuture<const std::vector<int32_t>&> future;
   handler()->SearchTabsByContent("query", future.GetCallback());
-  const std::vector<int32_t> tab_ids = future.Take();
-
-  // The page handler forwards to `open_tab_search` and returns the matched
-  // open-tab ids; ranking order and the URL-id filter it builds are covered
-  // by open_tab_search's own browser test.
-  EXPECT_THAT(tab_ids, testing::UnorderedElementsAre(foo_tab_id, bar_tab_id));
-
-  handler()->SetEmbeddingsSearchForTesting(std::nullopt);
-}
-
-// The tab list handed to the tab organization engine carries each tab's
-// indexed page excerpts.
-using TabSearchPageHandlerTabPassagesBrowserTest =
-    TabSearchPageHandlerHistoryEmbeddingsBrowserTest;
-
-IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerTabPassagesBrowserTest,
-                       GetSuggestedTopicsSendsPassages) {
-  // `IsHistoryEmbeddingsEnabledForProfile` also requires the Brave-owned pref.
-  profile1()->GetPrefs()->SetBoolean(
-      local_ai::prefs::kBraveHistoryEmbeddingsEnabled, true);
-  profile1()->GetPrefs()->SetBoolean(
-      ai_chat::prefs::kBraveAIChatTabOrganizationSendPageContent, true);
-
-  AppendTabWithTitle(browser(),
-                     https_server()->GetURL("foo.com", "/empty.html"),
-                     kFooDotComTitle1);
-  const GURL foo_url =
-      browser()->tab_strip_model()->GetTabAtIndex(1)->GetContents()->GetURL();
-
-  // Add the navigated URL to history so `QueryUrlIds` resolves a non-zero
-  // URLID for it.
-  history::HistoryService* history_service =
-      HistoryServiceFactory::GetForProfile(profile1(),
-                                           ServiceAccessType::EXPLICIT_ACCESS);
-  ASSERT_TRUE(history_service);
-  history_service->AddPage(foo_url, base::Time::Now(), /*context_id=*/0,
-                           /*nav_entry_id=*/0, /*referrer=*/GURL(),
-                           history::RedirectList(), ui::PAGE_TRANSITION_LINK,
-                           history::SOURCE_BROWSED,
-                           history::VisitResponseCodeCategory::kNot404,
-                           /*did_replace_entry=*/false);
-
-  // Stands in for the embeddings database, which needs a downloaded model to
-  // hold anything.
-  handler()->SetTabPassagesFetcherForTesting(base::BindLambdaForTesting(
-      [](const std::vector<GURL>& urls,
-         history_embeddings::TabPassagesCallback callback) {
-        std::move(callback).Run(
-            std::vector<std::vector<std::string>>(urls.size(), {kPassage}));
-      }));
-
-  auto* mock_engine = SetMockTabOrganizationEngine();
-  std::vector<ai_chat::Tab> sent_tabs;
-  EXPECT_CALL(*mock_engine, GetSuggestedTopics(_, _))
-      .WillOnce(testing::DoAll(
-          testing::SaveArg<0>(&sent_tabs),
-          base::test::RunOnceCallback<1>(std::vector<std::string>{kTopic})));
-
-  TestGetSuggestedTopics({kTopic}, nullptr);
-
-  // The window's initial blank tab isn't HTTP(S), so it never reaches the
-  // engine; only the navigated tab does, carrying its passage.
-  ASSERT_EQ(sent_tabs.size(), 1u);
-  EXPECT_EQ(sent_tabs[0].passages, std::vector<std::string>{kPassage});
-}
-
-IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerTabPassagesBrowserTest,
-                       NoPassagesWithoutSendPageContentPref) {
-  // History embeddings on, but the page-content opt-in left at its default.
-  ASSERT_FALSE(profile1()->GetPrefs()->GetBoolean(
-      ai_chat::prefs::kBraveAIChatTabOrganizationSendPageContent));
-  profile1()->GetPrefs()->SetBoolean(
-      local_ai::prefs::kBraveHistoryEmbeddingsEnabled, true);
-
-  AppendTabWithTitle(browser(),
-                     https_server()->GetURL("foo.com", "/empty.html"),
-                     kFooDotComTitle1);
-
-  // Would supply passages if it were ever consulted.
-  bool fetched = false;
-  handler()->SetTabPassagesFetcherForTesting(base::BindLambdaForTesting(
-      [&fetched](const std::vector<GURL>& urls,
-                 history_embeddings::TabPassagesCallback callback) {
-        fetched = true;
-        std::move(callback).Run(
-            std::vector<std::vector<std::string>>(urls.size(), {kPassage}));
-      }));
-
-  auto* mock_engine = SetMockTabOrganizationEngine();
-  std::vector<ai_chat::Tab> sent_tabs;
-  EXPECT_CALL(*mock_engine, GetSuggestedTopics(_, _))
-      .WillOnce(testing::DoAll(
-          testing::SaveArg<0>(&sent_tabs),
-          base::test::RunOnceCallback<1>(std::vector<std::string>{kTopic})));
-
-  TestGetSuggestedTopics({kTopic}, nullptr);
-
-  ASSERT_EQ(sent_tabs.size(), 1u);
-  EXPECT_TRUE(sent_tabs[0].passages.empty());
-  EXPECT_FALSE(fetched);
-}
-
-// Withdrawing consent while the passage read is in flight must drop what it
-// returned, not attach it.
-IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerTabPassagesBrowserTest,
-                       NoPassagesWhenConsentWithdrawnMidRead) {
-  profile1()->GetPrefs()->SetBoolean(
-      local_ai::prefs::kBraveHistoryEmbeddingsEnabled, true);
-  profile1()->GetPrefs()->SetBoolean(
-      ai_chat::prefs::kBraveAIChatTabOrganizationSendPageContent, true);
-
-  AppendTabWithTitle(browser(),
-                     https_server()->GetURL("foo.com", "/empty.html"),
-                     kFooDotComTitle1);
-
-  bool fetched = false;
-  handler()->SetTabPassagesFetcherForTesting(base::BindLambdaForTesting(
-      [this, &fetched](const std::vector<GURL>& urls,
-                       history_embeddings::TabPassagesCallback callback) {
-        fetched = true;
-        // The user turns the opt-in off while the read is outstanding.
-        profile1()->GetPrefs()->SetBoolean(
-            ai_chat::prefs::kBraveAIChatTabOrganizationSendPageContent, false);
-        std::move(callback).Run(
-            std::vector<std::vector<std::string>>(urls.size(), {kPassage}));
-      }));
-
-  auto* mock_engine = SetMockTabOrganizationEngine();
-  std::vector<ai_chat::Tab> sent_tabs;
-  EXPECT_CALL(*mock_engine, GetSuggestedTopics(_, _))
-      .WillOnce(testing::DoAll(
-          testing::SaveArg<0>(&sent_tabs),
-          base::test::RunOnceCallback<1>(std::vector<std::string>{kTopic})));
-
-  TestGetSuggestedTopics({kTopic}, nullptr);
-
-  // The read happened, but the result must not be attached.
-  ASSERT_EQ(sent_tabs.size(), 1u);
-  EXPECT_TRUE(sent_tabs[0].passages.empty());
-  EXPECT_TRUE(fetched);
-}
-
-IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerTabPassagesBrowserTest,
-                       NoPassagesWithoutHistoryEmbeddings) {
-  // The opt-in on its own isn't enough: without the index there is nothing
-  // on-device to read, so the passage path must stay shut.
-  profile1()->GetPrefs()->SetBoolean(
-      ai_chat::prefs::kBraveAIChatTabOrganizationSendPageContent, true);
-  profile1()->GetPrefs()->SetBoolean(
-      local_ai::prefs::kBraveHistoryEmbeddingsEnabled, false);
-
-  AppendTabWithTitle(browser(),
-                     https_server()->GetURL("foo.com", "/empty.html"),
-                     kFooDotComTitle1);
-
-  bool fetched = false;
-  handler()->SetTabPassagesFetcherForTesting(base::BindLambdaForTesting(
-      [&fetched](const std::vector<GURL>& urls,
-                 history_embeddings::TabPassagesCallback callback) {
-        fetched = true;
-        std::move(callback).Run(
-            std::vector<std::vector<std::string>>(urls.size(), {kPassage}));
-      }));
-
-  auto* mock_engine = SetMockTabOrganizationEngine();
-  std::vector<ai_chat::Tab> sent_tabs;
-  EXPECT_CALL(*mock_engine, GetSuggestedTopics(_, _))
-      .WillOnce(testing::DoAll(
-          testing::SaveArg<0>(&sent_tabs),
-          base::test::RunOnceCallback<1>(std::vector<std::string>{kTopic})));
-
-  TestGetSuggestedTopics({kTopic}, nullptr);
-
-  ASSERT_EQ(sent_tabs.size(), 1u);
-  EXPECT_TRUE(sent_tabs[0].passages.empty());
-  EXPECT_FALSE(fetched);
+  EXPECT_TRUE(future.Take().empty());
 }

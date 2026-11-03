@@ -32,7 +32,6 @@ function pref(
 function getBravePrefs(): chrome.settingsPrivate.PrefObject[] {
   const {BOOLEAN, NUMBER, STRING} = chrome.settingsPrivate.PrefType
   return [
-    pref('brave.history_embeddings_enabled', BOOLEAN, true),
     pref('brave.history.retention_days', NUMBER, 0),
     pref('webrtc.ip_handling_policy', STRING, 'default'),
     pref('brave.gcm.channel_status', BOOLEAN, true),

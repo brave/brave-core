@@ -27,7 +27,6 @@
 #include "brave/components/constants/brave_constants.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
-#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -59,10 +58,6 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
-#endif
-
-#if BUILDFLAG(ENABLE_LOCAL_AI)
-#include "brave/browser/history_embeddings/brave_history_embeddings_status.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
@@ -222,13 +217,6 @@ void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
   brave::SetDefaultSearchVersion(profile, profile->IsNewProfile());
   brave::SetDefaultThirdPartyCookieBlockValue(profile);
   perf::MaybeEnableBraveFeaturesPrefsForPerfTesting(profile);
-
-#if BUILDFLAG(ENABLE_LOCAL_AI)
-  // Capture the Semantic History Search setting before the embedding services
-  // are built on it.
-  history_embeddings::BraveHistoryEmbeddingsStatus::CreateForProfile(
-      profile, g_browser_process->local_state());
-#endif
 }
 
 void BraveProfileManager::DoFinalInitForServices(Profile* profile,
