@@ -14,6 +14,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/functional/function_ref.h"
+#include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 
@@ -106,22 +107,33 @@ void ForEachOmittableString(sync_pb::AIChatConversationSpecifics_Entry* entry,
 bool FitEntryWithinSyncBudget(
     sync_pb::AIChatConversationSpecifics_Entry* entry);
 
-// Builds a sync entity containing only conversation metadata.
+// Builds a sync entity containing only conversation metadata. |modified_time|
+// is when that metadata last changed, and a null time is left unset.
 sync_pb::AIChatConversationSpecifics ConversationMetadataToSpecifics(
-    const mojom::Conversation& conversation);
+    const mojom::Conversation& conversation,
+    base::Time modified_time);
 
 // Builds a sync entity for a single conversation entry. |conversation_uuid|
-// is the parent conversation's UUID. |associated_content| is filtered to
-// only the items that belong to this entry. |associated_content_texts|
-// holds the optional extracted text for each AC, keyed by AC UUID; entries
-// without a text in the map have their last_contents field left absent on
-// the wire so the receiver preserves any existing local text.
+// is the parent conversation's UUID. |modified_time| is when the entry's
+// content last changed, and a null time is left unset. |associated_content| is
+// filtered to only the items that belong to this entry.
+// |associated_content_texts| holds the optional extracted text for each AC,
+// keyed by AC UUID; entries without a text in the map have their last_contents
+// field left absent on the wire so the receiver preserves any existing local
+// text.
 sync_pb::AIChatConversationSpecifics EntryToSpecifics(
     const std::string& conversation_uuid,
     const mojom::ConversationTurn& entry,
+    base::Time modified_time,
     const std::vector<mojom::AssociatedContentPtr>& associated_content,
     const base::flat_map<std::string, std::string>& associated_content_texts =
         {});
+
+// Returns when the record's content last changed on the device that sent it,
+// as set by ConversationMetadataToSpecifics() or EntryToSpecifics(). Returns a
+// null time, meaning the oldest, when the record doesn't carry one.
+base::Time GetModifiedTimeFromSpecifics(
+    const sync_pb::AIChatConversationSpecifics& specifics);
 
 // Reverses ConversationMetadataToSpecifics. The returned Conversation has no
 // entries or associated content (those are carried by Entry records).
