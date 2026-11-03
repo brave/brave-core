@@ -2555,10 +2555,8 @@ extension BrowserViewController: SettingsDelegate {
       let factor = index / 1000
       let dateAdded =
         factor == 0 ? Date() : Calendar.current.date(byAdding: .day, value: -factor, to: Date())!
-      profileController.historyAPI.add(
-        url: url,
-        title: "QA-History - BraveSearch - \(index)",
-        dateAdded: dateAdded
+      profileController.historyAPI.addHistory(
+        HistoryNode(url: url, title: "QA-History - BraveSearch - \(index)", dateAdded: dateAdded)
       )
     }
   }

@@ -4,9 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
-import BraveShared
 import CoreData
-import Data
 import Foundation
 import ScreenTime
 import Shared
@@ -15,12 +13,7 @@ extension BraveHistoryAPI {
 
   // MARK: Internal
 
-  func add(url: URL, title: String, dateAdded: Date) {
-    let historyNode = HistoryNode(url: url, title: title, dateAdded: dateAdded)
-    addHistory(historyNode)
-  }
-
-  func byFrequency(
+  public func byFrequency(
     query: String,
     completion: @escaping ([HistoryNode]) -> Void
   ) -> HistoryCancellable? {
@@ -40,17 +33,7 @@ extension BraveHistoryAPI {
     )
   }
 
-  func update(_ historyNode: HistoryNode, customTitle: String?, dateAdded: Date?) {
-    if let title = customTitle {
-      historyNode.title = title
-    }
-
-    if let date = dateAdded {
-      historyNode.dateAdded = date
-    }
-  }
-
-  func deleteAll(completion: @escaping () -> Void) {
+  public func deleteAll(completion: @escaping () -> Void) {
     var screenTimeHistory: STWebHistory?
     do {
       screenTimeHistory = try STWebHistory(bundleIdentifier: Bundle.main.bundleIdentifier!)
@@ -66,7 +49,7 @@ extension BraveHistoryAPI {
     }
   }
 
-  @MainActor func search(
+  @MainActor public func search(
     withQuery query: String?,
     options: HistorySearchOptions
   ) async -> [HistoryNode] {
