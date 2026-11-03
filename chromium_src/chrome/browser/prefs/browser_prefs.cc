@@ -287,6 +287,9 @@ void MigrateObsoleteBraveProfilePrefsAfterChromium(
 #if !BUILDFLAG(IS_ANDROID)
   brave::MigrateBookmarkState(profile_prefs);
 #endif
+
+  // Added 2026-11
+  profile_prefs->ClearPref(kBraveHistoryEmbeddingsEnabled);
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }
 

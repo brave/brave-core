@@ -90,6 +90,9 @@ inline constexpr char kImportDialogPayments[] = "import_dialog_payments";
 // Deprecated: migrated into the upstream prefs::kCtrlTabMru.
 inline constexpr char kMRUCyclingEnabled[] = "brave.mru_cycling_enabled";
 inline constexpr char kTabsSearchShow[] = "brave.tabs_search_show";
+// Deprecated: upstream removed History Embeddings.
+inline constexpr char kBraveHistoryEmbeddingsEnabled[] =
+    "brave.history_embeddings_enabled";
 inline constexpr char kTabMuteIndicatorNotClickable[] =
     "brave.tabs.mute_indicator_not_clickable";
 inline constexpr char kDontAskForCrashReporting[] =

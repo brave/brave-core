@@ -310,7 +310,6 @@ brave_chrome_browser_deps = [
   "//components/feed/core/shared_prefs:feed_shared_prefs",
   "//components/gcm_driver:gcm_buildflags",
   "//components/history/core/common",
-  "//components/history_embeddings/core",
   "//components/metrics",
   "//components/ntp_tiles",
   "//components/ntp_tiles:pref_names",
@@ -418,11 +417,8 @@ if (enable_email_aliases) {
 if (enable_local_ai) {
   brave_chrome_browser_deps += [
     "//brave/browser/history_embeddings",
-    "//brave/browser/history_embeddings:open_tab_search",
-    "//brave/browser/history_embeddings:status",
     "//brave/browser/speech",
     "//brave/browser/ui/webui/local_ai",
-    "//brave/components/history_embeddings:open_tab_passages",
     "//brave/components/local_ai/content",
     "//brave/components/local_ai/core",
     "//brave/components/local_ai/core:features",
