@@ -112,8 +112,6 @@ std::vector<uint8_t> GetWalletAddr(std::string_view domain,
 
 namespace ens {
 
-std::string Resolver(std::string_view domain);
-
 std::optional<std::vector<uint8_t>> DnsEncode(std::string_view dotted_name);
 
 }  // namespace ens

@@ -397,16 +397,6 @@ std::vector<uint8_t> GetWalletAddr(std::string_view domain,
 
 namespace ens {
 
-std::string Resolver(std::string_view domain) {
-  const std::string function_hash = GetFunctionHash("resolver(bytes32)");
-  std::string tokenID = ToHex(Namehash(domain));
-  std::vector<std::string> hex_strings = {function_hash, tokenID};
-  std::string data;
-  ConcatHexStrings(hex_strings, &data);
-  DCHECK(IsValidHexString(data));
-  return data;
-}
-
 // https://docs.ens.domains/ens-improvement-proposals/ensip-10-wildcard-resolution#specification
 // Similar to chromium's `DNSDomainFromDot` but without length limitation and
 // support of terminal dot.
