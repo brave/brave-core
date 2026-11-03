@@ -1849,7 +1849,13 @@ class PublishTest(unittest.TestCase):
         self.assertEqual(result, 2)
         self.assertIn(('fetch', 'origin', 'cr158'), self.calls)
         self.assertIn(
-            ('cherry-pick', '--empty=drop', f'{_START}..{_LANDED}'), self.calls
+            (
+                'cherry-pick',
+                '--allow-empty',
+                '--empty=drop',
+                f'{_START}..{_LANDED}',
+            ),
+            self.calls,
         )
         self.assertEqual(self._pushes(), [])
 

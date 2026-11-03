@@ -1355,8 +1355,12 @@ class Publish:
         self._note(f'Picked what landed on GitHub since {expected[:12]}:')
         self._notes += [f'  - `{line}`' for line in landed.splitlines()]
         try:
+            # Brockit's `reassign!`/`drop!` markers are empty to begin with.
             brave.run_git(
-                'cherry-pick', '--empty=drop', f'{expected}..{remote}'
+                'cherry-pick',
+                '--allow-empty',
+                '--empty=drop',
+                f'{expected}..{remote}',
             )
         except subprocess.CalledProcessError:
             self._note(
