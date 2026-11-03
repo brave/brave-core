@@ -1211,6 +1211,10 @@ class PublishWithoutRebaseTest(unittest.TestCase):
         )
         with (
             mock.patch.object(autolift.repository, 'brave', brave),
+            # `PublishTest` covers it.
+            mock.patch.object(
+                autolift.Publish, '_presubmit', return_value=True
+            ),
             contextlib.redirect_stdout(io.StringIO()),
         ):
             return autolift.Publish(158).run(
@@ -1694,6 +1698,7 @@ class PublishTest(unittest.TestCase):
         remote_at_push: str | None = None,
         git_cache: str = '',
         chromium_mismatch: str | None = None,
+        presubmit_fails: bool = False,
     ):
         # The fake repository: picks and rebases move HEAD, and fetching the
         # base moves origin/master to GitHub's, a lift of its own if
@@ -1755,6 +1760,8 @@ class PublishTest(unittest.TestCase):
                 state.update(head='rebased', forked=state['base'], squash=False)
             if 'regen' in cmd:
                 state['head'] = 'regenerated'
+            if 'presubmit' in cmd:
+                return mock.Mock(returncode=1 if presubmit_fails else 0)
             return mock.Mock(returncode=0)
 
         def from_git(ref):
@@ -1840,9 +1847,44 @@ class PublishTest(unittest.TestCase):
         )
 
     def test_unchanged_branch_is_not_pushed(self):
-        result, _ = self._publish(remote=_START, head=_START)
+        result, run = self._publish(remote=_START, head=_START)
         self.assertEqual(result, 0)
         self.assertEqual(self._pushes(), [])
+        self.assertEqual(self._presubmits(run), [])
+
+    def _presubmits(self, run) -> list[list[str]]:
+        return [
+            c.args[0] for c in run.call_args_list if 'presubmit' in c.args[0]
+        ]
+
+    def test_presubmit_runs_against_the_upstream_before_the_push(self):
+        result, run = self._publish(remote=_START)
+        self.assertEqual(result, 0)
+        self.assertEqual(
+            self._presubmits(run),
+            [['pnpm', 'run', 'presubmit', '--base', 'origin/master']],
+        )
+        # Not again for the same commit.
+        _, run = self._publish(remote=_START, remote_at_push=_LANDED)
+        self.assertEqual(self._presubmits(run), [])
+
+    def test_presubmit_errors_hold_the_push_back(self):
+        result, _ = self._publish(remote=_START, presubmit_fails=True)
+        self.assertEqual(result, 1)
+        self.assertEqual(self._pushes(), [])
+        self.assertFalse(
+            (self.run_root / 'cr158' / 'presubmit-passed').exists()
+        )
+
+    def test_presubmit_errors_hold_a_new_branch_back(self):
+        result, run = self._publish(
+            remote=None, start=None, presubmit_fails=True
+        )
+        self.assertEqual(result, 1)
+        self.assertEqual(self._pushes(), [])
+        self.assertFalse(
+            any('update-version-issue' in c.args[0] for c in run.call_args_list)
+        )
 
     def test_picks_what_landed_meanwhile_then_pushes_over_it(self):
         result, _ = self._publish(remote=_LANDED)
@@ -1882,8 +1924,15 @@ class PublishTest(unittest.TestCase):
         self.assertNotIn('--discard-regen-changes', rebase)
         self.assertEqual(self._pushes(), [])
 
+    def _brockit_runs(self, run) -> list[list[str]]:
+        return [
+            c.args[0]
+            for c in run.call_args_list
+            if 'presubmit' not in c.args[0]
+        ]
+
     def _brockit_calls(self, run) -> list[list[str]]:
-        return [c.args[0][2:] for c in run.call_args_list]
+        return [cmd[2:] for cmd in self._brockit_runs(run)]
 
     def test_base_lift_discards_and_regenerates(self):
         result, run = self._publish(
@@ -1976,8 +2025,9 @@ class PublishTest(unittest.TestCase):
     def test_nothing_to_squash_needs_no_rebase(self):
         result, run = self._publish(remote=_START)
         self.assertEqual(result, 0)
-        self.assertEqual(len(run.call_args_list), 1)
-        self.assertIn('--dry-run', run.call_args.args[0])
+        brockit = self._brockit_runs(run)
+        self.assertEqual(len(brockit), 1)
+        self.assertIn('--dry-run', brockit[0])
 
     def test_rebases_onto_the_latest_base_once(self):
         result, run = self._publish(remote=_START, base_moved=True)
@@ -1993,9 +2043,7 @@ class PublishTest(unittest.TestCase):
         )
         self.assertEqual(result, 0)
         self.assertNotIn(('fetch', 'origin', 'master'), self.calls)
-        self.assertTrue(
-            all('--dry-run' in c.args[0] for c in run.call_args_list)
-        )
+        self.assertTrue(all('--dry-run' in c for c in self._brockit_runs(run)))
         self.assertEqual(len(self._pushes()), 1)
 
     def test_fetches_right_before_pushing(self):

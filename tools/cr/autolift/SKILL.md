@@ -913,8 +913,11 @@ pnpm run presubmit --base "$(git rev-parse --abbrev-ref '@{upstream}')" \
     > .autolift/cr<N>/presubmit.log 2>&1
 ```
 
-It checks only what is committed: every run that commits anything runs it after
-its last commit, this document's update included, before publishing.
+It checks every commit on the branch since the base, but only what is committed:
+run it after the last commit, this document's update included. Commits the run
+didn't write count too: the tooling `sync_tooling.py` picked, teammates' picks
+and the rebase. `publish` runs it again before any push, and pushes nothing
+while it has errors.
 
 Address what it reports, errors above all, rebuild the targets a fix touches,
 and run the presubmit again until no errors are left. Address warnings too when
@@ -1066,9 +1069,13 @@ vpython3 tools/cr/autolift/autolift.py publish <N>
 Run it in the background, with its output in `.autolift/cr<N>/publish.log`. It
 picks what teammates pushed to `cr<N>` during the run, catches up with the base
 once, runs a last `brockit rebase` and `brockit regen` when they would change
-anything, and appends what it did to the report, ending with "To review" links
-once it has pushed. For a new milestone, it also opens the version issue and
-pull request.
+anything, runs the presubmit against the base over the branch it is about to
+push (into `.autolift/cr<N>/presubmit.log`), and appends what it did to the
+report, ending with "To review" links once it has pushed. For a new milestone,
+it also opens the version issue and pull request.
+
+- **Exit 1 with presubmit errors:** nothing is pushed. Fix them as in
+  [step 7](#7-presubmit), and run `publish` again.
 
 - **Exit 2:** it changed the branch and didn't push. Sync (`pnpm run sync`),
   rebuild with [step 3](#3-linux-build)'s command, fix what broke as in step 3,
@@ -1126,9 +1133,10 @@ alone. After step 1:
    pushed.
 
 Then stop. Android, the Lit mangler snapshot and the code health review are for
-runs that lift; the presubmit is for runs that commit (see
-[step 7](#7-presubmit)). Step 9 applies as in a lift; do it before step 11, so
-it is pushed too.
+runs that lift. Run the presubmit (see [step 7](#7-presubmit)) before step 11
+whenever the branch differs from GitHub's: the rebase and the picked tooling
+make it so even with no fix of the run's own. Step 9 applies as in a lift; do it
+before step 11, so it is pushed too.
 
 ### Autofix run
 
@@ -1232,12 +1240,12 @@ report, not with `autolift.py step`.
    As in [step 11](#11-publish), it picks what teammates pushed to `cr<N>`
    during the run and pushes with a lease, but it doesn't catch up with the
    base, rebase or regenerate. Exit 2: the picks changed the branch, so sync
-   (`pnpm run sync`), rebuild with [step 3](#3-linux-build)'s command, run the
-   presubmit again, fix what broke as fixups, and run it again with `--built`.
-   It refuses merges, and commits that aren't fixups, pinned subjects or the
-   picked tooling: pass `--allow-new` when step 4 made a new commit. Conflicts
-   and a rewritten branch are handled as in step 11. The push starts CI again; a
-   later run reads the new results.
+   (`pnpm run sync`), rebuild with [step 3](#3-linux-build)'s command, fix what
+   broke as fixups, and run it again with `--built`. Presubmit errors stop it as
+   in step 11. It refuses merges, and commits that aren't fixups, pinned
+   subjects or the picked tooling: pass `--allow-new` when step 4 made a new
+   commit. Conflicts and a rewritten branch are handled as in step 11. The push
+   starts CI again; a later run reads the new results.
 7. Report each failed check: its builds and label, and what was done (the fix
    commit, the rerun, or why it was left).
 

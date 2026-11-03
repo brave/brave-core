@@ -1069,8 +1069,8 @@ class Publish:
     started; moves the upstream to the base's latest tip, once per run; runs
     `brockit rebase --squash-minor-bumps` if that would change the branch,
     with `--discard-regen-changes` and a `brockit regen` after it if the base
-    had a lift of its own; and, once a branch it changed has been rebuilt,
-    force-pushes it with a lease.
+    had a lift of its own; and, once a branch it changed has been rebuilt and
+    passes the presubmit against its upstream, force-pushes it with a lease.
 
     Its state between rounds lives in the run's directory, and what it does
     goes to the run's report, however the round ends.
@@ -1097,7 +1097,13 @@ class Publish:
     def record_start(cls, milestone: int, commit: str) -> None:
         """Records the commit `prepare` reset the branch to, for a new run."""
         publish = cls(milestone)
-        for name in ('synced', 'base-synced', 'rebuild-needed', 'regen-needed'):
+        for name in (
+            'synced',
+            'base-synced',
+            'rebuild-needed',
+            'regen-needed',
+            'presubmit-passed',
+        ):
             publish._state(name).unlink(missing_ok=True)
         publish._state('start').write_text(f'{commit}\n', encoding='utf-8')
 
@@ -1245,14 +1251,16 @@ class Publish:
             return self.AGAIN
         rebuild.unlink()
 
-        if new:
-            return self._push_new()
-        if head == expected:
+        if not new and head == expected:
             self._note(
                 f'{self.branch} is unchanged since the run started; nothing '
                 'pushed.'
             )
             return 0
+        if not self._presubmit(head):
+            return 1
+        if new:
+            return self._push_new()
         if not self._push(expected):
             return self.AGAIN
         # A later publish in the same run builds on this push.
@@ -1260,6 +1268,38 @@ class Publish:
         self._note(f'Pushed {self.branch} over {expected[:12]}.')
         self._note_for_review(expected)
         return 0
+
+    def _presubmit(self, head: str) -> bool:
+        """Whether the presubmit passes against the upstream: over every
+        commit the push carries, the picked ones included. Runs once per
+        `head`."""
+        passed = self._state('presubmit-passed')
+        if (
+            passed.exists()
+            and passed.read_text(encoding='utf-8').strip() == head
+        ):
+            return True
+        upstream = self._brave.run_git(
+            'rev-parse', '--abbrev-ref', '@{upstream}'
+        )
+        log = self._state('presubmit.log')
+        with log.open('w', encoding='utf-8') as output:
+            returncode = subprocess.run(
+                ['pnpm', 'run', 'presubmit', '--base', upstream],
+                cwd=self._brave.root,
+                stdout=output,
+                stderr=subprocess.STDOUT,
+                check=False,
+            ).returncode
+        if returncode:
+            self._note(
+                f'Not pushing: the presubmit against {upstream} has errors '
+                f'(see {log}). Fix them as in step 7, then run `publish` '
+                'again.'
+            )
+            return False
+        passed.write_text(f'{head}\n', encoding='utf-8')
+        return True
 
     def _note(self, message: str) -> None:
         print(message)
