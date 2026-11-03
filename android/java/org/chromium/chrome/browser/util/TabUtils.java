@@ -28,6 +28,8 @@ import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuCompat;
 
+import com.google.android.material.color.MaterialColors;
+
 import org.jni_zero.CalledByNative;
 
 import org.chromium.base.IntentUtils;
@@ -47,6 +49,7 @@ import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
+import org.chromium.chrome.browser.theme.BraveDynamicColors;
 import org.chromium.chrome.browser.toolbar.LocationBarModel;
 import org.chromium.components.bookmarks.BookmarkId;
 import org.chromium.content_public.browser.LoadUrlParams;
@@ -64,7 +67,14 @@ public class TabUtils {
             NullableObservableSupplier<BookmarkModel> bookmarkModelSupplier,
             LocationBarModel locationBarModel,
             BookmarkManagerOpener bookmarkManagerOpener) {
-        Context wrapper = new ContextThemeWrapper(context, R.style.BookmarkTabPopupMenu);
+        boolean useDynamicColors = BraveDynamicColors.isDynamicColorsEnabled();
+        Context themedContext = view.getContext();
+        Context wrapper =
+                new ContextThemeWrapper(
+                        themedContext,
+                        useDynamicColors
+                                ? R.style.BookmarkTabPopupMenuDynamic
+                                : R.style.BookmarkTabPopupMenu);
 
         PopupMenu popup = new PopupMenu(wrapper, view);
         popup.getMenuInflater().inflate(R.menu.bookmark_tab_menu, popup.getMenu());
@@ -104,8 +114,12 @@ public class TabUtils {
         MenuItem viewMenuItem = popup.getMenu().findItem(R.id.view_bookmarks);
         MenuItem deleteMenuItem = popup.getMenu().findItem(R.id.delete_bookmark);
 
-        if (GlobalNightModeStateProviderHolder.getInstance().isInNightMode()) {
-            int tintColor = ContextCompat.getColor(context, R.color.bookmark_menu_text_color);
+        if (useDynamicColors
+                || GlobalNightModeStateProviderHolder.getInstance().isInNightMode()) {
+            int tintColor =
+                    useDynamicColors
+                            ? MaterialColors.getColor(themedContext, R.attr.colorOnSurface, 0)
+                            : ContextCompat.getColor(context, R.color.bookmark_menu_text_color);
             tintIcon(addMenuItem.getIcon(), tintColor);
             tintIcon(editMenuItem.getIcon(), tintColor);
             tintIcon(viewMenuItem.getIcon(), tintColor);

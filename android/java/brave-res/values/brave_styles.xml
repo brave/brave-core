@@ -225,6 +225,13 @@
         <item name="android:popupMenuStyle">@drawable/bookmark_menu_bg</item>
     </style>
 
+    <style name="BookmarkTabPopupMenuDynamic" parent="Theme.AppCompat.DayNight">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:popupBackground">@drawable/bookmark_menu_bg_dynamic</item>
+        <item name="android:popupElevation">20dp</item>
+        <item name="android:popupMenuStyle">@drawable/bookmark_menu_bg_dynamic</item>
+    </style>
+
     <style name="NewTabPopupMenuLight" parent="Widget.AppCompat.PopupMenu">
       <item name="android:textColor">@android:color/black</item>
       <item name="android:itemBackground">@android:color/white</item>
