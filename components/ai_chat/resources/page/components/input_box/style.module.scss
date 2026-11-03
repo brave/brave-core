@@ -135,6 +135,7 @@
 
 .sendButtonDisabled {
   --leo-button-color: var(--leo-color-button-disabled);
+  pointer-events: none;
 }
 
 .sendIconDisabled {
