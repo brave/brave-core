@@ -5,6 +5,7 @@
 import * as React from 'react'
 import styled, { css } from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
+import textureUrl from '../../assets/bg-texture.svg'
 
 // The two palettes are distinct literal types, so the parameter only asks
 // for the shades the page uses.
@@ -46,6 +47,7 @@ const Box = styled.div<{ isTor?: boolean }>`
 
 const Glow = styled.div`
   position: absolute;
+  z-index: 0;
   top: -350px;
   left: 50%;
   width: 1024px;
@@ -57,6 +59,33 @@ const Glow = styled.div`
   pointer-events: none;
 `
 
+// The Figma texture is black at 50% opacity. Masking with it paints the dots
+// in the active palette's shade 30 (primitive-private-window-30 /
+// primitive-tor-window-30) without editing the asset. The SVG stretches
+// (preserveAspectRatio="none") so the grain covers the whole page.
+const Texture = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: var(--window-surface-stronger);
+  mask-image: url('${textureUrl}');
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: 100% 100%;
+  mask-mode: alpha;
+`
+
+// Positioned layers paint above in-flow content, so the page sits in its own
+// stacking context above the texture and the glow.
+const Foreground = styled.div`
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+`
+
 interface Props {
   children: React.ReactNode | React.ReactNode[]
   isTor?: boolean
@@ -66,7 +95,8 @@ function BackgroundView (props: Props) {
   return (
     <Box isTor={props.isTor}>
       <Glow />
-      {props.children}
+      <Texture />
+      <Foreground>{props.children}</Foreground>
     </Box>
   )
 }

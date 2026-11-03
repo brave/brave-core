@@ -150,6 +150,7 @@ const Card = styled.li`
   width: 304px;
   box-sizing: border-box;
   padding: ${leo.spacing['2Xl']};
+  background: var(--window-background);
   border: 1px solid var(--window-surface);
   border-radius: ${leo.radius.xl};
   text-align: center;
