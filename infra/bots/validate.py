@@ -203,9 +203,16 @@ class _Validator:
                     )
 
     def _check_sync_schema(self, sync_path: Path, sync_json: dict) -> None:
-        for required in ('target_os', 'target_cpu', 'gclient_overrides'):
+        for required in ('target_os', 'target_cpu'):
+            value = sync_json.get(required)
             if required not in sync_json:
                 self._errs.append('%s: missing %r' % (sync_path, required))
+            elif not isinstance(value, list) or not all(
+                isinstance(name, str) for name in value
+            ):
+                self._errs.append(
+                    '%s: %r is not a list of strings' % (sync_path, required)
+                )
 
     def _check_targets_schema(
         self, targets_path: Path, targets_json: dict

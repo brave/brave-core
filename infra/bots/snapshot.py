@@ -34,16 +34,23 @@ def _dump(data) -> str:
 
 
 def compute_fresh_output(builders_registry, gn_args_registry) -> dict[str, str]:
-    """Returns `{relative_path: content}` for every registered builder."""
+    """Returns `{relative_path: content}` for every registered builder.
+
+    Raises:
+        ConfigError: a builder's spec disagrees with its GN args.
+    """
+    from lib.config import check_builder_spec
+
     output = {}
     for builder in builders_registry.all():
         resolved = gn_args_registry.resolve(builder.name)
+        check_builder_spec(builder, resolved['gn_args'])
         output[f'{builder.name}/gn-args.json'] = _dump(resolved)
+        gclient_config = builder.builder_spec.gclient_config
         output[f'{builder.name}/sync.json'] = _dump(
             {
-                'target_os': builder.sync_config.target_os,
-                'target_cpu': builder.sync_config.target_cpu,
-                'gclient_overrides': builder.sync_config.gclient_overrides,
+                'target_os': list(gclient_config.target_os),
+                'target_cpu': list(gclient_config.target_cpu),
             }
         )
         output[f'{builder.name}/targets.json'] = _dump(

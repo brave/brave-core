@@ -4,7 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """Print a builder's generated configuration.
 
-Brave builder carries gn args, sync config, and compile/test targets. Use
+Brave builder carries gn args, gclient targets, and compile/test targets. Use
 `--json` to produce JSON for tooling.
 """
 
@@ -44,20 +44,17 @@ def _print_text(name: str, description: dict) -> None:
     targets = description.get('targets', {})
 
     print('%s:' % name)
-    print(
-        '  target_os:  %s'
-        % sync.get('target_os', gn_args.get('target_os', '?'))
-    )
-    print(
-        '  target_cpu: %s'
-        % sync.get('target_cpu', gn_args.get('target_cpu', '?'))
-    )
-
-    overrides = sync.get('gclient_overrides')
-    if overrides:
+    print('  target_os:  %s' % gn_args.get('target_os', '?'))
+    print('  target_cpu: %s' % gn_args.get('target_cpu', '?'))
+    if sync:
+        # What the checkout syncs, besides the host (always synced).
         print(
-            '  gclient overrides: %s'
-            % ', '.join('%s=%r' % kv for kv in sorted(overrides.items()))
+            '  sync target_os:  %s'
+            % (', '.join(sync.get('target_os', ())) or '(host)')
+        )
+        print(
+            '  sync target_cpu: %s'
+            % (', '.join(sync.get('target_cpu', ())) or '(host)')
         )
 
     compile_targets = targets.get('compile', ())

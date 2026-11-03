@@ -66,9 +66,8 @@ class DescribeBuilderTest(unittest.TestCase):
                 gn_args={'target_os': 'linux', 'target_cpu': 'x64'},
                 secrets={'brave_services_key': 'BRAVE_SERVICES_KEY'},
                 sync={
-                    'target_os': 'linux',
-                    'target_cpu': 'x64',
-                    'gclient_overrides': {},
+                    'target_os': ['android', 'linux'],
+                    'target_cpu': ['x64'],
                 },
                 targets={
                     'compile': ['brave:all'],
@@ -88,7 +87,7 @@ class DescribeBuilderTest(unittest.TestCase):
                 result['gn_args']['secrets'],
                 {'brave_services_key': 'BRAVE_SERVICES_KEY'},
             )
-            self.assertEqual(result['sync']['target_cpu'], 'x64')
+            self.assertEqual(result['sync']['target_cpu'], ['x64'])
             self.assertEqual(
                 result['targets']['tests'], ['brave_browser_tests']
             )
@@ -187,6 +186,31 @@ class CmdDescribeTest(unittest.TestCase):
             output = buf.getvalue()
             self.assertIn('brave_services_key', output)
             self.assertNotIn('super-secret-value', output)
+
+    def test_human_report_separates_build_and_sync_targets(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _write_builder(
+                tmp,
+                'b',
+                gn_args={'target_os': 'android', 'target_cpu': 'arm64'},
+                sync={'target_os': ['android', 'linux'], 'target_cpu': []},
+            )
+
+            original = gen_paths.BUILDERS_OUTPUT_DIR
+            gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp)
+            try:
+                args = argparse.Namespace(builder='b', json=False)
+                buf = io.StringIO()
+                with contextlib.redirect_stdout(buf):
+                    describe.cmd_describe(args)
+            finally:
+                gen_paths.BUILDERS_OUTPUT_DIR = original
+
+            output = buf.getvalue()
+            self.assertIn('  target_os:  android\n', output)
+            self.assertIn('  target_cpu: arm64\n', output)
+            self.assertIn('  sync target_os:  android, linux\n', output)
+            self.assertIn('  sync target_cpu: (host)\n', output)
 
 
 if __name__ == '__main__':
