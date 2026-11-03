@@ -118,7 +118,7 @@ import os
   @Published var httpsUpgradeLevel: HTTPSUpgradeLevel {
     didSet {
       Preferences.Shields.httpsUpgradeLevel = httpsUpgradeLevel
-      HttpsUpgradeServiceFactory.get(privateMode: false)?.clearAllowlist(
+      httpsUpgradeService?.clearAllowlist(
         fromStart: Date.distantPast,
         end: Date.distantFuture
       )
@@ -197,11 +197,15 @@ import os
   @Published var clearableSettings: [ClearableSetting]
 
   private var subscriptions: [AnyCancellable] = []
+  private let profile: any Profile
   private let prefs: any PrefService
   private let p3aUtilities: BraveP3AUtils
   private let localState: any PrefService
   private let debounceService: (any DebounceService)?
   private let braveShieldsSettings: (any BraveShieldsSettings)?
+  private let httpsUpgradeService: HttpsUpgradeService?
+  private let serpMetrics: (any SerpMetrics)?
+  private let historyAPI: BraveHistoryAPI
   private let rewards: BraveRewards?
   private let clearDataCallback: ClearDataCallback
   private let braveStats: BraveStats
@@ -209,12 +213,15 @@ import os
   let tabManager: TabManager
 
   init(
-    profile: LegacyBrowserProfile,
+    profile: any Profile,
     tabManager: TabManager,
     feedDataSource: FeedDataSource,
     debounceService: (any DebounceService)?,
     braveShieldsSettings: (any BraveShieldsSettings)?,
-    braveCore: BraveProfileController,
+    httpsUpgradeService: HttpsUpgradeService?,
+    historyAPI: BraveHistoryAPI,
+    serpMetrics: (any SerpMetrics)?,
+    prefs: any PrefService,
     p3aUtils: BraveP3AUtils,
     localState: any PrefService,
     rewards: BraveRewards?,
@@ -222,10 +229,14 @@ import os
     webcompatReporterHandler: WebcompatReporterWebcompatReporterHandler?,
     clearDataCallback: @escaping ClearDataCallback
   ) {
+    self.profile = profile
     self.p3aUtilities = p3aUtils
     self.localState = localState
     self.debounceService = debounceService
     self.braveShieldsSettings = braveShieldsSettings
+    self.httpsUpgradeService = httpsUpgradeService
+    self.historyAPI = historyAPI
+    self.serpMetrics = serpMetrics
     self.tabManager = tabManager
     self.isP3AEnabled = p3aUtilities.isP3AEnabled
     self.isCrashReportingEnabled = localState.boolean(forPath: kMetricsReportingEnabled)
@@ -233,7 +244,7 @@ import os
     self.rewards = rewards
     self.clearDataCallback = clearDataCallback
     self.braveStats = braveStats
-    self.prefs = braveCore.profile.prefs
+    self.prefs = prefs
     if FeatureList.kBraveShieldsContentSettings.enabled {
       self.adBlockAndTrackingPreventionLevel =
         braveShieldsSettings?.defaultAdBlockMode.shieldLevel ?? .standard
@@ -267,9 +278,9 @@ import os
       ClearableSetting(
         id: .history,
         clearable: HistoryClearable(
-          historyAPI: braveCore.historyAPI,
-          httpsUpgradeService: HttpsUpgradeServiceFactory.get(privateMode: false),
-          serpMetrics: SerpMetricsServiceFactory.get(profile: braveCore.profile)
+          historyAPI: historyAPI,
+          httpsUpgradeService: httpsUpgradeService,
+          serpMetrics: serpMetrics
         ),
         isEnabled: true
       ),
@@ -281,12 +292,12 @@ import os
       ),
       ClearableSetting(
         id: .passwords,
-        clearable: PasswordsClearable(profile: profile),
+        clearable: PasswordsClearable(),
         isEnabled: true
       ),
       ClearableSetting(id: .downloads, clearable: DownloadsClearable(), isEnabled: true),
     ]
-    if braveCore.profile.prefs.isBraveNewsAvailable {
+    if prefs.isBraveNewsAvailable {
       clearableSettings.append(
         ClearableSetting(
           id: .braveNews,
@@ -296,7 +307,7 @@ import os
       )
     }
 
-    if braveCore.profile.prefs.isPlaylistAvailable {
+    if prefs.isPlaylistAvailable {
       clearableSettings.append(
         ClearableSetting(id: .playlistCache, clearable: PlayListCacheClearable(), isEnabled: false)
       )
@@ -319,7 +330,7 @@ import os
       ClearableSetting(id: .recentSearches, clearable: RecentSearchClearable(), isEnabled: true),
       ClearableSetting(
         id: .siteAndShieldsSettings,
-        clearable: SiteAndShieldsSettingsClearable(profile: braveCore.profile),
+        clearable: SiteAndShieldsSettingsClearable(profile: profile),
         isEnabled: false
       ),
     ])
@@ -341,7 +352,7 @@ import os
   }
 
   private func clearHttpsUpgradeAllowlist() {
-    HttpsUpgradeServiceFactory.get(privateMode: false)?.clearAllowlist(
+    httpsUpgradeService?.clearAllowlist(
       fromStart: Date.distantPast,
       end: Date.distantFuture
     )
