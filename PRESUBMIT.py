@@ -847,6 +847,25 @@ _BANNED_JAVA_FUNCTIONS += (
         False,
         excluded_paths=(r'.*Test[A-Z]?.*\.java',),
     ),
+    BanRule(
+        r'/BraveProfileUtils(\.|::)onRegularProfileAvailable\b',
+        (
+            'This resolves the single regular profile and will break when '
+            'Chromium turns on multi-profile for Android '
+            '(chrome::android::kAndroidMultiprofile). Pass the Profile in '
+            'explicitly, or key the state per Profile with ProfileKeyedMap. '
+            'Only process-wide startup entry points may use this, and each '
+            'one has to be listed in excluded_paths below.',
+        ),
+        True,
+        excluded_paths=(
+            r'.*Test[A-Z]?.*\.java',
+            r'android/java/org/chromium/chrome/browser/'
+            r'BraveApplicationImplBase\.java',
+            r'android/java/org/chromium/chrome/browser/referrer/'
+            r'BraveReferrer\.java',
+        ),
+    ),
 )
 
 _BANNED_CPP_FUNCTIONS += (
