@@ -167,7 +167,7 @@ struct ContentView: View {
           urlSubmitText = ""
         }
         Button("Submit") {
-          let classification = AutocompleteClassifier.classify(urlSubmitText)
+          let classification = LegacyAutocompleteClassifier.classify(urlSubmitText)
           if let url = classification?.destinationURL {
             model.webView.load(URLRequest(url: url))
           }

@@ -1,0 +1,28 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("omnibox") {
+  sources = [
+    "autocomplete_classifier_bridge.h",
+    "autocomplete_classifier_bridge_impl.h",
+    "autocomplete_classifier_bridge_impl.mm",
+    "autocomplete_classifier_factory_bridge.h",
+    "autocomplete_classifier_factory_bridge.mm",
+    "autocomplete_match_bridge+private.h",
+    "autocomplete_match_bridge.h",
+    "autocomplete_match_bridge.mm",
+  ]
+  deps = [
+    "//base",
+    "//brave/ios/browser/keyed_service",
+    "//components/omnibox/browser",
+    "//ios/chrome/browser/autocomplete/model",
+    "//ios/chrome/browser/shared/model/profile",
+    "//net",
+    "//third_party/metrics_proto",
+    "//url",
+  ]
+  frameworks = [ "Foundation.framework" ]
+}
