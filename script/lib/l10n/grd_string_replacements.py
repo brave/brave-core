@@ -83,8 +83,9 @@ fixup_replacements = [
 # keyed by locale. Applied to XTB translations after the rules above.
 language_branding_replacements = {
     'cs': [(r'\bChromu\b', r'Brave')],
-    # Skip chrome:// and chrome-untrusted:// URLs and paths such as /chrome.
-    'fa': [(r'(?<![/.\-])\bchrome\b(?![:\-./])', r'Brave')],
+    # Skip chrome:// and chrome-untrusted:// URLs, paths such as /chrome and
+    # chrome.exe, but not a sentence-ending "chrome.".
+    'fa': [(r'(?<![/.\-])\bchrome\b(?![:\-/]|\.\w)', r'Brave')],
     # Chromium's translation starts with a Cyrillic C.
     'ky': [(r'\u0421hrome', r'Brave')],
     'sl': [
