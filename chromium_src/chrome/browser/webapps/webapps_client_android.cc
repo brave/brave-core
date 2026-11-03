@@ -7,7 +7,6 @@
 
 #include "base/feature_list.h"
 #include "brave/browser/brave_browser_features.h"
-#include "chrome/browser/android/shortcut_helper.h"
 #include "components/webapps/browser/android/shortcut_info.h"
 #include "third_party/blink/public/mojom/manifest/display_mode.mojom-shared.h"
 
@@ -27,10 +26,4 @@ ShortcutInfo BraveMaybeStandalone(const ShortcutInfo& info) {
 }  // namespace
 }  // namespace webapps
 
-#define AddToLauncherWithSkBitmap(web_contents, info, ...)            \
-  AddToLauncherWithSkBitmap(web_contents, BraveMaybeStandalone(info), \
-                            __VA_ARGS__)
-
 #include <chrome/browser/webapps/webapps_client_android.cc>
-
-#undef AddToLauncherWithSkBitmap
