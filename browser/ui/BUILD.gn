@@ -1798,7 +1798,9 @@ source_set("browser_tests") {
       sources += [ "views/side_panel/wallet/wallet_side_panel_browsertest.cc" ]
 
       deps += [
+        "//brave/browser/brave_wallet:tab_helper",
         "//brave/browser/ui/sidebar",
+        "//brave/browser/ui/webui/brave_wallet/wallet_panel",
         "//brave/components/brave_wallet/browser:utils",
         "//brave/components/brave_wallet/common",
         "//chrome/browser/ui/side_panel",

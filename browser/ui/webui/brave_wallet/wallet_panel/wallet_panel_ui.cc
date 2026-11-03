@@ -9,11 +9,13 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/functional/bind.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/browser/brave_wallet/blockchain_images_source.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/browser/ui/brave_wallet/wallet_bubble_host_tab.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
@@ -22,9 +24,6 @@
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
 #include "brave/components/brave_wallet_panel/resources/grit/brave_wallet_panel_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
 #include "chrome/browser/ui/webui/plural_string_handler.h"
 #include "chrome/browser/ui/webui/sanitized_image/sanitized_image_source.h"
@@ -34,6 +33,7 @@
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/grit/brave_components_webui_strings.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -50,6 +50,17 @@
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_handler.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
+
+content::WebContents* WalletPanelUI::GetHostTabWebContents() {
+  content::WebContents* host = web_ui()->GetWebContents();
+  if (auto* bubble_host = WalletBubbleHostTab::FromWebContents(host)) {
+    return bubble_host->tab();
+  }
+  if (auto* tab = webui::GetTabInterface(host)) {
+    return tab->GetContents();
+  }
+  return nullptr;
+}
 
 WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
     : TopChromeWebUIController(web_ui,
@@ -113,17 +124,6 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
                    profile, chrome::FaviconUrlFormat::kFavicon2));
   content::URLDataSource::Add(
       profile, std::make_unique<brave_wallet::BlockchainImagesSource>(profile));
-
-  // TODO(https://github.com/brave/brave-browser/issues/55074) should be set
-  // externally. Keep the existing last-active lookup for the bubble; do not
-  // CHECK — side-panel construction can run when last-active is unset (e.g.
-  // browser tests). CreatePanelHandler already no-ops if this is null. Proper
-  // tab binding for the side panel in a follow-up.
-  if (BrowserWindowInterface* const bwi =
-          GetLastActiveBrowserWindowInterfaceWithAnyProfile()) {
-    active_web_contents_ =
-        bwi->GetTabStripModel()->GetActiveWebContents()->GetWeakPtr();
-  }
 }
 
 WalletPanelUI::~WalletPanelUI() = default;
@@ -195,13 +195,10 @@ void WalletPanelUI::CreatePanelHandler(
   auto* profile = Profile::FromWebUI(web_ui());
   CHECK(profile);
 
-  content::WebContents* active_web_contents = active_web_contents_.get();
-  if (!active_web_contents) {
-    return;
-  }
-
   panel_handler_ = std::make_unique<WalletPanelHandler>(
-      std::move(panel_receiver), this, active_web_contents);
+      std::move(panel_receiver), this,
+      base::BindRepeating(&WalletPanelUI::GetHostTabWebContents,
+                          base::Unretained(this)));
 
   if (auto* wallet_service =
           brave_wallet::BraveWalletServiceFactory::GetServiceForContext(

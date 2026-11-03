@@ -1346,6 +1346,7 @@ test("brave_browser_tests") {
       "//brave/browser/brave_wallet:browser_tests",
       "//brave/browser/brave_wallet:tab_helper",
       "//brave/browser/decentralized_dns/test:browser_tests",
+      "//brave/browser/ui/webui/brave_wallet/wallet_panel",
       "//brave/components/brave_wallet/browser",
       "//brave/components/brave_wallet/browser:constants",
       "//brave/components/brave_wallet/browser:permission_utils",

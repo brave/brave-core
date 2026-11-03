@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 
+#include "base/functional/bind.h"
 #include "base/memory/raw_ptr.h"
 #include "base/test/run_until.h"
 #include "base/test/test_future.h"
@@ -125,9 +126,15 @@ class WalletPanelHandlerBrowserTest : public InProcessBrowserTest {
   // the WebUI controller, so the panel does not need to be instantiated to
   // drive them.
   std::unique_ptr<WalletPanelHandler> CreateHandler() {
+    return CreateHandlerWithResolver(base::BindRepeating(
+        &WalletPanelHandlerBrowserTest::web_contents, base::Unretained(this)));
+  }
+
+  std::unique_ptr<WalletPanelHandler> CreateHandlerWithResolver(
+      WalletPanelHandler::HostTabContentsResolver resolver) {
     return std::make_unique<WalletPanelHandler>(
         handler_remote_.BindNewPipeAndPassReceiver(),
-        /*webui_controller=*/nullptr, web_contents());
+        /*webui_controller=*/nullptr, std::move(resolver));
   }
 
  protected:
@@ -207,4 +214,34 @@ IN_PROC_BROWSER_TEST_F(WalletPanelHandlerBrowserTest,
   tab_helper->AddSolanaConnectedAccount(main_frame()->GetGlobalId(),
                                         kTestSolAccount);
   EXPECT_TRUE(is_connected());
+}
+
+// When the host has not declared a tab (or it is gone), every handler method
+// must fail closed: permission methods report denial, connect methods no-op,
+// and nothing is granted.
+IN_PROC_BROWSER_TEST_F(WalletPanelHandlerBrowserTest,
+                       HandlerMethodsFailClosedWhenResolverReturnsNull) {
+  auto handler = CreateHandlerWithResolver(
+      base::BindRepeating([]() -> content::WebContents* { return nullptr; }));
+
+  base::test::TestFuture<bool> connected;
+  handler->IsSolanaAccountConnected(kTestSolAccount, connected.GetCallback());
+  EXPECT_FALSE(connected.Get());
+
+  base::test::TestFuture<bool> granted;
+  handler->RequestPermission(
+      brave_wallet::MakeAccountId(brave_wallet::mojom::CoinType::ETH,
+                                  brave_wallet::mojom::KeyringId::kDefault,
+                                  brave_wallet::mojom::AccountKind::kDerived,
+                                  kTestEthAccount),
+      granted.GetCallback());
+  EXPECT_FALSE(granted.Get());
+
+  handler->ConnectToSite(
+      {kTestEthAccount},
+      brave_wallet::mojom::PermissionLifetimeOption::kForever);
+  handler->CancelConnectToSite();
+  EXPECT_FALSE(HasEthereumPermission(browser()->GetProfile(),
+                                     url::Origin::Create(main_frame_url_),
+                                     kTestEthAccount));
 }

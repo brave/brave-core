@@ -8,7 +8,10 @@
 #include <memory>
 
 #include "base/memory/weak_ptr.h"
+#include "base/test/run_until.h"
+#include "base/test/test_future.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/browser/ui/webui/brave_wallet/wallet_panel/wallet_panel_ui.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -316,4 +319,52 @@ IN_PROC_BROWSER_TEST_F(BraveWalletTabHelperBrowserTest, ShowPanelAfterDiscard) {
       ui_test_utils::NavigateToURL(browser(), GetWalletEthereumChainPageURL()));
   loop.Run();
   EXPECT_TRUE(tab_helper->IsShowingBubble());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveWalletTabHelperBrowserTest,
+                       PanelHandlerBindsAnchorTabNotLastActive) {
+  constexpr char kTestSolAccount[] =
+      "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
+
+  content::WebContents* contents_a =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  auto* tab_helper_a = brave_wallet::BraveWalletTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(contents_a));
+  ASSERT_TRUE(tab_helper_a);
+
+  // A second window becomes the last-active window. The bubble is requested
+  // from tab A, which is only the active tab of its own window.
+  auto* window2 = CreateBrowser(browser()->GetProfile());
+  content::WebContents* contents_w2 =
+      window2->GetTabStripModel()->GetActiveWebContents();
+  auto* tab_helper_w2 = brave_wallet::BraveWalletTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(contents_w2));
+  ASSERT_TRUE(tab_helper_w2);
+  tab_helper_w2->AddSolanaConnectedAccount(
+      contents_w2->GetPrimaryMainFrame()->GetGlobalId(), kTestSolAccount);
+
+  tab_helper_a->ShowApproveWalletBubble();
+  ASSERT_TRUE(tab_helper_a->IsShowingBubble());
+  auto* panel_contents = tab_helper_a->GetBubbleWebContentsForTesting();
+  ASSERT_TRUE(panel_contents);
+
+  auto* panel_ui =
+      panel_contents->GetWebUI()->GetController()->GetAs<WalletPanelUI>();
+  ASSERT_TRUE(panel_ui);
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return panel_ui->panel_handler_for_testing(); }));
+
+  // The handler serves the anchored tab (a.com), not the last-active window's
+  // tab, so the connection recorded there is not reported for this panel.
+  base::test::TestFuture<bool> connected;
+  panel_ui->panel_handler_for_testing()->IsSolanaAccountConnected(
+      kTestSolAccount, connected.GetCallback());
+  EXPECT_FALSE(connected.Get());
+
+  tab_helper_a->AddSolanaConnectedAccount(
+      contents_a->GetPrimaryMainFrame()->GetGlobalId(), kTestSolAccount);
+  base::test::TestFuture<bool> connected_after;
+  panel_ui->panel_handler_for_testing()->IsSolanaAccountConnected(
+      kTestSolAccount, connected_after.GetCallback());
+  EXPECT_TRUE(connected_after.Get());
 }

@@ -18,10 +18,14 @@
 class WalletPanelHandler : public brave_wallet::mojom::PanelHandler {
  public:
   using PanelCloseOnDeactivationCallback = base::RepeatingCallback<void(bool)>;
+  // Resolves the tab the panel serves, evaluated per call; may return null
+  // (callers must no-op). Never cached.
+  using HostTabContentsResolver =
+      base::RepeatingCallback<content::WebContents*()>;
   WalletPanelHandler(
       mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> receiver,
       TopChromeWebUIController* webui_controller,
-      content::WebContents* active_web_contents);
+      HostTabContentsResolver host_tab_contents_resolver);
 
   WalletPanelHandler(const WalletPanelHandler&) = delete;
   WalletPanelHandler& operator=(const WalletPanelHandler&) = delete;
@@ -45,7 +49,7 @@ class WalletPanelHandler : public brave_wallet::mojom::PanelHandler {
  private:
   mojo::Receiver<brave_wallet::mojom::PanelHandler> receiver_;
   const raw_ptr<TopChromeWebUIController> webui_controller_;
-  raw_ptr<content::WebContents> active_web_contents_ = nullptr;
+  HostTabContentsResolver host_tab_contents_resolver_;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_WALLET_PANEL_WALLET_PANEL_HANDLER_H_

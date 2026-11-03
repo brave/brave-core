@@ -15,6 +15,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#include "brave/browser/ui/brave_wallet/wallet_bubble_host_tab.h"
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel/wallet_panel_ui.h"
 #include "chrome/browser/file_select_helper.h"
@@ -190,7 +191,7 @@ class WalletWebUIBubbleManager : public WebUIBubbleManagerImpl<WalletPanelUI>,
     WebUIBubbleManagerImpl::OnWidgetDestroying(widget);
   }
 
-  content::WebContents* GetWebContentsForTesting() {
+  content::WebContents* GetWebContents() {
     if (!bubble_view_) {
       return nullptr;
     }
@@ -250,11 +251,15 @@ WalletBubbleManagerDelegateImpl::~WalletBubbleManagerDelegateImpl() {
 
 void WalletBubbleManagerDelegateImpl::ShowBubble() {
   webui_bubble_manager_->ShowBubble();
+  if (auto* bubble_contents = webui_bubble_manager_->GetWebContents()) {
+    WalletBubbleHostTab::CreateForWebContents(bubble_contents,
+                                              web_contents_->GetWeakPtr());
+  }
 }
 
 content::WebContents*
 WalletBubbleManagerDelegateImpl::GetWebContentsForTesting() {
-  return webui_bubble_manager_->GetWebContentsForTesting();
+  return webui_bubble_manager_->GetWebContents();
 }
 
 void WalletBubbleManagerDelegateImpl::CloseBubble() {

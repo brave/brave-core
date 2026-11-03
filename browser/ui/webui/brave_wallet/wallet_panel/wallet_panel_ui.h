@@ -9,7 +9,6 @@
 #include <memory>
 #include <string>
 
-#include "base/memory/weak_ptr.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel/wallet_panel_handler.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/wallet_handler.h"
@@ -48,6 +47,11 @@ class WalletPanelUI : public TopChromeWebUIController,
   // Binds the `LedgerBridgeService` requested by the trusted renderer.
   void BindInterface(
       mojo::PendingReceiver<brave_wallet::mojom::LedgerBridgeService> receiver);
+
+  // The panel handler; null until the frontend creates it.
+  WalletPanelHandler* panel_handler_for_testing() {
+    return panel_handler_.get();
+  }
 
   // Called with `LedgerBridge` coming from untrusted subframe.
   void BindLedgerBridge(
@@ -112,12 +116,16 @@ class WalletPanelUI : public TopChromeWebUIController,
 
   void MaybeFuseLedgerBridge();
 
+  // Resolves the tab this panel serves per call: bubbles via the requesting
+  // tab recorded on the bubble's WebContents, side panels via the tab
+  // embedding context.
+  content::WebContents* GetHostTabWebContents();
+
   std::unique_ptr<WalletPanelHandler> panel_handler_;
   std::unique_ptr<brave_wallet::WalletHandler> wallet_handler_;
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   std::unique_ptr<brave_rewards::mojom::RewardsPageHandler> rewards_handler_;
 #endif
-  base::WeakPtr<content::WebContents> active_web_contents_;
 
   mojo::PendingRemote<brave_wallet::mojom::LedgerBridge> ledger_bridge_remote_;
   mojo::PendingReceiver<brave_wallet::mojom::LedgerBridge>
