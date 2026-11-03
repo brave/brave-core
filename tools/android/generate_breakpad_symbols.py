@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 """A tool to generate symbols for a binary suitable for breakpad.
 
 Wrapper for components/crash/content/tools/generate_breakpad_symbols.py for
@@ -54,9 +57,6 @@ def GetRequiredLibsPaths(args, extension):
         'libandroidx.xr.runtime.openxr.so',  # AndroidX XR ARCore prebuilt (arcore-openxr.aar)
         'libandroidx.xr.arcore.openxr.so',  # AndroidX XR ARCore prebuilt (arcore-openxr.aar)
         'libimpress_api_jni.so',  # Google AR Impress prebuilt (com_google_ar_impress_java)
-        # Empty stub added to 32-bit-only APKs to mark them multiArch,
-        # see _is_32_bit_multiarch_browser in chrome_public_apk_tmpl.gni
-        'libplaceholder.so',
         'libwg-go.so',  # Wireguard lib for Brave VPN
     }
 
