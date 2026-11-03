@@ -31,6 +31,7 @@ sys.path.insert(0, os.path.join(SRC_SOURCE_ROOT, 'tools/grit/grit/extern'))
 import lxml.etree  # pylint: disable=import-error
 from lib.l10n.grd_utils import (
     braveify_grd_tree,
+    braveify_grd_text,
     braveify_language_forms,
     update_xtbs_locally,
 )
@@ -206,6 +207,27 @@ class BraveifyLanguageFormsTest(unittest.TestCase):
 
     def test_leaves_other_locales_alone(self):
         self.assertEqual(self.braveify('de', 'Chroma Chromu'), 'Chroma Chromu')
+
+
+class BraveifyKeepGoogleTest(unittest.TestCase):
+    def test_keeps_localized_google_service_names(self):
+        for text in ('Google 월렛에서', 'Carteira do Google', 'Google 相册'):
+            self.assertEqual(braveify_grd_text(text, True, True, True), text)
+
+    def test_still_replaces_chrome_when_keeping_google(self):
+        self.assertEqual(
+            braveify_grd_text('Google 월렛, Chrome', True, True, True),
+            'Google 월렛, Brave',
+        )
+
+    def test_replaces_google_by_default(self):
+        self.assertEqual(
+            braveify_grd_text('Carteira do Google', True, True),
+            'Carteira do Brave',
+        )
+        self.assertEqual(
+            braveify_grd_text('Google Play', True, True), 'Google Play'
+        )
 
 
 class GeneratedExtensionsStringsTest(unittest.TestCase):

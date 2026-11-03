@@ -6,6 +6,9 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
+# Replaces every "Google" except "Google Play".
+GOOGLE_BRANDING_PATTERN = r'(Google)(?!\sPlay)'
+
 # Strings we want to replace but that we also replace automatically
 # for XTB files
 branding_replacements = [
@@ -19,7 +22,7 @@ branding_replacements = [
     ),
     (r'The\sChromium\sAuthors', r'Brave Software Inc'),
     (r'Google\sChrome', r'Brave'),
-    (r'(Google)(?!\sPlay)', r'Brave'),
+    (GOOGLE_BRANDING_PATTERN, r'Brave'),
     (r'Chromium', r'Brave'),
     (r'Chrome', r'Brave'),
     (r'क्रोमियम', r'Brave'),  # Chromium in Hindi
@@ -93,6 +96,16 @@ language_branding_replacements = {
         (r'\bChroma\b', r'Brave'),
         (r'\bChromov\b', r'Braveov'),
     ],
+}
+
+
+# Messages about Google services that Brave does not offer. Their translations
+# keep "Google", because a localized name such as "Google 월렛" would otherwise
+# become "Brave 월렛". The English fixups above cannot cover localized names.
+keep_google_message_names = {
+    'IDS_IPH_KEYBOARD_ACCESSORY_AUTOFILL_AI_VALUABLES_IPH',
+    'IDS_IPH_KEYBOARD_ACCESSORY_ENABLE_LOYALTY_CARDS',
+    'IDS_IPH_KEYBOARD_ACCESSORY_AT_MEMORY',
 }
 
 

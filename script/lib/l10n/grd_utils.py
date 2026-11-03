@@ -14,10 +14,12 @@ import FP
 import lxml.etree  # pylint: disable=import-error
 
 from lib.l10n.grd_string_replacements import (
+    GOOGLE_BRANDING_PATTERN,
     branding_replacements,
     brave_strings_grd_replacements,
     default_replacements,
     fixup_replacements,
+    keep_google_message_names,
     language_branding_replacements,
     main_text_only_replacements,
     missing_descriptions,
@@ -38,9 +40,13 @@ GOOGLE_CHROME_STRINGS_MIGRATION_MAP = {
 INSTALLER_STRINGS = ['IDS_SETUP_PATCH_FAILED']
 
 
-def braveify_grd_text(text, is_main_text, branding_replacements_only):
+def braveify_grd_text(
+    text, is_main_text, branding_replacements_only, keep_google=False
+):
     """Replaces text string to Brave wording"""
     for pattern, to in branding_replacements:
+        if keep_google and pattern == GOOGLE_BRANDING_PATTERN:
+            continue
         text = re.sub(pattern, to, text)
     if not branding_replacements_only:
         for pattern, to in default_replacements:
@@ -53,24 +59,28 @@ def braveify_grd_text(text, is_main_text, branding_replacements_only):
     return text
 
 
-def generate_braveified_node(elem, is_comment, branding_replacements_only):
+def generate_braveified_node(
+    elem, is_comment, branding_replacements_only, keep_google=False
+):
     """Replaces a node and attributes to Brave wording"""
     if elem.text:
         elem.text = braveify_grd_text(
-            elem.text, not is_comment, branding_replacements_only
+            elem.text, not is_comment, branding_replacements_only, keep_google
         )
 
     if elem.tail:
         elem.tail = braveify_grd_text(
-            elem.tail, not is_comment, branding_replacements_only
+            elem.tail, not is_comment, branding_replacements_only, keep_google
         )
 
     if 'desc' in elem.keys():
         elem.attrib['desc'] = braveify_grd_text(
-            elem.attrib['desc'], False, branding_replacements_only
+            elem.attrib['desc'], False, branding_replacements_only, keep_google
         )
     for child in elem:
-        generate_braveified_node(child, is_comment, branding_replacements_only)
+        generate_braveified_node(
+            child, is_comment, branding_replacements_only, keep_google
+        )
 
 
 def escape_element_text(elem):
@@ -242,6 +252,14 @@ def update_xtbs_locally(grd_file_path, brave_source_root, only_for_lang):
         )
     }
 
+    # get_grd_strings drops the IDS_ prefix and lowercases names.
+    keep_google_names = {name[4:].lower() for name in keep_google_message_names}
+    keep_google_fps = {
+        chromium_grd_string[2]
+        for chromium_grd_string in chromium_grd_strings
+        if chromium_grd_string[0] in keep_google_names
+    }
+
     xtb_langs = [
         lang
         for (lang, path) in xtb_files
@@ -268,7 +286,9 @@ def update_xtbs_locally(grd_file_path, brave_source_root, only_for_lang):
         xml_tree = lxml.etree.parse(chromium_xtb_file)
 
         for node in xml_tree.xpath('//translation'):
-            generate_braveified_node(node, False, True)
+            generate_braveified_node(
+                node, False, True, node.attrib['id'] in keep_google_fps
+            )
             braveify_language_forms(node, xtb_langs[idx])
             # Use our fp, when exists.
             old_fp = node.attrib['id']

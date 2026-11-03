@@ -10,9 +10,9 @@
 <translation id="2652129567809778422">Izaberite lozinku</translation>
 <translation id="2903493209154104877">Adrese</translation>
 <translation id="3688051737190211318">Ako veb-sajt <ph name="ORIGIN"/> smatrate pouzdanim, možete da koristite sačuvanu lozinku za prijavljivanje</translation>
-<translation id="4110818514910776249">Sada možete automatski da popunjavate više informacija iz Brave novčanika. Upravljajte informacijama ili isključite ove predloge u Podešavanjima.</translation>
+<translation id="4110818514910776249">Sada možete automatski da popunjavate više informacija iz Google novčanika. Upravljajte informacijama ili isključite ove predloge u Podešavanjima.</translation>
 <translation id="4553044860350038560">Još pristupnih ključeva</translation>
-<translation id="457912817138344555">Sada možete automatski da popunjavate kartice lojalnosti. Možete da isključite ove predloge u Brave novčaniku.</translation>
+<translation id="457912817138344555">Sada možete automatski da popunjavate kartice lojalnosti. Možete da isključite ove predloge u Google novčaniku.</translation>
 <translation id="4631649115723685955">Povezan je povraćaj gotovine</translation>
 <translation id="4660011489602794167">Prikaži tastaturu</translation>
 <translation id="4953563283121525742">Prodavac ne prihvata ovu virtuelnu karticu</translation>
@@ -28,10 +28,8 @@
 <translation id="3792994947670632937">Automatski popunite imenom i imejl adresom sa Brave naloga</translation>
 <translation id="6851249282047649312">Otključaj lozinke</translation>
 <translation id="7286867818472074330">Izaberi pristupni ključ</translation>
-<translation id="7594473730623999723">Prevucite da biste videli još predloga</translation>
 <translation id="7873973044507799456">Prikaži sačuvane adrese</translation>
 <translation id="7923276689696325192">Poboljšano automatsko popunjavanje sada može da pronađe i popuni vaše informacije iz aplikacija kao što su Gmail i Slike</translation>
-<translation id="3504385936001027455">Koristite predlog Brave automatskog popunjavanja</translation>
 <translation id="8118489163946903409">Način plaćanja</translation>
 <translation id="8705308553596171387">Bez lozinke</translation>
 <translation id="879180780857354295">Alternativne opcije popunjavanja su dostupne iznad tastature</translation>
