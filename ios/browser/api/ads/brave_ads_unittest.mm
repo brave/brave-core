@@ -35,6 +35,8 @@
 #include "ios/chrome/browser/shared/model/profile/test/test_profile_manager_ios.h"
 #include "ios/chrome/test/ios_chrome_scoped_testing_local_state.h"
 #include "ios/web/public/test/web_task_environment.h"
+#include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
+#include "services/network/test/test_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "testing/gtest_mac.h"
@@ -84,6 +86,8 @@ class BraveAdsTest : public PlatformTest {
     CHECK(temp_dir_.CreateUniqueTempDir());
     profile_ =
         profile_manager_.AddProfileWithBuilder(TestProfileIOS::Builder());
+    profile_->SetSharedURLLoaderFactory(
+        test_url_loader_factory_.GetSafeWeakWrapper());
     ads_ = [[BraveAds alloc]
         initWithStateStoragePath:base::SysUTF8ToNSString(
                                      temp_dir_.GetPath().value())];
@@ -103,7 +107,8 @@ class BraveAdsTest : public PlatformTest {
   web::WebTaskEnvironment task_environment_;
   IOSChromeScopedTestingLocalState scoped_testing_local_state_;
   TestProfileManagerIOS profile_manager_;
-  raw_ptr<ProfileIOS> profile_ = nullptr;
+  raw_ptr<TestProfileIOS> profile_ = nullptr;
+  network::TestURLLoaderFactory test_url_loader_factory_;
   base::ScopedTempDir temp_dir_;
   BraveAds* ads_;
 };
