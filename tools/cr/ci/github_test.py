@@ -47,6 +47,21 @@ class ParseRollupTest(unittest.TestCase):
                     'conclusion': '',
                     'detailsUrl': '',
                 },
+                {
+                    '__typename': 'CheckRun',
+                    'name': 'security',
+                    'status': 'COMPLETED',
+                    'conclusion': 'FAILURE',
+                    'detailsUrl': 'https://github.com/brave/brave-core/'
+                    'actions/runs/1/job/2',
+                },
+                {
+                    '__typename': 'CheckRun',
+                    'name': 'GitHub page',
+                    'status': 'COMPLETED',
+                    'conclusion': 'SUCCESS',
+                    'detailsUrl': 'https://github.com/brave/brave-core',
+                },
             ]
         )
         self.assertEqual(
@@ -60,6 +75,8 @@ class ParseRollupTest(unittest.TestCase):
                 ),
                 ('Socket Security', State.NEUTRAL, 'socket.dev'),
                 ('lint', State.PENDING, ''),
+                ('security', State.FAILURE, 'actions'),
+                ('GitHub page', State.SUCCESS, 'github.com'),
             ],
         )
 
