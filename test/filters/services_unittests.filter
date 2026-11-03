@@ -68,7 +68,6 @@
 -StorageAccessHeaderNetworkContextParameterizedTest.RetryABAWithResourceRequestOptIn/*
 -StorageAccessHeaderNetworkContextParameterizedTest.RetryAfterInactive/1
 -StorageAccessHeaderNetworkContextTest.OptedInViaResourceRequest
--StorageAccessHeaderNetworkContextTest.RequestHeader_Active_TopLevelStorageAccess
 -StorageAccessHeaderRedirectNetworkContextTest.RetryThenRedirect/*
 
 # This test fails because Brave allows unpartitioned cookie access for a nonced
