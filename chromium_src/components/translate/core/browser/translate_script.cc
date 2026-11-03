@@ -50,7 +50,26 @@ void TranslateScript::Request(RequestCallback callback,
         FROM_HERE, base::BindOnce(std::move(callback), false));
     return;
   }
+#if BUILDFLAG(IS_IOS)
   ChromiumTranslateScript::Request(std::move(callback), is_incognito, prefs);
+#else
+  // Desktop and Android: inject the bundled Mozilla page script instead of
+  // downloading Google's element.js. iOS keeps its own script path.
+  script_fetch_start_time_ = base::Time::Now().InMillisecondsFSinceUnixEpoch();
+  callback_list_.AddUnsafe(std::move(callback));
+  if (fetcher_) {
+    return;
+  }
+  fetcher_ =
+      std::make_unique<TranslateURLFetcherImpl>(net::HttpRequestHeaders());
+  const std::string script =
+      ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
+          IDR_MOZILLA_TRANSLATE_JS);
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE,
+      base::BindOnce(&ChromiumTranslateScript::OnScriptFetchComplete,
+                     weak_method_factory_.GetWeakPtr(), true, script));
+#endif
 }
 
 void TranslateScript::OnScriptFetchComplete(bool success,

@@ -107,7 +107,7 @@ cr.googleTranslate.onLoadJavascript = function (url) {
     new Function(processJavascript(this.responseText)).call(window)
   }
   xhr.send()
-}
+};
 
 // The styles to hide root elements that are injected by the scripts in the DOM.
 // Currently they are always invisible. The styles are added in case of changes
@@ -134,4 +134,4 @@ cr.googleTranslate.onLoadCSS = function (url) {
     document.head.appendChild(element)
   }
   xhr.send()
-}
+};

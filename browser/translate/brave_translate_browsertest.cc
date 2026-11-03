@@ -53,37 +53,6 @@ using ::testing::Return;
 namespace translate {
 
 namespace {
-constexpr char kTestScript[] = R"(
-var api_key = undefined;
-var google = {};
-google.translate = (function() {
-  return {
-    TranslateService: function(params) {
-      api_key = params.key;
-      return {
-        isAvailable : function() {
-          return true;
-        },
-        restore : function() {
-          return;
-        },
-        getDetectedLanguage : function() {
-          return "fr";
-        },
-        translatePage : function(sourceLang, targetLang,
-                                 onTranslateProgress) {
-          onTranslateProgress(100, true, false);
-        }
-      };
-    }
-  };
-})();
-cr.googleTranslate.onLoadCSS("https://translate.googleapis.com/translate_static/css/translateelement.css");
-
-// Will call cr.googleTranslate.onTranslateElementLoad():
-cr.googleTranslate.onLoadJavascript("https://translate.googleapis.com/translate_static/js/element/main.js");
-)";
-
 constexpr char kXhrPromiseTemplate[] = R"(
   new Promise((resolve) => {
     const xhr = new XMLHttpRequest();
@@ -193,21 +162,12 @@ class BraveTranslateBrowserTest : public InProcessBrowserTest {
         TranslateWaiter::WaitEvent::kLanguageDetermined);
   }
 
-  // Set up expectations for the secondary test scripts and for the test css.
-  void SetupTestScriptExpectations() {
-    EXPECT_CALL(backend_request_, Call("/static/v1/element.js"))
-        .WillOnce(Return(std::make_tuple(net::HttpStatusCode::HTTP_OK,
-                                         "text/javascript", kTestScript)));
-
-    EXPECT_CALL(backend_request_, Call("/static/v1/css/translateelement.css"))
-        .WillRepeatedly(
-            Return(std::make_tuple(net::HttpStatusCode::HTTP_OK, "text/css",
-                                   "body{background-color:#AAA}")));
-
-    EXPECT_CALL(backend_request_, Call("/static/v1/js/element/main.js"))
-        .WillOnce(Return(
-            std::make_tuple(net::HttpStatusCode::HTTP_OK, "text/javascript",
-                            "cr.googleTranslate.onTranslateElementLoad()")));
+  // The page script is bundled. Translation chunks are posted to our backend.
+  void SetupTranslateBackendExpectations() {
+    EXPECT_CALL(backend_request_, Call("/translate_a/t"))
+        .WillRepeatedly(Return(std::make_tuple(net::HttpStatusCode::HTTP_OK,
+                                               "application/json",
+                                               "[\"translated\"]")));
   }
 
   // Waits until the active tab's source language is detected as
@@ -267,7 +227,7 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserTest, InternalTranslation) {
       browser(), embedded_test_server()->GetURL("/espanol_page.html")));
   WaitUntilLanguageDetermined("es");
 
-  SetupTestScriptExpectations();
+  SetupTranslateBackendExpectations();
 
   auto* bubble = CHECK_DEREF(TranslateBubbleController::From(browser()))
                      .GetTranslateBubble();
@@ -279,15 +239,10 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserTest, InternalTranslation) {
       bubble->GetWindowTitle(),
       l10n_util::GetStringUTF16(IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE));
 
-  // Translate the page. Note: the event onTranslateElementLoad() is
-  // called from main.js (see SetupTestScriptExpectations()).
+  // The bundled Mozilla script reports completion after it talks to
+  // translate.brave.com/translate_a/t.
   GetTranslateManager()->TranslatePage("es", "en", true);
   WaitUntilPageTranslated();
-
-  // Check that the test css styles were loaded and works.
-  EXPECT_EQ("rgb(170, 170, 170)",
-            EvalTranslateJs("getComputedStyle(document.body).getPropertyValue('"
-                            "background-color')"));
 
   // Simulate a translate request to googleapis.com and check that the
   // redirections works well.
@@ -361,7 +316,7 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserGoogleRedirectTest,
       browser(), embedded_test_server()->GetURL("/espanol_page.html")));
   WaitUntilLanguageDetermined("es");
 
-  SetupTestScriptExpectations();
+  SetupTranslateBackendExpectations();
   GetTranslateManager()->TranslatePage("es", "en", true);
   WaitUntilPageTranslated();
 
