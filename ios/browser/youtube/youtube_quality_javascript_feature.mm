@@ -50,7 +50,7 @@ YouTubeQualityJavaScriptFeature::YouTubeQualityJavaScriptFeature()
                    kReinjectOnDocumentRecreation,
                FeatureScript::PlaceholderReplacementsCallback(),
                web::OriginFilter::kYouTube)},
-          /*dependent_feature=*/{},
+          /*dependent_features=*/{},
           web::OriginFilter::kYouTube) {}
 
 YouTubeQualityJavaScriptFeature::~YouTubeQualityJavaScriptFeature() = default;
