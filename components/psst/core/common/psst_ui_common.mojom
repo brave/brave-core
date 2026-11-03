@@ -56,6 +56,30 @@ interface PsstLogSink {
       mojo_base.mojom.DictionaryValue? data);
 };
 
+// Mirrors psst::ConsentStatus (psst_metadata_schema.idl).
+enum ConsentStatus {
+  kNone = 0,
+  kAsk = 1,
+  kAllow = 2,
+  kBlock = 3,
+};
+
+// Per-site PSST settings snapshot, shown on the brave://psst-internals.
+struct PsstWebsiteSettingsEntry {
+  string site;
+  ConsentStatus consent_status;
+  int32 script_version;
+  string user_id;
+  array<string> uids_to_perform;
+};
+
+// Infobar counters and per-site settings, shown on the brave://psst-internals.
+struct PsstDiagnosticsInfo {
+  int32 infobar_shown_count;
+  int32 infobar_decline_count;
+  array<PsstWebsiteSettingsEntry> website_settings;
+};
+
 // WebUI -> browser interface for brave://psst-internals.
 interface PsstInternalsHandler {
   // Returns the entries currently buffered and subscribes `page` to later
@@ -65,6 +89,10 @@ interface PsstInternalsHandler {
 
   // Discards all buffered entries.
   Clear();
+
+  // Returns the infobar counters and per-site PSST settings. Fetched once
+  // when the page loads.
+  GetDiagnosticsInfo() => (PsstDiagnosticsInfo info);
 };
 
 // Browser -> WebUI interface for brave://psst-internals.

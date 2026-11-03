@@ -18,7 +18,11 @@
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
+class PrefService;
+
 namespace psst {
+
+class PsstSettingsService;
 
 // Serves the brave://psst-internals timeline from the profile's
 // `PsstLogService`.
@@ -27,8 +31,12 @@ class PsstInternalsHandler : public mojom::PsstInternalsHandler,
  public:
   // `log_service` may be null — the feature is off or the profile is
   // off-the-record — in which case the page gets an empty timeline, no pushes,
-  // and `Clear()` does nothing.
-  explicit PsstInternalsHandler(PsstLogService* log_service);
+  // and `Clear()` does nothing. `settings_service` and `prefs` may also be
+  // null for the same off-the-record reason, in which case
+  // `GetDiagnosticsInfo()` reports zeroed/empty data.
+  PsstInternalsHandler(PsstLogService* log_service,
+                       PsstSettingsService* settings_service,
+                       PrefService* prefs);
   PsstInternalsHandler(const PsstInternalsHandler&) = delete;
   PsstInternalsHandler& operator=(const PsstInternalsHandler&) = delete;
   ~PsstInternalsHandler() override;
@@ -40,6 +48,7 @@ class PsstInternalsHandler : public mojom::PsstInternalsHandler,
   void BindPage(mojo::PendingRemote<mojom::PsstInternalsPage> page,
                 BindPageCallback callback) override;
   void Clear() override;
+  void GetDiagnosticsInfo(GetDiagnosticsInfoCallback callback) override;
 
  private:
   // PsstLogService::Observer:
@@ -49,6 +58,8 @@ class PsstInternalsHandler : public mojom::PsstInternalsHandler,
   void FlushPendingEntries();
 
   const raw_ptr<PsstLogService> log_service_;
+  const raw_ptr<PsstSettingsService> settings_service_;
+  const raw_ptr<PrefService> prefs_;
 
   // New entries are coalesced over a short window so that a chatty script
   // can't turn into one IPC per line.
