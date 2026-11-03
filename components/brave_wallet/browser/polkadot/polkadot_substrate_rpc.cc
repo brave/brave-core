@@ -895,12 +895,20 @@ void PolkadotSubstrateRpc::OnGetRuntimeVersion(
   return std::move(callback).Run(version, std::nullopt);
 }
 
-void PolkadotSubstrateRpc::GetMetadata(std::string_view chain_id,
-                                       GetMetadataCallback callback) {
+void PolkadotSubstrateRpc::GetMetadata(
+    std::string_view chain_id,
+    std::optional<base::span<uint8_t, kPolkadotBlockHashSize>> block_hash,
+    GetMetadataCallback callback) {
   auto url = GetNetworkURL(chain_id);
 
+  base::ListValue params;
+
+  if (block_hash) {
+    params.Append(base::HexEncodeLower(*block_hash));
+  }
+
   auto payload = base::WriteJson(
-      MakeRpcRequestJson("state_getMetadata", base::ListValue()));
+      MakeRpcRequestJson("state_getMetadata", std::move(params)));
   CHECK(payload);
 
   MakePostRequestInternal(

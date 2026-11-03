@@ -49,7 +49,9 @@ class MockPolkadotSubstrateRpc : public PolkadotSubstrateRpc {
               (override));
   MOCK_METHOD(void,
               GetMetadata,
-              (std::string_view chain_id, GetMetadataCallback callback),
+              (std::string_view chain_id,
+               OptionalBlockHash block_hash,
+               GetMetadataCallback callback),
               (override));
 };
 
@@ -94,22 +96,25 @@ TEST_F(PolkadotMetadataProviderUnitTest, InitInitialization) {
   auto mainnet_requested_cb = mainnet_metadata_requested.GetCallback();
   auto testnet_requested_cb = testnet_metadata_requested.GetCallback();
 
-  EXPECT_CALL(*mock_rpc_, GetMetadata(_, _))
+  EXPECT_CALL(*mock_rpc_, GetMetadata(_, _, _))
       .Times(2)
-      .WillRepeatedly([&](std::string_view chain_id,
-                          PolkadotSubstrateRpc::GetMetadataCallback cb) {
-        if (chain_id == mojom::kPolkadotMainnet && mainnet_requested_cb) {
-          std::move(mainnet_requested_cb).Run();
-        }
-        if (chain_id == mojom::kPolkadotTestnet && testnet_requested_cb) {
-          std::move(testnet_requested_cb).Run();
-        }
-        if (chain_id == mojom::kPolkadotMainnet) {
-          std::move(cb).Run(base::ok(mainnet_metadata_bytes));
-          return;
-        }
-        std::move(cb).Run(base::ok(testnet_metadata_bytes));
-      });
+      .WillRepeatedly(
+          [&](std::string_view chain_id,
+              std::optional<base::span<uint8_t, kPolkadotBlockHashSize>>
+                  block_hash,
+              PolkadotSubstrateRpc::GetMetadataCallback cb) {
+            if (chain_id == mojom::kPolkadotMainnet && mainnet_requested_cb) {
+              std::move(mainnet_requested_cb).Run();
+            }
+            if (chain_id == mojom::kPolkadotTestnet && testnet_requested_cb) {
+              std::move(testnet_requested_cb).Run();
+            }
+            if (chain_id == mojom::kPolkadotMainnet) {
+              std::move(cb).Run(base::ok(mainnet_metadata_bytes));
+              return;
+            }
+            std::move(cb).Run(base::ok(testnet_metadata_bytes));
+          });
 
   provider_->Init();
   EXPECT_TRUE(mainnet_metadata_requested.Wait());
@@ -147,27 +152,30 @@ TEST_F(PolkadotMetadataProviderUnitTest, InitRetryCase) {
   auto second_mainnet_attempt_cb = second_mainnet_attempt.GetCallback();
 
   int mainnet_calls = 0;
-  EXPECT_CALL(*mock_rpc_, GetMetadata(_, _))
+  EXPECT_CALL(*mock_rpc_, GetMetadata(_, _, _))
       .Times(3)
-      .WillRepeatedly([&](std::string_view chain_id,
-                          PolkadotSubstrateRpc::GetMetadataCallback cb) {
-        if (chain_id == mojom::kPolkadotMainnet) {
-          ++mainnet_calls;
-          if (mainnet_calls == 1) {
-            if (first_mainnet_attempt_cb) {
-              std::move(first_mainnet_attempt_cb).Run();
+      .WillRepeatedly(
+          [&](std::string_view chain_id,
+              std::optional<base::span<uint8_t, kPolkadotBlockHashSize>>
+                  block_hash,
+              PolkadotSubstrateRpc::GetMetadataCallback cb) {
+            if (chain_id == mojom::kPolkadotMainnet) {
+              ++mainnet_calls;
+              if (mainnet_calls == 1) {
+                if (first_mainnet_attempt_cb) {
+                  std::move(first_mainnet_attempt_cb).Run();
+                }
+                std::move(cb).Run(base::unexpected<std::string>("first_fail"));
+                return;
+              }
+              if (mainnet_calls == 2 && second_mainnet_attempt_cb) {
+                std::move(second_mainnet_attempt_cb).Run();
+              }
+              std::move(cb).Run(base::ok(mainnet_metadata_bytes));
+              return;
             }
-            std::move(cb).Run(base::unexpected<std::string>("first_fail"));
-            return;
-          }
-          if (mainnet_calls == 2 && second_mainnet_attempt_cb) {
-            std::move(second_mainnet_attempt_cb).Run();
-          }
-          std::move(cb).Run(base::ok(mainnet_metadata_bytes));
-          return;
-        }
-        std::move(cb).Run(base::ok(testnet_metadata_bytes));
-      });
+            std::move(cb).Run(base::ok(testnet_metadata_bytes));
+          });
 
   provider_->Init();
   EXPECT_TRUE(first_mainnet_attempt.Wait());
@@ -211,7 +219,7 @@ TEST_F(PolkadotMetadataProviderUnitTest, DataIsRestoredFromCache) {
         version.spec_version = 100;
         std::move(cb).Run(std::make_optional(version), std::nullopt);
       });
-  EXPECT_CALL(*mock_rpc_, GetMetadata(_, _)).Times(0);
+  EXPECT_CALL(*mock_rpc_, GetMetadata(_, _, _)).Times(0);
 
   base::test::TestFuture<base::expected<PolkadotChainMetadata, std::string>>
       future;
@@ -234,12 +242,14 @@ TEST_F(PolkadotMetadataProviderUnitTest, DataIsSavedToCache) {
   const std::vector<uint8_t> metadata_bytes =
       ReadMetadataFixture("state_getMetadata_polkadot.json");
 
-  EXPECT_CALL(*mock_rpc_, GetMetadata(mojom::kPolkadotMainnet, _))
+  EXPECT_CALL(*mock_rpc_, GetMetadata(mojom::kPolkadotMainnet, _, _))
       .Times(1)
-      .WillOnce(
-          [&](std::string_view, PolkadotSubstrateRpc::GetMetadataCallback cb) {
-            std::move(cb).Run(base::ok(metadata_bytes));
-          });
+      .WillOnce([&](std::string_view,
+                    std::optional<base::span<uint8_t, kPolkadotBlockHashSize>>
+                        block_hash,
+                    PolkadotSubstrateRpc::GetMetadataCallback cb) {
+        std::move(cb).Run(base::ok(metadata_bytes));
+      });
 
   base::test::TestFuture<base::expected<PolkadotChainMetadata, std::string>>
       future1;
@@ -283,11 +293,13 @@ TEST_F(PolkadotMetadataProviderUnitTest, CachedDataIsUpdated) {
         std::move(cb).Run(std::make_optional(version), std::nullopt);
       });
 
-  EXPECT_CALL(*mock_rpc_, GetMetadata(mojom::kPolkadotMainnet, _))
-      .WillOnce(
-          [&](std::string_view, PolkadotSubstrateRpc::GetMetadataCallback cb) {
-            std::move(cb).Run(base::ok(metadata_bytes));
-          });
+  EXPECT_CALL(*mock_rpc_, GetMetadata(mojom::kPolkadotMainnet, _, _))
+      .WillOnce([&](std::string_view,
+                    std::optional<base::span<uint8_t, kPolkadotBlockHashSize>>
+                        block_hash,
+                    PolkadotSubstrateRpc::GetMetadataCallback cb) {
+        std::move(cb).Run(base::ok(metadata_bytes));
+      });
 
   base::test::TestFuture<base::expected<PolkadotChainMetadata, std::string>>
       future;

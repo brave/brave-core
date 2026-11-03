@@ -3279,7 +3279,8 @@ TEST_F(BraveWalletServiceUnitTest, PolkadotParachainRpcUrlsFromRegistry) {
   base::test::TestFuture<base::expected<std::vector<uint8_t>, std::string>>
       future;
 
-  polkadot_rpc->GetMetadata(mojom::kPolkadotAcala, future.GetCallback());
+  polkadot_rpc->GetMetadata(mojom::kPolkadotAcala, std::nullopt,
+                            future.GetCallback());
   EXPECT_TRUE(reqs->empty());
   auto metadata = future.Take();
   ASSERT_FALSE(metadata.has_value());
@@ -3295,14 +3296,16 @@ TEST_F(BraveWalletServiceUnitTest, PolkadotParachainRpcUrlsFromRegistry) {
   BlockchainRegistry::ScopedPolkadotRpcUrlsForTesting scoped_rpc_urls(
       std::move(*rpc_urls));
 
-  polkadot_rpc->GetMetadata(mojom::kPolkadotAcala, base::DoNothing());
+  polkadot_rpc->GetMetadata(mojom::kPolkadotAcala, std::nullopt,
+                            base::DoNothing());
   ASSERT_EQ(reqs->size(), 1u);
   EXPECT_EQ(reqs->front().request.url,
             GURL("https://acala-rpc-0.aca-api.network/"));
   reqs->clear();
 
   // A chain the registry doesn't know about stays unresolved.
-  polkadot_rpc->GetMetadata(mojom::kPolkadotBifrost, future.GetCallback());
+  polkadot_rpc->GetMetadata(mojom::kPolkadotBifrost, std::nullopt,
+                            future.GetCallback());
   EXPECT_TRUE(reqs->empty());
   metadata = future.Take();
   ASSERT_FALSE(metadata.has_value());

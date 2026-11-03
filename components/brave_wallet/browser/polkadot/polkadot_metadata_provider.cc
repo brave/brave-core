@@ -110,9 +110,10 @@ void PolkadotMetadataProvider::FetchAndParseChainMetadata(
     std::string chain_id,
     GetChainMetadataCallback callback) {
   polkadot_substrate_rpc_->GetMetadata(
-      chain_id, base::BindOnce(&PolkadotMetadataProvider::OnGetMetadata,
-                               weak_ptr_factory_.GetWeakPtr(), chain_id,
-                               std::move(callback)));
+      chain_id, std::nullopt,
+      base::BindOnce(&PolkadotMetadataProvider::OnGetMetadata,
+                     weak_ptr_factory_.GetWeakPtr(), chain_id,
+                     std::move(callback)));
 }
 
 void PolkadotMetadataProvider::OnGetMetadata(

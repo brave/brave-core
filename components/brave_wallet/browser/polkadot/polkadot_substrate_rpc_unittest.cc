@@ -2281,7 +2281,8 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetMetadata) {
 
   {
     // Successful RPC call (nullary).
-    polkadot_substrate_rpc_->GetMetadata(chain_id, future.GetCallback());
+    polkadot_substrate_rpc_->GetMetadata(chain_id, std::nullopt,
+                                         future.GetCallback());
 
     auto* reqs = url_loader_factory_.pending_requests();
     EXPECT_TRUE(reqs);
@@ -2316,7 +2317,54 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetMetadata) {
   }
 
   {
+    // Successful RPC call (with block hash).
+
+    static constexpr std::string_view kBlockHashHex =
+        "a4d849853e6d5f0df4e03b3fbc104d7937d8e85585fcbafa06290bfb4de081a9";
+
+    url_loader_factory_.ClearResponses();
+
+    std::array<uint8_t, kPolkadotBlockHashSize> block_hash = {};
+    ASSERT_TRUE(base::HexStringToSpan(kBlockHashHex, block_hash));
+
+    polkadot_substrate_rpc_->GetMetadata(chain_id, block_hash,
+                                         future.GetCallback());
+
+    auto* reqs = url_loader_factory_.pending_requests();
+    ASSERT_TRUE(reqs);
+    ASSERT_EQ(reqs->size(), 1u);
+
+    auto const& req = reqs->at(0);
+    ASSERT_TRUE(req.request.request_body->elements());
+    auto const& element = req.request.request_body->elements()->at(0);
+
+    std::string expected_body = R"(
+      {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "state_getMetadata",
+        "params": ["a4d849853e6d5f0df4e03b3fbc104d7937d8e85585fcbafa06290bfb4de081a9"]
+      })";
+
+    EXPECT_EQ(base::test::ParseJsonDict(
+                  element.As<network::DataElementBytes>().AsStringPiece()),
+              base::test::ParseJsonDict(expected_body));
+
+    url_loader_factory_.AddResponse(
+        testnet_url,
+        R"({"jsonrpc":"2.0","id":1,"result":"0x6d65746164617461"})");
+
+    auto metadata = future.Take();
+    ASSERT_TRUE(metadata.has_value());
+    std::vector<uint8_t> expected_bytes;
+    ASSERT_TRUE(
+        PrefixedHexStringToBytes("0x6d65746164617461", &expected_bytes));
+    EXPECT_EQ(*metadata, expected_bytes);
+  }
+
+  {
     // RPC error includes a message.
+    url_loader_factory_.ClearResponses();
     url_loader_factory_.AddResponse(testnet_url,
                                     R"(
       {
@@ -2325,7 +2373,8 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetMetadata) {
         "error":{"code":-32601,"message":"Method not found"}
       })");
 
-    polkadot_substrate_rpc_->GetMetadata(chain_id, future.GetCallback());
+    polkadot_substrate_rpc_->GetMetadata(chain_id, std::nullopt,
+                                         future.GetCallback());
     auto metadata = future.Take();
     ASSERT_FALSE(metadata.has_value());
     EXPECT_EQ(metadata.error(), "Method not found");
@@ -2333,6 +2382,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetMetadata) {
 
   {
     // RPC error has no message.
+    url_loader_factory_.ClearResponses();
     url_loader_factory_.AddResponse(testnet_url,
                                     R"(
       {
@@ -2341,7 +2391,8 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetMetadata) {
         "error":{"code":-32601}
       })");
 
-    polkadot_substrate_rpc_->GetMetadata(chain_id, future.GetCallback());
+    polkadot_substrate_rpc_->GetMetadata(chain_id, std::nullopt,
+                                         future.GetCallback());
     auto metadata = future.Take();
     ASSERT_FALSE(metadata.has_value());
     EXPECT_EQ(metadata.error(), WalletInternalErrorMessage());
@@ -2349,6 +2400,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetMetadata) {
 
   {
     // Error because result is missing.
+    url_loader_factory_.ClearResponses();
     url_loader_factory_.AddResponse(testnet_url,
                                     R"(
       {
@@ -2356,7 +2408,8 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetMetadata) {
         "id":1
       })");
 
-    polkadot_substrate_rpc_->GetMetadata(chain_id, future.GetCallback());
+    polkadot_substrate_rpc_->GetMetadata(chain_id, std::nullopt,
+                                         future.GetCallback());
     auto metadata = future.Take();
     ASSERT_FALSE(metadata.has_value());
     EXPECT_EQ(metadata.error(), WalletParsingErrorMessage());
@@ -2364,6 +2417,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetMetadata) {
 
   {
     // Error because result has an invalid type.
+    url_loader_factory_.ClearResponses();
     url_loader_factory_.AddResponse(testnet_url,
                                     R"(
       {
@@ -2372,7 +2426,8 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetMetadata) {
         "result":1234
       })");
 
-    polkadot_substrate_rpc_->GetMetadata(chain_id, future.GetCallback());
+    polkadot_substrate_rpc_->GetMetadata(chain_id, std::nullopt,
+                                         future.GetCallback());
     auto metadata = future.Take();
     ASSERT_FALSE(metadata.has_value());
     EXPECT_EQ(metadata.error(), WalletParsingErrorMessage());
@@ -2380,10 +2435,12 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetMetadata) {
 
   {
     // Error due to non-2XX response.
+    url_loader_factory_.ClearResponses();
     url_loader_factory_.AddResponse(testnet_url, "",
                                     net::HTTP_INTERNAL_SERVER_ERROR);
 
-    polkadot_substrate_rpc_->GetMetadata(chain_id, future.GetCallback());
+    polkadot_substrate_rpc_->GetMetadata(chain_id, std::nullopt,
+                                         future.GetCallback());
     auto metadata = future.Take();
     ASSERT_FALSE(metadata.has_value());
     EXPECT_EQ(metadata.error(), WalletInternalErrorMessage());
@@ -2754,7 +2811,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, DappParachainRpcUrls) {
                     ->GetNetworkURL(test_case.chain_id, mojom::CoinType::DOT)
                     .is_empty());
 
-    rpc->GetMetadata(test_case.chain_id, callback.Get());
+    rpc->GetMetadata(test_case.chain_id, std::nullopt, callback.Get());
 
     ASSERT_EQ(reqs->size(), 1u);
     EXPECT_EQ(reqs->front().request.url, test_case.rpc_url);
@@ -2763,7 +2820,8 @@ TEST_F(PolkadotSubstrateRpcUnitTest, DappParachainRpcUrls) {
   }
 
   // We route Asset Hub through the same URL our wallet natively uses.
-  rpc->GetMetadata(mojom::kPolkadotMainnetAssetHub, callback.Get());
+  rpc->GetMetadata(mojom::kPolkadotMainnetAssetHub, std::nullopt,
+                   callback.Get());
   ASSERT_EQ(reqs->size(), 1u);
   EXPECT_EQ(reqs->front().request.url,
             "https://polkadot-asset-hub.wallet.brave.com/");
@@ -2773,7 +2831,8 @@ TEST_F(PolkadotSubstrateRpcUnitTest, DappParachainRpcUrls) {
   network_manager_->SetNetworkURLForTesting(
       mojom::kPolkadotMainnetAssetHub,
       GURL("https://asset-hub.example.com/rpc"));
-  rpc->GetMetadata(mojom::kPolkadotMainnetAssetHub, callback.Get());
+  rpc->GetMetadata(mojom::kPolkadotMainnetAssetHub, std::nullopt,
+                   callback.Get());
   ASSERT_EQ(reqs->size(), 1u);
   EXPECT_EQ(reqs->front().request.url, "https://asset-hub.example.com/rpc");
   reqs->clear();
@@ -2795,7 +2854,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, DappRequestEmptyMap) {
       future;
 
   // An empty map resolves nothing, so there's no endpoint to talk to.
-  polkadot_substrate_rpc_->GetMetadata(mojom::kPolkadotAcala,
+  polkadot_substrate_rpc_->GetMetadata(mojom::kPolkadotAcala, std::nullopt,
                                        future.GetCallback());
 
   ASSERT_TRUE(reqs->empty());
@@ -2812,7 +2871,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, DappRequestEmptyMap) {
 
   auto rpc = MakeRpcWithUrlMap(std::move(url_map));
 
-  rpc->GetMetadata(mojom::kPolkadotAcala, future.GetCallback());
+  rpc->GetMetadata(mojom::kPolkadotAcala, std::nullopt, future.GetCallback());
 
   metadata = future.Take();
   ASSERT_FALSE(metadata.has_value());

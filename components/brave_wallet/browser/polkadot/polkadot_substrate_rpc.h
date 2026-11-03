@@ -158,12 +158,15 @@ class PolkadotSubstrateRpc {
       std::optional<base::span<uint8_t, kPolkadotBlockHashSize>> block_hash,
       GetRuntimeVersionCallback callback);
 
-  // Fetches runtime metadata for |chain_id| and returns it as SCALE bytes.
-  // The callback receives base::expected<std::vector<uint8_t>, std::string>
-  // where the value is metadata on success and the error contains a human-
-  // readable failure message for transport/RPC/parsing failures.
-  virtual void GetMetadata(std::string_view chain_id,
-                           GetMetadataCallback callback);
+  // "Fetches runtime metadata for |chain_id| at |block_hash| or, if not
+  // provided, at the latest block and returns it as SCALE bytes. The callback
+  // receives base::expected<std::vector<uint8_t>, std::string> where the value
+  // is metadata on success and the error contains a human- readable failure
+  // message for transport/RPC/parsing failures.
+  virtual void GetMetadata(
+      std::string_view chain_id,
+      std::optional<base::span<uint8_t, kPolkadotBlockHashSize>> block_hash,
+      GetMetadataCallback callback);
 
   // Fetches the chain spec's properties for |chain_id|: its ss58 prefix and the
   // decimals and symbol of its native token. These are not part of the runtime
