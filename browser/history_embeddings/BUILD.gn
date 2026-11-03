@@ -95,10 +95,7 @@ source_set("unit_tests") {
 
 source_set("browser_tests") {
   testonly = true
-  sources = [
-    "brave_history_ui_embeddings_browsertest.cc",
-    "open_tab_search_browsertest.cc",
-  ]
+  sources = [ "open_tab_search_browsertest.cc" ]
 
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
