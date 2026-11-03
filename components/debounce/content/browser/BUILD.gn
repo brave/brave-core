@@ -17,7 +17,6 @@ source_set("browser") {
     "//brave/components/debounce/core/browser",
     "//components/user_prefs",
     "//content/public/browser",
-    "//content/public/common",
     "//third_party/re2",
     "//ui/base",
     "//url",

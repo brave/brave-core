@@ -26,6 +26,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/common/content_client.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -228,6 +229,24 @@ IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, Redirect) {
   GURL landing_url = embedded_test_server()->GetURL("simple.b.com", "/");
   GURL original_url = add_redirect_param(base_url, landing_url);
   NavigateToURLAndWaitForRedirects(original_url, landing_url);
+}
+
+IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, ViewSourceIsNotDebounced) {
+  ASSERT_TRUE(InstallMockExtension());
+  ToggleDebouncePref(true);
+  GURL base_url = embedded_test_server()->GetURL("simple.a.com", "/");
+  GURL landing_url = embedded_test_server()->GetURL("simple.b.com", "/");
+  GURL original_url = add_redirect_param(base_url, landing_url);
+  GURL view_source_url("view-source:" + original_url.spec());
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), view_source_url));
+  ASSERT_TRUE(content::WaitForLoadStop(web_contents()));
+
+  content::NavigationEntry* entry =
+      web_contents()->GetController().GetLastCommittedEntry();
+  ASSERT_TRUE(entry);
+  EXPECT_TRUE(entry->IsViewSourceMode());
+  EXPECT_EQ(entry->GetVirtualURL(), view_source_url);
 }
 
 // Check that URLs ending with a '.' are properly debounced.
