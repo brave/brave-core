@@ -69,6 +69,11 @@ message AIChatConversationSpecifics {
     optional string model_key = 3;
     optional uint64 total_tokens = 4;
     optional uint64 trimmed_tokens = 5;
+    // When the title or model last changed, on whichever device changed it, in
+    // microseconds since the Windows epoch (1601). Lets a receiver tell which
+    // of two copies of this record is newer. Token counts change on every
+    // reply, so they don't move it. Unset means unknown, which is the oldest.
+    optional int64 modified_time_windows_epoch_micros = 6;
   }
 
   // A single conversation turn (human or assistant message), with the
@@ -105,6 +110,12 @@ message AIChatConversationSpecifics {
     // NEAR AI TEE attestation status for this turn. Absent when the turn has
     // no attestation.
     optional AIChatNEARVerificationStatus near_verification_status = 15;
+    // When this record's content last changed, on whichever device changed
+    // it, in microseconds since the Windows epoch (1601). Unlike
+    // |created_time_windows_epoch_micros|, it moves with every edit. Lets a
+    // receiver tell which of two copies of this record is newer. Unset means
+    // unknown, which is the oldest.
+    optional int64 modified_time_windows_epoch_micros = 16;
   }
 
   oneof kind {

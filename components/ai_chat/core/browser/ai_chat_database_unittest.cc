@@ -76,6 +76,16 @@ mojom::ConversationEntryEventPtr CreateWebSourcesEvent() {
                                   std::vector<std::string>{}));
 }
 
+mojom::ConversationTurnPtr CreateQueryEntry(std::string_view uuid) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = std::string(uuid);
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+  entry->text = "Hello";
+  entry->created_time = base::Time::Now();
+  return entry;
+}
+
 std::vector<mojom::UploadedFilePtr> CreateUploadedFile() {
   std::vector<mojom::UploadedFilePtr> files;
   files.push_back(
@@ -1526,7 +1536,8 @@ TEST_P(AIChatDatabaseTest, ApplyRemoteEntryFailsOnFailedChildInsert) {
   };
 
   auto original = make_response("entry-1", "Original");
-  ASSERT_TRUE(db_->ApplyRemoteEntry("conv", original->Clone(), {}, {}));
+  ASSERT_TRUE(
+      db_->ApplyRemoteEntry("conv", original->Clone(), base::Time(), {}, {}));
 
   // No entry owns this row, so the replace doesn't delete it, and it collides
   // with the edit's first event.
@@ -1535,7 +1546,8 @@ TEST_P(AIChatDatabaseTest, ApplyRemoteEntryFailsOnFailedChildInsert) {
   auto replacement = make_response("entry-1", "Replaced");
   replacement->edits.emplace();
   replacement->edits->push_back(make_response("edit-1", "Edited"));
-  EXPECT_FALSE(db_->ApplyRemoteEntry("conv", std::move(replacement), {}, {}));
+  EXPECT_FALSE(db_->ApplyRemoteEntry("conv", std::move(replacement),
+                                     base::Time(), {}, {}));
 
   auto data = db_->GetConversationData("conv");
   ASSERT_TRUE(data);
@@ -1652,7 +1664,8 @@ TEST_F(AIChatDatabaseSyncTest, ApplyRemoteConversationMetadataInsertsNew) {
   conversation->total_tokens = 100;
   conversation->trimmed_tokens = 5;
 
-  EXPECT_TRUE(db_->ApplyRemoteConversationMetadata(std::move(conversation)));
+  EXPECT_TRUE(db_->ApplyRemoteConversationMetadata(std::move(conversation),
+                                                   base::Time()));
 
   auto conversations = db_->GetAllConversations();
   ASSERT_EQ(conversations.size(), 1u);
@@ -1686,7 +1699,8 @@ TEST_F(AIChatDatabaseSyncTest,
   updated->uuid = "conv";
   updated->title = "Updated";
   updated->total_tokens = 42;
-  EXPECT_TRUE(db_->ApplyRemoteConversationMetadata(std::move(updated)));
+  EXPECT_TRUE(
+      db_->ApplyRemoteConversationMetadata(std::move(updated), base::Time()));
 
   // Metadata is updated...
   auto conversations = db_->GetAllConversations();
@@ -1708,8 +1722,10 @@ TEST_F(AIChatDatabaseSyncTest, ApplyRemoteConversationMetadataTwice) {
   conversation->uuid = "conv";
   conversation->title = "Title";
   conversation->total_tokens = 42;
-  ASSERT_TRUE(db_->ApplyRemoteConversationMetadata(conversation->Clone()));
-  EXPECT_TRUE(db_->ApplyRemoteConversationMetadata(std::move(conversation)));
+  ASSERT_TRUE(db_->ApplyRemoteConversationMetadata(conversation->Clone(),
+                                                   base::Time()));
+  EXPECT_TRUE(db_->ApplyRemoteConversationMetadata(std::move(conversation),
+                                                   base::Time()));
 
   auto conversations = db_->GetAllConversations();
   ASSERT_EQ(conversations.size(), 1u);
@@ -1722,13 +1738,15 @@ TEST_F(AIChatDatabaseSyncTest,
   auto conversation = mojom::Conversation::New();
   conversation->uuid = "conv";
   conversation->title = "Original";
-  ASSERT_TRUE(db_->ApplyRemoteConversationMetadata(conversation->Clone()));
+  ASSERT_TRUE(db_->ApplyRemoteConversationMetadata(conversation->Clone(),
+                                                   base::Time()));
 
   db_.reset();
   db_ = std::make_unique<AIChatDatabase>(
       db_file_path(), os_crypt_async::GetTestEncryptorWithoutKeysForTesting());
   conversation->title = "Updated";
-  EXPECT_FALSE(db_->ApplyRemoteConversationMetadata(std::move(conversation)));
+  EXPECT_FALSE(db_->ApplyRemoteConversationMetadata(std::move(conversation),
+                                                    base::Time()));
 
   db_.reset();
   base::test::TestFuture<scoped_refptr<os_crypt_async::Encryptor>> future;
@@ -1752,10 +1770,12 @@ TEST_F(AIChatDatabaseSyncTest, ApplyRemoteEntryCreatesStubConversation) {
 
   // No parent conversation exists yet, so a stub is created to hold the
   // entry, and it still counts as the parent for the next one.
-  EXPECT_TRUE(db_->ApplyRemoteEntry(
-      "orphan-conv", make_entry("entry-1", "Orphan entry"), {}, {}));
-  EXPECT_TRUE(db_->ApplyRemoteEntry(
-      "orphan-conv", make_entry("entry-2", "Second entry"), {}, {}));
+  EXPECT_TRUE(db_->ApplyRemoteEntry("orphan-conv",
+                                    make_entry("entry-1", "Orphan entry"),
+                                    base::Time(), {}, {}));
+  EXPECT_TRUE(db_->ApplyRemoteEntry("orphan-conv",
+                                    make_entry("entry-2", "Second entry"),
+                                    base::Time(), {}, {}));
 
   // The stub isn't listed until its metadata record arrives.
   EXPECT_TRUE(db_->GetAllConversations().empty());
@@ -1779,8 +1799,10 @@ TEST_F(AIChatDatabaseSyncTest, ApplyRemoteEntryReplacesExistingEntry) {
     return entry;
   };
 
-  EXPECT_TRUE(db_->ApplyRemoteEntry("conv", make_entry("Original"), {}, {}));
-  EXPECT_TRUE(db_->ApplyRemoteEntry("conv", make_entry("Replaced"), {}, {}));
+  EXPECT_TRUE(db_->ApplyRemoteEntry("conv", make_entry("Original"),
+                                    base::Time(), {}, {}));
+  EXPECT_TRUE(db_->ApplyRemoteEntry("conv", make_entry("Replaced"),
+                                    base::Time(), {}, {}));
 
   // Same uuid is fully replaced, not duplicated.
   auto data = db_->GetConversationData("conv");
@@ -1803,8 +1825,10 @@ TEST_F(AIChatDatabaseSyncTest, ApplyRemoteEntryReplacesChildRows) {
   history[1]->events->push_back(CreateToolUseEvent());
   ASSERT_EQ(history[1]->events->size(), 6u);
 
-  EXPECT_TRUE(db_->ApplyRemoteEntry("conv", history[0]->Clone(), {}, {}));
-  EXPECT_TRUE(db_->ApplyRemoteEntry("conv", history[1]->Clone(), {}, {}));
+  EXPECT_TRUE(
+      db_->ApplyRemoteEntry("conv", history[0]->Clone(), base::Time(), {}, {}));
+  EXPECT_TRUE(
+      db_->ApplyRemoteEntry("conv", history[1]->Clone(), base::Time(), {}, {}));
   auto data = db_->GetConversationData("conv");
   ASSERT_TRUE(data);
   ExpectConversationHistoryEquals(FROM_HERE, data->entries, history);
@@ -1812,8 +1836,10 @@ TEST_F(AIChatDatabaseSyncTest, ApplyRemoteEntryReplacesChildRows) {
   history[0]->uploaded_files->pop_back();
   history[1]->events->erase(history[1]->events->begin() + 1,
                             history[1]->events->end());
-  EXPECT_TRUE(db_->ApplyRemoteEntry("conv", history[0]->Clone(), {}, {}));
-  EXPECT_TRUE(db_->ApplyRemoteEntry("conv", history[1]->Clone(), {}, {}));
+  EXPECT_TRUE(
+      db_->ApplyRemoteEntry("conv", history[0]->Clone(), base::Time(), {}, {}));
+  EXPECT_TRUE(
+      db_->ApplyRemoteEntry("conv", history[1]->Clone(), base::Time(), {}, {}));
   auto trimmed_data = db_->GetConversationData("conv");
   ASSERT_TRUE(trimmed_data);
   ExpectConversationHistoryEquals(FROM_HERE, trimmed_data->entries, history);
@@ -1843,7 +1869,8 @@ TEST_F(AIChatDatabaseSyncTest, ApplyRemoteEntryPersistsEdits) {
       make_revision("edit-2", "Second revision", now + base::Minutes(2)));
   auto expected = entry->Clone();
 
-  ASSERT_TRUE(db_->ApplyRemoteEntry("conv", std::move(entry), {}, {}));
+  ASSERT_TRUE(
+      db_->ApplyRemoteEntry("conv", std::move(entry), base::Time(), {}, {}));
 
   auto data = db_->GetConversationData("conv");
   ASSERT_TRUE(data);
@@ -1878,8 +1905,10 @@ TEST_F(AIChatDatabaseSyncTest, ApplyRemoteEntryReplacesEditChildRows) {
     return entry;
   };
 
-  ASSERT_TRUE(db_->ApplyRemoteEntry("conv", make_entry("Before"), {}, {}));
-  ASSERT_TRUE(db_->ApplyRemoteEntry("conv", make_entry("After"), {}, {}));
+  ASSERT_TRUE(db_->ApplyRemoteEntry("conv", make_entry("Before"), base::Time(),
+                                    {}, {}));
+  ASSERT_TRUE(
+      db_->ApplyRemoteEntry("conv", make_entry("After"), base::Time(), {}, {}));
 
   auto data = db_->GetConversationData("conv");
   ASSERT_TRUE(data);
@@ -1895,7 +1924,8 @@ TEST_F(AIChatDatabaseSyncTest, ApplyRemoteEntryKeepsExistingConversation) {
   conversation->model_key = "model-x";
   conversation->total_tokens = 100;
   conversation->trimmed_tokens = 5;
-  ASSERT_TRUE(db_->ApplyRemoteConversationMetadata(std::move(conversation)));
+  ASSERT_TRUE(db_->ApplyRemoteConversationMetadata(std::move(conversation),
+                                                   base::Time()));
 
   auto entry = mojom::ConversationTurn::New();
   entry->uuid = "entry-1";
@@ -1903,7 +1933,8 @@ TEST_F(AIChatDatabaseSyncTest, ApplyRemoteEntryKeepsExistingConversation) {
   entry->action_type = mojom::ActionType::QUERY;
   entry->text = "Hello";
   entry->created_time = base::Time::Now();
-  EXPECT_TRUE(db_->ApplyRemoteEntry("conv", std::move(entry), {}, {}));
+  EXPECT_TRUE(
+      db_->ApplyRemoteEntry("conv", std::move(entry), base::Time(), {}, {}));
 
   // The stub insert must not overwrite metadata that already arrived.
   auto conversations = db_->GetAllConversations();
@@ -1925,14 +1956,16 @@ TEST_F(AIChatDatabaseSyncTest, ApplyRemoteConversationMetadataFillsInStub) {
   entry->action_type = mojom::ActionType::QUERY;
   entry->text = "Hello";
   entry->created_time = base::Time::Now();
-  ASSERT_TRUE(db_->ApplyRemoteEntry("conv", std::move(entry), {}, {}));
+  ASSERT_TRUE(
+      db_->ApplyRemoteEntry("conv", std::move(entry), base::Time(), {}, {}));
   ASSERT_TRUE(db_->GetAllConversations().empty());
 
   auto conversation = mojom::Conversation::New();
   conversation->uuid = "conv";
   conversation->title = "Late title";
   conversation->total_tokens = 42;
-  EXPECT_TRUE(db_->ApplyRemoteConversationMetadata(std::move(conversation)));
+  EXPECT_TRUE(db_->ApplyRemoteConversationMetadata(std::move(conversation),
+                                                   base::Time()));
 
   auto conversations = db_->GetAllConversations();
   ASSERT_EQ(conversations.size(), 1u);
@@ -1963,7 +1996,7 @@ TEST_F(AIChatDatabaseSyncTest, ApplyRemoteEntryPersistsAssociatedContent) {
   associated_content.push_back(std::move(content));
   std::vector<std::string> contents = {"page text"};
 
-  EXPECT_TRUE(db_->ApplyRemoteEntry("conv", std::move(entry),
+  EXPECT_TRUE(db_->ApplyRemoteEntry("conv", std::move(entry), base::Time(),
                                     std::move(associated_content),
                                     std::move(contents)));
 
@@ -2011,7 +2044,7 @@ TEST_F(AIChatDatabaseSyncTest, ApplyRemoteEntryKeepsWorkspaceContent) {
   std::vector<mojom::AssociatedContentPtr> remote_content;
   remote_content.push_back(make_content(
       "page-ac", mojom::ContentType::PageContent, "https://example.com"));
-  ASSERT_TRUE(db_->ApplyRemoteEntry("conv", entry->Clone(),
+  ASSERT_TRUE(db_->ApplyRemoteEntry("conv", entry->Clone(), base::Time(),
                                     std::move(remote_content),
                                     {"updated page text"}));
 
@@ -2068,6 +2101,180 @@ TEST_F(AIChatDatabaseSyncTest, GetConversationUuidForEntry) {
   EXPECT_EQ(db_->GetConversationUuidForEntry("entry-a2"), "conv-a");
   EXPECT_EQ(db_->GetConversationUuidForEntry("entry-b1"), "conv-b");
   EXPECT_EQ(db_->GetConversationUuidForEntry("no-such-entry"), std::nullopt);
+}
+
+TEST_F(AIChatDatabaseSyncTest, ConversationChangesSetModifiedTime) {
+  auto conversation = mojom::Conversation::New();
+  conversation->uuid = "conv";
+  ASSERT_TRUE(db_->AddConversation(std::move(conversation), {},
+                                   CreateQueryEntry("entry-1")));
+  EXPECT_EQ(db_->GetConversationModifiedTime("conv"), base::Time::Now());
+
+  task_environment_.FastForwardBy(base::Minutes(1));
+  ASSERT_TRUE(db_->UpdateConversationTitle("conv", "Renamed"));
+  EXPECT_EQ(db_->GetConversationModifiedTime("conv"), base::Time::Now());
+
+  task_environment_.FastForwardBy(base::Minutes(1));
+  ASSERT_TRUE(db_->UpdateConversationModelKey("conv", "model-x"));
+  const base::Time model_changed = base::Time::Now();
+  EXPECT_EQ(db_->GetConversationModifiedTime("conv"), model_changed);
+
+  // Each new entry saves the model again, and token counts change with every
+  // reply. Neither should make this copy newer than another device's rename.
+  task_environment_.FastForwardBy(base::Minutes(1));
+  ASSERT_TRUE(db_->UpdateConversationModelKey("conv", "model-x"));
+  ASSERT_TRUE(db_->UpdateConversationTokenInfo("conv", 100, 10));
+  EXPECT_EQ(db_->GetConversationModifiedTime("conv"), model_changed);
+
+  auto conversations = db_->GetAllConversations();
+  ASSERT_EQ(conversations.size(), 1u);
+  EXPECT_EQ(conversations[0]->model_key, "model-x");
+  EXPECT_EQ(conversations[0]->total_tokens, 100u);
+}
+
+TEST_F(AIChatDatabaseSyncTest, AddConversationEntrySetsModifiedTime) {
+  auto conversation = mojom::Conversation::New();
+  conversation->uuid = "conv";
+  ASSERT_TRUE(db_->AddConversation(std::move(conversation), {},
+                                   CreateQueryEntry("entry-1")));
+  EXPECT_EQ(db_->GetEntryModifiedTime("entry-1"), base::Time::Now());
+
+  task_environment_.FastForwardBy(base::Minutes(1));
+  ASSERT_TRUE(db_->AddConversationEntry("conv", CreateQueryEntry("entry-2")));
+  EXPECT_EQ(db_->GetEntryModifiedTime("entry-2"), base::Time::Now());
+  EXPECT_EQ(db_->GetEntryModifiedTime("entry-1"),
+            base::Time::Now() - base::Minutes(1));
+
+  // An edit is saved by removing the entry and adding it back with the edit.
+  // Sync sends the edited entry under the original entry's uuid, so that's
+  // the entry whose time moves.
+  task_environment_.FastForwardBy(base::Minutes(1));
+  auto edited = CreateQueryEntry("entry-1");
+  edited->edits.emplace();
+  edited->edits->push_back(CreateQueryEntry("edit-1"));
+  ASSERT_TRUE(db_->DeleteConversationEntry("entry-1"));
+  ASSERT_TRUE(db_->AddConversationEntry("conv", std::move(edited)));
+  EXPECT_EQ(db_->GetEntryModifiedTime("entry-1"), base::Time::Now());
+}
+
+TEST_F(AIChatDatabaseSyncTest, AssociatedContentChangesSetEntryModifiedTime) {
+  auto make_content = [] {
+    std::vector<mojom::AssociatedContentPtr> content;
+    content.push_back(mojom::AssociatedContent::New(
+        "ac-1", mojom::ContentType::PageContent, "page title", 1,
+        GURL("https://example.com"), 50, "entry-1", false));
+    return content;
+  };
+  auto conversation = mojom::Conversation::New();
+  conversation->uuid = "conv";
+  conversation->associated_content = make_content();
+  ASSERT_TRUE(db_->AddConversation(std::move(conversation), {"page text"},
+                                   CreateQueryEntry("entry-1")));
+  const base::Time added = base::Time::Now();
+
+  // Each new entry saves all of the conversation's content again. Content
+  // that hasn't changed leaves its entry's time alone.
+  task_environment_.FastForwardBy(base::Minutes(1));
+  ASSERT_TRUE(
+      db_->AddOrUpdateAssociatedContent("conv", make_content(), {"page text"}));
+  EXPECT_EQ(db_->GetEntryModifiedTime("entry-1"), added);
+
+  task_environment_.FastForwardBy(base::Minutes(1));
+  ASSERT_TRUE(db_->AddOrUpdateAssociatedContent("conv", make_content(),
+                                                {"updated page text"}));
+  EXPECT_EQ(db_->GetEntryModifiedTime("entry-1"), base::Time::Now());
+
+  task_environment_.FastForwardBy(base::Minutes(1));
+  auto changed_title = make_content();
+  changed_title[0]->title = "new title";
+  ASSERT_TRUE(db_->AddOrUpdateAssociatedContent(
+      "conv", std::move(changed_title), {"updated page text"}));
+  EXPECT_EQ(db_->GetEntryModifiedTime("entry-1"), base::Time::Now());
+
+  task_environment_.FastForwardBy(base::Minutes(1));
+  ASSERT_TRUE(db_->DeleteAssociatedWebContent(std::nullopt, std::nullopt));
+  const base::Time cleared = base::Time::Now();
+  EXPECT_EQ(db_->GetEntryModifiedTime("entry-1"), cleared);
+
+  // Nothing is left to clear.
+  task_environment_.FastForwardBy(base::Minutes(1));
+  ASSERT_TRUE(db_->DeleteAssociatedWebContent(std::nullopt, std::nullopt));
+  EXPECT_EQ(db_->GetEntryModifiedTime("entry-1"), cleared);
+}
+
+TEST_F(AIChatDatabaseSyncTest, UpdateToolUseEventSetsEntryModifiedTime) {
+  auto response = mojom::ConversationTurn::New();
+  response->uuid = "entry-1";
+  response->character_type = mojom::CharacterType::ASSISTANT;
+  response->action_type = mojom::ActionType::RESPONSE;
+  response->created_time = base::Time::Now();
+  response->events.emplace();
+  response->events->push_back(CreateToolUseEvent());
+  auto conversation = mojom::Conversation::New();
+  conversation->uuid = "conv";
+  ASSERT_TRUE(
+      db_->AddConversation(std::move(conversation), {}, std::move(response)));
+
+  auto tool_use_with_output = [] {
+    auto tool_use = CreateToolUseEvent()->get_tool_use_event()->Clone();
+    tool_use->output.emplace();
+    tool_use->output->push_back(mojom::ContentBlock::NewTextContentBlock(
+        mojom::TextContentBlock::New("tool output")));
+    return tool_use;
+  };
+
+  task_environment_.FastForwardBy(base::Minutes(1));
+  ASSERT_TRUE(db_->UpdateToolUseEvent("entry-1", 0, tool_use_with_output()));
+  const base::Time updated = base::Time::Now();
+  EXPECT_EQ(db_->GetEntryModifiedTime("entry-1"), updated);
+
+  // An update that matches no stored event changes nothing.
+  task_environment_.FastForwardBy(base::Minutes(1));
+  ASSERT_TRUE(db_->UpdateToolUseEvent("entry-1", 5, tool_use_with_output()));
+  EXPECT_EQ(db_->GetEntryModifiedTime("entry-1"), updated);
+}
+
+TEST_F(AIChatDatabaseSyncTest,
+       ApplyRemoteConversationMetadataStoresRecordTime) {
+  // The record's own time is stored, not the time it arrived.
+  const base::Time record_time = base::Time::Now() - base::Days(1);
+  auto conversation = mojom::Conversation::New();
+  conversation->uuid = "conv";
+  ASSERT_TRUE(
+      db_->ApplyRemoteConversationMetadata(conversation->Clone(), record_time));
+  EXPECT_EQ(db_->GetConversationModifiedTime("conv"), record_time);
+
+  // A record without a time leaves none.
+  ASSERT_TRUE(db_->ApplyRemoteConversationMetadata(std::move(conversation),
+                                                   base::Time()));
+  EXPECT_TRUE(db_->GetConversationModifiedTime("conv").is_null());
+}
+
+TEST_F(AIChatDatabaseSyncTest, ApplyRemoteEntryStoresRecordTime) {
+  // Writing the entry's edits and associated content goes through the local
+  // write paths, which set the current time. The record's own time must win.
+  const base::Time record_time = base::Time::Now() - base::Days(1);
+  auto make_entry = [] {
+    auto entry = CreateQueryEntry("entry-1");
+    entry->edits.emplace();
+    entry->edits->push_back(CreateQueryEntry("edit-1"));
+    return entry;
+  };
+  auto make_content = [] {
+    std::vector<mojom::AssociatedContentPtr> content;
+    content.push_back(mojom::AssociatedContent::New(
+        "ac-1", mojom::ContentType::PageContent, "page title", 1,
+        GURL("https://example.com"), 50, "entry-1", false));
+    return content;
+  };
+  ASSERT_TRUE(db_->ApplyRemoteEntry("conv", make_entry(), record_time,
+                                    make_content(), {"page text"}));
+  EXPECT_EQ(db_->GetEntryModifiedTime("entry-1"), record_time);
+
+  // A record without a time leaves none.
+  ASSERT_TRUE(db_->ApplyRemoteEntry("conv", make_entry(), base::Time(),
+                                    make_content(), {"page text"}));
+  EXPECT_TRUE(db_->GetEntryModifiedTime("entry-1").is_null());
 }
 
 // Test the migration for each version upgrade
@@ -2547,14 +2754,36 @@ TEST_P(AIChatDatabaseMigrationTest, Migration_Version12To13_SyncStubColumn) {
   entry->action_type = mojom::ActionType::QUERY;
   entry->text = "Hello";
   entry->created_time = base::Time::Now();
-  ASSERT_TRUE(db_->ApplyRemoteEntry("stub-conv", std::move(entry), {}, {}));
+  ASSERT_TRUE(db_->ApplyRemoteEntry("stub-conv", std::move(entry), base::Time(),
+                                    {}, {}));
   EXPECT_EQ(db_->GetAllConversations().size(), conversations.size());
 
   auto metadata = mojom::Conversation::New();
   metadata->uuid = "stub-conv";
   metadata->title = "Title";
-  ASSERT_TRUE(db_->ApplyRemoteConversationMetadata(std::move(metadata)));
+  ASSERT_TRUE(
+      db_->ApplyRemoteConversationMetadata(std::move(metadata), base::Time()));
   EXPECT_EQ(db_->GetAllConversations().size(), conversations.size() + 1);
+}
+
+TEST_P(AIChatDatabaseMigrationTest,
+       Migration_Version13To14_ModifiedTimeColumns) {
+  constexpr char kConversationUuid[] = "1ae484fe-ab33-4f42-8813-14080e4addc1";
+  constexpr char kEntryUuid[] = "5616a89c-7f56-4e7d-8e74-f882b76623a7";
+  ASSERT_EQ(db_->GetConversationUuidForEntry(kEntryUuid), kConversationUuid);
+
+  // Rows from before the columns existed have no time, which sync treats as
+  // the oldest.
+  EXPECT_TRUE(db_->GetConversationModifiedTime(kConversationUuid).is_null());
+  EXPECT_TRUE(db_->GetEntryModifiedTime(kEntryUuid).is_null());
+
+  // The migrated columns hold the time of a local change.
+  ASSERT_TRUE(db_->UpdateConversationTitle(kConversationUuid, "Renamed"));
+  EXPECT_EQ(db_->GetConversationModifiedTime(kConversationUuid),
+            base::Time::Now());
+  ASSERT_TRUE(db_->AddConversationEntry(kConversationUuid,
+                                        CreateQueryEntry("new-entry")));
+  EXPECT_EQ(db_->GetEntryModifiedTime("new-entry"), base::Time::Now());
 }
 
 }  // namespace ai_chat

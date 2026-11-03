@@ -67,9 +67,10 @@ base::flat_map<std::string, std::string> ContentTextsFromArchive(
 std::optional<sync_pb::AIChatConversationSpecifics> BuildCommittableEntry(
     const std::string& conversation_uuid,
     const mojom::ConversationTurn& entry,
+    base::Time modified_time,
     const std::vector<mojom::AssociatedContentPtr>& associated_content,
     const base::flat_map<std::string, std::string>& content_texts) {
-  auto specifics = EntryToSpecifics(conversation_uuid, entry,
+  auto specifics = EntryToSpecifics(conversation_uuid, entry, modified_time,
                                     associated_content, content_texts);
   if (!FitEntryWithinSyncBudget(specifics.mutable_entry())) {
     return std::nullopt;
@@ -154,8 +155,9 @@ void AIChatSyncBridge::ForEachLocalEntity(
 
     if (should_include(conversation_key)) {
       emit(std::move(conversation_key),
-           CreateEntityDataFromSpecifics(
-               ConversationMetadataToSpecifics(*conversation)));
+           CreateEntityDataFromSpecifics(ConversationMetadataToSpecifics(
+               *conversation,
+               database_->GetConversationModifiedTime(conversation->uuid))));
     }
 
     auto archive = database_->GetConversationData(conversation->uuid);
@@ -180,9 +182,10 @@ void AIChatSyncBridge::ForEachLocalEntity(
         continue;
       }
 
-      auto specifics = BuildCommittableEntry(conversation->uuid, *entry,
-                                             conversation->associated_content,
-                                             content_texts);
+      auto specifics = BuildCommittableEntry(
+          conversation->uuid, *entry,
+          database_->GetEntryModifiedTime(*entry->uuid),
+          conversation->associated_content, content_texts);
       if (!specifics) {
         continue;
       }
@@ -265,7 +268,8 @@ std::unique_ptr<syncer::DataBatch> AIChatSyncBridge::GetDataForCommit(
       if (!conversation) {
         continue;
       }
-      auto specifics = ConversationMetadataToSpecifics(*conversation);
+      auto specifics = ConversationMetadataToSpecifics(
+          *conversation, database_->GetConversationModifiedTime(uuid));
       batch->Put(key, CreateEntityDataFromSpecifics(specifics));
     } else if (key.starts_with(kEntryStorageKeyPrefix)) {
       const std::string entry_uuid = key.substr(kEntryStorageKeyPrefix.size());
@@ -288,9 +292,9 @@ std::unique_ptr<syncer::DataBatch> AIChatSyncBridge::GetDataForCommit(
       if (it == archive->entries.end()) {
         continue;
       }
-      auto specifics = BuildCommittableEntry(*conversation_uuid, **it,
-                                             conversation->associated_content,
-                                             ContentTextsFromArchive(*archive));
+      auto specifics = BuildCommittableEntry(
+          *conversation_uuid, **it, database_->GetEntryModifiedTime(entry_uuid),
+          conversation->associated_content, ContentTextsFromArchive(*archive));
       if (!specifics) {
         // The entry cannot be made to fit the per-record budget, so there is
         // nothing to commit. Untrack it explicitly rather than leave it out of
@@ -450,7 +454,8 @@ void AIChatSyncBridge::PutConversationMetadata(const std::string& uuid) {
   if (!conversation) {
     return;
   }
-  auto specifics = ConversationMetadataToSpecifics(*conversation);
+  auto specifics = ConversationMetadataToSpecifics(
+      *conversation, database_->GetConversationModifiedTime(uuid));
   auto metadata_change_list = CreateMetadataChangeList();
   change_processor()->Put(base::StrCat({kConversationStorageKeyPrefix, uuid}),
                           CreateEntityDataFromSpecifics(specifics),
@@ -475,9 +480,9 @@ void AIChatSyncBridge::PutEntry(const std::string& conversation_uuid,
   if (it == archive->entries.end()) {
     return;
   }
-  auto specifics = BuildCommittableEntry(conversation_uuid, **it,
-                                         conversation->associated_content,
-                                         ContentTextsFromArchive(*archive));
+  auto specifics = BuildCommittableEntry(
+      conversation_uuid, **it, database_->GetEntryModifiedTime(entry_uuid),
+      conversation->associated_content, ContentTextsFromArchive(*archive));
   if (!specifics) {
     // Too large to commit even after omitting every omittable field, so there
     // is nothing to Put. Leave the entity tracked: untracking one committed
