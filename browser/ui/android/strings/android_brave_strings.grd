@@ -1317,11 +1317,14 @@ Are you sure you want to do this?
       <message name="IDS_PREFS_NEW_TAB_PAGE" desc="Title of New Tab Page settings.">
         New Tab Page
       </message>
-      <message name="IDS_NEW_TAB_TAKEOVER_INFOBAR_MESSAGE" desc="The text of new tab takeover infobar message.">
-        Sponsored background images support Brave's mission to build an independent, user-first Web. And unlike Big Tech, we measure ad performance anonymously to preserve your privacy.
+      <message name="IDS_NEW_TAB_TAKEOVER_DISCLOSURE_LABEL" desc="Label shown on the new tab page when a New Tab Takeover is displayed.">
+        Sponsored
       </message>
-      <message name="IDS_NEW_TAB_TAKEOVER_INFOBAR_LEARN_MORE_OPT_OUT_CHOICES" desc="Button label on the new tab takeover notice. When pressed, a support page with opt-out choices opens.">
-        Learn more
+      <message name="IDS_NEW_TAB_TAKEOVER_DISCLOSURE_TOOLTIP_TEXT" desc="Tooltip text shown for the New Tab Takeover disclosure label. The placeholder is a link that opens a support page with opt-out choices.">
+        Help support Brave's mission to build an independent, user-first Web with Sponsored Ads. We measure ad performance privately, without identifying you. <ph name="LEARN_MORE_LINK">%1$s<ex>Learn more/Opt-out choices</ex></ph>.
+      </message>
+      <message name="IDS_NEW_TAB_TAKEOVER_DISCLOSURE_TOOLTIP_LEARN_MORE" desc="Link text in the New Tab Takeover disclosure tooltip. When pressed, a support page with opt-out choices opens.">
+        Learn more/Opt-out choices
       </message>
       <message name="IDS_BACKGROUND_IMAGES" desc= "Category title of background images option.">
         Background Images

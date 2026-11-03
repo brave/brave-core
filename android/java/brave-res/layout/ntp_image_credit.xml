@@ -39,6 +39,21 @@
             android:visibility="gone"/>
     </FrameLayout>
 
+    <TextView
+        android:id="@+id/sponsored_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="12dp"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        android:text="@string/new_tab_takeover_disclosure_label"
+        android:textColor="@android:color/white"
+        android:textSize="11sp"
+        android:lineHeight="16sp"
+        android:visibility="gone"/>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/super_referral_logo"
         android:layout_width="wrap_content"

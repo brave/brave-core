@@ -61,6 +61,7 @@ import org.chromium.build.annotations.Initializer;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_news.BraveNewsControllerFactory;
 import org.chromium.chrome.browser.brave_news.BraveNewsUtils;
@@ -88,8 +89,11 @@ import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
 import org.chromium.chrome.browser.suggestions.tile.BraveMostVisitedTilesLayoutBase;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabAttributes;
+import org.chromium.chrome.browser.tab.TabHidingType;
+import org.chromium.chrome.browser.tab.TabObserver;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tabmodel.TabModelUtils;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
@@ -136,7 +140,15 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     private @Nullable Bitmap mSponsoredLogo;
     private @Nullable Wallpaper mWallpaper;
 
-    private @Nullable BraveNewTabTakeoverInfobar mNewTabTakeoverInfobar;
+    private boolean mIsNewTabTakeoverDisclosureVisible;
+    private @Nullable NewTabTakeoverDisclosureTooltipController mDisclosureTooltipController;
+    private @Nullable NewTabTakeoverDisclosureTooltip mDisclosureTooltip;
+    private boolean mIsDisclosureTooltipAutoDisplayed;
+    private boolean mIsDisclosureTooltipContentVisible;
+    private boolean mIsDisclosureTooltipAutoDisplayPending;
+    private ViewTreeObserver.@Nullable OnGlobalLayoutListener mDisclosureAnchorListener;
+    private @Nullable Tab mDisclosureObservedTab;
+    private @Nullable TabObserver mDisclosureTabObserver;
 
     private CopyOnWriteArrayList<FeedItemsCard> mNewsItemsFeedCard =
             new CopyOnWriteArrayList<FeedItemsCard>();
@@ -321,12 +333,26 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
         if (mNtpAdapter == null) {
             if (mActivity != null && !mActivity.isDestroyed() && !mActivity.isFinishing()) {
-                mNtpAdapter = new BraveNtpAdapter(mActivity, this, Glide.with(mActivity),
-                        mNewsItemsFeedCard, mBraveNewsController, mMvTilesContainerLayout,
-                        mNtpImageGlobal, mSponsoredTab, mWallpaper, mSponsoredLogo,
-                        mNTPBackgroundImagesBridge, false, mRecyclerView.getHeight(),
-                        mIsTopSitesEnabled, mIsBraveStatsEnabled, mIsDisplayNewsFeed,
-                        mIsDisplayNewsOptin);
+                mNtpAdapter =
+                        new BraveNtpAdapter(
+                                mActivity,
+                                this,
+                                Glide.with(mActivity),
+                                mNewsItemsFeedCard,
+                                mBraveNewsController,
+                                mMvTilesContainerLayout,
+                                mNtpImageGlobal,
+                                mSponsoredTab,
+                                mWallpaper,
+                                mSponsoredLogo,
+                                mNTPBackgroundImagesBridge,
+                                false,
+                                mRecyclerView.getHeight(),
+                                mIsTopSitesEnabled,
+                                mIsBraveStatsEnabled,
+                                mIsDisplayNewsFeed,
+                                mIsDisplayNewsOptin);
+                mNtpAdapter.setNewTabTakeoverDisclosureVisible(mIsNewTabTakeoverDisclosureVisible);
 
                 mRecyclerView.setAdapter(mNtpAdapter);
 
@@ -535,6 +561,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
                         super.onScrolled(recyclerView, dx, dy);
 
+                        if (dy != 0) {
+                            dismissDisclosureTooltip();
+                        }
+
                         if (mIsDisplayNewsFeed) {
                             int lastVisibleItemPosition =
                                     linearLayoutManager.findLastCompletelyVisibleItemPosition();
@@ -708,6 +738,9 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     protected void onDetachedFromWindow() {
         assertNonNull(mRecyclerView);
 
+        cancelDisclosureTooltipAutoDisplay();
+        dismissDisclosureTooltip();
+
         if (mWorkerTask != null && mWorkerTask.getStatus() == AsyncTask.Status.RUNNING) {
             mWorkerTask.cancel(true);
             mWorkerTask = null;
@@ -757,6 +790,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+        dismissDisclosureTooltip();
         if (mActivity != null && (mActivity.isFinishing() || mActivity.isDestroyed())) {
             return;
         }
@@ -1085,13 +1119,229 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
             }
         }
 
-        assertNonNull(mProfile);
-        if (wasWallpaperShown
-                && mNtpImageGlobal instanceof Wallpaper
-                && getTab() != null
-                && mNewTabTakeoverInfobar == null) {
-            mNewTabTakeoverInfobar = new BraveNewTabTakeoverInfobar(mProfile);
-            mNewTabTakeoverInfobar.maybeDisplayAndIncrementCounter(mActivity, getTab());
+        updateNewTabTakeoverDisclosure(wasWallpaperShown);
+    }
+
+    private void updateNewTabTakeoverDisclosure(boolean wasWallpaperShown) {
+        NTPImage ntpImage = mNtpImageGlobal;
+        mIsNewTabTakeoverDisclosureVisible = wasWallpaperShown && ntpImage instanceof Wallpaper;
+        if (mNtpAdapter != null) {
+            mNtpAdapter.setNewTabTakeoverDisclosureVisible(mIsNewTabTakeoverDisclosureVisible);
+        }
+
+        if (!wasWallpaperShown || !(ntpImage instanceof Wallpaper)) {
+            cancelDisclosureTooltipAutoDisplay();
+            dismissDisclosureTooltip();
+            return;
+        }
+
+        maybeScheduleDisclosureTooltipAutoDisplay();
+    }
+
+    private NewTabTakeoverDisclosureTooltipController getDisclosureTooltipController() {
+        NewTabTakeoverDisclosureTooltipController controller = mDisclosureTooltipController;
+        if (controller == null) {
+            assertNonNull(mProfile);
+            controller =
+                    new NewTabTakeoverDisclosureTooltipController(
+                            UserPrefs.get(mProfile), BraveRewardsHelper::isRewardsEnabled);
+            mDisclosureTooltipController = controller;
+        }
+        return controller;
+    }
+
+    private void maybeScheduleDisclosureTooltipAutoDisplay() {
+        if (mIsDisclosureTooltipAutoDisplayPending
+                || !getDisclosureTooltipController().shouldAutoDisplay()) {
+            return;
+        }
+
+        mIsDisclosureTooltipAutoDisplayPending = true;
+        ViewTreeObserver.OnGlobalLayoutListener listener = this::maybeAutoDisplayDisclosureTooltip;
+        mDisclosureAnchorListener = listener;
+        getViewTreeObserver().addOnGlobalLayoutListener(listener);
+        maybeObserveTabForDisclosureTooltip();
+    }
+
+    private void maybeAutoDisplayDisclosureTooltip() {
+        if (!mIsDisclosureTooltipAutoDisplayPending
+                || (mDisclosureTooltip != null && mIsDisclosureTooltipAutoDisplayed)) {
+            return;
+        }
+
+        View label = findViewById(R.id.sponsored_label);
+        if (label == null || !isDisclosureTooltipAnchorReady(label)) {
+            return;
+        }
+
+        if (!getDisclosureTooltipController().shouldAutoDisplay()) {
+            cancelDisclosureTooltipAutoDisplay();
+            return;
+        }
+
+        NewTabTakeoverDisclosureTooltip tooltip =
+                openDisclosureTooltip(label, /* isAutoDisplayed= */ true);
+        post(() -> stopWaitingForDisclosureAnchorOrRetry(tooltip));
+    }
+
+    private void stopWaitingForDisclosureAnchorOrRetry(NewTabTakeoverDisclosureTooltip tooltip) {
+        if (tooltip != mDisclosureTooltip) {
+            return;
+        }
+
+        if (tooltip.isWindowShowing()) {
+            removeDisclosureAnchorListener();
+            return;
+        }
+
+        mDisclosureTooltip = null;
+        tooltip.dismiss();
+    }
+
+    private boolean isDisclosureTooltipAnchorReady(View label) {
+        return label.getVisibility() == View.VISIBLE
+                && label.isShown()
+                && label.isLaidOut()
+                && label.getWidth() > 0
+                && label.getHeight() > 0
+                && label.getAlpha() > 0f
+                && mNtpAdapter != null
+                && mNtpAdapter.isImageCreditPositioned();
+    }
+
+    @Override
+    public void toggleNewTabTakeoverDisclosureTooltip(View anchor) {
+        if (mDisclosureTooltip == null) {
+            openDisclosureTooltip(anchor, /* isAutoDisplayed= */ false);
+            return;
+        }
+
+        if (!isAutoDisplayedDisclosureTooltipNotYetCounted()) {
+            dismissDisclosureTooltip();
+        }
+    }
+
+    private boolean isAutoDisplayedDisclosureTooltipNotYetCounted() {
+        return mIsDisclosureTooltipAutoDisplayed && !mIsDisclosureTooltipContentVisible;
+    }
+
+    private NewTabTakeoverDisclosureTooltip openDisclosureTooltip(
+            View label, boolean isAutoDisplayed) {
+        dismissDisclosureTooltip();
+
+        NewTabTakeoverDisclosureTooltip tooltip =
+                new NewTabTakeoverDisclosureTooltip(
+                        label.getContext(), label, mDisclosureTooltipDelegate);
+        mDisclosureTooltip = tooltip;
+        mIsDisclosureTooltipAutoDisplayed = isAutoDisplayed;
+        mIsDisclosureTooltipContentVisible = false;
+        maybeObserveTabForDisclosureTooltip();
+        tooltip.show();
+        return tooltip;
+    }
+
+    private final NewTabTakeoverDisclosureTooltip.Delegate mDisclosureTooltipDelegate =
+            new NewTabTakeoverDisclosureTooltip.Delegate() {
+                @Override
+                public void onContentVisible(NewTabTakeoverDisclosureTooltip tooltip) {
+                    if (tooltip != mDisclosureTooltip) {
+                        return;
+                    }
+                    mIsDisclosureTooltipContentVisible = true;
+
+                    if (!mIsDisclosureTooltipAutoDisplayed
+                            || !mIsDisclosureTooltipAutoDisplayPending) {
+                        return;
+                    }
+                    getDisclosureTooltipController().onAutoDisplayed();
+                    mIsDisclosureTooltipAutoDisplayPending = false;
+                    removeDisclosureAnchorListener();
+                }
+
+                @Override
+                public void onWindowDismissed(NewTabTakeoverDisclosureTooltip tooltip) {
+                    if (tooltip != mDisclosureTooltip) {
+                        return;
+                    }
+                    dismissDisclosureTooltip();
+                }
+
+                @Override
+                public void onLearnMoreClicked(NewTabTakeoverDisclosureTooltip tooltip) {
+                    dismissDisclosureTooltip();
+                    getDisclosureTooltipController().onLearnMoreClicked();
+                    TabUtils.openUrlInNewTab(
+                            /* isIncognito= */ false,
+                            NewTabTakeoverDisclosureTooltip.LEARN_MORE_URL);
+                }
+            };
+
+    private void dismissDisclosureTooltip() {
+        NewTabTakeoverDisclosureTooltip tooltip = mDisclosureTooltip;
+        if (tooltip == null) {
+            return;
+        }
+
+        if (isAutoDisplayedDisclosureTooltipNotYetCounted()) {
+            cancelDisclosureTooltipAutoDisplay();
+            return;
+        }
+
+        mDisclosureTooltip = null;
+        tooltip.dismiss();
+        maybeStopObservingTabForDisclosureTooltip();
+    }
+
+    private void cancelDisclosureTooltipAutoDisplay() {
+        mIsDisclosureTooltipAutoDisplayPending = false;
+        removeDisclosureAnchorListener();
+
+        NewTabTakeoverDisclosureTooltip tooltip = mDisclosureTooltip;
+        if (tooltip != null && isAutoDisplayedDisclosureTooltipNotYetCounted()) {
+            mDisclosureTooltip = null;
+            tooltip.dismiss();
+        }
+        maybeStopObservingTabForDisclosureTooltip();
+    }
+
+    private void removeDisclosureAnchorListener() {
+        ViewTreeObserver.OnGlobalLayoutListener listener = mDisclosureAnchorListener;
+        if (listener == null) {
+            return;
+        }
+        mDisclosureAnchorListener = null;
+        getViewTreeObserver().removeOnGlobalLayoutListener(listener);
+    }
+
+    private void maybeObserveTabForDisclosureTooltip() {
+        Tab tab = mTab;
+        if (mDisclosureTabObserver != null || tab == null) {
+            return;
+        }
+
+        TabObserver observer =
+                new TabObserver() {
+                    @Override
+                    public void onHidden(Tab hiddenTab, @TabHidingType int type) {
+                        cancelDisclosureTooltipAutoDisplay();
+                        dismissDisclosureTooltip();
+                    }
+                };
+        tab.addObserver(observer);
+        mDisclosureObservedTab = tab;
+        mDisclosureTabObserver = observer;
+    }
+
+    private void maybeStopObservingTabForDisclosureTooltip() {
+        if (mDisclosureTooltip != null || mIsDisclosureTooltipAutoDisplayPending) {
+            return;
+        }
+        Tab tab = mDisclosureObservedTab;
+        TabObserver observer = mDisclosureTabObserver;
+        mDisclosureObservedTab = null;
+        mDisclosureTabObserver = null;
+        if (tab != null && observer != null) {
+            tab.removeObserver(observer);
         }
     }
 

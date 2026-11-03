@@ -61,7 +61,7 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
     private final float mDimAmount;
     private final boolean mContentArrowAtStart;
     private final View mContentView;
-    private View mContentLayout;
+    private ViewGroup mContentLayout;
     private final View mAnchorView;
     private final float mMaxWidth;
     private ViewGroup mRootView;
@@ -118,28 +118,37 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
         mPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setTouchable(true);
-        mPopupWindow.setTouchInterceptor(new View.OnTouchListener() {
-            @SuppressLint("ClickableViewAccessibility")
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                final int x = (int) event.getX();
-                final int y = (int) event.getY();
+        mPopupWindow.setTouchInterceptor(
+                new View.OnTouchListener() {
+                    @SuppressLint("ClickableViewAccessibility")
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        final int x = (int) event.getX();
+                        final int y = (int) event.getY();
 
-                if (!mDismissOnOutsideTouch && (event.getAction() == MotionEvent.ACTION_DOWN)
-                        && ((x < 0) || (x >= mContentLayout.getMeasuredWidth()) || (y < 0)
-                                || (y >= mContentLayout.getMeasuredHeight()))) {
-                    return true;
-                } else if (!mDismissOnOutsideTouch
-                        && event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-                    return true;
-                } else if ((event.getAction() == MotionEvent.ACTION_DOWN)
-                        && mDismissOnInsideTouch) {
-                    dismiss();
-                    return true;
-                }
-                return false;
-            }
-        });
+                        if (!mDismissOnOutsideTouch
+                                && (event.getAction() == MotionEvent.ACTION_DOWN)
+                                && ((x < 0)
+                                        || (x >= mContentLayout.getMeasuredWidth())
+                                        || (y < 0)
+                                        || (y >= mContentLayout.getMeasuredHeight()))) {
+                            return true;
+                        } else if (!mDismissOnOutsideTouch
+                                && event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                            return true;
+                        } else if (mDismissOnOutsideTouch
+                                && event.getAction() == MotionEvent.ACTION_DOWN
+                                && !isInsideContentView(x, y)) {
+                            dismiss();
+                            return true;
+                        } else if ((event.getAction() == MotionEvent.ACTION_DOWN)
+                                && mDismissOnInsideTouch) {
+                            dismiss();
+                            return true;
+                        }
+                        return false;
+                    }
+                });
         mPopupWindow.setClippingEnabled(false);
     }
 
@@ -153,6 +162,11 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
                 new Runnable() {
                     @Override
                     public void run() {
+                        if (mDismissed) {
+                            removeShowLayoutListeners();
+                            return;
+                        }
+
                         if (mRootView.isShown()) {
                             mPopupWindow.showAtLocation(
                                     mRootView,
@@ -163,6 +177,7 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
                                 dimBackgroundPopupWindow();
                             }
                         } else {
+                            removeShowLayoutListeners();
                             Log.e(
                                     TAG,
                                     "Tooltip cannot be shown, root view is invalid or has been"
@@ -170,6 +185,19 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
                         }
                     }
                 });
+    }
+
+    private boolean isInsideContentView(int x, int y) {
+        return x >= mContentView.getLeft()
+                && x < mContentView.getRight()
+                && y >= mContentView.getTop()
+                && y < mContentView.getBottom();
+    }
+
+    private void removeShowLayoutListeners() {
+        ViewTreeObserver observer = mContentLayout.getViewTreeObserver();
+        observer.removeOnGlobalLayoutListener(mLocationLayoutListener);
+        observer.removeOnGlobalLayoutListener(mAutoDismissLayoutListener);
     }
 
     private void dimBackgroundPopupWindow() {
@@ -229,17 +257,24 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
         mContentView.setPadding((int) mPadding, (int) mPadding, (int) mPadding, (int) mPadding);
 
         LinearLayout linearLayout = new LinearLayout(mContext);
-        linearLayout.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        linearLayout.setOrientation(mArrowDirection == ArrowColorDrawable.LEFT
+        linearLayout.setLayoutParams(
+                new ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        linearLayout.setOrientation(
+                mArrowDirection == ArrowColorDrawable.LEFT
                                 || mArrowDirection == ArrowColorDrawable.RIGHT
                         ? LinearLayout.HORIZONTAL
                         : LinearLayout.VERTICAL);
-        linearLayout.setPadding(mParentPaddingHorizontal, mParentPaddingVertical,
-                mParentPaddingHorizontal, mParentPaddingVertical);
+        linearLayout.setPadding(
+                mParentPaddingHorizontal,
+                mParentPaddingVertical,
+                mParentPaddingHorizontal,
+                mParentPaddingVertical);
+        linearLayout.setClipToPadding(false);
 
         mArrowView = new ImageView(mContext);
         mArrowView.setImageDrawable(mArrowColorDrawable);
+        mArrowView.setElevation(mContentView.getElevation());
         LinearLayout.LayoutParams arrowLayoutParams;
 
         if (mArrowDirection == ArrowColorDrawable.TOP
@@ -283,6 +318,10 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
     }
     public boolean isShowing() {
         return mPopupWindow != null && mPopupWindow.isShowing();
+    }
+
+    public ViewGroup getContentLayout() {
+        return mContentLayout;
     }
 
     @SuppressWarnings("unchecked")
@@ -432,7 +471,7 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
         private int mGravity = Gravity.BOTTOM;
         private float mMaxWidth;
         private Drawable mArrowColorDrawable;
-        private float mMargin = -1;
+        private float mMargin = Float.NaN;
         private float mPadding = -1;
         private OnDismissListener mOnDismissListener;
         private OnShowListener mOnShowListener;
@@ -453,7 +492,7 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
             if (mArrowColor == 0) {
                 mArrowColor = PopupWindowTooltipUtils.getColor(mContext, DEFAULT_ARROW_COLOR_RES);
             }
-            if (mMargin < 0) {
+            if (Float.isNaN(mMargin)) {
                 mMargin = mContext.getResources().getDimension(DEFAULT_MARGIN_RES);
             }
             if (mPadding < 0) {
