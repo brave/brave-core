@@ -21,6 +21,18 @@ substitutions:
       conditional: '!is_java_debug'
       template: chrome_common_apk_or_module_tmpl
 
+  - description: |
+      Restrict the 32-bit multiarch placeholder lib and manifest flags
+      (multiArch/use32bitAbi) to official Chrome-branded builds, matching
+      upstream's own later fix (crbug.com/576290604). Brave is not
+      is_chrome_branded, and the placeholder x86_64 ABI directory this
+      produces makes Google Play think the x86 bundle is reachable by
+      x86_64 devices, which always get served the higher-versionCode x64
+      bundle instead -- Play then rejects the release as unreachable.
+    regex:
+      re_pattern: '(_is_32_bit_multiarch_browser =\s*)!_is_trichrome'
+      replace: '\1is_chrome_branded && !_is_trichrome'
+
   - description: Package the WireGuard native library.
     append_to_target:
       target: target_name
