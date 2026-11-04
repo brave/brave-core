@@ -164,8 +164,7 @@ void WriteWebSourcesContentBlock(const mojom::WebSourcesContentBlock& block,
 void WriteToolUse(const mojom::ToolUseEvent& tool_use,
                   sync_pb::AIChatToolUseEvent* proto) {
   // Not synced: permission_challenge is transient (resolved during the live
-  // turn) and not persisted to the local store; each artifact's id is a local
-  // identifier.
+  // turn) and not persisted to the local store.
   proto->set_tool_name(tool_use.tool_name);
   proto->set_id(tool_use.id);
   WriteCompressibleString(tool_use.arguments_json,
@@ -212,6 +211,9 @@ void WriteToolUse(const mojom::ToolUseEvent& tool_use,
   if (tool_use.artifacts) {
     for (const auto& artifact : *tool_use.artifacts) {
       auto* a = proto->add_artifacts();
+      if (artifact->id) {
+        a->set_id(*artifact->id);
+      }
       a->set_type(artifact->type);
       WriteCompressibleString(artifact->content_json,
                               a->mutable_content_json());
@@ -412,6 +414,9 @@ mojom::ToolUseEventPtr ProtoToToolUse(
   if (!proto.artifacts().empty()) {
     tool_use->artifacts = base::ToVector(proto.artifacts(), [](const auto& a) {
       auto artifact = mojom::ToolArtifact::New();
+      if (a.has_id()) {
+        artifact->id = a.id();
+      }
       artifact->type = a.type();
       artifact->content_json =
           ReadCompressibleString(a.content_json()).value_or(std::string());
