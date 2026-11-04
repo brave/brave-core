@@ -20,6 +20,7 @@ import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.toolbar.R;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarButtonVariant;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarStatePredictor.UiState;
+import org.chromium.chrome.browser.ui.bottombar.BottomBarConfigUtils;
 import org.chromium.components.browser_ui.widget.RadioButtonWithDescription;
 import org.chromium.ui.base.DeviceFormFactor;
 
@@ -87,6 +88,12 @@ public class BraveRadioButtonGroupAdaptiveToolbarPreference
         if (mAutoButton != null) {
             mAutoButton.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    void setCanUseNewTab(boolean canUseNewTab) {
+        // Brave's bottom bar has no New tab button, unlike upstream's.
+        super.setCanUseNewTab(canUseNewTab || BottomBarConfigUtils.isBottomBarEnabled(mContext));
     }
 
     @Override

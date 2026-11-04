@@ -8,6 +8,9 @@ package org.chromium.chrome.browser.tabbed_mode;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 
 import android.app.Activity;
 
@@ -24,19 +27,24 @@ import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.base.supplier.SettableNullableObservableSupplier;
 import org.chromium.base.test.BaseRobolectricTestRunner;
+import org.chromium.base.test.util.Features.EnableFeatures;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsVisibilityManager;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.glic.GlicButtonDelegate;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
+import org.chromium.chrome.browser.preferences.ChromePreferenceKeys;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.tab_group_suggestion.toolbar.GroupSuggestionsButtonController;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tabstrip.StripVisibilityState;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarBehavior;
+import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarButtonController;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarButtonVariant;
+import org.chromium.chrome.browser.toolbar.adaptive.OptionalNewTabButtonController;
 
 import java.util.Arrays;
 import java.util.function.Supplier;
@@ -89,6 +97,12 @@ public class BraveTabbedAdaptiveToolbarBehaviorTest {
         AdaptiveToolbarBehavior.sValidButtons.clear();
         ChromeSharedPreferences.getInstance()
                 .removeKey(BravePreferenceKeys.BRAVE_TAB_GROUPS_FEATURE_ENABLED);
+        ChromeSharedPreferences.getInstance().removeKey(ChromePreferenceKeys.BOTTOM_BAR_ENABLED);
+    }
+
+    private static void enableBottomBar() {
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(ChromePreferenceKeys.BOTTOM_BAR_ENABLED, true);
     }
 
     @Test
@@ -146,5 +160,39 @@ public class BraveTabbedAdaptiveToolbarBehaviorTest {
         assertFalse(mBehavior.canShowManualOverride(AdaptiveToolbarButtonVariant.TAB_GROUPING));
         // Non-grouping buttons are unaffected.
         assertTrue(mBehavior.canShowManualOverride(AdaptiveToolbarButtonVariant.BOOKMARKS));
+    }
+
+    @Test
+    @EnableFeatures(ChromeFeatureList.ANDROID_BOTTOM_BAR)
+    public void registerPerSurfaceButtons_registersNewTabWithBottomBar() {
+        enableBottomBar();
+        AdaptiveToolbarButtonController controller =
+                Mockito.mock(AdaptiveToolbarButtonController.class);
+
+        mBehavior.registerPerSurfaceButtons(controller, () -> null);
+
+        verify(controller)
+                .addButtonVariant(
+                        eq(AdaptiveToolbarButtonVariant.NEW_TAB),
+                        any(OptionalNewTabButtonController.class));
+    }
+
+    @Test
+    @EnableFeatures(ChromeFeatureList.ANDROID_BOTTOM_BAR)
+    public void canShowManualOverride_allowsNewTabWithBottomBar() {
+        enableBottomBar();
+
+        assertTrue(mBehavior.canShowManualOverride(AdaptiveToolbarButtonVariant.NEW_TAB));
+        assertFalse(mBehavior.canShowManualOverride(AdaptiveToolbarButtonVariant.GLIC));
+    }
+
+    @Test
+    @EnableFeatures(ChromeFeatureList.ANDROID_BOTTOM_BAR)
+    public void resultFilter_keepsNewTabWithBottomBar() {
+        enableBottomBar();
+
+        int result = mBehavior.resultFilter(Arrays.asList(AdaptiveToolbarButtonVariant.NEW_TAB));
+
+        assertEquals(AdaptiveToolbarButtonVariant.NEW_TAB, result);
     }
 }
