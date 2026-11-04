@@ -24,6 +24,10 @@ describe('getNemotronModelType', () => {
     ['ES-us', 3],
     ['pt-PT', 13],
     ['hi-IN', 6],
+    ['zh-CN', 4],
+    ['fr-CA', 100],
+    ['nb-NO', 103],
+    ['ar', 7],
   ])('picks the multilingual model and prompt for %s', (lang, promptId) => {
     expect(getNemotronModelType(lang)).toEqual({
       modelType: 'multilingual',
@@ -31,8 +35,9 @@ describe('getNemotronModelType', () => {
     })
   })
 
-  // Includes near misses of supported tags, which neither model takes.
-  it.each(['es-MX', 'es', 'hi', 'fr-FR', 'english', ''])(
+  // The browser sends only canonical tags, so the worker takes no near miss,
+  // such as the model card's 'ar-AR' label.
+  it.each(['es-MX', 'es', 'hi', 'ar-AR', 'zh-TW', 'th-TH', 'english', ''])(
     'rejects %s',
     (lang) => {
       expect(() => getNemotronModelType(lang)).toThrow(

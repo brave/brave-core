@@ -69,9 +69,9 @@ export function argmax(a: Float32Array): number {
   return best
 }
 
-// Picks the model and prompt for a BCP 47 tag, ignoring case. Accepts the same
-// tags as `IsBraveOnDeviceSpeechLanguageSupported` in
-// brave/chromium_src/components/soda/constants.cc.
+// Picks the model and prompt for a BCP 47 tag, ignoring case. The browser
+// resolves a page's tag first, and sends the canonical tag of the locale from
+// `kLocales` in brave/chromium_src/components/soda/constants.cc.
 export function getNemotronModelType(lang: string): {
   modelType: NemotronModelType
   promptId: number | null

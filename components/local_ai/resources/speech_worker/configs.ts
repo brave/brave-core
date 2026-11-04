@@ -132,14 +132,40 @@ export const MULTILINGUAL_NEMOTRON_CONFIG = {
 // The English model takes any English tag, such as en-AU.
 export const ENGLISH_LANGUAGE_SUBTAG = 'en'
 
-// Tags the multilingual model has a prompt for, mapped to that prompt's ID.
-// Keep in sync with `kMultilingualLanguages` in
+// The canonical tags of the multilingual model's locales, mapped to the ID of
+// their prompt. The browser sends only these tags, never a page's own tag.
+// Arabic is 'ar', the correct tag, although the model card writes 'ar-AR'.
+// Keep in sync with `kLocales` in
 // brave/chromium_src/components/soda/constants.cc.
 export const MULTILINGUAL_SUPPORTED_LANGUAGES = {
+  'ar': 7,
+  'bg-BG': 30,
+  'cs-CZ': 22,
+  'da-DK': 25,
+  'de-DE': 9,
   'es-ES': 2,
   'es-US': 3,
+  'et-EE': 60,
+  'fi-FI': 26,
+  'fr-CA': 100,
+  'fr-FR': 8,
+  'hi-IN': 6,
+  'hr-HR': 29,
+  'hu-HU': 23,
   'it-IT': 15,
+  'ja-JP': 10,
+  'ko-KR': 14,
+  'nb-NO': 103,
+  'nl-NL': 16,
+  'pl-PL': 17,
   'pt-BR': 12,
   'pt-PT': 13,
-  'hi-IN': 6,
+  'ro-RO': 20,
+  'ru-RU': 11,
+  'sk-SK': 28,
+  'sv-SE': 24,
+  'tr-TR': 18,
+  'uk-UA': 19,
+  'vi-VN': 33,
+  'zh-CN': 4,
 } as const
