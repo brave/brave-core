@@ -48,6 +48,7 @@ TEST(BraveRuntimeEnabledFeaturesTest, DisabledFlags) {
   // Please, keep alphabetized.
   ExpectRuntimeFlagsFollowBaseFeatures(
       {
+          RUNTIME_FLAG(AIEmbeddingsAPI),
           RUNTIME_FLAG(AIPromptAPI),
           RUNTIME_FLAG(AIPromptAPIMultimodalInput),
           RUNTIME_FLAG(AIProofreadingAPI),
