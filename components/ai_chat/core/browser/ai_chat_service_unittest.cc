@@ -2191,4 +2191,51 @@ TEST_P(AIChatServiceUnitTest, Notification_CloseOnBind) {
   EXPECT_EQ(closed_uuid, uuid);
 }
 
+TEST_P(AIChatServiceUnitTest, Notification_NotShownWhileHandlerContinues) {
+  int show_count = 0;
+  ai_chat_service_->SetCompletionNotificationCallbackForTesting(
+      base::BindLambdaForTesting(
+          [&](const std::string&, const std::u16string&) { ++show_count; }));
+
+  ConversationHandler* handler = CreateConversation();
+  auto resolve = StartGeneration(handler, *client_);
+
+  // Tool use and queued requests report false while the handler carries on.
+  ai_chat_service_->OnRequestInProgressChanged(handler, false);
+  base::RunLoop run_loop;
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, run_loop.QuitClosure());
+  run_loop.Run();
+  EXPECT_EQ(show_count, 0);
+
+  ExpectGenerationState(
+      *client_, handler->get_conversation_uuid(),
+      mojom::ConversationGenerationState::kCompletedNotViewed,
+      base::BindOnce(&CompleteGeneration, std::move(resolve)));
+  EXPECT_EQ(show_count, 1);
+}
+
+TEST_P(AIChatServiceUnitTest, Notification_CloseOnDirectHandlerBind) {
+  std::string closed_uuid;
+  ai_chat_service_->SetCloseCompletionNotificationCallbackForTesting(
+      base::BindLambdaForTesting(
+          [&](const std::string& uuid) { closed_uuid = uuid; }));
+
+  ConversationHandler* handler = CreateConversation();
+  const std::string uuid = handler->get_conversation_uuid();
+  auto resolve = StartGeneration(handler, *client_);
+  ExpectGenerationState(
+      *client_, uuid, mojom::ConversationGenerationState::kCompletedNotViewed,
+      base::BindOnce(&CompleteGeneration, std::move(resolve)));
+
+  // Binding straight to the handler, as the tab-associated route does.
+  std::unique_ptr<MockConversationHandlerClient> client;
+  ExpectGenerationState(*client_, uuid,
+                        mojom::ConversationGenerationState::kIdle,
+                        base::BindLambdaForTesting([&] {
+                          client = CreateConversationClient(handler);
+                        }));
+  EXPECT_EQ(closed_uuid, uuid);
+}
+
 }  // namespace ai_chat
