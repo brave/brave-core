@@ -8,6 +8,7 @@
 #include <optional>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/test/gtest_util.h"
 #include "base/test/values_test_util.h"
@@ -559,7 +560,84 @@ TEST(SolanaResponseParserUnitTest, ParseGetTokenAccountsByOwner) {
 
   std::vector<SolanaAccountInfo> token_accounts;
   EXPECT_TRUE(ParseGetTokenAccountsByOwner(ParseJson(json), &token_accounts));
-  EXPECT_EQ(token_accounts.size(), 2u);
+  ASSERT_EQ(token_accounts.size(), 2u);
+  for (const auto& account : token_accounts) {
+    EXPECT_EQ(account.lamports, 2039280u);
+    EXPECT_EQ(account.owner, "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA");
+    EXPECT_FALSE(account.executable);
+    EXPECT_EQ(account.rent_epoch, 361u);
+  }
+
+  // Empty value list is valid and yields no accounts.
+  token_accounts.clear();
+  EXPECT_TRUE(ParseGetTokenAccountsByOwner(
+      ParseJson(R"({"jsonrpc":"2.0", "id":1, "result":{"value":[]}})"),
+      &token_accounts));
+  EXPECT_TRUE(token_accounts.empty());
+
+  // Minimal well-formed entry, used as the baseline for the invalid cases.
+  token_accounts.clear();
+  EXPECT_TRUE(ParseGetTokenAccountsByOwner(
+      ParseJson(R"({"jsonrpc":"2.0", "id":1, "result":{"value":[
+        {"account":{
+          "data":["SEVMTE8gV09STEQ=","base64"],
+          "executable":false,
+          "lamports":"5",
+          "owner":"11111111111111111111111111111111",
+          "rentEpoch":"7"}}
+      ]}})"),
+      &token_accounts));
+  ASSERT_EQ(token_accounts.size(), 1u);
+  EXPECT_EQ(token_accounts[0].lamports, 5u);
+  EXPECT_EQ(token_accounts[0].owner, "11111111111111111111111111111111");
+  EXPECT_EQ(token_accounts[0].data, "SEVMTE8gV09STEQ=");
+  EXPECT_EQ(token_accounts[0].rent_epoch, 7u);
+
+  std::vector<std::string> invalid_jsons = {
+      // No result.
+      R"({"jsonrpc":"2.0", "id":1})",
+      // No value.
+      R"({"jsonrpc":"2.0", "id":1, "result":{}})",
+      // Value is not a list.
+      R"({"jsonrpc":"2.0", "id":1, "result":{"value":{}}})",
+      // List entry is not a dict.
+      R"({"jsonrpc":"2.0", "id":1, "result":{"value":[5]}})",
+      // Entry without "account".
+      R"({"jsonrpc":"2.0", "id":1, "result":{"value":[{"pubkey":"a"}]}})",
+      // Account payload without "owner".
+      R"({"jsonrpc":"2.0", "id":1, "result":{"value":[
+        {"account":{
+          "data":["SEVMTE8gV09STEQ=","base64"],
+          "executable":false,
+          "lamports":"5",
+          "rentEpoch":"7"}}
+      ]}})",
+      // Account payload with non-base64 encoding.
+      R"({"jsonrpc":"2.0", "id":1, "result":{"value":[
+        {"account":{
+          "data":["SEVMTE8gV09STEQ=","base58"],
+          "executable":false,
+          "lamports":"5",
+          "owner":"11111111111111111111111111111111",
+          "rentEpoch":"7"}}
+      ]}})",
+      // A valid entry followed by an invalid one still fails.
+      R"({"jsonrpc":"2.0", "id":1, "result":{"value":[
+        {"account":{
+          "data":["SEVMTE8gV09STEQ=","base64"],
+          "executable":false,
+          "lamports":"5",
+          "owner":"11111111111111111111111111111111",
+          "rentEpoch":"7"}},
+        5
+      ]}})",
+  };
+  for (const auto& invalid_json : invalid_jsons) {
+    std::vector<SolanaAccountInfo> accounts;
+    EXPECT_FALSE(
+        ParseGetTokenAccountsByOwner(ParseJson(invalid_json), &accounts))
+        << invalid_json;
+  }
 }
 
 TEST(SolanaResponseParserUnitTest, ConverterForGetAccountInfo) {
