@@ -69,14 +69,14 @@ bool SidebarItemAddButton::IsBubbleVisible() const {
 void SidebarItemAddButton::UpdateButtonImages() {
   SetImageModel(STATE_NORMAL, ui::ImageModel::FromVectorIcon(
                                   kLeoPlusAddIcon, kColorSidebarButtonBase,
-                                  kDefaultIconSize));
+                                  GetDefaultIconSize()));
   SetImageModel(STATE_PRESSED, ui::ImageModel::FromVectorIcon(
                                    kLeoPlusAddIcon, kColorSidebarButtonPressed,
-                                   kDefaultIconSize));
-  SetImageModel(
-      STATE_DISABLED,
-      ui::ImageModel::FromVectorIcon(
-          kLeoPlusAddIcon, kColorToolbarButtonIconInactive, kDefaultIconSize));
+                                   GetDefaultIconSize()));
+  SetImageModel(STATE_DISABLED,
+                ui::ImageModel::FromVectorIcon(kLeoPlusAddIcon,
+                                               kColorToolbarButtonIconInactive,
+                                               GetDefaultIconSize()));
 }
 
 BEGIN_METADATA(SidebarItemAddButton)

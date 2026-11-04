@@ -5,6 +5,8 @@
 
 #include "chrome/browser/ui/views/tabs/tab_strip_control_button.h"
 
+#include "base/feature_list.h"
+#include "brave/browser/ui/brave_ui_features.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 
 #define TabStripControlButton TabStripControlButton_ChromiumImpl
@@ -39,6 +41,28 @@ int TabStripControlButton::GetCornerRadius() const {
   // a circular shape.
   return ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
       views::Emphasis::kMaximum, GetContentsBounds().size());
+}
+
+void TabStripControlButton::UpdateIcon() {
+  TabStripControlButton_ChromiumImpl::UpdateIcon();
+
+  // Upstream draws these icons at kIconSize (16).
+  if (!base::FeatureList::IsEnabled(features::kBraveToolbarsSmallIcons)) {
+    return;
+  }
+  constexpr int kSmallIconSize = 18;
+  for (const auto state :
+       {views::Button::STATE_NORMAL, views::Button::STATE_HOVERED,
+        views::Button::STATE_PRESSED}) {
+    const auto& model = GetImageModel(state);
+    if (!model || !model->IsVectorIcon()) {
+      continue;
+    }
+    const ui::VectorIconModel vector_icon = model->GetVectorIcon();
+    SetImageModel(state, ui::ImageModel::FromVectorIcon(
+                             *vector_icon.vector_icon(), vector_icon.color(),
+                             kSmallIconSize));
+  }
 }
 
 BEGIN_METADATA(TabStripControlButton)

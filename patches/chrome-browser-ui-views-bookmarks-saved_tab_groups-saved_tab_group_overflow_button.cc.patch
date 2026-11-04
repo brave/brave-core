@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/ui/views/bookmarks/saved_tab_groups/saved_tab_group_overflow_button.cc b/chrome/browser/ui/views/bookmarks/saved_tab_groups/saved_tab_group_overflow_button.cc
+index 097adce294fd5046741e0c7cf86c8207ffb14b78..f8247734b2d2b7bcc7fa6aaad7c459bad3e6e900 100644
+--- a/chrome/browser/ui/views/bookmarks/saved_tab_groups/saved_tab_group_overflow_button.cc
++++ b/chrome/browser/ui/views/bookmarks/saved_tab_groups/saved_tab_group_overflow_button.cc
+@@ -47,11 +47,13 @@ SavedTabGroupOverflowButton::SavedTabGroupOverflowButton(
+                                     ? kGridViewIcon
+                                     : kSavedTabGroupBarEverythingOldIcon;
+   SetImageModel(views::Button::STATE_NORMAL,
+-                ui::ImageModel::FromVectorIcon(icon, kColorBookmarkButtonIcon,
+-                                               kUIUpdateIconSize));
++                ui::ImageModel::FromVectorIcon(
++                    icon, kColorBookmarkButtonIcon,
++                    brave::GetToolbarsIconSize(kUIUpdateIconSize)));
+   SetImageModel(views::Button::STATE_DISABLED,
+-                ui::ImageModel::FromVectorIcon(icon, ui::kColorIconDisabled,
+-                                               kUIUpdateIconSize));
++                ui::ImageModel::FromVectorIcon(
++                    icon, ui::kColorIconDisabled,
++                    brave::GetToolbarsIconSize(kUIUpdateIconSize)));
+ }
+ 
+ SavedTabGroupOverflowButton::~SavedTabGroupOverflowButton() = default;

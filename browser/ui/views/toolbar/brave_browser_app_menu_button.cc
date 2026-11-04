@@ -6,6 +6,8 @@
 #include "brave/browser/ui/views/toolbar/brave_browser_app_menu_button.h"
 
 #include "base/check_deref.h"
+#include "base/feature_list.h"
+#include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/page_info/features.h"
 #include "brave/common/pref_names.h"
@@ -25,9 +27,13 @@
 
 namespace {
 
-constexpr int kBrandedIconSize = 24;
 constexpr int kBrandedBorderThickness = 1;
 constexpr int kBrandedLabelExtraSpacing = 3;
+
+int GetBrandedIconSize() {
+  return base::FeatureList::IsEnabled(features::kBraveToolbarsSmallIcons) ? 18
+                                                                          : 24;
+}
 
 bool ShowBrandedIcon() {
   return page_info::features::IsShowBraveShieldsInPageInfoEnabled();
@@ -96,9 +102,15 @@ void BraveBrowserAppMenuButton::UpdateLayoutInsets() {
   // Same Insets for W/O Label.
   SetLayoutInsets(::GetLayoutInsets(TOOLBAR_BUTTON));
   if (ShowBrandedIcon()) {
-    // The branded app menu icon is larger than a standard icon. Use insets
-    // delta to compensate for the difference.
-    SetLayoutInsetDelta(gfx::Insets::TLBR(-1, 2, -1, 4));
+    if (base::FeatureList::IsEnabled(features::kBraveToolbarsSmallIcons)) {
+      // The branded icon has no built-in padding, so add extra horizontal
+      // space (left 1, right 3) beyond the standard toolbar button insets.
+      SetLayoutInsetDelta(gfx::Insets::TLBR(0, 1, 0, 3));
+    } else {
+      // The branded app menu icon is larger than a standard icon. Use insets
+      // delta to compensate for the difference.
+      SetLayoutInsetDelta(gfx::Insets::TLBR(-1, 2, -1, 4));
+    }
   }
 }
 
@@ -125,7 +137,7 @@ void BraveBrowserAppMenuButton::UpdateIcon() {
   for (auto state : kButtonStates) {
     SetImageModel(
         state, ui::ImageModel::FromVectorIcon(icon, GetForegroundColor(state),
-                                              kBrandedIconSize));
+                                              GetBrandedIconSize()));
   }
 }
 

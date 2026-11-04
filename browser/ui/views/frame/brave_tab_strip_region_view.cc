@@ -9,6 +9,7 @@
 
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
+#include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
@@ -116,7 +117,10 @@ void BraveTabStripScrollButton::UpdateIcon() {
       STATE_DISABLED,
       ui::ImageModel::FromVectorIcon(
           icon_.get(),
-          cp->GetColor(kColorNewTabButtonCRForegroundFrameInactive), 16));
+          cp->GetColor(kColorNewTabButtonCRForegroundFrameInactive),
+          base::FeatureList::IsEnabled(features::kBraveToolbarsSmallIcons)
+              ? 18
+              : 16));
 }
 
 bool BraveTabStripScrollButton::OnMousePressed(const ui::MouseEvent& event) {

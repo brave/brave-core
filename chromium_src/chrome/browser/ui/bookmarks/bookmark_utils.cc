@@ -78,7 +78,10 @@ ui::ImageModel GetBraveBookmarkFolderIcon(BookmarkFolderIconType icon_type,
     color = kColorToolbarButtonIcon;
   }
 
-  return ui::ImageModel::FromVectorIcon(*id, color, 20);
+  return ui::ImageModel::FromVectorIcon(
+      *id, color,
+      base::FeatureList::IsEnabled(features::kBraveToolbarsSmallIcons) ? 18
+                                                                       : 20);
 }
 
 #endif  // defined(TOOLKIT_VIEWS)

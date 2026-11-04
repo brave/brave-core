@@ -11,8 +11,10 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/feature_list.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/app/vector_icons/vector_icons.h"
+#include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/color/color_palette.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -75,6 +77,17 @@ BraveAvatarToolbarButton::BraveAvatarToolbarButton(
     BrowserWindowInterface* browser)
     : AvatarToolbarButton(browser) {
   // Our toolbar button height is 28.
+  if (base::FeatureList::IsEnabled(features::kBraveToolbarsSmallIcons)) {
+    // Icon image size 18 + insets 10 (5x2) is the same as other toolbar
+    // buttons, so no delta is needed.
+#if BUILDFLAG(IS_LINUX)
+    // Linux requires 1px less vertical padding.
+    // TODO(simonhong): check why it's different from other platforms.
+    SetLayoutInsetDelta(gfx::Insets::VH(-1, 0));
+#endif
+    return;
+  }
+
   // Icon image size 20 + vertical insets 8(4x2).
   // However, avatar button's icon image size is 16.
   // So, set delta insets to make its height to 28.
@@ -153,7 +166,10 @@ void BraveAvatarToolbarButton::OnThemeChanged() {
 }
 
 int BraveAvatarToolbarButton::GetIconSize() const {
-  return GetLayoutConstant(LayoutConstant::kLocationBarIconSize);
+  return GetLayoutConstant(
+      base::FeatureList::IsEnabled(features::kBraveToolbarsSmallIcons)
+          ? LayoutConstant::kToolbarButtonIconSize
+          : LayoutConstant::kLocationBarIconSize);
 }
 
 void BraveAvatarToolbarButton::UpdateColorsAndInsets() {

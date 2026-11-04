@@ -556,8 +556,8 @@ ui::ImageModel SidebarItemsContentsView::GetImageForBuiltInItems(
     } else {
       color_id = kColorSidebarButtonBase;
     }
-    return ui::ImageModel::FromVectorIcon(icon, color_id,
-                                          SidebarButtonView::kDefaultIconSize);
+    return ui::ImageModel::FromVectorIcon(
+        icon, color_id, SidebarButtonView::GetDefaultIconSize());
   };
 
   switch (type) {

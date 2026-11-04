@@ -1667,6 +1667,7 @@ source_set("ui_features") {
   sources = [
     "brave_ui_features.cc",
     "brave_ui_features.h",
+    "toolbars_small_icons.h",
   ]
   public_deps = [ "//base" ]
 }
@@ -1702,6 +1703,7 @@ source_set("unit_tests") {
     deps = [
       ":brave_tab_prefs",
       ":ui",
+      ":ui_features",
       "//base/test:test_support",
       "//brave/browser/ui/tabs:tabs_public",
       "//brave/components/constants",

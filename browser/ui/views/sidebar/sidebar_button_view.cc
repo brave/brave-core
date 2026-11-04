@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/views/sidebar/sidebar_button_view.h"
 
+#include "base/feature_list.h"
+#include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "chrome/browser/ui/color/chrome_color_provider_utils.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
@@ -60,6 +62,12 @@ void SidebarButtonView::OnThemeChanged() {
   ConfigureInkDrop(this);
   views::InstallRoundRectHighlightPathGenerator(
       this, gfx::Insets::VH(0, kMargin), radii);
+}
+
+// static
+int SidebarButtonView::GetDefaultIconSize() {
+  return base::FeatureList::IsEnabled(features::kBraveToolbarsSmallIcons) ? 18
+                                                                          : 20;
 }
 
 gfx::Size SidebarButtonView::CalculatePreferredSize(

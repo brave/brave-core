@@ -19,6 +19,7 @@
 #include "base/functional/bind.h"
 #include "base/strings/string_split.h"
 #include "brave/app/vector_icons/vector_icons.h"
+#include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "brave/browser/ui/focus_mode/focus_mode_utils.h"
@@ -160,7 +161,9 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
     plus_icon_->SetVerticalAlignment(views::ImageView::Alignment::kCenter);
     plus_icon_->SetImage(ui::ImageModel::FromVectorIcon(
         kLeoPlusAddIcon, kColorBraveVerticalTabNTBIconColor,
-        /* icon_size= */ 16));
+        /* icon_size= */
+        base::FeatureList::IsEnabled(features::kBraveToolbarsSmallIcons) ? 18
+                                                                         : 16));
     plus_icon_->SetProperty(
         views::kFlexBehaviorKey,
         views::FlexSpecification(views::MinimumFlexSizeRule::kPreferred,

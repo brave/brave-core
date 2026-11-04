@@ -13,6 +13,9 @@ namespace features {
 
 BASE_DECLARE_FEATURE(kBraveNtpSearchWidget);
 BASE_DECLARE_FEATURE(kBraveFilledBookmarkFolderIcon);
+// Uses 18px (instead of 20px) icons in the toolbars, sidebar and similar
+// surfaces. Exposed as #toolbars-small-icons.
+BASE_DECLARE_FEATURE(kBraveToolbarsSmallIcons);
 #if BUILDFLAG(IS_WIN)
 BASE_DECLARE_FEATURE(kBraveWorkaroundNewWindowFlash);
 #endif  // BUILDFLAG(IS_WIN)
