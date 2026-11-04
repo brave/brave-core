@@ -1413,7 +1413,7 @@ void AIChatService::OnClientConnectionChanged(ConversationHandler* handler) {
     const std::string& uuid = handler->get_conversation_uuid();
     auto it = conversation_generation_state_.find(uuid);
     if (it != conversation_generation_state_.end() &&
-        it->second == mojom::ConversationGenerationState::kCompletedNotViewed) {
+        it->second != mojom::ConversationGenerationState::kGenerating) {
       conversation_generation_state_.erase(it);
       NotifyConversationGenerationState(uuid);
     }
@@ -1625,13 +1625,15 @@ void AIChatService::MaybeCompleteGeneration(const std::string& uuid) {
       it->second != mojom::ConversationGenerationState::kGenerating) {
     return;
   }
-  if (auto* handler = base::FindPtrOrNull(conversation_handlers_, uuid);
-      handler &&
+  auto* handler = base::FindPtrOrNull(conversation_handlers_, uuid);
+  if (handler &&
       (handler->IsRequestInProgress() || handler->IsToolUseInProgress())) {
     return;
   }
   if (IsConversationVisible(uuid)) {
     conversation_generation_state_.erase(it);
+  } else if (handler && handler->IsAwaitingUserInput()) {
+    it->second = mojom::ConversationGenerationState::kAwaitingUserInput;
   } else {
     it->second = mojom::ConversationGenerationState::kCompletedNotViewed;
   }

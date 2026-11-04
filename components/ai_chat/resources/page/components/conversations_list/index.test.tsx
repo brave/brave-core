@@ -665,6 +665,65 @@ describe('ConversationsList', () => {
       })
     })
 
+    it('shows approval warning when awaitingUserInput and not active', async () => {
+      await renderConversationsList(
+        <MockContext
+          service={{
+            getConversations: () =>
+              Promise.resolve({ conversations: mockConversations }),
+          }}
+          initialState={{
+            serviceState: { isStoragePrefEnabled: true },
+            conversationState: { conversationUuid: 'uuid-2' },
+            conversationGenerationState: new Map([
+              ['uuid-1', CG.kAwaitingUserInput],
+            ]),
+          }}
+        >
+          <ConversationsList />
+        </MockContext>,
+      )
+
+      await waitFor(() => {
+        expect(screen.getByText('How to use TypeScript')).toBeInTheDocument()
+      })
+      await waitFor(() => {
+        expect(
+          document.querySelectorAll('.awaitingUserInputIndicator').length,
+        ).toBe(1)
+        expect(document.querySelectorAll('.completedIndicator').length).toBe(0)
+      })
+    })
+
+    it('hides approval warning when awaitingUserInput but active', async () => {
+      await renderConversationsList(
+        <MockContext
+          service={{
+            getConversations: () =>
+              Promise.resolve({ conversations: mockConversations }),
+          }}
+          initialState={{
+            serviceState: { isStoragePrefEnabled: true },
+            conversationState: { conversationUuid: 'uuid-1' },
+            conversationGenerationState: new Map([
+              ['uuid-1', CG.kAwaitingUserInput],
+            ]),
+          }}
+        >
+          <ConversationsList />
+        </MockContext>,
+      )
+
+      await waitFor(() => {
+        expect(screen.getByText('How to use TypeScript')).toBeInTheDocument()
+      })
+      await waitFor(() => {
+        expect(
+          document.querySelectorAll('.awaitingUserInputIndicator').length,
+        ).toBe(0)
+      })
+    })
+
     it('shows nothing when idle (no entry)', async () => {
       await renderConversationsList(
         <MockContext
