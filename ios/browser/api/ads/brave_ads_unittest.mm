@@ -90,10 +90,10 @@ class BraveAdsTest : public PlatformTest {
     scoped_feature_list_.InitAndDisableFeature(
         brave_ads::kAdsObliviousHttpFeature);
     CHECK(temp_dir_.CreateUniqueTempDir());
-    profile_ =
-        profile_manager_.AddProfileWithBuilder(TestProfileIOS::Builder());
-    profile_->SetSharedURLLoaderFactory(
+    TestProfileIOS::Builder builder;
+    builder.SetSharedURLLoaderFactory(
         test_url_loader_factory_.GetSafeWeakWrapper());
+    profile_ = profile_manager_.AddProfileWithBuilder(std::move(builder));
     ads_ = [[BraveAds alloc]
         initWithStateStoragePath:base::SysUTF8ToNSString(
                                      temp_dir_.GetPath().value())];
