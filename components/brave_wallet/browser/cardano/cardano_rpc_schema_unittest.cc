@@ -102,6 +102,12 @@ TEST(CardanoRpcSchema, EpochParameters) {
     invalid.min_fee_b = value;
     EXPECT_FALSE(EpochParameters::FromBlockfrostApiValue(invalid.Clone()));
   }
+
+  for (auto* value : kInvalidUint64Values) {
+    auto invalid = valid.Clone();
+    invalid.coins_per_utxo_size = value;
+    EXPECT_FALSE(EpochParameters::FromBlockfrostApiValue(invalid.Clone()));
+  }
 }
 
 TEST(CardanoRpcSchema, Block) {
@@ -207,11 +213,16 @@ TEST(CardanoRpcSchema, UnspentOutput) {
   valid.amount.back().unit = base::HexEncode(std::vector<uint8_t>(27u, 0));
   EXPECT_FALSE(UnspentOutput::FromBlockfrostApiValue(addr, valid.Clone()));
 
+  // Drop the deliberately invalid asset so that each invalid tx_hash,
+  // output_index and amount case fails only because of the field it modifies.
+  valid.amount.pop_back();
+  ASSERT_TRUE(UnspentOutput::FromBlockfrostApiValue(addr, valid.Clone()));
+
   for (auto* value :
        {"", "xx0102030405060708090a0b0c0d0f0e000102030405060708090a0b0c0d0f0e",
         "5000102030405060708090a0b0c0d0f0e000102030405060708090a0b0c0d0f0e"}) {
     auto invalid = valid.Clone();
-    invalid.output_index = value;
+    invalid.tx_hash = value;
     EXPECT_FALSE(UnspentOutput::FromBlockfrostApiValue(addr, invalid.Clone()))
         << value;
   }
