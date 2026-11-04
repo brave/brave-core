@@ -97,6 +97,7 @@ interface PsstInternalsHandler {
 
 // Browser -> WebUI interface for brave://psst-internals.
 interface PsstInternalsPage {
+  OnPsstSettingsChanged(PsstDiagnosticsInfo info);
   OnEntriesAdded(array<PsstLogEntry> entries);
   OnCleared();
 };
