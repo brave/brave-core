@@ -55,6 +55,7 @@ public class OnboardingStepAdapter
     private final List<Integer> mSteps = new ArrayList<>();
 
     private final SpannableString mWdpLearnMore;
+    private final String mDayZeroVariant;
     private final PageBounceAnimator mPageBounceAnimator;
     private final OnboardingNavigationListener mListener;
 
@@ -70,6 +71,7 @@ public class OnboardingStepAdapter
             final PageBounceAnimator pageBounceAnimator,
             final OnboardingNavigationListener listener) {
         mWdpLearnMore = wdpLearnMore;
+        mDayZeroVariant = dayZeroVariant;
         mPageBounceAnimator = pageBounceAnimator;
         mListener = listener;
 
@@ -102,7 +104,11 @@ public class OnboardingStepAdapter
 
         if (viewType == R.layout.customize_brave) {
             return new CustomizeBraveViewHolder(
-                    view, getNextPosition(viewType), mPageBounceAnimator, mListener);
+                    view,
+                    mDayZeroVariant,
+                    getNextPosition(viewType),
+                    mPageBounceAnimator,
+                    mListener);
         }
 
         if (viewType == R.layout.make_brave_better) {
@@ -269,10 +275,24 @@ public class OnboardingStepAdapter
 
         private CustomizeBraveViewHolder(
                 final View itemView,
+                final String dayZeroVariant,
                 final int nextOnboardingPosition,
                 final PageBounceAnimator pageBounceAnimator,
                 final OnboardingNavigationListener listener) {
             super(itemView);
+            final Button leftButton = itemView.findViewById(R.id.onboarding_left_button);
+            final Button rightButton = itemView.findViewById(R.id.onboarding_right_button);
+
+            // Variant Z shows Customize on the left, variant Y shows it on the right.
+            if (DAY_ZERO_VARIANT_Z.equals(dayZeroVariant)) {
+                mCustomize = leftButton;
+                mUseDefaults = rightButton;
+            } else {
+                assert DAY_ZERO_VARIANT_Y.equals(dayZeroVariant);
+                mCustomize = rightButton;
+                mUseDefaults = leftButton;
+            }
+
             final View.OnClickListener goToNextStep =
                     view -> {
                         if (nextOnboardingPosition == -1) {
@@ -282,13 +302,13 @@ public class OnboardingStepAdapter
                         }
                     };
 
-            mCustomize = itemView.findViewById(R.id.onboarding_customize);
+            mCustomize.setText(R.string.customize_onboarding);
             mCustomize.setClipToOutline(true);
             // TODO(https://github.com/brave/brave-browser/issues/60480): Open the appearance
             // customizer flow with address bar position customization.
             // mCustomize.setOnClickListener(openAppearanceCustomizer);
 
-            mUseDefaults = itemView.findViewById(R.id.onboarding_use_defaults);
+            mUseDefaults.setText(R.string.use_defaults_onboarding);
             mUseDefaults.setClipToOutline(true);
             mUseDefaults.setOnClickListener(goToNextStep);
         }

@@ -72,29 +72,27 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/onboarding_customize"
+        android:id="@+id/onboarding_left_button"
         android:layout_width="0dp"
         android:layout_gravity="center_horizontal"
-        android:text="@string/customize_onboarding"
         style="@style/LargeOutlineButton"
         android:layout_marginVertical="40dp"
         android:layout_marginEnd="4dp"
         android:layout_marginStart="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/onboarding_use_defaults" />
+        app:layout_constraintEnd_toStartOf="@+id/onboarding_right_button" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/onboarding_use_defaults"
+        android:id="@+id/onboarding_right_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="@string/use_defaults_onboarding"
         style="@style/LargeFilledButton"
         android:layout_marginVertical="40dp"
         android:layout_marginStart="4dp"
         android:layout_marginEnd="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/onboarding_customize"
+        app:layout_constraintStart_toEndOf="@+id/onboarding_left_button"
         app:layout_constraintEnd_toEndOf="@+id/image_start_guide" />
 </merge>

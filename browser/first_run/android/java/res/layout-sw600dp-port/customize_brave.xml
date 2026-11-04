@@ -60,33 +60,31 @@
         android:padding="@dimen/onboarding_illustration_padding"
         android:contentDescription="@string/brave_onboarding_customize_brave_illustration_description"
         app:layout_constraintTop_toBottomOf="@+id/brave_onboarding_subtitle"
-        app:layout_constraintBottom_toTopOf="@+id/onboarding_customize"
+        app:layout_constraintBottom_toTopOf="@+id/onboarding_left_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/onboarding_customize"
+        android:id="@+id/onboarding_left_button"
         android:layout_width="0dp"
         android:layout_gravity="center_horizontal"
-        android:text="@string/customize_onboarding"
         style="@style/LargeOutlineButton"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="4dp"
         app:layout_constraintTop_toBottomOf="@+id/onboarding_illustration"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/onboarding_use_defaults" />
+        app:layout_constraintEnd_toStartOf="@+id/onboarding_right_button" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/onboarding_use_defaults"
+        android:id="@+id/onboarding_right_button"
         android:layout_width="0dp"
         android:layout_gravity="center_horizontal"
-        android:text="@string/use_defaults_onboarding"
         style="@style/LargeFilledButton"
         android:layout_marginTop="40dp"
         android:layout_marginStart="4dp"
         app:layout_constraintTop_toBottomOf="@+id/onboarding_illustration"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/onboarding_customize"
+        app:layout_constraintStart_toEndOf="@+id/onboarding_left_button"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
