@@ -49,7 +49,7 @@
         android:src="@drawable/onboarding_appearance_customizer"
         android:background="@drawable/onboarding_rounded_corners"
         android:padding="@dimen/onboarding_illustration_padding"
-        android:contentDescription="@string/brave_onboarding_customize_brave_illustration_description"
+        android:contentDescription="@null"
         app:layout_constraintTop_toBottomOf="@+id/brave_onboarding_subtitle"
         app:layout_constraintBottom_toTopOf="@+id/onboarding_left_button"
         app:layout_constraintStart_toStartOf="parent"
