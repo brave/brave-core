@@ -101,7 +101,8 @@ public class OnboardingStepAdapter
         }
 
         if (viewType == R.layout.customize_brave) {
-            return new CustomizeBraveViewHolder(view);
+            return new CustomizeBraveViewHolder(
+                    view, getNextPosition(viewType), mPageBounceAnimator, mListener);
         }
 
         if (viewType == R.layout.make_brave_better) {
@@ -262,12 +263,34 @@ public class OnboardingStepAdapter
         }
     }
 
-    // TODO(https://github.com/brave/brave-browser/issues/60341): Implement the Customize Brave
-    // step.
     private static final class CustomizeBraveViewHolder extends OnboardingBaseViewHolder {
+        final Button mCustomize;
+        final Button mUseDefaults;
 
-        private CustomizeBraveViewHolder(final View itemView) {
+        private CustomizeBraveViewHolder(
+                final View itemView,
+                final int nextOnboardingPosition,
+                final PageBounceAnimator pageBounceAnimator,
+                final OnboardingNavigationListener listener) {
             super(itemView);
+            final View.OnClickListener goToNextStep =
+                    view -> {
+                        if (nextOnboardingPosition == -1) {
+                            listener.onDismiss();
+                        } else {
+                            pageBounceAnimator.animateToPosition(nextOnboardingPosition);
+                        }
+                    };
+
+            mCustomize = itemView.findViewById(R.id.onboarding_customize);
+            mCustomize.setClipToOutline(true);
+            // TODO(https://github.com/brave/brave-browser/issues/60480): Open the appearance
+            // customizer flow with address bar position customization.
+            // mCustomize.setOnClickListener(openAppearanceCustomizer);
+
+            mUseDefaults = itemView.findViewById(R.id.onboarding_use_defaults);
+            mUseDefaults.setClipToOutline(true);
+            mUseDefaults.setOnClickListener(goToNextStep);
         }
 
         @Override
