@@ -195,6 +195,17 @@ TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest, TransactionCreated) {
   EXPECT_EQ(tx_result.value().v6_part().legacy_orchard.outputs.size(), 1u);
   EXPECT_EQ(tx_result.value().v6_part().legacy_orchard.outputs[0].value,
             50000u - 4 * 5000u);
+
+  // Change is routed to the account's internal Orchard address.
+  auto internal_addr = keyring_service().GetOrchardRawBytes(
+      account_id(), mojom::ZCashKeyId::New(account_id()->account_index, 1, 0));
+  ASSERT_TRUE(internal_addr);
+  EXPECT_EQ(tx_result.value().v6_part().legacy_orchard.outputs[0].addr,
+            internal_addr.value());
+
+  // Transaction metadata used by tx history / confirmation UI.
+  EXPECT_EQ(tx_result.value().to(), kTransparentAddress);
+  EXPECT_EQ(tx_result.value().amount(), 100000u);
 }
 
 TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest,
