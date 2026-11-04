@@ -195,10 +195,10 @@ function ConversationItem(props: ConversationItemProps) {
             <span
               className={styles.completedIndicator}
               aria-label={getLocale(
-                S.AI_CHAT_CONVERSATION_LIST_COMPLETED_NOT_VIEWED,
+                S.AI_CHAT_CONVERSATION_LIST_RESPONSE_READY,
               )}
               title={getLocale(
-                S.AI_CHAT_CONVERSATION_LIST_COMPLETED_NOT_VIEWED,
+                S.AI_CHAT_CONVERSATION_LIST_RESPONSE_READY,
               )}
               role='img'
             />
