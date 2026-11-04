@@ -257,6 +257,60 @@ IN_PROC_BROWSER_TEST_F(TrafficControlBrowserTest,
   EXPECT_EQ(contained->GetLastCommittedURL().host(), "example.com");
 }
 
+// A confined container's tab is not moved, whether the rule targets another
+// container or no container.
+IN_PROC_BROWSER_TEST_F(TrafficControlBrowserTest,
+                       ConfinedContainerIsNotRerouted) {
+  auto* containers_service =
+      ContainersServiceFactory::GetForProfile(browser()->GetProfile());
+  auto container = containers_service->CreateAndPersistTemporaryContainer();
+  containers_service->SetContainerConfined(container->id);
+  OpenUrlInContainerForTest(TestUrl("a.test"), container);
+  content::WebContents* confined =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(content::WaitForLoadStop(confined));
+  const int tab_count = browser()->tab_strip_model()->count();
+
+  const GURL to_container_url = TestUrl();
+  const GURL to_no_container_url = TestUrl("b.test");
+  std::vector<mojom::TrafficRulePtr> rules;
+  rules.push_back(MakeRule("r1", true, std::string(to_container_url.host()),
+                           container_id_));
+  rules.push_back(MakeRule("r2", true, std::string(to_no_container_url.host()),
+                           std::string("")));
+  SetRules(std::move(rules));
+
+  for (const GURL& url : {to_container_url, to_no_container_url}) {
+    SCOPED_TRACE(url);
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+    EXPECT_EQ(browser()->tab_strip_model()->count(), tab_count);
+    EXPECT_EQ(browser()->tab_strip_model()->GetActiveWebContents(), confined);
+    EXPECT_EQ(confined->GetLastCommittedURL(), url);
+    EXPECT_EQ(containers::GetContainerIdForWebContents(confined),
+              container->id);
+  }
+}
+
+// Confinement, not being a temporary container, is what keeps a tab in place.
+IN_PROC_BROWSER_TEST_F(TrafficControlBrowserTest,
+                       UnconfinedTemporaryContainerIsRerouted) {
+  auto* containers_service =
+      ContainersServiceFactory::GetForProfile(browser()->GetProfile());
+  auto container = containers_service->CreateAndPersistTemporaryContainer();
+  OpenUrlInContainerForTest(TestUrl("a.test"), container);
+  ASSERT_TRUE(content::WaitForLoadStop(
+      browser()->tab_strip_model()->GetActiveWebContents()));
+
+  const GURL url = TestUrl();
+  std::vector<mojom::TrafficRulePtr> rules;
+  rules.push_back(MakeRule("r1", true, std::string(url.host()), container_id_));
+  SetRules(std::move(rules));
+
+  content::WebContents* new_tab = NavigateExpectingReroute(url);
+  ASSERT_TRUE(new_tab);
+  EXPECT_EQ(containers::GetContainerIdForWebContents(new_tab), container_id_);
+}
+
 IN_PROC_BROWSER_TEST_F(TrafficControlBrowserTest, OpenWithoutContainer) {
   auto* containers_service =
       ContainersServiceFactory::GetForProfile(browser()->GetProfile());

@@ -228,6 +228,42 @@ TEST_F(ContainersServiceTest, GetUsedContainerIds) {
   EXPECT_THAT(service_->GetUsedContainerIds(), testing::ElementsAre("used-id"));
 }
 
+TEST_F(ContainersServiceTest, IsContainerConfined) {
+  auto container = service_->CreateAndPersistTemporaryContainer();
+  auto other = service_->CreateAndPersistTemporaryContainer();
+  EXPECT_FALSE(service_->IsContainerConfined(container->id));
+
+  service_->SetContainerConfined(container->id);
+
+  EXPECT_TRUE(service_->IsContainerConfined(container->id));
+  EXPECT_FALSE(service_->IsContainerConfined(other->id));
+}
+
+TEST_F(ContainersServiceTest, ConfinementEndsWhenStorageIsDeleted) {
+  auto container = service_->CreateAndPersistTemporaryContainer();
+  service_->SetContainerConfined(container->id);
+
+  delegate_->SetReferencedContainersIds({});
+  service_->ScheduleOrphanedContainersCleanupForTesting();
+
+  ASSERT_THAT(delegate_->delete_requests(),
+              testing::ElementsAre(container->id));
+  EXPECT_FALSE(service_->IsContainerConfined(container->id));
+}
+
+TEST_F(ContainersServiceTest, ConfinementOutlivesFailedStorageDeletion) {
+  auto container = service_->CreateAndPersistTemporaryContainer();
+  service_->SetContainerConfined(container->id);
+
+  delegate_->SetReferencedContainersIds({});
+  delegate_->set_delete_result(false);
+  service_->ScheduleOrphanedContainersCleanupForTesting();
+
+  ASSERT_THAT(delegate_->delete_requests(),
+              testing::ElementsAre(container->id));
+  EXPECT_TRUE(service_->IsContainerConfined(container->id));
+}
+
 TEST_F(ContainersServiceTest, GetUsedContainerIds_EmptyWhileDiscovering) {
   SetContainersToPrefs({}, prefs_);
   service_->MarkContainerUsed("orphan-id");

@@ -91,6 +91,15 @@ class ContainersService : public KeyedService {
   // orphaned-container cleanup is discovering candidates.
   std::vector<std::string> GetUsedContainerIds() const;
 
+  // Marks the container with `id` as confined: its tabs must stay in it, so
+  // features that move a navigation to another container, such as Traffic
+  // Control, leave them alone. Held in memory only, until the container's
+  // storage is deleted.
+  void SetContainerConfined(std::string_view id);
+
+  // Whether `id` is confined.
+  bool IsContainerConfined(std::string_view id) const;
+
   // Whether the Containers controls (menus, management UI) should be shown.
   bool ShouldShowContainerControls() const;
 
@@ -133,6 +142,7 @@ class ContainersService : public KeyedService {
   OrphanedContainersCleanupState orphaned_cleanup_state_ =
       OrphanedContainersCleanupState::kIdle;
   base::flat_set<std::string> orphaned_containers_pending_removal_;
+  base::flat_set<std::string> confined_container_ids_;
   base::WeakPtrFactory<ContainersService> weak_factory_{this};
 };
 

@@ -143,6 +143,15 @@ std::vector<std::string> ContainersService::GetUsedContainerIds() const {
   return used_ids;
 }
 
+void ContainersService::SetContainerConfined(std::string_view id) {
+  CHECK(!id.empty());
+  confined_container_ids_.emplace(id);
+}
+
+bool ContainersService::IsContainerConfined(std::string_view id) const {
+  return confined_container_ids_.contains(id);
+}
+
 bool ContainersService::ShouldShowContainerControls() const {
   return prefs_->GetBoolean(prefs::kContainersEnabled);
 }
@@ -265,6 +274,8 @@ void ContainersService::OnContainerStorageDeleted(const std::string& id,
                  << " will retry on next launch";
     return;
   }
+
+  confined_container_ids_.erase(id);
 
   // If the container did not reappear in the synced containers list, remove the
   // used-container snapshot from the prefs to forget about it forever.
