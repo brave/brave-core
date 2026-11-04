@@ -115,6 +115,13 @@ TEST(BitcoinTransaction, TxOutput_Value) {
   EXPECT_EQ(parsed->address, output.address);
   EXPECT_EQ(parsed->script_pubkey, output.script_pubkey);
   EXPECT_EQ(parsed->amount, output.amount);
+  EXPECT_EQ(parsed->type, BitcoinTransaction::TxOutputType::kTarget);
+
+  output.type = BitcoinTransaction::TxOutputType::kChange;
+  parsed = output.FromValue(output.ToValue());
+  ASSERT_TRUE(parsed);
+  EXPECT_EQ(*parsed, output);
+  EXPECT_EQ(parsed->type, BitcoinTransaction::TxOutputType::kChange);
 }
 
 TEST(BitcoinTransaction, Value) {
@@ -150,11 +157,13 @@ TEST(BitcoinTransaction, Value) {
   output2.script_pubkey =
       BitcoinSerializer::AddressToScriptPubkey(kAddress2, true);
   output2.amount = 50;
+  output2.type = BitcoinTransaction::TxOutputType::kChange;
   tx.AddOutput(std::move(output2));
 
   tx.set_to(kAddress1);
   tx.set_amount(12345);
   tx.set_locktime(777);
+  tx.set_sending_max_amount(true);
 
   auto parsed = tx.FromValue(tx.ToValue());
   ASSERT_TRUE(parsed);
@@ -164,6 +173,18 @@ TEST(BitcoinTransaction, Value) {
   EXPECT_EQ(parsed->to(), tx.to());
   EXPECT_EQ(parsed->amount(), tx.amount());
   EXPECT_EQ(parsed->locktime(), tx.locktime());
+  EXPECT_TRUE(parsed->sending_max_amount());
+  ASSERT_TRUE(parsed->TargetOutput());
+  EXPECT_EQ(parsed->TargetOutput()->address, kAddress1);
+  ASSERT_TRUE(parsed->ChangeOutput());
+  EXPECT_EQ(parsed->ChangeOutput()->address, kAddress2);
+  EXPECT_EQ(parsed->ChangeOutput()->type,
+            BitcoinTransaction::TxOutputType::kChange);
+
+  tx.set_sending_max_amount(false);
+  parsed = tx.FromValue(tx.ToValue());
+  ASSERT_TRUE(parsed);
+  EXPECT_FALSE(parsed->sending_max_amount());
 }
 
 TEST(BitcoinTransaction, IsSigned) {
