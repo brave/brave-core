@@ -94,6 +94,11 @@ substitutions:
   # These plaster override the `base::Feature` value for the blink runtime
   # features, and with it the runtime flag. Each must be listed in
   # brave/base/compile_overridden_features.inc. Keep them in alphabetical order.
+  - description: "Ship the Embeddings API's base feature disabled."
+    set_blink_runtime_enabled_feature_state:
+      feature_name: AIEmbeddingsAPI
+      value: disabled
+
   - description: "Ship the Prompt API's base feature disabled."
     set_blink_runtime_enabled_feature_state:
       feature_name: AIPromptAPI

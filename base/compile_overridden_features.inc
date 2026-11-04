@@ -8,6 +8,7 @@
 // Brave's default state differs from Chromium's default state. A plain default
 // state switch is not sufficient for this purpose, because the default state is
 // not considered an override.
+X("AIEmbeddingsAPI")
 X("AIPromptAPI")
 X("AIPromptAPIMultimodalInput")
 X("AIProofreadingAPI")
