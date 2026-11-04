@@ -4,9 +4,8 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: 'Friend BraveBrowser and BookmarkPrefsService'
+  - description: 'Friend BraveBrowser'
     add_friend:
       class_name: Browser
       friend_type:
-        - class BookmarkPrefsService
         - class BraveBrowser

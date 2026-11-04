@@ -1,12 +1,11 @@
 diff --git a/chrome/browser/ui/browser.h b/chrome/browser/ui/browser.h
-index 1c1beed970c04b404125f7bcad3170ebfec27735..7869ed1b033db154d0c02cc6531a3ed1145e7995 100644
+index 1c1beed970c04b404125f7bcad3170ebfec27735..e9188c6c9ced1e707c6c785fe489f75fe2ccd1df 100644
 --- a/chrome/browser/ui/browser.h
 +++ b/chrome/browser/ui/browser.h
-@@ -169,6 +169,8 @@ class Browser : public TabStripModelObserver,
+@@ -169,6 +169,7 @@ class Browser : public TabStripModelObserver,
    const DesktopBrowserWindowCapabilities* capabilities() const override;
  
   private:
-+  friend class BookmarkPrefsService;
 +  friend class BraveBrowser;
    friend BrowserWindowInterface* CreateBrowserWindow(
        BrowserWindowCreateParams create_params);
