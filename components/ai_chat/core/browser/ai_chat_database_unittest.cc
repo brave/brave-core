@@ -33,6 +33,7 @@
 #include "components/sync/model/metadata_batch.h"
 #include "components/sync/protocol/data_type_state.pb.h"
 #include "components/sync/protocol/entity_metadata.pb.h"
+#include "mojo/public/cpp/bindings/clone_traits.h"
 #include "sql/init_status.h"
 #include "sql/meta_table.h"
 #include "sql/statement.h"
@@ -1267,6 +1268,34 @@ TEST_P(AIChatDatabaseTest, AddOrUpdateAssociatedContent) {
   conversations = db_->GetAllConversations();
   ASSERT_EQ(conversations.size(), 1u);
   ExpectConversationEquals(FROM_HERE, conversations[0], metadata);
+}
+
+// What the UI is told of an attached MCP server, such as its status, is live
+// only.
+TEST_P(AIChatDatabaseTest, AssociatedMCPServerIsNotStored) {
+  const std::string uuid = "for_mcp_server";
+  auto history = CreateSampleChatHistory(1u);
+  std::vector<mojom::AssociatedContentPtr> associated_content;
+  associated_content.push_back(mojom::AssociatedContent::New(
+      "content_uuid", mojom::ContentType::PageContent, "page title", 1,
+      GURL("https://example.com/page"), 62, history.front()->uuid.value(),
+      false,
+      mojom::AssociatedMCPServer::New("server-id",
+                                      mojom::MCPServerStatus::kNotResponding,
+                                      /*missed_latest_answer=*/true)));
+  mojom::ConversationPtr metadata = mojom::Conversation::New(
+      uuid, "title", base::Time::Now() - base::Hours(2), true, std::nullopt, 0,
+      0, false, std::move(associated_content));
+  ASSERT_TRUE(db_->AddConversation(metadata->Clone(), {"Contents"},
+                                   history[0]->Clone()));
+  ASSERT_TRUE(db_->AddOrUpdateAssociatedContent(
+      uuid, mojo::Clone(metadata->associated_content), {"Contents"}));
+
+  std::vector<mojom::ConversationPtr> conversations =
+      db_->GetAllConversations();
+  ASSERT_EQ(conversations.size(), 1u);
+  ASSERT_EQ(conversations[0]->associated_content.size(), 1u);
+  EXPECT_FALSE(conversations[0]->associated_content[0]->mcp_server);
 }
 
 TEST_P(AIChatDatabaseTest, AddOrUpdateAssociatedContent_MultiContent) {

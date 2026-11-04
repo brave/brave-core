@@ -87,6 +87,10 @@ class AssociatedContentManager : public ToolProvider,
   // Whether the user's MCP server |server_id| is attached.
   bool HasMCPServer(std::string_view server_id) const;
 
+  // Clears whether the latest answer was written without the MCP server
+  // attached as |content_uuid|, once the user has dismissed the notice of it.
+  void DismissMCPServerNotice(std::string_view content_uuid);
+
   // Removes a content delegate from the list of content delegates.
   void RemoveContent(AssociatedContentDelegate* delegate,
                      bool notify_updated = true);
@@ -226,6 +230,7 @@ class AssociatedContentManager : public ToolProvider,
   void OnDestroyed(AssociatedContentDelegate* delegate) override;
   void OnNewPage(AssociatedContentDelegate* delegate) override;
   void OnTitleChanged(AssociatedContentDelegate* delegate) override;
+  void OnStatusChanged(AssociatedContentDelegate* delegate) override;
   void OnToolsAttachedChanged(AssociatedContentDelegate* delegate) override;
   void OnContentToolsChanged(AssociatedContentDelegate* delegate) override;
 
@@ -246,6 +251,9 @@ class AssociatedContentManager : public ToolProvider,
     std::string content_uuid;
     url::Origin origin;
     bool is_mcp_server = false;
+    // An MCP server that offered no tools, as it wasn't available when it
+    // answered, which is when a loop that waited for it goes ahead.
+    bool offered_no_tools = false;
     std::vector<std::unique_ptr<Tool>> tools;
   };
 
@@ -255,12 +263,24 @@ class AssociatedContentManager : public ToolProvider,
       AssociatedContentDelegate* content,
       size_t index,
       base::RepeatingCallback<void(FetchedContentTools)> done);
+  void OnContentToolsFetched(
+      base::RepeatingCallback<void(FetchedContentTools)> done,
+      FetchedContentTools fetched,
+      std::vector<std::unique_ptr<Tool>> tools);
 
   // Adds the tools fetched for generation loop |generation_loop_id|, then runs
   // |on_updated|, unless the loop has been replaced.
+  // |conversation_loop_id| is the conversation's, which changes as the loop is
+  // stopped.
   void OnGenerationLoopToolsFetched(uint64_t generation_loop_id,
+                                    uint64_t conversation_loop_id,
                                     base::OnceClosure on_updated,
                                     std::vector<FetchedContentTools> fetched);
+
+  // Records which MCP servers the loop whose tools are |fetched| goes ahead
+  // without.
+  void UpdateMCPServersMissedLatestAnswer(
+      const std::vector<FetchedContentTools>& fetched);
 
   void DetachContent();
 
@@ -397,8 +417,8 @@ class AssociatedContentManager : public ToolProvider,
   // uuids whose tools attachment the user explicitly set.
   base::flat_set<std::string> tools_attachment_overridden_;
 
-  // uuid -> server id, for the MCP servers among |content_delegates_|.
-  base::flat_map<std::string, std::string> mcp_server_ids_;
+  // The MCP servers among |content_delegates_|, by uuid.
+  base::flat_map<std::string, raw_ptr<MCPServerAssociatedContent>> mcp_servers_;
 
   // Used for ownership - still stored in the above array.
   // This includes:

@@ -69,6 +69,7 @@ MCPServerAssociatedContent::MCPServerAssociatedContent(
   set_url(endpoint_origin_.GetURL());
   SetTitle(base::UTF8ToUTF16(server.name));
   set_cached_page_content(PageContent("", mojom::ContentType::MCPServer));
+  status_ = GetCurrentStatus();
   host_observation_.Observe(&host);
 }
 
@@ -81,6 +82,12 @@ MCPServerAssociatedContent::~MCPServerAssociatedContent() {
   }
 }
 
+bool MCPServerAssociatedContent::SetMissedLatestAnswer(
+    bool missed_latest_answer) {
+  return std::exchange(missed_latest_answer_, missed_latest_answer) !=
+         missed_latest_answer;
+}
+
 void MCPServerAssociatedContent::GetContent(GetPageContentCallback callback) {
   // The value of this content is its tools, not its content.
   std::move(callback).Run(cached_page_content());
@@ -88,7 +95,7 @@ void MCPServerAssociatedContent::GetContent(GetPageContentCallback callback) {
 
 void MCPServerAssociatedContent::GetContentTools(
     GetContentToolsCallback callback) {
-  if (!client_ || IsBackingOff() || is_listing_late_) {
+  if (!client_ || IsFailing() || is_listing_late_) {
     std::move(callback).Run(CreateTools());
     return;
   }
@@ -136,48 +143,83 @@ void MCPServerAssociatedContent::OnMCPClientsChanged() {
   }
 
   if (client.get() == client_.get()) {
+    base::WeakPtr<MCPServerAssociatedContent> self =
+        weak_ptr_factory_.GetWeakPtr();
+    UpdateStatus();
     // Moved to another origin, it offers no tools.
-    if (moved) {
+    if (self && moved) {
       NotifyContentToolsChanged();
     }
     return;
   }
   client_ = std::move(client);
+  UpdateServerUse();
   // What the previous client listed, or was listing, no longer applies.
   tools_.reset();
-  last_failure_time_ = base::TimeTicks();
   ++listing_id_;
   is_listing_ = false;
   is_listing_late_ = false;
-  deadline_timer_.Stop();
   base::WeakPtr<MCPServerAssociatedContent> self =
       weak_ptr_factory_.GetWeakPtr();
-  RunWaitingCallbacks();
+  // The callers waiting go ahead with the status that this leaves it in.
+  UpdateStatus();
+  if (!self) {
+    return;
+  }
+  if (client_ && !waiting_callbacks_.empty()) {
+    // Listed by the new client, within the time the callers already wait.
+    ListTools();
+  } else {
+    deadline_timer_.Stop();
+    RunWaitingCallbacks();
+  }
   if (self) {
     NotifyContentToolsChanged();
   }
 }
 
+void MCPServerAssociatedContent::OnMCPServerStatusChanged(
+    const std::string& server_id) {
+  if (server_id != server_->id) {
+    return;
+  }
+  const bool was_available = status_ == mojom::MCPServerStatus::kAvailable;
+  base::WeakPtr<MCPServerAssociatedContent> self =
+      weak_ptr_factory_.GetWeakPtr();
+  UpdateStatus();
+  // Tools that were listed in the background are shown, and added to the loop
+  // that went without them. A listing of its own does that as it's answered.
+  if (self && !was_available && status_ == mojom::MCPServerStatus::kAvailable &&
+      client_ && !is_listing_) {
+    NotifyContentToolsChanged();
+  }
+}
+
 void MCPServerAssociatedContent::StartListing() {
-  is_listing_ = true;
   deadline_timer_.Start(FROM_HERE, kMCPToolsDeadline,
                         base::BindOnce(&MCPServerAssociatedContent::OnDeadline,
                                        base::Unretained(this)));
+  ListTools();
+}
+
+void MCPServerAssociatedContent::ListTools() {
+  is_listing_ = true;
   // The client drops its callbacks when it's destroyed, as it is when the
   // server's settings change.
-  client_->GetTools(mojo::WrapCallbackWithDefaultInvokeIfNotRun(
-      base::BindPostTaskToCurrentDefault(
-          base::BindOnce(&MCPServerAssociatedContent::OnToolsListed,
-                         weak_ptr_factory_.GetWeakPtr(), ++listing_id_)),
-      ToolsResult(base::unexpected(
-          MCPError{MCPErrorCode::kNetworkError,
-                   base::StrCat({server_->name,
-                                 " was changed or removed before it "
-                                 "answered."})}))));
+  host_->GetTools(server_->id,
+                  mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+                      base::BindPostTaskToCurrentDefault(base::BindOnce(
+                          &MCPServerAssociatedContent::OnToolsListed,
+                          weak_ptr_factory_.GetWeakPtr(), ++listing_id_)),
+                      MCPClient::ToolsResult(base::unexpected(MCPError{
+                          MCPErrorCode::kNetworkError,
+                          base::StrCat({server_->name,
+                                        " was changed or removed before it "
+                                        "answered."})}))));
 }
 
 void MCPServerAssociatedContent::OnToolsListed(int listing_id,
-                                               ToolsResult result) {
+                                               MCPClient::ToolsResult result) {
   if (listing_id != listing_id_) {
     return;
   }
@@ -188,11 +230,9 @@ void MCPServerAssociatedContent::OnToolsListed(int listing_id,
       GetToolNames(tools_);
   if (result.has_value()) {
     tools_ = std::move(*result);
-    last_failure_time_ = base::TimeTicks();
   } else {
     // The error names the server, and has nothing secret in it.
     DVLOG(1) << result.error().message;
-    last_failure_time_ = base::TimeTicks::Now();
   }
   // Callers were given the previous tools if they stopped waiting, or didn't
   // wait, and observers have been told of none if these are the first.
@@ -210,7 +250,13 @@ void MCPServerAssociatedContent::OnToolsListed(int listing_id,
 
 void MCPServerAssociatedContent::OnDeadline() {
   is_listing_late_ = true;
-  RunWaitingCallbacks();
+  // The callers waiting go ahead knowing that it isn't responding.
+  base::WeakPtr<MCPServerAssociatedContent> self =
+      weak_ptr_factory_.GetWeakPtr();
+  host_->MarkNotResponding(server_->id);
+  if (self) {
+    RunWaitingCallbacks();
+  }
 }
 
 void MCPServerAssociatedContent::RunWaitingCallbacks() {
@@ -237,9 +283,40 @@ std::vector<std::unique_ptr<Tool>> MCPServerAssociatedContent::CreateTools()
   return tools;
 }
 
-bool MCPServerAssociatedContent::IsBackingOff() const {
-  return !last_failure_time_.is_null() &&
-         base::TimeTicks::Now() - last_failure_time_ < kMCPToolsRetryDelay;
+bool MCPServerAssociatedContent::IsFailing() const {
+  return host_->IsFailing(server_->id);
+}
+
+mojom::MCPServerStatus MCPServerAssociatedContent::GetCurrentStatus() const {
+  // Moved to another origin, it has a client that isn't used here.
+  if (!client_ && host_->GetClient(server_->id)) {
+    return mojom::MCPServerStatus::kUnavailable;
+  }
+  return host_->GetServerStatus(server_->id);
+}
+
+void MCPServerAssociatedContent::UpdateStatus() {
+  const mojom::MCPServerStatus status = GetCurrentStatus();
+  if (status == status_) {
+    return;
+  }
+  status_ = status;
+  if (status_ == mojom::MCPServerStatus::kAvailable) {
+    missed_latest_answer_ = false;
+  }
+  NotifyStatusChanged();
+}
+
+void MCPServerAssociatedContent::DidChangeToolsAttached() {
+  UpdateServerUse();
+}
+
+void MCPServerAssociatedContent::UpdateServerUse() {
+  if (!client_ || !tools_attached()) {
+    server_use_.RunAndReset();
+  } else if (!server_use_) {
+    server_use_ = host_->UseServer(server_->id);
+  }
 }
 
 }  // namespace ai_chat

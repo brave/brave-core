@@ -87,6 +87,7 @@ describe('TabsMenu', () => {
               contentUsedPercentage: 0,
               uuid: '1',
               toolsAttached: false,
+              mcpServer: undefined,
             },
           ],
         },
@@ -123,6 +124,7 @@ describe('TabsMenu', () => {
       contentUsedPercentage: 0,
       uuid: 'content-1',
       toolsAttached: false,
+      mcpServer: undefined,
     }
     const { findByText } = await renderOpenedMenu({
       conversationOverrides: { inputText: ['@'] },
@@ -483,6 +485,7 @@ describe('TabsMenu', () => {
               contentUsedPercentage: 0,
               uuid: '1',
               toolsAttached: false,
+              mcpServer: undefined,
             },
           ],
         },
@@ -686,7 +689,11 @@ describe('TabsMenu connectors', () => {
     contentUsedPercentage: 100,
     conversationTurnUuid: undefined,
     toolsAttached: false,
-    mcpServer: { serverId: 'gmail' },
+    mcpServer: {
+      serverId: 'gmail',
+      status: Mojom.MCPServerStatus.kAvailable,
+      missedLatestAnswer: false,
+    },
   }
 
   beforeEach(() => {

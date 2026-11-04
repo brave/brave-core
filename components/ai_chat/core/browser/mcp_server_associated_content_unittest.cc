@@ -16,6 +16,7 @@
 #include <variant>
 #include <vector>
 
+#include "base/base64.h"
 #include "base/check_deref.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
@@ -48,6 +49,7 @@
 #include "brave/components/ai_chat/core/browser/mcp/mcp_host.h"
 #include "brave/components/ai_chat/core/browser/mcp/mcp_test_server.h"
 #include "brave/components/ai_chat/core/browser/mcp/test/deferred_os_crypt_async.h"
+#include "brave/components/ai_chat/core/browser/mock_untrusted_conversation_handler_client.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/test/mock_associated_content.h"
 #include "brave/components/ai_chat/core/browser/tools/mock_tool.h"
@@ -109,9 +111,7 @@ class TestConversationUI : public mojom::ConversationUI {
                           const std::vector<std::string>& names) {
     const PushedTools expected(content_uuid, names);
     while (!std::ranges::contains(pushed_tools_, expected)) {
-      base::RunLoop run_loop;
-      quit_ = run_loop.QuitClosure();
-      run_loop.Run();
+      Wait();
     }
   }
 
@@ -124,6 +124,28 @@ class TestConversationUI : public mojom::ConversationUI {
                                  PushedTools(content_uuid, names));
   }
   void ClearPushedTools() { pushed_tools_.clear(); }
+
+  // Waits for the browser to have pushed `statuses`, in turn, for the MCP
+  // server attached as `content_uuid`.
+  void WaitForPushedStatuses(
+      const std::string& content_uuid,
+      const std::vector<mojom::MCPServerStatus>& statuses) {
+    while (pushed_statuses_[content_uuid] != statuses) {
+      Wait();
+    }
+  }
+
+  // The MCP server attached as `content_uuid`, as last pushed.
+  mojom::AssociatedMCPServerPtr GetPushedServer(
+      const std::string& content_uuid) {
+    receiver_.FlushForTesting();
+    for (const mojom::AssociatedContentPtr& content : associated_content_) {
+      if (content->uuid == content_uuid) {
+        return content->mcp_server.Clone();
+      }
+    }
+    return nullptr;
+  }
 
   // mojom::ConversationUI:
   void OnContentToolsChanged(const std::string& content_uuid,
@@ -151,7 +173,22 @@ class TestConversationUI : public mojom::ConversationUI {
       mojom::SuggestionGenerationStatus status) override {}
 #endif
   void OnAssociatedContentInfoChanged(
-      std::vector<mojom::AssociatedContentPtr> associated_content) override {}
+      std::vector<mojom::AssociatedContentPtr> associated_content) override {
+    for (const mojom::AssociatedContentPtr& content : associated_content) {
+      if (!content->mcp_server) {
+        continue;
+      }
+      std::vector<mojom::MCPServerStatus>& statuses =
+          pushed_statuses_[content->uuid];
+      if (statuses.empty() || statuses.back() != content->mcp_server->status) {
+        statuses.push_back(content->mcp_server->status);
+      }
+    }
+    associated_content_ = std::move(associated_content);
+    if (quit_) {
+      std::move(quit_).Run();
+    }
+  }
   void OnVisionModelSwitchChanged(
       const std::optional<std::string>& model_key) override {}
   void OnContentAgentChanged(bool is_content_agent_chosen,
@@ -162,7 +199,15 @@ class TestConversationUI : public mojom::ConversationUI {
  private:
   using PushedTools = std::pair<std::string, std::vector<std::string>>;
 
+  void Wait() {
+    base::RunLoop run_loop;
+    quit_ = run_loop.QuitClosure();
+    run_loop.Run();
+  }
+
   std::vector<PushedTools> pushed_tools_;
+  std::map<std::string, std::vector<mojom::MCPServerStatus>> pushed_statuses_;
+  std::vector<mojom::AssociatedContentPtr> associated_content_;
   base::OnceClosure quit_;
   mojo::Receiver<mojom::ConversationUI> receiver_{this};
 };
@@ -362,6 +407,15 @@ class MCPServerAssociatedContentTest : public testing::Test {
     }
   }
 
+  // How many requests with JSON-RPC `method` were sent from index `from`.
+  size_t CountRequests(std::string_view method, size_t from) {
+    size_t count = 0;
+    for (size_t i = from; i < mcp_server_.RequestCount(); ++i) {
+      count += mcp_server_.Method(i) == method;
+    }
+    return count;
+  }
+
   AssociatedContentManager& Manager(ConversationHandler* conversation) {
     return *conversation->associated_content_manager();
   }
@@ -387,6 +441,30 @@ class MCPServerAssociatedContentTest : public testing::Test {
       titles.push_back(server->title);
     }
     return titles;
+  }
+
+  // What the UI is told of the attached MCP server titled `title`.
+  mojom::AssociatedMCPServerPtr GetMCPServer(ConversationHandler* conversation,
+                                             std::string_view title) {
+    for (mojom::AssociatedContentPtr& server : GetMCPServers(conversation)) {
+      if (server->title == title) {
+        return std::move(server->mcp_server);
+      }
+    }
+    ADD_FAILURE() << "No MCP server titled " << title;
+    return nullptr;
+  }
+
+  mojom::MCPServerStatus GetStatus(ConversationHandler* conversation,
+                                   std::string_view title) {
+    mojom::AssociatedMCPServerPtr server = GetMCPServer(conversation, title);
+    return server ? server->status : mojom::MCPServerStatus::kUnavailable;
+  }
+
+  bool MissedLatestAnswer(ConversationHandler* conversation,
+                          std::string_view title) {
+    mojom::AssociatedMCPServerPtr server = GetMCPServer(conversation, title);
+    return server && server->missed_latest_answer;
   }
 
   // The uuid of the attached MCP server titled `title`.
@@ -1407,6 +1485,364 @@ TEST_F(MCPServerAssociatedContentTest, NoFetchForAModelWithoutTools) {
   EXPECT_TRUE(done.IsReady());
   EXPECT_TRUE(GetLoopToolNames(conversation).empty());
   EXPECT_EQ(mcp_server_.RequestCount(), 0u);
+}
+
+namespace {
+constexpr mojom::MCPServerStatus kAvailable =
+    mojom::MCPServerStatus::kAvailable;
+constexpr mojom::MCPServerStatus kChecking = mojom::MCPServerStatus::kChecking;
+constexpr mojom::MCPServerStatus kNotResponding =
+    mojom::MCPServerStatus::kNotResponding;
+}  // namespace
+
+// The UI is told as the server's status changes, and when it recovers on its
+// own, without a message being sent.
+TEST_F(MCPServerAssociatedContentTest, StatusIsPushedAsItChanges) {
+  constexpr char kEndpoint[] = "https://mcp.example.com/mcp";
+  mojom::MCPServerPtr server = AddServer("Server", kEndpoint, {"search"});
+  failing_endpoints_.insert(GURL(kEndpoint).spec());
+  ConversationHandler* conversation = ai_chat_service_->CreateConversation();
+  TestConversationUI ui(*conversation);
+  Attach(conversation, *server);
+  const std::string uuid = GetMCPServerUuid(conversation, "Server");
+  ui.WaitForPushedStatuses(uuid, {kAvailable, kNotResponding});
+  EXPECT_EQ(GetStatus(conversation, "Server"), kNotResponding);
+
+  failing_endpoints_.clear();
+  task_environment_.FastForwardBy(kMCPToolsRetryDelay);
+  ui.WaitForPushedStatuses(uuid, {kAvailable, kNotResponding, kAvailable});
+  ui.WaitForPushedTools(uuid, {"search"});
+  // The tools listed in the background are used.
+  const size_t request_count = mcp_server_.RequestCount();
+  EXPECT_THAT(RunGenerationLoop(conversation), ElementsAre("search"));
+  EXPECT_EQ(mcp_server_.RequestCount(), request_count);
+}
+
+// Every conversation with the server agrees on its status, so once it's
+// failed in one, the others don't wait for it either.
+TEST_F(MCPServerAssociatedContentTest, ConversationsShareTheStatus) {
+  constexpr char kEndpoint[] = "https://mcp.example.com/mcp";
+  mojom::MCPServerPtr server = AddServer("Server", kEndpoint, {"search"});
+  failing_endpoints_.insert(GURL(kEndpoint).spec());
+  ConversationHandler* first = ai_chat_service_->CreateConversation();
+  TestConversationUI first_ui(*first);
+  ConversationHandler* second = ai_chat_service_->CreateConversation();
+  TestConversationUI second_ui(*second);
+  Attach(first, *server);
+  const std::string first_uuid = GetMCPServerUuid(first, "Server");
+  first_ui.WaitForPushedStatuses(first_uuid, {kAvailable, kNotResponding});
+
+  const size_t request_count = mcp_server_.RequestCount();
+  Attach(second, *server);
+  const std::string second_uuid = GetMCPServerUuid(second, "Server");
+  EXPECT_EQ(GetStatus(second, "Server"), kNotResponding);
+  base::test::TestFuture<void> done;
+  Manager(second).UpdateToolsForNewGenerationLoop(done.GetCallback());
+  EXPECT_TRUE(done.IsReady());
+  EXPECT_EQ(mcp_server_.RequestCount(), request_count);
+
+  // One retry, for both.
+  failing_endpoints_.clear();
+  task_environment_.FastForwardBy(kMCPToolsRetryDelay);
+  first_ui.WaitForPushedStatuses(first_uuid,
+                                 {kAvailable, kNotResponding, kAvailable});
+  second_ui.WaitForPushedStatuses(second_uuid, {kNotResponding, kAvailable});
+  first_ui.WaitForPushedTools(first_uuid, {"search"});
+  second_ui.WaitForPushedTools(second_uuid, {"search"});
+  EXPECT_EQ(CountRequests("tools/list", request_count), 1u);
+}
+
+// The UI can tell when an answer was written without any of a server's tools,
+// until a later one has them, the server's back, or the user dismisses it.
+TEST_F(MCPServerAssociatedContentTest, MissedLatestAnswer) {
+  constexpr char kEndpoint[] = "https://mcp.example.com/mcp";
+  mojom::MCPServerPtr server = AddServer("Server", kEndpoint, {"search"});
+  failing_endpoints_.insert(GURL(kEndpoint).spec());
+  ConversationHandler* conversation = ai_chat_service_->CreateConversation();
+  TestConversationUI ui(*conversation);
+  Attach(conversation, *server);
+  const std::string uuid = GetMCPServerUuid(conversation, "Server");
+  ui.WaitForPushedStatuses(uuid, {kAvailable, kNotResponding});
+
+  EXPECT_TRUE(RunGenerationLoop(conversation).empty());
+  EXPECT_TRUE(MissedLatestAnswer(conversation, "Server"));
+  EXPECT_TRUE(ui.GetPushedServer(uuid)->missed_latest_answer);
+
+  conversation->DismissMCPServerNotice(uuid);
+  EXPECT_FALSE(MissedLatestAnswer(conversation, "Server"));
+  EXPECT_FALSE(ui.GetPushedServer(uuid)->missed_latest_answer);
+
+  // Each answer written without it is told of.
+  EXPECT_TRUE(RunGenerationLoop(conversation).empty());
+  EXPECT_TRUE(MissedLatestAnswer(conversation, "Server"));
+  // Not if the user turned its tools off.
+  Manager(conversation).SetToolsAttached(uuid, /*tools_attached=*/false);
+  RunGenerationLoop(conversation);
+  EXPECT_FALSE(MissedLatestAnswer(conversation, "Server"));
+  Manager(conversation).SetToolsAttached(uuid, /*tools_attached=*/true);
+  EXPECT_TRUE(RunGenerationLoop(conversation).empty());
+  EXPECT_TRUE(MissedLatestAnswer(conversation, "Server"));
+
+  // Nor once it's back.
+  failing_endpoints_.clear();
+  task_environment_.FastForwardBy(kMCPToolsRetryDelay);
+  ui.WaitForPushedStatuses(uuid, {kAvailable, kNotResponding, kAvailable});
+  EXPECT_FALSE(MissedLatestAnswer(conversation, "Server"));
+  EXPECT_FALSE(ui.GetPushedServer(uuid)->missed_latest_answer);
+  EXPECT_THAT(RunGenerationLoop(conversation), ElementsAre("search"));
+  EXPECT_FALSE(MissedLatestAnswer(conversation, "Server"));
+}
+
+// The tools listed before the server failed are still offered, so an answer
+// that has them wasn't written without it.
+TEST_F(MCPServerAssociatedContentTest, NoMissedAnswerWithToolsListedBefore) {
+  constexpr char kEndpoint[] = "https://mcp.example.com/mcp";
+  mojom::MCPServerPtr server = AddServer("Server", kEndpoint, {"search"});
+  ConversationHandler* conversation = ai_chat_service_->CreateConversation();
+  TestConversationUI ui(*conversation);
+  Attach(conversation, *server);
+  EXPECT_THAT(RunGenerationLoop(conversation), ElementsAre("search"));
+
+  failing_endpoints_.insert(GURL(kEndpoint).spec());
+  task_environment_.FastForwardBy(kMCPToolsCacheTtl);
+  EXPECT_THAT(RunGenerationLoop(conversation), ElementsAre("search"));
+  EXPECT_EQ(GetStatus(conversation, "Server"), kNotResponding);
+  EXPECT_FALSE(MissedLatestAnswer(conversation, "Server"));
+}
+
+TEST_F(MCPServerAssociatedContentTest, MissedAnswerWhileItDidNotAnswerInTime) {
+  constexpr char kEndpoint[] = "https://mcp.example.com/mcp";
+  mojom::MCPServerPtr server = AddServer("Server", kEndpoint, {"search"});
+  ConversationHandler* conversation = ai_chat_service_->CreateConversation();
+  TestConversationUI ui(*conversation);
+  Hold(kEndpoint);
+  Attach(conversation, *server);
+  const std::string uuid = GetMCPServerUuid(conversation, "Server");
+
+  base::test::TestFuture<void> done;
+  Manager(conversation).UpdateToolsForNewGenerationLoop(done.GetCallback());
+  task_environment_.FastForwardBy(kMCPToolsDeadline);
+  ASSERT_TRUE(done.IsReady());
+  EXPECT_TRUE(GetLoopToolNames(conversation).empty());
+  EXPECT_EQ(GetStatus(conversation, "Server"), kNotResponding);
+  EXPECT_TRUE(MissedLatestAnswer(conversation, "Server"));
+
+  Release(kEndpoint);
+  ui.WaitForPushedStatuses(uuid, {kAvailable, kNotResponding, kAvailable});
+  EXPECT_FALSE(MissedLatestAnswer(conversation, "Server"));
+}
+
+// A loop that's stopped while it waits writes no answer.
+TEST_F(MCPServerAssociatedContentTest, NoMissedAnswerOnceStopped) {
+  constexpr char kEndpoint[] = "https://mcp.example.com/mcp";
+  mojom::MCPServerPtr server = AddServer("Server", kEndpoint, {"search"});
+  ConversationHandler* conversation = ai_chat_service_->CreateConversation();
+  TestConversationUI ui(*conversation);
+  conversation->SetEngineForTesting(
+      std::make_unique<NiceMock<MockEngineConsumer>>());
+  std::vector<mojom::ConversationTurnPtr> history;
+  history.push_back(HumanTurn("turn"));
+  conversation->SetChatHistoryForTesting(std::move(history));
+  Hold(kEndpoint);
+  Attach(conversation, *server);
+
+  base::test::TestFuture<void> done;
+  Manager(conversation).UpdateToolsForNewGenerationLoop(done.GetCallback());
+  base::test::TestFuture<mojom::ConversationTurnPtr> stopped;
+  conversation->StopGenerationAndMaybeGetHumanEntry(stopped.GetCallback());
+  ASSERT_TRUE(stopped.Wait());
+  task_environment_.FastForwardBy(kMCPToolsDeadline);
+  ASSERT_TRUE(done.IsReady());
+  EXPECT_EQ(GetStatus(conversation, "Server"), kNotResponding);
+  EXPECT_FALSE(MissedLatestAnswer(conversation, "Server"));
+}
+
+// A server whose settings change while a loop waits for it is asked again,
+// within the same time.
+TEST_F(MCPServerAssociatedContentTest, ClientReplacedWhileWaiting) {
+  constexpr char kEndpoint[] = "https://mcp.example.com/mcp";
+  mojom::MCPServerPtr server = AddServer("Server", kEndpoint, {"search"});
+  ConversationHandler* conversation = ai_chat_service_->CreateConversation();
+  TestConversationUI ui(*conversation);
+  Hold(kEndpoint);
+  Attach(conversation, *server);
+
+  base::test::TestFuture<void> done;
+  Manager(conversation).UpdateToolsForNewGenerationLoop(done.GetCallback());
+  task_environment_.FastForwardBy(kMCPToolsDeadline / 2);
+  UpdateServer(*server, "Renamed", kEndpoint, /*enabled=*/true);
+  EXPECT_FALSE(done.IsReady());
+  Release(kEndpoint);
+  EXPECT_TRUE(done.Wait());
+  EXPECT_THAT(GetLoopToolNames(conversation), ElementsAre("search"));
+  EXPECT_FALSE(MissedLatestAnswer(conversation, "Renamed"));
+}
+
+// The new client's listing isn't waited for longer than the first's would
+// have been.
+TEST_F(MCPServerAssociatedContentTest,
+       ClientReplacedWhileWaitingKeepsDeadline) {
+  constexpr char kEndpoint[] = "https://mcp.example.com/mcp";
+  mojom::MCPServerPtr server = AddServer("Server", kEndpoint, {"search"});
+  ConversationHandler* conversation = ai_chat_service_->CreateConversation();
+  TestConversationUI ui(*conversation);
+  Hold(kEndpoint);
+  Attach(conversation, *server);
+
+  base::test::TestFuture<void> done;
+  Manager(conversation).UpdateToolsForNewGenerationLoop(done.GetCallback());
+  task_environment_.FastForwardBy(kMCPToolsDeadline / 2);
+  UpdateServer(*server, "Renamed", kEndpoint, /*enabled=*/true);
+  task_environment_.FastForwardBy(kMCPToolsDeadline / 2 -
+                                  base::Milliseconds(1));
+  EXPECT_FALSE(done.IsReady());
+  task_environment_.FastForwardBy(base::Milliseconds(1));
+  EXPECT_TRUE(done.IsReady());
+  EXPECT_TRUE(GetLoopToolNames(conversation).empty());
+  EXPECT_EQ(GetStatus(conversation, "Renamed"), kNotResponding);
+}
+
+// A server whose tools are turned off isn't retried for that conversation.
+TEST_F(MCPServerAssociatedContentTest, NoRetryWhileToolsAreOff) {
+  constexpr char kEndpoint[] = "https://mcp.example.com/mcp";
+  mojom::MCPServerPtr server = AddServer("Server", kEndpoint, {"search"});
+  failing_endpoints_.insert(GURL(kEndpoint).spec());
+  ConversationHandler* conversation = ai_chat_service_->CreateConversation();
+  TestConversationUI ui(*conversation);
+  Attach(conversation, *server);
+  const std::string uuid = GetMCPServerUuid(conversation, "Server");
+  ui.WaitForPushedStatuses(uuid, {kAvailable, kNotResponding});
+
+  Manager(conversation).SetToolsAttached(uuid, /*tools_attached=*/false);
+  const size_t request_count = mcp_server_.RequestCount();
+  task_environment_.FastForwardBy(kMCPMaxToolsRetryDelay * 2);
+  EXPECT_EQ(mcp_server_.RequestCount(), request_count);
+
+  // Turned back on, it's retried, as a retry is due.
+  failing_endpoints_.clear();
+  Manager(conversation).SetToolsAttached(uuid, /*tools_attached=*/true);
+  ui.WaitForPushedStatuses(uuid, {kAvailable, kNotResponding, kAvailable});
+}
+
+TEST_F(MCPServerAssociatedContentTest, StatusWhileTheServerCanNotBeUsed) {
+  constexpr char kEndpoint[] = "https://mcp.example.com/mcp";
+  mojom::MCPServerPtr server = AddServer("Server", kEndpoint, {"search"});
+  ConversationHandler* conversation = ai_chat_service_->CreateConversation();
+  Attach(conversation, *server);
+  EXPECT_EQ(GetStatus(conversation, "Server"), kAvailable);
+
+  UpdateServer(*server, "Server", kEndpoint, /*enabled=*/false);
+  EXPECT_EQ(GetStatus(conversation, "Server"),
+            mojom::MCPServerStatus::kUnavailable);
+  RunGenerationLoop(conversation);
+  EXPECT_TRUE(MissedLatestAnswer(conversation, "Server"));
+  UpdateServer(*server, "Server", kEndpoint, /*enabled=*/true);
+  EXPECT_EQ(GetStatus(conversation, "Server"), kAvailable);
+  EXPECT_FALSE(MissedLatestAnswer(conversation, "Server"));
+
+  {
+    ScopedDictPrefUpdate update(&prefs_, prefs::kBraveAIChatMCPServers);
+    update->FindList("servers")->front().GetDict().Set(
+        "token", base::Base64Encode("not a ciphertext"));
+  }
+  EXPECT_EQ(GetStatus(conversation, "Server"),
+            mojom::MCPServerStatus::kAuthRequired);
+  {
+    ScopedDictPrefUpdate update(&prefs_, prefs::kBraveAIChatMCPServers);
+    update->FindList("servers")->front().GetDict().Remove("token");
+  }
+  EXPECT_EQ(GetStatus(conversation, "Server"), kAvailable);
+
+  // Moved to another origin, it isn't used here.
+  tools_[GURL("https://elsewhere.example.com/mcp").spec()] =
+      ToolsListResult({"search"});
+  UpdateServer(*server, "Server", "https://elsewhere.example.com/mcp",
+               /*enabled=*/true);
+  EXPECT_EQ(GetStatus(conversation, "Server"),
+            mojom::MCPServerStatus::kUnavailable);
+  EXPECT_EQ(host().GetServerStatus(server->id), kAvailable);
+}
+
+TEST_F(MCPServerAssociatedContentTest, ReconnectGoesThroughChecking) {
+  constexpr char kEndpoint[] = "https://mcp.example.com/mcp";
+  mojom::MCPServerPtr server = AddServer("Server", kEndpoint, {"search"});
+  failing_endpoints_.insert(GURL(kEndpoint).spec());
+  ConversationHandler* conversation = ai_chat_service_->CreateConversation();
+  TestConversationUI ui(*conversation);
+  Attach(conversation, *server);
+  const std::string uuid = GetMCPServerUuid(conversation, "Server");
+  ui.WaitForPushedStatuses(uuid, {kAvailable, kNotResponding});
+
+  // Still failing.
+  task_environment_.FastForwardBy(kMCPMinReconnectInterval);
+  host().ReconnectServer(server->id);
+  EXPECT_EQ(GetStatus(conversation, "Server"), kChecking);
+  ui.WaitForPushedStatuses(
+      uuid, {kAvailable, kNotResponding, kChecking, kNotResponding});
+
+  failing_endpoints_.clear();
+  task_environment_.FastForwardBy(kMCPMinReconnectInterval);
+  host().ReconnectServer(server->id);
+  ui.WaitForPushedStatuses(uuid, {kAvailable, kNotResponding, kChecking,
+                                  kNotResponding, kChecking, kAvailable});
+  ui.WaitForPushedTools(uuid, {"search"});
+}
+
+// A server no conversation has attached isn't retried.
+TEST_F(MCPServerAssociatedContentTest, NoRetryOnceDetached) {
+  constexpr char kEndpoint[] = "https://mcp.example.com/mcp";
+  mojom::MCPServerPtr server = AddServer("Server", kEndpoint, {"search"});
+  failing_endpoints_.insert(GURL(kEndpoint).spec());
+  ConversationHandler* conversation = ai_chat_service_->CreateConversation();
+  TestConversationUI ui(*conversation);
+  Attach(conversation, *server);
+  ui.WaitForPushedStatuses(GetMCPServerUuid(conversation, "Server"),
+                           {kAvailable, kNotResponding});
+
+  Detach(conversation, "Server");
+  const size_t request_count = mcp_server_.RequestCount();
+  task_environment_.FastForwardBy(kMCPMaxToolsRetryDelay * 2);
+  EXPECT_EQ(mcp_server_.RequestCount(), request_count);
+}
+
+TEST_F(MCPServerAssociatedContentTest, NoRetryAfterShutdown) {
+  constexpr char kEndpoint[] = "https://mcp.example.com/mcp";
+  mojom::MCPServerPtr server = AddServer("Server", kEndpoint, {"search"});
+  failing_endpoints_.insert(GURL(kEndpoint).spec());
+  ConversationHandler* conversation = ai_chat_service_->CreateConversation();
+  auto ui = std::make_unique<TestConversationUI>(*conversation);
+  Attach(conversation, *server);
+  ui->WaitForPushedStatuses(GetMCPServerUuid(conversation, "Server"),
+                            {kAvailable, kNotResponding});
+
+  ui.reset();
+  ai_chat_service_->Shutdown();
+  const size_t request_count = mcp_server_.RequestCount();
+  task_environment_.FastForwardBy(kMCPMaxToolsRetryDelay * 2);
+  EXPECT_EQ(mcp_server_.RequestCount(), request_count);
+}
+
+// The conversation frame is never told about servers, nor their status.
+TEST_F(MCPServerAssociatedContentTest, StatusIsNotSentToTheFrame) {
+  constexpr char kEndpoint[] = "https://mcp.example.com/mcp";
+  mojom::MCPServerPtr server = AddServer("Server", kEndpoint, {"search"});
+  failing_endpoints_.insert(GURL(kEndpoint).spec());
+  ConversationHandler* conversation = ai_chat_service_->CreateConversation();
+  TestConversationUI ui(*conversation);
+  NiceMock<MockUntrustedConversationHandlerClient> frame(conversation);
+  size_t frame_updates = 0;
+  EXPECT_CALL(frame, AssociatedContentChanged)
+      .WillRepeatedly(
+          [&](std::vector<mojom::AssociatedContentPtr> associated_content) {
+            ++frame_updates;
+            EXPECT_TRUE(associated_content.empty());
+          });
+  Attach(conversation, *server);
+  const std::string uuid = GetMCPServerUuid(conversation, "Server");
+  ui.WaitForPushedStatuses(uuid, {kAvailable, kNotResponding});
+  RunGenerationLoop(conversation);
+  ASSERT_TRUE(ui.GetPushedServer(uuid)->missed_latest_answer);
+  EXPECT_GT(frame_updates, 0u);
 }
 
 }  // namespace ai_chat

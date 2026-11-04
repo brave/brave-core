@@ -1143,7 +1143,13 @@ describe('findConnectorContent', () => {
     contentUsedPercentage: 100,
     conversationTurnUuid: undefined,
     toolsAttached: true,
-    mcpServer: serverId ? { serverId } : undefined,
+    mcpServer: serverId
+      ? {
+          serverId,
+          status: Mojom.MCPServerStatus.kAvailable,
+          missedLatestAnswer: false,
+        }
+      : undefined,
   })
 
   it('finds a connector by its id, not its URL', () => {

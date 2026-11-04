@@ -202,6 +202,7 @@ MCPError MakeErrorFor(std::string_view name, MCPErrorCode code) {
     case MCPErrorCode::kServerError:
       message = base::StrCat({name, " returned an error."});
       break;
+    case MCPErrorCode::kHttpClientError:
     case MCPErrorCode::kHttpError:
       message = base::StrCat({name, " returned an HTTP error."});
       break;
@@ -268,6 +269,9 @@ MCPClient::~MCPClient() {
       SendCancelledNotification(id, request->sent_headers, kShutdownReason);
     }
   }
+  for (const EndedSession& session : ended_sessions_) {
+    transport_->TerminateSession(session.headers);
+  }
   if (session_id_) {
     transport_->TerminateSession(SessionHeaders());
   }
@@ -306,6 +310,34 @@ base::OnceClosure MCPClient::CallTool(std::string_view name,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
   return base::BindOnce(&MCPClient::CancelRequest,
                         weak_ptr_factory_.GetWeakPtr(), id);
+}
+
+void MCPClient::EndSession() {
+  // A handshake under way already starts a new session.
+  if (state_ == State::kInitializing) {
+    return;
+  }
+  // Ending a session could stop the work of calls on the wire in it, so it's
+  // ended once they've finished.
+  if (session_id_) {
+    ended_sessions_.push_back({session_generation_, SessionHeaders()});
+  }
+  ResetSession();
+  tools_cache_.reset();
+  TerminateEndedSessions();
+}
+
+void MCPClient::TerminateEndedSessions() {
+  std::erase_if(ended_sessions_, [this](const EndedSession& session) {
+    if (std::ranges::any_of(requests_, [&session](const auto& entry) {
+          return entry.second->transport_request &&
+                 entry.second->session_generation == session.generation;
+        })) {
+      return false;
+    }
+    transport_->TerminateSession(session.headers);
+    return true;
+  });
 }
 
 base::WeakPtr<MCPClient> MCPClient::GetWeakPtr() {
@@ -530,6 +562,7 @@ void MCPClient::CompleteRequest(
   if (request->transport_request) {
     transport_->Cancel(*request->transport_request);
   }
+  TerminateEndedSessions();
   // May destroy `this`.
   std::move(request->callback).Run(std::move(result), response_headers);
 }
@@ -547,6 +580,7 @@ void MCPClient::CancelRequest(int id) {
     // Closing the connection doesn't stop the server's work.
     SendCancelledNotification(id, request->sent_headers, kCancelledReason);
   }
+  TerminateEndedSessions();
 }
 
 void MCPClient::SendCancelledNotification(int id,
@@ -748,8 +782,7 @@ void MCPClient::OnToolsListPage(
   FinishGetTools(std::exchange(tools_in_progress_, {}));
 }
 
-void MCPClient::FinishGetTools(
-    base::expected<std::vector<MCPToolDefinition>, MCPError> result) {
+void MCPClient::FinishGetTools(ToolsResult result) {
   tools_in_progress_.clear();
   if (result.has_value()) {
     tools_cache_ = CloneTools(*result);
@@ -833,7 +866,11 @@ MCPError MCPClient::MakeHttpError(const MCPTransport::Response& response,
        status == net::HTTP_METHOD_NOT_ALLOWED)) {
     return MakeError(MCPErrorCode::kStreamableHttpNotSupported);
   }
-  MCPError error = MakeError(MCPErrorCode::kHttpError);
+  const bool is_client_error = status >= 400 && status < 500 &&
+                               status != net::HTTP_REQUEST_TIMEOUT &&
+                               status != net::HTTP_TOO_MANY_REQUESTS;
+  MCPError error = MakeError(is_client_error ? MCPErrorCode::kHttpClientError
+                                             : MCPErrorCode::kHttpError);
   error.message = base::StrCat(
       {display_name_, " returned HTTP ", base::NumberToString(status), "."});
   return error;

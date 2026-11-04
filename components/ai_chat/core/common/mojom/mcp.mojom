@@ -46,6 +46,24 @@ enum MCPServerError {
   kConnectionFailed,
 };
 
+// Whether Leo can use a server's tools, as last found.
+enum MCPServerStatus {
+  // Listing the server's tools hasn't failed since it was set up, or since it
+  // last worked.
+  kAvailable,
+  // Listing them again, after ReconnectServer().
+  kChecking,
+  // The server couldn't be reached, didn't answer in time, or failed.
+  kNotResponding,
+  // The server needs a valid access token, or the saved one can't be read.
+  kAuthRequired,
+  // The server can't be used: it speaks another protocol version or
+  // transport, offers no tools, or answers with something that isn't MCP.
+  kUnsupported,
+  // The server was turned off, removed, or moved to another site.
+  kUnavailable,
+};
+
 // The settings of an MCP server that the user chooses.
 struct MCPServerParams {
   string name;
@@ -104,9 +122,20 @@ interface MCPHost {
   // its tools, so the user can check its settings.
   GetServerTools(string id) => result<array<MCPServerTool>, MCPServerError>;
 
+  // The status of each of the servers, by id.
+  GetServerStatuses() => (map<string, MCPServerStatus> statuses);
+
+  // Lists an enabled server's tools again now, in the background, rather than
+  // when it's next retried: in a new session, or by joining a listing that's
+  // under way, in that listing's session. Its status is kChecking until it
+  // answers. A no-op unless the status is failing, and within a second of the
+  // last attempt.
+  ReconnectServer(string id);
+
   BindObserver(pending_remote<MCPHostObserver> observer);
 };
 
 interface MCPHostObserver {
   OnServersChanged(array<MCPServer> servers);
+  OnServerStatusesChanged(map<string, MCPServerStatus> statuses);
 };

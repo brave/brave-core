@@ -61,7 +61,7 @@ constexpr char kServerName[] = "Test Server";
 constexpr char kSessionId[] = "session-1";
 
 using Headers = MCPTestHeaders;
-using ToolsResult = base::expected<std::vector<MCPToolDefinition>, MCPError>;
+using ToolsResult = MCPClient::ToolsResult;
 using CallResult = base::expected<MCPCallToolResult, MCPError>;
 
 enum class Format { kJson, kSse };
@@ -1129,10 +1129,78 @@ TEST_F(MCPClientTest, NotFoundWithoutSessionIsNotRetried) {
 
   ToolsResult result = Take(future);
   ASSERT_FALSE(result.has_value());
-  EXPECT_EQ(result.error().code, MCPErrorCode::kHttpError);
+  EXPECT_EQ(result.error().code, MCPErrorCode::kHttpClientError);
   EXPECT_THAT(result.error().message, HasSubstr("404"));
   EXPECT_EQ(RequestCount(), list + 1);
   EXPECT_EQ(client_->state(), MCPClient::State::kReady);
+}
+
+// Only a 4xx that doesn't ask to try again later says the request is wrong.
+TEST_F(MCPClientTest, HttpErrorsThatMayPass) {
+  size_t index = 0;
+  for (auto [status, code] :
+       {std::pair(net::HTTP_GONE, MCPErrorCode::kHttpClientError),
+        std::pair(net::HTTP_REQUEST_TIMEOUT, MCPErrorCode::kHttpError),
+        std::pair(net::HTTP_TOO_MANY_REQUESTS, MCPErrorCode::kHttpError),
+        std::pair(net::HTTP_INTERNAL_SERVER_ERROR, MCPErrorCode::kHttpError),
+        std::pair(net::HTTP_SERVICE_UNAVAILABLE, MCPErrorCode::kHttpError)}) {
+    SCOPED_TRACE(status);
+    base::test::TestFuture<ToolsResult> future;
+    client_->GetTools(future.GetCallback());
+    ASSERT_EQ(Method(index), "initialize");
+    Respond(index++, status, "text/plain", "");
+    ToolsResult result = Take(future);
+    ASSERT_FALSE(result.has_value());
+    EXPECT_EQ(result.error().code, code);
+  }
+}
+
+TEST_F(MCPClientTest, EndSessionStartsAnotherWithInitialize) {
+  base::test::TestFuture<ToolsResult> listed;
+  client_->GetTools(listed.GetCallback());
+  const size_t list = CompleteHandshake(0);
+  RespondResult(list, R"({"tools":[]})");
+  ASSERT_TRUE(Take(listed).has_value());
+
+  client_->EndSession();
+  RunReadyTasks();
+  // The session is ended, and its tools aren't served from the cache.
+  ASSERT_EQ(RequestCount(), list + 2);
+  EXPECT_EQ(Request(list + 1).method, "DELETE");
+  EXPECT_EQ(Header(list + 1, "Mcp-Session-Id"), kSessionId);
+  base::test::TestFuture<ToolsResult> relisted;
+  client_->GetTools(relisted.GetCallback());
+  EXPECT_EQ(Method(list + 2), "initialize");
+  EXPECT_FALSE(Request(list + 2).headers.HasHeader("Mcp-Session-Id"));
+}
+
+TEST_F(MCPClientTest, EndSessionLeavesCallsInFlight) {
+  base::test::TestFuture<ToolsResult> listed;
+  client_->GetTools(listed.GetCallback());
+  const size_t list = CompleteHandshake(0);
+  RespondResult(list, R"({"tools":[]})");
+  ASSERT_TRUE(Take(listed).has_value());
+  base::test::TestFuture<base::expected<MCPCallToolResult, MCPError>> called;
+  base::OnceClosure cancel =
+      client_->CallTool("search", base::DictValue(), called.GetCallback());
+  const size_t call = list + 1;
+  ASSERT_EQ(Method(call), "tools/call");
+
+  // Not ended on the server while it's working on the call.
+  client_->EndSession();
+  RunReadyTasks();
+  EXPECT_EQ(RequestCount(), call + 1);
+  // The next request starts a session of its own meanwhile.
+  base::test::TestFuture<ToolsResult> relisted;
+  client_->GetTools(relisted.GetCallback());
+  EXPECT_EQ(Method(call + 1), "initialize");
+
+  // Ended once the call has finished.
+  RespondResult(call, R"({"content":[{"type":"text","text":"Done"}]})");
+  EXPECT_TRUE(Take(called).has_value());
+  ASSERT_EQ(RequestCount(), call + 3);
+  EXPECT_EQ(Request(call + 2).method, "DELETE");
+  EXPECT_EQ(Header(call + 2, "Mcp-Session-Id"), kSessionId);
 }
 
 TEST_F(MCPClientTest, ErrorWithNullIdOnStream) {

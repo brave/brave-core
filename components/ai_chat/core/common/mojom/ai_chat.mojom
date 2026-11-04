@@ -523,6 +523,10 @@ interface ConversationHandler {
   // changes the tool's description.
   SetContentToolPermission(string content_uuid, ToolInfo tool);
 
+  // Clears `AssociatedMCPServer.missed_latest_answer` of the MCP server
+  // attached as |content_uuid|, once the user has dismissed the notice of it.
+  DismissMCPServerNotice(string content_uuid);
+
   // Records whether the user wants the content agent for this conversation.
   // A no-op unless |ServiceState.is_content_agent_user_selectable|. The
   // choice lasts as long as the conversation is loaded and is not persisted,

@@ -37,6 +37,7 @@ export default function createConversationApi(
         'stopTask',
         'setToolsAttached',
         'setContentToolPermission',
+        'dismissMCPServerNotice',
         'respondToVisionModelSwitch',
         'setContentAgentChosen',
       ]),

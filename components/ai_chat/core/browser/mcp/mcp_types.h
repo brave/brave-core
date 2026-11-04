@@ -71,6 +71,8 @@ enum class MCPErrorCode {
   kInvalidResponse,
   // The server answered with a JSON-RPC error.
   kServerError,
+  // Any other 4xx HTTP status, apart from those that ask to try again later.
+  kHttpClientError,
   // Any other non-2xx HTTP status.
   kHttpError,
 };

@@ -24,6 +24,7 @@ import WorkspaceFileLightbox from '../workspace_file_lightbox'
 import RateMessagePrivacyModal from '../rate_message_privacy_modal'
 import SkillModal from '../skill_modal/skill_modal'
 import ConnectorsModal from '../connectors_modal'
+import ConnectorNotices from '../connector_notices'
 import PrivacyMessage from '../privacy_message'
 import FeedbackForm from '../feedback_form'
 import ShareConversationModal from '../share_conversation_modal'
@@ -257,6 +258,7 @@ function Main() {
         </Dialog>
       )}
       <div className={styles.input}>
+        {aiChatContext.isMCPEnabled && <ConnectorNotices />}
         <ToolsMenu
           isOpen={
             !conversationContext.selectedSkill

@@ -30,6 +30,7 @@ const stagedContent = (contentId: number): Mojom.AssociatedContent => ({
   contentUsedPercentage: 0,
   conversationTurnUuid: undefined,
   toolsAttached: false,
+  mcpServer: undefined,
 })
 
 const committedContent = (
@@ -525,7 +526,11 @@ describe('useProvideConversationContext mentions', () => {
     contentId: -1,
     url: { url: ORIGIN },
     toolsAttached: true,
-    mcpServer: { serverId },
+    mcpServer: {
+      serverId,
+      status: Mojom.MCPServerStatus.kAvailable,
+      missedLatestAnswer: false,
+    },
   })
 
   it('removes only the mention of the connector that is detached', async () => {

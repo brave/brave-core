@@ -198,31 +198,112 @@ describe('ConnectorsModal', () => {
       expect(getServerTools).toHaveBeenCalledWith(ISSUES.id)
     })
 
-    it('shows why a connector could not be connected to', async () => {
+    it('shows the status that every chat shows', async () => {
+      const { getServerTools } = await renderModal({
+        mcpHost: {
+          getServerStatuses: () =>
+            Promise.resolve({
+              statuses: { [ISSUES.id]: Mojom.MCPServerStatus.kNotResponding },
+            }),
+        },
+      })
+
+      expect(
+        await screen.findByText('CHAT_UI_CONNECTOR_STATUS_NOT_RESPONDING'),
+      ).toBeInTheDocument()
+      // One that's failing isn't asked for its tools.
+      expect(getServerTools).not.toHaveBeenCalled()
+    })
+
+    it('waits for the status rather than show a failed listing', async () => {
+      const observer: Observer = {}
       await renderModal({
         mcpHost: {
           getServerTools: () =>
             Promise.reject(Mojom.MCPServerError.kConnectionFailed),
         },
+        observer,
       })
-
+      await screen.findByText('Issue tracker')
       expect(
-        await screen.findByText('CHAT_UI_CONNECTOR_ERROR_CONNECTION_FAILED'),
+        screen.queryByText('CHAT_UI_CONNECTOR_ERROR_CONNECTION_FAILED'),
+      ).not.toBeInTheDocument()
+      expect(
+        screen.getByText('CHAT_UI_CONNECTOR_STATUS_CONNECTING'),
       ).toBeInTheDocument()
+
+      await act(async () => {
+        observer.current!.onServerStatusesChanged({
+          [ISSUES.id]: Mojom.MCPServerStatus.kAuthRequired,
+        })
+      })
+      expect(
+        await screen.findByText('CHAT_UI_CONNECTOR_STATUS_AUTH_REQUIRED'),
+      ).toBeInTheDocument()
+      // A token is changed in its settings instead.
+      expect(
+        screen.queryByTestId('connector-reconnect'),
+      ).not.toBeInTheDocument()
     })
 
-    it("doesn't reconnect to a failed connector when the list is shown again", async () => {
-      const getServerTools = jest.fn(() =>
-        Promise.reject(Mojom.MCPServerError.kConnectionFailed),
-      )
-      await renderModal({ mcpHost: { getServerTools } })
-      await screen.findByText('CHAT_UI_CONNECTOR_ERROR_CONNECTION_FAILED')
+    it("doesn't connect to a failed connector when the list is shown again", async () => {
+      const getServerTools = jest.fn(() => Promise.resolve(TOOLS))
+      await renderModal({
+        mcpHost: {
+          getServerTools,
+          getServerStatuses: () =>
+            Promise.resolve({
+              statuses: { [ISSUES.id]: Mojom.MCPServerStatus.kNotResponding },
+            }),
+        },
+      })
+      await screen.findByText('CHAT_UI_CONNECTOR_STATUS_NOT_RESPONDING')
 
       await click(screen.getByTitle('CHAT_UI_EDIT_BUTTON_LABEL'))
       await click(screen.getByText('CHAT_UI_CANCEL_BUTTON_LABEL'))
 
       expect(
-        await screen.findByText('CHAT_UI_CONNECTOR_ERROR_CONNECTION_FAILED'),
+        await screen.findByText('CHAT_UI_CONNECTOR_STATUS_NOT_RESPONDING'),
+      ).toBeInTheDocument()
+      expect(getServerTools).not.toHaveBeenCalled()
+    })
+
+    it('reconnects to a connector that is not responding', async () => {
+      const observer: Observer = {}
+      const reconnectServer = jest.fn()
+      const { getServerTools } = await renderModal({
+        mcpHost: {
+          reconnectServer,
+          getServerStatuses: () =>
+            Promise.resolve({
+              statuses: { [ISSUES.id]: Mojom.MCPServerStatus.kNotResponding },
+            }),
+        },
+        observer,
+      })
+      await screen.findByText('CHAT_UI_CONNECTOR_STATUS_NOT_RESPONDING')
+
+      await click(screen.getByText('CHAT_UI_CONNECTOR_RECONNECT_BUTTON_LABEL'))
+      expect(reconnectServer).toHaveBeenCalledWith(ISSUES.id)
+
+      await act(async () => {
+        observer.current!.onServerStatusesChanged({
+          [ISSUES.id]: Mojom.MCPServerStatus.kChecking,
+        })
+      })
+      expect(
+        await screen.findByText('CHAT_UI_CONNECTOR_STATUS_CONNECTING'),
+      ).toBeInTheDocument()
+      expect(getServerTools).not.toHaveBeenCalled()
+
+      // Once it's back, what it offers is shown.
+      await act(async () => {
+        observer.current!.onServerStatusesChanged({
+          [ISSUES.id]: Mojom.MCPServerStatus.kAvailable,
+        })
+      })
+      expect(
+        await screen.findByText('CHAT_UI_CONNECTOR_TOOL_COUNT:2'),
       ).toBeInTheDocument()
       expect(getServerTools).toHaveBeenCalledTimes(1)
     })

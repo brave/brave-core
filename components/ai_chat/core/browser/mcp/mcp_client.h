@@ -65,8 +65,8 @@ class MCPClient {
     kFailed,
   };
 
-  using GetToolsCallback = base::OnceCallback<void(
-      base::expected<std::vector<MCPToolDefinition>, MCPError>)>;
+  using ToolsResult = base::expected<std::vector<MCPToolDefinition>, MCPError>;
+  using GetToolsCallback = base::OnceCallback<void(ToolsResult)>;
   using CallToolCallback =
       base::OnceCallback<void(base::expected<MCPCallToolResult, MCPError>)>;
 
@@ -97,6 +97,11 @@ class MCPClient {
   [[nodiscard]] base::OnceClosure CallTool(std::string_view name,
                                            base::DictValue arguments,
                                            CallToolCallback callback);
+
+  // Ends the session, best effort, so that the next request starts another
+  // with `initialize`. Calls in flight carry on, and the server is told once
+  // they've finished.
+  void EndSession();
 
   State state() const { return state_; }
   // Why connecting failed, while state() is kFailed.
@@ -137,6 +142,9 @@ class MCPClient {
                                  const MCPTransport::Headers& headers,
                                  std::string_view reason);
 
+  // Tells the server of each ended session that has no calls left in flight.
+  void TerminateEndedSessions();
+
   void SendNotification(std::string_view method,
                         std::optional<base::DictValue> params,
                         MCPTransport::CompleteCallback on_complete);
@@ -154,8 +162,7 @@ class MCPClient {
   void RequestToolsPage(std::optional<std::string> cursor);
   void OnToolsListPage(base::expected<base::DictValue, MCPError> result,
                        const MCPTransport::Headers& response_headers);
-  void FinishGetTools(
-      base::expected<std::vector<MCPToolDefinition>, MCPError> result);
+  void FinishGetTools(ToolsResult result);
   void RunGetToolsCallback(GetToolsCallback callback,
                            std::vector<MCPToolDefinition> tools);
   void OnCallToolResponse(CallToolCallback callback,
@@ -181,6 +188,12 @@ class MCPClient {
   // Incremented whenever the session is discarded, so that the expiry of a
   // session that's already been replaced isn't acted on twice.
   int session_generation_ = 0;
+  // Sessions that EndSession() ended while calls in them were in flight.
+  struct EndedSession {
+    int generation = 0;
+    MCPTransport::Headers headers;
+  };
+  std::vector<EndedSession> ended_sessions_;
 
   int next_request_id_ = 0;
   absl::flat_hash_map<int, std::unique_ptr<Request>> requests_;

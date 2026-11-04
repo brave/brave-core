@@ -223,6 +223,8 @@ const ASSOCIATED_CONTENT_WITH_TOOLS: Mojom.AssociatedContent = {
 // associated with a turn, so it stays beside the input box.
 const getAssociatedMCPServer = (
   server: Mojom.MCPServer,
+  status: Mojom.MCPServerStatus,
+  missedLatestAnswer: boolean,
 ): Mojom.AssociatedContent => ({
   ...ASSOCIATED_CONTENT,
   uuid: `uuid-${server.id}`,
@@ -233,7 +235,7 @@ const getAssociatedMCPServer = (
   contentUsedPercentage: 100,
   conversationTurnUuid: undefined,
   toolsAttached: true,
-  mcpServer: { serverId: server.id },
+  mcpServer: { serverId: server.id, status, missedLatestAnswer },
 })
 
 // Shown in the dialog opened from the "Tools" pill. The first description is
@@ -441,6 +443,8 @@ type CustomArgs = {
   hasAssociatedContent: boolean
   hasAttachedTools: boolean
   hasAttachedMCPServer: boolean
+  mcpServerStatus: keyof typeof Mojom.MCPServerStatus
+  mcpServerMissedLatestAnswer: boolean
   isFeedbackFormVisible: boolean
   isStorageNoticeDismissed: boolean
   canShowPremiumPrompt: boolean
@@ -493,6 +497,8 @@ const args: CustomArgs = {
   hasAssociatedContent: true,
   hasAttachedTools: false,
   hasAttachedMCPServer: false,
+  mcpServerStatus: 'kAvailable',
+  mcpServerMissedLatestAnswer: false,
   editingConversationId: null,
   deletingConversationId: null,
   generatingConversationId: null,
@@ -561,6 +567,10 @@ const meta: Meta<CustomArgs> = {
     },
     toolUseTaskState: {
       options: getKeysForMojomEnum(Mojom.TaskState),
+      control: { type: 'select' },
+    },
+    mcpServerStatus: {
+      options: getKeysForMojomEnum(Mojom.MCPServerStatus),
       control: { type: 'select' },
     },
     capabilitiesEnabled: {
@@ -704,6 +714,43 @@ function StoryContext(
     )
   }
 
+  // Whether Leo can use each connector. The issue tracker's comes from the
+  // controls, and the documentation search isn't responding.
+  const mcpServerStatuses = React.useRef<Record<string, Mojom.MCPServerStatus>>(
+    {},
+  )
+  const mcpServerStatusArg = React.useRef<string>(undefined)
+  if (mcpServerStatusArg.current !== args.mcpServerStatus) {
+    mcpServerStatusArg.current = args.mcpServerStatus
+    mcpServerStatuses.current = {
+      [SAMPLE_MCP_SERVERS[0].id]: Mojom.MCPServerStatus[args.mcpServerStatus],
+      'mcp-server-docs': Mojom.MCPServerStatus.kNotResponding,
+    }
+  }
+  const getMCPServerStatus = (id: string) =>
+    mcpServerStatuses.current[id] ?? Mojom.MCPServerStatus.kAvailable
+  const setMCPServerStatus = (id: string, status: Mojom.MCPServerStatus) => {
+    mcpServerStatuses.current = { ...mcpServerStatuses.current, [id]: status }
+    mcpHostObserver.current?.onServerStatusesChanged(mcpServerStatuses.current)
+    conversationUIObserver.current?.onAssociatedContentInfoChanged(
+      getAssociatedContent(),
+    )
+  }
+  // The documentation search still doesn't respond, and the rest come back.
+  const reconnectMCPServer = (id: string) => {
+    setMCPServerStatus(id, Mojom.MCPServerStatus.kChecking)
+    setTimeout(
+      () =>
+        setMCPServerStatus(
+          id,
+          id === 'mcp-server-docs'
+            ? Mojom.MCPServerStatus.kNotResponding
+            : Mojom.MCPServerStatus.kAvailable,
+        ),
+      2000,
+    )
+  }
+
   // Compute derived values from args for UntrustedConversationContext
   const getAssociatedContent = (): Mojom.AssociatedContent[] => {
     const content: Mojom.AssociatedContent[] = []
@@ -715,7 +762,14 @@ function StoryContext(
     }
     for (const server of mcpServers.current) {
       if (attachedMCPServerIds.current.includes(server.id)) {
-        content.push(getAssociatedMCPServer(server))
+        content.push(
+          getAssociatedMCPServer(
+            server,
+            getMCPServerStatus(server.id),
+            server.id === SAMPLE_MCP_SERVERS[0].id
+              && argsRef.current.mcpServerMissedLatestAnswer,
+          ),
+        )
       }
     }
     if (content.length === 0) {
@@ -846,6 +900,9 @@ function StoryContext(
       }}
       mcpHost={{
         getServers: () => Promise.resolve({ servers: mcpServers.current }),
+        getServerStatuses: () =>
+          Promise.resolve({ statuses: mcpServerStatuses.current }),
+        reconnectServer: reconnectMCPServer,
         addServer: (params, token) =>
           saveMCPServer(`mcp-server-${Date.now()}`, params, token),
         updateServer: saveMCPServer,
@@ -923,6 +980,8 @@ function StoryContext(
           conversationHistory: await getConversationHistory(),
         }),
         getContentTools: () => Promise.resolve({ tools: SAMPLE_CONTENT_TOOLS }),
+        dismissMCPServerNotice: () =>
+          props.setArgs({ mcpServerMissedLatestAnswer: false }),
       }}
       conversationProps={{
         selectedConversationId: activeChatContext.selectedConversationId,
@@ -1057,6 +1116,46 @@ export const _WithAttachedTools = GetPanelStory({
 export const _WithAttachedMCPServer = GetPanelStory({
   conversation_content: 'ALL',
   hasAttachedMCPServer: true,
+})
+
+// An attached connector that Leo can't use is shown as a warning, before and
+// after a message is sent.
+export const _WithConnectorNotResponding = GetPanelStory({
+  conversation_content: 'ALL',
+  model: MODELS[1].displayName,
+  hasAttachedMCPServer: true,
+  mcpServerStatus: 'kNotResponding',
+})
+
+export const _WithConnectorNeedingToken = GetPanelStory({
+  conversation_content: 'ALL',
+  model: MODELS[1].displayName,
+  hasAttachedMCPServer: true,
+  mcpServerStatus: 'kAuthRequired',
+})
+
+export const _WithConnectorUnavailable = GetPanelStory({
+  conversation_content: 'ALL',
+  model: MODELS[1].displayName,
+  hasAttachedMCPServer: true,
+  mcpServerStatus: 'kUnavailable',
+})
+
+// The latest answer was written without a connector, so the page says so.
+export const _WithConnectorNotice = GetPanelStory({
+  conversation_content: 'ALL',
+  model: MODELS[1].displayName,
+  hasAttachedMCPServer: true,
+  mcpServerStatus: 'kNotResponding',
+  mcpServerMissedLatestAnswer: true,
+})
+
+export const _WithConnectorNoticeNeedingToken = GetPanelStory({
+  conversation_content: 'ALL',
+  model: MODELS[1].displayName,
+  hasAttachedMCPServer: true,
+  mcpServerStatus: 'kAuthRequired',
+  mcpServerMissedLatestAnswer: true,
 })
 
 // Connectors are offered to a model that can use tools, in the attachments

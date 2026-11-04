@@ -209,6 +209,7 @@ class ConversationHandler : public mojom::ConversationHandler,
                        GetContentToolsCallback callback) override;
   void SetContentToolPermission(const std::string& content_uuid,
                                 mojom::ToolInfoPtr tool) override;
+  void DismissMCPServerNotice(const std::string& content_uuid) override;
   void SetContentAgentChosen(bool chosen) override;
   void RateMessage(bool is_liked,
                    const std::string& turn_uuid,
@@ -367,6 +368,9 @@ class ConversationHandler : public mojom::ConversationHandler,
   AssociatedContentManager* associated_content_manager() {
     return associated_content_manager_.get();
   }
+
+  // Changes as each generation loop starts, and as it's stopped.
+  uint64_t generation_loop_id() const { return generation_loop_id_; }
 
   AIChatService* ai_chat_service() { return ai_chat_service_; }
 

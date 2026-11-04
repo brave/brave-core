@@ -44,18 +44,47 @@ async function renderToolsAttachments(
   const getContentTools = jest.fn(() => Promise.resolve({ tools }))
   const setToolsAttached = jest.fn()
   const disassociateContent = jest.fn()
+  const reconnectServer = jest.fn()
+  const conversationHandler = { getContentTools }
+  const mcpHost = { reconnectServer }
+  const getElement = (content: Mojom.AssociatedContent) => (
+    <MockContext
+      conversationHandler={conversationHandler}
+      mcpHost={mcpHost}
+    >
+      <ToolsAttachments
+        toolsContent={[content]}
+        setToolsAttached={setToolsAttached}
+        disassociateContent={disassociateContent}
+      />
+    </MockContext>
+  )
+  let result: ReturnType<typeof render>
   await act(async () => {
-    render(
-      <MockContext conversationHandler={{ getContentTools }}>
-        <ToolsAttachments
-          toolsContent={[content]}
-          setToolsAttached={setToolsAttached}
-          disassociateContent={disassociateContent}
-        />
-      </MockContext>,
-    )
+    result = render(getElement(content))
   })
-  return { getContentTools, setToolsAttached, disassociateContent }
+  return {
+    getContentTools,
+    setToolsAttached,
+    disassociateContent,
+    reconnectServer,
+    rerender: (content: Mojom.AssociatedContent) =>
+      act(async () => result.rerender(getElement(content))),
+  }
+}
+
+function getConnector(status: Mojom.MCPServerStatus): Mojom.AssociatedContent {
+  return {
+    ...MCP_SERVER,
+    mcpServer: { serverId: 'server-id', status, missedLatestAnswer: false },
+  }
+}
+
+function getIconNames(element: Element): string[] {
+  return Array.from(
+    element.querySelectorAll('leo-icon'),
+    (icon) => (icon as any).name,
+  )
 }
 
 describe('ToolsAttachments', () => {
@@ -156,5 +185,90 @@ describe('ToolsAttachments', () => {
 
     expect(disassociateContent).toHaveBeenCalledWith(MCP_SERVER)
     expect(setToolsAttached).not.toHaveBeenCalled()
+  })
+
+  describe('connector status', () => {
+    const Status = Mojom.MCPServerStatus
+
+    it('shows nothing more once a connector is available', async () => {
+      const { rerender } = await renderToolsAttachments(
+        TOOLS,
+        getConnector(Status.kNotResponding),
+      )
+      expect(screen.getByTestId('connector-status')).toBeInTheDocument()
+      expect(screen.getByTestId('connector-reconnect')).toBeInTheDocument()
+
+      await rerender(getConnector(Status.kAvailable))
+      expect(screen.getByText('2')).toBeInTheDocument()
+      expect(screen.queryByTestId('connector-status')).toBeNull()
+      expect(screen.queryByTestId('connector-reconnect')).toBeNull()
+    })
+
+    it('shows a connector that is not responding as a warning', async () => {
+      const { reconnectServer } = await renderToolsAttachments(
+        TOOLS,
+        getConnector(Status.kNotResponding),
+      )
+
+      const status = screen.getByTestId('connector-status')
+      expect(status).toHaveTextContent(
+        'CHAT_UI_CONNECTOR_STATUS_NOT_RESPONDING',
+      )
+      expect(getIconNames(status)).toEqual(['warning-triangle-outline'])
+      // Says why, and what's being done about it, to keyboard and touch too.
+      const description = document.getElementById(
+        status.getAttribute('aria-describedby')!,
+      )
+      expect(description).toHaveTextContent(
+        'CHAT_UI_CONNECTOR_STATUS_NOT_RESPONDING_DESCRIPTION',
+      )
+      expect(description).toHaveAttribute('slot', 'content')
+      expect(status).toHaveAttribute('tabindex', '0')
+
+      fireEvent.click(screen.getByTestId('connector-reconnect'))
+      expect(reconnectServer).toHaveBeenCalledWith('server-id')
+    })
+
+    it.each([
+      [Status.kAuthRequired, 'AUTH_REQUIRED'],
+      [Status.kUnavailable, 'UNAVAILABLE'],
+    ])(
+      'offers no reconnect where it would not help (%s)',
+      async (status, name) => {
+        await renderToolsAttachments(TOOLS, getConnector(status))
+
+        const element = screen.getByTestId('connector-status')
+        expect(element).toHaveTextContent(`CHAT_UI_CONNECTOR_STATUS_${name}`)
+        expect(getIconNames(element)).toEqual(['warning-triangle-outline'])
+        expect(
+          document.getElementById(element.getAttribute('aria-describedby')!),
+        ).toHaveTextContent(`CHAT_UI_CONNECTOR_STATUS_${name}_DESCRIPTION`)
+        expect(screen.queryByTestId('connector-reconnect')).toBeNull()
+      },
+    )
+
+    it('can reconnect to a connector that is not supported', async () => {
+      const { reconnectServer } = await renderToolsAttachments(
+        TOOLS,
+        getConnector(Status.kUnsupported),
+      )
+
+      expect(screen.getByTestId('connector-status')).toHaveTextContent(
+        'CHAT_UI_CONNECTOR_STATUS_UNSUPPORTED',
+      )
+      fireEvent.click(screen.getByTestId('connector-reconnect'))
+      expect(reconnectServer).toHaveBeenCalledWith('server-id')
+    })
+
+    it('shows that it is checking a connector again', async () => {
+      await renderToolsAttachments(TOOLS, getConnector(Status.kChecking))
+
+      const status = screen.getByTestId('connector-status')
+      expect(status).toHaveTextContent('CHAT_UI_CONNECTOR_STATUS_CONNECTING')
+      expect(status.querySelector('leo-progressring')).toBeInTheDocument()
+      expect(getIconNames(status)).toEqual([])
+      expect(status).not.toHaveAttribute('tabindex')
+      expect(screen.queryByTestId('connector-reconnect')).toBeNull()
+    })
   })
 })

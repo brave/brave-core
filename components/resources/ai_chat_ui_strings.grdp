@@ -857,8 +857,47 @@
   <message name="IDS_CHAT_UI_CONNECTOR_ERROR_SERVER_CHANGED" desc="Error when the settings of a connector (a remote MCP server) changed, or it was removed, before it responded" formatter_data="webui=AiChat">
     The connector changed before it responded. Try again.
   </message>
-  <message name="IDS_CHAT_UI_CONNECTOR_ERROR_CONNECTION_FAILED" desc="Status of a connector (a remote MCP server that the user added) that Brave couldn't connect to, or couldn't get the list of tools from" formatter_data="webui=AiChat">
+  <message name="IDS_CHAT_UI_CONNECTOR_ERROR_CONNECTION_FAILED" desc="Result of testing the connection, in the form for editing a connector (a remote MCP server that the user added), when Brave couldn't connect to it, or couldn't get the list of tools from it" formatter_data="webui=AiChat">
     Couldn't connect, or couldn't list its tools. Check the URL and token, and try again.
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_STATUS_NOT_RESPONDING" desc="Short status of a connector (a remote MCP server that the user added) that couldn't be reached, didn't respond in time, or failed, so Leo can't use its tools for now. Shown beside its name in the tools of a chat that it's attached to, and in the list of connectors" formatter_data="webui=AiChat">
+    Not responding
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_STATUS_AUTH_REQUIRED" desc="Short status of a connector (a remote MCP server that the user added) that rejected its access token, needs one, or whose saved one can't be read. Shown beside its name in the tools of a chat that it's attached to, and in the list of connectors" formatter_data="webui=AiChat">
+    Needs a valid token
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_STATUS_UNSUPPORTED" desc="Short status of a connector (a remote MCP server that the user added) that Brave can't use, e.g. because it speaks a version of the protocol that Brave doesn't, or offers no tools. Shown beside its name in the tools of a chat that it's attached to, and in the list of connectors" formatter_data="webui=AiChat">
+    Not supported
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_STATUS_UNAVAILABLE" desc="Short status of a connector (a remote MCP server) that's attached to a chat, but was turned off, removed, or moved to another site since, so Leo can't use it in that chat. Shown beside its name in that chat's tools" formatter_data="webui=AiChat">
+    Unavailable
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_STATUS_NOT_RESPONDING_DESCRIPTION" desc="Tooltip of a connector (a remote MCP server) attached to a chat, when it isn't responding: what that means, and that Brave keeps trying to connect to it" formatter_data="webui=AiChat">
+    Leo can't use this connector's tools until it responds. Brave keeps trying in the background.
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_STATUS_AUTH_REQUIRED_DESCRIPTION" desc="Tooltip of a connector (a remote MCP server) attached to a chat, when it needs a valid access token: what that means, and where the user can enter one" formatter_data="webui=AiChat">
+    Leo can't use this connector's tools until it has a valid token. You can update it in Manage connectors.
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_STATUS_UNSUPPORTED_DESCRIPTION" desc="Tooltip of a connector (a remote MCP server) attached to a chat, when Brave can't use it, e.g. because it speaks a version of the protocol that Brave doesn't: what to check" formatter_data="webui=AiChat">
+    Leo can't use this connector. Check that its URL is the server's MCP endpoint.
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_STATUS_UNAVAILABLE_DESCRIPTION" desc="Tooltip of a connector (a remote MCP server) attached to a chat, when it was turned off, removed, or moved to another site since it was attached" formatter_data="webui=AiChat">
+    This connector was turned off, removed, or moved to another site, so Leo can't use it in this chat.
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_RECONNECT_BUTTON_LABEL" desc="Button on a connector (a remote MCP server) that isn't responding, or that Brave can't use, both where it's attached to a chat and in the list of connectors. It makes Brave try to connect to it again straight away, rather than waiting to retry" formatter_data="webui=AiChat">
+    Reconnect
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_NOTICE_NOT_RESPONDING" desc="Notice, below a chat, that Leo's latest answer was written without the tools of one of the user's connectors (remote MCP servers), because it didn't respond" formatter_data="webui=AiChat">
+    Connector <ph name="CONNECTOR_NAME">$1<ex>Issue tracker</ex></ph> didn't respond, so this answer was written without it.
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_NOTICE_AUTH_REQUIRED" desc="Notice, below a chat, that Leo's latest answer was written without the tools of one of the user's connectors (remote MCP servers), because it needs a valid access token" formatter_data="webui=AiChat">
+    Connector <ph name="CONNECTOR_NAME">$1<ex>Issue tracker</ex></ph> needs a valid token, so this answer was written without it.
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_NOTICE_UNAVAILABLE" desc="Notice, below a chat, that Leo's latest answer was written without the tools of one of the user's connectors (remote MCP servers), because Brave couldn't use it, or it was turned off or removed" formatter_data="webui=AiChat">
+    Connector <ph name="CONNECTOR_NAME">$1<ex>Issue tracker</ex></ph> isn't available, so this answer was written without it.
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_NOTICE_MANAGE_BUTTON_LABEL" desc="Button on the notice that Leo's latest answer was written without one of the user's connectors (remote MCP servers). It opens the dialog that lists the user's connectors" formatter_data="webui=AiChat">
+    Manage
   </message>
   <message name="IDS_CHAT_UI_CONNECTORS_MENU_LABEL" desc="Item in the attachments menu of the chat input that shows the user's connectors (remote MCP servers whose tools Leo can use), each with a toggle that attaches it to this chat. Also the title of that part of the menu" formatter_data="webui=AiChat">
     Connectors

@@ -80,6 +80,7 @@ void AssociatedContentDelegate::set_tools_attached(bool tools_attached) {
     return;
   }
   tools_attached_ = tools_attached;
+  DidChangeToolsAttached();
 
   observers_.Notify(&Observer::OnToolsAttachedChanged, this);
 }
@@ -108,6 +109,10 @@ void AssociatedContentDelegate::RemoveObserver(Observer* observer) {
 
 void AssociatedContentDelegate::NotifyContentToolsChanged() {
   observers_.Notify(&Observer::OnContentToolsChanged, this);
+}
+
+void AssociatedContentDelegate::NotifyStatusChanged() {
+  observers_.Notify(&Observer::OnStatusChanged, this);
 }
 
 }  // namespace ai_chat

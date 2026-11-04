@@ -69,6 +69,9 @@ class AssociatedContentDelegate {
     virtual void OnTitleChanged(AssociatedContentDelegate* delegate) {}
     virtual void OnToolsAttachedChanged(AssociatedContentDelegate* delegate) {}
     virtual void OnContentToolsChanged(AssociatedContentDelegate* delegate) {}
+    // Whether the content can be used changed, e.g. a server that it's from
+    // stopped responding.
+    virtual void OnStatusChanged(AssociatedContentDelegate* delegate) {}
   };
 
   AssociatedContentDelegate();
@@ -139,6 +142,9 @@ class AssociatedContentDelegate {
   virtual void OnNewPage(int64_t navigation_id);
 
   void NotifyContentToolsChanged();
+  void NotifyStatusChanged();
+  // Called as tools_attached() changes, before observers are told.
+  virtual void DidChangeToolsAttached() {}
 
   void set_uuid(std::string uuid) { uuid_ = std::move(uuid); }
   void NotifyNewPage();

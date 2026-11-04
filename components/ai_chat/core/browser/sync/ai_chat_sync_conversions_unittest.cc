@@ -22,6 +22,7 @@
 #include "brave/components/sync/protocol/ai_chat_specifics.pb.h"
 #include "components/sync/protocol/entity_data.h"
 #include "components/sync/protocol/entity_specifics.pb.h"
+#include "mojo/public/cpp/bindings/clone_traits.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -821,6 +822,37 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripAllFields) {
   EXPECT_EQ(rebuilt_texts,
             (base::flat_map<std::string, std::string>{
                 {"ac-uuid", "associated content extracted text"}}));
+}
+
+// What the UI is told of an attached MCP server, such as its status, is live
+// only.
+TEST(AIChatSyncConversionsTest, AssociatedMCPServerIsNotSynced) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry";
+  entry->created_time = base::Time::Now();
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+  std::vector<mojom::AssociatedContentPtr> associated_content;
+  associated_content.push_back(mojom::AssociatedContent::New(
+      "ac-uuid", mojom::ContentType::PageContent, "AC title", 0,
+      GURL("https://example.com/ac"), 42, "entry", false,
+      mojom::AssociatedMCPServer::New("server-id",
+                                      mojom::MCPServerStatus::kNotResponding,
+                                      /*missed_latest_answer=*/true)));
+
+  sync_pb::AIChatConversationSpecifics specifics =
+      EntryToSpecifics("conv", *entry, associated_content);
+  // Nothing of the server, its status or the notice is serialized.
+  std::vector<mojom::AssociatedContentPtr> without_server =
+      mojo::Clone(associated_content);
+  without_server[0]->mcp_server = nullptr;
+  EXPECT_EQ(
+      specifics.SerializeAsString(),
+      EntryToSpecifics("conv", *entry, without_server).SerializeAsString());
+  std::vector<mojom::AssociatedContentPtr> rebuilt_content;
+  ASSERT_TRUE(SpecificsToEntry(specifics, rebuilt_content));
+  ASSERT_EQ(rebuilt_content.size(), 1u);
+  EXPECT_FALSE(rebuilt_content[0]->mcp_server);
 }
 
 TEST(AIChatSyncConversionsTest, EntryRoundTripCompletionEvent) {

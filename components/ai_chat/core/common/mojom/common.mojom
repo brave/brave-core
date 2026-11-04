@@ -5,6 +5,7 @@
 
 module ai_chat.mojom;
 
+import "brave/components/ai_chat/core/common/mojom/mcp.mojom";
 import "mojo/public/mojom/base/time.mojom";
 import "url/mojom/url.mojom";
 
@@ -170,6 +171,14 @@ struct ServiceState {
 struct AssociatedMCPServer {
   // The server's id in `MCPHost`.
   string server_id;
+
+  // Whether Leo can use the server's tools in this conversation.
+  MCPServerStatus status;
+
+  // The latest answer was written without the server's tools, as it wasn't
+  // available. Cleared once it is, once a later answer has its tools, or once
+  // the user dismisses it.
+  bool missed_latest_answer;
 };
 
 // Represents the content that is associated with a conversation.

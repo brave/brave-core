@@ -87,6 +87,23 @@ export default function createAIChatApi(
     }
   }
 
+  // A server's tools are listed again once it recovers, as what was listed
+  // while it was failing no longer applies.
+  const resetToolsOfRecoveredServers = (
+    statuses: Record<string, Mojom.MCPServerStatus>,
+  ) => {
+    const old = api.getServerStatuses.current()
+    for (const [id, status] of Object.entries(statuses)) {
+      if (
+        status === Mojom.MCPServerStatus.kAvailable
+        && old[id] !== undefined
+        && old[id] !== status
+      ) {
+        api.getServerTools.reset(id)
+      }
+    }
+  }
+
   // Define the API layout and what to do with the interface data:
   // - which functions should be exposed to the UI as subscribable with hooks
   // - which should be prefetched,
@@ -194,6 +211,13 @@ export default function createAIChatApi(
           placeholderData: [] as Mojom.MCPServer[],
           retry: false,
         },
+        // Whether Leo can use each server's tools, by server id. Kept current
+        // by `onServerStatusesChanged`.
+        getServerStatuses: {
+          response: (result) => result.statuses,
+          placeholderData: {} as Record<string, Mojom.MCPServerStatus>,
+          retry: false,
+        },
         // Connects to the server if it isn't connected. A failure isn't
         // retried on its own, as each attempt is a request to the server.
         getServerTools: {
@@ -268,6 +292,7 @@ export default function createAIChatApi(
         Mojom.MetricsInterface,
         VoidMethodKeys<Mojom.MetricsInterface>
       >,
+      mcpHost: mcpHost as Pick<MCPHostInterface, 'reconnectServer'>,
     },
 
     // Events are subscribable data and offer an easy hook to wrap the subscription
@@ -355,6 +380,10 @@ export default function createAIChatApi(
           onServersChanged: (servers) => {
             resetToolsOfChangedServers(servers)
             api.getServers.update(servers)
+          },
+          onServerStatusesChanged: (statuses) => {
+            resetToolsOfRecoveredServers(statuses)
+            api.getServerStatuses.update(statuses)
           },
         },
         (observer) => {

@@ -122,6 +122,13 @@
   color: var(--leo-color-systemfeedback-warning-text);
 }
 
+.statusRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+}
+
 .statusSuccess {
   --leo-icon-color: var(--leo-color-systemfeedback-success-icon);
   color: var(--leo-color-systemfeedback-success-text);

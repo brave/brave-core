@@ -18,6 +18,7 @@ import {
   UploadedFileType,
   TaskState,
   ConversationCapability,
+  MCPServerStatus,
   Model,
   ModelAccess,
   ModelCategory,
@@ -110,6 +111,7 @@ describe('input box', () => {
                 uuid: '1234',
                 conversationTurnUuid: undefined,
                 toolsAttached: false,
+                mcpServer: undefined,
               },
             ],
           }}
@@ -161,6 +163,7 @@ describe('input box', () => {
                 uuid: '1234',
                 conversationTurnUuid: 'turn-1',
                 toolsAttached: false,
+                mcpServer: undefined,
               },
             ],
           }}
@@ -449,6 +452,7 @@ describe('input box', () => {
                 url: { url: 'https://example.com' },
                 uuid: '1234',
                 toolsAttached: false,
+                mcpServer: undefined,
               },
             ],
             pendingMessageFiles: [
@@ -728,6 +732,7 @@ describe('input box', () => {
       contentUsedPercentage: 100,
       conversationTurnUuid: undefined,
       toolsAttached: true,
+      mcpServer: undefined,
     }
 
     function createModel(supportsTools: boolean): Model {
@@ -781,6 +786,41 @@ describe('input box', () => {
       // Removing its tools detaches it, as it has nothing else to offer.
       fireEvent.click(container.querySelector('leo-button.toolPillRemove')!)
       expect(disassociateContent).toHaveBeenCalledWith(MCP_SERVER)
+    })
+
+    it("reconnects to a server that isn't responding", async () => {
+      const reconnectServer = jest.fn()
+      await renderInputBox(
+        <MockContext
+          conversationOverrides={{ currentModel: createModel(true) }}
+          mcpHost={{ reconnectServer }}
+        >
+          <InputBox
+            context={{
+              ...testContext,
+              associatedContentInfo: [
+                {
+                  ...MCP_SERVER,
+                  mcpServer: {
+                    serverId: 'server-id',
+                    status: MCPServerStatus.kNotResponding,
+                    missedLatestAnswer: false,
+                  },
+                },
+              ],
+            }}
+            conversationStarted={false}
+          />
+        </MockContext>,
+      )
+
+      expect(
+        screen.getByText('CHAT_UI_CONNECTOR_STATUS_NOT_RESPONDING'),
+      ).toBeInTheDocument()
+      await act(async () => {
+        fireEvent.click(screen.getByTestId('connector-reconnect'))
+      })
+      expect(reconnectServer).toHaveBeenCalledWith('server-id')
     })
 
     it('hides servers when the model cannot use tools', async () => {

@@ -6,6 +6,7 @@
 import * as React from 'react'
 import Button from '@brave/nala/react/button'
 import Icon from '@brave/nala/react/icon'
+import ProgressRing from '@brave/nala/react/progressRing'
 import Tooltip from '@brave/nala/react/tooltip'
 import classnames from '$web-common/classnames'
 import { formatLocale, getLocale } from '$web-common/locale'
@@ -14,7 +15,14 @@ import {
   isWorkspaceContent,
 } from '../../../common/conversation_history_utils'
 import * as Mojom from '../../../common/mojom'
+import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
+import {
+  canReconnectConnector,
+  getConnectorStatusDescription,
+  getConnectorStatusLabel,
+  isConnectorFailing,
+} from '../connectors_modal/connector_utils'
 import WebsiteToolsModal from '../website_tools_modal'
 import styles from './tools_attachments.module.scss'
 
@@ -95,6 +103,9 @@ function ToolPill(props: {
         )}
         <div slot='content'>{props.content.title}</div>
       </Tooltip>
+      {props.content.mcpServer && (
+        <ConnectorStatus server={props.content.mcpServer} />
+      )}
       <Button
         fab
         size='tiny'
@@ -106,6 +117,77 @@ function ToolPill(props: {
         <Icon name='close' />
       </Button>
     </div>
+  )
+}
+
+/**
+ * Whether Leo can use an attached connector's tools, shown while it's being
+ * checked or while it can't, before and after a message is sent.
+ */
+function ConnectorStatus(props: { server: Mojom.AssociatedMCPServer }) {
+  const { api } = useAIChat()
+  const descriptionId = React.useId()
+  const { serverId, status } = props.server
+
+  if (status === Mojom.MCPServerStatus.kChecking) {
+    return (
+      <span
+        className={styles.toolPillStatus}
+        data-testid='connector-status'
+      >
+        <ProgressRing />
+        {getConnectorStatusLabel(status)}
+      </span>
+    )
+  }
+  if (!isConnectorFailing(status)) {
+    return null
+  }
+
+  const reconnectLabel = getLocale(S.CHAT_UI_CONNECTOR_RECONNECT_BUTTON_LABEL)
+  return (
+    <>
+      <Tooltip
+        mode='mini'
+        positionStrategy='fixed'
+        className={styles.toolPillStatusTooltip}
+      >
+        {/* Focusable, so that why is shown to keyboard and touch too. */}
+        <div
+          tabIndex={0}
+          aria-describedby={descriptionId}
+          className={classnames(
+            styles.toolPillStatus,
+            styles.toolPillStatusWarning,
+          )}
+          data-testid='connector-status'
+        >
+          <Icon name='warning-triangle-outline' />
+          {getConnectorStatusLabel(status)}
+        </div>
+        <div
+          id={descriptionId}
+          slot='content'
+          className={styles.toolsTooltipContent}
+        >
+          {getConnectorStatusDescription(status)}
+        </div>
+      </Tooltip>
+      {canReconnectConnector(status) && (
+        <Button
+          fab
+          size='tiny'
+          kind='plain-faint'
+          className={styles.toolPillAction}
+          title={reconnectLabel}
+          aria-label={reconnectLabel}
+          onClick={() => api.mcpHost.reconnectServer(serverId)}
+          data-testid='connector-reconnect'
+        >
+          <Icon name='refresh' />
+        </Button>
+      )}
+    </>
   )
 }
 

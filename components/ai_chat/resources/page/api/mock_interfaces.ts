@@ -142,6 +142,7 @@ export function createMockConversationHandler(
     stopTask: () => {},
     setToolsAttached: () => {},
     setContentToolPermission: () => {},
+    dismissMCPServerNotice: () => {},
     respondToVisionModelSwitch: () => {},
     setContentAgentChosen: () => {},
 
@@ -344,6 +345,8 @@ export function createMockMCPHost(
     clearServerToken: () => Promise.reject(Mojom.MCPServerError.kNotFound),
     removeServer: () => Promise.resolve({ error: null }),
     getServerTools: () => Promise.resolve([]),
+    getServerStatuses: () => Promise.resolve({ statuses: {} }),
+    reconnectServer: () => {},
     bindObserver: () => {},
 
     // Apply overrides

@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { getLocale } from '$web-common/locale'
+import { formatLocale, getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
 
 /**
@@ -108,6 +108,82 @@ export function getConnectorOrigin(url: string): string {
     return new URL(url).origin
   } catch {
     return ''
+  }
+}
+
+/** Whether Leo can't use a connector's tools, as far as the browser knows. */
+export function isConnectorFailing(status: Mojom.MCPServerStatus): boolean {
+  return (
+    status !== Mojom.MCPServerStatus.kAvailable
+    && status !== Mojom.MCPServerStatus.kChecking
+  )
+}
+
+/**
+ * Whether connecting again could change a connector's status. One that needs a
+ * token, or that's turned off or gone, waits for the user to change it.
+ */
+export function canReconnectConnector(status: Mojom.MCPServerStatus): boolean {
+  return (
+    status === Mojom.MCPServerStatus.kNotResponding
+    || status === Mojom.MCPServerStatus.kUnsupported
+  )
+}
+
+/** A connector's status, in a few words. */
+export function getConnectorStatusLabel(status: Mojom.MCPServerStatus): string {
+  switch (status) {
+    case Mojom.MCPServerStatus.kChecking:
+      return getLocale(S.CHAT_UI_CONNECTOR_STATUS_CONNECTING)
+    case Mojom.MCPServerStatus.kNotResponding:
+      return getLocale(S.CHAT_UI_CONNECTOR_STATUS_NOT_RESPONDING)
+    case Mojom.MCPServerStatus.kAuthRequired:
+      return getLocale(S.CHAT_UI_CONNECTOR_STATUS_AUTH_REQUIRED)
+    case Mojom.MCPServerStatus.kUnsupported:
+      return getLocale(S.CHAT_UI_CONNECTOR_STATUS_UNSUPPORTED)
+    case Mojom.MCPServerStatus.kUnavailable:
+      return getLocale(S.CHAT_UI_CONNECTOR_STATUS_UNAVAILABLE)
+    default:
+      return getLocale(S.CHAT_UI_MCP_SERVER_LABEL)
+  }
+}
+
+/** Why Leo can't use a connector attached to a chat, and what to do. */
+export function getConnectorStatusDescription(
+  status: Mojom.MCPServerStatus,
+): string | undefined {
+  switch (status) {
+    case Mojom.MCPServerStatus.kNotResponding:
+      return getLocale(S.CHAT_UI_CONNECTOR_STATUS_NOT_RESPONDING_DESCRIPTION)
+    case Mojom.MCPServerStatus.kAuthRequired:
+      return getLocale(S.CHAT_UI_CONNECTOR_STATUS_AUTH_REQUIRED_DESCRIPTION)
+    case Mojom.MCPServerStatus.kUnsupported:
+      return getLocale(S.CHAT_UI_CONNECTOR_STATUS_UNSUPPORTED_DESCRIPTION)
+    case Mojom.MCPServerStatus.kUnavailable:
+      return getLocale(S.CHAT_UI_CONNECTOR_STATUS_UNAVAILABLE_DESCRIPTION)
+    default:
+      return undefined
+  }
+}
+
+/** What the notice of an answer written without connector `name` says. */
+export function getConnectorNoticeText(
+  status: Mojom.MCPServerStatus,
+  name: string,
+): string {
+  switch (status) {
+    case Mojom.MCPServerStatus.kNotResponding:
+      return formatLocale(S.CHAT_UI_CONNECTOR_NOTICE_NOT_RESPONDING, {
+        $1: name,
+      })
+    case Mojom.MCPServerStatus.kAuthRequired:
+      return formatLocale(S.CHAT_UI_CONNECTOR_NOTICE_AUTH_REQUIRED, {
+        $1: name,
+      })
+    default:
+      return formatLocale(S.CHAT_UI_CONNECTOR_NOTICE_UNAVAILABLE, {
+        $1: name,
+      })
   }
 }
 

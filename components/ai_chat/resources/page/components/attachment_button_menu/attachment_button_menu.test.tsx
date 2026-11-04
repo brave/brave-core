@@ -50,6 +50,7 @@ const MCP_SERVER_CONTENT: Mojom.AssociatedContent = {
   contentUsedPercentage: 100,
   conversationTurnUuid: undefined,
   toolsAttached: true,
+  mcpServer: undefined,
 }
 
 const PAGE_CONTENT: Mojom.AssociatedContent = {
@@ -61,6 +62,7 @@ const PAGE_CONTENT: Mojom.AssociatedContent = {
   contentUsedPercentage: 100,
   conversationTurnUuid: undefined,
   toolsAttached: false,
+  mcpServer: undefined,
 }
 
 describe('attachment button menu', () => {
@@ -173,7 +175,11 @@ const ISSUES_CONTENT: Mojom.AssociatedContent = {
   contentUsedPercentage: 100,
   conversationTurnUuid: undefined,
   toolsAttached: true,
-  mcpServer: { serverId: 'issues' },
+  mcpServer: {
+    serverId: 'issues',
+    status: Mojom.MCPServerStatus.kAvailable,
+    missedLatestAnswer: false,
+  },
 }
 
 const CONVERSATION_UUID = 'conversation-uuid'

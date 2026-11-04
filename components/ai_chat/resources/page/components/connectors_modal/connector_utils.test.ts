@@ -5,7 +5,12 @@
 
 import * as Mojom from '../../../common/mojom'
 import {
+  canReconnectConnector,
   getAttachableConnectors,
+  getConnectorNoticeText,
+  getConnectorStatusDescription,
+  getConnectorStatusLabel,
+  isConnectorFailing,
   getConnectorErrorField,
   getConnectorErrorMessage,
   getConnectorOrigin,
@@ -135,5 +140,66 @@ describe('getAttachableConnectors', () => {
       'on',
       'with-token',
     ])
+  })
+})
+
+describe('connector status', () => {
+  const Status = Mojom.MCPServerStatus
+
+  it('says which statuses are failing, and which reconnecting could change', () => {
+    expect(isConnectorFailing(Status.kAvailable)).toBe(false)
+    expect(isConnectorFailing(Status.kChecking)).toBe(false)
+    for (const status of [
+      Status.kNotResponding,
+      Status.kAuthRequired,
+      Status.kUnsupported,
+      Status.kUnavailable,
+    ]) {
+      expect(isConnectorFailing(status)).toBe(true)
+    }
+    expect(canReconnectConnector(Status.kNotResponding)).toBe(true)
+    expect(canReconnectConnector(Status.kUnsupported)).toBe(true)
+    expect(canReconnectConnector(Status.kAuthRequired)).toBe(false)
+    expect(canReconnectConnector(Status.kUnavailable)).toBe(false)
+    expect(canReconnectConnector(Status.kChecking)).toBe(false)
+  })
+
+  it('describes each status', () => {
+    expect(getConnectorStatusLabel(Status.kAvailable)).toBe(
+      'CHAT_UI_MCP_SERVER_LABEL',
+    )
+    expect(getConnectorStatusLabel(Status.kChecking)).toBe(
+      'CHAT_UI_CONNECTOR_STATUS_CONNECTING',
+    )
+    expect(getConnectorStatusDescription(Status.kAvailable)).toBeUndefined()
+    expect(getConnectorStatusDescription(Status.kChecking)).toBeUndefined()
+    for (const [status, name] of [
+      [Status.kNotResponding, 'NOT_RESPONDING'],
+      [Status.kAuthRequired, 'AUTH_REQUIRED'],
+      [Status.kUnsupported, 'UNSUPPORTED'],
+      [Status.kUnavailable, 'UNAVAILABLE'],
+    ] as const) {
+      expect(getConnectorStatusLabel(status)).toBe(
+        `CHAT_UI_CONNECTOR_STATUS_${name}`,
+      )
+      expect(getConnectorStatusDescription(status)).toBe(
+        `CHAT_UI_CONNECTOR_STATUS_${name}_DESCRIPTION`,
+      )
+    }
+  })
+
+  it('words the notice for an auth error with the token', () => {
+    expect(getConnectorNoticeText(Status.kNotResponding, 'Server')).toBe(
+      'CHAT_UI_CONNECTOR_NOTICE_NOT_RESPONDING',
+    )
+    expect(getConnectorNoticeText(Status.kAuthRequired, 'Server')).toBe(
+      'CHAT_UI_CONNECTOR_NOTICE_AUTH_REQUIRED',
+    )
+    expect(getConnectorNoticeText(Status.kUnsupported, 'Server')).toBe(
+      'CHAT_UI_CONNECTOR_NOTICE_UNAVAILABLE',
+    )
+    expect(getConnectorNoticeText(Status.kUnavailable, 'Server')).toBe(
+      'CHAT_UI_CONNECTOR_NOTICE_UNAVAILABLE',
+    )
   })
 })

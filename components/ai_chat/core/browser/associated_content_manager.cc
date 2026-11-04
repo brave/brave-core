@@ -217,16 +217,24 @@ void AssociatedContentManager::AddOwnedContent(
 void AssociatedContentManager::AddMCPServer(
     std::unique_ptr<MCPServerAssociatedContent> server) {
   MCPServerAssociatedContent* delegate = server.get();
-  mcp_server_ids_.emplace(delegate->uuid(), delegate->server_id());
+  mcp_servers_.emplace(delegate->uuid(), delegate);
   AddOwnedContent(std::move(server), /*notify_updated=*/false);
   // Tells the conversation, and adds the tools to the current loop.
   delegate->set_tools_attached(true);
 }
 
 bool AssociatedContentManager::HasMCPServer(std::string_view server_id) const {
-  return std::ranges::contains(
-      mcp_server_ids_, server_id,
-      [](const auto& entry) -> const std::string& { return entry.second; });
+  return std::ranges::any_of(mcp_servers_, [server_id](const auto& entry) {
+    return entry.second->server_id() == server_id;
+  });
+}
+
+void AssociatedContentManager::DismissMCPServerNotice(
+    std::string_view content_uuid) {
+  auto it = mcp_servers_.find(content_uuid);
+  if (it != mcp_servers_.end() && it->second->SetMissedLatestAnswer(false)) {
+    conversation_->OnAssociatedContentUpdated();
+  }
 }
 
 void AssociatedContentManager::RemoveContent(
@@ -249,7 +257,7 @@ void AssociatedContentManager::RemoveContent(
     content_observations_.RemoveObservation(delegate);
     content_delegates_.erase(it);
     tools_attachment_overridden_.erase(delegate->uuid());
-    mcp_server_ids_.erase(delegate->uuid());
+    mcp_servers_.erase(delegate->uuid());
     RunContentToolsAddedCallbacks(delegate->uuid(), 0);
   }
 
@@ -618,10 +626,12 @@ AssociatedContentManager::GetAssociatedContent() const {
     content->tools_attached = delegate->tools_attached();
 
     // An MCP server sends nothing, so takes nothing from the budget.
-    if (auto server_id = mcp_server_ids_.find(delegate->uuid());
-        server_id != mcp_server_ids_.end()) {
+    if (auto server = mcp_servers_.find(delegate->uuid());
+        server != mcp_servers_.end()) {
       content->content_used_percentage = 100;
-      content->mcp_server = mojom::AssociatedMCPServer::New(server_id->second);
+      content->mcp_server = mojom::AssociatedMCPServer::New(
+          server->second->server_id(), server->second->status(),
+          server->second->missed_latest_answer());
       result.push_back(std::move(content));
       continue;
     }
@@ -941,6 +951,11 @@ void AssociatedContentManager::OnTitleChanged(
   conversation_->OnAssociatedContentUpdated();
 }
 
+void AssociatedContentManager::OnStatusChanged(
+    AssociatedContentDelegate* delegate) {
+  conversation_->OnAssociatedContentUpdated();
+}
+
 void AssociatedContentManager::OnToolsAttachedChanged(
     AssociatedContentDelegate* delegate) {
   // Content attached after the generation loop started (e.g. added by a tool)
@@ -969,7 +984,10 @@ void AssociatedContentManager::UpdateToolsForNewGenerationLoop(
     }
   }
 
+  // A loop that's stopped while it waits for the tools writes no answer.
+  const uint64_t conversation_loop_id = conversation_->generation_loop_id();
   if (attached_delegates.empty()) {
+    UpdateMCPServersMissedLatestAnswer({});
     std::move(on_updated).Run();
     return;
   }
@@ -981,7 +999,7 @@ void AssociatedContentManager::UpdateToolsForNewGenerationLoop(
       attached_delegates.size(),
       base::BindOnce(&AssociatedContentManager::OnGenerationLoopToolsFetched,
                      weak_ptr_factory_.GetWeakPtr(), generation_loop_id_,
-                     std::move(on_updated)));
+                     conversation_loop_id, std::move(on_updated)));
   for (size_t i = 0; i < attached_delegates.size(); ++i) {
     FetchContentTools(attached_delegates[i], i, barrier);
   }
@@ -997,17 +1015,28 @@ void AssociatedContentManager::FetchContentTools(
   fetched.origin = content->GetOrigin();
   fetched.is_mcp_server = IsMCPServer(content);
   content->GetContentTools(base::BindOnce(
-      [](base::RepeatingCallback<void(FetchedContentTools)> done,
-         FetchedContentTools fetched,
-         std::vector<std::unique_ptr<Tool>> tools) {
-        fetched.tools = std::move(tools);
-        done.Run(std::move(fetched));
-      },
-      std::move(done), std::move(fetched)));
+      &AssociatedContentManager::OnContentToolsFetched,
+      weak_ptr_factory_.GetWeakPtr(), std::move(done), std::move(fetched)));
+}
+
+void AssociatedContentManager::OnContentToolsFetched(
+    base::RepeatingCallback<void(FetchedContentTools)> done,
+    FetchedContentTools fetched,
+    std::vector<std::unique_ptr<Tool>> tools) {
+  // Tools listed before it failed are still offered to the model.
+  if (auto server = mcp_servers_.find(fetched.content_uuid);
+      server != mcp_servers_.end()) {
+    fetched.offered_no_tools =
+        server->second->status() != mojom::MCPServerStatus::kAvailable &&
+        tools.empty();
+  }
+  fetched.tools = std::move(tools);
+  done.Run(std::move(fetched));
 }
 
 void AssociatedContentManager::OnGenerationLoopToolsFetched(
     uint64_t generation_loop_id,
+    uint64_t conversation_loop_id,
     base::OnceClosure on_updated,
     std::vector<FetchedContentTools> fetched) {
   // A loop that's been replaced isn't waited for.
@@ -1029,7 +1058,25 @@ void AssociatedContentManager::OnGenerationLoopToolsFetched(
     AddToolsForGenerationLoop(content.content_uuid, content.origin,
                               content.is_mcp_server, std::move(content.tools));
   }
+  if (conversation_loop_id == conversation_->generation_loop_id()) {
+    UpdateMCPServersMissedLatestAnswer(fetched);
+  }
   std::move(on_updated).Run();
+}
+
+void AssociatedContentManager::UpdateMCPServersMissedLatestAnswer(
+    const std::vector<FetchedContentTools>& fetched) {
+  bool changed = false;
+  for (auto& [uuid, server] : mcp_servers_) {
+    auto it =
+        std::ranges::find(fetched, uuid, &FetchedContentTools::content_uuid);
+    changed |= server->SetMissedLatestAnswer(it != fetched.end() &&
+                                             it->offered_no_tools &&
+                                             server->tools_attached());
+  }
+  if (changed) {
+    conversation_->OnAssociatedContentUpdated();
+  }
 }
 
 void AssociatedContentManager::RunWhenContentToolsAdded(
@@ -1152,15 +1199,16 @@ void AssociatedContentManager::DetachContent() {
     RunContentToolsAddedCallbacks(delegate->uuid(), 0);
   }
   content_delegates_.clear();
+  // Cleared while the servers it points to, which are owned, still exist.
+  mcp_servers_.clear();
   owned_content_.clear();
   tools_attachment_overridden_.clear();
-  mcp_server_ids_.clear();
   content_tool_permissions_.clear();
 }
 
 bool AssociatedContentManager::IsMCPServer(
     const AssociatedContentDelegate* delegate) const {
-  return mcp_server_ids_.contains(delegate->uuid());
+  return mcp_servers_.contains(delegate->uuid());
 }
 
 std::vector<AssociatedContentDelegate*>

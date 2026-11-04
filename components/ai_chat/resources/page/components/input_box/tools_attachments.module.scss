@@ -157,6 +157,39 @@
   color: var(--leo-color-neutral-60);
 }
 
+.toolPillStatusTooltip {
+  flex: 0 0 auto;
+}
+
+// A connector's status, with an icon so that it isn't shown by colour alone.
+.toolPillStatus {
+  --leo-icon-size: var(--leo-icon-xs);
+  --leo-icon-color: var(--leo-color-icon-default);
+  --leo-progressring-size: var(--leo-icon-xs);
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--leo-spacing-xs);
+  flex: 0 0 auto;
+  border-radius: var(--leo-radius-xs);
+  white-space: nowrap;
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-secondary);
+
+  // The transparent outline is what forced colours show.
+  &:focus-visible {
+    outline: 2px solid transparent;
+    box-shadow: var(--leo-effect-focus-state);
+  }
+}
+
+.toolPillStatusWarning {
+  --leo-icon-color: var(--leo-color-systemfeedback-warning-icon);
+  color: var(--leo-color-systemfeedback-warning-text);
+}
+
+.toolPillAction,
 .toolPillRemove {
   flex: 0 0 auto;
   --leo-icon-size: 16px;
