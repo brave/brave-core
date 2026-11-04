@@ -9,6 +9,7 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
+#include "brave/browser/ui/focus_mode/focus_mode_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -23,6 +24,7 @@ class VerticalTabControllerUnitTest : public testing::Test {
   void SetUp() override {
     tabs::RegisterProfilePrefs(pref_service_.registry());
     brave_tabs::RegisterBraveProfilePrefs(pref_service_.registry());
+    focus_mode::RegisterProfilePrefs(pref_service_.registry());
   }
 
  protected:
@@ -86,7 +88,7 @@ TEST_F(VerticalTabControllerUnitTest, ShouldShowWindowTitleFalseInFocusMode) {
   pref_service_.SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
   pref_service_.SetBoolean(brave_tabs::kVerticalTabsShowTitleOnWindow, true);
 
-  FocusModeController focus_mode_controller(user_data_host_);
+  FocusModeController focus_mode_controller(user_data_host_, pref_service_);
   auto controller = MakeController(BrowserWindowInterface::TYPE_NORMAL,
                                    &focus_mode_controller);
   EXPECT_TRUE(controller->ShouldShowWindowTitleForVerticalTabs());

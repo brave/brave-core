@@ -7,12 +7,22 @@
 
 #include "base/check_op.h"
 #include "base/functional/bind.h"
+#include "brave/browser/ui/focus_mode/focus_mode_prefs.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "components/prefs/pref_service.h"
 
 DEFINE_USER_DATA(FocusModeController);
 
-FocusModeController::FocusModeController(ui::UnownedUserDataHost& host)
-    : scoped_unowned_user_data_(host, *this) {}
+FocusModeController::FocusModeController(ui::UnownedUserDataHost& host,
+                                         PrefService& prefs)
+    : scoped_unowned_user_data_(host, *this), prefs_(prefs) {
+  pref_change_registrar_.Init(&prefs);
+  pref_change_registrar_.Add(
+      focus_mode::kFocusModeEnabled,
+      base::BindRepeating(&FocusModeController::OnPrefChanged,
+                          base::Unretained(this)));
+  last_notified_enabled_ = IsEnabled();
+}
 
 FocusModeController::~FocusModeController() = default;
 
@@ -37,30 +47,21 @@ void FocusModeController::RemoveObserver(Observer* observer) {
 }
 
 bool FocusModeController::IsEnabled() const {
-  return enabled_ && suppress_count_ == 0;
+  return prefs_->GetBoolean(focus_mode::kFocusModeEnabled) &&
+         suppress_count_ == 0;
 }
 
 void FocusModeController::SetEnabled(bool enabled) {
-  if (enabled_ == enabled) {
-    return;
-  }
-  const bool was_enabled = IsEnabled();
-  enabled_ = enabled;
-  if (IsEnabled() != was_enabled) {
-    observers_.Notify(&Observer::OnFocusModeToggled, IsEnabled());
-  }
+  prefs_->SetBoolean(focus_mode::kFocusModeEnabled, enabled);
 }
 
 void FocusModeController::ToggleEnabled() {
-  SetEnabled(!enabled_);
+  SetEnabled(!prefs_->GetBoolean(focus_mode::kFocusModeEnabled));
 }
 
 base::ScopedClosureRunner FocusModeController::Suppress() {
-  const bool was_enabled = IsEnabled();
   ++suppress_count_;
-  if (was_enabled) {
-    observers_.Notify(&Observer::OnFocusModeToggled, false);
-  }
+  NotifyIfChanged();
   return base::ScopedClosureRunner(base::BindOnce(
       &FocusModeController::EndSuppress, weak_factory_.GetWeakPtr()));
 }
@@ -68,7 +69,18 @@ base::ScopedClosureRunner FocusModeController::Suppress() {
 void FocusModeController::EndSuppress() {
   CHECK_GT(suppress_count_, 0);
   --suppress_count_;
-  if (IsEnabled()) {
-    observers_.Notify(&Observer::OnFocusModeToggled, true);
+  NotifyIfChanged();
+}
+
+void FocusModeController::OnPrefChanged() {
+  NotifyIfChanged();
+}
+
+void FocusModeController::NotifyIfChanged() {
+  const bool enabled = IsEnabled();
+  if (enabled == last_notified_enabled_) {
+    return;
   }
+  last_notified_enabled_ = enabled;
+  observers_.Notify(&Observer::OnFocusModeToggled, enabled);
 }
