@@ -2638,7 +2638,12 @@ class JsSetBlinkRuntimeEnabledFeatureStateRewriter(_AstGrepRewriter):
     # Authored in Markdown; `Help` renders it with rich.
     HELP: Final = r"""
         Sets `base_feature_status` on a `runtime_enabled_features.json5`
-        feature entry, overriding it.
+        feature entry, overriding it, and marks the entry
+        `brave_base_feature_overridden`. The mark makes Blink generate its
+        `base::Feature` with `BASE_OVERRIDDEN_FEATURE`, so that the state is
+        also copied into the runtime flag, which `status` would otherwise
+        decide. The feature must be listed in
+        `brave/base/compile_overridden_features.inc`.
 
         Fields:
 
@@ -2658,7 +2663,8 @@ class JsSetBlinkRuntimeEnabledFeatureStateRewriter(_AstGrepRewriter):
         ```diff
          {
            name: "MyFeature",
-        +  base_feature_status: "disabled",  // feature state is enforced via plaster rewrite.
+        +  brave_base_feature_overridden: true,
+        +  base_feature_status: "disabled",
            status: "stable",
          },
         ```
