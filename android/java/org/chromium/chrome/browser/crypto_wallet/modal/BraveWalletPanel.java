@@ -45,6 +45,7 @@ import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
+import org.chromium.brave_wallet.mojom.OriginInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -212,6 +213,7 @@ public class BraveWalletPanel implements DialogInterface {
                     AccountsPermissionsHelper accountsPermissionsHelper =
                             new AccountsPermissionsHelper(
                                     braveWalletService,
+                                    getActiveOriginInfo().originSpec,
                                     Utils.filterAccountsByCoin(
                                                     mAllAccountsInfo.accounts,
                                                     mSelectedAccount.accountId.coin)
@@ -239,6 +241,14 @@ public class BraveWalletPanel implements DialogInterface {
                 });
         mPopupWindow.setOnDismissListener(this::dismiss);
         setUpViews();
+    }
+
+    private OriginInfo getActiveOriginInfo() {
+        ChromeTabbedActivity activity = BraveActivity.getChromeTabbedActivity();
+        if (activity == null || activity.getActivityTab() == null) {
+            return Utils.getOriginInfo(GURL.emptyGURL());
+        }
+        return Utils.getOriginInfo(activity.getActivityTab().getUrl());
     }
 
     private void showPopupMenu() {

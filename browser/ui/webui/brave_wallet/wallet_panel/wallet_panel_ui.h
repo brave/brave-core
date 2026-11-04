@@ -64,6 +64,8 @@ class WalletPanelUI : public TopChromeWebUIController,
   void SetDeactivationCallback(
       base::RepeatingCallback<void(bool)> deactivation_callback);
 
+  void SetTabWebContents(content::WebContents* tab_web_contents);
+
   static constexpr std::string_view GetWebUIName() { return "WalletPanel"; }
 
  private:
@@ -112,12 +114,18 @@ class WalletPanelUI : public TopChromeWebUIController,
 
   void MaybeFuseLedgerBridge();
 
+  void BindPanelHandler(
+      mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> panel_receiver);
+
   std::unique_ptr<WalletPanelHandler> panel_handler_;
   std::unique_ptr<brave_wallet::WalletHandler> wallet_handler_;
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   std::unique_ptr<brave_rewards::mojom::RewardsPageHandler> rewards_handler_;
 #endif
-  base::WeakPtr<content::WebContents> active_web_contents_;
+  base::WeakPtr<content::WebContents> tab_web_contents_;
+  // Held until `tab_web_contents_` is set.
+  mojo::PendingReceiver<brave_wallet::mojom::PanelHandler>
+      pending_panel_receiver_;
 
   mojo::PendingRemote<brave_wallet::mojom::LedgerBridge> ledger_bridge_remote_;
   mojo::PendingReceiver<brave_wallet::mojom::LedgerBridge>

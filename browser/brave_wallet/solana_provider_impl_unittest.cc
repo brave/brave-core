@@ -123,15 +123,12 @@ class SolanaProviderImplUnitTest : public testing::Test {
     brave_wallet_tab_helper_.reset();
     web_contents_.reset();
     profile_.SetPermissionControllerDelegate(nullptr);
-    BraveWalletServiceDelegateImpl::SetActiveWebContentsForTesting(nullptr);
   }
 
   void SetUp() override {
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
     web_contents_ =
         content::TestWebContents::Create(browser_context(), nullptr);
-    BraveWalletServiceDelegateImpl::SetActiveWebContentsForTesting(
-        web_contents_.get());
     ON_CALL(tab_, GetContents())
         .WillByDefault(testing::Return(web_contents_.get()));
     tabs::TabLookupFromWebContents::CreateForWebContents(web_contents_.get(),

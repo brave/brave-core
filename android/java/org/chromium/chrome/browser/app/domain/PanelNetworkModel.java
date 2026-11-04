@@ -36,10 +36,11 @@ public class PanelNetworkModel extends NetworkModel {
 
     @Override
     void updateChainId() {
-        if (mBraveWalletService == null) {
+        if (mBraveWalletService == null || mOriginSpec == null) {
             return;
         }
         mBraveWalletService.getNetworkForSelectedAccountOnActiveOrigin(
+                mOriginSpec,
                 networkInfo -> {
                     if (networkInfo != null) {
                         mMediatorChainId.postValue(networkInfo.chainId);
@@ -74,7 +75,12 @@ public class PanelNetworkModel extends NetworkModel {
 
     public void setNetworkForSelectedAccountOnActiveOrigin(
             NetworkInfo networkToBeSetAsSelected, Callback1<Boolean> callback) {
+        if (mOriginSpec == null) {
+            callback.call(false);
+            return;
+        }
         mBraveWalletService.setNetworkForSelectedAccountOnActiveOrigin(
+                mOriginSpec,
                 networkToBeSetAsSelected.chainId,
                 success -> {
                     callback.call(success);

@@ -126,25 +126,26 @@ export const walletEndpoints = ({
       providesTags: ['IsMetaMaskInstalled'],
     }),
 
-    getActiveOrigin: query<BraveWallet.OriginInfo, void>({
+    getActivePanelOrigin: query<BraveWallet.OriginInfo, void>({
       queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
         try {
           const { data: api } = baseQuery(undefined)
-          const { braveWalletService } = api
-
-          const { originInfo } = await braveWalletService.getActiveOrigin()
+          if (!api.panelHandler) {
+            throw new Error('Panel handler is unavailable')
+          }
+          const { originInfo } = await api.panelHandler.getActivePanelOrigin()
           return {
             data: originInfo,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
-            'unable to get active origin',
+            'Unable to get active panel origin',
             error,
           )
         }
       },
-      providesTags: ['ActiveOrigin'],
+      providesTags: ['ActivePanelOrigin'],
     }),
 
     createWallet: mutation<

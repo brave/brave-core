@@ -237,7 +237,6 @@ class EthereumProviderImplUnitTest : public testing::Test {
     brave_wallet_tab_helper_.reset();
     web_contents_.reset();
     profile_.SetPermissionControllerDelegate(nullptr);
-    BraveWalletServiceDelegateImpl::SetActiveWebContentsForTesting(nullptr);
   }
 
   void SetUp() override {
@@ -245,8 +244,6 @@ class EthereumProviderImplUnitTest : public testing::Test {
 
     web_contents_ =
         content::TestWebContents::Create(browser_context(), nullptr);
-    BraveWalletServiceDelegateImpl::SetActiveWebContentsForTesting(
-        web_contents_.get());
     permissions::PermissionRequestManager::CreateForWebContents(web_contents());
     auto scoped_disable_autolock =
         BraveWalletServiceDelegateBase::GetScopedDisableAutolockForTesting();
@@ -521,7 +518,8 @@ class EthereumProviderImplUnitTest : public testing::Test {
   void ResetEthereumPermission(const mojom::AccountIdPtr& account_id) {
     base::RunLoop run_loop;
     brave_wallet_service_->ResetPermission(
-        account_id.Clone(), base::BindLambdaForTesting([&](bool success) {
+        GetOrigin().Serialize(), account_id.Clone(),
+        base::BindLambdaForTesting([&](bool success) {
           EXPECT_TRUE(success);
           run_loop.Quit();
         }));

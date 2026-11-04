@@ -10,7 +10,7 @@ import { BraveWallet } from '../../../constants/types'
 
 // Queries
 import {
-  useGetActiveOriginQuery,
+  useGetActivePanelOriginQuery,
   useGetSelectedDappAccountsQuery,
 } from '../../../common/slices/api.slice'
 
@@ -33,9 +33,7 @@ import {
   DefaultPanelHeader, //
 } from '$wallet/page/components/card_headers/default_panel_header'
 import { CreateSiteOrigin } from '../../shared/create-site-origin/index'
-import {
-  ConnectionSection, //
-} from './components/connection_section/connection_section'
+import { ConnectionSection } from './components/connection_section/connection_section'
 
 // Styled Components
 import {
@@ -47,8 +45,7 @@ import { Column } from '../../shared/style'
 
 export const Connections = () => {
   // Queries
-  const { data: activeOrigin = { eTldPlusOne: '', originSpec: '' } } =
-    useGetActiveOriginQuery()
+  const { data: activeOrigin } = useGetActivePanelOriginQuery()
   const { data: dappsAccounts } = useGetSelectedDappAccountsQuery()
 
   // Redux
@@ -58,6 +55,9 @@ export const Connections = () => {
   const isCardanoDappSupportEnabled = useSafeWalletSelector(
     WalletSelectors.isCardanoDappSupportEnabled,
   )
+  if (!activeOrigin) {
+    return null
+  }
 
   return (
     <WalletPageWrapper
@@ -105,21 +105,25 @@ export const Connections = () => {
           <ConnectionSection
             coin={BraveWallet.CoinType.ETH}
             selectedAccountId={dappsAccounts?.ethAccountId}
+            activeOrigin={activeOrigin}
           />
           <ConnectionSection
             coin={BraveWallet.CoinType.SOL}
             selectedAccountId={dappsAccounts?.solAccountId}
+            activeOrigin={activeOrigin}
           />
           {isCardanoDappSupportEnabled && dappsAccounts?.adaAccountId && (
             <ConnectionSection
               coin={BraveWallet.CoinType.ADA}
               selectedAccountId={dappsAccounts?.adaAccountId}
+              activeOrigin={activeOrigin}
             />
           )}
           {isPolkadotDappSupportEnabled && dappsAccounts?.dotAccountId && (
             <ConnectionSection
               coin={BraveWallet.CoinType.DOT}
               selectedAccountId={dappsAccounts?.dotAccountId}
+              activeOrigin={activeOrigin}
             />
           )}
         </Column>

@@ -7,11 +7,9 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_SERVICE_DELEGATE_H_
 
 #include <memory>
-#include <optional>
 #include <string>
 
 #include "base/functional/callback.h"
-#include "base/observer_list_types.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
@@ -40,14 +38,6 @@ class BraveWalletServiceDelegate {
       delete;
   virtual ~BraveWalletServiceDelegate() = default;
 
-  class Observer : public base::CheckedObserver {
-   public:
-    virtual void OnActiveOriginChanged(
-        const mojom::OriginInfoPtr& origin_info) {}
-  };
-  virtual void AddObserver(Observer* observer) {}
-  virtual void RemoveObserver(Observer* observer) {}
-
   virtual void IsExternalWalletInstalled(mojom::ExternalWalletType,
                                          IsExternalWalletInstalledCallback);
   virtual void IsExternalWalletInitialized(mojom::ExternalWalletType,
@@ -75,8 +65,6 @@ class BraveWalletServiceDelegate {
   virtual void ResetWebSitePermission(mojom::CoinType coin,
                                       const std::string& formed_website,
                                       ResetWebSitePermissionCallback callback);
-
-  virtual std::optional<url::Origin> GetActiveOrigin();
 
   virtual void ClearWalletUIStoragePartition();
 
