@@ -17,6 +17,7 @@
 
 #include "base/check.h"
 #include "base/check_deref.h"
+#include "base/containers/flat_map.h"
 #include "base/containers/map_util.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
@@ -1195,9 +1196,12 @@ void AIChatService::OnRequestInProgressChanged(ConversationHandler* handler,
 
   const std::string uuid = handler->get_conversation_uuid();
   if (in_progress) {
-    conversation_generation_state_[uuid] =
-        mojom::ConversationGenerationState::kGenerating;
-    NotifyConversationGenerationState(uuid);
+    // Follow-up requests (e.g. tool use) report true again while generating.
+    if (std::exchange(conversation_generation_state_[uuid],
+                      mojom::ConversationGenerationState::kGenerating) !=
+        mojom::ConversationGenerationState::kGenerating) {
+      NotifyConversationGenerationState(uuid);
+    }
   } else if (auto it = conversation_generation_state_.find(uuid);
              it != conversation_generation_state_.end() &&
              it->second == mojom::ConversationGenerationState::kGenerating) {
@@ -1527,13 +1531,12 @@ void AIChatService::BindMetrics(mojo::PendingReceiver<mojom::Metrics> metrics) {
 void AIChatService::BindObserver(
     mojo::PendingRemote<mojom::ServiceObserver> observer,
     mojom::Service::BindObserverCallback callback) {
-  mojo::Remote<mojom::ServiceObserver> new_remote(std::move(observer));
-  std::move(callback).Run(BuildState());
-  // Send existing generation state to the newly bound observer.
-  for (auto& kv : conversation_generation_state_) {
-    new_remote->OnConversationGenerationStateChanged(kv.first, kv.second);
-  }
-  observer_remotes_.Add(new_remote.Unbind());
+  observer_remotes_.Add(std::move(observer));
+  std::move(callback).Run(
+      BuildState(),
+      base::flat_map<std::string, mojom::ConversationGenerationState>(
+          conversation_generation_state_.begin(),
+          conversation_generation_state_.end()));
 }
 
 void AIChatService::BindObserver(
@@ -1599,21 +1602,16 @@ void AIChatService::OnConversationListChanged() {
 }
 
 void AIChatService::NotifyConversationGenerationState(const std::string& uuid) {
-  auto it = conversation_generation_state_.find(uuid);
-  auto state = it != conversation_generation_state_.end()
-                   ? it->second
-                   : mojom::ConversationGenerationState::kIdle;
+  const auto* state = base::FindOrNull(conversation_generation_state_, uuid);
   for (auto& remote : observer_remotes_) {
-    remote->OnConversationGenerationStateChanged(uuid, state);
+    remote->OnConversationGenerationStateChanged(
+        uuid, state ? *state : mojom::ConversationGenerationState::kIdle);
   }
 }
 
 bool AIChatService::IsConversationVisible(const std::string& uuid) const {
-  auto it = conversation_handlers_.find(uuid);
-  if (it == conversation_handlers_.end()) {
-    return false;
-  }
-  return it->second->IsAnyClientConnected();
+  auto* handler = base::FindPtrOrNull(conversation_handlers_, uuid);
+  return handler && handler->IsAnyClientConnected();
 }
 
 void AIChatService::OpenConversationWithStagedEntries(

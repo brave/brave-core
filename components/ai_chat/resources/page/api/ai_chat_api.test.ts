@@ -5,12 +5,11 @@
 
 import createAIChatApi from './ai_chat_api'
 import * as Mojom from '../../common/mojom'
-import { ConversationGenerationState } from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m.js'
 import { makeCloseable } from '$web-common/api'
 import { clearAllDataForTesting } from '$web-common/api'
 import { createMockService } from './mock_interfaces'
 
-const CG = ConversationGenerationState
+const CG = Mojom.ConversationGenerationState
 
 function makeApi() {
   const mockService = createMockService()
@@ -32,6 +31,20 @@ function makeApi() {
   return wrapper
 }
 
+type AIChatApiWrapper = ReturnType<typeof makeApi>
+
+function emit(
+  wrapper: AIChatApiWrapper,
+  uuid: string,
+  state: Mojom.ConversationGenerationState,
+) {
+  wrapper.serviceObserver.onConversationGenerationStateChanged(uuid, state)
+}
+
+function states(wrapper: AIChatApiWrapper) {
+  return wrapper.api.conversationGenerationState.current()
+}
+
 describe('ai_chat_api conversationGenerationState', () => {
   beforeEach(() => {
     clearAllDataForTesting()
@@ -39,127 +52,61 @@ describe('ai_chat_api conversationGenerationState', () => {
 
   it('initially empty', () => {
     const wrapper = makeApi()
-    expect(
-      (wrapper.api as any).conversationGenerationState.current().size,
-    ).toBe(0)
+    expect(states(wrapper).size).toBe(0)
   })
 
   it('adds kGenerating on event', () => {
     const wrapper = makeApi()
-    ;(wrapper.serviceObserver as any).onConversationGenerationStateChanged(
-      'uuid-1',
-      CG.kGenerating,
-    )
-    expect(
-      (wrapper.api as any).conversationGenerationState.current().get('uuid-1'),
-    ).toBe(CG.kGenerating)
+    emit(wrapper, 'uuid-1', CG.kGenerating)
+    expect(states(wrapper).get('uuid-1')).toBe(CG.kGenerating)
   })
 
   it('adds kCompletedNotViewed on event', () => {
     const wrapper = makeApi()
-    ;(wrapper.serviceObserver as any).onConversationGenerationStateChanged(
-      'uuid-2',
-      CG.kCompletedNotViewed,
-    )
-    expect(
-      (wrapper.api as any).conversationGenerationState.current().get('uuid-2'),
-    ).toBe(CG.kCompletedNotViewed)
+    emit(wrapper, 'uuid-2', CG.kCompletedNotViewed)
+    expect(states(wrapper).get('uuid-2')).toBe(CG.kCompletedNotViewed)
   })
 
   it('transitions kGenerating -> kCompletedNotViewed', () => {
     const wrapper = makeApi()
-    ;(wrapper.serviceObserver as any).onConversationGenerationStateChanged(
-      'uuid-1',
-      CG.kGenerating,
-    )
-    ;(wrapper.serviceObserver as any).onConversationGenerationStateChanged(
-      'uuid-1',
-      CG.kCompletedNotViewed,
-    )
-    expect(
-      (wrapper.api as any).conversationGenerationState.current().get('uuid-1'),
-    ).toBe(CG.kCompletedNotViewed)
-    expect(
-      (wrapper.api as any).conversationGenerationState.current().size,
-    ).toBe(1)
+    emit(wrapper, 'uuid-1', CG.kGenerating)
+    emit(wrapper, 'uuid-1', CG.kCompletedNotViewed)
+    expect(states(wrapper).get('uuid-1')).toBe(CG.kCompletedNotViewed)
+    expect(states(wrapper).size).toBe(1)
   })
 
   it('kIdle deletes entry', () => {
     const wrapper = makeApi()
-    ;(wrapper.serviceObserver as any).onConversationGenerationStateChanged(
-      'uuid-1',
-      CG.kGenerating,
-    )
-    ;(wrapper.serviceObserver as any).onConversationGenerationStateChanged(
-      'uuid-1',
-      CG.kIdle,
-    )
-    expect(
-      (wrapper.api as any).conversationGenerationState.current().has('uuid-1'),
-    ).toBe(false)
-    expect(
-      (wrapper.api as any).conversationGenerationState.current().size,
-    ).toBe(0)
+    emit(wrapper, 'uuid-1', CG.kGenerating)
+    emit(wrapper, 'uuid-1', CG.kIdle)
+    expect(states(wrapper).has('uuid-1')).toBe(false)
+    expect(states(wrapper).size).toBe(0)
   })
 
   it('kIdle on unknown id is no-op', () => {
     const wrapper = makeApi()
-    ;(wrapper.serviceObserver as any).onConversationGenerationStateChanged(
-      'unknown',
-      CG.kIdle,
-    )
-    expect(
-      (wrapper.api as any).conversationGenerationState.current().size,
-    ).toBe(0)
+    emit(wrapper, 'unknown', CG.kIdle)
+    expect(states(wrapper).size).toBe(0)
   })
 
   it('handles multiple conversations independently', () => {
     const wrapper = makeApi()
-    ;(wrapper.serviceObserver as any).onConversationGenerationStateChanged(
-      'a',
-      CG.kGenerating,
-    )
-    ;(wrapper.serviceObserver as any).onConversationGenerationStateChanged(
-      'b',
-      CG.kCompletedNotViewed,
-    )
-    ;(wrapper.serviceObserver as any).onConversationGenerationStateChanged(
-      'c',
-      CG.kGenerating,
-    )
-    expect(
-      (wrapper.api as any).conversationGenerationState.current().size,
-    ).toBe(3)
-    ;(wrapper.serviceObserver as any).onConversationGenerationStateChanged(
-      'a',
-      CG.kIdle,
-    )
-    expect(
-      (wrapper.api as any).conversationGenerationState.current().size,
-    ).toBe(2)
-    expect(
-      (wrapper.api as any).conversationGenerationState.current().has('a'),
-    ).toBe(false)
-    expect(
-      (wrapper.api as any).conversationGenerationState.current().get('b'),
-    ).toBe(CG.kCompletedNotViewed)
+    emit(wrapper, 'a', CG.kGenerating)
+    emit(wrapper, 'b', CG.kCompletedNotViewed)
+    emit(wrapper, 'c', CG.kGenerating)
+    expect(states(wrapper).size).toBe(3)
+    emit(wrapper, 'a', CG.kIdle)
+    expect(states(wrapper).size).toBe(2)
+    expect(states(wrapper).has('a')).toBe(false)
+    expect(states(wrapper).get('b')).toBe(CG.kCompletedNotViewed)
   })
 
   it('idempotent kGenerating insert', () => {
     const wrapper = makeApi()
-    ;(wrapper.serviceObserver as any).onConversationGenerationStateChanged(
-      'x',
-      CG.kGenerating,
-    )
-    const size1 = (wrapper.api as any).conversationGenerationState.current()
-      .size
-    ;(wrapper.serviceObserver as any).onConversationGenerationStateChanged(
-      'x',
-      CG.kGenerating,
-    )
-    const size2 = (wrapper.api as any).conversationGenerationState.current()
-      .size
+    emit(wrapper, 'x', CG.kGenerating)
+    const size1 = states(wrapper).size
+    emit(wrapper, 'x', CG.kGenerating)
     expect(size1).toBe(1)
-    expect(size2).toBe(1)
+    expect(states(wrapper).size).toBe(1)
   })
 })
