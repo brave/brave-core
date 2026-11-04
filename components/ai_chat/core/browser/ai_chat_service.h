@@ -18,6 +18,7 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "base/containers/flat_set.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
@@ -197,6 +198,11 @@ class AIChatService : public KeyedService,
                              const std::string& conversation_uuid);
   void DisassociateContent(const mojom::AssociatedContentPtr& content,
                            const std::string& conversation_uuid);
+
+  // Attaches the user's MCP server |server_id| to the conversation, unless it
+  // isn't enabled or is already attached.
+  void AssociateMCPServer(const std::string& server_id,
+                          const std::string& conversation_uuid);
 
   void GetFocusTabs(const std::vector<Tab>& tabs,
                     const std::string& topic,
@@ -456,6 +462,14 @@ class AIChatService : public KeyedService,
   // delete several conversations and then send the list once.
   void DeleteConversationWithoutNotifyingList(const std::string& id);
 
+  // Attaches the enabled MCP servers that the user wants in every
+  // conversation.
+  void AttachAutoAttachMCPServers(ConversationHandler& conversation);
+  void OnMCPHostReady();
+  // Attaches |server| to |conversation|, unless it's attached already.
+  void AttachMCPServer(ConversationHandler& conversation,
+                       const mojom::MCPServer& server);
+
   raw_ptr<ModelService> model_service_;
   raw_ptr<TabTrackerService> tab_tracker_service_;
   raw_ptr<PrefService> profile_prefs_;
@@ -479,6 +493,7 @@ class AIChatService : public KeyedService,
   std::unique_ptr<MemoryStorageTool> memory_tool_;
 
   // The user's MCP servers. Null unless the AIChatMCP feature is enabled.
+  // Destroyed after the conversations, whose attached servers use it.
   std::unique_ptr<MCPHost> mcp_host_;
 
   base::FilePath profile_path_;
@@ -493,6 +508,10 @@ class AIChatService : public KeyedService,
 
   // All conversation metadata. Mainly just titles and uuids.
   ConversationMap conversations_;
+
+  // Conversations created before the MCP host could list the user's servers,
+  // which get those to auto-attach once it can.
+  base::flat_set<std::string> conversations_awaiting_mcp_host_;
 
   // Used to restore a WorkspaceAssociatedContent from a url.
   base::RepeatingCallback<

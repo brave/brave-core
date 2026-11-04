@@ -29,6 +29,7 @@
 #include "brave/components/ai_chat/core/browser/associated_archive_content.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
+#include "brave/components/ai_chat/core/browser/mcp_server_associated_content.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 
@@ -41,6 +42,14 @@ constexpr size_t kMaxToolsPerContent = 30;
 AssociatedContentManager::AssociatedContentManager(
     ConversationHandler* conversation)
     : conversation_(conversation) {}
+
+AssociatedContentManager::FetchedContentTools::FetchedContentTools() = default;
+AssociatedContentManager::FetchedContentTools::FetchedContentTools(
+    FetchedContentTools&&) noexcept = default;
+AssociatedContentManager::FetchedContentTools&
+AssociatedContentManager::FetchedContentTools::operator=(
+    FetchedContentTools&&) noexcept = default;
+AssociatedContentManager::FetchedContentTools::~FetchedContentTools() = default;
 
 AssociatedContentManager::~AssociatedContentManager() {
   DVLOG(1) << __func__;
@@ -55,8 +64,12 @@ void AssociatedContentManager::LoadArchivedContent(
            << " metadata size: " << metadata->associated_content.size()
            << ", archive size: " << archive->associated_content.size();
 
-  // Remove all owned content - it should be reloaded from the DB.
+  // Remove all owned content - it should be reloaded from the DB. MCP servers
+  // are never stored, so they stay.
   for (int i = owned_content_.size() - 1; i >= 0; --i) {
+    if (IsMCPServer(owned_content_[i].get())) {
+      continue;
+    }
     RemoveContent(owned_content_[i].get(), /*notify_updated=*/false);
   }
 
@@ -71,6 +84,11 @@ void AssociatedContentManager::LoadArchivedContent(
     }
 
     auto* content = content_it->get();
+    // An attached MCP server lasts only as long as the conversation stays
+    // loaded, so there's nothing to restore.
+    if (content->content_type == mojom::ContentType::MCPServer) {
+      continue;
+    }
     std::unique_ptr<AssociatedContentDelegate> owned_content;
     if (content->content_type == mojom::ContentType::Workspace) {
       owned_content = conversation_->ai_chat_service()
@@ -177,8 +195,11 @@ void AssociatedContentManager::AddContent(AssociatedContentDelegate* delegate,
     delegate->OnAssociatedWithConversation();
 
     // Discover whether this content exposes tools so it can be attached and
-    // surfaced in the tools pill without waiting for a generation loop.
-    DetectContentTools(delegate);
+    // surfaced in the tools pill without waiting for a generation loop. An MCP
+    // server's tools are attached whatever it offers.
+    if (!IsMCPServer(delegate)) {
+      DetectContentTools(delegate);
+    }
   }
 
   if (notify_updated) {
@@ -193,6 +214,21 @@ void AssociatedContentManager::AddOwnedContent(
   AddContent(owned_content_.back().get(), notify_updated);
 }
 
+void AssociatedContentManager::AddMCPServer(
+    std::unique_ptr<MCPServerAssociatedContent> server) {
+  MCPServerAssociatedContent* delegate = server.get();
+  mcp_server_ids_.emplace(delegate->uuid(), delegate->server_id());
+  AddOwnedContent(std::move(server), /*notify_updated=*/false);
+  // Tells the conversation, and adds the tools to the current loop.
+  delegate->set_tools_attached(true);
+}
+
+bool AssociatedContentManager::HasMCPServer(std::string_view server_id) const {
+  return std::ranges::contains(
+      mcp_server_ids_, server_id,
+      [](const auto& entry) -> const std::string& { return entry.second; });
+}
+
 void AssociatedContentManager::RemoveContent(
     AssociatedContentDelegate* delegate,
     bool notify_updated) {
@@ -201,14 +237,19 @@ void AssociatedContentManager::RemoveContent(
   auto it = std::ranges::find(content_delegates_, delegate,
                               [](const auto& ptr) { return ptr; });
   url::Origin origin;
+  std::vector<std::string> later_mcp_servers;
   if (it != content_delegates_.end()) {
     // Captured now, as erasing owned content below may delete |delegate|.
     origin = delegate->GetOrigin();
+    if (IsMCPServer(delegate)) {
+      later_mcp_servers = GetMCPServersFrom(delegate, /*inclusive=*/false);
+    }
     // Let the content know it isn't associated with this conversation
     // anymore.
     content_observations_.RemoveObservation(delegate);
     content_delegates_.erase(it);
     tools_attachment_overridden_.erase(delegate->uuid());
+    mcp_server_ids_.erase(delegate->uuid());
     RunContentToolsAddedCallbacks(delegate->uuid(), 0);
   }
 
@@ -221,6 +262,7 @@ void AssociatedContentManager::RemoveContent(
   }
 
   MaybeResetToolPermissionsForOrigin(origin);
+  PushMCPServerToolInfos(later_mcp_servers);
 
   if (notify_updated) {
     conversation_->OnAssociatedContentUpdated();
@@ -270,9 +312,33 @@ void AssociatedContentManager::GetToolInfos(std::string_view content_uuid,
     return;
   }
 
-  (*it)->GetContentTools(base::BindOnce(
-      &AssociatedContentManager::OnToolInfosFetched,
-      weak_ptr_factory_.GetWeakPtr(), (*it)->GetOrigin(), std::move(callback)));
+  if (!IsMCPServer(*it)) {
+    (*it)->GetContentTools(
+        base::BindOnce(&AssociatedContentManager::OnToolInfosFetched,
+                       weak_ptr_factory_.GetWeakPtr(), (*it)->GetOrigin(),
+                       std::move(callback)));
+    return;
+  }
+
+  // The cap across MCP servers cuts a server's tools after those of the
+  // servers attached before it, so they're fetched too.
+  std::vector<AssociatedContentDelegate*> servers;
+  for (AssociatedContentDelegate* delegate : content_delegates_) {
+    if (delegate == *it) {
+      servers.push_back(delegate);
+      break;
+    }
+    if (IsMCPServer(delegate) && delegate->tools_attached()) {
+      servers.push_back(delegate);
+    }
+  }
+  auto barrier = base::BarrierCallback<FetchedContentTools>(
+      servers.size(),
+      base::BindOnce(&AssociatedContentManager::OnMCPServerToolInfosFetched,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+  for (size_t i = 0; i < servers.size(); ++i) {
+    FetchContentTools(servers[i], i, barrier);
+  }
 }
 
 void AssociatedContentManager::OnToolInfosFetched(
@@ -288,6 +354,36 @@ void AssociatedContentManager::OnToolInfosFetched(
         mojom::ToolInfo::New(std::string(tool->DisplayName()),
                              std::string(tool->DisplayDescription()),
                              GetToolPermission(origin, *tool)));
+  }
+  std::move(callback).Run(std::move(infos));
+}
+
+void AssociatedContentManager::OnMCPServerToolInfosFetched(
+    GetToolInfosCallback callback,
+    std::vector<FetchedContentTools> fetched) {
+  std::ranges::sort(fetched, {}, &FetchedContentTools::index);
+  std::vector<mojom::ToolInfoPtr> infos;
+  size_t mcp_tool_count = 0;
+  for (FetchedContentTools& server : fetched) {
+    const bool is_listed = &server == &fetched.back();
+    server.tools.resize(std::min(server.tools.size(), kMaxToolsPerContent));
+    // Counted as AddToolsForGenerationLoop() counts them, but blocked tools
+    // are listed too, so the user can see and undo the choice.
+    for (const std::unique_ptr<Tool>& tool : server.tools) {
+      const mojom::ToolPermission permission =
+          GetToolPermission(server.origin, *tool);
+      if (permission != mojom::ToolPermission::kNeverAllow) {
+        if (mcp_tool_count >= kMaxMCPToolsPerGenerationLoop) {
+          break;
+        }
+        ++mcp_tool_count;
+      }
+      if (is_listed) {
+        infos.push_back(mojom::ToolInfo::New(
+            std::string(tool->DisplayName()),
+            std::string(tool->DisplayDescription()), permission));
+      }
+    }
   }
   std::move(callback).Run(std::move(infos));
 }
@@ -331,10 +427,7 @@ void AssociatedContentManager::SetToolPermission(
   // The choice is conversation-wide, so tell every UI bound to the
   // conversation rather than leaving the one it was made from to update
   // itself.
-  GetToolInfos(content_uuid,
-               base::BindOnce(
-                   &AssociatedContentManager::NotifyContentToolsChanged,
-                   weak_ptr_factory_.GetWeakPtr(), std::string(content_uuid)));
+  PushToolInfos(*it);
 }
 
 void AssociatedContentManager::SetToolPermissionForModelToolName(
@@ -343,7 +436,7 @@ void AssociatedContentManager::SetToolPermissionForModelToolName(
   auto tool_it = std::ranges::find_if(tools_, [&](const auto& entry) {
     return entry.tool->Name() == model_tool_name;
   });
-  if (tool_it == tools_.end()) {
+  if (tool_it == tools_.end() || !tool_it->records_choice) {
     return;
   }
 
@@ -417,6 +510,13 @@ bool AssociatedContentManager::IsEligibleForAutoToolsUpdate(
 
 void AssociatedContentManager::OnContentToolsChanged(
     AssociatedContentDelegate* delegate) {
+  // An MCP server's tools stay attached whatever it offers, so what changes is
+  // the list the UI shows, and the loop if it went without them.
+  if (IsMCPServer(delegate)) {
+    PushToolInfos(delegate);
+    MaybeFetchToolsForGenerationLoop(delegate);
+    return;
+  }
   if (!IsEligibleForAutoToolsUpdate(delegate->uuid())) {
     return;
   }
@@ -425,11 +525,13 @@ void AssociatedContentManager::OnContentToolsChanged(
 
 void AssociatedContentManager::ClearContent() {
   DVLOG(1) << __func__;
-  if (!HasAssociatedContent()) {
+  if (!HasPageContent()) {
     return;
   }
 
-  DetachContent();
+  for (AssociatedContentDelegate* delegate : GetPageContentDelegates()) {
+    RemoveContent(delegate, /*notify_updated=*/false);
+  }
 
   conversation_->OnAssociatedContentUpdated();
 }
@@ -439,7 +541,8 @@ void AssociatedContentManager::AssociateUnsentContentWithTurn(
   CHECK(turn->uuid.has_value());
 
   for (const auto& content : content_delegates_) {
-    if (content_uuid_to_conversation_turns_.contains(content->uuid())) {
+    if (content_uuid_to_conversation_turns_.contains(content->uuid()) ||
+        IsMCPServer(content)) {
       continue;
     }
     content_uuid_to_conversation_turns_[content->uuid()] = {
@@ -454,7 +557,7 @@ bool AssociatedContentManager::AssociateContentWithTurn(
 
   auto it = std::ranges::find(content_delegates_, content_uuid,
                               [](const auto& ptr) { return ptr->uuid(); });
-  if (it == content_delegates_.end()) {
+  if (it == content_delegates_.end() || IsMCPServer(*it)) {
     return false;
   }
   const bool inserted =
@@ -512,6 +615,14 @@ AssociatedContentManager::GetAssociatedContent() const {
     content->url = delegate->url();
     content->title = base::UTF16ToUTF8(delegate->title());
     content->content_type = cached_page_content.content_type;
+    content->tools_attached = delegate->tools_attached();
+
+    // An MCP server sends nothing, so takes nothing from the budget.
+    if (IsMCPServer(delegate)) {
+      content->content_used_percentage = 100;
+      result.push_back(std::move(content));
+      continue;
+    }
 
     const uint32_t content_length =
         cached_page_content.content.length() + kAdditionalCharsPerContent;
@@ -534,8 +645,6 @@ AssociatedContentManager::GetAssociatedContent() const {
     if (it != content_uuid_to_conversation_turns_.end()) {
       content->conversation_turn_uuid = it->second.turn_uuid;
     }
-
-    content->tools_attached = delegate->tools_attached();
 
     result.push_back(std::move(content));
     total_consumed_chars += content_length;
@@ -711,12 +820,14 @@ void AssociatedContentManager::GetStagedEntriesFromContent(
     GetStagedEntriesCallback callback) {
   DVLOG(1) << __func__;
 
-  if (content_delegates_.size() != 1) {
+  const std::vector<AssociatedContentDelegate*> page_content =
+      GetPageContentDelegates();
+  if (page_content.size() != 1) {
     std::move(callback).Run(std::nullopt);
     return;
   }
 
-  content_delegates_[0]->GetStagedEntriesFromContent(std::move(callback));
+  page_content[0]->GetStagedEntriesFromContent(std::move(callback));
 }
 
 PageContents AssociatedContentManager::GetCachedContents() const {
@@ -749,8 +860,9 @@ PageContentsMap AssociatedContentManager::GetCachedContentsMap() const {
 bool AssociatedContentManager::HasOpenAIChatPermission() const {
   DVLOG(1) << __func__;
 
-  return content_delegates_.size() == 1 &&
-         content_delegates_[0]->HasOpenAIChatPermission();
+  const std::vector<AssociatedContentDelegate*> page_content =
+      GetPageContentDelegates();
+  return page_content.size() == 1 && page_content[0]->HasOpenAIChatPermission();
 }
 
 bool AssociatedContentManager::HasLiveContent() const {
@@ -765,16 +877,25 @@ bool AssociatedContentManager::HasAssociatedContent() const {
   return !content_delegates_.empty();
 }
 
+bool AssociatedContentManager::HasPageContent() const {
+  return std::ranges::any_of(content_delegates_,
+                             [this](const AssociatedContentDelegate* delegate) {
+                               return !IsMCPServer(delegate);
+                             });
+}
+
 bool AssociatedContentManager::IsVideo() const {
   DVLOG(1) << __func__;
 
-  return content_delegates_.size() == 1 &&
-         content_delegates_[0]->cached_page_content().content_type ==
+  const std::vector<AssociatedContentDelegate*> page_content =
+      GetPageContentDelegates();
+  return page_content.size() == 1 &&
+         page_content[0]->cached_page_content().content_type ==
              mojom::ContentType::VideoTranscript;
 }
 
-size_t AssociatedContentManager::GetContentDelegateCount() const {
-  return content_delegates_.size();
+size_t AssociatedContentManager::GetPageContentCount() const {
+  return GetPageContentDelegates().size();
 }
 
 void AssociatedContentManager::OnDestroyed(
@@ -793,6 +914,24 @@ void AssociatedContentManager::OnRequestArchive(
   CreateArchiveContent(delegate);
 }
 
+void AssociatedContentManager::OnNewPage(AssociatedContentDelegate* delegate) {
+  // A tab's content is archived, and so no longer observed, before it tells of
+  // a new page. An MCP server tells of one when it moves to another endpoint,
+  // where the choices made about its tools don't apply, nor does an answer to
+  // a prompt about one of them from before. It tells of its tools there once
+  // it has them.
+  if (!IsMCPServer(delegate)) {
+    return;
+  }
+  const url::Origin origin = delegate->GetOrigin();
+  content_tool_permissions_.erase(origin);
+  for (GenerationLoopTool& entry : tools_) {
+    if (entry.origin == origin) {
+      entry.records_choice = false;
+    }
+  }
+}
+
 void AssociatedContentManager::OnTitleChanged(
     AssociatedContentDelegate* delegate) {
   DVLOG(1) << __func__;
@@ -804,12 +943,11 @@ void AssociatedContentManager::OnToolsAttachedChanged(
     AssociatedContentDelegate* delegate) {
   // Content attached after the generation loop started (e.g. added by a tool)
   // has its tools added to that loop too, rather than waiting for the next.
-  if (delegate->tools_attached() &&
-      GetLoopToolCount(delegate->GetOrigin()) == 0) {
-    delegate->GetContentTools(
-        base::BindOnce(&AssociatedContentManager::OnAttachedContentToolsFetched,
-                       weak_ptr_factory_.GetWeakPtr(), delegate->GetWeakPtr(),
-                       generation_loop_id_));
+  MaybeFetchToolsForGenerationLoop(delegate);
+  // Whether its tools count against the cap across servers changes what the
+  // servers after it offer.
+  if (IsMCPServer(delegate)) {
+    PushMCPServerToolInfos(GetMCPServersFrom(delegate, /*inclusive=*/false));
   }
 
   conversation_->OnAssociatedContentUpdated();
@@ -818,12 +956,13 @@ void AssociatedContentManager::OnToolsAttachedChanged(
 void AssociatedContentManager::UpdateToolsForNewGenerationLoop(
     base::OnceClosure on_updated) {
   tools_.clear();
+  loop_content_uuids_.clear();
   ++generation_loop_id_;
 
   // Only load tools from content the user has attached.
   std::vector<AssociatedContentDelegate*> attached_delegates;
   for (AssociatedContentDelegate* content : content_delegates_) {
-    if (content->tools_attached()) {
+    if (content->tools_attached() && CanFetchTools(content)) {
       attached_delegates.push_back(content);
     }
   }
@@ -833,23 +972,62 @@ void AssociatedContentManager::UpdateToolsForNewGenerationLoop(
     return;
   }
 
-  auto barrier =
-      base::BarrierClosure(attached_delegates.size(), std::move(on_updated));
-  for (auto* content : attached_delegates) {
-    content->GetContentTools(base::BindOnce(
-        [](base::WeakPtr<AssociatedContentManager> self,
-           uint64_t generation_loop_id, std::string content_uuid,
-           url::Origin origin, base::RepeatingClosure done,
-           std::vector<std::unique_ptr<Tool>> tools) {
-          if (self && self->generation_loop_id_ == generation_loop_id) {
-            self->AddToolsForGenerationLoop(content_uuid, origin,
-                                            std::move(tools));
-          }
-          done.Run();
-        },
-        weak_ptr_factory_.GetWeakPtr(), generation_loop_id_, content->uuid(),
-        content->GetOrigin(), barrier));
+  // The tools are added once all the content has answered, in the order it was
+  // attached, so that which MCP tools the cap drops doesn't depend on which
+  // server answers first.
+  auto barrier = base::BarrierCallback<FetchedContentTools>(
+      attached_delegates.size(),
+      base::BindOnce(&AssociatedContentManager::OnGenerationLoopToolsFetched,
+                     weak_ptr_factory_.GetWeakPtr(), generation_loop_id_,
+                     std::move(on_updated)));
+  for (size_t i = 0; i < attached_delegates.size(); ++i) {
+    FetchContentTools(attached_delegates[i], i, barrier);
   }
+}
+
+void AssociatedContentManager::FetchContentTools(
+    AssociatedContentDelegate* content,
+    size_t index,
+    base::RepeatingCallback<void(FetchedContentTools)> done) {
+  FetchedContentTools fetched;
+  fetched.index = index;
+  fetched.content_uuid = content->uuid();
+  fetched.origin = content->GetOrigin();
+  fetched.is_mcp_server = IsMCPServer(content);
+  content->GetContentTools(base::BindOnce(
+      [](base::RepeatingCallback<void(FetchedContentTools)> done,
+         FetchedContentTools fetched,
+         std::vector<std::unique_ptr<Tool>> tools) {
+        fetched.tools = std::move(tools);
+        done.Run(std::move(fetched));
+      },
+      std::move(done), std::move(fetched)));
+}
+
+void AssociatedContentManager::OnGenerationLoopToolsFetched(
+    uint64_t generation_loop_id,
+    base::OnceClosure on_updated,
+    std::vector<FetchedContentTools> fetched) {
+  // A loop that's been replaced isn't waited for.
+  if (generation_loop_id != generation_loop_id_) {
+    return;
+  }
+  std::ranges::sort(fetched, {}, &FetchedContentTools::index);
+  for (FetchedContentTools& content : fetched) {
+    // Left out if it's been detached since, or its tools have been added by
+    // another fetch, as when it's detached and attached again.
+    auto delegate_it =
+        std::ranges::find(content_delegates_, content.content_uuid,
+                          [](const auto& ptr) { return ptr->uuid(); });
+    if (delegate_it == content_delegates_.end() ||
+        !(*delegate_it)->tools_attached() ||
+        loop_content_uuids_.contains(content.content_uuid)) {
+      continue;
+    }
+    AddToolsForGenerationLoop(content.content_uuid, content.origin,
+                              content.is_mcp_server, std::move(content.tools));
+  }
+  std::move(on_updated).Run();
 }
 
 void AssociatedContentManager::RunWhenContentToolsAdded(
@@ -890,14 +1068,18 @@ void AssociatedContentManager::OnAttachedContentToolsFetched(
     return;
   }
   AddToolsForGenerationLoop(delegate->uuid(), delegate->GetOrigin(),
-                            std::move(tools));
+                            IsMCPServer(delegate.get()), std::move(tools));
 }
 
 void AssociatedContentManager::AddToolsForGenerationLoop(
     const std::string& content_uuid,
     const url::Origin& origin,
+    bool is_mcp_server,
     std::vector<std::unique_ptr<Tool>> tools) {
   const size_t initial_tool_count = tools_.size();
+  size_t mcp_tool_count = static_cast<size_t>(
+      std::ranges::count(tools_, true, &GenerationLoopTool::is_mcp_server));
+  loop_content_uuids_.insert(content_uuid);
 
   // Cap before filtering so the list the model sees is a subset of the one the
   // website tools dialog shows, which caps the same way.
@@ -909,8 +1091,15 @@ void AssociatedContentManager::AddToolsForGenerationLoop(
     if (permission == mojom::ToolPermission::kNeverAllow) {
       continue;
     }
+    // The servers attached first keep their tools.
+    if (is_mcp_server) {
+      if (mcp_tool_count >= kMaxMCPToolsPerGenerationLoop) {
+        break;
+      }
+      ++mcp_tool_count;
+    }
     tool->SetUserPermissionStrategy(permission);
-    tools_.push_back({std::move(tool), origin});
+    tools_.push_back({std::move(tool), origin, is_mcp_server});
   }
 
   RunContentToolsAddedCallbacks(content_uuid,
@@ -963,7 +1152,84 @@ void AssociatedContentManager::DetachContent() {
   content_delegates_.clear();
   owned_content_.clear();
   tools_attachment_overridden_.clear();
+  mcp_server_ids_.clear();
   content_tool_permissions_.clear();
+}
+
+bool AssociatedContentManager::IsMCPServer(
+    const AssociatedContentDelegate* delegate) const {
+  return mcp_server_ids_.contains(delegate->uuid());
+}
+
+std::vector<AssociatedContentDelegate*>
+AssociatedContentManager::GetPageContentDelegates() const {
+  std::vector<AssociatedContentDelegate*> page_content;
+  for (AssociatedContentDelegate* delegate : content_delegates_) {
+    if (!IsMCPServer(delegate)) {
+      page_content.push_back(delegate);
+    }
+  }
+  return page_content;
+}
+
+bool AssociatedContentManager::CanFetchTools(
+    const AssociatedContentDelegate* delegate) const {
+  // An MCP server's are fetched from the server, so only for a model that can
+  // use them.
+  return !IsMCPServer(delegate) ||
+         conversation_->GetCurrentModel().supports_tools;
+}
+
+void AssociatedContentManager::MaybeFetchToolsForGenerationLoop(
+    AssociatedContentDelegate* delegate) {
+  if (!delegate->tools_attached() ||
+      GetLoopToolCount(delegate->GetOrigin()) > 0 || !CanFetchTools(delegate)) {
+    return;
+  }
+  delegate->GetContentTools(
+      base::BindOnce(&AssociatedContentManager::OnAttachedContentToolsFetched,
+                     weak_ptr_factory_.GetWeakPtr(), delegate->GetWeakPtr(),
+                     generation_loop_id_));
+}
+
+std::vector<std::string> AssociatedContentManager::GetMCPServersFrom(
+    const AssociatedContentDelegate* delegate,
+    bool inclusive) const {
+  std::vector<std::string> uuids;
+  auto it = std::ranges::find(content_delegates_, delegate,
+                              [](const auto& ptr) { return ptr.get(); });
+  if (it != content_delegates_.end() && !inclusive) {
+    ++it;
+  }
+  for (; it != content_delegates_.end(); ++it) {
+    if (IsMCPServer(*it)) {
+      uuids.push_back((*it)->uuid());
+    }
+  }
+  return uuids;
+}
+
+void AssociatedContentManager::PushToolInfos(
+    const AssociatedContentDelegate* delegate) {
+  if (!IsMCPServer(delegate)) {
+    GetToolInfos(
+        delegate->uuid(),
+        base::BindOnce(&AssociatedContentManager::NotifyContentToolsChanged,
+                       weak_ptr_factory_.GetWeakPtr(), delegate->uuid()));
+    return;
+  }
+  // The cap across servers cuts the tools of the servers after it, once its own
+  // are counted.
+  PushMCPServerToolInfos(GetMCPServersFrom(delegate, /*inclusive=*/true));
+}
+
+void AssociatedContentManager::PushMCPServerToolInfos(
+    const std::vector<std::string>& server_uuids) {
+  for (const std::string& uuid : server_uuids) {
+    GetToolInfos(uuid, base::BindOnce(
+                           &AssociatedContentManager::NotifyContentToolsChanged,
+                           weak_ptr_factory_.GetWeakPtr(), uuid));
+  }
 }
 
 bool AssociatedContentManager::HasLiveContentForOrigin(

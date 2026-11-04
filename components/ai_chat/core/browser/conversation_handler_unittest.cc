@@ -9386,4 +9386,93 @@ TEST_F(ConversationHandlerUnitTest, GetCurrentModelFallsBackToAutomatic) {
             kChatAutomaticModelKey);
 }
 
+// A loop stopped while the tools are updated for it doesn't generate.
+TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
+       StopWhileUpdatingToolsDoesNotGenerate) {
+  // Something to answer, even once the stopped submission is withdrawn.
+  conversation_handler_->SetChatHistoryForTesting(CreateSampleChatHistory(1));
+  base::OnceClosure tools_updated;
+  EXPECT_CALL(*mock_tool_provider_, UpdateToolsForNewGenerationLoop)
+      .WillOnce([&](base::OnceClosure cb) { tools_updated = std::move(cb); });
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  EXPECT_CALL(*engine, GenerateAssistantResponse).Times(0);
+
+  conversation_handler_->SubmitHumanConversationEntry("Question", std::nullopt);
+  ASSERT_TRUE(tools_updated);
+  conversation_handler_->StopGenerationAndMaybeGetHumanEntry(base::DoNothing());
+  std::move(tools_updated).Run();
+}
+
+// A loop replaced while the tools are updated for it doesn't generate, but
+// the one replacing it does.
+TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
+       ResubmitWhileUpdatingToolsGeneratesOnce) {
+  conversation_handler_->SetChatHistoryForTesting(CreateSampleChatHistory(1));
+  std::vector<base::OnceClosure> tools_updated;
+  EXPECT_CALL(*mock_tool_provider_, UpdateToolsForNewGenerationLoop)
+      .Times(2)
+      .WillRepeatedly([&](base::OnceClosure cb) {
+        tools_updated.push_back(std::move(cb));
+      });
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  conversation_handler_->SubmitHumanConversationEntry("Question", std::nullopt);
+  conversation_handler_->StopGenerationAndMaybeGetHumanEntry(base::DoNothing());
+  conversation_handler_->SubmitHumanConversationEntry("Again", std::nullopt);
+  ASSERT_EQ(tools_updated.size(), 2u);
+
+  EXPECT_CALL(*engine, GenerateAssistantResponse).Times(0);
+  std::move(tools_updated[0]).Run();
+  testing::Mock::VerifyAndClearExpectations(engine);
+  EXPECT_CALL(*engine, GenerateAssistantResponse);
+  std::move(tools_updated[1]).Run();
+}
+
+namespace {
+
+// Page content that's only fetched when the test says.
+class HeldPageContent : public MockAssociatedContent {
+ public:
+  void GetContent(GetPageContentCallback callback) override {
+    callbacks_.push_back(std::move(callback));
+  }
+
+  void Release() {
+    for (GetPageContentCallback& callback : std::exchange(callbacks_, {})) {
+      MockAssociatedContent::GetContent(std::move(callback));
+    }
+  }
+
+ private:
+  std::vector<GetPageContentCallback> callbacks_;
+};
+
+}  // namespace
+
+// A loop stopped while its page content is fetched doesn't generate.
+TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
+       StopWhileFetchingPageContentDoesNotGenerate) {
+  conversation_handler_->SetChatHistoryForTesting(CreateSampleChatHistory(1));
+  HeldPageContent page;
+  page.SetTextContent("Page text");
+  conversation_handler_->associated_content_manager()->AddContent(&page);
+  page.Release();
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  EXPECT_CALL(*engine, GenerateAssistantResponse).Times(0);
+
+  conversation_handler_->SubmitHumanConversationEntry("Question", std::nullopt);
+  conversation_handler_->StopGenerationAndMaybeGetHumanEntry(base::DoNothing());
+  page.Release();
+  // The fetch's answer is posted, so wait for what's posted after it.
+  base::RunLoop run_loop;
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, run_loop.QuitClosure());
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(engine);
+  conversation_handler_->associated_content_manager()->RemoveContent(&page);
+}
+
 }  // namespace ai_chat

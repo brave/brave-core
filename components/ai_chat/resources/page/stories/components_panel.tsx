@@ -215,6 +215,20 @@ const ASSOCIATED_CONTENT_WITH_TOOLS: Mojom.AssociatedContent = {
   toolsAttached: true,
 }
 
+// One of the user's MCP servers, attached to the conversation. It's never
+// associated with a turn, so it stays beside the input box.
+const ASSOCIATED_MCP_SERVER: Mojom.AssociatedContent = {
+  ...ASSOCIATED_CONTENT,
+  uuid: 'uuid-mcp-server',
+  contentType: Mojom.ContentType.MCPServer,
+  title: 'Issue tracker',
+  url: { url: 'https://mcp.example.com/mcp' },
+  contentId: -1,
+  contentUsedPercentage: 100,
+  conversationTurnUuid: undefined,
+  toolsAttached: true,
+}
+
 // Shown in the dialog opened from the "Tools" pill. The first description is
 // long enough to be clamped, so expand/collapse is exercised.
 const SAMPLE_CONTENT_TOOLS: Mojom.ToolInfo[] = [
@@ -368,6 +382,7 @@ type CustomArgs = {
   hasSuggestedQuestions: boolean
   hasAssociatedContent: boolean
   hasAttachedTools: boolean
+  hasAttachedMCPServer: boolean
   isFeedbackFormVisible: boolean
   isStorageNoticeDismissed: boolean
   canShowPremiumPrompt: boolean
@@ -417,6 +432,7 @@ const args: CustomArgs = {
   hasSuggestedQuestions: true,
   hasAssociatedContent: true,
   hasAttachedTools: false,
+  hasAttachedMCPServer: false,
   editingConversationId: null,
   deletingConversationId: null,
   generatingConversationId: null,
@@ -607,6 +623,9 @@ function StoryContext(
     }
     if (argsRef.current.hasAttachedTools) {
       content.push(ASSOCIATED_CONTENT_WITH_TOOLS)
+    }
+    if (argsRef.current.hasAttachedMCPServer) {
+      content.push(ASSOCIATED_MCP_SERVER)
     }
     if (content.length === 0) {
       content.push(new Mojom.AssociatedContent())
@@ -841,6 +860,11 @@ export const _Panel = GetPanelStory({
 export const _WithAttachedTools = GetPanelStory({
   conversation_content: 'ALL',
   hasAttachedTools: true,
+})
+
+export const _WithAttachedMCPServer = GetPanelStory({
+  conversation_content: 'ALL',
+  hasAttachedMCPServer: true,
 })
 
 export const _WithVisionModelSwitch = GetPanelStory({

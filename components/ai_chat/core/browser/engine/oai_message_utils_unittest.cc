@@ -312,6 +312,19 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages) {
   VerifyTextBlock(FROM_HERE, messages[3].content[1], "Another question");
 }
 
+// An MCP server has no content, so nothing of it is sent.
+TEST_F(OAIMessageUtilsTest, BuildOAIPageContentBlocks_SkipsMCPServers) {
+  PageContent page("Page content", mojom::ContentType::PageContent);
+  PageContent server("", mojom::ContentType::MCPServer);
+  uint32_t remaining_length = 1000;
+  std::vector<mojom::ContentBlockPtr> blocks =
+      BuildOAIPageContentBlocks({std::cref(server), std::cref(page)},
+                                remaining_length, [](std::string&) {});
+  ASSERT_EQ(blocks.size(), 1u);
+  VerifyPageTextBlock(FROM_HERE, blocks[0], "Page content");
+  EXPECT_EQ(remaining_length, 1000u - page.content.size());
+}
+
 // Content associated with an assistant turn (i.e. a workspace a tool added) is
 // only known to the model via that tool's result, so isn't sent as a block of
 // the assistant message.

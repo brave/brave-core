@@ -1231,6 +1231,40 @@ TEST(AIChatSyncConversionsTest, SpecificsToEntryRejectsWorkspaceContent) {
   EXPECT_TRUE(rebuilt_content.empty());
 }
 
+// MCP servers are never stored, so one arriving from sync is rejected too.
+TEST(AIChatSyncConversionsTest, SpecificsToEntryRejectsMCPServerContent) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-mcp";
+  entry->created_time = base::Time::Now();
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+
+  auto ac = mojom::AssociatedContent::New();
+  ac->uuid = "content-mcp";
+  ac->title = "Server";
+  ac->url = GURL("https://mcp.example.com/mcp");
+  ac->content_type = mojom::ContentType::PageContent;
+  ac->conversation_turn_uuid = "entry-mcp";
+  std::vector<mojom::AssociatedContentPtr> all_content;
+  all_content.push_back(std::move(ac));
+
+  auto specifics = EntryToSpecifics("conv-1", *entry, all_content);
+  ASSERT_EQ(specifics.entry().associated_content_size(), 1);
+  specifics.mutable_entry()->mutable_associated_content(0)->set_content_type(
+      std::to_underlying(mojom::ContentType::MCPServer));
+
+  std::vector<mojom::AssociatedContentPtr> rebuilt_content;
+  EXPECT_FALSE(SpecificsToEntry(specifics, rebuilt_content));
+  EXPECT_TRUE(rebuilt_content.empty());
+
+  // It isn't sent to sync either.
+  all_content[0]->content_type = mojom::ContentType::MCPServer;
+  EXPECT_EQ(EntryToSpecifics("conv-1", *entry, all_content)
+                .entry()
+                .associated_content_size(),
+            0);
+}
+
 TEST(AIChatSyncConversionsTest, EntryRoundTripSkillAndNearVerification) {
   auto entry = mojom::ConversationTurn::New();
   entry->uuid = "entry-skill";

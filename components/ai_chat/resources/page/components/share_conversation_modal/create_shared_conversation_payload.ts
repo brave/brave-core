@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { isMCPServerContent } from '../../../common/conversation_history_utils'
 import { type ConversationData } from '../../../common/conversation_serialization'
 import * as Mojom from '../../../common/mojom'
 
@@ -71,13 +72,17 @@ export async function createSharedConversationPayload(
 ): Promise<ConversationData> {
   const { api } = conversationContext
 
+  // The user's MCP servers aren't part of what's shared.
   const associatedContent = await Promise.all(
-    api.getState.current().associatedContent.map(
-      async (content): Promise<Mojom.AssociatedContentWithFavicon> => ({
-        ...content,
-        faviconUrl: await getFaviconDataUrl(faviconContext, content.url.url),
-      }),
-    ),
+    api.getState
+      .current()
+      .associatedContent.filter((content) => !isMCPServerContent(content))
+      .map(
+        async (content): Promise<Mojom.AssociatedContentWithFavicon> => ({
+          ...content,
+          faviconUrl: await getFaviconDataUrl(faviconContext, content.url.url),
+        }),
+      ),
   )
 
   return {

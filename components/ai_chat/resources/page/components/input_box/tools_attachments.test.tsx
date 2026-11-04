@@ -23,6 +23,15 @@ const CONTENT: Mojom.AssociatedContent = {
   toolsAttached: true,
 }
 
+const MCP_SERVER: Mojom.AssociatedContent = {
+  ...CONTENT,
+  uuid: 'server-uuid',
+  contentType: Mojom.ContentType.MCPServer,
+  title: 'My Server',
+  contentId: -1,
+  url: { url: 'https://mcp.example.com/mcp' },
+}
+
 const TOOLS: Mojom.ToolInfo[] = [
   { name: 'browse_store', description: 'Browse OR navigate to collections.' },
   { name: 'cancel_cart', description: 'Remove all items from the cart.' },
@@ -34,17 +43,19 @@ async function renderToolsAttachments(
 ) {
   const getContentTools = jest.fn(() => Promise.resolve({ tools }))
   const setToolsAttached = jest.fn()
+  const disassociateContent = jest.fn()
   await act(async () => {
     render(
       <MockContext conversationHandler={{ getContentTools }}>
         <ToolsAttachments
           toolsContent={[content]}
           setToolsAttached={setToolsAttached}
+          disassociateContent={disassociateContent}
         />
       </MockContext>,
     )
   })
-  return { getContentTools, setToolsAttached }
+  return { getContentTools, setToolsAttached, disassociateContent }
 }
 
 describe('ToolsAttachments', () => {
@@ -112,11 +123,38 @@ describe('ToolsAttachments', () => {
     expect(setToolsAttached).toHaveBeenCalledWith(workspace, false)
   })
 
+  it('shows an MCP server with an icon rather than a favicon', async () => {
+    await renderToolsAttachments(TOOLS, MCP_SERVER)
+
+    expect(await screen.findByText('2')).toBeInTheDocument()
+    expect(document.querySelector('img[src*="//favicon2"]')).toBeNull()
+    expect(document.querySelector('.toolPillIcon')).toBeInTheDocument()
+
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: /My Server/ }))
+    })
+    expect(
+      screen.getByText('CHAT_UI_MCP_SERVER_TOOLS_TITLE'),
+    ).toBeInTheDocument()
+    expect(screen.getByText('CHAT_UI_MCP_SERVER_LABEL')).toBeInTheDocument()
+    expect(document.querySelector('img[src*="//favicon2"]')).toBeNull()
+  })
+
   it('detaches the tools when the pill is removed', async () => {
     const { setToolsAttached } = await renderToolsAttachments(TOOLS)
 
     fireEvent.click(document.querySelector('leo-button.toolPillRemove')!)
 
     expect(setToolsAttached).toHaveBeenCalledWith(CONTENT, false)
+  })
+
+  it('detaches an MCP server when its pill is removed', async () => {
+    const { setToolsAttached, disassociateContent } =
+      await renderToolsAttachments(TOOLS, MCP_SERVER)
+
+    fireEvent.click(document.querySelector('leo-button.toolPillRemove')!)
+
+    expect(disassociateContent).toHaveBeenCalledWith(MCP_SERVER)
+    expect(setToolsAttached).not.toHaveBeenCalled()
   })
 })

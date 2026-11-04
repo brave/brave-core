@@ -22,6 +22,7 @@ import {
 } from '../../state/conversation_context'
 import { getLocale } from '$web-common/locale'
 import usePromise from '$web-common/usePromise'
+import { isMCPServerContent } from '../../../common/conversation_history_utils'
 
 type Attachment = TabData | Bookmark | HistoryEntry
 
@@ -61,8 +62,12 @@ function TabItem({ tab, index }: { tab: TabData; index: number }) {
 function UrlContentItem({ url, title }: { url: string; title: string }) {
   const aiChat = useAIChat()
   const conversation = useConversation()
+  // A connector's URL is its endpoint's origin, which can also be a page's.
   const content = React.useMemo(
-    () => conversation.associatedContentInfo.find((c) => c.url.url === url),
+    () =>
+      conversation.associatedContentInfo.find(
+        (c) => !isMCPServerContent(c) && c.url.url === url,
+      ),
     [conversation.associatedContentInfo, url],
   )
   return (

@@ -6,6 +6,7 @@
 import * as React from 'react'
 import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import {
+  AttachmentContentItem,
   AttachmentItem,
   AttachmentPageItem,
   AttachmentSpinnerItem,
@@ -24,6 +25,51 @@ Object.defineProperty(URL, 'createObjectURL', {
 Object.defineProperty(URL, 'revokeObjectURL', {
   writable: true,
   value: jest.fn(),
+})
+
+describe('attachment content item', () => {
+  const content: Mojom.AssociatedContent = {
+    uuid: 'uuid',
+    contentType: Mojom.ContentType.PageContent,
+    title: 'My Page',
+    contentId: 1,
+    url: { url: 'https://example.com/page' },
+    contentUsedPercentage: 100,
+    conversationTurnUuid: undefined,
+    toolsAttached: false,
+  }
+
+  it('shows a page with its favicon', () => {
+    const { container } = render(<AttachmentContentItem content={content} />)
+    expect(
+      screen.getByText('My Page', { selector: '.title' }),
+    ).toBeInTheDocument()
+    expect(
+      container.querySelector('img[src*="//favicon2"]'),
+    ).toBeInTheDocument()
+  })
+
+  it('shows an MCP server with a generic icon, never its own', () => {
+    const { container } = render(
+      <AttachmentContentItem
+        content={{
+          ...content,
+          contentType: Mojom.ContentType.MCPServer,
+          title: 'My Server',
+          contentId: -1,
+          url: { url: 'https://mcp.example.com/' },
+        }}
+      />,
+    )
+    expect(
+      screen.getByText('My Server', { selector: '.title' }),
+    ).toBeInTheDocument()
+    expect(screen.getByText('CHAT_UI_MCP_SERVER_LABEL')).toBeInTheDocument()
+    expect(
+      container.querySelector('leo-icon[name="cloud-hosting"]'),
+    ).toBeInTheDocument()
+    expect(container.querySelector('img')).toBeNull()
+  })
 })
 
 describe('attachment item', () => {

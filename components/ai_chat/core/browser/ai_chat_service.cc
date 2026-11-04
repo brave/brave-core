@@ -38,6 +38,7 @@
 #include "brave/components/ai_chat/core/browser/conversation_share_manager.h"
 #include "brave/components/ai_chat/core/browser/conversation_tools.h"
 #include "brave/components/ai_chat/core/browser/mcp/mcp_host.h"
+#include "brave/components/ai_chat/core/browser/mcp_server_associated_content.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/sync/ai_chat_sync_backend.h"
 #include "brave/components/ai_chat/core/browser/sync/ai_chat_sync_bridge.h"
@@ -295,6 +296,7 @@ ConversationHandler* AIChatService::CreateConversation() {
           /*tool_providers=*/std::vector<std::unique_ptr<ToolProvider>>());
   AddToolProvidersToConversation(conversation_handler.get());
   conversation_observations_.AddObservation(conversation_handler.get());
+  AttachAutoAttachMCPServers(*conversation_handler);
 
   // Own it
   conversation_handlers_.insert_or_assign(conversation_uuid,
@@ -416,6 +418,8 @@ void AIChatService::OnConversationDataReceived(
           std::move(data));
   AddToolProvidersToConversation(conversation_handler.get());
   conversation_observations_.AddObservation(conversation_handler.get());
+  // Attached servers aren't stored, so these are the only ones that return.
+  AttachAutoAttachMCPServers(*conversation_handler);
   conversation_handlers_.insert_or_assign(conversation_uuid,
                                           std::move(conversation_handler));
   std::move(callback).Run(GetConversation(conversation_uuid));
@@ -1732,6 +1736,20 @@ void AIChatService::DisassociateContent(
   }
 }
 
+void AIChatService::AssociateMCPServer(const std::string& server_id,
+                                       const std::string& conversation_uuid) {
+  ConversationHandler* conversation = GetConversation(conversation_uuid);
+  if (!conversation || !mcp_host_) {
+    return;
+  }
+  for (const MCPHost::EnabledServer& enabled : mcp_host_->GetEnabledServers()) {
+    if (enabled.server->id == server_id) {
+      AttachMCPServer(*conversation, *enabled.server);
+      return;
+    }
+  }
+}
+
 void AIChatService::GetSuggestedTopics(const std::vector<Tab>& tabs,
                                        GetSuggestedTopicsCallback callback) {
   size_t passage_count = 0;
@@ -1801,6 +1819,52 @@ void AIChatService::AddToolProvidersToConversation(
       memory_tool_ ? memory_tool_->GetWeakPtr() : nullptr));
 
   conversation->AddToolProviders(std::move(tool_providers));
+}
+
+void AIChatService::AttachAutoAttachMCPServers(
+    ConversationHandler& conversation) {
+  if (!mcp_host_) {
+    return;
+  }
+  // There are no servers to list until tokens can be decrypted, so the
+  // conversation gets them once they can.
+  if (!mcp_host_->IsReady()) {
+    if (conversations_awaiting_mcp_host_.empty()) {
+      mcp_host_->RunWhenReady(base::BindOnce(&AIChatService::OnMCPHostReady,
+                                             weak_ptr_factory_.GetWeakPtr()));
+    }
+    conversations_awaiting_mcp_host_.insert(
+        conversation.get_conversation_uuid());
+    return;
+  }
+  for (const MCPHost::EnabledServer& enabled : mcp_host_->GetEnabledServers()) {
+    if (enabled.server->auto_attach) {
+      AttachMCPServer(conversation, *enabled.server);
+    }
+  }
+}
+
+void AIChatService::OnMCPHostReady() {
+  for (const std::string& conversation_uuid :
+       std::exchange(conversations_awaiting_mcp_host_, {})) {
+    if (ConversationHandler* conversation =
+            GetConversation(conversation_uuid)) {
+      AttachAutoAttachMCPServers(*conversation);
+    }
+  }
+}
+
+void AIChatService::AttachMCPServer(ConversationHandler& conversation,
+                                    const mojom::MCPServer& server) {
+  if (conversation.associated_content_manager()->HasMCPServer(server.id)) {
+    return;
+  }
+  auto content =
+      std::make_unique<MCPServerAssociatedContent>(*mcp_host_, server);
+  if (!CanAssociateContent(content.get())) {
+    return;
+  }
+  conversation.associated_content_manager()->AddMCPServer(std::move(content));
 }
 
 void AIChatService::CreateTabOrganizationEngineIfNeeded() {

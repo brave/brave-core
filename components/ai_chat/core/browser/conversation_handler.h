@@ -477,6 +477,9 @@ class ConversationHandler : public mojom::ConversationHandler,
   // Setup tools for the conversation. When a new user message is added, we
   // can reset some of the state of the tools, ready for the next loop.
   void InitToolsForNewGenerationLoop(base::OnceClosure on_updated);
+  // Runs |closure| if |generation_loop_id| is still the current loop.
+  void RunIfGenerationLoopIsCurrent(uint64_t generation_loop_id,
+                                    base::OnceClosure closure);
 
   mojom::ConversationEntriesStatePtr GetStateForConversationEntries();
   void AddToConversationHistory(mojom::ConversationTurnPtr turn);
@@ -686,6 +689,10 @@ class ConversationHandler : public mojom::ConversationHandler,
   // When this is true, the most recent content retrieval was different to the
   // previous one.
   bool is_content_different_ = true;
+  // Incremented as each generation loop starts, and when it's stopped, so that
+  // a loop stopped while it waits for its tools or page content doesn't
+  // generate.
+  uint64_t generation_loop_id_ = 0;
 
   // Percentage of visual content used (0-100), tracks image truncation
   // during screenshot capture due to MAX_IMAGES limits

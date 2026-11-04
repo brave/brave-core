@@ -169,6 +169,16 @@ void RemoveUploadedImagesAndScreenshots(mojom::ConversationTurn& turn) {
   }
 }
 
+// The conversation entries UI shows content by the turn it was sent with,
+// which MCP servers never are, so it isn't told about them.
+std::vector<mojom::AssociatedContentPtr> WithoutMCPServers(
+    std::vector<mojom::AssociatedContentPtr> associated_content) {
+  std::erase_if(associated_content, [](const auto& content) {
+    return content->content_type == mojom::ContentType::MCPServer;
+  });
+  return associated_content;
+}
+
 }  // namespace
 
 ConversationHandler::Suggestion::Suggestion(std::string title)
@@ -380,7 +390,7 @@ void ConversationHandler::BindUntrustedConversationUI(
   std::move(callback).Run(GetStateForConversationEntries());
 
   untrusted_conversation_ui_handlers_.Get(id)->AssociatedContentChanged(
-      associated_content_manager_->GetAssociatedContent());
+      WithoutMCPServers(associated_content_manager_->GetAssociatedContent()));
 }
 
 void ConversationHandler::OnArchiveContentUpdated(
@@ -412,7 +422,7 @@ void ConversationHandler::OnAssociatedContentUpdated() {
   }
 
   for (const auto& client : untrusted_conversation_ui_handlers_) {
-    client->AssociatedContentChanged(clone_content());
+    client->AssociatedContentChanged(WithoutMCPServers(clone_content()));
   }
 
   OnStateForConversationEntriesChanged();
@@ -729,7 +739,9 @@ void ConversationHandler::SendFeedback(const std::string& category,
   auto associated_content = associated_content_manager_->GetAssociatedContent();
   if (send_hostname) {
     for (const auto& content : associated_content) {
-      if (!content->url.is_valid() || !content->url.SchemeIsHTTPOrHTTPS()) {
+      // The user is asked about sending the hostnames of pages, not servers.
+      if (!content->url.is_valid() || !content->url.SchemeIsHTTPOrHTTPS() ||
+          content->content_type == mojom::ContentType::MCPServer) {
         continue;
       }
       urls.push_back(content->url.host());
@@ -1115,7 +1127,7 @@ void ConversationHandler::RegenerateAnswer(const std::string& turn_uuid,
 void ConversationHandler::SubmitSummarizationRequest() {
   // This is a special case for the pre-optin UI which has a specific button
   // to summarize the page if we're associatable with content.
-  DCHECK(associated_content_manager_->HasAssociatedContent())
+  DCHECK(associated_content_manager_->HasPageContent())
       << "This conversation request is not associated with content";
 
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
@@ -1188,7 +1200,7 @@ void ConversationHandler::GenerateQuestions() {
                 << "opted in to AI Chat";
     return;
   }
-  if (!associated_content_manager_->HasAssociatedContent()) {
+  if (!associated_content_manager_->HasPageContent()) {
     DLOG(ERROR)
         << "Should not be associated with content when not allowed to be";
     return;
@@ -1202,7 +1214,7 @@ void ConversationHandler::GenerateQuestions() {
   }
   // We're not expecting to already have generated suggestions
   const size_t expected_existing_suggestions_size =
-      associated_content_manager_->HasAssociatedContent() ? 1u : 0u;
+      associated_content_manager_->HasPageContent() ? 1u : 0u;
   if (suggestions_.size() > expected_existing_suggestions_size) {
     DLOG(ERROR) << "GenerateQuestions should not be called more than once";
     return;
@@ -1302,6 +1314,8 @@ void ConversationHandler::StopGenerationAndMaybeGetHumanEntry(
 
   StopTask();
 
+  // A loop still waiting for its tools doesn't generate.
+  ++generation_loop_id_;
   connection_issue_retry_timer_.Stop();
   connection_issue_retry_count_ = 0;
   is_request_in_progress_ = false;
@@ -1705,21 +1719,36 @@ void ConversationHandler::InitToolsForNewGenerationLoop(
 
   // We can reset any already-created tools that don't want state to
   // survive between loops (i.e. when a new user message is received).
-  // Wait for all providers to finish before continuing.
-  auto barrier =
-      base::BarrierClosure(tool_providers_.size(), std::move(on_updated));
+  // Wait for all providers to finish before continuing, unless the loop is
+  // stopped or replaced meanwhile.
+  auto barrier = base::BarrierClosure(
+      tool_providers_.size(),
+      base::BindOnce(&ConversationHandler::RunIfGenerationLoopIsCurrent,
+                     weak_ptr_factory_.GetWeakPtr(), ++generation_loop_id_,
+                     std::move(on_updated)));
   for (auto& tool_provider : tool_providers_) {
     tool_provider->UpdateToolsForNewGenerationLoop(barrier);
   }
 }
 
+void ConversationHandler::RunIfGenerationLoopIsCurrent(
+    uint64_t generation_loop_id,
+    base::OnceClosure closure) {
+  if (generation_loop_id == generation_loop_id_) {
+    std::move(closure).Run();
+  }
+}
+
 void ConversationHandler::PerformAssistantGenerationWithPossibleContent(
     const std::optional<std::string>& thread_uuid) {
-  if (associated_content_manager_->HasAssociatedContent()) {
-    // Fetch updated page content before performing generation
-    GeneratePageContent(
+  if (associated_content_manager_->HasPageContent()) {
+    // Fetch updated page content before performing generation, unless the
+    // loop's stopped meanwhile.
+    GeneratePageContent(base::BindOnce(
+        &ConversationHandler::RunIfGenerationLoopIsCurrent,
+        weak_ptr_factory_.GetWeakPtr(), generation_loop_id_,
         base::BindOnce(&ConversationHandler::PerformAssistantGeneration,
-                       weak_ptr_factory_.GetWeakPtr(), thread_uuid));
+                       weak_ptr_factory_.GetWeakPtr(), thread_uuid)));
   } else {
     // Now the conversation is committed, we can remove some unneccessary data
     // if we're not associated with a page.
@@ -2005,7 +2034,7 @@ void ConversationHandler::TakeFollowUpSuggestionsFromLastEntry() {
 }
 
 void ConversationHandler::MaybeSeedOrClearSuggestions() {
-  if (!associated_content_manager_->HasAssociatedContent()) {
+  if (!associated_content_manager_->HasPageContent()) {
     // Suggestions offered by the assistant during the conversation should
     // survive content changes, so only reset for a conversation which hasn't
     // started yet, where the starter prompts below belong.
@@ -2102,7 +2131,7 @@ void ConversationHandler::MaybeSeedOrClearSuggestions() {
             ? l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO)
             : l10n_util::GetPluralStringFUTF8(
                   IDS_CHAT_UI_SUMMARIZE_PAGES_SUGGESTION,
-                  associated_content_manager_->GetContentDelegateCount());
+                  associated_content_manager_->GetPageContentCount());
     suggestions_[0].prompt =
         associated_content_manager_->IsVideo()
             ? l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO)
@@ -2120,7 +2149,7 @@ void ConversationHandler::MaybeFetchOrClearContentStagedConversation() {
     return;
   }
 
-  if (!associated_content_manager_->HasAssociatedContent()) {
+  if (!associated_content_manager_->HasPageContent()) {
     // Clear any staged conversation entries since user might have unassociated
     // content with this conversation
     size_t num_entries = chat_history_.size();
@@ -2142,7 +2171,7 @@ void ConversationHandler::OnGetStagedEntriesFromContent(
     const std::optional<std::vector<SearchQuerySummary>>& entries) {
   // Check if all requirements are still met.
   if (is_request_in_progress_ || !entries ||
-      !associated_content_manager_->HasAssociatedContent()) {
+      !associated_content_manager_->HasPageContent()) {
     return;
   }
 
@@ -2181,7 +2210,7 @@ void ConversationHandler::OnGetStagedEntriesFromContent(
 
 void ConversationHandler::GeneratePageContent(base::OnceClosure callback) {
   VLOG(1) << __func__;
-  CHECK(associated_content_manager_->HasAssociatedContent())
+  CHECK(associated_content_manager_->HasPageContent())
       << "Shouldn't have been asked to generate page text when "
       << "|associated_content_manager_->HasContent()| is false.";
 
@@ -2677,6 +2706,8 @@ void ConversationHandler::OnConversationEntryAdded(
     return;
   }
   std::optional<PageContents> associated_content_value;
+  // MCP servers included, as what's stored pairs these with the content's
+  // metadata, which lists them too.
   if (is_content_different_ &&
       associated_content_manager_->HasAssociatedContent()) {
     associated_content_value = associated_content_manager_->GetCachedContents();
@@ -2729,10 +2760,14 @@ ConversationHandler::GetStateForConversationEntries() {
   entries_state->default_model_key = model_service_->GetDefaultModelKey();
   entries_state->total_tokens = metadata_->total_tokens;
   entries_state->trimmed_tokens = metadata_->trimmed_tokens;
+  // An MCP server has no content, so isn't what's reported on.
+  auto page_content_it = std::ranges::find_if(
+      metadata_->associated_content, [](const auto& content) {
+        return content->content_type != mojom::ContentType::MCPServer;
+      });
   entries_state->content_used_percentage =
-      !metadata_->associated_content.empty()
-          ? std::make_optional(
-                metadata_->associated_content[0]->content_used_percentage)
+      page_content_it != metadata_->associated_content.end()
+          ? std::make_optional((*page_content_it)->content_used_percentage)
           : std::nullopt;
   entries_state->visual_content_used_percentage =
       visual_content_used_percentage_;
@@ -2854,6 +2889,7 @@ std::vector<base::WeakPtr<Tool>> ConversationHandler::GetTools() {
           [&](auto& tool) {
             return (
                 !tool->IsSupportedByModel(model, conversation_capabilities_) ||
+                // An MCP server is untrusted content too.
                 !tool->SupportsConversation(
                     GetIsTemporary(),
                     associated_content_manager_->HasAssociatedContent(),
@@ -3120,7 +3156,7 @@ void ConversationHandler::GetScreenshots(GetScreenshotsCallback callback) {
 }
 
 bool ConversationHandler::should_send_page_contents() const {
-  return associated_content_manager_->HasAssociatedContent();
+  return associated_content_manager_->HasPageContent();
 }
 
 mojom::APIError ConversationHandler::current_error() const {

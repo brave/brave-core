@@ -17,16 +17,20 @@
 #include "base/test/run_until.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
+#include "base/uuid.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/mcp/mcp_host.h"
+#include "brave/components/ai_chat/core/browser/mcp_server_associated_content.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/test/mock_associated_content.h"
 #include "brave/components/ai_chat/core/browser/tools/mock_tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
+#include "brave/components/ai_chat/core/common/mojom/mcp.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "build/build_config.h"
 #include "components/os_crypt/async/browser/test_utils.h"
@@ -170,8 +174,26 @@ class AssociatedContentManagerUnitTest : public testing::Test {
   AIChatFeedbackAPI feedback_api_;
   std::unique_ptr<ModelService> model_service_;
   std::unique_ptr<AIChatService> ai_chat_service_;
+  // Outlives the conversation, whose MCP servers observe it.
+  std::unique_ptr<MCPHost> mcp_host_;
   mojom::ConversationPtr conversation_;
   std::unique_ptr<ConversationHandler> conversation_handler_;
+
+  // Attaches one of the user's MCP servers. It has no client, so it offers no
+  // tools.
+  void AddMCPServer() {
+    if (!mcp_host_) {
+      mcp_host_ = std::make_unique<MCPHost>(prefs_, *os_crypt_,
+                                            shared_url_loader_factory_);
+    }
+    mojom::MCPServerPtr server = mojom::MCPServer::New(
+        base::Uuid::GenerateRandomV4().AsLowercaseString(), "Server",
+        GURL("https://mcp.example.com/mcp"), /*enabled=*/true,
+        /*auto_attach=*/false, "server", /*has_token=*/false,
+        /*token_unreadable=*/false);
+    conversation_handler_->associated_content_manager()->AddMCPServer(
+        std::make_unique<MCPServerAssociatedContent>(*mcp_host_, *server));
+  }
 
  private:
   base::ScopedTempDir temp_directory_;
@@ -1819,6 +1841,104 @@ TEST_F(AssociatedContentManagerUnitTest,
 
   ASSERT_TRUE(
       base::test::RunUntil([&] { return page_tools.probe_count() == 5; }));
+}
+
+TEST_F(AssociatedContentManagerUnitTest, HasPageContent_NotForMCPServers) {
+  auto* manager = conversation_handler_->associated_content_manager();
+  AddMCPServer();
+  EXPECT_TRUE(manager->HasAssociatedContent());
+  EXPECT_FALSE(manager->HasPageContent());
+  EXPECT_EQ(manager->GetPageContentCount(), 0u);
+
+  NiceMock<MockAssociatedContent> page;
+  ON_CALL(page, HasOpenAIChatPermission).WillByDefault([] { return true; });
+  manager->AddContent(&page);
+  EXPECT_TRUE(manager->HasPageContent());
+  EXPECT_EQ(manager->GetPageContentCount(), 1u);
+  // The one page decides, whatever servers are attached.
+  EXPECT_TRUE(manager->HasOpenAIChatPermission());
+  manager->RemoveContent(&page);
+}
+
+// MCP servers are attached to the conversation rather than to what it's
+// about, so they're kept when its content is cleared.
+TEST_F(AssociatedContentManagerUnitTest, ClearContent_KeepsMCPServers) {
+  auto* manager = conversation_handler_->associated_content_manager();
+  AddMCPServer();
+  manager->ClearContent();
+  EXPECT_EQ(manager->GetAssociatedContent().size(), 1u);
+
+  NiceMock<MockAssociatedContent> page;
+  manager->AddContent(&page);
+  manager->ClearContent();
+  std::vector<mojom::AssociatedContentPtr> content =
+      manager->GetAssociatedContent();
+  ASSERT_EQ(content.size(), 1u);
+  EXPECT_EQ(content[0]->content_type, mojom::ContentType::MCPServer);
+  EXPECT_FALSE(manager->HasPageContent());
+}
+
+// Tools are added in the order their content was attached, whichever answers
+// first, so the cap across MCP servers always cuts the same tools.
+TEST_F(AssociatedContentManagerUnitTest,
+       UpdateToolsForNewGenerationLoop_AddsToolsInAttachmentOrder) {
+  auto* manager = conversation_handler_->associated_content_manager();
+  NiceMock<MockAssociatedContent> first_content;
+  NiceMock<MockAssociatedContent> second_content;
+  first_content.SetUrl(GURL("https://first.example.com"));
+  second_content.SetUrl(GURL("https://second.example.com"));
+  manager->AddContent(&first_content);
+  manager->AddContent(&second_content);
+  manager->SetToolsAttached(first_content.uuid(), /*tools_attached=*/true);
+  manager->SetToolsAttached(second_content.uuid(), /*tools_attached=*/true);
+
+  AssociatedContentDelegate::GetContentToolsCallback first_tools;
+  AssociatedContentDelegate::GetContentToolsCallback second_tools;
+  EXPECT_CALL(first_content, GetContentTools)
+      .WillOnce([&](AssociatedContentDelegate::GetContentToolsCallback cb) {
+        first_tools = std::move(cb);
+      });
+  EXPECT_CALL(second_content, GetContentTools)
+      .WillOnce([&](AssociatedContentDelegate::GetContentToolsCallback cb) {
+        second_tools = std::move(cb);
+      });
+  base::test::TestFuture<void> done;
+  manager->UpdateToolsForNewGenerationLoop(done.GetCallback());
+
+  std::vector<std::unique_ptr<Tool>> tools;
+  tools.push_back(std::make_unique<NiceMock<MockTool>>("second_tool"));
+  std::move(second_tools).Run(std::move(tools));
+  tools.clear();
+  tools.push_back(std::make_unique<NiceMock<MockTool>>("first_tool"));
+  std::move(first_tools).Run(std::move(tools));
+  ASSERT_TRUE(done.Wait());
+
+  std::vector<base::WeakPtr<Tool>> loop_tools = manager->GetTools();
+  ASSERT_EQ(loop_tools.size(), 2u);
+  EXPECT_EQ(loop_tools[0]->Name(), "first_tool");
+  EXPECT_EQ(loop_tools[1]->Name(), "second_tool");
+}
+
+// Two tabs on one site each offer their own tools.
+TEST_F(AssociatedContentManagerUnitTest,
+       UpdateToolsForNewGenerationLoop_AddsToolsOfContentSharingAnOrigin) {
+  auto* manager = conversation_handler_->associated_content_manager();
+  NiceMock<MockAssociatedContent> first_tab;
+  NiceMock<MockAssociatedContent> second_tab;
+  first_tab.SetUrl(GURL("https://example.com/first"));
+  second_tab.SetUrl(GURL("https://example.com/second"));
+  ExposeTools(first_tab, {"first_tool"});
+  ExposeTools(second_tab, {"second_tool"});
+  manager->AddContent(&first_tab);
+  manager->AddContent(&second_tab);
+
+  base::test::TestFuture<void> done;
+  manager->UpdateToolsForNewGenerationLoop(done.GetCallback());
+  ASSERT_TRUE(done.Wait());
+  std::vector<base::WeakPtr<Tool>> loop_tools = manager->GetTools();
+  ASSERT_EQ(loop_tools.size(), 2u);
+  EXPECT_EQ(loop_tools[0]->Name(), "first_tool");
+  EXPECT_EQ(loop_tools[1]->Name(), "second_tool");
 }
 
 }  // namespace ai_chat

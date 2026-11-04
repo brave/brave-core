@@ -250,6 +250,7 @@ leo_icons_sources = [
   "close-circle.svg",
   "close.svg",
   "cloud-download.svg",
+  "cloud-hosting.svg",
   "cloud-off.svg",
   "code-off.svg",
   "code.svg",

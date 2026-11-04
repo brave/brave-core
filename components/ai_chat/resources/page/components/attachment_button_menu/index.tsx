@@ -9,7 +9,10 @@ import Button from '@brave/nala/react/button'
 import Icon from '@brave/nala/react/icon'
 import { ConversationContext } from '../../state/conversation_context'
 import { AIChatContext } from '../../state/ai_chat_context'
-import { shouldDisableAttachmentsButton } from '../../../common/conversation_history_utils'
+import {
+  isMCPServerContent,
+  shouldDisableAttachmentsButton,
+} from '../../../common/conversation_history_utils'
 
 // Utils
 import { getLocale } from '$web-common/locale'
@@ -51,10 +54,10 @@ export default function AttachmentButtonMenu(props: Props) {
 
   const hasAssociatedContent =
     // Screenshots are not supported on iOS.
-    // <if expr="is_ios">
-    false
+    // <if expr="!is_ios">
+    props.associatedContentInfo.some((content) => !isMCPServerContent(content))
   // <else>
-  props.associatedContentInfo.length > 0
+  false
   // </if>
 
   return (

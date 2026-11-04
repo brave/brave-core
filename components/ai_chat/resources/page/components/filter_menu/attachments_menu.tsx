@@ -14,6 +14,7 @@ import { getLocale } from '$web-common/locale'
 import { FuzzyFinder } from './fuzzy_finder'
 import { makeEdit, stringifyContent } from '../input_box/editable_content'
 import Icon from '@brave/nala/react/icon'
+import { isMCPServerContent } from '../../../common/conversation_history_utils'
 
 type Attachment = TabData | Bookmark
 
@@ -68,9 +69,18 @@ export default function TabsMenu() {
     editor?.focus()
   }, [])
 
+  // The attached content that tabs, bookmarks and history are matched against.
+  // Connectors are left out, as a connector's URL is its server's origin,
+  // which a page can share.
+  const pageContent = React.useMemo(
+    () =>
+      conversation.associatedContentInfo.filter((c) => !isMCPServerContent(c)),
+    [conversation.associatedContentInfo],
+  )
+
   const selectAttachment = React.useCallback(
     (attachment: Attachment) => {
-      const alreadyAttached = conversation.associatedContentInfo.find((c) =>
+      const alreadyAttached = pageContent.find((c) =>
         'contentId' in attachment
           ? c.contentId === attachment.contentId
           : c.url.url === attachment.url.url,
@@ -111,7 +121,7 @@ export default function TabsMenu() {
     [
       aiChat,
       conversation.conversationUuid,
-      conversation.associatedContentInfo,
+      pageContent,
       conversation.setToolsAttached,
       setIsOpen,
     ],
@@ -133,12 +143,9 @@ export default function TabsMenu() {
   const unselectedBookmarks = React.useMemo(
     () =>
       bookmarks.filter(
-        (b) =>
-          !conversation.associatedContentInfo.some(
-            (c) => c.url.url === b.url.url,
-          ),
+        (b) => !pageContent.some((c) => c.url.url === b.url.url),
       ),
-    [bookmarks, conversation.associatedContentInfo],
+    [bookmarks, pageContent],
   )
 
   const history = aiChat.api.useGetHistoryData(query ?? '', null)
@@ -146,13 +153,8 @@ export default function TabsMenu() {
   // Filter out content that is already associated with the conversation.
   const unselectedHistory = React.useMemo(
     () =>
-      history.filter(
-        (h) =>
-          !conversation.associatedContentInfo.some(
-            (c) => c.url.url === h.url.url,
-          ),
-      ),
-    [history, conversation.associatedContentInfo],
+      history.filter((h) => !pageContent.some((c) => c.url.url === h.url.url)),
+    [history, pageContent],
   )
 
   const distinctEntries = React.useMemo(() => {

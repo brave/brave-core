@@ -165,6 +165,10 @@ std::vector<mojom::ContentBlockPtr> BuildOAIPageContentBlocks(
   // Note: We iterate in reverse so that we prefer more recent page content
   // (i.e. the oldest content will be truncated when we run out of context).
   for (const auto& page_content : std::views::reverse(page_contents)) {
+    // An MCP server has no content: what it offers is its tools.
+    if (page_content.get().content_type == mojom::ContentType::MCPServer) {
+      continue;
+    }
     uint32_t effective_length_limit = max_associated_content_length;
     if (max_per_content_length.has_value()) {
       effective_length_limit =

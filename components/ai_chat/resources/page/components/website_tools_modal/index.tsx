@@ -10,11 +10,12 @@ import ProgressRing from '@brave/nala/react/progressRing'
 import classnames from '$web-common/classnames'
 import { formatLocale, getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
+import { isMCPServerContent } from '../../../common/conversation_history_utils'
 import {
   useConversation,
   useConversationState,
 } from '../../state/conversation_context'
-import { AttachmentPageItem } from '../attachment_item'
+import { AttachmentContentItem } from '../attachment_item'
 import styles from './style.module.scss'
 
 interface Props {
@@ -123,10 +124,11 @@ function ToolItem(props: {
   )
 }
 
-// Lists the tools an attached website exposes to Leo. Opened from the tools
-// pill above the input box.
+// Lists the tools an attached website, or MCP server, exposes to Leo. Opened
+// from the tools pill above the input box.
 export default function WebsiteToolsModal(props: Props) {
   const conversation = useConversation()
+  const isMCPServer = isMCPServerContent(props.content)
   // Placeholder data means the page hasn't answered yet. A cached answer isn't
   // shown while re-fetching either: it could name a permission the browser has
   // since forgotten.
@@ -160,7 +162,11 @@ export default function WebsiteToolsModal(props: Props) {
         slot='title'
         className={styles.title}
       >
-        {getLocale(S.CHAT_UI_WEBSITE_TOOLS_TITLE)}
+        {getLocale(
+          isMCPServer
+            ? S.CHAT_UI_MCP_SERVER_TOOLS_TITLE
+            : S.CHAT_UI_WEBSITE_TOOLS_TITLE,
+        )}
       </div>
       {/* In the header rather than the body so it stays pinned - the dialog
           scrolls once the tool list outgrows the viewport. */}
@@ -168,10 +174,7 @@ export default function WebsiteToolsModal(props: Props) {
         slot='subtitle'
         className={styles.site}
       >
-        <AttachmentPageItem
-          title={props.content.title}
-          url={props.content.url.url}
-        />
+        <AttachmentContentItem content={props.content} />
       </div>
       <div className={styles.body}>
         {isLoading ? (

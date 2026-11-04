@@ -121,6 +121,16 @@ export const isWorkspaceContent = (
 }
 
 /**
+ * Checks if associated content is one of the user's MCP servers, which offers
+ * tools but has no content of its own.
+ */
+export const isMCPServerContent = (
+  content: Mojom.AssociatedContent,
+): boolean => {
+  return content.contentType === Mojom.ContentType.MCPServer
+}
+
+/**
  * Updates the conversation history by either merging a new entry with an
  * existing one or appending it if it doesn't exist.
  *

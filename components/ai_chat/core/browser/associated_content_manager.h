@@ -34,6 +34,12 @@
 namespace ai_chat {
 
 class ConversationHandler;
+class MCPServerAssociatedContent;
+
+// Every tool's definition is sent with each request, and a model chooses worse
+// from too many, so MCP servers together offer at most this many, leaving room
+// for the built-in tools.
+inline constexpr size_t kMaxMCPToolsPerGenerationLoop = 60;
 
 using PageContents = std::vector<std::reference_wrapper<const PageContent>>;
 using PageContentsMap = base::flat_map<std::string, PageContents>;
@@ -74,6 +80,13 @@ class AssociatedContentManager : public ToolProvider,
   void AddOwnedContent(std::unique_ptr<AssociatedContentDelegate> delegate,
                        bool notify_updated = true);
 
+  // Attaches one of the user's MCP servers. The user chose it for its tools,
+  // so they're attached straight away.
+  void AddMCPServer(std::unique_ptr<MCPServerAssociatedContent> server);
+
+  // Whether the user's MCP server |server_id| is attached.
+  bool HasMCPServer(std::string_view server_id) const;
+
   // Removes a content delegate from the list of content delegates.
   void RemoveContent(AssociatedContentDelegate* delegate,
                      bool notify_updated = true);
@@ -89,7 +102,7 @@ class AssociatedContentManager : public ToolProvider,
 
   // Fetches the tools the content with |content_uuid| exposes, described for
   // display to the user. Empty if there's no such content. Capped at the same
-  // limit as the tools handed to the LLM, so the UI doesn't overpromise.
+  // limits as the tools handed to the LLM, so the UI doesn't overpromise.
   using GetToolInfosCallback =
       base::OnceCallback<void(std::vector<mojom::ToolInfoPtr>)>;
   void GetToolInfos(std::string_view content_uuid,
@@ -110,15 +123,18 @@ class AssociatedContentManager : public ToolProvider,
   // Records |permission| for the content tool the model calls
   // |model_tool_name|, under the page-registered name the dialog reads by.
   // No-op unless a content tool of that name is in the current generation
-  // loop, so answering any other tool's challenge records nothing.
+  // loop, so answering any other tool's challenge records nothing. Nor is one
+  // recorded for a tool whose origin's choices were reset since it was added.
   void SetToolPermissionForModelToolName(std::string_view model_tool_name,
                                          mojom::ToolPermission permission);
 
-  // Clears all content from the conversation.
+  // Clears all content from the conversation, apart from MCP servers, which
+  // are attached to the conversation rather than to what it's about.
   void ClearContent();
 
   // Associates all content which hasn't been associated with a turn with
-  // |turn|. Note: |turn| must have a non-empty |uuid| field.
+  // |turn|. Note: |turn| must have a non-empty |uuid| field. MCP servers are
+  // never associated with a turn, so they're never persisted.
   void AssociateUnsentContentWithTurn(const mojom::ConversationTurnPtr& turn);
 
   // Associates the content with |content_uuid| with the turn with |turn_uuid|,
@@ -177,14 +193,17 @@ class AssociatedContentManager : public ToolProvider,
   bool HasOpenAIChatPermission() const;
   bool HasLiveContent() const;
   bool HasAssociatedContent() const;
+  // Whether there's content other than MCP servers. An MCP server only offers
+  // tools, so it has nothing to send, summarize or take screenshots of.
+  bool HasPageContent() const;
 
   // Determines if the content for this conversation is a single video.
   // Deprecated: Instead use the |type| field on the associated content.
   // TODO(fallaciousreasoning): Remove this method.
   bool IsVideo() const;
 
-  // The number of content delegates.
-  size_t GetContentDelegateCount() const;
+  // The number of content delegates, apart from MCP servers.
+  size_t GetPageContentCount() const;
 
   // Runs |callback| once the tools of the content with |content_uuid| are in
   // the current generation loop, with the number added. Content's tools are
@@ -205,6 +224,7 @@ class AssociatedContentManager : public ToolProvider,
   // AssociatedContentDelegate::Observer:
   void OnRequestArchive(AssociatedContentDelegate* delegate) override;
   void OnDestroyed(AssociatedContentDelegate* delegate) override;
+  void OnNewPage(AssociatedContentDelegate* delegate) override;
   void OnTitleChanged(AssociatedContentDelegate* delegate) override;
   void OnToolsAttachedChanged(AssociatedContentDelegate* delegate) override;
   void OnContentToolsChanged(AssociatedContentDelegate* delegate) override;
@@ -214,7 +234,50 @@ class AssociatedContentManager : public ToolProvider,
   }
 
  private:
+  // Tools fetched for a generation loop from the content at |index| in the
+  // attached content, which they're added in the order of.
+  struct FetchedContentTools {
+    FetchedContentTools();
+    FetchedContentTools(FetchedContentTools&&) noexcept;
+    FetchedContentTools& operator=(FetchedContentTools&&) noexcept;
+    ~FetchedContentTools();
+
+    size_t index = 0;
+    std::string content_uuid;
+    url::Origin origin;
+    bool is_mcp_server = false;
+    std::vector<std::unique_ptr<Tool>> tools;
+  };
+
+  // Fetches the tools of |content|, at |index| in the order they're added in,
+  // for |done|.
+  void FetchContentTools(
+      AssociatedContentDelegate* content,
+      size_t index,
+      base::RepeatingCallback<void(FetchedContentTools)> done);
+
+  // Adds the tools fetched for generation loop |generation_loop_id|, then runs
+  // |on_updated|, unless the loop has been replaced.
+  void OnGenerationLoopToolsFetched(uint64_t generation_loop_id,
+                                    base::OnceClosure on_updated,
+                                    std::vector<FetchedContentTools> fetched);
+
   void DetachContent();
+
+  bool IsMCPServer(const AssociatedContentDelegate* delegate) const;
+  std::vector<AssociatedContentDelegate*> GetPageContentDelegates() const;
+  bool CanFetchTools(const AssociatedContentDelegate* delegate) const;
+  // Fetches the tools of |delegate| for the current loop, if it's attached and
+  // none of its origin's are in the loop yet.
+  void MaybeFetchToolsForGenerationLoop(AssociatedContentDelegate* delegate);
+  // The uuids of the MCP servers attached after |delegate|, and of |delegate|
+  // too if |inclusive|.
+  std::vector<std::string> GetMCPServersFrom(
+      const AssociatedContentDelegate* delegate,
+      bool inclusive) const;
+  // Tells every UI bound to the conversation what |delegate| offers now.
+  void PushToolInfos(const AssociatedContentDelegate* delegate);
+  void PushMCPServerToolInfos(const std::vector<std::string>& server_uuids);
 
   // Fetches the tools |delegate| exposes, updating its tools_attached state via
   // OnContentToolsDetected().
@@ -234,6 +297,9 @@ class AssociatedContentManager : public ToolProvider,
   void OnToolInfosFetched(const url::Origin& origin,
                           GetToolInfosCallback callback,
                           std::vector<std::unique_ptr<Tool>> tools);
+  // Lists the tools of the last of |fetched|, which are MCP servers.
+  void OnMCPServerToolInfosFetched(GetToolInfosCallback callback,
+                                   std::vector<FetchedContentTools> fetched);
 
   // Invoked with the result of GetToolInfos(), to push the list every UI bound
   // to this conversation should now be showing.
@@ -261,9 +327,11 @@ class AssociatedContentManager : public ToolProvider,
 
   // Takes ownership of the tools the content with |content_uuid| (and
   // |origin|) exposes for the current loop, dropping the ones the user has
-  // blocked, then runs its RunWhenContentToolsAdded() callbacks.
+  // blocked, and an MCP server's beyond kMaxMCPToolsPerGenerationLoop, then
+  // runs its RunWhenContentToolsAdded() callbacks.
   void AddToolsForGenerationLoop(const std::string& content_uuid,
                                  const url::Origin& origin,
+                                 bool is_mcp_server,
                                  std::vector<std::unique_ptr<Tool>> tools);
 
   // Posts the RunWhenContentToolsAdded() callbacks for |content_uuid| with
@@ -281,8 +349,14 @@ class AssociatedContentManager : public ToolProvider,
   struct GenerationLoopTool {
     std::unique_ptr<Tool> tool;
     url::Origin origin;
+    bool is_mcp_server = false;
+    // Cleared once the choices about its origin's tools are reset, as the
+    // user was asked about the tool as it was before.
+    bool records_choice = true;
   };
   std::vector<GenerationLoopTool> tools_;
+  // The content whose tools have been added to the current loop.
+  base::flat_set<std::string> loop_content_uuids_;
 
   // Incremented as each generation loop starts, so tools fetched for an
   // earlier one aren't added to it.
@@ -322,6 +396,9 @@ class AssociatedContentManager : public ToolProvider,
 
   // uuids whose tools attachment the user explicitly set.
   base::flat_set<std::string> tools_attachment_overridden_;
+
+  // uuid -> server id, for the MCP servers among |content_delegates_|.
+  base::flat_map<std::string, std::string> mcp_server_ids_;
 
   // Used for ownership - still stored in the above array.
   // This includes:

@@ -95,6 +95,12 @@
   object-fit: contain;
 }
 
+.toolPillIcon {
+  --leo-icon-size: 16px;
+  --leo-icon-color: var(--leo-color-icon-default);
+  flex: 0 0 auto;
+}
+
 .toolPillTitleTooltip {
   flex: 1 1 auto;
   min-width: 0;

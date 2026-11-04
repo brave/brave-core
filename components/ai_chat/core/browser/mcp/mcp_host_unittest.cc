@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/strcat.h"
 #include "base/test/task_environment.h"
@@ -55,6 +56,21 @@ mojom::MCPServerParamsPtr Params(std::string_view name = "Example",
 using ServerResult = base::expected<mojom::MCPServerPtr, mojom::MCPServerError>;
 using ToolsResult =
     base::expected<std::vector<mojom::MCPServerToolPtr>, mojom::MCPServerError>;
+
+class TestObserver : public MCPHost::Observer {
+ public:
+  explicit TestObserver(MCPHost& host) : host_(host) {}
+
+  void OnMCPClientsChanged() override {
+    // Clients have already been updated.
+    enabled_server_counts.push_back(host_->GetEnabledServers().size());
+  }
+
+  std::vector<size_t> enabled_server_counts;
+
+ private:
+  raw_ref<MCPHost> host_;
+};
 
 class TestMojomObserver : public mojom::MCPHostObserver {
  public:
@@ -139,13 +155,13 @@ TEST_F(MCPHostTest, WaitsForTokensToBeDecryptable) {
   remote_->GetServers(servers.GetCallback());
   RunReadyTasks();
   EXPECT_FALSE(servers.IsReady());
-  EXPECT_FALSE(host_->GetClientForTesting(server->id));
+  EXPECT_FALSE(host_->GetClient(server->id));
 
   os_crypt_.Complete();
   std::vector<mojom::MCPServerPtr> listed = servers.Take();
   ASSERT_EQ(listed.size(), 1u);
   EXPECT_EQ(*listed[0], *server);
-  EXPECT_TRUE(host_->GetClientForTesting(server->id));
+  EXPECT_TRUE(host_->GetClient(server->id));
 }
 
 TEST_F(MCPHostTest, ClientsFollowEnabledState) {
@@ -153,29 +169,29 @@ TEST_F(MCPHostTest, ClientsFollowEnabledState) {
   mojom::MCPServerPtr enabled = Add(Params("Enabled"));
   mojom::MCPServerPtr disabled =
       Add(Params("Disabled", kEndpoint, /*enabled=*/false));
-  base::WeakPtr<MCPClient> client = host_->GetClientForTesting(enabled->id);
+  base::WeakPtr<MCPClient> client = host_->GetClient(enabled->id);
   EXPECT_TRUE(client);
-  EXPECT_FALSE(host_->GetClientForTesting(disabled->id));
+  EXPECT_FALSE(host_->GetClient(disabled->id));
 
   ASSERT_TRUE(
       Update(enabled->id, Params("Enabled", kEndpoint, /*enabled=*/false))
           .has_value());
   EXPECT_FALSE(client);
-  EXPECT_FALSE(host_->GetClientForTesting(enabled->id));
+  EXPECT_FALSE(host_->GetClient(enabled->id));
 
   ASSERT_TRUE(Update(disabled->id, Params("Disabled")).has_value());
-  client = host_->GetClientForTesting(disabled->id);
+  client = host_->GetClient(disabled->id);
   EXPECT_TRUE(client);
 
   EXPECT_EQ(Remove(disabled->id), std::nullopt);
   EXPECT_FALSE(client);
-  EXPECT_FALSE(host_->GetClientForTesting(disabled->id));
+  EXPECT_FALSE(host_->GetClient(disabled->id));
 }
 
 TEST_F(MCPHostTest, ConfigChangesReplaceClient) {
   os_crypt_.Complete();
   mojom::MCPServerPtr server = Add(Params("Name"));
-  base::WeakPtr<MCPClient> client = host_->GetClientForTesting(server->id);
+  base::WeakPtr<MCPClient> client = host_->GetClient(server->id);
   ASSERT_TRUE(client);
 
   // Not something a client uses.
@@ -187,14 +203,14 @@ TEST_F(MCPHostTest, ConfigChangesReplaceClient) {
   ASSERT_TRUE(Update(server->id, Params("Name", "https://other.example.com/"))
                   .has_value());
   EXPECT_FALSE(client);
-  client = host_->GetClientForTesting(server->id);
+  client = host_->GetClient(server->id);
   ASSERT_TRUE(client);
 
   ASSERT_TRUE(
       Update(server->id, Params("Name", "https://other.example.com/"), kToken)
           .has_value());
   EXPECT_FALSE(client);
-  client = host_->GetClientForTesting(server->id);
+  client = host_->GetClient(server->id);
   ASSERT_TRUE(client);
 
   // The name is in the client's error messages.
@@ -202,14 +218,14 @@ TEST_F(MCPHostTest, ConfigChangesReplaceClient) {
       Update(server->id, Params("Renamed", "https://other.example.com/"))
           .has_value());
   EXPECT_FALSE(client);
-  client = host_->GetClientForTesting(server->id);
+  client = host_->GetClient(server->id);
   ASSERT_TRUE(client);
 
   base::test::TestFuture<ServerResult> cleared;
   remote_->ClearServerToken(server->id, cleared.GetCallback());
   ASSERT_TRUE(cleared.Take().has_value());
   EXPECT_FALSE(client);
-  EXPECT_TRUE(host_->GetClientForTesting(server->id));
+  EXPECT_TRUE(host_->GetClient(server->id));
 }
 
 TEST_F(MCPHostTest, Crud) {
@@ -307,6 +323,57 @@ TEST_F(MCPHostTest, NotifiesObservers) {
   EXPECT_TRUE(mojom_observer.future.Take().empty());
 }
 
+TEST_F(MCPHostTest, ListsEnabledServers) {
+  // Added before this profile's host could decrypt tokens.
+  DeferredOSCryptAsync other_os_crypt(encryptor_);
+  other_os_crypt.Complete();
+  MCPServerRegistry other_registry(prefs_, other_os_crypt);
+  mojom::MCPServerPtr enabled =
+      other_registry.AddServer(*Params("Enabled"), std::string(kToken)).value();
+  ASSERT_TRUE(other_registry
+                  .AddServer(*Params("Disabled", kEndpoint, /*enabled=*/false),
+                             std::nullopt)
+                  .has_value());
+  EXPECT_TRUE(host_->GetEnabledServers().empty());
+  EXPECT_FALSE(host_->IsReady());
+
+  TestObserver observer(*host_);
+  host_->AddObserver(&observer);
+  os_crypt_.Complete();
+  GetServers();
+  EXPECT_TRUE(host_->IsReady());
+  std::vector<MCPHost::EnabledServer> servers = host_->GetEnabledServers();
+  ASSERT_EQ(servers.size(), 1u);
+  EXPECT_EQ(*servers[0].server, *enabled);
+  EXPECT_TRUE(servers[0].client);
+  EXPECT_EQ(servers[0].client.get(), host_->GetClient(enabled->id).get());
+  EXPECT_EQ(observer.enabled_server_counts, std::vector<size_t>({1}));
+  host_->RemoveObserver(&observer);
+}
+
+TEST_F(MCPHostTest, NotifiesObserversOfClientChanges) {
+  TestObserver observer(*host_);
+  host_->AddObserver(&observer);
+  // With no servers, becoming ready changes nothing.
+  os_crypt_.Complete();
+  mojom::MCPServerPtr server = Add();
+  EXPECT_EQ(observer.enabled_server_counts, std::vector<size_t>({1}));
+
+  // Not something a client uses.
+  ASSERT_TRUE(Update(server->id, Params("Example", kEndpoint, /*enabled=*/true,
+                                        /*auto_attach=*/true))
+                  .has_value());
+  ASSERT_TRUE(
+      Update(server->id, Params("Example", kEndpoint, /*enabled=*/false))
+          .has_value());
+  ASSERT_TRUE(Update(server->id, Params("Example")).has_value());
+  ASSERT_TRUE(Update(server->id, Params("Renamed")).has_value());
+  EXPECT_EQ(Remove(server->id), std::nullopt);
+  EXPECT_EQ(observer.enabled_server_counts,
+            std::vector<size_t>({1, 0, 1, 1, 0}));
+  host_->RemoveObserver(&observer);
+}
+
 TEST_F(MCPHostTest, GetServerTools) {
   os_crypt_.Complete();
   mojom::MCPServerPtr server = Add();
@@ -392,7 +459,7 @@ TEST_F(MCPHostTest, TokenIsNotSentToAnotherOrigin) {
 TEST_F(MCPHostTest, UndecryptableToken) {
   os_crypt_.Complete();
   mojom::MCPServerPtr server = Add(Params(), kToken);
-  base::WeakPtr<MCPClient> client = host_->GetClientForTesting(server->id);
+  base::WeakPtr<MCPClient> client = host_->GetClient(server->id);
   ASSERT_TRUE(client);
   TestMojomObserver observer;
   remote_->BindObserver(observer.receiver.BindNewPipeAndPassRemote());
@@ -406,7 +473,7 @@ TEST_F(MCPHostTest, UndecryptableToken) {
   }
   // Not connected without it, and the user is told why.
   EXPECT_FALSE(client);
-  EXPECT_FALSE(host_->GetClientForTesting(server->id));
+  EXPECT_FALSE(host_->GetClient(server->id));
   std::vector<mojom::MCPServerPtr> changed = observer.future.Take();
   ASSERT_EQ(changed.size(), 1u);
   EXPECT_TRUE(changed[0]->token_unreadable);
@@ -418,13 +485,13 @@ TEST_F(MCPHostTest, UndecryptableToken) {
   ServerResult updated = Update(server->id, Params(), kToken);
   ASSERT_TRUE(updated.has_value());
   EXPECT_FALSE((*updated)->token_unreadable);
-  EXPECT_TRUE(host_->GetClientForTesting(server->id));
+  EXPECT_TRUE(host_->GetClient(server->id));
 }
 
 TEST_F(MCPHostTest, DestroyingTheHostDestroysClients) {
   os_crypt_.Complete();
   mojom::MCPServerPtr server = Add();
-  base::WeakPtr<MCPClient> client = host_->GetClientForTesting(server->id);
+  base::WeakPtr<MCPClient> client = host_->GetClient(server->id);
   ASSERT_TRUE(client);
   host_.reset();
   EXPECT_FALSE(client);

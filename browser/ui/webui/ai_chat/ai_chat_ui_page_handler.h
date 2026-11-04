@@ -130,6 +130,8 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
                            const std::string& conversation_uuid) override;
   void DisassociateContent(mojom::AssociatedContentPtr content,
                            const std::string& conversation_uuid) override;
+  void AssociateMCPServer(const std::string& server_id,
+                          const std::string& conversation_uuid) override;
   void NewConversation(
       mojo::PendingReceiver<mojom::ConversationHandler> receiver,
       mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler,

@@ -68,16 +68,26 @@
   }
 }
 
-.loadingContainer {
-  --leo-progressring-color: var(--leo-color-icon-default);
-  --leo-progressring-size: 20px;
+.loadingContainer,
+.iconContainer {
   display: flex;
   width: 40px;
   height: 40px;
+  flex-shrink: 0;
   justify-content: center;
   align-items: center;
   border-radius: var(--leo-radius-s);
   background-color: var(--leo-color-container-highlight);
+}
+
+.loadingContainer {
+  --leo-progressring-color: var(--leo-color-icon-default);
+  --leo-progressring-size: 20px;
+}
+
+.iconContainer {
+  --leo-icon-size: 20px;
+  --leo-icon-color: var(--leo-color-icon-default);
 }
 
 .leftSide {

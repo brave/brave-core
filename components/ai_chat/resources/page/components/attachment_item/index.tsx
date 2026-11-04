@@ -16,7 +16,10 @@ import * as Mojom from '../../../common/mojom'
 // Styles
 import styles from './style.module.scss'
 import { getLocale } from '$web-common/locale'
-import { isFullPageScreenshot } from '../../../common/conversation_history_utils'
+import {
+  isFullPageScreenshot,
+  isMCPServerContent,
+} from '../../../common/conversation_history_utils'
 
 /**
  * Formats file size in bytes to human readable format
@@ -180,6 +183,34 @@ export function AttachmentPageItem(props: {
       remove={props.remove}
       onClick={props.onClick}
       className={props.className}
+    />
+  )
+}
+
+/**
+ * Attached content: a page, or one of the user's MCP servers. A server is
+ * shown with a generic icon, as its own icons are never fetched.
+ */
+export function AttachmentContentItem(props: {
+  content: Mojom.AssociatedContent
+}) {
+  if (!isMCPServerContent(props.content)) {
+    return (
+      <AttachmentPageItem
+        title={props.content.title}
+        url={props.content.url.url}
+      />
+    )
+  }
+  return (
+    <AttachmentItem
+      icon={
+        <div className={styles.iconContainer}>
+          <Icon name='cloud-hosting' />
+        </div>
+      }
+      title={props.content.title}
+      subtitle={getLocale(S.CHAT_UI_MCP_SERVER_LABEL)}
     />
   )
 }

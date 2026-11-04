@@ -9,6 +9,7 @@ import generateReactContext from '$web-common/api/react_api'
 import { getLocale } from '$web-common/locale'
 import {
   isFullPageScreenshot,
+  isMCPServerContent,
   isWorkspaceContent,
   attachUploadedFilesWithLimits,
 } from '../../common/conversation_history_utils'
@@ -181,7 +182,9 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     let totalCharLimit = 0
 
     totalCharLimit += options.longConversationWarningCharacterLimit ?? 0
-    if (conversationState.associatedContent.length > 0) {
+    if (
+      conversationState.associatedContent.some((c) => !isMCPServerContent(c))
+    ) {
       totalCharLimit += options.maxAssociatedContentLength ?? 0
     }
 
@@ -193,7 +196,7 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     conversationHistory,
     currentModel,
     hasDismissedLongConversationInfo,
-    conversationState.associatedContent.length,
+    conversationState.associatedContent,
   ])
 
   const apiHasError = conversationState.error !== Mojom.APIError.None
@@ -356,8 +359,12 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     if (prevContentId === newContentId) return
 
     // Clear all staged content (not yet committed to a conversation turn).
+    // Workspaces and MCP servers belong to the conversation, not the tab.
     for (const content of conversationState.associatedContent.filter(
-      (c) => !c.conversationTurnUuid && !isWorkspaceContent(c),
+      (c) =>
+        !c.conversationTurnUuid
+        && !isWorkspaceContent(c)
+        && !isMCPServerContent(c),
     )) {
       aiChat.api.uiHandler.disassociateContent(
         content,

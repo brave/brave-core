@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import { render, act } from '@testing-library/react'
+import * as Mojom from '../../../common/mojom'
 import AttachmentButtonMenu from '.'
 
 jest.mock('$web-common/uploadFile', () => ({
@@ -35,6 +36,28 @@ const expectedAccept: string | undefined =
 // <else>
 undefined
 // </if>
+
+const MCP_SERVER_CONTENT: Mojom.AssociatedContent = {
+  uuid: 'server-uuid',
+  contentType: Mojom.ContentType.MCPServer,
+  title: 'Attached Server',
+  contentId: -1,
+  url: { url: 'https://mcp.example.com/mcp' },
+  contentUsedPercentage: 100,
+  conversationTurnUuid: undefined,
+  toolsAttached: true,
+}
+
+const PAGE_CONTENT: Mojom.AssociatedContent = {
+  uuid: 'page-uuid',
+  contentType: Mojom.ContentType.PageContent,
+  title: 'Attached Page',
+  contentId: 1,
+  url: { url: 'https://example.com/' },
+  contentUsedPercentage: 100,
+  conversationTurnUuid: undefined,
+  toolsAttached: false,
+}
 
 describe('attachment button menu', () => {
   beforeEach(() => {
@@ -74,5 +97,29 @@ describe('attachment button menu', () => {
       capture: 'environment',
       accept: expectedAccept,
     })
+  })
+
+  it('offers a screenshot of a page attached beside an MCP server', async () => {
+    const { container } = render(
+      <AttachmentButtonMenu
+        {...defaultProps}
+        associatedContentInfo={[PAGE_CONTENT, MCP_SERVER_CONTENT]}
+      />,
+    )
+    expect(
+      container.querySelector('leo-menu-item[data-testid="screenshot"]'),
+    ).toBeInTheDocument()
+  })
+
+  it('offers no screenshot of an MCP server', async () => {
+    const { container } = render(
+      <AttachmentButtonMenu
+        {...defaultProps}
+        associatedContentInfo={[MCP_SERVER_CONTENT]}
+      />,
+    )
+    expect(
+      container.querySelector('leo-menu-item[data-testid="screenshot"]'),
+    ).toBeNull()
   })
 })

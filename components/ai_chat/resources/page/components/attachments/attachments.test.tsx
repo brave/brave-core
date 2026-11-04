@@ -505,6 +505,58 @@ describe('Attachments Component', () => {
       })
     })
 
+    it('does not treat a connector at a bookmark URL as the bookmark', async () => {
+      const connector: AssociatedContent = {
+        conversationTurnUuid: undefined,
+        contentId: -1,
+        title: 'Connector',
+        url: { url: 'https://brave.com' },
+        contentType: ContentType.MCPServer,
+        contentUsedPercentage: 0,
+        uuid: 'connector-uuid',
+        toolsAttached: true,
+      }
+      const { container } = await renderAttachments(
+        <MockContext
+          initialState={{
+            conversationState: {
+              associatedContent: [connector],
+              conversationUuid: 'test-conversation',
+            },
+          }}
+          bookmarksService={{
+            getBookmarks: () => Promise.resolve({ bookmarks: mockBookmarks }),
+          }}
+          uiHandler={{
+            disassociateContent: mockDisassociateContent,
+          }}
+          conversationOverrides={{
+            attachmentsDialog: 'bookmarks',
+            setAttachmentsDialog: mockSetAttachmentsDialog,
+          }}
+        >
+          <Attachments />
+        </MockContext>,
+      )
+
+      let checkbox: Element | undefined
+      await waitFor(() => {
+        checkbox = Array.from(container.querySelectorAll('leo-checkbox')).find(
+          (item) => item.textContent?.includes('Brave Browser'),
+        )
+        expect(checkbox).toBeDefined()
+      })
+      expect(checkbox).toHaveProperty('checked', false)
+
+      // Unchecking it can't detach the connector.
+      act(() => {
+        checkbox!.dispatchEvent(
+          Object.assign(new Event('change'), { checked: false }),
+        )
+      })
+      expect(mockDisassociateContent).not.toHaveBeenCalled()
+    })
+
     it('displays correct title for bookmarks dialog', async () => {
       await renderAttachments(
         <MockContext

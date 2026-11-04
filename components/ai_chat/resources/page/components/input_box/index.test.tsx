@@ -13,10 +13,14 @@ import * as React from 'react'
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import { clearAllDataForTesting } from '$web-common/api'
 import {
+  AssociatedContent,
   ContentType,
   UploadedFileType,
   TaskState,
   ConversationCapability,
+  Model,
+  ModelAccess,
+  ModelCategory,
 } from '../../../common/mojom'
 import { MockContext } from '../../state/mock_context'
 import InputBox, { InputBoxProps, type InputBoxHandle } from '.'
@@ -679,5 +683,86 @@ describe('input box', () => {
 
     expect(focusSpy).toHaveBeenCalled()
     focusSpy.mockRestore()
+  })
+
+  describe('MCP servers', () => {
+    const MCP_SERVER: AssociatedContent = {
+      uuid: 'server-uuid',
+      contentType: ContentType.MCPServer,
+      title: 'My Server',
+      contentId: -1,
+      url: { url: 'https://mcp.example.com/mcp' },
+      contentUsedPercentage: 100,
+      conversationTurnUuid: undefined,
+      toolsAttached: true,
+    }
+
+    function createModel(supportsTools: boolean): Model {
+      return {
+        key: 'model',
+        displayName: 'Model',
+        isSuggestedModel: true,
+        isNearModel: false,
+        visionSupport: false,
+        supportsTools,
+        supportedCapabilities: [],
+        options: {
+          customModelOptions: undefined,
+          leoModelOptions: {
+            name: 'model',
+            displayMaker: 'Brave',
+            category: ModelCategory.CHAT,
+            longConversationWarningCharacterLimit: 1,
+            maxAssociatedContentLength: 2,
+            access: ModelAccess.BASIC_AND_PREMIUM,
+          },
+        },
+      } as Model
+    }
+
+    it('shows an attached server only with its tools', async () => {
+      const disassociateContent = jest.fn()
+      const { container } = await renderInputBox(
+        <MockContext
+          conversationOverrides={{ currentModel: createModel(true) }}
+        >
+          <InputBox
+            context={{
+              ...testContext,
+              associatedContentInfo: [MCP_SERVER],
+              disassociateContent,
+            }}
+            conversationStarted={false}
+          />
+        </MockContext>,
+      )
+
+      expect(
+        screen.getByRole('button', { name: /My Server/ }),
+      ).toBeInTheDocument()
+      expect(container.querySelector('.toolPillIcon')).toBeInTheDocument()
+      expect(container.querySelector('img[src*="//favicon2"]')).toBeNull()
+      // Not as an attachment too.
+      expect(container.querySelector('.attachmentWrapper')).toBeNull()
+
+      // Removing its tools detaches it, as it has nothing else to offer.
+      fireEvent.click(container.querySelector('leo-button.toolPillRemove')!)
+      expect(disassociateContent).toHaveBeenCalledWith(MCP_SERVER)
+    })
+
+    it('hides servers when the model cannot use tools', async () => {
+      await renderInputBox(
+        <MockContext
+          conversationOverrides={{ currentModel: createModel(false) }}
+        >
+          <InputBox
+            context={{ ...testContext, associatedContentInfo: [MCP_SERVER] }}
+            conversationStarted={false}
+          />
+        </MockContext>,
+      )
+
+      expect(screen.queryByText('My Server')).not.toBeInTheDocument()
+    })
   })
 })

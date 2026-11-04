@@ -154,6 +154,53 @@ describe('TabsMenu', () => {
     expect(associateTab).not.toHaveBeenCalled()
   })
 
+  it("doesn't take a page at a connector's origin for the connector", async () => {
+    const setToolsAttached = jest.fn()
+    const associateUrlContent = jest.fn()
+    const { findByText } = await renderOpenedMenu({
+      conversationOverrides: { inputText: ['@'] },
+      bookmarksService: {
+        getBookmarks: () =>
+          Promise.resolve({
+            bookmarks: [
+              {
+                id: BigInt(1),
+                title: 'Mail home',
+                url: { url: 'https://gmail.example.com/' },
+              },
+            ],
+          }),
+      },
+      initialState: {
+        conversationState: {
+          conversationUuid: 'conversation-uuid',
+          associatedContent: [
+            {
+              uuid: 'connector-content',
+              contentType: ContentType.MCPServer,
+              title: 'Gmail',
+              contentId: -1,
+              url: { url: 'https://gmail.example.com/' },
+              contentUsedPercentage: 100,
+              conversationTurnUuid: undefined,
+              toolsAttached: true,
+            },
+          ],
+        },
+      },
+      uiHandler: { associateUrlContent },
+      conversationHandler: { setToolsAttached },
+    })
+
+    const item = await findByText('Mail home')
+    await act(async () => {
+      item.closest<HTMLElement>('leo-menu-item')!.click()
+    })
+
+    expect(associateUrlContent).toHaveBeenCalled()
+    expect(setToolsAttached).not.toHaveBeenCalled()
+  })
+
   it('should be open when query starts with @', async () => {
     const { container } = await renderOpenedMenu({
       conversationOverrides: { inputText: ['@'] },

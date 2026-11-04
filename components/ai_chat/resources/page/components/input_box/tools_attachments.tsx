@@ -9,7 +9,10 @@ import Icon from '@brave/nala/react/icon'
 import Tooltip from '@brave/nala/react/tooltip'
 import classnames from '$web-common/classnames'
 import { formatLocale, getLocale } from '$web-common/locale'
-import { isWorkspaceContent } from '../../../common/conversation_history_utils'
+import {
+  isMCPServerContent,
+  isWorkspaceContent,
+} from '../../../common/conversation_history_utils'
 import * as Mojom from '../../../common/mojom'
 import { useConversation } from '../../state/conversation_context'
 import WebsiteToolsModal from '../website_tools_modal'
@@ -24,6 +27,7 @@ interface Props {
     content: Mojom.AssociatedContent,
     toolsAttached: boolean,
   ) => void
+  disassociateContent: (content: Mojom.AssociatedContent) => void
 }
 
 function ToolPill(props: {
@@ -41,10 +45,17 @@ function ToolPill(props: {
 
   const pillContent = (
     <>
-      <img
-        className={styles.toolPillFavicon}
-        src={`//favicon2?size=64&pageUrl=${encodeURIComponent(props.content.url.url)}&allowGoogleServerFallback=0`}
-      />
+      {isMCPServerContent(props.content) ? (
+        <Icon
+          className={styles.toolPillIcon}
+          name='cloud-hosting'
+        />
+      ) : (
+        <img
+          className={styles.toolPillFavicon}
+          src={`//favicon2?size=64&pageUrl=${encodeURIComponent(props.content.url.url)}&allowGoogleServerFallback=0`}
+        />
+      )}
       <span className={styles.toolPillTitle}>{props.content.title}</span>
       {tools.length > 0 && (
         <span
@@ -143,7 +154,13 @@ export default function ToolsAttachments(props: Props) {
             key={content.uuid}
             content={content}
             onOpen={() => setOpenContentUuid(content.uuid)}
-            onRemove={() => props.setToolsAttached(content, false)}
+            // An MCP server is only there for its tools, so is detached
+            // with them.
+            onRemove={() =>
+              isMCPServerContent(content)
+                ? props.disassociateContent(content)
+                : props.setToolsAttached(content, false)
+            }
           />
         ))}
       </div>

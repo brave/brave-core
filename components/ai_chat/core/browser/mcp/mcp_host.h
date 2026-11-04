@@ -14,8 +14,12 @@
 #include <string_view>
 #include <vector>
 
+#include "base/functional/callback_forward.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/observer_list.h"
+#include "base/observer_list_types.h"
+#include "base/one_shot_event.h"
 #include "base/scoped_observation.h"
 #include "brave/components/ai_chat/core/browser/mcp/mcp_server_registry.h"
 #include "brave/components/ai_chat/core/browser/mcp/mcp_types.h"
@@ -45,6 +49,23 @@ class MCPClient;
 // does.
 class MCPHost : public mojom::MCPHost, public MCPServerRegistry::Observer {
  public:
+  class Observer : public base::CheckedObserver {
+   public:
+    // Clients were created, replaced or destroyed to match the servers'
+    // configs.
+    virtual void OnMCPClientsChanged() {}
+  };
+
+  struct EnabledServer {
+    EnabledServer();
+    EnabledServer(EnabledServer&&) noexcept;
+    EnabledServer& operator=(EnabledServer&&) noexcept;
+    ~EnabledServer();
+
+    mojom::MCPServerPtr server;
+    base::WeakPtr<MCPClient> client;
+  };
+
   MCPHost(PrefService& prefs,
           os_crypt_async::OSCryptAsync& os_crypt_async,
           scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
@@ -55,8 +76,20 @@ class MCPHost : public mojom::MCPHost, public MCPServerRegistry::Observer {
   // Messages are handled once tokens can be read and written.
   void Bind(mojo::PendingReceiver<mojom::MCPHost> receiver);
 
-  base::WeakPtr<MCPClient> GetClientForTesting(
-      std::string_view server_id) const;
+  // Enabled servers that have a client, in the order they were added. Empty
+  // until tokens can be decrypted. A server whose token can't be decrypted
+  // has no client.
+  std::vector<EnabledServer> GetEnabledServers() const;
+  base::WeakPtr<MCPClient> GetClient(std::string_view server_id) const;
+
+  // Whether the clients have been created, which waits for tokens to be
+  // decryptable.
+  bool IsReady() const;
+  // Runs `callback` once IsReady(). Always posted.
+  void RunWhenReady(base::OnceClosure callback);
+
+  void AddObserver(Observer* observer);
+  void RemoveObserver(Observer* observer);
 
   // mojom::MCPHost:
   void GetServers(GetServersCallback callback) override;
@@ -93,7 +126,8 @@ class MCPHost : public mojom::MCPHost, public MCPServerRegistry::Observer {
 
   void OnRegistryReady();
   void BindReady(mojo::PendingReceiver<mojom::MCPHost> receiver);
-  // Creates, replaces and destroys clients to match `servers`.
+  // Creates, replaces and destroys clients to match `servers`, and tells
+  // observers if it did.
   void UpdateClients(const std::vector<mojom::MCPServerPtr>& servers);
 
   // Outlives the clients, which use it as they're destroyed.
@@ -103,6 +137,9 @@ class MCPHost : public mojom::MCPHost, public MCPServerRegistry::Observer {
       registry_observation_{this};
   // By server id.
   std::map<std::string, Client, std::less<>> clients_;
+  // Signaled once the first clients have been created.
+  base::OneShotEvent clients_ready_;
+  base::ObserverList<Observer> observers_;
   mojo::ReceiverSet<mojom::MCPHost> receivers_;
   mojo::RemoteSet<mojom::MCPHostObserver> remote_observers_;
   base::WeakPtrFactory<MCPHost> weak_ptr_factory_{this};

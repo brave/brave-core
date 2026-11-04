@@ -468,10 +468,12 @@ mojom::AssociatedContentPtr ProtoToAssociatedContent(
              << proto.content_type();
     return nullptr;
   }
-  // Workspace content is device-local and should never be synced. Reject it if
-  // it somehow arrives from another device.
-  if (content_type.value() == mojom::ContentType::Workspace) {
-    DVLOG(1) << "Rejecting workspace content from sync";
+  // Workspace content is device-local and should never be synced, nor should
+  // MCP servers, which are never stored. Reject either if it somehow arrives
+  // from another device.
+  if (content_type.value() == mojom::ContentType::Workspace ||
+      content_type.value() == mojom::ContentType::MCPServer) {
+    DVLOG(1) << "Rejecting device-local content from sync";
     return nullptr;
   }
   content->content_type = content_type.value();
@@ -832,14 +834,16 @@ sync_pb::AIChatConversationSpecifics EntryToSpecifics(
   // associated content manager records only the first turn a content appears
   // with), so match on |entry.uuid|.
   // Workspace content is not synced because it is ephemeral and can only be
-  // restored on the device where the workspace was created.
+  // restored on the device where the workspace was created. MCP servers are
+  // never associated with a turn, nor stored.
   if (entry.uuid) {
     for (const auto& content : associated_content) {
       if (!content->conversation_turn_uuid ||
           *content->conversation_turn_uuid != *entry.uuid) {
         continue;
       }
-      if (content->content_type == mojom::ContentType::Workspace) {
+      if (content->content_type == mojom::ContentType::Workspace ||
+          content->content_type == mojom::ContentType::MCPServer) {
         continue;
       }
       std::optional<std::string_view> text;

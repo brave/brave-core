@@ -42,6 +42,12 @@ void OnServerTools(mojom::MCPHost::GetServerToolsCallback callback,
 
 }  // namespace
 
+MCPHost::EnabledServer::EnabledServer() = default;
+MCPHost::EnabledServer::EnabledServer(EnabledServer&&) noexcept = default;
+MCPHost::EnabledServer& MCPHost::EnabledServer::operator=(
+    EnabledServer&&) noexcept = default;
+MCPHost::EnabledServer::~EnabledServer() = default;
+
 MCPHost::Client::Client(MCPServerConfig config,
                         std::unique_ptr<MCPClient> client)
     : config(std::move(config)), client(std::move(client)) {}
@@ -70,13 +76,42 @@ void MCPHost::Bind(mojo::PendingReceiver<mojom::MCPHost> receiver) {
                      std::move(receiver)));
 }
 
-base::WeakPtr<MCPClient> MCPHost::GetClientForTesting(
-    std::string_view server_id) const {
+std::vector<MCPHost::EnabledServer> MCPHost::GetEnabledServers() const {
+  std::vector<EnabledServer> enabled_servers;
+  for (mojom::MCPServerPtr& server : registry_.GetServers()) {
+    base::WeakPtr<MCPClient> client = GetClient(server->id);
+    if (!client) {
+      continue;
+    }
+    EnabledServer& enabled_server = enabled_servers.emplace_back();
+    enabled_server.server = std::move(server);
+    enabled_server.client = std::move(client);
+  }
+  return enabled_servers;
+}
+
+base::WeakPtr<MCPClient> MCPHost::GetClient(std::string_view server_id) const {
   auto it = clients_.find(server_id);
   if (it == clients_.end()) {
     return nullptr;
   }
   return it->second.client->GetWeakPtr();
+}
+
+bool MCPHost::IsReady() const {
+  return clients_ready_.is_signaled();
+}
+
+void MCPHost::RunWhenReady(base::OnceClosure callback) {
+  clients_ready_.Post(FROM_HERE, std::move(callback));
+}
+
+void MCPHost::AddObserver(Observer* observer) {
+  observers_.AddObserver(observer);
+}
+
+void MCPHost::RemoveObserver(Observer* observer) {
+  observers_.RemoveObserver(observer);
 }
 
 void MCPHost::GetServers(GetServersCallback callback) {
@@ -146,6 +181,7 @@ void MCPHost::OnMCPServersChanged() {
 
 void MCPHost::OnRegistryReady() {
   UpdateClients(registry_.GetServers());
+  clients_ready_.Signal();
 }
 
 void MCPHost::BindReady(mojo::PendingReceiver<mojom::MCPHost> receiver) {
@@ -154,6 +190,7 @@ void MCPHost::BindReady(mojo::PendingReceiver<mojom::MCPHost> receiver) {
 
 void MCPHost::UpdateClients(const std::vector<mojom::MCPServerPtr>& servers) {
   std::map<std::string, Client, std::less<>> clients;
+  bool changed = false;
   for (const mojom::MCPServerPtr& server : servers) {
     if (!server->enabled || server->token_unreadable) {
       continue;
@@ -175,12 +212,17 @@ void MCPHost::UpdateClients(const std::vector<mojom::MCPServerPtr>& servers) {
       continue;
     }
     clients.emplace(server->id, Client(std::move(*config), std::move(*client)));
+    changed = true;
   }
   // The clients of servers that were removed, disabled or changed are
   // destroyed after the swap, so that anything they run as they go sees the
   // current ones.
   std::swap(clients_, clients);
+  changed |= !clients.empty();
   clients.clear();
+  if (changed) {
+    observers_.Notify(&Observer::OnMCPClientsChanged);
+  }
 }
 
 }  // namespace ai_chat

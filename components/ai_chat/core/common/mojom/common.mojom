@@ -135,11 +135,14 @@ enum ModelAccess {
   PREMIUM,
 };
 
-// Type of content that is extracted
+// Type of content that is extracted. Persisted, so only append.
 enum ContentType {
   PageContent,
   VideoTranscript,
   Workspace,
+  // A remote MCP server the user added. It has no content, only tools, and is
+  // never persisted or synced.
+  MCPServer,
 };
 
 enum UploadedFileType {

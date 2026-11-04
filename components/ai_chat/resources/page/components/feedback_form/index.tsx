@@ -8,6 +8,7 @@ import Button from '@brave/nala/react/button'
 import Checkbox from '@brave/nala/react/checkbox'
 import Dialog from '@brave/nala/react/dialog'
 import { getLocale, formatLocale } from '$web-common/locale'
+import { isMCPServerContent } from '../../../common/conversation_history_utils'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import styles from './style.module.scss'
@@ -33,6 +34,10 @@ function FeedbackForm() {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
   const [shouldSendUrl, setShouldSendUrl] = React.useState(true)
+  // Only the hostnames of pages are offered, not those of MCP servers.
+  const pageContent = conversationContext.associatedContentInfo.filter(
+    (content) => !isMCPServerContent(content),
+  )
 
   const canSubmit = !!category
 
@@ -99,16 +104,14 @@ function FeedbackForm() {
             placeholder={getLocale(S.CHAT_UI_FEEDBACK_DESCRIPTION_LABEL)}
           />
         </label>
-        {conversationContext.associatedContentInfo.length > 0 && (
+        {pageContent.length > 0 && (
           <Checkbox
             checked={shouldSendUrl}
             onChange={handleCheckboxChange}
           >
             <span>
               {formatLocale(S.CHAT_UI_SEND_SITE_HOSTNAME_LABEL, {
-                $1: conversationContext.associatedContentInfo
-                  .map((c) => getHostName(c.url.url))
-                  .join(', '),
+                $1: pageContent.map((c) => getHostName(c.url.url)).join(', '),
               })}
             </span>
           </Checkbox>

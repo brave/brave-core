@@ -27,7 +27,10 @@ import {
 import { ModelSelector } from '../model_selector'
 import ToolsAttachments from './tools_attachments'
 import usePromise from '$web-common/usePromise'
-import { isFullPageScreenshot } from '../../../common/conversation_history_utils'
+import {
+  isFullPageScreenshot,
+  isMCPServerContent,
+} from '../../../common/conversation_history_utils'
 import Editable from './editable'
 import { stringifyContent } from './editable_content'
 
@@ -259,7 +262,9 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
     }
 
     const placeholderText = usePlaceholderText(
-      props.context.associatedContentInfo.length,
+      props.context.associatedContentInfo.filter(
+        (content) => !isMCPServerContent(content),
+      ).length,
       props.conversationStarted,
       props.context.getPluralString,
     )
@@ -294,8 +299,9 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
       props.context.pendingMessageFiles.length > 0
       || props.context.isUploadingFiles
 
+    // An MCP server is only there for its tools, so it's shown only with them.
     const pendingContent = props.context.associatedContentInfo.filter(
-      (c) => !c.conversationTurnUuid,
+      (c) => !c.conversationTurnUuid && !isMCPServerContent(c),
     )
     // Tools chips are shown for any content with tools attached, even content
     // that has already been committed to a conversation turn. Hide entirely if
@@ -408,6 +414,7 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
         <ToolsAttachments
           toolsContent={toolsContent}
           setToolsAttached={props.context.setToolsAttached}
+          disassociateContent={props.context.disassociateContent}
         />
         <div className={styles.inputBody}>
           {(showUploadedFiles || pendingContent.length > 0) && (

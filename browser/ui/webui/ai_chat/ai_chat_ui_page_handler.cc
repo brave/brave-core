@@ -783,6 +783,14 @@ void AIChatUIPageHandler::DisassociateContent(
   service->DisassociateContent(content, conversation_uuid);
 }
 
+void AIChatUIPageHandler::AssociateMCPServer(
+    const std::string& server_id,
+    const std::string& conversation_uuid) {
+  if (auto* service = AIChatServiceFactory::GetForBrowserContext(profile_)) {
+    service->AssociateMCPServer(server_id, conversation_uuid);
+  }
+}
+
 void AIChatUIPageHandler::NewConversation(
     mojo::PendingReceiver<mojom::ConversationHandler> receiver,
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler,

@@ -690,29 +690,35 @@
   <message name="IDS_CHAT_UI_PAGE_ATTACHMENT_TOOLTIP_INFO" desc="Info tooltip for page attachment" formatter_data="webui=AiChat">
     This page's content will be sent to Leo along with your messages.
   </message>
-  <message name="IDS_CHAT_UI_TOOLS_ATTACHMENT_LABEL" desc="Label for the section, shown above the input box, listing the tools provided by attached pages" formatter_data="webui=AiChat">
+  <message name="IDS_CHAT_UI_TOOLS_ATTACHMENT_LABEL" desc="Label for the section, shown above the input box, listing the tools provided by attached pages and MCP (Model Context Protocol) servers" formatter_data="webui=AiChat">
     Tools
   </message>
-  <message name="IDS_CHAT_UI_TOOLS_ATTACHMENT_TOOLTIP_INFO" desc="Info tooltip explaining what attached page tools are and their privacy implications" formatter_data="webui=AiChat">
-    These sites expose tools that Leo can use to send data to and from this site. Do not attach or approve these tools if this conversation contains data that you don't want this site to see.
+  <message name="IDS_CHAT_UI_TOOLS_ATTACHMENT_TOOLTIP_INFO" desc="Info tooltip explaining what the tools of attached pages and MCP (Model Context Protocol) servers are, and their privacy implications" formatter_data="webui=AiChat">
+    Leo can use these tools to send data to, and get data from, the sites or servers that provide them. Do not attach or approve these tools if this conversation contains data that you don't want them to see.
   </message>
-  <message name="IDS_CHAT_UI_TOOLS_ATTACHMENT_REMOVE_LABEL" desc="Accessible label for the button that removes an attached page's tools" formatter_data="webui=AiChat">
+  <message name="IDS_CHAT_UI_TOOLS_ATTACHMENT_REMOVE_LABEL" desc="Accessible label for the button that removes the tools of an attached page or MCP (Model Context Protocol) server. An MCP server is only attached for its tools, so this detaches it from the conversation" formatter_data="webui=AiChat">
     Remove tools
   </message>
   <message name="IDS_CHAT_UI_WEBSITE_TOOLS_TITLE" desc="Title of the dialog that lists the tools an attached website provides to Leo" formatter_data="webui=AiChat">
     Available website tools
   </message>
-  <message name="IDS_CHAT_UI_WEBSITE_TOOLS_LIST_LABEL" desc="Heading above the list of tools in the website tools dialog, also used as the accessible label for the tool count on an attached page's tools pill. The placeholder is the number of tools, e.g. 'Available tools (10)'" formatter_data="webui=AiChat">
+  <message name="IDS_CHAT_UI_WEBSITE_TOOLS_LIST_LABEL" desc="Heading above the list of tools in the dialog that lists the tools of an attached website or MCP (Model Context Protocol) server, also used as the accessible label for the tool count on its tools pill. The placeholder is the number of tools, e.g. 'Available tools (10)'" formatter_data="webui=AiChat">
     Available tools (<ph name="TOOL_COUNT">$1<ex>10</ex></ph>)
   </message>
-  <message name="IDS_CHAT_UI_WEBSITE_TOOL_PERMISSION_ALLOW_SESSION" desc="Dropdown option letting Leo use a website tool without asking each time, for as long as the site stays attached to the conversation" formatter_data="webui=AiChat">
+  <message name="IDS_CHAT_UI_WEBSITE_TOOL_PERMISSION_ALLOW_SESSION" desc="Dropdown option letting Leo use a tool of a website or MCP (Model Context Protocol) server without asking each time, for as long as the site or server stays attached to the conversation" formatter_data="webui=AiChat">
     Allow for this session
   </message>
-  <message name="IDS_CHAT_UI_WEBSITE_TOOL_PERMISSION_ASK" desc="Dropdown option asking for approval each time Leo wants to use a website tool" formatter_data="webui=AiChat">
+  <message name="IDS_CHAT_UI_WEBSITE_TOOL_PERMISSION_ASK" desc="Dropdown option asking for approval each time Leo wants to use a tool of a website or MCP (Model Context Protocol) server" formatter_data="webui=AiChat">
     Ask every time
   </message>
-  <message name="IDS_CHAT_UI_WEBSITE_TOOL_PERMISSION_NEVER_ALLOW" desc="Dropdown option preventing Leo from using a website tool at all" formatter_data="webui=AiChat">
+  <message name="IDS_CHAT_UI_WEBSITE_TOOL_PERMISSION_NEVER_ALLOW" desc="Dropdown option preventing Leo from using a tool of a website or MCP (Model Context Protocol) server at all" formatter_data="webui=AiChat">
     Never allow
+  </message>
+  <message name="IDS_CHAT_UI_MCP_SERVER_TOOLS_TITLE" desc="Title of the dialog that lists the tools that an MCP (Model Context Protocol) server, which the user added and attached to a conversation, provides to Leo" formatter_data="webui=AiChat">
+    Available connector tools
+  </message>
+  <message name="IDS_CHAT_UI_MCP_SERVER_LABEL" desc="Says what an attachment is: shown below the name of an MCP (Model Context Protocol) server that the user added and attached to a conversation, in the dialog that lists its tools" formatter_data="webui=AiChat">
+    Connector
   </message>
   <message name="IDS_CHAT_UI_SUBSCRIPTION_POLICY_INFO" desc="An info text that is shown below various subcription prices" formatter_data="webui=AiChat">
     All subscriptions are auto-renewed but can be cancelled at any time before renewal.
