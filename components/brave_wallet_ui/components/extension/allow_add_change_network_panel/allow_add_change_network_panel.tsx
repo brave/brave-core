@@ -346,10 +346,7 @@ export function AllowAddChangeNetworkPanel(props: Props) {
               </Button>
             )}
           </Column>
-          <ButtonRow
-            padding='16px'
-            gap='12px'
-          >
+          <ButtonRow>
             <Button
               kind='outline'
               size='medium'

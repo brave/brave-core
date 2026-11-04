@@ -98,6 +98,9 @@ export const Card = styled(Column)`
 `
 
 export const ButtonRow = styled(Row)`
+  padding: ${leo.spacing.xl};
+  gap: ${leo.spacing.l};
+
   & > leo-button {
     flex: 1 1 0;
   }
