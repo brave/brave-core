@@ -55,6 +55,20 @@ bool TrafficControlApplier::AlreadyAtTarget(content::WebContents* web_contents,
     return false;
   }
 
+  // Null when the Containers feature is disabled, in which case nothing can be
+  // in a container.
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents->GetBrowserContext());
+  containers::ContainersService* containers_service =
+      profile ? ContainersServiceFactory::GetForProfile(profile) : nullptr;
+
+  // A confined container's tabs stay in it, whatever the target.
+  if (containers_service &&
+      containers_service->IsContainerConfined(
+          containers::GetContainerIdForWebContents(web_contents))) {
+    return true;
+  }
+
   // Temporary destinations always open a new tab from non-temporary sources.
   // Once already in a temporary container, proceed to avoid an apply loop on
   // the newly opened tab's navigation.
@@ -80,10 +94,6 @@ bool TrafficControlApplier::AlreadyAtTarget(content::WebContents* web_contents,
 
   // A missing destination is a no-op. In particular, do not move a tab from
   // another container into the default partition when a rule is stale.
-  Profile* profile =
-      Profile::FromBrowserContext(web_contents->GetBrowserContext());
-  containers::ContainersService* containers_service =
-      profile ? ContainersServiceFactory::GetForProfile(profile) : nullptr;
   if (containers_service &&
       !containers_service->GetRuntimeContainerById(*target.container_id)) {
     return true;

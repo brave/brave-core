@@ -5,19 +5,13 @@
 
 #include "brave/browser/traffic_control/traffic_control_navigation_throttle.h"
 
-#include <string>
-
 #include "base/functional/bind.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/types/optional_ref.h"
-#include "brave/browser/containers/containers_service_factory.h"
 #include "brave/browser/traffic_control/traffic_control_apply.h"
 #include "brave/browser/traffic_control/traffic_control_tab_utils.h"
-#include "brave/components/containers/content/browser/storage_partition_utils.h"
-#include "brave/components/containers/core/browser/containers_service.h"
 #include "brave/components/traffic_control/core/browser/traffic_control_service.h"
 #include "brave/components/traffic_control/core/mojom/traffic_control.mojom.h"
-#include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/navigation_throttle_registry.h"
 #include "content/public/browser/site_instance.h"
@@ -26,25 +20,6 @@
 #include "url/origin.h"
 
 namespace traffic_control {
-
-namespace {
-
-bool IsInConfinedContainer(content::WebContents* web_contents) {
-  // Null when the Containers feature is disabled, in which case nothing can be
-  // in a container.
-  containers::ContainersService* containers_service =
-      ContainersServiceFactory::GetForProfile(
-          Profile::FromBrowserContext(web_contents->GetBrowserContext()));
-  if (!containers_service) {
-    return false;
-  }
-  const std::string container_id =
-      containers::GetContainerIdForWebContents(web_contents);
-  return !container_id.empty() &&
-         containers_service->IsContainerConfined(container_id);
-}
-
-}  // namespace
 
 // static
 void TrafficControlNavigationThrottle::MaybeCreateAndAdd(
@@ -90,11 +65,6 @@ TrafficControlNavigationThrottle::MaybeReroute() {
   base::optional_ref<const mojom::TrafficRule> rule =
       service_->FindMatchingRule(url);
   if (!rule || !rule->target) {
-    return PROCEED;
-  }
-
-  // A confined container's tabs stay in it, whatever the rules say.
-  if (IsInConfinedContainer(web_contents)) {
     return PROCEED;
   }
 

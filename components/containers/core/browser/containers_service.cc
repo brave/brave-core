@@ -275,6 +275,8 @@ void ContainersService::OnContainerStorageDeleted(const std::string& id,
     return;
   }
 
+  confined_container_ids_.erase(id);
+
   // If the container did not reappear in the synced containers list, remove the
   // used-container snapshot from the prefs to forget about it forever.
   if (!GetContainerFromPrefs(*prefs_, id)) {

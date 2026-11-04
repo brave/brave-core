@@ -47,9 +47,10 @@ class TrafficControlApplier {
                     std::optional<url::Origin> initiator_origin,
                     ui::PageTransition page_transition);
 
-  // Returns true when re-routing should not run because |web_contents| already
-  // satisfies |target| or the target has no usable destination. Unset and
-  // unknown container destinations leave the current tab unchanged.
+  // Returns true when re-routing should not run because |web_contents| is in a
+  // confined container, already satisfies |target|, or the target has no
+  // usable destination. Unset and unknown container destinations leave the
+  // current tab unchanged.
   static bool AlreadyAtTarget(content::WebContents* web_contents,
                               const mojom::Target& target);
 

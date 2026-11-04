@@ -271,17 +271,21 @@ IN_PROC_BROWSER_TEST_F(TrafficControlBrowserTest,
   ASSERT_TRUE(content::WaitForLoadStop(confined));
   const int tab_count = browser()->tab_strip_model()->count();
 
+  const GURL to_container_url = TestUrl();
+  const GURL to_no_container_url = TestUrl("b.test");
   std::vector<mojom::TrafficRulePtr> rules;
-  rules.push_back(MakeRule("r1", true, "example.com", container_id_));
-  rules.push_back(MakeRule("r2", true, "b.test", std::string("")));
+  rules.push_back(MakeRule("r1", true, std::string(to_container_url.host()),
+                           container_id_));
+  rules.push_back(MakeRule("r2", true, std::string(to_no_container_url.host()),
+                           std::string("")));
   SetRules(std::move(rules));
 
-  for (const char* host : {"example.com", "b.test"}) {
-    SCOPED_TRACE(host);
-    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), TestUrl(host)));
+  for (const GURL& url : {to_container_url, to_no_container_url}) {
+    SCOPED_TRACE(url);
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
     EXPECT_EQ(browser()->tab_strip_model()->count(), tab_count);
     EXPECT_EQ(browser()->tab_strip_model()->GetActiveWebContents(), confined);
-    EXPECT_EQ(confined->GetLastCommittedURL().host(), host);
+    EXPECT_EQ(confined->GetLastCommittedURL(), url);
     EXPECT_EQ(containers::GetContainerIdForWebContents(confined),
               container->id);
   }
@@ -297,11 +301,12 @@ IN_PROC_BROWSER_TEST_F(TrafficControlBrowserTest,
   ASSERT_TRUE(content::WaitForLoadStop(
       browser()->tab_strip_model()->GetActiveWebContents()));
 
+  const GURL url = TestUrl();
   std::vector<mojom::TrafficRulePtr> rules;
-  rules.push_back(MakeRule("r1", true, "example.com", container_id_));
+  rules.push_back(MakeRule("r1", true, std::string(url.host()), container_id_));
   SetRules(std::move(rules));
 
-  content::WebContents* new_tab = NavigateExpectingReroute(TestUrl());
+  content::WebContents* new_tab = NavigateExpectingReroute(url);
   ASSERT_TRUE(new_tab);
   EXPECT_EQ(containers::GetContainerIdForWebContents(new_tab), container_id_);
 }
