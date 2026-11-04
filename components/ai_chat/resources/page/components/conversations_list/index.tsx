@@ -186,7 +186,7 @@ function ConversationItem(props: ConversationItemProps) {
               className={styles.generatingIndicator}
               aria-label={getLocale(S.AI_CHAT_CONVERSATION_LIST_GENERATING)}
               title={getLocale(S.AI_CHAT_CONVERSATION_LIST_GENERATING)}
-              role='status'
+              role='img'
             >
               <ProgressRing mode='indeterminate' />
             </span>
@@ -200,7 +200,7 @@ function ConversationItem(props: ConversationItemProps) {
               title={getLocale(
                 S.AI_CHAT_CONVERSATION_LIST_COMPLETED_NOT_VIEWED,
               )}
-              role='status'
+              role='img'
             />
           )}
 

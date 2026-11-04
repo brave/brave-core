@@ -12,8 +12,6 @@ import { ActiveChatContext } from '../../state/active_chat_context'
 import { clearAllDataForTesting } from '$web-common/api'
 import ConversationsList from './index'
 import * as Mojom from '../../../common/mojom'
-import { ConversationGenerationState } from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m.js'
-import { useAIChat } from '../../state/ai_chat_context'
 
 const mockConversations: Mojom.Conversation[] = [
   {
@@ -557,26 +555,7 @@ describe('ConversationsList', () => {
   })
 
   describe('Generation indicators', () => {
-    const CG = ConversationGenerationState
-
-    function WithGeneration({
-      entries,
-      children,
-    }: {
-      entries: Array<[string, number]>
-      children: React.ReactNode
-    }) {
-      const Inner = ({ children: inner }: { children: React.ReactNode }) => {
-        const aiChat = useAIChat()
-        React.useEffect(() => {
-          aiChat.api.conversationGenerationState.update(
-            () => new Map(entries as any),
-          )
-        }, [])
-        return <>{inner}</>
-      }
-      return <Inner>{children}</Inner>
-    }
+    const CG = Mojom.ConversationGenerationState
 
     it('shows ProgressRing when generating and not active', async () => {
       await renderConversationsList(
@@ -588,11 +567,10 @@ describe('ConversationsList', () => {
           initialState={{
             serviceState: { isStoragePrefEnabled: true },
             conversationState: { conversationUuid: 'uuid-2' },
+            conversationGenerationState: new Map([['uuid-1', CG.kGenerating]]),
           }}
         >
-          <WithGeneration entries={[['uuid-1', CG.kGenerating]]}>
-            <ConversationsList />
-          </WithGeneration>
+          <ConversationsList />
         </MockContext>,
       )
 
@@ -600,10 +578,8 @@ describe('ConversationsList', () => {
         expect(screen.getByText('How to use TypeScript')).toBeInTheDocument()
       })
       await waitFor(() => {
-        const generating = document.querySelectorAll('.generatingIndicator')
-        expect(generating.length).toBe(1)
-        const completed = document.querySelectorAll('.completedIndicator')
-        expect(completed.length).toBe(0)
+        expect(document.querySelectorAll('.generatingIndicator').length).toBe(1)
+        expect(document.querySelectorAll('.completedIndicator').length).toBe(0)
       })
     })
 
@@ -617,11 +593,10 @@ describe('ConversationsList', () => {
           initialState={{
             serviceState: { isStoragePrefEnabled: true },
             conversationState: { conversationUuid: 'uuid-1' },
+            conversationGenerationState: new Map([['uuid-1', CG.kGenerating]]),
           }}
         >
-          <WithGeneration entries={[['uuid-1', CG.kGenerating]]}>
-            <ConversationsList />
-          </WithGeneration>
+          <ConversationsList />
         </MockContext>,
       )
 
@@ -644,11 +619,12 @@ describe('ConversationsList', () => {
           initialState={{
             serviceState: { isStoragePrefEnabled: true },
             conversationState: { conversationUuid: 'uuid-2' },
+            conversationGenerationState: new Map([
+              ['uuid-1', CG.kCompletedNotViewed],
+            ]),
           }}
         >
-          <WithGeneration entries={[['uuid-1', CG.kCompletedNotViewed]]}>
-            <ConversationsList />
-          </WithGeneration>
+          <ConversationsList />
         </MockContext>,
       )
 
@@ -656,8 +632,8 @@ describe('ConversationsList', () => {
         expect(screen.getByText('How to use TypeScript')).toBeInTheDocument()
       })
       await waitFor(() => {
-        expect(document.querySelectorAll('.completedIndicator').length).toBe(1)
         expect(document.querySelectorAll('.generatingIndicator').length).toBe(0)
+        expect(document.querySelectorAll('.completedIndicator').length).toBe(1)
       })
     })
 
@@ -671,11 +647,12 @@ describe('ConversationsList', () => {
           initialState={{
             serviceState: { isStoragePrefEnabled: true },
             conversationState: { conversationUuid: 'uuid-1' },
+            conversationGenerationState: new Map([
+              ['uuid-1', CG.kCompletedNotViewed],
+            ]),
           }}
         >
-          <WithGeneration entries={[['uuid-1', CG.kCompletedNotViewed]]}>
-            <ConversationsList />
-          </WithGeneration>
+          <ConversationsList />
         </MockContext>,
       )
 
@@ -683,6 +660,7 @@ describe('ConversationsList', () => {
         expect(screen.getByText('How to use TypeScript')).toBeInTheDocument()
       })
       await waitFor(() => {
+        expect(document.querySelectorAll('.generatingIndicator').length).toBe(0)
         expect(document.querySelectorAll('.completedIndicator').length).toBe(0)
       })
     })
@@ -697,11 +675,10 @@ describe('ConversationsList', () => {
           initialState={{
             serviceState: { isStoragePrefEnabled: true },
             conversationState: { conversationUuid: 'uuid-99' },
+            conversationGenerationState: new Map([]),
           }}
         >
-          <WithGeneration entries={[]}>
-            <ConversationsList />
-          </WithGeneration>
+          <ConversationsList />
         </MockContext>,
       )
 
@@ -714,7 +691,7 @@ describe('ConversationsList', () => {
       })
     })
 
-    it('prefers generating over completed (mutually exclusive)', async () => {
+    it('shows each conversation its own indicator', async () => {
       await renderConversationsList(
         <MockContext
           service={{
@@ -724,11 +701,13 @@ describe('ConversationsList', () => {
           initialState={{
             serviceState: { isStoragePrefEnabled: true },
             conversationState: { conversationUuid: 'other' },
+            conversationGenerationState: new Map([
+              ['uuid-1', CG.kGenerating],
+              ['uuid-3', CG.kCompletedNotViewed],
+            ]),
           }}
         >
-          <WithGeneration entries={[['uuid-1', CG.kGenerating]]}>
-            <ConversationsList />
-          </WithGeneration>
+          <ConversationsList />
         </MockContext>,
       )
 
@@ -737,6 +716,7 @@ describe('ConversationsList', () => {
       })
       await waitFor(() => {
         expect(document.querySelectorAll('.generatingIndicator').length).toBe(1)
+        expect(document.querySelectorAll('.completedIndicator').length).toBe(1)
       })
     })
   })
