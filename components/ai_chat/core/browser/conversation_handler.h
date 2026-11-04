@@ -184,6 +184,8 @@ class ConversationHandler : public mojom::ConversationHandler,
   bool IsAnyClientConnected();
   bool HasAnyHistory();
   bool IsRequestInProgress();
+  // Whether a tool use loop is running, between generation requests.
+  bool IsToolUseInProgress() const;
 
   const mojom::Model& GetCurrentModel();
   const std::vector<mojom::ConversationTurnPtr>& GetConversationHistory() const;

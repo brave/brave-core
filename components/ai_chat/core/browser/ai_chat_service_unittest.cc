@@ -2010,6 +2010,53 @@ TEST_P(AIChatServiceUnitTest,
   CompleteGeneration(std::move(resolve));
 }
 
+TEST_P(AIChatServiceUnitTest,
+       GenerationState_StaysGeneratingWhileHandlerContinues) {
+  ConversationHandler* handler = CreateConversation();
+  const std::string uuid = handler->get_conversation_uuid();
+  auto resolve = StartGeneration(handler, *client_);
+
+  // Tool use and queued requests report false while the handler carries on.
+  ai_chat_service_->OnRequestInProgressChanged(handler, false);
+  base::RunLoop run_loop;
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, run_loop.QuitClosure());
+  run_loop.Run();
+
+  mojo::PendingRemote<mojom::ServiceObserver> observer;
+  auto observer_receiver = observer.InitWithNewPipeAndPassReceiver();
+  base::test::TestFuture<mojom::ServiceStatePtr, GenerationStates> future;
+  ai_chat_service_->BindObserver(
+      std::move(observer),
+      future.GetCallback<mojom::ServiceStatePtr, const GenerationStates&>());
+  EXPECT_THAT(future.Get<1>(),
+              testing::ElementsAre(testing::Pair(
+                  uuid, mojom::ConversationGenerationState::kGenerating)));
+
+  ExpectGenerationState(
+      *client_, uuid, mojom::ConversationGenerationState::kCompletedNotViewed,
+      base::BindOnce(&CompleteGeneration, std::move(resolve)));
+}
+
+TEST_P(AIChatServiceUnitTest,
+       GenerationState_DirectHandlerBindClearsNotViewed) {
+  ConversationHandler* handler = CreateConversation();
+  const std::string uuid = handler->get_conversation_uuid();
+  auto resolve = StartGeneration(handler, *client_);
+  ExpectGenerationState(
+      *client_, uuid, mojom::ConversationGenerationState::kCompletedNotViewed,
+      base::BindOnce(&CompleteGeneration, std::move(resolve)));
+
+  // Binding straight to the handler, as the tab-associated route does,
+  // bypasses AIChatService::BindConversation.
+  std::unique_ptr<MockConversationHandlerClient> client;
+  ExpectGenerationState(*client_, uuid,
+                        mojom::ConversationGenerationState::kIdle,
+                        base::BindLambdaForTesting([&] {
+                          client = CreateConversationClient(handler);
+                        }));
+}
+
 TEST_P(AIChatServiceUnitTest, GenerationState_BindClearsNotViewed) {
   ConversationHandler* handler = CreateConversation();
   const std::string uuid = handler->get_conversation_uuid();

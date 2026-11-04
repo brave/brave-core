@@ -901,7 +901,7 @@ export const _FullPageWithGenerationStatus = {
   ..._FullPage,
   args: {
     ..._FullPage.args,
-    generatingConversationId: CONVERSATIONS[1].uuid,
+    generatingConversationId: CONVERSATIONS[0].uuid,
     completedNotViewedConversationId: CONVERSATIONS[2].uuid,
   },
 }
