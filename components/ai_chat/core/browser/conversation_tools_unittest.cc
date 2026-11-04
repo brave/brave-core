@@ -5,10 +5,15 @@
 
 #include "brave/components/ai_chat/core/browser/conversation_tools.h"
 
+#include <algorithm>
 #include <string>
 #include <string_view>
 
+#include "base/memory/weak_ptr.h"
+#include "brave/components/ai_chat/core/browser/tools/tool.h"
+#include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -102,6 +107,26 @@ TEST(ConversationToolsUnitTest, FollowUpSuggestionsOnlyForUserChoiceTool) {
       "some_other_tool",
       R"({"choice_type":"follow_up","choices":["Ask A","Ask B"]})");
   EXPECT_EQ(GetFollowUpSuggestionsFromToolUse(*tool_use), std::nullopt);
+}
+
+TEST(ConversationToolsUnitTest, AssistantDetailStorageToolInAllModes) {
+  ConversationToolProvider provider(nullptr);
+  auto tools = provider.GetTools();
+  auto it = std::ranges::find_if(tools, [](const base::WeakPtr<Tool>& tool) {
+    return tool && tool->Name() == mojom::kAssistantDetailStorageToolName;
+  });
+  ASSERT_NE(it, tools.end());
+
+  // Large tool results are trimmed from context regardless of mode, so the
+  // tool should be offered to regular chat as well as content agent.
+  const ConversationCapabilitySet kChat = {
+      mojom::ConversationCapability::CHAT};
+  const ConversationCapabilitySet kContentAgent = {
+      mojom::ConversationCapability::CONTENT_AGENT};
+  EXPECT_TRUE((*it)->SupportsConversation(false, false, kChat));
+  EXPECT_TRUE((*it)->SupportsConversation(false, true, kChat));
+  EXPECT_TRUE((*it)->SupportsConversation(true, false, kChat));
+  EXPECT_TRUE((*it)->SupportsConversation(false, false, kContentAgent));
 }
 
 }  // namespace ai_chat

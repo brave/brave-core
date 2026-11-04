@@ -99,9 +99,9 @@ The key is to avoid overusing the tool. It should supplement your responses, not
 };
 
 // Encourages the LLM to store important information before it gets removed
-// from context. Offer in situations where large tool output is expected in
-// conversations with multiple rounds. Adjust the Description and
-// SupportsConversation to reflect any other use cases.
+// from context. Large tool outputs are trimmed from the history sent to the
+// model in every conversation mode (see oai_message_utils.cc), so this is
+// offered to all conversations, not just content agent ones.
 class AssistantDetailStorageTool : public Tool {
  public:
   // static name
@@ -113,26 +113,19 @@ class AssistantDetailStorageTool : public Tool {
   std::string_view Name() const override { return kName; }
   std::string_view Description() const override {
     return "This tool allows the assistant to preserve important information "
-           "from large web content before it gets pushed out of "
-           "context. The assistant should proactively use this tool "
-           "before performing additional actions on the content which will "
-           "force any content apart from the 2 most recent page content tool "
-           "responses to be removed from the conversation. It should only be "
-           "used if there's valuable information neccessary to complete the "
-           "task or provide the information the user has requested. "
-           "By storing key details, "
-           "observations, or data points from page content, the assistant "
-           "can reference this information later in the conversation even if "
-           "the original web content is no longer in context. This is "
+           "from large tool results (such as web page content, screenshots, "
+           "or other lengthy output) before it gets pushed out of context. "
+           "Only the 2 most recent large tool results are kept in the "
+           "conversation; any earlier ones are removed. The assistant should "
+           "proactively use this tool before making further tool calls that "
+           "are likely to return large results. It should only be used if "
+           "there's valuable information necessary to complete the task or "
+           "provide the information the user has requested. By storing key "
+           "details, observations, or data points, the assistant can "
+           "reference this information later in the conversation even if the "
+           "original tool result is no longer in context. This is "
            "particularly important for multi-step tasks where earlier "
-           "context contains critical information needed for later steps. "
-           "Actions like scrolling, navigating, or clicking will result in an "
-           "additional "
-           "large web content result and anything before the latest 2 results "
-           "being removed "
-           "from "
-           "context, so it's important to use this tool when any valuable "
-           "information is gleamed from a web content output.";
+           "context contains critical information needed for later steps.";
   }
 
   std::optional<base::DictValue> InputProperties() const override {
@@ -140,16 +133,6 @@ class AssistantDetailStorageTool : public Tool {
         {{"information",
           StringProperty(
               "Useful information from an immediately-previous tool call")}});
-  }
-
-  bool SupportsConversation(bool is_temporary,
-                            bool has_untrusted_content,
-                            const ConversationCapabilitySet&
-                                conversation_capabilities) const override {
-    // This tool is only useful for multi-step agentic tasks especially when
-    // other tools might have their output truncated from the context.
-    return conversation_capabilities.contains(
-        mojom::ConversationCapability::CONTENT_AGENT);
   }
 
   void UseTool(const std::string& input_json,
