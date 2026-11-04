@@ -364,6 +364,7 @@ type CustomArgs = {
   deletingConversationId: string | null
   generatingConversationId: string | null
   completedNotViewedConversationId: string | null
+  awaitingUserInputConversationId: string | null
   conversationListCount: number
   hasSuggestedQuestions: boolean
   hasAssociatedContent: boolean
@@ -421,6 +422,7 @@ const args: CustomArgs = {
   deletingConversationId: null,
   generatingConversationId: null,
   completedNotViewedConversationId: null,
+  awaitingUserInputConversationId: null,
   isFeedbackFormVisible: false,
   isStorageNoticeDismissed: false,
   canShowPremiumPrompt: false,
@@ -503,6 +505,7 @@ const meta: Meta<CustomArgs> = {
     deletingConversationId: CONVERSATION_ID_CONTROL,
     generatingConversationId: CONVERSATION_ID_CONTROL,
     completedNotViewedConversationId: CONVERSATION_ID_CONTROL,
+    awaitingUserInputConversationId: CONVERSATION_ID_CONTROL,
     ratingTurnUuid: {
       options: [{ isLiked: true, turnUuid: 'turn-uuid' }],
       control: { type: 'select' },
@@ -587,6 +590,12 @@ function getGenerationStateMap(args: CustomArgs) {
     states.set(
       args.completedNotViewedConversationId,
       Mojom.ConversationGenerationState.kCompletedNotViewed,
+    )
+  }
+  if (args.awaitingUserInputConversationId) {
+    states.set(
+      args.awaitingUserInputConversationId,
+      Mojom.ConversationGenerationState.kAwaitingUserInput,
     )
   }
   return states
@@ -903,6 +912,7 @@ export const _FullPageWithGenerationStatus = {
     ..._FullPage.args,
     generatingConversationId: CONVERSATIONS[0].uuid,
     completedNotViewedConversationId: CONVERSATIONS[2].uuid,
+    awaitingUserInputConversationId: CONVERSATIONS[1].uuid,
   },
 }
 

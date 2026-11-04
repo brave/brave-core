@@ -275,3 +275,12 @@
   margin-left: auto;
   flex-shrink: 0;
 }
+
+.awaitingUserInputIndicator {
+  margin-left: auto;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  --leo-icon-size: 16px;
+  --leo-icon-color: var(--leo-color-systemfeedback-warning-icon);
+}
