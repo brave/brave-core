@@ -29,7 +29,6 @@
 #include "base/time/time.h"
 #include "base/types/expected.h"
 #include "base/values.h"
-#include "brave/components/brave_account/endpoint_client/test_support.h"
 #include "brave/components/brave_vpn/browser/v2/api/brave_vpn_api_client.h"
 #include "brave/components/brave_vpn/browser/v2/credential_store.h"
 #include "brave/components/brave_vpn/browser/v2/credential_store_test_util.h"
@@ -38,6 +37,7 @@
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
+#include "brave/components/endpoint_client/test_support.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "brave/components/skus/browser/skus_service_impl.h"
 #include "brave/components/skus/browser/skus_utils.h"
@@ -1239,9 +1239,8 @@ class PurchasedStateManagerWithRealSkusServiceTest
   void Interceptor(const network::ResourceRequest&) {
     const size_t i =
         std::min(exchange_response_index_++, exchange_responses_.size() - 1);
-    brave_account::endpoint_client::MockResponseFor<
-        endpoints::GetSubscriberCredentialV12>(url_loader_factory_,
-                                               exchange_responses_[i]);
+    endpoint_client::MockResponseFor<endpoints::GetSubscriberCredentialV12>(
+        url_loader_factory_, exchange_responses_[i]);
   }
 
   void WaitForCommitOrTerminalOutcome(size_t terminal_change_count) {

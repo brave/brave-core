@@ -13,11 +13,11 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
-#include "brave/components/brave_account/endpoint_client/response.h"
 #include "brave/components/brave_vpn/browser/v2/api/error_body.h"
 #include "brave/components/brave_vpn/browser/v2/api/purchase_endpoints.h"
 #include "brave/components/brave_vpn/browser/v2/api/raw_json_response_body.h"
 #include "brave/components/brave_vpn/browser/v2/api/transport_protocol.h"
+#include "brave/components/endpoint_client/response.h"
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -43,8 +43,8 @@ class BraveVpnApiClient {
   // success is forwarded as opaque JSON and whose error is a parsed
   // VpnErrorBody title.
   using RawJsonResponse =
-      brave_account::endpoint_client::Response<endpoints::RawJsonResponseBody,
-                                               endpoints::VpnErrorBody>;
+      endpoint_client::Response<endpoints::RawJsonResponseBody,
+                                endpoints::VpnErrorBody>;
   using RawJsonCallback =
       base::OnceCallback<void(base::expected<std::string, std::string>)>;
 

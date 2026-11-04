@@ -14,12 +14,12 @@
 #include "base/functional/callback.h"
 #include "base/strings/strcat.h"
 #include "base/types/expected.h"
-#include "brave/components/brave_account/endpoint_client/client.h"
-#include "brave/components/brave_account/endpoint_client/with_headers.h"
 #include "brave/components/brave_vpn/browser/v2/api/device_endpoints.h"
 #include "brave/components/brave_vpn/browser/v2/api/purchase_endpoints.h"
 #include "brave/components/brave_vpn/browser/v2/api/region_endpoints.h"
 #include "brave/components/brave_vpn/browser/v2/api/support_endpoints.h"
+#include "brave/components/endpoint_client/client.h"
+#include "brave/components/endpoint_client/with_headers.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_status_code.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
@@ -28,8 +28,8 @@
 #include "services/network/public/mojom/fetch_api.mojom.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
-using brave_account::endpoint_client::Client;
-using brave_account::endpoint_client::WithHeaders;
+using endpoint_client::Client;
+using endpoint_client::WithHeaders;
 
 namespace brave_vpn::v2 {
 

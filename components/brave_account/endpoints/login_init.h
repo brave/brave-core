@@ -6,18 +6,18 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINTS_LOGIN_INIT_H_
 #define BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINTS_LOGIN_INIT_H_
 
-#include "brave/components/brave_account/endpoint_client/brave_endpoint.h"
-#include "brave/components/brave_account/endpoint_client/request_types.h"
-#include "brave/components/brave_account/endpoint_client/response.h"
 #include "brave/components/brave_account/endpoints/error_body.h"
 #include "brave/components/brave_account/endpoints/login_init_bodies.h"
+#include "brave/components/endpoint_client/brave_endpoint.h"
+#include "brave/components/endpoint_client/request_types.h"
+#include "brave/components/endpoint_client/response.h"
 
 namespace brave_account::endpoints {
 
 using LoginInit = endpoint_client::BraveEndpoint<
     "accounts.bsg",
     "/v2/auth/login/init",
-    endpoint_client::POST<LoginInitRequestBody>,
+    endpoint_client::Post<LoginInitRequestBody>,
     endpoint_client::Response<LoginInitSuccessBody, ErrorBody>>;
 
 }  // namespace brave_account::endpoints

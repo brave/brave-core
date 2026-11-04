@@ -10,12 +10,12 @@
 
 #include "base/strings/strcat.h"
 #include "base/values.h"
-#include "brave/components/brave_account/endpoint_client/request_types.h"
-#include "brave/components/brave_account/endpoint_client/response.h"
 #include "brave/components/brave_vpn/browser/v2/api/empty_request_body.h"
 #include "brave/components/brave_vpn/browser/v2/api/endpoint_constants.h"
 #include "brave/components/brave_vpn/browser/v2/api/error_body.h"
 #include "brave/components/brave_vpn/browser/v2/api/raw_json_response_body.h"
+#include "brave/components/endpoint_client/request_types.h"
+#include "brave/components/endpoint_client/response.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"
 
@@ -29,9 +29,8 @@ namespace brave_vpn::v2::endpoints {
 // GetServerRegions API returns all regions at a given precision which is a URL
 // path segment and is appended by callers.
 struct GetServerRegions {
-  using Request = brave_account::endpoint_client::GET<EmptyRequestBody>;
-  using Response = brave_account::endpoint_client::Response<RawJsonResponseBody,
-                                                            VpnErrorBody>;
+  using Request = endpoint_client::Get<EmptyRequestBody>;
+  using Response = endpoint_client::Response<RawJsonResponseBody, VpnErrorBody>;
 
   static GURL URL() {
     return GURL(base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator,
@@ -42,9 +41,8 @@ struct GetServerRegions {
 
 // GetTimezonesForRegions API returns timezone metadata for all regions.
 struct GetTimezonesForRegions {
-  using Request = brave_account::endpoint_client::GET<EmptyRequestBody>;
-  using Response = brave_account::endpoint_client::Response<RawJsonResponseBody,
-                                                            VpnErrorBody>;
+  using Request = endpoint_client::Get<EmptyRequestBody>;
+  using Response = endpoint_client::Response<RawJsonResponseBody, VpnErrorBody>;
 
   static GURL URL() {
     return GURL(base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator,
@@ -66,10 +64,8 @@ struct GetHostnamesForRegionRequestBody {
 };
 
 struct GetHostnamesForRegion {
-  using Request =
-      brave_account::endpoint_client::POST<GetHostnamesForRegionRequestBody>;
-  using Response = brave_account::endpoint_client::Response<RawJsonResponseBody,
-                                                            VpnErrorBody>;
+  using Request = endpoint_client::Post<GetHostnamesForRegionRequestBody>;
+  using Response = endpoint_client::Response<RawJsonResponseBody, VpnErrorBody>;
 
   static GURL URL() {
     return GURL(base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator,
