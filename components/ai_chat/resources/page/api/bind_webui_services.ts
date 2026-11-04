@@ -3,8 +3,27 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { Closable } from '$web-common/api'
+import { loadTimeData } from '$web-common/loadTimeData'
 import * as Mojom from '../../common/mojom'
-import createAIChatAPI from './ai_chat_api'
+import createAIChatAPI, { MCPHostInterface } from './ai_chat_api'
+
+/**
+ * Connects to the host of the user's MCP servers. Where connectors aren't
+ * managed, the remote is left unbound, so that its requests fail.
+ */
+function bindMCPHost(serviceRemote: Mojom.ServiceRemote) {
+  const remote = new Mojom.MCPHostRemote()
+  const isBound = loadTimeData.getBoolean('isMCPEnabled')
+  if (isBound) {
+    serviceRemote.bindMCPHost(remote.$.bindNewPipeAndPassReceiver())
+  }
+  return {
+    // The `.m.js` bindings mistype `result<>` responses.
+    remote: remote as unknown as Closable<MCPHostInterface>,
+    isBound,
+  }
+}
 
 export default function bindWebUiServices() {
   // Create global mojo connections
@@ -13,6 +32,7 @@ export default function bindWebUiServices() {
   serviceRemote.bindMetrics(metricsRemote.$.bindNewPipeAndPassReceiver())
   const uiHandlerRemote = Mojom.AIChatUIHandler.getRemote()
   const tabTrackerServiceRemote = Mojom.TabTrackerService.getRemote()
+  const mcpHost = bindMCPHost(serviceRemote)
 
   const aiChat = createAIChatAPI(
     serviceRemote,
@@ -20,6 +40,7 @@ export default function bindWebUiServices() {
     Mojom.BookmarksPageHandler.getRemote(),
     Mojom.HistoryUIHandler.getRemote(),
     metricsRemote,
+    mcpHost.remote,
   )
 
   // Bind mojo receivers to the appropriate observers, routing events.
@@ -47,6 +68,15 @@ export default function bindWebUiServices() {
   tabTrackerServiceRemote.addObserver(
     tabDataObserverReceiver.$.bindNewPipeAndPassRemote(),
   )
+
+  if (mcpHost.isBound) {
+    const mcpHostObserverReceiver = new Mojom.MCPHostObserverReceiver(
+      aiChat.mcpHostObserver,
+    )
+    mcpHost.remote.bindObserver(
+      mcpHostObserverReceiver.$.bindNewPipeAndPassRemote(),
+    )
+  }
 
   return aiChat
 }

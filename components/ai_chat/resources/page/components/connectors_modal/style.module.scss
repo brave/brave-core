@@ -1,0 +1,190 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+.dialog {
+  --leo-dialog-padding: var(--leo-spacing-2xl);
+  --leo-dialog-width: 480px;
+}
+
+.title {
+  font: var(--leo-font-heading-h3);
+  color: var(--leo-color-text-primary);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-xl);
+  // The dialog is a grid whose column can't be narrower than its content's
+  // min-content width, so a long name or URL would widen the dialog instead
+  // of ellipsizing or wrapping.
+  contain: inline-size;
+}
+
+.description {
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-secondary);
+}
+
+.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--leo-spacing-2xl);
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-secondary);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-m);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.connector {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-m);
+  padding: var(--leo-spacing-l) var(--leo-spacing-xl);
+  border-radius: var(--leo-radius-xl);
+  border: 1px solid var(--leo-color-divider-subtle);
+}
+
+.connectorHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--leo-spacing-m);
+}
+
+.connectorIcon {
+  --leo-icon-size: var(--leo-icon-m);
+  --leo-icon-color: var(--leo-color-icon-default);
+  flex-shrink: 0;
+  padding-block-start: var(--leo-spacing-xs);
+}
+
+.connectorDetails {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-xs);
+  // Allows the name and origin to ellipsize rather than widen the row.
+  min-width: 0;
+  flex: 1;
+}
+
+.connectorName,
+.connectorOrigin {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.connectorName {
+  font: var(--leo-font-default-semibold);
+  color: var(--leo-color-text-primary);
+}
+
+.connectorOrigin {
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-secondary);
+}
+
+.connectorActions {
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-s);
+}
+
+.status {
+  --leo-icon-size: var(--leo-icon-xs);
+  --leo-icon-color: var(--leo-color-icon-default);
+  --leo-progressring-size: var(--leo-icon-xs);
+
+  display: flex;
+  align-items: flex-start;
+  gap: var(--leo-spacing-s);
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-secondary);
+
+  leo-icon,
+  leo-progressring {
+    flex-shrink: 0;
+  }
+}
+
+.statusWarning {
+  --leo-icon-color: var(--leo-color-systemfeedback-warning-icon);
+  color: var(--leo-color-systemfeedback-warning-text);
+}
+
+.statusSuccess {
+  --leo-icon-color: var(--leo-color-systemfeedback-success-icon);
+  color: var(--leo-color-systemfeedback-success-text);
+}
+
+.toggleRow {
+  --leo-toggle-label-flex-direction: row-reverse;
+  --leo-toggle-label-gap: var(--leo-spacing-xl);
+  display: block;
+}
+
+.toggleLabel {
+  flex: 1 1 auto;
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-primary);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-xl);
+}
+
+.form [slot='errors'] {
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-systemfeedback-error-text);
+  margin-block-start: var(--leo-spacing-s);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-m);
+}
+
+.authentication {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-l);
+}
+
+.savedToken {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-primary);
+}
+
+.tokenActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--leo-spacing-m);
+}
+
+.test {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--leo-spacing-m);
+}
+
+.removeButton {
+  --leo-button-color: var(--leo-color-systemfeedback-error-text);
+}

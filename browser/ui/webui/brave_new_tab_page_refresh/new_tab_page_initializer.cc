@@ -278,6 +278,8 @@ void NewTabPageInitializer::AddLoadTimeValues() {
       "isWorkspaceNativeDirectoriesEnabled",
       base::FeatureList::IsEnabled(ai_chat::features::kAIChatWorkspaceTools) &&
           ai_chat::features::kWorkspaceNativeDirectories.Get());
+  source_->AddBoolean("isMCPEnabled", base::FeatureList::IsEnabled(
+                                          ai_chat::features::kAIChatMCP));
 #endif
 
   source_->AddBoolean("aiChatInputEnabled", ai_chat_input_enabled);

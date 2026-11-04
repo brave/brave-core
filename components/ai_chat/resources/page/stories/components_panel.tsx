@@ -25,6 +25,7 @@ import StorybookConversationEntries from './story_utils/ConversationEntries'
 import UntrustedMockContext from '../../untrusted_conversation_frame/mock_untrusted_conversation_context'
 import { Content } from '../components/input_box/editable_content'
 import { MockContext } from '../state/mock_context'
+import { ConnectorsDialog } from '../state/ai_chat_context'
 import {
   ActiveChatContext,
   SelectedChatDetails,
@@ -299,6 +300,57 @@ const SAMPLE_CONVERSATION_SHARES: Mojom.ConversationShare[] = [
   },
 ]
 
+// A connector that works, one that can't be reached, one whose token can't be
+// decrypted, and one that's turned off.
+const SAMPLE_MCP_SERVERS: Mojom.MCPServer[] = [
+  {
+    id: 'mcp-server-issues',
+    name: 'Issue tracker',
+    endpoint: { url: 'https://mcp.example.com/mcp' },
+    enabled: true,
+    autoAttach: true,
+    slug: 'issuetracker',
+    hasToken: true,
+    tokenUnreadable: false,
+  },
+  {
+    id: 'mcp-server-docs',
+    name: 'Documentation search for a very long product name that wraps',
+    endpoint: { url: 'https://docs.example.org/api/mcp' },
+    enabled: true,
+    autoAttach: false,
+    slug: 'documentation',
+    hasToken: false,
+    tokenUnreadable: false,
+  },
+  {
+    id: 'mcp-server-calendar',
+    name: 'Calendar',
+    endpoint: { url: 'https://calendar.example.net/mcp' },
+    enabled: true,
+    autoAttach: false,
+    slug: 'calendar',
+    hasToken: true,
+    tokenUnreadable: true,
+  },
+  {
+    id: 'mcp-server-local',
+    name: 'Local notes',
+    endpoint: { url: 'http://localhost:8080/mcp' },
+    enabled: false,
+    autoAttach: false,
+    slug: 'localnotes',
+    hasToken: false,
+    tokenUnreadable: false,
+  },
+]
+
+const SAMPLE_MCP_SERVER_TOOLS: Mojom.MCPServerTool[] = [
+  { name: 'search_issues', title: 'Search issues', description: undefined },
+  { name: 'create_issue', title: undefined, description: 'Files an issue' },
+  { name: 'get_issue', title: undefined, description: undefined },
+]
+
 const SAMPLE_TABS: Mojom.TabData[] = [
   {
     id: 1,
@@ -415,6 +467,8 @@ type CustomArgs = {
   isDragActive: boolean
   isDragOver: boolean
   skillDialog: Mojom.Skill | null
+  isMCPEnabled: boolean
+  connectorsDialog: 'list' | 'add' | 'edit' | null
   selectedActionType: Mojom.ActionType | undefined
   selectedSkill: Mojom.Skill | undefined
 }
@@ -473,6 +527,8 @@ const args: CustomArgs = {
   isDragActive: false,
   isDragOver: false,
   skillDialog: null,
+  isMCPEnabled: true,
+  connectorsDialog: null,
   selectedActionType: undefined,
   selectedSkill: undefined,
 }
@@ -521,6 +577,10 @@ const meta: Meta<CustomArgs> = {
     completedNotViewedConversationId: CONVERSATION_ID_CONTROL,
     ratingTurnUuid: {
       options: [{ isLiked: true, turnUuid: 'turn-uuid' }],
+      control: { type: 'select' },
+    },
+    connectorsDialog: {
+      options: [null, 'list', 'add', 'edit'],
       control: { type: 'select' },
     },
   },
@@ -651,6 +711,51 @@ function StoryContext(
   const getConversationHistory = () =>
     getConversationContent(argsRef.current.conversation_content)
 
+  // An in-memory host, so that changes made in the connectors dialog show.
+  const mcpServers = React.useRef(SAMPLE_MCP_SERVERS)
+  const mcpHostObserver = React.useRef<
+    Mojom.MCPHostObserverInterface | undefined
+  >(undefined)
+  const setMCPServers = (servers: Mojom.MCPServer[]) => {
+    mcpServers.current = servers
+    // Like the browser's, it arrives as its own message.
+    setTimeout(() => mcpHostObserver.current?.onServersChanged(servers))
+  }
+  const saveMCPServer = (
+    id: string,
+    params: Mojom.MCPServerParams,
+    token: string | null,
+  ) => {
+    const old = mcpServers.current.find((server) => server.id === id)
+    const server: Mojom.MCPServer = {
+      ...params,
+      id,
+      slug: old?.slug ?? id,
+      hasToken: !!token || !!old?.hasToken,
+      tokenUnreadable: !token && !!old?.tokenUnreadable,
+    }
+    setMCPServers(
+      old
+        ? mcpServers.current.map((s) => (s.id === id ? server : s))
+        : [...mcpServers.current, server],
+    )
+    return Promise.resolve(server)
+  }
+
+  const [connectorsDialog, setConnectorsDialog] =
+    React.useState<ConnectorsDialog | null>(null)
+  React.useEffect(() => {
+    setConnectorsDialog(
+      args.connectorsDialog === 'list'
+        ? { view: 'list' }
+        : args.connectorsDialog === 'add'
+          ? { view: 'editor' }
+          : args.connectorsDialog === 'edit'
+            ? { view: 'editor', serverId: SAMPLE_MCP_SERVERS[0].id }
+            : null,
+    )
+  }, [args.connectorsDialog])
+
   return (
     <MockContext
       service={{
@@ -687,6 +792,48 @@ function StoryContext(
               : [],
           }),
       }}
+      uiHandler={{
+        getPluralString: (key: string, count: number) =>
+          Promise.resolve({
+            pluralString:
+              key === S.CHAT_UI_CONNECTOR_TEST_SUCCESS
+                ? `Connected, and found ${count} tools`
+                : key === S.CHAT_UI_CONNECTOR_TOOL_COUNT
+                  ? `${count} tools`
+                  : '',
+          }),
+      }}
+      mcpHost={{
+        getServers: () => Promise.resolve({ servers: mcpServers.current }),
+        addServer: (params, token) =>
+          saveMCPServer(`mcp-server-${Date.now()}`, params, token),
+        updateServer: saveMCPServer,
+        clearServerToken: (id) => {
+          const server = mcpServers.current.find((s) => s.id === id)
+          if (!server) {
+            return Promise.reject(Mojom.MCPServerError.kNotFound)
+          }
+          const updated = { ...server, hasToken: false, tokenUnreadable: false }
+          setMCPServers(
+            mcpServers.current.map((s) => (s.id === id ? updated : s)),
+          )
+          return Promise.resolve(updated)
+        },
+        removeServer: (id) => {
+          setMCPServers(mcpServers.current.filter((s) => s.id !== id))
+          return Promise.resolve({ error: null })
+        },
+        getServerTools: (id) =>
+          id === 'mcp-server-docs'
+            ? new Promise((resolve, reject) =>
+                setTimeout(
+                  () => reject(Mojom.MCPServerError.kConnectionFailed),
+                  2000,
+                ),
+              )
+            : Promise.resolve(SAMPLE_MCP_SERVER_TOOLS),
+      }}
+      mcpHostObserverRef={mcpHostObserver}
       initialState={React.useMemo(
         () => ({
           tabs: SAMPLE_TABS,
@@ -756,6 +903,9 @@ function StoryContext(
         isConversationShareEnabled: true,
         isAIChatExportJSONEnabled: true,
         skillDialog: args.skillDialog,
+        isMCPEnabled: args.isMCPEnabled,
+        connectorsDialog,
+        setConnectorsDialog,
       }}
       conversationOverrides={{
         isFeedbackFormVisible: args.isFeedbackFormVisible,
@@ -865,6 +1015,16 @@ export const _WithAttachedTools = GetPanelStory({
 export const _WithAttachedMCPServer = GetPanelStory({
   conversation_content: 'ALL',
   hasAttachedMCPServer: true,
+})
+
+export const _WithConnectors = GetPanelStory({
+  conversation_content: 'ALL',
+  connectorsDialog: 'list',
+})
+
+export const _WithConnectorEditor = GetPanelStory({
+  conversation_content: 'ALL',
+  connectorsDialog: 'edit',
 })
 
 export const _WithVisionModelSwitch = GetPanelStory({

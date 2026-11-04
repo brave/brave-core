@@ -19,6 +19,12 @@ import {
 } from '@tanstack/react-query'
 
 /**
+ * Whether a query or mutation failed because it was cancelled, e.g. because
+ * its endpoint was reset, rather than because the remote failed.
+ */
+export { isCancelledError } from '@tanstack/react-query'
+
+/**
  * Shared QueryClient singleton used by all APIs created with createInterfaceApi.
  * Each API differentiates its data via unique key prefixes.
  * Callers can still pass their own QueryClient if needed.

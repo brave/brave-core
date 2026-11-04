@@ -27,6 +27,7 @@
 
 import { Closable, makeCloseable } from '$web-common/api'
 import * as Mojom from '../../common/mojom'
+import type { MCPHostInterface } from './ai_chat_api'
 
 export const defaultServiceState: Mojom.ServiceState = {
   hasAcceptedAgreement: false,
@@ -306,6 +307,44 @@ export function createMockHistoryService(
 ): Closable<Mojom.HistoryUIHandlerInterface> {
   return makeCloseable({
     getHistory: () => Promise.resolve({ history: [] }),
+
+    // Apply overrides
+    ...overrides,
+  })
+}
+
+/**
+ * Creates a mock MCPHostInterface for Storybook/tests. It keeps no servers:
+ * override `getServers`, and push changes through the observer that the API
+ * returns, to simulate them.
+ *
+ * @param overrides - Partial implementation to override default behavior
+ */
+export function createMockMCPHost(
+  overrides: Partial<MCPHostInterface> = {},
+): Closable<MCPHostInterface> {
+  const toServer = (
+    id: string,
+    params: Mojom.MCPServerParams,
+    token: string | null,
+  ): Mojom.MCPServer => ({
+    ...params,
+    id,
+    slug: id,
+    hasToken: !!token,
+    tokenUnreadable: false,
+  })
+
+  return makeCloseable({
+    getServers: () => Promise.resolve({ servers: [] }),
+    addServer: (params, token) =>
+      Promise.resolve(toServer('mock-server-id', params, token)),
+    updateServer: (id, params, token) =>
+      Promise.resolve(toServer(id, params, token)),
+    clearServerToken: () => Promise.reject(Mojom.MCPServerError.kNotFound),
+    removeServer: () => Promise.resolve({ error: null }),
+    getServerTools: () => Promise.resolve([]),
+    bindObserver: () => {},
 
     // Apply overrides
     ...overrides,

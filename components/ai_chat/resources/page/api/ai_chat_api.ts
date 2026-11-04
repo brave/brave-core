@@ -13,6 +13,30 @@ import {
   VoidMethodKeys,
 } from '$web-common/api'
 
+/**
+ * `Mojom.MCPHostInterface` as its remote behaves. The `.m.js` bindings type a
+ * `result<T, E>` response as `{ result: { success?: T, failure?: E } }`, but
+ * resolve with the `T`, and reject with the `E`.
+ */
+// TODO(https://github.com/brave/brave-browser/issues/48960): drop this once
+// the JSDoc of `result<>` responses is fixed.
+export type MCPHostInterface = Omit<
+  Mojom.MCPHostInterface,
+  'addServer' | 'updateServer' | 'clearServerToken' | 'getServerTools'
+> & {
+  addServer: (
+    params: Mojom.MCPServerParams,
+    token: string | null,
+  ) => Promise<Mojom.MCPServer>
+  updateServer: (
+    id: string,
+    params: Mojom.MCPServerParams,
+    token: string | null,
+  ) => Promise<Mojom.MCPServer>
+  clearServerToken: (id: string) => Promise<Mojom.MCPServer>
+  getServerTools: (id: string) => Promise<Mojom.MCPServerTool[]>
+}
+
 // createAIChatAPI uses createInterfaceAPI to configure
 // the various mojom interfaces for use
 // in the UI. Some function are marked as subscribable,
@@ -34,6 +58,7 @@ export default function createAIChatApi(
   bookmarksService: Closable<Mojom.BookmarksPageHandlerInterface>,
   historyService: Closable<Mojom.HistoryUIHandlerInterface>,
   metrics: Closable<Mojom.MetricsInterface>,
+  mcpHost: Closable<MCPHostInterface>,
 ) {
   // Hang on to some receiver references as in some cases we're passed
   // the remote from an event on another receiver.
@@ -41,6 +66,26 @@ export default function createAIChatApi(
   let chatUIObserver: Mojom.ChatUIInterface
   let conversationEntriesFrameObserver: Mojom.ParentUIFrameInterface
   let tabDataObserver: Mojom.TabDataObserverInterface
+  let mcpHostObserver: Mojom.MCPHostObserverInterface
+
+  // A server's tools are listed again once its connection changes. A new
+  // token isn't visible in `MCPServer`, so the mutations that set one reset
+  // the server's tools themselves.
+  const resetToolsOfChangedServers = (servers: Mojom.MCPServer[]) => {
+    for (const old of api.getServers.current()) {
+      const server = servers.find((s) => s.id === old.id)
+      if (
+        !server
+        || server.name !== old.name
+        || server.endpoint.url !== old.endpoint.url
+        || server.enabled !== old.enabled
+        || server.hasToken !== old.hasToken
+        || server.tokenUnreadable !== old.tokenUnreadable
+      ) {
+        api.getServerTools.reset(old.id)
+      }
+    }
+  }
 
   // Define the API layout and what to do with the interface data:
   // - which functions should be exposed to the UI as subscribable with hooks
@@ -135,6 +180,48 @@ export default function createAIChatApi(
         getHistory: {
           response: (result) => result.history,
           placeholderData: [] as Mojom.HistoryEntry[],
+        },
+      }),
+
+      // The user's MCP servers. Their failed requests reject with an
+      // `MCPServerError`, except `removeServer`, which resolves with it.
+      // Nothing is prefetched, so that nothing is asked of the host while the
+      // feature is off.
+      ...endpointsFor(mcpHost, {
+        // Fails only if there's no host, which retrying wouldn't change.
+        getServers: {
+          response: (result) => result.servers,
+          placeholderData: [] as Mojom.MCPServer[],
+          retry: false,
+        },
+        // Connects to the server if it isn't connected. A failure isn't
+        // retried on its own, as each attempt is a request to the server.
+        getServerTools: {
+          response: (tools) => tools,
+          retry: false,
+          retryOnMount: false,
+          refetchOnWindowFocus: false,
+          refetchOnReconnect: false,
+        },
+        addServer: {
+          mutationResponse: (server) => server,
+        },
+        updateServer: {
+          mutationResponse: (server) => server,
+          onSuccess: (server, [, , token]) => {
+            if (token !== null) {
+              api.getServerTools.reset(server.id)
+            }
+          },
+        },
+        clearServerToken: {
+          mutationResponse: (server) => server,
+          onSuccess: (server) => {
+            api.getServerTools.reset(server.id)
+          },
+        },
+        removeServer: {
+          mutationResponse: (result) => result.error,
         },
       }),
 
@@ -261,6 +348,19 @@ export default function createAIChatApi(
           tabDataObserver = observer
         },
       ),
+
+      ...eventsFor(
+        Mojom.MCPHostObserverInterface,
+        {
+          onServersChanged: (servers) => {
+            resetToolsOfChangedServers(servers)
+            api.getServers.update(servers)
+          },
+        },
+        (observer) => {
+          mcpHostObserver = observer
+        },
+      ),
     },
   })
 
@@ -278,6 +378,7 @@ export default function createAIChatApi(
     chatUIObserver: chatUIObserver!,
     conversationEntriesFrameObserver: conversationEntriesFrameObserver!,
     tabDataObserver: tabDataObserver!,
+    mcpHostObserver: mcpHostObserver!,
 
     close: () => {
       unsubscribeGenerationStates()

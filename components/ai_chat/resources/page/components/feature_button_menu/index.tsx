@@ -210,6 +210,23 @@ export default function FeatureMenu(props: Props) {
           </div>
         </leo-menu-item>
       )}
+      {aiChatContext.isMCPEnabled && (
+        <leo-menu-item
+          onClick={() => aiChatContext.setConnectorsDialog({ view: 'list' })}
+        >
+          <div
+            className={classnames(
+              styles.menuItemWithIcon,
+              styles.menuItemMainItem,
+            )}
+          >
+            <Icon name='cloud-hosting' />
+            <span className={styles.menuText}>
+              {getLocale(S.CHAT_UI_MENU_MANAGE_CONNECTORS)}
+            </span>
+          </div>
+        </leo-menu-item>
+      )}
       {!aiChatContext.isMobile && (
         <leo-menu-item
           onClick={() => aiChatContext.api.uiHandler.openMemorySettings()}

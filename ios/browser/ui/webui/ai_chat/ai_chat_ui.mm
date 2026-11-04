@@ -83,6 +83,8 @@ AIChatUI::AIChatUI(web::WebUIIOS* web_ui, const GURL& url)
       "isWorkspaceNativeDirectoriesEnabled",
       base::FeatureList::IsEnabled(ai_chat::features::kAIChatWorkspaceTools) &&
           ai_chat::features::kWorkspaceNativeDirectories.Get());
+  source->AddBoolean("isMCPEnabled", base::FeatureList::IsEnabled(
+                                         ai_chat::features::kAIChatMCP));
   // Brave client version, used to tag serialized conversations for sharing.
   source->AddString("braveVersion",
                     version_info::GetBraveVersionWithoutChromiumMajorVersion());

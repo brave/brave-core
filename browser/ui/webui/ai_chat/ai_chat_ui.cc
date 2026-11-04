@@ -120,6 +120,8 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
       "isWorkspaceNativeDirectoriesEnabled",
       base::FeatureList::IsEnabled(ai_chat::features::kAIChatWorkspaceTools) &&
           ai_chat::features::kWorkspaceNativeDirectories.Get());
+  source->AddBoolean("isMCPEnabled", base::FeatureList::IsEnabled(
+                                         ai_chat::features::kAIChatMCP));
 
   web_ui->AddRequestableScheme(content::kChromeUIUntrustedScheme);
   source->OverrideContentSecurityPolicy(

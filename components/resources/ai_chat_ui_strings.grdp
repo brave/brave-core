@@ -720,6 +720,146 @@
   <message name="IDS_CHAT_UI_MCP_SERVER_LABEL" desc="Says what an attachment is: shown below the name of an MCP (Model Context Protocol) server that the user added and attached to a conversation, in the dialog that lists its tools" formatter_data="webui=AiChat">
     Connector
   </message>
+  <message name="IDS_CHAT_UI_MENU_MANAGE_CONNECTORS" desc="Menu item that opens a dialog for managing connectors. A connector is a remote MCP (Model Context Protocol) server that the user adds, so that Leo can use its tools" formatter_data="webui=AiChat">
+    Manage connectors
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTORS_TITLE" desc="Title of the dialog that lists the user's connectors: remote MCP (Model Context Protocol) servers whose tools Leo can use" formatter_data="webui=AiChat">
+    Connectors
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTORS_DESCRIPTION" desc="Description at the top of the dialog that lists the user's connectors, saying what a connector is and where the data that Leo sends to its tools goes" formatter_data="webui=AiChat">
+    Connectors give Leo the tools of MCP servers that you add. When you let Leo use a tool, Brave sends the data the tool needs straight to its server.
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTORS_EMPTY" desc="Shown in the dialog that lists the user's connectors (remote MCP servers) when the user hasn't added any" formatter_data="webui=AiChat">
+    You haven't added any connectors.
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTORS_ADD_BUTTON_LABEL" desc="Button in the connectors dialog that opens a form for adding a connector (a remote MCP server)" formatter_data="webui=AiChat">
+    Add connector
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_REMOVE_BUTTON_LABEL" desc="Label of the button that removes a connector (a remote MCP server that the user added), both on its row in the list of connectors and in the dialog that confirms the removal" formatter_data="webui=AiChat">
+    Remove
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_ENABLED_LABEL" desc="Label of a toggle, on a connector (a remote MCP server that the user added) in the list of connectors, that lets Leo connect to it and use its tools when it's on" formatter_data="webui=AiChat">
+    Use with Leo
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_AUTO_ATTACH_LABEL" desc="Label of a toggle, on a connector (a remote MCP server that the user added) in the list of connectors, that adds its tools to every new chat when it's on" formatter_data="webui=AiChat">
+    Add to new chats
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_STATUS_CONNECTING" desc="Status of a connector (a remote MCP server that the user added) while Brave connects to it and lists its tools" formatter_data="webui=AiChat">
+    Connecting…
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_TOOL_COUNT" desc="Status of a connector (a remote MCP server that the user added) that Brave connected to: the number of tools it offers Leo [ICU Syntax]" formatter_data="webui=AiChat">
+    {TOOL_COUNT, plural,
+      =0 {No tools}
+      =1 {1 tool}
+      other {# tools}
+    }
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_REMOVE_TITLE" desc="Title of the dialog that asks the user to confirm removing a connector (a remote MCP server that the user added)" formatter_data="webui=AiChat">
+    Remove connector?
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_REMOVE_DESCRIPTION" desc="Body of the dialog that asks the user to confirm removing a connector (a remote MCP server that the user added), saying what happens when it's removed" formatter_data="webui=AiChat">
+    Leo will no longer be able to use the tools of <ph name="CONNECTOR_NAME">$1<ex>Issue tracker</ex></ph>. Its URL and any saved token will be deleted.
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_ADD_TITLE" desc="Title of the form for adding a connector (a remote MCP server whose tools Leo can use)" formatter_data="webui=AiChat">
+    Add connector
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_EDIT_TITLE" desc="Title of the form for changing the settings of a connector (a remote MCP server that the user added)" formatter_data="webui=AiChat">
+    Edit connector
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_EDITOR_DESCRIPTION" desc="Warning at the top of the form for adding or editing a connector (a remote MCP server): the server sees what Leo sends to its tools, and what it returns can affect Leo's answers" formatter_data="webui=AiChat">
+    Only add connectors that you trust. They receive what Leo sends to their tools, and what they send back can steer Leo's answers.
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_NAME_LABEL" desc="Label of the field for the name of a connector (a remote MCP server), in the form for adding or editing one" formatter_data="webui=AiChat">
+    Name
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_URL_LABEL" desc="Label of the field for the URL of a connector's MCP (Model Context Protocol) server, in the form for adding or editing a connector" formatter_data="webui=AiChat">
+    MCP server URL
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_URL_PLACEHOLDER" translateable="false" desc="Placeholder of the field for the URL of a connector's MCP server: an example URL" formatter_data="webui=AiChat">
+    https://example.com/mcp
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_AUTHENTICATION_LABEL" desc="Title of a section, which the user can expand, of the form for adding or editing a connector (a remote MCP server). It holds the optional access token that is sent to the server" formatter_data="webui=AiChat">
+    Authentication
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_TOKEN_DESCRIPTION" desc="Explains the optional access token in the form for adding or editing a connector (a remote MCP server): where it's sent, and how it's stored" formatter_data="webui=AiChat">
+    Optional. If the server needs an access token, enter it here. It's only sent to this server, and is stored encrypted on this device.
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_TOKEN_LABEL" desc="Label of the field for the access token that is sent to a connector's MCP server, in the form for adding or editing a connector" formatter_data="webui=AiChat">
+    Access token
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_TOKEN_SAVED" desc="Says that a connector (a remote MCP server) has a saved access token. The token itself is never shown" formatter_data="webui=AiChat">
+    Token saved
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_TOKEN_REPLACE_BUTTON_LABEL" desc="Button that lets the user enter a new access token for a connector (a remote MCP server), in place of the saved one" formatter_data="webui=AiChat">
+    Replace
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_TOKEN_REMOVE_BUTTON_LABEL" desc="Button, in the form for editing a connector (a remote MCP server), that marks its saved access token for removal. The token is removed when the user saves the form" formatter_data="webui=AiChat">
+    Remove
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_TOKEN_REMOVED_ON_SAVE" desc="Note in the form for editing a connector (a remote MCP server), shown after the user chose to remove its saved access token: the token is only removed once they save the form" formatter_data="webui=AiChat">
+    The saved token will be removed when you save.
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_TOKEN_ORIGIN_CHANGED" desc="Warning at the URL field of the form for editing a connector (a remote MCP server), shown when the user changes its URL to another site: the saved access token was only given for the old site" formatter_data="webui=AiChat">
+    The saved token will be deleted, because this URL is on another site. If the new site needs a token, enter it under Authentication.
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_TEST_BUTTON_LABEL" desc="Button, in the form for editing a connector (a remote MCP server), that connects to the server with its saved settings and lists its tools" formatter_data="webui=AiChat">
+    Test connection
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_TEST_SUCCESS" desc="Result of testing the connection to a connector (a remote MCP server): Brave connected, and found this number of tools [ICU Syntax]" formatter_data="webui=AiChat">
+    {TOOL_COUNT, plural,
+      =0 {Connected, but it has no tools}
+      =1 {Connected, and found 1 tool}
+      other {Connected, and found # tools}
+    }
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_ERROR_NOT_FOUND" desc="Error about a connector (a remote MCP server that the user added) that was removed, e.g. in another window, while the user was changing it" formatter_data="webui=AiChat">
+    This connector has been removed.
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_ERROR_INVALID_NAME" desc="Error at the name field of the form for adding or editing a connector (a remote MCP server), when the name is empty, too long, or has line breaks" formatter_data="webui=AiChat">
+    Enter a short name, on one line.
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_ERROR_INVALID_URL" desc="Error at the URL field of the form for adding or editing a connector (a remote MCP server), when what was entered isn't a URL" formatter_data="webui=AiChat">
+    Enter the full URL of the MCP server.
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_ERROR_UNSUPPORTED_SCHEME" desc="Error at the URL field of the form for adding or editing a connector (a remote MCP server), when the URL isn't a web address, e.g. it starts with ftp://" formatter_data="webui=AiChat">
+    Use a URL that starts with https:// instead.
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_ERROR_EMBEDDED_CREDENTIALS" desc="Error at the URL field of the form for adding or editing a connector (a remote MCP server), when the URL has a username or password in it" formatter_data="webui=AiChat">
+    Remove the username and password from the URL. If the server needs a token, add it under Authentication.
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_ERROR_INSECURE_SCHEME" desc="Error at the URL field of the form for adding or editing a connector (a remote MCP server), when the URL starts with http:// and isn't on this device" formatter_data="webui=AiChat">
+    Use https:// for this URL. Only localhost can use http://, without encryption.
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_ERROR_PRIVATE_ADDRESS_NOT_ALLOWED" desc="Error at the URL field of the form for adding or editing a connector (a remote MCP server), when the URL is an address on the user's local network" formatter_data="webui=AiChat">
+    Connectors can't use addresses on your local network. Use a public address, or localhost.
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_ERROR_INVALID_TOKEN" desc="Error at the access token field of the form for adding or editing a connector (a remote MCP server), when the token is too long or has characters that can't be sent" formatter_data="webui=AiChat">
+    Check the token, and enter it again without line breaks.
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_ERROR_TOKEN_ENCRYPTION_FAILED" desc="Error when a connector's access token couldn't be encrypted for storage, so the connector's settings weren't saved" formatter_data="webui=AiChat">
+    Couldn't store the token securely, so nothing was saved. Try again.
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_ERROR_ENDPOINT_TOO_LONG" desc="Error at the URL field of the form for adding or editing a connector (a remote MCP server), when the URL is too long" formatter_data="webui=AiChat">
+    This URL is too long. Enter a shorter one.
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_ERROR_TOO_MANY_SERVERS" desc="Error when the user tries to add a connector (a remote MCP server), but already has as many as Brave allows" formatter_data="webui=AiChat">
+    You've added as many connectors as you can. Remove one to add another.
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_ERROR_UNSUPPORTED_SETTINGS_VERSION" desc="Error when the user tries to change their connectors (remote MCP servers), but they were saved by a newer version of Brave, so this version leaves them as they are" formatter_data="webui=AiChat">
+    Your connectors were saved by a newer version of Brave, so they can't be changed here. Update Brave to change them.
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_ERROR_SERVER_DISABLED" desc="Status of a connector (a remote MCP server that the user added) that is turned off, so Brave doesn't connect to it" formatter_data="webui=AiChat">
+    This connector is turned off. Turn it on to connect to it.
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_ERROR_TOKEN_UNREADABLE" desc="Status of a connector (a remote MCP server that the user added) whose saved access token can no longer be decrypted, so Brave doesn't connect to it until the user enters the token again" formatter_data="webui=AiChat">
+    The saved token can't be read, so enter it again.
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_ERROR_SERVER_CHANGED" desc="Error when the settings of a connector (a remote MCP server) changed, or it was removed, before it responded" formatter_data="webui=AiChat">
+    The connector changed before it responded. Try again.
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTOR_ERROR_CONNECTION_FAILED" desc="Status of a connector (a remote MCP server that the user added) that Brave couldn't connect to, or couldn't get the list of tools from" formatter_data="webui=AiChat">
+    Couldn't connect, or couldn't list its tools. Check the URL and token, and try again.
+  </message>
   <message name="IDS_CHAT_UI_SUBSCRIPTION_POLICY_INFO" desc="An info text that is shown below various subcription prices" formatter_data="webui=AiChat">
     All subscriptions are auto-renewed but can be cancelled at any time before renewal.
   </message>

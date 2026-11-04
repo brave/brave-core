@@ -28,6 +28,14 @@ type AIChatContextProps = {
   ) => React.ReactElement
 }
 
+/**
+ * What the connectors dialog shows: the user's connectors, or an editor that
+ * adds one or, given `serverId`, edits it.
+ */
+export type ConnectorsDialog =
+  | { view: 'list' }
+  | { view: 'editor'; serverId?: string }
+
 export function useIsSmall() {
   return useMediaQuery('(max-width: 1024px)')
 }
@@ -48,6 +56,8 @@ export default function useProvideAIChatContext(props: AIChatContextProps) {
   const isSmall = useIsSmall()
   const [showSidebar, setShowSidebar] = React.useState(!isSmall)
   const [skillDialog, setSkillDialog] = React.useState<Mojom.Skill | null>(null)
+  const [connectorsDialog, setConnectorsDialog] =
+    React.useState<ConnectorsDialog | null>(null)
 
   const { getConversationsData, isPlaceholderData: isConversationsLoading } =
     api.useGetConversations()
@@ -73,6 +83,7 @@ export default function useProvideAIChatContext(props: AIChatContextProps) {
     isWorkspaceNativeDirectoriesEnabled: loadTimeData.getBoolean(
       'isWorkspaceNativeDirectoriesEnabled',
     ),
+    isMCPEnabled: loadTimeData.getBoolean('isMCPEnabled'),
     isGlobalPanel:
       !initiallyTabAssociated && api.isStandalone.current() === false,
 
@@ -181,6 +192,8 @@ export default function useProvideAIChatContext(props: AIChatContextProps) {
     toggleSidebar: () => setShowSidebar((s) => !s),
     skillDialog,
     setSkillDialog,
+    connectorsDialog,
+    setConnectorsDialog,
     conversationEntriesComponent: props.conversationEntriesComponent,
   }
 

@@ -23,6 +23,7 @@ import ImageLightbox from '../image_lightbox'
 import WorkspaceFileLightbox from '../workspace_file_lightbox'
 import RateMessagePrivacyModal from '../rate_message_privacy_modal'
 import SkillModal from '../skill_modal/skill_modal'
+import ConnectorsModal from '../connectors_modal'
 import PrivacyMessage from '../privacy_message'
 import FeedbackForm from '../feedback_form'
 import ShareConversationModal from '../share_conversation_modal'
@@ -300,6 +301,7 @@ function Main() {
       <RateMessagePrivacyModal />
       <FeedbackForm />
       {aiChatContext.skillDialog && <SkillModal />}
+      {aiChatContext.connectorsDialog && <ConnectorsModal />}
     </main>
   )
 }

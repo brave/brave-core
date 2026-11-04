@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import * as Mojom from '../../common/mojom'
-import createAIChatApi from '../api/ai_chat_api'
+import createAIChatApi, { MCPHostInterface } from '../api/ai_chat_api'
 import createConversationApi from '../api/conversation_api'
 import {
   createMockConversationHandler,
@@ -13,6 +13,7 @@ import {
   createMockUIHandler,
   createMockBookmarksService,
   createMockHistoryService,
+  createMockMCPHost,
   createMockMetrics,
   defaultConversationState,
   defaultServiceState,
@@ -33,11 +34,16 @@ export interface MockContextProps {
   bookmarksService?: Partial<Mojom.BookmarksPageHandlerInterface>
   historyService?: Partial<Mojom.HistoryUIHandlerInterface>
   metrics?: Partial<Mojom.MetricsInterface>
+  mcpHost?: Partial<MCPHostInterface>
   conversationHandler?: Partial<Mojom.ConversationHandlerInterface>
 
   // Receives the observer the browser pushes conversation events to, so tests
   // can simulate them.
   conversationUIObserverRef?: { current?: Mojom.ConversationUIInterface }
+
+  // Receives the observer the browser pushes changes to the user's MCP servers
+  // to, so tests can simulate them.
+  mcpHostObserverRef?: { current?: Mojom.MCPHostObserverInterface }
 
   // Initial state for state-type endpoints
   initialState?: {
@@ -123,10 +129,12 @@ export function MockContext(props: MockContextProps) {
     bookmarksService,
     historyService,
     metrics,
+    mcpHost,
     initialState = {},
     aiChatOverrides,
     conversationHandler,
     conversationUIObserverRef,
+    mcpHostObserverRef,
     conversationOverrides,
     conversationProps = {},
     deps = [],
@@ -143,6 +151,7 @@ export function MockContext(props: MockContextProps) {
     const mockBookmarksService = createMockBookmarksService(bookmarksService)
     const mockHistoryService = createMockHistoryService(historyService)
     const mockMetrics = createMockMetrics(metrics)
+    const mockMCPHost = createMockMCPHost(mcpHost)
 
     const api = createAIChatApi(
       mockService,
@@ -150,7 +159,12 @@ export function MockContext(props: MockContextProps) {
       mockBookmarksService,
       mockHistoryService,
       mockMetrics,
+      mockMCPHost,
     )
+
+    if (mcpHostObserverRef) {
+      mcpHostObserverRef.current = api.mcpHostObserver
+    }
 
     return api
   })

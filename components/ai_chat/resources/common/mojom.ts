@@ -10,6 +10,7 @@ export * from 'gen/brave/components/ai_chat/core/common/mojom/untrusted_frame.mo
 export * from 'gen/brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.m.js'
 export * from 'gen/brave/components/ai_chat/core/common/mojom/bookmarks.mojom.m.js'
 export * from 'gen/brave/components/ai_chat/core/common/mojom/history.mojom.m.js'
+export * from 'gen/brave/components/ai_chat/core/common/mojom/mcp.mojom.m.js'
 export * from 'gen/brave/components/ai_chat/core/common/mojom/ollama.mojom.m.js'
 
 // Until this is needed outside of the UI, we don't need to add the field to the mojom.
