@@ -58,11 +58,10 @@ class PsstInternalsHandler : public mojom::PsstInternalsHandler,
   void OnPsstLogCleared() override;
 
   // PsstSettingsService::PrefObserver:
-  void OnPsstPrefsChange(
-        int infobar_shown_counter,
-        int infobar_decline_counter,
-        const base::flat_map<std::string, PsstWebsiteSettings>&
-            psst_websites_settings) override;
+  void OnPsstPrefsChange(int infobar_shown_counter,
+                         int infobar_decline_counter,
+                         const base::flat_map<std::string, PsstWebsiteSettings>&
+                             psst_websites_settings) override;
 
   void FlushPendingEntries();
 
@@ -79,7 +78,8 @@ class PsstInternalsHandler : public mojom::PsstInternalsHandler,
   mojo::Remote<mojom::PsstInternalsPage> page_;
   base::ScopedObservation<PsstLogService, PsstLogService::Observer>
       log_observation_{this};
-  base::ScopedObservation<PsstSettingsService, PsstSettingsService::PrefObserver>
+  base::ScopedObservation<PsstSettingsService,
+                          PsstSettingsService::PrefObserver>
       settings_observation_{this};
 };
 
