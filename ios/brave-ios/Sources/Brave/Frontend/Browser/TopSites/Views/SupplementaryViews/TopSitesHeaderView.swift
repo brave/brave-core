@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveUI
+import Preferences
 import Shared
 import UIKit
 
@@ -38,7 +39,9 @@ class TopSitesHeaderView: UICollectionReusableView {
 
   private func setTheme() {
     label.do {
-      $0.text = Strings.recentSearchFavorites
+      $0.text =
+        Preferences.NewTabPage.topSitesMode.value == .favourite
+        ? Strings.recentSearchFavorites : Strings.NTP.topsitesTypeMostVisited
       $0.textColor = isPrivateBrowsing ? .white : UIColor(braveSystemName: .textPrimary)
 
       var sizeCategory = UIApplication.shared.preferredContentSizeCategory
