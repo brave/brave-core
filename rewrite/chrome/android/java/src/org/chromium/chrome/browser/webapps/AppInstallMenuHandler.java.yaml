@@ -26,8 +26,5 @@ substitutions:
       directly.'
     add_before_line:
       line: 'boolean webAppInstalled ='
-      code:
-        '        if
-        (BraveAppInstallMenuHandlerUtils.shouldAddToHomescreenOnly()) return
-        doAddToHomescreen(activity, windowAndroid, modalDialogManager,
-        currentTab, AppMenuVerbiage.APP_MENU_OPTION_ADD_TO_HOMESCREEN);'
+      code: |2-
+                if (BraveAppInstallMenuHandlerUtils.shouldAddToHomescreenOnly()) return doAddToHomescreen(activity, windowAndroid, modalDialogManager, currentTab, AppMenuVerbiage.APP_MENU_OPTION_ADD_TO_HOMESCREEN);
