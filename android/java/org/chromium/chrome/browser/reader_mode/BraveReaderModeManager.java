@@ -3,10 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.dom_distiller;
+package org.chromium.chrome.browser.reader_mode;
 
 import androidx.annotation.VisibleForTesting;
 
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -16,11 +17,13 @@ import org.chromium.components.user_prefs.UserPrefs;
 
 import java.util.function.Supplier;
 
+@NullMarked
 public class BraveReaderModeManager extends ReaderModeManager {
     // To be removed in bytecode, parent variable will be used instead.
-    private Tab mTab;
+    private @Nullable Tab mTab;
 
-    BraveReaderModeManager(Tab tab, Supplier<MessageDispatcher> messageDispatcherSupplier) {
+    BraveReaderModeManager(
+            Tab tab, Supplier<@Nullable MessageDispatcher> messageDispatcherSupplier) {
         super(tab, messageDispatcherSupplier);
     }
 

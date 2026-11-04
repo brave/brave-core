@@ -373,8 +373,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/share/send_tab_to_self/ManageAccountDevicesLinkView")); // presubmit: ignore-long-line
-        Assert.assertTrue(
-                classExists("org/chromium/chrome/browser/dom_distiller/ReaderModeManager"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/reader_mode/ReaderModeManager"));
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/download/dialogs/DownloadLocationDialogCoordinator")); // presubmit: ignore-long-line
@@ -633,7 +632,7 @@ public class BytecodeTest {
                         void.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/dom_distiller/ReaderModeManager",
+                        "org/chromium/chrome/browser/reader_mode/ReaderModeManager",
                         "shouldUseReaderModeMessages",
                         MethodModifier.STATIC,
                         boolean.class,
@@ -1826,8 +1825,8 @@ public class BytecodeTest {
                         Runnable.class));
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/chrome/browser/dom_distiller/ReaderModeManager",
-                        "org/chromium/chrome/browser/dom_distiller/BraveReaderModeManager",
+                        "org/chromium/chrome/browser/reader_mode/ReaderModeManager",
+                        "org/chromium/chrome/browser/reader_mode/BraveReaderModeManager",
                         Tab.class,
                         Supplier.class));
         Assert.assertTrue(
@@ -2643,7 +2642,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/multiwindow/MultiInstanceManagerApi31",
                         "mInstanceId"));
         Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/dom_distiller/ReaderModeManager", "mTab"));
+                fieldExists("org/chromium/chrome/browser/reader_mode/ReaderModeManager", "mTab"));
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/download/dialogs/DownloadLocationDialogCoordinator", // presubmit: ignore-long-line
