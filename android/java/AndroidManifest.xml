@@ -31,6 +31,7 @@
 
 <activity
     android:name="org.chromium.chrome.browser.firstrun.WelcomeOnboardingActivity"
+    android:configChanges="uiMode"
     android:theme="@style/Theme.Brave.WelcomeOnboarding"/>
 
 <activity android:name="org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity"

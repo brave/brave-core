@@ -358,7 +358,13 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(KEY_SPLASH_ANIMATION_FINISHED, mSplashAnimationFinished);
-        outState.putInt(KEY_PAGE_INDEX, mOnboardingPager.getCurrentItem());
+        // If the activity is recreated before finishNativeInitialization() sets the adapter, keep
+        // the restored page instead of the empty pager's position.
+        final int pageIndex =
+                mOnboardingPager.getAdapter() != null
+                        ? mOnboardingPager.getCurrentItem()
+                        : mRestoredPageIndex;
+        outState.putInt(KEY_PAGE_INDEX, pageIndex);
         outState.putBoolean(KEY_CRASH_REPORTING_CHECKED, mCrashReportingChecked);
         outState.putBoolean(KEY_P3A_CHECKED, mP3aChecked);
     }
