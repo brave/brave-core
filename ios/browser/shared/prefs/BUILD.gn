@@ -33,6 +33,7 @@ source_set("prefs") {
     "//brave/components/de_amp/common",
     "//brave/components/debounce/core/browser",
     "//brave/components/email_aliases/buildflags",
+    "//brave/components/external_links/core/browser",
     "//brave/components/global_privacy_control",
     "//brave/components/l10n/common",
     "//brave/components/ntp_background_images/browser",

@@ -11,7 +11,8 @@ source_set("content_settings") {
   ]
   deps = [
     "//base",
-    "//brave/components/content_settings/core/common",
+    "//brave/components/external_links/core/browser",
+    "//brave/components/external_links/core/common",
     "//components/content_settings/core/browser",
     "//components/content_settings/core/common",
     "//net",

@@ -1,0 +1,38 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("browser") {
+  sources = [
+    "external_link_handler.cc",
+    "external_link_handler.h",
+  ]
+
+  public_deps = [ "//brave/components/external_links/core/common" ]
+
+  deps = [
+    "//base",
+    "//brave/components/content_settings/core/common",
+    "//components/content_settings/core/browser",
+    "//components/content_settings/core/common",
+    "//components/prefs",
+    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "external_link_handler_unittest.cc" ]
+
+  deps = [
+    ":browser",
+    "//base",
+    "//base/test:test_support",
+    "//components/content_settings/core/browser",
+    "//components/sync_preferences:test_support",
+    "//testing/gtest",
+    "//url",
+  ]
+}

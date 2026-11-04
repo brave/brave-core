@@ -118,12 +118,6 @@ extension Preferences {
       default: true
     )
 
-    /// Whether the onboarding for how links from other apps open has been shown
-    static let externalLinkOnboardingShown = Option<Bool>(
-      key: "general.external-link-onboarding-shown",
-      default: false
-    )
-
     /// Whether or not the app will always load YouTube in Brave
     public static let keepYouTubeInBrave = Option<Bool>(
       key: "general.follow-universal-links.youtube",

@@ -26,6 +26,16 @@ typedef NS_ENUM(NSInteger, ExternalLinkMode) {
   ExternalLinkModeModal,
 };
 
+/// What to do with a link opened from another app.
+typedef NS_ENUM(NSInteger, ExternalLinkAction) {
+  ExternalLinkActionOpenCurrent = 0,
+  ExternalLinkActionShowOnboarding,
+  ExternalLinkActionShowPrompt,
+  ExternalLinkActionOpenRegular,
+  ExternalLinkActionOpenPrivate,
+  ExternalLinkActionOpenModal,
+};
+
 /// A list of default website preferences.
 OBJC_EXPORT
 @interface DefaultHostContentSettings : NSObject
@@ -39,8 +49,8 @@ OBJC_EXPORT
 /// How links opened from other apps are loaded by default.
 @property(nonatomic) ExternalLinkMode defaultExternalLinkMode;
 
-/// The remembered per-site external link mode for the given URL, or
-/// `ExternalLinkModeCurrent` when none is remembered.
+/// The external link mode for the given URL, falling back to
+/// `defaultExternalLinkMode` when no per-site mode is remembered.
 - (ExternalLinkMode)externalLinkModeForURL:(NSURL*)url;
 
 /// Remembers the external link mode for the given URL's base domain (eTLD+1)
@@ -49,6 +59,14 @@ OBJC_EXPORT
 
 /// Removes all remembered per-site external link modes, keeping the default.
 - (void)clearAllExternalLinkModes;
+
+/// Whether the onboarding for links opened from other apps has been shown.
+@property(nonatomic) BOOL externalLinkOnboardingShown;
+
+/// Decides what to do with a link opened from another app. A remembered
+/// per-site mode takes precedence over the default. Returns
+/// `ExternalLinkActionShowOnboarding` at most once.
+- (ExternalLinkAction)resolveExternalLinkForURL:(NSURL*)url;
 
 @end
 

@@ -30,7 +30,8 @@ namespace {
 bool IsBraveValidDefaultValue(ContentSettingsType content_type,
                               const base::Value& value) {
   return value.is_dict() &&
-         content_settings::IsShieldsContentSettingsType(content_type);
+         (content_settings::IsShieldsContentSettingsType(content_type) ||
+          content_type == ContentSettingsType::BRAVE_EXTERNAL_LINK_MODE);
 }
 
 }  // namespace

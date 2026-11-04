@@ -11,7 +11,7 @@
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
-#include "brave/components/content_settings/core/common/external_link_mode.h"
+#include "brave/components/external_links/core/common/external_link_mode_value.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings.mojom.h"
@@ -409,8 +409,8 @@ void ContentSettingsRegistry::BraveInit() {
 
   website_settings_registry_->Register(
       ContentSettingsType::BRAVE_EXTERNAL_LINK_MODE, "braveExternalLinkMode",
-      base::Value(
-          static_cast<int>(content_settings::ExternalLinkMode::kCurrent)),
+      external_links::ExternalLinkModeToValue(
+          external_links::ExternalLinkMode::kCurrent),
       WebsiteSettingsInfo::SYNCABLE, WebsiteSettingsInfo::NOT_LOSSY,
       WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
       WebsiteSettingsRegistry::DESKTOP |

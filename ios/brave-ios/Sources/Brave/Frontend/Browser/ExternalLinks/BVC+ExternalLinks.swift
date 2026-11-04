@@ -21,21 +21,22 @@ extension BrowserViewController {
     else {
       return false
     }
-    let settings = profileController.defaultHostContentSettings
-    if let remembered = ExternalLinkChoice(settings.externalLinkMode(for: url)) {
-      performExternalLinkChoice(remembered, url: url, open: open)
-      return true
-    }
-    switch settings.defaultExternalLinkMode {
-    case .current:
-      guard !Preferences.General.externalLinkOnboardingShown.value else { return false }
-      Preferences.General.externalLinkOnboardingShown.value = true
+    switch profileController.defaultHostContentSettings.resolveExternalLink(for: url) {
+    case .openCurrent:
+      return false
+    case .showOnboarding:
       presentExternalLinkOnboarding(url: url, isPrivate: isPrivate, open: open)
-    case .ask:
+    case .showPrompt:
       presentExternalLinkPrompt(url: url, open: open)
-    case let mode:
-      guard let choice = ExternalLinkChoice(mode) else { return false }
-      performExternalLinkChoice(choice, url: url, open: open)
+    case .openRegular:
+      performExternalLinkChoice(.regularMode, url: url, open: open)
+    case .openPrivate:
+      performExternalLinkChoice(.privateMode, url: url, open: open)
+    case .openModal:
+      guard ExternalLinkChoice.quickView.isAvailable else { return false }
+      performExternalLinkChoice(.quickView, url: url, open: open)
+    @unknown default:
+      return false
     }
     return true
   }
