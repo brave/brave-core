@@ -1,0 +1,55 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ui/ExclusiveAccessBubble.java b/chrome/android/java/src/org/chromium/chrome/browser/ui/ExclusiveAccessBubble.java
+index 4f68c538219298d717284fb4af32a58d50c9e8b7..eddb1f0297442a6b9896748b9c0d855806f2b317 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/ui/ExclusiveAccessBubble.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/ui/ExclusiveAccessBubble.java
+@@ -24,6 +24,7 @@ import org.chromium.ui.base.DeviceInput;
+  */
+ @NullMarked
+ public class ExclusiveAccessBubble {
++    private final BraveExclusiveAccessNotice mBraveNotice;
+     private static final int EXCLUSIVE_ACCESS_SNACKBAR_DURATION_MS = 3800;
+ 
+     private final ExclusiveAccessContext mParentContext;
+@@ -40,6 +41,7 @@ public class ExclusiveAccessBubble {
+ 
+     private ExclusiveAccessBubble(ExclusiveAccessContext parentContext) {
+         mParentContext = parentContext;
++        mBraveNotice = new BraveExclusiveAccessNotice(parentContext);
+     }
+ 
+     @CalledByNative
+@@ -49,6 +51,7 @@ public class ExclusiveAccessBubble {
+ 
+     @CalledByNative
+     public void show() {
++        if (mBraveNotice.show(mText)) return;
+         if (mText == null || mSnackbar != null) {
+             return;
+         }
+@@ -77,6 +80,10 @@ public class ExclusiveAccessBubble {
+ 
+     @CalledByNative
+     public void update(@JniType("std::u16string") String text) {
++        if (mBraveNotice.update(text)) {
++            mText = text;
++            return;
++        }
+         SnackbarManager snackbarManager = mParentContext.getSnackbarManager();
+         if (snackbarManager == null || !snackbarManager.canShowSnackbar()) {
+             mText = text;
+@@ -101,6 +108,7 @@ public class ExclusiveAccessBubble {
+ 
+     @CalledByNative
+     public void hide() {
++        mBraveNotice.hide();
+         SnackbarManager snackbarManager = mParentContext.getSnackbarManager();
+         if (snackbarManager != null && mSnackbar != null) {
+             snackbarManager.dismissSnackbars(mSnackbarController);
+@@ -110,6 +118,7 @@ public class ExclusiveAccessBubble {
+ 
+     @CalledByNative
+     public boolean isVisible() {
++        if (mBraveNotice.isVisible()) return true;
+         return mSnackbar != null;
+     }
+ 
