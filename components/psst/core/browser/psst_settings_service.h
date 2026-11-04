@@ -28,6 +28,8 @@ class PsstSettingsService : public KeyedService {
   class PrefObserver : public base::CheckedObserver {
    public:
     virtual void OnPsstEnableChange(bool new_value) {}
+    virtual void OnInfobarShownCounterChange(int infobar_shown_counter,
+                                             int infobar_decline_counter) {}
 
    protected:
     ~PrefObserver() override = default;
