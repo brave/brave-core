@@ -5,7 +5,10 @@
 
 #include "brave/components/brave_wallet/browser/json_keystore_parser.h"
 
+#include <string>
+
 #include "base/test/values_test_util.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -25,6 +28,30 @@ std::string GetHexAddr(const HDKey* key) {
       base::span(pubkey_no_header).to_fixed_extent<64>().value());
   return addr.ToHex();
 }
+
+// Valid v3 pbkdf2 keystore. Used as a base for negative cases because pbkdf2 is
+// much cheaper than the scrypt fixture.
+constexpr char kPbkdf2Keystore[] =
+    R"({
+        "address":"b14ab53e38da1c172f877dbc6d65e4a1b0474c3c",
+        "crypto" : {
+            "cipher" : "aes-128-ctr",
+            "cipherparams" : {
+                "iv" : "cecacd85e9cb89788b5aab2f93361233"
+            },
+            "ciphertext" : "01ee7f1a3c8d187ea244c92eea9e332ab0bb2b4c902d89bdd71f80dc384da1be",
+            "kdf" : "pbkdf2",
+            "kdfparams" : {
+                "c" : 262144,
+                "dklen" : 32,
+                "prf" : "hmac-sha256",
+                "salt" : "dc9e4a98886738bd8aae134a1f89aaa5a502c3fbd10e336136d4d5fe47448ad6"
+            },
+            "mac" : "0c02cd0badfebd5e783e0cf41448f84086a96365fc3456716c33641a86ebc7cc"
+        },
+        "id" : "7e59dc02-8d42-409d-b29a-a8a0f862cc81",
+        "version" : 3
+      })";
 
 }  // namespace
 
@@ -122,6 +149,94 @@ TEST(JsonKeystoreParser, DecryptPrivateKeyFromJsonKeystore) {
   ASSERT_TRUE(hd_key2);
   EXPECT_EQ(GetHexAddr(hd_key2.get()),
             "0xb14ab53e38da1c172f877dbc6d65e4a1b0474c3c");
+}
+
+TEST(JsonKeystoreParser, Pbkdf2BaseKeystoreIsValid) {
+  // Sanity check that kPbkdf2Keystore, the base fixture of the Rejects* tests,
+  // decrypts.
+  auto private_key = DecryptPrivateKeyFromJsonKeystore(
+      "testtest", ParseJsonDict(kPbkdf2Keystore));
+  ASSERT_TRUE(private_key);
+  EXPECT_EQ(private_key->size(), 32u);
+}
+
+TEST(JsonKeystoreParser, RejectsUnsupportedCipher) {
+  // MAC is computed over derived_key[16:32] || ciphertext and ignores the
+  // cipher name, so it stays valid here.
+  auto dict = ParseJsonDict(kPbkdf2Keystore);
+  dict.SetByDottedPath("crypto.cipher", "aes-128-cbc");
+  EXPECT_FALSE(DecryptPrivateKeyFromJsonKeystore("testtest", dict));
+}
+
+TEST(JsonKeystoreParser, RejectsUnsupportedVersion) {
+  auto dict = ParseJsonDict(kPbkdf2Keystore);
+  dict.Set("version", 4);
+  EXPECT_FALSE(DecryptPrivateKeyFromJsonKeystore("testtest", dict));
+
+  dict = ParseJsonDict(kPbkdf2Keystore);
+  dict.Set("version", 2);
+  EXPECT_FALSE(DecryptPrivateKeyFromJsonKeystore("testtest", dict));
+
+  dict = ParseJsonDict(kPbkdf2Keystore);
+  ASSERT_TRUE(dict.Remove("version"));
+  EXPECT_FALSE(DecryptPrivateKeyFromJsonKeystore("testtest", dict));
+}
+
+TEST(JsonKeystoreParser, RejectsUnsupportedKdfParams) {
+  // dklen other than 32.
+  auto dict = ParseJsonDict(kPbkdf2Keystore);
+  dict.SetByDottedPath("crypto.kdfparams.dklen", 16);
+  EXPECT_FALSE(DecryptPrivateKeyFromJsonKeystore("testtest", dict));
+
+  // Unknown kdf.
+  dict = ParseJsonDict(kPbkdf2Keystore);
+  dict.SetByDottedPath("crypto.kdf", "argon2");
+  EXPECT_FALSE(DecryptPrivateKeyFromJsonKeystore("testtest", dict));
+
+  // Unsupported pbkdf2 prf.
+  dict = ParseJsonDict(kPbkdf2Keystore);
+  dict.SetByDottedPath("crypto.kdfparams.prf", "hmac-sha512");
+  EXPECT_FALSE(DecryptPrivateKeyFromJsonKeystore("testtest", dict));
+
+  // Iteration count which does not fit into uint32_t.
+  dict = ParseJsonDict(kPbkdf2Keystore);
+  dict.SetByDottedPath("crypto.kdfparams.c", -1);
+  EXPECT_FALSE(DecryptPrivateKeyFromJsonKeystore("testtest", dict));
+
+  // Salt and iv which are not valid hex of expected size.
+  dict = ParseJsonDict(kPbkdf2Keystore);
+  dict.SetByDottedPath("crypto.kdfparams.salt", "zz");
+  EXPECT_FALSE(DecryptPrivateKeyFromJsonKeystore("testtest", dict));
+
+  dict = ParseJsonDict(kPbkdf2Keystore);
+  dict.SetByDottedPath("crypto.cipherparams.iv", "cecacd85");
+  EXPECT_FALSE(DecryptPrivateKeyFromJsonKeystore("testtest", dict));
+}
+
+TEST(JsonKeystoreParser, RejectsMissingFields) {
+  for (const char* path :
+       {"crypto", "crypto.kdf", "crypto.kdfparams", "crypto.kdfparams.dklen",
+        "crypto.kdfparams.salt", "crypto.kdfparams.c", "crypto.kdfparams.prf",
+        "crypto.mac", "crypto.ciphertext", "crypto.cipher",
+        "crypto.cipherparams", "crypto.cipherparams.iv"}) {
+    SCOPED_TRACE(path);
+    auto dict = ParseJsonDict(kPbkdf2Keystore);
+    ASSERT_TRUE(dict.RemoveByDottedPath(path));
+    EXPECT_FALSE(DecryptPrivateKeyFromJsonKeystore("testtest", dict));
+  }
+}
+
+TEST(JsonKeystoreParser, RejectsMissingScryptParams) {
+  for (const char* missing : {"n", "r", "p"}) {
+    SCOPED_TRACE(missing);
+    auto dict = ParseJsonDict(kPbkdf2Keystore);
+    dict.SetByDottedPath("crypto.kdf", "scrypt");
+    dict.SetByDottedPath("crypto.kdfparams.n", 16);
+    dict.SetByDottedPath("crypto.kdfparams.r", 1);
+    dict.SetByDottedPath("crypto.kdfparams.p", 1);
+    ASSERT_TRUE(dict.FindDictByDottedPath("crypto.kdfparams")->Remove(missing));
+    EXPECT_FALSE(DecryptPrivateKeyFromJsonKeystore("testtest", dict));
+  }
 }
 
 }  // namespace brave_wallet
