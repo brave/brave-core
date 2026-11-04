@@ -217,7 +217,6 @@ const chromiumKeyboardAccessoryStringsPath = path.join(
 const braveKeyboardAccessoryStringsPath = path.join(
   srcDir,
   'brave',
-  'chrome',
   'browser',
   'keyboard_accessory',
   'android',

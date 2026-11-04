@@ -142,7 +142,6 @@ const update = () => {
   fileMap.add([
     path.join(
       config.braveCoreDir,
-      'chrome',
       'browser',
       'keyboard_accessory',
       'android',
