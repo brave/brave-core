@@ -243,6 +243,9 @@ Client<MyEndpoint>::Send(
     }));
 ```
 
+`response.headers` is set only when `response.status_code` is, i.e. on `net::OK`
+with response headers received.
+
 ---
 
 ### 4. Cancelable requests

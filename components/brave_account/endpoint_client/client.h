@@ -144,7 +144,9 @@ class Client {
     Response response(Response::Deserialize(simple_url_loader.NetError(),
                                             headers, std::move(response_body)));
     if constexpr (base::is_instantiation<Response, WithHeaders>) {
-      response.headers = std::move(headers);
+      if (response.status_code) {
+        response.headers = std::move(headers);
+      }
     }
 
     std::move(callback).Run(std::move(response));
