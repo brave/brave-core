@@ -1,0 +1,22 @@
+diff --git a/chrome/common/read_anything/read_anything_util.cc b/chrome/common/read_anything/read_anything_util.cc
+index fedd0d6a77e5c97e52412532f45a3a0d4d4143c1..5e104709ba7ac56829a1a2b97a156991c4a1e4a1 100644
+--- a/chrome/common/read_anything/read_anything_util.cc
++++ b/chrome/common/read_anything/read_anything_util.cc
+@@ -28,6 +28,7 @@ int AsSteps(double font_scale) {
+ }  // namespace
+ 
+ std::vector<std::string> GetSupportedFonts(std::string_view language_code) {
++  std::vector<std::string> font_choices = [&]() -> std::vector<std::string> {
+   // If you modify the set of fonts here, also change `LogFontName()` below.
+   static constexpr auto kPoppinsLangs =
+       base::MakeFixedFlatSet<std::string_view>(
+@@ -106,6 +107,9 @@ std::vector<std::string> GetSupportedFonts(std::string_view language_code) {
+   }
+ 
+   return font_choices;
++  }();
++  UpdateSupportedFonts(font_choices, language_code);
++  return font_choices;
+ }
+ 
+ void LogFontName(std::string_view font_name) {

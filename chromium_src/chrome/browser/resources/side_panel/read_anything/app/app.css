@@ -1,0 +1,50 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* #css_wrapper_metadata_start
+ * #type=style-lit
+ * #import=./app-chromium.css.js
+ * #scheme=relative
+ * #include=app-chromium
+ * #css_wrapper_metadata_end */
+
+#appFlexParent #container {
+  font-size: calc(var(--font-size) * 0.75);
+  text-rendering: optimizeLegibility;
+}
+
+#appFlexParent #container :is(h1, h2, h3, h4, h5, h6) {
+  font-family: inherit;
+  font-weight: 700;
+}
+
+#appFlexParent #container h1 {
+  font-size: 1.6em;
+  line-height: 1.3;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+#appFlexParent #container h2 {
+  font-size: 1.2em;
+  line-height: 1.35;
+}
+
+#appFlexParent #container h3 {
+  font-size: 1.1em;
+  line-height: 1.4;
+}
+
+#appFlexParent #container :is(h4, h5, h6) {
+  font-size: 1em;
+  line-height: 1.4;
+}
+
+.immersive.full-page .sp-scroller::-webkit-scrollbar-thumb {
+  background-color: var(
+      --color-read-anything-full-page-scrollbar,
+      color-mix(in srgb, var(--foreground-color) 40%, transparent));
+}
+

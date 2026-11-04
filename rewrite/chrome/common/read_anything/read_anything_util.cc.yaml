@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Only offer the Read Anything fonts that ship with Brave.
+    after_function_impl:
+      function_name: GetSupportedFonts
+      result_var: font_choices
+      code: |-
+        UpdateSupportedFonts(font_choices, language_code);
+        return font_choices;
