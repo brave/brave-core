@@ -119,8 +119,7 @@ TEST(ConversationToolsUnitTest, AssistantDetailStorageToolInAllModes) {
 
   // Large tool results are trimmed from context regardless of mode, so the
   // tool should be offered to regular chat as well as content agent.
-  const ConversationCapabilitySet kChat = {
-      mojom::ConversationCapability::CHAT};
+  const ConversationCapabilitySet kChat = {mojom::ConversationCapability::CHAT};
   const ConversationCapabilitySet kContentAgent = {
       mojom::ConversationCapability::CONTENT_AGENT};
   EXPECT_TRUE((*it)->SupportsConversation(false, false, kChat));

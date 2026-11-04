@@ -99,9 +99,8 @@ The key is to avoid overusing the tool. It should supplement your responses, not
 };
 
 // Encourages the LLM to store important information before it gets removed
-// from context. Large tool outputs are trimmed from the history sent to the
-// model in every conversation mode (see oai_message_utils.cc), so this is
-// offered to all conversations, not just content agent ones.
+// from context. Large tool outputs are trimmed from the history sent in
+// conversations with multiple rounds.
 class AssistantDetailStorageTool : public Tool {
  public:
   // static name
