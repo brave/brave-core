@@ -12,8 +12,19 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/color_palette.h"
 #include "ui/views/animation/ink_drop.h"
+#include "ui/views/controls/focus_ring.h"
 #include "ui/views/controls/highlight_path_generator.h"
 #include "ui/views/view_class_properties.h"
+
+// The highlight path is inset by kMargin horizontally and the focus ring paints
+// it outset by `halo_thickness / 2 + kFocusRingOutset` plus half the stroke --
+// i.e. halo_thickness + kFocusRingOutset, both 2. SidebarControlView and
+// SidebarItemsScrollView clip to their layer bounds, so kMargin is what keeps
+// the ring inside them, currently with no slack at all. kFocusRingOutset is
+// private to focus_ring.cc, so assert against the thickness it equals.
+static_assert(SidebarButtonView::kMargin >=
+                  2 * views::FocusRing::kDefaultHaloThickness,
+              "Sidebar button padding must fit the focus ring outset");
 
 SidebarButtonView::SidebarButtonView(const std::u16string& accessible_name) {
   // Don't want to draw flipped images in RTL, as the image should be the same

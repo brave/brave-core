@@ -424,10 +424,12 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VisualState) {
   ASSERT_EQ(State::kExpanded, region_view->state());
 
   // When rounded corners is on(it's default now),
-  // region view's border inset is changed during the floating.
+  // region view's border inset is changed during the floating: the separator is
+  // only drawn while floating, and otherwise the strip needs no inset because
+  // its tabs' own padding spaces them from the contents.
   // See BraveVerticalTabStripRegionView::UpdateBorder() for
   // border inset calculation.
-  const int inset_for_expanded_collapsed = -2;
+  const int inset_for_expanded_collapsed = 0;
   const int inset_for_floating = 1;
   EXPECT_EQ(inset_for_expanded_collapsed, region_view->GetInsets().width());
 
@@ -2197,12 +2199,13 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest, GetMinimumWidth) {
   EXPECT_EQ(0, region_view->GetMinimumSize().width());
 
   // When the preference is disabled, the minimum width should be back to
-  // 41px(w/o rounded corners) or 38px(with rounded corners) due to region
-  // view's difference. See BraveVerticalTabStripRegionView::UpdateBorder().
+  // 41px(w/o rounded corners) or 40px(with rounded corners) -- the separator
+  // thickness is only reserved when the separator is drawn. See
+  // BraveVerticalTabStripRegionView::UpdateBorder().
   SetHideCompletelyWhenCollapsed(false);
 
-  // As rounded corners is on by default minimum size is 38px.
-  EXPECT_EQ(38, region_view->GetMinimumSize().width());
+  // As rounded corners is on by default minimum size is 40px.
+  EXPECT_EQ(40, region_view->GetMinimumSize().width());
 
   // 41px w/o rounded corners.
   browser()->GetProfile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners,

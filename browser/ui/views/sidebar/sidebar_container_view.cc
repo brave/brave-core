@@ -137,9 +137,6 @@ void SidebarContainerView::SetSidebarOnLeft(bool sidebar_on_left) {
   }
 
   sidebar_on_left_ = sidebar_on_left;
-
-  DCHECK(sidebar_control_view_);
-  sidebar_control_view_->SetSidebarOnLeft(sidebar_on_left_);
 }
 
 bool SidebarContainerView::IsSidebarVisible() const {
@@ -198,10 +195,6 @@ void SidebarContainerView::ShowSidebarOnMouseOver(
     ShowSidebar();
     return;
   }
-}
-
-void SidebarContainerView::UpdateBorder() {
-  sidebar_control_view_->UpdateBorder();
 }
 
 void SidebarContainerView::SetSidebarShowOption(ShowSidebarOption show_option) {
