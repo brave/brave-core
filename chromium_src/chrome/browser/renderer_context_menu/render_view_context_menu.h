@@ -47,8 +47,7 @@ class RenderViewContextMenu : public RenderViewContextMenu_Chromium
   static void AddSpellCheckServiceItem(ui::SimpleMenuModel* menu,
                                        bool is_checked);
   void AddAccessibilityLabelsServiceItem(bool is_checked) override;
-  // Do nothing as we have our own speed reader
-  void AppendReadAnythingItem() override {}
+  void AppendReadAnythingItem() override;
 
   void AppendDeveloperItems() override;
 

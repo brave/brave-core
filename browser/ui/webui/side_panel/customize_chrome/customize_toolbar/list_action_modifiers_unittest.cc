@@ -17,6 +17,7 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/sharing_hub/sharing_hub_features.h"
 #include "chrome/browser/ui/webui/util/image_util.h"
@@ -58,6 +59,10 @@
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/components/speedreader/common/features.h"
 #endif
 
 using ActionId = side_panel::customize_chrome::mojom::ActionId;
@@ -199,6 +204,26 @@ TEST_F(ListActionModifiersUnitTest,
         << " in filtered results.";
   }
 }
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+TEST_F(ListActionModifiersUnitTest,
+       FilterUnsupportedChromiumAction_ReadAnythingAllowedWhenSpeedreaderOff) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndDisableFeature(
+      speedreader::features::kSpeedreaderFeature);
+
+  std::vector<side_panel::customize_chrome::mojom::ActionPtr> actions;
+  auto read_anything_action =
+      side_panel::customize_chrome::mojom::Action::New();
+  read_anything_action->id = ActionId::kShowReadAnything;
+  actions.push_back(std::move(read_anything_action));
+
+  const auto filtered =
+      customize_chrome::FilterUnsupportedChromiumActions(std::move(actions));
+  ASSERT_EQ(filtered.size(), 1u);
+  EXPECT_EQ(filtered[0]->id, ActionId::kShowReadAnything);
+}
+#endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 
 TEST_F(ListActionModifiersUnitTest,
        ApplyBraveSpecificModifications_TabSearchShouldBeInNavigationCategory) {

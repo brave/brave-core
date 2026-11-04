@@ -111,6 +111,7 @@ constexpr auto kCommandIcons =
         {IDC_NAME_WINDOW, &kLeoEditBoxIcon},
         {IDC_COMMANDER, &kLeoArrowSmallRightIcon},
         {IDC_SHOW_APPS_PAGE, &kLeoGrid04Icon},
+        {IDC_SHOW_READING_MODE, &kLeoProductSpeedreaderIcon},
         {IDC_PERFORMANCE, &kLeoNetworkSpeedFastIcon},
         {IDC_DEV_TOOLS, &kLeoCodeIcon},
         {IDC_TASK_MANAGER_APP_MENU, &kLeoWindowTaskManagerIcon},
