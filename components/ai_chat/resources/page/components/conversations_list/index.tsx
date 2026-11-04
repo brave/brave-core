@@ -194,12 +194,8 @@ function ConversationItem(props: ConversationItemProps) {
           {showCompleted && (
             <span
               className={styles.completedIndicator}
-              aria-label={getLocale(
-                S.AI_CHAT_CONVERSATION_LIST_RESPONSE_READY,
-              )}
-              title={getLocale(
-                S.AI_CHAT_CONVERSATION_LIST_RESPONSE_READY,
-              )}
+              aria-label={getLocale(S.AI_CHAT_CONVERSATION_LIST_RESPONSE_READY)}
+              title={getLocale(S.AI_CHAT_CONVERSATION_LIST_RESPONSE_READY)}
               role='img'
             />
           )}
