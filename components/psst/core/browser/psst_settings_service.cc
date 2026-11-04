@@ -172,6 +172,15 @@ void PsstSettingsService::OnPreferenceChanged(const std::string& pref_name) {
   if (pref_name == prefs::kPsstEnabled) {
     observers_.Notify(&PrefObserver::OnPsstEnableChange, IsPsstEnabled());
     return;
+  } else if (pref_name == prefs::kPsstInfobarShownCounter ||
+             pref_name == prefs::kPsstInfobarDeclineCounter) {
+    const int infobar_decline_count =
+        prefs_->GetInteger(prefs::kPsstInfobarDeclineCounter);
+    const int infobar_shown_count =
+        prefs_->GetInteger(prefs::kPsstInfobarShownCounter);
+    observers_.Notify(&PrefObserver::OnInfobarShownCounterChange,
+                      infobar_shown_count, infobar_decline_count);
+    return;
   }
 }
 
