@@ -66,6 +66,14 @@ PsstSettingsService::PsstSettingsService(
       prefs::kPsstEnabled,
       base::BindRepeating(&PsstSettingsService::OnPreferenceChanged,
                           weak_ptr_factory_.GetWeakPtr()));
+  pref_change_registrar_.Add(
+      prefs::kPsstInfobarShownCounter,
+      base::BindRepeating(&PsstSettingsService::OnPreferenceChanged,
+                          weak_ptr_factory_.GetWeakPtr()));
+  pref_change_registrar_.Add(
+      prefs::kPsstInfobarDeclineCounter,
+      base::BindRepeating(&PsstSettingsService::OnPreferenceChanged,
+                          weak_ptr_factory_.GetWeakPtr()));
 }
 
 PsstSettingsService::~PsstSettingsService() = default;
