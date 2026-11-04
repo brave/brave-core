@@ -39,6 +39,7 @@
 #include "brave/components/ai_chat/core/browser/tools/tool_provider_factory.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
+#include "brave/components/ai_chat/core/common/mojom/mcp.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
@@ -67,6 +68,7 @@ class SharedURLLoaderFactory;
 namespace ai_chat {
 
 class AIChatSyncBackend;
+class MCPHost;
 class ModelService;
 class TabTrackerService;
 class AIChatMetrics;
@@ -243,6 +245,7 @@ class AIChatService : public KeyedService,
       override;
 
   void BindMetrics(mojo::PendingReceiver<mojom::Metrics> metrics) override;
+  void BindMCPHost(mojo::PendingReceiver<mojom::MCPHost> host) override;
   void BindObserver(mojo::PendingRemote<mojom::ServiceObserver> ui,
                     mojom::Service::BindObserverCallback callback) override;
   void BindObserver(
@@ -299,6 +302,8 @@ class AIChatService : public KeyedService,
   }
 
   size_t GetInMemoryConversationCountForTesting();
+
+  MCPHost* GetMCPHostForTesting() { return mcp_host_.get(); }
 
   EngineConsumer* GetTabOrganizationEngineForTesting() {
     return tab_organization_engine_.get();
@@ -472,6 +477,9 @@ class AIChatService : public KeyedService,
 
   // Memory tool that is available and shared across all conversations.
   std::unique_ptr<MemoryStorageTool> memory_tool_;
+
+  // The user's MCP servers. Null unless the AIChatMCP feature is enabled.
+  std::unique_ptr<MCPHost> mcp_host_;
 
   base::FilePath profile_path_;
 

@@ -102,6 +102,8 @@ class MCPClient {
   // Why connecting failed, while state() is kFailed.
   const std::optional<MCPError>& last_error() const { return last_error_; }
 
+  base::WeakPtr<MCPClient> GetWeakPtr();
+
  private:
   // `response_headers` are those of the response that carried the result.
   using ResultCallback =

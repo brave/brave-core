@@ -262,6 +262,7 @@ if (enable_ai_chat) {
     # directly on settings
     "$root_gen_dir/brave/components/ai_chat/core/common/mojom/common.mojom-webui.ts",
     "$root_gen_dir/brave/components/ai_chat/core/common/mojom/customization_settings.mojom-webui.ts",
+    "$root_gen_dir/brave/components/ai_chat/core/common/mojom/mcp.mojom-webui.ts",
     "$root_gen_dir/brave/components/ai_chat/core/common/mojom/ollama.mojom-webui.ts",
     "$root_gen_dir/brave/components/ai_chat/core/common/mojom/tab_tracker.mojom-webui.ts",
     "$root_gen_dir/brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom-webui.ts",

@@ -41,6 +41,7 @@
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/mcp/mcp_test_server.h"
 #include "brave/components/ai_chat/core/browser/mock_conversation_handler_observer.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
@@ -55,6 +56,7 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/mcp.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
 #include "components/os_crypt/async/browser/os_crypt_async.h"
@@ -63,7 +65,9 @@
 #include "components/sync/model/type_entities_count.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+#include "mojo/public/cpp/bindings/remote.h"
 #include "services/network/public/cpp/network_context_getter.h"
+#include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -2208,6 +2212,70 @@ TEST_P(AIChatServiceUnitTest, GenerationState_BulkDeleteClears) {
       .WillOnce(base::test::RunOnceClosure(cleared.GetCallback()));
   ai_chat_service_->DeleteConversations();
   ASSERT_TRUE(cleared.Wait());
+}
+
+TEST_P(AIChatServiceUnitTest, BindMCPHost) {
+  base::test::ScopedFeatureList scoped_feature_list(features::kAIChatMCP);
+  ResetService();
+  ASSERT_TRUE(ai_chat_service_->GetMCPHostForTesting());
+
+  mojo::Remote<mojom::MCPHost> host;
+  client_->service_remote()->BindMCPHost(host.BindNewPipeAndPassReceiver());
+  base::test::TestFuture<std::vector<mojom::MCPServerPtr>> servers;
+  host->GetServers(servers.GetCallback());
+  EXPECT_TRUE(servers.Take().empty());
+}
+
+TEST_P(AIChatServiceUnitTest, ShutdownEndsMCPSessions) {
+  base::test::ScopedFeatureList scoped_feature_list(features::kAIChatMCP);
+  ResetService();
+  MCPTestServer mcp_server(url_loader_factory_);
+  mojo::Remote<mojom::MCPHost> host;
+  client_->service_remote()->BindMCPHost(host.BindNewPipeAndPassReceiver());
+  base::test::TestFuture<
+      base::expected<mojom::MCPServerPtr, mojom::MCPServerError>>
+      added;
+  host->AddServer(
+      mojom::MCPServerParams::New("Server", GURL("https://mcp.example.com/mcp"),
+                                  /*enabled=*/true, /*auto_attach=*/false),
+      std::nullopt, added.GetCallback());
+  ASSERT_TRUE(added.Get().has_value());
+
+  // Connects, so that the server issues a session.
+  base::test::TestFuture<base::expected<std::vector<mojom::MCPServerToolPtr>,
+                                        mojom::MCPServerError>>
+      tools;
+  host->GetServerTools(added.Get().value()->id, tools.GetCallback());
+  const size_t list = mcp_server.CompleteHandshake(0, "session-id");
+  mcp_server.WaitForRequest(list);
+  mcp_server.RespondResult(list, R"({"tools":[]})");
+  ASSERT_TRUE(tools.Get().has_value());
+
+  // The session is ended while the network can still be used.
+  base::test::TestFuture<void> disconnected;
+  host.set_disconnect_handler(disconnected.GetCallback());
+  ai_chat_service_->Shutdown();
+  EXPECT_FALSE(ai_chat_service_->GetMCPHostForTesting());
+  ASSERT_EQ(mcp_server.RequestCount(), list + 2);
+  EXPECT_EQ(mcp_server.Request(list + 1).method, "DELETE");
+  EXPECT_EQ(mcp_server.Request(list + 1).headers.GetHeader("Mcp-Session-Id"),
+            "session-id");
+  EXPECT_TRUE(disconnected.Wait());
+}
+
+TEST_P(AIChatServiceUnitTest, BindMCPHost_FeatureDisabled) {
+  EXPECT_FALSE(ai_chat_service_->GetMCPHostForTesting());
+
+  mojo::Remote<mojom::MCPHost> host;
+  client_->service_remote()->BindMCPHost(host.BindNewPipeAndPassReceiver());
+  base::test::TestFuture<void> disconnected;
+  host.set_disconnect_handler(disconnected.GetCallback());
+  EXPECT_TRUE(disconnected.Wait());
+
+  // The service itself is unaffected.
+  EXPECT_TRUE(client_->service_remote().is_connected());
+  CreateConversation();
+  ExpectConversationsSize(FROM_HERE, 1);
 }
 
 }  // namespace ai_chat

@@ -156,6 +156,9 @@ inline constexpr char kBraveAIChatOllamaFetchEnabled[] =
 // decryption key of each shared conversation.
 inline constexpr char kBraveAIChatConversationShares[] =
     "brave.ai_chat.conversation_shares";
+// The user's remote MCP servers. Their access tokens are OSCrypt-encrypted,
+// then base64-encoded.
+inline constexpr char kBraveAIChatMCPServers[] = "brave.ai_chat.mcp_servers";
 // Stores the time at which the remote model list was last successfully fetched
 // and cached to disk. Used for TTL checks without reading the cache file.
 inline constexpr char kRemoteModelsCachedAt[] =

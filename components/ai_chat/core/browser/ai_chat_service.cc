@@ -18,6 +18,7 @@
 #include "base/check.h"
 #include "base/check_deref.h"
 #include "base/containers/map_util.h"
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
@@ -36,6 +37,7 @@
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/conversation_share_manager.h"
 #include "brave/components/ai_chat/core/browser/conversation_tools.h"
+#include "brave/components/ai_chat/core/browser/mcp/mcp_host.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/sync/ai_chat_sync_backend.h"
 #include "brave/components/ai_chat/core/browser/sync/ai_chat_sync_bridge.h"
@@ -46,6 +48,7 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/mcp.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
 #include "build/build_config.h"
@@ -154,6 +157,11 @@ AIChatService::AIChatService(
       profile_path_(profile_path) {
   DCHECK(profile_prefs_);
 
+  if (base::FeatureList::IsEnabled(features::kAIChatMCP)) {
+    mcp_host_ = std::make_unique<MCPHost>(
+        *profile_prefs_, CHECK_DEREF(os_crypt_async), url_loader_factory_);
+  }
+
   // Initialize tools based on current pref settings which can be used across
   // all conversations.
   InitializeTools();
@@ -245,6 +253,9 @@ void AIChatService::Shutdown() {
   conversation_handlers_.clear();
   conversations_.clear();
   conversation_generation_state_.clear();
+
+  // Ends the MCP servers' sessions while the network can still be used.
+  mcp_host_.reset();
 }
 
 std::unique_ptr<syncer::DataTypeControllerDelegate>
@@ -1537,6 +1548,12 @@ void AIChatService::BindConversation(
 void AIChatService::BindMetrics(mojo::PendingReceiver<mojom::Metrics> metrics) {
   if (ai_chat_metrics_) {
     ai_chat_metrics_->Bind(std::move(metrics));
+  }
+}
+
+void AIChatService::BindMCPHost(mojo::PendingReceiver<mojom::MCPHost> host) {
+  if (mcp_host_) {
+    mcp_host_->Bind(std::move(host));
   }
 }
 

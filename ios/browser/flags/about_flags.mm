@@ -258,6 +258,14 @@ const flags_ui::FeatureEntry::FeatureVariation
           "conversation.",                                                  \
           flags_ui::kOsIos,                                                 \
           FEATURE_VALUE_TYPE(ai_chat::features::kAIChatUserChoiceTool),     \
+      },                                                                    \
+      {                                                                     \
+          "brave-ai-chat-mcp",                                              \
+          "Brave AI Chat MCP Servers",                                      \
+          "Lets you add remote MCP (Model Context Protocol) servers, "      \
+          "whose tools Brave AI Chat can use.",                             \
+          flags_ui::kOsIos,                                                 \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatMCP),                \
       })
 
 #define BRAVE_WALLET_FEATURE_ENTRIES                                      \

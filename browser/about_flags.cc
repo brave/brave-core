@@ -967,6 +967,14 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
           "Renders LaTeX expressions in assistant responses as typeset math.", \
           kOsWin | kOsMac | kOsLinux | kOsAndroid,                             \
           FEATURE_VALUE_TYPE(ai_chat::features::kAIChatMathRendering),         \
+      },                                                                       \
+      {                                                                        \
+          "brave-ai-chat-mcp",                                                 \
+          "Brave AI Chat MCP Servers",                                         \
+          "Lets you add remote MCP (Model Context Protocol) servers, whose "   \
+          "tools Brave AI Chat can use.",                                      \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatMCP),                   \
       })
 #else
 #define BRAVE_AI_CHAT_FEATURE_ENTRIES

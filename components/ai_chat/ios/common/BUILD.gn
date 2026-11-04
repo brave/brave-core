@@ -10,6 +10,7 @@ ios_objc_mojom_wrappers("mojom") {
   sources = [
     "//brave/components/ai_chat/core/common/mojom/ai_chat.mojom",
     "//brave/components/ai_chat/core/common/mojom/common.mojom",
+    "//brave/components/ai_chat/core/common/mojom/mcp.mojom",
     "//brave/components/ai_chat/core/common/mojom/settings_helper.mojom",
     "//brave/components/ai_chat/core/common/mojom/tab_tracker.mojom",
     "//brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom",
@@ -32,5 +33,9 @@ ios_objc_mojom_wrappers("mojom") {
     "UntrustedConversationHandler",
     "UntrustedConversationUI",
     "UntrustedUIHandler",
+
+    # Only the AI Chat WebUI uses these.
+    "MCPHost",
+    "MCPHostObserver",
   ]
 }

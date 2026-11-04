@@ -7,16 +7,25 @@ import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 
 assert(enable_ai_chat)
 
+# Mustn't depend on //brave/components/ai_chat/core/browser, which depends on
+# this.
 static_library("mcp") {
-  visibility = [ ":unit_tests" ]
+  visibility = [
+    ":*",
+    "//brave/components/ai_chat/core/browser",
+  ]
 
   sources = [
     "mcp_client.cc",
     "mcp_client.h",
     "mcp_endpoint_validator.cc",
     "mcp_endpoint_validator.h",
+    "mcp_host.cc",
+    "mcp_host.h",
     "mcp_json_rpc.cc",
     "mcp_json_rpc.h",
+    "mcp_server_registry.cc",
+    "mcp_server_registry.h",
     "mcp_streamable_http_transport.cc",
     "mcp_streamable_http_transport.h",
     "mcp_transport.cc",
@@ -27,7 +36,10 @@ static_library("mcp") {
 
   public_deps = [
     "//base",
+    "//brave/components/ai_chat/core/common/mojom",
     "//brave/components/api_request_helper",
+    "//components/prefs",
+    "//mojo/public/cpp/bindings",
     "//third_party/abseil-cpp:absl",
     "//url",
   ]
@@ -35,6 +47,8 @@ static_library("mcp") {
   deps = [
     "//brave/components/ai_chat/core/common",
     "//brave/components/version_info",
+    "//components/os_crypt/async/browser",
+    "//components/os_crypt/async/common",
     "//net",
     "//net/traffic_annotation",
     "//services/network/public/cpp",
@@ -44,25 +58,34 @@ static_library("mcp") {
 
 source_set("test_support") {
   testonly = true
-  visibility = [ ":unit_tests" ]
+  visibility = [
+    ":unit_tests",
+    "//brave/components/ai_chat/core/browser:unit_tests",
+  ]
 
   sources = [
     "mcp_http_test_base.cc",
     "mcp_http_test_base.h",
+    "mcp_test_server.cc",
+    "mcp_test_server.h",
+    "test/deferred_os_crypt_async.cc",
+    "test/deferred_os_crypt_async.h",
   ]
 
   public_deps = [
     "//base",
     "//base/test:test_support",
+    "//components/os_crypt/async/browser",
     "//mojo/public/cpp/system",
     "//services/network:test_support",
+    "//services/network/public/cpp",
     "//services/network/public/mojom",
     "//testing/gtest",
   ]
 
   deps = [
+    "//components/os_crypt/async/common",
     "//net",
-    "//services/network/public/cpp",
     "//url",
   ]
 }
@@ -72,7 +95,9 @@ source_set("unit_tests") {
   sources = [
     "mcp_client_unittest.cc",
     "mcp_endpoint_validator_unittest.cc",
+    "mcp_host_unittest.cc",
     "mcp_json_rpc_unittest.cc",
+    "mcp_server_registry_unittest.cc",
     "mcp_streamable_http_transport_unittest.cc",
     "mcp_types_unittest.cc",
   ]
@@ -83,7 +108,13 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/mojom",
     "//brave/components/version_info",
+    "//components/os_crypt/async/browser",
+    "//components/os_crypt/async/browser:test_support",
+    "//components/os_crypt/async/common",
+    "//components/prefs:test_support",
+    "//mojo/public/cpp/bindings",
     "//mojo/public/cpp/system",
     "//net",
     "//services/network:test_support",

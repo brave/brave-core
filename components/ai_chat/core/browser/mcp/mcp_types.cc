@@ -101,6 +101,8 @@ MCPServerConfig& MCPServerConfig::operator=(MCPServerConfig&&) noexcept =
     default;
 MCPServerConfig::~MCPServerConfig() = default;
 
+bool MCPServerConfig::operator==(const MCPServerConfig&) const = default;
+
 MCPToolDefinition::MCPToolDefinition() = default;
 MCPToolDefinition::MCPToolDefinition(MCPToolDefinition&&) noexcept = default;
 MCPToolDefinition& MCPToolDefinition::operator=(MCPToolDefinition&&) noexcept =

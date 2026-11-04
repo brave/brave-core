@@ -308,6 +308,10 @@ base::OnceClosure MCPClient::CallTool(std::string_view name,
                         weak_ptr_factory_.GetWeakPtr(), id);
 }
 
+base::WeakPtr<MCPClient> MCPClient::GetWeakPtr() {
+  return weak_ptr_factory_.GetWeakPtr();
+}
+
 void MCPClient::SendRequest(int id,
                             std::string_view method,
                             std::optional<base::DictValue> params,

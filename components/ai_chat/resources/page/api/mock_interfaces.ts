@@ -197,6 +197,7 @@ export function createMockService(
         generationStates: {},
       }),
     bindMetrics: () => {},
+    bindMCPHost: () => {},
 
     // Apply overrides
     ...overrides,

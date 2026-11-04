@@ -265,4 +265,6 @@ BASE_FEATURE(kAIChatExportJSON, base::FEATURE_DISABLED_BY_DEFAULT);
 
 BASE_FEATURE(kAIChatMathRendering, base::FEATURE_ENABLED_BY_DEFAULT);
 
+BASE_FEATURE(kAIChatMCP, base::FEATURE_DISABLED_BY_DEFAULT);
+
 }  // namespace ai_chat::features

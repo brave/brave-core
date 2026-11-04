@@ -1,0 +1,112 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module ai_chat.mojom;
+
+import "url/mojom/url.mojom";
+
+// Why a request about the user's MCP servers failed.
+enum MCPServerError {
+  // There's no server with the given id.
+  kNotFound,
+  // The name is empty, too long, or has control characters.
+  kInvalidName,
+  // The endpoint isn't a valid URL, or is an unspecified address.
+  kInvalidUrl,
+  // The endpoint is neither http nor https.
+  kUnsupportedScheme,
+  // The endpoint has a username or password.
+  kEmbeddedCredentials,
+  // The endpoint is http, but not to localhost, 127.0.0.1 or [::1].
+  kInsecureScheme,
+  // The endpoint is another address that isn't publicly routable, which is
+  // only allowed while the kAllowPrivateIPs feature is enabled.
+  kPrivateAddressNotAllowed,
+  // The access token is empty, too long, or can't be sent in an HTTP header.
+  kInvalidToken,
+  // The access token couldn't be encrypted, so nothing was saved.
+  kTokenEncryptionFailed,
+  // The endpoint URL is longer than 2 KiB.
+  kEndpointTooLong,
+  // As many servers as are allowed are already configured.
+  kTooManyServers,
+  // The servers were saved by another version of the browser, in a format
+  // this one doesn't know, so they're left as they are.
+  kUnsupportedSettingsVersion,
+  // The server is turned off, so it isn't connected to.
+  kServerDisabled,
+  // The server's access token can't be decrypted, so it isn't connected to
+  // until the token is entered again.
+  kTokenUnreadable,
+  // The server's settings changed, or it was removed, before it answered.
+  kServerChanged,
+  // Connecting to the server, or listing its tools, failed.
+  kConnectionFailed,
+};
+
+// The settings of an MCP server that the user chooses.
+struct MCPServerParams {
+  string name;
+  // The server's Streamable HTTP endpoint.
+  url.mojom.Url endpoint;
+  bool enabled;
+  // Whether the server's tools are offered in new conversations without the
+  // user attaching it.
+  bool auto_attach;
+};
+
+// A configured MCP server. Its access token is never included.
+struct MCPServer {
+  string id;
+  string name;
+  url.mojom.Url endpoint;
+  bool enabled;
+  bool auto_attach;
+  // Prefixes the names of the server's tools, as the model sees them. Unique
+  // among the user's servers, and fixed when the server is added.
+  string slug;
+  bool has_token;
+  // The access token can't be decrypted, so the server can't be used until
+  // the token is entered again.
+  bool token_unreadable;
+};
+
+// A tool that a server offers.
+struct MCPServerTool {
+  string name;
+  string? title;
+  string? description;
+};
+
+// Manages the user's remote MCP servers, for one profile.
+interface MCPHost {
+  // In the order they were added.
+  GetServers() => (array<MCPServer> servers);
+
+  // `token`, if set, is sent to the server as a bearer token.
+  AddServer(MCPServerParams params, string? token)
+      => result<MCPServer, MCPServerError>;
+
+  // Replaces the server's settings. Its access token is replaced if `token` is
+  // set. Otherwise it's kept, unless the endpoint moves to another origin,
+  // which the token wasn't given for.
+  UpdateServer(string id, MCPServerParams params, string? token)
+      => result<MCPServer, MCPServerError>;
+
+  ClearServerToken(string id) => result<MCPServer, MCPServerError>;
+
+  // Returns null once the server is removed.
+  RemoveServer(string id) => (MCPServerError? error);
+
+  // Connects to an enabled server, if it isn't connected already, and lists
+  // its tools, so the user can check its settings.
+  GetServerTools(string id) => result<array<MCPServerTool>, MCPServerError>;
+
+  BindObserver(pending_remote<MCPHostObserver> observer);
+};
+
+interface MCPHostObserver {
+  OnServersChanged(array<MCPServer> servers);
+};

@@ -6,6 +6,7 @@
 module ai_chat.mojom;
 
 import "brave/components/ai_chat/core/common/mojom/common.mojom";
+import "brave/components/ai_chat/core/common/mojom/mcp.mojom";
 import "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom";
 import "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom";
 import "mojo/public/mojom/base/time.mojom";
@@ -253,6 +254,10 @@ interface Service {
 
   // Bind metrics interface
   BindMetrics(pending_receiver<Metrics> metrics);
+
+  // Binds the user's MCP servers. The receiver is dropped unless the
+  // AIChatMCP feature is enabled.
+  BindMCPHost(pending_receiver<MCPHost> host);
 };
 
 interface ServiceObserver {

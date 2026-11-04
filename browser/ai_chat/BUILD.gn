@@ -326,6 +326,7 @@ if (enable_brave_ai_chat_agent_profile) {
 source_set("unit_tests") {
   testonly = true
   sources = [
+    "ai_chat_service_factory_unittest.cc",
     "brave_open_ai_chat_permission_context_unittest.cc",
     "tools/attach_workspace_tool_unittest.cc",
   ]
@@ -345,6 +346,7 @@ source_set("unit_tests") {
     "//chrome/test/base:testing_browser_process",
     "//components/history/core/browser",
     "//components/passage_embeddings/core",
+    "//components/sync_preferences:test_support",
     "//content/public/browser",
     "//content/test:test_support",
     "//testing/gmock",

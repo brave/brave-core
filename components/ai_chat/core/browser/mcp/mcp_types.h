@@ -28,6 +28,8 @@ struct MCPServerConfig {
   MCPServerConfig& operator=(MCPServerConfig&&) noexcept;
   ~MCPServerConfig();
 
+  bool operator==(const MCPServerConfig&) const;
+
   // The server's Streamable HTTP endpoint.
   GURL endpoint;
   // Sent as `Authorization: Bearer <token>`. A secret: never log it.

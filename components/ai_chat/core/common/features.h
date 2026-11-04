@@ -234,6 +234,11 @@ BASE_DECLARE_FEATURE(kAIChatExportJSON);
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kAIChatMathRendering);
 
+// Lets the user configure remote MCP (Model Context Protocol) servers, whose
+// tools AI Chat can use.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+BASE_DECLARE_FEATURE(kAIChatMCP);
+
 }  // namespace ai_chat::features
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_FEATURES_H_
