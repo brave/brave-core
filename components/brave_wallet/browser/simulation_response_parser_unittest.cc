@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/simulation_response_parser.h"
 
 #include <optional>
+#include <string>
 
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -1140,6 +1141,141 @@ TEST(SimulationResponseParserUnitTest, ParseEvmUnknownError) {
   EXPECT_EQ(simulation_response->expected_state_changes.size(), 0ULL);
 }
 
+TEST(SimulationResponseParserUnitTest, ParseEvmErrorKinds) {
+  constexpr char kJson[] = R"(
+    {
+      "requestId":"e8cd35ce-f743-4ef2-8e94-f26857744db7",
+      "action":"NONE",
+      "warnings":[],
+      "simulationResults":{
+        "aggregated": {
+          "error": {
+            "humanReadableError": "%s",
+            "kind": "%s"
+          },
+          "expectedStateChanges": {
+            "0xd8da6bf26964af9d7eed9e03e53415d37aa96045": []
+          }
+        }
+      }
+    }
+  )";
+
+  struct {
+    const char* kind;
+    mojom::BlowfishEVMErrorKind expected;
+  } kCases[] = {
+      {"SIMULATION_FAILED", mojom::BlowfishEVMErrorKind::kSimulationFailed},
+      {"TRANSACTION_REVERTED",
+       mojom::BlowfishEVMErrorKind::kTransactionReverted},
+      {"TRANSACTION_ERROR", mojom::BlowfishEVMErrorKind::kTransactionError},
+      {"UNKNOWN_ERROR", mojom::BlowfishEVMErrorKind::kUnknownError},
+  };
+
+  for (const auto& test_case : kCases) {
+    SCOPED_TRACE(test_case.kind);
+    auto json = absl::StrFormat(kJson, "Error for kind", test_case.kind);
+    auto simulation_response = evm::ParseSimulationResponse(
+        ParseJson(json), "0xd8da6bf26964af9d7eed9e03e53415d37aa96045");
+    ASSERT_TRUE(simulation_response);
+    ASSERT_TRUE(simulation_response->error);
+    EXPECT_EQ(simulation_response->error->kind, test_case.expected);
+    EXPECT_EQ(simulation_response->error->human_readable_error,
+              "Error for kind");
+    EXPECT_EQ(simulation_response->expected_state_changes.size(), 0u);
+  }
+}
+
+TEST(SimulationResponseParserUnitTest, ParseEvmUserAccountKeyMatching) {
+  constexpr char kJson[] = R"(
+    {
+      "requestId":"e8cd35ce-f743-4ef2-8e94-f26857744db7",
+      "action":"NONE",
+      "warnings":[],
+      "simulationResults":{
+        "aggregated":{
+          "error":null,
+          "expectedStateChanges":{
+            "%s":[
+              {
+                "humanReadableDiff":"Send 0.033 ETH",
+                "rawInfo":{
+                  "kind":"NATIVE_ASSET_TRANSFER",
+                  "data":{
+                    "amount":{
+                      "after":"71057321770366572",
+                      "before":"104057321770366572"
+                    },
+                    "asset":{
+                      "address":"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+                      "symbol":"ETH",
+                      "name":"Ether",
+                      "decimals":"18",
+                      "verified":true,
+                      "imageUrl":"https://eth.png",
+                      "price":{
+                        "source":"Coingecko",
+                        "updatedAt":"1681958792",
+                        "dollarValuePerToken":"1945.92"
+                      }
+                    },
+                    "counterparty":{
+                      "kind":"ACCOUNT",
+                      "address":"0x06924592cdf28acd3c1d23c37875c6c6a667bdf7"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  )";
+  constexpr char kChecksummedAccount[] =
+      "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045";
+  constexpr char kLowercaseAccount[] =
+      "0xd8da6bf26964af9d7eed9e03e53415d37aa96045";
+
+  {
+    // The lowercase key is found when a checksummed account is passed.
+    auto json = absl::StrFormat(kJson, kLowercaseAccount);
+    auto simulation_response =
+        evm::ParseSimulationResponse(ParseJson(json), kChecksummedAccount);
+    ASSERT_TRUE(simulation_response);
+    EXPECT_FALSE(simulation_response->error);
+    ASSERT_EQ(simulation_response->expected_state_changes.size(), 1u);
+    EXPECT_EQ(
+        simulation_response->expected_state_changes.at(0)->human_readable_diff,
+        "Send 0.033 ETH");
+  }
+
+  {
+    // An exact key match is preferred.
+    auto json = absl::StrFormat(kJson, kChecksummedAccount);
+    auto simulation_response =
+        evm::ParseSimulationResponse(ParseJson(json), kChecksummedAccount);
+    ASSERT_TRUE(simulation_response);
+    ASSERT_EQ(simulation_response->expected_state_changes.size(), 1u);
+    EXPECT_EQ(
+        simulation_response->expected_state_changes.at(0)->human_readable_diff,
+        "Send 0.033 ETH");
+  }
+
+  {
+    // No key for the account yields a response without state changes.
+    auto json =
+        absl::StrFormat(kJson, "0x06924592cdf28acd3c1d23c37875c6c6a667bdf7");
+    auto simulation_response =
+        evm::ParseSimulationResponse(ParseJson(json), kChecksummedAccount);
+    ASSERT_TRUE(simulation_response);
+    EXPECT_EQ(simulation_response->action,
+              mojom::BlowfishSuggestedAction::kNone);
+    EXPECT_FALSE(simulation_response->error);
+    EXPECT_EQ(simulation_response->expected_state_changes.size(), 0u);
+  }
+}
+
 TEST(SimulationResponseParserUnitTest, ParseEvmUnknownWarnings) {
   std::string json(R"(
     {
@@ -1913,6 +2049,76 @@ TEST(SimulationResponseParserUnitTest, ParseSolanaInvalidError) {
   auto simulation_response = solana::ParseSimulationResponse(
       ParseJson(json), "8eekKfUAGSJbq3CdA2TmHb8tKuyzd5gtEas3MYAtXzrT");
   EXPECT_FALSE(simulation_response);
+}
+
+TEST(SimulationResponseParserUnitTest, ParseSolanaErrorKinds) {
+  constexpr char kJson[] = R"(
+    {
+      "aggregated": {
+        "action": "NONE",
+        "warnings": [],
+        "expectedStateChanges": {
+          "8eekKfUAGSJbq3CdA2TmHb8tKuyzd5gtEas3MYAtXzrT": []
+        },
+        "error": {
+          "kind": "%s",
+          "humanReadableError": "%s"
+        }
+      }
+    }
+  )";
+
+  struct {
+    const char* kind;
+    const char* human_readable_error;
+    mojom::BlowfishSolanaErrorKind expected;
+  } kCases[] = {
+      {"BAD_REQUEST", "User account supplied in request not found",
+       mojom::BlowfishSolanaErrorKind::kBadRequest},
+      {"ERROR_PROCESSING_INSTRUCTION_0:_x", "Instruction 0 failed",
+       mojom::BlowfishSolanaErrorKind::kErrorProcessingInstruction},
+      {"SIMULATION_FAILED", "Simulation failed",
+       mojom::BlowfishSolanaErrorKind::kSimulationFailed},
+      {"UNKNOWN_ERROR", "Unknown error",
+       mojom::BlowfishSolanaErrorKind::kUnknownError},
+      {"SOMETHING_NOT_DOCUMENTED", "Undocumented error",
+       mojom::BlowfishSolanaErrorKind::kUnknownError},
+  };
+
+  for (const auto& test_case : kCases) {
+    SCOPED_TRACE(test_case.kind);
+    auto json =
+        absl::StrFormat(kJson, test_case.kind, test_case.human_readable_error);
+    auto simulation_response = solana::ParseSimulationResponse(
+        ParseJson(json), "8eekKfUAGSJbq3CdA2TmHb8tKuyzd5gtEas3MYAtXzrT");
+    ASSERT_TRUE(simulation_response);
+    ASSERT_TRUE(simulation_response->error);
+    EXPECT_EQ(simulation_response->error->kind, test_case.expected);
+    EXPECT_EQ(simulation_response->error->human_readable_error,
+              test_case.human_readable_error);
+    EXPECT_EQ(simulation_response->expected_state_changes.size(), 0u);
+  }
+}
+
+TEST(SimulationResponseParserUnitTest, ParseSolanaMissingUserAccount) {
+  std::string json(R"(
+    {
+      "aggregated": {
+        "action": "NONE",
+        "warnings": [],
+        "expectedStateChanges": {
+          "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8": []
+        },
+        "error": null
+      }
+    }
+  )");
+
+  auto simulation_response = solana::ParseSimulationResponse(
+      ParseJson(json), "8eekKfUAGSJbq3CdA2TmHb8tKuyzd5gtEas3MYAtXzrT");
+  ASSERT_TRUE(simulation_response);
+  EXPECT_FALSE(simulation_response->error);
+  EXPECT_EQ(simulation_response->expected_state_changes.size(), 0u);
 }
 
 TEST(SimulationResponseParserUnitTest, ParseSolanaResponseNotDict) {
