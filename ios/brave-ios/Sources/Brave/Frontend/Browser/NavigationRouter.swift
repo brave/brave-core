@@ -65,7 +65,7 @@ public enum NavigationPath: Equatable {
         }
         url = resolvedURL
       } else {
-        url = nil
+        return nil
       }
       let isPrivate =
         Preferences.Privacy.privateBrowsingOnly.value
