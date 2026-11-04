@@ -640,7 +640,7 @@
     Search • Tools
   </message>
   <message name="IDS_CHAT_UI_CHAT_CLAUDE_OPUS_SUBTITLE" desc="A description for claude-opus model" formatter_data="webui=AiChat">
-    Search • Vision
+    Search • Vision • Tools
   </message>
   <message name="IDS_CHAT_UI_CHAT_BRAVE_SUMMARY_SUBTITLE" desc="A description for ocelot model" formatter_data="webui=AiChat">
     Summaries • Fast
