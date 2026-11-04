@@ -28,8 +28,11 @@ class PsstSettingsService : public KeyedService {
   class PrefObserver : public base::CheckedObserver {
    public:
     virtual void OnPsstEnableChange(bool new_value) {}
-    virtual void OnInfobarShownCounterChange(int infobar_shown_counter,
-                                             int infobar_decline_counter) {}
+    virtual void OnPsstPrefsChange(
+        int infobar_shown_counter,
+        int infobar_decline_counter,
+        const base::flat_map<std::string, PsstWebsiteSettings>&
+            psst_websites_settings) {}
 
    protected:
     ~PrefObserver() override = default;

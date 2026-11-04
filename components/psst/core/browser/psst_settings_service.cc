@@ -178,8 +178,9 @@ void PsstSettingsService::OnPreferenceChanged(const std::string& pref_name) {
         prefs_->GetInteger(prefs::kPsstInfobarDeclineCounter);
     const int infobar_shown_count =
         prefs_->GetInteger(prefs::kPsstInfobarShownCounter);
-    observers_.Notify(&PrefObserver::OnInfobarShownCounterChange,
-                      infobar_shown_count, infobar_decline_count);
+    const auto websites_settings = GetAllPsstWebsitesSettings();
+    observers_.Notify(&PrefObserver::OnPsstPrefsChange, infobar_shown_count,
+                      infobar_decline_count, websites_settings);
     return;
   }
 }
