@@ -492,6 +492,10 @@ bool ConversationHandler::IsRequestInProgress() {
   return is_request_in_progress_;
 }
 
+bool ConversationHandler::IsToolUseInProgress() const {
+  return is_tool_use_in_progress_;
+}
+
 void ConversationHandler::OnConversationDeleted() {
   for (auto& client : conversation_ui_handlers_) {
     client->OnConversationDeleted();

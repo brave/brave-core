@@ -719,5 +719,43 @@ describe('ConversationsList', () => {
         expect(document.querySelectorAll('.completedIndicator').length).toBe(1)
       })
     })
+
+    it('treats the bound conversation as active on the tab route', async () => {
+      await renderConversationsList(
+        <MockContext
+          service={{
+            getConversations: () =>
+              Promise.resolve({ conversations: mockConversations }),
+          }}
+          initialState={{
+            serviceState: { isStoragePrefEnabled: true },
+            conversationState: { conversationUuid: 'uuid-1' },
+            conversationGenerationState: new Map([['uuid-1', CG.kGenerating]]),
+          }}
+        >
+          <ActiveChatContext.Provider
+            value={{
+              api: undefined!,
+              selectedConversationId: 'tab',
+              updateSelectedConversationId: () => {},
+              createNewConversation: () => {},
+              createNewConversationWithWorkspace: () => {},
+              isMainConversation: false,
+              openMainConversation: () => {},
+            }}
+          >
+            <ConversationsList />
+          </ActiveChatContext.Provider>
+        </MockContext>,
+      )
+
+      await waitFor(() => {
+        expect(screen.getByText('How to use TypeScript')).toBeInTheDocument()
+      })
+      await waitFor(() => {
+        expect(document.querySelectorAll('.navItemActive').length).toBe(1)
+        expect(document.querySelectorAll('.generatingIndicator').length).toBe(0)
+      })
+    })
   })
 })

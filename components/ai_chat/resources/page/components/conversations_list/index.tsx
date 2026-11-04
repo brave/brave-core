@@ -429,12 +429,10 @@ export default function ConversationsList(props: ConversationsListProps) {
 
   const generationStateMap =
     aiChatContext.api.useConversationGenerationStateData()
-  const { selectedConversationId } = useActiveChat()
-  const conversationCtx = useConversation()
-  const { conversationUuid: contextConversationUuid } =
-    conversationCtx.api.useGetStateData()
-
-  const activeUuid = selectedConversationId || contextConversationUuid
+  // The route id can be the tab-associated placeholder, so use the conversation
+  // that is actually bound.
+  const { conversationUuid: activeUuid } =
+    useConversation().api.useGetStateData()
 
   const itemState: ItemState = {
     openOptionsMenuKey,

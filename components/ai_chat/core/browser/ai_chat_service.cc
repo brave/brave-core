@@ -23,6 +23,7 @@
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
@@ -1202,18 +1203,15 @@ void AIChatService::OnRequestInProgressChanged(ConversationHandler* handler,
         mojom::ConversationGenerationState::kGenerating) {
       NotifyConversationGenerationState(uuid);
     }
-  } else if (auto it = conversation_generation_state_.find(uuid);
-             it != conversation_generation_state_.end() &&
-             it->second == mojom::ConversationGenerationState::kGenerating) {
-    // Stopping an idle conversation also reports false, so only transition
-    // out of kGenerating.
-    if (IsConversationVisible(uuid)) {
-      conversation_generation_state_.erase(it);
-      NotifyConversationGenerationState(uuid);
-    } else {
-      it->second = mojom::ConversationGenerationState::kCompletedNotViewed;
-      NotifyConversationGenerationState(uuid);
-    }
+  } else if (const auto* state =
+                 base::FindOrNull(conversation_generation_state_, uuid);
+             state &&
+             *state == mojom::ConversationGenerationState::kGenerating) {
+    // The handler reports false before deciding whether to continue with a
+    // tool or a queued request, so decide once it has.
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindOnce(&AIChatService::MaybeCompleteGeneration,
+                                  weak_ptr_factory_.GetWeakPtr(), uuid));
   }
 
   // We don't unload a conversation if it has a request in progress, so check
@@ -1405,6 +1403,17 @@ void AIChatService::OnClientConnectionChanged(ConversationHandler* handler) {
     ai_chat_metrics_->RecordConversationUnload(
         handler->get_conversation_uuid());
   }
+  // A connected client, whichever path bound it, counts as viewing the
+  // conversation.
+  if (handler->IsAnyClientConnected()) {
+    const std::string& uuid = handler->get_conversation_uuid();
+    auto it = conversation_generation_state_.find(uuid);
+    if (it != conversation_generation_state_.end() &&
+        it->second == mojom::ConversationGenerationState::kCompletedNotViewed) {
+      conversation_generation_state_.erase(it);
+      NotifyConversationGenerationState(uuid);
+    }
+  }
   QueueMaybeUnloadConversation(handler);
 }
 
@@ -1498,14 +1507,6 @@ void AIChatService::BindConversation(
     const std::string& uuid,
     mojo::PendingReceiver<mojom::ConversationHandler> receiver,
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
-  // Viewing a conversation clears its completed-not-viewed state.
-  auto it = conversation_generation_state_.find(uuid);
-  if (it != conversation_generation_state_.end() &&
-      it->second == mojom::ConversationGenerationState::kCompletedNotViewed) {
-    conversation_generation_state_.erase(it);
-    NotifyConversationGenerationState(uuid);
-  }
-
   GetConversation(
       std::move(uuid),
       base::BindOnce(
@@ -1612,6 +1613,25 @@ void AIChatService::NotifyConversationGenerationState(const std::string& uuid) {
 bool AIChatService::IsConversationVisible(const std::string& uuid) const {
   auto* handler = base::FindPtrOrNull(conversation_handlers_, uuid);
   return handler && handler->IsAnyClientConnected();
+}
+
+void AIChatService::MaybeCompleteGeneration(const std::string& uuid) {
+  auto it = conversation_generation_state_.find(uuid);
+  if (it == conversation_generation_state_.end() ||
+      it->second != mojom::ConversationGenerationState::kGenerating) {
+    return;
+  }
+  if (auto* handler = base::FindPtrOrNull(conversation_handlers_, uuid);
+      handler &&
+      (handler->IsRequestInProgress() || handler->IsToolUseInProgress())) {
+    return;
+  }
+  if (IsConversationVisible(uuid)) {
+    conversation_generation_state_.erase(it);
+  } else {
+    it->second = mojom::ConversationGenerationState::kCompletedNotViewed;
+  }
+  NotifyConversationGenerationState(uuid);
 }
 
 void AIChatService::OpenConversationWithStagedEntries(

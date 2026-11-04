@@ -5,8 +5,7 @@
 
 import createAIChatApi from './ai_chat_api'
 import * as Mojom from '../../common/mojom'
-import { makeCloseable } from '$web-common/api'
-import { clearAllDataForTesting } from '$web-common/api'
+import { clearAllDataForTesting, makeCloseable } from '$web-common/api'
 import { createMockService } from './mock_interfaces'
 
 const CG = Mojom.ConversationGenerationState
@@ -108,5 +107,26 @@ describe('ai_chat_api conversationGenerationState', () => {
     emit(wrapper, 'x', CG.kGenerating)
     expect(size1).toBe(1)
     expect(states(wrapper).size).toBe(1)
+  })
+
+  it('replays events received before the snapshot on top of it', () => {
+    const wrapper = makeApi()
+    emit(wrapper, 'a', CG.kCompletedNotViewed)
+    emit(wrapper, 'b', CG.kIdle)
+    wrapper.setInitialGenerationStates({
+      a: CG.kGenerating,
+      b: CG.kGenerating,
+      c: CG.kGenerating,
+    })
+    expect(states(wrapper).get('a')).toBe(CG.kCompletedNotViewed)
+    expect(states(wrapper).has('b')).toBe(false)
+    expect(states(wrapper).get('c')).toBe(CG.kGenerating)
+  })
+
+  it('applies events after the snapshot normally', () => {
+    const wrapper = makeApi()
+    wrapper.setInitialGenerationStates({ a: CG.kGenerating })
+    emit(wrapper, 'a', CG.kIdle)
+    expect(states(wrapper).size).toBe(0)
   })
 })
