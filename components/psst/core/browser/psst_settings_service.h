@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
@@ -52,6 +53,8 @@ class PsstSettingsService : public KeyedService {
   std::optional<PsstWebsiteSettings> GetPsstWebsiteSettings(
       const url::Origin& origin,
       std::string_view user_id);
+
+  base::flat_map<std::string, PsstWebsiteSettings> GetAllPsstWebsitesSettings();
 
   void SetPsstWebsiteSettings(const url::Origin& origin,
                               PsstWebsiteSettings psst_metadata);

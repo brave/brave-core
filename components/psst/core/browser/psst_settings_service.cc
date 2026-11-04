@@ -82,6 +82,39 @@ std::optional<PsstWebsiteSettings> PsstSettingsService::GetPsstWebsiteSettings(
   return PsstWebsiteSettings::FromValue(*user_id_metadata_dict);
 }
 
+base::flat_map<std::string, PsstWebsiteSettings>
+PsstSettingsService::GetAllPsstWebsitesSettings() {
+  ContentSettingsForOneType settings =
+      host_content_settings_map_->GetSettingsForOneType(
+          ContentSettingsType::BRAVE_PSST);
+
+  base::flat_map<std::string, PsstWebsiteSettings> result;
+  for (const auto& setting : settings) {
+    const auto url = GURL(setting.primary_pattern.ToString());
+    if (!url.is_valid()) {
+      continue;
+    }
+
+    const auto* user_id_dicts = setting.setting_value.GetIfDict();
+    if (!user_id_dicts) {
+      continue;
+    }
+
+    for (const auto [key, value] : *user_id_dicts) {
+      const auto* user_id_metadata_dict = value.GetIfDict();
+      if (!user_id_metadata_dict) {
+        continue;
+      }
+
+      if (auto psst_metadata =
+              PsstWebsiteSettings::FromValue(*user_id_metadata_dict)) {
+        result.emplace(url.host(), std::move(*psst_metadata));
+      }
+    }
+  }
+  return result;
+}
+
 void PsstSettingsService::SetPsstWebsiteSettings(
     const url::Origin& origin,
     ConsentStatus consent_status,
