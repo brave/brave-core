@@ -28,6 +28,7 @@ import org.robolectric.Robolectric;
 import org.robolectric.shadows.ShadowLooper;
 
 import org.chromium.base.test.BaseRobolectricTestRunner;
+import org.chromium.ui.base.ViewUtils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -170,7 +171,7 @@ public class BraveExclusiveAccessNoticeTest {
 
         // Simulates a rotation: the container is measured and laid out again.
         mContent.layout(0, 0, mContent.getHeight() + 100, mContent.getWidth() + 100);
-        mContent.requestLayout();
+        ViewUtils.requestLayout(mContent, "BraveExclusiveAccessNoticeTest.layoutChange");
         ShadowLooper.idleMainLooper();
         assertTrue(mNotice.isVisible());
         assertEquals(1, noticeCount());

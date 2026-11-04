@@ -10,17 +10,17 @@ substitutions:
       It replaces the bottom snackbar, which covers subtitles and video
       controls and can outlive its timeout behind other snackbars.
     regex:
-      re_pattern: '(public class ExclusiveAccessBubble \{)'
+      pattern: 'public class ExclusiveAccessBubble {'
       replace: |-
-        \1
+        public class ExclusiveAccessBubble {
             private final BraveExclusiveAccessNotice mBraveNotice;
 
   - description: |-
       Create the Brave notice with the bubble.
     regex:
-      re_pattern: '(mParentContext = parentContext;)'
+      pattern: 'mParentContext = parentContext;'
       replace: |-
-        \1
+        mParentContext = parentContext;
                 mBraveNotice = new BraveExclusiveAccessNotice(parentContext);
 
   - description: |-
@@ -28,18 +28,17 @@ substitutions:
 
       The snackbar remains the fallback when the activity has no content view.
     regex:
-      re_pattern: '(public void show\(\) \{)'
+      pattern: 'public void show() {'
       replace: |-
-        \1
+        public void show() {
                 if (mBraveNotice.show(mText)) return;
 
   - description: |-
       Update the Brave notice instead of the snackbar.
     regex:
-      re_pattern:
-        '(public void update\(@JniType\("std::u16string"\) String text\) \{)'
+      pattern: 'public void update(@JniType("std::u16string") String text) {'
       replace: |-
-        \1
+        public void update(@JniType("std::u16string") String text) {
                 if (mBraveNotice.update(text)) {
                     mText = text;
                     return;
@@ -48,15 +47,15 @@ substitutions:
   - description: |-
       Hide the Brave notice with the bubble.
     regex:
-      re_pattern: '(public void hide\(\) \{)'
+      pattern: 'public void hide() {'
       replace: |-
-        \1
+        public void hide() {
                 mBraveNotice.hide();
 
   - description: |-
       Report the Brave notice's visibility.
     regex:
-      re_pattern: '(public boolean isVisible\(\) \{)'
+      pattern: 'public boolean isVisible() {'
       replace: |-
-        \1
+        public boolean isVisible() {
                 if (mBraveNotice.isVisible()) return true;
