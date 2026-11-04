@@ -3233,10 +3233,17 @@ TEST_F(BraveWalletServiceUnitTest, DisplayTxNotification) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, AutolockIsDisabledInTests) {
-  // Wallet autolock was turned off for `service_`.
+  // Wallet autolock was turned off for `service_`. IsLockedSync() is false
+  // when no wallet exists, so a wallet is required for this to be meaningful.
+  SetupWallet();
+  ASSERT_TRUE(service_->keyring_service()->IsWalletCreatedSync());
   EXPECT_FALSE(service_->keyring_service()->IsLockedSync());
   task_environment_.FastForwardBy(base::Minutes(20));
   EXPECT_FALSE(service_->keyring_service()->IsLockedSync());
+
+  // Clear the wallet from the shared prefs before the second half.
+  service_->keyring_service()->Reset();
+  ASSERT_FALSE(service_->keyring_service()->IsWalletCreatedSync());
 
   // Setup wallet service with autolock enabled.
   auto delegate = std::make_unique<TestBraveWalletServiceDelegate>();
