@@ -64,20 +64,20 @@ import org.chromium.ui.text.SpanApplier;
 import org.chromium.ui.text.SpanApplier.SpanInfo;
 
 /**
- * Activity responsible for handling the first-run onboarding experience for new Brave browser
- * installations.
+ * Activity that runs the Brave first run onboarding.
  *
- * <p>This activity extends {@link FirstRunActivityBase} and guides users through a series of
- * onboarding steps:
+ * <p>It plays the splash animation, asks the system to make Brave the default browser, and then
+ * shows the onboarding steps from {@link OnboardingStepAdapter}:
  *
  * <ul>
- *   <li>Setting Brave as the default browser
- *   <li>Configuring privacy and analytics preferences (P3A and crash reporting)
- *   <li>Accepting the Terms of Service
+ *   <li>Help Brave Search, skipped when Web Discovery isn't available
+ *   <li>Block interruptions
+ *   <li>Customize Brave, only for Day Zero variants Y and Z
+ *   <li>Make Brave better (P3A and crash reporting), skipped when both are managed by policy
  * </ul>
  *
- * <p>The onboarding flow uses animations and clear UI elements to introduce Brave’s key features
- * and privacy-focused approach.
+ * <p>Dismissing the last step accepts the EULA, marks first run as complete, and launches the
+ * pending intent.
  */
 @NullMarked
 public class WelcomeOnboardingActivity extends FirstRunActivityBase
