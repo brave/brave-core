@@ -114,7 +114,7 @@ void PsstInternalsHandler::OnPsstPrefsChange(
   if (!page_) {
     return;
   }
-  
+
   auto info = mojom::PsstDiagnosticsInfo::New();
   info->infobar_shown_count = infobar_shown_counter;
   info->infobar_decline_count = infobar_decline_counter;
