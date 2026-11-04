@@ -622,6 +622,36 @@ public class BraveBrowserLockManagerTest {
                         & WindowManager.LayoutParams.FLAG_SECURE);
     }
 
+    @Test
+    public void setScreenshotMode_notifiesRegisteredChangeHandler() {
+        BraveBrowserLockManager.ScreenshotModeChangeHandler handler =
+                mock(BraveBrowserLockManager.ScreenshotModeChangeHandler.class);
+        BraveBrowserLockManager.setScreenshotModeChangeHandler(handler);
+
+        BraveBrowserLockManager.setScreenshotMode(
+                BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_EVERYTHING, mActivity);
+
+        verify(handler)
+                .onScreenshotModeChanged(
+                        BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_EVERYTHING,
+                        mActivity);
+    }
+
+    @Test
+    public void setScreenshotMode_withoutActivity_stillNotifiesHandlerWithNullActivity() {
+        BraveBrowserLockManager.ScreenshotModeChangeHandler handler =
+                mock(BraveBrowserLockManager.ScreenshotModeChangeHandler.class);
+        BraveBrowserLockManager.setScreenshotModeChangeHandler(handler);
+
+        // The no-Activity overload is what every existing (pre-this-feature) call site uses.
+        BraveBrowserLockManager.setScreenshotMode(
+                BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_ALLOW);
+
+        verify(handler)
+                .onScreenshotModeChanged(
+                        BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_ALLOW, null);
+    }
+
     // --- shouldSecureForIncognitoVisibility ---
 
     @Test

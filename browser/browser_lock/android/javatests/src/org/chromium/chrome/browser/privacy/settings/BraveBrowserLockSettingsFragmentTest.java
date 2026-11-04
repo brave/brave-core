@@ -39,16 +39,13 @@ import org.robolectric.annotation.Config;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Callback;
 import org.chromium.base.test.BaseRobolectricTestRunner;
-import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveFeatureUtil;
-import org.chromium.chrome.browser.BraveFeatureUtilJni;
-import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.device_reauth.BiometricStatus;
 import org.chromium.chrome.browser.device_reauth.ReauthenticatorBridge;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthManager;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthSettingUtils;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.privacy.BraveBrowserLockManager;
+import org.chromium.chrome.browser.privacy.R;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.ProfileDependentSetting;
 import org.chromium.components.prefs.PrefService;
@@ -75,7 +72,6 @@ public class BraveBrowserLockSettingsFragmentTest {
     @Mock private Profile mProfile;
     @Mock private PrefService mPrefService;
     @Mock private ReauthenticatorBridge mReauthenticatorBridge;
-    @Mock private BraveFeatureUtil.Natives mBraveFeatureUtilNatives;
 
     // Mockito doesn't link a stubbed setter to a getter automatically — back the mock with real
     // state so a write is reflected by the next read, matching how the real PrefService behaves.
@@ -102,9 +98,6 @@ public class BraveBrowserLockSettingsFragmentTest {
         doReturn(BiometricStatus.BIOMETRICS_AVAILABLE)
                 .when(mReauthenticatorBridge)
                 .getBiometricAvailabilityStatus();
-
-        BraveFeatureUtilJni.setInstanceForTesting(mBraveFeatureUtilNatives);
-        BraveRelaunchUtils.setDisableDialogForTesting(true);
     }
 
     private void stubReauthResult(boolean success) {
@@ -356,7 +349,7 @@ public class BraveBrowserLockSettingsFragmentTest {
         return FragmentScenario.launchInContainer(
                 BraveBrowserLockSettingsFragment.class,
                 Bundle.EMPTY,
-                R.style.Theme_Chromium_Settings,
+                org.chromium.chrome.R.style.Theme_Chromium_Settings,
                 new FragmentFactory() {
                     @Override
                     public Fragment instantiate(

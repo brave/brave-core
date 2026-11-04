@@ -11,6 +11,8 @@ import android.os.Bundle;
 
 import com.wireguard.android.backend.GoBackend;
 
+import org.chromium.base.BraveFeatureList;
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.JavaUtils;
 import org.chromium.base.Log;
 import org.chromium.build.annotations.NullMarked;
@@ -18,7 +20,6 @@ import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.base.SplitCompatApplication;
 import org.chromium.chrome.browser.privacy.BraveBrowserLockManager;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
-import org.chromium.chrome.browser.privacy.BraveBrowserLockManager;
 import org.chromium.chrome.browser.util.BraveProfileUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.components.safe_browsing.BraveSafeBrowsingApiHandler;
@@ -35,6 +36,24 @@ public class BraveApplicationImplBase extends SplitCompatApplication.Impl {
         super.onCreate();
         if (SplitCompatApplication.isBrowserProcess()) {
             BraveBrowserLockManager.initialize(getApplication());
+            // BraveBrowserLockManager cannot depend on BraveFeatureUtil/BraveRelaunchUtils
+            // itself without creating a dependency cycle (both are shared by other settings
+            // pages that stay part of chrome_java), so this registers the one real caller's
+            // follow-up work here instead.
+            BraveBrowserLockManager.setScreenshotModeChangeHandler(
+                    (newMode, activity) -> {
+                        // Unify with the incognito-tab screenshot protection Chrome already
+                        // provides — this native feature flag only takes effect on relaunch.
+                        BraveFeatureUtil.enableFeature(
+                                BraveFeatureList.BRAVE_INCOGNITO_SCREENSHOT,
+                                /* enabled= */ newMode
+                                        == BravePreferenceKeys
+                                                .BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_ALLOW,
+                                /* fallbackToDefault= */ false);
+                        if (activity != null) {
+                            BraveRelaunchUtils.askForRelaunch(activity);
+                        }
+                    });
             // Handle Mojo BadMessageException gracefully by closing the pipe instead of
             // crashing. This matches the C++ behavior in Connector::DispatchMessage
             // (mojo/public/cpp/bindings/lib/connector.cc) where a failed Accept() calls
