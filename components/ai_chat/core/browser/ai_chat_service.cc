@@ -1416,7 +1416,7 @@ void AIChatService::OnClientConnectionChanged(ConversationHandler* handler) {
     const std::string& uuid = handler->get_conversation_uuid();
     auto it = conversation_generation_state_.find(uuid);
     if (it != conversation_generation_state_.end() &&
-        it->second == mojom::ConversationGenerationState::kCompletedNotViewed) {
+        it->second != mojom::ConversationGenerationState::kGenerating) {
       conversation_generation_state_.erase(it);
       NotifyConversationGenerationState(uuid);
       MaybeCloseCompletionNotification(uuid);
@@ -1636,8 +1636,8 @@ void AIChatService::MaybeCompleteGeneration(const std::string& uuid) {
       it->second != mojom::ConversationGenerationState::kGenerating) {
     return;
   }
-  if (auto* handler = base::FindPtrOrNull(conversation_handlers_, uuid);
-      handler &&
+  auto* handler = base::FindPtrOrNull(conversation_handlers_, uuid);
+  if (handler &&
       (handler->IsRequestInProgress() || handler->IsToolUseInProgress())) {
     return;
   }
@@ -1646,12 +1646,16 @@ void AIChatService::MaybeCompleteGeneration(const std::string& uuid) {
     NotifyConversationGenerationState(uuid);
     return;
   }
-  it->second = mojom::ConversationGenerationState::kCompletedNotViewed;
+  const bool needs_approval = handler && handler->IsAwaitingUserInput();
+  it->second = needs_approval
+                   ? mojom::ConversationGenerationState::kAwaitingUserInput
+                   : mojom::ConversationGenerationState::kCompletedNotViewed;
   NotifyConversationGenerationState(uuid);
-  MaybeShowCompletionNotification(uuid);
+  MaybeShowCompletionNotification(uuid, needs_approval);
 }
 
-void AIChatService::MaybeShowCompletionNotification(const std::string& uuid) {
+void AIChatService::MaybeShowCompletionNotification(const std::string& uuid,
+                                                    bool needs_approval) {
   if (!show_completion_notification_callback_) {
     return;
   }
@@ -1659,7 +1663,7 @@ void AIChatService::MaybeShowCompletionNotification(const std::string& uuid) {
   if (auto it = conversations_.find(uuid); it != conversations_.end()) {
     title_u16 = base::UTF8ToUTF16(it->second->title);
   }
-  show_completion_notification_callback_.Run(uuid, title_u16);
+  show_completion_notification_callback_.Run(uuid, title_u16, needs_approval);
 }
 
 void AIChatService::MaybeCloseCompletionNotification(const std::string& uuid) {
