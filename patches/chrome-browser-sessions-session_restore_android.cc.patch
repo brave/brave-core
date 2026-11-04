@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/sessions/session_restore_android.cc b/chrome/browser/sessions/session_restore_android.cc
-index cf951bb0609298d32dd98dacba3353d40ef3c1bc..8e2d77880c703c5996d57103a21aa85d3bba7f26 100644
+index eee9ca90428320878c91ce111801ca8f59deea7e..32e2670f47dc8dc8c7757b3069682ebf400205f2 100644
 --- a/chrome/browser/sessions/session_restore_android.cc
 +++ b/chrome/browser/sessions/session_restore_android.cc
 @@ -24,7 +24,7 @@

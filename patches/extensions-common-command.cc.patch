@@ -1,5 +1,5 @@
 diff --git a/extensions/common/command.cc b/extensions/common/command.cc
-index 80bfe1714f0fad2a917377a9e31ee88056735120..389f3b4ba88d03b148d3cb93fecd9e1471b1391e 100644
+index 1768b63cb70e185e4b70391e4b1554fe9a68339e..8e57408af4d6c11ba41f26f571e600f68f41bafa 100644
 --- a/extensions/common/command.cc
 +++ b/extensions/common/command.cc
 @@ -119,7 +119,7 @@ std::string Command::CommandPlatform() {

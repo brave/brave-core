@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/tabs/tab_model.h b/chrome/browser/ui/tabs/tab_model.h
-index e7b5824cb2284ecb4adb2a9f8325c580a221eabf..6dc5156b3f85975df3f9cb8dedf386304a6cf7ff 100644
+index a6c09c12615ef251541b0601fa612087bffeb8c7..55c0d1a172df1fee12ee80bb09c9e90956850b76 100644
 --- a/chrome/browser/ui/tabs/tab_model.h
 +++ b/chrome/browser/ui/tabs/tab_model.h
-@@ -198,6 +198,14 @@ class TabModel final : public TabInterface,
+@@ -192,6 +192,14 @@ class TabModel final : public TabInterface,
      base::AutoReset<bool> scoped_prevent_initialization_;
    };
  

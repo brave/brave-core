@@ -1,5 +1,5 @@
 diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
-index 6f5f891dc689a2e7628cf731b7863264cc0ac0ab..7b697c06b9b787ba0249c9fa82de092a87970eb8 100644
+index e153e9539f8e79e31b812ab892d0f434c306d71a..f89aed78c18a18cf80a1dd7fe654202e6e063ca8 100644
 --- a/chrome/common/BUILD.gn
 +++ b/chrome/common/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -26,7 +26,7 @@ index 6f5f891dc689a2e7628cf731b7863264cc0ac0ab..7b697c06b9b787ba0249c9fa82de092a
    defines = []
  
    configs += [ "//build/config:precompiled_headers" ]
-@@ -261,6 +264,7 @@ static_library("common_lib") {
+@@ -262,6 +265,7 @@ static_library("common_lib") {
      "//ui/resources",
      "//url",
    ]
@@ -34,7 +34,7 @@ index 6f5f891dc689a2e7628cf731b7863264cc0ac0ab..7b697c06b9b787ba0249c9fa82de092a
  
    deps = [
      "//components/cdm/common:buildflags",
-@@ -276,6 +280,7 @@ static_library("common_lib") {
+@@ -277,6 +281,7 @@ static_library("common_lib") {
      "//components/pdf/common:constants",
      "//components/pdf/common:util",
    ]
@@ -42,7 +42,7 @@ index 6f5f891dc689a2e7628cf731b7863264cc0ac0ab..7b697c06b9b787ba0249c9fa82de092a
  
    if (is_mac || is_win || is_linux || is_chromeos) {
      deps += [ "//components/webapps/isolated_web_apps:scheme" ]
-@@ -486,6 +491,7 @@ static_library("non_code_constants") {
+@@ -487,6 +492,7 @@ static_library("non_code_constants") {
    if (is_chromeos) {
      deps += [ "//ash/constants" ]
    }
@@ -50,7 +50,7 @@ index 6f5f891dc689a2e7628cf731b7863264cc0ac0ab..7b697c06b9b787ba0249c9fa82de092a
  }
  
  component("chrome_features") {
-@@ -588,6 +594,7 @@ static_library("constants") {
+@@ -590,6 +596,7 @@ static_library("constants") {
      "//printing/buildflags",
      "//third_party/widevine/cdm:buildflags",
    ]

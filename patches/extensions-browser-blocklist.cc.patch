@@ -1,8 +1,8 @@
 diff --git a/extensions/browser/blocklist.cc b/extensions/browser/blocklist.cc
-index 7dae85306825cc55e6b31ed2e32b3befbcbb502d..94a77b0f40a659f24a32f9038c91a064027c077d 100644
+index 0d28fcf4d0c455254351fdd6649eb88620066859..e9406051abc4845d1740f214c1c7960b7e62aa08 100644
 --- a/extensions/browser/blocklist.cc
 +++ b/extensions/browser/blocklist.cc
-@@ -191,6 +191,8 @@ Blocklist::~Blocklist() = default;
+@@ -189,6 +189,8 @@ Blocklist::~Blocklist() = default;
  
  void Blocklist::GetBlocklistedIDs(const std::set<ExtensionId>& ids,
                                    GetBlocklistedIDsCallback callback) {
