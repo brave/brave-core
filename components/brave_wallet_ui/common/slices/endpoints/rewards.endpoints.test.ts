@@ -92,5 +92,27 @@ describe('api slice Brave Rewards endpoints', () => {
       expect(isRewardsEnabled).toBeDefined()
       expect(isRewardsEnabled).toBe(mockedRewardsData.rewardsEnabled)
     })
+    it('should fetch & cache card verification', async () => {
+      const store = createMockStore(
+        {},
+        {},
+        { ...mockedRewardsData, isRewardsCardVerified: true },
+      )
+
+      const { result } = renderHook(
+        () => useGetRewardsInfoQuery(),
+        renderHookOptionsWithMockStore(store),
+      )
+
+      await waitFor(() =>
+        expect(result.current.data && !result.current.isLoading).toBeTruthy(),
+      )
+
+      const { data: rewardsInfo, isLoading, error } = result.current
+
+      expect(isLoading).toBe(false)
+      expect(error).not.toBeDefined()
+      expect(rewardsInfo?.isRewardsCardVerified).toBe(true)
+    })
   })
 })

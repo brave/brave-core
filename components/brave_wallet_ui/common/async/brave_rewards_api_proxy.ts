@@ -55,6 +55,11 @@ export class BraveRewardsProxy {
     const result = await this.rewardsPageProxy.handler.getAvailableBalance()
     return result?.balance ?? undefined
   }
+
+  // Card verification is not available from the rewards API yet.
+  getIsRewardsCardVerified = () => {
+    return Promise.resolve(false)
+  }
 }
 
 export type BraveRewardsProxyInstance = InstanceType<typeof BraveRewardsProxy>

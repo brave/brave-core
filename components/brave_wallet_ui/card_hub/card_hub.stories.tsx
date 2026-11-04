@@ -23,6 +23,7 @@ import { WalletStatus } from '$wallet/constants/types'
 type StorybookCardHubArgs = {
   isWalletCreated: boolean
   isRewardsEnabled: boolean
+  isRewardsCardVerified: boolean
 }
 
 const mockRewardsInfo: BraveRewardsProxyOverrides = {
@@ -38,7 +39,7 @@ const mockRewardsInfo: BraveRewardsProxyOverrides = {
 
 export const _CardHub = {
   render: (args: StorybookCardHubArgs) => {
-    const { isWalletCreated, isRewardsEnabled } = args
+    const { isWalletCreated, isRewardsEnabled, isRewardsCardVerified } = args
     return (
       <WalletPanelStory
         walletStateOverride={{
@@ -52,8 +53,12 @@ export const _CardHub = {
         }}
         rewardsApiOverrides={
           isRewardsEnabled
-            ? mockRewardsInfo
-            : { rewardsEnabled: false, externalWallet: null }
+            ? { ...mockRewardsInfo, isRewardsCardVerified }
+            : {
+                rewardsEnabled: false,
+                externalWallet: null,
+                isRewardsCardVerified,
+              }
         }
       >
         <CardHub />
@@ -71,9 +76,11 @@ export default {
   args: {
     isWalletCreated: false,
     isRewardsEnabled: false,
+    isRewardsCardVerified: false,
   },
   argTypes: {
     isWalletCreated: { control: { type: 'boolean' } },
     isRewardsEnabled: { control: { type: 'boolean' } },
+    isRewardsCardVerified: { control: { type: 'boolean' } },
   },
 }

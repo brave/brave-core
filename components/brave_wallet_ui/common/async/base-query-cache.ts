@@ -342,23 +342,34 @@ export class BaseQueryCache {
   // Brave Rewards
   getBraveRewardsInfo = async () => {
     if (!this.rewardsInfo) {
-      const isRewardsEnabled = await getBraveRewardsProxy().getRewardsEnabled()
+      const rewardsProxy = getBraveRewardsProxy()
+      const [isRewardsEnabled, isRewardsCardVerified] = await Promise.all([
+        rewardsProxy.getRewardsEnabled(),
+        rewardsProxy.getIsRewardsCardVerified(),
+      ])
 
       if (!isRewardsEnabled) {
-        this.rewardsInfo = emptyRewardsInfo
+        this.rewardsInfo = {
+          ...emptyRewardsInfo,
+          isRewardsCardVerified,
+        }
         return this.rewardsInfo
       }
       const { provider, status, url } =
-        (await getBraveRewardsProxy().getExternalWallet()) || {}
+        (await rewardsProxy.getExternalWallet()) || {}
 
       if (!provider || provider === 'solana') {
-        return emptyRewardsInfo
+        return {
+          ...emptyRewardsInfo,
+          isRewardsCardVerified,
+        }
       }
 
-      const balance = await getBraveRewardsProxy().fetchBalance()
+      const balance = await rewardsProxy.fetchBalance()
 
       this.rewardsInfo = {
         isRewardsEnabled: true,
+        isRewardsCardVerified,
         balance,
         provider,
         status: status || WalletStatus.kNotConnected,
@@ -684,6 +695,7 @@ export async function makeTokensRegistry({
 // defaults
 export const emptyRewardsInfo: BraveRewardsInfo = {
   isRewardsEnabled: false,
+  isRewardsCardVerified: false,
   balance: undefined,
   rewardsToken: undefined,
   provider: undefined,

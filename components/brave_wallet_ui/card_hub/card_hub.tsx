@@ -18,6 +18,10 @@ import { WalletCardOptions } from '$wallet/options/wallet-card-options'
 
 // Utils
 import { getLocale } from '$web-common/locale'
+import { emptyRewardsInfo } from '$wallet/common/async/base-query-cache'
+
+// Queries
+import { useGetRewardsInfoQuery } from '$wallet/common/slices/api.slice'
 
 // Hooks
 import { useLocalStorage } from '$wallet/common/hooks/use_local_storage'
@@ -31,6 +35,7 @@ import { HubMenu } from './components/hub_menu/hub_menu'
 import { Settings } from './components/settings/settings'
 import { HideCardPopup } from './components/hide_card_popup/hide_card_popup'
 import { CardDetails } from './components/card_details/card_details'
+import { VerifyRewardsCard } from './components/verify_rewards_card/verify_rewards_card'
 
 // Styles
 import {
@@ -94,6 +99,10 @@ export const CardHub = () => {
   } = useCardHubTransition(visibleCardIds)
 
   const history = useHistory()
+
+  // Queries
+  const { data: { isRewardsCardVerified } = emptyRewardsInfo } =
+    useGetRewardsInfoQuery()
 
   const selectedCardTitle = selectedCardId
     ? getLocale(
@@ -185,12 +194,20 @@ export const CardHub = () => {
           })}
         </CardStack>
       </Column>
-      <CardDetails
-        title={selectedCardTitle}
-        visible={detailsOpen}
-        slotRef={detailsSlotRef}
-        onBack={onBackFromDetails}
-      />
+      {isRewardsCardVerified ? (
+        <CardDetails
+          title={selectedCardTitle}
+          visible={detailsOpen}
+          slotRef={detailsSlotRef}
+          onBack={onBackFromDetails}
+        />
+      ) : (
+        <VerifyRewardsCard
+          visible={detailsOpen}
+          slotRef={detailsSlotRef}
+          onBack={onBackFromDetails}
+        />
+      )}
       <HideCardPopup
         card={hidingCard}
         isOpen={!!hidingCard}
