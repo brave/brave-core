@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index 8f5b96aa1c0f80b24f48312e7547738186416fce..cc80776962409aecd4496dc836d8bc7ce111b05d 100644
+index 812e9639a21469ae87ce2ab14b014ceb718747ac..72ddd387832e7e3f794e0862ae5ab33d3e9c6842 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
 @@ -319,6 +319,7 @@
@@ -161,7 +161,7 @@ index 8f5b96aa1c0f80b24f48312e7547738186416fce..cc80776962409aecd4496dc836d8bc7c
        status: "stable",
      },
      {
-@@ -6804,7 +6818,7 @@
+@@ -6813,7 +6827,7 @@
          "ChromeOS": "stable",
          "default": "",
        },
@@ -170,7 +170,7 @@ index 8f5b96aa1c0f80b24f48312e7547738186416fce..cc80776962409aecd4496dc836d8bc7c
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -6972,6 +6986,7 @@
+@@ -6981,6 +6995,7 @@
      },
      {
        name: "UserMediaElement",
@@ -178,7 +178,7 @@ index 8f5b96aa1c0f80b24f48312e7547738186416fce..cc80776962409aecd4496dc836d8bc7c
        status: "stable",
        public: true,
      },
-@@ -7800,7 +7815,7 @@
+@@ -7809,7 +7824,7 @@
        // with its responseXML document.
        // https://crbug.com/466303347
        name: "XMLRustForNonXslt",
@@ -187,7 +187,7 @@ index 8f5b96aa1c0f80b24f48312e7547738186416fce..cc80776962409aecd4496dc836d8bc7c
      },
      {
        name: "XMLSerializerConsistentDefaultNsDeclMatching",
-@@ -7833,5 +7848,10 @@
+@@ -7842,5 +7857,10 @@
        // crbug.com/435623334.
        name: "XSLTSpecialTrial",
      },
