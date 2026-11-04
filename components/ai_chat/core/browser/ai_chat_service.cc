@@ -487,8 +487,6 @@ void AIChatService::DeleteConversations(std::optional<base::Time> begin_time,
   // Avoid notifying the list once per deleted conversation.
   for (const auto& uuid : conversation_keys) {
     EraseConversation(uuid);
-    std::erase_if(content_conversations_,
-                  [&uuid](const auto& kv) { return kv.second == uuid; });
   }
   if (!conversation_keys.empty()) {
     OnConversationListChanged();
@@ -1069,6 +1067,12 @@ bool AIChatService::CanUnloadConversation(ConversationHandler* conversation) {
   // 2. History is disabled: We'll show a blank conversation.
 
   if (conversation->IsRequestInProgress()) {
+    return false;
+  }
+
+  // Tool use runs between requests, so the request flag alone doesn't mean the
+  // response is finished.
+  if (conversation->IsToolUseInProgress()) {
     return false;
   }
 

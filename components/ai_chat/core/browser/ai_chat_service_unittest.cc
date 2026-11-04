@@ -2063,6 +2063,41 @@ TEST_P(AIChatServiceUnitTest,
                         }));
 }
 
+TEST_P(AIChatServiceUnitTest,
+       GenerationState_CompletedNotViewedSurvivesUnload) {
+  ConversationHandler* handler = CreateConversation();
+  const std::string uuid = handler->get_conversation_uuid();
+  auto resolve = StartGeneration(handler, *client_);
+  ExpectGenerationState(
+      *client_, uuid, mojom::ConversationGenerationState::kCompletedNotViewed,
+      base::BindOnce(&CompleteGeneration, std::move(resolve)));
+  ASSERT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 1u);
+
+  if (!IsAIChatHistoryEnabled()) {
+    // Without history the conversation itself is removed on unload.
+    ExpectGenerationState(*client_, uuid,
+                          mojom::ConversationGenerationState::kIdle,
+                          base::BindLambdaForTesting([&] {
+                            task_environment_.FastForwardBy(base::Seconds(10));
+                          }));
+    return;
+  }
+
+  task_environment_.FastForwardBy(base::Seconds(10));
+  ASSERT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 0u);
+
+  mojo::PendingRemote<mojom::ServiceObserver> observer;
+  auto observer_receiver = observer.InitWithNewPipeAndPassReceiver();
+  base::test::TestFuture<mojom::ServiceStatePtr, GenerationStates> future;
+  ai_chat_service_->BindObserver(
+      std::move(observer),
+      future.GetCallback<mojom::ServiceStatePtr, const GenerationStates&>());
+  EXPECT_THAT(
+      future.Get<1>(),
+      testing::ElementsAre(testing::Pair(
+          uuid, mojom::ConversationGenerationState::kCompletedNotViewed)));
+}
+
 TEST_P(AIChatServiceUnitTest, GenerationState_BindClearsNotViewed) {
   ConversationHandler* handler = CreateConversation();
   const std::string uuid = handler->get_conversation_uuid();
