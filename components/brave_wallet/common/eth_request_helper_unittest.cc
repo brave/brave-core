@@ -49,6 +49,8 @@ TEST(EthRequestHelperUnitTest, CommonParseErrors) {
     EXPECT_FALSE(ParsePersonalEcRecoverParams(list_params));
     EXPECT_FALSE(ParseEthGetEncryptionPublicKeyParams(list_params));
     EXPECT_FALSE(ParseEthDecryptParams(list_params));
+    EXPECT_FALSE(ParseEthSignTypedDataParams(
+        list_params, EthSignTypedDataHelper::Version::kV4));
   }
 
   auto dict_error_cases =
@@ -660,6 +662,11 @@ TEST(EthResponseHelperUnitTest, ParseSwitchEthereumChainParams) {
                 ParseParamsList("{\"params\": [{\"chainId\": \"0x1\"}]}")),
             "0x1");
 
+  // Chain id is normalized to lowercase.
+  EXPECT_EQ(ParseSwitchEthereumChainParams(
+                ParseParamsList("{\"params\": [{\"chainId\": \"0xA86A\"}]}")),
+            "0xa86a");
+
   EXPECT_FALSE(ParseSwitchEthereumChainParams(
       ParseParamsList("{\"params\": [{\"chainId\": 1}]}")));
   EXPECT_FALSE(ParseSwitchEthereumChainParams(
@@ -828,6 +835,102 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
       eth_sign_typed_data->domain_hash, eth_sign_typed_data->primary_hash);
   EXPECT_EQ(base::HexEncodeLower(message_to_sign), expected_message_to_sign);
   EXPECT_FALSE(eth_sign_typed_data->meta);
+}
+
+TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParamsInvalidInput) {
+  constexpr char kAddress[] = "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826";
+  constexpr char kTypedDataJson[] = R"({
+    "types": {
+      "EIP712Domain": [
+        {"name": "name", "type": "string"},
+        {"name": "version", "type": "string"},
+        {"name": "chainId", "type": "uint256"},
+        {"name": "verifyingContract", "type": "address"}
+      ],
+      "Mail": [
+        {"name": "from", "type": "Person"},
+        {"name": "to", "type": "Person"},
+        {"name": "contents", "type": "string"}
+      ],
+      "Person": [
+        {"name": "name", "type": "string"},
+        {"name": "wallet", "type": "address"}
+      ]
+    },
+    "primaryType": "Mail",
+    "domain": {
+      "name": "Ether Mail",
+      "version": "1",
+      "chainId": 1,
+      "verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC"
+    },
+    "message": {
+      "from": {
+        "name": "Cow",
+        "wallet": "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826"
+      },
+      "to": {
+        "name": "Bob",
+        "wallet": "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB"
+      },
+      "contents": "Hello, Bob!"
+    }
+  })";
+
+  auto parse = [](const base::ListValue& params) {
+    return ParseEthSignTypedDataParams(params,
+                                       EthSignTypedDataHelper::Version::kV4);
+  };
+  auto make_params = [&](base::Value typed_data) {
+    base::ListValue params;
+    params.Append(std::string(kAddress));
+    params.Append(std::move(typed_data));
+    return params;
+  };
+
+  // Sanity check: the unmodified typed data is accepted.
+  EXPECT_TRUE(parse(make_params(base::Value(ParseJsonDict(kTypedDataJson)))));
+  EXPECT_TRUE(parse(make_params(base::Value(std::string(kTypedDataJson)))));
+
+  // Wrong number of params.
+  EXPECT_FALSE(parse(base::ListValue()));
+  {
+    base::ListValue params;
+    params.Append(std::string(kAddress));
+    EXPECT_FALSE(parse(params));
+  }
+  {
+    auto params = make_params(base::Value(ParseJsonDict(kTypedDataJson)));
+    params.Append("extra");
+    EXPECT_FALSE(parse(params));
+  }
+
+  // Address is not a string.
+  {
+    base::ListValue params;
+    params.Append(1);
+    params.Append(base::Value(ParseJsonDict(kTypedDataJson)));
+    EXPECT_FALSE(parse(params));
+  }
+
+  // Typed data is neither a dict nor a string with a JSON dict.
+  EXPECT_FALSE(parse(make_params(base::Value(1))));
+  EXPECT_FALSE(parse(make_params(base::Value("not a json"))));
+  EXPECT_FALSE(parse(make_params(base::Value("[]"))));
+
+  // Required typed data fields are missing or have a wrong type.
+  for (const char* key :
+       std::to_array({"primaryType", "domain", "message", "types"})) {
+    SCOPED_TRACE(key);
+
+    auto missing = ParseJsonDict(kTypedDataJson);
+    ASSERT_TRUE(missing.Remove(key));
+    EXPECT_FALSE(parse(make_params(base::Value(std::move(missing)))));
+
+    auto wrong_type = ParseJsonDict(kTypedDataJson);
+    wrong_type.Set(key, 1);
+    EXPECT_FALSE(parse(make_params(base::Value(std::move(wrong_type)))));
+  }
 }
 
 TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
