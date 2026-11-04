@@ -754,7 +754,8 @@ def cmd_post(args):
             _log(d, 'STOP found; %d left' % (len(todo) - n + 1))
             return
         ok = False
-        for attempt in range(4):
+        attempts = 4
+        for attempt in range(attempts):
             if attempt:
                 # A failed create can still have created the issue.
                 url = _existing(args.repo, args.account, label, env).get(
@@ -769,6 +770,9 @@ def cmd_post(args):
                 ok = True
                 break
             err = (r.stderr + r.stdout)[:300]
+            if attempt == attempts - 1:
+                _log(d, 'FAILED %s: %s; giving up' % (x['key'], err))
+                break
             rate = re.search(r'rate limit|secondary|abuse', err, re.I)
             wait = (
                 random.randint(1800, 3600) if rate else random.randint(120, 300)
