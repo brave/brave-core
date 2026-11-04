@@ -3,7 +3,7 @@ URL: https://crates.io/crates/convert_case
 Version: 0.4.0
 Revision: 300d9eef9e8c970e15f324afbc3df8b6a4ebbf71
 License: MIT
-License File:
+License File: //brave/third_party/rust/chromium_crates_io/vendor/convert_case-v0_4/../../../convert_case/v0_4/LICENSE
 Shipped: yes
 Security Critical: yes
 

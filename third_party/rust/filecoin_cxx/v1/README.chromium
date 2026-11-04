@@ -2,7 +2,7 @@ Name: filecoin-cxx
 URL: https://crates.io/crates/filecoin-cxx
 Version: 1.0.0
 License: MPL-2.0
-License File:
+License File: //brave/components/filecoin/rs/../../../common/licenses/MPL-2.0
 Shipped: yes
 Security Critical: yes
 

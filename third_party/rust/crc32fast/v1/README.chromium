@@ -2,7 +2,7 @@ Name: crc32fast
 URL: https://crates.io/crates/crc32fast
 Version: 1.5.2
 License: Apache-2.0
-License File:
+License File: //third_party/rust/chromium_crates_io/vendor/crc32fast-v1/LICENSE-APACHE
 Shipped: yes
 Security Critical: yes
 

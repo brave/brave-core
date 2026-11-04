@@ -2,7 +2,7 @@ Name: challenge-bypass-ristretto-cxx
 URL: https://crates.io/crates/challenge-bypass-ristretto-cxx
 Version: 1.0.0
 License: MPL-2.0
-License File:
+License File: //brave/components/challenge_bypass_ristretto/rust/cxx/../../../../common/licenses/MPL-2.0
 Shipped: yes
 Security Critical: yes
 

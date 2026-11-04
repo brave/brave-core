@@ -2,7 +2,7 @@ Name: adblock-cxx
 URL: https://crates.io/crates/adblock-cxx
 Version: 1.0.0
 License: MPL-2.0
-License File:
+License File: //brave/components/brave_shields/core/common/adblock/rs/../../../../../../common/licenses/MPL-2.0
 Shipped: yes
 Security Critical: yes
 
