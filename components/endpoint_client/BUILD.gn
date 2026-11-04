@@ -6,7 +6,7 @@
 import("//third_party/protobuf/proto_library.gni")
 import("//tools/json_schema_compiler/json_schema_api.gni")
 
-source_set("endpoint_client") {
+static_library("endpoint_client") {
   sources = [
     "brave_endpoint.h",
     "client.h",
