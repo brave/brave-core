@@ -26,6 +26,7 @@ import UntrustedMockContext from '../../untrusted_conversation_frame/mock_untrus
 import { Content } from '../components/input_box/editable_content'
 import { MockContext } from '../state/mock_context'
 import { ConnectorsDialog } from '../state/ai_chat_context'
+import { getConnectorOrigin } from '../components/connectors_modal/connector_utils'
 import {
   ActiveChatContext,
   SelectedChatDetails,
@@ -40,6 +41,7 @@ const makeWorkspaceContent = (uuid: string): Mojom.AssociatedContent => ({
   contentUsedPercentage: 100,
   conversationTurnUuid: 'turn-uuid',
   toolsAttached: true,
+  mcpServer: undefined,
 })
 
 const CONVERSATIONS: Mojom.Conversation[] = [
@@ -202,6 +204,7 @@ const ASSOCIATED_CONTENT: Mojom.AssociatedContent = {
   contentId: 1,
   conversationTurnUuid: 'turn-uuid',
   toolsAttached: false,
+  mcpServer: undefined,
 }
 
 // A staged (not yet committed) page attachment whose site provides tools, so it
@@ -218,17 +221,20 @@ const ASSOCIATED_CONTENT_WITH_TOOLS: Mojom.AssociatedContent = {
 
 // One of the user's MCP servers, attached to the conversation. It's never
 // associated with a turn, so it stays beside the input box.
-const ASSOCIATED_MCP_SERVER: Mojom.AssociatedContent = {
+const getAssociatedMCPServer = (
+  server: Mojom.MCPServer,
+): Mojom.AssociatedContent => ({
   ...ASSOCIATED_CONTENT,
-  uuid: 'uuid-mcp-server',
+  uuid: `uuid-${server.id}`,
   contentType: Mojom.ContentType.MCPServer,
-  title: 'Issue tracker',
-  url: { url: 'https://mcp.example.com/mcp' },
+  title: server.name,
+  url: { url: `${getConnectorOrigin(server.endpoint.url)}/` },
   contentId: -1,
   contentUsedPercentage: 100,
   conversationTurnUuid: undefined,
   toolsAttached: true,
-}
+  mcpServer: { serverId: server.id },
+})
 
 // Shown in the dialog opened from the "Tools" pill. The first description is
 // long enough to be clamped, so expand/collapse is exercised.
@@ -675,6 +681,29 @@ function StoryContext(
   const argsRef = React.useRef(args)
   argsRef.current = args
 
+  // An in-memory host, so that changes made in the connectors dialog show.
+  const mcpServers = React.useRef(SAMPLE_MCP_SERVERS)
+
+  // The connectors attached to the conversation, which the attachments menu
+  // attaches and detaches.
+  const attachedMCPServerIds = React.useRef<string[]>([])
+  const hasAttachedMCPServer = React.useRef<boolean>(undefined)
+  if (hasAttachedMCPServer.current !== args.hasAttachedMCPServer) {
+    hasAttachedMCPServer.current = args.hasAttachedMCPServer
+    attachedMCPServerIds.current = args.hasAttachedMCPServer
+      ? [SAMPLE_MCP_SERVERS[0].id]
+      : []
+  }
+  const conversationUIObserver = React.useRef<
+    Mojom.ConversationUIInterface | undefined
+  >(undefined)
+  const setAttachedMCPServerIds = (ids: string[]) => {
+    attachedMCPServerIds.current = ids
+    conversationUIObserver.current?.onAssociatedContentInfoChanged(
+      getAssociatedContent(),
+    )
+  }
+
   // Compute derived values from args for UntrustedConversationContext
   const getAssociatedContent = (): Mojom.AssociatedContent[] => {
     const content: Mojom.AssociatedContent[] = []
@@ -684,8 +713,10 @@ function StoryContext(
     if (argsRef.current.hasAttachedTools) {
       content.push(ASSOCIATED_CONTENT_WITH_TOOLS)
     }
-    if (argsRef.current.hasAttachedMCPServer) {
-      content.push(ASSOCIATED_MCP_SERVER)
+    for (const server of mcpServers.current) {
+      if (attachedMCPServerIds.current.includes(server.id)) {
+        content.push(getAssociatedMCPServer(server))
+      }
     }
     if (content.length === 0) {
       content.push(new Mojom.AssociatedContent())
@@ -711,8 +742,6 @@ function StoryContext(
   const getConversationHistory = () =>
     getConversationContent(argsRef.current.conversation_content)
 
-  // An in-memory host, so that changes made in the connectors dialog show.
-  const mcpServers = React.useRef(SAMPLE_MCP_SERVERS)
   const mcpHostObserver = React.useRef<
     Mojom.MCPHostObserverInterface | undefined
   >(undefined)
@@ -793,6 +822,18 @@ function StoryContext(
           }),
       }}
       uiHandler={{
+        associateMCPServer: (serverId: string) => {
+          if (!attachedMCPServerIds.current.includes(serverId)) {
+            setAttachedMCPServerIds([...attachedMCPServerIds.current, serverId])
+          }
+        },
+        disassociateContent: (content: Mojom.AssociatedContent) => {
+          setAttachedMCPServerIds(
+            attachedMCPServerIds.current.filter(
+              (id) => id !== content.mcpServer?.serverId,
+            ),
+          )
+        },
         getPluralString: (key: string, count: number) =>
           Promise.resolve({
             pluralString:
@@ -834,6 +875,7 @@ function StoryContext(
             : Promise.resolve(SAMPLE_MCP_SERVER_TOOLS),
       }}
       mcpHostObserverRef={mcpHostObserver}
+      conversationUIObserverRef={conversationUIObserver}
       initialState={React.useMemo(
         () => ({
           tabs: SAMPLE_TABS,
@@ -1015,6 +1057,15 @@ export const _WithAttachedTools = GetPanelStory({
 export const _WithAttachedMCPServer = GetPanelStory({
   conversation_content: 'ALL',
   hasAttachedMCPServer: true,
+})
+
+// Connectors are offered to a model that can use tools, in the attachments
+// menu and as mentions.
+export const _WithConnectorMentions = GetPanelStory({
+  conversation_content: 'ALL',
+  model: MODELS[1].displayName,
+  hasAttachedMCPServer: true,
+  inputText: ['@'],
 })
 
 export const _WithConnectors = GetPanelStory({

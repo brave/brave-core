@@ -276,6 +276,7 @@ const workspaceContent: Mojom.AssociatedContent = {
   contentUsedPercentage: 100,
   conversationTurnUuid: undefined,
   toolsAttached: true,
+  mcpServer: undefined,
 }
 
 // Stands in for the chrome-untrusted:// workspace viewer, which can't load in

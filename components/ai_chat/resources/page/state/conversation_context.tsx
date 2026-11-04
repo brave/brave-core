@@ -316,25 +316,34 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     resetSelectedActionType()
   }
 
-  const disassociateContent = (content: Mojom.AssociatedContent) => {
+  const disassociateContent = (
+    content: Mojom.AssociatedContent,
+    options: { keepFocus?: boolean } = {},
+  ) => {
     aiChat.api.uiHandler.disassociateContent(
       content,
       conversationState.conversationUuid,
     )
 
-    // If the attachment was removed then remove any references to it in the input text.
+    // If the attachment was removed then remove any references to it in the
+    // input text. Connectors can share an origin, so are found by their id.
     const matchingRef = inputText.findIndex(
       (c) =>
         typeof c !== 'string'
         && c.type === 'attachment'
-        && c.url === content.url.url,
+        && (content.mcpServer
+          ? c.id === content.mcpServer.serverId
+          : c.url === content.url.url),
     )
     if (matchingRef !== -1) {
       setInputText(inputText.filter((c, i) => i !== matchingRef))
     }
 
     // Removing an attachment chip shouldn't steal focus from the composer.
-    focusInput()
+    // Callers that keep focus elsewhere, such as an open menu, opt out.
+    if (!options.keepFocus) {
+      focusInput()
+    }
   }
 
   const setToolsAttached = (

@@ -860,6 +860,15 @@
   <message name="IDS_CHAT_UI_CONNECTOR_ERROR_CONNECTION_FAILED" desc="Status of a connector (a remote MCP server that the user added) that Brave couldn't connect to, or couldn't get the list of tools from" formatter_data="webui=AiChat">
     Couldn't connect, or couldn't list its tools. Check the URL and token, and try again.
   </message>
+  <message name="IDS_CHAT_UI_CONNECTORS_MENU_LABEL" desc="Item in the attachments menu of the chat input that shows the user's connectors (remote MCP servers whose tools Leo can use), each with a toggle that attaches it to this chat. Also the title of that part of the menu" formatter_data="webui=AiChat">
+    Connectors
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTORS_MENU_BACK_LABEL" desc="Tooltip of the item at the top of the connectors part of the chat input's attachments menu, which goes back to the rest of the attachments menu" formatter_data="webui=AiChat">
+    Back
+  </message>
+  <message name="IDS_CHAT_UI_CONNECTORS_MENU_ADD_LABEL" desc="Item in the connectors part of the chat input's attachments menu that opens a form for adding a connector (a remote MCP server whose tools Leo can use)" formatter_data="webui=AiChat">
+    Add connector
+  </message>
   <message name="IDS_CHAT_UI_SUBSCRIPTION_POLICY_INFO" desc="An info text that is shown below various subcription prices" formatter_data="webui=AiChat">
     All subscriptions are auto-renewed but can be cancelled at any time before renewal.
   </message>

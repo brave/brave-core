@@ -36,6 +36,11 @@ export interface Match {
   ranges: Range[]
 }
 
+/** Whether the needle is all of the haystack, or the start of it. */
+export function isPrefixMatch(match: Match): boolean {
+  return match.score >= PREFIX_SCORE
+}
+
 interface Range {
   start: number
   end: number

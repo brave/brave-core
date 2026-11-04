@@ -637,3 +637,261 @@ describe('TabsMenu', () => {
     })
   })
 })
+
+describe('TabsMenu connectors', () => {
+  const TOOLS_MODEL = {
+    key: 'tools-model',
+    displayName: 'Tools model',
+    isSuggestedModel: true,
+    isNearModel: false,
+    visionSupport: false,
+    supportsTools: true,
+    supportedCapabilities: [],
+    options: {
+      customModelOptions: undefined,
+      leoModelOptions: undefined,
+    },
+  } as unknown as Mojom.Model
+
+  const server = (
+    id: string,
+    name: string,
+    overrides: Partial<Mojom.MCPServer> = {},
+  ): Mojom.MCPServer => ({
+    id,
+    name,
+    endpoint: { url: `https://${id}.example.com/secret/mcp` },
+    enabled: true,
+    autoAttach: false,
+    slug: id,
+    hasToken: false,
+    tokenUnreadable: false,
+    ...overrides,
+  })
+
+  const GMAIL = server('gmail', 'Gmail')
+  const GROUP_EMAIL = server('group', 'Group email')
+  const DISABLED = server('disabled', 'Gmail archive', { enabled: false })
+  const UNREADABLE = server('unreadable', 'Gmail backup', {
+    hasToken: true,
+    tokenUnreadable: true,
+  })
+
+  const GMAIL_CONTENT: Mojom.AssociatedContent = {
+    uuid: 'gmail-content',
+    contentType: ContentType.MCPServer,
+    title: 'Gmail',
+    contentId: -1,
+    url: { url: 'https://gmail.example.com/' },
+    contentUsedPercentage: 100,
+    conversationTurnUuid: undefined,
+    toolsAttached: false,
+    mcpServer: { serverId: 'gmail' },
+  }
+
+  beforeEach(() => {
+    clearAllDataForTesting()
+  })
+
+  function renderWithConnectors(
+    inputText: string,
+    options: {
+      servers?: Mojom.MCPServer[]
+      tabs?: Mojom.TabData[]
+      associatedContent?: Mojom.AssociatedContent[]
+      supportsTools?: boolean
+      isMCPEnabled?: boolean
+      conversationUuid?: string
+      getServers?: jest.Mock
+      uiHandler?: MockContextProps['uiHandler']
+      conversationHandler?: MockContextProps['conversationHandler']
+    } = {},
+  ) {
+    const servers = options.servers ?? [GMAIL, DISABLED, UNREADABLE]
+    return renderOpenedMenu({
+      conversationOverrides: { inputText: [inputText] },
+      aiChatOverrides: { isMCPEnabled: options.isMCPEnabled ?? true },
+      mcpHost: {
+        getServers:
+          options.getServers?.mockResolvedValue({ servers })
+          ?? (() => Promise.resolve({ servers })),
+      },
+      initialState: {
+        tabs: options.tabs ?? [],
+        conversationState: {
+          conversationUuid: options.conversationUuid ?? 'conversation-uuid',
+          allModels: [
+            { ...TOOLS_MODEL, supportsTools: options.supportsTools ?? true },
+          ],
+          currentModelKey: TOOLS_MODEL.key,
+          associatedContent: options.associatedContent ?? [],
+        },
+      },
+      uiHandler: options.uiHandler,
+      conversationHandler: options.conversationHandler,
+    })
+  }
+
+  const mentionedNames = (container: HTMLElement) =>
+    Array.from(container.querySelectorAll('leo-menu-item')).map((item) => ({
+      name: item.textContent,
+      isConnector: item.getAttribute('data-testid') === 'connector-mention',
+    }))
+
+  it('offers the connectors that are turned on and usable', async () => {
+    const { findByText, container } = await renderWithConnectors('@')
+
+    expect(await findByText('Gmail')).toBeInTheDocument()
+    expect(mentionedNames(container)).toEqual([
+      { name: 'Gmail', isConnector: true },
+    ])
+  })
+
+  it("offers no connectors to a model that can't use tools", async () => {
+    const getServers = jest.fn()
+    const { findByText, container } = await renderWithConnectors('@', {
+      getServers,
+      supportsTools: false,
+      tabs: [
+        { id: 1, contentId: 1, title: 'Tab', url: { url: 'https://a.com' } },
+      ],
+    })
+
+    expect(await findByText('Tab')).toBeInTheDocument()
+    expect(
+      container.querySelector('[data-testid="connector-mention"]'),
+    ).toBeNull()
+    expect(getServers).not.toHaveBeenCalled()
+  })
+
+  // A mention of a connector that can't be attached would mislead the model.
+  it('offers no connectors before there is a conversation', async () => {
+    const getServers = jest.fn()
+    const { findByText, container } = await renderWithConnectors('@', {
+      getServers,
+      conversationUuid: '',
+      tabs: [
+        { id: 1, contentId: 1, title: 'Tab', url: { url: 'https://a.com' } },
+      ],
+    })
+
+    expect(await findByText('Tab')).toBeInTheDocument()
+    expect(
+      container.querySelector('[data-testid="connector-mention"]'),
+    ).toBeNull()
+    expect(getServers).not.toHaveBeenCalled()
+  })
+
+  it("offers no connectors where they aren't enabled", async () => {
+    const getServers = jest.fn()
+    const { findByText, container } = await renderOpenedMenu({
+      conversationOverrides: { inputText: ['@'] },
+      aiChatOverrides: { isMCPEnabled: false },
+      mcpHost: { getServers },
+      initialState: {
+        tabs: [
+          { id: 1, contentId: 1, title: 'Tab', url: { url: 'https://a.com' } },
+        ],
+        conversationState: {
+          allModels: [TOOLS_MODEL],
+          currentModelKey: TOOLS_MODEL.key,
+        },
+      },
+    })
+
+    expect(await findByText('Tab')).toBeInTheDocument()
+    expect(
+      container.querySelector('[data-testid="connector-mention"]'),
+    ).toBeNull()
+    expect(getServers).not.toHaveBeenCalled()
+  })
+
+  it('ranks connectors among the content they match', async () => {
+    const tab = (id: number, title: string): Mojom.TabData => ({
+      id,
+      contentId: id,
+      title,
+      url: { url: `https://tab${id}.example.com` },
+    })
+    const { container } = await renderWithConnectors('@gmail', {
+      servers: [GROUP_EMAIL, GMAIL],
+      tabs: [tab(1, 'My Gmail'), tab(2, 'Gmail')],
+    })
+
+    await waitFor(() =>
+      expect(mentionedNames(container)).toEqual([
+        { name: 'Gmail', isConnector: true },
+        { name: 'Gmail', isConnector: false },
+        { name: 'My Gmail', isConnector: false },
+        { name: 'Group email', isConnector: true },
+      ]),
+    )
+  })
+
+  it('attaches a connector that is mentioned', async () => {
+    const associateMCPServer = jest.fn()
+    const setToolsAttached = jest.fn()
+    const editor = document.createElement('div')
+    editor.setAttribute('data-editor', 'true')
+    editor.contentEditable = 'true'
+    editor.textContent = '@gm'
+    document.body.appendChild(editor)
+
+    const { container } = await renderWithConnectors('@gm', {
+      uiHandler: { associateMCPServer },
+      conversationHandler: { setToolsAttached },
+    })
+    // Its name is split up by the highlighting of what matched.
+    const item = await waitFor(() => {
+      const connector = container.querySelector<HTMLElement>(
+        '[data-testid="connector-mention"]',
+      )
+      expect(connector).toHaveTextContent('Gmail')
+      return connector!
+    })
+
+    const selection = window.getSelection()!
+    selection.removeAllRanges()
+    const range = document.createRange()
+    range.setStart(editor.firstChild!, 3)
+    range.setEnd(editor.firstChild!, 3)
+    selection.addRange(range)
+    await act(async () => {
+      item.click()
+    })
+
+    expect(associateMCPServer).toHaveBeenCalledWith(
+      'gmail',
+      'conversation-uuid',
+    )
+    expect(setToolsAttached).not.toHaveBeenCalled()
+
+    // Mentioned like a tab, by its name, with only its origin as its URL.
+    const mention = editor.querySelector('[data-type="attachment"]')
+    expect(mention?.textContent).toBe('Gmail')
+    expect(mention?.getAttribute('data-id')).toBe('gmail')
+    expect(mention?.getAttribute('data-url')).toBe('https://gmail.example.com')
+    document.body.removeChild(editor)
+  })
+
+  it('turns the tools of an attached connector back on', async () => {
+    const associateMCPServer = jest.fn()
+    const setToolsAttached = jest.fn()
+    const { findByText } = await renderWithConnectors('@', {
+      associatedContent: [GMAIL_CONTENT],
+      uiHandler: { associateMCPServer },
+      conversationHandler: { setToolsAttached },
+    })
+
+    const item = await findByText('Gmail')
+    await act(async () => {
+      item.closest<HTMLElement>('leo-menu-item')!.click()
+    })
+
+    expect(setToolsAttached).toHaveBeenCalledWith(
+      expect.objectContaining({ uuid: 'gmail-content' }),
+      true,
+    )
+    expect(associateMCPServer).not.toHaveBeenCalled()
+  })
+})

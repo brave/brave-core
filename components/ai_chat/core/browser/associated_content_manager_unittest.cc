@@ -179,9 +179,9 @@ class AssociatedContentManagerUnitTest : public testing::Test {
   mojom::ConversationPtr conversation_;
   std::unique_ptr<ConversationHandler> conversation_handler_;
 
-  // Attaches one of the user's MCP servers. It has no client, so it offers no
-  // tools.
-  void AddMCPServer() {
+  // Attaches one of the user's MCP servers, and returns its id. It has no
+  // client, so it offers no tools.
+  std::string AddMCPServer() {
     if (!mcp_host_) {
       mcp_host_ = std::make_unique<MCPHost>(prefs_, *os_crypt_,
                                             shared_url_loader_factory_);
@@ -193,6 +193,7 @@ class AssociatedContentManagerUnitTest : public testing::Test {
         /*token_unreadable=*/false);
     conversation_handler_->associated_content_manager()->AddMCPServer(
         std::make_unique<MCPServerAssociatedContent>(*mcp_host_, *server));
+    return server->id;
   }
 
  private:
@@ -1857,6 +1858,33 @@ TEST_F(AssociatedContentManagerUnitTest, HasPageContent_NotForMCPServers) {
   EXPECT_EQ(manager->GetPageContentCount(), 1u);
   // The one page decides, whatever servers are attached.
   EXPECT_TRUE(manager->HasOpenAIChatPermission());
+  manager->RemoveContent(&page);
+}
+
+// The UI tells which of the user's MCP servers each attached one is, as their
+// content has nothing else that identifies them.
+TEST_F(AssociatedContentManagerUnitTest,
+       GetAssociatedContent_IdentifiesMCPServers) {
+  auto* manager = conversation_handler_->associated_content_manager();
+  NiceMock<MockAssociatedContent> page;
+  manager->AddContent(&page);
+  const std::string first_id = AddMCPServer();
+  const std::string second_id = AddMCPServer();
+
+  std::vector<mojom::AssociatedContentPtr> content =
+      manager->GetAssociatedContent();
+  ASSERT_EQ(content.size(), 3u);
+  EXPECT_FALSE(content[0]->mcp_server);
+  ASSERT_TRUE(content[1]->mcp_server);
+  EXPECT_EQ(content[1]->mcp_server->server_id, first_id);
+  ASSERT_TRUE(content[2]->mcp_server);
+  EXPECT_EQ(content[2]->mcp_server->server_id, second_id);
+
+  manager->RemoveContent(content[1]->uuid);
+  content = manager->GetAssociatedContent();
+  ASSERT_EQ(content.size(), 2u);
+  ASSERT_TRUE(content[1]->mcp_server);
+  EXPECT_EQ(content[1]->mcp_server->server_id, second_id);
   manager->RemoveContent(&page);
 }
 

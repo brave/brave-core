@@ -13,6 +13,12 @@ import { FuzzyFinder, Match } from './fuzzy_finder'
 
 const MAX_RESULTS = 100
 
+/** An entry of a menu, with how it matches the query. */
+export interface MatchedEntry<T> {
+  entry: T
+  match: Match
+}
+
 export interface Props<T> {
   query: string | null
   isOpen: boolean
@@ -33,6 +39,10 @@ export interface Props<T> {
     entry: T,
     category?: string,
   ) => Match | undefined
+
+  // Orders the entries that match, best first. By default, they're ordered by
+  // how well they match.
+  compareMatches?: (a: MatchedEntry<T>, b: MatchedEntry<T>) => number
 
   children: (entry: T, category?: string, match?: Match) => React.ReactNode
 }
@@ -126,7 +136,14 @@ export default function FilterMenu<T>(props: Props<T>) {
                   return [match, entry] as const
                 })
                 .filter(([match]) => match)
-                .sort((a, b) => b[0]!.score - a[0]!.score)
+                .sort(([aMatch, aEntry], [bMatch, bEntry]) =>
+                  props.compareMatches
+                    ? props.compareMatches(
+                        { entry: aEntry, match: aMatch! },
+                        { entry: bEntry, match: bMatch! },
+                      )
+                    : bMatch!.score - aMatch!.score,
+                )
                 .map(([_, entry]) => entry),
             }))
             .filter((g) => g.entries.length > 0)

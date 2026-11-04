@@ -33,6 +33,7 @@ import {
 } from '../../../common/conversation_history_utils'
 import Editable from './editable'
 import { stringifyContent } from './editable_content'
+import { useCanAttachConnectors } from '../../hooks/useAttachableConnectors'
 
 const LEARN_MORE_CONTENT_AGENT_URL =
   'https://support.brave.app/hc/en-us/articles/41240379376909'
@@ -231,6 +232,11 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
     }
 
     const handleOnKeyDown = (e: React.KeyboardEvent) => {
+      // Enter elsewhere in the form, such as on a menu item, is for what has
+      // focus.
+      if (!(e.target as Element).closest('[data-editor]')) {
+        return
+      }
       if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
         if (!e.repeat) {
           props.context.submitInputTextToAPI()
@@ -308,6 +314,7 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
     // the current model doesn't support tools.
     const modelSupportsTools =
       conversationContext.currentModel?.supportsTools ?? false
+    const canAttachConnectors = useCanAttachConnectors()
     const toolsContent = modelSupportsTools
       ? props.context.associatedContentInfo.filter((c) => c.toolsAttached)
       : []
@@ -501,6 +508,7 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
                       }
                     : undefined
                 }
+                canAttachConnectors={canAttachConnectors}
               />
               {showContentAgentButton && (
                 <Button

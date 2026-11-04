@@ -39,3 +39,26 @@
 .anchor {
   display: flex;
 }
+
+.label {
+  flex: 1;
+}
+
+// Points the way it leads, which is the other way in a right-to-left layout.
+.directionalIcon:dir(rtl) {
+  transform: scaleX(-1);
+}
+
+.menuTitle {
+  font: var(--leo-font-default-semibold);
+}
+
+.connectorName {
+  flex: 1;
+  min-width: 0;
+  // Long names are cut short, rather than widening the menu.
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

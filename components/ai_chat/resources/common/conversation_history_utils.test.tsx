@@ -5,6 +5,7 @@
 
 import {
   attachUploadedFilesWithLimits,
+  findConnectorContent,
   getImageFiles,
   getRawDocumentFiles,
   shouldDisableAttachmentsButton,
@@ -1123,5 +1124,45 @@ describe('formatConversationForClipboard', () => {
 
     const result = formatConversationForClipboard(conversationHistory)
     expect(result).toBe('Leo AI: Here you go:\n\nMore text.')
+  })
+})
+
+describe('findConnectorContent', () => {
+  const content = (
+    uuid: string,
+    serverId?: string,
+  ): Mojom.AssociatedContent => ({
+    uuid,
+    contentType: serverId
+      ? Mojom.ContentType.MCPServer
+      : Mojom.ContentType.PageContent,
+    title: uuid,
+    contentId: serverId ? -1 : 1,
+    // Connectors on one gateway share an origin.
+    url: { url: 'https://gateway.example.com/' },
+    contentUsedPercentage: 100,
+    conversationTurnUuid: undefined,
+    toolsAttached: true,
+    mcpServer: serverId ? { serverId } : undefined,
+  })
+
+  it('finds a connector by its id, not its URL', () => {
+    const associatedContent = [
+      content('page'),
+      content('first-content', 'first'),
+      content('second-content', 'second'),
+    ]
+    expect(findConnectorContent(associatedContent, 'second')?.uuid).toBe(
+      'second-content',
+    )
+    expect(findConnectorContent(associatedContent, 'first')?.uuid).toBe(
+      'first-content',
+    )
+  })
+
+  it("finds nothing for a connector that isn't attached", () => {
+    expect(
+      findConnectorContent([content('page'), content('a', 'first')], 'second'),
+    ).toBeUndefined()
   })
 })

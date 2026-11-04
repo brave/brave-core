@@ -453,6 +453,17 @@ describe('useProvideConversationContext focus restoration', () => {
     expect(focus).toHaveBeenCalled()
   })
 
+  it('leaves focus alone when removing content, if asked to', async () => {
+    const { rendered, focus } = await setUpWithInput()
+    act(() => {
+      rendered.result.current.conversation.disassociateContent(
+        stagedContent(1),
+        { keepFocus: true },
+      )
+    })
+    expect(focus).not.toHaveBeenCalled()
+  })
+
   it('returns focus to the composer after removing a file', async () => {
     const { rendered, focus } = await setUpWithInput()
     act(() => {
@@ -495,5 +506,54 @@ describe('useProvideConversationContext focus restoration', () => {
       rendered.result.current.conversation.setAttachmentsDialog('bookmarks')
     })
     expect(focus).not.toHaveBeenCalled()
+  })
+})
+
+describe('useProvideConversationContext mentions', () => {
+  beforeEach(() => {
+    clearAllDataForTesting()
+  })
+
+  // Connectors on one gateway share an origin, which is also a page's URL.
+  const ORIGIN = 'https://gateway.example.com/'
+
+  const connectorContent = (serverId: string): Mojom.AssociatedContent => ({
+    ...stagedContent(1),
+    uuid: `${serverId}-content`,
+    contentType: Mojom.ContentType.MCPServer,
+    title: serverId,
+    contentId: -1,
+    url: { url: ORIGIN },
+    toolsAttached: true,
+    mcpServer: { serverId },
+  })
+
+  it('removes only the mention of the connector that is detached', async () => {
+    const rendered = renderConversation()
+    await act(async () => {
+      await rendered.result.current.conversation.api.getState.fetch()
+    })
+    act(() => {
+      rendered.result.current.conversation.setInputText([
+        { type: 'attachment', id: 'first', text: 'first', url: ORIGIN },
+        ' and ',
+        { type: 'attachment', id: 'second', text: 'second', url: ORIGIN },
+        ' and ',
+        { type: 'attachment', id: '7', text: 'Page', url: ORIGIN },
+      ])
+    })
+
+    act(() => {
+      rendered.result.current.conversation.disassociateContent(
+        connectorContent('second'),
+      )
+    })
+
+    expect(rendered.result.current.conversation.inputText).toEqual([
+      { type: 'attachment', id: 'first', text: 'first', url: ORIGIN },
+      ' and ',
+      ' and ',
+      { type: 'attachment', id: '7', text: 'Page', url: ORIGIN },
+    ])
   })
 })

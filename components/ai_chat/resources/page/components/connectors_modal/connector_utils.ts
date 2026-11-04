@@ -110,3 +110,13 @@ export function getConnectorOrigin(url: string): string {
     return ''
   }
 }
+
+/**
+ * The connectors that can be attached to a conversation: the browser only
+ * attaches one that's turned on and whose token it can read.
+ */
+export function getAttachableConnectors(
+  servers: Mojom.MCPServer[],
+): Mojom.MCPServer[] {
+  return servers.filter((server) => server.enabled && !server.tokenUnreadable)
+}

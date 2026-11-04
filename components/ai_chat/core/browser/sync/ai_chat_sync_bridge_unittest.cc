@@ -351,7 +351,8 @@ TEST_F(AIChatSyncBridgeTest, GetDataForCommitSerializesAssociatedContentText) {
   conv->title = "With content";
   conv->associated_content.push_back(mojom::AssociatedContent::New(
       content_uuid, mojom::ContentType::PageContent, "page title", 1,
-      GURL("https://example.com"), 42, entry_uuid, false));
+      GURL("https://example.com"), 42, entry_uuid, false,
+      /*mcp_server=*/nullptr));
 
   auto entry = mojom::ConversationTurn::New();
   entry->uuid = entry_uuid;

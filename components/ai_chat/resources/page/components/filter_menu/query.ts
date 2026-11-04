@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { FuzzyFinder } from './fuzzy_finder'
+import { FuzzyFinder, Match, isPrefixMatch } from './fuzzy_finder'
 
 export function matches(finder: FuzzyFinder, text: string) {
   // Note: Empty string should match anything.
@@ -45,4 +45,30 @@ export function useExtractedQuery(
     () => extractQuery(input, options),
     [input, options.onlyAtStart, options.triggerCharacter],
   )
+}
+
+/** An `@` mention that matches the query, and whether it's of a connector. */
+export interface RankedMention {
+  isConnector: boolean
+  match: Match
+}
+
+/**
+ * Orders the mentions that match the query, best first. A connector comes
+ * before any content that it matches at least as well as, and an exact or
+ * prefix match on a connector's name comes before everything else.
+ */
+export function compareMentions(a: RankedMention, b: RankedMention): number {
+  const aLeads = a.isConnector && isPrefixMatch(a.match)
+  const bLeads = b.isConnector && isPrefixMatch(b.match)
+  if (aLeads !== bLeads) {
+    return aLeads ? -1 : 1
+  }
+  if (a.match.score !== b.match.score) {
+    return b.match.score - a.match.score
+  }
+  if (a.isConnector !== b.isConnector) {
+    return a.isConnector ? -1 : 1
+  }
+  return 0
 }

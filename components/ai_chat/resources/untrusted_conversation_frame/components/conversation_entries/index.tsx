@@ -50,6 +50,10 @@ type RichSegment =
   | { type: 'text'; value: string }
   | { type: 'skill'; id: string; text: string }
   | { type: 'attachment'; content: Mojom.AssociatedContent }
+  // A mention of something this frame isn't told about, such as a connector.
+  | { type: 'mention'; text: string }
+
+const MENTION = /^\[mention\((.+)\)\]$/
 
 const parseRichSegments = (
   text: string,
@@ -65,9 +69,9 @@ const parseRichSegments = (
 
   replacements.push(
     ...associatedContent.map((c) => escape(`[mention(${c.title})]`)),
+    // Any other mention. It's tried last, so that a mention of content wins.
+    String.raw`\[mention\(.+?\)\]`,
   )
-
-  if (!replacements.length) return [{ type: 'text', value: text }]
 
   const regex = new RegExp(replacements.map((r) => `(${r})`).join('|'), 'g')
 
@@ -85,8 +89,11 @@ const parseRichSegments = (
     const content = associatedContent.find(
       (c) => match[0] === `[mention(${c.title})]`,
     )
+    const mention = MENTION.exec(match[0])
     if (content) {
       segments.push({ type: 'attachment', content })
+    } else if (mention) {
+      segments.push({ type: 'mention', text: mention[1] })
     } else {
       segments.push({ type: 'skill', id: skill!.shortcut, text: match[0] })
     }
@@ -154,6 +161,10 @@ const makeEditContent = (
     if (seg.type === 'text') return seg.value
     if (seg.type === 'skill') {
       return { type: 'skill' as const, id: seg.id, text: seg.text }
+    }
+    // Kept as a mention, though what it's of isn't known here.
+    if (seg.type === 'mention') {
+      return { type: 'attachment' as const, id: '', text: seg.text, url: '' }
     }
     return {
       type: 'attachment' as const,

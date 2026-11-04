@@ -5,6 +5,7 @@
 
 import * as Mojom from '../../../common/mojom'
 import {
+  getAttachableConnectors,
   getConnectorErrorField,
   getConnectorErrorMessage,
   getConnectorOrigin,
@@ -104,5 +105,35 @@ describe('getConnectorOrigin', () => {
       'https://mcp.example.com',
     )
     expect(getConnectorOrigin('not a url')).toBe('')
+  })
+})
+
+describe('getAttachableConnectors', () => {
+  const server = (
+    id: string,
+    overrides: Partial<Mojom.MCPServer> = {},
+  ): Mojom.MCPServer => ({
+    id,
+    name: id,
+    endpoint: { url: `https://${id}.example.com/mcp` },
+    enabled: true,
+    autoAttach: false,
+    slug: id,
+    hasToken: false,
+    tokenUnreadable: false,
+    ...overrides,
+  })
+
+  it('leaves out connectors that are off, or whose token is unreadable', () => {
+    const servers = [
+      server('on'),
+      server('off', { enabled: false }),
+      server('unreadable', { hasToken: true, tokenUnreadable: true }),
+      server('with-token', { hasToken: true }),
+    ]
+    expect(getAttachableConnectors(servers).map((s) => s.id)).toEqual([
+      'on',
+      'with-token',
+    ])
   })
 })

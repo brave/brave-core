@@ -165,6 +165,13 @@ struct ServiceState {
   bool is_content_agent_user_selectable;
 };
 
+// One of the user's MCP servers, attached to a conversation. Live only: it's
+// never persisted or synced.
+struct AssociatedMCPServer {
+  // The server's id in `MCPHost`.
+  string server_id;
+};
+
 // Represents the content that is associated with a conversation.
 struct AssociatedContent {
   string uuid;
@@ -188,6 +195,9 @@ struct AssociatedContent {
 
   // Whether this content has tools available for the LLM to use.
   bool tools_attached;
+
+  // Set only for content of type MCPServer, which isn't persisted.
+  AssociatedMCPServer? mcp_server;
 };
 
 // The user's choice for a website-provided tool. Only affects the client's own

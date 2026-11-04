@@ -1153,6 +1153,39 @@ describe('highlightRichText', () => {
     expect(images[1]?.src).toContain('two.com')
   })
 
+  test('should highlight mentions of what it is not given, like a connector', () => {
+    const associatedContent: Mojom.AssociatedContent[] = [
+      {
+        conversationTurnUuid: '1',
+        contentId: 1,
+        title: 'Test Page',
+        url: { url: 'https://test.com' },
+        contentType: Mojom.ContentType.PageContent,
+        contentUsedPercentage: 0,
+        uuid: '1',
+        toolsAttached: false,
+      },
+    ]
+
+    // A connector is never sent to this frame, but can be mentioned.
+    const text =
+      'Ask [mention(Issue tracker (beta))] about [mention(Test Page)]'
+    const result = highlightRichText(text, undefined, associatedContent)
+
+    const TestComponent = () => <>{result}</>
+    const { container } = render(<TestComponent />)
+
+    expect(container.textContent).toBe(
+      'Ask Issue tracker (beta) about Test Page',
+    )
+    const richLabels = container.querySelectorAll('.richLabel')
+    expect(richLabels.length).toBe(2)
+    expect(richLabels[0]).toHaveTextContent('Issue tracker (beta)')
+    expect(richLabels[0].querySelector('img')).toBeNull()
+    expect(richLabels[1]).toHaveTextContent('Test Page')
+    expect(richLabels[1].querySelector('img')?.src).toContain('test.com')
+  })
+
   test('should return plain text when no mentions exist', () => {
     const text = 'Just plain text'
     const result = highlightRichText(text, undefined, [])

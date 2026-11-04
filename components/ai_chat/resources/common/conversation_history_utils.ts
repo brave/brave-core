@@ -130,6 +130,16 @@ export const isMCPServerContent = (
   return content.contentType === Mojom.ContentType.MCPServer
 }
 
+/** What one of the user's connectors is attached as, if it's attached. */
+export const findConnectorContent = (
+  associatedContent: Mojom.AssociatedContent[],
+  serverId: string,
+): Mojom.AssociatedContent | undefined => {
+  return associatedContent.find(
+    (content) => content.mcpServer?.serverId === serverId,
+  )
+}
+
 /**
  * Updates the conversation history by either merging a new entry with an
  * existing one or appending it if it doesn't exist.

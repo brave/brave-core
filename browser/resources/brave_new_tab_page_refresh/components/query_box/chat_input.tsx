@@ -16,6 +16,7 @@ import ToolsMenu, {
 import AttachmentsMenu from '../../../../../components/ai_chat/resources/page/components/filter_menu/attachments_menu'
 import Attachments from '../../../../../components/ai_chat/resources/page/components/attachments'
 import SkillModal from '../../../../../components/ai_chat/resources/page/components/skill_modal/skill_modal'
+import ConnectorsModal from '../../../../../components/ai_chat/resources/page/components/connectors_modal'
 import { useExtractedQuery } from '../../../../../components/ai_chat/resources/page/components/filter_menu/query'
 import { openLink } from '../common/link'
 
@@ -102,6 +103,7 @@ export function ChatInput(props: Props) {
         )}
       </div>
       {aiChatContext.skillDialog && <SkillModal />}
+      {aiChatContext.connectorsDialog && <ConnectorsModal />}
     </div>
   )
 }

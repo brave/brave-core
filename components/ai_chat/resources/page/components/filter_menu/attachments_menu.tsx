@@ -3,11 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { Bookmark, TabData } from '../../../common/mojom'
-import FilterMenu, { MatchedText } from './filter_menu'
+import { Bookmark, MCPServer, TabData } from '../../../common/mojom'
+import FilterMenu, { MatchedEntry, MatchedText } from './filter_menu'
 import styles from './style.module.scss'
 import * as React from 'react'
-import { useExtractedQuery, matches } from './query'
+import { useExtractedQuery, matches, compareMentions } from './query'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import { getLocale } from '$web-common/locale'
@@ -15,12 +15,26 @@ import { FuzzyFinder } from './fuzzy_finder'
 import { makeEdit, stringifyContent } from '../input_box/editable_content'
 import Icon from '@brave/nala/react/icon'
 import { isMCPServerContent } from '../../../common/conversation_history_utils'
+import { getConnectorOrigin } from '../connectors_modal/connector_utils'
+import useAttachableConnectors, {
+  useCanAttachConnectors,
+} from '../../hooks/useAttachableConnectors'
 
 type Attachment = TabData | Bookmark
+// What can be mentioned: content, or one of the user's connectors.
+type Mention = Attachment | MCPServer
 
-function matchesQuery(query: FuzzyFinder, entry: Attachment) {
-  return matches(query, entry.title)
+const isConnector = (entry: Mention): entry is MCPServer => 'endpoint' in entry
+
+function matchesQuery(query: FuzzyFinder, entry: Mention) {
+  return matches(query, isConnector(entry) ? entry.name : entry.title)
 }
+
+const compareMatches = (a: MatchedEntry<Mention>, b: MatchedEntry<Mention>) =>
+  compareMentions(
+    { isConnector: isConnector(a.entry), match: a.match },
+    { isConnector: isConnector(b.entry), match: b.match },
+  )
 
 const getType = (entry: Attachment) => {
   if ('contentId' in entry) {
@@ -39,6 +53,23 @@ const icon: Record<ReturnType<typeof getType>, string> = {
 }
 
 export default function TabsMenu() {
+  return useCanAttachConnectors() ? <MenuWithConnectors /> : <Menu />
+}
+
+function MenuWithConnectors() {
+  const connectors = useAttachableConnectors()
+  return (
+    <Menu
+      connectors={connectors.servers}
+      attachConnector={connectors.attach}
+    />
+  )
+}
+
+function Menu(props: {
+  connectors?: MCPServer[]
+  attachConnector?: (server: MCPServer) => void
+}) {
   const aiChat = useAIChat()
   const conversation = useConversation()
 
@@ -79,28 +110,32 @@ export default function TabsMenu() {
   )
 
   const selectAttachment = React.useCallback(
-    (attachment: Attachment) => {
-      const alreadyAttached = pageContent.find((c) =>
-        'contentId' in attachment
-          ? c.contentId === attachment.contentId
-          : c.url.url === attachment.url.url,
-      )
-
-      if (alreadyAttached) {
-        // Re-mentioning content that's already attached re-attaches its tools
-        // (the browser only attaches them when the content exposes any).
-        conversation.setToolsAttached(alreadyAttached, true)
-      } else if ('contentId' in attachment) {
-        aiChat.api.uiHandler.associateTab(
-          attachment,
-          conversation.conversationUuid!,
-        )
+    (attachment: Mention) => {
+      if (isConnector(attachment)) {
+        props.attachConnector?.(attachment)
       } else {
-        aiChat.api.uiHandler.associateUrlContent(
-          attachment.url,
-          attachment.title,
-          conversation.conversationUuid!,
+        const alreadyAttached = pageContent.find((c) =>
+          'contentId' in attachment
+            ? c.contentId === attachment.contentId
+            : c.url.url === attachment.url.url,
         )
+
+        if (alreadyAttached) {
+          // Re-mentioning content that's already attached re-attaches its tools
+          // (the browser only attaches them when the content exposes any).
+          conversation.setToolsAttached(alreadyAttached, true)
+        } else if ('contentId' in attachment) {
+          aiChat.api.uiHandler.associateTab(
+            attachment,
+            conversation.conversationUuid!,
+          )
+        } else {
+          aiChat.api.uiHandler.associateUrlContent(
+            attachment.url,
+            attachment.title,
+            conversation.conversationUuid!,
+          )
+        }
       }
 
       const editor = document.querySelector<HTMLElement>('[data-editor]')
@@ -108,12 +143,22 @@ export default function TabsMenu() {
         makeEdit(editor)
           .selectRangeToTriggerChar('@')
           .ifHasSelection()
-          ?.replaceSelectedRange({
-            id: attachment.id.toString(),
-            text: attachment.title,
-            url: attachment.url.url,
-            type: 'attachment',
-          })
+          ?.replaceSelectedRange(
+            isConnector(attachment)
+              ? {
+                  id: attachment.id,
+                  text: attachment.name,
+                  // Only the origin, as a connector's path can hold secrets.
+                  url: getConnectorOrigin(attachment.endpoint.url),
+                  type: 'attachment',
+                }
+              : {
+                  id: attachment.id.toString(),
+                  text: attachment.title,
+                  url: attachment.url.url,
+                  type: 'attachment',
+                },
+          )
       }
 
       setIsOpen(false)
@@ -123,6 +168,7 @@ export default function TabsMenu() {
       conversation.conversationUuid,
       pageContent,
       conversation.setToolsAttached,
+      props.attachConnector,
       setIsOpen,
     ],
   )
@@ -175,13 +221,16 @@ export default function TabsMenu() {
       categories={[
         {
           category: '',
-          entries: distinctEntries,
+          // Connectors come first, including attached ones, as mentioning one
+          // turns its tools back on.
+          entries: [...(props.connectors ?? []), ...distinctEntries],
         },
       ]}
       isOpen={isOpen}
       setIsOpen={handleClose}
       query={query}
       matchesQuery={matchesQuery}
+      compareMatches={compareMatches}
       header={
         <div className={styles.tabsMenuHeader}>
           {getLocale(S.CHAT_UI_ATTACHMENTS_MENU_TITLE)}
@@ -193,22 +242,41 @@ export default function TabsMenu() {
       }}
       isFullWidth
     >
-      {(item, category, match) => (
-        <leo-menu-item
-          class={styles.tabMenuItem}
-          key={item.id.toString()}
-          onClick={() => selectAttachment(item)}
-        >
-          <img src={`//favicon2?pageUrl=${encodeURIComponent(item.url.url)}`} />
-          <div className={styles.tabItemInfo}>
-            <MatchedText
-              text={item.title}
-              match={match}
+      {(item, category, match) =>
+        isConnector(item) ? (
+          <leo-menu-item
+            class={styles.tabMenuItem}
+            key={`connector-${item.id}`}
+            data-testid='connector-mention'
+            onClick={() => selectAttachment(item)}
+          >
+            <Icon name='cloud-hosting' />
+            <div className={styles.tabItemInfo}>
+              <MatchedText
+                text={item.name}
+                match={match}
+              />
+            </div>
+          </leo-menu-item>
+        ) : (
+          <leo-menu-item
+            class={styles.tabMenuItem}
+            key={item.id.toString()}
+            onClick={() => selectAttachment(item)}
+          >
+            <img
+              src={`//favicon2?pageUrl=${encodeURIComponent(item.url.url)}`}
             />
-          </div>
-          <Icon name={icon[getType(item)]} />
-        </leo-menu-item>
-      )}
+            <div className={styles.tabItemInfo}>
+              <MatchedText
+                text={item.title}
+                match={match}
+              />
+            </div>
+            <Icon name={icon[getType(item)]} />
+          </leo-menu-item>
+        )
+      }
     </FilterMenu>
   )
 }

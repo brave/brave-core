@@ -171,7 +171,8 @@ class AIChatDatabaseTest : public testing::Test,
     std::vector<mojom::AssociatedContentPtr> associated_content;
     associated_content.push_back(mojom::AssociatedContent::New(
         "content", mojom::ContentType::PageContent, "page title", 1,
-        GURL("https://example.com/page"), 62, history[0]->uuid.value(), false));
+        GURL("https://example.com/page"), 62, history[0]->uuid.value(), false,
+        /*mcp_server=*/nullptr));
     auto metadata = mojom::Conversation::New(
         conversation_uuid, "title", base::Time::Now(), true, std::nullopt, 0, 0,
         false, std::move(associated_content));
@@ -259,7 +260,8 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
     if (has_content) {
       associated_content.push_back(mojom::AssociatedContent::New(
           content_uuid, mojom::ContentType::PageContent, "page title", 1,
-          page_url, 62, history.front()->uuid.value(), false));
+          page_url, 62, history.front()->uuid.value(), false,
+          /*mcp_server=*/nullptr));
     }
     const mojom::ConversationPtr metadata = mojom::Conversation::New(
         uuid, "title", now - base::Hours(2), true, std::nullopt, 0, 0, false,
@@ -1226,7 +1228,8 @@ TEST_P(AIChatDatabaseTest, AddOrUpdateAssociatedContent) {
 
   associated_content.push_back(mojom::AssociatedContent::New(
       content_uuid, mojom::ContentType::PageContent, "page title", 1, page_url,
-      62, history.front()->uuid.value(), false));
+      62, history.front()->uuid.value(), false,
+      /*mcp_server=*/nullptr));
 
   mojom::ConversationPtr metadata = mojom::Conversation::New(
       uuid, "title", base::Time::Now() - base::Hours(2), true, std::nullopt, 0,
@@ -1271,10 +1274,12 @@ TEST_P(AIChatDatabaseTest, AddOrUpdateAssociatedContent_MultiContent) {
   const std::string uuid = "for_associated_content";
   auto content_1 = mojom::AssociatedContent::New(
       "content_1", mojom::ContentType::PageContent, "one", 1,
-      GURL("https://one.com"), 61, history.front()->uuid.value(), false);
+      GURL("https://one.com"), 61, history.front()->uuid.value(), false,
+      /*mcp_server=*/nullptr);
   auto content_2 = mojom::AssociatedContent::New(
       "content_2", mojom::ContentType::PageContent, "two", 2,
-      GURL("https://two.com"), 62, history.front()->uuid.value(), false);
+      GURL("https://two.com"), 62, history.front()->uuid.value(), false,
+      /*mcp_server=*/nullptr);
 
   // Note: This is reused for all conversations, as it is moved into the
   // conversation ptr.
@@ -1396,7 +1401,8 @@ TEST_P(AIChatDatabaseTest, DeleteAssociatedWebContent) {
   // are persisted.
   associated_content.push_back(mojom::AssociatedContent::New(
       "first-content", mojom::ContentType::PageContent, "page title", 1,
-      page_url, 62, history_first.front()->uuid.value(), false));
+      page_url, 62, history_first.front()->uuid.value(), false,
+      /*mcp_server=*/nullptr));
   mojom::ConversationPtr metadata_first = mojom::Conversation::New(
       "first", "title", base::Time::Now() - base::Hours(2), true, std::nullopt,
       0, 0, false, std::move(associated_content));
@@ -1405,7 +1411,8 @@ TEST_P(AIChatDatabaseTest, DeleteAssociatedWebContent) {
   associated_content.clear();
   associated_content.push_back(mojom::AssociatedContent::New(
       "second-content", mojom::ContentType::PageContent, "page title", 2,
-      page_url, 62, history_second.front()->uuid.value(), false));
+      page_url, 62, history_second.front()->uuid.value(), false,
+      /*mcp_server=*/nullptr));
   mojom::ConversationPtr metadata_second = mojom::Conversation::New(
       "second", "title", base::Time::Now() - base::Hours(1), true, "model-2", 0,
       0, false, std::move(associated_content));
@@ -1480,10 +1487,12 @@ TEST_P(AIChatDatabaseTest, DeleteConversationEntryWithAssociatedContent) {
   std::vector<mojom::AssociatedContentPtr> associated_content;
   associated_content.push_back(mojom::AssociatedContent::New(
       "content_turn_1", mojom::ContentType::PageContent, "page title 1", 1,
-      page_url, 62, history[0]->uuid.value(), false));
+      page_url, 62, history[0]->uuid.value(), false,
+      /*mcp_server=*/nullptr));
   associated_content.push_back(mojom::AssociatedContent::New(
       "content_turn_3", mojom::ContentType::PageContent, "page title 3", 2,
-      page_url, 65, history[2]->uuid.value(), false));
+      page_url, 65, history[2]->uuid.value(), false,
+      /*mcp_server=*/nullptr));
 
   mojom::ConversationPtr metadata = mojom::Conversation::New(
       uuid, "title", base::Time::Now() - base::Hours(2), true, std::nullopt, 0,
@@ -2264,7 +2273,8 @@ TEST_P(AIChatDatabaseMigrationTest, MigrationToVCurrent) {
     std::vector<mojom::AssociatedContentPtr> associated_content;
     associated_content.push_back(mojom::AssociatedContent::New(
         content_uuid, mojom::ContentType::PageContent, "test title", 1,
-        GURL("https://example.com"), 62, history.front()->uuid.value(), false));
+        GURL("https://example.com"), 62, history.front()->uuid.value(), false,
+        /*mcp_server=*/nullptr));
 
     uint64_t expected_total_tokens = 3770;
     uint64_t expected_trimmed_tokens = 100;
@@ -2396,8 +2406,8 @@ TEST_P(AIChatDatabaseMigrationTest, MigrationToVCurrent) {
 
     metadata->associated_content.push_back(mojom::AssociatedContent::New(
         "1234", mojom::ContentType::PageContent, "title", 1,
-        GURL("https://example.com"), 100, history.front()->uuid.value(),
-        false));
+        GURL("https://example.com"), 100, history.front()->uuid.value(), false,
+        /*mcp_server=*/nullptr));
 
     EXPECT_TRUE(db_->AddConversation(metadata->Clone(), {"Hello world!"},
                                      history[0]->Clone()));

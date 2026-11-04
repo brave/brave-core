@@ -1140,10 +1140,12 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   auto metadata = mojom::Conversation::New();
   metadata->associated_content.push_back(mojom::AssociatedContent::New(
       "1", mojom::ContentType::PageContent, "Content 1", 1,
-      GURL("https://one.com"), 100, "turn-1", false));
+      GURL("https://one.com"), 100, "turn-1", false,
+      /*mcp_server=*/nullptr));
   metadata->associated_content.push_back(mojom::AssociatedContent::New(
       "2", mojom::ContentType::PageContent, "Content 2", 2,
-      GURL("https://two.com"), 100, "turn-1", false));
+      GURL("https://two.com"), 100, "turn-1", false,
+      /*mcp_server=*/nullptr));
 
   auto conversation_archive = mojom::ConversationArchive::New();
   conversation_archive->associated_content.push_back(
@@ -1179,7 +1181,8 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   auto metadata = mojom::Conversation::New();
   metadata->associated_content.push_back(mojom::AssociatedContent::New(
       "workspace-content", mojom::ContentType::Workspace, "Workspace", 1,
-      workspace_url, 100, "turn-1", true));
+      workspace_url, 100, "turn-1", true,
+      /*mcp_server=*/nullptr));
   auto conversation_archive = mojom::ConversationArchive::New();
   conversation_archive->associated_content.push_back(
       mojom::ContentArchive::New("workspace-content", "", "turn-1"));

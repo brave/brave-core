@@ -685,6 +685,39 @@ describe('input box', () => {
     focusSpy.mockRestore()
   })
 
+  describe('Enter', () => {
+    async function renderWithEditor() {
+      const result = await renderInputBox(
+        <MockContext>
+          <InputBox
+            context={{ ...testContext, inputText: ['Hello'] }}
+            conversationStarted={false}
+          />
+        </MockContext>,
+      )
+      return result.container
+    }
+
+    it('submits from the editor', async () => {
+      const container = await renderWithEditor()
+
+      fireEvent.keyDown(container.querySelector('[data-editor]')!, {
+        key: 'Enter',
+      })
+
+      expect(testContext.submitInputTextToAPI).toHaveBeenCalledTimes(1)
+    })
+
+    it('is left to a menu item that has focus', async () => {
+      const container = await renderWithEditor()
+      const item = container.querySelector('leo-menu-item')!
+
+      // Not cancelled, so that the menu can select the item.
+      expect(fireEvent.keyDown(item, { key: 'Enter' })).toBe(true)
+      expect(testContext.submitInputTextToAPI).not.toHaveBeenCalled()
+    })
+  })
+
   describe('MCP servers', () => {
     const MCP_SERVER: AssociatedContent = {
       uuid: 'server-uuid',
@@ -764,5 +797,38 @@ describe('input box', () => {
 
       expect(screen.queryByText('My Server')).not.toBeInTheDocument()
     })
+
+    it.each([
+      [
+        'with the flag, a tools model and a conversation',
+        true,
+        true,
+        'c',
+        true,
+      ],
+      ['not without the flag', false, true, 'c', false],
+      ["not to a model that can't use tools", true, false, 'c', false],
+      ['not without a conversation', true, true, '', false],
+    ])(
+      'offers connectors to attach %s',
+      async (_, isMCPEnabled, supportsTools, conversationUuid, expected) => {
+        await renderInputBox(
+          <MockContext
+            aiChatOverrides={{ isMCPEnabled }}
+            conversationOverrides={{
+              currentModel: createModel(supportsTools),
+            }}
+            initialState={{ conversationState: { conversationUuid } }}
+          >
+            <InputBox
+              context={testContext}
+              conversationStarted={false}
+            />
+          </MockContext>,
+        )
+
+        expect(!!screen.queryByTestId('connectors')).toBe(expected)
+      },
+    )
   })
 })

@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { FuzzyFinder } from './fuzzy_finder'
-import { extractQuery, matches } from './query'
+import { FuzzyFinder, isPrefixMatch } from './fuzzy_finder'
+import { compareMentions, extractQuery, matches } from './query'
 
 describe('query', () => {
   describe('matches', () => {
@@ -96,5 +96,74 @@ describe('query', () => {
         }),
       ).toBe('hello world')
     })
+  })
+})
+
+describe('compareMentions', () => {
+  const find = (query: string, text: string) =>
+    new FuzzyFinder(query).find(text)
+  const connector = (query: string, name: string) => ({
+    isConnector: true,
+    match: find(query, name),
+  })
+  const content = (query: string, title: string) => ({
+    isConnector: false,
+    match: find(query, title),
+  })
+
+  it('puts an exact or prefix match on a connector first', () => {
+    const exactTab = content('gmail', 'Gmail')
+    const prefixConnector = connector('gmail', 'Gmail work')
+    expect(isPrefixMatch(prefixConnector.match)).toBe(true)
+    expect(exactTab.match.score).toBeGreaterThan(prefixConnector.match.score)
+
+    expect(compareMentions(prefixConnector, exactTab)).toBeLessThan(0)
+    expect(compareMentions(exactTab, prefixConnector)).toBeGreaterThan(0)
+  })
+
+  it('puts a connector before content it matches as well as', () => {
+    expect(
+      compareMentions(connector('gmail', 'Gmail'), content('gmail', 'Gmail')),
+    ).toBeLessThan(0)
+    expect(
+      compareMentions(
+        content('gml', 'Google Mail'),
+        connector('gml', 'Google Mail'),
+      ),
+    ).toBeGreaterThan(0)
+  })
+
+  it('puts a connector before content it matches better than', () => {
+    const fuzzyConnector = connector('gml', 'Google Mail')
+    const weakerTab = content('gml', 'aggregated metrics log')
+    expect(isPrefixMatch(fuzzyConnector.match)).toBe(false)
+    expect(fuzzyConnector.match.score).toBeGreaterThan(weakerTab.match.score)
+
+    expect(compareMentions(fuzzyConnector, weakerTab)).toBeLessThan(0)
+  })
+
+  it("doesn't put a weak match on a connector before a better one", () => {
+    const fuzzyConnector = connector('gmail', 'Group email')
+    const exactTab = content('gmail', 'Gmail')
+    expect(isPrefixMatch(fuzzyConnector.match)).toBe(false)
+
+    expect(compareMentions(fuzzyConnector, exactTab)).toBeGreaterThan(0)
+    expect(compareMentions(exactTab, fuzzyConnector)).toBeLessThan(0)
+  })
+
+  it('orders connectors, and content, by how well they match', () => {
+    const mentions = [
+      content('mail', 'Group email'),
+      connector('mail', 'Group email'),
+      content('mail', 'Mail'),
+      connector('mail', 'Mail archive'),
+      connector('mail', 'Mail'),
+      content('mail', 'Mailing lists'),
+    ]
+    expect(
+      [...mentions]
+        .sort(compareMentions)
+        .map((mention) => mentions.indexOf(mention)),
+    ).toEqual([4, 3, 2, 5, 1, 0])
   })
 })

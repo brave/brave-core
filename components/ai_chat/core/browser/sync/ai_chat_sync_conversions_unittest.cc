@@ -803,7 +803,8 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripAllFields) {
       GURL("https://example.com/ac") /* url */,
       42 /* content_used_percentage */,
       "entry-all" /* conversation_turn_uuid */,
-      false /* tools_attached (not synced) */));
+      false /* tools_attached (not synced) */,
+      /*mcp_server=*/nullptr));
 
   base::flat_map<std::string, std::string> texts;
   texts["ac-uuid"] = "associated content extracted text";

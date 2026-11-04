@@ -618,8 +618,10 @@ AssociatedContentManager::GetAssociatedContent() const {
     content->tools_attached = delegate->tools_attached();
 
     // An MCP server sends nothing, so takes nothing from the budget.
-    if (IsMCPServer(delegate)) {
+    if (auto server_id = mcp_server_ids_.find(delegate->uuid());
+        server_id != mcp_server_ids_.end()) {
       content->content_used_percentage = 100;
+      content->mcp_server = mojom::AssociatedMCPServer::New(server_id->second);
       result.push_back(std::move(content));
       continue;
     }
