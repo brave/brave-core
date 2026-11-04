@@ -28,4 +28,5 @@ export type BraveRewardsProxyOverrides = Partial<{
   rewardsEnabled: boolean
   balance: number
   externalWallet: RewardsExternalWallet | null
+  isRewardsCardVerified: boolean
 }>

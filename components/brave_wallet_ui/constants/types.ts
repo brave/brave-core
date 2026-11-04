@@ -980,6 +980,7 @@ export type WalletImportMode = 'seed' | 'metamask' | 'legacy'
 
 export interface BraveRewardsInfo {
   isRewardsEnabled: boolean
+  isRewardsCardVerified: boolean
   balance: number | undefined
   rewardsToken: BraveWallet.BlockchainToken | undefined
   provider: ExternalWalletProvider | undefined
