@@ -222,6 +222,7 @@ TEST_F(ContentToolTest, RequiresPermissionChallengeUntilGranted) {
   ContentTool tool(*mojo_tool, weak_document());
 
   auto tool_use = mojom::ToolUseEvent::New();
+  tool_use->id = "use_1";
   auto result = tool.RequiresUserInteractionBeforeHandling(*tool_use);
   ASSERT_TRUE(std::holds_alternative<mojom::PermissionChallengePtr>(result));
   auto& challenge = std::get<mojom::PermissionChallengePtr>(result);
@@ -239,12 +240,39 @@ TEST_F(ContentToolTest, RequiresPermissionChallengeUntilGranted) {
             "**https\\:\\/\\/example\\.com**");
   EXPECT_TRUE(challenge->supports_allow_session);
 
-  tool.UserPermissionGranted(/*tool_use_id=*/"any",
-                             *mojom::PermissionChallenge::New());
+  tool.UserPermissionGranted(tool_use->id, *mojom::PermissionChallenge::New());
 
   auto after = tool.RequiresUserInteractionBeforeHandling(*tool_use);
   ASSERT_TRUE(std::holds_alternative<bool>(after));
   EXPECT_FALSE(std::get<bool>(after));
+}
+
+TEST_F(ContentToolTest, AllowOnceOnlyCoversTheAnsweredToolUse) {
+  auto mojo_tool = MakeScriptTool("echo", "");
+  ContentTool tool(*mojo_tool, weak_document());
+
+  auto first_use = mojom::ToolUseEvent::New();
+  first_use->id = "use_1";
+  first_use->arguments_json = R"({"text":"hi"})";
+  tool.UserPermissionGranted(first_use->id, *mojom::PermissionChallenge::New());
+  EXPECT_FALSE(
+      std::get<bool>(tool.RequiresUserInteractionBeforeHandling(*first_use)));
+
+  // A later use of the same tool is asked again, even with the same arguments.
+  auto second_use = first_use->Clone();
+  second_use->id = "use_2";
+  EXPECT_TRUE(std::holds_alternative<mojom::PermissionChallengePtr>(
+      tool.RequiresUserInteractionBeforeHandling(*second_use)));
+
+  // Allowing the second use doesn't carry the grant over to a third.
+  tool.UserPermissionGranted(second_use->id,
+                             *mojom::PermissionChallenge::New());
+  EXPECT_FALSE(
+      std::get<bool>(tool.RequiresUserInteractionBeforeHandling(*second_use)));
+  auto third_use = first_use->Clone();
+  third_use->id = "use_3";
+  EXPECT_TRUE(std::holds_alternative<mojom::PermissionChallengePtr>(
+      tool.RequiresUserInteractionBeforeHandling(*third_use)));
 }
 
 TEST_F(ContentToolTest, AllowSessionSkipsPermissionChallenge) {

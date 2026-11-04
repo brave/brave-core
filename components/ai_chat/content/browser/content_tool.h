@@ -49,8 +49,9 @@ class ContentTool : public Tool {
                UseToolCallback callback) override;
 
  private:
-  // Granted for this tool use loop only, by answering a permission challenge.
-  bool user_permission_granted_ = false;
+  // The tool use the user allowed once by answering a permission challenge.
+  // Other uses of this tool, even with the same arguments, are asked again.
+  std::optional<std::string> granted_tool_use_id_;
   // When the permission is set to kNeverAllow the content tool will be
   // discarded so we don't need to handle it here.
   mojom::ToolPermission user_permission_strategy_ = mojom::ToolPermission::kAsk;
