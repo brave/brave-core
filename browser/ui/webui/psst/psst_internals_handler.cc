@@ -31,6 +31,9 @@ PsstInternalsHandler::PsstInternalsHandler(
   if (log_service_) {
     log_observation_.Observe(log_service_);
   }
+  if (settings_service_) {
+    settings_observation_.Observe(settings_service_);
+  }
 }
 
 PsstInternalsHandler::~PsstInternalsHandler() = default;
@@ -101,6 +104,31 @@ void PsstInternalsHandler::OnPsstLogCleared() {
   if (page_) {
     page_->OnCleared();
   }
+}
+
+void PsstInternalsHandler::OnPsstPrefsChange(
+    int infobar_shown_counter,
+    int infobar_decline_counter,
+    const base::flat_map<std::string, PsstWebsiteSettings>&
+        psst_websites_settings) {
+  if (!page_) {
+    return;
+  }
+  
+  auto info = mojom::PsstDiagnosticsInfo::New();
+  info->infobar_shown_count = infobar_shown_counter;
+  info->infobar_decline_count = infobar_decline_counter;
+  for (const auto& [site, settings] : psst_websites_settings) {
+    auto entry = mojom::PsstWebsiteSettingsEntry::New();
+    entry->site = site;
+    entry->consent_status =
+        static_cast<mojom::ConsentStatus>(settings.consent_status);
+    entry->script_version = settings.script_version;
+    entry->user_id = settings.user_id;
+    entry->uids_to_perform = settings.uids_to_perform;
+    info->website_settings.push_back(std::move(entry));
+  }
+  page_->OnPsstSettingsChanged(std::move(info));
 }
 
 void PsstInternalsHandler::FlushPendingEntries() {

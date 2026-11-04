@@ -33,7 +33,7 @@ export function createPsstInternalsApi() {
       }),
 
       // Infobar counters and per-site PSST settings. Fetched once when the
-      // page loads — unlike `entries`, nothing pushes updates for this.
+      // page loads, then kept in sync via `onPsstSettingsChanged`.
       diagnosticsInfo: query({
         query: () => handler.getDiagnosticsInfo().then((r) => r.info),
         prefetchWithArgs: [],
@@ -54,6 +54,9 @@ export function createPsstInternalsApi() {
           },
           onCleared() {
             api.entries.update([])
+          },
+          onPsstSettingsChanged(info: Mojom.PsstDiagnosticsInfo) {
+            api.diagnosticsInfo.update(info)
           },
         },
         (observer) => {

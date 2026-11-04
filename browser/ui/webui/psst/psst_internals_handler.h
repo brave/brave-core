@@ -12,6 +12,7 @@
 #include "base/scoped_observation.h"
 #include "base/timer/timer.h"
 #include "brave/components/psst/core/browser/psst_log_service.h"
+#include "brave/components/psst/core/browser/psst_settings_service.h"
 #include "brave/components/psst/core/common/psst_ui_common.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -27,7 +28,8 @@ class PsstSettingsService;
 // Serves the brave://psst-internals timeline from the profile's
 // `PsstLogService`.
 class PsstInternalsHandler : public mojom::PsstInternalsHandler,
-                             public PsstLogService::Observer {
+                             public PsstLogService::Observer,
+                             public PsstSettingsService::PrefObserver {
  public:
   // `log_service` may be null — the feature is off or the profile is
   // off-the-record — in which case the page gets an empty timeline, no pushes,
@@ -55,6 +57,13 @@ class PsstInternalsHandler : public mojom::PsstInternalsHandler,
   void OnPsstLogEntryAdded(const mojom::PsstLogEntry& entry) override;
   void OnPsstLogCleared() override;
 
+  // PsstSettingsService::PrefObserver:
+  void OnPsstPrefsChange(
+        int infobar_shown_counter,
+        int infobar_decline_counter,
+        const base::flat_map<std::string, PsstWebsiteSettings>&
+            psst_websites_settings) override;
+
   void FlushPendingEntries();
 
   const raw_ptr<PsstLogService> log_service_;
@@ -70,6 +79,8 @@ class PsstInternalsHandler : public mojom::PsstInternalsHandler,
   mojo::Remote<mojom::PsstInternalsPage> page_;
   base::ScopedObservation<PsstLogService, PsstLogService::Observer>
       log_observation_{this};
+  base::ScopedObservation<PsstSettingsService, PsstSettingsService::PrefObserver>
+      settings_observation_{this};
 };
 
 }  // namespace psst
