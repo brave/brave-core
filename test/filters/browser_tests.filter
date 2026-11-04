@@ -2905,6 +2905,7 @@
 -BackForwardCacheSiteDetailsBrowserTest.*
 -BackgroundContentsTagTest.*
 -BackgroundFetchBrowserTest.*
+-BackgroundFetchCorsBrowserTest.*
 -BackgroundTabLoadingBrowserTest.RestoreTab
 -BookmarkBrowsertest.OpenAllBookmarks
 -BreadcrumbManagerTabHelperBrowserTest.*
