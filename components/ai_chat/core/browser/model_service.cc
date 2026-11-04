@@ -401,7 +401,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->key = "chat-claude-opus";
       model->display_name = "Claude Opus";
       model->vision_support = true;
-      model->supports_tools = false;
+      model->supports_tools = true;
       model->supported_capabilities = {
           mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
