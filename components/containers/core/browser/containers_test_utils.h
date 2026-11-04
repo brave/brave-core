@@ -31,6 +31,7 @@ class MockContainersServiceDelegate : public ContainersService::Delegate {
               GetReferencedContainerIds,
               (OnReferencedContainerIdsReadyCallback),
               (override));
+  MOCK_METHOD(bool, HasOpenTabInContainer, (const std::string&), (override));
   MOCK_METHOD(void,
               DeleteContainerStorage,
               (const std::string&, DeleteContainerStorageCallback),
@@ -38,6 +39,10 @@ class MockContainersServiceDelegate : public ContainersService::Delegate {
 
   void SetReferencedContainersIds(base::flat_set<std::string> ids) {
     referenced_container_ids_ = std::move(ids);
+  }
+
+  void SetOpenTabContainerIds(base::flat_set<std::string> ids) {
+    open_tab_container_ids_ = std::move(ids);
   }
 
   void set_delete_result(bool delete_result) { delete_result_ = delete_result; }
@@ -70,6 +75,7 @@ class MockContainersServiceDelegate : public ContainersService::Delegate {
 
  private:
   base::flat_set<std::string> referenced_container_ids_;
+  base::flat_set<std::string> open_tab_container_ids_;
   bool delete_result_ = true;
   bool defer_referenced_container_ids_callback_ = false;
   bool defer_delete_container_storage_callback_ = false;

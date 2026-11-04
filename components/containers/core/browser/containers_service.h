@@ -42,6 +42,10 @@ class ContainersService : public KeyedService {
     virtual void GetReferencedContainerIds(
         OnReferencedContainerIdsReadyCallback callback) = 0;
 
+    // Returns whether any currently open tab is browsing in the container with
+    // the given id.
+    virtual bool HasOpenTabInContainer(const std::string& id) = 0;
+
     // Deletes the storage for the container with the given id.
     virtual void DeleteContainerStorage(
         const std::string& id,
@@ -75,6 +79,19 @@ class ContainersService : public KeyedService {
   // use `CreateAndPersistTemporaryContainer` to get a generated name.
   mojom::ContainerPtr GetOrCreateTemporaryContainerByName(
       std::string_view name);
+
+  // Deletes the storage of the temporary container `id` and forgets it, rather
+  // than waiting for the orphan sweep that only runs at startup. `done` is
+  // given whether the storage was actually deleted, and runs synchronously when
+  // it was not.
+  //
+  // Deletion is declined unless `id` is a temporary container this profile has
+  // used, which the synced list doesn't claim, which no open tab is browsing
+  // in, and which isn't already being deleted. Deleting the storage removes the
+  // partition directory, so a container that still holds a tab is kept and left
+  // to the orphan sweep on the next launch.
+  void MaybeDeleteTemporaryContainer(const std::string& id,
+                                     base::OnceCallback<void(bool)> done);
 
   // Returns the runtime container with the given `id`. Runtime containers are
   // containers that are currently in use by the user. This can be a synced
@@ -119,6 +136,12 @@ class ContainersService : public KeyedService {
   // Called when the storage for the container with the given id is deleted.
   void OnContainerStorageDeleted(const std::string& id, bool success);
 
+  // Called when the storage of a container requested via
+  // `MaybeDeleteTemporaryContainer` is deleted.
+  void OnTemporaryContainerStorageDeleted(const std::string& id,
+                                          base::OnceCallback<void(bool)> done,
+                                          bool success);
+
   enum class OrphanedContainersCleanupState {
     kIdle,
     kDiscoveringOrphans,
@@ -133,6 +156,9 @@ class ContainersService : public KeyedService {
   OrphanedContainersCleanupState orphaned_cleanup_state_ =
       OrphanedContainersCleanupState::kIdle;
   base::flat_set<std::string> orphaned_containers_pending_removal_;
+  // Tracked apart from the orphan sweep's set so that neither path can hand the
+  // same container to a second, concurrent storage deletion.
+  base::flat_set<std::string> temporary_containers_pending_removal_;
   base::WeakPtrFactory<ContainersService> weak_factory_{this};
 };
 
