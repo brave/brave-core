@@ -92,9 +92,11 @@
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/ai_chat/ai_chat_tab_helper_factory.h"
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/ai_chat/tab_data_web_contents_observer.h"
 #include "brave/browser/ai_chat/web_mcp_injection/web_mcp_injector.h"
+#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
@@ -158,6 +160,11 @@ BraveTabFeatures::~BraveTabFeatures() = default;
 
 void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
   TabFeatures::Init(tab, profile);
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  // Created first, as other features may look it up through the tab.
+  ai_chat_tab_helper_ = ai_chat::MaybeCreateAIChatTabHelper(tab);
+#endif
 
   // Expect upstream's Init to create the registry.
   auto* side_panel_registry = SidePanelRegistry::From(&tab);

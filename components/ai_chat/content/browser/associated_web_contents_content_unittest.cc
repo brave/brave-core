@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 
+#include "base/functional/bind.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
@@ -19,6 +20,7 @@
 #include "components/favicon/content/content_favicon_driver.h"
 #include "components/favicon/core/test/mock_favicon_service.h"
 #include "components/pdf/common/constants.h"
+#include "components/tabs/public/mock_tab_interface.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/reload_type.h"
 #include "content/public/test/navigation_simulator.h"
@@ -51,6 +53,15 @@ class MockPrintPreviewExtractor
 
   MOCK_METHOD(void, CaptureImages, (CaptureImagesCallback), (override));
 };
+
+namespace {
+
+std::unique_ptr<AssociatedWebContentsContent::PrintPreviewExtractionDelegate>
+CreateMockPrintPreviewExtractor(content::WebContents* web_contents) {
+  return std::make_unique<MockPrintPreviewExtractor>();
+}
+
+}  // namespace
 
 class MockPageContentFetcher
     : public AssociatedWebContentsContent::PageContentFetcherDelegate {
@@ -175,12 +186,12 @@ class AssociatedWebContentsContentUnitTest
     content::RenderViewHostTestHarness::SetUp();
     favicon::ContentFaviconDriver::CreateForWebContents(web_contents(),
                                                         &favicon_service_);
-    AIChatTabHelper::CreateForWebContents(
-        web_contents(), is_print_preview_supported_
-                            ? std::make_unique<MockPrintPreviewExtractor>()
-                            : nullptr);
-    auto* helper = AIChatTabHelper::FromWebContents(web_contents());
-    web_contents_content_ = &helper->web_contents_content();
+    ON_CALL(tab_, GetContents()).WillByDefault(testing::Return(web_contents()));
+    tab_helper_ = std::make_unique<AIChatTabHelper>(
+        tab_, is_print_preview_supported_
+                  ? base::BindRepeating(&CreateMockPrintPreviewExtractor)
+                  : AIChatTabHelper::PrintPreviewExtractionDelegateFactory());
+    web_contents_content_ = &tab_helper_->web_contents_content();
 
     web_contents_content_->SetPageContentFetcherDelegateForTesting(
         std::make_unique<MockPageContentFetcher>());
@@ -200,6 +211,7 @@ class AssociatedWebContentsContentUnitTest
   void TearDown() override {
     web_contents_content_->RemoveObserver(observer_.get());
     web_contents_content_ = nullptr;
+    tab_helper_.reset();
 
     content::RenderViewHostTestHarness::TearDown();
   }
@@ -285,6 +297,8 @@ class AssociatedWebContentsContentUnitTest
 
  protected:
   NiceMock<favicon::MockFaviconService> favicon_service_;
+  tabs::MockTabInterface tab_;
+  std::unique_ptr<AIChatTabHelper> tab_helper_;
   std::unique_ptr<NiceMock<MockAssociatedContentObserver>> observer_;
   raw_ptr<AssociatedWebContentsContent> web_contents_content_;
   raw_ptr<MockPrintPreviewExtractor, DanglingUntriaged>

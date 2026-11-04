@@ -1,0 +1,20 @@
+diff --git a/ios/web/js_messaging/java_script_content_world.h b/ios/web/js_messaging/java_script_content_world.h
+index e34c81554d276d35ad4d54a0cef1372e5d45d394..445edba8e8bb1391b452fa49561cf8bf3415c1e4 100644
+--- a/ios/web/js_messaging/java_script_content_world.h
++++ b/ios/web/js_messaging/java_script_content_world.h
+@@ -49,6 +49,15 @@ class JavaScriptContentWorld {
+   // Returns true if and only if `feature` has been added to this content world.
+   bool HasFeature(const JavaScriptFeature* feature);
+ 
++  // Returns the added feature replying to prompts for `handler_name`, or
++  // nullptr if there is none.
++  const JavaScriptFeature* GetFeatureReplyingToPrompts(
++      const std::string& handler_name);
++
++ protected:
++  base::flat_map<std::string, const JavaScriptFeature*>
++      prompt_replying_features_;
++
+  private:
+   // Processes the response of a script message and forwards it to `handler`.
+   void ScriptMessageReceived(base::WeakPtr<JavaScriptFeature> feature,
