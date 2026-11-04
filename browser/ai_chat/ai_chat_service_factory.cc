@@ -160,12 +160,11 @@ AIChatServiceFactory::BuildServiceInstanceForBrowserContext(
   }
 
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
-  // Notification handling stays in the browser layer.
   Profile* profile = Profile::FromBrowserContext(context);
   service->SetCompletionNotificationCallbacks(
       base::BindRepeating(&ShowAIChatCompletionNotification, profile),
       base::BindRepeating(&CloseAIChatCompletionNotification, profile));
-#endif
+#endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
   return service;
 }
