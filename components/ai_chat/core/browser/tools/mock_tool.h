@@ -93,6 +93,8 @@ class MockTool : public Tool {
               (const std::string& input_json, UseToolCallback callback),
               (override));
 
+  MOCK_METHOD(void, StopToolUse, (), (override));
+
  private:
   std::string name_;
   std::string description_;

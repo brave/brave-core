@@ -112,12 +112,20 @@ struct MCPImageContent {
 
   // Base64-encoded image bytes.
   std::string data;
+  // Always one that the model can be given.
   std::string mime_type;
 };
 
-using MCPContent = std::variant<MCPTextContent, MCPImageContent>;
+// An image of a type the model can't be given, kept only so the model can be
+// told it was left out.
+struct MCPUnsupportedImageContent {
+  bool operator==(const MCPUnsupportedImageContent&) const = default;
+};
 
-// Result of `tools/call`. Content types other than text and image are
+using MCPContent =
+    std::variant<MCPTextContent, MCPImageContent, MCPUnsupportedImageContent>;
+
+// The result of `tools/call`. Content other than text and images is
 // dropped.
 struct MCPCallToolResult {
   MCPCallToolResult();

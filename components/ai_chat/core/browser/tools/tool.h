@@ -142,6 +142,11 @@ class Tool {
   // tool handled directly by the ConversationHandler.
   virtual void UseTool(const std::string& input_json, UseToolCallback callback);
 
+  // The user stopped the task this tool is used in. A UseTool() still in
+  // progress should stop its work, and still run its callback, asynchronously,
+  // with output saying it was stopped.
+  virtual void StopToolUse();
+
   base::WeakPtr<Tool> GetWeakPtr() { return weak_ptr_factory_.GetWeakPtr(); }
 
  protected:

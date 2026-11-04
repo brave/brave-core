@@ -200,6 +200,7 @@ class AssociatedContentManager : public ToolProvider,
   // ToolProvider:
   void UpdateToolsForNewGenerationLoop(base::OnceClosure on_updated) override;
   std::vector<base::WeakPtr<Tool>> GetTools() override;
+  void StopAllTasks() override;
 
   // AssociatedContentDelegate::Observer:
   void OnRequestArchive(AssociatedContentDelegate* delegate) override;

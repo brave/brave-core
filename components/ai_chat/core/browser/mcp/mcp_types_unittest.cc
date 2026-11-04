@@ -83,10 +83,13 @@ TEST(MCPTypesTest, ParseCallToolResult) {
     "_meta": {}
   })"));
   ASSERT_TRUE(result);
-  ASSERT_EQ(result->content.size(), 2u);
+  ASSERT_EQ(result->content.size(), 3u);
   EXPECT_EQ(std::get<MCPTextContent>(result->content[0]).text, "hello");
   EXPECT_EQ(std::get<MCPImageContent>(result->content[1]),
             (MCPImageContent{"aGVsbG8=", "image/png"}));
+  // Kept so the model can be told about it, but without the data.
+  EXPECT_TRUE(
+      std::holds_alternative<MCPUnsupportedImageContent>(result->content[2]));
   EXPECT_EQ(result->structured_content, ParseJsonDict(R"({"a":1})"));
   EXPECT_FALSE(result->is_error);
 

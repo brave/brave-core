@@ -960,7 +960,7 @@
   <message name="IDS_CHAT_UI_PERMISSION_CHALLENGE_HEADER" desc="Heading for permission challenge" formatter_data="webui=AiChat">
     Security warning
   </message>
-  <message name="IDS_CHAT_UI_PERMISSION_CHALLENGE_WEB_TOOL_HEADER" desc="Heading for a permission challenge raised by a website-provided (WebMCP) tool, asking the user whether the AI may run the tool">
+  <message name="IDS_CHAT_UI_PERMISSION_CHALLENGE_WEB_TOOL_HEADER" desc="Heading for a permission challenge raised by a tool that a website (WebMCP) or an MCP (Model Context Protocol) server provides, asking the user whether the AI may run the tool">
     Tool permission request
   </message>
   <message name="IDS_CHAT_UI_PERMISSION_CHALLENGE_SUMMARY" desc="Summary for permission challenge" formatter_data="webui=AiChat">
@@ -968,6 +968,9 @@
   </message>
   <message name="IDS_CHAT_UI_PERMISSION_CHALLENGE_WEB_TOOL_SUMMARY" desc="Summary for a permission challenge raised by a website-provided (WebMCP) tool. Supports markdown, which is used to bold the tool name and site origin." formatter_data="webui=AiChat">
     Brave AI would like to execute **<ph name="TOOL_NAME">$1<ex>get_stock_price</ex></ph>** on **<ph name="SITE_ORIGIN">$2<ex>https://www.example.com</ex></ph>**
+  </message>
+  <message name="IDS_CHAT_UI_PERMISSION_CHALLENGE_MCP_TOOL_SUMMARY" desc="Summary for a permission challenge raised by a tool from an MCP (Model Context Protocol) server that the user added, asking the user whether the AI may run the tool. Supports markdown, which is used to bold the tool name, server name and server origin.">
+    Brave AI would like to execute **<ph name="TOOL_NAME">$1<ex>search_issues</ex></ph>** from the connector **<ph name="SERVER_NAME">$2<ex>GitHub</ex></ph>** at **<ph name="SERVER_ORIGIN">$3<ex>https://api.example.com</ex></ph>**
   </message>
   <message name="IDS_CHAT_UI_PERMISSION_CHALLENGE_ASSESSMENT_INTRO" desc="Introduction to an assessment for why a permission challenge is being presented" formatter_data="webui=AiChat">
     The operation was detected as potentially misaligned with your request:

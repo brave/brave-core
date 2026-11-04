@@ -745,6 +745,35 @@ TEST_F(AssociatedContentManagerUnitTest,
                               "first_tool", "second_tool", "third_tool"));
 }
 
+TEST_F(AssociatedContentManagerUnitTest, StopAllTasksStopsEachToolUse) {
+  NiceMock<MockAssociatedContent> content;
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+  manager->SetToolsAttached(content.uuid(), /*tools_attached=*/true);
+
+  EXPECT_CALL(content, GetContentTools)
+      .WillOnce([](AssociatedContentDelegate::GetContentToolsCallback cb) {
+        std::vector<std::unique_ptr<Tool>> tools;
+        for (const char* name : {"first_tool", "second_tool"}) {
+          auto tool = std::make_unique<NiceMock<MockTool>>(name);
+          EXPECT_CALL(*tool, StopToolUse);
+          tools.push_back(std::move(tool));
+        }
+        std::move(cb).Run(std::move(tools));
+      });
+  base::test::TestFuture<void> done;
+  manager->UpdateToolsForNewGenerationLoop(done.GetCallback());
+  EXPECT_TRUE(done.Wait());
+  ASSERT_EQ(2u, manager->GetTools().size());
+
+  manager->StopAllTasks();
+  for (const base::WeakPtr<Tool>& tool : manager->GetTools()) {
+    ASSERT_TRUE(tool);
+    testing::Mock::VerifyAndClearExpectations(
+        static_cast<MockTool*>(tool.get()));
+  }
+}
+
 TEST_F(AssociatedContentManagerUnitTest,
        UpdateToolsForNewGenerationLoop_ClearsPreviousTools) {
   NiceMock<MockAssociatedContent> content;

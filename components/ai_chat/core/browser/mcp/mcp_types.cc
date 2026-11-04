@@ -74,10 +74,15 @@ std::optional<MCPContent> ParseContent(const base::Value& item) {
   if (*type == kImageContentType) {
     const std::string* data = dict.FindString(kDataKey);
     const std::string* mime_type = dict.FindString(kMimeTypeKey);
+    if (!data || !mime_type) {
+      return std::nullopt;
+    }
+    if (!kSupportedImageMimeTypes.contains(*mime_type)) {
+      return MCPUnsupportedImageContent{};
+    }
     // Only strict base64 is accepted, so `data` can be used without
     // re-encoding.
-    if (!data || !mime_type || !kSupportedImageMimeTypes.contains(*mime_type) ||
-        !base::Base64Decode(*data)) {
+    if (!base::Base64Decode(*data)) {
       return std::nullopt;
     }
     return MCPImageContent{*data, *mime_type};

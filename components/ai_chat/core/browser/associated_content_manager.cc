@@ -947,6 +947,12 @@ std::vector<base::WeakPtr<Tool>> AssociatedContentManager::GetTools() {
   return tool_ptrs;
 }
 
+void AssociatedContentManager::StopAllTasks() {
+  for (const auto& entry : tools_) {
+    entry.tool->StopToolUse();
+  }
+}
+
 void AssociatedContentManager::DetachContent() {
   DVLOG(1) << __func__;
 

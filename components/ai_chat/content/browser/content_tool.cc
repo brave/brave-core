@@ -31,38 +31,6 @@
 
 namespace ai_chat {
 
-namespace {
-
-// Reduces `text` to an allowlist of `[0-9A-Za-z/_-.:]`, dropping every other
-// character (including all whitespace), then backslash-escapes the punctuation
-// that survives. Used for site-controlled values (e.g. WebMCP tool names and
-// hosts) shown in the permission prompt, so a site cannot inject markdown
-// formatting, a link, or extra prompt lines into the challenge text.
-std::string EscapeMarkdown(std::string_view text) {
-  std::string escaped;
-  escaped.reserve(text.size());
-  for (char c : text) {
-    // Ignore whitespace characters in our escaping.
-    if (absl::ascii_isspace(c)) {
-      continue;
-    }
-
-    // Only certain characters are allowed so as to avoid markdown injection.
-    if (!absl::ascii_isalnum(c) && c != '/' && c != '_' && c != '-' &&
-        c != '.' && c != ':') {
-      continue;
-    }
-
-    if (absl::ascii_ispunct(c)) {
-      escaped.push_back('\\');
-    }
-    escaped.push_back(c);
-  }
-  return escaped;
-}
-
-}  // namespace
-
 ContentTool::ContentTool(const blink::mojom::ScriptTool& script_tool,
                          content::WeakDocumentPtr rfh,
                          bool requires_permission)

@@ -94,4 +94,6 @@ void Tool::UseTool(const std::string& input_json,
   CHECK(false) << "UseTool called but not implemented";
 }
 
+void Tool::StopToolUse() {}
+
 }  // namespace ai_chat
