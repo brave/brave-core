@@ -15,6 +15,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/containers/flat_map.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
@@ -74,6 +75,9 @@ using ::testing::NiceMock;
 namespace ai_chat {
 
 namespace {
+
+using GenerationStates =
+    base::flat_map<std::string, mojom::ConversationGenerationState>;
 
 class MockAIChatCredentialManager : public AIChatCredentialManager {
  public:
@@ -1797,11 +1801,14 @@ TEST_P(AIChatServiceUnitTest, ServiceStateHasContentAgentUserSelectable) {
 
     mojo::PendingRemote<mojom::ServiceObserver> observer;
     auto observer_receiver = observer.InitWithNewPipeAndPassReceiver();
-    base::test::TestFuture<mojom::ServiceStatePtr> state_future;
-    ai_chat_service_->BindObserver(std::move(observer),
-                                   state_future.GetCallback());
+    base::test::TestFuture<mojom::ServiceStatePtr, GenerationStates>
+        state_future;
+    ai_chat_service_->BindObserver(
+        std::move(observer),
+        state_future
+            .GetCallback<mojom::ServiceStatePtr, const GenerationStates&>());
 
-    EXPECT_EQ(state_future.Take()->is_content_agent_user_selectable,
+    EXPECT_EQ(state_future.Get<0>()->is_content_agent_user_selectable,
               is_user_selectable);
   }
 }
@@ -1963,6 +1970,44 @@ TEST_P(AIChatServiceUnitTest, GenerationState_StopWhileIdle_StaysIdle) {
       mojom::ConversationGenerationState::kGenerating,
       base::BindLambdaForTesting(
           [&] { ai_chat_service_->OnRequestInProgressChanged(other, true); }));
+}
+
+TEST_P(AIChatServiceUnitTest, GenerationState_RepeatedInProgressNotifiesOnce) {
+  ConversationHandler* handler = CreateConversation();
+  auto resolve = StartGeneration(handler, *client_);
+
+  EXPECT_CALL(*client_, OnConversationGenerationStateChanged(
+                            handler->get_conversation_uuid(), _))
+      .Times(0);
+  ai_chat_service_->OnRequestInProgressChanged(handler, true);
+
+  // Observer messages arrive in order, so once a later change arrives, a
+  // repeated notification for |handler| would already have been delivered.
+  ConversationHandler* other = CreateConversation();
+  ExpectGenerationState(
+      *client_, other->get_conversation_uuid(),
+      mojom::ConversationGenerationState::kGenerating,
+      base::BindLambdaForTesting(
+          [&] { ai_chat_service_->OnRequestInProgressChanged(other, true); }));
+  CompleteGeneration(std::move(resolve));
+}
+
+TEST_P(AIChatServiceUnitTest,
+       GenerationState_BindObserverReturnsCurrentStates) {
+  ConversationHandler* handler = CreateConversation();
+  auto resolve = StartGeneration(handler, *client_);
+
+  mojo::PendingRemote<mojom::ServiceObserver> observer;
+  auto observer_receiver = observer.InitWithNewPipeAndPassReceiver();
+  base::test::TestFuture<mojom::ServiceStatePtr, GenerationStates> future;
+  ai_chat_service_->BindObserver(
+      std::move(observer),
+      future.GetCallback<mojom::ServiceStatePtr, const GenerationStates&>());
+  EXPECT_THAT(future.Get<1>(),
+              testing::ElementsAre(testing::Pair(
+                  handler->get_conversation_uuid(),
+                  mojom::ConversationGenerationState::kGenerating)));
+  CompleteGeneration(std::move(resolve));
 }
 
 TEST_P(AIChatServiceUnitTest, GenerationState_BindClearsNotViewed) {

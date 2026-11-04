@@ -513,9 +513,16 @@ class AIChatService : public KeyedService,
   mojo::RemoteSet<mojom::UntrustedServiceObserver>
       untrusted_service_observer_remotes_;
 
+  // Session-only generation state per conversation uuid. A missing entry means
+  // kIdle; kIdle is never stored.
   std::map<std::string, mojom::ConversationGenerationState>
       conversation_generation_state_;
+  // Sends |uuid|'s stored state, or kIdle if there is no entry, to all
+  // |observer_remotes_|.
   void NotifyConversationGenerationState(const std::string& uuid);
+  // Whether |uuid| has a loaded ConversationHandler with a connected client.
+  // This doesn't mean the conversation is on screen.
+  bool IsConversationVisible(const std::string& uuid) const;
   // Deletes a conversation without notifying the conversation list.
   void EraseConversation(const std::string& id);
 
@@ -554,8 +561,6 @@ class AIChatService : public KeyedService,
   // can hand out a proxy delegate before the bridge itself exists; the bridge
   // is owned, accessed, and destroyed only on |db_task_runner_|.
   scoped_refptr<AIChatSyncBackend> sync_backend_;
-
-  bool IsConversationVisible(const std::string& uuid) const;
 
   base::WeakPtrFactory<AIChatService> weak_ptr_factory_{this};
 };
