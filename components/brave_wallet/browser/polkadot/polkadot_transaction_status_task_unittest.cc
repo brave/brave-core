@@ -521,6 +521,108 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest,
   EXPECT_EQ(fee, std::nullopt);
 }
 
+TEST_F(PolkadotTransactionStatusTaskUnitTest,
+       FindExtrinsic_NumericLimits_SaturatedMortalityWindow) {
+  // Test that the mortality window saturates at the end of the chain rather
+  // than wrapping: the extrinsic lives in a block past `block_num` but before
+  // the saturated end of the window, so it can only be found if the whole
+  // window is walked.
+
+  auto polkadot_mock_rpc = std::make_unique<PolkadotMockRpc>(
+      &url_loader_factory_, network_manager_.get());
+
+  auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
+      *keyring_service_, *network_manager_, prefs_,
+      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap());
+
+  UnlockWallet();
+
+  std::vector<uint8_t> extrinsic;
+  ASSERT_TRUE(base::HexStringToBytes(kDefaultExtrinsic, &extrinsic));
+
+  // block_num + mortality_period overflows uint32_t, so the end of the window
+  // saturates at 0xffffffff.
+  const uint32_t num_blocks = 13;
+  const uint32_t block_num = std::numeric_limits<uint32_t>::max() - num_blocks;
+  const uint32_t mortality_period = 64;
+
+  auto task = PolkadotTransactionStatusTask::Create(
+      *polkadot_wallet_service, *keyring_service_,
+      polkadot_testnet_account_->account_id->Clone(), mojom::kPolkadotTestnet,
+      std::move(extrinsic), block_num, mortality_period);
+  ASSERT_TRUE(task);
+
+  base::test::TestFuture<base::expected<
+      std::pair<PolkadotTransactionStatus, std::optional<uint128_t>>,
+      std::string>>
+      future;
+
+  // The finalized head is the last block of the chain.
+  polkadot_mock_rpc->SetFinalizedBlockHeader(R"(
+    {
+      "jsonrpc":"2.0",
+      "id":1,
+      "result":{
+        "parentHash":"0x3abc27144bbf0c75c90335c42438e365aa4b7e9188b8a980d9a1d4d32f2b44fa",
+        "number":"0xffffffff",
+        "stateRoot":"0x4a0be8dd0e559d1db6a3706cd680ab725bff879a573e55944b24c9fdadd2a0c8",
+        "extrinsicsRoot":"0xf392f83f6fe0a75a468b4f59a241377cf28a6d5a892d936b6bb84c213d74fa0d",
+        "digest":{
+          "logs":[
+            "0x0642414245b5010302000000b5659f11000000009abf4ca7b5e17b0c8dd71723a5c9f26b856d98e855c4d2153024b872a83d3a08a4b15a23ffae388ac0e3e71787079e6afa86e5f1db4733fa88abe1f8d536bd04cfcafb33306d0d8dc933c0c42dcdf5af5b7e55829b1c9f2993a9d1f668e53106",
+            "0x0442454546840385b89b5af093f2269fac4180942cd2f3f3814783f33ee572b3c6df4570e21fc1",
+            "0x054241424501017c737c5a03844ffdf92efbe9a8fa2c47f40d9b3b4a040ef99c1ed3ba4529916a59611765c8d78e4d4ba9c8eb4866aa89e5bdf9959583de8a073696134d107782"
+          ]
+        }
+      }
+    }
+  )");
+
+  // Every block before the last one in the window is empty; the final one
+  // (0xfffffffe) contains the extrinsic.
+  RegisterDefaultBlocks(polkadot_mock_rpc.get());
+  {
+    base::flat_map<uint32_t, std::string> block_hash_map;
+    for (uint32_t i = 0; i < num_blocks; ++i) {
+      block_hash_map.emplace(block_num + i,
+                             i == num_blocks - 1
+                                 ? "0x14a9e3880ed1d2b7cd6ab0480ea54ab0cde8d1cb0"
+                                   "cef92cba7d588ae32331d61"
+                                 : "0x411f460c170a3cda43f42036999a74ea4ae960121"
+                                   "cf59fc421a9b4820beadce2");
+    }
+
+    polkadot_mock_rpc->SetBlockHashMap(std::move(block_hash_map));
+  }
+
+  RegisterCustomEventsForDefaultBlock(
+      polkadot_mock_rpc.get(),
+      "0b080000000e000000000001000000000007d41643ad0b9970"
+      "02000000"
+      "02000000040814bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704"
+      "d71edc8df1b50300000000000000000000000000"
+      "02000000040214bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704"
+      "d71e8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48a866"
+      "14000000000000000000000000000000"
+      "0200000004076d6f646c6461702f7361746c000000000000000000000000000000000000"
+      "0000dc8df1b50300000000000000000000000000"
+      "020000001a0014bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704"
+      "d71edc8df1b5030000000000000000000000000000000000000000000000000000000000"
+      "020000000000823798916da8000000");
+
+  polkadot_mock_rpc->AddGetFinalizedBlockHash();
+  polkadot_mock_rpc->FinalizeSetup();
+
+  task->Start(future.GetCallback());
+
+  auto result = future.Take();
+  ASSERT_TRUE(result.has_value());
+
+  const auto [status, fee] = *result;
+  EXPECT_EQ(status, PolkadotTransactionStatus::kSuccess);
+  EXPECT_EQ(fee, uint128_t{15937408476});
+}
+
 TEST_F(PolkadotTransactionStatusTaskUnitTest, OutpacedFinalizedHead) {
   // Test that our task terminates early if we outpace the finalized head.
 
