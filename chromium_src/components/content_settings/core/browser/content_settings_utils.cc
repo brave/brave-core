@@ -8,6 +8,7 @@
 #include <iostream>
 
 #include "base/check.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 
 #define GetRendererContentSettingRules \
   GetRendererContentSettingRules_ChromiumImpl
@@ -33,6 +34,7 @@ void GetRendererContentSettingRules(const HostContentSettingsMap* map,
       {ContentSettingsType::BRAVE_SHIELDS, &rules->brave_shields_rules},
       {ContentSettingsType::BRAVE_COSMETIC_FILTERING,
        &rules->cosmetic_filtering_rules},
+      {ContentSettingsType::BRAVE_FARBLING_LEVEL, &rules->brave_farbling_level},
   };
   for (const auto& setting : settings) {
     DCHECK(

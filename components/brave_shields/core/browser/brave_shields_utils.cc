@@ -782,28 +782,54 @@ bool IsWebcompatEnabled(HostContentSettingsMap* map,
   return setting == CONTENT_SETTING_ALLOW;
 }
 
-mojom::FarblingLevel GetFarblingLevel(HostContentSettingsMap* map,
-                                      const GURL& primary_url) {
-  if (!base::FeatureList::IsEnabled(features::kBraveFarbling)) {
-    return brave_shields::mojom::FarblingLevel::OFF;
+content_settings::mojom::FarblingLevel GetFarblingLevel(
+    HostContentSettingsMap* map,
+    const GURL& primary_url,
+    ContentSettingsType webcompat_settings_type) {
+  if (!base::FeatureList::IsEnabled(features::kBraveFarbling) || !map) {
+    return content_settings::mojom::FarblingLevel::OFF;
   }
 
-  const bool shields_up = IsBraveShieldsEnabled(map, primary_url);
-  if (!shields_up) {
-    return brave_shields::mojom::FarblingLevel::OFF;
+  if (!IsBraveShieldsEnabled(map, primary_url)) {
+    return content_settings::mojom::FarblingLevel::OFF;
   }
 
-  auto fingerprinting_type = GetFingerprintingControlType(map, primary_url);
-  switch (fingerprinting_type) {
-    case ControlType::ALLOW:
-      return brave_shields::mojom::FarblingLevel::OFF;
-    case ControlType::BLOCK:
-      return brave_shields::mojom::FarblingLevel::MAXIMUM;
-    case ControlType::BLOCK_THIRD_PARTY:
-      NOTREACHED();
-    case ControlType::DEFAULT:
-      return brave_shields::mojom::FarblingLevel::BALANCED;
+  content_settings::mojom::FarblingLevel level =
+      content_settings::mojom::FarblingLevel::BALANCED;
+  const ContentSettingsForOneType farbling_rules =
+      map->GetSettingsForOneType(ContentSettingsType::BRAVE_FARBLING_LEVEL);
+  bool explicit_farbling_rule = false;
+  for (const auto& rule : farbling_rules) {
+    if (!rule.primary_pattern.Matches(primary_url)) {
+      continue;
+    }
+    if (!rule.primary_pattern.MatchesAllHosts()) {
+      level = FarblingLevelFromContentSetting(rule.GetContentSetting());
+      explicit_farbling_rule = true;
+    }
+    break;
   }
+  if (!explicit_farbling_rule) {
+    switch (GetFingerprintingControlType(map, primary_url)) {
+      case ControlType::ALLOW:
+        level = content_settings::mojom::FarblingLevel::OFF;
+        break;
+      case ControlType::BLOCK:
+        level = content_settings::mojom::FarblingLevel::MAXIMUM;
+        break;
+      case ControlType::BLOCK_THIRD_PARTY:
+        NOTREACHED();
+      case ControlType::DEFAULT:
+        level = content_settings::mojom::FarblingLevel::BALANCED;
+        break;
+    }
+  }
+  if (level != content_settings::mojom::FarblingLevel::OFF &&
+      webcompat_settings_type != ContentSettingsType::BRAVE_WEBCOMPAT_NONE &&
+      IsWebcompatEnabled(map, webcompat_settings_type, primary_url)) {
+    return content_settings::mojom::FarblingLevel::OFF;
+  }
+  return level;
 }
 
 bool IsDeveloperModeEnabled(PrefService* profile_state) {

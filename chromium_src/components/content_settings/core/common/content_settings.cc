@@ -38,6 +38,7 @@ bool RendererContentSettingRules::IsRendererContentSetting(
          content_type == ContentSettingsType::AUTOPLAY ||
          content_type == ContentSettingsType::BRAVE_COSMETIC_FILTERING ||
          content_type == ContentSettingsType::BRAVE_FINGERPRINTING_V2 ||
+         content_type == ContentSettingsType::BRAVE_FARBLING_LEVEL ||
          content_type == ContentSettingsType::BRAVE_GOOGLE_SIGN_IN ||
          content_type == ContentSettingsType::BRAVE_SHIELDS;
 }
@@ -50,6 +51,7 @@ void RendererContentSettingRules::FilterRulesByOutermostMainFrameURL(
   FilterRulesForType(brave_shields_rules, outermost_main_frame_url);
   FilterRulesForType(cosmetic_filtering_rules, outermost_main_frame_url);
   FilterRulesForType(fingerprinting_rules, outermost_main_frame_url);
+  FilterRulesForType(brave_farbling_level, outermost_main_frame_url);
 }
 
 namespace content_settings {

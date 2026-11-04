@@ -134,6 +134,20 @@ void ContentSettingsRegistry::BraveInit() {
            ContentSettingsInfo::INHERIT_IN_INCOGNITO,
            PermissionSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 
+  // ASK is the balanced default, matching fingerprinting. ALLOW and BLOCK are
+  // the off and maximum farbling levels.
+  Register(ContentSettingsType::BRAVE_FARBLING_LEVEL, "braveFarblingLevel",
+           CONTENT_SETTING_ASK, WebsiteSettingsInfo::UNSYNCABLE,
+           /*allowlisted_schemes=*/{},
+           /*valid_settings=*/
+           {CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK, CONTENT_SETTING_ASK},
+           WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
+           WebsiteSettingsRegistry::DESKTOP |
+               WebsiteSettingsRegistry::PLATFORM_ANDROID |
+               WebsiteSettingsRegistry::PLATFORM_IOS,
+           ContentSettingsInfo::INHERIT_IN_INCOGNITO,
+           PermissionSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
+
   Register(ContentSettingsType::BRAVE_SHIELDS, brave_shields::kBraveShields,
            CONTENT_SETTING_ALLOW, WebsiteSettingsInfo::SYNCABLE,
            /*allowlisted_schemes=*/{},

@@ -335,7 +335,7 @@ void BraveShieldsWebContentsObserver::SendShieldsSettings(
 
   HostContentSettingsMap* host_content_settings_map =
       HostContentSettingsMapFactory::GetForProfile(rfh->GetBrowserContext());
-  const brave_shields::mojom::FarblingLevel farbling_level =
+  const content_settings::mojom::FarblingLevel farbling_level =
       brave_shields::GetFarblingLevel(host_content_settings_map, primary_url);
   std::string additional_entropy;
 #if BUILDFLAG(ENABLE_CONTAINERS)
@@ -348,7 +348,7 @@ void BraveShieldsWebContentsObserver::SendShieldsSettings(
       BraveShieldsSettingsServiceFactory::GetForProfile(
           Profile::FromBrowserContext(rfh->GetBrowserContext()));
   const base::Token farbling_token =
-      farbling_level != brave_shields::mojom::FarblingLevel::OFF &&
+      farbling_level != content_settings::mojom::FarblingLevel::OFF &&
               shields_settings_service
           ? shields_settings_service->GetFarblingToken(
                 primary_url, base::as_byte_span(additional_entropy))
@@ -359,7 +359,7 @@ void BraveShieldsWebContentsObserver::SendShieldsSettings(
   mojo::AssociatedRemote<brave_shields::mojom::BraveShields> agent;
   rfh->GetRemoteAssociatedInterfaces()->GetInterface(&agent);
   agent->SetShieldsSettings(brave_shields::mojom::ShieldsSettings::New(
-      farbling_level, farbling_token, allowed_scripts_,
+      farbling_token, allowed_scripts_,
       brave_shields::IsReduceLanguageEnabledForProfile(pref_service),
       IsJsBlockingEnforced(rfh->GetBrowserContext(), primary_url),
       brave_user_agent::ShouldHideBraveBrand(primary_url)));

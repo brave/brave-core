@@ -10,6 +10,7 @@
 
 #include "brave/components/brave_shields/core/common/shields_settings.mojom-data-view.h"
 #include "components/content_settings/core/common/content_settings.h"
+#include "components/content_settings/core/common/content_settings.mojom.h"
 
 class GURL;
 
@@ -30,6 +31,29 @@ ContentSetting GetBraveWebcompatContentSettingFromRules(
         webcompat_rules,
     const GURL& primary_url,
     const ContentSettingsType content_settings_type);
+
+// ALLOW is farbling off, BLOCK is maximum, and ASK/DEFAULT are balanced.
+inline content_settings::mojom::FarblingLevel FarblingLevelFromContentSetting(
+    ContentSetting setting) {
+  switch (setting) {
+    case CONTENT_SETTING_ALLOW:
+      return content_settings::mojom::FarblingLevel::OFF;
+    case CONTENT_SETTING_BLOCK:
+      return content_settings::mojom::FarblingLevel::MAXIMUM;
+    case CONTENT_SETTING_ASK:
+    case CONTENT_SETTING_DEFAULT:
+      return content_settings::mojom::FarblingLevel::BALANCED;
+    default:
+      return content_settings::mojom::FarblingLevel::BALANCED;
+  }
+}
+
+// Resolves BRAVE_FARBLING_LEVEL from renderer content setting rules. Shields
+// down and a webcompat exception both force farbling off.
+content_settings::mojom::FarblingLevel GetBraveFarblingLevelFromRules(
+    const RendererContentSettingRules& rules,
+    const GURL& primary_url,
+    ContentSettingsType webcompat_settings_type);
 
 ShieldsSettingCounts GetSettingCountFromRules(
     const ContentSettingsForOneType& fp_rules);

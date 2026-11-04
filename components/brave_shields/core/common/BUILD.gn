@@ -21,7 +21,10 @@ static_library("common") {
     sources += [ "brave_shield_localized_strings.h" ]
   }
 
-  public_deps = [ "//brave/components/resources:strings" ]
+  public_deps = [
+    "//brave/components/resources:strings",
+    "//components/content_settings/core/common:mojo_bindings",
+  ]
 
   deps = [
     "//base",

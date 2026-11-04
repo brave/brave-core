@@ -14,6 +14,8 @@
   }                                                                 \
   brave_shields::mojom::ShieldsSettingsPtr GetBraveShieldsSettings( \
       ContentSettingsType webcompat_settings_type) override;        \
+  content_settings::mojom::FarblingLevel GetBraveFarblingLevel(     \
+      ContentSettingsType webcompat_settings_type) override;        \
   bool AllowStorageAccessSync
 
 #include <third_party/blink/renderer/core/workers/shared_worker_content_settings_proxy.h>  // IWYU pragma: export

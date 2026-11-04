@@ -13,7 +13,12 @@
   void GetBraveShieldsSettings(                               \
       const content::GlobalRenderFrameHostToken& frame_token, \
       content_settings::mojom::ContentSettingsManager::       \
-          GetBraveShieldsSettingsCallback callback)
+          GetBraveShieldsSettingsCallback callback) override; \
+  void GetBraveFarblingLevel(                                 \
+      const content::GlobalRenderFrameHostToken& frame_token, \
+      ContentSettingsType webcompat_settings_type,            \
+      content_settings::mojom::ContentSettingsManager::       \
+          GetBraveFarblingLevelCallback callback)
 
 #include <chrome/browser/content_settings/content_settings_manager_delegate.h>  // IWYU pragma: export
 

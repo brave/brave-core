@@ -35,4 +35,15 @@ void ContentSettingsManagerImpl::GetBraveShieldsSettings(
       std::move(callback));
 }
 
+void ContentSettingsManagerImpl::GetBraveFarblingLevel(
+    const blink::LocalFrameToken& frame_token,
+    int32_t webcompat_settings_type,
+    GetBraveFarblingLevelCallback callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  delegate_->GetBraveFarblingLevel(
+      content::GlobalRenderFrameHostToken(render_process_id_, frame_token),
+      static_cast<ContentSettingsType>(webcompat_settings_type),
+      std::move(callback));
+}
+
 }  // namespace content_settings

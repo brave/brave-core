@@ -7,12 +7,6 @@ module brave_shields.mojom;
 
 import "mojo/public/mojom/base/token.mojom";
 
-enum FarblingLevel {
-  OFF,
-  BALANCED,
-  MAXIMUM,
-};
-
 // Maps to content_settings::SettingSource
 enum ContentSettingSource {
   kNone = 0,
@@ -28,7 +22,6 @@ enum ContentSettingSource {
 };
 
 struct ShieldsSettings {
-  FarblingLevel farbling_level;
   mojo_base.mojom.Token farbling_token;
   array<string> origins_to_allow_scripts;
   bool reduce_language;

@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <cstdint>
 #include <string>
 #include <string_view>
 
@@ -53,7 +54,7 @@ brave_shields::mojom::ShieldsSettingsPtr GetBraveShieldsSettingsOnUI(
   const GURL& top_frame_url = top_frame_rfh->GetLastCommittedURL();
 
   content::BrowserContext* browser_context = rfh->GetBrowserContext();
-  const brave_shields::mojom::FarblingLevel farbling_level =
+  const content_settings::mojom::FarblingLevel farbling_level =
       brave_shields::GetFarblingLevel(
           HostContentSettingsMapFactory::GetForProfile(browser_context),
           top_frame_url);
@@ -71,7 +72,7 @@ brave_shields::mojom::ShieldsSettingsPtr GetBraveShieldsSettingsOnUI(
       BraveShieldsSettingsServiceFactory::GetForProfile(
           Profile::FromBrowserContext(browser_context));
   const base::Token farbling_token =
-      farbling_level != brave_shields::mojom::FarblingLevel::OFF &&
+      farbling_level != content_settings::mojom::FarblingLevel::OFF &&
               shields_settings_service
           ? shields_settings_service->GetFarblingToken(
                 top_frame_url, base::as_byte_span(additional_entropy))
@@ -79,10 +80,27 @@ brave_shields::mojom::ShieldsSettingsPtr GetBraveShieldsSettingsOnUI(
   PrefService* pref_service = user_prefs::UserPrefs::Get(browser_context);
 
   return brave_shields::mojom::ShieldsSettings::New(
-      farbling_level, farbling_token, std::vector<std::string>(),
+      farbling_token, std::vector<std::string>(),
       brave_shields::IsReduceLanguageEnabledForProfile(pref_service),
       IsJsBlockingEnforced(browser_context, top_frame_url),
       brave_user_agent::ShouldHideBraveBrand(top_frame_url));
+}
+
+int32_t GetBraveFarblingLevelOnUI(
+    const content::GlobalRenderFrameHostToken& frame_token,
+    ContentSettingsType webcompat_settings_type) {
+  content::RenderFrameHost* rfh =
+      content::RenderFrameHost::FromFrameToken(frame_token);
+  if (!rfh) {
+    return static_cast<int32_t>(content_settings::mojom::FarblingLevel::OFF);
+  }
+  content::RenderFrameHost* top_frame_rfh = rfh->GetOutermostMainFrame();
+  if (!top_frame_rfh) {
+    return static_cast<int32_t>(content_settings::mojom::FarblingLevel::OFF);
+  }
+  return static_cast<int32_t>(brave_shields::GetFarblingLevel(
+      HostContentSettingsMapFactory::GetForProfile(rfh->GetBrowserContext()),
+      top_frame_rfh->GetLastCommittedURL(), webcompat_settings_type));
 }
 
 }  // namespace
@@ -93,5 +111,17 @@ void ContentSettingsManagerDelegate::GetBraveShieldsSettings(
         GetBraveShieldsSettingsCallback callback) {
   content::GetUIThreadTaskRunner({})->PostTaskAndReplyWithResult(
       FROM_HERE, base::BindOnce(&GetBraveShieldsSettingsOnUI, frame_token),
+      std::move(callback));
+}
+
+void ContentSettingsManagerDelegate::GetBraveFarblingLevel(
+    const content::GlobalRenderFrameHostToken& frame_token,
+    ContentSettingsType webcompat_settings_type,
+    content_settings::mojom::ContentSettingsManager::
+        GetBraveFarblingLevelCallback callback) {
+  content::GetUIThreadTaskRunner({})->PostTaskAndReplyWithResult(
+      FROM_HERE,
+      base::BindOnce(&GetBraveFarblingLevelOnUI, frame_token,
+                     webcompat_settings_type),
       std::move(callback));
 }

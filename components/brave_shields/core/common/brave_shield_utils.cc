@@ -6,12 +6,14 @@
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 
 #include <map>
+#include <optional>
 
 #include "base/containers/map_util.h"
 #include "base/feature_list.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom-data-view.h"
 #include "brave/components/webcompat/core/common/features.h"
 #include "components/content_settings/core/common/content_settings.h"
@@ -57,6 +59,80 @@ ContentSetting GetBraveWebcompatContentSettingFromRules(
     }
   }
   return CONTENT_SETTING_DEFAULT;
+}
+
+namespace {
+
+// Site-specific BRAVE_FARBLING_LEVEL exceptions override the level derived
+// from fingerprinting. The global default stays on the fingerprinting rules.
+std::optional<ContentSetting> GetExplicitFarblingSetting(
+    const ContentSettingsForOneType& rules,
+    const GURL& primary_url) {
+  for (const auto& rule : rules) {
+    if (!rule.primary_pattern.Matches(primary_url)) {
+      continue;
+    }
+    if (rule.primary_pattern.MatchesAllHosts()) {
+      return std::nullopt;
+    }
+    return rule.GetContentSetting();
+  }
+  return std::nullopt;
+}
+
+content_settings::mojom::FarblingLevel FarblingLevelFromFingerprintingSetting(
+    ContentSetting fp_setting) {
+  if (fp_setting == CONTENT_SETTING_ALLOW) {
+    return content_settings::mojom::FarblingLevel::OFF;
+  }
+  if (fp_setting == CONTENT_SETTING_BLOCK &&
+      base::FeatureList::IsEnabled(
+          features::kBraveShowStrictFingerprintingMode)) {
+    return content_settings::mojom::FarblingLevel::MAXIMUM;
+  }
+  return content_settings::mojom::FarblingLevel::BALANCED;
+}
+
+}  // namespace
+
+content_settings::mojom::FarblingLevel GetBraveFarblingLevelFromRules(
+    const RendererContentSettingRules& rules,
+    const GURL& primary_url,
+    ContentSettingsType webcompat_settings_type) {
+  if (!base::FeatureList::IsEnabled(features::kBraveFarbling) ||
+      !primary_url.SchemeIsHTTPOrHTTPS()) {
+    return content_settings::mojom::FarblingLevel::OFF;
+  }
+
+  ContentSetting shields_setting = CONTENT_SETTING_DEFAULT;
+  for (const auto& rule : rules.brave_shields_rules) {
+    if (rule.primary_pattern.Matches(primary_url) &&
+        rule.secondary_pattern.Matches(GURL())) {
+      shields_setting = rule.GetContentSetting();
+      break;
+    }
+  }
+  if (shields_setting == CONTENT_SETTING_BLOCK) {
+    return content_settings::mojom::FarblingLevel::OFF;
+  }
+
+  content_settings::mojom::FarblingLevel level;
+  if (const std::optional<ContentSetting> explicit_setting =
+          GetExplicitFarblingSetting(rules.brave_farbling_level, primary_url)) {
+    level = FarblingLevelFromContentSetting(*explicit_setting);
+  } else {
+    level = FarblingLevelFromFingerprintingSetting(
+        GetBraveFPContentSettingFromRules(rules.fingerprinting_rules,
+                                          primary_url));
+  }
+  if (level != content_settings::mojom::FarblingLevel::OFF &&
+      webcompat_settings_type != ContentSettingsType::BRAVE_WEBCOMPAT_NONE &&
+      GetBraveWebcompatContentSettingFromRules(
+          rules.webcompat_rules, primary_url, webcompat_settings_type) ==
+          CONTENT_SETTING_ALLOW) {
+    return content_settings::mojom::FarblingLevel::OFF;
+  }
+  return level;
 }
 
 ShieldsSettingCounts GetSettingCountFromRules(

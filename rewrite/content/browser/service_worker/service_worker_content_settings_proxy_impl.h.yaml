@@ -5,9 +5,15 @@
 
 substitutions:
   - description: |-
-      Add a hook for Shields settings to reach service worker requests.
+      Add hooks for Shields settings and the farbling level to reach service
+      worker requests. The farbling level is resolved from content settings on
+      the browser because service workers do not have renderer content setting
+      rules.
     add_to_public:
       class_name: ServiceWorkerContentSettingsProxyImpl
       code: |-
         void GetBraveShieldsSettings(
             GetBraveShieldsSettingsCallback callback) override;
+        void GetBraveFarblingLevel(
+            int32_t webcompat_settings_type,
+            GetBraveFarblingLevelCallback callback) override;

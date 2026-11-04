@@ -5,6 +5,7 @@
 
 #include "base/check.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom-blink.h"
+#include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "mojo/public/cpp/bindings/string_traits_wtf.h"
 
 #include <third_party/blink/renderer/modules/service_worker/service_worker_content_settings_proxy.cc>
@@ -27,6 +28,16 @@ ServiceWorkerContentSettingsProxy::GetBraveShieldsSettings(
           std::move(blink_result)),
       &result));
   return result;
+}
+
+BraveFarblingLevel ServiceWorkerContentSettingsProxy::GetBraveFarblingLevel(
+    ContentSettingsType webcompat_settings_type) {
+  int32_t level = static_cast<int32_t>(BraveFarblingLevel::OFF);
+  if (!GetService()->GetBraveFarblingLevel(
+          static_cast<int32_t>(webcompat_settings_type), &level)) {
+    return BraveFarblingLevel::OFF;
+  }
+  return static_cast<BraveFarblingLevel>(level);
 }
 
 }  // namespace blink

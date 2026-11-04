@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_CONTENT_BROWSER_CLIENT_H_
 #define BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_CONTENT_BROWSER_CLIENT_H_
 
+#include <cstdint>
+
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "third_party/blink/public/mojom/loader/referrer.mojom.h"
@@ -43,6 +45,9 @@ class Origin;
   WorkerGetBraveShieldSettings(                                              \
       const GURL& url, BrowserContext* browser_context,                      \
       const StoragePartitionConfig* storage_partition_config);               \
+  virtual int32_t WorkerGetBraveFarblingLevel(                               \
+      const GURL& url, BrowserContext* browser_context,                      \
+      int32_t webcompat_settings_type);                                      \
   virtual std::optional<GURL> SanitizeURL(content::RenderFrameHost*,         \
                                           const GURL&);                      \
   virtual bool IsWindowsRecallDisabled();                                    \

@@ -27,4 +27,11 @@ interface ContentSettingsManager {
   [Sync]
   GetBraveShieldsSettings(
       blink.mojom.LocalFrameToken frame_token) => (brave_shields.mojom.ShieldsSettings shields_settings);
+
+  // Farbling level for a worker whose renderer content setting rules are
+  // missing. |webcompat_settings_type| is a ContentSettingsType value.
+  [Sync]
+  GetBraveFarblingLevel(
+      blink.mojom.LocalFrameToken frame_token,
+      int32 webcompat_settings_type) => (int32 farbling_level);
 };

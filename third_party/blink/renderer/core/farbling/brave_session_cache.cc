@@ -248,9 +248,17 @@ int FarbledPointerScreenCoordinate(const DOMWindow* view,
   return FarbleInteger(context, key, zoom_factor * client_coordinate, 0, 8);
 }
 
+BraveSessionCache::~BraveSessionCache() = default;
+
+bool BraveSessionCache::ShouldHideBraveBrand() const {
+  return default_shields_settings_->hide_brave_brand;
+}
+
 BraveSessionCache::BraveSessionCache(ExecutionContext& context)
     : Supplement<ExecutionContext>(context) {
   if (auto* settings_client = GetContentSettingsClientFor(&context)) {
+    default_farbling_level_ = settings_client->GetBraveFarblingLevel(
+        ContentSettingsType::BRAVE_WEBCOMPAT_NONE);
     default_shields_settings_ = settings_client->GetBraveShieldsSettings(
         ContentSettingsType::BRAVE_WEBCOMPAT_NONE);
     if (!default_shields_settings_) {
@@ -449,7 +457,7 @@ bool BraveSessionCache::AllowFontFamily(
       !settings->IsReduceLanguageEnabled()) {
     return true;
   }
-  switch (default_shields_settings_->farbling_level) {
+  switch (default_farbling_level_) {
     case BraveFarblingLevel::OFF:
       return true;
     case BraveFarblingLevel::BALANCED:
@@ -481,7 +489,7 @@ brave_shields::FarblingPRNG BraveSessionCache::MakePseudoRandomGenerator(
 
 BraveFarblingLevel BraveSessionCache::GetBraveFarblingLevel(
     ContentSettingsType webcompat_content_settings) {
-  if (default_shields_settings_->farbling_level == BraveFarblingLevel::OFF) {
+  if (default_farbling_level_ == BraveFarblingLevel::OFF) {
     return BraveFarblingLevel::OFF;
   }
   auto item = farbling_levels_.find(webcompat_content_settings);
@@ -494,20 +502,13 @@ BraveFarblingLevel BraveSessionCache::GetBraveFarblingLevel(
       webcompat_content_settings < ContentSettingsType::BRAVE_WEBCOMPAT_ALL) {
     if (auto* settings_client =
             GetContentSettingsClientFor(GetSupplementable())) {
-      auto shields_settings =
-          settings_client->GetBraveShieldsSettings(webcompat_content_settings);
-      // https://github.com/brave/brave-browser/issues/41889 debug.
-      if (!shields_settings) {
-        DEBUG_ALIAS_FOR_OBJECT(settings_client_alias, settings_client);
-        base::debug::DumpWithoutCrashing();
-        return default_shields_settings_->farbling_level;
-      }
-      farbling_levels_.insert(webcompat_content_settings,
-                              shields_settings->farbling_level);
-      return shields_settings->farbling_level;
+      const auto level =
+          settings_client->GetBraveFarblingLevel(webcompat_content_settings);
+      farbling_levels_.insert(webcompat_content_settings, level);
+      return level;
     }
   }
-  return default_shields_settings_->farbling_level;
+  return default_farbling_level_;
 }
 
 }  // namespace brave

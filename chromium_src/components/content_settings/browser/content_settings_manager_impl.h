@@ -15,19 +15,26 @@
   GetCookieSettings(__VA_ARGS__) = 0;                         \
   virtual void GetBraveShieldsSettings(                       \
       const content::GlobalRenderFrameHostToken& frame_token, \
-      GetBraveShieldsSettingsCallback callback)
+      GetBraveShieldsSettingsCallback callback) = 0;          \
+  virtual void GetBraveFarblingLevel(                         \
+      const content::GlobalRenderFrameHostToken& frame_token, \
+      ContentSettingsType webcompat_settings_type,            \
+      GetBraveFarblingLevelCallback callback)
 
 // Extend ContentSettingsManagerImpl.
-#define OnContentBlocked                                                    \
-  NotUsed() {}                                                              \
-  void AllowEphemeralStorageAccess(                                         \
-      const blink::LocalFrameToken& frame_token, const url::Origin& origin, \
-      const net::SiteForCookies& site_for_cookies,                          \
-      const url::Origin& top_frame_origin,                                  \
-      AllowEphemeralStorageAccessCallback callback) override;               \
-  void GetBraveShieldsSettings(const blink::LocalFrameToken& frame_token,   \
-                               GetBraveShieldsSettingsCallback callback)    \
-      override;                                                             \
+#define OnContentBlocked                                                       \
+  NotUsed() {}                                                                 \
+  void AllowEphemeralStorageAccess(                                            \
+      const blink::LocalFrameToken& frame_token, const url::Origin& origin,    \
+      const net::SiteForCookies& site_for_cookies,                             \
+      const url::Origin& top_frame_origin,                                     \
+      AllowEphemeralStorageAccessCallback callback) override;                  \
+  void GetBraveShieldsSettings(const blink::LocalFrameToken& frame_token,      \
+                               GetBraveShieldsSettingsCallback callback)       \
+      override;                                                                \
+  void GetBraveFarblingLevel(const blink::LocalFrameToken& frame_token,        \
+                             int32_t webcompat_settings_type,                  \
+                             GetBraveFarblingLevelCallback callback) override; \
   void OnContentBlocked
 
 #include <components/content_settings/browser/content_settings_manager_impl.h>  // IWYU pragma: export

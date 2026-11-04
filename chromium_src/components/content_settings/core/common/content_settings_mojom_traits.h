@@ -45,6 +45,10 @@ struct StructTraits<
   webcompat_rules(const RendererContentSettingRules& r) {
     return r.webcompat_rules;
   }
+  static const std::vector<ContentSettingPatternSource>& brave_farbling_level(
+      const RendererContentSettingRules& r) {
+    return r.brave_farbling_level;
+  }
 
   static bool Read(
       content_settings::mojom::RendererContentSettingRulesDataView data,

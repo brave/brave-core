@@ -7,6 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_PUBLIC_PLATFORM_WEB_CONTENT_SETTINGS_CLIENT_H_
 
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
+#include "components/content_settings/core/common/content_settings.mojom.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "third_party/blink/public/platform/web_security_origin.h"
 
@@ -23,6 +24,10 @@
   virtual brave_shields::mojom::ShieldsSettingsPtr GetBraveShieldsSettings( \
       ContentSettingsType webcompat_settings_type) {                        \
     return brave_shields::mojom::ShieldsSettingsPtr();                      \
+  }                                                                         \
+  virtual content_settings::mojom::FarblingLevel GetBraveFarblingLevel(     \
+      ContentSettingsType webcompat_settings_type) {                        \
+    return content_settings::mojom::FarblingLevel::OFF;                     \
   }                                                                         \
   virtual bool IsReduceLanguageEnabled() {                                  \
     return false;                                                           \

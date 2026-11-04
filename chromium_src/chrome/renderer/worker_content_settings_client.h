@@ -33,6 +33,8 @@ class WorkerContentSettingsClient_BraveImpl
   std::unique_ptr<blink::WebContentSettingsClient> Clone() override;
   brave_shields::mojom::ShieldsSettingsPtr GetBraveShieldsSettings(
       ContentSettingsType webcompat_settings_type) override;
+  content_settings::mojom::FarblingLevel GetBraveFarblingLevel(
+      ContentSettingsType webcompat_settings_type) override;
   blink::WebSecurityOrigin GetEphemeralStorageOriginSync() override;
   bool HasContentSettingsRules() const override;
 
