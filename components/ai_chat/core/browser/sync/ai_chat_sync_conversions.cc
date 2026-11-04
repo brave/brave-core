@@ -125,10 +125,14 @@ void WriteAssociatedContent(const mojom::AssociatedContent& content,
   }
   proto->set_content_type(std::to_underlying(content.content_type));
   proto->set_content_used_percentage(content.content_used_percentage);
-  // With no |last_contents|, the field is left unset, and the receiver writes
-  // the text as blank.
   if (last_contents) {
     WriteCompressibleString(*last_contents, proto->mutable_last_contents());
+  } else if (!content.url.is_valid()) {
+    // Clearing browsing data leaves content with no url, title or text. Its
+    // text is sent as an explicit empty value, so the receiver clears its copy
+    // too. Any other content with no text leaves the field unset: the record
+    // doesn't carry the text, and the receiver keeps its own.
+    proto->mutable_last_contents()->set_raw(std::string());
   }
 }
 
@@ -333,29 +337,25 @@ void WriteEntryFields(const mojom::ConversationTurn& entry,
 
 // --- Download helpers: sync proto → mojom ---
 
-// Decodes a repeated AIChatCompressibleString field into strings, skipping any
-// entry with no usable value (omitted-for-sync, empty, or undecodable).
-std::vector<std::string> ReadCompressibleStrings(
-    const google::protobuf::RepeatedPtrField<sync_pb::AIChatCompressibleString>&
-        strings) {
-  std::vector<std::string> out;
-  out.reserve(strings.size());
-  for (const auto& string : strings) {
-    if (auto decoded = ReadCompressibleString(string)) {
-      out.push_back(std::move(*decoded));
-    }
-  }
-  return out;
-}
-
 // Decodes |in| for a mojom string that can't be absent, so a value that can't
 // be read decodes as "". That includes a value the sender omitted to fit the
 // size limit, which is right only because the sync bridge first puts back
-// each omitted value this device holds a copy of. An omitted value still here
-// has no local copy with the sender's hash.
+// each omitted value it can from this device's copy. An omitted value still
+// here is one this device doesn't hold.
 std::string ReadCompressibleStringOrEmpty(
     const sync_pb::AIChatCompressibleString& in) {
   return ReadCompressibleString(in).value_or(std::string());
+}
+
+// Decodes a repeated AIChatCompressibleString field into strings. An item with
+// no usable value (omitted-for-sync, unset, or undecodable) decodes as "", so
+// that each item keeps its position: that's how the sync bridge matches an
+// omitted item it couldn't put back with this device's copy when it sends the
+// entry again. Consumers skip empty items.
+std::vector<std::string> ReadCompressibleStrings(
+    const google::protobuf::RepeatedPtrField<sync_pb::AIChatCompressibleString>&
+        strings) {
+  return base::ToVector(strings, &ReadCompressibleStringOrEmpty);
 }
 
 // Parses a URL read from the wire. Returns nullopt when it doesn't parse,
@@ -546,9 +546,10 @@ mojom::UploadedFilePtr ProtoToUploadedFile(
 // Populates |associated_content| from the entry's associated_content field
 // (each tagged with the entry UUID) and, when provided, |associated_content_
 // texts| with the last_contents value for each AC the sender included. An AC
-// whose last_contents is absent, or omitted and not put back, is left out of
-// the texts map, and the sync bridge writes its text as blank. Returns false,
-// rejecting the entry, when an item fails to decode or two items share a uuid.
+// whose last_contents is absent, or omitted, is left out of the texts map, and
+// the sync bridge writes its text as blank unless it filled the text in from
+// this device's copy first. Returns false, rejecting the entry, when an item
+// fails to decode or two items share a uuid.
 bool ReadAssociatedContentFromEntry(
     const sync_pb::AIChatConversationSpecifics_Entry& proto,
     std::vector<mojom::AssociatedContentPtr>& associated_content,
@@ -738,7 +739,10 @@ void VisitCompletions(const sync_pb::AIChatConversationSpecifics_Entry& entry,
 // cannot replace is what the conversation actually said, so that goes last.
 // Adding a compressible field to the proto without listing it here means it can
 // never be omitted, and an entry that only that field makes oversized becomes
-// uncommittable.
+// uncommittable. A field listed here must also be reached by
+// ForEachOmittedValueAtSamePosition(), or a device that doesn't hold its value
+// sends a blank in its place; AIChatSyncConversionsTest.
+// OmissionMarkersCoverEveryOmittableValue fails until it is.
 constexpr auto kOmissionPasses = std::to_array<OmissionPass>({
     // Page text. Bulk context the replies already reflect, and the receiver
     // still has the URL to re-derive it from.
@@ -777,6 +781,214 @@ void RunPassOnMutableEntry(OmissionPass pass,
   });
 }
 
+// --- Omission markers: omitted values at the same position of two records ---
+
+using OmittedValueVisitor =
+    base::FunctionRef<void(const sync_pb::AIChatCompressibleString& omitted,
+                           sync_pb::AIChatCompressibleString& counterpart)>;
+using OmittedFileVisitor =
+    base::FunctionRef<void(const sync_pb::AIChatUploadedFile& omitted,
+                           sync_pb::AIChatUploadedFile& counterpart)>;
+
+// What ForEachOmittedValueAtSamePosition() does with a position the
+// counterpart record lacks.
+enum class MissingPosition {
+  kSkip,
+  // Add it, of the same kind.
+  kAdd,
+};
+
+// Returns the item of |items| at |index|. When there's none, adds items up to
+// it for MissingPosition::kAdd, and returns null otherwise.
+template <typename T>
+T* ItemAt(google::protobuf::RepeatedPtrField<T>& items,
+          int index,
+          MissingPosition missing) {
+  if (index >= items.size()) {
+    if (missing == MissingPosition::kSkip) {
+      return nullptr;
+    }
+    while (items.size() <= index) {
+      items.Add();
+    }
+  }
+  return items.Mutable(index);
+}
+
+// Whether a oneof holding |kind| can take the values of one holding
+// |entry_kind| at the same position: it holds the same kind, or none when
+// |missing| lets it take one. Every oneof's *_NOT_SET case is 0.
+template <typename OneofCase>
+bool CanTakeKind(OneofCase kind,
+                 OneofCase entry_kind,
+                 MissingPosition missing) {
+  return kind == entry_kind ||
+         (missing == MissingPosition::kAdd && kind == OneofCase());
+}
+
+// Shared by the web sources of an event and of a tool output block, which are
+// different messages with the same fields.
+template <typename WebSources>
+void VisitOmittedWebSourceValues(const WebSources& web_sources,
+                                 WebSources& counterpart,
+                                 MissingPosition missing,
+                                 OmittedValueVisitor visit) {
+  for (int i = 0; i < web_sources.sources_size(); ++i) {
+    const auto& page_content = web_sources.sources(i).page_content();
+    if (!page_content.has_omitted_content_hash()) {
+      continue;
+    }
+    auto* source = ItemAt(*counterpart.mutable_sources(), i, missing);
+    if (!source) {
+      break;
+    }
+    visit(page_content, *source->mutable_page_content());
+  }
+  for (int i = 0; i < web_sources.rich_results_size(); ++i) {
+    const auto& rich_result = web_sources.rich_results(i);
+    if (!rich_result.has_omitted_content_hash()) {
+      continue;
+    }
+    auto* counterpart_rich_result =
+        ItemAt(*counterpart.mutable_rich_results(), i, missing);
+    if (!counterpart_rich_result) {
+      break;
+    }
+    visit(rich_result, *counterpart_rich_result);
+  }
+}
+
+void VisitOmittedToolUseValues(const sync_pb::AIChatToolUseEvent& tool_use,
+                               sync_pb::AIChatToolUseEvent& counterpart,
+                               MissingPosition missing,
+                               OmittedValueVisitor visit) {
+  if (tool_use.arguments_json().has_omitted_content_hash()) {
+    visit(tool_use.arguments_json(), *counterpart.mutable_arguments_json());
+  }
+  for (int i = 0; i < tool_use.output_size(); ++i) {
+    const auto& block = tool_use.output(i);
+    auto* counterpart_block = ItemAt(*counterpart.mutable_output(), i, missing);
+    if (!counterpart_block) {
+      break;
+    }
+    if (!CanTakeKind(counterpart_block->content_case(), block.content_case(),
+                     missing)) {
+      continue;
+    }
+    // Each case sets the block's kind on |counterpart_block| if it has none.
+    switch (block.content_case()) {
+      case sync_pb::AIChatContentBlock::kTextContentBlock: {
+        auto* counterpart_text =
+            counterpart_block->mutable_text_content_block();
+        const auto& text = block.text_content_block().text();
+        if (text.has_omitted_content_hash()) {
+          visit(text, *counterpart_text->mutable_text());
+        }
+        break;
+      }
+      case sync_pb::AIChatContentBlock::kImageContentBlock:
+        counterpart_block->mutable_image_content_block();
+        break;
+      case sync_pb::AIChatContentBlock::kWebSourcesContentBlock:
+        VisitOmittedWebSourceValues(
+            block.web_sources_content_block(),
+            *counterpart_block->mutable_web_sources_content_block(), missing,
+            visit);
+        break;
+      case sync_pb::AIChatContentBlock::CONTENT_NOT_SET:
+        break;
+    }
+  }
+  for (int i = 0; i < tool_use.artifacts_size(); ++i) {
+    const auto& content_json = tool_use.artifacts(i).content_json();
+    if (!content_json.has_omitted_content_hash()) {
+      continue;
+    }
+    auto* artifact = ItemAt(*counterpart.mutable_artifacts(), i, missing);
+    if (!artifact) {
+      break;
+    }
+    visit(content_json, *artifact->mutable_content_json());
+  }
+}
+
+void VisitOmittedEventValues(const sync_pb::AIChatEntryEventProto& event,
+                             sync_pb::AIChatEntryEventProto& counterpart,
+                             MissingPosition missing,
+                             OmittedValueVisitor visit) {
+  if (!CanTakeKind(counterpart.event_case(), event.event_case(), missing)) {
+    return;
+  }
+  // Each case sets the event's kind on |counterpart| if it has none.
+  switch (event.event_case()) {
+    case sync_pb::AIChatEntryEventProto::kCompletion: {
+      auto* counterpart_completion = counterpart.mutable_completion();
+      if (event.completion().has_omitted_content_hash()) {
+        visit(event.completion(), *counterpart_completion);
+      }
+      break;
+    }
+    case sync_pb::AIChatEntryEventProto::kSearchQueries:
+      counterpart.mutable_search_queries();
+      break;
+    case sync_pb::AIChatEntryEventProto::kWebSources:
+      VisitOmittedWebSourceValues(event.web_sources(),
+                                  *counterpart.mutable_web_sources(), missing,
+                                  visit);
+      break;
+    case sync_pb::AIChatEntryEventProto::kInlineSearch: {
+      auto* counterpart_search = counterpart.mutable_inline_search();
+      const auto& results_json = event.inline_search().results_json();
+      if (results_json.has_omitted_content_hash()) {
+        visit(results_json, *counterpart_search->mutable_results_json());
+      }
+      break;
+    }
+    case sync_pb::AIChatEntryEventProto::kToolUse:
+      VisitOmittedToolUseValues(
+          event.tool_use(), *counterpart.mutable_tool_use(), missing, visit);
+      break;
+    case sync_pb::AIChatEntryEventProto::EVENT_NOT_SET:
+      break;
+  }
+}
+
+// Invokes |visit_value| for each value in |entry|'s events and uploaded files
+// that holds an omission hash, and |visit_file| for each uploaded file whose
+// bytes do, with the value or file at the same position of |counterpart| (see
+// ExtractOmissionMarkers()). Associated content, which is matched by uuid,
+// isn't visited. A value |counterpart| doesn't set is passed unset, and stays
+// that way unless the visitor sets it.
+void ForEachOmittedValueAtSamePosition(
+    const sync_pb::AIChatConversationSpecifics_Entry& entry,
+    sync_pb::AIChatConversationSpecifics_Entry& counterpart,
+    MissingPosition missing,
+    OmittedValueVisitor visit_value,
+    OmittedFileVisitor visit_file) {
+  for (int i = 0; i < entry.events_size(); ++i) {
+    auto* event = ItemAt(*counterpart.mutable_events(), i, missing);
+    if (!event) {
+      break;
+    }
+    VisitOmittedEventValues(entry.events(i), *event, missing, visit_value);
+  }
+  for (int i = 0; i < entry.uploaded_files_size(); ++i) {
+    auto* counterpart_file =
+        ItemAt(*counterpart.mutable_uploaded_files(), i, missing);
+    if (!counterpart_file) {
+      break;
+    }
+    const auto& file = entry.uploaded_files(i);
+    if (file.has_omitted_data_hash()) {
+      visit_file(file, *counterpart_file);
+    }
+    if (file.extracted_text().has_omitted_content_hash()) {
+      visit_value(file.extracted_text(),
+                  *counterpart_file->mutable_extracted_text());
+    }
+  }
+}
+
 }  // namespace
 
 void ForEachOmittableString(sync_pb::AIChatConversationSpecifics_Entry* entry,
@@ -792,6 +1004,71 @@ void ForEachOmittableString(
   for (OmissionPass pass : kOmissionPasses) {
     pass(entry, visit);
   }
+}
+
+std::optional<sync_pb::AIChatConversationSpecifics_Entry>
+ExtractOmissionMarkers(
+    const sync_pb::AIChatConversationSpecifics_Entry& entry) {
+  sync_pb::AIChatConversationSpecifics_Entry markers;
+  bool omits_any = false;
+  for (const auto& content : entry.associated_content()) {
+    if (content.last_contents().has_omitted_content_hash()) {
+      auto* marker = markers.add_associated_content();
+      marker->set_uuid(content.uuid());
+      marker->mutable_last_contents()->set_omitted_content_hash(
+          content.last_contents().omitted_content_hash());
+      omits_any = true;
+    }
+  }
+  ForEachOmittedValueAtSamePosition(
+      entry, markers, MissingPosition::kAdd,
+      [&omits_any](const sync_pb::AIChatCompressibleString& omitted,
+                   sync_pb::AIChatCompressibleString& marker) {
+        marker.set_omitted_content_hash(omitted.omitted_content_hash());
+        omits_any = true;
+      },
+      [&omits_any](const sync_pb::AIChatUploadedFile& omitted,
+                   sync_pb::AIChatUploadedFile& marker) {
+        marker.set_omitted_data_hash(omitted.omitted_data_hash());
+        omits_any = true;
+      });
+  if (!omits_any) {
+    return std::nullopt;
+  }
+  return markers;
+}
+
+void AddOmissionMarkers(
+    const sync_pb::AIChatConversationSpecifics_Entry& omission_markers,
+    sync_pb::AIChatConversationSpecifics_Entry& entry) {
+  for (auto& content : *entry.mutable_associated_content()) {
+    if (content.has_last_contents()) {
+      continue;
+    }
+    auto marker =
+        std::ranges::find(omission_markers.associated_content(), content.uuid(),
+                          &sync_pb::AIChatAssociatedContentProto::uuid);
+    if (marker != omission_markers.associated_content().end() &&
+        marker->last_contents().has_omitted_content_hash()) {
+      content.mutable_last_contents()->set_omitted_content_hash(
+          marker->last_contents().omitted_content_hash());
+    }
+  }
+  ForEachOmittedValueAtSamePosition(
+      omission_markers, entry, MissingPosition::kSkip,
+      [](const sync_pb::AIChatCompressibleString& marker,
+         sync_pb::AIChatCompressibleString& value) {
+        if (!value.has_gzipped() && !value.has_omitted_content_hash() &&
+            value.raw().empty()) {
+          value.set_omitted_content_hash(marker.omitted_content_hash());
+        }
+      },
+      [](const sync_pb::AIChatUploadedFile& marker,
+         sync_pb::AIChatUploadedFile& file) {
+        if (file.data().empty() && !file.has_omitted_data_hash()) {
+          file.set_omitted_data_hash(marker.omitted_data_hash());
+        }
+      });
 }
 
 bool FitEntryWithinSyncBudget(
@@ -940,6 +1217,13 @@ sync_pb::AIChatConversationSpecifics EntryToSpecifics(
   }
 
   return specifics;
+}
+
+sync_pb::AIChatConversationSpecifics_Entry TurnToSpecificsEntry(
+    const mojom::ConversationTurn& turn) {
+  sync_pb::AIChatConversationSpecifics_Entry entry;
+  WriteEntryFields(turn, &entry);
+  return entry;
 }
 
 base::Time GetModifiedTimeFromSpecifics(

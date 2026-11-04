@@ -74,17 +74,24 @@ base::flat_map<std::string, std::string> ContentTextsFromArchive(
 }
 
 // Serializes |entry| (with its associated content and page texts) and omits
-// oversized fields to fit the per-record sync budget. Returns nullopt when the
-// record is too large even after omission, in which case it must not be
-// committed.
+// oversized fields to fit the per-record sync budget. |omission_markers| are
+// the hashes the processor keeps for the entry: every value the last record of
+// it omitted, including ones this device put back or omitted itself. Only a
+// value that's empty here takes its hash, so the hashes go in place of the
+// values this device couldn't put back. Returns nullopt when the record is too
+// large even after omission, in which case it must not be committed.
 std::optional<sync_pb::AIChatConversationSpecifics> BuildCommittableEntry(
     const std::string& conversation_uuid,
     const mojom::ConversationTurn& entry,
     base::Time modified_time,
     const std::vector<mojom::AssociatedContentPtr>& associated_content,
-    const base::flat_map<std::string, std::string>& content_texts) {
+    const base::flat_map<std::string, std::string>& content_texts,
+    const sync_pb::AIChatConversationSpecifics_Entry& omission_markers) {
   auto specifics = EntryToSpecifics(conversation_uuid, entry, modified_time,
                                     associated_content, content_texts);
+  // Before the size fit, so that the record is measured with them. The fit
+  // leaves a hash as it is.
+  AddOmissionMarkers(omission_markers, *specifics.mutable_entry());
   if (!FitEntryWithinSyncBudget(specifics.mutable_entry())) {
     return std::nullopt;
   }
@@ -158,12 +165,28 @@ bool HasOmittedValues(const sync_pb::AIChatConversationSpecifics_Entry& entry) {
   return omitted;
 }
 
+// Whether the record doesn't carry |content|'s text: it holds neither a value
+// nor a hash that this client knows. A text in a form only a newer client
+// knows is treated the same, rather than written blank.
+bool IsTextNotCarried(const sync_pb::AIChatAssociatedContentProto& content) {
+  return content.last_contents().value_case() ==
+         sync_pb::AIChatCompressibleString::VALUE_NOT_SET;
+}
+
+// Whether |entry| has associated content whose text the record doesn't carry.
+bool HasContentWithoutText(
+    const sync_pb::AIChatConversationSpecifics_Entry& entry) {
+  return std::ranges::any_of(entry.associated_content(), &IsTextNotCarried);
+}
+
 // Returns, keyed by hash, each value this device holds that a sender may omit
-// from the record of |local_entry|: the values of the entry's latest revision,
-// and |page_texts|, the texts of its associated content.
+// from a record of the entry: the values of |local_entry|, when it's read, and
+// of each of its revisions, and |page_texts|, the texts of its associated
+// content. Each revision is built into a record as a sender would build it,
+// so its values are the ones a sender hashed.
 absl::flat_hash_map<uint32_t, std::string> BuildLocalContentByHash(
-    const mojom::ConversationTurn& local_entry,
-    std::vector<std::string> page_texts) {
+    const mojom::ConversationTurn* local_entry,
+    const base::flat_map<std::string, std::string>& page_texts) {
   absl::flat_hash_map<uint32_t, std::string> content_by_hash;
   auto remember = [&content_by_hash](std::string value) {
     if (!value.empty()) {
@@ -171,42 +194,51 @@ absl::flat_hash_map<uint32_t, std::string> BuildLocalContentByHash(
       content_by_hash.try_emplace(hash, std::move(value));
     }
   };
-
-  // Built into a record as a sender builds it, which takes an edited entry's
-  // values from its latest revision, so they're the values the sender hashed.
-  // No conversation uuid or time is given, because neither is an omittable
-  // value.
-  const auto local_specifics =
-      EntryToSpecifics(std::string(), local_entry, base::Time(), {});
-  ForEachOmittableString(
-      local_specifics.entry(),
-      [&remember](const sync_pb::AIChatCompressibleString& value) {
-        if (auto plaintext = ReadCompressibleString(value)) {
-          remember(std::move(*plaintext));
-        }
-      });
-  for (const auto& file : local_specifics.entry().uploaded_files()) {
-    remember(file.data());
+  auto remember_turn = [&remember](const mojom::ConversationTurn& turn) {
+    const auto record = TurnToSpecificsEntry(turn);
+    ForEachOmittableString(
+        record, [&remember](const sync_pb::AIChatCompressibleString& value) {
+          if (auto plaintext = ReadCompressibleString(value)) {
+            remember(std::move(*plaintext));
+          }
+        });
+    for (const auto& file : record.uploaded_files()) {
+      remember(file.data());
+    }
+  };
+  if (local_entry) {
+    remember_turn(*local_entry);
+    if (local_entry->edits) {
+      for (const auto& edit : *local_entry->edits) {
+        remember_turn(*edit);
+      }
+    }
   }
-  for (auto& text : page_texts) {
-    remember(std::move(text));
+  for (const auto& [uuid, text] : page_texts) {
+    remember(text);
   }
   return content_by_hash;
 }
 
 // A sender that omits a value to fit the size limit sends a hash of it in its
-// place. Puts back into |remote_entry| each omitted value that has the same
-// hash as a value of |local_entry|, this device's copy of the entry, or of
-// |page_texts|, the texts of its associated content. Matching by hash rather
-// than by position puts back only the value the sender had, since the two
-// copies can differ, and most values are in events and lists, which have no
-// identity to match by. A value with no match stays omitted.
-void RestoreOmittedFieldsFromLocal(
-    const mojom::ConversationTurn& local_entry,
-    std::vector<std::string> page_texts,
+// place. Fills in |remote_entry| from this device's copy of the entry:
+// |local_entry|, when it's read, and |page_texts|, the texts of its associated
+// content by uuid.
+// - An omitted value with the hash of a value of the entry, of any of its
+//   revisions, or of a page text, is put back. Matching by hash puts back only
+//   the value the sender had.
+// - Associated content whose text the record doesn't carry keeps this
+//   device's text. Cleared content carries an empty one.
+// An omitted value with no match is newer than any this device holds, since
+// only a newer record is written. It decodes as blank rather than as this
+// device's older value, and the processor keeps its hash, which this device
+// sends in the blank's place (see TrimAllSupportedFieldsFromRemoteSpecifics()).
+// Sending the older value instead would overwrite the newer one everywhere.
+void FillValuesFromLocal(
+    const mojom::ConversationTurn* local_entry,
+    const base::flat_map<std::string, std::string>& page_texts,
     sync_pb::AIChatConversationSpecifics_Entry& remote_entry) {
-  const auto content_by_hash =
-      BuildLocalContentByHash(local_entry, std::move(page_texts));
+  const auto content_by_hash = BuildLocalContentByHash(local_entry, page_texts);
   ForEachOmittableString(
       &remote_entry,
       [&content_by_hash](sync_pb::AIChatCompressibleString& value) {
@@ -227,15 +259,28 @@ void RestoreOmittedFieldsFromLocal(
       file.set_data(*local);
     }
   }
+
+  for (auto& content : *remote_entry.mutable_associated_content()) {
+    if (!IsTextNotCarried(content)) {
+      continue;
+    }
+    if (const std::string* text =
+            base::FindOrNull(page_texts, content.uuid())) {
+      WriteCompressibleString(*text, content.mutable_last_contents());
+    }
+  }
 }
 
 // Whether |remote_entry|, decoded from a record, has the content of the latest
 // revision of |local_entry|, an entry with edit revisions. |local_entry| is
 // built into a record the way a sender builds it, and decoded again, so both
-// sides hold only what sync carries: a field it doesn't carry, such as a tool
-// artifact's id, can't count as a difference. The decoded entries are compared
-// rather than the records, because a record's gzipped fields can differ for
-// the same text.
+// sides hold only what sync carries: a field it doesn't carry can't count as
+// a difference. A value the record omitted that this device couldn't put back
+// decodes as blank, and matches a latest revision that's blank there too, as
+// one written from such a record is. Where the latest revision holds a value
+// instead, the sender's newer value differs from it, so the record becomes a
+// new revision. The decoded entries are compared rather than the records,
+// because a record's gzipped fields can differ for the same text.
 bool HasLatestRevisionContent(const mojom::ConversationTurn& local_entry,
                               const mojom::ConversationTurn& remote_entry) {
   // The decoded entry holds no conversation uuid, modified time or associated
@@ -389,7 +434,8 @@ void AIChatSyncBridge::ForEachLocalEntity(
       auto specifics = BuildCommittableEntry(
           conversation->uuid, *entry,
           TimeToSend(database_->GetEntryModifiedTime(*entry->uuid)),
-          conversation->associated_content, content_texts);
+          conversation->associated_content, content_texts,
+          GetOmissionMarkers(entry_key));
       if (!specifics) {
         continue;
       }
@@ -545,7 +591,8 @@ std::unique_ptr<syncer::DataBatch> AIChatSyncBridge::GetDataForCommit(
       auto specifics = BuildCommittableEntry(
           *conversation_uuid, **it,
           TimeToSend(database_->GetEntryModifiedTime(entry_uuid)),
-          conversation->associated_content, ContentTextsFromArchive(*archive));
+          conversation->associated_content, ContentTextsFromArchive(*archive),
+          GetOmissionMarkers(key));
       if (!specifics) {
         // The entry cannot be made to fit the per-record budget, so there is
         // nothing to commit. Untrack it explicitly rather than leave it out of
@@ -647,10 +694,43 @@ sync_pb::EntitySpecifics
 AIChatSyncBridge::TrimAllSupportedFieldsFromRemoteSpecifics(
     const sync_pb::EntitySpecifics& entity_specifics) const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  // The bridge actively uses every field in AIChatConversationSpecifics, so
-  // there is nothing to preserve for older clients. Returning an empty
-  // EntitySpecifics avoids the I/O cost of caching a copy.
-  return sync_pb::EntitySpecifics();
+  // Other bridges keep here the fields only a newer client knows, so that
+  // this client doesn't drop them when it sends the record. This bridge keeps
+  // something else, for a similar reason: the hash of each value the record's
+  // sender omitted to fit the size limit (ExtractOmissionMarkers()). The
+  // processor saves what this returns with the record's sync metadata whenever
+  // the record arrives or this device Put()s it, and GetOmissionMarkers()
+  // reads it back. A value this device couldn't put back is stored blank, and
+  // its hash is sent in the blank's place (AddOmissionMarkers()), so that the
+  // value isn't overwritten with a blank on devices that hold it. Unlike
+  // PasswordSyncBridge, the bridge doesn't download every record again when
+  // the cache holds a field it supports: this cache always holds supported
+  // fields, so that check would always fire.
+  const auto& specifics = entity_specifics.ai_chat_conversation();
+  if (!specifics.has_entry()) {
+    return sync_pb::EntitySpecifics();
+  }
+  auto markers = ExtractOmissionMarkers(specifics.entry());
+  if (!markers) {
+    return sync_pb::EntitySpecifics();
+  }
+  sync_pb::EntitySpecifics trimmed;
+  *trimmed.mutable_ai_chat_conversation()->mutable_entry() =
+      std::move(*markers);
+  return trimmed;
+}
+
+const sync_pb::AIChatConversationSpecifics_Entry&
+AIChatSyncBridge::GetOmissionMarkers(const std::string& storage_key) const {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  // The processor keeps them only while it tracks records.
+  if (!change_processor()->IsTrackingMetadata()) {
+    return sync_pb::AIChatConversationSpecifics_Entry::default_instance();
+  }
+  return change_processor()
+      ->GetPossiblyTrimmedRemoteSpecifics(storage_key)
+      .ai_chat_conversation()
+      .entry();
 }
 
 void AIChatSyncBridge::ApplyDisableSyncChanges(
@@ -909,26 +989,23 @@ bool AIChatSyncBridge::ApplyRemoteRecord(
     local_entry = std::move(*read);
   }
 
-  // An omitted value decodes as blank, so the values the sender omitted are
-  // put back, into a copy of the record, before it's decoded.
+  // An omitted value decodes as blank, and so does page text the record
+  // doesn't carry, so they're filled in from this device's copy, in a copy of
+  // the record, before it's decoded.
   std::optional<sync_pb::AIChatConversationSpecifics> specifics_copy;
-  if (has_omitted_values && local_entry) {
+  if (local->exists &&
+      (has_omitted_values || HasContentWithoutText(remote_entry))) {
     // This scans the associated_content table, but only for a newer record
-    // that omits a value and has a local entry.
+    // that needs it and has a local entry.
     auto page_texts = database_->GetAssociatedContentTexts(remote_entry.uuid());
     if (!page_texts) {
       return false;
     }
     specifics_copy.emplace(specifics);
-    RestoreOmittedFieldsFromLocal(*local_entry, std::move(*page_texts),
-                                  *specifics_copy->mutable_entry());
+    FillValuesFromLocal(local_entry.get(), *page_texts,
+                        *specifics_copy->mutable_entry());
   }
 
-  // TODO(https://github.com/brave/brave-browser/issues/53978): an omitted value
-  // with no local match (changed here since, or only in an earlier revision)
-  // still decodes as blank, so the write blanks it. For an edited entry, the
-  // blank also counts as a change from the latest revision, so it's added as a
-  // new revision.
   std::vector<mojom::AssociatedContentPtr> associated_content;
   base::flat_map<std::string, std::string> associated_content_texts;
   auto entry = SpecificsToEntry(specifics_copy ? *specifics_copy : specifics,
@@ -1074,9 +1151,10 @@ void AIChatSyncBridge::PutEntry(
   if (it == archive->entries.end()) {
     return;
   }
-  auto specifics = BuildCommittableEntry(conversation_uuid, **it, modified_time,
-                                         conversation->associated_content,
-                                         ContentTextsFromArchive(*archive));
+  std::string storage_key = base::StrCat({kEntryStorageKeyPrefix, entry_uuid});
+  auto specifics = BuildCommittableEntry(
+      conversation_uuid, **it, modified_time, conversation->associated_content,
+      ContentTextsFromArchive(*archive), GetOmissionMarkers(storage_key));
   if (!specifics) {
     // Too large to commit even after omitting every omittable field, so there
     // is nothing to Put. Leave the entity tracked: untracking one committed
@@ -1084,7 +1162,7 @@ void AIChatSyncBridge::PutEntry(
     // server's copy. GetDataForCommit() untracks it if a commit asks for it.
     return;
   }
-  change_processor()->Put(base::StrCat({kEntryStorageKeyPrefix, entry_uuid}),
+  change_processor()->Put(std::move(storage_key),
                           CreateEntityDataFromSpecifics(*specifics),
                           &metadata_change_list);
 }

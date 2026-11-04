@@ -25,6 +25,7 @@
 
 namespace sync_pb {
 class AIChatConversationSpecifics;
+class AIChatConversationSpecifics_Entry;
 }  // namespace sync_pb
 
 namespace syncer {
@@ -103,6 +104,8 @@ class AIChatSyncBridge : public syncer::DataTypeSyncBridge {
   syncer::ConflictResolution ResolveConflict(
       const std::string& storage_key,
       const syncer::EntityData& remote_data) const override;
+  // Keeps only the hashes of the values an entry record's sender omitted to
+  // fit the size limit, at the same positions. Empty for any other record.
   sync_pb::EntitySpecifics TrimAllSupportedFieldsFromRemoteSpecifics(
       const sync_pb::EntitySpecifics& entity_specifics) const override;
   void ApplyDisableSyncChanges(std::unique_ptr<syncer::MetadataChangeList>
@@ -147,6 +150,13 @@ class AIChatSyncBridge : public syncer::DataTypeSyncBridge {
   // Forwards a sync model error to the change processor. Bound as a WeakPtr
   // callback for the metadata store's error reporting.
   void ReportError(const syncer::ModelError& error);
+
+  // Returns the hashes the processor keeps for the entry |storage_key|, from
+  // the last record of it this device received or sent (see
+  // TrimAllSupportedFieldsFromRemoteSpecifics()). Empty when there are none,
+  // or the processor isn't tracking records.
+  const sync_pb::AIChatConversationSpecifics_Entry& GetOmissionMarkers(
+      const std::string& storage_key) const;
 
   // Iterate through all sync-allowed entities in the local database, invoking
   // |emit| for each one that additionally satisfies |should_include|.
@@ -218,8 +228,10 @@ class AIChatSyncBridge : public syncer::DataTypeSyncBridge {
   // - When both have the same time, or neither has one, they're the same
   //   version, and nothing is written.
   // Before an entry record is decoded, each value its sender omitted to fit
-  // the size limit is put back from this device's copy of the entry, when
-  // that copy holds a value with the hash the sender sent.
+  // the size limit is put back from this device's copy of the entry, when the
+  // entry or any of its revisions holds a value with the hash the sender sent.
+  // One with no match is written blank. Page text the record doesn't carry
+  // keeps this device's text.
   // An entry written over keeps this device's edit revisions, and the record's
   // content becomes its latest revision. |edited_entry_uuids| is the batch's
   // snapshot of the entries that have revisions.
