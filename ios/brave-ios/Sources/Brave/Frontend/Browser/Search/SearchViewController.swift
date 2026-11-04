@@ -515,12 +515,17 @@ public class SearchViewController: UIViewController, LoaderListener {
   private func makeQuickSearchView() -> QuickSearchView {
     QuickSearchView(
       isAiChatAvailable: dataSource.isAIChatAvailable,
-      items: dataSource.quickSearchEngines,
-      onAiChat: { [weak self] in
-        self?.didClickLeoButton()
-      },
-      onSelection: { [weak self] engine in
-        self?.didSelectEngine(engine)
+      items: dataSource.quickSearchItems,
+      onSelection: { [weak self] item in
+        switch item.source {
+        case .aiChat:
+          self?.didClickLeoButton()
+        case .engine(let engine):
+          self?.didSelectEngine(engine)
+        case .braveVertical:
+          // Not yet available
+          break
+        }
       },
       onOpenMore: { [weak self] in
         self?.searchDelegate?.presentQuickSearchEnginesViewController()
@@ -706,7 +711,12 @@ public class SearchViewController: UIViewController, LoaderListener {
 
   // MARK: Actions
 
-  func didSelectEngine(_ engine: OpenSearchEngine) {
+  private func didClickLeoButton() {
+    submitSearchQueryToAIChat()
+    recordQuickSearchActionP3A(option: .leo)
+  }
+
+  private func didSelectEngine(_ engine: OpenSearchEngine) {
     let localSearchQuery = dataSource.searchQuery.lowercased()
     let widgetAttr =
       searchDelegate?.searchViewControllerHasPendingWidgetSearchAttribution(self) ?? false
@@ -722,11 +732,6 @@ public class SearchViewController: UIViewController, LoaderListener {
     }
     searchDelegate?.searchViewController(self, didSelectURL: url)
     recordQuickSearchActionP3A(option: .searchEngine(engine))
-  }
-
-  @objc func didClickLeoButton() {
-    submitSearchQueryToAIChat()
-    recordQuickSearchActionP3A(option: .leo)
   }
 
   @objc func onShowMorePressed() {
