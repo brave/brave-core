@@ -39,6 +39,20 @@ base::DictValue CreatePsstSettingsObject(PsstWebsiteSettings psst_metadata) {
   return object;
 }
 
+void NotifyPsstPrefsChange(
+    PrefService* prefs,
+    base::ObserverList<PsstSettingsService::PrefObserver>& observers,
+    PsstSettingsService* service) {
+  const int infobar_decline_count =
+      prefs->GetInteger(prefs::kPsstInfobarDeclineCounter);
+  const int infobar_shown_count =
+      prefs->GetInteger(prefs::kPsstInfobarShownCounter);
+  const auto websites_settings = service->GetAllPsstWebsitesSettings();
+  observers.Notify(&PsstSettingsService::PrefObserver::OnPsstPrefsChange,
+                   infobar_shown_count, infobar_decline_count,
+                   websites_settings);
+}
+
 }  // namespace
 
 PsstSettingsService::PsstSettingsService(
@@ -158,6 +172,7 @@ void PsstSettingsService::SetPsstWebsiteSettings(
         base::Value(base::DictValue().Set(
             user_id, CreatePsstSettingsObject(std::move(psst_metadata)))));
   }
+  NotifyPsstPrefsChange(prefs_, observers_, this);
 }
 
 bool PsstSettingsService::IsPsstEnabled() const {
@@ -174,13 +189,7 @@ void PsstSettingsService::OnPreferenceChanged(const std::string& pref_name) {
     return;
   } else if (pref_name == prefs::kPsstInfobarShownCounter ||
              pref_name == prefs::kPsstInfobarDeclineCounter) {
-    const int infobar_decline_count =
-        prefs_->GetInteger(prefs::kPsstInfobarDeclineCounter);
-    const int infobar_shown_count =
-        prefs_->GetInteger(prefs::kPsstInfobarShownCounter);
-    const auto websites_settings = GetAllPsstWebsitesSettings();
-    observers_.Notify(&PrefObserver::OnPsstPrefsChange, infobar_shown_count,
-                      infobar_decline_count, websites_settings);
+    NotifyPsstPrefsChange(prefs_, observers_, this);
     return;
   }
 }
