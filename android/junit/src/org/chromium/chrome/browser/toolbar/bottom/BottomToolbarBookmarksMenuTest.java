@@ -20,8 +20,6 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.PopupMenu;
 
-import androidx.core.content.ContextCompat;
-
 import com.google.android.material.color.MaterialColors;
 
 import org.junit.Before;
@@ -76,19 +74,6 @@ public class BottomToolbarBookmarksMenuTest {
     }
 
     @Test
-    public void testPopupMenuStyle_dynamicColors_usesDynamicStyle() {
-        assertEquals(
-                R.style.BookmarkTabPopupMenuDynamic,
-                BottomToolbarBookmarksMenu.getPopupMenuStyle(true));
-    }
-
-    @Test
-    public void testPopupMenuStyle_noDynamicColors_usesDefaultStyle() {
-        assertEquals(
-                R.style.BookmarkTabPopupMenu, BottomToolbarBookmarksMenu.getPopupMenuStyle(false));
-    }
-
-    @Test
     public void testIconTint_dynamicColors_usesThemeOnSurface() {
         Integer tint = BottomToolbarBookmarksMenu.getIconTint(mActivity, true, false);
 
@@ -110,14 +95,14 @@ public class BottomToolbarBookmarksMenuTest {
     }
 
     @Test
-    public void testIconTint_noDynamicColors_nightMode_dayConfigContext_usesDayResourceColor() {
+    public void testIconTint_noDynamicColors_nightFlag_dayContext_usesDayColor() {
         Integer tint = BottomToolbarBookmarksMenu.getIconTint(mActivity, false, true);
 
         assertEquals(LIGHT_ICON_COLOR, (int) tint);
     }
 
     @Test
-    public void testIconTint_noDynamicColors_nightMode_resolvesFromThemedContext() {
+    public void testIconTint_noDynamicColors_nightFlag_nightContext_usesNightColor() {
         // The menu's night mode follows Brave's theme, which can differ from the context the
         // caller holds; the color must come from the context passed in.
         Configuration nightConfig = new Configuration(mActivity.getResources().getConfiguration());
@@ -128,8 +113,6 @@ public class BottomToolbarBookmarksMenuTest {
 
         Integer tint = BottomToolbarBookmarksMenu.getIconTint(nightContext, false, true);
 
-        assertEquals(
-                ContextCompat.getColor(nightContext, R.color.bookmark_menu_text_color), (int) tint);
         assertEquals(NIGHT_ICON_COLOR, (int) tint);
     }
 

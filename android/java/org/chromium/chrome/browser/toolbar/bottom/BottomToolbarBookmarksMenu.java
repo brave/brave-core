@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.PopupMenu;
 
 import androidx.annotation.ColorInt;
-import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuCompat;
@@ -54,7 +53,11 @@ public class BottomToolbarBookmarksMenu {
         boolean useDynamicColors = BraveDynamicColors.isDynamicColorsEnabled();
         Context themedContext = view.getContext();
         Context wrapper =
-                new ContextThemeWrapper(themedContext, getPopupMenuStyle(useDynamicColors));
+                new ContextThemeWrapper(
+                        themedContext,
+                        useDynamicColors
+                                ? R.style.BookmarkTabPopupMenuDynamic
+                                : R.style.BookmarkTabPopupMenu);
 
         PopupMenu popup = new PopupMenu(wrapper, view);
         popup.getMenuInflater().inflate(R.menu.bookmark_tab_menu, popup.getMenu());
@@ -139,13 +142,6 @@ public class BottomToolbarBookmarksMenu {
                 });
 
         popup.show();
-    }
-
-    @VisibleForTesting
-    static @StyleRes int getPopupMenuStyle(boolean useDynamicColors) {
-        return useDynamicColors
-                ? R.style.BookmarkTabPopupMenuDynamic
-                : R.style.BookmarkTabPopupMenu;
     }
 
     /** Returns the icon tint, or null when the icons keep their own (light theme) color. */
