@@ -5,39 +5,62 @@
 
 #include "brave/ios/browser/api/content_settings/default_host_content_settings.h"
 
+#include <memory>
+
 #include "base/memory/scoped_refptr.h"
-#include "base/values.h"
-#include "brave/components/content_settings/core/common/external_link_mode.h"
+#include "brave/components/external_links/core/browser/external_link_handler.h"
+#include "brave/components/external_links/core/common/external_link_mode.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
-#include "components/content_settings/core/common/content_settings.h"
-#include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "net/base/apple/url_conversions.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
+
+using external_links::ExternalLinkHandler;
 
 static_assert(
     ExternalLinkModeCurrent ==
-    static_cast<NSInteger>(content_settings::ExternalLinkMode::kCurrent));
+    static_cast<NSInteger>(external_links::ExternalLinkMode::kCurrent));
 static_assert(ExternalLinkModeAsk ==
-              static_cast<NSInteger>(content_settings::ExternalLinkMode::kAsk));
+              static_cast<NSInteger>(external_links::ExternalLinkMode::kAsk));
 static_assert(
     ExternalLinkModeRegular ==
-    static_cast<NSInteger>(content_settings::ExternalLinkMode::kRegular));
-static_assert(ExternalLinkModePrivateBrowsing ==
-              static_cast<NSInteger>(
-                  content_settings::ExternalLinkMode::kPrivateBrowsing));
+    static_cast<NSInteger>(external_links::ExternalLinkMode::kRegular));
 static_assert(
-    ExternalLinkModeModal ==
-    static_cast<NSInteger>(content_settings::ExternalLinkMode::kModal));
+    ExternalLinkModePrivateBrowsing ==
+    static_cast<NSInteger>(external_links::ExternalLinkMode::kPrivateBrowsing));
+static_assert(ExternalLinkModeModal ==
+              static_cast<NSInteger>(external_links::ExternalLinkMode::kModal));
+
+static_assert(
+    ExternalLinkActionOpenCurrent ==
+    static_cast<NSInteger>(external_links::ExternalLinkAction::kOpenCurrent));
+static_assert(ExternalLinkActionShowOnboarding ==
+              static_cast<NSInteger>(
+                  external_links::ExternalLinkAction::kShowOnboarding));
+static_assert(
+    ExternalLinkActionShowPrompt ==
+    static_cast<NSInteger>(external_links::ExternalLinkAction::kShowPrompt));
+static_assert(
+    ExternalLinkActionOpenRegular ==
+    static_cast<NSInteger>(external_links::ExternalLinkAction::kOpenRegular));
+static_assert(
+    ExternalLinkActionOpenPrivate ==
+    static_cast<NSInteger>(external_links::ExternalLinkAction::kOpenPrivate));
+static_assert(
+    ExternalLinkActionOpenModal ==
+    static_cast<NSInteger>(external_links::ExternalLinkAction::kOpenModal));
 
 @implementation DefaultHostContentSettings {
   scoped_refptr<HostContentSettingsMap> _settingsMap;
+  std::unique_ptr<ExternalLinkHandler> _externalLinkHandler;
 }
 
-- (instancetype)initWithSettingsMap:(HostContentSettingsMap*)settingsMap {
+- (instancetype)initWithSettingsMap:(HostContentSettingsMap*)settingsMap
+                              prefs:(PrefService*)prefs {
   if ((self = [super init])) {
     _settingsMap = settingsMap;
+    _externalLinkHandler =
+        std::make_unique<ExternalLinkHandler>(settingsMap, prefs);
   }
   return self;
 }
@@ -69,71 +92,40 @@ static_assert(
 }
 
 - (ExternalLinkMode)defaultExternalLinkMode {
-  return [self
-      externalLinkModeFromValue:
-          _settingsMap->GetWebsiteSetting(
-              GURL(), GURL(), ContentSettingsType::BRAVE_EXTERNAL_LINK_MODE)];
+  return static_cast<ExternalLinkMode>(_externalLinkHandler->GetDefaultMode());
 }
 
 - (void)setDefaultExternalLinkMode:(ExternalLinkMode)mode {
-  _settingsMap->SetWebsiteSettingCustomScope(
-      ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::BRAVE_EXTERNAL_LINK_MODE,
-      base::Value(static_cast<int>(mode)));
+  _externalLinkHandler->SetDefaultMode(
+      static_cast<external_links::ExternalLinkMode>(mode));
 }
 
 - (ExternalLinkMode)externalLinkModeForURL:(NSURL*)url {
-  GURL gurl = net::GURLWithNSURL(url);
-  if (!gurl.is_valid()) {
-    return ExternalLinkModeCurrent;
-  }
-  content_settings::SettingInfo info;
-  base::Value value = _settingsMap->GetWebsiteSetting(
-      gurl, gurl, ContentSettingsType::BRAVE_EXTERNAL_LINK_MODE, &info);
-  if (info.primary_pattern == ContentSettingsPattern::Wildcard() &&
-      info.secondary_pattern == ContentSettingsPattern::Wildcard()) {
-    return ExternalLinkModeCurrent;
-  }
-  return [self externalLinkModeFromValue:value];
+  return static_cast<ExternalLinkMode>(
+      _externalLinkHandler->GetMode(net::GURLWithNSURL(url)));
 }
 
 - (void)setExternalLinkMode:(ExternalLinkMode)mode forURL:(NSURL*)url {
-  GURL gurl = net::GURLWithNSURL(url);
-  if (!gurl.is_valid()) {
-    return;
-  }
-  std::string base_domain =
-      net::registry_controlled_domains::GetDomainAndRegistry(
-          gurl, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
-  ContentSettingsPattern pattern =
-      base_domain.empty()
-          ? ContentSettingsPattern::FromURL(gurl)
-          : ContentSettingsPattern::FromString("[*.]" + base_domain);
-  _settingsMap->SetWebsiteSettingCustomScope(
-      pattern, ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::BRAVE_EXTERNAL_LINK_MODE,
-      base::Value(static_cast<int>(mode)));
+  _externalLinkHandler->SetSiteMode(
+      net::GURLWithNSURL(url),
+      static_cast<external_links::ExternalLinkMode>(mode));
 }
 
 - (void)clearAllExternalLinkModes {
-  for (const auto& entry : _settingsMap->GetSettingsForOneType(
-           ContentSettingsType::BRAVE_EXTERNAL_LINK_MODE)) {
-    if (entry.primary_pattern == ContentSettingsPattern::Wildcard() &&
-        entry.secondary_pattern == ContentSettingsPattern::Wildcard()) {
-      continue;
-    }
-    _settingsMap->SetWebsiteSettingCustomScope(
-        entry.primary_pattern, entry.secondary_pattern,
-        ContentSettingsType::BRAVE_EXTERNAL_LINK_MODE, base::Value());
-  }
+  _externalLinkHandler->ClearSiteModes();
 }
 
-- (ExternalLinkMode)externalLinkModeFromValue:(const base::Value&)value {
-  if (!value.is_int() || value.GetInt() < ExternalLinkModeCurrent ||
-      value.GetInt() > ExternalLinkModeModal) {
-    return ExternalLinkModeCurrent;
-  }
-  return static_cast<ExternalLinkMode>(value.GetInt());
+- (BOOL)externalLinkOnboardingShown {
+  return _externalLinkHandler->IsOnboardingShown();
+}
+
+- (void)setExternalLinkOnboardingShown:(BOOL)shown {
+  _externalLinkHandler->SetOnboardingShown(shown);
+}
+
+- (ExternalLinkAction)resolveExternalLinkForURL:(NSURL*)url {
+  return static_cast<ExternalLinkAction>(
+      _externalLinkHandler->Resolve(net::GURLWithNSURL(url)));
 }
 
 @end

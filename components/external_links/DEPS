@@ -1,0 +1,6 @@
+include_rules = [
+  "+brave/components/content_settings/core/common",
+  "+components/content_settings/core",
+  "+components/prefs",
+  "+components/sync_preferences",
+]

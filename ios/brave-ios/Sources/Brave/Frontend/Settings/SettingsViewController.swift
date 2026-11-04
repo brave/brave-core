@@ -1527,7 +1527,8 @@ class SettingsViewController: TableViewController {
               RetentionPreferencesDebugMenuViewController(
                 p3aUtilities: p3aUtilities,
                 attributionManager: attributionManager,
-                localState: localState
+                localState: localState,
+                defaultHostContentSettings: braveCore.defaultHostContentSettings
               ),
               animated: true
             )

@@ -15,6 +15,7 @@ struct RetentionPreferencesDebugMenuView: View {
   private let p3aUtilities: BraveP3AUtils
   private let attributionManager: AttributionManager
   private let localState: PrefService
+  private let defaultHostContentSettings: DefaultHostContentSettings
 
   @State private var isOnboardingPresented: Bool = false
 
@@ -25,17 +26,21 @@ struct RetentionPreferencesDebugMenuView: View {
     .rewardsCalloutCompleted
   @ObservedObject private var defaultBrowserIntroCompleted = Preferences.DefaultBrowserIntro
     .completed
-  @ObservedObject private var externalLinkOnboardingShown = Preferences.General
-    .externalLinkOnboardingShown
+  @State private var externalLinkOnboardingShown: Bool
 
   init(
     p3aUtilities: BraveP3AUtils,
     attributionManager: AttributionManager,
-    localState: PrefService
+    localState: PrefService,
+    defaultHostContentSettings: DefaultHostContentSettings
   ) {
     self.p3aUtilities = p3aUtilities
     self.attributionManager = attributionManager
     self.localState = localState
+    self.defaultHostContentSettings = defaultHostContentSettings
+    self._externalLinkOnboardingShown = State(
+      initialValue: defaultHostContentSettings.externalLinkOnboardingShown
+    )
   }
 
   var body: some View {
@@ -79,7 +84,7 @@ struct RetentionPreferencesDebugMenuView: View {
               .font(.footnote)
           }
         }
-        Toggle(isOn: $externalLinkOnboardingShown.value) {
+        Toggle(isOn: $externalLinkOnboardingShown) {
           VStack(alignment: .leading) {
             Text("External Link Onboarding Shown")
             Text(
@@ -88,6 +93,9 @@ struct RetentionPreferencesDebugMenuView: View {
             .foregroundStyle(.secondary)
             .font(.footnote)
           }
+        }
+        .onChange(of: externalLinkOnboardingShown) { _, shown in
+          defaultHostContentSettings.externalLinkOnboardingShown = shown
         }
         Toggle(isOn: $defaultBrowserIntroCompleted.value) {
           VStack(alignment: .leading) {
@@ -146,13 +154,15 @@ class RetentionPreferencesDebugMenuViewController: UIHostingController<
   init(
     p3aUtilities: BraveP3AUtils,
     attributionManager: AttributionManager,
-    localState: PrefService
+    localState: PrefService,
+    defaultHostContentSettings: DefaultHostContentSettings
   ) {
     super.init(
       rootView: RetentionPreferencesDebugMenuView(
         p3aUtilities: p3aUtilities,
         attributionManager: attributionManager,
-        localState: localState
+        localState: localState,
+        defaultHostContentSettings: defaultHostContentSettings
       )
     )
   }

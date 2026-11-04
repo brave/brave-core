@@ -9,9 +9,11 @@
 #include "brave/ios/browser/api/content_settings/default_host_content_settings.h"
 
 class HostContentSettingsMap;
+class PrefService;
 
 @interface DefaultHostContentSettings ()
 - (instancetype)initWithSettingsMap:(HostContentSettingsMap*)settingsMap
+                              prefs:(PrefService*)prefs
     NS_DESIGNATED_INITIALIZER;
 @end
 
