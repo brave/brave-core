@@ -270,8 +270,6 @@ public class OnboardingStepAdapter
     }
 
     private static final class CustomizeBraveViewHolder extends OnboardingBaseViewHolder {
-        final Button mCustomize;
-        final Button mUseDefaults;
 
         private CustomizeBraveViewHolder(
                 final View itemView,
@@ -284,13 +282,15 @@ public class OnboardingStepAdapter
             final Button rightButton = itemView.findViewById(R.id.onboarding_right_button);
 
             // Variant Z shows Customize on the left, variant Y shows it on the right.
+            final Button customize;
+            final Button useDefaults;
             if (DAY_ZERO_VARIANT_Z.equals(dayZeroVariant)) {
-                mCustomize = leftButton;
-                mUseDefaults = rightButton;
+                customize = leftButton;
+                useDefaults = rightButton;
             } else {
                 assert DAY_ZERO_VARIANT_Y.equals(dayZeroVariant);
-                mCustomize = rightButton;
-                mUseDefaults = leftButton;
+                customize = rightButton;
+                useDefaults = leftButton;
             }
 
             final View.OnClickListener goToNextStep =
@@ -302,15 +302,15 @@ public class OnboardingStepAdapter
                         }
                     };
 
-            mCustomize.setText(R.string.customize_onboarding);
-            mCustomize.setClipToOutline(true);
+            customize.setText(R.string.customize_onboarding);
+            customize.setClipToOutline(true);
             // TODO(https://github.com/brave/brave-browser/issues/60480): Open the appearance
             // customizer flow with address bar position customization.
-            // mCustomize.setOnClickListener(openAppearanceCustomizer);
+            // customize.setOnClickListener(openAppearanceCustomizer);
 
-            mUseDefaults.setText(R.string.use_defaults_onboarding);
-            mUseDefaults.setClipToOutline(true);
-            mUseDefaults.setOnClickListener(goToNextStep);
+            useDefaults.setText(R.string.use_defaults_onboarding);
+            useDefaults.setClipToOutline(true);
+            useDefaults.setOnClickListener(goToNextStep);
         }
 
         @Override
