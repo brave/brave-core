@@ -9,7 +9,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="InconsistentLayout"
+    tools:ignore="InconsistentLayout,RtlHardcoded"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginHorizontal="@dimen/onboarding_main_container_horizontal_margin">
@@ -61,11 +61,11 @@
         android:layout_gravity="center_horizontal"
         style="@style/LargeOutlineButton"
         android:layout_marginVertical="@dimen/onboarding_buttons_vertical_margin"
-        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
         app:layout_constraintTop_toBottomOf="@+id/onboarding_illustration"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/onboarding_right_button" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/onboarding_right_button" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/onboarding_right_button"
@@ -73,9 +73,9 @@
         android:layout_gravity="center_horizontal"
         style="@style/LargeFilledButton"
         android:layout_marginVertical="@dimen/onboarding_buttons_vertical_margin"
-        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
         app:layout_constraintTop_toBottomOf="@+id/onboarding_illustration"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/onboarding_left_button"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintLeft_toRightOf="@+id/onboarding_left_button"
+        app:layout_constraintRight_toRightOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

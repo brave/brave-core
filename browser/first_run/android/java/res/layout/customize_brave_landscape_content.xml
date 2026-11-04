@@ -6,6 +6,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="RtlHardcoded"
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
     <ImageView
@@ -77,11 +78,11 @@
         android:layout_gravity="center_horizontal"
         style="@style/LargeOutlineButton"
         android:layout_marginVertical="40dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginStart="40dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginLeft="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/onboarding_right_button" />
+        app:layout_constraintLeft_toLeftOf="@+id/brave_onboarding_subtitle"
+        app:layout_constraintRight_toLeftOf="@+id/onboarding_right_button" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/onboarding_right_button"
@@ -90,9 +91,9 @@
         android:layout_gravity="center_horizontal"
         style="@style/LargeFilledButton"
         android:layout_marginVertical="40dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="40dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/onboarding_left_button"
-        app:layout_constraintEnd_toEndOf="@+id/image_start_guide" />
+        app:layout_constraintLeft_toRightOf="@+id/onboarding_left_button"
+        app:layout_constraintRight_toRightOf="@+id/brave_onboarding_subtitle" />
 </merge>
