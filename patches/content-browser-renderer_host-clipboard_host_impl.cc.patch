@@ -1,8 +1,8 @@
 diff --git a/content/browser/renderer_host/clipboard_host_impl.cc b/content/browser/renderer_host/clipboard_host_impl.cc
-index 1c56fd299a34a63322eecf001a9ce8d97e28fa5d..e5867231336b21e07266f34c73d112ed10f387fc 100644
+index 2118dfe7f6153e256a2385f7d152996682a621d0..0d849750fac77b04d8d611d8f78ef2b0bfe3f8a5 100644
 --- a/content/browser/renderer_host/clipboard_host_impl.cc
 +++ b/content/browser/renderer_host/clipboard_host_impl.cc
-@@ -143,6 +143,8 @@ class FrameClipboardContext : public ClipboardHostImpl::Context {
+@@ -144,6 +144,8 @@ class FrameClipboardContext : public ClipboardHostImpl::Context {
    }
  #endif
  
@@ -11,7 +11,7 @@ index 1c56fd299a34a63322eecf001a9ce8d97e28fa5d..e5867231336b21e07266f34c73d112ed
   private:
    // The DocumentService that owns the host dies with the document.
    const raw_ref<RenderFrameHostImpl> render_frame_host_;
-@@ -343,6 +345,10 @@ class ClipboardHostDocumentHelper
+@@ -344,6 +346,10 @@ class ClipboardHostDocumentHelper
    }
  #endif
  
@@ -22,7 +22,7 @@ index 1c56fd299a34a63322eecf001a9ce8d97e28fa5d..e5867231336b21e07266f34c73d112ed
   private:
    ~ClipboardHostDocumentHelper() override = default;
  
-@@ -889,6 +895,8 @@ void ClipboardHostImpl::WriteText(const std::u16string& text) {
+@@ -890,6 +896,8 @@ void ClipboardHostImpl::WriteText(const std::u16string& text) {
    ClipboardPasteData data;
    data.text = text;
    ++pending_writes_;

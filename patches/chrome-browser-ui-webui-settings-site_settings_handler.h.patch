@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_handler.h b/chrome/browser/ui/webui/settings/site_settings_handler.h
-index 4929c49bd38897dce0130a32c1b80c30974d068e..0d6c1cfe705b0713c4f63d5295cdbefec707cdd6 100644
+index 39a1bd2a253adbd13d5cf10ae4419d297855b93b..f314abc433533a119bdbce11fac1c763ba606030 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_handler.h
 +++ b/chrome/browser/ui/webui/settings/site_settings_handler.h
 @@ -246,6 +246,7 @@ class SiteSettingsHandler

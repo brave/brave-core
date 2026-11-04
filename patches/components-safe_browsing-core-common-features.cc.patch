@@ -1,5 +1,5 @@
 diff --git a/components/safe_browsing/core/common/features.cc b/components/safe_browsing/core/common/features.cc
-index 31f96516c8b52928d1dc4137d57bb0a19b1e5150..22af61c05fb63f733f0dcfe034bde09ca4fe4e36 100644
+index 60addcf8865ae47a5b48a543caffd5376a0d84ca..a9e8c7cd46b9b5cf3bc37bf38b5b936d867ccdaf 100644
 --- a/components/safe_browsing/core/common/features.cc
 +++ b/components/safe_browsing/core/common/features.cc
 @@ -41,7 +41,7 @@ BASE_FEATURE(kAdSamplerTriggerFeature,

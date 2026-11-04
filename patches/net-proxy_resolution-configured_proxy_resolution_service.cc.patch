@@ -1,8 +1,8 @@
 diff --git a/net/proxy_resolution/configured_proxy_resolution_service.cc b/net/proxy_resolution/configured_proxy_resolution_service.cc
-index a8b07eb66b03a2e288582346ffd12706f403127d..374044e072abd678b74e2098bb2602e7044d699d 100644
+index 76060b4e2efddda3aa01e2ece02f4091c410907b..412a9d1292fdeb3354bfc3fa2f81bd96738c2613 100644
 --- a/net/proxy_resolution/configured_proxy_resolution_service.cc
 +++ b/net/proxy_resolution/configured_proxy_resolution_service.cc
-@@ -975,6 +975,7 @@ int ConfiguredProxyResolutionService::ResolveProxy(
+@@ -986,6 +986,7 @@ int ConfiguredProxyResolutionService::ResolveProxy(
    // using a direct connection for example).
    int rv = TryResolveSynchronously(url, /*bypass_override_rules=*/false,
                                     net_log, result);
