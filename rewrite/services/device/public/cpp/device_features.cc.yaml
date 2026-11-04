@@ -19,3 +19,15 @@ substitutions:
     set_feature_flag_default_state:
       feature_name: kSensorsAllowAskBlockPermissionModel
       value: base::FEATURE_ENABLED_BY_DEFAULT
+
+  - description: |-
+      Backport crrev.com/c/8693149: a USB device stays unusable after
+      device.reset() because Blink never resynchronizes the active
+      configuration. Drop this once we pick up the upstream fix.
+    regex:
+      pattern: |-
+        BASE_FEATURE(kWebUsbResetInvalidatesConfiguration,
+                     base::FEATURE_ENABLED_BY_DEFAULT);
+      replace: |-
+        BASE_FEATURE(kWebUsbResetInvalidatesConfiguration,
+                     base::FEATURE_DISABLED_BY_DEFAULT);
