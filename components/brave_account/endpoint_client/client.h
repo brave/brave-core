@@ -113,10 +113,16 @@ class Client {
       }
     }();
 
-    simple_url_loader_ptr->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-        url_loader_factory.get(),
-        base::BindOnce(OnResponse<Response>, std::move(callback),
-                       std::move(bound_simple_url_loader)));
+    auto on_response = base::BindOnce(OnResponse<Response>, std::move(callback),
+                                      std::move(bound_simple_url_loader));
+    if (request.max_body_size) {
+      simple_url_loader_ptr->DownloadToString(url_loader_factory.get(),
+                                              std::move(on_response),
+                                              *request.max_body_size);
+    } else {
+      simple_url_loader_ptr->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
+          url_loader_factory.get(), std::move(on_response));
+    }
 
     if constexpr (C == RequestCancelability::kCancelable) {
       return RequestHandle(std::move(simple_url_loader),

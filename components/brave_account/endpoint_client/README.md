@@ -188,6 +188,11 @@ Client<LoginInit>::Send(
 `network_traffic_annotation_tag` is required (only tests may leave it unset).
 Requests also have:
 
+- `max_body_size`: forwarded to `SimpleURLLoader::DownloadToString()`; defaults
+  to `SimpleURLLoader::kMaxBoundedStringDownloadSize` (5 MiB), which
+  `DownloadToString()` `DCHECK`s it does not exceed. Larger responses fail with
+  `net::ERR_INSUFFICIENT_RESOURCES`. `std::nullopt` lifts the limit via
+  `SimpleURLLoader::DownloadToStringOfUnboundedSizeUntilCrashAndDie()`.
 - `redirect_mode`: forwarded to `network::ResourceRequest::redirect_mode`;
   defaults to `kError`, so the network service fails a redirect with
   `net::ERR_FAILED`. With `kFollow`, the headers set on the request (e.g. bearer
