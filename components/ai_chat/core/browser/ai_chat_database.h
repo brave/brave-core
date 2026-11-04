@@ -83,10 +83,12 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   // the record carries. Token count updates don't move it. An edit moves the
   // time of the entry it edits, which is the record sync sends. A null time,
   // meaning the oldest, is returned when no time is recorded, as for rows
-  // saved before this was added, or when there is no such row.
-  virtual base::Time GetConversationModifiedTime(
+  // saved before this was added, or when there is no such row. nullopt is
+  // returned when the read fails, so that it can't be taken for a missing row
+  // or time.
+  virtual std::optional<base::Time> GetConversationModifiedTime(
       std::string_view conversation_uuid);
-  virtual base::Time GetEntryModifiedTime(
+  virtual std::optional<base::Time> GetEntryModifiedTime(
       std::string_view conversation_entry_uuid);
 
   // Returns new ID for the provided entry and any provided associated content

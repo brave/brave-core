@@ -93,6 +93,19 @@ void BindModifiedTime(sql::Statement& statement, int index, base::Time time) {
   }
 }
 
+// Reads the result of a query for one row's modified_time. Returns nullopt
+// when the query fails, and the null time when there is no such row.
+std::optional<base::Time> ReadModifiedTime(sql::Statement& statement) {
+  if (!statement.Step()) {
+    if (!statement.Succeeded()) {
+      return std::nullopt;
+    }
+    return base::Time();
+  }
+  // A NULL column reads as 0, which is the null time.
+  return statement.ColumnTime(0);
+}
+
 bool MigrateFrom1To2(sql::Database* db) {
   // Add a new column to the associated_content table to store the content type.
   static constexpr char kAddPromptColumnQuery[] =
@@ -614,11 +627,11 @@ std::optional<std::string> AIChatDatabase::GetConversationUuidForEntry(
   return statement.ColumnString(0);
 }
 
-base::Time AIChatDatabase::GetConversationModifiedTime(
+std::optional<base::Time> AIChatDatabase::GetConversationModifiedTime(
     std::string_view conversation_uuid) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!LazyInit()) {
-    return base::Time();
+    return std::nullopt;
   }
 
   static constexpr char kQuery[] =
@@ -626,15 +639,14 @@ base::Time AIChatDatabase::GetConversationModifiedTime(
   sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE, kQuery));
   CHECK(statement.is_valid());
   statement.BindString(0, conversation_uuid);
-  // A NULL column reads as 0, which is the null time.
-  return statement.Step() ? statement.ColumnTime(0) : base::Time();
+  return ReadModifiedTime(statement);
 }
 
-base::Time AIChatDatabase::GetEntryModifiedTime(
+std::optional<base::Time> AIChatDatabase::GetEntryModifiedTime(
     std::string_view conversation_entry_uuid) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!LazyInit()) {
-    return base::Time();
+    return std::nullopt;
   }
 
   static constexpr char kQuery[] =
@@ -642,8 +654,7 @@ base::Time AIChatDatabase::GetEntryModifiedTime(
   sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE, kQuery));
   CHECK(statement.is_valid());
   statement.BindString(0, conversation_entry_uuid);
-  // A NULL column reads as 0, which is the null time.
-  return statement.Step() ? statement.ColumnTime(0) : base::Time();
+  return ReadModifiedTime(statement);
 }
 
 std::vector<mojom::ConversationTurnPtr>
@@ -2384,8 +2395,8 @@ bool AIChatDatabase::ApplyRemoteEntry(
     return false;
   }
 
-  // The writes above are the local write paths, which set the current time.
-  // Replace it with the record's own time.
+  // AddConversationEntry() and AddOrUpdateAssociatedContent() are local write
+  // paths that stamp the current time; replace it with the record's own time.
   if (!SetEntryModifiedTime(entry_uuid, modified_time)) {
     return false;
   }

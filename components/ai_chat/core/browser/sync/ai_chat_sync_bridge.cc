@@ -78,6 +78,13 @@ std::optional<sync_pb::AIChatConversationSpecifics> BuildCommittableEntry(
   return specifics;
 }
 
+// Returns the modified time to send with a local record. A failed read sends
+// none, so the record counts as the oldest and can't overwrite another device's
+// copy that has a time.
+base::Time TimeToSend(const std::optional<base::Time>& modified_time) {
+  return modified_time.value_or(base::Time());
+}
+
 }  // namespace
 
 AIChatSyncBridge::AIChatSyncBridge(
@@ -156,8 +163,8 @@ void AIChatSyncBridge::ForEachLocalEntity(
     if (should_include(conversation_key)) {
       emit(std::move(conversation_key),
            CreateEntityDataFromSpecifics(ConversationMetadataToSpecifics(
-               *conversation,
-               database_->GetConversationModifiedTime(conversation->uuid))));
+               *conversation, TimeToSend(database_->GetConversationModifiedTime(
+                                  conversation->uuid)))));
     }
 
     auto archive = database_->GetConversationData(conversation->uuid);
@@ -184,7 +191,7 @@ void AIChatSyncBridge::ForEachLocalEntity(
 
       auto specifics = BuildCommittableEntry(
           conversation->uuid, *entry,
-          database_->GetEntryModifiedTime(*entry->uuid),
+          TimeToSend(database_->GetEntryModifiedTime(*entry->uuid)),
           conversation->associated_content, content_texts);
       if (!specifics) {
         continue;
@@ -269,7 +276,8 @@ std::unique_ptr<syncer::DataBatch> AIChatSyncBridge::GetDataForCommit(
         continue;
       }
       auto specifics = ConversationMetadataToSpecifics(
-          *conversation, database_->GetConversationModifiedTime(uuid));
+          *conversation,
+          TimeToSend(database_->GetConversationModifiedTime(uuid)));
       batch->Put(key, CreateEntityDataFromSpecifics(specifics));
     } else if (key.starts_with(kEntryStorageKeyPrefix)) {
       const std::string entry_uuid = key.substr(kEntryStorageKeyPrefix.size());
@@ -293,7 +301,8 @@ std::unique_ptr<syncer::DataBatch> AIChatSyncBridge::GetDataForCommit(
         continue;
       }
       auto specifics = BuildCommittableEntry(
-          *conversation_uuid, **it, database_->GetEntryModifiedTime(entry_uuid),
+          *conversation_uuid, **it,
+          TimeToSend(database_->GetEntryModifiedTime(entry_uuid)),
           conversation->associated_content, ContentTextsFromArchive(*archive));
       if (!specifics) {
         // The entry cannot be made to fit the per-record budget, so there is
@@ -455,7 +464,7 @@ void AIChatSyncBridge::PutConversationMetadata(const std::string& uuid) {
     return;
   }
   auto specifics = ConversationMetadataToSpecifics(
-      *conversation, database_->GetConversationModifiedTime(uuid));
+      *conversation, TimeToSend(database_->GetConversationModifiedTime(uuid)));
   auto metadata_change_list = CreateMetadataChangeList();
   change_processor()->Put(base::StrCat({kConversationStorageKeyPrefix, uuid}),
                           CreateEntityDataFromSpecifics(specifics),
@@ -481,7 +490,8 @@ void AIChatSyncBridge::PutEntry(const std::string& conversation_uuid,
     return;
   }
   auto specifics = BuildCommittableEntry(
-      conversation_uuid, **it, database_->GetEntryModifiedTime(entry_uuid),
+      conversation_uuid, **it,
+      TimeToSend(database_->GetEntryModifiedTime(entry_uuid)),
       conversation->associated_content, ContentTextsFromArchive(*archive));
   if (!specifics) {
     // Too large to commit even after omitting every omittable field, so there

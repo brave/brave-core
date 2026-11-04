@@ -2103,6 +2103,12 @@ TEST_F(AIChatDatabaseSyncTest, GetConversationUuidForEntry) {
   EXPECT_EQ(db_->GetConversationUuidForEntry("no-such-entry"), std::nullopt);
 }
 
+// No such row reads as the null time, not as a failed read.
+TEST_F(AIChatDatabaseSyncTest, MissingRowHasNullModifiedTime) {
+  EXPECT_EQ(db_->GetConversationModifiedTime("no-such-conv"), base::Time());
+  EXPECT_EQ(db_->GetEntryModifiedTime("no-such-entry"), base::Time());
+}
+
 TEST_F(AIChatDatabaseSyncTest, ConversationChangesSetModifiedTime) {
   auto conversation = mojom::Conversation::New();
   conversation->uuid = "conv";
@@ -2247,7 +2253,7 @@ TEST_F(AIChatDatabaseSyncTest,
   // A record without a time leaves none.
   ASSERT_TRUE(db_->ApplyRemoteConversationMetadata(std::move(conversation),
                                                    base::Time()));
-  EXPECT_TRUE(db_->GetConversationModifiedTime("conv").is_null());
+  EXPECT_EQ(db_->GetConversationModifiedTime("conv"), base::Time());
 }
 
 TEST_F(AIChatDatabaseSyncTest, ApplyRemoteEntryStoresRecordTime) {
@@ -2274,7 +2280,7 @@ TEST_F(AIChatDatabaseSyncTest, ApplyRemoteEntryStoresRecordTime) {
   // A record without a time leaves none.
   ASSERT_TRUE(db_->ApplyRemoteEntry("conv", make_entry(), base::Time(),
                                     make_content(), {"page text"}));
-  EXPECT_TRUE(db_->GetEntryModifiedTime("entry-1").is_null());
+  EXPECT_EQ(db_->GetEntryModifiedTime("entry-1"), base::Time());
 }
 
 // Test the migration for each version upgrade
@@ -2774,8 +2780,8 @@ TEST_P(AIChatDatabaseMigrationTest,
 
   // Rows from before the columns existed have no time, which sync treats as
   // the oldest.
-  EXPECT_TRUE(db_->GetConversationModifiedTime(kConversationUuid).is_null());
-  EXPECT_TRUE(db_->GetEntryModifiedTime(kEntryUuid).is_null());
+  EXPECT_EQ(db_->GetConversationModifiedTime(kConversationUuid), base::Time());
+  EXPECT_EQ(db_->GetEntryModifiedTime(kEntryUuid), base::Time());
 
   // The migrated columns hold the time of a local change.
   ASSERT_TRUE(db_->UpdateConversationTitle(kConversationUuid, "Renamed"));
