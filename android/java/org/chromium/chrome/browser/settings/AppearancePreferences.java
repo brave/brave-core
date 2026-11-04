@@ -503,6 +503,11 @@ public class AppearancePreferences extends AppearanceSettingsFragment
                     } else if (ChromeFeatureList.sBookmarksBarNTP.isEnabled()) {
                         indexData.removeEntryForKey(
                                 frag, AppearanceSettingsFragment.PREF_BOOKMARK_BAR_SWITCH);
+                        indexData.updateEntrySummaryForKey(
+                                frag,
+                                AppearanceSettingsFragment.PREF_BOOKMARK_BAR,
+                                AppearanceSettingsFragment.getBookmarkBarVisibilityStateSummaryRes(
+                                        profile));
                     } else {
                         indexData.removeEntryForKey(
                                 frag, AppearanceSettingsFragment.PREF_BOOKMARK_BAR);
