@@ -47,6 +47,7 @@
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/cpp/url_loader_completion_status.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
+#include "services/network/public/mojom/fetch_api.mojom.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "services/network/test/test_utils.h"
@@ -434,6 +435,8 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
                   net::HttpRequestHeaders::kContentType),
               Request::ContentType());
     EXPECT_FALSE(resource_request.SavesCookies());
+    EXPECT_EQ(resource_request.redirect_mode,
+              network::mojom::RedirectMode::kError);
     EXPECT_THAT(RequestBodyFrom<typename Endpoint::Request::Body>(
                     network::GetUploadData(resource_request)),
                 detail::BodyEq(MakeRequest().body));

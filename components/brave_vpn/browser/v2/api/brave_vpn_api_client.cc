@@ -25,6 +25,7 @@
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "services/network/public/mojom/fetch_api.mojom.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 using brave_account::endpoint_client::Client;
@@ -74,6 +75,8 @@ Request MakeRequest() {
   Request request;
   request.network_traffic_annotation_tag =
       net::MutableNetworkTrafficAnnotationTag(kTrafficAnnotation);
+  // TODO(https://github.com/brave/brave-browser/issues/60846)
+  request.redirect_mode = network::mojom::RedirectMode::kFollow;
   request.retry_options = {
       .max_retries = 1,
       .retry_mode = network::SimpleURLLoader::RETRY_ON_NETWORK_CHANGE};
