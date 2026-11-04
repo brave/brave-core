@@ -195,18 +195,13 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
       BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
           browser());
 
-  // With rounded corners, we need
-  // distance(tabs::kMarginForVerticalTabContainers) between vertical tab and
-  // contents. Each side has half of it as a margin.
-  const int contents_margin =
-      rounded_corners ? (tabs::kMarginForVerticalTabContainers / 2) : 0;
   const int top_contents_separator_height = rounded_corners ? 0 : 1;
 
+  // The vertical tab strip owns the gap between itself and the contents
+  // through its own padding, so the contents reserves no margin on that side
+  // and starts exactly where the infobar and bookmark bar do.
   auto contents_area_origin = [&]() {
-    return gfx::Point(
-        browser_view()->contents_container()->bounds().origin().x() -
-            contents_margin,
-        browser_view()->contents_container()->bounds().origin().y());
+    return browser_view()->contents_container()->bounds().origin();
   };
 
 #if !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)

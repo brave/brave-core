@@ -330,11 +330,6 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
 
   auto* prefs = browser_->GetProfile()->GetPrefs();
 
-  sidebar_side_.Init(prefs::kSidePanelHorizontalAlignment, prefs,
-                     base::BindRepeating(
-                         &BraveVerticalTabStripRegionView::OnBrowserPanelsMoved,
-                         base::Unretained(this)));
-
   expanded_width_pref_.Init(
       brave_tabs::kVerticalTabsExpandedWidth, prefs,
       base::BindRepeating(
@@ -379,7 +374,7 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
   vertical_tab_on_right_.Init(
       brave_tabs::kVerticalTabsOnRight, prefs,
       base::BindRepeating(
-          &BraveVerticalTabStripRegionView::OnBrowserPanelsMoved,
+          &BraveVerticalTabStripRegionView::OnVerticalTabSideChanged,
           base::Unretained(this)));
 
   if (base::FeatureList::IsEnabled(tabs::kBraveVerticalTabHideCompletely)) {
@@ -672,38 +667,14 @@ gfx::Size BraveVerticalTabStripRegionView::GetMinimumSize() const {
     return size;
   }
 
-  // In rounded corners, border is changed on floating.
-  // If we calculated preferred size with |include_border|,
-  // it gives different size because of border change.
-  // If minumum size changes during the floating, it could affect
-  // contents size. It could cause contents area flickering.
-  // Append same border width to |size|.
-  //
-  // This must match the inset UpdateBorder() installs, because the host view
-  // sized from here is what the sidebar is positioned against. When the
-  // sidebar is on the same side, UpdateBorder() keeps the full margin rather
-  // than overlapping into the contents margin, so don't subtract it here
-  // either -- otherwise the host ends up narrower than the strip and the
-  // strip overflows onto the sidebar, clipping its focus rings.
-  if (BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
-          browser_) &&
-      !IsSidebarOnSameSide()) {
-    size.Enlarge(-(tabs::kMarginForVerticalTabContainers / 2), 0);
-  } else {
-    size.Enlarge(kBorderThickness, 0);
+  // Add the non-floating border width -- zero with rounded corners, where the
+  // separator only shows while floating.
+  if (!BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
+          browser_)) {
+    size.Enlarge(GetInsets().width(), 0);
   }
 
   return size;
-}
-
-bool BraveVerticalTabStripRegionView::IsSidebarOnSameSide() const {
-  if (sidebar_side_.GetPrefName().empty()) {
-    return false;
-  }
-
-  const bool is_on_right =
-      !vertical_tab_on_right_.GetPrefName().empty() && *vertical_tab_on_right_;
-  return sidebar_side_.GetValue() == is_on_right;
 }
 
 void BraveVerticalTabStripRegionView::Layout(PassKey) {
@@ -768,7 +739,7 @@ void BraveVerticalTabStripRegionView::OnShowVerticalTabsPrefChanged() {
   UpdateBorder();
 }
 
-void BraveVerticalTabStripRegionView::OnBrowserPanelsMoved() {
+void BraveVerticalTabStripRegionView::OnVerticalTabSideChanged() {
   UpdateBorder();
   PreferredSizeChanged();
 }
@@ -1026,42 +997,20 @@ void BraveVerticalTabStripRegionView::UpdateBorder() {
            state_ == State::kFloating;
   };
 
-  // At this point |sidebar_side_| needs to be initialized.
-  CHECK(!sidebar_side_.GetPrefName().empty());
+  // No separator, no inset: the tabs' own padding is what spaces them from the
+  // contents, which reserves nothing on this side in turn.
+  if (!show_visible_border()) {
+    SetBorder(nullptr);
+    PreferredSizeChanged();
+    return;
+  }
 
-  // If the sidebar is on the same side as the vertical tab strip, we shouldn't
-  // take away the margin on the vertical tabs, because the sidebar will be
-  // between it and the web_contents.
-  bool is_on_right =
+  const bool is_on_right =
       !vertical_tab_on_right_.GetPrefName().empty() && *vertical_tab_on_right_;
-  bool sidebar_on_same_side = IsSidebarOnSameSide();
-
-  gfx::Insets border_insets;
-  if (is_on_right) {
-    border_insets.set_left(kBorderThickness);
-  } else {
-    border_insets.set_right(kBorderThickness);
-  }
-
-  // When show vertical tab's border line, vertical tab can have its whole
-  // padding.
-  if (show_visible_border()) {
-    SetBorder(views::CreateSolidSidedBorder(
-        border_insets,
-        GetColorProvider()->GetColor(kColorBraveVerticalTabSeparator)));
-  } else {
-    // When vertical tab's border line is not shown, vertical tab should have
-    // only half of its padding because contents has half or margin to draw its
-    // shadow.
-    if (!sidebar_on_same_side) {
-      if (is_on_right) {
-        border_insets.set_left(-(tabs::kMarginForVerticalTabContainers / 2));
-      } else {
-        border_insets.set_right(-(tabs::kMarginForVerticalTabContainers / 2));
-      }
-    }
-    SetBorder(views::CreateEmptyBorder(border_insets));
-  }
+  SetBorder(views::CreateSolidSidedBorder(
+      is_on_right ? gfx::Insets::TLBR(0, kBorderThickness, 0, 0)
+                  : gfx::Insets::TLBR(0, 0, 0, kBorderThickness),
+      GetColorProvider()->GetColor(kColorBraveVerticalTabSeparator)));
 
   PreferredSizeChanged();
 }
