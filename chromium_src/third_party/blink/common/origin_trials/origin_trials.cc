@@ -25,6 +25,7 @@ namespace {
 // When updating also update the array in the overload below.
 constexpr auto kBraveDisabledTrialNames =
     base::MakeFixedFlatSet<std::string_view>({
+        "AISemanticEmbedderAPI",
         "DeviceAttributes",
         "DigitalGoodsV2",
         "InterestCohortAPI",

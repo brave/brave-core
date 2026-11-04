@@ -355,6 +355,7 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
 TEST(FeatureDefaultsTest, DisabledBlinkRuntimeEnabledFeatures) {
   // Please, keep alphabetized.
   const base::Feature* disabled_features[] = {
+      &blink::features::kAIEmbeddingsAPI,
       &blink::features::kAIProofreadingAPI,
       &blink::features::kAIPromptAPI,
       &blink::features::kAIPromptAPIMultimodalInput,
