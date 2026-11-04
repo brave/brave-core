@@ -11,6 +11,8 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/files/file_path.h"
+#include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
@@ -27,6 +29,7 @@
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
 #include "brave/components/brave_ads/core/public/test/ads_client_mock.h"
@@ -44,6 +47,10 @@
 #include "url/gurl.h"
 
 namespace brave_ads {
+
+namespace {
+constexpr char kAdsDatabaseFilename[] = "Ads.db";
+}  // namespace
 
 class BraveAdsServiceImplIOSTest : public PlatformTest {
  public:
@@ -906,6 +913,38 @@ TEST_F(BraveAdsServiceImplIOSTest,
 
   // Assert
   EXPECT_FALSE(prefs_.HasPrefPath(prefs::kSponsoredEnabled));
+}
+
+TEST_F(BraveAdsServiceImplIOSTest, ClearDataDeletesAdsDatabase) {
+  // Arrange
+  ASSERT_TRUE(InitializeAdsSuccessfully());
+  const base::FilePath ads_database_path =
+      temp_dir_.GetPath().AppendASCII(kAdsDatabaseFilename);
+  ASSERT_TRUE(base::WriteFile(ads_database_path, ""));
+  base::test::TestFuture<bool> test_future;
+
+  // Act
+  ads_service_->ClearData(test_future.GetCallback());
+  ASSERT_TRUE(test_future.Get());
+
+  // Assert
+  EXPECT_FALSE(base::PathExists(ads_database_path));
+}
+
+TEST_F(BraveAdsServiceImplIOSTest, ClearDataDeletesClientJson) {
+  // Arrange
+  ASSERT_TRUE(InitializeAdsSuccessfully());
+  const base::FilePath client_json_path =
+      temp_dir_.GetPath().AppendASCII(kClientJsonFilename);
+  ASSERT_TRUE(base::WriteFile(client_json_path, ""));
+  base::test::TestFuture<bool> test_future;
+
+  // Act
+  ads_service_->ClearData(test_future.GetCallback());
+  ASSERT_TRUE(test_future.Get());
+
+  // Assert
+  EXPECT_FALSE(base::PathExists(client_json_path));
 }
 
 TEST_F(BraveAdsServiceImplIOSTest, ClearDataNotifiesObserversWhenNotRunning) {
