@@ -2182,7 +2182,12 @@ public class BrowserViewController: UIViewController {
         // This let's the user spam the Cmd+T button without lots of responder changes.
         guard freshTab === self.tabManager.selectedTab else { return }
         if let text = searchText {
-          self.processAddressBar(text: text)
+          // Externally supplied text must never be treated as a URL, as that would allow
+          // external apps to navigate to privileged schemes such as chrome://
+          self.submitSearchText(text)
+          if !self.privateBrowsingManager.isPrivateBrowsing {
+            RecentSearch.addItem(type: .text, text: text, websiteUrl: nil)
+          }
         } else {
           self.focusURLBar()
         }
