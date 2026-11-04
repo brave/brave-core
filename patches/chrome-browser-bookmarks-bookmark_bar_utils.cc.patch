@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/bookmarks/bookmark_bar_utils.cc b/chrome/browser/bookmarks/bookmark_bar_utils.cc
+index 38a1b6f2eee90222b4a9c5d6cefd0610eb36231e..63b1bd4cc1fba854f2fc576f750fcfbce5718eb1 100644
+--- a/chrome/browser/bookmarks/bookmark_bar_utils.cc
++++ b/chrome/browser/bookmarks/bookmark_bar_utils.cc
+@@ -76,6 +76,7 @@ void UpdateBookmarkBarVisibilityPrefOnUserAction(Profile* profile) {
+ }
+ 
+ bool IsAppsShortcutEnabled(Profile* profile) {
++  if ((true)) return false;
+ #if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)
+   // Chrome OS uses the app list / app launcher. Android has no apps shortcut on
+   // the bookmark bar.
+@@ -86,6 +87,7 @@ bool IsAppsShortcutEnabled(Profile* profile) {
+ }
+ 
+ bool ShouldShowAppsShortcutInBookmarkBar(Profile* profile) {
++  if ((true)) return false;
+   return IsAppsShortcutEnabled(profile) &&
+          profile->GetPrefs()->GetBoolean(
+              bookmarks::prefs::kShowAppsShortcutInBookmarkBar);
