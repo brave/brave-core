@@ -23,6 +23,9 @@ export const style = scoped.css`
     display: flex;
     flex-direction: column;
     gap: var(--leo-spacing-m);
+    background: lightgray;
+    padding: var(--leo-spacing-2xl);
+    border-radius: 8px;
   }
 
   section h2 {
