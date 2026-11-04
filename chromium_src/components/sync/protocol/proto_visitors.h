@@ -127,6 +127,7 @@ VISIT(brave_fields);
   VISIT_PROTO_FIELDS(const sync_pb::AIChatToolArtifact& proto) {           \
     VISIT(type);                                                           \
     VISIT(content_json);                                                   \
+    VISIT(id);                                                             \
   }
 
 #include <components/sync/protocol/proto_visitors.h>  // IWYU pragma: export

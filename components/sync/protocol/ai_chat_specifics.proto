@@ -254,4 +254,7 @@ message AIChatWebSourcesContentBlock {
 message AIChatToolArtifact {
   optional string type = 1;
   optional AIChatCompressibleString content_json = 2;
+  // Shared by successive versions of the same artifact, such as an updated
+  // chart, so that only the latest version is shown.
+  optional string id = 3;
 }
