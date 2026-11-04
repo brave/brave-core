@@ -15,6 +15,7 @@
 #include "base/hash/hash.h"
 #include "base/location.h"
 #include "base/numerics/byte_conversions.h"
+#include "base/test/protobuf_matchers.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/test_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -1597,6 +1598,181 @@ TEST(AIChatSyncConversionsTest, FitEntryRefusesEntryOversizedByPlainField) {
         }
       });
   EXPECT_THAT(not_omitted, testing::IsEmpty());
+}
+
+// Clearing browsing data leaves associated content with no url, title or
+// text, and its text is sent as an explicit empty value, which receivers
+// write. Content with a url and no text leaves the field unset, meaning the
+// record doesn't carry it, so receivers keep theirs.
+TEST(AIChatSyncConversionsTest,
+     EntryToSpecificsSendsEmptyTextForClearedContent) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry";
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+  entry->created_time = base::Time::Now();
+  std::vector<mojom::AssociatedContentPtr> content;
+  content.push_back(
+      mojom::AssociatedContent::New("cleared", mojom::ContentType::PageContent,
+                                    "", 1, GURL(), 100, "entry", false));
+  content.push_back(mojom::AssociatedContent::New(
+      "no-text", mojom::ContentType::PageContent, "Page", 2,
+      GURL("https://example.com"), 100, "entry", false));
+
+  auto specifics = EntryToSpecifics("conv", *entry, base::Time(), content);
+
+  ASSERT_EQ(specifics.entry().associated_content_size(), 2);
+  const auto& cleared = specifics.entry().associated_content(0);
+  EXPECT_FALSE(cleared.has_url());
+  ASSERT_TRUE(cleared.last_contents().has_raw());
+  EXPECT_EQ(cleared.last_contents().raw(), "");
+  EXPECT_FALSE(specifics.entry().associated_content(1).has_last_contents());
+}
+
+// An omitted rich result that isn't put back decodes as an empty item rather
+// than being dropped, so the items after it keep their positions.
+TEST(AIChatSyncConversionsTest,
+     SpecificsToEntryKeepsPositionOfOmittedListItem) {
+  sync_pb::AIChatConversationSpecifics specifics;
+  auto* entry = specifics.mutable_entry();
+  entry->set_uuid("entry");
+  auto* web_sources = entry->add_events()->mutable_web_sources();
+  web_sources->add_rich_results()->set_raw("first");
+  auto* omitted = web_sources->add_rich_results();
+  omitted->set_raw("second");
+  OmitCompressibleString(omitted);
+  web_sources->add_rich_results()->set_raw("third");
+
+  std::vector<mojom::AssociatedContentPtr> associated_content;
+  auto decoded = SpecificsToEntry(specifics, associated_content);
+
+  ASSERT_TRUE(decoded && decoded->events);
+  ASSERT_EQ(decoded->events->size(), 1u);
+  EXPECT_THAT(decoded->events->at(0)->get_sources_event()->rich_results,
+              testing::ElementsAre("first", "", "third"));
+}
+
+// An edited entry keeps its original values, with its revisions in |edits|.
+// TurnToSpecificsEntry() builds a record of the turn's own values.
+TEST(AIChatSyncConversionsTest, TurnToSpecificsEntryIgnoresRevisions) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry";
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+  entry->text = "Original";
+  entry->created_time = base::Time::Now();
+  auto edit = entry->Clone();
+  edit->uuid = "edit";
+  edit->text = "Edited";
+  entry->edits.emplace();
+  entry->edits->push_back(std::move(edit));
+
+  EXPECT_EQ(TurnToSpecificsEntry(*entry).entry_text(), "Original");
+  EXPECT_EQ(TurnToSpecificsEntry(*entry->edits->front()).entry_text(),
+            "Edited");
+  EXPECT_EQ(
+      EntryToSpecifics("conv", *entry, base::Time(), {}).entry().entry_text(),
+      "Edited");
+}
+
+// A device that holds none of a record's omitted values stores them blank, and
+// sends the record's hashes in their place. Every value a sender can omit must
+// make that round trip, or a device that doesn't hold it sends a blank over
+// it.
+TEST(AIChatSyncConversionsTest, OmissionMarkersCoverEveryOmittableValue) {
+  sync_pb::AIChatConversationSpecifics_Entry omitted;
+  PopulateOmittableStrings(&omitted);
+  omitted.mutable_uploaded_files(0)->set_data("file bytes");
+  sync_pb::AIChatConversationSpecifics_Entry blank = omitted;
+  ForEachOmittableString(&omitted,
+                         [](sync_pb::AIChatCompressibleString& value) {
+                           OmitCompressibleString(&value);
+                         });
+  OmitUploadedFileData(omitted.mutable_uploaded_files(0));
+  // As that device sends its copy: every value empty, and the page text not
+  // carried.
+  ForEachOmittableString(&blank, [](sync_pb::AIChatCompressibleString& value) {
+    value.set_raw("");
+  });
+  blank.mutable_associated_content(0)->clear_last_contents();
+  blank.mutable_uploaded_files(0)->clear_data();
+
+  auto markers = ExtractOmissionMarkers(omitted);
+  ASSERT_TRUE(markers);
+  AddOmissionMarkers(*markers, blank);
+
+  EXPECT_THAT(blank, base::test::EqualsProto(omitted));
+}
+
+// A hash goes only to a value that's empty, at an event or tool output block
+// of the same kind. Positions the record lacks aren't added.
+TEST(AIChatSyncConversionsTest, AddOmissionMarkersMatchesByStructure) {
+  sync_pb::AIChatConversationSpecifics_Entry omitted;
+  for (const char* answer : {"first answer", "second answer"}) {
+    auto* completion = omitted.add_events()->mutable_completion();
+    completion->set_raw(answer);
+    OmitCompressibleString(completion);
+  }
+  auto* tool_text = omitted.add_events()
+                        ->mutable_tool_use()
+                        ->add_output()
+                        ->mutable_text_content_block()
+                        ->mutable_text();
+  tool_text->set_raw("tool output");
+  OmitCompressibleString(tool_text);
+  auto* page_content = omitted.add_events()
+                           ->mutable_web_sources()
+                           ->add_sources()
+                           ->mutable_page_content();
+  page_content->set_raw("page");
+  OmitCompressibleString(page_content);
+  auto markers = ExtractOmissionMarkers(omitted);
+  ASSERT_TRUE(markers);
+
+  // An empty completion, one this device holds, and an image block where the
+  // tool output text was.
+  sync_pb::AIChatConversationSpecifics_Entry entry;
+  entry.add_events()->mutable_completion()->set_raw("");
+  entry.add_events()->mutable_completion()->set_raw("This device's answer");
+  entry.add_events()
+      ->mutable_tool_use()
+      ->add_output()
+      ->mutable_image_content_block()
+      ->set_image_url("https://example.com/image.png");
+  sync_pb::AIChatConversationSpecifics_Entry expected = entry;
+  *expected.mutable_events(0)->mutable_completion() =
+      omitted.events(0).completion();
+
+  AddOmissionMarkers(*markers, entry);
+
+  EXPECT_THAT(entry, base::test::EqualsProto(expected));
+}
+
+// A value the record leaves unset, such as the page content of a source this
+// device received omitted, gets the hash too.
+TEST(AIChatSyncConversionsTest,
+     AddOmissionMarkersSetsValueTheRecordLeavesUnset) {
+  sync_pb::AIChatConversationSpecifics_Entry omitted;
+  auto* page_content = omitted.add_events()
+                           ->mutable_web_sources()
+                           ->add_sources()
+                           ->mutable_page_content();
+  page_content->set_raw("page");
+  OmitCompressibleString(page_content);
+  auto markers = ExtractOmissionMarkers(omitted);
+  ASSERT_TRUE(markers);
+  sync_pb::AIChatConversationSpecifics_Entry entry;
+  entry.add_events()->mutable_web_sources()->add_sources()->set_title("Page");
+  sync_pb::AIChatConversationSpecifics_Entry expected = entry;
+  *expected.mutable_events(0)
+       ->mutable_web_sources()
+       ->mutable_sources(0)
+       ->mutable_page_content() =
+      omitted.events(0).web_sources().sources(0).page_content();
+
+  AddOmissionMarkers(*markers, entry);
+
+  EXPECT_THAT(entry, base::test::EqualsProto(expected));
 }
 
 }  // namespace ai_chat

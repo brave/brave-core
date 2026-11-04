@@ -11,6 +11,7 @@
 #include <string_view>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 #include "base/gtest_prod_util.h"
 #include "base/sequence_checker.h"
@@ -101,11 +102,12 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   GetConversationEntryWithoutEdits(std::string_view conversation_entry_uuid);
 
   // Returns the page text of each piece of associated content that belongs to
-  // the entry |conversation_entry_uuid| and has one, or nullopt if the read
-  // failed. A value that fails to decrypt reads as blank. Nothing is indexed on
-  // the entry uuid, so this scans the associated_content table.
-  virtual std::optional<std::vector<std::string>> GetAssociatedContentTexts(
-      std::string_view conversation_entry_uuid);
+  // the entry |conversation_entry_uuid| and has one, keyed by the content's
+  // uuid, or nullopt if the read failed. A value that fails to decrypt reads
+  // as blank. Nothing is indexed on the entry uuid, so this scans the
+  // associated_content table.
+  virtual std::optional<base::flat_map<std::string, std::string>>
+  GetAssociatedContentTexts(std::string_view conversation_entry_uuid);
 
   // Returns the uuids of every entry that has edit revisions, or nullopt if the
   // read failed. Nothing is indexed on editing_entry_uuid, so callers that

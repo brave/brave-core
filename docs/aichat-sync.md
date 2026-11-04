@@ -43,6 +43,8 @@ default).
   conversation's metadata record.
 - **Omitted value**: a value the sender left out to fit the size limit, sending
   its hash in its place.
+- **Unknown value**: an omitted value this device doesn't hold, so it can't put
+  it back.
 
 ## Overview
 
@@ -178,6 +180,19 @@ more than `kSyncCompressionMaxDecompressedBytes` (100 × the record budget) or
 the available memory. Otherwise it returns the decoded string, possibly empty.
 They live in
 `components/ai_chat/core/browser/sync/ai_chat_sync_conversions.{h,cc}`.
+
+A field is in one of three states on the wire:
+
+| Wire                                    | Meaning                                                          |
+| --------------------------------------- | ---------------------------------------------------------------- |
+| `raw` or `gzipped`, including `raw: ""` | The sender's value. An empty value is never omitted.             |
+| `omitted_content_hash`                  | The sender has the value, but left it out to fit the size limit. |
+| unset                                   | The record doesn't carry it.                                     |
+
+Only associated content's `last_contents` is left unset to mean "not carried":
+the sender has no text for it. A `last_contents` holding only a form this client
+doesn't know, as a newer client's might, counts as not carried too. Other
+optional fields are unset when the sender's value is null.
 
 Wrapped fields, meaning the fields the local store fills with long generated or
 fetched text:
@@ -413,8 +428,10 @@ are kept"). Then, for each change:
   4. Read the local turn, only when one exists and the record omits a value or
      has revisions locally: `GetConversationEntryWithEdits()` when it has
      revisions, `GetConversationEntryWithoutEdits()` (by primary key) otherwise.
-  5. Restore omitted values into a copy of the record, in proto space (see
-     "Restoring omitted values").
+  5. Fill in omitted values, and page text the record doesn't carry, from this
+     device's copy, into a copy of the record, in proto space (see "Filling in
+     values the record doesn't carry"). The page texts are read
+     (`GetAssociatedContentTexts()`) only when one of these is needed.
   6. Decode (`SpecificsToEntry`). Skip a record that doesn't decode.
   7. Keep this device's edit history (`WithLocalEditHistory()`).
   8. Write (`ApplyRemoteEntry`), storing the record's time.
@@ -471,35 +488,98 @@ the local copy, changed after it, is newer, so it's kept and sent then. Local
 deletes aren't guarded: saving the tombstone at the batch's version is right,
 since the delete came after the remote change.
 
-## Restoring omitted values
+## Filling in values the record doesn't carry
 
-A sender omits large values to fit the size limit, sending a hash of each.
-Before decoding, `RestoreOmittedFieldsFromLocal()` puts back each omitted value
-whose hash matches a value this device holds for the same turn:
+The database write is a full replace of the turn, so a value the record doesn't
+carry in full would be written blank. Before decoding, `FillValuesFromLocal()`
+fills those in from this device's copy of the turn:
 
-- every omittable value of the local turn's latest revision, built into a record
-  with `EntryToSpecifics` exactly as a sender builds it, since a sender sends an
-  edited turn's latest revision;
-- the page texts of the turn's own associated content
-  (`AIChatDatabase::GetAssociatedContentTexts()`).
+1. **Omitted, with a matching hash:** put back. The pool is every omittable
+   value of the local turn and of each of its revisions, each built into a
+   record with `TurnToSpecificsEntry()` as a sender would build it, plus the
+   page texts of the turn's own associated content
+   (`AIChatDatabase::GetAssociatedContentTexts()`). Matching by hash puts back
+   only the value the sender had, wherever this device holds it, including a
+   revision before the latest.
+2. **Page text not carried** (`last_contents` unset): this device's text is
+   kept.
+3. **Omitted, with no match:** the value is **unknown** here. It decodes as
+   blank, or as an empty item in a list so that the items keep their positions,
+   and its hash is kept and sent again (see "Values this device doesn't hold").
+   This device's own value isn't kept in its place, even where it has one: only
+   a newer record is written, so a hash that misses is of a newer value than any
+   this device holds. Keeping the older value would send it on this device's
+   next upload, over the newer one on every device.
 
 It runs in proto space, on a copy of the record, before `SpecificsToEntry`,
-because once decoded an omitted value and an empty one look the same. Matching
-is by hash rather than position, because the two copies can differ and most
-values sit in events and lists with no identity to match by. Restoring runs only
-for a record that is newer than the local copy, has a local row and omits
-something. A failed read of the local turn or its page texts fails the batch.
+because once decoded an omitted value and an empty one look the same. It runs
+only for a record that is newer than the local copy and has a local row, and
+only when the record omits a value or leaves a page text out. A failed read of
+the local turn or its page texts fails the batch.
 
-**A value that isn't restored is lost on this device.** Several of these mojom
-fields can't be absent (`completion`, tool `arguments_json`, tool output text,
-artifact `content_json`, inline search `results_json`), so they read through
-`ReadCompressibleStringOrEmpty()` as blank, and its comment says the restore
-must come first. An unrestored `rich_results` item is dropped from its list.
-Associated content whose `last_contents` is absent or still omitted is written
-with blank text. A hash misses when this device's value has changed since, or
-exists only in an earlier revision; the write then blanks it, and on an edited
-turn the blank counts as a new revision. The TODO in `ApplyRemoteRecord()` links
-https://github.com/brave/brave-browser/issues/53978.
+### Cleared versus not carried
+
+Clearing browsing data (`DeleteAssociatedWebContent()`) sets associated
+content's url, title and text to NULL, and the turn is sent again. A NULL text
+also describes content whose text this device doesn't have, so the url tells
+them apart: `EntryToSpecifics` sends content with no url an explicit empty text
+(`raw: ""`), which receivers write, clearing their copies. Content with a url
+and no text leaves `last_contents` unset, or sends its hash (see "Values this
+device doesn't hold"), and receivers keep their text.
+
+This only works with the rules in "Filling in values the record doesn't carry"
+and "Values this device doesn't hold". Keeping local text when it isn't carried,
+without sending clears explicitly, would stop clears from syncing. And sending a
+NULL text as a clear, without knowing which values are unknown, would let a
+device that never had a value clear it on every other device.
+
+### Values this device doesn't hold
+
+An unknown value shows as blank on this device. When this device sends the turn
+again, for example after a change of its own, sending the blank would overwrite
+the value on every device that has it. So the record carries the value's hash in
+the blank's place, as the original sender's did, and a device that holds the
+value puts it back.
+
+The hashes are kept in the processor's own per-record cache, so no table or
+migration is needed:
+
+- **`TrimAllSupportedFieldsFromRemoteSpecifics()`** returns, for a turn's record
+  with omitted values, a copy holding only their hashes, at the same positions
+  (`ExtractOmissionMarkers()`). For any other record it returns nothing. The
+  processor saves what it returns with the record's sync metadata on every
+  remote update and every local `Put`, and the bridge reads it back with
+  `GetPossiblyTrimmedRemoteSpecifics()` (`GetOmissionMarkers()`).
+- **Positions** follow the structure, never the walk order, so a value added or
+  cleared elsewhere doesn't move them: associated content by uuid; uploaded
+  files and events by index, an event or tool output block only when it's of the
+  same kind, and the items of a list in them by index. Omission replaces values
+  and never drops an event or item, so the positions in a record match the
+  sender's turn.
+- **Every upload** (`PutEntry()`, the first sync's upload in
+  `ForEachLocalEntity()`, and `GetDataForCommit()`) builds the record with
+  `BuildCommittableEntry()`, which copies each kept hash into the value at the
+  same position (`AddOmissionMarkers()`), only where that value is empty here.
+  It runs after `EntryToSpecifics` and before `FitEntryWithinSyncBudget`, so the
+  record is measured with the hashes, and the size fit leaves a hash as it is.
+  The cache exists only while the processor is tracking, so
+  `GetAllDataForDebugging()` without tracking copies none.
+- **Lifecycle:** the cache is replaced on each remote update of the record,
+  saved again from this device's own record on each `Put`, and deleted with the
+  record's sync metadata. A replay delivers the hashes again.
+
+A new omittable field must be reached by the position walk as well as by
+`kOmissionPasses`;
+`AIChatSyncConversionsTest.OmissionMarkersCoverEveryOmittableValue` fails until
+it is.
+
+Upstream bridges, such as `PasswordSyncBridge` and `ContactInfoSyncBridge`, use
+the same cache to keep the fields of a newer client, so an older client doesn't
+drop them when it commits. AI Chat uses it for the omitted values' hashes, and
+doesn't keep a newer client's fields (see "Future improvements").
+`PasswordSyncBridge` also downloads every record again when the cache holds a
+field it now supports. AI Chat doesn't: its cache always holds supported fields,
+so that check would always fire.
 
 ## Edit history
 
@@ -544,7 +624,11 @@ latest revision, unless it already matches the latest.
 - **Compared after a sync round trip.** `HasLatestRevisionContent()` builds the
   local turn into a record and decodes it again, then compares that with the
   decoded remote turn, so both hold only what sync carries: a field sync doesn't
-  carry, such as a tool artifact's id, can't add a revision. Decoded mojom is
+  carry can't add a revision. An omitted value this device couldn't put back
+  decodes as blank, so it matches a latest revision that is blank there too, as
+  one written from such a record is. Where the latest revision holds a value
+  instead, the sender's newer value differs from it, and the record becomes a
+  new revision, blank there, whose hash is kept and sent again. Decoded mojom is
   compared, not protos, because gzip output can differ for the same text.
 - **Dated to sort last.** The new revision gets a fresh uuid and
   `max(record's modified time, latest local revision + 1µs)` as its
@@ -562,8 +646,6 @@ latest revision, unless it already matches the latest.
 **Known gaps:**
 
 - A revision that isn't the latest is kept but the UI can't show it.
-- An omitted value with no local match adds a blank revision (see "Restoring
-  omitted values").
 - `GetConversationEntryWithEdits()` reports only a failed read of the turn rows.
   A failed read of their events or files, or a failed decryption, reads as
   blank, and the apply writes that blank back over this device's own revisions.
@@ -583,14 +665,15 @@ latest revision, unless it already matches the latest.
 | Turn removed                        | Entry `Delete`                                                                                                                                                     |
 | Rename                              | Conversation `Put`                                                                                                                                                 |
 | Token counts                        | None of their own; they go with the next metadata `Put`                                                                                                            |
-| Browsing data cleared               | Entry `Put` for each turn whose associated content was cleared                                                                                                     |
+| Browsing data cleared               | Entry `Put` for each turn whose associated content was cleared, with an empty text (see "Cleared versus not carried")                                              |
 | Conversation deleted                | Entry `Delete` per turn, then Conversation `Delete`, sent before the database delete so the turns can still be listed                                              |
 | Every conversation deleted          | Entry and Conversation `Delete` for every tracked record (see "Delete all")                                                                                        |
 
 Each Entry `Put` rebuilds the record from the database
-(`BuildCommittableEntry()`), including page text, and fits it within the budget
-(see "Turns too large to send"). `GetDataForCommit()` does the same when the
-processor has no cached copy, finding the turn's conversation with
+(`BuildCommittableEntry()`), including page text and the hashes of values this
+device doesn't hold (see "Values this device doesn't hold"), and fits it within
+the budget (see "Turns too large to send"). `GetDataForCommit()` does the same
+when the processor has no cached copy, finding the turn's conversation with
 `GetConversationUuidForEntry()`. A first sync uploads the local records the
 server lacks.
 
@@ -959,34 +1042,39 @@ A test that applies a record through a replay must give it a newer time than the
 local copy, or the comparison writes nothing and the test passes without
 applying anything.
 
+Three bridge tests send a turn with every stored field set, too large to fit,
+through the real send path (`GetDataForCommit()`) and back through the apply
+path, and check that nothing is lost (`SeedOversizedEntry()`): a replay of the
+turn (`ReplayOfOversizedEntryKeepsEveryValue`), a replay of its record from
+before a local edit, whose values are then only in the original
+(`ReplayOverLocalEditRestoresValuesOfOriginalEntry`), and a round trip through a
+second device that holds none of its omitted values
+(`OversizedEntrySurvivesReSyncFromDeviceWithoutIt`). That second device's mock
+processor returns what its bridge trimmed, as the processor does.
+
 ### Known testing limitations
 
 1. **No fake-server test drives a sync session.** Brave has no `SyncTest`
    harness, so nothing runs a real configuration: injecting records, checking
    they land, or `DataTypeManager` stopping and clearing the type when storage
    turns off and restarting it when storage turns on. The controller test calls
-   `Stop(CLEAR_METADATA, …)` itself.
-2. **No test replays a turn with every field filled.** Nothing sends a turn too
-   large to fit, with every stored field set, through the real send path and
-   back through the apply path to check the result is lossless.
-3. **Bridge tests use a fresh schema**, never the result of the migration chain.
-4. **The `BindPostTask` wrapping isn't exercised.** Service tests call
+   `Stop(CLEAR_METADATA, …)` itself. Nor does a real processor keep the hashes
+   of omitted values; bridge tests stand in for it.
+2. **Bridge tests use a fresh schema**, never the result of the migration chain.
+3. **The `BindPostTask` wrapping isn't exercised.** Service tests call
    `OnRemoteSyncDataApplied()` directly.
-5. **Stopping a tool use loop on remote apply isn't tested**; stopping a request
+4. **Stopping a tool use loop on remote apply isn't tested**; stopping a request
    is (`RemoteSyncReloadStopsReplyBeforeReadingAgain`).
 
 ## Future improvements
 
-1. **Values a hash can't restore** (see "Restoring omitted values"). Search
-   every revision, not only the latest, fall back to the local value at the same
-   position, and keep an unrestorable value's hash so this device sends it on
-   rather than a blank. Chromium's per-record cache of fields from newer clients
-   (`TrimAllSupportedFieldsFromRemoteSpecifics()` /
-   `GetPossiblyTrimmedRemoteSpecifics()`) could hold those hashes.
-2. **Fields from newer clients.** `TrimAllSupportedFieldsFromRemoteSpecifics()`
-   returns empty, so nothing of a record is cached. This device rebuilds each
-   record it commits from its database, so an older client that commits a record
-   drops any field a newer client added.
+1. **Fields from newer clients.** `TrimAllSupportedFieldsFromRemoteSpecifics()`
+   keeps only the hashes of omitted values. This device rebuilds each record it
+   commits from its database, so an older client that commits a record drops any
+   field a newer client added. The same cache could keep those fields too.
+2. **An unknown value shows as blank** on the device that doesn't hold it, even
+   where that device holds an older value, until a record that carries it
+   arrives.
 3. **Deletes made while AI Chat sync is off come back.** No tombstone is sent
    while the processor isn't tracking, and the comparison can't help because no
    local row is left. A local log of deletes, compared with each record's time

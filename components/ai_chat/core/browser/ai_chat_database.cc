@@ -16,6 +16,7 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
@@ -706,7 +707,7 @@ AIChatDatabase::GetConversationEntryWithoutEdits(
   return std::move(entries.front());
 }
 
-std::optional<std::vector<std::string>>
+std::optional<base::flat_map<std::string, std::string>>
 AIChatDatabase::GetAssociatedContentTexts(
     std::string_view conversation_entry_uuid) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -715,20 +716,21 @@ AIChatDatabase::GetAssociatedContentTexts(
   }
 
   static constexpr char kQuery[] =
-      "SELECT last_contents FROM associated_content"
+      "SELECT uuid, last_contents FROM associated_content"
       " WHERE conversation_entry_uuid=? AND last_contents IS NOT NULL";
   sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE, kQuery));
   CHECK(statement.is_valid());
   statement.BindString(0, conversation_entry_uuid);
 
-  std::vector<std::string> texts;
+  std::vector<std::pair<std::string, std::string>> texts;
   while (statement.Step()) {
-    texts.push_back(DecryptColumnToString(statement, 0));
+    texts.emplace_back(statement.ColumnString(0),
+                       DecryptColumnToString(statement, 1));
   }
   if (!statement.Succeeded()) {
     return std::nullopt;
   }
-  return texts;
+  return base::flat_map<std::string, std::string>(std::move(texts));
 }
 
 std::optional<base::flat_set<std::string>>

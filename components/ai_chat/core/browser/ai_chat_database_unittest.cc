@@ -2391,11 +2391,13 @@ TEST_F(AIChatDatabaseSyncTest, GetAssociatedContentTexts) {
   ASSERT_TRUE(db_->AddConversationEntry("conv", CreateQueryEntry("entry-2")));
 
   // Content with no text is left out.
-  EXPECT_THAT(
-      db_->GetAssociatedContentTexts("entry-1"),
-      testing::Optional(testing::UnorderedElementsAre("Page one", "Page two")));
+  EXPECT_THAT(db_->GetAssociatedContentTexts("entry-1"),
+              testing::Optional(testing::ElementsAre(
+                  testing::Pair("content-1", "Page one"),
+                  testing::Pair("content-2", "Page two"))));
   EXPECT_THAT(db_->GetAssociatedContentTexts("entry-2"),
-              testing::Optional(testing::ElementsAre("Page four")));
+              testing::Optional(testing::ElementsAre(
+                  testing::Pair("content-4", "Page four"))));
   EXPECT_THAT(db_->GetAssociatedContentTexts("no-such-entry"),
               testing::Optional(testing::IsEmpty()));
 }

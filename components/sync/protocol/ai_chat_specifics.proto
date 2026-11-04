@@ -34,9 +34,9 @@ package sync_pb;
 // be dropped to fit the record under the size cap.
 //
 // On read, the receiver MUST treat a set `omitted_content_hash` as "the value
-// was omitted; restore it from a local copy whose content hashes to this
-// value, or preserve any existing local value" rather than as an empty
-// string.
+// was omitted" rather than as an empty string: restore it from a local copy
+// whose content hashes to this value. If none matches, the value is unknown:
+// decode it blank, and send the hash back in its place.
 message AIChatCompressibleString {
   oneof value {
     string raw = 1;

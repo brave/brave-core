@@ -91,7 +91,10 @@ std::optional<std::string> ReadCompressibleString(
 // set the budget policy can drop, rather than maintaining a second list of its
 // own. Uploaded file bytes are not covered — they are raw bytes rather than an
 // AIChatCompressibleString, so callers handle
-// AIChatUploadedFile::omitted_data_hash separately.
+// AIChatUploadedFile::omitted_data_hash separately. A field added here must
+// also be reached by ExtractOmissionMarkers() and AddOmissionMarkers(), which
+// find values by position; AIChatSyncConversionsTest.
+// OmissionMarkersCoverEveryOmittableValue fails until it is.
 using CompressibleStringVisitor =
     base::FunctionRef<void(sync_pb::AIChatCompressibleString&)>;
 void ForEachOmittableString(sync_pb::AIChatConversationSpecifics_Entry* entry,
@@ -102,6 +105,29 @@ using ConstCompressibleStringVisitor =
 void ForEachOmittableString(
     const sync_pb::AIChatConversationSpecifics_Entry& entry,
     ConstCompressibleStringVisitor visit);
+
+// Omission markers are the hashes of the values a record of an entry omitted,
+// kept at the same positions, so that a device that doesn't hold a value can
+// send its hash in the blank value's place. A position follows the record's
+// structure, so a value added or cleared elsewhere doesn't move it:
+// associated content by uuid, an uploaded file or event by index, an event or
+// tool output block only when it's of the same kind, and an item of a list in
+// either by index. Omission replaces values and leaves this structure alone.
+
+// Returns the omission markers of |entry|: a record holding only hashes, with
+// the associated content whose text is omitted, by uuid, the same events,
+// tool output blocks and files, and each list's items up to its last omitted
+// one. Returns nullopt when |entry| omits nothing.
+std::optional<sync_pb::AIChatConversationSpecifics_Entry>
+ExtractOmissionMarkers(const sync_pb::AIChatConversationSpecifics_Entry& entry);
+
+// Copies each hash in |omission_markers| into the value of |entry| at the same
+// position, when that value is empty: the record doesn't carry it, or carries
+// an empty one. An associated content's text gets one only when the record
+// doesn't carry it, since an empty text there means it was cleared.
+void AddOmissionMarkers(
+    const sync_pb::AIChatConversationSpecifics_Entry& omission_markers,
+    sync_pb::AIChatConversationSpecifics_Entry& entry);
 
 // Drops long-text and binary fields from |entry| (replacing each with a
 // content hash so the receiver can restore it from a byte-identical local
@@ -125,8 +151,10 @@ sync_pb::AIChatConversationSpecifics ConversationMetadataToSpecifics(
 // content last changed, and a null time is left unset. |associated_content| is
 // filtered to only the items that belong to this entry.
 // |associated_content_texts| holds the optional extracted text for each AC,
-// keyed by AC UUID; entries without a text in the map have their last_contents
-// field left absent on the wire, and the receiver writes their text as blank.
+// keyed by AC UUID. An AC without a text in the map has its last_contents
+// left absent, meaning the record doesn't carry it, and the receiver keeps its
+// own text. An AC with no url was cleared, as clearing browsing data leaves
+// it, so it's sent an explicit empty text instead, which the receiver writes.
 sync_pb::AIChatConversationSpecifics EntryToSpecifics(
     const std::string& conversation_uuid,
     const mojom::ConversationTurn& entry,
@@ -134,6 +162,14 @@ sync_pb::AIChatConversationSpecifics EntryToSpecifics(
     const std::vector<mojom::AssociatedContentPtr>& associated_content,
     const base::flat_map<std::string, std::string>& associated_content_texts =
         {});
+
+// Builds a record of |turn|'s own values, as EntryToSpecifics() does for an
+// entry's latest revision, with no conversation, modified time or associated
+// content. |turn|'s revisions are ignored, so this also builds an edited
+// entry's original values. Used to find a value a sender omitted among this
+// device's revisions.
+sync_pb::AIChatConversationSpecifics_Entry TurnToSpecificsEntry(
+    const mojom::ConversationTurn& turn);
 
 // Returns when the record's content last changed on the device that sent it,
 // as set by ConversationMetadataToSpecifics() or EntryToSpecifics(). Returns a
@@ -150,12 +186,14 @@ mojom::ConversationPtr SpecificsToConversationMetadata(
 // entry's associated_content field, each tagged with this entry's UUID via
 // |conversation_turn_uuid|. When non-null, |associated_content_texts|
 // receives the last_contents value for each AC where the sender provided
-// one; an AC with no map entry, because its text was absent or omitted, gets
-// a blank text when the sync bridge writes it.
+// one. An AC with no map entry, because its text was absent or omitted, gets
+// a blank text when the sync bridge writes it, unless the bridge filled in
+// this device's text first, as it does for an absent one.
 // A value the sender omitted to fit the size limit decodes as blank, since
-// most such fields can't be absent in mojom. A caller that holds a copy of the
-// entry puts the omitted values back into |specifics| first, as the sync
-// bridge does.
+// most such fields can't be absent in mojom, and an omitted list item as an
+// empty one, so the items keep their positions. A caller that holds a copy of
+// the entry puts its values back into |specifics| first, as the sync bridge
+// does.
 mojom::ConversationTurnPtr SpecificsToEntry(
     const sync_pb::AIChatConversationSpecifics& specifics,
     std::vector<mojom::AssociatedContentPtr>& associated_content,

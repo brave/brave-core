@@ -5,6 +5,7 @@
 
 #include "brave/components/ai_chat/core/browser/sync/ai_chat_sync_bridge.h"
 
+#include <algorithm>
 #include <cstdint>
 #include <map>
 #include <memory>
@@ -14,16 +15,24 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
+#include "base/containers/map_util.h"
+#include "base/containers/span.h"
+#include "base/containers/to_vector.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/callback_helpers.h"
+#include "base/hash/hash.h"
+#include "base/location.h"
 #include "base/run_loop.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/test/protobuf_matchers.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 #include "brave/components/ai_chat/core/browser/sync/ai_chat_sync_backend.h"
 #include "brave/components/ai_chat/core/browser/sync/ai_chat_sync_conversions.h"
+#include "brave/components/ai_chat/core/browser/test_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/sync/protocol/ai_chat_specifics.pb.h"
@@ -37,6 +46,7 @@
 #include "components/sync/protocol/data_type_state.pb.h"
 #include "components/sync/protocol/entity_data.h"
 #include "components/sync/protocol/entity_metadata.pb.h"
+#include "components/sync/protocol/entity_specifics.pb.h"
 #include "components/sync/test/mock_data_type_local_change_processor.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -185,8 +195,8 @@ class UnreadableEntryAIChatDatabase : public AIChatDatabase {
     return std::nullopt;
   }
 
-  std::optional<std::vector<std::string>> GetAssociatedContentTexts(
-      std::string_view conversation_entry_uuid) override {
+  std::optional<base::flat_map<std::string, std::string>>
+  GetAssociatedContentTexts(std::string_view conversation_entry_uuid) override {
     return std::nullopt;
   }
 };
@@ -196,8 +206,8 @@ class UnreadablePageTextsAIChatDatabase : public AIChatDatabase {
  public:
   using AIChatDatabase::AIChatDatabase;
 
-  std::optional<std::vector<std::string>> GetAssociatedContentTexts(
-      std::string_view conversation_entry_uuid) override {
+  std::optional<base::flat_map<std::string, std::string>>
+  GetAssociatedContentTexts(std::string_view conversation_entry_uuid) override {
     return std::nullopt;
   }
 };
@@ -266,6 +276,205 @@ void AddRemoteAssociatedContent(syncer::EntityData& data,
   content->mutable_last_contents()->set_raw("Remote page text");
 }
 
+// Returns |size| printable characters, derived from |seed|, that gzip can't
+// shrink much, so that a record holding them fits the size limit only by
+// omitting them.
+std::string IncompressibleText(std::string_view seed, size_t size) {
+  std::string text(seed);
+  // A linear congruential generator, with the multiplier and increment from
+  // Numerical Recipes. Its high byte picks one of the 94 printable characters.
+  uint32_t state = base::PersistentHash(seed);
+  while (text.size() < size) {
+    state = state * 1664525u + 1013904223u;
+    text.push_back(static_cast<char>('!' + (state >> 24) % 94));
+  }
+  return text;
+}
+
+// What a processor keeps of each record, by storage key, as returned by the
+// bridge's TrimAllSupportedFieldsFromRemoteSpecifics().
+using TrimmedSpecifics = std::map<std::string, sync_pb::EntitySpecifics>;
+
+// Makes |processor| return, from GetPossiblyTrimmedRemoteSpecifics(), what
+// |trimmed_specifics| holds for the storage key, as a processor returns what
+// it kept.
+void ReturnTrimmedSpecifics(syncer::MockDataTypeLocalChangeProcessor& processor,
+                            const TrimmedSpecifics& trimmed_specifics) {
+  ON_CALL(processor, GetPossiblyTrimmedRemoteSpecifics(_))
+      .WillByDefault([&trimmed_specifics](const std::string& storage_key)
+                         -> const sync_pb::EntitySpecifics& {
+        const auto* trimmed = base::FindOrNull(trimmed_specifics, storage_key);
+        return trimmed ? *trimmed
+                       : sync_pb::EntitySpecifics::default_instance();
+      });
+}
+
+// Another device that syncs the same account: its own database and bridge,
+// with a processor that is tracking and returns what the test saves in
+// |trimmed_specifics|.
+struct OtherDevice {
+  OtherDevice(const base::FilePath& db_file_path,
+              scoped_refptr<os_crypt_async::Encryptor> encryptor)
+      : db(db_file_path, std::move(encryptor)) {
+    auto processor = std::make_unique<
+        testing::NiceMock<syncer::MockDataTypeLocalChangeProcessor>>();
+    ON_CALL(*processor, IsTrackingMetadata())
+        .WillByDefault(testing::Return(true));
+    ReturnTrimmedSpecifics(*processor, trimmed_specifics);
+    bridge = std::make_unique<AIChatSyncBridge>(std::move(processor),
+                                                base::DoNothing());
+    bridge->SetDatabase(&db);
+  }
+  // The processor refers to |trimmed_specifics|.
+  OtherDevice(const OtherDevice&) = delete;
+  OtherDevice& operator=(const OtherDevice&) = delete;
+
+  // Takes |changes| in a first-sync merge, or with |merge| false as an
+  // incremental update, keeping what the bridge trims from each, as the
+  // processor does before it hands them over.
+  [[nodiscard]] bool Take(syncer::EntityChangeList changes, bool merge) {
+    for (const auto& change : changes) {
+      trimmed_specifics[change->storage_key()] =
+          bridge->TrimAllSupportedFieldsFromRemoteSpecifics(
+              change->data().specifics);
+    }
+    auto metadata_change_list = bridge->CreateMetadataChangeList();
+    return !(merge ? bridge->MergeFullSyncData(std::move(metadata_change_list),
+                                               std::move(changes))
+                   : bridge->ApplyIncrementalSyncChanges(
+                         std::move(metadata_change_list), std::move(changes)))
+                .has_value();
+  }
+
+  AIChatDatabase db;
+  TrimmedSpecifics trimmed_specifics;
+  std::unique_ptr<AIChatSyncBridge> bridge;
+};
+
+// Returns the record of |storage_key| that |bridge| builds for the processor
+// to commit, or nullopt when it builds none.
+std::optional<sync_pb::AIChatConversationSpecifics> GetRecordToCommit(
+    AIChatSyncBridge& bridge,
+    const std::string& storage_key) {
+  auto batch = bridge.GetDataForCommit({storage_key});
+  if (!batch->HasNext()) {
+    return std::nullopt;
+  }
+  return batch->Next().second->specifics.ai_chat_conversation();
+}
+
+// Returns a remote change of |record|, dated |modified_time|.
+std::unique_ptr<syncer::EntityChange> MakeRecordChange(
+    sync_pb::AIChatConversationSpecifics record,
+    base::Time modified_time) {
+  syncer::EntityData data;
+  const std::string storage_key = GetStorageKeyFromSpecifics(record);
+  *data.specifics.mutable_ai_chat_conversation() = std::move(record);
+  return syncer::EntityChange::CreateUpdate(
+      storage_key, WithModifiedTime(std::move(data), modified_time));
+}
+
+// Returns the hash |record| sends in place of its single completion, or
+// nullopt when it sends the completion.
+std::optional<uint32_t> GetOmittedCompletionHash(
+    const sync_pb::AIChatConversationSpecifics& record) {
+  if (record.entry().events_size() != 1) {
+    return std::nullopt;
+  }
+  const auto& completion = record.entry().events(0).completion();
+  if (!completion.has_omitted_content_hash()) {
+    return std::nullopt;
+  }
+  return completion.omitted_content_hash();
+}
+
+// Expects every value of |entry| that a sender can omit to hold a hash:
+// |expected_values| strings, and the bytes of |expected_files| files. Counting
+// them keeps a test from passing on a record that carries fewer.
+void ExpectEveryValueOmitted(
+    const sync_pb::AIChatConversationSpecifics_Entry& entry,
+    size_t expected_values,
+    int expected_files) {
+  size_t values = 0;
+  ForEachOmittableString(
+      entry, [&values](const sync_pb::AIChatCompressibleString& value) {
+        ++values;
+        EXPECT_TRUE(value.has_omitted_content_hash());
+      });
+  EXPECT_EQ(values, expected_values);
+  ASSERT_EQ(entry.uploaded_files_size(), expected_files);
+  for (const auto& file : entry.uploaded_files()) {
+    EXPECT_TRUE(file.has_omitted_data_hash());
+  }
+}
+
+// Expects |actual| to equal |expected|. Events, files and revisions are
+// compared one at a time first, so that a failure names which differs
+// without printing their large values.
+void ExpectSameEntry(const mojom::ConversationTurn& actual,
+                     const mojom::ConversationTurn& expected) {
+  auto size = [](const auto& list) { return list ? list->size() : 0u; };
+  ASSERT_EQ(size(actual.events), size(expected.events));
+  for (size_t i = 0; i < size(actual.events); ++i) {
+    EXPECT_TRUE(actual.events->at(i)->Equals(*expected.events->at(i)))
+        << "event " << i;
+  }
+  ASSERT_EQ(size(actual.uploaded_files), size(expected.uploaded_files));
+  for (size_t i = 0; i < size(actual.uploaded_files); ++i) {
+    EXPECT_TRUE(
+        actual.uploaded_files->at(i)->Equals(*expected.uploaded_files->at(i)))
+        << "file " << i;
+  }
+  ASSERT_EQ(size(actual.edits), size(expected.edits));
+  for (size_t i = 0; i < size(actual.edits); ++i) {
+    SCOPED_TRACE(testing::Message() << "revision " << i);
+    ASSERT_NO_FATAL_FAILURE(
+        ExpectSameEntry(*actual.edits->at(i), *expected.edits->at(i)));
+  }
+  EXPECT_TRUE(actual.Equals(expected));
+}
+
+// What a database stores of the entry "entry" of conversation "conv".
+struct StoredEntry {
+  mojom::ConversationTurnPtr entry;
+  // By uuid: an apply writes the synced rows again after the Workspace ones,
+  // so they're listed in another order.
+  std::vector<mojom::AssociatedContentPtr> associated_content;
+  std::vector<mojom::ContentArchivePtr> contents;
+};
+
+StoredEntry ReadStoredEntry(AIChatDatabase& database) {
+  StoredEntry stored;
+  if (auto entry = database.GetConversationEntryWithEdits("entry")) {
+    stored.entry = std::move(*entry);
+  }
+  for (auto& conversation : database.GetAllConversations()) {
+    if (conversation->uuid == "conv") {
+      stored.associated_content = std::move(conversation->associated_content);
+      std::ranges::sort(stored.associated_content, {},
+                        &mojom::AssociatedContent::uuid);
+    }
+  }
+  if (auto archive = database.GetConversationData("conv")) {
+    stored.contents = std::move(archive->associated_content);
+  }
+  return stored;
+}
+
+void ExpectSameStoredEntry(const StoredEntry& actual,
+                           const StoredEntry& expected) {
+  ASSERT_TRUE(actual.entry);
+  ASSERT_TRUE(expected.entry);
+  ASSERT_NO_FATAL_FAILURE(ExpectSameEntry(*actual.entry, *expected.entry));
+  ExpectAssociatedContentEquals(FROM_HERE, actual.associated_content,
+                                expected.associated_content);
+  ASSERT_EQ(actual.contents.size(), expected.contents.size());
+  for (size_t i = 0; i < actual.contents.size(); ++i) {
+    EXPECT_TRUE(actual.contents[i]->Equals(*expected.contents[i]))
+        << "content " << actual.contents[i]->content_uuid;
+  }
+}
+
 class AIChatSyncBridgeTest : public testing::Test {
  public:
   void SetUp() override {
@@ -294,6 +503,7 @@ class AIChatSyncBridgeTest : public testing::Test {
     mock_processor_ = processor.get();
     ON_CALL(*mock_processor_, IsTrackingMetadata())
         .WillByDefault(testing::Return(is_tracking_metadata));
+    ReturnTrimmedSpecifics(*mock_processor_, trimmed_specifics_);
     bridge_ = std::make_unique<AIChatSyncBridge>(
         std::move(processor),
         base::BindRepeating(&AIChatSyncBridgeTest::OnRemoteChangesApplied,
@@ -598,6 +808,128 @@ class AIChatSyncBridgeTest : public testing::Test {
     return completions;
   }
 
+  // The values a sender can omit from the record of the entry
+  // SeedOversizedEntry() adds: page text, file text, inline search results,
+  // tool output page content, tool output text, tool arguments, three rich
+  // results, artifact content and the completion. And its two files' bytes.
+  static constexpr size_t kOversizedEntryOmittableValues = 11;
+  static constexpr int kOversizedEntryFiles = 2;
+
+  // Adds conversation "conv" whose single entry "entry" sets every field the
+  // database stores: every kind of event; tool output with text, image and
+  // web sources blocks; web sources with page content and rich results; an
+  // artifact with an id; files with bytes and extracted text; page content
+  // with its text, and Workspace content, which never syncs. Values are long
+  // enough to compress, and the completion alone is over the size limit, so
+  // a record of the entry omits every value it can.
+  // With |edited|, the entry also has revision "edit-1", an edit of the
+  // answer as ConversationHandler::ModifyConversation() makes one: the
+  // original's events with another completion, and no files.
+  void SeedOversizedEntry(bool edited = false) {
+    auto conversation = mojom::Conversation::New();
+    conversation->uuid = "conv";
+    conversation->title = "Local";
+    conversation->model_key = "model";
+    conversation->associated_content.push_back(mojom::AssociatedContent::New(
+        "page", mojom::ContentType::PageContent, "Page title", 1,
+        GURL("https://example.com/page"), 80, "entry", false));
+    conversation->associated_content.push_back(mojom::AssociatedContent::New(
+        "workspace", mojom::ContentType::Workspace, "Workspace", 2,
+        GURL("https://example.com/workspace"), 100, "entry", false));
+    std::vector<std::string> contents = {
+        IncompressibleText("page text", 20 * 1024),
+        IncompressibleText("workspace text", 1024)};
+
+    auto entry = mojom::ConversationTurn::New();
+    entry->uuid = "entry";
+    entry->character_type = mojom::CharacterType::ASSISTANT;
+    entry->action_type = mojom::ActionType::RESPONSE;
+    entry->text = "Question";
+    entry->prompt = "Prompt";
+    entry->selected_text = "Selected text";
+    entry->created_time = base::Time::Now() - base::Minutes(1);
+    entry->model_key = "model";
+    entry->skill = mojom::SkillEntry::New("/skill", "Skill prompt");
+    entry->near_verification_status = mojom::NEARVerificationStatus::New(true);
+
+    std::vector<mojom::ConversationEntryEventPtr> events;
+    events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New(
+            IncompressibleText("completion", 400 * 1024))));
+    events.push_back(mojom::ConversationEntryEvent::NewSearchQueriesEvent(
+        mojom::SearchQueriesEvent::New(
+            std::vector<std::string>{"query 1", "query 2"})));
+    // The database doesn't store page content or snippets for these sources.
+    std::vector<mojom::WebSourcePtr> sources;
+    sources.push_back(mojom::WebSource::New(
+        "Source", GURL("https://example.com/source"),
+        GURL("https://example.com/source.ico"), std::nullopt, std::nullopt));
+    events.push_back(mojom::ConversationEntryEvent::NewSourcesEvent(
+        mojom::WebSourcesEvent::New(
+            std::move(sources),
+            std::vector<std::string>{IncompressibleText("rich 1", 2048),
+                                     IncompressibleText("rich 2", 2048)})));
+    events.push_back(mojom::ConversationEntryEvent::NewInlineSearchEvent(
+        mojom::InlineSearchEvent::New(
+            "inline query", IncompressibleText("inline results", 2048))));
+    std::vector<mojom::ContentBlockPtr> output;
+    output.push_back(mojom::ContentBlock::NewTextContentBlock(
+        mojom::TextContentBlock::New(IncompressibleText("tool text", 2048))));
+    output.push_back(mojom::ContentBlock::NewImageContentBlock(
+        mojom::ImageContentBlock::New(GURL("https://example.com/image.png"))));
+    std::vector<mojom::WebSourcePtr> tool_sources;
+    tool_sources.push_back(
+        mojom::WebSource::New("Tool source", GURL("https://example.com/tool"),
+                              GURL("https://example.com/tool.ico"),
+                              IncompressibleText("tool page", 2048),
+                              std::vector<std::string>{"snippet"}));
+    output.push_back(mojom::ContentBlock::NewWebSourcesContentBlock(
+        mojom::WebSourcesContentBlock::New(
+            std::move(tool_sources), std::vector<std::string>{"tool query"},
+            std::vector<std::string>{IncompressibleText("tool rich", 2048)})));
+    std::vector<mojom::ToolArtifactPtr> artifacts;
+    artifacts.push_back(mojom::ToolArtifact::New(
+        "chart-1", "chart", IncompressibleText("artifact", 2048)));
+    events.push_back(
+        mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+            "tool", "tool-1", IncompressibleText("arguments", 1024),
+            std::move(output), std::move(artifacts), nullptr, true)));
+    entry->events = std::move(events);
+
+    auto bytes = [](std::string_view seed, size_t size) {
+      const std::string text = IncompressibleText(seed, size);
+      return base::ToVector(base::as_byte_span(text));
+    };
+    entry->uploaded_files.emplace();
+    entry->uploaded_files->push_back(mojom::UploadedFile::New(
+        "doc.pdf", 4096, bytes("pdf", 4096), mojom::UploadedFileType::kPdf,
+        IncompressibleText("pdf text", 2048)));
+    entry->uploaded_files->push_back(mojom::UploadedFile::New(
+        "image.png", 4096, bytes("png", 4096), mojom::UploadedFileType::kImage,
+        std::nullopt));
+
+    if (edited) {
+      auto edit = mojom::ConversationTurn::New();
+      edit->uuid = "edit-1";
+      edit->character_type = mojom::CharacterType::ASSISTANT;
+      edit->action_type = mojom::ActionType::RESPONSE;
+      edit->text = "Edited answer";
+      edit->created_time = base::Time::Now();
+      edit->model_key = entry->model_key;
+      edit->events.emplace();
+      for (const auto& event : *entry->events) {
+        edit->events->push_back(event->Clone());
+      }
+      edit->events->front()->get_completion_event()->completion =
+          IncompressibleText("edited completion", 400 * 1024);
+      entry->edits.emplace();
+      entry->edits->push_back(std::move(edit));
+    }
+
+    ASSERT_TRUE(db_->AddConversation(std::move(conversation),
+                                     std::move(contents), std::move(entry)));
+  }
+
   base::FilePath db_file_path() {
     return temp_directory_.GetPath().AppendASCII("test_ai_chat.db");
   }
@@ -613,6 +945,8 @@ class AIChatSyncBridgeTest : public testing::Test {
   std::unique_ptr<AIChatDatabase> db_;
   std::unique_ptr<AIChatSyncBridge> bridge_;
   raw_ptr<syncer::MockDataTypeLocalChangeProcessor> mock_processor_ = nullptr;
+  // What the processor keeps of each record.
+  TrimmedSpecifics trimmed_specifics_;
   int remote_changes_applied_count_ = 0;
   std::vector<std::string> last_affected_conversation_uuids_;
   std::vector<std::string> last_deleted_conversation_uuids_;
@@ -3108,6 +3442,540 @@ TEST_F(AIChatSyncBridgeTest, ApplyRestoresOmittedValueThatIsGzipped) {
   EXPECT_THAT(GetCompletions("conv"), ElementsAre(answer));
   EXPECT_THAT(db_->GetEntryModifiedTime("entry"),
               IsModifiedAt(base::Time::Now()));
+}
+
+// A replay applies this device's own records again, and a newer one goes
+// through the whole apply. That must keep everything the entry holds, though
+// its record omits every value it can. It's applied in a first-sync merge,
+// then again as an incremental update.
+TEST_F(AIChatSyncBridgeTest, ReplayOfOversizedEntryKeepsEveryValue) {
+  ASSERT_NO_FATAL_FAILURE(SeedOversizedEntry());
+  CreateBridge();
+  const StoredEntry stored = ReadStoredEntry(*db_);
+  auto record = GetRecordToCommit(*bridge_, "e:entry");
+  ASSERT_TRUE(record);
+  ASSERT_NO_FATAL_FAILURE(ExpectEveryValueOmitted(
+      record->entry(), kOversizedEntryOmittableValues, kOversizedEntryFiles));
+
+  task_environment_.FastForwardBy(base::Minutes(1));
+  syncer::EntityChangeList merge;
+  merge.push_back(MakeRecordChange(*record, base::Time::Now()));
+  ASSERT_FALSE(bridge_
+                   ->MergeFullSyncData(bridge_->CreateMetadataChangeList(),
+                                       std::move(merge))
+                   .has_value());
+  EXPECT_THAT(db_->GetEntryModifiedTime("entry"),
+              IsModifiedAt(base::Time::Now()));
+  ASSERT_NO_FATAL_FAILURE(ExpectSameStoredEntry(ReadStoredEntry(*db_), stored));
+
+  task_environment_.FastForwardBy(base::Minutes(1));
+  syncer::EntityChangeList update;
+  update.push_back(MakeRecordChange(*record, base::Time::Now()));
+  ASSERT_FALSE(bridge_
+                   ->ApplyIncrementalSyncChanges(
+                       bridge_->CreateMetadataChangeList(), std::move(update))
+                   .has_value());
+  EXPECT_THAT(db_->GetEntryModifiedTime("entry"),
+              IsModifiedAt(base::Time::Now()));
+  ASSERT_NO_FATAL_FAILURE(ExpectSameStoredEntry(ReadStoredEntry(*db_), stored));
+}
+
+// The server holds the entry's record from before this device edited it,
+// every value omitted, and it arrives with a newer time. Some of its values,
+// such as the completion and the files, are now only in this device's
+// original entry, not in the revision, and are put back from there. The record
+// differs from the revision, so it becomes one new revision with the original
+// values, and the original and revision are kept. Applied again, as a
+// first-sync merge replays it, the record matches the new revision and adds
+// none.
+TEST_F(AIChatSyncBridgeTest, ReplayOverLocalEditRestoresValuesOfOriginalEntry) {
+  ASSERT_NO_FATAL_FAILURE(SeedOversizedEntry());
+  CreateBridge();
+  const StoredEntry original = ReadStoredEntry(*db_);
+  auto record = GetRecordToCommit(*bridge_, "e:entry");
+  ASSERT_TRUE(record);
+  ASSERT_NO_FATAL_FAILURE(ExpectEveryValueOmitted(
+      record->entry(), kOversizedEntryOmittableValues, kOversizedEntryFiles));
+  // The same entry, with a revision this device added since.
+  ASSERT_TRUE(db_->DeleteConversation("conv"));
+  ASSERT_NO_FATAL_FAILURE(SeedOversizedEntry(/*edited=*/true));
+  const StoredEntry edited = ReadStoredEntry(*db_);
+
+  for (bool merge : {false, true}) {
+    SCOPED_TRACE(testing::Message() << (merge ? "merge" : "update"));
+    task_environment_.FastForwardBy(base::Minutes(1));
+    syncer::EntityChangeList changes;
+    changes.push_back(MakeRecordChange(*record, base::Time::Now()));
+    auto metadata_change_list = bridge_->CreateMetadataChangeList();
+    ASSERT_FALSE(
+        (merge ? bridge_->MergeFullSyncData(std::move(metadata_change_list),
+                                            std::move(changes))
+               : bridge_->ApplyIncrementalSyncChanges(
+                     std::move(metadata_change_list), std::move(changes)))
+            .has_value());
+    EXPECT_THAT(db_->GetEntryModifiedTime("entry"),
+                IsModifiedAt(base::Time::Now()));
+
+    StoredEntry applied = ReadStoredEntry(*db_);
+    ASSERT_TRUE(applied.entry && applied.entry->edits);
+    ASSERT_EQ(applied.entry->edits->size(), 2u);
+    mojom::ConversationTurnPtr new_revision =
+        std::move(applied.entry->edits->back());
+    applied.entry->edits->pop_back();
+    ASSERT_NO_FATAL_FAILURE(ExpectSameStoredEntry(applied, edited));
+    // A revision has its own identity.
+    auto expected_revision = original.entry->Clone();
+    expected_revision->uuid = new_revision->uuid;
+    expected_revision->created_time = new_revision->created_time;
+    ASSERT_NO_FATAL_FAILURE(ExpectSameEntry(*new_revision, *expected_revision));
+  }
+}
+
+// Device B doesn't hold the values device A's record omitted, so it stores
+// them blank. B's processor keeps the record's hashes, so when B sends the
+// entry again, its record carries them in place of the blanks. A, applying
+// B's record, puts each value back and keeps everything.
+TEST_F(AIChatSyncBridgeTest, OversizedEntrySurvivesReSyncFromDeviceWithoutIt) {
+  // The fixture's database and bridge are device A's.
+  ASSERT_NO_FATAL_FAILURE(SeedOversizedEntry());
+  CreateBridge();
+  const StoredEntry stored = ReadStoredEntry(*db_);
+  OtherDevice b(temp_directory_.GetPath().AppendASCII("device_b.db"),
+                encryptor_);
+  syncer::EntityChangeList to_b;
+  for (const char* storage_key : {"c:conv", "e:entry"}) {
+    auto record = GetRecordToCommit(*bridge_, storage_key);
+    ASSERT_TRUE(record);
+    to_b.push_back(
+        MakeRecordChange(*record, GetModifiedTimeFromSpecifics(*record)));
+  }
+  ASSERT_TRUE(b.Take(std::move(to_b), /*merge=*/true));
+  auto b_entry = b.db.GetConversationEntryWithEdits("entry");
+  ASSERT_TRUE(b_entry && *b_entry && (*b_entry)->events);
+  EXPECT_EQ((*b_entry)->events->front()->get_completion_event()->completion,
+            "");
+
+  // B sends the entry again, as it does after a change on B.
+  auto b_record = GetRecordToCommit(*b.bridge, "e:entry");
+  ASSERT_TRUE(b_record);
+  ASSERT_NO_FATAL_FAILURE(ExpectEveryValueOmitted(
+      b_record->entry(), kOversizedEntryOmittableValues, kOversizedEntryFiles));
+
+  task_environment_.FastForwardBy(base::Minutes(1));
+  syncer::EntityChangeList to_a;
+  to_a.push_back(MakeRecordChange(*b_record, base::Time::Now()));
+  ASSERT_FALSE(bridge_
+                   ->ApplyIncrementalSyncChanges(
+                       bridge_->CreateMetadataChangeList(), std::move(to_a))
+                   .has_value());
+  EXPECT_THAT(db_->GetEntryModifiedTime("entry"),
+              IsModifiedAt(base::Time::Now()));
+  ASSERT_NO_FATAL_FAILURE(ExpectSameStoredEntry(ReadStoredEntry(*db_), stored));
+}
+
+// Device B holds an older completion than the one device A's newer record
+// omits, so B can't put A's back. B writes it blank rather than keeping its
+// own, and when B sends the entry again, its record carries A's hash, so A
+// keeps its completion. B's older completion, sent instead, would overwrite
+// A's newer one.
+TEST_F(AIChatSyncBridgeTest, OlderLocalValueIsNotSentOverNewerOmittedValue) {
+  // The fixture's database and bridge are device A's. B takes A's entry.
+  ASSERT_NO_FATAL_FAILURE(SeedCompletion("Older answer"));
+  CreateBridge();
+  OtherDevice b(temp_directory_.GetPath().AppendASCII("device_b.db"),
+                encryptor_);
+  syncer::EntityChangeList to_b;
+  for (const char* storage_key : {"c:conv", "e:entry"}) {
+    auto record = GetRecordToCommit(*bridge_, storage_key);
+    ASSERT_TRUE(record);
+    to_b.push_back(
+        MakeRecordChange(*record, GetModifiedTimeFromSpecifics(*record)));
+  }
+  ASSERT_TRUE(b.Take(std::move(to_b), /*merge=*/true));
+
+  // A changes the completion, and its record omits it, as it would a long one.
+  task_environment_.FastForwardBy(base::Minutes(1));
+  auto a_entry = db_->GetConversationEntryWithoutEdits("entry");
+  ASSERT_TRUE(a_entry && *a_entry && (*a_entry)->events);
+  (*a_entry)->events->front()->get_completion_event()->completion =
+      "Newer answer";
+  ASSERT_TRUE(db_->DeleteConversationEntry("entry"));
+  ASSERT_TRUE(db_->AddConversationEntry("conv", std::move(*a_entry)));
+  auto a_record = GetRecordToCommit(*bridge_, "e:entry");
+  ASSERT_TRUE(a_record);
+  ASSERT_EQ(a_record->entry().events_size(), 1);
+  OmitCompressibleString(
+      a_record->mutable_entry()->mutable_events(0)->mutable_completion());
+  syncer::EntityChangeList newer;
+  newer.push_back(
+      MakeRecordChange(*a_record, GetModifiedTimeFromSpecifics(*a_record)));
+  ASSERT_TRUE(b.Take(std::move(newer), /*merge=*/false));
+  auto b_entry = b.db.GetConversationEntryWithoutEdits("entry");
+  ASSERT_TRUE(b_entry && *b_entry && (*b_entry)->events);
+  EXPECT_EQ((*b_entry)->events->front()->get_completion_event()->completion,
+            "");
+
+  // B sends the entry again, as it does after a change on B.
+  auto b_record = GetRecordToCommit(*b.bridge, "e:entry");
+  ASSERT_TRUE(b_record);
+  ASSERT_EQ(b_record->entry().events_size(), 1);
+  EXPECT_EQ(b_record->entry().events(0).completion().omitted_content_hash(),
+            base::PersistentHash("Newer answer"));
+  task_environment_.FastForwardBy(base::Minutes(1));
+  syncer::EntityChangeList to_a;
+  to_a.push_back(MakeRecordChange(*b_record, base::Time::Now()));
+  ASSERT_FALSE(bridge_
+                   ->ApplyIncrementalSyncChanges(
+                       bridge_->CreateMetadataChangeList(), std::move(to_a))
+                   .has_value());
+
+  EXPECT_THAT(db_->GetEntryModifiedTime("entry"),
+              IsModifiedAt(base::Time::Now()));
+  EXPECT_THAT(GetCompletions("conv"), ElementsAre("Newer answer"));
+}
+
+// The sender omitted a completion this device holds only in the entry as it
+// was before its edit. It's put back rather than blanked. The record's
+// content differs from the latest revision, so it becomes a new one.
+TEST_F(AIChatSyncBridgeTest, ApplyRestoresOmittedValueOfOriginalEntry) {
+  std::vector<mojom::ConversationEntryEventPtr> revision_events;
+  revision_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+      mojom::CompletionEvent::New("Edited answer")));
+  ASSERT_NO_FATAL_FAILURE(SeedEditedAnswer(std::move(revision_events), {}, {}));
+  CreateBridge();
+  task_environment_.FastForwardBy(base::Minutes(1));
+
+  ASSERT_FALSE(
+      bridge_
+          ->ApplyIncrementalSyncChanges(
+              bridge_->CreateMetadataChangeList(),
+              MakeOmittedCompletionUpdate("Original answer", base::Time::Now()))
+          .has_value());
+
+  auto entry = db_->GetConversationEntryWithEdits("entry");
+  ASSERT_TRUE(entry && *entry && (*entry)->edits);
+  ASSERT_EQ((*entry)->edits->size(), 2u);
+  const auto& events = (*entry)->edits->back()->events;
+  ASSERT_TRUE(events);
+  ASSERT_EQ(events->size(), 1u);
+  EXPECT_EQ(events->at(0)->get_completion_event()->completion,
+            "Original answer");
+}
+
+// The same, for a completion this device holds only in a revision before the
+// latest.
+TEST_F(AIChatSyncBridgeTest, ApplyRestoresOmittedValueOfOlderRevision) {
+  auto answer = [](std::string uuid, std::string completion, base::Time time) {
+    auto turn = mojom::ConversationTurn::New();
+    turn->uuid = std::move(uuid);
+    turn->character_type = mojom::CharacterType::ASSISTANT;
+    turn->action_type = mojom::ActionType::RESPONSE;
+    turn->created_time = time;
+    turn->events.emplace();
+    turn->events->push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New(std::move(completion))));
+    return turn;
+  };
+  auto conversation = mojom::Conversation::New();
+  conversation->uuid = "conv";
+  conversation->title = "Local";
+  auto entry =
+      answer("entry", "Original answer", base::Time::Now() - base::Minutes(2));
+  entry->edits.emplace();
+  entry->edits->push_back(
+      answer("edit-1", "First edit", base::Time::Now() - base::Minutes(1)));
+  entry->edits->push_back(answer("edit-2", "Second edit", base::Time::Now()));
+  ASSERT_TRUE(
+      db_->AddConversation(std::move(conversation), {}, std::move(entry)));
+  CreateBridge();
+  task_environment_.FastForwardBy(base::Minutes(1));
+
+  ASSERT_FALSE(
+      bridge_
+          ->ApplyIncrementalSyncChanges(
+              bridge_->CreateMetadataChangeList(),
+              MakeOmittedCompletionUpdate("First edit", base::Time::Now()))
+          .has_value());
+
+  auto applied = db_->GetConversationEntryWithEdits("entry");
+  ASSERT_TRUE(applied && *applied && (*applied)->edits);
+  ASSERT_EQ((*applied)->edits->size(), 3u);
+  const auto& events = (*applied)->edits->back()->events;
+  ASSERT_TRUE(events);
+  ASSERT_EQ(events->size(), 1u);
+  EXPECT_EQ(events->at(0)->get_completion_event()->completion, "First edit");
+}
+
+// An edited answer's latest revision lacks a completion and a rich result
+// that another device's record holds and omits, as a revision written from
+// such a record does. The newer record's omitted values can't be put back,
+// and decode as empty too, keeping the rich result's place in its list, so
+// the record matches the latest revision and adds none.
+TEST_F(AIChatSyncBridgeTest,
+       ApplyAddsNoRevisionWhereRecordAndLatestRevisionLackAValue) {
+  std::vector<mojom::WebSourcePtr> sources;
+  sources.push_back(mojom::WebSource::New(
+      "Source", GURL("https://example.com/source"),
+      GURL("https://example.com/source.ico"), std::nullopt, std::nullopt));
+  std::vector<mojom::ConversationEntryEventPtr> revision_events;
+  revision_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+      mojom::CompletionEvent::New("")));
+  revision_events.push_back(mojom::ConversationEntryEvent::NewSourcesEvent(
+      mojom::WebSourcesEvent::New(std::move(sources),
+                                  std::vector<std::string>{""})));
+  ASSERT_NO_FATAL_FAILURE(SeedEditedAnswer(std::move(revision_events), {}, {}));
+  CreateBridge();
+  auto local = db_->GetConversationEntryWithEdits("entry");
+  ASSERT_TRUE(local && *local);
+  sync_pb::AIChatConversationSpecifics record =
+      EntryToSpecifics("conv", **local, base::Time(), {});
+  ASSERT_EQ(record.entry().events_size(), 2);
+  ASSERT_EQ(record.entry().events(1).web_sources().rich_results_size(), 1);
+  auto* completion =
+      record.mutable_entry()->mutable_events(0)->mutable_completion();
+  WriteCompressibleString("The sender's answer", completion);
+  OmitCompressibleString(completion);
+  auto* rich_result = record.mutable_entry()
+                          ->mutable_events(1)
+                          ->mutable_web_sources()
+                          ->mutable_rich_results(0);
+  WriteCompressibleString(R"({"sender": 1})", rich_result);
+  OmitCompressibleString(rich_result);
+
+  task_environment_.FastForwardBy(base::Minutes(1));
+  syncer::EntityChangeList update;
+  update.push_back(MakeRecordChange(record, base::Time::Now()));
+  ASSERT_FALSE(bridge_
+                   ->ApplyIncrementalSyncChanges(
+                       bridge_->CreateMetadataChangeList(), std::move(update))
+                   .has_value());
+
+  EXPECT_THAT(db_->GetEntryModifiedTime("entry"),
+              IsModifiedAt(base::Time::Now()));
+  auto entry = db_->GetConversationEntryWithEdits("entry");
+  ASSERT_TRUE(entry && *entry && (*entry)->edits);
+  EXPECT_EQ((*entry)->edits->size(), 1u);
+}
+
+// Associated content keeps this device's page text when the newer record
+// doesn't carry it, including a text in a form only a newer client knows. A
+// text the record omits that this device doesn't hold is newer than this
+// device's, and is written blank, not as this device's older text. Content the
+// record sends an empty text for, with no url, was cleared on the sending
+// device, and is cleared here too.
+TEST_F(AIChatSyncBridgeTest, ApplyKeepsPageTextTheRecordDoesNotCarry) {
+  auto conversation = mojom::Conversation::New();
+  conversation->uuid = "conv";
+  conversation->title = "Local";
+  for (const char* uuid :
+       {"not-carried", "newer-form", "unmatched", "cleared"}) {
+    conversation->associated_content.push_back(mojom::AssociatedContent::New(
+        uuid, mojom::ContentType::PageContent, "Page", 1,
+        GURL("https://example.com"), 100, "entry", false));
+  }
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry";
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+  entry->text = "Hello";
+  entry->created_time = base::Time::Now();
+  ASSERT_TRUE(db_->AddConversation(std::move(conversation),
+                                   {"Text not carried", "Text in newer form",
+                                    "Text unmatched", "Text cleared"},
+                                   std::move(entry)));
+  CreateBridge();
+  task_environment_.FastForwardBy(base::Minutes(1));
+  syncer::EntityData data = WithModifiedTime(
+      MakeRemoteEntry("conv", "entry", "Hello"), base::Time::Now());
+  for (const char* uuid :
+       {"not-carried", "newer-form", "unmatched", "cleared"}) {
+    AddRemoteAssociatedContent(data, uuid);
+  }
+  auto* remote_entry =
+      data.specifics.mutable_ai_chat_conversation()->mutable_entry();
+  remote_entry->mutable_associated_content(0)->clear_last_contents();
+  // Only field 4, which this client's AIChatCompressibleString doesn't have.
+  ASSERT_TRUE(remote_entry->mutable_associated_content(1)
+                  ->mutable_last_contents()
+                  ->ParseFromString(std::string("\x22\x01x", 3)));
+  ASSERT_EQ(remote_entry->associated_content(1).last_contents().value_case(),
+            sync_pb::AIChatCompressibleString::VALUE_NOT_SET);
+  auto* unmatched =
+      remote_entry->mutable_associated_content(2)->mutable_last_contents();
+  WriteCompressibleString("The sender's text", unmatched);
+  OmitCompressibleString(unmatched);
+  auto* cleared = remote_entry->mutable_associated_content(3);
+  cleared->clear_url();
+  cleared->clear_title();
+  cleared->mutable_last_contents()->set_raw("");
+  syncer::EntityChangeList changes;
+  changes.push_back(
+      syncer::EntityChange::CreateUpdate("e:entry", std::move(data)));
+
+  ASSERT_FALSE(bridge_
+                   ->ApplyIncrementalSyncChanges(
+                       bridge_->CreateMetadataChangeList(), std::move(changes))
+                   .has_value());
+
+  EXPECT_THAT(db_->GetEntryModifiedTime("entry"),
+              IsModifiedAt(base::Time::Now()));
+  // Only content with a text is listed, so the blank "unmatched" and
+  // "cleared" texts are checked by their absence.
+  EXPECT_THAT(
+      db_->GetAssociatedContentTexts("entry"),
+      testing::Optional(ElementsAre(Pair("newer-form", "Text in newer form"),
+                                    Pair("not-carried", "Text not carried"))));
+}
+
+// Clearing browsing data leaves associated content with no url, title or
+// text. Its record sends an empty text, which clears other devices' copies,
+// rather than none, which would keep them. The processor's hash for the text
+// isn't sent in its place.
+TEST_F(AIChatSyncBridgeTest, ClearedPageTextIsSentAsEmpty) {
+  auto conversation = mojom::Conversation::New();
+  conversation->uuid = "conv";
+  conversation->title = "Local";
+  conversation->associated_content.push_back(mojom::AssociatedContent::New(
+      "content", mojom::ContentType::PageContent, "Page title", 1,
+      GURL("https://example.com"), 100, "entry", false));
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry";
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+  entry->text = "Hello";
+  entry->created_time = base::Time::Now();
+  ASSERT_TRUE(db_->AddConversation(std::move(conversation), {"Page text"},
+                                   std::move(entry)));
+  CreateBridge();
+  // A record of the entry that omitted the page text, as the processor keeps
+  // it.
+  auto record = GetRecordToCommit(*bridge_, "e:entry");
+  ASSERT_TRUE(record);
+  ASSERT_EQ(record->entry().associated_content_size(), 1);
+  OmitCompressibleString(record->mutable_entry()
+                             ->mutable_associated_content(0)
+                             ->mutable_last_contents());
+  sync_pb::EntitySpecifics received;
+  *received.mutable_ai_chat_conversation() = *record;
+  trimmed_specifics_["e:entry"] =
+      bridge_->TrimAllSupportedFieldsFromRemoteSpecifics(received);
+  ASSERT_TRUE(db_->DeleteAssociatedWebContent(std::nullopt, std::nullopt));
+
+  auto sent = GetRecordToCommit(*bridge_, "e:entry");
+
+  ASSERT_TRUE(sent);
+  ASSERT_EQ(sent->entry().associated_content_size(), 1);
+  const auto& content = sent->entry().associated_content(0);
+  EXPECT_FALSE(content.has_url());
+  ASSERT_TRUE(content.last_contents().has_raw());
+  EXPECT_EQ(content.last_contents().raw(), "");
+}
+
+// This device has no copy of a value another device's record omitted, so it
+// stores the value blank. Every record this device sends of the entry carries
+// the hash the processor kept in the blank's place, rather than the blank,
+// which would overwrite the value on the devices that hold it: a commit, a
+// local change, and the upload of a local copy a first-sync merge keeps.
+TEST_F(AIChatSyncBridgeTest, UnknownValueIsSentAsItsHash) {
+  CreateBridge();
+  const uint32_t hash = base::PersistentHash("The sender's answer");
+  syncer::EntityChangeList changes = MakeConversationAdd("conv");
+  for (auto& change :
+       MakeOmittedCompletionUpdate("The sender's answer", base::Time::Now())) {
+    changes.push_back(std::move(change));
+  }
+  trimmed_specifics_["e:entry"] =
+      bridge_->TrimAllSupportedFieldsFromRemoteSpecifics(
+          changes.back()->data().specifics);
+  ASSERT_FALSE(bridge_
+                   ->ApplyIncrementalSyncChanges(
+                       bridge_->CreateMetadataChangeList(), std::move(changes))
+                   .has_value());
+  ASSERT_THAT(GetCompletions("conv"), ElementsAre(""));
+
+  auto committed = GetRecordToCommit(*bridge_, "e:entry");
+  ASSERT_TRUE(committed);
+  EXPECT_EQ(GetOmittedCompletionHash(*committed), hash);
+
+  std::unique_ptr<syncer::EntityData> put;
+  EXPECT_CALL(*mock_processor_, Put("e:entry", _, _))
+      .WillOnce([&put](const std::string&,
+                       std::unique_ptr<syncer::EntityData> data,
+                       syncer::MetadataChangeList*) { put = std::move(data); });
+  bridge_->OnConversationEntryModified("conv", "entry");
+  ASSERT_TRUE(put);
+  EXPECT_EQ(GetOmittedCompletionHash(put->specifics.ai_chat_conversation()),
+            hash);
+  testing::Mock::VerifyAndClearExpectations(mock_processor_);
+
+  // The server's copy is older than this device's, so the merge keeps this
+  // device's and uploads it.
+  task_environment_.FastForwardBy(base::Minutes(1));
+  syncer::EntityChangeList merge = MakeConversationAdd("conv");
+  for (auto& change : MakeOmittedCompletionUpdate(
+           "The sender's answer", base::Time::Now() - base::Minutes(2))) {
+    merge.push_back(std::move(change));
+  }
+  std::unique_ptr<syncer::EntityData> uploaded;
+  EXPECT_CALL(*mock_processor_, Put("e:entry", _, _))
+      .WillOnce([&uploaded](const std::string&,
+                            std::unique_ptr<syncer::EntityData> data,
+                            syncer::MetadataChangeList*) {
+        uploaded = std::move(data);
+      });
+  ASSERT_FALSE(bridge_
+                   ->MergeFullSyncData(bridge_->CreateMetadataChangeList(),
+                                       std::move(merge))
+                   .has_value());
+  ASSERT_TRUE(uploaded);
+  EXPECT_EQ(
+      GetOmittedCompletionHash(uploaded->specifics.ai_chat_conversation()),
+      hash);
+}
+
+// The processor keeps what this returns with each record's sync metadata. For
+// an entry record, it's the hash of each value the sender omitted, at the same
+// position, and nothing else, so that it stays small. Any other record keeps
+// nothing.
+TEST_F(AIChatSyncBridgeTest, TrimKeepsOnlyOmissionMarkers) {
+  CreateBridge();
+  sync_pb::EntitySpecifics conversation;
+  *conversation.mutable_ai_chat_conversation() =
+      MakeRemoteConversation("conv", "Title").specifics.ai_chat_conversation();
+  EXPECT_THAT(bridge_->TrimAllSupportedFieldsFromRemoteSpecifics(conversation),
+              base::test::EqualsProto(sync_pb::EntitySpecifics()));
+
+  syncer::EntityData data = MakeRemoteEntry("conv", "entry", "Hello");
+  AddRemoteAssociatedContent(data, "omitted");
+  AddRemoteAssociatedContent(data, "sent");
+  auto& entry = *data.specifics.mutable_ai_chat_conversation()->mutable_entry();
+  entry.add_events()->mutable_search_queries()->add_queries("query");
+  entry.add_events()->mutable_completion()->set_raw("Answer");
+  auto* file = entry.add_uploaded_files();
+  file->set_filename("file.png");
+  file->set_data("bytes");
+  EXPECT_THAT(
+      bridge_->TrimAllSupportedFieldsFromRemoteSpecifics(data.specifics),
+      base::test::EqualsProto(sync_pb::EntitySpecifics()));
+
+  OmitCompressibleString(
+      entry.mutable_associated_content(0)->mutable_last_contents());
+  OmitCompressibleString(entry.mutable_events(1)->mutable_completion());
+  OmitUploadedFileData(file);
+  sync_pb::EntitySpecifics expected;
+  auto& markers = *expected.mutable_ai_chat_conversation()->mutable_entry();
+  auto* content_marker = markers.add_associated_content();
+  content_marker->set_uuid("omitted");
+  *content_marker->mutable_last_contents() =
+      entry.associated_content(0).last_contents();
+  markers.add_events()->mutable_search_queries();
+  *markers.add_events()->mutable_completion() = entry.events(1).completion();
+  markers.add_uploaded_files()->set_omitted_data_hash(
+      file->omitted_data_hash());
+
+  EXPECT_THAT(
+      bridge_->TrimAllSupportedFieldsFromRemoteSpecifics(data.specifics),
+      base::test::EqualsProto(expected));
 }
 
 }  // namespace
