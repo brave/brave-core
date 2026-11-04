@@ -2392,7 +2392,7 @@ public abstract class BraveActivity extends ChromeActivity
 
         mWalletModel
                 .getCryptoModel()
-                .getNetworkModel()
+                .getPanelNetworkModel()
                 .mNeedToCreateAccountForNetwork
                 .observe(
                         this,
@@ -2419,7 +2419,7 @@ public abstract class BraveActivity extends ChromeActivity
                                                     (dialog, which) -> {
                                                         mWalletModel
                                                                 .getCryptoModel()
-                                                                .getNetworkModel()
+                                                                .getPanelNetworkModel()
                                                                 .clearCreateAccountState();
                                                         dialog.dismiss();
                                                     });
@@ -2441,7 +2441,7 @@ public abstract class BraveActivity extends ChromeActivity
         mWalletModel.getDappsModel().mWalletIconNotificationVisible.removeObservers(this);
         mWalletModel
                 .getCryptoModel()
-                .getNetworkModel()
+                .getPanelNetworkModel()
                 .mNeedToCreateAccountForNetwork
                 .removeObservers(this);
     }

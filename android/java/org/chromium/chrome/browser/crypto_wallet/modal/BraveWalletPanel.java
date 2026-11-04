@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
@@ -45,8 +46,9 @@ import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.app.domain.NetworkModel;
+import org.chromium.chrome.browser.app.domain.PanelNetworkModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletProviderDelegateImplHelper;
 import org.chromium.chrome.browser.crypto_wallet.activities.AccountSelectorActivity;
@@ -57,9 +59,12 @@ import org.chromium.chrome.browser.crypto_wallet.util.BalanceHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.chrome.browser.custom_layout.popup_window_tooltip.PopupWindowTooltip.OnDismissListener;
+import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tab.TabObserver;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.components.embedder_support.util.UrlConstants;
+import org.chromium.content_public.browser.NavigationHandle;
 import org.chromium.url.GURL;
 
 import java.util.ArrayList;
@@ -103,6 +108,19 @@ public class BraveWalletPanel implements DialogInterface {
 
     private final Observer<NetworkInfo> mDefaultNetworkObserver;
 
+    private @Nullable Tab mObservedTab;
+    private final TabObserver mTabObserver =
+            new TabObserver() {
+                @Override
+                public void onDidFinishNavigationInPrimaryMainFrame(
+                        Tab tab, NavigationHandle navigationHandle) {
+                    if (navigationHandle.hasCommitted()
+                            && navigationHandle.isInPrimaryMainFrame()) {
+                        updateOriginSpec(tab);
+                    }
+                }
+            };
+
     @SuppressLint("ClickableViewAccessibility")
     public BraveWalletPanel(
             @NonNull final View anchorViewHost,
@@ -110,8 +128,9 @@ public class BraveWalletPanel implements DialogInterface {
             final boolean showExpandButton) {
         try {
             mWalletModel = BraveActivity.getBraveActivity().getWalletModel();
-            // Update network model to use network per origin
-            getNetworkModel().updateMode(NetworkModel.Mode.PANEL_MODE);
+            ChromeTabbedActivity activity = BraveActivity.getChromeTabbedActivity();
+            mObservedTab = activity == null ? null : activity.getActivityTab();
+            updateOriginSpec(mObservedTab);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "BraveWalletPanel Constructor", e);
         }
@@ -156,13 +175,13 @@ public class BraveWalletPanel implements DialogInterface {
                                                                         ? Arrays.asList(assetPrices)
                                                                         : new ArrayList<>(),
                                                                 asset);
+                                                String accountAddress =
+                                                        mSelectedAccount.address.toLowerCase(
+                                                                Locale.getDefault());
                                                 double balance =
                                                         Utils.getOrDefault(
                                                                 nativeAssetsBalances,
-                                                                mSelectedAccount.address
-                                                                        .toLowerCase(
-                                                                                Locale
-                                                                                        .getDefault()),
+                                                                accountAddress,
                                                                 0.0d);
                                                 String fiatBalanceString =
                                                         String.format(
@@ -320,6 +339,8 @@ public class BraveWalletPanel implements DialogInterface {
 
     public void resume() {
         setUpObservers();
+        // The tab observer is detached while paused, so catch up on any origin change.
+        updateOriginSpec(mObservedTab);
     }
 
     public void pause() {
@@ -330,15 +351,26 @@ public class BraveWalletPanel implements DialogInterface {
         return mPopupWindow != null && mPopupWindow.isShowing();
     }
 
+    private void updateOriginSpec(@Nullable Tab tab) {
+        GURL pageUrl = tab == null ? GURL.emptyGURL() : tab.getUrl();
+        getPanelNetworkModel().updateOriginSpec(Utils.getOriginInfo(pageUrl).originSpec);
+    }
+
     private void setUpObservers() {
         cleanUpObservers();
         mWalletModel.getKeyringModel().mAllAccountsInfo.observeForever(mAllAccountsInfoObserver);
-        getNetworkModel().mDefaultNetwork.observeForever(mDefaultNetworkObserver);
+        getPanelNetworkModel().mDefaultNetwork.observeForever(mDefaultNetworkObserver);
+        if (mObservedTab != null) {
+            mObservedTab.addObserver(mTabObserver);
+        }
     }
 
     private void cleanUpObservers() {
         mWalletModel.getKeyringModel().mAllAccountsInfo.removeObserver(mAllAccountsInfoObserver);
-        getNetworkModel().mDefaultNetwork.removeObserver(mDefaultNetworkObserver);
+        getPanelNetworkModel().mDefaultNetwork.removeObserver(mDefaultNetworkObserver);
+        if (mObservedTab != null) {
+            mObservedTab.removeObserver(mTabObserver);
+        }
     }
 
     private void updateSelectedAccountInfo() {
@@ -503,7 +535,7 @@ public class BraveWalletPanel implements DialogInterface {
                 });
         mBtnSelectedNetwork.setOnLongClickListener(
                 v -> {
-                    NetworkInfo networkInfo = getNetworkModel().mDefaultNetwork.getValue();
+                    NetworkInfo networkInfo = getPanelNetworkModel().mDefaultNetwork.getValue();
                     if (networkInfo != null) {
                         Toast.makeText(mActivity, networkInfo.chainName, Toast.LENGTH_SHORT).show();
                     }
@@ -523,7 +555,7 @@ public class BraveWalletPanel implements DialogInterface {
                 }
             };
 
-    private NetworkModel getNetworkModel() {
-        return mWalletModel.getCryptoModel().getNetworkModel();
+    private PanelNetworkModel getPanelNetworkModel() {
+        return mWalletModel.getCryptoModel().getPanelNetworkModel();
     }
 }

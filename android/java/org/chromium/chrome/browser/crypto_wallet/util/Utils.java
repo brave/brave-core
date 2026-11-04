@@ -70,7 +70,9 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.util.TabUtils;
+import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.ui.text.ChromeClickableSpan;
+import org.chromium.url.GURL;
 
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
@@ -1015,6 +1017,15 @@ public class Utils {
 
     public static Spanned geteTldSpanned(DappOriginInfo originInfo) {
         return AndroidUtils.formatHTML(geteTldHtmlString(originInfo));
+    }
+
+    public static OriginInfo getOriginInfo(GURL url) {
+        GURL origin = url.getOrigin();
+        OriginInfo originInfo = new OriginInfo();
+        originInfo.originSpec = origin.getSpec();
+        String eTldPlusOne = UrlUtilities.getDomainAndRegistry(origin.getSpec(), false);
+        originInfo.eTldPlusOne = eTldPlusOne == null ? "" : eTldPlusOne;
+        return originInfo;
     }
 
     @Nullable
