@@ -813,9 +813,9 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripAllFields) {
           std::vector<std::string>{"{\"block\":1}"} /* rich_results */)));
 
   std::vector<mojom::ToolArtifactPtr> artifacts;
-  artifacts.push_back(mojom::ToolArtifact::New(
-      std::nullopt /* id (not synced) */, "line_chart" /* type */,
-      "[1,2,3]" /* content_json */));
+  artifacts.push_back(mojom::ToolArtifact::New("artifact-id" /* id */,
+                                               "line_chart" /* type */,
+                                               "[1,2,3]" /* content_json */));
 
   events.push_back(
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
@@ -994,10 +994,10 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripToolUseArtifacts) {
   tool_use->id = "tool-artifact";
   tool_use->arguments_json = "{}";
   std::vector<mojom::ToolArtifactPtr> artifacts;
-  // |id| is a local identifier and is intentionally not synced, so leave it
-  // unset to keep the round trip an identity.
   artifacts.push_back(
-      mojom::ToolArtifact::New(std::nullopt, "line_chart", "[1,2,3]"));
+      mojom::ToolArtifact::New("chart-1", "line_chart", "[1,2,3]"));
+  artifacts.push_back(
+      mojom::ToolArtifact::New(std::nullopt, "line_chart", "[4,5,6]"));
   tool_use->artifacts = std::move(artifacts);
 
   std::vector<mojom::ConversationEntryEventPtr> events;
@@ -1005,9 +1005,16 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripToolUseArtifacts) {
       mojom::ConversationEntryEvent::NewToolUseEvent(std::move(tool_use)));
   entry->events = std::move(events);
 
+  auto specifics = EntryToSpecifics("conv-1", *entry, base::Time(), {});
+  ASSERT_EQ(specifics.entry().events_size(), 1);
+  const auto& artifacts_proto =
+      specifics.entry().events(0).tool_use().artifacts();
+  ASSERT_EQ(artifacts_proto.size(), 2);
+  EXPECT_EQ(artifacts_proto[0].id(), "chart-1");
+  EXPECT_FALSE(artifacts_proto[1].has_id());
+
   std::vector<mojom::AssociatedContentPtr> rebuilt_content;
-  auto rebuilt = SpecificsToEntry(
-      EntryToSpecifics("conv-1", *entry, base::Time(), {}), rebuilt_content);
+  auto rebuilt = SpecificsToEntry(specifics, rebuilt_content);
   ASSERT_TRUE(rebuilt);
   ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
 }
