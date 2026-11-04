@@ -7,8 +7,10 @@ package org.chromium.chrome.browser.toolbar.top;
 
 import android.view.View.OnLongClickListener;
 
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Callback;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
@@ -51,6 +53,10 @@ public class BottomTabSwitcherActionMenuCoordinator extends TabSwitcherActionMen
         ModelList itemList = new ModelList();
         itemList.add(buildListItemByMenuItemType(MenuItemType.NEW_TAB));
         itemList.add(buildListItemByMenuItemType(MenuItemType.NEW_INCOGNITO_TAB));
+        if (ChromeSharedPreferences.getInstance()
+                .readBoolean(BravePreferenceKeys.BRAVE_TAB_GROUPS_FEATURE_ENABLED, true)) {
+            maybeBuildAddToGroup(itemList);
+        }
         itemList.add(buildListItemByMenuItemType(MenuItemType.DIVIDER));
         itemList.add(buildListItemByMenuItemType(MenuItemType.CLOSE_TAB));
         return itemList;

@@ -65,6 +65,7 @@ if (is_android) {
       "src/org/chromium/chrome/browser/toolbar/adaptive/settings/BraveAdaptiveToolbarSettingsFragmentTest.java",
       "src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarConfigurationTest.java",
       "src/org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediatorTest.java",
+      "src/org/chromium/chrome/browser/toolbar/top/BottomTabSwitcherActionMenuCoordinatorTest.java",
       "src/org/chromium/chrome/browser/toolbar/top/BraveTabSwitcherActionMenuCoordinatorTest.java",
     ]
 
