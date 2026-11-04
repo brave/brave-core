@@ -13,3 +13,15 @@ substitutions:
         new (TabSwitcherActionMenuCoordinator\()
       replace: |-
         new Brave\1
+
+  - description: |-
+      Open up the tab group entry decision to subclasses.
+
+      BottomTabSwitcherActionMenuCoordinator builds its own item list in a
+      different order, so it cannot reuse buildMenuItems(), but it still needs
+      the upstream choice between "Add to group" and "Add to new group".
+    regex:
+      re_pattern: |-
+        private (void maybeBuildAddToGroup\()
+      replace: |-
+        protected \1

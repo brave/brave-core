@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/TabSwitcherActionMenuCoordinator.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/TabSwitcherActionMenuCoordinator.java
-index 3faf8a98ed08e39e5c2b0de5f56040374b252b2b..34da59f102824e63226f45678408a23a892beccb 100644
+index 3faf8a98ed08e39e5c2b0de5f56040374b252b2b..40a05f924d3282843e4dde8f9434f90bec58bb82 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/TabSwitcherActionMenuCoordinator.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/TabSwitcherActionMenuCoordinator.java
 @@ -99,7 +99,7 @@ public class TabSwitcherActionMenuCoordinator {
@@ -11,3 +11,12 @@ index 3faf8a98ed08e39e5c2b0de5f56040374b252b2b..34da59f102824e63226f45678408a23a
                          profile, tabModelSelectorSupplier, tabGroupExistenceChecker),
                  profile,
                  onItemClicked);
+@@ -240,7 +240,7 @@ public class TabSwitcherActionMenuCoordinator {
+         return itemList;
+     }
+ 
+-    private void maybeBuildAddToGroup(ModelList itemList) {
++    protected void maybeBuildAddToGroup(ModelList itemList) {
+         TabModelSelector selector = mTabModelSelectorSupplier.get();
+         if (selector == null || !selector.isTabStateInitialized()) return;
+         TabModel tabModel = selector.getCurrentModel();
