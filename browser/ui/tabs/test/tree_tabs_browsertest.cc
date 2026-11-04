@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include <algorithm>
+#include <array>
 #include <unordered_set>
 #include <variant>
 
@@ -40,6 +42,7 @@
 #include "components/tabs/public/pinned_tab_collection.h"
 #include "components/tabs/public/split_tab_collection.h"
 #include "components/tabs/public/tab_collection.h"
+#include "components/tabs/public/tab_collection_observer.h"
 #include "components/tabs/public/tab_group_tab_collection.h"
 #include "components/tabs/public/tab_strip_collection.h"
 #include "components/tabs/public/unpinned_tab_collection.h"
@@ -4424,4 +4427,188 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
   EXPECT_EQ(1, reload_observers[1].load_count());
   EXPECT_EQ(1, reload_observers[2].load_count());
   EXPECT_EQ(0, reload_observers[3].load_count());
+}
+
+namespace {
+
+// Records the notifications of the root collection of the tab strip.
+class RecordingCollectionObserver : public tabs::TabCollectionObserver {
+ public:
+  enum class Kind { kAdded, kRemoved, kMoved };
+
+  // Returns the handles reported with |kind|, in the order of notification.
+  const tabs::TabCollectionNodes& handles(Kind kind) const {
+    return handles_[static_cast<size_t>(kind)];
+  }
+
+  bool Has(Kind kind, const tabs::TabCollectionNodeHandle& handle) const {
+    return std::ranges::find(handles(kind), handle) != handles(kind).end();
+  }
+
+  // tabs::TabCollectionObserver:
+  void OnChildrenAdded(const tabs::TabCollection::Position& position,
+                       const tabs::TabCollectionNodes& handles,
+                       bool insert_from_detached) override {
+    Record(Kind::kAdded, handles);
+  }
+  void OnChildrenRemoved(const tabs::TabCollection::Position& position,
+                         const tabs::TabCollectionNodes& handles) override {
+    Record(Kind::kRemoved, handles);
+  }
+  void OnChildMoved(const tabs::TabCollection::Position& to_position,
+                    const NodeData& node_data) override {
+    Record(Kind::kMoved, {node_data.handle});
+  }
+
+ private:
+  void Record(Kind kind, const tabs::TabCollectionNodes& handles) {
+    auto& recorded = handles_[static_cast<size_t>(kind)];
+    recorded.insert(recorded.end(), handles.begin(), handles.end());
+  }
+
+  std::array<tabs::TabCollectionNodes, 3> handles_;
+};
+
+}  // namespace
+
+// Tests for the notifications that BraveTreeTabStripCollectionDelegate sends
+// to the observers of the root collection when it manipulates the tree tab
+// node collections by itself.
+class TreeTabsCollectionNotificationBrowserTest : public TreeTabsBrowserTest {
+ public:
+  tabs::TabCollectionNodeHandle NodeHandleOf(tabs::TabInterface* tab) {
+    return tab->GetParentCollection()->GetHandle();
+  }
+
+  // Returns the handle of the tree node that is the parent of the tree node of
+  // |tab|.
+  tabs::TabCollectionNodeHandle ParentNodeHandleOf(tabs::TabInterface* tab) {
+    return tab->GetParentCollection()->GetParentCollection()->GetHandle();
+  }
+
+  // Adds a tab opened from |opener|, i.e. a child of |opener|.
+  tabs::TabInterface* AddChildOf(tabs::TabInterface* opener) {
+    auto tab = std::make_unique<tabs::TabModel>(CreateWebContents(),
+                                                &tab_strip_model());
+    tab->set_opener(opener);
+    tab_strip_model().AddTab(std::move(tab), -1,
+                             ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+    return tab_strip_model().GetTabAtIndex(tab_strip_model().count() - 1);
+  }
+
+  // TreeTabsBrowserTest:
+  void SetUpOnMainThread() override {
+    TreeTabsBrowserTest::SetUpOnMainThread();
+    SetTreeTabsEnabled(true);
+    tab_strip_collection().AddObserver(&observer_);
+  }
+
+  void TearDownOnMainThread() override {
+    tab_strip_collection().RemoveObserver(&observer_);
+    TreeTabsBrowserTest::TearDownOnMainThread();
+  }
+
+  RecordingCollectionObserver observer_;
+};
+
+IN_PROC_BROWSER_TEST_F(TreeTabsCollectionNotificationBrowserTest,
+                       NotifiesWhenTabIsAddedAsTreeNode) {
+  AddTab();
+  tabs::TabInterface* tab = tab_strip_model().GetTabAtIndex(1);
+  ASSERT_EQ(tabs::TabCollection::Type::TREE_NODE,
+            tab->GetParentCollection()->type());
+  EXPECT_TRUE(observer_.Has(RecordingCollectionObserver::Kind::kAdded,
+                            NodeHandleOf(tab)));
+}
+
+IN_PROC_BROWSER_TEST_F(TreeTabsCollectionNotificationBrowserTest,
+                       NotifiesWhenChildIsAddedToTreeNode) {
+  tabs::TabInterface* parent = tab_strip_model().GetTabAtIndex(0);
+  tabs::TabInterface* child = AddChildOf(parent);
+  ASSERT_EQ(NodeHandleOf(parent), ParentNodeHandleOf(child));
+  EXPECT_TRUE(observer_.Has(RecordingCollectionObserver::Kind::kAdded,
+                            NodeHandleOf(child)));
+}
+
+IN_PROC_BROWSER_TEST_F(TreeTabsCollectionNotificationBrowserTest,
+                       NotifiesWhenChildrenAreHoistedInOrder) {
+  tabs::TabInterface* parent = tab_strip_model().GetTabAtIndex(0);
+  tabs::TabInterface* child_a = AddChildOf(parent);
+  tabs::TabInterface* child_b = AddChildOf(parent);
+  const tabs::TabCollectionNodeHandle parent_node = NodeHandleOf(parent);
+  const tabs::TabCollectionNodeHandle node_a = NodeHandleOf(child_a);
+  const tabs::TabCollectionNodeHandle node_b = NodeHandleOf(child_b);
+  ASSERT_EQ(parent_node, ParentNodeHandleOf(child_a));
+  ASSERT_EQ(parent_node, ParentNodeHandleOf(child_b));
+
+  // Closing the parent moves its children up and removes its tree node.
+  tab_strip_model().CloseWebContentsAt(0, TabCloseTypes::CLOSE_NONE);
+
+  EXPECT_TRUE(
+      observer_.Has(RecordingCollectionObserver::Kind::kRemoved, parent_node));
+  const auto& moved =
+      observer_.handles(RecordingCollectionObserver::Kind::kMoved);
+  const auto it_a = std::ranges::find(moved, node_a);
+  const auto it_b = std::ranges::find(moved, node_b);
+  ASSERT_NE(moved.end(), it_a);
+  ASSERT_NE(moved.end(), it_b);
+  // Observers place an item after the one before it, so the children have to
+  // be reported in the order of the tab strip.
+  EXPECT_LT(it_a, it_b);
+}
+
+IN_PROC_BROWSER_TEST_F(TreeTabsCollectionNotificationBrowserTest,
+                       NotifiesWhenTabIsGrouped) {
+  AddTab();
+  const tabs::TabCollectionNodeHandle node =
+      NodeHandleOf(tab_strip_model().GetTabAtIndex(0));
+
+  tab_strip_model().AddToNewGroup({0});
+
+  // The tree node of the tab is removed, as the group is wrapped by its own.
+  EXPECT_TRUE(observer_.Has(RecordingCollectionObserver::Kind::kRemoved, node));
+}
+
+IN_PROC_BROWSER_TEST_F(TreeTabsCollectionNotificationBrowserTest,
+                       NotifiesWhenTabsAreSplitAndUnsplit) {
+  AddTab();
+  const tabs::TabCollectionNodeHandle node_0 =
+      NodeHandleOf(tab_strip_model().GetTabAtIndex(0));
+  const tabs::TabCollectionNodeHandle node_1 =
+      NodeHandleOf(tab_strip_model().GetTabAtIndex(1));
+
+  tab_strip_model().ActivateTabAt(0);
+  const split_tabs::SplitTabId split_id = tab_strip_model().AddToNewSplit(
+      {1}, split_tabs::SplitTabVisualData(),
+      split_tabs::SplitTabCreatedSource::kTabContextMenu);
+  EXPECT_TRUE(
+      observer_.Has(RecordingCollectionObserver::Kind::kRemoved, node_0));
+  EXPECT_TRUE(
+      observer_.Has(RecordingCollectionObserver::Kind::kRemoved, node_1));
+
+  tab_strip_model().RemoveSplit(split_id);
+  for (int i = 0; i < 2; ++i) {
+    tabs::TabInterface* tab = tab_strip_model().GetTabAtIndex(i);
+    ASSERT_EQ(tabs::TabCollection::Type::TREE_NODE,
+              tab->GetParentCollection()->type());
+    EXPECT_TRUE(observer_.Has(RecordingCollectionObserver::Kind::kAdded,
+                              NodeHandleOf(tab)))
+        << "tab index: " << i;
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(TreeTabsCollectionNotificationBrowserTest,
+                       NotifiesWhenTabIsPinnedAndUnpinned) {
+  AddTab();
+  tabs::TabInterface* tab = tab_strip_model().GetTabAtIndex(1);
+  const tabs::TabCollectionNodeHandle node = NodeHandleOf(tab);
+
+  tab_strip_model().SetTabPinned(1, true);
+  EXPECT_TRUE(observer_.Has(RecordingCollectionObserver::Kind::kRemoved, node));
+
+  tab_strip_model().SetTabPinned(tab_strip_model().GetIndexOfTab(tab), false);
+  ASSERT_EQ(tabs::TabCollection::Type::TREE_NODE,
+            tab->GetParentCollection()->type());
+  EXPECT_TRUE(observer_.Has(RecordingCollectionObserver::Kind::kAdded,
+                            NodeHandleOf(tab)));
 }
