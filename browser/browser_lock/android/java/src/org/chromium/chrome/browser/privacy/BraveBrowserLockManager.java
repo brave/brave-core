@@ -377,13 +377,43 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
         return migrated;
     }
 
+    /**
+     * Invoked after a user-initiated {@link #setScreenshotMode} change, so code that lives outside
+     * this module (and so has access to utilities this module cannot depend on without creating a
+     * cycle, e.g. relaunch prompts) can react. Registered once, at app startup.
+     */
+    public interface ScreenshotModeChangeHandler {
+        void onScreenshotModeChanged(int newMode, @Nullable Activity activity);
+    }
+
+    private static @Nullable ScreenshotModeChangeHandler sScreenshotModeChangeHandler;
+
+    public static void setScreenshotModeChangeHandler(
+            @Nullable ScreenshotModeChangeHandler handler) {
+        ScreenshotModeChangeHandler previous = sScreenshotModeChangeHandler;
+        sScreenshotModeChangeHandler = handler;
+        ResettersForTesting.register(() -> sScreenshotModeChangeHandler = previous);
+    }
+
     public static void setScreenshotMode(int mode) {
+        setScreenshotMode(mode, /* activity= */ null);
+    }
+
+    /**
+     * @param activity Passed through to the registered {@link ScreenshotModeChangeHandler}, if any.
+     *     Only meaningful for a user-initiated change from the settings UI.
+     */
+    public static void setScreenshotMode(int mode, @Nullable Activity activity) {
         ChromeSharedPreferences.getInstance()
                 .writeInt(BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE, mode);
         BraveBrowserLockManager instance = sInstance;
-        if (instance == null) return;
-        for (ScreenshotModeObserver observer : instance.mScreenshotModeObservers.values()) {
-            observer.onScreenshotModeChanged();
+        if (instance != null) {
+            for (ScreenshotModeObserver observer : instance.mScreenshotModeObservers.values()) {
+                observer.onScreenshotModeChanged();
+            }
+        }
+        if (sScreenshotModeChangeHandler != null) {
+            sScreenshotModeChangeHandler.onScreenshotModeChanged(mode, activity);
         }
     }
 

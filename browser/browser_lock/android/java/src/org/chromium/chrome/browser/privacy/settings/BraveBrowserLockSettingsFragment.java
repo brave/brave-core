@@ -18,21 +18,18 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.materialswitch.MaterialSwitch;
 
-import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
-import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveFeatureUtil;
-import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthManager;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthSettingUtils;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.privacy.BraveBrowserLockManager;
+import org.chromium.chrome.browser.privacy.R;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.ProfileDependentSetting;
 import org.chromium.components.browser_ui.settings.EmbeddableSettingsPage;
@@ -95,7 +92,7 @@ public class BraveBrowserLockSettingsFragment extends Fragment
             @NonNull LayoutInflater inflater,
             @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
-        mPageTitle.set(getString(R.string.brave_browser_lock_title));
+        mPageTitle.set(getString(R.string.brave_browser_lock_settings_title));
         return inflater.inflate(R.layout.fragment_brave_browser_lock_settings, container, false);
     }
 
@@ -281,19 +278,10 @@ public class BraveBrowserLockSettingsFragment extends Fragment
                     public void onIncognitoReauthSuccess() {
                         mReauthInFlight = false;
                         reauth.destroy();
-                        BraveBrowserLockManager.setScreenshotMode(newMode);
-                        // Unify with the incognito-tab screenshot protection Chrome already
-                        // provides — this native feature flag only takes effect on relaunch.
-                        BraveFeatureUtil.enableFeature(
-                                BraveFeatureList.BRAVE_INCOGNITO_SCREENSHOT,
-                                /* enabled= */ newMode
-                                        == BravePreferenceKeys
-                                                .BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_ALLOW,
-                                /* fallbackToDefault= */ false);
+                        BraveBrowserLockManager.setScreenshotMode(newMode, getActivity());
                         if (isAdded()) {
                             setScreenshotModeRadioChecked(radios, modes, newMode);
                         }
-                        BraveRelaunchUtils.askForRelaunch(getActivity());
                     }
 
                     @Override

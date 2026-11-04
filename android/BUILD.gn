@@ -562,7 +562,6 @@ android_resources("java_resources") {
     "java/brave-res/layout/fragment_add_token.xml",
     "java/brave-res/layout/fragment_backup_wallet.xml",
     "java/brave-res/layout/fragment_brave_bookmark_import_export_dialog.xml",
-    "java/brave-res/layout/fragment_brave_browser_lock_settings.xml",
     "java/brave-res/layout/fragment_brave_location_bar_qr_dialog.xml",
     "java/brave-res/layout/fragment_brave_multiwindow_dialog.xml",
     "java/brave-res/layout/fragment_brave_vpn_always_on_error_dialog.xml",
