@@ -2391,6 +2391,10 @@
 # we don't have.
 -GlicActor*BrowserTest*.*
 
+# Flaky: the simulated mouse-down that starts the drag times out (Windows CI,
+# 157.0.8103.39; ~0.5% upstream). Glic isn't shipped in Brave.
+-All/GlicWebDragAndDropBrowserTest.testWebToGlicDragMaterializationFromDetached/*
+
 # These tests fail because we short-circuit
 # WebrtcLoggingPrivateFunction::RphFromRequest
 -PolicyEnabled/WebrtcLoggingPrivateApiStartEventLoggingTestPolicy.StartEventLogging/*
@@ -2912,6 +2916,7 @@
 -BackForwardCacheSiteDetailsBrowserTest.*
 -BackgroundContentsTagTest.*
 -BackgroundFetchBrowserTest.*
+-BackgroundFetchCorsBrowserTest.*
 -BackgroundTabLoadingBrowserTest.RestoreTab
 -BookmarkBrowsertest.OpenAllBookmarks
 -BreadcrumbManagerTabHelperBrowserTest.*
