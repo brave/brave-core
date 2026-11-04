@@ -96,6 +96,8 @@ class SimulationServiceUnitTest : public testing::Test {
 
   PrefService* GetPrefs() { return &prefs_; }
 
+  int NumPendingRequests() { return url_loader_factory_.NumPending(); }
+
   GURL GetNetwork(const std::string& chain_id, mojom::CoinType coin) {
     return network_manager_->GetNetworkURL(chain_id, coin);
   }
@@ -227,6 +229,36 @@ class SimulationServiceUnitTest : public testing::Test {
       SimulationService::ScanSignSolTransactionsRequestCallback callback) {
     simulation_service_->ScanSignSolTransactionsRequestInternal(
         std::move(request), language, std::move(callback));
+  }
+
+  // Both scans must fail synchronously with a generic error and start no
+  // request. Call after tripping the guard under test.
+  void ExpectScansBlocked() {
+    const int baseline_pending = NumPendingRequests();
+
+    base::MockCallback<mojom::SimulationService::ScanEVMTransactionCallback>
+        evm_callback;
+    EXPECT_CALL(
+        evm_callback,
+        Run(EqualsMojo(mojom::EVMSimulationResponsePtr()), "",
+            l10n_util::GetStringUTF8(IDS_WALLET_REQUEST_PROCESSING_ERROR)));
+    ScanEVMTransaction(
+        GetCannedScanEVMTransactionParams(false, mojom::kMainnetChainId),
+        "en-US", evm_callback.Get());
+
+    base::MockCallback<mojom::SimulationService::ScanSolanaTransactionCallback>
+        sol_callback;
+    EXPECT_CALL(
+        sol_callback,
+        Run(EqualsMojo(mojom::SolanaSimulationResponsePtr()), "",
+            l10n_util::GetStringUTF8(IDS_WALLET_REQUEST_PROCESSING_ERROR)));
+    ScanSolanaTransaction(GetCannedScanSolanaTransactionParams(
+                              std::nullopt, mojom::kSolanaMainnet),
+                          "en-US", sol_callback.Get());
+
+    testing::Mock::VerifyAndClearExpectations(&evm_callback);
+    testing::Mock::VerifyAndClearExpectations(&sol_callback);
+    EXPECT_EQ(baseline_pending, NumPendingRequests());
   }
 
  protected:
@@ -443,6 +475,25 @@ TEST_F(SimulationServiceUnitTest, ScanEVMTransactionUnsupportedNetwork) {
 
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
+}
+
+TEST_F(SimulationServiceUnitTest, ScanTransactionBlockedWhenOptInDenied) {
+  SetTransactionSimulationOptInStatus(&prefs_,
+                                      mojom::BlowfishOptInStatus::kDenied);
+  ExpectScansBlocked();
+}
+
+TEST_F(SimulationServiceUnitTest, ScanTransactionBlockedWhenOptInUnset) {
+  SetTransactionSimulationOptInStatus(&prefs_,
+                                      mojom::BlowfishOptInStatus::kUnset);
+  ExpectScansBlocked();
+}
+
+TEST_F(SimulationServiceUnitTest, ScanTransactionBlockedWhenFeatureDisabled) {
+  base::test::ScopedFeatureList disabled_feature_list;
+  disabled_feature_list.InitAndDisableFeature(
+      features::kBraveWalletTransactionSimulationsFeature);
+  ExpectScansBlocked();
 }
 
 TEST_F(SimulationServiceUnitTest, ScanEVMTransactionValidErrorResponse) {
