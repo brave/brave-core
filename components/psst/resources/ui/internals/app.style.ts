@@ -41,7 +41,7 @@ export const style = scoped.css`
 
   .toolbar {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     gap: var(--leo-spacing-m);
     flex-wrap: wrap;
   }
