@@ -54,7 +54,10 @@ TEST(PermissionUtilsUnitTest, ParseRequestingOriginFromSubRequest) {
        "https://"
        "test.com__"
        "1815_0_0_0:123",
-       "1815_0_0_0"}};
+       "1815_0_0_0"},
+      {permissions::RequestType::kBravePolkadot, "https://test.com--354_0_0_0",
+       "https://test.com--354_0_0_0/path", "https://test.com__354_0_0_0",
+       "https://test.com__354_0_0_0:123", "354_0_0_0"}};
 
   url::Origin requesting_origin;
   std::string account;
@@ -135,7 +138,9 @@ TEST(PermissionUtilsUnitTest, GetSubRequestOrigin) {
        "1815_0_0_0",
        "https://"
        "test.com__"
-       "1815_0_0_0:123"}};
+       "1815_0_0_0:123"},
+      {permissions::RequestType::kBravePolkadot, "354_0_0_0",
+       "https://test.com__354_0_0_0", "https://test.com__354_0_0_0:123"}};
   for (auto& test_case : cases) {
     SCOPED_TRACE(testing::Message() << test_case.account);
 
@@ -232,6 +237,9 @@ TEST(PermissionUtilsUnitTest, CoinTypeToPermissionType) {
   type = CoinTypeToPermissionType(mojom::CoinType::ADA);
   ASSERT_TRUE(type);
   EXPECT_EQ(*type, blink::PermissionType::BRAVE_CARDANO);
+  type = CoinTypeToPermissionType(mojom::CoinType::DOT);
+  ASSERT_TRUE(type);
+  EXPECT_EQ(*type, blink::PermissionType::BRAVE_POLKADOT);
   EXPECT_FALSE(CoinTypeToPermissionType(mojom::CoinType::FIL));
   EXPECT_FALSE(CoinTypeToPermissionType(mojom::CoinType::BTC));
 }
@@ -246,8 +254,11 @@ TEST(PermissionUtilsUnitTest, CoinTypeToPermissionRequestType) {
   request = CoinTypeToPermissionRequestType(mojom::CoinType::ADA);
   ASSERT_TRUE(request);
   EXPECT_EQ(*request, permissions::RequestType::kBraveCardano);
-  EXPECT_FALSE(CoinTypeToPermissionType(mojom::CoinType::FIL));
-  EXPECT_FALSE(CoinTypeToPermissionType(mojom::CoinType::BTC));
+  request = CoinTypeToPermissionRequestType(mojom::CoinType::DOT);
+  ASSERT_TRUE(request);
+  EXPECT_EQ(*request, permissions::RequestType::kBravePolkadot);
+  EXPECT_FALSE(CoinTypeToPermissionRequestType(mojom::CoinType::FIL));
+  EXPECT_FALSE(CoinTypeToPermissionRequestType(mojom::CoinType::BTC));
 }
 
 }  // namespace brave_wallet
