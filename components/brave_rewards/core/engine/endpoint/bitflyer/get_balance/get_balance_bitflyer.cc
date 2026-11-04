@@ -113,7 +113,7 @@ void GetBalance::OnRequest(GetBalanceCallback callback,
     return;
   }
 
-  double available;
+  double available = 0.0;
   result = ParseBody(response->body, &available);
   std::move(callback).Run(result, available);
 }
