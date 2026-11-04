@@ -37,6 +37,7 @@ void FakeSnapHostBridge::LoadSnap(const std::string& snap_id,
 
 void FakeSnapHostBridge::UnloadSnap(const std::string& snap_id) {
   ++unload_snap_call_count;
+  last_unloaded_snap_id = snap_id;
 }
 
 FakeSnapHostBridgeController::FakeSnapHostBridgeController() = default;

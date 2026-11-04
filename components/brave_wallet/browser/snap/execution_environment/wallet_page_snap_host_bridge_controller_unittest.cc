@@ -8,6 +8,7 @@
 #include <optional>
 #include <string>
 
+#include "base/test/run_until.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "brave/components/brave_wallet/browser/snap/execution_environment/snap_host_bridge_test_utils.h"
@@ -87,6 +88,24 @@ TEST_F(WalletPageSnapHostBridgeControllerUnitTest, LoadSnapPassthrough) {
 TEST_F(WalletPageSnapHostBridgeControllerUnitTest,
        UnloadSnapWhileUnboundIsNoop) {
   controller_.UnloadSnap("npm:test");  // Should not crash.
+}
+
+TEST_F(WalletPageSnapHostBridgeControllerUnitTest,
+       UnloadSnapForwardsToBoundBridge) {
+  FakeSnapHostBridge bridge;
+  controller_.BindNewBridge(bridge.BindNewPipeAndPassRemote());
+  EXPECT_EQ(0, bridge.unload_snap_call_count);
+
+  // UnloadSnap has no reply, so wait for the message to reach the bridge.
+  controller_.UnloadSnap("npm:test");
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return bridge.unload_snap_call_count == 1; }));
+  EXPECT_EQ("npm:test", bridge.last_unloaded_snap_id);
+
+  controller_.UnloadSnap("npm:other");
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return bridge.unload_snap_call_count == 2; }));
+  EXPECT_EQ("npm:other", bridge.last_unloaded_snap_id);
 }
 
 TEST_F(WalletPageSnapHostBridgeControllerUnitTest, DisconnectUnbinds) {

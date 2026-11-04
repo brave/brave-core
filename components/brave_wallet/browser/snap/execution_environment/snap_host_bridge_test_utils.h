@@ -35,6 +35,7 @@ class FakeSnapHostBridge : public mojom::SnapHostBridge {
 
   int load_snap_call_count = 0;
   int unload_snap_call_count = 0;
+  std::string last_unloaded_snap_id;
   std::string last_snap_id;
   std::string last_source_code;
   bool next_load_succeeds = true;
