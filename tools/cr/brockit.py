@@ -1925,10 +1925,18 @@ class Upgrade(Versioned):
             self._start(ack_advisory=ack_advisory)
 
         if with_github:
-            GitHubIssue(
-                base_version=self.base_version,
-                target_version=self.target_version,
-            ).create_or_update_version_issue(with_pr=False)
+            # The lift's commits are made by now, and there is no continuation
+            # left to resume: a `gh` failure must not skip the checks below.
+            try:
+                GitHubIssue(
+                    base_version=self.base_version,
+                    target_version=self.target_version,
+                ).create_or_update_version_issue(with_pr=False)
+            except subprocess.CalledProcessError:
+                terminal.log_task(
+                    '[bold]❌[/] GitHub issue update. Run '
+                    '[bold cyan]brockit update-version-issue[/] to retry it.'
+                )
 
         try:
             terminal.run([VPYTHON3_PATH, plaster.__file__, 'check'])

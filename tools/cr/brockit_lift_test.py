@@ -2172,6 +2172,24 @@ class LiftGitHubTest(LiftTestCase):
         )
         self.assertIsNone(self.env.gh.issue_edit_cmd())
 
+    def test_with_github_issue_failure_still_runs_the_checks(self):
+        self.env.gh.issue_list_error = subprocess.CalledProcessError(
+            1, ['gh', 'issue', 'list'], stderr='HTTP 502'
+        )
+        self.env.terminal.fail(PLASTER)
+        with self.env.upstream_release(MAJOR_TARGET):
+            pass
+
+        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--with-github')
+
+        self.assert_succeeded(run)
+        self.assert_output_has(
+            run,
+            '* ❌ GitHub issue update. Run brockit update-version-issue to '
+            'retry it.',
+            '* ❌ Plaster check. Please investigate it.',
+        )
+
     def test_with_github_without_a_login_stops_before_any_work(self):
         self.env.gh.logged_in = False
         with self.env.upstream_release(MAJOR_TARGET):
