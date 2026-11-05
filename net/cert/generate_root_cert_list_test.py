@@ -4,12 +4,16 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """Tests for generate_root_cert_list.py.
 
+Needs root_store_pb2.py from a build of //brave/net/cert:root_cert_list. Uses
+the newest out/*/pyproto unless PYPROTO_DIR is set; skips if neither exists.
+
 python3 brave/net/cert/generate_root_cert_list_test.py
 """
 
 import base64
 import hashlib
 import json
+import os
 import re
 import shutil
 import sys
@@ -35,6 +39,25 @@ R46_SPKI_HASH = (
     '0e8bb18bbeefb381be21bfc1a206d317298462ad104855f04a0542699708d3d4'
 )
 R46_CRS_ROOT_ID = 95
+
+
+def _find_pyproto_dir() -> Path | None:
+    if env := os.environ.get('PYPROTO_DIR'):
+        return Path(env)
+    pb2s = SRC_DIR.glob(
+        'out/*/pyproto/net/cert/root_store_proto_full/root_store_pb2.py'
+    )
+    newest = max(pb2s, key=lambda p: p.stat().st_mtime, default=None)
+    return newest.parents[3] if newest else None
+
+
+def setUpModule() -> None:  # pylint: disable=invalid-name
+    pyproto_dir = _find_pyproto_dir()
+    if pyproto_dir is None:
+        raise unittest.SkipTest(
+            'root_store_pb2.py not found; build //brave/net/cert:root_cert_list'
+        )
+    gen.import_protos(pyproto_dir)
 
 
 def _certs_by_hash() -> dict[str, bytes]:
