@@ -5,12 +5,13 @@
 
 package org.chromium.chrome.browser.ui;
 
+import static org.chromium.ui.base.ViewUtils.dpToPx;
+
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -225,14 +226,6 @@ public class BraveExclusiveAccessNotice implements ApplicationStatus.WindowFocus
                         WindowInsetsCompat.Type.systemBars()
                                 | WindowInsetsCompat.Type.displayCutout());
         return bars.top;
-    }
-
-    private static int dpToPx(Activity activity, int dp) {
-        return Math.round(
-                TypedValue.applyDimension(
-                        TypedValue.COMPLEX_UNIT_DIP,
-                        dp,
-                        activity.getResources().getDisplayMetrics()));
     }
 
     private void startObserving() {
