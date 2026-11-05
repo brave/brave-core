@@ -29,8 +29,8 @@ from recipe_test_api import RecipeTestApi
 
 engine._ensure_on_sys_path()
 engine._ensure_protos()
-import recipe_modules.platform as platform_module
-import recipe_modules.step as step_module
+import recipe_modules.platform as platform_module  # noqa: E402
+import recipe_modules.step as step_module  # noqa: E402
 
 
 @contextlib.contextmanager

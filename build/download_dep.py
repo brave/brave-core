@@ -8,7 +8,6 @@
 from argparse import ArgumentParser
 from brave_chromium_utils import wspath
 from deps_config import DEPS_PACKAGES_URL
-from os.path import join
 
 import deps
 

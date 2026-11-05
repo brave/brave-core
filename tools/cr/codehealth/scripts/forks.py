@@ -229,7 +229,7 @@ def copied_function(text: str, line: int) -> tuple[str, str] | None:
     few lines after `line` (1-based), the one a "copied from" comment there
     introduces. A copied snippet inside a function has none."""
     lines = text.splitlines(True)
-    offset = sum(len(l) for l in lines[: line - 1])
+    offset = sum(len(text) for text in lines[: line - 1])
     for candidate in lines[line - 1 : line + 3]:
         if not candidate.lstrip().startswith(('//', '*', '/*', '#')):
             for match in _CALL.finditer(candidate):
@@ -411,7 +411,12 @@ class ForkReport:
         root = repository.brave.root
         listed = subprocess.run(
             ['git', '-C', str(root), 'grep', '-l', '-E']
-            + [r'#\s*define\s+\w+\s+\w+_ChromiumImpl', '--', 'chromium_src'],
+            + [
+                r'#[[:space:]]*define[[:space:]]+[[:alnum:]_]+[[:space:]]+'
+                r'[[:alnum:]_]+_ChromiumImpl',
+                '--',
+                'chromium_src',
+            ],
             capture_output=True,
             text=True,
             check=False,
