@@ -164,14 +164,6 @@ void BraveContentRendererClient::
                                                      false);
   blink::WebRuntimeFeatures::EnableFeatureFromString("ProfilerAPI", false);
   blink::WebRuntimeFeatures::EnableFeatureFromString("TranslationAPI", false);
-
-#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-  if (base::FeatureList::IsEnabled(
-          blink::features::kMiddleButtonClickAutoscroll)) {
-    blink::WebRuntimeFeatures::EnableFeatureFromString("MiddleClickAutoscroll",
-                                                       true);
-  }
-#endif  // BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 }
 
 BraveContentRendererClient::~BraveContentRendererClient() = default;
