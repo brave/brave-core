@@ -14,5 +14,5 @@ brave_net_sources = [
 
 brave_net_deps = [
   "//brave/components/brave_wallet/common/buildflags",
-  "//brave/net/cert:root_cert_list_generated",
+  "//brave/net/cert:root_cert_list",
 ]

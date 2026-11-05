@@ -37,10 +37,6 @@ described here:
     trust anchors can be used to proxy (or MITM) connections, even to pinned
     sites. “Data loss prevention” appliances, firewalls, content filters, and
     malware can use this feature to defeat the protections of key pinning.
-
-IMPORTANT: Changing this file? Run
-brave/net/cert/generate_root_cert_list_test.py after doing so. The test is not
-automatically run, but is useful as a check on revisions to this file.
 """
 
 import argparse
