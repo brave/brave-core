@@ -1074,12 +1074,6 @@ bool AIChatService::CanUnloadConversation(ConversationHandler* conversation) {
     return false;
   }
 
-  // Permission challenges aren't persisted, so a reloaded conversation would
-  // lose the request the user still has to answer.
-  if (conversation->IsAwaitingUserInput()) {
-    return false;
-  }
-
   return true;
 }
 
@@ -1419,7 +1413,7 @@ void AIChatService::OnClientConnectionChanged(ConversationHandler* handler) {
     const std::string& uuid = handler->get_conversation_uuid();
     auto it = conversation_generation_state_.find(uuid);
     if (it != conversation_generation_state_.end() &&
-        it->second != mojom::ConversationGenerationState::kGenerating) {
+        it->second == mojom::ConversationGenerationState::kCompletedNotViewed) {
       conversation_generation_state_.erase(it);
       NotifyConversationGenerationState(uuid);
     }
@@ -1631,15 +1625,13 @@ void AIChatService::MaybeCompleteGeneration(const std::string& uuid) {
       it->second != mojom::ConversationGenerationState::kGenerating) {
     return;
   }
-  auto* handler = base::FindPtrOrNull(conversation_handlers_, uuid);
-  if (handler &&
+  if (auto* handler = base::FindPtrOrNull(conversation_handlers_, uuid);
+      handler &&
       (handler->IsRequestInProgress() || handler->IsToolUseInProgress())) {
     return;
   }
   if (IsConversationVisible(uuid)) {
     conversation_generation_state_.erase(it);
-  } else if (handler && handler->IsAwaitingUserInput()) {
-    it->second = mojom::ConversationGenerationState::kAwaitingUserInput;
   } else {
     it->second = mojom::ConversationGenerationState::kCompletedNotViewed;
   }
