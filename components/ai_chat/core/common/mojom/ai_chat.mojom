@@ -70,9 +70,6 @@ enum ConversationGenerationState {
   kIdle,
   kGenerating,
   kCompletedNotViewed,
-  // Stopped on a permission challenge that needs the user before generation
-  // can continue.
-  kAwaitingUserInput,
 };
 
 
