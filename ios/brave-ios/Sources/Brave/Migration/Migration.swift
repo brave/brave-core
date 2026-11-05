@@ -31,7 +31,7 @@ public class BraveProfileMigrations {
     migrateMediaBackgroundingPreference()
     migrateBlockAllCookiesPreference()
     migrateDefaultWalletPreferences()
-    migrateShowNewFavoritesPreference()
+    migrateTopSitesModePreference()
     migrateSponsoredAdsEnabledPreference()
     migrateHTTPSUpgradeLevelPreference()
   }
@@ -176,15 +176,51 @@ public class BraveProfileMigrations {
     }
   }
 
-  private func migrateShowNewFavoritesPreference() {
-    Preferences.NewTabPage.showNewTabFavourites.migrate { value in
-      if value {
-        Preferences.NewTabPage.topSitesMode.value =
-          Favorite.hasFavorites ? TopSitesMode.favourite : TopSitesMode.mostVisited
-      } else {
-        Preferences.NewTabPage.topSitesMode.value = TopSitesMode.none
-      }
+  /// Migrates the deprecated top sites preferences to `Preferences.NewTabPage.topSitesMode`.
+  private func migrateTopSitesModePreference() {
+    // Collect before the guard so that the deprecated keys are always cleared, even on devices
+    // that already have a mode and skip the write.
+    var deprecatedRawValue: Int?
+    var showNewTabFavourites: Bool?
+    Preferences.DeprecatedPreferences.topSitesMode.migrate { deprecatedRawValue = $0 }
+    Preferences.DeprecatedPreferences.showNewTabFavourites.migrate { showNewTabFavourites = $0 }
+    guard !Preferences.NewTabPage.topSitesMode.isRawValueStored,
+      let mode = BraveProfileMigrations.topSitesMode(
+        forDeprecatedRawValue: deprecatedRawValue,
+        showNewTabFavourites: showNewTabFavourites
+      )
+    else { return }
+    Preferences.NewTabPage.topSitesMode.value = mode
+  }
+
+  /// The mode that the deprecated top sites preferences represent, or `nil` when neither was
+  /// stored and `Preferences.NewTabPage.topSitesMode` should keep its default.
+  ///
+  /// Both deprecated preferences only carry whether top sites were shown, not which source they
+  /// drew from: no release that wrote them could render most visited sites, so the new tab page
+  /// checked the mode against `none` and nothing else.
+  ///
+  /// `showNewTabFavourites` wins when it is stored. 1.97.x is the only release where it was
+  /// settable, and the only value its new tab page read, while the mode there was a launch time
+  /// seed that nothing read. Every release since removes it on first launch and makes the mode
+  /// settable, so a stored flag and a mode the user actually chose cannot coexist.
+  ///
+  /// A stored `mostVisited` is therefore the 1.97.x seed rather than a choice, and maps to
+  /// `favourite` to preserve what the user was looking at. `none` is ambiguous: it means `none`
+  /// up to 1.98.x but `favourite` from 1.99.x. It is read as `none` to honour an explicit opt out
+  /// by the far larger release channel, which resets testers who picked favourites.
+  static func topSitesMode(
+    forDeprecatedRawValue deprecatedRawValue: Int?,
+    showNewTabFavourites: Bool?
+  ) -> TopSitesMode? {
+    if let showNewTabFavourites {
+      return showNewTabFavourites ? .favourite : TopSitesMode.none
     }
+    if let deprecatedRawValue {
+      return deprecatedRawValue == DeprecatedTopSitesMode.none.rawValue
+        ? TopSitesMode.none : .favourite
+    }
+    return nil
   }
 
   /// Migrates deprecated `backgroundMediaTypeRaw` to `kBraveAdsSponsoredEnabledPrefName`.
@@ -397,6 +433,17 @@ private enum DeprecatedYoutubeHighQualityPreference: String {
   case off
 }
 
+/// The raw values stored under `newtabpage.topsites-mode`.
+///
+/// 1.99.x inserted `none` at 0 and shifted the rest while reusing the key, so the same integer
+/// means different things depending on which release wrote it. These are the values as written up
+/// to 1.98.x.
+private enum DeprecatedTopSitesMode: Int {
+  case mostVisited = 0
+  case favourite = 1
+  case none = 2
+}
+
 private enum DeprecatedBackgroundMediaType: Int {
   case defaultImages = 0
   case sponsoredImages = 1
@@ -430,6 +477,24 @@ extension Preferences {
     static let backgroundSponsoredImages = Option<Bool>(
       key: "newtabpage.background-sponsored-images",
       default: true
+    )
+
+    /// Whether favourites were shown in the new tab page.
+    ///
+    /// 1.97.x is the only release where this was settable, and the only value its new tab page
+    /// read. Superseded by `topSitesMode`.
+    static let showNewTabFavourites = Option<Bool>(
+      key: "newtabpage.show-newtab-favourites",
+      default: true
+    )
+
+    /// Mode to display tiles in the new tab page.
+    ///
+    /// Superseded by `Preferences.NewTabPage.topSitesMode`, which uses a different key because
+    /// values stored here are ambiguous. See `DeprecatedTopSitesMode`.
+    static let topSitesMode = Option<Int>(
+      key: "newtabpage.topsites-mode",
+      default: DeprecatedTopSitesMode.favourite.rawValue
     )
 
     /// Used to specify the type of background media to display.
@@ -810,5 +875,15 @@ extension Preferences.Option {
 
   fileprivate var isValueStored: Bool {
     (container.object(forKey: key) as? ValueType) != nil
+  }
+}
+
+extension Preferences.Option where ValueType: RawRepresentable {
+  /// Whether a value is stored in the container.
+  ///
+  /// `isValueStored` cannot be used here: the container holds the raw value rather than a
+  /// `ValueType`, so the cast it performs never succeeds.
+  var isRawValueStored: Bool {
+    (container.object(forKey: key) as? ValueType.RawValue) != nil
   }
 }
