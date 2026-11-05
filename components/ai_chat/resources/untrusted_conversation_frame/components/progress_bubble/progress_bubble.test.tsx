@@ -463,6 +463,45 @@ describe('ProgressBubble interrupted state', () => {
     expect(getBubble()?.className).toContain('isInterrupted')
   })
 
+  test('shows "Waiting for your approval" when the latest task is stopped on a permission challenge', () => {
+    render(
+      <MockContext
+        initialState={{
+          conversationEntriesState: {
+            isGenerating: false,
+            isToolExecuting: false,
+            toolUseTaskState: Mojom.TaskState.kRunning,
+          },
+        }}
+      >
+        <ProgressBubble
+          responseGroup={[
+            makeAssistantTurn([
+              getToolUseEvent({
+                toolName: Mojom.NAVIGATE_TOOL_NAME,
+                id: '1',
+                argumentsJson: '{"website_url":"https://example.com"}',
+                output: undefined,
+                permissionChallenge: {
+                  plan: 'plan',
+                } as Mojom.PermissionChallenge,
+              }),
+            ]),
+          ]}
+          isLastGroup={true}
+        />
+      </MockContext>,
+    )
+
+    expect(
+      screen.getByText(S.CHAT_UI_TASK_STATE_AWAITING_APPROVAL_LABEL),
+    ).toBeInTheDocument()
+    expect(
+      screen.queryByText(S.CHAT_UI_TOOL_LABEL_COMPLETE),
+    ).not.toBeInTheDocument()
+    expect(getBubble()?.className).toContain('isInterrupted')
+  })
+
   test('does not show interrupted state on non-latest task groups (state belongs to the active task)', () => {
     render(
       <MockContext
