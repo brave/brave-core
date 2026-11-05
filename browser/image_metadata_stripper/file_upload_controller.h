@@ -19,11 +19,11 @@
 #include "base/threading/sequence_bound.h"
 #include "brave/components/image_metadata_stripper/image_metadata_stripper.h"
 #include "chrome/browser/ui/tabs/contents_observing_tab_feature.h"
-#include "content/public/browser/page_navigator.h"
 #include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 
 namespace content {
 class WebContents;
+class Page;
 }  // namespace content
 
 namespace tabs {

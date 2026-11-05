@@ -21,6 +21,7 @@
 #include "chrome/browser/ui/tabs/contents_observing_tab_feature.h"
 #include "chrome/common/chrome_paths.h"
 #include "components/tabs/public/tab_interface.h"
+#include "content/public/browser/page_navigator.h"
 
 namespace image_metadata_stripper {
 
