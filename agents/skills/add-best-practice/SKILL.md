@@ -37,6 +37,11 @@ Parse the argument to understand:
 3. **Category** it falls under (C++ coding, testing, architecture, build system,
    frontend, etc.)
 
+**State negative boundaries using emphatic imperative phrasing** (such as "Under
+no circumstances...", "MUST NOT", or "NEVER"). NEVER use passive or mild
+declarative statements to express these boundaries; models may interpret them as
+optional suggestions.
+
 **If the argument is a GitHub PR comment URL**, gather full context before
 proceeding:
 
@@ -121,32 +126,6 @@ add it there.
 
 Write the entry following the exact format used in existing docs. Read a few
 entries from the target document first to match its style.
-
-### Negative boundaries for AI and LLM agents
-
-State negative boundaries using emphatic imperative phrasing (such as "Under no
-circumstances...", "MUST NOT", or "NEVER"). NEVER use passive or mild
-declarative statements to express these boundaries; models may interpret them as
-optional suggestions.
-
-**Bad:**
-
-```markdown
-## Non-Bugs
-
-These are not security bugs, regardless of how easy they are to trigger.
-```
-
-**Good:**
-
-```markdown
-## Non-Bugs
-
-These are not security bugs, regardless of how easy they are to trigger. Under
-no circumstances is something matching an entry in this list a security bug.
-```
-
-### Entry format
 
 **Required format:**
 
