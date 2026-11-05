@@ -94,9 +94,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         }
         try {
             mWalletModel = BraveActivity.getBraveActivity().getWalletModel();
-
-            // Update network model to use default network.
-            getNetworkModel().updateMode(NetworkModel.Mode.WALLET_MODE);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "triggerLayoutInflation", e);
         }

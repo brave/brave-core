@@ -26,6 +26,7 @@ import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.NetworkModel;
+import org.chromium.chrome.browser.app.domain.PanelNetworkModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSelectorAdapter;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
@@ -43,7 +44,7 @@ public class NetworkSelectorActivity extends BraveWalletBaseActivity
     private static final String TAG = "NetworkSelector";
     private RecyclerView mRVNetworkSelector;
     private @Nullable SettingsNavigation mSettingsLauncher;
-    private @Nullable NetworkModel mNetworkModel;
+    private @Nullable PanelNetworkModel mNetworkModel;
 
     /**
      * Creates an Intent object to open network selector activity.
@@ -92,7 +93,7 @@ public class NetworkSelectorActivity extends BraveWalletBaseActivity
         }
 
         mSettingsLauncher = new BraveSettingsLauncherImpl();
-        final NetworkModel networkModel = walletModel.getCryptoModel().getNetworkModel();
+        final PanelNetworkModel networkModel = walletModel.getCryptoModel().getPanelNetworkModel();
         mNetworkModel = networkModel;
         NetworkModel.NetworkLists networkLists = networkModel.mNetworkLists.getValue();
         NetworkInfo selectedNetwork = networkModel.mDefaultNetwork.getValue();
@@ -149,7 +150,7 @@ public class NetworkSelectorActivity extends BraveWalletBaseActivity
 
     @Override
     public void onNetworkItemSelected(final NetworkInfo networkInfo) {
-        final NetworkModel networkModel = mNetworkModel;
+        final PanelNetworkModel networkModel = mNetworkModel;
         if (networkModel == null) {
             return;
         }
