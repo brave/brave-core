@@ -19,6 +19,7 @@ of truth) and linked into the generated `.claude/skills/` discovery dir by
 | `/create-contributor-prs` | Dispatch the rebase-from-fork workflow so CI runs on contributor PRs              |
 | `/force-push-downstream`  | Force-push branch + all downstream branches                                       |
 | `/impl-review`            | Implement PR review feedback                                                      |
+| `/implement-backlog`      | Implement a bounded issue search in one PR with reviewed, validated issue commits |
 | `/make-ci-green`          | Re-run failed CI jobs (Experimental)                                              |
 | `/plaster-from-patch`     | Convert an existing Chromium `.patch` into a Plaster (`rewrite/*.yaml`) config    |
 | `/pr`                     | Create a pull request for the current branch                                      |
