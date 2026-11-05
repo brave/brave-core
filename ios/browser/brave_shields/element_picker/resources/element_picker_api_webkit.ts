@@ -29,7 +29,10 @@ export class WebKitElementPickerAPI implements ElementPickerAPI {
   ) {
     sendTokenizedWebKitMessageWithReply(messageHandlerName, {
       request_type: 'theme_info',
-    }).then((val: { isDarkModeEnabled: boolean; bgcolor: number }) => {
+    }).then((val: { isDarkModeEnabled: boolean; bgcolor: number } | null) => {
+      if (!val) {
+        return
+      }
       callback(val.isDarkModeEnabled, val.bgcolor)
     })
   }
@@ -47,14 +50,19 @@ export class WebKitElementPickerAPI implements ElementPickerAPI {
     sendTokenizedWebKitMessageWithReply(messageHandlerName, {
       request_type: 'localized_texts',
     }).then(
-      (val: {
-        btnCreateDisabledText: string
-        btnCreateEnabledText: string
-        btnManageText: string
-        btnShowRulesBoxText: string
-        btnHideRulesBoxText: string
-        btnQuitText: string
-      }) => {
+      (
+        val: {
+          btnCreateDisabledText: string
+          btnCreateEnabledText: string
+          btnManageText: string
+          btnShowRulesBoxText: string
+          btnHideRulesBoxText: string
+          btnQuitText: string
+        } | null,
+      ) => {
+        if (!val) {
+          return
+        }
         callback(
           val.btnCreateDisabledText,
           val.btnCreateEnabledText,
