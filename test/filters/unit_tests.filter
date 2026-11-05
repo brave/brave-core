@@ -1089,7 +1089,6 @@
 -ChromeDownloadManagerDelegateTest.*
 -ChromeLabs*Test.*
 -ChromeMetricsServicesManagerClientTest.*
--ChromeWebContentsViewDelegateViewsTest.*
 -ClearBrowsingDataHandlerUnitTest.*
 -ClickToCallUtilsTest.TelLink*
 -CloudBinaryUploadServiceTest.DeepScanESBEnabledEnhancedProtectionMalwareRequestAuthorized
