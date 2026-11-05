@@ -43,20 +43,20 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
               icon="container-on"
               label="$i18n{SETTINGS_CONTAINERS_ALWAYS_USE_MINI_ICON_LABEL}"
             ></settings-toggle-button>
-            <div class="cr-row">
+            <div class="cr-row continuation">
               <div
                 class="flex cr-padded-text"
                 aria-hidden="true"
               >
-                $i18n{SETTINGS_CONTAINERS_NEW_TAB_DEFAULT_LABEL}
+                $i18n{SETTINGS_CONTAINERS_NEW_TAB_TARGET_LABEL}
               </div>
               <settings-dropdown-menu
-                id="newTabDefaultDropdown"
-                label="$i18n{SETTINGS_CONTAINERS_NEW_TAB_DEFAULT_LABEL}"
-                .value="${this.newTabDefaultDropdownValue_()}"
-                .menuOptions="${this.newTabDefaultMenuOptions_()}"
+                id="newTabTargetDropdown"
+                label="$i18n{SETTINGS_CONTAINERS_NEW_TAB_TARGET_LABEL}"
+                .value="${this.newTabTargetDropdownValue_()}"
+                .menuOptions="${this.newTabTargetMenuOptions_()}"
                 @settings-control-change="${this
-                  .onNewTabDefaultSettingsControlChange_}"
+                  .onNewTabTargetSettingsControlChange_}"
               ></settings-dropdown-menu>
             </div>
             ${this.containersList_?.length

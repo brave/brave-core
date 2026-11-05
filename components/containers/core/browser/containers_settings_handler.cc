@@ -46,8 +46,8 @@ ContainersSettingsHandler::ContainersSettingsHandler(PrefService* prefs)
       base::BindRepeating(&ContainersSettingsHandler::OnContainersChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
-      prefs::kNewTabDefault,
-      base::BindRepeating(&ContainersSettingsHandler::OnNewTabDefaultChanged,
+      prefs::kNewTabTarget,
+      base::BindRepeating(&ContainersSettingsHandler::OnNewTabTargetChanged,
                           base::Unretained(this)));
 }
 
@@ -162,28 +162,20 @@ void ContainersSettingsHandler::ReorderContainers(
   std::move(callback).Run(std::nullopt);
 }
 
-void ContainersSettingsHandler::GetNewTabDefault(
-    GetNewTabDefaultCallback callback) {
-  std::move(callback).Run(GetNewTabDefaultFromPrefs(*prefs_));
+void ContainersSettingsHandler::GetNewTabTarget(
+    GetNewTabTargetCallback callback) {
+  std::move(callback).Run(GetNewTabTargetFromPrefs(*prefs_));
 }
 
-void ContainersSettingsHandler::SetNewTabDefault(
-    mojom::NewTabDefaultPtr new_tab_default,
-    SetNewTabDefaultCallback callback) {
-  const int choices = (new_tab_default->temporary_container ? 1 : 0) +
-                      (new_tab_default->ask_each_time ? 1 : 0) +
-                      (new_tab_default->container_id.empty() ? 0 : 1);
-  if (choices > 1) {
-    std::move(callback).Run(
-        mojom::ContainerOperationError::kInvalidNewTabDefault);
-    return;
-  }
-  if (!new_tab_default->container_id.empty() &&
-      !GetContainerFromPrefs(*prefs_, new_tab_default->container_id)) {
+void ContainersSettingsHandler::SetNewTabTarget(
+    mojom::NewTabTargetPtr target,
+    SetNewTabTargetCallback callback) {
+  if (target && target->is_container_id() &&
+      !GetContainerFromPrefs(*prefs_, target->get_container_id())) {
     std::move(callback).Run(mojom::ContainerOperationError::kNotFound);
     return;
   }
-  SetNewTabDefaultToPrefs(new_tab_default, *prefs_);
+  SetNewTabTargetToPrefs(target, *prefs_);
   std::move(callback).Run(std::nullopt);
 }
 
@@ -213,9 +205,9 @@ void ContainersSettingsHandler::OnContainersChanged() {
   }
 }
 
-void ContainersSettingsHandler::OnNewTabDefaultChanged() {
+void ContainersSettingsHandler::OnNewTabTargetChanged() {
   if (ui_) {
-    ui_->OnNewTabDefaultChanged(GetNewTabDefaultFromPrefs(*prefs_));
+    ui_->OnNewTabTargetChanged(GetNewTabTargetFromPrefs(*prefs_));
   }
 }
 

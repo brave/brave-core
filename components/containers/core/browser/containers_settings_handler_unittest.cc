@@ -76,26 +76,25 @@ class MockContainersSettingsObserver : public mojom::ContainersSettingsUI {
 
   int containers_changed_count() const { return containers_changed_count_; }
 
-  void OnNewTabDefaultChanged(
-      mojom::NewTabDefaultPtr new_tab_default) override {
-    last_new_tab_default_ = std::move(new_tab_default);
-    new_tab_default_changed_count_++;
+  void OnNewTabTargetChanged(mojom::NewTabTargetPtr target) override {
+    last_new_tab_target_ = std::move(target);
+    new_tab_target_changed_count_++;
   }
 
-  const mojom::NewTabDefaultPtr& last_new_tab_default() const {
-    return last_new_tab_default_;
+  const mojom::NewTabTargetPtr& last_new_tab_target() const {
+    return last_new_tab_target_;
   }
 
-  int new_tab_default_changed_count() const {
-    return new_tab_default_changed_count_;
+  int new_tab_target_changed_count() const {
+    return new_tab_target_changed_count_;
   }
 
  private:
   mojo::Receiver<mojom::ContainersSettingsUI> receiver_{this};
   std::vector<mojom::ContainerPtr> last_containers_;
   int containers_changed_count_ = 0;
-  mojom::NewTabDefaultPtr last_new_tab_default_;
-  int new_tab_default_changed_count_ = 0;
+  mojom::NewTabTargetPtr last_new_tab_target_;
+  int new_tab_target_changed_count_ = 0;
 };
 
 }  // namespace
@@ -425,90 +424,61 @@ TEST_F(ContainersSettingsHandlerTest, ExternalContainerChanges) {
   EXPECT_EQ("Test Container", mock_observer_->last_containers()[0]->name);
 }
 
-TEST_F(ContainersSettingsHandlerTest, GetNewTabDefault_DefaultsToNoContainer) {
-  base::test::TestFuture<mojom::NewTabDefaultPtr> future;
-  handler_->GetNewTabDefault(future.GetCallback());
-  const auto& result = future.Get();
-  EXPECT_TRUE(result->container_id.empty());
-  EXPECT_FALSE(result->temporary_container);
+TEST_F(ContainersSettingsHandlerTest, GetNewTabTarget_DefaultsToNoContainer) {
+  base::test::TestFuture<mojom::NewTabTargetPtr> future;
+  handler_->GetNewTabTarget(future.GetCallback());
+  EXPECT_FALSE(future.Get());
 }
 
-TEST_F(ContainersSettingsHandlerTest, SetNewTabDefault_PersistsAndNotifies) {
+TEST_F(ContainersSettingsHandlerTest, SetNewTabTarget_PersistsAndNotifies) {
   std::vector<mojom::ContainerPtr> containers;
   containers.push_back(
       mojom::Container::New("id-1", "Work", mojom::Icon::kWork, SK_ColorRED));
   SetContainersToPrefs(containers, prefs_);
 
   base::test::TestFuture<std::optional<mojom::ContainerOperationError>> future;
-  handler_->SetNewTabDefault(mojom::NewTabDefault::New("id-1", false, false),
-                             future.GetCallback());
+  handler_->SetNewTabTarget(mojom::NewTabTarget::NewContainerId("id-1"),
+                            future.GetCallback());
   EXPECT_EQ(future.Get(), std::nullopt);
-  EXPECT_EQ(GetNewTabDefaultFromPrefs(prefs_)->container_id, "id-1");
-  EXPECT_EQ(mock_observer_->new_tab_default_changed_count(), 1);
-  EXPECT_EQ(mock_observer_->last_new_tab_default()->container_id, "id-1");
+  EXPECT_EQ(GetNewTabTargetFromPrefs(prefs_)->get_container_id(), "id-1");
+  EXPECT_EQ(mock_observer_->new_tab_target_changed_count(), 1);
+  EXPECT_EQ(mock_observer_->last_new_tab_target()->get_container_id(), "id-1");
 
   // Switching to a temporary container is a second notification.
   base::test::TestFuture<std::optional<mojom::ContainerOperationError>>
       temporary_future;
-  handler_->SetNewTabDefault(mojom::NewTabDefault::New("", true, false),
-                             temporary_future.GetCallback());
+  handler_->SetNewTabTarget(mojom::NewTabTarget::NewTemporaryContainer(true),
+                            temporary_future.GetCallback());
   EXPECT_EQ(temporary_future.Get(), std::nullopt);
-  EXPECT_TRUE(GetNewTabDefaultFromPrefs(prefs_)->temporary_container);
-  EXPECT_EQ(mock_observer_->new_tab_default_changed_count(), 2);
+  EXPECT_TRUE(GetNewTabTargetFromPrefs(prefs_)->is_temporary_container());
+  EXPECT_EQ(mock_observer_->new_tab_target_changed_count(), 2);
+
+  // Null resets to no container.
+  base::test::TestFuture<std::optional<mojom::ContainerOperationError>>
+      reset_future;
+  handler_->SetNewTabTarget(nullptr, reset_future.GetCallback());
+  EXPECT_EQ(reset_future.Get(), std::nullopt);
+  EXPECT_FALSE(GetNewTabTargetFromPrefs(prefs_));
+  EXPECT_EQ(mock_observer_->new_tab_target_changed_count(), 3);
+  EXPECT_FALSE(mock_observer_->last_new_tab_target());
 }
 
-TEST_F(ContainersSettingsHandlerTest,
-       SetNewTabDefault_RejectsUnknownContainer) {
+TEST_F(ContainersSettingsHandlerTest, SetNewTabTarget_RejectsUnknownContainer) {
   base::test::TestFuture<std::optional<mojom::ContainerOperationError>> future;
-  handler_->SetNewTabDefault(mojom::NewTabDefault::New("missing", false, false),
-                             future.GetCallback());
+  handler_->SetNewTabTarget(mojom::NewTabTarget::NewContainerId("missing"),
+                            future.GetCallback());
   EXPECT_THAT(future.Get(),
               testing::Optional(mojom::ContainerOperationError::kNotFound));
-  EXPECT_TRUE(GetNewTabDefaultFromPrefs(prefs_)->container_id.empty());
-  EXPECT_EQ(mock_observer_->new_tab_default_changed_count(), 0);
+  EXPECT_FALSE(GetNewTabTargetFromPrefs(prefs_));
+  EXPECT_EQ(mock_observer_->new_tab_target_changed_count(), 0);
 }
 
-TEST_F(ContainersSettingsHandlerTest,
-       SetNewTabDefault_RejectsContainerIdWithTemporary) {
-  std::vector<mojom::ContainerPtr> containers;
-  containers.push_back(
-      mojom::Container::New("id-1", "Work", mojom::Icon::kWork, SK_ColorRED));
-  SetContainersToPrefs(containers, prefs_);
-
+TEST_F(ContainersSettingsHandlerTest, SetNewTabTarget_AskEachTime) {
   base::test::TestFuture<std::optional<mojom::ContainerOperationError>> future;
-  handler_->SetNewTabDefault(mojom::NewTabDefault::New("id-1", true, false),
-                             future.GetCallback());
-  EXPECT_THAT(
-      future.Get(),
-      testing::Optional(mojom::ContainerOperationError::kInvalidNewTabDefault));
-  EXPECT_TRUE(GetNewTabDefaultFromPrefs(prefs_)->container_id.empty());
-}
-
-TEST_F(ContainersSettingsHandlerTest, SetNewTabDefault_AskEachTime) {
-  std::vector<mojom::ContainerPtr> containers;
-  containers.push_back(
-      mojom::Container::New("id-1", "Work", mojom::Icon::kWork, SK_ColorRED));
-  SetContainersToPrefs(containers, prefs_);
-
-  // Ask alone is accepted.
-  base::test::TestFuture<std::optional<mojom::ContainerOperationError>> ok;
-  handler_->SetNewTabDefault(mojom::NewTabDefault::New("", false, true),
-                             ok.GetCallback());
-  EXPECT_EQ(ok.Get(), std::nullopt);
-  EXPECT_TRUE(GetNewTabDefaultFromPrefs(prefs_)->ask_each_time);
-
-  // Ask combined with a container or a temporary container is rejected.
-  auto expect_rejected = [&](mojom::NewTabDefaultPtr combo) {
-    base::test::TestFuture<std::optional<mojom::ContainerOperationError>>
-        rejected;
-    handler_->SetNewTabDefault(std::move(combo), rejected.GetCallback());
-    EXPECT_THAT(rejected.Get(),
-                testing::Optional(
-                    mojom::ContainerOperationError::kInvalidNewTabDefault));
-  };
-  expect_rejected(mojom::NewTabDefault::New("id-1", false, true));
-  expect_rejected(mojom::NewTabDefault::New("", true, true));
-  EXPECT_TRUE(GetNewTabDefaultFromPrefs(prefs_)->ask_each_time);
+  handler_->SetNewTabTarget(mojom::NewTabTarget::NewAskEachTime(true),
+                            future.GetCallback());
+  EXPECT_EQ(future.Get(), std::nullopt);
+  EXPECT_TRUE(GetNewTabTargetFromPrefs(prefs_)->is_ask_each_time());
 }
 
 }  // namespace containers

@@ -23,7 +23,7 @@ import {
   Container,
   ContainerOperationError,
   Icon,
-  NewTabDefault,
+  NewTabTarget,
 } from '../containers.mojom-webui.js'
 import type {
   DropdownMenuOptionList,
@@ -72,7 +72,7 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
       containersList_: {
         type: Array,
       },
-      newTabDefault_: {
+      newTabTarget_: {
         type: Object,
       },
       editingContainer_: {
@@ -98,11 +98,8 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
     | chrome.settingsPrivate.PrefObject<boolean>
     | undefined
   accessor containersList_: Container[] = []
-  accessor newTabDefault_: NewTabDefault = {
-    containerId: '',
-    temporaryContainer: false,
-    askEachTime: false,
-  }
+  // null means no container.
+  accessor newTabTarget_: NewTabTarget | null = null
   accessor editingContainer_: Container | undefined
   accessor deletingContainer_: Container | undefined
   accessor isEditDialogNameInvalid_ = false
@@ -118,12 +115,12 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
     this.browserProxy.callbackRouter.onContainersChanged.addListener(
       this.onContainersListUpdated_.bind(this),
     )
-    this.browserProxy.handler.getNewTabDefault().then(({ newTabDefault }) => {
-      this.newTabDefault_ = newTabDefault
+    this.browserProxy.handler.getNewTabTarget().then(({ target }) => {
+      this.newTabTarget_ = target
     })
-    this.browserProxy.callbackRouter.onNewTabDefaultChanged.addListener(
-      (newTabDefault: NewTabDefault) => {
-        this.newTabDefault_ = newTabDefault
+    this.browserProxy.callbackRouter.onNewTabTargetChanged.addListener(
+      (target: NewTabTarget | null) => {
+        this.newTabTarget_ = target
       },
     )
   }
@@ -159,7 +156,7 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
       .catch(() => this.onReorderableItemsUpdated_())
   }
 
-  newTabDefaultMenuOptions_(): DropdownMenuOptionList {
+  newTabTargetMenuOptions_(): DropdownMenuOptionList {
     return [
       {
         name: this.i18n(ContainersStrings.CXMENU_NO_CONTAINER),
@@ -172,38 +169,37 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
       },
       {
         name: this.i18n(
-          ContainersStrings.SETTINGS_CONTAINERS_NEW_TAB_DEFAULT_ASK_LABEL,
+          ContainersStrings.SETTINGS_CONTAINERS_NEW_TAB_TARGET_ASK_LABEL,
         ),
         value: kAskEachTimeDropdownValue,
       },
     ]
   }
 
-  newTabDefaultDropdownValue_(): string {
-    if (this.newTabDefault_.temporaryContainer) {
+  newTabTargetDropdownValue_(): string {
+    if (this.newTabTarget_?.temporaryContainer !== undefined) {
       return kTemporaryContainerDropdownValue
     }
-    if (this.newTabDefault_.askEachTime) {
+    if (this.newTabTarget_?.askEachTime !== undefined) {
       return kAskEachTimeDropdownValue
     }
-    return this.newTabDefault_.containerId
+    return this.newTabTarget_?.containerId ?? ''
   }
 
-  async onNewTabDefaultSettingsControlChange_(e: Event) {
+  async onNewTabTargetSettingsControlChange_(e: Event) {
     const selected =
       (e.target as SettingsDropdownMenuElement).getSelectedValue() ?? ''
-    const newTabDefault: NewTabDefault = {
-      containerId: '',
-      temporaryContainer: selected === kTemporaryContainerDropdownValue,
-      askEachTime: selected === kAskEachTimeDropdownValue,
+    let target: NewTabTarget | null = null
+    if (selected === kTemporaryContainerDropdownValue) {
+      target = { temporaryContainer: true }
+    } else if (selected === kAskEachTimeDropdownValue) {
+      target = { askEachTime: true }
+    } else if (selected) {
+      target = { containerId: selected }
     }
-    if (!newTabDefault.temporaryContainer && !newTabDefault.askEachTime) {
-      newTabDefault.containerId = selected
-    }
-    const { error } =
-      await this.browserProxy.handler.setNewTabDefault(newTabDefault)
+    const { error } = await this.browserProxy.handler.setNewTabTarget(target)
     if (!error) {
-      this.newTabDefault_ = newTabDefault
+      this.newTabTarget_ = target
     }
   }
 
