@@ -8,6 +8,7 @@
 
 #include "chrome/browser/ui/views/infobars/infobar_container_view.h"
 #include "ui/base/metadata/metadata_header_macros.h"
+#include "ui/gfx/geometry/rounded_corners_f.h"
 
 class BraveInfoBarContainerView : public InfoBarContainerView {
   METADATA_HEADER(BraveInfoBarContainerView, InfoBarContainerView)
@@ -18,6 +19,21 @@ class BraveInfoBarContainerView : public InfoBarContainerView {
   BraveInfoBarContainerView& operator=(const BraveInfoBarContainerView&) =
       delete;
   ~BraveInfoBarContainerView() override;
+
+  // views::View:
+  void Layout(PassKey) override;
+  void OnThemeChanged() override;
+
+  // When `enabled`, replaces the flat bottom divider with a floating-card
+  // look: margin from the window edges (applied by the browser view's
+  // layout; see BraveBrowserViewTabbedLayoutImpl::AdjustInfobarLayout()) plus
+  // a rounded-rect outline border using `corner_radii`.
+  void SetRoundedBorderEnabled(bool enabled,
+                               const gfx::RoundedCornersF& corner_radii);
+
+ private:
+  bool rounded_border_enabled_ = false;
+  gfx::RoundedCornersF rounded_border_corner_radii_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_INFOBARS_BRAVE_INFOBAR_CONTAINER_VIEW_H_

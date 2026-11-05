@@ -520,7 +520,7 @@ TEST(BraveBrowserViewTabbedLayoutImplTest,
 }
 
 TEST(BraveBrowserViewTabbedLayoutImplTest,
-     CalculateSeparatorInfoMacFullscreenRoundedWithInfobarKeepsSeparator) {
+     CalculateSeparatorInfoMacFullscreenRoundedWithInfobarHidesSeparator) {
   auto mock =
       std::make_unique<testing::NiceMock<MockBrowserViewLayoutDelegate>>();
   EXPECT_CALL(*mock, IsToolbarVisible())
@@ -536,9 +536,11 @@ TEST(BraveBrowserViewTabbedLayoutImplTest,
   layout->SetWindowStateForTesting(
       BrowserViewLayoutDelegate::WindowState::kFullscreenWithToolbar);
 
-  // With an infobar showing, the separator is still needed to divide it from
-  // the toolbar above, so the mac-only branch must not suppress it.
-  EXPECT_TRUE(layout->GetTopContainerSeparatorForTesting());
+  // Brave's infobars draw their own boundary (a flat divider, or an outline in
+  // the rounded-corners style), so the upstream top-container separator above
+  // the infobar is always suppressed, independent of the mac-only branch
+  // above.
+  EXPECT_FALSE(layout->GetTopContainerSeparatorForTesting());
 }
 
 TEST(BraveBrowserViewTabbedLayoutImplTest,

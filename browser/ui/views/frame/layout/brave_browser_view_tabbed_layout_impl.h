@@ -153,6 +153,23 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
   bool ShouldPushBookmarkBarForVerticalTabs() const;
   gfx::Insets GetInsetsConsideringVerticalTabHost() const;
 
+  // Returns the corner radii for the infobar container's rounded-corners
+  // outline border. The infobar floats as its own card (see
+  // AdjustInfobarLayout()); its top corners use the window/border radius the
+  // same way CalculateContentsCornerRadii() does for the contents view when
+  // it's at the top edge, but its bottom corners always use the smaller
+  // radius, since the infobar never touches the window's bottom edge (the
+  // contents view is always below it).
+  gfx::RoundedCornersF CalculateInfobarCornerRadii() const;
+
+  // Brave's sidebar icon strip (SidebarControlView) has its own compositor
+  // layer added after the infobar container in the browser view's child
+  // order, so it paints over (hides) BraveInfoBarContainerView's bottom
+  // divider wherever the two overlap horizontally. Pushes a small
+  // browser-painted patch into the sidebar itself so the divider still reads
+  // as continuous under it. See SidebarContainerView::SetInfobarBottomDividerY().
+  void UpdateSidebarBottomDivider() const;
+
   // Whether the sidebar / vertical tab strip occupies the leading (lowest-X)
   // edge in stored coordinates. As stored bounds are paint-mirrored in RTL,
   // these flip the user's alignment pref so the visual side always matches

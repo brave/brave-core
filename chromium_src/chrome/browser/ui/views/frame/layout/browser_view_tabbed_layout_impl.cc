@@ -61,6 +61,16 @@ BraveBrowserViewTabbedLayoutImpl::CalculateSeparatorInfo() const {
   }
 #endif
 
+  // Brave's infobars draw their own bottom divider (BraveInfoBarContainerView),
+  // and the rounded-corners style draws its own outline around the infobar
+  // instead. Showing upstream's top-container separator above the infobar as
+  // well doubles up the boundary and looks boxed-in, so suppress it whenever
+  // an infobar is visible, regardless of window state or rounded-corners
+  // style.
+  if (delegate().IsInfobarVisible()) {
+    info.top_container_separator = false;
+  }
+
   return info;
 }
 

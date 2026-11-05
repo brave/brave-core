@@ -15,6 +15,7 @@
 #include "base/numerics/safe_conversions.h"
 #include "brave/browser/ui/views/brave_layout_provider.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/infobars/brave_infobar_container_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
@@ -38,6 +39,7 @@
 #include "ui/views/layout/layout_provider.h"
 #include "ui/views/layout/proposed_layout.h"
 #include "ui/views/view_class_properties.h"
+#include "ui/views/view_utils.h"
 
 BraveBrowserViewTabbedLayoutImpl::BraveBrowserViewTabbedLayoutImpl(
     std::unique_ptr<BrowserViewLayoutDelegate> delegate,
@@ -349,6 +351,89 @@ void BraveBrowserViewTabbedLayoutImpl::AdjustInfobarLayout(
       views().vertical_tab_strip_host
           ? std::make_optional(GetInsetsConsideringVerticalTabHost())
           : std::nullopt);
+
+  if (delegate().ShouldUseBraveWebViewRoundedCornersForContents()) {
+    // Float the infobar as its own card, the same margin on every side as
+    // the contents view uses (see GetContentsMargins()). This computation
+    // runs after upstream has already placed the contents view below the
+    // infobar's pre-margin bounds (see BrowserViewTabbedLayoutImpl's own
+    // CalculateProposedLayout(), called at the top of ours), so shrinking the
+    // infobar's bounds here naturally opens up a matching gap above the
+    // contents view without needing to touch its layout too.
+    infobar_layout->bounds.Inset(kRoundedCornersContentsViewMargin);
+  }
+}
+
+void BraveBrowserViewTabbedLayoutImpl::UpdateSidebarBottomDivider() const {
+  if (!views().sidebar_container) {
+    return;
+  }
+
+  if (!IsParentedTo(views().infobar_container, views().browser_view) ||
+      !delegate().IsInfobarVisible() ||
+      delegate().ShouldUseBraveWebViewRoundedCornersForContents()) {
+    views().sidebar_container->SetInfobarBottomDividerY(std::nullopt);
+    return;
+  }
+
+  // Both views are direct children of the browser view, so they share the
+  // same coordinate space; convert the infobar's bottom edge into the
+  // sidebar's own local coordinates.
+  const gfx::Rect infobar_bounds = views().infobar_container->bounds();
+  const gfx::Rect sidebar_bounds = views().sidebar_container->bounds();
+  views().sidebar_container->SetInfobarBottomDividerY(infobar_bounds.bottom() -
+                                                       sidebar_bounds.y());
+}
+
+gfx::RoundedCornersF
+BraveBrowserViewTabbedLayoutImpl::CalculateInfobarCornerRadii() const {
+  if (!delegate().ShouldUseBraveWebViewRoundedCornersForContents()) {
+    return {};
+  }
+
+  auto* layout_provider = views::LayoutProvider::Get();
+  const float window_corner_radius = layout_provider->GetCornerRadiusMetric(
+      ExtendedShapeContextTokens::kRoundedCornersBorderRadiusAtWindowCorner);
+  const float border_corner_radius = layout_provider->GetCornerRadiusMetric(
+      ExtendedShapeContextTokens::kRoundedCornersBorderRadius);
+
+  bool has_left_ui = false;
+  bool has_right_ui = false;
+
+  if (IsVerticalTabStripAtContentsEdge()) {
+    if (delegate().IsVerticalTabOnRight()) {
+      has_right_ui = true;
+    } else {
+      has_left_ui = true;
+    }
+  }
+
+  if (IsSidebarAtContentsEdge()) {
+    bool on_left = false;
+    if (views().sidebar_container) {
+      on_left = views().sidebar_container->sidebar_on_left();
+    } else if (views().side_panel) {
+      on_left = !views().side_panel->IsRightAligned();
+    }
+    if (on_left) {
+      has_left_ui = true;
+    } else {
+      has_right_ui = true;
+    }
+  }
+
+  // The infobar floats as its own card (see AdjustInfobarLayout()); it never
+  // touches the window's bottom edge, since the contents view is always
+  // below it, so the bottom corners always use the smaller "not a window
+  // corner" radius. The top corners use the window radius, the same way
+  // CalculateContentsCornerRadii() does for the contents view when it's at
+  // the top edge, unless side UI (sidebar/vertical tabs) narrows that side.
+  gfx::RoundedCornersF corner_radii(border_corner_radius);
+  corner_radii.set_upper_left(has_left_ui ? border_corner_radius
+                                          : window_corner_radius);
+  corner_radii.set_upper_right(has_right_ui ? border_corner_radius
+                                            : window_corner_radius);
+  return corner_radii;
 }
 
 gfx::Rect BraveBrowserViewTabbedLayoutImpl::CalculateTopContainerLayout(
@@ -401,6 +486,16 @@ void BraveBrowserViewTabbedLayoutImpl::DoPostLayoutVisualAdjustments(
   BrowserViewTabbedLayoutImpl::DoPostLayoutVisualAdjustments(params);
   UpdateInsetsForVerticalTabStrip();
   delegate().UpdateContentsCornerRadii(CalculateContentsCornerRadii());
+  UpdateSidebarBottomDivider();
+
+  if (auto* infobar_container = views::AsViewClass<BraveInfoBarContainerView>(
+          views().infobar_container.get())) {
+    const bool rounded =
+        delegate().IsInfobarVisible() &&
+        delegate().ShouldUseBraveWebViewRoundedCornersForContents();
+    infobar_container->SetRoundedBorderEnabled(rounded,
+                                               CalculateInfobarCornerRadii());
+  }
 
   UpdateVerticalTabStripCorners(params);
 
