@@ -306,7 +306,7 @@ class RunableConfiguration:
 
       test_success: Optional[bool] = None
       attempt: int = 0
-      while test_success != True and attempt <= self.common_options.retry_count:
+      while not test_success and attempt <= self.common_options.retry_count:
         attempt += 1
         test_success = self.RunSingleTest(
           self.config, benchmark, test_out_dir, self.common_options.local_run

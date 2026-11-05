@@ -22,7 +22,6 @@ import contextlib
 import logging
 import os
 import subprocess
-import sys
 
 DEFAULT_TSC_TIMEOUT_SEC = int(os.environ.get('CHROMIUM_TSC_TIMEOUT_SEC', '90'))
 DEFAULT_TSC_MAX_RETRIES = int(os.environ.get('CHROMIUM_TSC_MAX_RETRIES', '2'))

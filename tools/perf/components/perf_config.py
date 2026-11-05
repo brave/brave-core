@@ -54,7 +54,7 @@ class RunnerConfig:
     for key in json:
       if key == 'target':
         self.version, location = ParseTarget(json[key])
-        if not 'location' in json:
+        if 'location' not in json:
           self.location = location
         continue
       if key == 'browser-type':

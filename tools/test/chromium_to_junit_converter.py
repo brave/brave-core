@@ -15,7 +15,7 @@ import sys
 import time
 import xml.etree.ElementTree as ET
 from xml.dom import minidom
-from typing import Dict, List, Optional, Union
+from typing import Dict
 
 
 class ChromiumToJUnitConverter:
