@@ -6,7 +6,6 @@
 """Tests for git_cr_follow_renames.py."""
 
 import logging
-import os
 import unittest
 from pathlib import Path
 from unittest.mock import patch
@@ -18,7 +17,6 @@ from alias.follow_renames import (
     _collapse_renames,
     _get_chromium_renames,
     _repair_patch_files,
-    _repair_plaster_files,
     cmd_follow_renames,
 )
 from test.fake_chromium_repo import FakeChromiumRepo

@@ -120,7 +120,7 @@ Subcommands:
 from __future__ import annotations
 
 import argparse
-from collections.abc import Callable, Mapping, Sequence
+from collections.abc import Mapping, Sequence
 import os
 import dataclasses
 from dataclasses import dataclass

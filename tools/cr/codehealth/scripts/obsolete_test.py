@@ -536,7 +536,9 @@ class TestFiltersTest(unittest.TestCase):
                 TestIndex(_OLD_TESTS),
                 TestIndex(_NEW_TESTS + ['TEST_F(NewVisualTest, Case) {']),
             )
-            return [l for l in filters.run() if 'new subclass suite' in l]
+            return [
+                line for line in filters.run() if 'new subclass suite' in line
+            ]
 
         self.assertEqual([], subclass_lines('-FooTest.Renamed\n'))
         self.assertEqual(
@@ -709,7 +711,9 @@ class LiftOverridesTest(unittest.TestCase):
         overrides = LiftOverrides(FakeRange(brave))
         touching = {'added\tchromium_src/a.cc': ['abc Change a']}
         with mock.patch.object(
-            overrides, '_touching', side_effect=lambda l: touching.get(l, [])
+            overrides,
+            '_touching',
+            side_effect=lambda path: touching.get(path, []),
         ):
             self.assertEqual(
                 [

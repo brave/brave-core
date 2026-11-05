@@ -9,7 +9,6 @@ import subprocess
 import unittest
 from unittest.mock import patch
 
-import gh_cli
 from gh_cli import GhCli
 
 
