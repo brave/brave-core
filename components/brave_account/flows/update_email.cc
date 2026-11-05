@@ -10,8 +10,8 @@
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "brave/components/brave_account/brave_account_service_constants.h"
-#include "brave/components/brave_account/endpoint_client/with_headers.h"
 #include "brave/components/brave_account/flows/make_request.h"
+#include "brave/components/endpoint_client/with_headers.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_account {

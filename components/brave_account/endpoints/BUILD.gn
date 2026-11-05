@@ -22,8 +22,9 @@ source_set("endpoints") {
   ]
 
   public_deps = [
-    "//brave/components/brave_account/endpoint_client",
     "//brave/components/brave_account/endpoints:generated_api_types",
+    "//brave/components/endpoint_client",
+    "//brave/components/endpoint_client:brave_endpoint",
   ]
 }
 
@@ -71,9 +72,9 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
-    "//brave/components/brave_account/endpoint_client",
-    "//brave/components/brave_account/endpoint_client:test_support",
     "//brave/components/brave_account/endpoints",
+    "//brave/components/endpoint_client",
+    "//brave/components/endpoint_client:test_support",
     "//net",
     "//services/network:test_support",
     "//services/network/public/cpp",

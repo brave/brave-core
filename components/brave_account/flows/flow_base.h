@@ -20,10 +20,10 @@
 #include "base/types/expected.h"
 #include "brave/components/brave_account/brave_account_encryption.h"
 #include "brave/components/brave_account/brave_account_state_prefs.h"
-#include "brave/components/brave_account/endpoint_client/client.h"
-#include "brave/components/brave_account/endpoint_client/request_handle.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/brave_account/state_internal.h"
+#include "brave/components/endpoint_client/client.h"
+#include "brave/components/endpoint_client/request_handle.h"
 
 namespace network {
 class SharedURLLoaderFactory;

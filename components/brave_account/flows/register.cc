@@ -11,10 +11,10 @@
 #include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "base/types/expected.h"
-#include "brave/components/brave_account/endpoint_client/with_headers.h"
 #include "brave/components/brave_account/flows/make_request.h"
 #include "brave/components/brave_account/mojom/register.mojom.h"
 #include "brave/components/brave_account/state_internal.h"
+#include "brave/components/endpoint_client/with_headers.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_account {

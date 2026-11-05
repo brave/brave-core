@@ -19,7 +19,6 @@
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/components/brave_account/brave_account_encryption.h"
 #include "brave/components/brave_account/brave_account_service.h"
-#include "brave/components/brave_account/endpoint_client/test_support.h"
 #include "brave/components/brave_account/endpoints/auth_validate.h"
 #include "brave/components/brave_account/endpoints/login_finalize.h"
 #include "brave/components/brave_account/endpoints/login_init.h"
@@ -31,6 +30,7 @@
 #include "brave/components/email_aliases/email_aliases_service.h"
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/email_aliases/pref_names.h"
+#include "brave/components/endpoint_client/test_support.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_browsertest_util.h"
@@ -74,7 +74,7 @@ void MockLoginResponses(
   using brave_account::endpoints::LoginInit;
   using brave_account::endpoints::ServiceToken;
 
-  brave_account::endpoint_client::MockResponseFor<LoginInit>(
+  endpoint_client::MockResponseFor<LoginInit>(
       test_url_loader_factory,
       {.net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
          LoginInit::Response::SuccessBody body;
@@ -83,7 +83,7 @@ void MockLoginResponses(
          return body;
        }()});
 
-  brave_account::endpoint_client::MockResponseFor<LoginFinalize>(
+  endpoint_client::MockResponseFor<LoginFinalize>(
       test_url_loader_factory,
       {.net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
          LoginFinalize::Response::SuccessBody body;
@@ -92,7 +92,7 @@ void MockLoginResponses(
          return body;
        }()});
 
-  brave_account::endpoint_client::MockResponseFor<ServiceToken>(
+  endpoint_client::MockResponseFor<ServiceToken>(
       test_url_loader_factory,
       {.net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
          ServiceToken::Response::SuccessBody body;
