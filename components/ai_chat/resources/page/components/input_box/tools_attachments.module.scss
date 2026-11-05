@@ -65,7 +65,7 @@
   border-radius: var(--leo-radius-full);
   background-color: var(--leo-color-container-background);
 
-  &:hover {
+  &:not(.toolPillStatic):hover {
     background-color: var(--leo-color-container-highlight);
   }
 }
@@ -84,15 +84,18 @@
   overflow: hidden;
 }
 
-// Opens the tools dialog, but styled as plain pill content so the pill still
-// reads as a single element.
-.toolPillOpen {
+.toolPillContent {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: var(--leo-spacing-s);
   width: 100%;
   min-width: 0;
+}
+
+// Opens the tools dialog, but styled as plain pill content so the pill still
+// reads as a single element.
+.toolPillOpen {
   appearance: none;
   margin: 0;
   padding: 0;

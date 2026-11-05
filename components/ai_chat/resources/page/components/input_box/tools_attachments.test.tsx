@@ -28,14 +28,17 @@ const TOOLS: Mojom.ToolInfo[] = [
   { name: 'cancel_cart', description: 'Remove all items from the cart.' },
 ]
 
-async function renderToolsAttachments(tools: Mojom.ToolInfo[]) {
+async function renderToolsAttachments(
+  tools: Mojom.ToolInfo[],
+  content: Mojom.AssociatedContent = CONTENT,
+) {
   const getContentTools = jest.fn(() => Promise.resolve({ tools }))
   const setToolsAttached = jest.fn()
   await act(async () => {
     render(
       <MockContext conversationHandler={{ getContentTools }}>
         <ToolsAttachments
-          toolsContent={[CONTENT]}
+          toolsContent={[content]}
           setToolsAttached={setToolsAttached}
         />
       </MockContext>,
@@ -85,6 +88,28 @@ describe('ToolsAttachments', () => {
     })
 
     expect(screen.getByText('CHAT_UI_WEBSITE_TOOLS_TITLE')).toBeInTheDocument()
+  })
+
+  it('does not open the tools dialog for a workspace', async () => {
+    const workspace: Mojom.AssociatedContent = {
+      ...CONTENT,
+      contentType: Mojom.ContentType.Workspace,
+      title: 'Workspace',
+      url: { url: 'workspace://abc' },
+    }
+    const { setToolsAttached } = await renderToolsAttachments(TOOLS, workspace)
+
+    expect(await screen.findByText('2')).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /Workspace/ })).toBeNull()
+
+    await act(async () => {
+      fireEvent.click(screen.getAllByText('Workspace')[0])
+    })
+    expect(screen.queryByText('CHAT_UI_WEBSITE_TOOLS_TITLE')).toBeNull()
+
+    // It can still be removed.
+    fireEvent.click(document.querySelector('leo-button.toolPillRemove')!)
+    expect(setToolsAttached).toHaveBeenCalledWith(workspace, false)
   })
 
   it('detaches the tools when the pill is removed', async () => {

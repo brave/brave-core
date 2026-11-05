@@ -115,6 +115,11 @@ class WorkspaceAssociatedContent : public AssociatedContentDelegate,
   // launchQueue. Runs once the page's main frame has loaded.
   void DeliverDirectoryHandle(content::RenderFrameHost* rfh);
 
+  // Whether the workspace origin has been granted File System Access to a
+  // user-picked folder. If not, its tools can only touch the workspace's own
+  // OPFS, so they run without a permission prompt.
+  bool HasFolderAccess() const;
+
   void OnContentToolsFetched(
       GetContentToolsCallback callback,
       content::WeakDocumentPtr rfh,
