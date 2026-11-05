@@ -125,6 +125,9 @@ best-practice entries, or external documentation. Readers must be able to
 understand and apply the practice without following a link. Distill only the
 relevant guidance; do not copy entire source documents.
 
+Keep best practices consistent with other documentation. Resolve conflicting
+guidance by updating the affected documents in the same change.
+
 The following example applies to general project documentation:
 
 ```markdown
