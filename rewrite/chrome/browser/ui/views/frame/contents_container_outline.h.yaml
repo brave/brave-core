@@ -1,0 +1,27 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Friend BraveContentsContainerOutline
+
+      Our subclass overrides OnPaint() to stroke Brave's own outline styles,
+      and needs the observed mini toolbar to decide whether the path detours
+      around it.
+    add_friend:
+      class_name: ContentsContainerOutline
+      friend_type: class BraveContentsContainerOutline
+
+  - description: |-
+      Let our subclass set the mini toolbar's clip path.
+
+      Upstream computes the clip's notch from the toolbar's own rect while
+      OnPaint() computes the stroke's notch from the outline's bounds. The two
+      curves only coincide for upstream's thickness, so with Brave's thicknesses
+      the toolbar's rounded corners poke outside the stroke and the web contents
+      show through the sliver. Our override derives both from one path.
+    make_virtual:
+      class_name: ContentsContainerOutline
+      method_name: SetClipPath
