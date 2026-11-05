@@ -2,68 +2,22 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import type { ElementPickerAPI } from './element_picker_api'
+import { elementPickerTemplate } from './element_picker_template'
+
 const NSSVG = 'http://www.w3.org/2000/svg'
 
 let pickerDiv: HTMLDivElement | null
 let shadowRoot: ShadowRoot | null
-let isAndroid: boolean | null
+let isMobile: boolean | null
 let btnCreateEnabledText: string
 let btnCreateDisabledText: string
 let btnShowRulesBoxText: string
 let btnHideRulesBoxText: string
 
-const api = {
-  cosmeticFilterCreate: (selector: string) => {
-    cf_worker.addSiteCosmeticFilter(selector)
-  },
-  cosmeticFilterManage: () => {
-    cf_worker.manageCustomFilters()
-  },
-  getElementPickerThemeInfo: (
-    callback: (isDarkModeEnabled: boolean, bgcolor: number) => void,
-  ) => {
-    cf_worker
-      .getElementPickerThemeInfo()
-      .then((val: { isDarkModeEnabled: boolean; bgcolor: number }) => {
-        callback(val.isDarkModeEnabled, val.bgcolor)
-      })
-  },
-  getLocalizedTexts: (
-    callback: (
-      btnCreateDisabledText: string,
-      btnCreateEnabledText: string,
-      btnManageText: string,
-      btnShowRulesBoxText: string,
-      btnHideRulesBoxText: string,
-      btnQuitText: string,
-    ) => void,
-  ) => {
-    cf_worker
-      .getLocalizedTexts()
-      .then(
-        (val: {
-          btnCreateDisabledText: string
-          btnCreateEnabledText: string
-          btnManageText: string
-          btnShowRulesBoxText: string
-          btnHideRulesBoxText: string
-          btnQuitText: string
-        }) => {
-          callback(
-            val.btnCreateDisabledText,
-            val.btnCreateEnabledText,
-            val.btnManageText,
-            val.btnShowRulesBoxText,
-            val.btnHideRulesBoxText,
-            val.btnQuitText,
-          )
-        },
-      )
-  },
-  getPlatform: (): string => {
-    return cf_worker.getPlatform()
-  },
-}
+// Set by `showElementPicker()` before any of the picker UI is created.
+let api: ElementPickerAPI
 
 // When the picker is activated, it eats all pointer events and takes up the
 // entire screen. All calls to document.elementFromPoint(..) will return the
@@ -262,7 +216,7 @@ const cssSelectorFromElement = (elem: Element): ElementSelectorBuilder => {
         if (data !== undefined && data.length > 0) {
           // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs
           if (data.startsWith('data:')) {
-            data = data.split(',')[1].slice(0, 256)
+            data = data.split(',')[1]?.slice(0, 256)
           }
         }
         if (data === undefined || data.length === 0) {
@@ -363,10 +317,9 @@ const attachElementPicker = () => {
   pickerDiv.id = 'brave-element-picker'
   shadowRoot = pickerDiv.attachShadow({ mode: 'closed' })
 
-  // Will be resolved by webpack to the file content.
   // It's a trusted content so it's safe to use innerHTML.
-  // eslint-disable-next-line no-unsanitized/property, @typescript-eslint/no-require-imports
-  shadowRoot.innerHTML = require('./element_picker.html')
+  // eslint-disable-next-line no-unsanitized/property
+  shadowRoot.innerHTML = elementPickerTemplate
 
   const pickerCSSStyle: string = [
     'background: transparent',
@@ -413,7 +366,6 @@ interface TargetRect {
 
 class Target {
   element: Element
-  rectElem: Element
   coord: TargetRect
 
   constructor(elem: Element) {
@@ -510,7 +462,8 @@ const onTargetSelected = (selected: Element | null, index: number): string => {
     0b10011, // No attributes, no class names
     0b11111, // All selector rules (default)
   ]
-  const mask: number = specificityMasks[index]
+  // Fall back to the default (all selector rules) for an out-of-range index.
+  const mask: number = specificityMasks[index] ?? 0b11111
 
   if (mask & SpecificityFlags.Hierarchy) {
     while (elem !== null && elem !== document.body) {
@@ -525,6 +478,9 @@ const onTargetSelected = (selected: Element | null, index: number): string => {
   let i = 0
   for (; i < selectorBuilders.length; i++) {
     const b = selectorBuilders[i]
+    if (!b) {
+      continue
+    }
     try {
       if (
         (mask & SpecificityFlags.Id && b.hasId)
@@ -654,11 +610,11 @@ const launchElementPicker = (root: ShadowRoot) => {
   let hasSelectedTarget = false
 
   const btnShowRulesBox = root.getElementById('btn-show-rules-box')
-  if (isAndroid && btnShowRulesBox) {
+  if (isMobile && btnShowRulesBox) {
     btnShowRulesBox.style.display = 'none'
   }
 
-  if (isAndroid) {
+  if (isMobile) {
     const minimizeButton = root.getElementById('card-header')!
     minimizeButton.addEventListener('click', () => {
       setMinimizeState(true)
@@ -685,15 +641,10 @@ const launchElementPicker = (root: ShadowRoot) => {
     },
   })
 
+  // ShadowRoot has no typed event map, so the handler needs a cast here.
   root.addEventListener(
     'keydown',
-    (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        event.stopPropagation()
-        event.preventDefault()
-        quitElementPicker()
-      }
-    },
+    elementPickerOnKeydown as EventListener,
     true,
   )
 
@@ -744,7 +695,7 @@ const launchElementPicker = (root: ShadowRoot) => {
     })
   }
 
-  if (!isAndroid) {
+  if (!isMobile) {
     section.classList.add('desktop')
   }
 
@@ -755,13 +706,13 @@ const launchElementPicker = (root: ShadowRoot) => {
     } else {
       createButton.textContent = btnCreateDisabledText
     }
-    if (!isAndroid) {
+    if (!isMobile) {
       section.style.setProperty('opacity', show ? '1' : '0.2')
     }
   }
   targetedElems.togglePicker = togglePopup
 
-  if (isAndroid) {
+  if (isMobile) {
     const sc = root.getElementById('slider-container') as HTMLInputElement
     sc.style.display = 'none'
   }
@@ -776,7 +727,7 @@ const launchElementPicker = (root: ShadowRoot) => {
   }
   const retrieveTheme = () => {
     api.getElementPickerThemeInfo(
-      (isDarkModeEnabled: boolean, bgcolor: number) => {
+      (_isDarkModeEnabled: boolean, bgcolor: number) => {
         const bgcolorMaskOut = bgcolor & 0xffffff
         const colorHex = `#${bgcolorMaskOut.toString(16).padStart(6, '0')}`
         section.style.setProperty('--theme-background-color', colorHex)
@@ -786,7 +737,7 @@ const launchElementPicker = (root: ShadowRoot) => {
     )
   }
   const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)')
-  const handleColorSchemeChange = (event: MediaQueryListEvent) => {
+  const handleColorSchemeChange = () => {
     retrieveTheme()
   }
   prefersDarkScheme.addEventListener('change', handleColorSchemeChange)
@@ -811,7 +762,9 @@ const launchElementPicker = (root: ShadowRoot) => {
       elem = elementFromFrameCoords(event.clientX, event.clientY)
     } else if (event instanceof TouchEvent) {
       const touch = event.touches[0]
-      elem = elementFromFrameCoords(touch.clientX, touch.clientY)
+      if (touch) {
+        elem = elementFromFrameCoords(touch.clientX, touch.clientY)
+      }
     }
 
     if (elem) {
@@ -854,7 +807,7 @@ const launchElementPicker = (root: ShadowRoot) => {
     if (!target || !trigger) {
       return
     }
-    trigger.addEventListener('click', (e) => {
+    trigger.addEventListener('click', () => {
       if (target.style.display !== 'block') {
         target.style.display = 'block'
         setShowRulesHiddenBtnState(trigger, true)
@@ -902,7 +855,6 @@ const highlightElements = () => {
     // target rectangle orange
     const targetingArea = mask.cloneNode(false) as SVGRectElement
     targetingArea.classList.add('target')
-    target.rectElem = targetingArea
 
     svgFragment.appendChild(targetingArea)
   }
@@ -941,9 +893,21 @@ const localizeTextData = (
   }
 }
 
-const active = document.getElementById('brave-element-picker')
-if (!active) {
-  isAndroid = api.getPlatform() === 'android'
+// Opens the element picker, or un-minimizes it if it is already open. The
+// platform supplies its own `ElementPickerAPI` since the browser-side
+// transport differs between Chromium and WebKit.
+export const showElementPicker = (platformApi: ElementPickerAPI) => {
+  api = platformApi
+
+  const active = document.getElementById('brave-element-picker')
+  if (active) {
+    // Re-opening existing picker
+    setMinimizeState(false)
+    return
+  }
+
+  const platform = api.getPlatform()
+  isMobile = platform === 'android' || platform === 'ios'
   const root = attachElementPicker()
   api.getLocalizedTexts(
     (
@@ -966,7 +930,4 @@ if (!active) {
       launchElementPicker(root)
     },
   )
-} else {
-  // Re-opening existing picker
-  setMinimizeState(false)
 }
