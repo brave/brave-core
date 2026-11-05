@@ -1000,6 +1000,12 @@ BraveBrowserViewTabbedLayoutImpl::CalculateContentsCornerRadiiForTesting()
   return CalculateContentsCornerRadii();
 }
 
+gfx::RoundedCornersF
+BraveBrowserViewTabbedLayoutImpl::CalculateInfobarCornerRadiiForTesting()
+    const {
+  return CalculateInfobarCornerRadii();
+}
+
 bool BraveBrowserViewTabbedLayoutImpl::ShouldPushBookmarkBarForVerticalTabs()
     const {
   CHECK(views().vertical_tab_strip_host)
