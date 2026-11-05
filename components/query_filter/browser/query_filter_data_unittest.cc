@@ -5,10 +5,14 @@
 
 #include "brave/components/query_filter/browser/query_filter_data.h"
 
+#include <optional>
+
 #include "base/test/scoped_feature_list.h"
+#include "brave/components/query_filter/browser/utils.h"
 #include "brave/components/query_filter/common/features.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
 
 namespace query_filter {
 
@@ -296,6 +300,44 @@ TEST_F(QueryFilterDataTest,
   EXPECT_TRUE(new_rules[0].exclude.empty());
   EXPECT_THAT(new_rules[0].params,
               testing::ElementsAre("__hsfp", "gclid", "fbclid"));
+}
+
+TEST_F(QueryFilterDataTest, TestXComShareParamsAreStripped) {
+  constexpr char kJson[] = R"json([
+    {
+      "include": [
+        "*://*.twitter.com/*",
+        "*://twitter.com/*",
+        "*://*.x.com/*",
+        "*://x.com/*"
+      ],
+      "exclude": [],
+      "params": [
+        "a",
+        "ref_src",
+        "ref_url",
+        "s",
+        "t"
+      ]
+    }
+  ])json";
+
+  EXPECT_TRUE(instance()->PopulateDataFromComponent(kJson));
+  const auto& rules = GetQueryFilterRules();
+  ASSERT_EQ(1UL, rules.size());
+  EXPECT_THAT(rules[0].include,
+              testing::ElementsAre("*://*.twitter.com/*", "*://twitter.com/*",
+                                   "*://*.x.com/*", "*://x.com/*"));
+  EXPECT_TRUE(rules[0].exclude.empty());
+  EXPECT_THAT(rules[0].params,
+              testing::ElementsAre("a", "ref_src", "ref_url", "s", "t"));
+
+  const GURL original(
+      "https://x.com/xyz/status/21057"
+      "?a=-XFpoSUNWABr-LXx6po&s=20");
+  const std::optional<GURL> filtered = ApplyQueryFilter(original);
+  ASSERT_TRUE(filtered.has_value());
+  EXPECT_EQ(GURL("https://x.com/xyz/status/21057"), *filtered);
 }
 
 }  // namespace query_filter
