@@ -525,7 +525,7 @@ class AIChatService : public KeyedService,
   bool IsConversationVisible(const std::string& uuid) const;
   // Moves |uuid| out of kGenerating once its handler is neither generating nor
   // running tools: to kIdle if a client is connected, otherwise to
-  // kAwaitingUserInput if it stopped on a tool use request, or else to
+  // kAwaitingUserInput if it stopped on a permission challenge, or else to
   // kCompletedNotViewed.
   void MaybeCompleteGeneration(const std::string& uuid);
   // Deletes a conversation without notifying the conversation list.

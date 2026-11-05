@@ -9126,4 +9126,37 @@ TEST_F(ConversationHandlerUnitTest, GetCurrentModelFallsBackToAutomatic) {
             kChatAutomaticModelKey);
 }
 
+TEST_F(ConversationHandlerUnitTest,
+       IsAwaitingUserInput_OnlyForPendingPermissionChallenge) {
+  EXPECT_FALSE(conversation_handler_->IsAwaitingUserInput());
+
+  auto set_last_tool_use = [&](mojom::PermissionChallengePtr challenge) {
+    std::vector<mojom::ConversationEntryEventPtr> events;
+    events.push_back(mojom::ConversationEntryEvent::NewToolUseEvent(
+        mojom::ToolUseEvent::New("test_tool", "tool_id_1", "{}", std::nullopt,
+                                 std::nullopt, std::move(challenge), false)));
+    std::vector<mojom::ConversationTurnPtr> history;
+    history.push_back(mojom::ConversationTurn::New(
+        "turn-0", std::nullopt /* thread_uuid */,
+        mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE, "",
+        std::nullopt /* prompt */, std::nullopt /* selected_text */,
+        std::move(events), base::Time::Now(), std::nullopt /* edits */,
+        std::nullopt /* uploaded_images */, nullptr /* skill */,
+        false /* from_brave_search_SERP */, std::nullopt /* model_key */,
+        nullptr /* near_verification_status */,
+        std::vector<std::string>{} /* child_thread_uuids */));
+    conversation_handler_->SetChatHistoryForTesting(std::move(history));
+  };
+
+  // An unanswered tool use with nothing to approve, e.g. one reloaded from
+  // storage, doesn't need the user.
+  set_last_tool_use(nullptr);
+  EXPECT_FALSE(conversation_handler_->IsAwaitingUserInput());
+
+  set_last_tool_use(mojom::PermissionChallenge::New(
+      std::nullopt, "plan", std::nullopt, std::nullopt, std::nullopt,
+      /*supports_allow_session=*/false));
+  EXPECT_TRUE(conversation_handler_->IsAwaitingUserInput());
+}
+
 }  // namespace ai_chat

@@ -505,9 +505,15 @@ bool ConversationHandler::IsAwaitingUserInput() const {
       !last_entry->events) {
     return false;
   }
+  // Only a live permission challenge counts: challenges aren't persisted, and a
+  // tool use left unanswered for any other reason (stopped, reloaded from
+  // storage) has nothing for the user to approve.
   return std::ranges::any_of(*last_entry->events, [](const auto& event) {
-    return event->is_tool_use_event() &&
-           !event->get_tool_use_event()->output.has_value();
+    if (!event->is_tool_use_event()) {
+      return false;
+    }
+    const auto& tool_use = event->get_tool_use_event();
+    return !tool_use->output.has_value() && tool_use->permission_challenge;
   });
 }
 
