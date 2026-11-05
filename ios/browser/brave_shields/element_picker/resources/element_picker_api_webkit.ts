@@ -29,12 +29,17 @@ export class WebKitElementPickerAPI implements ElementPickerAPI {
   ) {
     sendTokenizedWebKitMessageWithReply(messageHandlerName, {
       request_type: 'theme_info',
-    }).then((val: { isDarkModeEnabled: boolean; bgcolor: number } | null) => {
-      if (!val) {
-        return
-      }
-      callback(val.isDarkModeEnabled, val.bgcolor)
     })
+      .then((val: { isDarkModeEnabled: boolean; bgcolor: number } | null) => {
+        if (!val) {
+          console.error('Element picker received no theme info')
+          return
+        }
+        callback(val.isDarkModeEnabled, val.bgcolor)
+      })
+      .catch((error) => {
+        console.error('Element picker failed to get theme info:', error)
+      })
   }
 
   getLocalizedTexts(
@@ -49,30 +54,35 @@ export class WebKitElementPickerAPI implements ElementPickerAPI {
   ) {
     sendTokenizedWebKitMessageWithReply(messageHandlerName, {
       request_type: 'localized_texts',
-    }).then(
-      (
-        val: {
-          btnCreateDisabledText: string
-          btnCreateEnabledText: string
-          btnManageText: string
-          btnShowRulesBoxText: string
-          btnHideRulesBoxText: string
-          btnQuitText: string
-        } | null,
-      ) => {
-        if (!val) {
-          return
-        }
-        callback(
-          val.btnCreateDisabledText,
-          val.btnCreateEnabledText,
-          val.btnManageText,
-          val.btnShowRulesBoxText,
-          val.btnHideRulesBoxText,
-          val.btnQuitText,
-        )
-      },
-    )
+    })
+      .then(
+        (
+          val: {
+            btnCreateDisabledText: string
+            btnCreateEnabledText: string
+            btnManageText: string
+            btnShowRulesBoxText: string
+            btnHideRulesBoxText: string
+            btnQuitText: string
+          } | null,
+        ) => {
+          if (!val) {
+            console.error('Element picker received no localized texts')
+            return
+          }
+          callback(
+            val.btnCreateDisabledText,
+            val.btnCreateEnabledText,
+            val.btnManageText,
+            val.btnShowRulesBoxText,
+            val.btnHideRulesBoxText,
+            val.btnQuitText,
+          )
+        },
+      )
+      .catch((error) => {
+        console.error('Element picker failed to get localized texts:', error)
+      })
   }
 
   getPlatform() {
