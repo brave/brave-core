@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+// Only makes brave::GetToolbarsIconSize() available to the patched icon
+// size in SavedTabGroupButton::UpdateButtonLayout().
 #include "brave/browser/ui/toolbars_small_icons.h"
 
 #include <chrome/browser/ui/views/bookmarks/saved_tab_groups/saved_tab_group_button.cc>

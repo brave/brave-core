@@ -12,6 +12,8 @@ BASE_FEATURE(kBraveNtpSearchWidget,
 
 BASE_FEATURE(kBraveFilledBookmarkFolderIcon, base::FEATURE_DISABLED_BY_DEFAULT);
 
+// Uses 18px icons in the toolbar, tab strip, vertical tabs, sidebar, side
+// panel header and bookmarks bar. Exposed as #toolbars-small-icons.
 BASE_FEATURE(kBraveToolbarsSmallIcons, base::FEATURE_DISABLED_BY_DEFAULT);
 
 #if BUILDFLAG(IS_WIN)

@@ -1667,6 +1667,7 @@ source_set("ui_features") {
   sources = [
     "brave_ui_features.cc",
     "brave_ui_features.h",
+    "toolbars_small_icons.cc",
     "toolbars_small_icons.h",
   ]
   public_deps = [ "//base" ]

@@ -9,4 +9,5 @@ substitutions:
       the icon honors #toolbars-small-icons like other toolbar buttons.'
     regex:
       pattern: 'return kDefaultIconSizeChromeRefresh;'
-      replace: 'return GetLayoutConstant(LayoutConstant::kToolbarButtonIconSize);'
+      replace:
+        'return GetLayoutConstant(LayoutConstant::kToolbarButtonIconSize);'
