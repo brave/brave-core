@@ -9,19 +9,22 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
-#include "brave/browser/ui/views/frame/brave_contents_view_util.h"
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/infobars/brave_confirm_infobar.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "components/infobars/core/infobar.h"
+#include "third_party/skia/include/core/SkBlendMode.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_provider.h"
 #include "ui/compositor/layer.h"
 #include "ui/gfx/canvas.h"
+#include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
+#include "ui/views/painter.h"
 #include "ui/views/view.h"
 #include "ui/views/view_utils.h"
 
@@ -41,6 +44,22 @@ BraveConfirmInfoBar* AsBraveConfirmInfoBar(const infobars::InfoBar* infobar,
 }
 
 constexpr int kContentSeparatorHeightDip = 1;
+
+// The same 1px ring the contents view wears, so the floating infobar card
+// reads as its sibling. Fills its own rounded path with the band's backdrop
+// colour and strokes it, leaving the area outside the corners untouched.
+std::unique_ptr<views::Border> CreateOutlineBorder(
+    const ui::ColorProvider* color_provider,
+    const gfx::RoundedCornersF& corner_radii) {
+  return views::CreateBorderPainter(
+      views::Painter::CreateRoundRectWith1PxBorderPainter(
+          color_provider->GetColor(kColorToolbar),
+          color_provider->GetColor(kColorBraveContentsOutline), corner_radii,
+          SkBlendMode::kSrc,
+          /*antialias=*/true,
+          /*should_border_scale=*/true),
+      gfx::Insets(kRoundedCornersContentsOutlineThickness));
+}
 
 // Upstream draws a heavy BubbleBorder drop shadow here; Brave wants a
 // flatter look, but removing it entirely leaves no browser-drawn line
@@ -213,8 +232,7 @@ void BraveInfoBarContainerView::UpdateOutlineBorder() {
   if (!color_provider) {
     return;
   }
-  SetBorder(BraveContentsViewUtil::CreateContentsOutlineBorder(
-      color_provider, GetOutlineCornerRadii()));
+  SetBorder(CreateOutlineBorder(color_provider, GetOutlineCornerRadii()));
 }
 
 void BraveInfoBarContainerView::UpdateInfoBarCornerRadii() {
