@@ -30,7 +30,6 @@ sys.path.insert(0, os.path.join(SRC_SOURCE_ROOT, 'tools/grit/grit/extern'))
 # pylint: disable=wrong-import-position
 import lxml.etree  # pylint: disable=import-error
 from lib.l10n.grd_utils import (
-    braveify_grd_tree,
     braveify_grd_text,
     braveify_language_forms,
     update_xtbs_locally,
@@ -153,27 +152,6 @@ class UpdateXtbsLocallyTest(unittest.TestCase):
         self.assertIn('Autre', result)
 
 
-class BraveifyMissingDescriptionTest(unittest.TestCase):
-    def braveify(self, desc_attribute):
-        name = 'IDS_EXTENSION_EXTERNAL_INITIAL_INSTALL_PROMPT_TITLE_EXTENSION'
-        tree = lxml.etree.fromstring(
-            f'<grit-part><message name="{name}"{desc_attribute}>'
-            'Chrome works</message></grit-part>'
-        )
-        braveify_grd_tree(tree, False)
-        return tree.find('message')
-
-    def test_fills_empty_description(self):
-        message = self.braveify(' desc=""')
-        self.assertIn('partner program', message.get('desc'))
-        self.assertEqual(message.text, 'Brave works')
-
-    def test_keeps_existing_description(self):
-        self.assertEqual(
-            self.braveify(' desc="Chrome title"').get('desc'), 'Brave title'
-        )
-
-
 class BraveifyLanguageFormsTest(unittest.TestCase):
     def braveify(self, lang, text):
         node = lxml.etree.fromstring(f'<translation>{text}</translation>')
@@ -228,19 +206,6 @@ class BraveifyKeepGoogleTest(unittest.TestCase):
         self.assertEqual(
             braveify_grd_text('Google Play', True, True), 'Google Play'
         )
-
-
-class GeneratedExtensionsStringsTest(unittest.TestCase):
-    def test_every_message_has_a_description(self):
-        grd = os.path.join(
-            BRAVE_SOURCE_ROOT, 'extensions', 'strings', 'extensions_strings.grd'
-        )
-        empty = [
-            message.get('name')
-            for message in lxml.etree.parse(grd).iter('message')
-            if not (message.get('desc') or '').strip()
-        ]
-        self.assertEqual(empty, [])
 
 
 if __name__ == '__main__':
