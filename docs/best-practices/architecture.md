@@ -443,11 +443,11 @@ if (brave_wallet_enabled) {
 
 **When tests or other classes need access to private members, use `friend`
 declarations instead of making methods public or protected.** This rule is about
-bypassing access control for convenience. It does not apply to normal
+bypassing access control for convenience. **Under this rule, NEVER flag normal
 inheritance where a subclass calls inherited protected methods or exposes new
-public methods that delegate to them.
+public methods that delegate to them.**
 
-This rule does not apply to `*ForTesting()` methods, which are an accepted
+**NEVER flag `*ForTesting()` methods under this rule.** They are an accepted
 Chromium convention for exposing test-only accessors.
 
 ```cpp
@@ -1427,15 +1427,16 @@ injection instead.
 
 This rule applies to features with UI changes (new views, buttons, dialogs,
 etc.). Non-UI components such as tab helpers, services, or background logic
-should be covered by unit tests or browser tests appropriate to the code — a CUJ
-test is not required when there is no user-visible interaction to validate.
+should be covered by unit tests or browser tests appropriate to the code.
+**NEVER require a CUJ test when there is no user-visible interaction to
+validate.**
 
 **Exception:** This rule targets native (Views) UI that `InteractiveBrowserTest`
-can drive. Don't require a CUJ test for WebUI pages such as `brave://settings`
+can drive. **NEVER require a CUJ test for WebUI pages such as `brave://settings`
 or `chrome://history`, where `InteractiveBrowserTest`-style testing is not
 available, nor for trivial UI with no meaningful logic to test (e.g. a toggle
 wired to a pref), nor for changes that follow an existing untested pattern in
-the surrounding code.
+the surrounding code.**
 
 ```cpp
 // ✅ CORRECT - CUJ test: validates user-visible behavior end-to-end

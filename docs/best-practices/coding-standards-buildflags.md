@@ -30,7 +30,7 @@ the same buildflag in GN, or the header sits behind its own buildflag. In that
 case an unconditional include breaks the build when the feature is disabled,
 because the header does not exist in that configuration.
 
-**Do NOT guard an include just because it is only _used_ inside a
+**NEVER guard an include just because it is only _used_ inside a
 `#if BUILDFLAG(...)` block.** Most Chromium headers (e.g. `web_contents.h`,
 `tab_interface.h`, `history_service.h`) are always built regardless of any
 feature flag. An unconditional include of an always-available header does not
@@ -40,12 +40,12 @@ no benefit. Before suggesting a guard, confirm the header is actually gated in
 GN (check the relevant `BUILD.gn` `sources` lists / buildflag conditions); if it
 is always built, leave the include unconditional.
 
-**IMPORTANT: Only apply this rule when the BUILDFLAG actually exists.** Before
+**NEVER apply this rule unless the BUILDFLAG actually exists.** Before
 suggesting that code be wrapped in a `#if BUILDFLAG(...)` guard, verify the
 buildflag is defined in the codebase (check `buildflags.gni` files or existing
-usage). Never fabricate or assume a buildflag name — if no buildflag exists for
-a feature, do not invent one. Instead, check if the feature uses
-`base::FeatureList` runtime checks or has no compile-time guard at all.
+usage). **NEVER fabricate or assume a buildflag name.** If no buildflag exists
+for a feature, check if it uses `base::FeatureList` runtime checks or has no
+compile-time guard at all.
 
 ```cpp
 // ❌ WRONG - unconditional include of a GN-gated header
@@ -171,8 +171,11 @@ static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 ## ✅ Forward Declarations Don't Need `BUILDFLAG` Guards
 
 **Only `#include` directives and actual usages need to be wrapped in
-`#if BUILDFLAG(...)` guards.** Forward declarations are harmless — they don't
-pull in dependencies and cost nothing at compile time if unused.
+`#if BUILDFLAG(...)` guards.**
+
+**NEVER require a `BUILDFLAG` guard for a forward declaration.** Forward
+declarations are harmless — they don't pull in dependencies and cost nothing at
+compile time if unused.
 
 ```cpp
 // ❌ UNNECESSARY - guarding a forward declaration

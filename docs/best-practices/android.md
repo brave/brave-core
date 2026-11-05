@@ -334,11 +334,11 @@ In these cases, use direct `.java.patch` files instead. Also use direct
 
 ## ✅ `ProfileManager.getLastUsedRegularProfile()` Is Acceptable in Widgets
 
-**While the presubmit check flags `ProfileManager.getLastUsedRegularProfile()`
-as a banned pattern, it is acceptable in Android widget providers** (e.g.,
+**NEVER flag `ProfileManager.getLastUsedRegularProfile()` as a banned-pattern
+violation in Android widget providers** (e.g.,
 `QuickActionSearchAndBookmarkWidgetProvider`) where no Activity or WebContents
-context is available. This matches upstream Chromium's approach in their own
-widgets.
+context is available, even though presubmit flags it. This matches upstream
+Chromium's approach in their own widgets.
 
 ---
 
@@ -1149,16 +1149,16 @@ styled `Button`, `BottomSheetDialogFragment` over hand-rolled sheets,
 `MaterialAlertDialogBuilder` over custom modal views, `Snackbar`, `Chip`,
 `TextInputLayout`, `MaterialCardView`.
 
-**Brave subclasses are fine, and often required.** A class like
-`BraveSettingsSwitch extends MaterialSwitch` is the correct pattern, not a
-violation — it's how Brave adds theming or telemetry on top of Material. If a
-Brave subclass exists in the module, callers should use it instead of the raw
-Material class.
+**NEVER flag a Brave subclass of a Material component as a custom
+reimplementation.** A class like `BraveSettingsSwitch extends MaterialSwitch` is
+how Brave adds theming or telemetry on top of Material. If a Brave subclass
+exists in the module, callers should use it instead of the raw Material class.
 
-**Flag as `nit:` only, never a blocker.** Ask why Material wasn't used; the
-author may have a valid constraint that just isn't documented. Before flagging,
-verify the flagged class does **not** extend any `com.google.android.material.*`
-component (check the full class hierarchy, not just the file in the diff).
+**Flag as `nit:` only. NEVER make this a blocker.** Ask why Material wasn't
+used; the author may have a valid constraint that just isn't documented. Before
+flagging, verify the flagged class does **not** extend any
+`com.google.android.material.*` component (check the full class hierarchy, not
+just the file in the diff).
 
 ---
 
@@ -1220,11 +1220,12 @@ with its own dependencies and JNI generation. Its target is included in
 [`build/android/config.gni`](../../build/android/config.gni).
 
 `chrome/browser/android/` serves a different purpose: common browser-support
-code that feature-local Android code can depend on. It is not deprecated by this
-rule and is not the default home for feature-specific Java files.
+code that feature-local Android code can depend on. **NEVER flag
+`chrome/browser/android/` as deprecated under this rule.** It is not the default
+home for feature-specific Java files.
 
-**Exception: new files that subclass upstream classes in deprecated locations
-are allowed in the corresponding deprecated Brave location.** For example,
+**Exception: NEVER flag new files that subclass upstream classes in deprecated
+locations for using the corresponding deprecated Brave location.** For example,
 `android/java/org/chromium/chrome/browser/app/bookmarks/BraveBookmarkActivity.java`
 extends upstream `BookmarkActivity` in
 `chrome/android/java/src/org/chromium/chrome/browser/app/bookmarks/`.

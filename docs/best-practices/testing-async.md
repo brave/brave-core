@@ -43,9 +43,8 @@ ExtractMethodThatChangesWhenThingsRun();  // Same code, different timing
 // it's a fake fix that will eventually break
 ```
 
-**This list is not exhaustive.** The key principle: if your change works by
-altering when things execute rather than by adding proper synchronization, it's
-unacceptable.
+**NEVER use a timing-based "fix", even if it is not listed above.** Add proper
+synchronization instead of altering when things execute.
 
 **Why these "fixes" are unacceptable:**
 
@@ -164,7 +163,7 @@ ASSERT_TRUE(base::test::RunUntil([this]() {
 
 ## General Rule: Avoid Nested Run Loops
 
-**Any operation that creates its own run loop should NOT be called inside
+**NEVER call an operation that creates its own run loop inside
 `base::test::RunUntil()`:**
 
 - ❌ `content::EvalJs()` - creates run loop

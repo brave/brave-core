@@ -772,9 +772,9 @@ take contrived abuse to reach and yield little beyond what the check already
 guarantees. See
 [Chromium C++ testing best practices](https://www.chromium.org/chromium-os/developer-library/guides/testing/cpp-writing-tests/).
 
-**Exception:** Don't require a dedicated test when the change is trivial UI with
+**Exception: NEVER require a dedicated test when the change is trivial UI with
 no meaningful logic to test (e.g. a toggle wired to a pref), or when it follows
-an existing untested pattern in the surrounding code.
+an existing untested pattern in the surrounding code.**
 
 **If code is difficult to test, suggest refactors that improve testability**
 rather than accepting untested code. Common refactors include extracting logic

@@ -69,8 +69,8 @@ section links to a detailed document.
 
 Before writing async tests, verify:
 
-- [ ] No `RunLoop::RunUntilIdle()` usage
-- [ ] No `EvalJs()` or `ExecJs()` inside `RunUntil()` lambdas
+- [ ] NEVER use `RunLoop::RunUntilIdle()`
+- [ ] NEVER call `EvalJs()` or `ExecJs()` inside `RunUntil()` lambdas
 - [ ] Using manual polling loops for JavaScript conditions
 - [ ] Using `base::test::RunUntil()` only for C++ conditions
 - [ ] Waiting for specific completion signals, not arbitrary timeouts
