@@ -768,14 +768,15 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
 #define BRAVE_PAGE_INFO_FEATURE_ENTRIES
 #endif  // defined(TOOLKIT_VIEWS)
 
-#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-#define BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                      \
-  EXPAND_FEATURE_ENTRIES({                                               \
-      "middle-button-autoscroll",                                        \
-      "Middle button autoscroll",                                        \
-      "Enables autoscrolling when the middle mouse button is clicked",   \
-      kOsMac | kOsLinux,                                                 \
-      FEATURE_VALUE_TYPE(blink::features::kMiddleButtonClickAutoscroll), \
+// Exposes upstream's Linux-only #middle-click-autoscroll feature on Mac.
+#if BUILDFLAG(IS_MAC)
+#define BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                    \
+  EXPAND_FEATURE_ENTRIES({                                             \
+      "middle-button-autoscroll",                                      \
+      "Middle button autoscroll",                                      \
+      "Enables autoscrolling when the middle mouse button is clicked", \
+      kOsMac,                                                          \
+      FEATURE_VALUE_TYPE(blink::features::kMiddleClickAutoscroll),     \
   })
 #else
 #define BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY
