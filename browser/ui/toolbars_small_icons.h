@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_TOOLBARS_SMALL_ICONS_H_
 #define BRAVE_BROWSER_UI_TOOLBARS_SMALL_ICONS_H_
 
+#include <optional>
+
 namespace brave {
 
 // Icon size used by #toolbars-small-icons.
@@ -14,8 +16,8 @@ inline constexpr int kToolbarsSmallIconSize = 18;
 bool IsToolbarsSmallIconsEnabled();
 
 // Returns kToolbarsSmallIconSize when #toolbars-small-icons is enabled,
-// otherwise `default_size`.
-int GetToolbarsIconSize(int default_size);
+// otherwise nullopt so callers can `.value_or()` their own default.
+std::optional<int> GetToolbarsIconSize();
 
 }  // namespace brave
 

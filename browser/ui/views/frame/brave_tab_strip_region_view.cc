@@ -117,7 +117,7 @@ void BraveTabStripScrollButton::UpdateIcon() {
                 ui::ImageModel::FromVectorIcon(
                     icon_.get(),
                     cp->GetColor(kColorNewTabButtonCRForegroundFrameInactive),
-                    brave::GetToolbarsIconSize(16)));
+                    brave::GetToolbarsIconSize().value_or(16)));
 }
 
 bool BraveTabStripScrollButton::OnMousePressed(const ui::MouseEvent& event) {

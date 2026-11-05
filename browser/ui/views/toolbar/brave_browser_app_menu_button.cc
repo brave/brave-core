@@ -30,7 +30,7 @@ constexpr int kBrandedBorderThickness = 1;
 constexpr int kBrandedLabelExtraSpacing = 3;
 
 int GetBrandedIconSize() {
-  return brave::GetToolbarsIconSize(24);
+  return brave::GetToolbarsIconSize().value_or(24);
 }
 
 bool ShowBrandedIcon() {

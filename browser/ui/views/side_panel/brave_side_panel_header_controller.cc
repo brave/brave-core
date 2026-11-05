@@ -34,7 +34,7 @@ namespace {
 
 constexpr int kHeaderTitleFontSize = 16;
 int GetHeaderButtonSize() {
-  return brave::GetToolbarsIconSize(20);
+  return brave::GetToolbarsIconSize().value_or(20);
 }
 
 std::unique_ptr<views::ImageButton> CreateHeaderImageButton(

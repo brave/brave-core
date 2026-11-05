@@ -65,7 +65,7 @@ void SidebarButtonView::OnThemeChanged() {
 
 // static
 int SidebarButtonView::GetDefaultIconSize() {
-  return brave::GetToolbarsIconSize(20);
+  return brave::GetToolbarsIconSize().value_or(20);
 }
 
 gfx::Size SidebarButtonView::CalculatePreferredSize(

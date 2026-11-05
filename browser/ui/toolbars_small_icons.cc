@@ -14,8 +14,10 @@ bool IsToolbarsSmallIconsEnabled() {
   return base::FeatureList::IsEnabled(features::kBraveToolbarsSmallIcons);
 }
 
-int GetToolbarsIconSize(int default_size) {
-  return IsToolbarsSmallIconsEnabled() ? kToolbarsSmallIconSize : default_size;
+std::optional<int> GetToolbarsIconSize() {
+  return IsToolbarsSmallIconsEnabled()
+             ? std::optional<int>(kToolbarsSmallIconSize)
+             : std::nullopt;
 }
 
 }  // namespace brave

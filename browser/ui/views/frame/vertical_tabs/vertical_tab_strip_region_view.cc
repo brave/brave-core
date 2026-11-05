@@ -162,7 +162,7 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
     plus_icon_->SetImage(ui::ImageModel::FromVectorIcon(
         kLeoPlusAddIcon, kColorBraveVerticalTabNTBIconColor,
         /* icon_size= */
-        brave::GetToolbarsIconSize(16)));
+        brave::GetToolbarsIconSize().value_or(16)));
     plus_icon_->SetProperty(
         views::kFlexBehaviorKey,
         views::FlexSpecification(views::MinimumFlexSizeRule::kPreferred,

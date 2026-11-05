@@ -7,11 +7,11 @@ index 097adce294fd5046741e0c7cf86c8207ffb14b78..9e4ac26799285964597440720d7dd989
    SetImageModel(views::Button::STATE_NORMAL,
                  ui::ImageModel::FromVectorIcon(icon, kColorBookmarkButtonIcon,
 -                                               kUIUpdateIconSize));
-+                                               brave::GetToolbarsIconSize(kUIUpdateIconSize)));
++                                               brave::GetToolbarsIconSize().value_or(kUIUpdateIconSize)));
    SetImageModel(views::Button::STATE_DISABLED,
                  ui::ImageModel::FromVectorIcon(icon, ui::kColorIconDisabled,
 -                                               kUIUpdateIconSize));
-+                                               brave::GetToolbarsIconSize(kUIUpdateIconSize)));
++                                               brave::GetToolbarsIconSize().value_or(kUIUpdateIconSize)));
  }
  
  SavedTabGroupOverflowButton::~SavedTabGroupOverflowButton() = default;

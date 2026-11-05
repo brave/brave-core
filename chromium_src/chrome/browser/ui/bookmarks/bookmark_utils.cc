@@ -80,7 +80,7 @@ ui::ImageModel GetBraveBookmarkFolderIcon(BookmarkFolderIconType icon_type,
   }
 
   return ui::ImageModel::FromVectorIcon(*id, color,
-                                        brave::GetToolbarsIconSize(20));
+                                        brave::GetToolbarsIconSize().value_or(20));
 }
 
 #endif  // defined(TOOLKIT_VIEWS)
