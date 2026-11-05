@@ -19,6 +19,7 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_dapp_utils.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -55,9 +56,10 @@ PolkadotApiImpl::PolkadotApiImpl(
       polkadot_wallet_service_(polkadot_wallet_service),
       delegate_(std::move(delegate)),
       granted_account_(std::move(granted_account)),
-      origin_(origin) {
+      dapp_origin_(origin) {
   CHECK(delegate_);
   CHECK(granted_account_);
+  CHECK(IsValidDappOrigin(dapp_origin_));
 }
 
 PolkadotApiImpl::~PolkadotApiImpl() {
@@ -264,7 +266,7 @@ void PolkadotApiImpl::OnSignPayloadFetchesComplete(
 
   polkadot_wallet_service_->AddSignPolkadotTransactionRequest(
       mojom::SignPolkadotTransactionRequest::New(
-          -1, granted_account_.Clone(), MakeDappOriginInfo(origin_),
+          0, granted_account_.Clone(), MakeDappOriginInfo(dapp_origin_),
           mojom::ChainId::New(mojom::CoinType::DOT, std::move(chain_id)),
           std::move(payload_json.value()), std::move(*fetches->metadata_bytes),
           std::move(fetches->chain_properties),
@@ -273,7 +275,7 @@ void PolkadotApiImpl::OnSignPayloadFetchesComplete(
                      weak_ptr_factory_.GetWeakPtr(), next_signer_result_id_++,
                      std::move(callback)));
 
-  delegate_->ShowPanel(origin_);
+  delegate_->ShowPanel(dapp_origin_);
 }
 
 void PolkadotApiImpl::OnSignPayloadRequestProcessed(
@@ -309,6 +311,9 @@ void PolkadotApiImpl::OnSignPayloadRequestProcessed(
     return;
   }
 
+  // The Signer interface requires us to include the request id, which we count
+  // using a per-Injected basis.
+  // https://github.com/polkadot-js/api/blob/81aabcce128f7f8ca5cf83e4a4d5705855950ca9/packages/types/src/types/extrinsic.ts#L144-L166
   std::move(callback).Run(
       mojom::PolkadotSignerResult::New(
           request_id, MakePolkadotSignerSignatureHex(*signature)),

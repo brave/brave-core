@@ -239,9 +239,8 @@ void PolkadotWalletService::NotifySignPolkadotTransactionRequestProcessed(
 void PolkadotWalletService::AddSignPolkadotTransactionRequest(
     mojom::SignPolkadotTransactionRequestPtr request,
     SignPolkadotTransactionRequestCallback callback) {
-  if (request->id < 0) {
-    request->id = sign_polkadot_transactions_id_++;
-  }
+  CHECK_EQ(request->id, 0);
+  request->id = sign_polkadot_transactions_id_++;
   sign_polkadot_transaction_requests_.emplace_back(std::move(request),
                                                    std::move(callback));
 }

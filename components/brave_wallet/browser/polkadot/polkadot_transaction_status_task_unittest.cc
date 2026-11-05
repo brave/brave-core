@@ -538,7 +538,8 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest,
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
       *keyring_service_, *network_manager_, prefs_,
-      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap());
+      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap(),
+      NoOriginPermissionChecking());
 
   UnlockWallet();
 

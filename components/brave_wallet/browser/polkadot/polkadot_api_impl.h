@@ -95,7 +95,7 @@ class PolkadotApiImpl final : public mojom::PolkadotApi {
   // Owns its own delegate, which knows the frame the dapp is in.
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
   const mojom::AccountIdPtr granted_account_;
-  const url::Origin origin_;
+  const url::Origin dapp_origin_;
 
   base::WeakPtrFactory<PolkadotApiImpl> weak_ptr_factory_{this};
 };

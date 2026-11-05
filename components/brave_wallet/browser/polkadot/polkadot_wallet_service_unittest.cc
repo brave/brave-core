@@ -14,7 +14,7 @@
 
 #include "base/functional/callback_forward.h"
 #include "base/functional/function_ref.h"
-#include "base/strings/strcat.h"
+#include "base/strings/strcat.h"  // IWYU pragma: keep
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
@@ -168,7 +168,7 @@ class PolkadotWalletServiceUnitTest : public testing::Test {
     }
 
     return mojom::SignPolkadotTransactionRequest::New(
-        /*id=*/-1, account_id.Clone(), MakeDappOriginInfo(origin),
+        /*id=*/0, account_id.Clone(), MakeDappOriginInfo(origin),
         mojom::ChainId::New(mojom::CoinType::DOT,
                             std::string(mojom::kPolkadotTestnet)),
         /*raw_payload_json=*/"{}",
