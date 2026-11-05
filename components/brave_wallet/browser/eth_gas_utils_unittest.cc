@@ -68,6 +68,48 @@ TEST(EthGasUtilsTest, GetSuggested1559Fees) {
   EXPECT_EQ(avg_priority_fee, 2000000000ULL);
   EXPECT_EQ(high_priority_fee, 2000000000ULL);
 
+  // The 40th percentile of the high column (index 2 of 5 sorted values) equals
+  // avg, so high is walked forward to the next larger value.
+  const std::vector<std::vector<std::string>> high_equals_avg_reward{
+      {"0x3B9ACA00" /* 1 gwei */, "0x77359400" /* 2 gwei */,
+       "0x77359400" /* 2 gwei */},
+      {"0x3B9ACA00" /* 1 gwei */, "0x77359400" /* 2 gwei */,
+       "0xB2D05E00" /* 3 gwei */},
+      {"0x3B9ACA00" /* 1 gwei */, "0x77359400" /* 2 gwei */,
+       "0x77359400" /* 2 gwei */},
+      {"0x3B9ACA00" /* 1 gwei */, "0x77359400" /* 2 gwei */,
+       "0xB2D05E00" /* 3 gwei */},
+      {"0x3B9ACA00" /* 1 gwei */, "0x77359400" /* 2 gwei */,
+       "0x77359400" /* 2 gwei */}};
+  EXPECT_TRUE(GetSuggested1559Fees(
+      base_fee_per_gas, gas_used_ratio, oldest_block, high_equals_avg_reward,
+      &low_priority_fee, &avg_priority_fee, &high_priority_fee,
+      &suggested_base_fee_per_gas));
+  EXPECT_EQ(low_priority_fee, 1000000000ULL);
+  EXPECT_EQ(avg_priority_fee, 2000000000ULL);
+  EXPECT_EQ(high_priority_fee, 3000000000ULL);
+
+  // All high values equal avg: there is no larger value to walk forward to, so
+  // high stays equal to avg and the walk stops at the last element.
+  const std::vector<std::vector<std::string>> all_equal_reward{
+      {"0x3B9ACA00" /* 1 gwei */, "0x77359400" /* 2 gwei */,
+       "0x77359400" /* 2 gwei */},
+      {"0x3B9ACA00" /* 1 gwei */, "0x77359400" /* 2 gwei */,
+       "0x77359400" /* 2 gwei */},
+      {"0x3B9ACA00" /* 1 gwei */, "0x77359400" /* 2 gwei */,
+       "0x77359400" /* 2 gwei */},
+      {"0x3B9ACA00" /* 1 gwei */, "0x77359400" /* 2 gwei */,
+       "0x77359400" /* 2 gwei */},
+      {"0x3B9ACA00" /* 1 gwei */, "0x77359400" /* 2 gwei */,
+       "0x77359400" /* 2 gwei */}};
+  EXPECT_TRUE(GetSuggested1559Fees(
+      base_fee_per_gas, gas_used_ratio, oldest_block, all_equal_reward,
+      &low_priority_fee, &avg_priority_fee, &high_priority_fee,
+      &suggested_base_fee_per_gas));
+  EXPECT_EQ(low_priority_fee, 1000000000ULL);
+  EXPECT_EQ(avg_priority_fee, 2000000000ULL);
+  EXPECT_EQ(high_priority_fee, 2000000000ULL);
+
   // No base fee per gas info should return false
   EXPECT_FALSE(GetSuggested1559Fees(std::vector<std::string>(), gas_used_ratio,
                                     oldest_block, reward, &low_priority_fee,

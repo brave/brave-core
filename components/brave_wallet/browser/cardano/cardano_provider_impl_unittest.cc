@@ -25,11 +25,13 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/l10n/l10n_util.h"
 
 using base::test::TestFuture;
 using testing::_;
@@ -291,18 +293,13 @@ TEST_F(CardanoProviderImplUnitTest, IsEnabled_NoAllowedAccounts) {
 
 TEST_F(CardanoProviderImplUnitTest, IsEnabled_WalletLocked) {
   CreateWallet();
-  keyring_service()->Lock();
+  // Account exists, so the locked state is what makes IsEnabled return false.
   auto added_account = AddAccount();
+  ASSERT_TRUE(added_account);
+  keyring_service()->Lock();
 
-  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
-      .WillByDefault(
-          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
-            EXPECT_EQ(coin, mojom::CoinType::ADA);
-            EXPECT_EQ(accounts.size(), 1u);
-            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
-            return std::vector<std::string>(
-                {added_account->account_id->unique_key});
-          });
+  // The lock check short-circuits before the permissions are queried.
+  EXPECT_CALL(*delegate(), GetAllowedAccounts(_, _)).Times(0);
 
   ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return true; });
 
@@ -373,6 +370,10 @@ TEST_F(CardanoProviderImplUnitTest, Enable_OnWalletUnlock_PermissionApproved) {
 TEST_F(CardanoProviderImplUnitTest, NoWallet) {
   ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return true; });
   EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
+  // Without a wallet there is nothing to create an account in or to ask
+  // permissions for.
+  EXPECT_CALL(*delegate(), ShowAccountCreation(_, _)).Times(0);
+  EXPECT_CALL(*delegate(), RequestPermissions(_, _, _, _)).Times(0);
 
   base::test::TestFuture<mojo::PendingRemote<mojom::CardanoApi>,
                          mojom::CardanoProviderErrorBundlePtr>
@@ -380,7 +381,10 @@ TEST_F(CardanoProviderImplUnitTest, NoWallet) {
   provider()->Enable(future.GetCallback());
 
   EXPECT_FALSE(future.Get<0>());
-  EXPECT_TRUE(future.Get<1>());
+  EXPECT_EQ(future.Get<1>(),
+            mojom::CardanoProviderErrorBundle::New(
+                -3, l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST),
+                nullptr));
 }
 
 TEST_F(CardanoProviderImplUnitTest, AccCreation) {

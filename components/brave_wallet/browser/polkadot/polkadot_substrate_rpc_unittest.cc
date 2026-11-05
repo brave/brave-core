@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
 
 #include "base/containers/map_util.h"
+#include "base/strings/strcat.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
@@ -333,7 +334,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
         "jsonrpc":"2.0",
         "result":[
           {
-            "block":""0x1bcd3e074b91ef25740714dc63671f4a36d2781ff93877ef9ef31b849d1ad69c",
+            "block":"0x1bcd3e074b91ef25740714dc63671f4a36d2781ff93877ef9ef31b849d1ad69c",
             "changes":[["", "0x1234"]]
           }
         ]
@@ -345,6 +346,30 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
     auto [account_info, error] = future.Take();
     EXPECT_EQ(error, WalletParsingErrorMessage());
     EXPECT_FALSE(account_info);
+  }
+
+  {
+    // Account data is one byte short or one byte too long. Both must be
+    // rejected rather than padded or truncated.
+
+    for (const size_t num_bytes : {size_t{79}, size_t{81}}) {
+      SCOPED_TRACE(num_bytes);
+
+      url_loader_factory_.AddResponse(
+          testnet_url,
+          base::StrCat(
+              {R"({"id":1,"jsonrpc":"2.0","result":[{"block":)",
+               R"("0x1bcd3e074b91ef25740714dc63671f4a36d2781ff93877ef9ef31b849d1ad69c",)",
+               R"("changes":[["", "0x)", std::string(num_bytes * 2, '0'),
+               R"("]]}]})"}));
+
+      polkadot_substrate_rpc_->GetAccountBalance(chain_id, pubkey,
+                                                 future.GetCallback());
+
+      auto [account_info, error] = future.Take();
+      EXPECT_EQ(error, WalletParsingErrorMessage());
+      EXPECT_FALSE(account_info);
+    }
   }
 
   {

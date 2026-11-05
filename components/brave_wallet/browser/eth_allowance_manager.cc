@@ -152,6 +152,11 @@ void EthAllowanceManager::DiscoverEthAllowancesOnAllSupportedChains(
     get_block_tasks_++;
     json_rpc_service_->GetBlockNumber(chain_id, std::move(internal_callback));
   }
+
+  // No chain had tokens to check, so nothing will call back.
+  if (get_block_tasks_ == 0 && allowance_discovery_tasks_.empty()) {
+    OnDiscoverEthAllowancesCompleted({});
+  }
 }
 
 void EthAllowanceManager::OnGetCurrentBlock(

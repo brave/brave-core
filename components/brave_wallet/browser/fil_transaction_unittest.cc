@@ -105,10 +105,18 @@ TEST(FilTransactionUnitTest, FromTxData) {
   ASSERT_TRUE(empty_nonce);
   EXPECT_FALSE(empty_nonce->nonce());
 
+  // non numeric nonce is treated as unset, it does not reject the tx.
+  auto non_numeric_nonce = FilTransaction::FromTxData(
+      false,
+      mojom::FilTxData::New("a", "2", "3", "4", "5",
+                            "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "6"));
+  ASSERT_TRUE(non_numeric_nonce);
+  EXPECT_FALSE(non_numeric_nonce->nonce());
+
   // non numeric values
   EXPECT_FALSE(FilTransaction::FromTxData(
       false,
-      mojom::FilTxData::New("a", "2", "3", "4", "d",
+      mojom::FilTxData::New("1", "2", "3", "4", "d",
                             "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "6")));
   EXPECT_FALSE(FilTransaction::FromTxData(
       false,
@@ -151,19 +159,19 @@ TEST(FilTransactionUnitTest, FromTxData) {
       mojom::FilTxData::New("1", "2", "3", "4", "5",
                             "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "6")));
 
-  // invalid address
+  // invalid address, all other fields are valid.
   EXPECT_FALSE(FilTransaction::FromTxData(
       false,
-      mojom::FilTxData::New("1", "2", "3", "4", "e", "t1h4n7rp3q", "0x1")));
+      mojom::FilTxData::New("1", "2", "3", "4", "5", "t1h4n7rp3q", "1")));
 
-  // invalid value
+  // invalid value, all other fields are valid.
   EXPECT_FALSE(FilTransaction::FromTxData(
-      false, mojom::FilTxData::New("1", "2", "3", "4", "e",
+      false, mojom::FilTxData::New("1", "2", "3", "4", "5",
                                    "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
                                    "0x1")));
   EXPECT_FALSE(FilTransaction::FromTxData(
       false,
-      mojom::FilTxData::New("1", "2", "3", "4", "e",
+      mojom::FilTxData::New("1", "2", "3", "4", "5",
                             "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "")));
 }
 

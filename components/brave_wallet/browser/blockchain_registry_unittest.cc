@@ -572,6 +572,25 @@ TEST(BlockchainRegistryUnitTest, ParseLists) {
       R"({"polkadot_acala": ["https://acala-rpc-0.aca-api.network"]})"));
 
   auto* registry = BlockchainRegistry::GetInstance();
+
+  // The registry is a process-wide singleton that other tests fill with the
+  // same fixtures, so clear it to make sure ParseLists is what populates it.
+  registry->UpdateCoingeckoIdsMap(CoingeckoIdsMap());
+  registry->UpdateTokenList(TokenListMap());
+  registry->UpdateChainList(ChainList());
+  registry->UpdateRestrictedAddressesList({});
+  registry->UpdatePolkadotRpcUrls(PolkadotRpcUrlsMap());
+  EXPECT_FALSE(
+      registry->GetCoingeckoId(mojom::kOptimismMainnetChainId,
+                               "0x7f5c764cbc14f9669b88837ca1490cca17c31607"));
+  EXPECT_FALSE(registry->GetTokenByAddress(
+      mojom::kMainnetChainId, mojom::CoinType::ETH,
+      "0x0D8775F648430679A709E98d2b0Cb6250d2887EF"));
+  EXPECT_TRUE(registry->GetPrepopulatedNetworks().empty());
+  EXPECT_FALSE(registry->IsRestrictedAddress(
+      "0xb9ef770b6a5e12e45983c5d80545258aa38f3b78"));
+  EXPECT_TRUE(registry->GetPolkadotRpcUrls().empty());
+
   auto run_loop = std::make_unique<base::RunLoop>();
   registry->ParseLists(path,
                        base::BindLambdaForTesting([&]() { run_loop->Quit(); }));

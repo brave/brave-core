@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 
 #include <optional>
+#include <string>
 #include <vector>
 
 #include "base/strings/string_number_conversions.h"
@@ -386,6 +387,20 @@ TEST(JsonRpcResponseParserUnitTest, AnkrParseGetAccountBalanceResponse) {
             "thumbnail": "polygon.svg"
           },
           {
+            "blockchain": "unknown_chain",
+            "tokenName": "Unsupported Chain Token",
+            "tokenSymbol": "UNK",
+            "tokenDecimals": "6",
+            "tokenType": "ERC20",
+            "contractAddress": "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+            "holderAddress": "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4",
+            "balance": "8.202765",
+            "balanceRawInteger": "8202765",
+            "balanceUsd": "8.202765",
+            "tokenPrice": "1",
+            "thumbnail": "unk.png"
+          },
+          {
             "blockchain": "polygon",
             "tokenName": "Malformed USDC",
             "tokenSymbol": "USDC",
@@ -433,7 +448,12 @@ TEST(JsonRpcResponseParserUnitTest, AnkrParseGetAccountBalanceResponse) {
 
   auto response = ankr::ParseGetAccountBalanceResponse(ParseJson(json));
   ASSERT_TRUE(response);
+  // The asset on the unsupported blockchain is dropped.
   ASSERT_EQ(response->size(), 2u);
+  for (const auto& balance : *response) {
+    EXPECT_FALSE(balance->asset->chain_id.empty());
+    EXPECT_NE(balance->asset->name, "Unsupported Chain Token");
+  }
 
   EXPECT_EQ(response->at(0)->asset->contract_address, "");
   EXPECT_EQ(response->at(0)->asset->name, "Matic");
@@ -570,18 +590,45 @@ TEST(JsonRpcResponseParserUnitTest, ConvertAllNumbersToString) {
   EXPECT_EQ(ConvertAllNumbersToString("/invalid", json).value_or(""), json);
   EXPECT_EQ(ConvertAllNumbersToString("/", json).value_or(""), json);
 
+  // OK: INT64_MIN fits in an i64.
+  json = R"({"a":[{"key":)" + base::NumberToString(INT64_MIN) + "}]}";
+  EXPECT_EQ(ConvertAllNumbersToString("", json).value_or(""),
+            R"({"a":[{"key":"-9223372036854775808"}]})");
+
+  // OK: numbers that do not fit in u64/i64 are parsed as f64 and converted to
+  // a string that still represents the same f64 value.
+  const struct {
+    const char* number;
+    double expected;
+  } kOutOfRangeCases[] = {
+      // UINT64_MAX + 1 (2^64).
+      {"18446744073709551616", 18446744073709551616.0},
+      // Far beyond u64, exactly representable as f64.
+      {"100000000000000000000", 1e20},
+  };
+  for (const auto& test_case : kOutOfRangeCases) {
+    SCOPED_TRACE(test_case.number);
+    json = std::string(R"({"a":[{"key":)") + test_case.number + "}]}";
+    auto converted = ConvertAllNumbersToString("", json);
+    ASSERT_TRUE(converted);
+    base::DictValue dict = base::test::ParseJsonDict(*converted);
+    const auto* list = dict.FindList("a");
+    ASSERT_TRUE(list);
+    ASSERT_EQ(list->size(), 1u);
+    const auto* key = (*list)[0].GetDict().FindString("key");
+    ASSERT_TRUE(key);
+    double parsed = 0;
+    ASSERT_TRUE(base::StringToDouble(*key, &parsed)) << *key;
+    EXPECT_DOUBLE_EQ(parsed, test_case.expected);
+  }
+
   // KO: invalid cases
   std::vector<std::string> invalid_cases = {
       // invalid json
       R"({"a": hello})",
-      // UINT64_MAX + 1
-      R"("{a":[{"key":18446744073709551616}]})",
-      // INT64_MIN
-      R"("{a":[{"key":)" + base::NumberToString(INT64_MIN) + "}]}",
-      // DBL_MIN
-      R"("{a":[{"key":)" + base::NumberToString(DBL_MIN) + "}]}",
-      // DBL_MAX
-      R"("{a":[{"key":)" + base::NumberToString(DBL_MAX + 1) + "}]}"};
+      // stray quote makes the document malformed
+      R"("{a":[{"key":1}]})",
+  };
   for (const auto& invalid_case : invalid_cases) {
     EXPECT_EQ("", ConvertAllNumbersToString("", invalid_case).value_or(""))
         << invalid_case;

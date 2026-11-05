@@ -263,6 +263,26 @@ TEST(ValueConversionUtilsUnitTest, ValueToNetworkInfoTest) {
 }
 
 TEST(ValueConversionUtilsUnitTest,
+     ValueToNetworkInfoTest_ActiveRpcEndpointIndexOutOfRange) {
+  auto value = base::test::ParseJson(kNetworkDataValue);
+
+  // Last valid index is kept.
+  value.GetDict().Set("activeRpcEndpointIndex", 6);
+  mojom::NetworkInfoPtr chain = ValueToNetworkInfo(value);
+  ASSERT_TRUE(chain);
+  ASSERT_EQ(chain->rpc_endpoints.size(), 7u);
+  EXPECT_EQ(6, chain->active_rpc_endpoint_index);
+
+  // Negative and oversized persisted indices are reset to 0.
+  for (int index : {-1, 100}) {
+    value.GetDict().Set("activeRpcEndpointIndex", index);
+    chain = ValueToNetworkInfo(value);
+    ASSERT_TRUE(chain);
+    EXPECT_EQ(0, chain->active_rpc_endpoint_index) << index;
+  }
+}
+
+TEST(ValueConversionUtilsUnitTest,
      ValueToNetworkInfoTest_SupportedKeyringMigration) {
   auto value = base::test::ParseJson(R"({
     "chainId": "bitcoin_mainnet",
@@ -405,8 +425,8 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
 
   // Test input value with required keys.
   TestValueToBlockchainTokenFailCases(
-      json_value, {"address", "name", "symbol", "is_erc20", "is_erc721",
-                   "decimals", "visible"});
+      json_value, {"coin", "chain_id", "address", "name", "symbol", "is_erc20",
+                   "is_erc721", "decimals", "visible"});
 
   // Test input value with optional keys.
   base::DictValue optional_value = json_value.Clone();
@@ -589,6 +609,43 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
   token = ValueToBlockchainToken(json_value);
   ASSERT_TRUE(token);
   EXPECT_EQ(token->zcash_token_type, mojom::ZCashTokenType::kNone);
+}
+
+TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken_LegacyIsNft) {
+  // Persisted assets without is_nft fall back to is_erc721.
+  auto json_value = base::test::ParseJsonDict(R"({
+      "coin": 60,
+      "chain_id": "0x1",
+      "address": "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d",
+      "name": "Crypto Kitties",
+      "symbol": "CK",
+      "logo": "CryptoKitties-Kitty-13733.svg",
+      "is_erc20": false,
+      "is_erc721": true,
+      "is_erc1155": false,
+      "is_spam": false,
+      "decimals": 0,
+      "visible": true
+  })");
+  ASSERT_FALSE(json_value.contains("is_nft"));
+
+  mojom::BlockchainTokenPtr token = ValueToBlockchainToken(json_value);
+  ASSERT_TRUE(token);
+  EXPECT_TRUE(token->is_erc721);
+  EXPECT_TRUE(token->is_nft);
+
+  json_value.Set("is_erc721", false);
+  token = ValueToBlockchainToken(json_value);
+  ASSERT_TRUE(token);
+  EXPECT_FALSE(token->is_erc721);
+  EXPECT_FALSE(token->is_nft);
+
+  // An explicit is_nft takes precedence over is_erc721.
+  json_value.Set("is_nft", true);
+  token = ValueToBlockchainToken(json_value);
+  ASSERT_TRUE(token);
+  EXPECT_FALSE(token->is_erc721);
+  EXPECT_TRUE(token->is_nft);
 }
 
 TEST(ValueConversionUtilsUnitTest, PermissionRequestResponseToValue) {

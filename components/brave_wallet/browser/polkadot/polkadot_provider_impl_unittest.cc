@@ -327,8 +327,11 @@ TEST_F(PolkadotProviderImplUnitTest, Enable_TabInactive) {
   provider()->Enable(future.GetCallback());
 
   EXPECT_FALSE(future.Get<0>());
-  ASSERT_TRUE(future.Get<1>());
-  EXPECT_EQ(future.Get<1>()->code, mojom::PolkadotProviderError::kUnknown);
+  EXPECT_THAT(
+      future.Get<1>(),
+      EqualsMojo(mojom::PolkadotProviderErrorBundle::New(
+          mojom::PolkadotProviderError::kUnknown,
+          l10n_util::GetStringUTF8(IDS_WALLET_TAB_IS_NOT_ACTIVE_ERROR))));
 }
 
 TEST_F(PolkadotProviderImplUnitTest, Enable_DeniedGlobally) {
@@ -343,12 +346,16 @@ TEST_F(PolkadotProviderImplUnitTest, Enable_DeniedGlobally) {
   provider()->Enable(future.GetCallback());
 
   EXPECT_FALSE(future.Get<0>());
-  ASSERT_TRUE(future.Get<1>());
-  EXPECT_EQ(future.Get<1>()->code, mojom::PolkadotProviderError::kUnknown);
+  EXPECT_THAT(future.Get<1>(),
+              EqualsMojo(mojom::PolkadotProviderErrorBundle::New(
+                  mojom::PolkadotProviderError::kUnknown,
+                  l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST))));
 }
 
 TEST_F(PolkadotProviderImplUnitTest, Enable_NoWallet) {
   EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
+  EXPECT_CALL(*delegate(), ShowAccountCreation(_, _)).Times(0);
+  EXPECT_CALL(*delegate(), GetAllowedAccounts(_, _)).Times(0);
 
   TestFuture<mojo::PendingRemote<mojom::PolkadotApi>,
              mojom::PolkadotProviderErrorBundlePtr>
@@ -356,7 +363,10 @@ TEST_F(PolkadotProviderImplUnitTest, Enable_NoWallet) {
   provider()->Enable(future.GetCallback());
 
   EXPECT_FALSE(future.Get<0>());
-  EXPECT_TRUE(future.Get<1>());
+  EXPECT_THAT(future.Get<1>(),
+              EqualsMojo(mojom::PolkadotProviderErrorBundle::New(
+                  mojom::PolkadotProviderError::kUnknown,
+                  l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST))));
 }
 
 TEST_F(PolkadotProviderImplUnitTest, Enable_GetAllowedAccountsFailed) {

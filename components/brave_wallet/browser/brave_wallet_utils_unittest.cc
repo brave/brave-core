@@ -335,9 +335,10 @@ TEST(BraveWalletUtilsUnitTest, SwapInfoToValue_NullPtr) {
 
 TEST(BraveWalletUtilsUnitTest, SwapInfoToValue_DifferentProviders) {
   std::vector<mojom::SwapProvider> providers = {
-      mojom::SwapProvider::kAuto,   mojom::SwapProvider::kLiFi,
-      mojom::SwapProvider::kZeroEx, mojom::SwapProvider::kJupiter,
-      mojom::SwapProvider::kSquid,  mojom::SwapProvider::kNearIntents,
+      mojom::SwapProvider::kAuto,    mojom::SwapProvider::kLiFi,
+      mojom::SwapProvider::kZeroEx,  mojom::SwapProvider::kJupiter,
+      mojom::SwapProvider::kSquid,   mojom::SwapProvider::kNearIntents,
+      mojom::SwapProvider::kCowSwap,
   };
 
   for (auto provider : providers) {
@@ -360,6 +361,11 @@ TEST(BraveWalletUtilsUnitTest, SwapInfoToValue_DifferentProviders) {
 
     ASSERT_TRUE(swap_info_from_value);
     EXPECT_EQ(swap_info->provider, swap_info_from_value->provider);
+
+    if (provider == mojom::SwapProvider::kCowSwap) {
+      ASSERT_TRUE(value.FindString("provider"));
+      EXPECT_EQ(*value.FindString("provider"), "COW_SWAP");
+    }
   }
 }
 
@@ -400,7 +406,8 @@ TEST(BraveWalletUtilsUnitTest, ValueToSwapInfo_MissingRequiredFields) {
                                    "destination_token_address",
                                    "destination_amount",
                                    "recipient",
-                                   "provider"};
+                                   "provider",
+                                   "route_id"};
 
   base::DictValue base_value;
   base_value.Set("source_coin", "ETH");
@@ -416,7 +423,11 @@ TEST(BraveWalletUtilsUnitTest, ValueToSwapInfo_MissingRequiredFields) {
   base_value.Set("route_id", "test-route-id");
 
   // The valid dict should be accepted
-  EXPECT_TRUE(ValueToSwapInfo(base_value));
+  auto valid_swap_info = ValueToSwapInfo(base_value);
+  ASSERT_TRUE(valid_swap_info);
+  // destination_amount_min is optional and defaults to an empty string.
+  EXPECT_EQ(valid_swap_info->destination_amount_min, "");
+  EXPECT_EQ(valid_swap_info->route_id, "test-route-id");
 
   for (const auto* field : required_fields) {
     base::DictValue value = base_value.Clone();

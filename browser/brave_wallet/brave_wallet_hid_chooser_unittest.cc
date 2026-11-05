@@ -31,6 +31,7 @@ namespace {
 
 constexpr uint16_t kLedgerVendorId = 0x2c97;
 constexpr uint16_t kOtherVendorId = 0x1234;
+constexpr uint16_t kAbsentVendorId = 0x5678;
 constexpr uint16_t kProductId = 0x4015;
 
 std::vector<blink::mojom::HidDeviceFilterPtr> MakeLedgerVendorOnlyFilters() {
@@ -203,10 +204,16 @@ TEST_F(BraveWalletHidChooserTest, MultipleFiltersCancels) {
 }
 
 TEST_F(BraveWalletHidChooserTest, ExclusionFiltersCancels) {
+  // The exclusion filter matches no connected device, so an empty result can
+  // only come from BraveWalletHidChooser rejecting the request.
+  std::vector<blink::mojom::HidDeviceFilterPtr> exclusion_filters;
+  exclusion_filters.push_back(blink::mojom::HidDeviceFilter::New(
+      blink::mojom::DeviceIdFilter::NewVendor(kAbsentVendorId), nullptr));
+
   TestFuture<std::vector<device::mojom::HidDeviceInfoPtr>> future;
   auto chooser =
       CreateChooser(subframe_rfh(), MakeLedgerVendorOnlyFilters(),
-                    MakeLedgerVendorOnlyFilters(), future.GetCallback());
+                    std::move(exclusion_filters), future.GetCallback());
   EXPECT_TRUE(future.Get().empty());
 }
 

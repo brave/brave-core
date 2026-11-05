@@ -82,6 +82,40 @@ TEST(BraveWalletResponseHelpersTest,
   EXPECT_EQ(result.GetString(), "0xbb4323");
 }
 
+TEST(BraveWalletResponseHelpersTest,
+     GetProviderRequestReturnFromEthJsonResponseNoResult) {
+  bool reject = false;
+  base::Value result = GetProviderRequestReturnFromEthJsonResponse(
+      200, ParseJson(R"({"jsonrpc":"2.0","id":1})"), &reject);
+  EXPECT_TRUE(reject);
+  ASSERT_TRUE(result.is_dict());
+  auto& dict = result.GetDict();
+  const auto result_code = dict.FindInt("code");
+  const auto* result_message = dict.FindString("message");
+  ASSERT_TRUE(result_code);
+  ASSERT_TRUE(result_message);
+  EXPECT_EQ(*result_code,
+            static_cast<int>(mojom::ProviderError::kUnsupportedMethod));
+  EXPECT_EQ(*result_message, "Invalid response: no result field");
+}
+
+TEST(BraveWalletResponseHelpersTest,
+     GetProviderRequestReturnFromEthJsonResponseNotDict) {
+  bool reject = false;
+  base::Value result =
+      GetProviderRequestReturnFromEthJsonResponse(200, base::Value(), &reject);
+  EXPECT_TRUE(reject);
+  ASSERT_TRUE(result.is_dict());
+  auto& dict = result.GetDict();
+  const auto result_code = dict.FindInt("code");
+  const auto* result_message = dict.FindString("message");
+  ASSERT_TRUE(result_code);
+  ASSERT_TRUE(result_message);
+  EXPECT_EQ(*result_code,
+            static_cast<int>(mojom::ProviderError::kUnsupportedMethod));
+  EXPECT_EQ(*result_message, "Invalid response: JSON is not a dict");
+}
+
 TEST(BraveWalletResponseHelpersTest, ToProviderResponseEmpty) {
   auto result = ToProviderResponse(base::Value(), nullptr, nullptr);
 
