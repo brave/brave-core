@@ -175,11 +175,6 @@ TabFeatures::TabFeatures(content::WebContents* web_contents, Profile* profile)
 
 TabFeatures::~TabFeatures() = default;
 
-enterprise_data_protection::DataProtectionNavigationController*
-TabFeatures::data_protection_controller() {
-  return brave_tab_features_->data_protection_controller();
-}
-
 tasks::TaskTabHelper* TabFeatures::task_tab_helper() {
   return brave_tab_features_->task_tab_helper();
 }
