@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/net/brave_onion_origin_header_client.h"
+#include "brave/browser/net/onion_origin_header_client.h"
 
 #include <memory>
 #include <optional>
@@ -42,25 +42,25 @@ net::HttpRequestHeaders HideCrossOriginOnionOrigin(
 
 // static
 mojo::PendingRemote<network::mojom::TrustedHeaderClient>
-BraveOnionOriginHeaderClient::Create(
+OnionOriginHeaderClient::Create(
     mojo::PendingRemote<network::mojom::TrustedHeaderClient> inner) {
   mojo::PendingRemote<network::mojom::TrustedHeaderClient> remote;
   mojo::MakeSelfOwnedReceiver(
-      std::make_unique<BraveOnionOriginHeaderClient>(std::move(inner)),
+      std::make_unique<OnionOriginHeaderClient>(std::move(inner)),
       remote.InitWithNewPipeAndPassReceiver());
   return remote;
 }
 
-BraveOnionOriginHeaderClient::BraveOnionOriginHeaderClient(
+OnionOriginHeaderClient::OnionOriginHeaderClient(
     mojo::PendingRemote<network::mojom::TrustedHeaderClient> inner) {
   if (inner) {
     inner_.Bind(std::move(inner));
   }
 }
 
-BraveOnionOriginHeaderClient::~BraveOnionOriginHeaderClient() = default;
+OnionOriginHeaderClient::~OnionOriginHeaderClient() = default;
 
-void BraveOnionOriginHeaderClient::OnBeforeSendHeaders(
+void OnionOriginHeaderClient::OnBeforeSendHeaders(
     const GURL& request_url,
     const net::HttpRequestHeaders& headers,
     OnBeforeSendHeadersCallback callback) {
@@ -91,7 +91,7 @@ void BraveOnionOriginHeaderClient::OnBeforeSendHeaders(
           net::ERR_FAILED, std::nullopt, std::nullopt));
 }
 
-void BraveOnionOriginHeaderClient::OnHeadersReceived(
+void OnionOriginHeaderClient::OnHeadersReceived(
     const std::string& headers,
     const net::IPEndPoint& remote_endpoint,
     const std::optional<net::SSLInfo>& ssl_info,

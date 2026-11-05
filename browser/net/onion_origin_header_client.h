@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_NET_BRAVE_ONION_ORIGIN_HEADER_CLIENT_H_
-#define BRAVE_BROWSER_NET_BRAVE_ONION_ORIGIN_HEADER_CLIENT_H_
+#ifndef BRAVE_BROWSER_NET_ONION_ORIGIN_HEADER_CLIENT_H_
+#define BRAVE_BROWSER_NET_ONION_ORIGIN_HEADER_CLIENT_H_
 
 #include <optional>
 #include <string>
@@ -25,20 +25,18 @@ namespace brave {
 
 // Nullifies the Origin header of cross-origin WebSocket handshakes from .onion
 // pages, so they do not disclose the address they came from.
-class BraveOnionOriginHeaderClient
-    : public network::mojom::TrustedHeaderClient {
+class OnionOriginHeaderClient : public network::mojom::TrustedHeaderClient {
  public:
   // Returns a remote to a self-owned client wrapping `inner`, which may be
   // null.
   static mojo::PendingRemote<network::mojom::TrustedHeaderClient> Create(
       mojo::PendingRemote<network::mojom::TrustedHeaderClient> inner);
 
-  explicit BraveOnionOriginHeaderClient(
+  explicit OnionOriginHeaderClient(
       mojo::PendingRemote<network::mojom::TrustedHeaderClient> inner);
-  BraveOnionOriginHeaderClient(const BraveOnionOriginHeaderClient&) = delete;
-  BraveOnionOriginHeaderClient& operator=(const BraveOnionOriginHeaderClient&) =
-      delete;
-  ~BraveOnionOriginHeaderClient() override;
+  OnionOriginHeaderClient(const OnionOriginHeaderClient&) = delete;
+  OnionOriginHeaderClient& operator=(const OnionOriginHeaderClient&) = delete;
+  ~OnionOriginHeaderClient() override;
 
   // network::mojom::TrustedHeaderClient override.
   void OnBeforeSendHeaders(const GURL& request_url,
@@ -55,4 +53,4 @@ class BraveOnionOriginHeaderClient
 
 }  // namespace brave
 
-#endif  // BRAVE_BROWSER_NET_BRAVE_ONION_ORIGIN_HEADER_CLIENT_H_
+#endif  // BRAVE_BROWSER_NET_ONION_ORIGIN_HEADER_CLIENT_H_
