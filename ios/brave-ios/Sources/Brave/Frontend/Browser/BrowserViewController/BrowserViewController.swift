@@ -2638,12 +2638,12 @@ extension BrowserViewController: WalletTabHelperDelegate {
     removeWalletNotificationAndClearOrigin()
     WalletProviderPermissionRequestsManager.shared.cancelAllPendingRequests(for: [coin])
     WalletProviderAccountCreationRequestManager.shared.cancelAllPendingRequests(coins: [coin])
-    let privateMode = privateBrowsingManager.isPrivateBrowsing
+    var profile = profileController.profile
+    if privateBrowsingManager.isPrivateBrowsing {
+      profile = profile.offTheRecordProfile
+    }
     if let cryptoStore = self.walletStore?.cryptoStore
-      ?? CryptoStore.from(
-        ipfsApi: profileController.ipfsAPI,
-        privateMode: privateMode
-      )
+      ?? CryptoStore.from(ipfsApi: profileController.ipfsAPI, profile: profile)
     {
       cryptoStore.rejectAllPendingWebpageRequests()
     }
@@ -2681,15 +2681,15 @@ extension BrowserViewController: WalletTabHelperDelegate {
 
   @MainActor
   private func isPendingRequestAvailable() async -> Bool {
-    let privateMode = privateBrowsingManager.isPrivateBrowsing
     // If we have an open `WalletStore`, use that so we can assign the pending request if the wallet is open,
     // which allows us to store the new `PendingRequest` triggering a modal presentation for that request.
+    var profile = profileController.profile
+    if privateBrowsingManager.isPrivateBrowsing {
+      profile = profile.offTheRecordProfile
+    }
     guard
       let cryptoStore = self.walletStore?.cryptoStore
-        ?? CryptoStore.from(
-          ipfsApi: profileController.ipfsAPI,
-          privateMode: privateMode
-        )
+        ?? CryptoStore.from(ipfsApi: profileController.ipfsAPI, profile: profile)
     else {
       return false
     }

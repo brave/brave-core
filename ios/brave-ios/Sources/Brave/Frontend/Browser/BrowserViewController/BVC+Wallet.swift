@@ -16,28 +16,22 @@ import Web
 import os.log
 
 extension WalletStore {
-  /// Creates a WalletStore based on whether or not the user is in Private Mode
+  /// Creates a WalletStore based on the profile
   static func from(
     ipfsApi: IpfsAPI,
-    privateMode: Bool
+    profile: any Profile
   ) -> WalletStore? {
     guard
-      let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: privateMode),
-      let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: privateMode),
-      let assetRatioService = BraveWallet.AssetRatioServiceFactory.get(privateMode: privateMode),
-      let walletService = BraveWallet.ServiceFactory.get(privateMode: privateMode),
-      let txService = BraveWallet.TxServiceFactory.get(privateMode: privateMode),
-      let ethTxManagerProxy = BraveWallet.EthTxManagerProxyFactory.get(privateMode: privateMode),
-      let solTxManagerProxy = BraveWallet.SolanaTxManagerProxyFactory.get(privateMode: privateMode),
-      let bitcoinWalletService = BraveWallet.BitcoinWalletServiceFactory.get(
-        privateMode: privateMode
-      ),
-      let zcashWalletService = BraveWallet.ZCashWalletServiceFactory.get(
-        privateMode: privateMode
-      ),
-      let cardanoWalletService = BraveWallet.CardanoWalletServiceFactory.get(
-        privateMode: privateMode
-      )
+      let keyringService = BraveWallet.KeyringServiceFactory.get(profile: profile),
+      let rpcService = BraveWallet.JsonRpcServiceFactory.get(profile: profile),
+      let assetRatioService = BraveWallet.AssetRatioServiceFactory.get(profile: profile),
+      let walletService = BraveWallet.ServiceFactory.get(profile: profile),
+      let txService = BraveWallet.TxServiceFactory.get(profile: profile),
+      let ethTxManagerProxy = BraveWallet.EthTxManagerProxyFactory.get(profile: profile),
+      let solTxManagerProxy = BraveWallet.SolanaTxManagerProxyFactory.get(profile: profile),
+      let bitcoinWalletService = BraveWallet.BitcoinWalletServiceFactory.get(profile: profile),
+      let zcashWalletService = BraveWallet.ZCashWalletServiceFactory.get(profile: profile),
+      let cardanoWalletService = BraveWallet.CardanoWalletServiceFactory.get(profile: profile)
     else {
       Logger.module.error("Failed to load wallet. One or more services were unavailable")
       return nil
@@ -60,28 +54,22 @@ extension WalletStore {
 }
 
 extension CryptoStore {
-  /// Creates a CryptoStore based on whether or not the user is in Private Mode
+  /// Creates a CryptoStore based on the profile
   static func from(
     ipfsApi: IpfsAPI,
-    privateMode: Bool
+    profile: any Profile
   ) -> CryptoStore? {
     guard
-      let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: privateMode),
-      let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: privateMode),
-      let assetRatioService = BraveWallet.AssetRatioServiceFactory.get(privateMode: privateMode),
-      let walletService = BraveWallet.ServiceFactory.get(privateMode: privateMode),
-      let txService = BraveWallet.TxServiceFactory.get(privateMode: privateMode),
-      let ethTxManagerProxy = BraveWallet.EthTxManagerProxyFactory.get(privateMode: privateMode),
-      let solTxManagerProxy = BraveWallet.SolanaTxManagerProxyFactory.get(privateMode: privateMode),
-      let bitcoinWalletService = BraveWallet.BitcoinWalletServiceFactory.get(
-        privateMode: privateMode
-      ),
-      let zcashWalletService = BraveWallet.ZCashWalletServiceFactory.get(
-        privateMode: privateMode
-      ),
-      let cardanoWalletService = BraveWallet.CardanoWalletServiceFactory.get(
-        privateMode: privateMode
-      )
+      let keyringService = BraveWallet.KeyringServiceFactory.get(profile: profile),
+      let rpcService = BraveWallet.JsonRpcServiceFactory.get(profile: profile),
+      let assetRatioService = BraveWallet.AssetRatioServiceFactory.get(profile: profile),
+      let walletService = BraveWallet.ServiceFactory.get(profile: profile),
+      let txService = BraveWallet.TxServiceFactory.get(profile: profile),
+      let ethTxManagerProxy = BraveWallet.EthTxManagerProxyFactory.get(profile: profile),
+      let solTxManagerProxy = BraveWallet.SolanaTxManagerProxyFactory.get(profile: profile),
+      let bitcoinWalletService = BraveWallet.BitcoinWalletServiceFactory.get(profile: profile),
+      let zcashWalletService = BraveWallet.ZCashWalletServiceFactory.get(profile: profile),
+      let cardanoWalletService = BraveWallet.CardanoWalletServiceFactory.get(profile: profile)
     else {
       Logger.module.error("Failed to load wallet. One or more services were unavailable")
       return nil
@@ -110,12 +98,12 @@ extension BrowserViewController {
     if !profileController.braveWalletAPI.isAllowed {
       return nil
     }
-    let privateMode = privateBrowsingManager.isPrivateBrowsing
+    var profile = profileController.profile
+    if privateBrowsingManager.isPrivateBrowsing {
+      profile = profile.offTheRecordProfile
+    }
     guard
-      let walletStore = WalletStore.from(
-        ipfsApi: profileController.ipfsAPI,
-        privateMode: privateMode
-      )
+      let walletStore = WalletStore.from(ipfsApi: profileController.ipfsAPI, profile: profile)
     else {
       Logger.module.error("Failed to load wallet. One or more services were unavailable")
       return nil

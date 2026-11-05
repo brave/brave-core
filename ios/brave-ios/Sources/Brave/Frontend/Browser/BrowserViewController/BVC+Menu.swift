@@ -21,10 +21,10 @@ import os.log
 
 extension BrowserViewController {
   private var settingsController: SettingsViewController {
-    let isPrivateMode = privateBrowsingManager.isPrivateBrowsing
-    let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: isPrivateMode)
-    let walletService = BraveWallet.ServiceFactory.get(privateMode: isPrivateMode)
-    let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: isPrivateMode)
+    let profile = profileController.profile
+    let keyringService = BraveWallet.KeyringServiceFactory.get(profile: profile)
+    let walletService = BraveWallet.ServiceFactory.get(profile: profile)
+    let rpcService = BraveWallet.JsonRpcServiceFactory.get(profile: profile)
 
     var keyringStore: KeyringStore? = walletStore?.keyringStore
     if keyringStore == nil {
@@ -44,7 +44,7 @@ extension BrowserViewController {
     if cryptoStore == nil {
       cryptoStore = CryptoStore.from(
         ipfsApi: profileController.ipfsAPI,
-        privateMode: isPrivateMode
+        profile: profile
       )
     }
 
