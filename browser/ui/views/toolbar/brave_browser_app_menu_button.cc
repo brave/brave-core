@@ -6,10 +6,9 @@
 #include "brave/browser/ui/views/toolbar/brave_browser_app_menu_button.h"
 
 #include "base/check_deref.h"
-#include "base/feature_list.h"
-#include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/page_info/features.h"
+#include "brave/browser/ui/toolbars_small_icons.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
@@ -31,8 +30,7 @@ constexpr int kBrandedBorderThickness = 1;
 constexpr int kBrandedLabelExtraSpacing = 3;
 
 int GetBrandedIconSize() {
-  return base::FeatureList::IsEnabled(features::kBraveToolbarsSmallIcons) ? 18
-                                                                          : 24;
+  return brave::GetToolbarsIconSize(24);
 }
 
 bool ShowBrandedIcon() {
@@ -102,7 +100,7 @@ void BraveBrowserAppMenuButton::UpdateLayoutInsets() {
   // Same Insets for W/O Label.
   SetLayoutInsets(::GetLayoutInsets(TOOLBAR_BUTTON));
   if (ShowBrandedIcon()) {
-    if (base::FeatureList::IsEnabled(features::kBraveToolbarsSmallIcons)) {
+    if (brave::IsToolbarsSmallIconsEnabled()) {
       // The branded icon has no built-in padding, so add extra horizontal
       // space (left 1, right 3) beyond the standard toolbar button insets.
       SetLayoutInsetDelta(gfx::Insets::TLBR(0, 1, 0, 3));

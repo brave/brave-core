@@ -11,12 +11,17 @@
 
 namespace brave {
 
-// Returns the icon size to use in toolbars and similar surfaces: 18 when
-// #toolbars-small-icons is enabled, otherwise `default_size`.
+// Icon size used by #toolbars-small-icons.
+inline constexpr int kToolbarsSmallIconSize = 18;
+
+inline bool IsToolbarsSmallIconsEnabled() {
+  return base::FeatureList::IsEnabled(features::kBraveToolbarsSmallIcons);
+}
+
+// Returns kToolbarsSmallIconSize when #toolbars-small-icons is enabled,
+// otherwise `default_size`.
 inline int GetToolbarsIconSize(int default_size) {
-  return base::FeatureList::IsEnabled(features::kBraveToolbarsSmallIcons)
-             ? 18
-             : default_size;
+  return IsToolbarsSmallIconsEnabled() ? kToolbarsSmallIconSize : default_size;
 }
 
 }  // namespace brave

@@ -5,8 +5,7 @@
 
 #include "chrome/browser/ui/views/tabs/tab_strip_control_button.h"
 
-#include "base/feature_list.h"
-#include "brave/browser/ui/brave_ui_features.h"
+#include "brave/browser/ui/toolbars_small_icons.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 
 #define TabStripControlButton TabStripControlButton_ChromiumImpl
@@ -47,10 +46,9 @@ void TabStripControlButton::UpdateIcon() {
   TabStripControlButton_ChromiumImpl::UpdateIcon();
 
   // Upstream draws these icons at kIconSize (16).
-  if (!base::FeatureList::IsEnabled(features::kBraveToolbarsSmallIcons)) {
+  if (!brave::IsToolbarsSmallIconsEnabled()) {
     return;
   }
-  constexpr int kSmallIconSize = 18;
   for (const auto state :
        {views::Button::STATE_NORMAL, views::Button::STATE_HOVERED,
         views::Button::STATE_PRESSED}) {
@@ -61,7 +59,7 @@ void TabStripControlButton::UpdateIcon() {
     const ui::VectorIconModel vector_icon = model->GetVectorIcon();
     SetImageModel(state, ui::ImageModel::FromVectorIcon(
                              *vector_icon.vector_icon(), vector_icon.color(),
-                             kSmallIconSize));
+                             brave::kToolbarsSmallIconSize));
   }
 }
 

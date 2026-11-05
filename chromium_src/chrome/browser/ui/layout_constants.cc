@@ -8,9 +8,8 @@
 #include <algorithm>
 #include <optional>
 
-#include "base/feature_list.h"
-#include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/toolbars_small_icons.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "components/prefs/pref_service.h"
@@ -104,19 +103,15 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
       return touch ? 48 : 28;
     }
     case LayoutConstant::kToolbarButtonIconSize:
-    case LayoutConstant::kTabCloseButtonSize:
-    case LayoutConstant::kTabAlertIndicatorIconWidth:
-    case LayoutConstant::kTabAlertIndicatorCaptureIconWidth:
       // See also SidebarButtonView::GetDefaultIconSize()
-      if (!touch &&
-          base::FeatureList::IsEnabled(features::kBraveToolbarsSmallIcons)) {
-        return 18;
+      if (!touch && brave::IsToolbarsSmallIconsEnabled()) {
+        return brave::kToolbarsSmallIconSize;
       }
       break;
     case LayoutConstant::kLocationBarTrailingIconSize:
     case LayoutConstant::kVerticalTabStripButtonIconSize:
-      if (base::FeatureList::IsEnabled(features::kBraveToolbarsSmallIcons)) {
-        return 18;
+      if (brave::IsToolbarsSmallIconsEnabled()) {
+        return brave::kToolbarsSmallIconSize;
       }
       break;
     case LayoutConstant::kToolbarCornerRadius:

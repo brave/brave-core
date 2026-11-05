@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/extensions/extensions_toolbar_button.cc b/chrome/browser/ui/views/extensions/extensions_toolbar_button.cc
+index a36455069d310fd65a6abff2bbbb86149eea03f9..11460c59fe97780d122de6b9e12d635f6e6ed081 100644
+--- a/chrome/browser/ui/views/extensions/extensions_toolbar_button.cc
++++ b/chrome/browser/ui/views/extensions/extensions_toolbar_button.cc
+@@ -192,7 +192,7 @@ int ExtensionsToolbarButton::GetIconSize() const {
+     return kDefaultTouchableIconSize;
+   }
+ 
+-  return kDefaultIconSizeChromeRefresh;
++  return GetLayoutConstant(LayoutConstant::kToolbarButtonIconSize);
+ }
+ 
+ void ExtensionsToolbarButton::UpdateCachedTooltipText(

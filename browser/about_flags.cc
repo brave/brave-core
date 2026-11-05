@@ -1212,8 +1212,8 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
       {                                                                        \
           "toolbars-small-icons",                                              \
           "Small toolbar icons",                                               \
-          "Uses 18px icons instead of 20px in the toolbars, sidebar and "      \
-          "side panel header",                                                 \
+          "Uses 18px icons in the toolbar, tab strip, vertical tabs, "         \
+          "sidebar, side panel header and bookmarks bar",                      \
           kOsDesktop,                                                          \
           FEATURE_VALUE_TYPE(features::kBraveToolbarsSmallIcons),              \
       },                                                                       \

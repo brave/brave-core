@@ -8,10 +8,9 @@
 #include <string>
 #include <utility>
 
-#include "base/feature_list.h"
 #include "base/functional/bind.h"
-#include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/toolbars_small_icons.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -35,8 +34,7 @@ namespace {
 
 constexpr int kHeaderTitleFontSize = 16;
 int GetHeaderButtonSize() {
-  return base::FeatureList::IsEnabled(features::kBraveToolbarsSmallIcons) ? 18
-                                                                          : 20;
+  return brave::GetToolbarsIconSize(20);
 }
 
 std::unique_ptr<views::ImageButton> CreateHeaderImageButton(

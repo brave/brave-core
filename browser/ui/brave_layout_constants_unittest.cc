@@ -11,6 +11,8 @@
 #include "ui/gfx/geometry/insets.h"
 
 TEST(BraveLayoutConstantsTest, BraveValueTest) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndDisableFeature(features::kBraveToolbarsSmallIcons);
   ui::MockTouchUiController controller;
   EXPECT_FALSE(controller.touch_ui());
 
@@ -48,8 +50,6 @@ TEST(BraveLayoutConstantsTest, ToolbarsSmallIconsTest) {
   EXPECT_EQ(18,
             GetLayoutConstant(LayoutConstant::kLocationBarTrailingIconSize));
   EXPECT_EQ(28, GetLayoutConstant(LayoutConstant::kToolbarButtonHeight));
-  EXPECT_EQ(18, GetLayoutConstant(LayoutConstant::kTabCloseButtonSize));
-  EXPECT_EQ(18, GetLayoutConstant(LayoutConstant::kTabAlertIndicatorIconWidth));
   EXPECT_EQ(18,
             GetLayoutConstant(LayoutConstant::kVerticalTabStripButtonIconSize));
 }

@@ -19,13 +19,13 @@
 #include "base/functional/bind.h"
 #include "base/strings/string_split.h"
 #include "brave/app/vector_icons/vector_icons.h"
-#include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "brave/browser/ui/focus_mode/focus_mode_utils.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/public/switches.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
+#include "brave/browser/ui/toolbars_small_icons.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/frame/tab_strip_placement_coordinator.h"
@@ -162,8 +162,7 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
     plus_icon_->SetImage(ui::ImageModel::FromVectorIcon(
         kLeoPlusAddIcon, kColorBraveVerticalTabNTBIconColor,
         /* icon_size= */
-        base::FeatureList::IsEnabled(features::kBraveToolbarsSmallIcons) ? 18
-                                                                         : 16));
+        brave::GetToolbarsIconSize(16)));
     plus_icon_->SetProperty(
         views::kFlexBehaviorKey,
         views::FlexSpecification(views::MinimumFlexSizeRule::kPreferred,
