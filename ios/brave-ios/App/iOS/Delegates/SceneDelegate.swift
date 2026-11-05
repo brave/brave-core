@@ -111,6 +111,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
   private var cancellables: Set<AnyCancellable> = []
 
+  /// A control widget shortcut that arrived before this window had a browser to open it in.
+  private var pendingControlWidgetShortcut: WidgetShortcut?
+
   func scene(
     _ scene: UIScene,
     willConnectTo session: UISceneSession,
@@ -476,8 +479,8 @@ extension SceneDelegate {
     }
 
     if #available(iOS 26.0, *) {
-      handleControlWidgetIntentIfNeeded(
-        sceneState.connectionOptions.appIntent,
+      openControlWidgetShortcut(
+        for: sceneState.connectionOptions.appIntent,
         browserViewController: browserViewController
       )
     }
@@ -503,21 +506,34 @@ extension SceneDelegate {
   }
 
   @available(iOS 26.0, *)
-  private func handleControlWidgetIntentIfNeeded(
-    _ appIntent: (any UISceneAppIntent)?,
-    browserViewController: BrowserViewController
+  private static func controlWidgetShortcut(
+    for appIntent: any UISceneAppIntent
+  ) -> WidgetShortcut? {
+    switch appIntent {
+    case let intent as OpenControlWidgetShortcutIntent: intent.shortcut
+    case is OpenBraveSearchControlIntent: .search
+    case is OpenAskBraveControlIntent: .askBrave
+    default: nil
+    }
+  }
+
+  /// Opens the shortcut carried by a control intent. A shortcut that arrives before the window has
+  /// a browser is held until `performPostSceneConnectionTasks` can open it.
+  @available(iOS 26.0, *)
+  private func openControlWidgetShortcut(
+    for appIntent: (any UISceneAppIntent)?,
+    browserViewController: BrowserViewController?
   ) {
-    let shortcut: WidgetShortcut?
-    if appIntent is OpenAskBraveControlIntent {
-      shortcut = .askBrave
-    } else if appIntent is OpenBraveSearchControlIntent {
-      shortcut = .search
-    } else if let intent = appIntent as? OpenControlWidgetShortcutIntent {
-      shortcut = intent.shortcut
-    } else {
-      shortcut = nil
+    var shortcut = pendingControlWidgetShortcut
+    if let appIntent, let intentShortcut = Self.controlWidgetShortcut(for: appIntent) {
+      shortcut = intentShortcut
     }
     guard let shortcut else { return }
+    guard let browserViewController else {
+      pendingControlWidgetShortcut = shortcut
+      return
+    }
+    pendingControlWidgetShortcut = nil
     browserViewController.handleNavigationPath(path: .widgetShortcutURL(shortcut))
   }
 
@@ -940,10 +956,10 @@ extension SceneDelegate {
 @available(iOS 26.0, *)
 extension SceneDelegate: AppIntentSceneDelegate {
   func scene(_ scene: UIScene, willPerformAppIntent appIntent: any UISceneAppIntent) {
-    guard let windowScene = scene as? UIWindowScene,
-      let browserViewController = windowScene.browserViewController
-    else { return }
-    handleControlWidgetIntentIfNeeded(appIntent, browserViewController: browserViewController)
+    openControlWidgetShortcut(
+      for: appIntent,
+      browserViewController: (scene as? UIWindowScene)?.browserViewController
+    )
   }
 }
 

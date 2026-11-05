@@ -6,32 +6,29 @@
 import AppIntents
 import UIKit
 
-// WidgetShortcut is generated as an `@objc` enum, so a checked `Sendable` conformance
-// cannot be added outside that file. The cases are a trivial `Int`.
-extension WidgetShortcut: @unchecked Sendable {}
-
 @available(iOS 26.0, *)
 public struct OpenControlWidgetShortcutIntent: UISceneAppIntent {
   public static let title: LocalizedStringResource = "Open Brave"
   public static let openAppWhenRun: Bool = true
 
-  /// Control Center restores this after `init()`. The stored `WidgetShortcut` does not come back.
   @Parameter(title: "Shortcut")
-  public var shortcutValue: Int?
+  public var shortcutOption: ShortcutControlOption?
 
   public init() {}
 
-  public init(shortcut: WidgetShortcut?) {
-    self.shortcutValue = shortcut?.rawValue
+  public init(shortcut: ShortcutControlOption?) {
+    self.shortcutOption = shortcut
   }
 
+  /// Read through `valueState` rather than `shortcutOption`. The wrapped value is not populated on
+  /// the instance `scene(_:willPerformAppIntent:)` receives, but the resolved parameter is.
   public var shortcut: WidgetShortcut? {
-    guard let shortcutValue else { return nil }
-    return WidgetShortcut(rawValue: shortcutValue)
+    guard case .set(let option) = $shortcutOption.valueState else { return nil }
+    return option?.widgetShortcut
   }
 }
 
-/// Static Search control. Control Center restores an intent with `init()` and does not keep a stored shortcut, so the intent type is the shortcut.
+/// Static Search control. Control Center restores an intent with `init()`, so the intent type is the shortcut.
 @available(iOS 26.0, *)
 public struct OpenBraveSearchControlIntent: UISceneAppIntent {
   public static let title: LocalizedStringResource = "Brave Search"
