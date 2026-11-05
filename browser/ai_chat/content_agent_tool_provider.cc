@@ -53,7 +53,7 @@
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/storage_partition_config.h"
 #include "ui/base/l10n/l10n_util.h"
-#endif
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE));
 
@@ -75,7 +75,7 @@ constexpr auto kActorStatesToNotify =
 // assigned a site, so its tab would not be placed in the container's storage
 // partition.
 constexpr char kContainerTaskTabInitialUrl[] = "data:text/html,";
-#endif
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 }  // namespace
 
@@ -207,7 +207,7 @@ void ContentAgentToolProvider::GetOrCreateTabHandleForTask(
           profile_, containers::kContainersStoragePartitionDomain, container_id,
           profile_->IsOffTheRecord());
     }
-#endif
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
     Navigate(&params);
     content::WebContents* new_contents = params.navigated_or_inserted_contents;
 
@@ -298,7 +298,7 @@ const std::string& ContentAgentToolProvider::GetOrCreateContainerId() {
   }
   return container_id_;
 }
-#endif
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 void ContentAgentToolProvider::OnActionsFinished(
     Tool::UseToolCallback callback,

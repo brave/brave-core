@@ -59,7 +59,7 @@
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
-#endif
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 namespace ai_chat {
 

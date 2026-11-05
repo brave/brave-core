@@ -81,7 +81,7 @@ class ContentAgentToolProvider : public ToolProvider,
   // first use. Empty in the AI browsing profile, or if containers are
   // unavailable for the profile.
   const std::string& GetOrCreateContainerId();
-#endif
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
   void TabAddedToTask(base::OnceCallback<void(tabs::TabHandle)> callback,
                       actor::mojom::ActionResultPtr result);
@@ -106,7 +106,7 @@ class ContentAgentToolProvider : public ToolProvider,
   // storage. Created lazily, so that conversations which never open a task tab
   // don't create one.
   std::string container_id_;
-#endif
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
   raw_ptr<actor::ActorKeyedService> actor_service_ = nullptr;
   raw_ptr<Profile> profile_ = nullptr;
   raw_ref<actor::ui::ActorUiStateManagerInterface> ui_state_manager_;
