@@ -46,6 +46,10 @@ $stickyMargin: var(--leo-spacing-m);
   &.isInterrupted {
     --bubble-content-color: var(--leo-color-systemfeedback-error-text);
   }
+
+  &.isAwaitingApproval {
+    --bubble-content-color: var(--leo-color-systemfeedback-warning-text);
+  }
 }
 
 .icon {
