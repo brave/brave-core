@@ -327,8 +327,8 @@ PRACTICE_RULES = [
         _CPP,
         False,
         'Hand-rolled `JSONReader::Read` + `GetDict()`/`FindString` chains in '
-        'assertions where `base::test::ParseJson*`/`DictHasValue` apply. Cite '
-        'TI-020 instead when the problem is substring matching.',
+        'assertions where `base::test::ParseJson*`/`DictionaryHasValue` '
+        'apply. Cite TI-020 instead when the problem is substring matching.',
     ),
     (
         'ARCH-062',
