@@ -577,7 +577,7 @@ def post_batch_review(repo, pr_number, violations, head_sha):
 def submit_approval(repo, pr_number):
     """Submit an APPROVE review. Returns html_url or None."""
     payload = json.dumps({"event": "APPROVE", "body": ""})
-    rc, out, _err = run_cmd(
+    rc, out, err = run_cmd(
         [
             "gh",
             "api",

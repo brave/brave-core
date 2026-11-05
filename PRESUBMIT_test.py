@@ -15,10 +15,10 @@ sys.path.append(str(BRAVE_PATH / 'script'))
 sys.path.append(str(CHROMIUM_SRC_PATH))
 sys.path.append(str(BRAVE_PATH / 'vendor' / 'depot_tools'))
 
-import PRESUBMIT
+import PRESUBMIT  # noqa: E402
 
-from PRESUBMIT_test_mocks import MockAffectedFile
-from PRESUBMIT_test_mocks import MockInputApi, MockOutputApi
+from PRESUBMIT_test_mocks import MockAffectedFile  # noqa: E402
+from PRESUBMIT_test_mocks import MockInputApi, MockOutputApi  # noqa: E402
 
 
 class CheckTypeScriptSuppressionsHaveReasonsTest(unittest.TestCase):

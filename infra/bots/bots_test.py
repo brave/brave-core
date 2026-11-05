@@ -27,11 +27,8 @@ sys.path.insert(
 )
 
 import bots
-import describe
 import gen
 import gen_paths
-import lookup
-import validate
 
 
 def _make_generated_output_dir(tmp_dir, builder_names):
