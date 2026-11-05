@@ -22,18 +22,33 @@ class BraveInfoBarContainerView : public InfoBarContainerView {
 
   // views::View:
   void Layout(PassKey) override;
+  gfx::Size CalculatePreferredSize(
+      const views::SizeBounds& available_size) const override;
   void OnThemeChanged() override;
 
   // When `enabled`, replaces the flat bottom divider with a floating-card
-  // look: margin from the window edges (applied by the browser view's
-  // layout; see BraveBrowserViewTabbedLayoutImpl::AdjustInfobarLayout()) plus
-  // a rounded-rect outline border using `corner_radii`.
-  void SetRoundedBorderEnabled(bool enabled,
-                               const gfx::RoundedCornersF& corner_radii);
+  // look: margin from the window edges (applied by the browser view's layout;
+  // see BraveBrowserViewTabbedLayoutImpl::AdjustInfobarLayout()) plus a
+  // rounded-rect outline border. `contents_corner_radii` are the radii of the
+  // infobars inside the outline; the outline itself is rounded by its own
+  // thickness more, the same way the contents view's outline is.
+  void SetRoundedBorderEnabled(
+      bool enabled,
+      const gfx::RoundedCornersF& contents_corner_radii);
 
  private:
+  // The outline's radii, i.e. the contents radii grown by its own thickness.
+  gfx::RoundedCornersF GetOutlineCornerRadii() const;
+
+  void UpdateOutlineBorder();
+
+  // Rounds the infobars' own corners to match the outline. They each paint to
+  // an opaque layer that composites over everything the container painted, so
+  // square layers would cover the outline's rounded corners.
+  void UpdateInfoBarCornerRadii();
+
   bool rounded_border_enabled_ = false;
-  gfx::RoundedCornersF rounded_border_corner_radii_;
+  gfx::RoundedCornersF contents_corner_radii_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_INFOBARS_BRAVE_INFOBAR_CONTAINER_VIEW_H_
