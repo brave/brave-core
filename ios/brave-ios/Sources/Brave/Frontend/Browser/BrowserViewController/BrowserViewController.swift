@@ -286,6 +286,7 @@ public class BrowserViewController: UIViewController {
 
   var processAddressBarTask: Task<(), Never>?
   var topToolbarDidPressReloadTask: Task<(), Never>?
+  private var markPlayingVideosTask: Task<Void, Never>?
 
   /// In app purchase obsever for VPN Subscription action
   let iapObserver: BraveVPNInAppPurchaseObserver
@@ -940,15 +941,32 @@ public class BrowserViewController: UIViewController {
 
   /// Stamp videos that are playing before WebKit's background pause. A video the user already paused stays unmarked
   private func markPlayingVideosBeforeBackground() {
-    for tab in tabManager.allTabs {
-      tab.videoBackgroundPlayback?.markPlayingVideos()
+    markPlayingVideosTask = Task { @MainActor [weak self] in
+      guard let self else { return }
+      for tab in tabManager.allTabs {
+        // Marking walks the DOM looking for shadow roots, so skip tabs the web view reports as
+        // having nothing to resume rather than paying for that walk on every open tab.
+        // `.suspended` still counts, since a background tab's media may already be suspended.
+        switch await tab.requestMediaPlaybackState() {
+        case .none, .paused:
+          continue
+        case .playing, .suspended:
+          tab.videoBackgroundPlayback?.markPlayingVideos()
+        }
+      }
     }
   }
 
   /// Resumes videos marked while this scene was resigning active.
   private func resumePlayingVideoAfterBackground() {
-    for tab in tabManager.allTabs {
-      tab.videoBackgroundPlayback?.resumePlayingVideos()
+    Task { @MainActor [weak self] in
+      guard let self else { return }
+      // Marking is asynchronous, so it has to land before anything can be resumed.
+      await markPlayingVideosTask?.value
+      markPlayingVideosTask = nil
+      for tab in tabManager.allTabs {
+        tab.videoBackgroundPlayback?.resumePlayingVideos()
+      }
     }
   }
 
