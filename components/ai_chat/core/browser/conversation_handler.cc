@@ -496,6 +496,10 @@ bool ConversationHandler::IsToolUseInProgress() const {
 }
 
 bool ConversationHandler::IsAwaitingUserInput() const {
+  // A stopped task won't run its tools even if the challenge is answered.
+  if (tool_use_task_state_ == mojom::TaskState::kStopped) {
+    return false;
+  }
   const auto& history = GetConversationHistory();
   if (history.empty()) {
     return false;

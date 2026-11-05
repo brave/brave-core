@@ -45,6 +45,8 @@
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "brave/components/ai_chat/core/browser/test/mock_associated_content.h"
 #include "brave/components/ai_chat/core/browser/test_utils.h"
+#include "brave/components/ai_chat/core/browser/tools/mock_tool.h"
+#include "brave/components/ai_chat/core/browser/tools/mock_tool_provider.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -2126,20 +2128,57 @@ TEST_P(AIChatServiceUnitTest,
 }
 
 TEST_P(AIChatServiceUnitTest,
-       GenerationState_AwaitingUserInput_ResumesGenerating) {
+       GenerationState_ApprovingChallengeResumesGenerating) {
   ConversationHandler* handler = CreateConversation();
   const std::string uuid = handler->get_conversation_uuid();
+  auto* provider =
+      handler->AddToolProviderForTesting(std::make_unique<MockToolProvider>());
+  auto* tool = provider->AddToolForTesting(
+      std::make_unique<testing::NiceMock<MockTool>>("test_tool"));
+  // Keep the tool running so the conversation stays mid tool use.
+  Tool::UseToolCallback tool_callback;
+  EXPECT_CALL(*tool, UseTool)
+      .WillOnce([&](const std::string&, Tool::UseToolCallback callback) {
+        tool_callback = std::move(callback);
+      });
+
   auto resolve = StartGeneration(handler, *client_, ToolUseNeedingPermission());
   ExpectGenerationState(
       *client_, uuid, mojom::ConversationGenerationState::kAwaitingUserInput,
       base::BindOnce(&CompleteGeneration, std::move(resolve)));
+  std::unique_ptr<MockConversationHandlerClient> client;
+  ExpectGenerationState(*client_, uuid,
+                        mojom::ConversationGenerationState::kIdle,
+                        base::BindLambdaForTesting([&] {
+                          client = CreateConversationClient(handler);
+                        }));
 
-  // Answering the challenge restarts the tool loop, which reports in progress.
+  // The approved tool runs without a generation request in progress.
   ExpectGenerationState(
       *client_, uuid, mojom::ConversationGenerationState::kGenerating,
       base::BindLambdaForTesting([&] {
-        ai_chat_service_->OnRequestInProgressChanged(handler, true);
+        handler->ProcessPermissionChallenge(
+            "tool_id_1", mojom::PermissionChallengeDecision::kAllowOnce);
       }));
+  EXPECT_TRUE(handler->IsToolUseInProgress());
+}
+
+TEST_P(AIChatServiceUnitTest, GenerationState_StoppedChallengeIsNotAwaiting) {
+  ConversationHandler* handler = CreateConversation();
+  auto resolve = StartGeneration(handler, *client_, ToolUseNeedingPermission());
+  ExpectGenerationState(
+      *client_, handler->get_conversation_uuid(),
+      mojom::ConversationGenerationState::kAwaitingUserInput,
+      base::BindOnce(&CompleteGeneration, std::move(resolve)));
+
+  // Stopping happens from an open conversation. A stopped task won't
+  // continue, so leaving it doesn't flag it and it can unload.
+  auto client = CreateConversationClient(handler);
+  handler->StopTask();
+  EXPECT_FALSE(handler->IsAwaitingUserInput());
+  client.reset();
+  task_environment_.FastForwardBy(base::Seconds(10));
+  EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 0u);
 }
 
 TEST_P(AIChatServiceUnitTest,
