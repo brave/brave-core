@@ -87,6 +87,10 @@ TEST_LABELS = {
     'tests/best-practices': (
         'Tests that break the documented test best practices'
     ),
+    'tests/flaky-risk': (
+        'Tests whose waits or shared state can make them flaky or '
+        'order-dependent'
+    ),
 }
 _BASE_LABELS = ['tests', 'tests/test-quality', 'QA/No', 'release-notes/exclude']
 # Path prefix -> existing brave-browser feature label (first match wins).
@@ -413,6 +417,22 @@ PRACTICE_RULES = [
         '`expect(render(...)).toBeTruthy()` and similar always-true checks.',
     ),
 ]
+# Rules whose violation risks flakiness or order dependence; findings under
+# them also get the `tests/flaky-risk` label.
+_FLAKY_RULES = {
+    'TA-003',
+    'TA-005',
+    'TA-008',
+    'TA-012',
+    'TI-003',
+    'TI-004',
+    'TI-013',
+    'TI-042',
+    'TJ-004',
+    'TN-001',
+    'TN-002',
+    'TN-003',
+}
 # Preferred patterns. Shown so a finding's suggested_fix can point at them;
 # never cited as a violation.
 PRACTICE_REFS = [
@@ -1007,9 +1027,11 @@ def _bp_issues(meta, verdicts, work, min_sev):
             % (meta['type_name'].capitalize(), p, blob + p),
             '',
         ]
+        rule_ids = set()
         for i in ids:
             v, f = verdicts[i], work[i][1]
             rid = v.get('rule') or f.get('rule') or ''
+            rule_ids.add(rid)
             rule = rules.get(rid)
             rule_text = '`%s`' % rid
             if rule:
@@ -1060,6 +1082,7 @@ def _bp_issues(meta, verdicts, work, min_sev):
                 'body': '\n'.join(body) + '\n',
                 'labels': list(_BASE_LABELS)
                 + ['tests/best-practices']
+                + (['tests/flaky-risk'] if rule_ids & _FLAKY_RULES else [])
                 + _path_labels(p),
                 'severity': _sev(verdicts[ids[0]]),
                 'findings': len(ids),

@@ -227,7 +227,8 @@ Never post without the user's explicit go-ahead for this run. Issues go to
 1. Labels: test issues get `tests`, `tests/test-quality`, `QA/No`,
    `release-notes/exclude`, then for `effectiveness` `tests/false-positive` /
    `tests/weak-assertions` / `tests/missing-coverage` by finding category, or
-   for `best-practices` `tests/best-practices`, and a feature label from the
+   for `best-practices` `tests/best-practices` (plus `tests/flaky-risk` when a
+   finding is about waits, races or shared state), and a feature label from the
    path. Bug issues get `bug`, `crash` where it applies, and a feature label.
    Creating labels needs write access: `python3 $TQ labels` (default gh
    account).
