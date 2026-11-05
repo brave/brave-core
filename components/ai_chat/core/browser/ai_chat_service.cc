@@ -1220,7 +1220,8 @@ void AIChatService::OnRequestInProgressChanged(ConversationHandler* handler,
   }
 
   const std::string uuid = handler->get_conversation_uuid();
-  if (in_progress) {
+  // A tool approved by the user runs without a request, so count it too.
+  if (in_progress || handler->IsToolUseInProgress()) {
     // Follow-up requests (e.g. tool use) report true again while generating.
     auto [it, inserted] = conversation_generation_state_.try_emplace(
         uuid, mojom::ConversationGenerationState::kGenerating);

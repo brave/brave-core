@@ -165,6 +165,7 @@ function useProgressState(
   // Any tool use in the turn can carry the challenge, not just the last one.
   const isAwaitingApproval =
     isActiveGroup
+    && taskState !== Mojom.TaskState.kStopped
     && !!responseGroup
       ?.at(-1)
       ?.events?.some(
