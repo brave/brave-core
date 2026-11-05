@@ -16,3 +16,14 @@ substitutions:
       code: |-
         MaybeSetTorCircuitIsolation(result_code, config_, url,
                                     network_anonymization_key, result, this);
+
+  - description: |
+      Drop the Tor circuit credentials of a destroyed service.
+
+      The credentials are cached per service, keyed by its address, so a later
+      service at the same address would otherwise reuse them and link its
+      circuits to the old ones. Requests aborted by the destructor fail, so
+      they add no credentials back.
+    preempt_function_impl:
+      function_name: ConfiguredProxyResolutionService::~ConfiguredProxyResolutionService
+      code: 'ProxyConfigServiceTor::ClearProxyAuthorization(this);'

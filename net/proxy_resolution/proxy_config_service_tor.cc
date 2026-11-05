@@ -232,6 +232,12 @@ void ProxyConfigServiceTor::SetProxyAuthorization(
   }
 }
 
+// static
+void ProxyConfigServiceTor::ClearProxyAuthorization(
+    ProxyResolutionService* service) {
+  g_tor_proxy_map->erase(service);
+}
+
 void ProxyConfigServiceTor::AddObserver(Observer* observer) {
   observers_.AddObserver(observer);
 }
