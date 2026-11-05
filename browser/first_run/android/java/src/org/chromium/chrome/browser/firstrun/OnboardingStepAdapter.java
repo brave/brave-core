@@ -55,6 +55,7 @@ public class OnboardingStepAdapter
     private final List<Integer> mSteps = new ArrayList<>();
 
     private final SpannableString mWdpLearnMore;
+    private final String mDayZeroVariant;
     private final PageBounceAnimator mPageBounceAnimator;
     private final OnboardingNavigationListener mListener;
 
@@ -70,6 +71,7 @@ public class OnboardingStepAdapter
             final PageBounceAnimator pageBounceAnimator,
             final OnboardingNavigationListener listener) {
         mWdpLearnMore = wdpLearnMore;
+        mDayZeroVariant = dayZeroVariant;
         mPageBounceAnimator = pageBounceAnimator;
         mListener = listener;
 
@@ -101,7 +103,12 @@ public class OnboardingStepAdapter
         }
 
         if (viewType == R.layout.customize_brave) {
-            return new CustomizeBraveViewHolder(view);
+            return new CustomizeBraveViewHolder(
+                    view,
+                    mDayZeroVariant,
+                    getNextPosition(viewType),
+                    mPageBounceAnimator,
+                    mListener);
         }
 
         if (viewType == R.layout.make_brave_better) {
@@ -262,12 +269,48 @@ public class OnboardingStepAdapter
         }
     }
 
-    // TODO(https://github.com/brave/brave-browser/issues/60341): Implement the Customize Brave
-    // step.
     private static final class CustomizeBraveViewHolder extends OnboardingBaseViewHolder {
 
-        private CustomizeBraveViewHolder(final View itemView) {
+        private CustomizeBraveViewHolder(
+                final View itemView,
+                final String dayZeroVariant,
+                final int nextOnboardingPosition,
+                final PageBounceAnimator pageBounceAnimator,
+                final OnboardingNavigationListener listener) {
             super(itemView);
+            final Button leftButton = itemView.findViewById(R.id.onboarding_left_button);
+            final Button rightButton = itemView.findViewById(R.id.onboarding_right_button);
+
+            // Variant Z shows Customize on the left, variant Y shows it on the right.
+            final Button customize;
+            final Button useDefaults;
+            if (DAY_ZERO_VARIANT_Z.equals(dayZeroVariant)) {
+                customize = leftButton;
+                useDefaults = rightButton;
+            } else {
+                assert DAY_ZERO_VARIANT_Y.equals(dayZeroVariant);
+                customize = rightButton;
+                useDefaults = leftButton;
+            }
+
+            final View.OnClickListener goToNextStep =
+                    view -> {
+                        if (nextOnboardingPosition == -1) {
+                            listener.onDismiss();
+                        } else {
+                            pageBounceAnimator.animateToPosition(nextOnboardingPosition);
+                        }
+                    };
+
+            customize.setText(R.string.customize_onboarding);
+            customize.setClipToOutline(true);
+            // TODO(https://github.com/brave/brave-browser/issues/60480): Open the appearance
+            // customizer flow with address bar position customization.
+            // customize.setOnClickListener(openAppearanceCustomizer);
+
+            useDefaults.setText(R.string.use_defaults_onboarding);
+            useDefaults.setClipToOutline(true);
+            useDefaults.setOnClickListener(goToNextStep);
         }
 
         @Override

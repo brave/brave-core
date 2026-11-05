@@ -196,6 +196,65 @@ public class OnboardingStepAdapterTest {
     }
 
     @Test
+    public void testCustomizeBraveButtonsVariantZ() {
+        OnboardingStepAdapter adapter = createAdapter(DAY_ZERO_VARIANT_Z, false);
+
+        OnboardingStepAdapter.OnboardingBaseViewHolder holder =
+                createViewHolder(adapter, CUSTOMIZE_BRAVE);
+        Button leftButton = holder.itemView.findViewById(R.id.onboarding_left_button);
+        Button rightButton = holder.itemView.findViewById(R.id.onboarding_right_button);
+
+        assertNotNull(leftButton);
+        assertNotNull(rightButton);
+        assertEquals(
+                holder.itemView.getContext().getString(R.string.customize_onboarding),
+                leftButton.getText().toString());
+        assertEquals(
+                holder.itemView.getContext().getString(R.string.use_defaults_onboarding),
+                rightButton.getText().toString());
+
+        rightButton.performClick();
+        verify(mPageBounceAnimator).animateToPosition(CUSTOMIZE_BRAVE + 1);
+        assertEquals(0, mListener.mDismissCount);
+    }
+
+    @Test
+    public void testCustomizeBraveButtonsVariantY() {
+        OnboardingStepAdapter adapter = createAdapter(DAY_ZERO_VARIANT_Y, false);
+
+        OnboardingStepAdapter.OnboardingBaseViewHolder holder =
+                createViewHolder(adapter, CUSTOMIZE_BRAVE);
+        Button leftButton = holder.itemView.findViewById(R.id.onboarding_left_button);
+        Button rightButton = holder.itemView.findViewById(R.id.onboarding_right_button);
+
+        assertNotNull(leftButton);
+        assertNotNull(rightButton);
+        assertEquals(
+                holder.itemView.getContext().getString(R.string.use_defaults_onboarding),
+                leftButton.getText().toString());
+        assertEquals(
+                holder.itemView.getContext().getString(R.string.customize_onboarding),
+                rightButton.getText().toString());
+
+        leftButton.performClick();
+        verify(mPageBounceAnimator).animateToPosition(CUSTOMIZE_BRAVE + 1);
+        assertEquals(0, mListener.mDismissCount);
+    }
+
+    @Test
+    public void testCustomizeBraveUseDefaultsDismissesWhenMakeBraveBetterSkipped() {
+        OnboardingStepAdapter adapter = createAdapter(DAY_ZERO_VARIANT_Z, true);
+
+        OnboardingStepAdapter.OnboardingBaseViewHolder holder =
+                createViewHolder(adapter, CUSTOMIZE_BRAVE);
+        Button useDefaults = holder.itemView.findViewById(R.id.onboarding_right_button);
+
+        useDefaults.performClick();
+        verify(mPageBounceAnimator, never()).animateToPosition(anyInt());
+        assertEquals(1, mListener.mDismissCount);
+    }
+
+    @Test
     public void testMakeBraveBetterChangeNotifiesItsPosition() {
         OnboardingStepAdapter adapter = createAdapter();
         RecyclerView.AdapterDataObserver observer = mock(RecyclerView.AdapterDataObserver.class);

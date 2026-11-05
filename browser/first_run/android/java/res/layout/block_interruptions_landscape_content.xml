@@ -62,7 +62,7 @@
         android:id="@+id/onboarding_illustration"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:contentDescription="@string/brave_onboarding_block_interruptions_illustration_description"
+        android:contentDescription="@null"
         android:padding="@dimen/onboarding_illustration_padding"
         android:background="@color/schemes_surface_container"
         app:layout_constraintTop_toTopOf="parent"

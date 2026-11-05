@@ -871,17 +871,20 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_ONBOARDING_SPLASH_LOGO_DESCRIPTION" desc="Accessibility description for the onboarding splash logo">
         Brave logo
       </message>
-      <message name="IDS_BRAVE_ONBOARDING_HELP_BRAVE_SEARCH_ILLUSTRATION_DESCRIPTION" desc="Accessibility description for the help Brave Search onboarding illustration">
-        Help Brave Search illustration
-      </message>
-      <message name="IDS_BRAVE_ONBOARDING_BLOCK_INTERRUPTIONS_ILLUSTRATION_DESCRIPTION" desc="Accessibility description for the block interruptions onboarding illustration">
-        Block interruptions illustration
-      </message>
-      <message name="IDS_BRAVE_ONBOARDING_MAKE_BRAVE_BETTER_ILLUSTRATION_DESCRIPTION" desc="Accessibility description for the make Brave better onboarding illustration">
-        Make Brave better illustration
-      </message>
       <message name="IDS_BLOCK_INTERRUPTIONS_SUBTITLE" desc="Block video ads subtitle onboarding">
         Block annoying interruptions on your favorite streaming sites.
+      </message>
+      <message name="IDS_CUSTOMIZE_BRAVE" desc="Customize Brave title onboarding">
+        Make Brave yours
+      </message>
+      <message name="IDS_CUSTOMIZE_BRAVE_SUBTITLE" desc="Customize Brave subtitle onboarding">
+        Customize the browser to your liking: Theme, address bar position, shortcuts, and more.
+      </message>
+      <message name="IDS_CUSTOMIZE_ONBOARDING" desc="Text for Customize button onboarding">
+        Customize
+      </message>
+      <message name="IDS_USE_DEFAULTS_ONBOARDING" desc="Text for Use defaults button onboarding">
+        Use defaults
       </message>
       <message name="IDS_SURE_ILL_HELP_ONBOARDING" desc="Text for Sure i'll help button onboarding">
         Sure, I'll help

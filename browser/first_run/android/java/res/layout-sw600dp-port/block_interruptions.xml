@@ -55,7 +55,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="38dp"
-        android:contentDescription="@string/brave_onboarding_block_interruptions_illustration_description"
+        android:contentDescription="@null"
         android:padding="@dimen/onboarding_illustration_padding"
         android:background="@drawable/onboarding_rounded_corners"
         app:layout_constraintTop_toBottomOf="@+id/brave_onboarding_subtitle"
