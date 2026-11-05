@@ -25,7 +25,7 @@ of truth) and linked into the generated `.claude/skills/` discovery dir by
 | `/preflight`              | Run all preflight checks (format, build, test)                                    |
 | `/rebase-downstream`      | Rebase a tree of dependent branches                                               |
 | `/review`                 | Code review (PR or local changes)                                                 |
-| `/test-quality`           | Find tests that would pass even if the code they test broke, and file issues      |
+| `/test-quality`           | Audit tests for weak assertions and best-practice violations, and file issues     |
 | `/top-crashers`           | Query Backtrace for top crash data (Experimental)                                 |
 | `/uplift`                 | Cherry-pick fixes to beta/release branches                                        |
 
