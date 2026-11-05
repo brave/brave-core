@@ -35,6 +35,7 @@ static_library("psst") {
     "//brave/components/psst/core/browser",
     "//brave/components/psst/core/common",
     "//brave/components/script_injector/common/mojom",
+    "//brave/ui/color:nala_color_id",
     "//chrome/browser:browser_process",
     "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/infobars",

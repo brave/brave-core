@@ -12,9 +12,9 @@
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/components/psst/core/common/constants.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "components/infobars/core/infobar.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "ui/color/color_id.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/infobars/confirm_infobar_creator.h"
@@ -74,8 +74,11 @@ PsstInfoBarDelegate::GetIdentifier() const {
 }
 
 ui::ImageModel PsstInfoBarDelegate::GetIcon() const {
-  return ui::ImageModel::FromVectorIcon(kLeoPsstIcon, ui::kColorIcon,
-                                        /*icon_size=*/20);
+  // Drawn on top of a branded badge background (see PsstInfoBar), so it
+  // always needs to contrast with that fixed color, not the theme's
+  // default icon color.
+  return ui::ImageModel::FromVectorIcon(kLeoPsstIcon, nala::kColorPrimitivePrimary30,
+                                        /*icon_size=*/32);
 }
 
 std::u16string PsstInfoBarDelegate::GetMessageText() const {
