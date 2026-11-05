@@ -123,6 +123,7 @@ source_set("browser_tests") {
     ":frame_impl",
     "//base",
     "//base/test:test_support",
+    "//brave/browser/infobars",
     "//brave/browser/ui",
     "//brave/browser/ui:brave_tab_prefs",
     "//brave/browser/ui/focus_mode",
@@ -135,6 +136,7 @@ source_set("browser_tests") {
     "//brave/browser/ui/views/toolbar:screenshot",
     "//brave/components/brave_origin/buildflags",
     "//brave/components/constants",
+    "//brave/components/infobars/core",
     "//chrome/browser",
     "//chrome/browser/infobars",
     "//chrome/browser/profiles:profile",
@@ -159,6 +161,7 @@ source_set("browser_tests") {
     "//components/infobars/content",
     "//components/prefs",
     "//content/test:test_support",
+    "//testing/gmock",
     "//ui/views",
   ]
 
