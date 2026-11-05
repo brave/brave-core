@@ -11,6 +11,7 @@
 #include "base/functional/bind.h"
 #include "brave/browser/psst/psst_infobar_delegate.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -18,7 +19,10 @@
 #include "ui/events/event.h"
 #include "ui/gfx/font_list.h"
 #include "ui/gfx/geometry/point.h"
+#include "ui/gfx/geometry/size.h"
 #include "ui/gfx/range/range.h"
+#include "ui/views/background.h"
+#include "ui/views/controls/image_view.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/controls/styled_label.h"
 #include "ui/views/style/typography.h"
@@ -27,6 +31,10 @@ namespace {
 
 // Vertical gap between the title and subtitle rows.
 constexpr int kTitleSubtitleSpacing = 2;
+
+// Size of the branded badge drawn behind the icon, and its corner radius.
+constexpr int kIconBadgeSize = 44;
+constexpr float kIconBadgeRadius = 8.0f;
 
 }  // namespace
 
@@ -37,6 +45,15 @@ std::unique_ptr<infobars::InfoBar> CreatePsstInfoBar(
 
 PsstInfoBar::PsstInfoBar(std::unique_ptr<psst::PsstInfoBarDelegate> delegate)
     : BraveConfirmInfoBar(std::move(delegate)) {
+  // Grow the icon into a branded rounded-square badge; the (already
+  // smaller, white) icon image stays centered within it.
+  if (icon_) {
+    icon_->SetBackground(views::CreateRoundedRectBackground(
+        nala::kColorPrimitivePrimary70, kIconBadgeRadius));
+    icon_->SetPreferredSize(gfx::Size(kIconBadgeSize, kIconBadgeSize));
+    icon_->SizeToPreferredSize();
+  }
+
   // The base label acts as the bold title; emphasize it to match.
   label_->SetFontList(
       label_->font_list().DeriveWithWeight(gfx::Font::Weight::SEMIBOLD));
