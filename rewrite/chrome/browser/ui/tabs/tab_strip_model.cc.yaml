@@ -10,7 +10,7 @@ substitutions:
       Avoids enumeration values not handled in switch error.
     regex:
       re_pattern: |
-        (bool\ TabStripModel::IsContextMenuCommandEnabled\(.*?switch\s*\(command_id\)\s*\{)
+        (bool\ TabStripModel::IsContextMenuCommandEnabled\(\s*tabs::TabHandle\ context_tab,.*?switch\s*\(command_id\)\s*\{)
       re_flags: ['DOTALL']
       replace: |-
         \1
@@ -30,7 +30,7 @@ substitutions:
       Avoids enumeration values not handled in switch error.
     regex:
       re_pattern: |
-        (void\ TabStripModel::ExecuteContextMenuCommand\(.*switch\s*\(command_id\)\s*\{)
+        (void\ TabStripModel::ExecuteContextMenuCommand\(\s*tabs::TabHandle\ context_tab,.*?switch\s*\(command_id\)\s*\{)
       re_flags: ['DOTALL']
       replace: |-
         \1
