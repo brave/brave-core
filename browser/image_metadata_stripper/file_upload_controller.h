@@ -23,6 +23,7 @@
 
 namespace content {
 class WebContents;
+class Page;
 }  // namespace content
 
 namespace tabs {
@@ -49,9 +50,10 @@ namespace image_metadata_stripper {
 // named `kStripTempDirPrefix` directory on the first strip. Within it, every
 // stripped image gets a numbered subdirectory (0, 1, 2, ...) so that the copy
 // can keep the basename of its original without colliding with copies of
-// identically named images. A tab's directory is deleted when the tab closes
-// or its contents are discarded. Whatever is left over, e.g. after a crash,
-// is removed at the next startup via CleanUpFromLastSession method.
+// identically named images. A tab's directory is deleted when its primary page
+// changes, the tab closes, or its contents are discarded. Whatever is left
+// over, e.g. after a crash, is removed at the next startup via
+// CleanUpFromLastSession method.
 inline constexpr base::FilePath::CharType kStripperRootDirName[] =
     FILE_PATH_LITERAL("ImageMetadataStripperTemp");
 
@@ -61,8 +63,8 @@ inline constexpr base::FilePath::CharType kStripTempDirPrefix[] =
     FILE_PATH_LITERAL("brave_image_strip");
 
 // Makes the stripped copies of the images a tab uploads, and deletes them when
-// the tab closes or its contents are discarded. Lives on the UI thread; all
-// file work runs on a sequence of its own.
+// the primary page changes, the tab closes, or its contents are discarded.
+// Lives on the UI thread; all file work runs on a sequence of its own.
 class FileUploadController : public tabs::ContentsObservingTabFeature {
  public:
   // For each source path, in order, the stripped copy or std::nullopt when no
@@ -113,12 +115,11 @@ class FileUploadController : public tabs::ContentsObservingTabFeature {
                   std::vector<std::optional<base::FilePath>> copies);
 
   // tabs::ContentsObservingTabFeature override.
-  // TODO(https://github.com/brave/brave-browser/issues/58868): Consider
-  // observing OnPrimaryPageChanged to reset the Delegate (therefore deleting
-  // the temp files) when the web contents are changed to a new URL.
   void OnDiscardContents(tabs::TabInterface* tab,
                          content::WebContents* old_contents,
                          content::WebContents* new_contents) override;
+  // content::WebContentsObserver override.
+  void PrimaryPageChanged(content::Page& page) override;
 
   SEQUENCE_CHECKER(sequence_checker_);
 

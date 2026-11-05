@@ -34,9 +34,12 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/reload_type.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/test_navigation_observer.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
@@ -310,6 +313,27 @@ IN_PROC_BROWSER_TEST_F(FileSelectImageMetadataStripperBrowserTest,
       1, TabCloseTypes::CLOSE_USER_GESTURE);
   EXPECT_TRUE(base::test::RunUntil([&]() { return !PathExists(tab_dir); }))
       << "Temporary upload files should be deleted after the tab closes";
+}
+
+// Reloading commits a new primary page, which drops the tab's stripped copies.
+IN_PROC_BROWSER_TEST_F(FileSelectImageMetadataStripperBrowserTest,
+                       ReloadDeletesTheTemporaryFile) {
+  content::WebContents* web_contents =
+      OpenTabAndSelectFiles({fbmd_test_image_path_});
+
+  const std::vector<base::FilePath> copies = StrippedCopies();
+  ASSERT_EQ(1u, copies.size());
+  const base::FilePath tab_dir = TabDirOf(copies[0]);
+  ASSERT_TRUE(PathExists(tab_dir));
+
+  content::TestNavigationObserver reload_observer(web_contents);
+  web_contents->GetController().Reload(content::ReloadType::NORMAL,
+                                       /*check_for_repost=*/false);
+  reload_observer.Wait();
+
+  EXPECT_TRUE(base::test::RunUntil([&]() { return !PathExists(tab_dir); }))
+      << "Temporary upload files should be deleted when the page reloads";
+  EXPECT_TRUE(StrippedCopies().empty());
 }
 
 IN_PROC_BROWSER_TEST_F(FileSelectImageMetadataStripperBrowserTest,

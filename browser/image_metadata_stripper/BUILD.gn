@@ -37,6 +37,13 @@ source_set("unit_tests") {
     "//base/test:test_support",
     "//brave/components/image_metadata_stripper/common",
     "//chrome/common:constants",
+    "//components/tabs:impl",
+    "//components/tabs:test_support",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//testing/gmock",
     "//testing/gtest",
   ]
+
+  data = [ "//brave/test/data/image_metadata_stripper/" ]
 }
