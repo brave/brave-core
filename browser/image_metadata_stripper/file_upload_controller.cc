@@ -18,6 +18,7 @@
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
 #include "brave/components/misc_metrics/image_metadata_stripper_metrics.h"
+#include "chrome/browser/ui/tabs/contents_observing_tab_feature.h"
 #include "chrome/common/chrome_paths.h"
 #include "components/tabs/public/tab_interface.h"
 
@@ -238,6 +239,12 @@ void FileUploadController::OnDiscardContents(
   delegate_.Reset();
   tabs::ContentsObservingTabFeature::OnDiscardContents(tab, old_contents,
                                                        new_contents);
+}
+
+void FileUploadController::PrimaryPageChanged(content::Page& page) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  delegate_.Reset();
+  tabs::ContentsObservingTabFeature::PrimaryPageChanged(page);
 }
 
 }  // namespace image_metadata_stripper
