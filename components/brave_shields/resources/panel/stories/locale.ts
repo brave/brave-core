@@ -44,6 +44,7 @@ provideStrings({
   braveShieldsTrackersAndAdsAllowAll: 'Allow all trackers & ads',
   braveShieldsThirdPartyCookiesBlocked: 'Block third-party cookies',
   braveShieldsForgetFirstPartyStorage: 'Forget first-party storage',
+  braveShieldsBlockAllNewWindows: 'Block all new windows',
   braveShieldsCookiesBlockAll: 'Block all cookies',
   braveShieldsCookiesAllowedAll: 'Allow all cookies',
   braveShieldsFingerprintingBlocked: 'Fingerprinting blocked',

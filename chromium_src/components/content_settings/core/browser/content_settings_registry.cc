@@ -105,6 +105,17 @@ void ContentSettingsRegistry::BraveInit() {
            ContentSettingsInfo::INHERIT_IN_INCOGNITO,
            PermissionSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 
+  Register(ContentSettingsType::BRAVE_BLOCK_ALL_NEW_WINDOWS,
+           brave_shields::kBlockAllNewWindows, CONTENT_SETTING_ALLOW,
+           WebsiteSettingsInfo::SYNCABLE,
+           /*allowlisted_schemes=*/{},
+           /*valid_settings=*/{CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK},
+           WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
+           WebsiteSettingsRegistry::DESKTOP |
+               WebsiteSettingsRegistry::PLATFORM_ANDROID,
+           ContentSettingsInfo::INHERIT_IN_INCOGNITO,
+           PermissionSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
+
   /* The default value for BRAVE_COOKIES specified during registration isn't
    * important because the GetCookieControlType function identifies the default
    * by looking for a (*,*) pattern and uses the COOKIES value.

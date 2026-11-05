@@ -1728,6 +1728,14 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
           FEATURE_VALUE_TYPE(brave_shields::features::kBraveShredFeature),     \
       },                                                                       \
       {                                                                        \
+          "brave-block-all-new-windows",                                       \
+          "Enable Shields 'Block all new windows'",                            \
+          "Adds a per-site Shields toggle that blocks every new window or "    \
+          "tab a site tries to open, including ones triggered by a click.",    \
+          kOsDesktop,                                                          \
+          FEATURE_VALUE_TYPE(brave_shields::features::kBlockAllNewWindows),    \
+      },                                                                       \
+      {                                                                        \
           "brave-request-info-unique-ptr",                                     \
           "BraveRequestInfo unique_ptr",                                       \
           "Enable experimental use of unique_ptr/WeakPtr instead of "          \

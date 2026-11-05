@@ -12,7 +12,9 @@
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -24,11 +26,13 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/buildflags.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/omnibox/browser/location_bar_model.h"
 #include "components/prefs/pref_service.h"
@@ -36,6 +40,7 @@
 #include "content/public/common/content_client.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/test_utils.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/constants.h"
@@ -430,6 +435,136 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientReferrerTest,
   client()->MaybeHideReferrer(browser()->GetProfile(), kRequestUrl,
                               kDocumentUrl, &referrer);
   EXPECT_EQ(referrer->url, kDocumentUrl);
+}
+
+class BraveContentBrowserClientBlockAllNewWindowsTest
+    : public BraveContentBrowserClientTest {
+ public:
+  BraveContentBrowserClientBlockAllNewWindowsTest() {
+    feature_list_.InitAndEnableFeature(
+        brave_shields::features::kBlockAllNewWindows);
+  }
+
+ protected:
+  HostContentSettingsMap* content_settings() {
+    return HostContentSettingsMapFactory::GetForProfile(
+        browser()->GetProfile());
+  }
+
+  void SetBlockAllNewWindows(const GURL& url, ContentSetting setting) {
+    content_settings()->SetContentSettingCustomScope(
+        ContentSettingsPattern::FromURL(url),
+        ContentSettingsPattern::Wildcard(),
+        ContentSettingsType::BRAVE_BLOCK_ALL_NEW_WINDOWS, setting);
+  }
+
+  content::WebContents* web_contents() {
+    return browser()->tab_strip_model()->GetActiveWebContents();
+  }
+
+  int tab_count() { return browser()->tab_strip_model()->count(); }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientBlockAllNewWindowsTest,
+                       BlocksUserGestureWindowOpen) {
+  const GURL url = embedded_test_server()->GetURL("a.test", "/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  SetBlockAllNewWindows(url, CONTENT_SETTING_BLOCK);
+  const int tabs_before = tab_count();
+
+  EXPECT_EQ(true, content::EvalJs(web_contents(),
+                                  "window.open('/simple.html', '_blank') === "
+                                  "null"));
+  EXPECT_EQ(tabs_before, tab_count());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientBlockAllNewWindowsTest,
+                       BlocksBlankTargetLinkAndForm) {
+  const GURL url = embedded_test_server()->GetURL("a.test", "/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  SetBlockAllNewWindows(url, CONTENT_SETTING_BLOCK);
+  const int tabs_before = tab_count();
+
+  ASSERT_TRUE(content::ExecJs(web_contents(), R"(
+    const a = document.createElement('a');
+    a.href = '/simple.html';
+    a.target = '_blank';
+    document.body.appendChild(a);
+    a.click();
+    const f = document.createElement('form');
+    f.action = '/simple.html';
+    f.target = '_blank';
+    document.body.appendChild(f);
+    f.submit();
+  )"));
+  content::RunAllTasksUntilIdle();
+  EXPECT_EQ(tabs_before, tab_count());
+}
+
+// A cross-site ad iframe is judged by the top-level site's setting.
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientBlockAllNewWindowsTest,
+                       UsesTopLevelSiteForCrossSiteIframe) {
+  const GURL url = embedded_test_server()->GetURL("a.test", "/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  SetBlockAllNewWindows(url, CONTENT_SETTING_BLOCK);
+  ASSERT_TRUE(
+      content::ExecJs(web_contents(),
+                      "const i = document.createElement('iframe'); i.id = 'ad';"
+                      "document.body.appendChild(i);"));
+  ASSERT_TRUE(content::NavigateIframeToURL(
+      web_contents(), "ad",
+      embedded_test_server()->GetURL("b.test", "/simple.html")));
+  content::RenderFrameHost* ad_frame =
+      content::ChildFrameAt(web_contents()->GetPrimaryMainFrame(), 0);
+  ASSERT_TRUE(ad_frame);
+  const int tabs_before = tab_count();
+
+  EXPECT_EQ(true, content::EvalJs(ad_frame,
+                                  "window.open('/simple.html', '_blank') === "
+                                  "null"));
+  EXPECT_EQ(tabs_before, tab_count());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientBlockAllNewWindowsTest,
+                       AllowsWhenSettingAllowOrShieldsDownOrOtherSite) {
+  const GURL url = embedded_test_server()->GetURL("a.test", "/simple.html");
+  const GURL other = embedded_test_server()->GetURL("c.test", "/simple.html");
+  SetBlockAllNewWindows(url, CONTENT_SETTING_BLOCK);
+
+  // Other site unaffected.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), other));
+  int tabs_before = tab_count();
+  EXPECT_EQ(true, content::EvalJs(web_contents(),
+                                  "window.open('/simple.html', '_blank') !== "
+                                  "null"));
+  EXPECT_EQ(tabs_before + 1, tab_count());
+
+  // Shields down on the blocked site disables enforcement.
+  browser()->tab_strip_model()->ActivateTabAt(0);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  content_settings()->SetContentSettingCustomScope(
+      ContentSettingsPattern::FromURL(url), ContentSettingsPattern::Wildcard(),
+      ContentSettingsType::BRAVE_SHIELDS, CONTENT_SETTING_BLOCK);
+  tabs_before = tab_count();
+  EXPECT_EQ(true, content::EvalJs(web_contents(),
+                                  "window.open('/simple.html', '_blank') !== "
+                                  "null"));
+  EXPECT_EQ(tabs_before + 1, tab_count());
+
+  // Shields up, setting back to ALLOW.
+  browser()->tab_strip_model()->ActivateTabAt(0);
+  content_settings()->SetContentSettingCustomScope(
+      ContentSettingsPattern::FromURL(url), ContentSettingsPattern::Wildcard(),
+      ContentSettingsType::BRAVE_SHIELDS, CONTENT_SETTING_ALLOW);
+  SetBlockAllNewWindows(url, CONTENT_SETTING_ALLOW);
+  tabs_before = tab_count();
+  EXPECT_EQ(true, content::EvalJs(web_contents(),
+                                  "window.open('/simple.html', '_blank') !== "
+                                  "null"));
+  EXPECT_EQ(tabs_before + 1, tab_count());
 }
 
 // Confirm only expected extension has been installed.

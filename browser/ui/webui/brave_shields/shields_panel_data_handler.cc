@@ -90,6 +90,8 @@ void ShieldsPanelDataHandler::GetSiteSettings(
       brave_shields_settings_->IsNoScriptEnabled(site_url);
   settings.is_forget_first_party_storage_enabled =
       brave_shields_settings_->GetForgetFirstPartyStorageEnabled(site_url);
+  settings.is_block_all_new_windows_enabled =
+      brave_shields_settings_->GetBlockAllNewWindowsEnabled(site_url);
   settings.webcompat_settings =
       active_shields_data_controller_->GetWebcompatSettings();
   settings.scripts_blocked_override_status =
@@ -202,6 +204,15 @@ void ShieldsPanelDataHandler::SetForgetFirstPartyStorageEnabled(
   }
 
   brave_shields_settings_->SetForgetFirstPartyStorageEnabled(
+      is_enabled, active_shields_data_controller_->GetCurrentSiteURL());
+}
+
+void ShieldsPanelDataHandler::SetBlockAllNewWindowsEnabled(bool is_enabled) {
+  if (!active_shields_data_controller_) {
+    return;
+  }
+
+  brave_shields_settings_->SetBlockAllNewWindowsEnabled(
       is_enabled, active_shields_data_controller_->GetCurrentSiteURL());
 }
 

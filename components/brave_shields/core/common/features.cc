@@ -78,6 +78,8 @@ BASE_FEATURE(kBraveShredCacheData,
 #else
              base::FEATURE_DISABLED_BY_DEFAULT);
 #endif
+// When enabled, brave Shields will refuse new windows on user click
+BASE_FEATURE(kBlockAllNewWindows, base::FEATURE_DISABLED_BY_DEFAULT);
 // When enabled, brave will use content settings for Shields on iOS.
 BASE_FEATURE(kBraveShieldsContentSettingsIOS, base::FEATURE_ENABLED_BY_DEFAULT);
 // When enabled, will display debug menu for adblock features in the Shields

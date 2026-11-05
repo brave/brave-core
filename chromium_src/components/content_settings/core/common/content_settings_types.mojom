@@ -55,4 +55,5 @@ enum ContentSettingsType {
   BRAVE_CARDANO,
   BRAVE_PSST,
   BRAVE_POLKADOT,
+  BRAVE_BLOCK_ALL_NEW_WINDOWS,
 };
