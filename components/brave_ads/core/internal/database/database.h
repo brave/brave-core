@@ -10,8 +10,9 @@
 #include <memory>
 
 #include "base/files/file_path.h"
-#include "base/memory/memory_pressure_listener.h"
 #include "base/memory/weak_ptr.h"
+#include "base/memory_coordinator/async_memory_consumer_registration.h"
+#include "base/memory_coordinator/memory_consumer.h"
 #include "base/sequence_checker.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "sql/database.h"
@@ -19,7 +20,7 @@
 
 namespace brave_ads {
 
-class Database final : public base::MemoryPressureListener {
+class Database final : public base::MemoryConsumer {
  public:
   explicit Database(base::FilePath path);
 
@@ -74,8 +75,9 @@ class Database final : public base::MemoryPressureListener {
   void SetSqliteResult(
       const mojom::DBTransactionResultInfoPtr& mojom_db_transaction_result);
 
-  // base::MemoryPressureListener:
-  void OnMemoryPressure(base::MemoryPressureLevel level) override;
+  // base::MemoryConsumer:
+  void OnUpdateMemoryLimit() override;
+  void OnReleaseMemory() override;
 
   const base::FilePath db_path_;
   sql::Database db_;
@@ -83,8 +85,8 @@ class Database final : public base::MemoryPressureListener {
 
   bool is_initialized_ = false;
 
-  std::unique_ptr<base::AsyncMemoryPressureListenerRegistration>
-      memory_pressure_listener_registration_;
+  std::unique_ptr<base::AsyncMemoryConsumerRegistration>
+      memory_consumer_registration_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 
