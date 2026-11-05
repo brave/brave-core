@@ -277,15 +277,17 @@ class AIChatService : public KeyedService,
 
   using ShowCompletionNotificationCallback =
       base::RepeatingCallback<void(const std::string& uuid,
-                                   const std::u16string& title)>;
+                                   const std::u16string& title,
+                                   bool needs_approval)>;
   using CloseCompletionNotificationCallback =
       base::RepeatingCallback<void(const std::string& uuid)>;
   // Lets the embedder notify the user when a response finishes in the
   // background. |show| runs when a conversation's response finishes while no
   // client is connected to it, with the conversation's title, which is empty
-  // if it has none. |close| runs when the conversation is viewed, deleted, or
-  // unloaded and dropped from the list, whether or not a notification is
-  // showing. Either callback can be null.
+  // if it has none, and |needs_approval| set if it stopped on a permission
+  // request rather than finishing. |close| runs when the conversation is
+  // viewed, deleted, or unloaded and dropped from the list, whether or not a
+  // notification is showing. Either callback can be null.
   void SetCompletionNotificationCallbacks(
       ShowCompletionNotificationCallback show,
       CloseCompletionNotificationCallback close);
@@ -468,13 +470,17 @@ class AIChatService : public KeyedService,
   // This doesn't mean the conversation is on screen.
   bool IsConversationClientConnected(const std::string& uuid) const;
   // Marks |conversation_uuid| as no longer generating once its handler is
-  // neither generating nor running tools: kCompletedNotViewed, or idle if a
-  // client is connected.
+  // neither generating nor running tools: idle if a client is connected,
+  // otherwise kAwaitingUserInput if it stopped on a permission challenge, or
+  // else kCompletedNotViewed.
   void MaybeMarkGenerationComplete(const std::string& conversation_uuid);
   // DeleteConversation() without OnConversationListChanged(), for callers that
   // delete several conversations and then send the list once.
   void DeleteConversationWithoutNotifyingList(const std::string& id);
-  void MaybeShowCompletionNotification(const std::string& uuid);
+  // |needs_approval| is set when generation stopped on a permission challenge
+  // rather than finishing.
+  void MaybeShowCompletionNotification(const std::string& uuid,
+                                       bool needs_approval);
   void MaybeCloseCompletionNotification(const std::string& uuid);
 
   raw_ptr<ModelService> model_service_;
