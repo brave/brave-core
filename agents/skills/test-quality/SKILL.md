@@ -77,9 +77,9 @@ an audit note that narrows what counts.
   in the `testing-*` docs that `tq.py` doesn't classify (it is skipped until
   someone adds it to a table). Report that warning to the user.
 
-Best-practices issues are labelled `tests/best-practices`. Many older tests
-predate these rules, so a full sweep may produce a lot of findings; Phase 4 lets
-you cut them by severity.
+Best-practices issues are labelled `tests/best-practice-violation`. Many older
+tests predate these rules, so a full sweep may produce a lot of findings; Phase
+4 lets you cut them by severity.
 
 ---
 
@@ -227,10 +227,10 @@ Never post without the user's explicit go-ahead for this run. Issues go to
 1. Labels: test issues get `tests`, `tests/test-quality`, `QA/No`,
    `release-notes/exclude`, then for `effectiveness` `tests/false-positive` /
    `tests/weak-assertions` / `tests/missing-coverage` by finding category, or
-   for `best-practices` `tests/best-practices` (plus `tests/flaky-risk` when a
-   finding is about waits, races or shared state), and a feature label from the
-   path. Bug issues get `bug`, `crash` where it applies, and a feature label.
-   Creating labels needs write access: `python3 $TQ labels` (default gh
+   for `best-practices` `tests/best-practice-violation` (plus `tests/flaky-risk`
+   when a finding is about waits, races or shared state), and a feature label
+   from the path. Bug issues get `bug`, `crash` where it applies, and a feature
+   label. Creating labels needs write access: `python3 $TQ labels` (default gh
    account).
 2. Ask which account to post as. Posting reads the token with
    `gh auth token --user <account>` and passes it as `GH_TOKEN`, so the user's

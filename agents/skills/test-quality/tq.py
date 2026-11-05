@@ -84,8 +84,8 @@ TEST_LABELS = {
     'tests/missing-coverage': (
         "Functionality isn't meaningfully covered despite tests existing"
     ),
-    'tests/best-practices': (
-        'Tests that break the documented test best practices'
+    'tests/best-practice-violation': (
+        'Tests that violate a documented test best practice'
     ),
     'tests/flaky-risk': (
         'Tests whose waits or shared state can make them flaky or '
@@ -1081,7 +1081,7 @@ def _bp_issues(meta, verdicts, work, min_sev):
                 % _short_name(p, names),
                 'body': '\n'.join(body) + '\n',
                 'labels': list(_BASE_LABELS)
-                + ['tests/best-practices']
+                + ['tests/best-practice-violation']
                 + (['tests/flaky-risk'] if rule_ids & _FLAKY_RULES else [])
                 + _path_labels(p),
                 'severity': _sev(verdicts[ids[0]]),
@@ -1316,7 +1316,7 @@ def cmd_post(args):
     else:
         issues = _read_json(d / 'final/issues.json')
         label = (
-            'tests/best-practices'
+            'tests/best-practice-violation'
             if _lane(d) == 'best-practices'
             else 'tests/test-quality'
         )
