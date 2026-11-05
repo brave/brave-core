@@ -499,8 +499,9 @@ describe('ProgressBubble interrupted state', () => {
     expect(
       screen.queryByText(S.CHAT_UI_TOOL_LABEL_COMPLETE),
     ).not.toBeInTheDocument()
-    // Waiting isn't a failure, so it doesn't get the error styling.
+    // Waiting isn't a failure, so it gets warning, not error, styling.
     expect(getBubble()?.className).not.toContain('isInterrupted')
+    expect(getBubble()?.className).toContain('isAwaitingApproval')
   })
 
   test('shows "Waiting for your approval" when an earlier tool use in the turn has the challenge', () => {
