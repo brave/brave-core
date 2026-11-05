@@ -93,31 +93,28 @@ PEM_RE = re.compile(
 )
 
 
+def import_protos(pyproto_dir: Path) -> None:
+    """Puts the generated root_store_pb2 and its protobuf runtime first."""
+    sys.path[0:0] = [
+        str(pyproto_dir),
+        str(pyproto_dir / 'net/cert/root_store_proto_full'),
+    ]
+
+
 def parse_trust_anchors(textproto: Path) -> dict[str, int]:
     """Returns {cert sha256 hex: crs_root_id} for top-level trust_anchors."""
+    # pylint: disable=import-error
+    import root_store_pb2
+    from google.protobuf import text_format
+
+    root_store = text_format.Parse(
+        textproto.read_text(), root_store_pb2.RootStore()
+    )
     anchors: dict[str, int] = {}
-    depth = 0
-    in_anchor = False
-    cert_hash: str | None = None
-    for line in textproto.read_text().splitlines():
-        line = line.split('#', 1)[0].strip()
-        if not line:
-            continue
-        if depth == 0 and line == 'trust_anchors {':
-            in_anchor = True
-            cert_hash = None
-        elif in_anchor and depth == 1:
-            if m := re.fullmatch(r'sha256_hex:\s*"([0-9a-f]{64})"', line):
-                cert_hash = m.group(1)
-            elif m := re.fullmatch(r'crs_root_id:\s*(\d+)', line):
-                if cert_hash is None:
-                    raise ValueError('crs_root_id before sha256_hex')
-                anchors[cert_hash] = int(m.group(1))
-        depth += line.count('{') - line.count('}')
-        if depth == 0 and in_anchor:
-            if cert_hash is None or cert_hash not in anchors:
-                raise ValueError(f'Incomplete trust_anchors entry: {cert_hash}')
-            in_anchor = False
+    for anchor in root_store.trust_anchors:
+        if not anchor.sha256_hex or not anchor.HasField('crs_root_id'):
+            raise ValueError(f'Incomplete trust_anchors entry: {anchor}')
+        anchors[anchor.sha256_hex] = anchor.crs_root_id
     return anchors
 
 
@@ -196,9 +193,11 @@ def main() -> int:
     parser.add_argument('--root-stores', type=Path, required=True)
     parser.add_argument('--chrome-root-store', type=Path, required=True)
     parser.add_argument('--chrome-root-store-certs', type=Path, required=True)
+    parser.add_argument('--pyproto-dir', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
 
+    import_protos(args.pyproto_dir)
     merged = merge(
         args.root_stores, args.chrome_root_store, args.chrome_root_store_certs
     )
