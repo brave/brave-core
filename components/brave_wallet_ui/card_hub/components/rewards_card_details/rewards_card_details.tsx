@@ -16,7 +16,11 @@ import { ActionButton } from './action_button/action_button'
 // Styles
 import { CardSlot, DetailsHeader, DetailsPane } from '../../card_hub.style'
 import { Column, Row, Text } from '$wallet/components/shared/style'
-import { BoxContainer, DetailsButton, IconBubble } from './card_details.style'
+import {
+  BoxContainer,
+  DetailsButton,
+  IconBubble,
+} from './rewards_card_details.style'
 
 const earningsMonth = new Date().toLocaleDateString(undefined, {
   month: 'long',
@@ -35,7 +39,7 @@ interface Props {
   onBack?: () => void
 }
 
-export const CardDetails = (props: Props) => {
+export const RewardsCardDetails = (props: Props) => {
   const { title, visible, slotRef, onBack } = props
 
   return (
