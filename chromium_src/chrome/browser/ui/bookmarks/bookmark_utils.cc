@@ -79,8 +79,8 @@ ui::ImageModel GetBraveBookmarkFolderIcon(BookmarkFolderIconType icon_type,
     color = kColorToolbarButtonIcon;
   }
 
-  return ui::ImageModel::FromVectorIcon(*id, color,
-                                        brave::GetToolbarsIconSize().value_or(20));
+  return ui::ImageModel::FromVectorIcon(
+      *id, color, brave::GetToolbarsIconSize().value_or(20));
 }
 
 #endif  // defined(TOOLKIT_VIEWS)
