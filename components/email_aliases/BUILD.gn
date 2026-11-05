@@ -69,6 +69,7 @@ static_library("service") {
     "//brave/components/constants",
     "//brave/components/email_aliases:features",
     "//brave/components/endpoint_client",
+    "//brave/components/endpoint_client:brave_endpoint",
     "//brave/components/p3a_utils",
     "//brave/components/resources:strings_grit",
     "//brave/components/time_period_storage",

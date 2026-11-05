@@ -8,7 +8,6 @@ import("//tools/json_schema_compiler/json_schema_api.gni")
 
 static_library("endpoint_client") {
   sources = [
-    "brave_endpoint.h",
     "client.h",
     "has_to_value.h",
     "is_endpoint.h",
@@ -24,7 +23,6 @@ static_library("endpoint_client") {
     "request_types.h",
     "response.h",
     "retry_options.h",
-    "static_string.h",
     "url_replacements.cc",
     "url_replacements.h",
     "with_headers.h",
@@ -32,10 +30,23 @@ static_library("endpoint_client") {
 
   public_deps = [
     "//base",
-    "//brave/brave_domains",
     "//net",
     "//services/network/public/cpp",
     "//third_party/protobuf:protobuf_lite",
+    "//url",
+  ]
+}
+
+source_set("brave_endpoint") {
+  sources = [
+    "brave_endpoint.h",
+    "static_string.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/brave_domains",
+    "//brave/components/endpoint_client",
     "//url",
   ]
 }

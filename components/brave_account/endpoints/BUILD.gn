@@ -24,6 +24,7 @@ source_set("endpoints") {
   public_deps = [
     "//brave/components/brave_account/endpoints:generated_api_types",
     "//brave/components/endpoint_client",
+    "//brave/components/endpoint_client:brave_endpoint",
   ]
 }
 

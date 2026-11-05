@@ -120,7 +120,9 @@ using LoginInit = BraveEndpoint<
 
 The `BraveEndpoint<>` `template` simplifies defining endpoints for Brave
 services. It uses `brave_domains::GetServicesDomain()` under the hood to
-automatically resolve the service domain to the correct environment.
+automatically resolve the service domain to the correct environment. It lives in
+its own `//brave/components/endpoint_client:brave_endpoint` target, so only
+endpoints that use it depend on `//brave/brave_domains`.
 
 Non-official builds resolve to staging, so that local testing never writes to
 production. Official builds always resolve to production. Either way, the
