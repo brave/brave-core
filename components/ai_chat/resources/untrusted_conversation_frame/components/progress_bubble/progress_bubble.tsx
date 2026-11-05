@@ -281,6 +281,7 @@ export default function ProgressBubble(props: Props) {
           isStuck && styles.isStuck,
           !isComplete && styles.isActive,
           isInterrupted && styles.isInterrupted,
+          isAwaitingApproval && styles.isAwaitingApproval,
           isExpandable && styles.isExpandable,
         )}
         onClick={onClickHandler}
