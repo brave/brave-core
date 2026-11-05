@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import("//brave/components/tabs//buildflags/buildflags.gni")
 import("//build/config/ozone.gni")
 import("//build/config/ui.gni")
 
@@ -64,10 +65,12 @@ source_set("browser_tests") {
     "//brave/browser/ui",
     "//brave/browser/ui:brave_tab_prefs",
     "//brave/browser/ui/tabs:tab_menu",
+    "//brave/browser/ui/tabs:tab_strip",
     "//brave/browser/ui/tabs:tabs_public",
     "//brave/browser/ui/views/frame",
     "//brave/browser/ui/views/sidebar",
     "//brave/components/sidebar/browser",
+    "//brave/components/tabs",
     "//cc/paint",
     "//chrome/browser",
     "//chrome/browser/tab_group_sync:factories",
@@ -86,6 +89,7 @@ source_set("browser_tests") {
     "//chrome/browser/ui/views/location_bar",
     "//chrome/browser/ui/views/tabs:new_tab_button",
     "//chrome/browser/ui/views/tabs:tab_strip",
+    "//chrome/browser/ui/views/tabs/common:impl",
     "//chrome/browser/ui/views/tabs/tab",
     "//chrome/browser/ui/views/tabs/vertical",
     "//chrome/test:test_support_ui",
@@ -111,6 +115,14 @@ source_set("browser_tests") {
     deps += [
       "//ui/ozone",
       "//ui/platform_window/common",
+    ]
+  }
+
+  if (enable_brave_tree_tabs) {
+    sources += [ "upstream_tree_tabs_browsertest.cc" ]
+    deps += [
+      "//brave/browser/ui/tabs:tree_tab",
+      "//brave/browser/ui/views/tabs:tree_tab_view_utils",
     ]
   }
 }
