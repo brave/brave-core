@@ -10,11 +10,11 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
-#include "url/gurl.h"
 
 namespace content {
 class WebUIController;
 }
+class GURL;
 class Profile;
 
 namespace brave_wallet {
