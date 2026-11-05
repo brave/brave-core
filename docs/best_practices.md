@@ -4,6 +4,13 @@ This document is an index of best practices for the Brave Browser codebase,
 discovered from code reviews, test fixes, and development experience. Each
 section links to a detailed document.
 
+**File Patterns** on individual practices are review-routing hints, relative to
+brave-core. `**` matches any directory depth and `{a,b}` lists alternatives.
+Patterns identify candidate files, not exclusive applicability: check the code
+role and any accompanying scope notes. Named destination files do not limit
+where a change can trigger a requirement. Rules without patterns remain
+applicable whenever their subject is involved.
+
 ## Nala / Leo Design System
 
 - **[Nala / Leo Design System](./best-practices/nala.md)** - Icons (Android,

@@ -4,6 +4,8 @@
 
 ## ✅ Auto-Generated Filters for Flaky Upstream Tests
 
+**File Patterns:** `test/filters/generated/*.filter`
+
 **Upstream tests with a flake rate ≥1% over the past 30 days (per Chromium LUCI
 Analysis) are filtered automatically.** The
 `test/filters/generated/<suite>-<config>.filter` files — where `<config>` is a
@@ -36,6 +38,10 @@ model.
 
 ## ❌ Never Use Patches to Disable Upstream Test Failures
 
+**File Patterns:** `test/filters/*.filter`, `patches/**`, `chromium_src/**`.
+Filter candidates and upstream-test disabling changes; first verify the failure
+is upstream.
+
 **Do not create patch files to disable upstream Chromium tests for intermittent
 failures.** Use filter files in `test/filters/` instead — they are the preferred
 way to disable flaky upstream tests and are trivially reversible.
@@ -51,6 +57,10 @@ solution for upstream flakes. Only fix the upstream test code if Brave's own
 <a id="TUF-002"></a>
 
 ## ✅ Check Upstream Flakiness Before Filtering a Test
+
+**File Patterns:** `test/filters/*.filter`, `patches/**`, `chromium_src/**`.
+Filter candidates and upstream-test disabling changes; first verify the failure
+is upstream.
 
 **Before adding an upstream Chromium test to a filter file, verify that Brave
 code is not responsible for the failure.** If a Brave override or patch is
@@ -95,6 +105,10 @@ verdicts:
 
 ## ✅ Filter Only Specific Flaky Parameterized Variants
 
+**File Patterns:** `test/filters/*.filter`, `patches/**`, `chromium_src/**`.
+Filter candidates and upstream-test disabling changes; first verify the failure
+is upstream.
+
 **Do not use wildcard filters that suppress stable variants alongside flaky
 ones.** Check LUCI Analysis data for each variant individually and only filter
 the specific variants that are actually flaky.
@@ -115,6 +129,10 @@ the specific variants that are actually flaky.
 <a id="TUF-004"></a>
 
 ## ✅ Match Filter Specificity to Actual Failure Scope
+
+**File Patterns:** `test/filters/*.filter`, `patches/**`, `chromium_src/**`.
+Filter candidates and upstream-test disabling changes; first verify the failure
+is upstream.
 
 **Use the most specific/narrow filter approach, but only when the evidence
 supports it.** If a test only fails under ASAN on Linux and upstream LUCI
@@ -137,6 +155,10 @@ occur.
 <a id="TUF-005"></a>
 
 ## ✅ Filter File Entries Must Include a Descriptive Comment
+
+**File Patterns:** `test/filters/*.filter`, `patches/**`, `chromium_src/**`.
+Filter candidates and upstream-test disabling changes; first verify the failure
+is upstream.
 
 **Every disabled test entry in a filter file must be preceded by a comment that
 includes:**
@@ -163,6 +185,10 @@ includes:**
 <a id="TUF-006"></a>
 
 ## ✅ Group Filter File Entries by Root Cause
+
+**File Patterns:** `test/filters/*.filter`, `patches/**`, `chromium_src/**`.
+Filter candidates and upstream-test disabling changes; first verify the failure
+is upstream.
 
 **In filter files, group disabled tests that share a root cause under a single
 comment section.** Tests with distinct root causes get their own section. Always

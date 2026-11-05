@@ -147,6 +147,9 @@ void NTPBackgroundImagesBridge::GetCurrentWallpaperForDisplay() {
 
 ## ✅ Use LazyHolder Pattern for Singleton Factories
 
+**File Patterns:** `**/*Factory.java`. Singleton factory candidates; inspect
+other singleton implementations too.
+
 **Use the LazyHolder idiom for singleton service factories instead of explicit
 `synchronized` blocks with a lock `Object`.** This is more compact and
 thread-safe by leveraging Java's class loading guarantees.
@@ -218,6 +221,9 @@ public class MyPreference extends Preference {
 <a id="AND-008"></a>
 
 ## ✅ Use `app:isPreferenceVisible="false"` for Conditionally Shown Preferences
+
+**File Patterns:** `**/{res,brave-res}/xml*/*.xml`. Android preference
+resources.
 
 **When a preference in XML will be programmatically removed or hidden based on a
 feature flag, set `app:isPreferenceVisible="false"` in XML to avoid a brief
@@ -323,6 +329,8 @@ See `BraveDynamicColors.java` for an existing example of this pattern.
 
 ## ✅ Use Direct Java Patches When Bytecode Patching Fails
 
+**File Patterns:** `patches/**/*.java.patch`, `build/android/bytecode/**/*.java`
+
 **Bytecode (class adapter) patching fails when a class has two constructors.**
 In these cases, use direct `.java.patch` files instead. Also use direct
 `BUILD.gn` patches to add sources when circular dependencies prevent using
@@ -333,6 +341,9 @@ In these cases, use direct `.java.patch` files instead. Also use direct
 <a id="AND-014"></a>
 
 ## ✅ `ProfileManager.getLastUsedRegularProfile()` Is Acceptable in Widgets
+
+**File Patterns:** `**/*Widget*Provider.java`, `**/*Widget*.java`.
+Widget-provider candidates; verify the code is actually a widget provider.
 
 **While the presubmit check flags `ProfileManager.getLastUsedRegularProfile()`
 as a banned pattern, it is acceptable in Android widget providers** (e.g.,
@@ -365,6 +376,9 @@ public interface OnAnimationCompleteListener {
 
 ## ❌ Don't Set `clickable`/`focusable` on Non-Interactive Views
 
+**File Patterns:** `**/{res,brave-res}/layout*/**/*.xml`. Android layout
+resources.
+
 **Avoid setting `android:clickable="true"` or `android:focusable="true"` on
 purely decorative or display-only views** (like animation containers). These
 attributes affect accessibility and touch event handling.
@@ -384,6 +398,9 @@ ensures future changes only need to be made once.
 <a id="AND-019"></a>
 
 ## ✅ Group Feature-Specific Java Sources into Separate Build Targets
+
+**File Patterns:** `**/{brave_java_sources,java_sources}.gni`, `**/BUILD.gn`.
+Android Java build targets.
 
 **When Java sources for a specific feature (e.g., `crypto_wallet`) accumulate in
 `brave_java_sources.gni`, consider creating a separate build target.** This
@@ -423,6 +440,10 @@ private void handleState() {
 
 ## ✅ Bytecode Adapter Changes Require Bytecode Tests
 
+**File Patterns:** `build/android/bytecode/java/org/brave/bytecode/**/*.java`,
+`android/javatests/org/chromium/chrome/browser/BytecodeTest.java`. Adapter
+changes trigger the test requirement; do not review only the test destination.
+
 **When adding or modifying a bytecode class adapter (files in
 `build/android/bytecode/java/org/brave/bytecode/`), add a corresponding bytecode
 test** in `android/javatests/org/chromium/chrome/browser/BytecodeTest.java`.
@@ -436,6 +457,9 @@ failures.
 <a id="AND-023"></a>
 
 ## ✅ Proguard Rules: Separate Runtime vs Test Keep Rules
+
+**File Patterns:** `android/java/proguard.flags`,
+`android/java/apk_for_test.flags`
 
 **Proguard keep rules must go in the correct file:**
 
@@ -451,6 +475,9 @@ production APK size by preventing code shrinking.
 <a id="AND-024"></a>
 
 ## ✅ Keep Bytecode-Redirected Constructors Free of Class Static State
+
+**File Patterns:** `**/*.java`. Bytecode adapters and replacement/subclass
+constructors targeted by redirects.
 
 **When bytecode rewriting redirects an allocation to a subclass or replacement
 type, that type's constructor must not read its own static state.**
@@ -519,6 +546,9 @@ usage from non-test code.
 
 ## ✅ Prefer Programmatic `addView` Over Full XML Layout Replacement
 
+**File Patterns:** `**/*.java`, `**/layout*/**/*.xml`, `patches/**/*.xml.patch`.
+Android UI implementations and upstream layout replacements.
+
 **When customizing Android UI, prefer adding views programmatically (via
 `addView` in Java) over replacing entire upstream XML layout files.** Replacing
 full XML files creates maintenance burden during Chromium upgrades. However, if
@@ -530,6 +560,8 @@ invasive changes, document the trade-off and accept the XML replacement.
 <a id="AND-027"></a>
 
 ## ✅ Brave Resources Go in `brave-res`, Not Upstream Folders
+
+**File Patterns:** `**/brave-res/**`, `**/res/**`. Android resources.
 
 **Brave-specific Android resources (drawables, layouts, etc.) should be placed
 in a dedicated `brave-res` folder, not copied into upstream Chromium resource
@@ -577,6 +609,8 @@ have no upstream anchor that might change.
 
 ## ✅ Patches Are Acceptable for Anonymous Inner Classes
 
+**File Patterns:** `patches/**/*.java.patch`, `build/android/bytecode/**/*.java`
+
 **When the Brave override system cannot handle anonymous inner classes in
 upstream Chromium Java code, a `.patch` file is the accepted fallback.**
 Document the reason in the PR and link to the tracking issue for better override
@@ -587,6 +621,9 @@ support.
 <a id="AND-033"></a>
 
 ## ✅ Verify Shared Resource Changes Don't Break Other UIs
+
+**File Patterns:** `**/{res,brave-res}/values*/*.xml`. Android shared colors,
+dimensions, styles and themes; check consumers outside these files too.
 
 **When modifying shared Android resource values (colors, dimensions, styles in
 files like `brave_colors.xml`), verify the impact on ALL UIs that reference
@@ -599,6 +636,9 @@ cross-check usages before modifying.
 
 ## ✅ Use Baseline Colors Over Java Code Patches for Theming
 
+**File Patterns:** `**/{res,brave-res}/values*/*.xml`. Android shared colors,
+dimensions, styles and themes; check consumers outside these files too.
+
 **When fixing Android color/theming issues, prefer following upstream's approach
 of using baseline colors (XML color resources) for non-dynamic color states
 rather than patching Java code to programmatically set colors.** This is more
@@ -610,6 +650,9 @@ with the Dynamic Colors flag both enabled and disabled.
 <a id="AND-035"></a>
 
 ## ❌ Don't Modify Upstream String Resource Files
+
+**File Patterns:** `**/strings.xml`, `**/chrome_strings.grd`,
+`browser/ui/android/strings/android_brave_strings.grd`
 
 **Never modify upstream Chromium string resource files (e.g.,
 `chrome_strings.grd`, upstream `strings.xml`).** Add Brave-specific strings to
@@ -661,6 +704,9 @@ private static final String TAG = "BraveVPN";
 
 ## ✅ Use Layout Shorthand Attributes
 
+**File Patterns:** `**/{res,brave-res}/layout*/**/*.xml`. Android layout
+resources.
+
 **Use shorthand XML layout attributes (`paddingHorizontal`, `marginHorizontal`,
 `paddingVertical`, `marginVertical`) instead of setting start/end or top/bottom
 separately.** This reduces XML verbosity and improves readability.
@@ -703,6 +749,9 @@ Key configuration facts:
 
 ## ✅ Place `@Nullable` Immediately Before the Type
 
+**File Patterns:** `**/*.java`. Android Java; do not apply Java-specific
+nullness rules automatically to Kotlin.
+
 **`@Nullable` is `TYPE_USE` in JSpecify mode — it must appear immediately before
 the type it annotates.** Placing it on a separate line or before modifiers does
 not compile. For nested types, the annotation goes before the inner type name.
@@ -738,6 +787,9 @@ private @Nullable Callback<@Nullable String> mNullableCallbackOfNullableString;
 <a id="AND-040"></a>
 
 ## ✅ Use Method Annotations for Pre/Post Conditions
+
+**File Patterns:** `**/*.java`. Android Java; do not apply Java-specific
+nullness rules automatically to Kotlin.
 
 **NullAway analyzes code per-method. Use `@RequiresNonNull`, `@EnsuresNonNull`,
 `@EnsuresNonNullIf`, and `@Contract` to communicate nullability conditions
@@ -790,6 +842,9 @@ See [NullAway#1104](https://github.com/uber/NullAway/issues/1104).
 
 ## ✅ Use `@MonotonicNonNull` for Late-Initialized Fields
 
+**File Patterns:** `**/*.java`. Android Java; do not apply Java-specific
+nullness rules automatically to Kotlin.
+
 **When a field starts as null but must never be set back to null after
 initialization, use `@MonotonicNonNull` instead of `@Nullable`.** This allows
 NullAway to trust the field is non-null after its first assignment, even in
@@ -813,6 +868,9 @@ public void doThing(String value) {
 <a id="AND-042"></a>
 
 ## ✅ Choose the Right Assert/Assume Pattern
+
+**File Patterns:** `**/*.java`. Android Java; do not apply Java-specific
+nullness rules automatically to Kotlin.
 
 **Use the correct null assertion mechanism depending on whether you need a
 statement or expression and what safety guarantees you want.** Always use
@@ -872,6 +930,9 @@ public String describe(@MyIntDef int validity) {
 
 ## ✅ Handle Object Destruction Correctly
 
+**File Patterns:** `**/*.java`. Android Java; do not apply Java-specific
+nullness rules automatically to Kotlin.
+
 **For classes with `destroy()` methods that null out otherwise non-null fields,
 choose one of two strategies:**
 
@@ -916,6 +977,9 @@ public void destroy() {
 
 ## ✅ Use `assertBound()` for View Binders, Not `@Initializer`
 
+**File Patterns:** `**/*.java`. Android Java; do not apply Java-specific
+nullness rules automatically to Kotlin.
+
 **Do not mark `onBindViewHolder()` with `@Initializer` — it is not called
 immediately after construction.** Instead, add an `assertBound()` helper that
 uses `@EnsuresNonNull` to verify fields are initialized.
@@ -947,6 +1011,9 @@ private void updateView() {
 <a id="AND-045"></a>
 
 ## ✅ Initialize Struct-Like Class Fields via Constructor
+
+**File Patterns:** `**/*.java`. Android Java; do not apply Java-specific
+nullness rules automatically to Kotlin.
 
 **NullAway has no special handling for classes with public fields — it warns on
 non-primitive, non-`@Nullable` public fields not set by a constructor.** Create
@@ -981,6 +1048,9 @@ new TabInfo(/* title= */ "Home", /* url= */ "https://brave.com");
 
 ## ✅ Use "Checked" Companion Methods for Effectively Non-Null Returns
 
+**File Patterns:** `**/*.java`. Android Java; do not apply Java-specific
+nullness rules automatically to Kotlin.
+
 **Some methods are technically `@Nullable` but practically always non-null
 (e.g., `Activity.findViewById()`, `Context.getSystemService()`).** For
 Chromium-authored code, create a "Checked" companion instead of mis-annotating
@@ -1008,6 +1078,9 @@ analysis.
 
 ## ✅ Handle Supplier Nullability Variance
 
+**File Patterns:** `**/*.java`. Android Java; do not apply Java-specific
+nullness rules automatically to Kotlin.
+
 **`Supplier<T>` and `Supplier<@Nullable T>` are not assignment-compatible due to
 Java generics invariance.** Explicit casts or utilities are required.
 
@@ -1034,6 +1107,9 @@ on why casts are necessary.
 <a id="AND-048"></a>
 
 ## ✅ Use `@Initializer` for Two-Phase Initialization
+
+**File Patterns:** `**/*.java`. Android Java; do not apply Java-specific
+nullness rules automatically to Kotlin.
 
 **When a class uses two-phase initialization (e.g., `onCreate()`,
 `initialize()`), annotate the second-phase method with `@Initializer`.**
@@ -1065,6 +1141,9 @@ called. When multiple setters are always called together, prefer a single
 
 ## ✅ Understand `@SuppressWarnings("NullAway")` vs `@NullUnmarked`
 
+**File Patterns:** `**/*.java`. Android Java; do not apply Java-specific
+nullness rules automatically to Kotlin.
+
 **Both suppress NullAway warnings, but they differ in how callers see the
 method's signature.**
 
@@ -1082,6 +1161,9 @@ positive inside a method without degrading the caller experience. Use
 <a id="AND-050"></a>
 
 ## ❌ Don't Use Intermediate Booleans for Null Checks
+
+**File Patterns:** `**/*.java`. Android Java; do not apply Java-specific
+nullness rules automatically to Kotlin.
 
 **NullAway cannot track nullness through intermediate boolean variables.**
 Always use the null check directly in the `if` condition.
@@ -1108,6 +1190,9 @@ This is a known NullAway limitation:
 
 ## ✅ JNI: `@CalledByNative` Skips Checks, Java-to-Native Is Checked
 
+**File Patterns:** `**/*.java`. Android Java; do not apply Java-specific
+nullness rules automatically to Kotlin.
+
 **Nullness is not checked for `@CalledByNative` methods**
 ([crbug/389192501](https://crbug.com/389192501)). However, Java-to-Native method
 calls **are checked** via `assert` statements when `@NullMarked` is present.
@@ -1120,6 +1205,9 @@ callers on the Java side are properly checked.
 <a id="AND-052"></a>
 
 ## ✅ Use JSpecify Annotations for Mirrored Code
+
+**File Patterns:** `**/*.java`. Android Java; do not apply Java-specific
+nullness rules automatically to Kotlin.
 
 **For code that will be mirrored and built in other environments, use JSpecify
 annotations directly** instead of Chromium's copies under

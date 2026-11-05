@@ -6,6 +6,9 @@
 
 ## ✅ Use unique_ptr for View Child Add/Remove
 
+**File Patterns:** `**/*.{cc,h,mm}`. Desktop Views/UI code, fetchers and
+clipboard writers; not exclusively files named _\_view._.
+
 **Prefer the `unique_ptr` overload of `View::AddChildView()` and use
 `View::RemoveChildViewT()` when you need to remove a child from the hierarchy
 and then destroy it.** `RemoveChildView(View*)` does not delete the child;
@@ -29,6 +32,9 @@ std::unique_ptr<views::View> owned = parent->RemoveChildViewT(some_child);
 <a id="UV-002"></a>
 
 ## ✅ Do not manually call `RemoveObserver` when inheriting `TabStripModelObserver`
+
+**File Patterns:** `**/*.{cc,h,mm}`. Desktop Views/UI code, fetchers and
+clipboard writers; not exclusively files named _\_view._.
 
 **Do not call `TabStripModel::RemoveObserver(this)` from your subclass
 destructor, `Shutdown()`, or `OnTabStripModelDestroyed`.**
@@ -70,6 +76,9 @@ void MyView::OnTabStripModelDestroyed(TabStripModel* model) {
 
 ## ✅ Prefer `views::AsViewClass` and `views::IsViewClass` Over `static_cast<>` for View Downcasting
 
+**File Patterns:** `**/*.{cc,h,mm}`. Desktop Views/UI code, fetchers and
+clipboard writers; not exclusively files named _\_view._.
+
 **Use `views::AsViewClass<T>()` and `views::IsViewClass<T>()` instead of
 `static_cast<T*>()` when downcasting `views::View` pointers.**
 
@@ -110,6 +119,9 @@ if (views::IsViewClass<MyCustomView>(some_view)) {
 <a id="UV-004"></a>
 
 ## ❌ Avoid `BubbleDialogDelegateView`
+
+**File Patterns:** `**/*.{cc,h,mm}`. Desktop Views/UI code, fetchers and
+clipboard writers; not exclusively files named _\_view._.
 
 **Do not inherit from `BubbleDialogDelegateView`; it is deprecated by
 Chromium.** Combining the delegate and view into one class makes ownership and
@@ -160,6 +172,9 @@ void MyClass::OnBubbleClosing(views::Widget::ClosedReason reason) {
 
 ## ❌ Avoid `DialogDelegateView`
 
+**File Patterns:** `**/*.{cc,h,mm}`. Desktop Views/UI code, fetchers and
+clipboard writers; not exclusively files named _\_view._.
+
 **Do not inherit from `DialogDelegateView`; it is deprecated by Chromium.**
 Combining the delegate and view into one class makes ownership and lifetimes
 harder to reason about, and encourages mixing UI layout with business logic.
@@ -195,6 +210,9 @@ widget->Show();
 
 ## ❌ Don't Use `ImageFetcher` for Off-the-Record or Tor Profiles
 
+**File Patterns:** `**/*.{cc,h,mm}`. Desktop Views/UI code, fetchers and
+clipboard writers; not exclusively files named _\_view._.
+
 **`ImageFetcherService` sends its requests through the browser-wide
 `SystemNetworkContextManager` network context, which is not bound to any
 profile.** For an off-the-record profile the request leaves the profile's
@@ -227,6 +245,9 @@ use a `SimpleURLLoader` with the profile's `URLLoaderFactory` instead.
 <a id="UV-007"></a>
 
 ## ✅ Mark Clipboard Writes from Off-the-Record Profiles as Off-the-Record
+
+**File Patterns:** `**/*.{cc,h,mm}`. Desktop Views/UI code, fetchers and
+clipboard writers; not exclusively files named _\_view._.
 
 **When browser UI code writes content derived from an off-the-record profile
 (Incognito, Private, Tor) to the clipboard, call
