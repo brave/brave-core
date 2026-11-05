@@ -161,6 +161,12 @@ function useProgressState(
     ? conversationState.toolUseTaskState
     : Mojom.TaskState.kNone
 
+  // The loop has stopped to ask the user for permission, so it isn't done.
+  const isAwaitingApproval =
+    isActiveGroup
+    && !!lastEvent?.toolUseEvent?.permissionChallenge
+    && !lastEvent.toolUseEvent.output
+
   return React.useMemo(() => {
     const isExpandable = !!responseGroup && isAssistantGroupTask(responseGroup)
 
@@ -192,8 +198,11 @@ function useProgressState(
       // security scan event detail.
     } else if (isExpandable) {
       isComplete = true
-      isInterrupted = INTERRUPTED_TASK_STATES.includes(taskState)
-      if (taskState === Mojom.TaskState.kPaused) {
+      isInterrupted =
+        isAwaitingApproval || INTERRUPTED_TASK_STATES.includes(taskState)
+      if (isAwaitingApproval) {
+        progressText = getLocale(S.CHAT_UI_TASK_STATE_AWAITING_APPROVAL_LABEL)
+      } else if (taskState === Mojom.TaskState.kPaused) {
         progressText = getLocale(S.CHAT_UI_TASK_STATE_PAUSED_LABEL)
       }
       if (taskState === Mojom.TaskState.kStopped) {
@@ -212,6 +221,7 @@ function useProgressState(
     lastEvent?.toolUseEvent,
     responseGroup,
     taskState,
+    isAwaitingApproval,
   ])
 }
 
