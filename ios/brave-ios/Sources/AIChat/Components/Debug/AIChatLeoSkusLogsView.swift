@@ -14,8 +14,10 @@ public struct AIChatLeoSkusLogsView: View {
   @State
   private var text = ""
 
-  public init() {
+  private let skusService: SkusSkusService
 
+  public init(skusService: SkusSkusService) {
+    self.skusService = skusService
   }
 
   public var body: some View {
@@ -59,9 +61,6 @@ public struct AIChatLeoSkusLogsView: View {
 
   @MainActor
   private func getSkusState() async -> String {
-    guard let skusService = Skus.SkusServiceFactory.get(privateMode: false) else {
-      return ""
-    }
     var result = ""
     let orderId = Preferences.AIChat.subscriptionOrderId.value ?? "None"
 
