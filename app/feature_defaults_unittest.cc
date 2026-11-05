@@ -8,6 +8,7 @@
 #include "base/features.h"
 #include "chrome/browser/browser_features.h"
 #include "chrome/browser/devtools/features.h"
+#include "chrome/browser/glic/public/features.h"
 #include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #include "chrome/browser/policy/policy_util.h"
 #include "chrome/browser/preloading/preloading_features.h"
@@ -203,6 +204,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kEmailVerificationProtocol,
       &features::kEnterpriseReleaseNotes,
       &features::kFedCm,
+      &features::kGlicTextSelectionContextMenu,
       &features::kHttpsFirstBalancedMode,
       &features::kIndigo,
 #if BUILDFLAG(IS_WIN)
