@@ -1246,3 +1246,37 @@ brave_java_sources = [
 ```
 
 ---
+
+<a id="AND-057"></a>
+
+## ❌ Don't Give Decorative `ImageView`s a Content Description
+
+**Set `android:contentDescription="@null"` on an `ImageView` that is purely
+decorative**, rather than a string resource. An image is decorative when it
+isn't interactive and conveys nothing beyond nearby text, e.g. an icon beside a
+title or an onboarding illustration. A description there makes TalkBack read
+noise or repeat the adjacent label, and adds a needless translatable string. Use
+`@null`, not an empty string or an omitted attribute, so the intent is explicit.
+The same applies to `setContentDescription(...)` in Java.
+
+```xml
+<!-- ❌ WRONG - icon description repeats the adjacent title -->
+<ImageView
+    android:src="@drawable/ic_shield_done"
+    android:contentDescription="@string/brave_shields_title" />
+<TextView
+    android:text="@string/brave_shields_title" />
+
+<!-- ✅ CORRECT - decorative icon is skipped by screen readers -->
+<ImageView
+    android:src="@drawable/ic_shield_done"
+    android:contentDescription="@null" />
+<TextView
+    android:text="@string/brave_shields_title" />
+```
+
+Before flagging, confirm the image really is decorative. Images that carry
+meaning on their own still need a real description: clickable images, icon-only
+buttons, QR codes, and status icons with no accompanying text.
+
+---
