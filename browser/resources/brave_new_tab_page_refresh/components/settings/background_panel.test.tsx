@@ -59,6 +59,8 @@ function createBackgroundStore(
       notifyNewTabTakeoverLoadError() {},
       notifyNewTabTakeoverLogoClicked() {},
       notifyNewTabTakeoverRichMediaEvent() {},
+      notifyNewTabTakeoverDisclosureLearnMoreClicked() {},
+      notifyNewTabTakeoverDisclosureAutoDisplayed() {},
       ...actions,
     },
     ...state,

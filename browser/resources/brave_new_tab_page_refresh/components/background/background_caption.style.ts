@@ -23,6 +23,12 @@ export const style = scoped.css`
     border-radius: ${radius.m};
   }
 
+  &:has(.sponsored-logo) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
   .sponsored-logo {
     --leo-icon-size: 20px;
 

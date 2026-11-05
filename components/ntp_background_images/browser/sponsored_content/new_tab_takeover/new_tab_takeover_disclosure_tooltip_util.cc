@@ -5,6 +5,7 @@
 
 #include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/new_tab_takeover_disclosure_tooltip_util.h"
 
+#include "base/check_op.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -17,20 +18,20 @@ bool ShouldAutoDisplayNewTabTakeoverDisclosureTooltip(
     return false;
   }
 
-  return prefs.GetInteger(
-             prefs::kNewTabTakeoverDisclosureTooltipRemainingDisplayCount) > 0;
+  return prefs.GetInteger(prefs::kNewTabTakeoverInfobarRemainingDisplayCount) >
+         0;
 }
 
 void RecordNewTabTakeoverDisclosureTooltipWasDisplayed(PrefService& prefs) {
-  const int count = prefs.GetInteger(
-      prefs::kNewTabTakeoverDisclosureTooltipRemainingDisplayCount);
-  prefs.SetInteger(prefs::kNewTabTakeoverDisclosureTooltipRemainingDisplayCount,
+  const int count =
+      prefs.GetInteger(prefs::kNewTabTakeoverInfobarRemainingDisplayCount);
+  CHECK_GT(count, 0);
+  prefs.SetInteger(prefs::kNewTabTakeoverInfobarRemainingDisplayCount,
                    count - 1);
 }
 
 void SuppressNewTabTakeoverDisclosureTooltip(PrefService& prefs) {
-  prefs.SetInteger(prefs::kNewTabTakeoverDisclosureTooltipRemainingDisplayCount,
-                   0);
+  prefs.SetInteger(prefs::kNewTabTakeoverInfobarRemainingDisplayCount, 0);
 }
 
 }  // namespace ntp_background_images

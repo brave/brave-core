@@ -27,6 +27,8 @@ function createMockNewTabPageProxy() {
       getNewTabTakeoverBackground: jest
         .fn()
         .mockResolvedValue({ background: null }),
+      notifyNewTabTakeoverDisclosureLearnMoreClicked: jest.fn(),
+      notifyNewTabTakeoverDisclosureTooltipAutoDisplayed: jest.fn(),
     },
     addListeners: jest.fn((newListeners: Partial<NewTabPageInterface>) => {
       registeredListeners = newListeners
@@ -79,5 +81,40 @@ describe('createBackgroundStore', () => {
     await simulateNewTabTakeoversEnabledUpdate(true)
 
     expect(store.getState().newTabTakeoversEnabled).toBe(true)
+  })
+
+  describe('new tab takeover disclosure', () => {
+    beforeEach(async () => {
+      newTabPageProxy.handler.getNewTabTakeoverBackground.mockResolvedValue({
+        background: { shouldAutoDisplayNewTabTakeoverDisclosure: true },
+      })
+      store = createBackgroundStore()
+      await jest.runOnlyPendingTimersAsync()
+    })
+
+    it('should stop auto-displaying the disclosure after learn more is clicked', () => {
+      store.getState().actions.notifyNewTabTakeoverDisclosureLearnMoreClicked()
+
+      expect(
+        newTabPageProxy.handler.notifyNewTabTakeoverDisclosureLearnMoreClicked,
+      ).toHaveBeenCalledTimes(1)
+      expect(
+        store.getState().newTabTakeoverBackground
+          ?.shouldAutoDisplayNewTabTakeoverDisclosure,
+      ).toBe(false)
+    })
+
+    it('should stop auto-displaying the disclosure for the current tab after it is auto-displayed', () => {
+      store.getState().actions.notifyNewTabTakeoverDisclosureAutoDisplayed()
+
+      expect(
+        newTabPageProxy.handler
+          .notifyNewTabTakeoverDisclosureTooltipAutoDisplayed,
+      ).toHaveBeenCalledTimes(1)
+      expect(
+        store.getState().newTabTakeoverBackground
+          ?.shouldAutoDisplayNewTabTakeoverDisclosure,
+      ).toBe(false)
+    })
   })
 })
