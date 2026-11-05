@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_CONTAINERS_CORE_BROWSER_CONTAINERS_SERVICE_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 
@@ -65,8 +66,12 @@ class ContainersService : public KeyedService {
   // the synced list, otherwise a placeholder from `CreateUnknownContainer`.
   void MarkContainerUsed(std::string_view container_id);
 
-  // Creates a temporary container and persists it locally.
-  mojom::ContainerPtr CreateAndPersistTemporaryContainer();
+  // Creates a temporary container and persists it locally. Uses `name` when
+  // given, otherwise generates one. Unlike
+  // `GetOrCreateTemporaryContainerByName`, always creates a new container, so
+  // the name need not be unique.
+  mojom::ContainerPtr CreateAndPersistTemporaryContainer(
+      std::optional<std::string_view> name = std::nullopt);
 
   // Returns the temporary container named `name`, creating and persisting it
   // if there isn't one yet. Containers that aren't temporary are never

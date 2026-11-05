@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_AI_CHAT_CONTENT_AGENT_TOOL_PROVIDER_H_
 #define BRAVE_BROWSER_AI_CHAT_CONTENT_AGENT_TOOL_PROVIDER_H_
 
+#include <string>
 #include <vector>
 
 #include "base/memory/raw_ref.h"
@@ -14,6 +15,7 @@
 #include "brave/browser/ai_chat/content_agent_tool_provider_factory.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/actor/actor_keyed_service.h"
 #include "chrome/browser/actor/actor_task.h"
 #include "components/optimization_guide/content/browser/page_content_proto_provider.h"
@@ -74,6 +76,13 @@ class ContentAgentToolProvider : public ToolProvider,
 
   void CreateTools();
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  // Returns the id of this conversation's temporary container, creating it on
+  // first use. Empty in the AI browsing profile, or if containers are
+  // unavailable for the profile.
+  const std::string& GetOrCreateContainerId();
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
   void TabAddedToTask(base::OnceCallback<void(tabs::TabHandle)> callback,
                       actor::mojom::ActionResultPtr result);
   void OnActionsFinished(
@@ -92,6 +101,12 @@ class ContentAgentToolProvider : public ToolProvider,
 
   actor::TaskId task_id_;
   tabs::TabHandle task_tab_handle_;
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  // Isolates the agent's browsing in a main profile from the user's own
+  // storage. Created lazily, so that conversations which never open a task tab
+  // don't create one.
+  std::string container_id_;
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
   raw_ptr<actor::ActorKeyedService> actor_service_ = nullptr;
   raw_ptr<Profile> profile_ = nullptr;
   raw_ref<actor::ui::ActorUiStateManagerInterface> ui_state_manager_;

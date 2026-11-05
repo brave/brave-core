@@ -73,8 +73,9 @@ void ContainersService::MarkContainerUsed(std::string_view container_id) {
   SetLocallyUsedContainerToPrefs(container, *prefs_);
 }
 
-mojom::ContainerPtr ContainersService::CreateAndPersistTemporaryContainer() {
-  auto container = CreateTemporaryContainer();
+mojom::ContainerPtr ContainersService::CreateAndPersistTemporaryContainer(
+    std::optional<std::string_view> name) {
+  auto container = CreateTemporaryContainer(name);
   SetLocallyUsedContainerToPrefs(container, *prefs_);
   return container;
 }
