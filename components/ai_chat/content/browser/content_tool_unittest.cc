@@ -291,6 +291,16 @@ TEST_F(ContentToolTest, AllowSessionSkipsPermissionChallenge) {
       tool.RequiresUserInteractionBeforeHandling(*tool_use)));
 }
 
+TEST_F(ContentToolTest, NoPermissionChallengeWhenNotRequired) {
+  auto mojo_tool = MakeScriptTool("echo", "");
+  ContentTool tool(*mojo_tool, weak_document(), /*requires_permission=*/false);
+
+  auto tool_use = mojom::ToolUseEvent::New();
+  auto result = tool.RequiresUserInteractionBeforeHandling(*tool_use);
+  ASSERT_TRUE(std::holds_alternative<bool>(result));
+  EXPECT_FALSE(std::get<bool>(result));
+}
+
 TEST_F(ContentToolTest, PermissionChallengeDescriptionEscapesToolName) {
   // Tool names are site-controlled. Characters outside the allowlist (here the
   // brackets and parens of a markdown link) are dropped outright, and the

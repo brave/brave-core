@@ -64,8 +64,10 @@ std::string EscapeMarkdown(std::string_view text) {
 }  // namespace
 
 ContentTool::ContentTool(const blink::mojom::ScriptTool& script_tool,
-                         content::WeakDocumentPtr rfh)
-    : rfh_(std::move(rfh)),
+                         content::WeakDocumentPtr rfh,
+                         bool requires_permission)
+    : requires_permission_(requires_permission),
+      rfh_(std::move(rfh)),
       internal_tool_name_(script_tool.name),
       internal_tool_description_(script_tool.description) {
   const GURL& url = rfh_.AsRenderFrameHostIfValid()->GetLastCommittedURL();
@@ -154,7 +156,8 @@ std::optional<std::vector<std::string>> ContentTool::RequiredProperties()
 std::variant<bool, mojom::PermissionChallengePtr>
 ContentTool::RequiresUserInteractionBeforeHandling(
     const mojom::ToolUseEvent& tool_use) const {
-  if (user_permission_strategy_ == mojom::ToolPermission::kAllowSession ||
+  if (!requires_permission_ ||
+      user_permission_strategy_ == mojom::ToolPermission::kAllowSession ||
       granted_tool_use_id_ == tool_use.id) {
     return false;
   }

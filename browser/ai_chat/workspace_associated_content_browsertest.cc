@@ -8,6 +8,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <variant>
 #include <vector>
 
 #include "base/command_line.h"
@@ -664,6 +665,44 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentWebMcpBrowserTest,
   EXPECT_THAT(names, ::testing::UnorderedElementsAre(
                          "view", "str_replace_based_edit_tool", "grep", "glob",
                          "append_file"));
+}
+
+// An empty workspace can only reach its own OPFS, so its tools run without
+// asking.
+IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentWebMcpBrowserTest,
+                       OpfsWorkspaceToolsDoNotRequirePermission) {
+  // Owned here, as in RegistersAllToolsByThePageBeingReady.
+  auto content = std::make_unique<WorkspaceAssociatedContent>(
+      /*folder_path=*/std::nullopt, browser()->GetProfile(), base::DoNothing());
+  ASSERT_TRUE(base::test::RunUntil([&] { return content->tools_attached(); }));
+
+  base::test::TestFuture<std::vector<std::unique_ptr<Tool>>> tools;
+  content->GetContentTools(tools.GetCallback());
+  ASSERT_FALSE(tools.Get().empty());
+  auto tool_use = mojom::ToolUseEvent::New();
+  for (const auto& tool : tools.Get()) {
+    auto result = tool->RequiresUserInteractionBeforeHandling(*tool_use);
+    ASSERT_TRUE(std::holds_alternative<bool>(result)) << tool->Name();
+    EXPECT_FALSE(std::get<bool>(result)) << tool->Name();
+  }
+}
+
+// A workspace with a user-picked folder can change real files, so its tools
+// still ask.
+IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentWebMcpBrowserTest,
+                       FolderWorkspaceToolsRequirePermission) {
+  auto* content = CreateContent(CreateWorkspaceFolder());
+  ASSERT_TRUE(base::test::RunUntil([&] { return content->tools_attached(); }));
+
+  base::test::TestFuture<std::vector<std::unique_ptr<Tool>>> tools;
+  content->GetContentTools(tools.GetCallback());
+  ASSERT_FALSE(tools.Get().empty());
+  auto tool_use = mojom::ToolUseEvent::New();
+  for (const auto& tool : tools.Get()) {
+    EXPECT_TRUE(std::holds_alternative<mojom::PermissionChallengePtr>(
+        tool->RequiresUserInteractionBeforeHandling(*tool_use)))
+        << tool->Name();
+  }
 }
 
 // The viewer has no tools of its own. It is a cross-origin iframe without

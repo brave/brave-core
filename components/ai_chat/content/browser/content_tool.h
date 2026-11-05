@@ -21,8 +21,11 @@ namespace ai_chat {
 // Executes via the renderer's PageContentExtractor mojo interface.
 class ContentTool : public Tool {
  public:
+  // |requires_permission| false skips the per-use permission challenge, for
+  // first-party pages whose tools can't affect anything outside the page.
   ContentTool(const blink::mojom::ScriptTool& script_tool,
-              content::WeakDocumentPtr rfh);
+              content::WeakDocumentPtr rfh,
+              bool requires_permission = true);
   ~ContentTool() override;
 
   ContentTool(const ContentTool&) = delete;
@@ -49,6 +52,7 @@ class ContentTool : public Tool {
                UseToolCallback callback) override;
 
  private:
+  const bool requires_permission_;
   // The tool use the user allowed once by answering a permission challenge.
   // Other uses of this tool, even with the same arguments, are asked again.
   std::optional<std::string> granted_tool_use_id_;

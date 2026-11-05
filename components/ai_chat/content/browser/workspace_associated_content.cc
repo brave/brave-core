@@ -318,6 +318,23 @@ void WorkspaceAssociatedContent::DeliverDirectoryHandle(
                                       std::move(entries));
 }
 
+bool WorkspaceAssociatedContent::HasFolderAccess() const {
+  // DeliverDirectoryHandle() is the only way a workspace gets a real folder,
+  // and it grants these to the workspace origin first. Without them the page
+  // can't use a folder handle (it can't prompt, being hidden), so it is
+  // confined to its own origin private file system. This also covers restored
+  // workspaces, whose folder only the page knows.
+  const GURL origin_url = GetOrigin().GetURL();
+  auto* map = permissions::PermissionsClient::Get()->GetSettingsMap(
+      web_contents_->GetBrowserContext());
+  return map->GetContentSetting(origin_url, origin_url,
+                                ContentSettingsType::FILE_SYSTEM_READ_GUARD) ==
+             CONTENT_SETTING_ALLOW ||
+         map->GetContentSetting(origin_url, origin_url,
+                                ContentSettingsType::FILE_SYSTEM_WRITE_GUARD) ==
+             CONTENT_SETTING_ALLOW;
+}
+
 void WorkspaceAssociatedContent::OnContentToolsFetched(
     GetContentToolsCallback callback,
     content::WeakDocumentPtr rfh,
@@ -325,8 +342,10 @@ void WorkspaceAssociatedContent::OnContentToolsFetched(
     blink::mojom::AIPageContentPtr result) {
   std::vector<std::unique_ptr<Tool>> tools;
   if (result && result->frame_data) {
+    const bool requires_permission = HasFolderAccess();
     for (const auto& script_tool : result->frame_data->script_tools) {
-      tools.push_back(std::make_unique<ContentTool>(*script_tool, rfh));
+      tools.push_back(std::make_unique<ContentTool>(*script_tool, rfh,
+                                                    requires_permission));
     }
   }
   std::move(callback).Run(std::move(tools));

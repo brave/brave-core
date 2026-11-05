@@ -7,7 +7,9 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import Tooltip from '@brave/leo/react/tooltip'
+import classnames from '$web-common/classnames'
 import { formatLocale, getLocale } from '$web-common/locale'
+import { isWorkspaceContent } from '../../../common/conversation_history_utils'
 import * as Mojom from '../../../common/mojom'
 import { useConversation } from '../../state/conversation_context'
 import WebsiteToolsModal from '../website_tools_modal'
@@ -30,36 +32,53 @@ function ToolPill(props: {
   const { getContentToolsData: tools } = conversation.api.useGetContentTools(
     props.content.uuid,
   )
+  // Workspace tools have no per-tool permissions to manage, so the pill
+  // doesn't open the tools dialog.
+  const isWorkspace = isWorkspaceContent(props.content)
+
+  const pillContent = (
+    <>
+      <img
+        className={styles.toolPillFavicon}
+        src={`//favicon2?size=64&pageUrl=${encodeURIComponent(props.content.url.url)}&allowGoogleServerFallback=0`}
+      />
+      <span className={styles.toolPillTitle}>{props.content.title}</span>
+      {tools.length > 0 && (
+        <span
+          className={styles.toolPillCount}
+          role='img'
+          aria-label={formatLocale(S.CHAT_UI_WEBSITE_TOOLS_LIST_LABEL, {
+            $1: tools.length.toString(),
+          })}
+        >
+          <Icon name='tool-box' />
+          {tools.length}
+        </span>
+      )}
+    </>
+  )
 
   return (
-    <div className={styles.toolPill}>
+    <div
+      className={classnames(styles.toolPill, {
+        [styles.toolPillStatic]: isWorkspace,
+      })}
+    >
       <Tooltip
         mode='mini'
         className={styles.toolPillTitleTooltip}
       >
-        <button
-          type='button'
-          className={styles.toolPillOpen}
-          onClick={props.onOpen}
-        >
-          <img
-            className={styles.toolPillFavicon}
-            src={`//favicon2?size=64&pageUrl=${encodeURIComponent(props.content.url.url)}&allowGoogleServerFallback=0`}
-          />
-          <span className={styles.toolPillTitle}>{props.content.title}</span>
-          {tools.length > 0 && (
-            <span
-              className={styles.toolPillCount}
-              role='img'
-              aria-label={formatLocale(S.CHAT_UI_WEBSITE_TOOLS_LIST_LABEL, {
-                $1: tools.length.toString(),
-              })}
-            >
-              <Icon name='tool-box' />
-              {tools.length}
-            </span>
-          )}
-        </button>
+        {isWorkspace ? (
+          <div className={styles.toolPillOpen}>{pillContent}</div>
+        ) : (
+          <button
+            type='button'
+            className={styles.toolPillOpen}
+            onClick={props.onOpen}
+          >
+            {pillContent}
+          </button>
+        )}
         <div slot='content'>{props.content.title}</div>
       </Tooltip>
       <Button
