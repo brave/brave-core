@@ -158,6 +158,7 @@ public class BottomToolbarBookmarksMenu {
     }
 
     private static void tintIcon(@Nullable Drawable icon, int color) {
-        if (icon != null) icon.setTint(color);
+        // Drawables loaded from one resource share state until mutated.
+        if (icon != null) icon.mutate().setTint(color);
     }
 }
