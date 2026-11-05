@@ -8,7 +8,6 @@ import logging
 import os
 import re
 import shutil
-import json
 import zipfile
 
 from pathlib import Path
@@ -23,9 +22,9 @@ from components import perf_config
 from components.path_util import GetBravePerfProfileDir
 from components.perf_profile import GetProfilePath
 from components.perf_config import RunnerConfig
-from components.common_options import CommonOptions, PerfMode
+from components.common_options import CommonOptions
 
-from lib.util import make_zip, scoped_cwd
+from lib.util import scoped_cwd
 
 _CACHE_DIRECTORIES = [
   os.path.join('Default', 'Cache'),

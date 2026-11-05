@@ -6,14 +6,13 @@
 
 from __future__ import print_function
 from builtins import str
-from builtins import object
 import argparse
 import os
 import re
 import sys
 import json
 
-from lib.config import get_env_var, BRAVE_CORE_ROOT
+from lib.config import BRAVE_CORE_ROOT
 from lib.util import execute, scoped_cwd
 from lib.helpers import channels, BRAVE_CORE_REPO
 from lib.github import (

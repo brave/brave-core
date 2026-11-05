@@ -43,7 +43,7 @@ def collect_data(browser, out_dir, url):
             f"--speedreader-collect-test-data={out}",
         ]
     ) as process:
-        while not os.path.exists(distilled_path) and process.poll() == None:
+        while not os.path.exists(distilled_path) and process.poll() is None:
             time.sleep(1)
 
         if ticket != '':

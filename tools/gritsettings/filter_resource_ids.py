@@ -65,7 +65,7 @@ def filter_ids(in_file, out_file, srcdir):
     for grd_filename in list(ids_dict.keys()):
         # If the key matches our removal pattern but not in exclusions, then
         # remove the entry
-        if re.search(patterns, grd_filename) and not grd_filename in exclusions:
+        if re.search(patterns, grd_filename) and grd_filename not in exclusions:
             ids_dict.pop(grd_filename)
     with open(out_file, 'w', encoding='utf-8', newline='\n') as f:
         f.write(repr(ids_dict))

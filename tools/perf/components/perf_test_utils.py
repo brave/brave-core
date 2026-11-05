@@ -11,7 +11,7 @@ import time
 import platform
 
 from threading import Timer
-from typing import Dict, List, Optional, Tuple
+from typing import List, Optional, Tuple
 from urllib.request import urlopen
 
 from components import path_util

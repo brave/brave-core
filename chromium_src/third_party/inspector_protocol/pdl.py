@@ -4,8 +4,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import os
-import re
-import pprint
 
 import brave_chromium_utils
 import override_utils
