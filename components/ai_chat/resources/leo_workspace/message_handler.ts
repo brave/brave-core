@@ -32,6 +32,14 @@ export function viewOrigin(origin: string): string {
     : ''
 }
 
+// chrome-untrusted://view.<uuid>.leo-workspace -> chrome-untrusted://<uuid>.leo-workspace
+export function workspaceOrigin(viewerOrigin: string): string {
+  const viewPrefix = `${kScheme}view.`
+  return viewerOrigin.startsWith(viewPrefix)
+    ? viewerOrigin.replace(viewPrefix, kScheme)
+    : ''
+}
+
 async function readFilePayload(
   root: Promise<FileSystemDirectoryHandle>,
   path: unknown,
