@@ -176,7 +176,7 @@ void OnboardingTabHelper::MaybeHighlightShields() {
 void OnboardingTabHelper::PerformBraveShieldsChecksAndShowHelpBubble() {
   auto* shields_data_controller =
       brave_shields::BraveShieldsTabHelper::From(&tab());
-  DCHECK(shields_data_controller);
+  CHECK(shields_data_controller);
 
   if (shields_data_controller->IsBraveShieldsEnabled() &&
       shields_data_controller->GetTotalBlockedCount() > 0 &&
