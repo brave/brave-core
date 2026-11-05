@@ -34,6 +34,7 @@ class WalletPageHandler : public brave_wallet::mojom::PageHandler {
   void ShowOnboarding(bool is_new_wallet) override;
   void OpenWalletHome() override;
   void ScanQRCode(ScanQRCodeCallback callback) override;
+  void OpenTab(const GURL& url) override;
 
  private:
   raw_ptr<web::WebState> web_state_;

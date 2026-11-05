@@ -516,6 +516,11 @@ interface PageHandler {
   // Mobile only
   // - Used by Wallet WebUI when user needs to scan QR code to read address
   ScanQRCode() => (string address);
+
+  // Mobile Only
+  // - Used by Wallet WebUI when user taps on an external link from
+  // Wallet WebUI
+  OpenTab(url.mojom.Url url);
 };
 
 enum AssetPriceTimeframe {
