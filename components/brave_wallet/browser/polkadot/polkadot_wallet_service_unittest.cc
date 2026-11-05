@@ -6,11 +6,15 @@
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
 
 #include <optional>
+#include <set>
+#include <string>
 #include <string_view>
+#include <utility>
+#include <vector>
 
 #include "base/functional/callback_forward.h"
 #include "base/functional/function_ref.h"
-#include "base/strings/strcat.h"
+#include "base/strings/strcat.h"  // IWYU pragma: keep
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
@@ -32,6 +36,8 @@
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"  // IWYU pragma: keep
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
+#include "url/origin.h"
 
 namespace brave_wallet {
 
@@ -41,6 +47,15 @@ namespace {
 // https://westend.subscan.io/account/5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty
 inline constexpr const char kBob[] =
     "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48";
+
+inline constexpr const char kDappOrigin[] = "https://app.example.com";
+inline constexpr const char kOtherDappOrigin[] = "https://other.example.com";
+
+// Mirrors PolkadotWalletService::SignPolkadotTransactionRequestCallback.
+using SignRequestFuture =
+    base::test::TestFuture<bool,
+                           std::optional<std::vector<uint8_t>>,
+                           const std::optional<std::string>&>;
 
 void AddValidMetadataResponses(
     network::TestURLLoaderFactory& url_loader_factory,
@@ -121,6 +136,50 @@ class PolkadotWalletServiceUnitTest : public testing::Test {
     return AccountUtils(keyring_service_.get());
   }
 
+  PolkadotWalletService::OriginPermissionChecker PermissionChecker() {
+    return base::BindLambdaForTesting(
+        [this](const url::Origin& origin,
+               const mojom::AccountIdPtr& account_id) {
+          return granted_permissions_.contains(
+              {origin.Serialize(), account_id->unique_key});
+        });
+  }
+
+  void GrantPermission(std::string_view origin_spec,
+                       const mojom::AccountIdPtr& account_id) {
+    granted_permissions_.insert(
+        {url::Origin::Create(GURL(origin_spec)).Serialize(),
+         account_id->unique_key});
+  }
+
+  void RevokePermission(std::string_view origin_spec,
+                        const mojom::AccountIdPtr& account_id) {
+    granted_permissions_.erase(
+        {url::Origin::Create(GURL(origin_spec)).Serialize(),
+         account_id->unique_key});
+  }
+
+  mojom::SignPolkadotTransactionRequestPtr MakeSignRequest(
+      const mojom::AccountIdPtr& account_id,
+      std::optional<std::string_view> origin_spec) {
+    std::optional<url::Origin> origin;
+    if (origin_spec) {
+      origin = url::Origin::Create(GURL(*origin_spec));
+    }
+
+    return mojom::SignPolkadotTransactionRequest::New(
+        /*id=*/0, account_id.Clone(), MakeDappOriginInfo(origin),
+        mojom::ChainId::New(mojom::CoinType::DOT,
+                            std::string(mojom::kPolkadotTestnet)),
+        /*raw_payload_json=*/"{}",
+        /*metadata_bytes=*/std::vector<uint8_t>(),
+        mojom::PolkadotChainProperties::New(
+            /*ss58_format=*/nullptr,
+            /*token_decimals=*/std::vector<uint32_t>{12},
+            /*token_symbol=*/std::vector<std::string>{"WND"}),
+        /*signature_payload=*/std::nullopt);
+  }
+
   // Drives GenerateSignedTransferExtrinsic on testnet against a mock RPC whose
   // signing steps all succeed except for the one disabled by `configure` (e.g.
   // PolkadotMockRpc::RejectInitialChainHeader). Returns the result, which the
@@ -132,7 +191,8 @@ class PolkadotWalletServiceUnitTest : public testing::Test {
                                       network_manager_.get());
     PolkadotWalletService polkadot_wallet_service(
         *keyring_service_, *network_manager_, prefs_,
-        url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap());
+        url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap(),
+        NoOriginPermissionChecking());
 
     UnlockWallet();
 
@@ -175,6 +235,10 @@ class PolkadotWalletServiceUnitTest : public testing::Test {
   network::TestURLLoaderFactory url_loader_factory_;
 
   std::unique_ptr<PolkadotSubstrateRpc> polkadot_substrate_rpc_;
+
+  // Granted (serialized origin, account unique key) pairs. See
+  // PermissionChecker().
+  std::set<std::pair<std::string, std::string>> granted_permissions_;
 };
 
 void VerifyTestnet(const PolkadotChainMetadata& metadata) {
@@ -213,7 +277,8 @@ TEST_F(PolkadotWalletServiceUnitTest, Constructor) {
 
     auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
         *keyring_service_, *network_manager_, prefs_,
-        url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap());
+        url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap(),
+        NoOriginPermissionChecking());
 
     UnlockWallet();
     EXPECT_EQ(url_loader_factory_.NumPending(), 2);
@@ -264,7 +329,8 @@ TEST_F(PolkadotWalletServiceUnitTest, Constructor) {
 
     auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
         *keyring_service_, *network_manager_, prefs_,
-        url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap());
+        url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap(),
+        NoOriginPermissionChecking());
 
     UnlockWallet();
     EXPECT_EQ(url_loader_factory_.NumPending(), 2);
@@ -316,7 +382,8 @@ TEST_F(PolkadotWalletServiceUnitTest, Constructor) {
 TEST_F(PolkadotWalletServiceUnitTest, GetChainMetadataInvalidChainId) {
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
       *keyring_service_, *network_manager_, prefs_,
-      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap());
+      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap(),
+      NoOriginPermissionChecking());
 
   base::test::TestFuture<base::expected<PolkadotChainMetadata, std::string>>
       future;
@@ -350,7 +417,8 @@ TEST_F(PolkadotWalletServiceUnitTest, ConcurrentChainNameFetches) {
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
       *keyring_service_, *network_manager_, prefs_,
-      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap());
+      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap(),
+      NoOriginPermissionChecking());
 
   UnlockWallet();
   EXPECT_EQ(url_loader_factory_.NumPending(), 2);
@@ -415,7 +483,8 @@ TEST_F(PolkadotWalletServiceUnitTest, ConcurrentChainNameFetches) {
 TEST_F(PolkadotWalletServiceUnitTest, GetCompatibleNetworks) {
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
       *keyring_service_, *network_manager_, prefs_,
-      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap());
+      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap(),
+      NoOriginPermissionChecking());
   // Start from a known visibility state for deterministic assertions.
   network_manager_->RemoveHiddenNetwork(mojom::CoinType::DOT,
                                         mojom::kPolkadotMainnet);
@@ -486,7 +555,8 @@ TEST_F(PolkadotWalletServiceUnitTest, GetAddress) {
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
       *keyring_service_, *network_manager_, prefs_,
-      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap());
+      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap(),
+      NoOriginPermissionChecking());
 
   polkadot_mock_rpc->FinalizeSetup();
 
@@ -557,7 +627,8 @@ TEST_F(PolkadotWalletServiceUnitTest, ValidateAddressForTransaction) {
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
       *keyring_service_, *network_manager_, prefs_,
-      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap());
+      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap(),
+      NoOriginPermissionChecking());
 
   polkadot_mock_rpc->FinalizeSetup();
 
@@ -605,7 +676,8 @@ TEST_F(PolkadotWalletServiceUnitTest,
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
       *keyring_service_, *network_manager_, prefs_,
-      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap());
+      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap(),
+      NoOriginPermissionChecking());
 
   polkadot_mock_rpc->UseInvalidChainMetadata();
   polkadot_mock_rpc->FinalizeSetup();
@@ -624,7 +696,8 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic) {
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
       *keyring_service_, *network_manager_, prefs_,
-      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap());
+      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap(),
+      NoOriginPermissionChecking());
 
   UnlockWallet();
 
@@ -772,7 +845,8 @@ TEST_F(PolkadotWalletServiceUnitTest,
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
       *keyring_service_, *network_manager_, prefs_,
-      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap());
+      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap(),
+      NoOriginPermissionChecking());
 
   UnlockWallet();
 
@@ -826,7 +900,8 @@ TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction) {
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
       *keyring_service_, *network_manager_, prefs_,
-      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap());
+      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap(),
+      NoOriginPermissionChecking());
 
   UnlockWallet();
 
@@ -898,7 +973,8 @@ TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction_WestendAssetHub) {
       &url_loader_factory_, network_manager_.get());
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
       *keyring_service_, *network_manager_, prefs_,
-      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap());
+      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap(),
+      NoOriginPermissionChecking());
 
   static constexpr char kExpectedExtrinsic[] =
       "4d0284000e161e17289c260a07020cc2a23192e882d5bee006b1390deed844b"
@@ -975,7 +1051,8 @@ TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction_PaseoAssetHub) {
       &url_loader_factory_, network_manager_.get());
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
       *keyring_service_, *network_manager_, prefs_,
-      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap());
+      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap(),
+      NoOriginPermissionChecking());
 
   static constexpr char kExpectedExtrinsic[] =
       "550284000e161e17289c260a07020cc2a23192e882d5bee006b1390deed844b881b7e71e"
@@ -1050,7 +1127,8 @@ TEST_F(PolkadotWalletServiceUnitTest,
       &url_loader_factory_, network_manager_.get());
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
       *keyring_service_, *network_manager_, prefs_,
-      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap());
+      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap(),
+      NoOriginPermissionChecking());
 
   static constexpr char kExpectedExtrinsic[] =
       "6502"
@@ -1140,7 +1218,8 @@ TEST_F(PolkadotWalletServiceUnitTest,
       &url_loader_factory_, network_manager_.get());
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
       *keyring_service_, *network_manager_, prefs_,
-      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap());
+      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap(),
+      NoOriginPermissionChecking());
 
   static constexpr char kExpectedExtrinsic[] =
       "5102"
@@ -1225,7 +1304,8 @@ TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction_PolkadotAssetHub) {
       &url_loader_factory_, network_manager_.get());
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
       *keyring_service_, *network_manager_, prefs_,
-      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap());
+      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap(),
+      NoOriginPermissionChecking());
 
   static constexpr char kExpectedExtrinsic[] =
       "490284000e161e17289c260a07020cc2a23192e882d5bee006b1390deed844b"
@@ -1272,7 +1352,8 @@ TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction_TransferAll) {
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
       *keyring_service_, *network_manager_, prefs_,
-      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap());
+      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap(),
+      NoOriginPermissionChecking());
 
   UnlockWallet();
 
@@ -1320,7 +1401,8 @@ TEST_F(PolkadotWalletServiceUnitTest,
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
       *keyring_service_, *network_manager_, prefs_,
-      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap());
+      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap(),
+      NoOriginPermissionChecking());
 
   UnlockWallet();
 
@@ -1358,7 +1440,8 @@ TEST_F(PolkadotWalletServiceUnitTest, GetFeeEstimate) {
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
       *keyring_service_, *network_manager_, prefs_,
-      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap());
+      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap(),
+      NoOriginPermissionChecking());
 
   UnlockWallet();
 
@@ -1400,7 +1483,8 @@ TEST_F(PolkadotWalletServiceUnitTest, GetFeeEstimate_NetworkFailure) {
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
       *keyring_service_, *network_manager_, prefs_,
-      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap());
+      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap(),
+      NoOriginPermissionChecking());
 
   UnlockWallet();
 
@@ -1441,7 +1525,8 @@ TEST_F(PolkadotWalletServiceUnitTest, GetFeeEstimate_PaymentInfoFailure) {
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
       *keyring_service_, *network_manager_, prefs_,
-      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap());
+      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap(),
+      NoOriginPermissionChecking());
 
   UnlockWallet();
 
@@ -1483,7 +1568,8 @@ TEST_F(PolkadotWalletServiceUnitTest, GetFeeEstimate_NullPaymentInfo) {
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
       *keyring_service_, *network_manager_, prefs_,
-      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap());
+      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap(),
+      NoOriginPermissionChecking());
 
   UnlockWallet();
 
@@ -1587,6 +1673,149 @@ TEST_F(PolkadotWalletServiceUnitTest, ChainIdFromGenesisHash_ExactMatchOnly) {
               std::nullopt)
         << genesis_hash;
   }
+}
+
+TEST_F(PolkadotWalletServiceUnitTest,
+       DrainSignRequestsWithoutPermission_RejectsRevoked) {
+  // Prove that pending requests are unapproved when permission is revoked.
+
+  PolkadotWalletService polkadot_wallet_service(
+      *keyring_service_, *network_manager_, prefs_,
+      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap(),
+      PermissionChecker());
+
+  const auto& account_id = polkadot_testnet_account_->account_id;
+  GrantPermission(kDappOrigin, account_id);
+
+  SignRequestFuture future;
+  polkadot_wallet_service.AddSignPolkadotTransactionRequest(
+      MakeSignRequest(account_id, kDappOrigin), future.GetCallback());
+
+  auto pending =
+      polkadot_wallet_service.GetPendingSignPolkadotTransactionRequestsSync();
+  ASSERT_EQ(pending.size(), 1u);
+
+  polkadot_wallet_service.SetSignPolkadotTransactionRequestSignaturePayload(
+      pending[0]->id, std::vector<uint8_t>{1, 2, 3});
+
+  RevokePermission(kDappOrigin, account_id);
+  polkadot_wallet_service
+      .DrainSignPolkadotTransactionRequestsWithoutPermission();
+
+  EXPECT_TRUE(
+      polkadot_wallet_service.GetPendingSignPolkadotTransactionRequestsSync()
+          .empty());
+
+  ASSERT_TRUE(future.IsReady());
+  auto [approved, signature_payload, error] = future.Take();
+  EXPECT_FALSE(approved);
+  EXPECT_FALSE(signature_payload.has_value());
+  EXPECT_FALSE(error.has_value());
+}
+
+TEST_F(PolkadotWalletServiceUnitTest,
+       DrainSignRequestsWithoutPermission_KeepsPermitted) {
+  // Prove that nothing happens when permissions are not revoked.
+
+  PolkadotWalletService polkadot_wallet_service(
+      *keyring_service_, *network_manager_, prefs_,
+      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap(),
+      PermissionChecker());
+
+  const auto& account_id = polkadot_testnet_account_->account_id;
+  GrantPermission(kDappOrigin, account_id);
+
+  SignRequestFuture future;
+  polkadot_wallet_service.AddSignPolkadotTransactionRequest(
+      MakeSignRequest(account_id, kDappOrigin), future.GetCallback());
+
+  polkadot_wallet_service
+      .DrainSignPolkadotTransactionRequestsWithoutPermission();
+
+  EXPECT_EQ(
+      polkadot_wallet_service.GetPendingSignPolkadotTransactionRequestsSync()
+          .size(),
+      1u);
+  EXPECT_FALSE(future.IsReady());
+}
+
+TEST_F(PolkadotWalletServiceUnitTest,
+       DrainSignRequestsWithoutPermission_KeepsWalletInitiated) {
+  // No permission is granted to anything, but a request with no dApp origin
+  // has no origin permission to lose.
+
+  PolkadotWalletService polkadot_wallet_service(
+      *keyring_service_, *network_manager_, prefs_,
+      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap(),
+      PermissionChecker());
+
+  SignRequestFuture future;
+  polkadot_wallet_service.AddSignPolkadotTransactionRequest(
+      MakeSignRequest(polkadot_testnet_account_->account_id, std::nullopt),
+      future.GetCallback());
+
+  polkadot_wallet_service
+      .DrainSignPolkadotTransactionRequestsWithoutPermission();
+
+  EXPECT_EQ(
+      polkadot_wallet_service.GetPendingSignPolkadotTransactionRequestsSync()
+          .size(),
+      1u);
+  EXPECT_FALSE(future.IsReady());
+}
+
+TEST_F(PolkadotWalletServiceUnitTest,
+       DrainSignRequestsWithoutPermission_PerOriginAndAccount) {
+  // Test per-origin and per-account permission granting.
+
+  PolkadotWalletService polkadot_wallet_service(
+      *keyring_service_, *network_manager_, prefs_,
+      url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap(),
+      PermissionChecker());
+
+  const auto& testnet_account = polkadot_testnet_account_->account_id;
+  const auto& mainnet_account = polkadot_mainnet_account_->account_id;
+
+  GrantPermission(kDappOrigin, testnet_account);
+
+  SignRequestFuture permitted;
+  polkadot_wallet_service.AddSignPolkadotTransactionRequest(
+      MakeSignRequest(testnet_account, kDappOrigin), permitted.GetCallback());
+
+  // Same origin, an account it was never granted.
+  SignRequestFuture other_account;
+  polkadot_wallet_service.AddSignPolkadotTransactionRequest(
+      MakeSignRequest(mainnet_account, kDappOrigin),
+      other_account.GetCallback());
+
+  // Same account, an origin that was never granted it.
+  SignRequestFuture other_origin;
+  polkadot_wallet_service.AddSignPolkadotTransactionRequest(
+      MakeSignRequest(testnet_account, kOtherDappOrigin),
+      other_origin.GetCallback());
+
+  ASSERT_EQ(
+      polkadot_wallet_service.GetPendingSignPolkadotTransactionRequestsSync()
+          .size(),
+      3u);
+
+  polkadot_wallet_service
+      .DrainSignPolkadotTransactionRequestsWithoutPermission();
+
+  auto pending =
+      polkadot_wallet_service.GetPendingSignPolkadotTransactionRequestsSync();
+  ASSERT_EQ(pending.size(), 1u);
+  EXPECT_EQ(pending[0]->account_id, testnet_account);
+  EXPECT_EQ(pending[0]->dapp_origin_info->origin_spec,
+            url::Origin::Create(GURL(kDappOrigin)).Serialize());
+  EXPECT_FALSE(permitted.IsReady());
+
+  // Both of these should be unapproved.
+  ASSERT_TRUE(other_account.IsReady());
+  EXPECT_FALSE(std::get<0>(other_account.Take()));
+
+  ASSERT_TRUE(other_origin.IsReady());
+  EXPECT_FALSE(std::get<0>(other_origin.Take()));
 }
 
 }  // namespace brave_wallet
