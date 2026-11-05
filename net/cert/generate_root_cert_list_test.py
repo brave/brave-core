@@ -11,6 +11,7 @@ import base64
 import hashlib
 import json
 import re
+import shutil
 import sys
 import tempfile
 import unittest
@@ -54,11 +55,8 @@ def _pem(der: bytes) -> str:
 
 class GenerateRootCertListTest(unittest.TestCase):
     def setUp(self) -> None:
-        self._tmp = tempfile.TemporaryDirectory()
-        self.tmp = Path(self._tmp.name)
-
-    def tearDown(self) -> None:
-        self._tmp.cleanup()
+        self.tmp = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, self.tmp)
 
     def _write(self, name: str, content: str) -> Path:
         path = self.tmp / name
