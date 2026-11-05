@@ -11,6 +11,7 @@
 
 #include "base/check.h"
 #include "base/logging.h"
+#include "base/memory_coordinator/traits.h"
 #include "base/sequence_checker.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
@@ -18,6 +19,16 @@
 namespace brave_rewards::internal {
 
 namespace {
+
+// `OnReleaseMemory()` trims SQLite's caches once per call, which the database
+// refills from disk as needed.
+constexpr base::MemoryConsumerTraits kMemoryConsumerTraits(
+    base::MemoryConsumerTraits::EstimatedMemoryUsage::kSmall,
+    base::MemoryConsumerTraits::ReleaseMemoryDataAccess::kNone,
+    base::MemoryConsumerTraits::InformationRetention::kLossless,
+    base::MemoryConsumerTraits::ExecutionType::kAsynchronous,
+    base::MemoryConsumerTraits::RecreateMemoryCost::kCheap,
+    base::MemoryConsumerTraits::IsStateful::kNo);
 
 void HandleBinding(sql::Statement* statement,
                    const mojom::DBCommandBinding& binding) {
@@ -222,9 +233,9 @@ mojom::DBCommandResponse::Status RewardsDatabase::Initialize(
     }
 
     initialized_ = true;
-    memory_pressure_listener_registration_ =
-        std::make_unique<base::AsyncMemoryPressureListenerRegistration>(
-            FROM_HERE, base::MemoryPressureListenerTag::kRewardsDatabase, this);
+    memory_consumer_registration_ =
+        std::make_unique<base::AsyncMemoryConsumerRegistration>(
+            "RewardsDatabase", kMemoryConsumerTraits, this);
   } else {
     table_version = meta_table_.GetVersionNumber();
   }
@@ -342,13 +353,10 @@ int RewardsDatabase::GetTablesCount() {
   return tables_count;
 }
 
-void RewardsDatabase::OnMemoryPressure(base::MemoryPressureLevel level) {
+void RewardsDatabase::OnUpdateMemoryLimit() {}
+
+void RewardsDatabase::OnReleaseMemory() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  if (level == base::MEMORY_PRESSURE_LEVEL_NONE) {
-    return;
-  }
-
   db_.TrimMemory();
 }
 
