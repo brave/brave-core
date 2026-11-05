@@ -69,14 +69,15 @@ const net::NetworkTrafficAnnotationTag kTrafficAnnotation =
     )");
 
 // Builds a request with the traffic annotation and retry policy common to all
-// Brave VPN endpoints.
+// Brave VPN endpoints. Relies on endpoint_client's default kError redirect
+// mode: following redirects could send requests carrying VPN credentials or
+// subscriber data to an unintended host. Guardian has confirmed their
+// endpoints don't use redirects.
 template <typename Request>
 Request MakeRequest() {
   Request request;
   request.network_traffic_annotation_tag =
       net::MutableNetworkTrafficAnnotationTag(kTrafficAnnotation);
-  // TODO(https://github.com/brave/brave-browser/issues/60846)
-  request.redirect_mode = network::mojom::RedirectMode::kFollow;
   request.retry_options = {
       .max_retries = 1,
       .retry_mode = network::SimpleURLLoader::RETRY_ON_NETWORK_CHANGE};

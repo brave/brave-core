@@ -617,23 +617,4 @@ TEST_F(BraveVpnApiClientRequestBodyTest,
   EXPECT_EQ(*parsed->FindString("multihop-exit-region"), "disabled");
 }
 
-TEST_F(BraveVpnApiClientRequestBodyTest, FollowsRedirects) {
-  std::optional<network::mojom::RedirectMode> redirect_mode;
-  url_loader_factory_.SetInterceptor(
-      base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
-        redirect_mode = request.redirect_mode;
-      }));
-
-  MockResponseFor<endpoints::GetTimezonesForRegions>(
-      url_loader_factory_,
-      endpoints::GetTimezonesForRegions::Response{
-          .net_error = net::OK,
-          .status_code = net::HTTP_OK,
-          .body = base::ok(endpoints::RawJsonResponseBody{.json = "{}"})});
-
-  std::ignore = CallClientApi(&BraveVpnApiClient::GetTimezonesForRegions);
-
-  EXPECT_EQ(redirect_mode, network::mojom::RedirectMode::kFollow);
-}
-
 }  // namespace brave_vpn::v2
