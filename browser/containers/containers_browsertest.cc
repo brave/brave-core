@@ -3320,14 +3320,14 @@ IN_PROC_BROWSER_TEST_F(ContainersPwaBrowserTest, LaunchPwaWithoutContainer) {
 }
 
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
-                       NewTabDefault_OpensBlankNewTabInContainer) {
+                       NewTabTarget_OpensBlankNewTabInContainer) {
   PrefService* prefs = browser()->GetProfile()->GetPrefs();
   std::vector<mojom::ContainerPtr> synced;
   synced.push_back(
       MakeContainer(kTestContainerId, "Work", mojom::Icon::kWork, SK_ColorRED));
   SetContainersToPrefs(synced, *prefs);
-  SetNewTabDefaultToPrefs(
-      mojom::NewTabDefault::New(kTestContainerId, false, false), *prefs);
+  SetNewTabTargetToPrefs(mojom::NewTabTarget::NewContainerId(kTestContainerId),
+                         *prefs);
 
   // Ctrl+T.
   content::WebContents& new_tab =
@@ -3349,9 +3349,9 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
-                       NewTabDefault_TemporaryContainerPerNewTab) {
-  SetNewTabDefaultToPrefs(mojom::NewTabDefault::New("", true, false),
-                          *browser()->GetProfile()->GetPrefs());
+                       NewTabTarget_TemporaryContainerPerNewTab) {
+  SetNewTabTargetToPrefs(mojom::NewTabTarget::NewTemporaryContainer(true),
+                         *browser()->GetProfile()->GetPrefs());
 
   content::WebContents& first =
       chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
@@ -3375,7 +3375,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
-                       NewTabDefault_UnsetOpensWithoutContainer) {
+                       NewTabTarget_UnsetOpensWithoutContainer) {
   content::WebContents& new_tab =
       chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
   ASSERT_TRUE(content::WaitForLoadStop(&new_tab));
@@ -3383,14 +3383,14 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
-                       NewTabDefault_IgnoredWhenContainersDisabled) {
+                       NewTabTarget_IgnoredWhenContainersDisabled) {
   PrefService* prefs = browser()->GetProfile()->GetPrefs();
   std::vector<mojom::ContainerPtr> synced;
   synced.push_back(
       MakeContainer(kTestContainerId, "Work", mojom::Icon::kWork, SK_ColorRED));
   SetContainersToPrefs(synced, *prefs);
-  SetNewTabDefaultToPrefs(
-      mojom::NewTabDefault::New(kTestContainerId, false, false), *prefs);
+  SetNewTabTargetToPrefs(mojom::NewTabTarget::NewContainerId(kTestContainerId),
+                         *prefs);
   SetContainersEnabled(false, prefs);
 
   content::WebContents& new_tab =
@@ -3400,7 +3400,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
-                       NewTabDefault_AskEachTime_NewTabButtonShowsMenu) {
+                       NewTabTarget_AskEachTime_NewTabButtonShowsMenu) {
   BrowserView* const browser_view =
       BrowserView::GetBrowserViewForBrowser(browser());
   ASSERT_TRUE(browser_view);
@@ -3425,8 +3425,8 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   EXPECT_FALSE(BraveNewTabButtonHasPreparedContainersContextMenu(new_tab));
 
   // With "ask every time" a click prepares the container menu instead.
-  SetNewTabDefaultToPrefs(mojom::NewTabDefault::New("", false, true),
-                          *browser()->GetProfile()->GetPrefs());
+  SetNewTabTargetToPrefs(mojom::NewTabTarget::NewAskEachTime(true),
+                         *browser()->GetProfile()->GetPrefs());
   views::test::ButtonTestApi(new_tab).NotifyClick(click);
   EXPECT_EQ(tab_count + 1, browser()->tab_strip_model()->count());
   EXPECT_TRUE(BraveNewTabButtonHasPreparedContainersContextMenu(new_tab));

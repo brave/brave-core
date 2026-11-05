@@ -148,31 +148,40 @@ base::ListValue ConvertContainersToListValue(
   return list;
 }
 
-mojom::NewTabDefaultPtr GetNewTabDefaultFromPrefs(const PrefService& prefs) {
+mojom::NewTabTargetPtr GetNewTabTargetFromPrefs(const PrefService& prefs) {
   CHECK(base::FeatureList::IsEnabled(features::kContainers));
-  const base::DictValue& dict = prefs.GetDict(prefs::kNewTabDefault);
-  const std::string* container_id = dict.FindString(kContainerIdKey);
-  return mojom::NewTabDefault::New(
-      container_id ? *container_id : std::string(),
-      dict.FindBool(kTemporaryContainerKey).value_or(false),
-      dict.FindBool(kAskEachTimeKey).value_or(false));
+  const base::DictValue& dict = prefs.GetDict(prefs::kNewTabTarget);
+  if (const std::string* container_id = dict.FindString(kContainerIdKey);
+      container_id && !container_id->empty()) {
+    return mojom::NewTabTarget::NewContainerId(*container_id);
+  }
+  if (dict.FindBool(kTemporaryContainerKey).value_or(false)) {
+    return mojom::NewTabTarget::NewTemporaryContainer(true);
+  }
+  if (dict.FindBool(kAskEachTimeKey).value_or(false)) {
+    return mojom::NewTabTarget::NewAskEachTime(true);
+  }
+  return nullptr;
 }
 
-void SetNewTabDefaultToPrefs(const mojom::NewTabDefaultPtr& new_tab_default,
-                             PrefService& prefs) {
+void SetNewTabTargetToPrefs(const mojom::NewTabTargetPtr& target,
+                            PrefService& prefs) {
   CHECK(base::FeatureList::IsEnabled(features::kContainers));
-  CHECK(new_tab_default);
   base::DictValue dict;
-  if (!new_tab_default->container_id.empty()) {
-    dict.Set(kContainerIdKey, new_tab_default->container_id);
+  if (target) {
+    switch (target->which()) {
+      case mojom::NewTabTarget::Tag::kContainerId:
+        dict.Set(kContainerIdKey, target->get_container_id());
+        break;
+      case mojom::NewTabTarget::Tag::kTemporaryContainer:
+        dict.Set(kTemporaryContainerKey, true);
+        break;
+      case mojom::NewTabTarget::Tag::kAskEachTime:
+        dict.Set(kAskEachTimeKey, true);
+        break;
+    }
   }
-  if (new_tab_default->temporary_container) {
-    dict.Set(kTemporaryContainerKey, true);
-  }
-  if (new_tab_default->ask_each_time) {
-    dict.Set(kAskEachTimeKey, true);
-  }
-  prefs.SetDict(prefs::kNewTabDefault, std::move(dict));
+  prefs.SetDict(prefs::kNewTabTarget, std::move(dict));
 }
 
 }  // namespace containers

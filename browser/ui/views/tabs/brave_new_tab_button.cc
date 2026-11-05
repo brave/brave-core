@@ -160,20 +160,13 @@ BraveNewTabButton::BraveNewTabButton(
     Edge fixed_flat_edge,
     Edge animated_flat_edge,
     BrowserWindowInterface* browser_window_interface)
-    : NewTabButton(
-#if BUILDFLAG(ENABLE_CONTAINERS)
-          base::BindRepeating(&BraveNewTabButton::OnPressed,
-                              base::Unretained(this)),
-#else
-          std::move(callback),
-#endif
-          kLeoPlusAddIcon,
-          fixed_flat_edge,
-          animated_flat_edge,
-          browser_window_interface),
-#if BUILDFLAG(ENABLE_CONTAINERS)
+    : NewTabButton(base::BindRepeating(&BraveNewTabButton::OnPressed,
+                                       base::Unretained(this)),
+                   kLeoPlusAddIcon,
+                   fixed_flat_edge,
+                   animated_flat_edge,
+                   browser_window_interface),
       original_pressed_callback_(std::move(callback)),
-#endif
       browser_window_interface_(CHECK_DEREF(browser_window_interface)) {
   views::HighlightPathGenerator::Install(
       this, std::make_unique<BraveNewTabButtonHighlightPathGenerator>(*this));
@@ -191,24 +184,29 @@ BraveNewTabButton::BraveNewTabButton(
 
 BraveNewTabButton::~BraveNewTabButton() = default;
 
-#if BUILDFLAG(ENABLE_CONTAINERS)
 void BraveNewTabButton::OnPressed(const ui::Event& event) {
+#if BUILDFLAG(ENABLE_CONTAINERS)
   if (ShouldAskForContainer()) {
     ShowContextMenuForViewImpl(this, GetBoundsInScreen().bottom_left(),
                                ui::mojom::MenuSourceType::kMouse);
     return;
   }
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
   original_pressed_callback_.Run(event);
 }
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
 bool BraveNewTabButton::ShouldAskForContainer() const {
   if (!base::FeatureList::IsEnabled(containers::features::kContainers)) {
     return false;
   }
   auto* service = ContainersServiceFactory::GetForProfile(
       browser_window_interface_->GetProfile());
-  return service && service->ShouldShowContainerControls() &&
-         service->GetNewTabDefault()->ask_each_time;
+  if (!service || !service->ShouldShowContainerControls()) {
+    return false;
+  }
+  const auto target = service->GetNewTabTarget();
+  return target && target->is_ask_each_time();
 }
 
 void BraveNewTabButton::ShowContextMenuForViewImpl(
