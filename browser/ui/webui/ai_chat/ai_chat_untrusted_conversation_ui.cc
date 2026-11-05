@@ -40,6 +40,7 @@
 #include "brave/components/local_ai/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
+#include "chrome/browser/ui/webui/theme_source.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_webui_strings.h"
@@ -79,7 +80,6 @@
 #include "chrome/browser/ui/chrome_pages.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/thumbnails/thumbnail_tracker.h"
-#include "chrome/browser/ui/webui/theme_source.h"
 #include "chrome/browser/ui/webui/util/image_util.h"
 #include "ui/base/base_window.h"
 #endif
@@ -559,10 +559,8 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
                                   /*serve_untrusted=*/true));
   content::URLDataSource::Add(
       profile, std::make_unique<UntrustedSanitizedImageSource>(profile));
-#if !BUILDFLAG(IS_ANDROID)
   content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(
                                            profile, /*serve_untrusted=*/true));
-#endif
 }
 
 AIChatUntrustedConversationUI::~AIChatUntrustedConversationUI() = default;

@@ -205,6 +205,7 @@ import org.chromium.chrome.browser.tabmodel.TabList;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelUtils;
 import org.chromium.chrome.browser.tabwindow.TabWindowManager;
+import org.chromium.chrome.browser.theme.BraveAccentColorBridge;
 import org.chromium.chrome.browser.toolbar.BraveToolbarManager;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl;
@@ -1280,6 +1281,10 @@ public abstract class BraveActivity extends ChromeActivity
 
     @Override
     public void finishNativeInitialization() {
+        // Before super, so the accent is in place before restored tabs (e.g. WebUI pages loading
+        // chrome://theme/colors.css) start loading.
+        BraveAccentColorBridge.update(this);
+
         super.finishNativeInitialization();
 
         boolean isFirstInstall = PackageUtils.isFirstInstall(this);

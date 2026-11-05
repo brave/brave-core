@@ -4,6 +4,38 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//build/config/android/rules.gni")
+import("//third_party/jni_zero/jni_zero.gni")
+
+assert(is_android)
+
+generate_jni("jni_headers") {
+  sources = [
+    "java/src/org/chromium/chrome/browser/theme/BraveAccentColorBridge.java",
+  ]
+}
+
+source_set("theme") {
+  sources = [ "brave_accent_color_bridge.cc" ]
+  deps = [
+    ":jni_headers",
+    "//base",
+    "//skia",
+    "//third_party/jni_zero",
+    "//ui/native_theme",
+  ]
+}
+
+android_library("accent_color_java") {
+  sources = [
+    "java/src/org/chromium/chrome/browser/theme/BraveAccentColorBridge.java",
+  ]
+  srcjar_deps = [ ":jni_headers" ]
+  deps = [
+    ":dynamic_colors_java",
+    "//build/android:build_java",
+    "//third_party/jni_zero:jni_zero_java",
+  ]
+}
 
 android_library("java") {
   sources =

@@ -54,6 +54,7 @@ brave_chrome_java_deps = [
   "//brave/browser/ui/android/logo:java",
   "//brave/browser/ui/android/ntp_widgets:java",
   "//brave/browser/ui/android/omnibox:java",
+  "//brave/browser/ui/android/theme:accent_color_java",
   "//brave/browser/ui/android/theme:dynamic_colors_java",
   "//brave/browser/ui/android/theme:java",
   "//brave/browser/ui/android/toolbar:java",
