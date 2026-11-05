@@ -39,6 +39,8 @@ class PsstInfoBar : public BraveConfirmInfoBar {
   // BraveConfirmInfoBar:
   void Layout(PassKey) override;
 
+  views::StyledLabel* subtitle_for_testing() const { return subtitle_.get(); }
+
  private:
   // Base's `label_` is repurposed as the bold title and `link_` is hidden:
   // the "Learn more" link lives inline in `subtitle_` instead.

@@ -21,6 +21,7 @@
 #include "brave/browser/psst/psst_settings_service_factory.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/tabs/public/brave_tab_features.h"
+#include "brave/browser/ui/views/infobars/brave_confirm_infobar.h"
 #include "brave/browser/ui/webui/psst/brave_psst_dialog_ui.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/psst/core/browser/pref_names.h"
@@ -39,8 +40,6 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
-#include "chrome/browser/ui/views/infobars/confirm_infobar.h"
-#include "chrome/browser/ui/views/infobars/infobar_view.h"
 #include "chrome/browser/ui/views/location_bar/icon_label_bubble_view.h"
 #include "chrome/browser/ui/views/page_action/page_action_view.h"
 #include "chrome/test/base/chrome_test_utils.h"
@@ -912,11 +911,12 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
   }
 
   // Clicks the OK button to accept `infobar` and continue the flow, so that
-  // ConfirmInfoBar::OkButtonPressed() closes the infobar as it would in
-  // production.
+  // BraveConfirmInfoBar::OkButtonPressed() closes the infobar as it would in
+  // production. The PSST infobar is a BraveConfirmInfoBar (PsstInfoBar), not
+  // upstream's ConfirmInfoBar.
   void ClickInfobarOkButton(infobars::InfoBar* infobar) {
     views::test::ButtonTestApi(
-        static_cast<ConfirmInfoBar*>(infobar)->ok_button_for_testing())
+        static_cast<BraveConfirmInfoBar*>(infobar)->ok_button_for_testing())
         .NotifyClick(ui::MouseEvent(ui::EventType::kMousePressed, gfx::Point(),
                                     gfx::Point(), base::TimeTicks(),
                                     ui::EF_LEFT_MOUSE_BUTTON,
@@ -924,12 +924,15 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
   }
 
   // Clicks the close ("x") button on `infobar`, so that
-  // InfoBarView::CloseButtonPressed() calls delegate()->InfoBarDismissed() and
-  // removes the infobar as it would in production.
+  // BraveConfirmInfoBar::CloseButtonPressed() calls
+  // delegate()->InfoBarDismissed() and removes the infobar as it would in
+  // production. The PSST infobar is a BraveConfirmInfoBar (PsstInfoBar), not
+  // upstream's InfoBarView.
   void ClickInfobarCloseButton(infobars::InfoBar* infobar) {
     views::test::ButtonTestApi(
         views::Button::AsButton(
-            static_cast<InfoBarView*>(infobar)->close_button()))
+            static_cast<BraveConfirmInfoBar*>(infobar)
+                ->close_button_for_testing()))
         .NotifyClick(ui::MouseEvent(ui::EventType::kMousePressed, gfx::Point(),
                                     gfx::Point(), base::TimeTicks(),
                                     ui::EF_LEFT_MOUSE_BUTTON,

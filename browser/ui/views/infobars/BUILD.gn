@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/psst/buildflags/buildflags.gni")
+
 source_set("unit_tests") {
   testonly = true
 
@@ -23,4 +25,13 @@ source_set("unit_tests") {
     "//ui/views",
     "//ui/views:test_support",
   ]
+
+  if (enable_psst) {
+    sources += [ "psst_infobar_unittest.cc" ]
+    deps += [
+      "//brave/app:brave_generated_resources_grit",
+      "//brave/browser/psst",
+      "//brave/components/psst/core/common",
+    ]
+  }
 }
