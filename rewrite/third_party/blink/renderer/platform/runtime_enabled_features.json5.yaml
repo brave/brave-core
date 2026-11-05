@@ -60,7 +60,7 @@ substitutions:
               name: "CompositorTimelineTrigger",
               status: "experimental", // Brave: revert when crbug.com/541924666 is fixed.
 
-  # The three following entries are plastered to generate no `base::Feature` at
+  # The two following entries are plastered to generate no `base::Feature` at
   # all.
   - description:
       'Generate no base::Feature for FileSystemAccessAPIExperimental.'
@@ -72,12 +72,6 @@ substitutions:
   - description: 'Generate no base::Feature for FileSystemAccessLocal.'
     regex:
       re_pattern: '^( *)(name: "FileSystemAccessLocal",)'
-      re_flags: [MULTILINE]
-      replace: '\1\2\n\1base_feature: "none",'
-
-  - description: 'Generate no base::Feature for MiddleClickAutoscroll.'
-    regex:
-      re_pattern: '^( *)(name: "MiddleClickAutoscroll",)'
       re_flags: [MULTILINE]
       replace: '\1\2\n\1base_feature: "none",'
 

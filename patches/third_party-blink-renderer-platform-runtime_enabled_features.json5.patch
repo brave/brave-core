@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index ed0c21189a78ab6165c72c63feec9c9b17f0b8c7..cc88f7f7fb494882126c364e762e6508d7366b9f 100644
+index ed0c21189a78ab6165c72c63feec9c9b17f0b8c7..561f57e193aec8f6ab33e28283ee82522ea1418c 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
 @@ -185,6 +185,14 @@
@@ -148,15 +148,7 @@ index ed0c21189a78ab6165c72c63feec9c9b17f0b8c7..cc88f7f7fb494882126c364e762e6508
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -4543,6 +4570,7 @@
-     // "experimental" is the support on other platforms.
-     {
-       name: "MiddleClickAutoscroll",
-+      base_feature: "none",
-       status: "test",
-     },
-     // Killswitch for crbug.com/40062462 fix.
-@@ -5302,6 +5330,8 @@
+@@ -5302,6 +5329,8 @@
        //
        // It also has some feature params defined throughout the codebase.
        name: "Prerender2",
@@ -165,7 +157,7 @@ index ed0c21189a78ab6165c72c63feec9c9b17f0b8c7..cc88f7f7fb494882126c364e762e6508
        status: "stable",
      },
      {
-@@ -5518,6 +5548,8 @@
+@@ -5518,6 +5547,8 @@
      // but we still keep this flag for future phase tests.
      {
        name: "ReduceUserAgentMinorVersion",
@@ -174,7 +166,7 @@ index ed0c21189a78ab6165c72c63feec9c9b17f0b8c7..cc88f7f7fb494882126c364e762e6508
        status: "stable",
      },
      {
-@@ -7110,7 +7142,8 @@
+@@ -7110,7 +7141,8 @@
          "ChromeOS": "stable",
          "default": "",
        },
@@ -184,7 +176,7 @@ index ed0c21189a78ab6165c72c63feec9c9b17f0b8c7..cc88f7f7fb494882126c364e762e6508
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -7298,6 +7331,8 @@
+@@ -7298,6 +7330,8 @@
      },
      {
        name: "UserMediaElement",
@@ -193,7 +185,7 @@ index ed0c21189a78ab6165c72c63feec9c9b17f0b8c7..cc88f7f7fb494882126c364e762e6508
        status: "stable",
        public: true,
      },
-@@ -7761,6 +7796,7 @@
+@@ -7761,6 +7795,7 @@
        origin_trial_feature_name: "WebMCP",
        origin_trial_allows_third_party: true,
        public: true,
@@ -201,7 +193,7 @@ index ed0c21189a78ab6165c72c63feec9c9b17f0b8c7..cc88f7f7fb494882126c364e762e6508
        base_feature_status: "enabled",
        copied_from_base_feature_if: "overridden",
        // Note that `depends_on` isn't supported by origin trials.
-@@ -7770,7 +7806,7 @@
+@@ -7770,7 +7805,7 @@
          "WebMCPFormAssociatedCustomElements",
          "WebMCPWaitForToolsUntil"
        ],
@@ -210,7 +202,7 @@ index ed0c21189a78ab6165c72c63feec9c9b17f0b8c7..cc88f7f7fb494882126c364e762e6508
      },
      {
        name: "WebMCPContinuations",
-@@ -8224,5 +8260,10 @@
+@@ -8224,5 +8259,10 @@
        // crbug.com/435623334.
        name: "XSLTSpecialTrial",
      },

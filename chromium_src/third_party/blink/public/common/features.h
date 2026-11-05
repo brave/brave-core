@@ -23,10 +23,6 @@ BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kRestrictEventSourcePool);
 BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(
     kWebGLBalancedFingerprintingProtection);
 
-#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kMiddleButtonClickAutoscroll);
-#endif  // BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
 // A feature flag that allow users to open context menu even if
 // event.preventDefault() is called on contextmenu event when Shift key is
