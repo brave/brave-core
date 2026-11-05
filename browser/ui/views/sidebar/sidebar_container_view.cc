@@ -46,9 +46,11 @@
 #include "third_party/blink/public/common/input/web_mouse_event.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/color/color_provider.h"
 #include "ui/compositor/layer.h"
 #include "ui/events/event_observer.h"
 #include "ui/events/types/event_type.h"
+#include "ui/gfx/canvas.h"
 #include "ui/gfx/geometry/point.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/webview/webview.h"
@@ -68,6 +70,40 @@ using ShowSidebarOption = sidebar::SidebarService::ShowSidebarOption;
 sidebar::SidebarService* GetSidebarService(BrowserWindowInterface* browser) {
   return sidebar::SidebarServiceFactory::GetForProfile(browser->GetProfile());
 }
+
+constexpr int kInfobarBottomDividerThickness = 1;
+
+// A thin hairline matching BraveInfoBarContainerView's own bottom divider
+// (see brave_infobar_container_view.cc), painted to its own layer so it can
+// stack above `sidebar_control_view_`'s layer instead of being hidden behind
+// it. Positioned manually by SetInfobarBottomDividerY(), so it's excluded
+// from SidebarContainerView's default fill layout.
+class InfobarBottomDividerView : public views::View {
+  METADATA_HEADER(InfobarBottomDividerView, views::View)
+
+ public:
+  InfobarBottomDividerView() {
+    SetPaintToLayer();
+    layer()->SetFillsBoundsOpaquely(false);
+    SetProperty(views::kViewIgnoredByLayoutKey, true);
+    SetVisible(false);
+  }
+
+  // views::View:
+  void OnPaint(gfx::Canvas* canvas) override {
+    canvas->FillRect(
+        GetLocalBounds(),
+        GetColorProvider()->GetColor(kColorInfoBarContentAreaSeparator));
+  }
+
+  void OnThemeChanged() override {
+    views::View::OnThemeChanged();
+    SchedulePaint();
+  }
+};
+
+BEGIN_METADATA(InfobarBottomDividerView)
+END_METADATA
 
 }  // namespace
 
@@ -141,6 +177,17 @@ void SidebarContainerView::SetSidebarOnLeft(bool sidebar_on_left) {
 
 bool SidebarContainerView::IsSidebarVisible() const {
   return sidebar_control_view_ && sidebar_control_view_->GetVisible();
+}
+
+void SidebarContainerView::SetInfobarBottomDividerY(std::optional<int> y) {
+  if (!y) {
+    infobar_bottom_divider_->SetVisible(false);
+    return;
+  }
+
+  infobar_bottom_divider_->SetBoundsRect(
+      gfx::Rect(0, *y, width(), kInfobarBottomDividerThickness));
+  infobar_bottom_divider_->SetVisible(true);
 }
 
 void SidebarContainerView::ChildVisibilityChanged(views::View* child) {
@@ -249,6 +296,11 @@ void SidebarContainerView::AddChildViews() {
   // Hide by default. Visibility will be controlled by show options callback
   // later.
   sidebar_control_view_->SetVisible(false);
+
+  // Added after `sidebar_control_view_` so its own layer stacks above it;
+  // see SetInfobarBottomDividerY().
+  infobar_bottom_divider_ =
+      AddChildView(std::make_unique<InfobarBottomDividerView>());
 }
 
 gfx::Size SidebarContainerView::CalculatePreferredSize(

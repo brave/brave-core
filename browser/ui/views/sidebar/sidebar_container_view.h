@@ -66,6 +66,14 @@ class SidebarContainerView : public sidebar::Sidebar,
 
   bool IsSidebarVisible() const;
 
+  // The sidebar's icon strip (`sidebar_control_view_`) has its own compositor
+  // layer, which stacks above BraveInfoBarContainerView's own bottom divider
+  // wherever the two overlap horizontally (the infobar container's bounds
+  // extend behind the sidebar; see AdjustInfobarLayout()), hiding it there.
+  // `y`, in this view's own local coordinates, draws a matching 1dip line so
+  // the divider still reads as continuous under the sidebar; nullopt hides it.
+  void SetInfobarBottomDividerY(std::optional<int> y);
+
   // Show sidebar if the hot corner contains |point_in_screen|.
   void ShowSidebarOnMouseOver(const gfx::PointF& point_in_screen);
 
@@ -130,6 +138,7 @@ class SidebarContainerView : public sidebar::Sidebar,
 
   raw_ptr<BrowserWindowInterface> browser_ = nullptr;
   raw_ptr<SidebarControlView> sidebar_control_view_ = nullptr;
+  raw_ptr<views::View> infobar_bottom_divider_ = nullptr;
   bool sidebar_on_left_ = true;
   base::OneShotTimer sidebar_hide_timer_;
   sidebar::SidebarService::ShowSidebarOption show_sidebar_option_ =
