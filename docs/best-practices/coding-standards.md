@@ -32,7 +32,7 @@ its GN target (not in the target's `public` list, and your target isn't on its
 `friend`/`visibility` allowlist) — the GN header check will fail. Include the
 header the owner exports for that purpose instead, often a `*_test_util.h` or
 `mock_*.h` from a test-support target. Check the owning target in `BUILD.gn`
-first, and do NOT flag the missing private include in review.
+first, and **NEVER flag the missing private include in review.**
 
 ```cpp
 // ❌ WRONG - net/dns/host_resolver.h is private to //net/dns:host_resolver
@@ -182,8 +182,8 @@ std::string user_name;
 
 - **Opening brace** goes at the end of the previous line (K&R style)
 - **Continuation lines** should be indented 4 spaces
-- **Do NOT enforce include order** — include ordering is handled by code
-  formatting tools and lint, not by code review
+- **NEVER enforce include order in code review** — include ordering is handled
+  by code formatting tools and lint, not by code review
 
 ---
 
@@ -268,7 +268,7 @@ local to a `.cc` file in an unnamed namespace (see [CS-016](#CS-016)).
 **Headers should use forward declarations instead of `#include` for types only
 used as pointers or references.** Move the full `#include` to the `.cc` file.
 
-**Exceptions — do NOT suggest forward declarations when:**
+**Exceptions — NEVER suggest forward declarations when:**
 
 - The type is **not directly `#include`d** but comes transitively through a base
   class header that must be included anyway (e.g., `content::WebUI*` comes
@@ -745,7 +745,7 @@ macros like `WIN32`, `__APPLE__`, or `__linux__`, and never the long-removed
 Put platform-specific `#include`s in their own section below the standard
 includes, repeating the normal include order within that section. Ordering is
 formatting, not review material — per [CS-010](#CS-010), leave it to
-`clang-format` and lint and don't flag it in review.
+`clang-format` and lint. **NEVER flag include order in review.**
 
 ---
 
@@ -892,7 +892,7 @@ For expected or non-critical failure cases (e.g., a bad user-supplied filter
 list, a failed parse of optional data), use `VLOG` for debug info or
 `LOG(WARNING)` for noteworthy but non-critical issues.
 
-**Do not suggest lowering log severity for failures you haven't confirmed are
+**NEVER suggest lowering log severity for failures you haven't confirmed are
 non-critical.** The developer knows whether a failure is critical for their
 service better than a reviewer can infer from the code alone. For example,
 failing to load a model file may look non-critical in isolation but could be a
@@ -1084,8 +1084,8 @@ the inconvenience of writing an explicit type."
 
 However, `auto` **is appropriate** when the explicit type is verbose/complex and
 doesn't improve readability (e.g., nested templates, long type names). This is a
-preference, not a hard rule — always prefix with `nit:` and do not insist if the
-developer declines.
+preference, not a hard rule — always prefix with `nit:`. **NEVER insist if the
+developer declines.**
 
 ```cpp
 // ❌ WRONG - auto hides a short, descriptive type
@@ -1548,7 +1548,7 @@ for (const auto& url : urls) {
 }
 ```
 
-**Do NOT flag missing braces in review** — like include order
+**NEVER flag missing braces in review** — like include order
 ([CS-010](#CS-010)), it is handled by tooling.
 
 Also prefer `(foo == 0)` over `(0 == foo)`.

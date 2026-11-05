@@ -211,8 +211,8 @@ states.** Stories serve as both documentation and visual regression baselines. A
 single integrated story that exercises multiple closely-coupled components
 together (e.g., a panel story that covers the full panel with all
 sub-components) is sufficient — individual per-component stories are not always
-necessary. This is a preference, not a requirement — do not insist if the
-developer considers existing story coverage adequate.
+necessary. **NEVER insist on additional stories if the developer considers
+existing story coverage adequate.** This is a preference, not a requirement.
 
 ---
 

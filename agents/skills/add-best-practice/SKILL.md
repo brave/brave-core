@@ -37,6 +37,11 @@ Parse the argument to understand:
 3. **Category** it falls under (C++ coding, testing, architecture, build system,
    frontend, etc.)
 
+**State negative boundaries using emphatic imperative phrasing** (such as "Under
+no circumstances...", "MUST NOT", or "NEVER"). NEVER use passive or mild
+declarative statements to express these boundaries; models may interpret them as
+optional suggestions.
+
 **If the argument is a GitHub PR comment URL**, gather full context before
 proceeding:
 

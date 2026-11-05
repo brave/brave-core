@@ -164,8 +164,8 @@ base::ThreadPool::PostTaskAndReplyWithResult(
 
 **When a class owns a `base::RepeatingTimer` or `base::OneShotTimer`, prefer
 `base::Unretained(this)`.** The timer is destroyed with the class, so it can
-only fire while `this` is valid. Using `WeakPtr` adds unnecessary overhead but
-is not functionally wrong — it's a style preference, not a correctness issue.
+only fire while `this` is valid. Using `WeakPtr` adds unnecessary overhead, but
+**NEVER report it as a correctness bug.** This is a style preference.
 
 ```cpp
 // ⚠️ AVOID - unnecessary overhead (but not a bug)
@@ -180,7 +180,7 @@ timer_.Start(FROM_HERE, delay,
 **Key distinction:** This is the opposite of the "never use Unretained with
 thread pool" rule. The difference is ownership: you own the timer, so it cannot
 outlive you. If a developer prefers `WeakPtr` for defensive coding, that's a
-valid choice — do not insist on changing it.
+valid choice — **NEVER insist on changing it.**
 
 ---
 
@@ -208,10 +208,9 @@ remote_.set_disconnect_handler(
     base::BindOnce(&MyClass::OnDisconnect, weak_factory_.GetWeakPtr()));
 ```
 
-**Do NOT flag `base::Unretained(this)` in Mojo disconnect/error handlers as
-unsafe.** This is a well-established safe pattern in Chromium. Only flag it if
-the binding crosses thread boundaries or if `this` does not own the Mojo
-endpoint.
+**NEVER flag `base::Unretained(this)` in Mojo disconnect/error handlers as
+unsafe unless the binding crosses thread boundaries or `this` does not own the
+Mojo endpoint.** This is a well-established safe pattern in Chromium.
 
 ---
 
@@ -498,10 +497,10 @@ processes, consider restricting to an allowlist or enum** rather than accepting
 arbitrary URLs. An unrestricted URL parameter means the renderer can send
 requests to any endpoint.
 
-**When NOT to flag:** If the implementation already validates or filters the URL
-downstream, do not request documentation comments about it. Before flagging,
-check whether similar patterns in surrounding code or elsewhere in the codebase
-have such comments — if they don't, your suggestion would introduce
+**NEVER request documentation comments about URL validation if the
+implementation already validates or filters the URL downstream.** Before
+flagging, check whether similar patterns in surrounding code or elsewhere in the
+codebase have such comments — if they don't, your suggestion would introduce
 inconsistency and unnecessary verbosity.
 
 ---
@@ -769,10 +768,10 @@ dereference directly) without an extra assertion.
 - (Very rare) cases where `raw_ptr<T>` causes runtime errors — add a comment and
   consult `base/memory/raw_ptr.md`
 
-Types not flagged by the Clang plugin — raw `T*` is fine, no annotation
-required: function pointers, ObjC pointers, `const char*`/`const wchar_t*`
-pointing to string literals (if they may point to heap-allocated objects, use
-`raw_ptr<const char>` for UaF safety).
+**NEVER require `raw_ptr<T>` or an exclusion annotation for these types exempt
+from the Clang plugin:** function pointers, ObjC pointers,
+`const char*`/`const wchar_t*` pointing to string literals. If they may point to
+heap-allocated objects, use `raw_ptr<const char>` for UaF safety.
 
 Blink renderer code using Oilpan, and any other code whose objects are allocated
 outside PartitionAlloc (V8 heap, Java heap, etc.), cannot use `raw_ptr<T>` or
@@ -862,9 +861,9 @@ base::BindOnce(&Validate, base::span(kMagic));
 **`base::Unretained(this)` is safe whenever the bound callback is owned by
 `this` — directly or through a member that is destroyed with `this` — so the
 callback cannot run after `this` is gone.** This is the common, correct pattern;
-the only genuinely problematic case is a callback that can outlive `this`. Flag
-(and replace with a `WeakPtr`) only that case — not the member-owned callbacks
-below.
+the only genuinely problematic case is a callback that can outlive `this`.
+**NEVER flag the member-owned callbacks below or request a `WeakPtr` replacement
+when they cannot outlive `this`.**
 
 Safe — the callback's owner is a member destroyed with `this`:
 

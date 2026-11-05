@@ -9,8 +9,9 @@ network callbacks, notification handlers, animation completions, and stored
 closures. Use `[unowned self]` only when the closure's lifetime is guaranteed to
 be shorter than `self`.
 
-**Exception:** Fire-and-forget `Task {}` blocks that are **not** stored as a
-property do not need `[weak self]` because they don't create a retain cycle.
+**Exception: NEVER require `[weak self]` under this retain-cycle rule for
+fire-and-forget `Task {}` blocks that are not stored as a property.** They don't
+create a retain cycle.
 
 ```swift
 // ❌ WRONG - strong self capture in stored closure
@@ -246,8 +247,8 @@ explicitly specify.** This prevents accidental use of incorrect defaults.
 **Use `let` for properties that are assigned once and never mutated.** The
 compiler enforces immutability, preventing accidental reassignment.
 
-**Exception:** Swift structs control mutability at the usage site via
-`let`/`var`, so `var` properties in structs are acceptable:
+**Exception: NEVER flag `var` properties in Swift structs under this rule.**
+Structs control mutability at the usage site via `let`/`var`:
 
 ```swift
 struct Item {

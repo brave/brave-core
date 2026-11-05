@@ -112,8 +112,10 @@ currently used by that feature.
 
 **Use `enable_brave_<feature>` as the naming convention for buildflags when the
 flag needs to be distinguished from a Chromium flag or is a top-level Brave
-feature.** The `enable_brave_` prefix is not required for flags that are clearly
-Brave-specific by context (e.g., a flag scoped within a Brave component's own
+feature.**
+
+**NEVER require the `enable_brave_` prefix for flags that are clearly
+Brave-specific by context** (e.g., a flag scoped within a Brave component's own
 buildflags file).
 
 ```gn
@@ -204,9 +206,9 @@ brave-core.
 **When adding a new network endpoint URL that does not require user opt-in, it
 must be added to the network audit allowed list** in
 `brave/browser/net/brave_network_audit_allowed_lists.h`. Without this, the
-network audit check will fail. Endpoints that only make requests based on
-explicit user action (e.g., clicking a button) do not need to be added to the
-network auditor.
+network audit check will fail. **NEVER require a network audit allowed-list
+entry for endpoints that only make requests based on explicit user action**
+(e.g., clicking a button).
 
 ---
 
@@ -327,8 +329,8 @@ deps += [ "//brave/components/brave_vpn/browser/v2:unit_tests" ]
 ```
 
 Note: many component `:unit_tests` targets currently live in `brave_unit_tests`
-for historical reasons; the rule above is the target state, not a license to
-flag every existing dep there as a violation.
+for historical reasons. **NEVER flag an existing dependency as a violation
+solely because it lives there.** The rule above is the target state.
 
 ---
 
