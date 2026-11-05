@@ -247,7 +247,6 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.VerticalTabs.PinnedTabs", MetricConfig{.ephemeral = true}},
     {"Brave.Wallet.UsageWeekly", MetricConfig{.ephemeral = true}},
     {"Brave.Web3.DappVisited", MetricConfig{.ephemeral = true}},
-    {"Brave.WebTorrent.UsageWeekly", MetricConfig{.ephemeral = true}},
 });
 
 inline constexpr auto kCollectedSlowHistograms =
