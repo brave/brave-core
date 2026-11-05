@@ -6,12 +6,21 @@
 #ifndef BRAVE_BROWSER_PSST_PSST_INFOBAR_DELEGATE_H_
 #define BRAVE_BROWSER_PSST_PSST_INFOBAR_DELEGATE_H_
 
+#include <memory>
+
 #include "base/functional/callback.h"
-#include "components/infobars/core/confirm_infobar_delegate.h"
+#include "brave/components/infobars/core/brave_confirm_infobar_delegate.h"
+#include "build/build_config.h"
+#include "ui/base/models/image_model.h"
+#include "url/gurl.h"
+
+namespace infobars {
+class InfoBar;
+}  // namespace infobars
 
 namespace psst {
 
-class PsstInfoBarDelegate : public ConfirmInfoBarDelegate {
+class PsstInfoBarDelegate : public BraveConfirmInfoBarDelegate {
  public:
   using AcceptCallback = base::OnceCallback<void(const bool is_accepted)>;
 
@@ -41,13 +50,23 @@ class PsstInfoBarDelegate : public ConfirmInfoBarDelegate {
 
   // ConfirmInfoBarDelegate overrides:
   infobars::InfoBarDelegate::InfoBarIdentifier GetIdentifier() const override;
+  ui::ImageModel GetIcon() const override;
   std::u16string GetMessageText() const override;
   int GetButtons() const override;
   std::u16string GetButtonLabel(InfoBarButton button) const override;
+  GURL GetLinkURL() const override;
 
   AcceptCallback on_accept_callback_;
 };
 
 }  // namespace psst
+
+#if !BUILDFLAG(IS_ANDROID)
+// Defined in brave/browser/ui/views/infobars/psst_infobar.cc. Declared here
+// (rather than in a views-layer creator header) since it's only ever used by
+// PsstInfoBarDelegate::Create().
+std::unique_ptr<infobars::InfoBar> CreatePsstInfoBar(
+    std::unique_ptr<psst::PsstInfoBarDelegate> delegate);
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 #endif  // BRAVE_BROWSER_PSST_PSST_INFOBAR_DELEGATE_H_
