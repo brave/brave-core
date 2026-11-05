@@ -1074,6 +1074,12 @@ bool AIChatService::CanUnloadConversation(ConversationHandler* conversation) {
     return false;
   }
 
+  // Permission challenges aren't persisted, so a reloaded conversation would
+  // lose the request the user still has to answer.
+  if (conversation->IsAwaitingUserInput()) {
+    return false;
+  }
+
   return true;
 }
 
