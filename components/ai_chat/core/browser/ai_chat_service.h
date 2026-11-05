@@ -276,8 +276,7 @@ class AIChatService : public KeyedService,
 
   using ShowCompletionNotificationCallback =
       base::RepeatingCallback<void(const std::string& uuid,
-                                   const std::u16string& title,
-                                   bool needs_approval)>;
+                                   const std::u16string& title)>;
   using CloseCompletionNotificationCallback =
       base::RepeatingCallback<void(const std::string& uuid)>;
   void SetCompletionNotificationCallbacks(
@@ -543,9 +542,8 @@ class AIChatService : public KeyedService,
   // This doesn't mean the conversation is on screen.
   bool IsConversationVisible(const std::string& uuid) const;
   // Moves |uuid| out of kGenerating once its handler is neither generating nor
-  // running tools: to kIdle if a client is connected, otherwise to
-  // kAwaitingUserInput if it stopped on a tool use request, or else to
-  // kCompletedNotViewed.
+  // running tools: to kCompletedNotViewed, or to kIdle if a client is
+  // connected.
   void MaybeCompleteGeneration(const std::string& uuid);
   // Deletes a conversation without notifying the conversation list.
   void EraseConversation(const std::string& id);
@@ -588,10 +586,7 @@ class AIChatService : public KeyedService,
 
   ShowCompletionNotificationCallback show_completion_notification_callback_;
   CloseCompletionNotificationCallback close_completion_notification_callback_;
-  // |needs_approval| is set when generation stopped on a tool use request
-  // rather than finishing.
-  void MaybeShowCompletionNotification(const std::string& uuid,
-                                       bool needs_approval);
+  void MaybeShowCompletionNotification(const std::string& uuid);
   void MaybeCloseCompletionNotification(const std::string& uuid);
 
   base::WeakPtrFactory<AIChatService> weak_ptr_factory_{this};

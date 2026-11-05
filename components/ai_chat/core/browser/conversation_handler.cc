@@ -495,22 +495,6 @@ bool ConversationHandler::IsToolUseInProgress() const {
   return is_tool_use_in_progress_;
 }
 
-bool ConversationHandler::IsAwaitingUserInput() const {
-  const auto& history = GetConversationHistory();
-  if (history.empty()) {
-    return false;
-  }
-  const auto& last_entry = history.back();
-  if (last_entry->character_type != mojom::CharacterType::ASSISTANT ||
-      !last_entry->events) {
-    return false;
-  }
-  return std::ranges::any_of(*last_entry->events, [](const auto& event) {
-    return event->is_tool_use_event() &&
-           !event->get_tool_use_event()->output.has_value();
-  });
-}
-
 void ConversationHandler::OnConversationDeleted() {
   for (auto& client : conversation_ui_handlers_) {
     client->OnConversationDeleted();
