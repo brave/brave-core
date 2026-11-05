@@ -193,7 +193,7 @@ class TopSitesModeMigrationTests: XCTestCase {
   /// Documents the accepted cost of the ambiguous raw value: `2` is read as the 1.98.x `none`,
   /// which resets a tester who picked favourites on 1.99.x. Honouring an explicit opt out on the
   /// far larger release channel is the safer side to err on.
-  func testTesterWhoPickedFavouritesIsResetToNone() {
+  func testUserWhoPickedFavouritesIsResetToNone() {
     XCTAssertEqual(
       BraveProfileMigrations.topSitesMode(
         forDeprecatedRawValue: DeprecatedRawValue.favouriteFrom199,
@@ -203,7 +203,7 @@ class TopSitesModeMigrationTests: XCTestCase {
     )
   }
 
-  func testTesterWhoPickedMostVisitedIsResetToFavourites() {
+  func testUserWhoPickedMostVisitedIsResetToFavourites() {
     XCTAssertEqual(
       BraveProfileMigrations.topSitesMode(
         forDeprecatedRawValue: DeprecatedRawValue.mostVisitedFrom199,
@@ -213,7 +213,7 @@ class TopSitesModeMigrationTests: XCTestCase {
     )
   }
 
-  func testTesterWhoTurnedTopSitesOffGetsThemBack() {
+  func testUserWhoTurnedTopSitesOffGetsThemBack() {
     XCTAssertEqual(
       BraveProfileMigrations.topSitesMode(
         forDeprecatedRawValue: DeprecatedRawValue.noneFrom199,
