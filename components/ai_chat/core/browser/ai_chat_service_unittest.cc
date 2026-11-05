@@ -2109,6 +2109,23 @@ TEST_P(AIChatServiceUnitTest, GenerationState_ViewingClearsAwaitingUserInput) {
 }
 
 TEST_P(AIChatServiceUnitTest,
+       GenerationState_LeavingUnansweredChallengeFlagsAwaitingUserInput) {
+  ConversationHandler* handler = CreateConversation();
+  const std::string uuid = handler->get_conversation_uuid();
+  auto client = CreateConversationClient(handler);
+  auto resolve = StartGeneration(handler, *client_, ToolUseNeedingPermission());
+  // Stopping on the challenge while open needs no indicator.
+  ExpectGenerationState(
+      *client_, uuid, mojom::ConversationGenerationState::kIdle,
+      base::BindOnce(&CompleteGeneration, std::move(resolve)));
+
+  // Leaving without answering it does.
+  ExpectGenerationState(*client_, uuid,
+                        mojom::ConversationGenerationState::kAwaitingUserInput,
+                        base::BindLambdaForTesting([&] { client.reset(); }));
+}
+
+TEST_P(AIChatServiceUnitTest,
        GenerationState_AwaitingUserInput_ResumesGenerating) {
   ConversationHandler* handler = CreateConversation();
   const std::string uuid = handler->get_conversation_uuid();
