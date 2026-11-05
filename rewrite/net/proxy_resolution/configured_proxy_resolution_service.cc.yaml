@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Isolate Tor circuits for every resolved proxy request.
+
+      Requests resolved synchronously and requests that waited for the proxy
+      config both finish here, so each one gets the per-site SOCKS credentials
+      of the Tor proxy. A Tor profile holds its requests until Tor's SOCKS
+      endpoint is known, and those complete through the asynchronous path.
+    preempt_function_impl:
+      function_name: ConfiguredProxyResolutionService::ProcessResolutionResult
+      code: |-
+        MaybeSetTorCircuitIsolation(result_code, config_, url,
+                                    network_anonymization_key, result, this);
