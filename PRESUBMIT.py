@@ -1166,4 +1166,11 @@ def CheckTodoBugReferences(_original_check, input_api, output_api):
     return []
 
 
+@chromium_presubmit_overrides.override_check(globals())
+def CheckRuff(_original_check, input_api, output_api):
+    # Upstream skips Chromium directories that run Ruff in their own PRESUBMIT,
+    # which here would skip Brave's chrome/, components/, tools/, etc.
+    return input_api.canned_checks.RunRuff(input_api, output_api)
+
+
 # DON'T ADD NEW CHECKS HERE, ADD THEM BEFORE FIRST inline_presubmit().
