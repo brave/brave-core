@@ -456,6 +456,19 @@ class AIChatService : public KeyedService,
       base::expected<std::vector<std::string>, mojom::APIError> result);
   // Creates the tool providers for |conversation| and adds them to it.
   void AddToolProvidersToConversation(ConversationHandler* conversation);
+  // Sends |uuid|'s stored state, or kIdle if there is no entry, to all
+  // |observer_remotes_|.
+  void NotifyConversationGenerationState(const std::string& uuid);
+  // Whether |uuid| has a loaded ConversationHandler with a connected client.
+  // This doesn't mean the conversation is on screen.
+  bool IsConversationVisible(const std::string& uuid) const;
+  // Moves |uuid| out of kGenerating once its handler is neither generating nor
+  // running tools: to kIdle if a client is connected, otherwise to
+  // kAwaitingUserInput if it stopped on a permission challenge, or else to
+  // kCompletedNotViewed.
+  void MaybeCompleteGeneration(const std::string& uuid);
+  // Deletes a conversation without notifying the conversation list.
+  void EraseConversation(const std::string& id);
 
   raw_ptr<ModelService> model_service_;
   raw_ptr<TabTrackerService> tab_tracker_service_;
@@ -536,19 +549,6 @@ class AIChatService : public KeyedService,
   // kIdle; kIdle is never stored.
   std::map<std::string, mojom::ConversationGenerationState>
       conversation_generation_state_;
-  // Sends |uuid|'s stored state, or kIdle if there is no entry, to all
-  // |observer_remotes_|.
-  void NotifyConversationGenerationState(const std::string& uuid);
-  // Whether |uuid| has a loaded ConversationHandler with a connected client.
-  // This doesn't mean the conversation is on screen.
-  bool IsConversationVisible(const std::string& uuid) const;
-  // Moves |uuid| out of kGenerating once its handler is neither generating nor
-  // running tools: to kIdle if a client is connected, otherwise to
-  // kAwaitingUserInput if it stopped on a permission challenge, or else to
-  // kCompletedNotViewed.
-  void MaybeCompleteGeneration(const std::string& uuid);
-  // Deletes a conversation without notifying the conversation list.
-  void EraseConversation(const std::string& id);
 
   mojo::Receiver<mojom::TabDataObserver> tab_data_observer_receiver_{this};
 
