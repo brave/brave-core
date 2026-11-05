@@ -467,6 +467,8 @@ class AIChatService : public KeyedService,
   void MaybeCompleteGeneration(const std::string& uuid);
   // Deletes a conversation without notifying the conversation list.
   void EraseConversation(const std::string& id);
+  void MaybeShowCompletionNotification(const std::string& uuid);
+  void MaybeCloseCompletionNotification(const std::string& uuid);
 
   raw_ptr<ModelService> model_service_;
   raw_ptr<TabTrackerService> tab_tracker_service_;
@@ -586,8 +588,6 @@ class AIChatService : public KeyedService,
 
   ShowCompletionNotificationCallback show_completion_notification_callback_;
   CloseCompletionNotificationCallback close_completion_notification_callback_;
-  void MaybeShowCompletionNotification(const std::string& uuid);
-  void MaybeCloseCompletionNotification(const std::string& uuid);
 
   base::WeakPtrFactory<AIChatService> weak_ptr_factory_{this};
 };
