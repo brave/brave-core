@@ -25,18 +25,20 @@ namespace brave {
 
 // Nullifies the Origin header of cross-origin WebSocket handshakes from .onion
 // pages, so they do not disclose the address they came from.
-class OnionOriginHeaderClient : public network::mojom::TrustedHeaderClient {
+class BraveOnionOriginHeaderClient
+    : public network::mojom::TrustedHeaderClient {
  public:
   // Returns a remote to a self-owned client wrapping `inner`, which may be
   // null.
   static mojo::PendingRemote<network::mojom::TrustedHeaderClient> Create(
       mojo::PendingRemote<network::mojom::TrustedHeaderClient> inner);
 
-  explicit OnionOriginHeaderClient(
+  explicit BraveOnionOriginHeaderClient(
       mojo::PendingRemote<network::mojom::TrustedHeaderClient> inner);
-  OnionOriginHeaderClient(const OnionOriginHeaderClient&) = delete;
-  OnionOriginHeaderClient& operator=(const OnionOriginHeaderClient&) = delete;
-  ~OnionOriginHeaderClient() override;
+  BraveOnionOriginHeaderClient(const BraveOnionOriginHeaderClient&) = delete;
+  BraveOnionOriginHeaderClient& operator=(const BraveOnionOriginHeaderClient&) =
+      delete;
+  ~BraveOnionOriginHeaderClient() override;
 
   // network::mojom::TrustedHeaderClient override.
   void OnBeforeSendHeaders(const GURL& request_url,

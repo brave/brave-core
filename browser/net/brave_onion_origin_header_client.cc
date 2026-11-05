@@ -42,25 +42,25 @@ net::HttpRequestHeaders HideCrossOriginOnionOrigin(
 
 // static
 mojo::PendingRemote<network::mojom::TrustedHeaderClient>
-OnionOriginHeaderClient::Create(
+BraveOnionOriginHeaderClient::Create(
     mojo::PendingRemote<network::mojom::TrustedHeaderClient> inner) {
   mojo::PendingRemote<network::mojom::TrustedHeaderClient> remote;
   mojo::MakeSelfOwnedReceiver(
-      std::make_unique<OnionOriginHeaderClient>(std::move(inner)),
+      std::make_unique<BraveOnionOriginHeaderClient>(std::move(inner)),
       remote.InitWithNewPipeAndPassReceiver());
   return remote;
 }
 
-OnionOriginHeaderClient::OnionOriginHeaderClient(
+BraveOnionOriginHeaderClient::BraveOnionOriginHeaderClient(
     mojo::PendingRemote<network::mojom::TrustedHeaderClient> inner) {
   if (inner) {
     inner_.Bind(std::move(inner));
   }
 }
 
-OnionOriginHeaderClient::~OnionOriginHeaderClient() = default;
+BraveOnionOriginHeaderClient::~BraveOnionOriginHeaderClient() = default;
 
-void OnionOriginHeaderClient::OnBeforeSendHeaders(
+void BraveOnionOriginHeaderClient::OnBeforeSendHeaders(
     const GURL& request_url,
     const net::HttpRequestHeaders& headers,
     OnBeforeSendHeadersCallback callback) {
@@ -91,7 +91,7 @@ void OnionOriginHeaderClient::OnBeforeSendHeaders(
           net::ERR_FAILED, std::nullopt, std::nullopt));
 }
 
-void OnionOriginHeaderClient::OnHeadersReceived(
+void BraveOnionOriginHeaderClient::OnHeadersReceived(
     const std::string& headers,
     const net::IPEndPoint& remote_endpoint,
     const std::optional<net::SSLInfo>& ssl_info,

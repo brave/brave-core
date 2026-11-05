@@ -141,9 +141,10 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       network::mojom::URLLoaderFactoryOverridePtr* factory_override,
       scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner,
       bool is_for_network_service) override;
-  // Allows to add Brave specific trusted header clients on top of upstream's.
+
   content::ContentBrowserClient::WebSocketOptions GetWebSocketOptions(
       content::RenderFrameHost* frame) override;
+
   bool WillInterceptWebSocket(content::RenderFrameHost* frame) override;
 
   void WillCreateWebTransport(
