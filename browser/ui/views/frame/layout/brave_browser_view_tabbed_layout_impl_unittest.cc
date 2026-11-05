@@ -179,6 +179,11 @@ std::unique_ptr<BraveBrowserViewTabbedLayoutImpl> CreateLayoutWithWebPanel(
       std::move(mock), BrowserViewLayoutViews());
 }
 
+int GetBorderCornerRadius() {
+  return views::LayoutProvider::Get()->GetCornerRadiusMetric(
+      ExtendedShapeContextTokens::kRoundedCornersBorderRadius);
+}
+
 }  // namespace
 
 // ---------------------------------------------------------------------------
@@ -597,6 +602,52 @@ TEST(BraveBrowserViewTabbedLayoutImplTest,
             layout->CalculateWebPanelCornerRadiiForTesting());
   EXPECT_EQ(gfx::RoundedCornersF(kWindow),
             layout->CalculateContentsCornerRadiiForTesting());
+}
+
+// CalculateInfobarCornerRadii
+//
+// The infobar floats as its own card (see AdjustInfobarLayout()): its top
+// corners follow the window/border radius the same way the contents view's
+// do, but its bottom corners always use the smaller border radius, since the
+// infobar never touches the window's bottom edge (the contents view is
+// always below it).
+// ---------------------------------------------------------------------------
+
+TEST(BraveBrowserViewTabbedLayoutImplTest,
+     CalculateInfobarCornerRadiiEmptyWithoutRoundedCorners) {
+  BraveLayoutProvider layout_provider;
+  auto mock =
+      std::make_unique<testing::NiceMock<MockBrowserViewLayoutDelegate>>();
+  EXPECT_CALL(*mock, ShouldUseBraveWebViewRoundedCornersForContents())
+      .WillRepeatedly(::testing::Return(false));
+
+  BrowserViewLayoutViews views;
+  auto layout = std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
+      std::move(mock), std::move(views));
+
+  EXPECT_EQ(gfx::RoundedCornersF(),
+            layout->CalculateInfobarCornerRadiiForTesting());
+}
+
+TEST(BraveBrowserViewTabbedLayoutImplTest,
+     CalculateInfobarCornerRadiiTopUsesWindowRadiusBottomUsesBorderRadius) {
+  BraveLayoutProvider layout_provider;
+  auto mock =
+      std::make_unique<testing::NiceMock<MockBrowserViewLayoutDelegate>>();
+  EXPECT_CALL(*mock, ShouldUseBraveWebViewRoundedCornersForContents())
+      .WillRepeatedly(::testing::Return(true));
+
+  // No sidebar / vertical tab strip views, so neither side edge has UI next
+  // to the infobar.
+  BrowserViewLayoutViews views;
+  auto layout = std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
+      std::move(mock), std::move(views));
+
+  const float window_radius = GetWindowCornerRadius();
+  const float border_radius = GetBorderCornerRadius();
+  const gfx::RoundedCornersF expected(window_radius, window_radius,
+                                      border_radius, border_radius);
+  EXPECT_EQ(expected, layout->CalculateInfobarCornerRadiiForTesting());
 }
 
 #if BUILDFLAG(IS_MAC)

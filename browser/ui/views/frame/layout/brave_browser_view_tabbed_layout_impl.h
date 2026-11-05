@@ -104,6 +104,9 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
   gfx::RoundedCornersF CalculateContentsCornerRadiiForTesting() const;
   gfx::RoundedCornersF CalculateWebPanelCornerRadiiForTesting() const;
 
+  // Test-only accessor for CalculateInfobarCornerRadii(), which is private.
+  gfx::RoundedCornersF CalculateInfobarCornerRadiiForTesting() const;
+
   // Populates `layout_data_` with the given window state (and a zero side
   // panel width) so `CalculateSeparatorInfo()` can be exercised without
   // running a full layout pass. Implemented alongside CalculateSeparatorInfo()
