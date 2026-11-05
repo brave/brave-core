@@ -19,6 +19,16 @@ import autolift
 _FULL_HASH = '5691202e214341a5d96a3296c1b9811cce19572b'
 
 
+def _git_env() -> dict[str, str]:
+    """Isolates git from the user's config, e.g. `tag.gpgsign` opening an
+    editor that hangs the test."""
+    return {
+        **os.environ,
+        'GIT_CONFIG_GLOBAL': os.devnull,
+        'GIT_CONFIG_NOSYSTEM': '1',
+    }
+
+
 class StripAnsiTest(unittest.TestCase):
     def test_removes_colour_escapes(self):
         self.assertEqual(
@@ -1315,6 +1325,7 @@ class ReviewListTest(unittest.TestCase):
         return subprocess.run(
             ['git', '-C', str(self.dir), *args],
             check=True,
+            env=_git_env(),
             capture_output=True,
             text=True,
         ).stdout.strip()
@@ -1331,6 +1342,7 @@ class ReviewListTest(unittest.TestCase):
             subprocess.run(
                 ['git', '-C', str(self.dir), *args],
                 check=True,
+                env=_git_env(),
                 capture_output=True,
                 text=True,
             ).stdout
@@ -1402,7 +1414,9 @@ class PublishWithoutRebaseTest(unittest.TestCase):
         self.remote = root / 'remote.git'
         self.dir = root / 'brave'
         subprocess.run(
-            ['git', 'init', '-q', '--bare', str(self.remote)], check=True
+            ['git', 'init', '-q', '--bare', str(self.remote)],
+            check=True,
+            env=_git_env(),
         )
         self.dir.mkdir()
         self._git('init', '-q', '-b', 'master')
@@ -1427,6 +1441,7 @@ class PublishWithoutRebaseTest(unittest.TestCase):
         return subprocess.run(
             ['git', '-C', str(cwd or self.dir), *args],
             check=True,
+            env=_git_env(),
             capture_output=True,
             text=True,
         ).stdout.strip()
@@ -1448,6 +1463,7 @@ class PublishWithoutRebaseTest(unittest.TestCase):
             subprocess.run(
                 ['git', '-C', str(self.dir), *args],
                 check=True,
+                env=_git_env(),
                 capture_output=True,
                 text=True,
             ).stdout
@@ -2974,7 +2990,9 @@ class FixListingTest(unittest.TestCase):
         self._git(self.chromium, 'tag', '157.0.8103.39')
 
         subprocess.run(
-            ['git', 'init', '-q', '--bare', str(self.remote)], check=True
+            ['git', 'init', '-q', '--bare', str(self.remote)],
+            check=True,
+            env=_git_env(),
         )
         self._git(self.dir, 'remote', 'add', 'origin', str(self.remote))
         self._commit(self.dir, 'device.yaml', 'pin\nbackport\n', 'Base')
@@ -3008,6 +3026,7 @@ class FixListingTest(unittest.TestCase):
                 subprocess.run(
                     ['git', '-C', str(path), *args],
                     check=True,
+                    env=_git_env(),
                     capture_output=True,
                     text=True,
                 ).stdout
@@ -3033,6 +3052,7 @@ class FixListingTest(unittest.TestCase):
         return subprocess.run(
             ['git', '-C', str(repo), *args],
             check=True,
+            env=_git_env(),
             capture_output=True,
             text=True,
         ).stdout.strip()
@@ -3187,7 +3207,9 @@ class ChannelBumpTest(unittest.TestCase):
         self.remote = root / 'remote.git'
         self.dir = root / 'brave'
         subprocess.run(
-            ['git', 'init', '-q', '--bare', str(self.remote)], check=True
+            ['git', 'init', '-q', '--bare', str(self.remote)],
+            check=True,
+            env=_git_env(),
         )
         self.dir.mkdir()
         self._git('init', '-q', '-b', 'master')
@@ -3221,6 +3243,7 @@ class ChannelBumpTest(unittest.TestCase):
             subprocess.run(
                 ['git', '-C', str(self.dir), *args],
                 check=True,
+                env=_git_env(),
                 capture_output=True,
                 text=True,
             ).stdout
@@ -3253,6 +3276,7 @@ class ChannelBumpTest(unittest.TestCase):
         return subprocess.run(
             ['git', '-C', str(cwd or self.dir), *args],
             check=True,
+            env=_git_env(),
             capture_output=True,
             text=True,
         ).stdout.strip()
