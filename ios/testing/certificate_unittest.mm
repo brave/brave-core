@@ -5,11 +5,14 @@
 
 #import <Security/Security.h>
 
+#include <iterator>
+
 #include "base/containers/span.h"
 #import "brave/ios/browser/api/net/certificate_utility.h"
 #include "net/http/transport_security_state.h"
 #include "net/net_buildflags.h"
 #import "testing/gtest/include/gtest/gtest.h"
+#import "testing/gtest_mac.h"
 #import "testing/platform_test.h"
 
 using CertificateTest = PlatformTest;
@@ -77,20 +80,19 @@ TEST_F(CertificateTest, LoadingCertificate) {
 }
 
 TEST_F(CertificateTest, AcceptableCertificates) {
-  std::size_t acceptable_certs_count = sizeof(net::kBraveAcceptableCerts) /
-                                       sizeof(net::kBraveAcceptableCerts[0]);
-
   NSArray<NSData*>* certs = [BraveCertificateUtility acceptableSPKIHashes];
 
-  EXPECT_TRUE([certs count] > 3);
-  EXPECT_EQ([certs count], acceptable_certs_count);
+  ASSERT_GT([certs count], 3u);
+  ASSERT_EQ([certs count], std::size(net::kBraveAcceptableCerts));
 
-  auto test_cert = base::as_byte_span(*net::kBraveAcceptableCerts[0]);
-  if (test_cert.size() > 0) {
-    NSData* data = [NSData dataWithBytes:&test_cert[0] length:test_cert.size()];
-    EXPECT_NE(data, nil);
-
-    EXPECT_TRUE([certs[0] isEqual:data]);
+  size_t i = 0;
+  for (const auto* cert : net::kBraveAcceptableCerts) {
+    ASSERT_TRUE(cert);
+    auto expected = base::as_byte_span(*cert);
+    NSData* data = [NSData dataWithBytes:expected.data()
+                                  length:expected.size()];
+    EXPECT_NSEQ(certs[i], data) << "Mismatch at index " << i;
+    ++i;
   }
 }
 

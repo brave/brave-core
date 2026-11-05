@@ -47,12 +47,12 @@ TEST_F(DictionaryTransformTest, StringCppStructToDictionary) {
     return [[TestFoo alloc] initWithCppFoo:foo];
   });
 
-  EXPECT_EQ(dict.count, static_cast<NSUInteger>(2));
+  ASSERT_EQ(dict.count, static_cast<NSUInteger>(2));
   const auto keys = @[ @"0", @"1" ];
   EXPECT_TRUE([dict.allKeys isEqualToArray:keys]);
 
   const auto foo = dict[@"0"];
-  EXPECT_NE(foo, nil);
+  ASSERT_NE(foo, nil);
   EXPECT_EQ(foo.boolean, true);
   EXPECT_EQ(foo.integer, 10);
   EXPECT_TRUE([foo.stringObject isEqualToString:@"test"]);
@@ -60,7 +60,7 @@ TEST_F(DictionaryTransformTest, StringCppStructToDictionary) {
   EXPECT_TRUE([foo.numbers isEqualToArray:numbers]);
 
   const auto foo1 = dict[@"1"];
-  EXPECT_NE(foo1, nil);
+  ASSERT_NE(foo1, nil);
   EXPECT_EQ(foo1.boolean, false);
   EXPECT_EQ(foo1.integer, 7);
   EXPECT_TRUE([foo1.stringObject isEqualToString:@"test2"]);
