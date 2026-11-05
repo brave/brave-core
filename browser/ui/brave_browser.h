@@ -40,6 +40,23 @@ class BraveBrowser : public Browser {
   }
 
  private:
+  // False when the window should stay open with a fresh tab instead.
+  bool ShouldCloseWindowWhenTabStripEmpty() const;
+  void AddNewTabForEmptyTabStrip();
+
+  // The web panel is backed by a pinned tab, so a strip holding only it never
+  // fires TabStripEmpty() even though the user just closed their last tab.
+  // `tab_moved_to_other_window` is true when that tab was detached for
+  // insertion elsewhere, leaving nothing here to replace.
+  //
+  // To close, this removes the panel's tab rather than closing the window, so
+  // the ordinary last-tab path runs through TabStripEmpty() as if the panel
+  // never existed - closing the window directly would detach the panel midway
+  // through the close and re-enter it via TabStripEmpty(). The panel doesn't
+  // get to veto a gesture aimed at the user's tabs, so its unload handlers are
+  // skipped.
+  void MaybeHandleOnlyWebPanelLeft(bool tab_moved_to_other_window);
+
   // When "kEnableClosingLastTab" is false, browser will try to add new tab in
   // TabStripEmpty() if there is no tab. But, in some cases, we should not add
   // new tab, like when user tries to "Bring all tabs" to other window.

@@ -428,4 +428,10 @@ bool IsWebPanelTab(BrowserWindowInterface* browser,
   return false;
 }
 
+bool IsWebPanelOnlyTab(BrowserWindowInterface* browser) {
+  auto* tab_strip_model = browser->GetTabStripModel();
+  return tab_strip_model->count() == 1 &&
+         IsWebPanelTab(browser, tab_strip_model->GetWebContentsAt(0));
+}
+
 }  // namespace sidebar

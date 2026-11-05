@@ -8,6 +8,9 @@
 #include <optional>
 
 #include "base/check.h"
+#include "base/location.h"
+#include "base/run_loop.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/values_test_util.h"
@@ -23,6 +26,7 @@
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/sidebar/browser/constants.h"
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
@@ -33,6 +37,7 @@
 #include "chrome/browser/sessions/session_restore.h"
 #include "chrome/browser/sessions/tab_restore_service_factory.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -47,6 +52,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/test_utils.h"
 #include "ui/gfx/animation/animation.h"
 #include "ui/gfx/animation/animation_test_api.h"
 #include "ui/views/animation/ink_drop.h"
@@ -78,6 +84,17 @@ class WebPanelBrowserTest : public SidebarBrowserTest {
 
   SidebarWebPanelController* web_panel_controller() {
     return controller()->GetWebPanelController();
+  }
+
+  void OpenWebPanel(const GURL& url,
+                    const base::Location& location = FROM_HERE) {
+    SCOPED_TRACE(location.ToString());
+
+    auto* service =
+        SidebarServiceFactory::GetForProfile(browser()->GetProfile());
+    service->AddItem(SidebarItem::CreateWebPanelItem(url, u"title"));
+    controller()->OnItemPressed(model()->GetAllSidebarItems().size() - 1);
+    ASSERT_TRUE(web_panel_controller()->HasOpenPanel());
   }
 
  private:
@@ -561,6 +578,233 @@ IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
   // Deliberately no RunLoop here - the point is that the tab is already gone.
   EXPECT_EQ(tab_count_before - 1, tab_model()->count());
   EXPECT_FALSE(web_panel_controller()->HasOpenPanel());
+}
+
+// The panel's pinned tab keeps TabStripModel::empty() false, so closing the
+// last ordinary tab would otherwise fire no TabStripEmpty() at all and leave
+// the window open with no real tab. The panel must not count as a tab for the
+// last-tab policy.
+IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
+                       ClosingLastTabWithWebPanelClosesWindow) {
+  // Keeps the process alive once |browser()| goes away.
+  ASSERT_TRUE(CreateBrowser(browser()->GetProfile()));
+  ASSERT_TRUE(
+      browser()->GetProfile()->GetPrefs()->GetBoolean(kEnableClosingLastTab));
+
+  // Held before the panel opens, so normal_contents->Close() is unambiguously
+  // closing the user's own tab and can't silently become the panel's.
+  auto* normal_contents = tab_model()->GetActiveWebContents();
+
+  OpenWebPanel(GURL(kTestWebPanelURL));
+  ASSERT_EQ(2, tab_model()->count());
+  auto* panel_contents = tab_model()->GetWebContentsAt(0);
+  ASSERT_EQ(panel_contents, web_panel_controller()->panel_contents());
+  ASSERT_NE(panel_contents, normal_contents);
+
+  // Both armed before the close: the window can be gone before Wait() runs.
+  content::WebContentsDestroyedWatcher panel_destroyed(panel_contents);
+  ui_test_utils::BrowserDestroyedObserver browser_destroyed(browser());
+
+  normal_contents->Close();
+
+  // The panel's tab is closed as a consequence of the last ordinary tab going
+  // away, rather than keeping the window alive.
+  panel_destroyed.Wait();
+  browser_destroyed.Wait();
+  EXPECT_EQ(1u, GlobalBrowserCollection::GetInstance()->GetSize());
+}
+
+IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
+                       ClosingLastTabWithWebPanelAddsNewTabWhenPrefIsOff) {
+  browser()->GetProfile()->GetPrefs()->SetBoolean(kEnableClosingLastTab, false);
+  // Navigated away from the new tab URL so the added tab is distinguishable.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(kRegularTabURL)));
+  auto* normal_contents = tab_model()->GetActiveWebContents();
+
+  OpenWebPanel(GURL(kTestWebPanelURL));
+  ASSERT_EQ(2, tab_model()->count());
+  ASSERT_NE(normal_contents, web_panel_controller()->panel_contents());
+
+  normal_contents->Close();
+
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return tab_model()->count() == 2 &&
+           tab_model()->GetWebContentsAt(1)->GetVisibleURL() ==
+               chrome::GetNewTabURL(browser());
+  }));
+  // The panel is window-level UI, so it outlives the tab it was opened beside.
+  EXPECT_TRUE(web_panel_controller()->HasOpenPanel());
+  EXPECT_TRUE(GetBraveMultiContentsView()->IsWebPanelVisible());
+  EXPECT_EQ(1u, GlobalBrowserCollection::GetInstance()->GetSize());
+}
+
+// A tab the user pinned themselves is an ordinary tab for this policy, so it
+// keeps the window open exactly as it does upstream.
+IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
+                       UserPinnedTabKeepsWindowOpenWithWebPanel) {
+  ASSERT_TRUE(
+      browser()->GetProfile()->GetPrefs()->GetBoolean(kEnableClosingLastTab));
+
+  auto* normal_contents = tab_model()->GetActiveWebContents();
+
+  OpenWebPanel(GURL(kTestWebPanelURL));
+  ASSERT_TRUE(chrome::AddAndReturnTabAt(browser(), GURL(kUserPinnedTabURL), 1,
+                                        false, std::nullopt, true));
+  ASSERT_EQ(3, tab_model()->count());
+  ASSERT_NE(normal_contents, web_panel_controller()->panel_contents());
+
+  content::WebContentsDestroyedWatcher normal_destroyed(normal_contents);
+  normal_contents->Close();
+  normal_destroyed.Wait();
+
+  EXPECT_FALSE(sidebar::IsWebPanelOnlyTab(browser()));
+
+  // Checked before anything touches |browser()|: on failure the window is gone
+  // and the tab_model() assertions would be reading freed memory.
+  ASSERT_EQ(1u, GlobalBrowserCollection::GetInstance()->GetSize());
+  ASSERT_EQ(2, tab_model()->count()) << "a new tab was added anyway";
+  EXPECT_TRUE(tab_model()->GetTabAtIndex(1)->IsPinned());
+  EXPECT_TRUE(web_panel_controller()->HasOpenPanel());
+}
+
+// Moving the last ordinary tab to another window has to close this one rather
+// than leave it holding just the panel, even with the pref off - there is no
+// tab left here to replace.
+IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
+                       DetachingLastTabWithWebPanelClosesWindow) {
+  browser()->GetProfile()->GetPrefs()->SetBoolean(kEnableClosingLastTab, false);
+  auto* browser2 = CreateBrowser(browser()->GetProfile());
+  ASSERT_TRUE(browser2);
+
+  OpenWebPanel(GURL(kTestWebPanelURL));
+  ASSERT_EQ(2, tab_model()->count());
+
+  auto detached_tab = tab_model()->DetachTabAtForInsertion(1);
+  browser2->tab_strip_model()->InsertDetachedTabAt(0, std::move(detached_tab),
+                                                   AddTabTypes::ADD_ACTIVE);
+
+  EXPECT_TRUE(base::test::RunUntil(
+      [] { return GlobalBrowserCollection::GetInstance()->GetSize() == 1u; }));
+}
+
+// The deferred close re-checks the strip, because tabs can come and go between
+// posting and running. This is the only test that makes it give up, so it is
+// what covers that guard - drop the re-check and the close here would tear out
+// the panel while a real tab is present.
+//
+// It also pins the ordering it depends on: the pref override is set when the
+// close goes ahead rather than when the detach is seen, so an abandoned
+// attempt leaves nothing behind to affect a later last-tab close.
+IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
+                       DeferredCloseGivesUpWhenTabArrives) {
+  browser()->GetProfile()->GetPrefs()->SetBoolean(kEnableClosingLastTab, false);
+  auto* browser2 = CreateBrowser(browser()->GetProfile());
+  ASSERT_TRUE(browser2);
+
+  OpenWebPanel(GURL(kTestWebPanelURL));
+  ASSERT_EQ(2, tab_model()->count());
+
+  // Detach the last ordinary tab, then rescue the window by inserting one
+  // before the deferred close runs - both happen in this one task, so the
+  // close sees a window that is in use again and gives up.
+  auto detached_tab = tab_model()->DetachTabAtForInsertion(1);
+  browser2->tab_strip_model()->InsertDetachedTabAt(0, std::move(detached_tab),
+                                                   AddTabTypes::ADD_ACTIVE);
+  auto* rescue_contents = chrome::AddAndReturnTabAt(
+      browser(), GURL(kRegularTabURL), -1, true, std::nullopt, false);
+  ASSERT_TRUE(rescue_contents);
+  ASSERT_EQ(2, tab_model()->count());
+
+  // Runs the detach's deferred close while the rescue tab is still here, which
+  // is the abandoned path this test is about. The detach and the rescue-tab
+  // insert are both synchronous, so without this the close would still be
+  // queued when rescue_contents->Close() runs, see a panel-only strip, and
+  // handle that removal instead - carrying the detach's reason, so it would
+  // close the window and fail here for the wrong reason.
+  base::RunLoop run_loop;
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, run_loop.QuitClosure());
+  run_loop.Run();
+
+  // It gave up without touching the strip, so the window survives with its
+  // panel.
+  ASSERT_FALSE(sidebar::IsWebPanelOnlyTab(browser()));
+  ASSERT_EQ(2, tab_model()->count()) << "the abandoned close changed the strip";
+  ASSERT_EQ(2u, GlobalBrowserCollection::GetInstance()->GetSize());
+  ASSERT_TRUE(web_panel_controller()->HasOpenPanel());
+
+  // With the pref off this must open a new tab, not close the window - the
+  // abandoned detach-close must not still be in effect.
+  content::WebContentsDestroyedWatcher rescue_destroyed(rescue_contents);
+  rescue_contents->Close();
+  rescue_destroyed.Wait();
+
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return tab_model()->count() == 2 &&
+           tab_model()->GetWebContentsAt(1)->GetVisibleURL() ==
+               chrome::GetNewTabURL(browser());
+  }));
+  EXPECT_EQ(2u, GlobalBrowserCollection::GetInstance()->GetSize());
+  EXPECT_TRUE(web_panel_controller()->HasOpenPanel());
+}
+
+// The panel isn't one of the user's tabs, so it doesn't get to veto a gesture
+// aimed at them: the last-tab path removes its tab without running the page's
+// unload handlers. A panel page therefore cannot keep the window alive.
+class WebPanelBeforeUnloadBrowserTest : public WebPanelBrowserTest {
+ protected:
+  void SetUpOnMainThread() override {
+    WebPanelBrowserTest::SetUpOnMainThread();
+    ASSERT_TRUE(embedded_test_server()->Start());
+  }
+
+  // Returns the panel's contents, with its beforeunload handler armed.
+  content::WebContents* OpenWebPanelWithBeforeUnload() {
+    // beforeunload.html's handler returns a string, which is what would put up
+    // a dialog if the close ran the handler at all.
+    OpenWebPanel(embedded_test_server()->GetURL("/beforeunload.html"));
+    if (!web_panel_controller()->HasOpenPanel()) {
+      return nullptr;
+    }
+
+    auto* panel_contents = tab_model()->GetWebContentsAt(0);
+    if (!content::WaitForLoadStop(panel_contents)) {
+      return nullptr;
+    }
+
+    // beforeunload is ignored on a frame that never saw a user activation, so
+    // without this the handler could not fire even in principle and the test
+    // would pass vacuously.
+    content::PrepContentsForBeforeUnloadTest(panel_contents);
+    return panel_contents;
+  }
+};
+
+// A prompt here would stall the close, so this test would fail by timing out in
+// BrowserDestroyedObserver::Wait() rather than on an assertion.
+IN_PROC_BROWSER_TEST_F(WebPanelBeforeUnloadBrowserTest,
+                       PanelBeforeUnloadCannotBlockClosingLastTab) {
+  // Keeps the process alive once |browser()| goes away.
+  ASSERT_TRUE(CreateBrowser(browser()->GetProfile()));
+  ASSERT_TRUE(
+      browser()->GetProfile()->GetPrefs()->GetBoolean(kEnableClosingLastTab));
+
+  auto* normal_contents = tab_model()->GetActiveWebContents();
+  auto* panel_contents = OpenWebPanelWithBeforeUnload();
+  ASSERT_TRUE(panel_contents);
+  ASSERT_EQ(2, tab_model()->count());
+  ASSERT_NE(panel_contents, normal_contents);
+  ASSERT_TRUE(panel_contents->NeedToFireBeforeUnloadOrUnloadEvents())
+      << "the panel has no handler to skip, so this proves nothing";
+
+  content::WebContentsDestroyedWatcher panel_destroyed(panel_contents);
+  ui_test_utils::BrowserDestroyedObserver browser_destroyed(browser());
+
+  normal_contents->Close();
+
+  panel_destroyed.Wait();
+  browser_destroyed.Wait();
+  EXPECT_EQ(1u, GlobalBrowserCollection::GetInstance()->GetSize());
 }
 
 // prefs::kPinnedTabs is a second, independent restore path: PinnedTabService
