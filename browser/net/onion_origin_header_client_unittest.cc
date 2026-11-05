@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/net/brave_onion_origin_header_client.h"
+#include "brave/browser/net/onion_origin_header_client.h"
 
 #include <optional>
 #include <string>
@@ -62,11 +62,11 @@ class InnerHeaderClient : public network::mojom::TrustedHeaderClient {
   bool headers_received_ = false;
 };
 
-class BraveOnionOriginHeaderClientTest : public testing::Test {
+class OnionOriginHeaderClientTest : public testing::Test {
  protected:
   void CreateClient(mojo::PendingRemote<network::mojom::TrustedHeaderClient>
                         inner = mojo::NullRemote()) {
-    client_.Bind(BraveOnionOriginHeaderClient::Create(std::move(inner)));
+    client_.Bind(OnionOriginHeaderClient::Create(std::move(inner)));
   }
 
   // Returns the result and headers the network service would send for a
@@ -99,25 +99,25 @@ class BraveOnionOriginHeaderClientTest : public testing::Test {
   mojo::Remote<network::mojom::TrustedHeaderClient> client_;
 };
 
-TEST_F(BraveOnionOriginHeaderClientTest, HidesCrossOriginOnionOrigin) {
+TEST_F(OnionOriginHeaderClientTest, HidesCrossOriginOnionOrigin) {
   CreateClient();
   EXPECT_EQ("null", SentOrigin(GURL("wss://bar.com/socket")));
   EXPECT_EQ("null", SentOrigin(GURL("wss://bar.onion/socket")));
   EXPECT_EQ("null", SentOrigin(GURL("ws://foo.onion/socket")));
 }
 
-TEST_F(BraveOnionOriginHeaderClientTest, KeepsSameOriginOnionOrigin) {
+TEST_F(OnionOriginHeaderClientTest, KeepsSameOriginOnionOrigin) {
   CreateClient();
   EXPECT_EQ(kOnionOrigin, SentOrigin(GURL("wss://foo.onion/socket")));
 }
 
-TEST_F(BraveOnionOriginHeaderClientTest, KeepsNonOnionOrigin) {
+TEST_F(OnionOriginHeaderClientTest, KeepsNonOnionOrigin) {
   CreateClient();
   EXPECT_EQ("https://foo.com",
             SentOrigin(GURL("wss://bar.com/socket"), "https://foo.com"));
 }
 
-TEST_F(BraveOnionOriginHeaderClientTest, PassesResponseHeadersThrough) {
+TEST_F(OnionOriginHeaderClientTest, PassesResponseHeadersThrough) {
   CreateClient();
   base::test::TestFuture<int, const std::optional<std::string>&,
                          const std::optional<GURL>&>
@@ -131,7 +131,7 @@ TEST_F(BraveOnionOriginHeaderClientTest, PassesResponseHeadersThrough) {
   EXPECT_FALSE(headers);
 }
 
-TEST_F(BraveOnionOriginHeaderClientTest, RunsInnerClientBeforeHidingOrigin) {
+TEST_F(OnionOriginHeaderClientTest, RunsInnerClientBeforeHidingOrigin) {
   InnerHeaderClient inner;
   CreateClient(inner.CreateRemote());
 
@@ -152,7 +152,7 @@ TEST_F(BraveOnionOriginHeaderClientTest, RunsInnerClientBeforeHidingOrigin) {
   EXPECT_TRUE(inner.headers_received());
 }
 
-TEST_F(BraveOnionOriginHeaderClientTest, FailsWhenInnerClientDisconnects) {
+TEST_F(OnionOriginHeaderClientTest, FailsWhenInnerClientDisconnects) {
   InnerHeaderClient inner;
   CreateClient(inner.CreateRemote());
   inner.Disconnect();

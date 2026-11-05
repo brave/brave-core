@@ -35,7 +35,6 @@
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
-#include "brave/browser/net/brave_onion_origin_header_client.h"
 #include "brave/browser/net/brave_proxying_url_loader_factory.h"
 #include "brave/browser/net/brave_proxying_web_socket.h"
 #include "brave/browser/net/features.h"
@@ -283,6 +282,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/net/onion_origin_header_client.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/tor/common/onion_domain_throttle.h"
 #include "brave/components/tor/onion_location_navigation_throttle.h"
@@ -1361,7 +1361,7 @@ BraveContentBrowserClient::GetWebSocketOptions(
   // have no frame, so their origin is not known here and they always get the
   // client.
   if (!frame || net::IsOnion(frame->GetLastCommittedOrigin())) {
-    options.header_client = brave::BraveOnionOriginHeaderClient::Create(
+    options.header_client = brave::OnionOriginHeaderClient::Create(
         std::move(options.header_client));
   }
 #endif  // BUILDFLAG(ENABLE_TOR)
