@@ -1561,7 +1561,7 @@ public abstract class BraveActivity extends ChromeActivity
                                 removeQuickActionSearchEnginesView();
                             } else {
                                 if (getBraveToolbarLayout().isUrlBarFocused()
-                                        && KeyboardUtils.isAndroidSoftKeyboardShowing(urlBar)) {
+                                        && KeyboardUtils.isAndroidSoftKeyboardVisible(urlBar)) {
                                     View rootView = findViewById(android.R.id.content);
                                     Rect r = new Rect();
                                     rootView.getWindowVisibleDisplayFrame(r);
