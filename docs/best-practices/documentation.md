@@ -125,7 +125,7 @@ best-practice entries, or external documentation. Distill only the relevant
 guidance; NEVER copy entire source documents. Include everything readers need to
 understand and apply the practice.
 
-Keep best practices consistent with other documentation. Resolve conflicting
+Best practices MUST be consistent with other documentation. Resolve conflicting
 guidance by updating the affected documents in the same change.
 
 Use the following linking example for general project documentation only. NEVER
