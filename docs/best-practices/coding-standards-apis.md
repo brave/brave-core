@@ -671,22 +671,23 @@ removing it.** This ensures the old value is cleared from existing profiles.
 
 ## ❌ Don't Modify Production Code Solely to Accommodate Tests
 
-**Test-specific workarounds should not affect production behavior.** Use test
+**NEVER let test-specific workarounds affect production behavior.** Use test
 infrastructure like `kHostResolverRules` command line switches in
 `SetUpCommandLine` instead of adding production code paths only needed for
 tests.
 
-**Only flag this rule when you are certain the code exists solely for tests.**
-Clear signals include `CHECK_IS_TEST()`, `#if defined(UNIT_TEST)`,
-`_for_testing` suffixes, or comments explicitly mentioning test support. Do NOT
-flag legitimate production logic such as handling empty/null/default values,
-reset paths, or cleanup behavior — these are normal defensive coding patterns,
-not test accommodations. When uncertain, do not flag.
+**NEVER flag a violation of this rule unless you are certain the code exists
+solely for tests.** Clear signals include `CHECK_IS_TEST()`,
+`#if defined(UNIT_TEST)`, `_for_testing` suffixes, or comments explicitly
+mentioning test support. **NEVER flag legitimate production logic such as
+handling empty/null/default values, reset paths, or cleanup behavior — these are
+normal defensive coding patterns, not test accommodations. When uncertain, NEVER
+flag.**
 
-**Exception:** Thin `ForTesting()` accessors that expose internalized features
-(e.g., `base::Feature`) are acceptable. These keep the feature internalized
-while providing a clean way for tests to reference it, and do not affect
-production behavior.
+**Exception: NEVER flag thin `ForTesting()` accessors that expose internalized
+features (e.g., `base::Feature`) under this rule.** These keep the feature
+internalized while providing a clean way for tests to reference it, and do not
+affect production behavior.
 
 ---
 
@@ -1082,11 +1083,11 @@ all platforms, use `kOsAll`** instead of listing individual platform constants.
 when and why it can be removed. Workarounds without tracking issues become
 permanent technical debt.
 
-**This rule does NOT apply to permanent design decisions.** If a comment
-explains why an alternative API or approach was not used due to a known
-limitation, and the current code is the intended long-term solution (not
-something to revisit later), it is not a workaround -- it is a design rationale
-comment and does not need a tracking issue.
+**NEVER require a tracking issue for permanent design decisions under this
+rule.** If a comment explains why an alternative API or approach was not used
+due to a known limitation, and the current code is the intended long-term
+solution (not something to revisit later), treat it as a design rationale rather
+than a temporary workaround.
 
 ```cpp
 // ❌ WRONG - unexplained workaround
@@ -1271,9 +1272,9 @@ for deprecation notices before using unfamiliar APIs.
 
 **Reviewer note:** To flag a violation of this rule, you MUST read the actual
 header file that declares the API and confirm a deprecation notice exists in the
-current source tree. Do not rely on memory or training data — APIs change across
-chromium upgrades and assumptions about what is or isn't deprecated are
-frequently wrong.
+current source tree. **NEVER flag an API as deprecated based on memory or
+training data.** APIs change across chromium upgrades and assumptions about what
+is or isn't deprecated are frequently wrong.
 
 ```cpp
 // ❌ WRONG - base::Hash deprecated for 6+ years
@@ -1335,7 +1336,7 @@ std::string_view GetDomain(std::string_view env_from_switch);
 the referenced data must outlive the object. However, there are well-established
 safe patterns:
 
-**Safe — no need to flag:**
+**NEVER flag these safe `std::string_view` member patterns as lifetime bugs:**
 
 - Members initialized from `inline constexpr char[]` constants (e.g., pref keys
   like `kMyPrefName`), `kFeatureName` string literals, or other compile-time

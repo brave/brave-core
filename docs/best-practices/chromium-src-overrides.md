@@ -254,15 +254,14 @@ required, or find alternative approaches.
 
 **When creating a chromium_src override, include comments explaining why the
 override is needed.** The override's purpose is not always self-evident from the
-code alone. Per-function comments explaining each overridden function are
-sufficient — a global file-level comment is not required if the per-function
-comments adequately explain the purpose.
+code alone. **NEVER require a global file-level comment if per-function comments
+adequately explain the purpose.**
 
-**Exception:** Do not request doc comments on method declarations injected
-inside `#define` macros (e.g., macros that add virtual methods to an upstream
-class). Comments cannot be practically added inside macro bodies. If
-documentation is needed, it belongs in the header file that defines the macro or
-in the implementation file, not inline in the macro expansion.
+**Exception: NEVER request doc comments on method declarations injected inside
+`#define` macros (e.g., macros that add virtual methods to an upstream class).**
+Comments cannot be practically added inside macro bodies. If documentation is
+needed, it belongs in the header file that defines the macro or in the
+implementation file, not inline in the macro expansion.
 
 ```cpp
 // chromium_src/chrome/browser/ui/views/tabs/tab_view.cc

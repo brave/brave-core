@@ -34,8 +34,8 @@ across languages (browser history vs. event history). Add specifics like "Title
 for the browser visits history section of a URL picker".
 
 For simple, self-evident strings where the meaning is unambiguous in any
-language (e.g., "Summary", "Settings", "Cancel"), a brief description is fine —
-do not insist on verbose descriptions when the string speaks for itself.
+language (e.g., "Summary", "Settings", "Cancel"), a brief description is fine.
+**NEVER insist on verbose descriptions when the string speaks for itself.**
 
 Additional requirements for `desc` attributes:
 
