@@ -22,7 +22,7 @@ scripts_dir = os.path.join(brave_root_dir, 'build', 'commands', 'scripts')
 
 sys.path.append(os.path.join(src_dir, 'third_party', 'node'))
 
-import node
+import node  # noqa: E402
 
 
 def main():
