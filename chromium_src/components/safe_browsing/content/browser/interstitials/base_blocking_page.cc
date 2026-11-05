@@ -32,5 +32,5 @@ class BraveSafeBrowsingLoudErrorUI : public SafeBrowsingLoudErrorUI {
 }  // namespace security_interstitials
 
 #define SafeBrowsingLoudErrorUI BraveSafeBrowsingLoudErrorUI
-#include <components/safe_browsing/content/browser/base_blocking_page.cc>
+#include <components/safe_browsing/content/browser/interstitials/base_blocking_page.cc>
 #undef SafeBrowsingLoudErrorUI
