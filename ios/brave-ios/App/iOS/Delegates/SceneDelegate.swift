@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import AppIntents
 import Brave
 import BraveCore
 import BraveNews
@@ -476,10 +475,7 @@ extension SceneDelegate {
     }
 
     if #available(iOS 26.0, *) {
-      handleControlWidgetIntentIfNeeded(
-        sceneState.connectionOptions.appIntent,
-        browserViewController: browserViewController
-      )
+      observeControlWidgetShortcuts(browserViewController: browserViewController)
     }
 
     if sceneState.windowScene.activationState == .foregroundActive {
@@ -502,23 +498,19 @@ extension SceneDelegate {
     }
   }
 
+  /// Opens shortcuts that control intents hand off, including any that arrived while the browser
+  /// was still launching.
   @available(iOS 26.0, *)
-  private func handleControlWidgetIntentIfNeeded(
-    _ appIntent: (any UISceneAppIntent)?,
-    browserViewController: BrowserViewController
-  ) {
-    let shortcut: WidgetShortcut?
-    if appIntent is OpenAskBraveControlIntent {
-      shortcut = .askBrave
-    } else if appIntent is OpenBraveSearchControlIntent {
-      shortcut = .search
-    } else if let intent = appIntent as? OpenControlWidgetShortcutIntent {
-      shortcut = intent.shortcut
-    } else {
-      shortcut = nil
+  private func observeControlWidgetShortcuts(browserViewController: BrowserViewController) {
+    let handoff = ControlWidgetShortcutHandoff.shared
+    handoff.handler = { [weak browserViewController] shortcut in
+      guard let browserViewController else { return false }
+      browserViewController.handleNavigationPath(path: .widgetShortcutURL(shortcut))
+      return true
     }
-    guard let shortcut else { return }
-    browserViewController.handleNavigationPath(path: .widgetShortcutURL(shortcut))
+    if let shortcut = handoff.takePendingShortcut() {
+      browserViewController.handleNavigationPath(path: .widgetShortcutURL(shortcut))
+    }
   }
 
   private func sendDAUPingIfNeeded() {
@@ -934,16 +926,6 @@ extension SceneDelegate {
     let onlyPrivateTabs = privateTabs.count == windowTabs.count
 
     return selectedTabIsPrivate || onlyPrivateTabs
-  }
-}
-
-@available(iOS 26.0, *)
-extension SceneDelegate: AppIntentSceneDelegate {
-  func scene(_ scene: UIScene, willPerformAppIntent appIntent: any UISceneAppIntent) {
-    guard let windowScene = scene as? UIWindowScene,
-      let browserViewController = windowScene.browserViewController
-    else { return }
-    handleControlWidgetIntentIfNeeded(appIntent, browserViewController: browserViewController)
   }
 }
 

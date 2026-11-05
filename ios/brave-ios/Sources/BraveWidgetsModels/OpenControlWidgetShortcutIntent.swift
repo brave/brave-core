@@ -5,33 +5,37 @@
 
 import AppIntents
 import UIKit
-
-// WidgetShortcut is generated as an `@objc` enum, so a checked `Sendable` conformance
-// cannot be added outside that file. The cases are a trivial `Int`.
-extension WidgetShortcut: @unchecked Sendable {}
+import os.log
 
 @available(iOS 26.0, *)
 public struct OpenControlWidgetShortcutIntent: UISceneAppIntent {
   public static let title: LocalizedStringResource = "Open Brave"
   public static let openAppWhenRun: Bool = true
 
-  /// Control Center restores this after `init()`. The stored `WidgetShortcut` does not come back.
   @Parameter(title: "Shortcut")
-  public var shortcutValue: Int?
+  public var shortcutOption: ShortcutControlOption?
 
   public init() {}
 
-  public init(shortcut: WidgetShortcut?) {
-    self.shortcutValue = shortcut?.rawValue
+  public init(shortcut: ShortcutControlOption?) {
+    self.shortcutOption = shortcut
   }
 
   public var shortcut: WidgetShortcut? {
-    guard let shortcutValue else { return nil }
-    return WidgetShortcut(rawValue: shortcutValue)
+    guard let shortcutOption else { return nil }
+    return shortcutOption.widgetShortcut
+  }
+
+  public func performNavigation(forScene scene: UIScene) {
+    Logger.module.debug(
+      "[CONTROL PROBE] performNavigation valueState=\(String(describing: $shortcutOption.valueState))"
+    )
+    guard let shortcut else { return }
+    ControlWidgetShortcutHandoff.handOff(shortcut)
   }
 }
 
-/// Static Search control. Control Center restores an intent with `init()` and does not keep a stored shortcut, so the intent type is the shortcut.
+/// Static Search control. Control Center restores an intent with `init()`, so the intent type is the shortcut.
 @available(iOS 26.0, *)
 public struct OpenBraveSearchControlIntent: UISceneAppIntent {
   public static let title: LocalizedStringResource = "Brave Search"
@@ -39,6 +43,10 @@ public struct OpenBraveSearchControlIntent: UISceneAppIntent {
   public static let isDiscoverable: Bool = false
 
   public init() {}
+
+  public func performNavigation(forScene scene: UIScene) {
+    ControlWidgetShortcutHandoff.handOff(.search)
+  }
 }
 
 /// Static Ask Brave control. Separate from Search so a restored empty intent cannot open Search.
@@ -49,4 +57,8 @@ public struct OpenAskBraveControlIntent: UISceneAppIntent {
   public static let isDiscoverable: Bool = false
 
   public init() {}
+
+  public func performNavigation(forScene scene: UIScene) {
+    ControlWidgetShortcutHandoff.handOff(.askBrave)
+  }
 }
