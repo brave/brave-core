@@ -748,8 +748,13 @@ void RenderViewContextMenu::AppendDeveloperItems() {
 
   auto* shields_tab_helper = brave_shields::BraveShieldsTabHelper::From(
       tabs::TabInterface::MaybeGetFromContents(source_web_contents_));
-  bool add_block_elements = shields_tab_helper &&
-                            shields_tab_helper->IsBraveShieldsEnabled() &&
+  // Null for contents outside a tab, e.g. DevTools, extension popups or
+  // side panels.
+  if (!shields_tab_helper) {
+    return;
+  }
+
+  bool add_block_elements = shields_tab_helper->IsBraveShieldsEnabled() &&
                             shields_tab_helper->GetAdBlockMode() !=
                                 brave_shields::mojom::AdBlockMode::ALLOW;
   add_block_elements &=

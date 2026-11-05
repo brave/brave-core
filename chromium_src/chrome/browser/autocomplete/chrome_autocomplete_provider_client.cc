@@ -100,7 +100,10 @@ void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
     auto* chat_tab_helper =
         ai_chat::AIChatTabHelper::From(tabs::TabInterface::MaybeGetFromContents(
             browser->GetTabStripModel()->GetActiveWebContents()));
-    DCHECK(chat_tab_helper);
+    // Null when the matched browser is a private window of this profile.
+    if (!chat_tab_helper) {
+      return;
+    }
     conversation_handler =
         ai_chat_service->GetOrCreateConversationHandlerForContent(
             chat_tab_helper->web_contents_content().content_id(),

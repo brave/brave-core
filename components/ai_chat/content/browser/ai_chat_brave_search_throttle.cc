@@ -77,12 +77,17 @@ AIChatBraveSearchThrottle::WillStartRequest() {
     return content::NavigationThrottle::PROCEED;
   }
 
+  // Null for contents outside a tab, e.g. a <webview> guest.
+  auto* tab_helper = AIChatTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
+  if (!tab_helper) {
+    return content::NavigationThrottle::PROCEED;
+  }
+
   // Check if nonce in HTML tag matches the one in the URL.
-  AIChatTabHelper::From(tabs::TabInterface::MaybeGetFromContents(web_contents))
-      ->web_contents_content()
-      .GetOpenAIChatButtonNonce(
-          base::BindOnce(&AIChatBraveSearchThrottle::OnGetOpenAIChatButtonNonce,
-                         weak_factory_.GetWeakPtr()));
+  tab_helper->web_contents_content().GetOpenAIChatButtonNonce(
+      base::BindOnce(&AIChatBraveSearchThrottle::OnGetOpenAIChatButtonNonce,
+                     weak_factory_.GetWeakPtr()));
   return content::NavigationThrottle::DEFER;
 }
 
@@ -92,11 +97,14 @@ void AIChatBraveSearchThrottle::OpenAIChatWithStagedEntries() {
     return;
   }
 
+  auto* tab_helper = AIChatTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
+  if (!tab_helper) {
+    return;
+  }
+
   ai_chat_service_->OpenConversationWithStagedEntries(
-      AIChatTabHelper::From(
-          tabs::TabInterface::MaybeGetFromContents(web_contents))
-          ->web_contents_content()
-          .GetWeakPtr(),
+      tab_helper->web_contents_content().GetWeakPtr(),
       base::BindOnce(&AIChatBraveSearchThrottle::OnOpenAIChat,
                      weak_factory_.GetWeakPtr()));
 }
