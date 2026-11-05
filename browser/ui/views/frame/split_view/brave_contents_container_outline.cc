@@ -16,16 +16,35 @@
 #include "third_party/skia/include/core/SkMatrix.h"
 #include "third_party/skia/include/core/SkPath.h"
 #include "third_party/skia/include/core/SkPathBuilder.h"
-#include "third_party/skia/include/pathops/SkPathOps.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_provider.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/rect_f.h"
-#include "ui/gfx/geometry/size_f.h"
-#include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/gfx/scoped_canvas.h"
 #include "ui/views/view_utils.h"
+
+namespace {
+
+// Appends the detour around the mini toolbar, clockwise: |notch| is the
+// toolbar's footprint and |path|'s current point must be its top right corner.
+// Leaves the current point at its bottom left corner. Always detours the bottom
+// right corner; mirroring for RTL is the caller's job.
+void AppendMiniToolbarNotch(const gfx::RectF& notch,
+                            float corner_radius,
+                            SkPathBuilder& path) {
+  const SkVector radii(corner_radius, corner_radius);
+  path.arcTo(radii, 0, SkPathBuilder::kSmall_ArcSize, SkPathDirection::kCW,
+             SkPoint(notch.right() - corner_radius, notch.y() + corner_radius));
+  path.lineTo(notch.x() + corner_radius * 2, notch.y() + corner_radius);
+  path.arcTo(radii, 0, SkPathBuilder::kSmall_ArcSize, SkPathDirection::kCCW,
+             SkPoint(notch.x() + corner_radius, notch.y() + corner_radius * 2));
+  path.lineTo(notch.x() + corner_radius, notch.bottom() - corner_radius);
+  path.arcTo(radii, 0, SkPathBuilder::kSmall_ArcSize, SkPathDirection::kCW,
+             SkPoint(notch.x(), notch.bottom()));
+}
+
+}  // namespace
 
 // Declared by chromium_src/chrome/browser/ui/views/frame/
 // contents_container_view.cc so that upstream's constructor builds our outline.
@@ -96,7 +115,7 @@ SkPath BraveContentsContainerOutline::GetPath(
     const gfx::RectF& local_bounds,
     const gfx::RoundedCornersF& corner_radii,
     float mini_toolbar_corner_radius,
-    const gfx::SizeF& mini_toolbar_size) {
+    const gfx::RectF& mini_toolbar_notch) {
   const float upper_left = corner_radii.upper_left();
   const float upper_right = corner_radii.upper_right();
   const float lower_right = corner_radii.lower_right();
@@ -114,37 +133,16 @@ SkPath BraveContentsContainerOutline::GetPath(
              SkPathBuilder::kSmall_ArcSize, SkPathDirection::kCW,
              SkPoint(local_bounds.right(), local_bounds.y() + upper_right));
 
-  if (mini_toolbar_size.IsEmpty()) {
+  if (mini_toolbar_notch.IsEmpty()) {
     path.lineTo(local_bounds.right(), local_bounds.bottom() - lower_right);
     path.arcTo(
         SkVector(lower_right, lower_right), 0.0f, SkPathBuilder::kSmall_ArcSize,
         SkPathDirection::kCW,
         SkPoint(local_bounds.right() - lower_right, local_bounds.bottom()));
   } else {
-    path.lineTo(local_bounds.right(),
-                local_bounds.bottom() - mini_toolbar_size.height());
-    path.arcTo(SkVector(mini_toolbar_corner_radius, mini_toolbar_corner_radius),
-               0, SkPathBuilder::kSmall_ArcSize, SkPathDirection::kCW,
-               SkPoint(local_bounds.right() - mini_toolbar_corner_radius,
-                       local_bounds.bottom() - mini_toolbar_size.height() +
-                           mini_toolbar_corner_radius));
-    path.lineTo(local_bounds.right() - mini_toolbar_size.width() +
-                    mini_toolbar_corner_radius * 2,
-                local_bounds.bottom() - mini_toolbar_size.height() +
-                    mini_toolbar_corner_radius);
-    path.arcTo(SkVector(mini_toolbar_corner_radius, mini_toolbar_corner_radius),
-               0, SkPathBuilder::kSmall_ArcSize, SkPathDirection::kCCW,
-               SkPoint(local_bounds.right() - mini_toolbar_size.width() +
-                           mini_toolbar_corner_radius,
-                       local_bounds.bottom() - mini_toolbar_size.height() +
-                           mini_toolbar_corner_radius * 2));
-    path.lineTo(local_bounds.right() - mini_toolbar_size.width() +
-                    mini_toolbar_corner_radius,
-                local_bounds.bottom() - mini_toolbar_corner_radius);
-    path.arcTo(SkVector(mini_toolbar_corner_radius, mini_toolbar_corner_radius),
-               0, SkPathBuilder::kSmall_ArcSize, SkPathDirection::kCW,
-               SkPoint(local_bounds.right() - mini_toolbar_size.width(),
-                       local_bounds.bottom()));
+    path.lineTo(mini_toolbar_notch.right(), mini_toolbar_notch.y());
+    AppendMiniToolbarNotch(mini_toolbar_notch, mini_toolbar_corner_radius,
+                           path);
   }
 
   path.lineTo(local_bounds.x() + lower_left, local_bounds.bottom());
@@ -154,6 +152,16 @@ SkPath BraveContentsContainerOutline::GetPath(
   path.close();
 
   return path.detach();
+}
+
+// static
+SkPath BraveContentsContainerOutline::MirrorHorizontally(
+    const SkPath& path,
+    const gfx::RectF& bounds) {
+  const gfx::PointF center = bounds.CenterPoint();
+  SkMatrix flip;
+  flip.setScale(-1, 1, center.x(), center.y());
+  return path.makeTransform(flip);
 }
 
 BraveContentsContainerOutline::~BraveContentsContainerOutline() = default;
@@ -180,6 +188,10 @@ int BraveContentsContainerOutline::GetStrokeOuterInset() const {
   return GetBorderThickness(style_) - GetStrokeThickness(style_);
 }
 
+float BraveContentsContainerOutline::GetStrokeOffset() const {
+  return GetStrokeOuterInset() + GetStrokeThickness(style_) / 2.0f;
+}
+
 ui::ColorId BraveContentsContainerOutline::GetStrokeColorId() const {
   switch (style_) {
     case Style::kHidden:
@@ -194,24 +206,33 @@ ui::ColorId BraveContentsContainerOutline::GetStrokeColorId() const {
   NOTREACHED();
 }
 
+gfx::RectF BraveContentsContainerOutline::GetMiniToolbarNotch() const {
+  // An invisible mini toolbar means no notch, just a plain rounded rect.
+  if (!mini_toolbar_ || !mini_toolbar_->GetVisible() ||
+      mini_toolbar_->size().IsEmpty()) {
+    return gfx::RectF();
+  }
+
+  // The ring runs inside the container's edges by the stroke offset, so its
+  // detour around the toolbar sits that far above and left of the toolbar
+  // itself, meeting the rest of the ring at the container's bottom right.
+  gfx::RectF notch(mini_toolbar_->bounds());
+  notch.Offset(-GetStrokeOffset(), -GetStrokeOffset());
+  return notch;
+}
+
 SkPath BraveContentsContainerOutline::BuildRingPath() const {
-  // Distance from the container's edge to the stroke's centre line.
-  const float stroke_offset =
-      GetStrokeOuterInset() + GetStrokeThickness(style_) / 2.0f;
+  const float stroke_offset = GetStrokeOffset();
 
   gfx::RectF local_bounds(GetLocalBounds());
   local_bounds.Inset(stroke_offset);
 
-  // An invisible mini toolbar means no notch, just a plain rounded rect.
-  gfx::SizeF mini_toolbar_size;
-  if (mini_toolbar_ && mini_toolbar_->GetVisible()) {
-    mini_toolbar_size = gfx::SizeF(mini_toolbar_->size());
-  }
+  const gfx::RectF notch = GetMiniToolbarNotch();
 
-  // The toolbar is laid out at the logical bottom right, which views mirrors to
-  // the physical bottom left in RTL, while we paint unflipped. GetPath() always
-  // cuts the notch out of the bottom right, so flip the finished path.
-  const bool mirror = !mini_toolbar_size.IsEmpty() && base::i18n::IsRTL();
+  // Views mirrors the toolbar's logical bottom right to the physical bottom
+  // left in RTL, while we paint unflipped. GetPath() always cuts the notch out
+  // of the bottom right, so flip the finished path.
+  const bool mirror = !notch.IsEmpty() && base::i18n::IsRTL();
 
   // Square contents (rounded corners off, or tab fullscreen) give all-zero
   // outer radii, and gfx::RoundedCornersF clamps the negative result back to
@@ -227,16 +248,8 @@ SkPath BraveContentsContainerOutline::BuildRingPath() const {
                                  radii.lower_left(), radii.lower_right());
   }
 
-  const SkPath path =
-      GetPath(local_bounds, radii, kCornerRadius, mini_toolbar_size);
-  if (!mirror) {
-    return path;
-  }
-
-  const gfx::PointF center = local_bounds.CenterPoint();
-  SkMatrix flip;
-  flip.setScale(-1, 1, center.x(), center.y());
-  return path.makeTransform(flip);
+  const SkPath path = GetPath(local_bounds, radii, kCornerRadius, notch);
+  return mirror ? MirrorHorizontally(path, local_bounds) : path;
 }
 
 void BraveContentsContainerOutline::OnPaint(gfx::Canvas* canvas) {
@@ -261,34 +274,39 @@ void BraveContentsContainerOutline::OnPaint(gfx::Canvas* canvas) {
 }
 
 void BraveContentsContainerOutline::SetClipPath() {
-  if (!mini_toolbar_ || !mini_toolbar_->GetVisible() ||
-      mini_toolbar_->size().IsEmpty()) {
-    return;
-  }
-
-  // Keep the toolbar to the part of itself lying outside the ring's centre
-  // line. The stroke then straddles the seam, so no sliver of web contents can
-  // surface between the toolbar and the ring. Upstream instead derives the
-  // clip's notch from the toolbar's own rect, which only lines up with the
-  // stroke at upstream's thickness.
-  //
-  // The ring is in our coordinates, which we paint unflipped, so translating by
-  // the toolbar's mirrored origin is what lands it in the toolbar's own space.
-  const gfx::Rect toolbar_bounds = mini_toolbar_->GetMirroredBounds();
-  const SkPath ring =
-      BuildRingPath().makeOffset(-toolbar_bounds.x(), -toolbar_bounds.y());
-  const SkPath toolbar =
-      SkPath::Rect(gfx::RectToSkRect(mini_toolbar_->GetLocalBounds()));
-
-  SkPath clip;
-  if (!Op(toolbar, ring, kDifference_SkPathOp, &clip) || clip.isEmpty()) {
+  gfx::RectF notch = GetMiniToolbarNotch();
+  if (notch.IsEmpty()) {
     // The toolbar paints to a layer, where SetClipPath() installs a mask built
     // from the path, so an empty path would hide it entirely rather than clear
     // the clip. Keep the old clip until we are called with usable bounds.
     return;
   }
 
-  mini_toolbar_->SetClipPath(clip);
+  // The clip is in the toolbar's coordinates. Upstream builds the notch by
+  // insetting the toolbar's own rect, which only lines up with their ring at
+  // their own thickness, so we take it from the ring instead.
+  const gfx::RectF local_bounds(mini_toolbar_->GetLocalBounds());
+  notch.Offset(-mini_toolbar_->x(), -mini_toolbar_->y());
+
+  // Keep the toolbar's side of the detour, closed along its own right and
+  // bottom edges. The stroke then straddles the seam, so no sliver of web
+  // contents can surface between the toolbar and the ring.
+  SkPathBuilder clip;
+  clip.moveTo(notch.right(), notch.y());
+  AppendMiniToolbarNotch(notch, kCornerRadius, clip);
+  clip.lineTo(notch.x(), local_bounds.bottom());
+  clip.lineTo(local_bounds.right(), local_bounds.bottom());
+  clip.lineTo(local_bounds.right(), notch.y());
+  clip.close();
+
+  // Views mirrors the toolbar's bounds in RTL but not what it paints, so the
+  // detour has to be flipped to the toolbar's other side.
+  SkPath path = clip.detach();
+  if (base::i18n::IsRTL()) {
+    path = MirrorHorizontally(path, local_bounds);
+  }
+
+  mini_toolbar_->SetClipPath(path);
 }
 
 BEGIN_METADATA(BraveContentsContainerOutline)

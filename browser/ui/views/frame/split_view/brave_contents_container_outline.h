@@ -59,12 +59,17 @@ class BraveContentsContainerOutline : public ContentsContainerOutline {
   // corners vs. corners meeting the split divider or side panel), so we build
   // the path ourselves rather than patching upstream's.
   //
-  // Takes physical radii, and always cuts the notch out of the bottom right
-  // corner. Mirroring it for RTL is BuildRingPath()'s job.
+  // Takes physical radii, and always cuts |mini_toolbar_notch| out of the
+  // bottom right corner. Mirroring for RTL is the caller's job.
   static SkPath GetPath(const gfx::RectF& local_bounds,
                         const gfx::RoundedCornersF& corner_radii,
                         float mini_toolbar_corner_radius,
-                        const gfx::SizeF& mini_toolbar_size);
+                        const gfx::RectF& mini_toolbar_notch);
+
+  // |path| flipped about |bounds|' vertical centre line, which is how views
+  // mirrors bounds in RTL.
+  static SkPath MirrorHorizontally(const SkPath& path,
+                                   const gfx::RectF& bounds);
 
   // Distance from the container's edge to the stroke's outer edge. Except for
   // kMiniToolbarOnly, this plus GetStrokeThickness() equals
@@ -72,10 +77,18 @@ class BraveContentsContainerOutline : public ContentsContainerOutline {
   // the reserved inset.
   int GetStrokeOuterInset() const;
 
+  // Distance from the container's edge to the stroke's centre line.
+  float GetStrokeOffset() const;
+
   ui::ColorId GetStrokeColorId() const;
 
-  // The ring's centre line, in this view's coordinates. OnPaint() strokes it
-  // and SetClipPath() clips the mini toolbar to it, so the two cannot disagree.
+  // The rect the ring detours around the mini toolbar, in this view's logical
+  // coordinates. Empty when there is no toolbar to detour around.
+  gfx::RectF GetMiniToolbarNotch() const;
+
+  // The ring's centre line, in this view's coordinates. OnPaint() strokes it,
+  // and SetClipPath() builds the toolbar's clip from the same notch, so the
+  // two cannot disagree.
   SkPath BuildRingPath() const;
 
   // ContentsContainerOutline:
