@@ -1423,14 +1423,20 @@ void AIChatService::OnClientConnectionChanged(ConversationHandler* handler) {
   }
   // A connected client, whichever path bound it, counts as viewing the
   // conversation.
+  const std::string& uuid = handler->get_conversation_uuid();
   if (handler->IsAnyClientConnected()) {
-    const std::string& uuid = handler->get_conversation_uuid();
     auto it = conversation_generation_state_.find(uuid);
     if (it != conversation_generation_state_.end() &&
         it->second != mojom::ConversationGenerationState::kGenerating) {
       conversation_generation_state_.erase(it);
       NotifyConversationGenerationStateChanged();
     }
+  } else if (handler->IsAwaitingUserInput() &&
+             !conversation_generation_state_.contains(uuid)) {
+    // Left without answering the challenge, so it still needs the user.
+    conversation_generation_state_[uuid] =
+        mojom::ConversationGenerationState::kAwaitingUserInput;
+    NotifyConversationGenerationStateChanged();
   }
   QueueMaybeUnloadConversation(handler);
 }
