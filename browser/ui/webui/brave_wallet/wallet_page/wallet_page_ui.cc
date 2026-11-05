@@ -25,6 +25,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
 #include "chrome/browser/ui/webui/sanitized_image/sanitized_image_source.h"
+#include "chrome/browser/ui/webui/theme_source.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
@@ -38,7 +39,6 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/webui/plural_string_handler.h"
-#include "chrome/browser/ui/webui/theme_source.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
@@ -131,9 +131,7 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
   source->AddBoolean("isSnapEnabled", IsSnapFeatureEnabled());
   source->AddString("braveSnapsContainerUrl", kBraveUISnapsContainerURL);
 
-#if !BUILDFLAG(IS_ANDROID)
   content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(profile));
-#endif
 
   content::URLDataSource::Add(profile,
                               std::make_unique<SanitizedImageSource>(profile));

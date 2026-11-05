@@ -77,6 +77,13 @@
 #include "brave/components/tor/tor_constants.h"
 #endif
 
+#if BUILDFLAG(IS_ANDROID)
+#include <memory>
+
+#include "chrome/browser/ui/webui/theme_source.h"
+#include "content/public/browser/url_data_source.h"
+#endif
+
 using brave_shields::ControlType;
 using content::BrowserThread;
 using ntp_background_images::prefs::kNewTabPageShowBackgroundImage;
@@ -264,6 +271,12 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
   misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(profile);
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
   request_otr::RequestOTRServiceFactory::GetForBrowserContext(profile);
+#endif
+#if BUILDFLAG(IS_ANDROID)
+  // Serves chrome://theme/colors.css for nala.css, which is also pulled into
+  // upstream WebUIs that don't register it. Desktop gets this from
+  // InstantService (crbug.com/40757220), which doesn't exist on Android.
+  content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(profile));
 #endif
 }
 

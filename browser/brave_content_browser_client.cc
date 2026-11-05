@@ -102,6 +102,7 @@
 #include "brave/components/url_sanitizer/core/browser/url_sanitizer_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
+#include "brave/ui/webui/brave_color_change_listener/brave_color_change_handler.h"
 #include "build/build_config.h"
 #include "chrome/browser/bluetooth/chrome_bluetooth_delegate_impl_client.h"
 #include "chrome/browser/browser_process.h"
@@ -159,6 +160,7 @@
 #include "third_party/blink/public/mojom/webpreferences/web_preferences.mojom.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/webui/resources/cr_components/color_change_listener/color_change_listener.mojom.h"
 #include "url/origin.h"
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -225,9 +227,12 @@ using content::WebContents;
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "chrome/browser/extensions/chrome_content_browser_client_extensions_part.h"
 #include "extensions/browser/extension_registry.h"
-#include "extensions/common/constants.h"
 
 using extensions::ChromeContentBrowserClientExtensionsPart;
+#endif
+
+#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+#include "extensions/common/constants.h"
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -267,8 +272,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/commands/common/features.h"
-#include "brave/ui/webui/brave_color_change_listener/brave_color_change_handler.h"
-#include "ui/webui/resources/cr_components/color_change_listener/color_change_listener.mojom.h"
 #include "ui/webui/resources/cr_components/theme_color_picker/theme_color_picker.mojom.h"
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ui/ai_chat/utils.h"
@@ -516,7 +519,6 @@ void MaybeBindSkusSdkImpl(
   skus::SkusServiceFactory::BindForContext(context, std::move(receiver));
 }
 
-#if !BUILDFLAG(IS_ANDROID)
 void MaybeBindColorChangeHandler(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<color_change_listener::mojom::PageHandler> receiver) {
@@ -524,9 +526,13 @@ void MaybeBindColorChangeHandler(
 
   // Only supported on chrome://, chrome-untrusted:// and chrome-extension://
   // urls
-  if (!frame_host_url.SchemeIs(content::kChromeUIScheme) &&
-      !frame_host_url.SchemeIs(content::kChromeUIUntrustedScheme) &&
-      !frame_host_url.SchemeIs(extensions::kExtensionScheme)) {
+  bool is_supported_scheme =
+      frame_host_url.SchemeIs(content::kChromeUIScheme) ||
+      frame_host_url.SchemeIs(content::kChromeUIUntrustedScheme);
+#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+  is_supported_scheme |= frame_host_url.SchemeIs(extensions::kExtensionScheme);
+#endif
+  if (!is_supported_scheme) {
     return;
   }
 
@@ -534,7 +540,6 @@ void MaybeBindColorChangeHandler(
       content::WebContents::FromRenderFrameHost(frame_host),
       std::move(receiver));
 }
-#endif
 
 bool IsJsBlockingEnforced(content::BrowserContext* browser_context,
                           const GURL& url) {
@@ -679,10 +684,8 @@ void BraveContentBrowserClient::
 void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
     content::WebUIBrowserInterfaceBrokerRegistry& registry) {
   ChromeContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(registry);
-#if !BUILDFLAG(IS_ANDROID)
   registry.AddGlobal<color_change_listener::mojom::PageHandler>(
       base::BindRepeating(&MaybeBindColorChangeHandler));
-#endif
 
   // BraveSettingsUI interfaces
 #if BUILDFLAG(ENABLE_CONTAINERS)
@@ -886,12 +889,10 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
 void BraveContentBrowserClient::RegisterUntrustedWebUIInterfaceBrokers(
     content::WebUIBrowserInterfaceBrokerRegistry& registry) {
   ChromeContentBrowserClient::RegisterUntrustedWebUIInterfaceBrokers(registry);
-#if !BUILDFLAG(IS_ANDROID)
   // Upstream's per-document ColorChangeHandler DCHECKs on a second bind, which
   // happens when leo.bundle.js and a bundled WebUI each create a BrowserProxy.
   registry.AddGlobal<color_change_listener::mojom::PageHandler>(
       base::BindRepeating(&MaybeBindColorChangeHandler));
-#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
   if (brave_vpn::IsBraveVPNFeatureEnabled()) {
@@ -1101,10 +1102,10 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
       brave_rewards::mojom::RewardsPageHandler,
       brave_rewards::RewardsPageTopUI>(map);
 #endif
+#endif  // !BUILDFLAG(IS_ANDROID)
 
   map->Add<color_change_listener::mojom::PageHandler>(
       base::BindRepeating(&MaybeBindColorChangeHandler));
-#endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   auto* prefs =
