@@ -145,7 +145,7 @@ TEST_F(BraveAdsConditionMatcherTimePeriodStorageUtilTest,
 TEST_F(BraveAdsConditionMatcherTimePeriodStorageUtilTest,
        SumListValuesWithEntryOnCusp) {
   // Arrange
-  const base::Time cutoff = test::Now() - base::Days(7);
+  const base::Time cutoff = test::TimeFromString("November 18 2020 12:34:56");
   const base::ListValue list =
       base::ListValue()
           .Append(base::DictValue()
