@@ -4,6 +4,9 @@
 
 ## ✅ Use `[weak self]` in Async Closures to Prevent Retain Cycles
 
+**File Patterns:** `**/*.swift`. Apply framework-specific rules only to code
+using that framework.
+
 **Always capture `[weak self]` in closures that outlive the current scope** —
 network callbacks, notification handlers, animation completions, and stored
 closures. Use `[unowned self]` only when the closure's lifetime is guaranteed to
@@ -48,6 +51,9 @@ closures inherit the capture from the outer scope.
 
 ## ✅ Use `@Observable` Macro, Not `ObservableObject`
 
+**File Patterns:** `**/*.swift`. Apply framework-specific rules only to code
+using that framework.
+
 **Prefer the `@Observable` macro (Observation framework) over `ObservableObject`
 (Combine).** `@Observable` is the modern replacement, requires less boilerplate,
 and integrates better with SwiftUI.
@@ -70,6 +76,9 @@ class ViewModel {
 <a id="IOS-003"></a>
 
 ## ✅ Use `@MainActor` to Ensure UI Work Runs on the Main Thread
+
+**File Patterns:** `**/*.swift`. Apply framework-specific rules only to code
+using that framework.
 
 **Mark methods and types that perform UI work as `@MainActor`** so that async
 contexts are forced to await them. Note that Tasks inherit actor isolation from
@@ -117,6 +126,9 @@ func updateUI() async {
 
 ## ✅ Use `#available` Compiler Checks
 
+**File Patterns:** `**/*.swift`. Apply framework-specific rules only to code
+using that framework.
+
 **Use `#available` for API availability checks, not manual version
 comparisons.** The compiler enforces `#available` correctness and produces
 warnings when minimum deployment targets change.
@@ -138,6 +150,9 @@ if #available(iOS 17, *) {
 <a id="IOS-005"></a>
 
 ## ✅ Prefer Swift Idioms for Concise Code
+
+**File Patterns:** `**/*.swift`. Apply framework-specific rules only to code
+using that framework.
 
 **Use Swift-native patterns instead of verbose alternatives:**
 
@@ -180,6 +195,9 @@ guard let a = optionalA, let b = optionalB else { return }
 
 ## ✅ Use `Set` for Membership Testing
 
+**File Patterns:** `**/*.swift`. Apply framework-specific rules only to code
+using that framework.
+
 **Use `Set` instead of `Array` when the primary operation is membership testing
 (`contains`).** `Set.contains` is O(1) vs Array's O(n).
 
@@ -199,6 +217,9 @@ if allowedTypes.contains(type) { ... }
 
 ## ✅ Use `public` Not `open` Unless Subclassing Is Required
 
+**File Patterns:** `**/*.swift`. Apply framework-specific rules only to code
+using that framework.
+
 **Default to `public` access control. Only use `open` when external modules need
 to subclass or override.** Using `open` unnecessarily exposes implementation
 details.
@@ -208,6 +229,9 @@ details.
 <a id="IOS-008"></a>
 
 ## ✅ Prefer Convenience Initializers on Enums Over Static Factory Methods
+
+**File Patterns:** `**/*.swift`. Apply framework-specific rules only to code
+using that framework.
 
 **Use convenience initializers on enums instead of static factory methods.**
 This is more idiomatic Swift and integrates better with the type system.
@@ -234,6 +258,9 @@ extension TabType {
 
 ## ❌ No Default Values for Required Init Parameters
 
+**File Patterns:** `**/*.swift`. Apply framework-specific rules only to code
+using that framework.
+
 **Don't provide default values for parameters that callers should always
 explicitly specify.** This prevents accidental use of incorrect defaults.
 
@@ -242,6 +269,9 @@ explicitly specify.** This prevents accidental use of incorrect defaults.
 <a id="IOS-010"></a>
 
 ## ✅ Use `let` Over `var` for Single-Assignment Properties
+
+**File Patterns:** `**/*.swift`. Apply framework-specific rules only to code
+using that framework.
 
 **Use `let` for properties that are assigned once and never mutated.** The
 compiler enforces immutability, preventing accidental reassignment.
@@ -264,6 +294,9 @@ var itemTwo = Item(name: "...") // itemTwo.name is mutable
 
 ## ❌ Avoid Implicitly Unwrapped Optionals for viewDidLoad Properties
 
+**File Patterns:** `**/*.swift`. Apply framework-specific rules only to code
+using that framework.
+
 **Do not use implicitly unwrapped optionals (`!`) for properties initialized in
 `viewDidLoad`.** Use lazy properties, optional types with safe unwrapping, or
 initialize in the initializer.
@@ -284,6 +317,9 @@ lazy var tableView = UITableView()
 <a id="IOS-012"></a>
 
 ## ✅ Use `withTaskCancellationHandler` When Bridging Callbacks to Async
+
+**File Patterns:** `**/*.swift`. Apply framework-specific rules only to code
+using that framework.
 
 **When wrapping callback-based APIs with `withCheckedContinuation`, use
 `withTaskCancellationHandler` to propagate cancellation properly.**
@@ -308,6 +344,9 @@ func fetchData() async throws -> Data {
 <a id="IOS-013"></a>
 
 ## ✅ Always Call Completion Handlers on All Code Paths
+
+**File Patterns:** `**/*.swift`. Apply framework-specific rules only to code
+using that framework.
 
 **When a function accepts a completion handler, always call it on every code
 path — including error and early-return paths.** Failing to call the completion
@@ -336,6 +375,9 @@ func fetchData(from url: URL, _ completionHandler: @escaping () -> Void) {
 
 ## ✅ Use `evaluateSafeJavaScript` Instead of Raw JS Evaluation
 
+**File Patterns:** `**/*.swift`. Apply framework-specific rules only to code
+using that framework.
+
 **Use the `evaluateSafeJavaScript` wrapper instead of calling
 `callAsyncJavaScript` or `evaluateJavaScript` directly.** The wrapper provides
 proper error handling and security checks.
@@ -345,6 +387,9 @@ proper error handling and security checks.
 <a id="IOS-015"></a>
 
 ## ✅ Model Error States as Swift `Error` Types
+
+**File Patterns:** `**/*.swift`. Apply framework-specific rules only to code
+using that framework.
 
 **Use Swift `Error` enums/structs for error representation, not integer error
 codes.** This provides type safety, exhaustive switch handling, and better
@@ -370,6 +415,9 @@ enum FetchError: Error {
 
 ## ✅ Delegate Methods Should Take Non-Optional Parameters
 
+**File Patterns:** `**/*.swift`. Apply framework-specific rules only to code
+using that framework.
+
 **Delegate method parameters should be non-optional.** The delegate should not
 need to handle nil values from the delegating object.
 
@@ -378,6 +426,9 @@ need to handle nil values from the delegating object.
 <a id="IOS-017"></a>
 
 ## ✅ Use `_ = variable` to Silence "Wrote But Not Read" Warnings
+
+**File Patterns:** `**/*.swift`. Apply framework-specific rules only to code
+using that framework.
 
 **When a variable is intentionally unused (e.g., the result of a side-effecting
 function), assign it to `_` explicitly.** This signals intent to future readers
@@ -388,6 +439,9 @@ and silences compiler warnings.
 <a id="IOS-018"></a>
 
 ## ✅ Use `.clipShape` Instead of Deprecated `.cornerRadius()`
+
+**File Patterns:** `**/*.swift`. Apply framework-specific rules only to code
+using that framework.
 
 **Use `.clipShape(.rect(cornerRadius:))` instead of the deprecated
 `.cornerRadius()` modifier.**
@@ -408,6 +462,9 @@ Text("Hello")
 
 ## ✅ Use `.background(_:in:)` With Shape Parameter
 
+**File Patterns:** `**/*.swift`. Apply framework-specific rules only to code
+using that framework.
+
 **Use the `.background(_:in:)` modifier with a shape parameter instead of
 layering `.background()` with `.clipShape()`.**
 
@@ -427,6 +484,9 @@ Text("Hello")
 <a id="IOS-020"></a>
 
 ## ✅ Use Stack Spacing Instead of Individual Padding
+
+**File Patterns:** `**/*.swift`. Apply framework-specific rules only to code
+using that framework.
 
 **Use the `spacing` parameter on `VStack`/`HStack` instead of adding padding to
 each child element.** This is cleaner and more maintainable.
@@ -455,6 +515,9 @@ VStack(spacing: 8) {
 
 ## ✅ Extract Inline SwiftUI Blocks Into Named Views
 
+**File Patterns:** `**/*.swift`. Apply framework-specific rules only to code
+using that framework.
+
 **When an inline SwiftUI view builder block exceeds a few lines, extract it into
 a named `View` struct or computed property.** This improves readability and
 enables reuse.
@@ -464,6 +527,9 @@ enables reuse.
 <a id="IOS-022"></a>
 
 ## ✅ Use `UIHostingConfiguration` for SwiftUI in UITableViewCell
+
+**File Patterns:** `**/*.swift`. Apply framework-specific rules only to code
+using that framework.
 
 **When using SwiftUI views inside `UITableViewCell` or `UICollectionViewCell`,
 use `UIHostingConfiguration` instead of manually embedding a
@@ -556,6 +622,8 @@ view.backgroundColor = UIColor(braveSystemName: .primary20)
 
 ## ✅ Keep Tab Observer and Policy Decider Thin
 
+**File Patterns:** `**/BVC+TabObserver.swift`, `**/BVC+TabPolicyDecider.swift`
+
 **Do not add feature-specific business logic directly in `BVC+TabObserver.swift`
 or `BVC+TabPolicyDecider.swift`.** These files should only contain thin
 delegation. Feature-specific logic belongs in `Tab` helpers.
@@ -590,6 +658,8 @@ override func viewDidLoad() {
 <a id="IOS-030"></a>
 
 ## ✅ Wrap ObjC Headers With Nullability Annotations
+
+**File Patterns:** `ios/**/*.h`. Objective-C headers, not C++ headers.
 
 **All Objective-C headers should use
 `NS_ASSUME_NONNULL_BEGIN`/`NS_ASSUME_NONNULL_END` and explicitly annotate
@@ -629,6 +699,9 @@ Objective-C usage is from Swift, which does not call `new`.
 
 ## ✅ `OBJC_EXPORT` Goes on Headers Only
 
+**File Patterns:** `ios/**/*.{h,m,mm}`. Declarations belong in headers;
+implementation files can contain misplaced exports.
+
 **`OBJC_EXPORT` should only appear on the header declaration, not the
 implementation.**
 
@@ -637,6 +710,8 @@ implementation.**
 <a id="IOS-033"></a>
 
 ## ✅ Use `NS_SWIFT_NAME` to Control Swift Method Naming
+
+**File Patterns:** `ios/**/*.h`. Objective-C headers, not C++ headers.
 
 **Use `NS_SWIFT_NAME` on Objective-C APIs to provide idiomatic Swift names.**
 This is especially important for factory methods and methods with C-style
@@ -800,6 +875,10 @@ feature-specific helpers instead.
 
 ## ✅ Register Prefs in `browser_prefs.mm` on iOS
 
+**File Patterns:** `**/browser_prefs.mm`, `rewrite/**/browser_prefs.mm.yaml`,
+`patches/*browser_prefs.mm.patch`. Pref-registration destinations; changes
+introducing iOS prefs elsewhere also trigger this requirement.
+
 **iOS preference registration goes in `browser_prefs.mm`, not in arbitrary init
 methods.**
 
@@ -865,6 +944,10 @@ store state that must survive app restarts in the caches directory.
 
 ## ✅ New Strings Go in `BraveStrings`, Not `SharedStrings.swift`
 
+**File Patterns:** `**/BraveStrings/**`,
+`**/{BraveStrings,SharedStrings}.swift`. String additions elsewhere must also
+use the correct module.
+
 **Add new user-facing strings to `BraveStrings`, not `SharedStrings.swift`.**
 SharedStrings is for legacy/shared strings only.
 
@@ -873,6 +956,8 @@ SharedStrings is for legacy/shared strings only.
 <a id="IOS-054"></a>
 
 ## ❌ Do Not Add New Functionality to the Legacy `Shared` Module
+
+**File Patterns:** `ios/brave-ios/Sources/Shared/**`
 
 **The `Shared` module is legacy — do not add new functionality to it.** If you
 need a shared module for new code, create a new module instead. Existing
@@ -884,6 +969,9 @@ need a shared module for new code, create a new module instead. Existing
 
 ## ✅ Tests Mirror Source Modules
 
+**File Patterns:** `ios/**/*Tests/**`, `ios/**/*Tests.swift`. Test-structure
+candidates; inspect new source modules requiring matching tests too.
+
 **Test files should be organized to mirror the source module structure.** A
 class in `BraveCore/Wallet/` should have tests in `BraveCoreTests/Wallet/`.
 
@@ -892,6 +980,9 @@ class in `BraveCore/Wallet/` should have tests in `BraveCoreTests/Wallet/`.
 <a id="IOS-056"></a>
 
 ## ✅ Export Pref Constants in Feature-Specific Headers
+
+**File Patterns:** `ios/**/*pref*.h`, `ios/**/pref_names_bridge.h`.
+Pref-constant export candidates; headers with other names can also export prefs.
 
 **iOS pref constants should be exported in feature-specific headers, not in a
 shared `pref_names_bridge.h`.** This reduces coupling and makes dependencies
@@ -903,6 +994,8 @@ explicit.
 
 ## ✅ Mojom Wrappers Go in `ios/common`, Not `ios/browser`
 
+**File Patterns:** `ios/{common,browser}/**`. Mojom wrappers.
+
 **Mojom wrapper types belong in `ios/common/` because they are shared between
 browser and renderer processes.** Placing them in `ios/browser/` creates
 unnecessary layering constraints.
@@ -912,6 +1005,9 @@ unnecessary layering constraints.
 <a id="IOS-058"></a>
 
 ## ✅ Use `_bridge.h` for ObjC Wrappers, `_ios.h` for iOS Implementations
+
+**File Patterns:** `**/*_bridge.h`, `**/*_ios.h`. Expected names; inspect newly
+introduced wrappers/implementations with other names too.
 
 **Use the `_bridge.h` suffix for plain Objective-C wrapper headers that expose
 C++ types to Swift.** Use `_ios.h` for iOS-specific implementations of
@@ -971,6 +1067,9 @@ dark mode support instead of toggling CSS classes via JavaScript.**
 
 ## ✅ Use `@_disfavoredOverload` + `@available(iOS, obsoleted:)` for Backporting
 
+**File Patterns:** `**/*.swift`. Apply framework-specific rules only to code
+using that framework.
+
 **When backporting newer APIs, use `@_disfavoredOverload` combined with
 `@available(iOS, obsoleted:)` to create transparent fallbacks that automatically
 disappear when the deployment target is raised.**
@@ -993,6 +1092,9 @@ extension View {
 
 ## ✅ Artificial Delays Require Comments
 
+**File Patterns:** `**/*.swift`. Apply framework-specific rules only to code
+using that framework.
+
 **Any use of `Task.sleep` or similar artificial delays must include a comment
 explaining why the delay is necessary.** Unexplained delays are a code smell and
 may hide race conditions.
@@ -1013,6 +1115,9 @@ try await Task.sleep(nanoseconds: 500_000_000)
 
 ## ✅ Use `TimestampFormatStyle` for Duration Formatting
 
+**File Patterns:** `**/*.swift`. Apply framework-specific rules only to code
+using that framework.
+
 **Use `TimestampFormatStyle` or `Duration.formatted()` for displaying durations
 instead of manual string formatting.**
 
@@ -1021,6 +1126,9 @@ instead of manual string formatting.**
 <a id="IOS-068"></a>
 
 ## ✅ Prefer Local Variables for Short-Lived Cancellables
+
+**File Patterns:** `**/*.swift`. Apply framework-specific rules only to code
+using that framework.
 
 **For Combine subscriptions that are only needed temporarily (e.g., waiting for
 a single value), use a local variable instead of storing the cancellable as a
@@ -1031,6 +1139,9 @@ property.** This prevents accumulation of dead subscriptions.
 <a id="IOS-069"></a>
 
 ## ✅ Check Delegate Before `withCheckedContinuation`
+
+**File Patterns:** `**/*.swift`. Apply framework-specific rules only to code
+using that framework.
 
 **When using `withCheckedContinuation` that depends on a delegate callback,
 verify the delegate is set before entering the continuation.** Otherwise the
@@ -1051,6 +1162,8 @@ the design specifically calls for it.
 <a id="IOS-071"></a>
 
 ## ✅ chromium_src iOS Overrides: Prefer Subclassing
+
+**File Patterns:** `chromium_src/ios/**`
 
 **When overriding iOS Chromium classes via chromium_src, prefer subclassing over
 code duplication.** Use the `#define`/`#include`/`#undef` pattern to substitute
@@ -1074,6 +1187,8 @@ readability.**
 
 ## ✅ Use GN Build Args for Platform-Specific Feature Defaults
 
+**File Patterns:** `**/BUILD.gn`, `**/*.gni`. iOS-relevant build configuration.
+
 **Use GN build arguments (not C++ source code) to set platform-specific feature
 defaults.** This allows build-time configuration and reduces `#ifdef` clutter.
 
@@ -1083,6 +1198,8 @@ defaults.** This allows build-time configuration and reduces `#ifdef` clutter.
 
 ## ✅ Include All iOS Test Targets in `brave_all_unit_tests`
 
+**File Patterns:** `**/BUILD.gn`, `**/*.gni`. iOS-relevant build configuration.
+
 **Every new iOS test target must be included in `brave_all_unit_tests`.** Tests
 that are not included will never run on CI.
 
@@ -1091,6 +1208,9 @@ that are not included will never run on CI.
 <a id="IOS-076"></a>
 
 ## ✅ Feature Flag Names Must Match C++ Feature Names
+
+**File Patterns:** `ios/**/*_bridge.h`. Swift-facing feature declarations may
+also live in other headers.
 
 **In iOS bridge headers, feature flag names must exactly match the C++
 `base::Feature` names.** Mismatches cause silent failures where the flag appears
@@ -1122,6 +1242,9 @@ imageView.contentMode = .scaleAspectFill
 
 ## ✅ Use `Label` for Icon-Only Buttons in SwiftUI
 
+**File Patterns:** `**/*.swift`. Apply framework-specific rules only to code
+using that framework.
+
 **Always use `Label` with `.labelStyle(.iconOnly)` for icon-only buttons.** This
 ensures accessibility information is provided automatically.
 
@@ -1148,6 +1271,9 @@ Button {
 
 ## ✅ Use Nala Design System Icons Over Apple's System Icons
 
+**File Patterns:** `**/*.swift`. Apply framework-specific rules only to code
+using that framework.
+
 **Use `Image(braveSystemName:)` with Nala (Leo) icons instead of Apple's
 `Image(systemName:)`.** Nala icons ensure visual consistency with the Brave
 design system.
@@ -1165,6 +1291,9 @@ Image(braveSystemName: "leo.trash")
 <a id="IOS-080"></a>
 
 ## ✅ Size Nala Icons Using Fonts, Not Frame
+
+**File Patterns:** `**/*.swift`. Apply framework-specific rules only to code
+using that framework.
 
 **Nala icons are custom SF Symbols and should be treated like font glyphs, not
 images.** Size them with `.font()`, not `.resizable().frame()`.
@@ -1185,6 +1314,9 @@ Image(braveSystemName: "leo.trash")
 <a id="IOS-081"></a>
 
 ## ❌ Do Not Use Explicit Font Sizes
+
+**File Patterns:** `**/*.swift`. Apply framework-specific rules only to code
+using that framework.
 
 **UI must adhere to the user's dynamic font sizing preferences.** Use semantic
 font styles (`.subheadline`, `.body`, etc.). If a custom value must be used, use
@@ -1210,6 +1342,9 @@ Text("Hello World")
 <a id="IOS-082"></a>
 
 ## ❌ Do Not Initialize SwiftUI `@State` on `init`
+
+**File Patterns:** `**/*.swift`. Apply framework-specific rules only to code
+using that framework.
 
 **Do not assign `@State` properties in `init` using `State(wrappedValue:)`.**
 This can cause undefined behavior on future body computations. Pass in the
@@ -1243,6 +1378,9 @@ struct ContentView: View {
 <a id="IOS-083"></a>
 
 ## ❌ Avoid manual/computed SwiftUI Bindings
+
+**File Patterns:** `**/*.swift`. Apply framework-specific rules only to code
+using that framework.
 
 **Avoid using the `Binding(get:set:)` closure-based initializer to perform
 side-effects or transform state.** This can cause unneccessary SwiftUI hierarchy

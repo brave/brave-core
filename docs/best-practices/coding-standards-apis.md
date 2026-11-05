@@ -1035,6 +1035,10 @@ base::Extend(accelerator_list, base::span(kBraveAcceleratorMap));
 
 ## ✅ Use `base::test::ParseJson` and `base::ExpectDict*` in Tests
 
+**File Patterns:** `**/*{_unittest,_browsertest,_test}.{cc,mm}`,
+`**/test*/**/*.{cc,h,mm}`. C++ tests and helpers; test code can use other
+filenames.
+
 **Use `base::test::ParseJson()` for parsing JSON in tests, and `base::test::*`
 utilities from `base/test/values_test_util.h` for asserting dict contents.**
 These are more readable and produce better error messages than manual JSON
@@ -1059,6 +1063,8 @@ EXPECT_THAT(dict, base::test::DictHasValue("name", "test"));
 <a id="CSA-052"></a>
 
 ## ✅ Use `kOsAll` for Cross-Platform Feature Flags
+
+**File Patterns:** `**/about_flags.cc`
 
 **When registering feature flags in `about_flags.cc` that should be available on
 all platforms, use `kOsAll`** instead of listing individual platform constants.
@@ -1222,6 +1228,8 @@ enum class SidebarItem {
 
 ## ✅ Name All Function Parameters in Header Declarations
 
+**File Patterns:** `**/*.h`
+
 **Always name function parameters in header declarations, especially when types
 alone are ambiguous.** Match the parameter names used in the `.cc` file.
 
@@ -1288,6 +1296,8 @@ uint32_t hash = base::FastHash(base::as_byte_span(str));
 <a id="CSA-063"></a>
 
 ## ✅ Default-Initialize POD-Type Members in Headers
+
+**File Patterns:** `**/*.h`
 
 **Plain old data (POD) type members in structs and classes declared in headers
 must have explicit default initialization.** Uninitialized POD members lead to
@@ -1475,6 +1485,8 @@ base::ReadUnicodeCharacter(
 <a id="CSA-070"></a>
 
 ## ✅ String Usage in Rust/C++ FFI
+
+**File Patterns:** `**/*.rs`, `**/*.{cc,h}`. Rust/C++ FFI code.
 
 **Pick FFI string types by data flow (borrow vs. own) and payload size (standard
 vs. large).** Rust's `String`/`Vec` and C++'s `std::string`/`std::vector` use

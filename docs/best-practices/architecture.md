@@ -39,6 +39,8 @@ dependencies. **Code in a lower layer must never depend on a higher layer.**
 
 ## ❌ No Layering Violations - Components Cannot Depend on Browser
 
+**File Patterns:** `components/**`
+
 **Code in `components/` must never use `g_browser_process` or depend on
 `brave/browser/`.**
 
@@ -285,6 +287,9 @@ bool IsOptedIn() { return prefs_->GetBoolean(kOptedIn); }
 
 ### ✅ Use DependsOn for Factory Dependencies
 
+**File Patterns:** `**/*_factory.{cc,h,mm}`. Candidates for service factories;
+also inspect factories with other names.
+
 **If your KeyedServiceFactory depends on other services, declare it with
 `DependsOn`.** This ensures proper initialization order.
 
@@ -299,6 +304,9 @@ MyServiceFactory::MyServiceFactory()
 <a id="ARCH-012"></a>
 
 ### ✅ Return Null for Incognito Profiles
+
+**File Patterns:** `**/*_factory.{cc,h,mm}`. Candidates for service factories;
+also inspect factories with other names.
 
 **If a service shouldn't be active in incognito, return null from
 `GetForProfile` rather than overriding `GetBrowserContextToUse`.**
@@ -339,6 +347,9 @@ Then cast to the abstract type in components without a layering violation.
 <a id="ARCH-015"></a>
 
 ## ❌ Don't Initialize Services for Wrong Profile Types
+
+**File Patterns:** `**/*_factory.{cc,h,mm}`. Candidates for service factories;
+also inspect factories with other names.
 
 **Never initialize services for profile types they shouldn't support.** For
 example, never initialize Rewards service for incognito profiles. The
@@ -417,6 +428,8 @@ This keeps related code together and is consistent with Chromium patterns like
 <a id="ARCH-019"></a>
 
 ## ✅ Exclude Entire Feature API from GN When Disabled
+
+**File Patterns:** `**/BUILD.gn`, `**/*.gni`
 
 **When a feature is disabled via buildflag, exclude the entire API from the
 build.** Don't leave API declarations with no implementation.
@@ -514,6 +527,8 @@ void RewardsService::SetRecurringDonation(amount) {
 
 ## ❌ Don't Expose Internal Library Types in Public Headers
 
+**File Patterns:** `components/**/*.h`. Public component headers.
+
 **Never expose internal implementation types in public component headers.** Use
 the component's public API types (e.g., Mojo types) instead.
 
@@ -532,6 +547,8 @@ void DoSomething(mojom::PublisherInfoPtr info);
 <a id="ARCH-023"></a>
 
 ## ✅ source_set Name Should Match Directory
+
+**File Patterns:** `**/BUILD.gn`, `**/*.gni`
 
 **GN source_set names should match their directory name.** This makes paths
 predictable and readable.
@@ -598,6 +615,9 @@ BraveVPNConnectionManager::BraveVPNConnectionManager(
 <a id="ARCH-026"></a>
 
 ## ✅ Use `ServiceIsNULLWhileTesting` for Optional Keyed Services
+
+**File Patterns:** `**/*_factory.{cc,h,mm}`. Candidates for service factories;
+also inspect factories with other names.
 
 **When a `KeyedService` should not be created during unit tests that don't
 provide the required dependencies, override `ServiceIsNULLWhileTesting()` to
@@ -675,6 +695,9 @@ static void MaybeCreateForWebContents(content::WebContents* web_contents) {
 <a id="ARCH-029"></a>
 
 ## ✅ Use `ProfileKeyedServiceFactory` for New Desktop Factories
+
+**File Patterns:** `**/*_factory.{cc,h,mm}`. Candidates for service factories;
+also inspect factories with other names.
 
 **New keyed service factories on desktop should inherit from
 `ProfileKeyedServiceFactory`** rather than the older
@@ -815,6 +838,8 @@ service3->Fetch(barrier);
 
 ## ❌ Mojom Enums Must Be Top-Level When Targeting iOS
 
+**File Patterns:** `**/*.mojom`
+
 **Mojom enums cannot be nested inside mojom structs when the target includes
 iOS.** The Objective-C++ code generator produces invalid code for nested enums
 (`common.mojom.objc.mm` build failure). Always define mojom enums at the top
@@ -858,6 +883,9 @@ uses WebKit, not Chromium's content layer. Pass specific dependencies
 
 ## ✅ Use Layered Component Structure (`core/` + `content/`) for iOS-Compatible Components
 
+**File Patterns:** `components/**/core/**`, `components/**/content/**`,
+`**/BUILD.gn`, `**/DEPS`. Components shared with iOS.
+
 **When a component needs to work on both iOS and content-based platforms, use a
 layered component structure.** Split the component into `core/` (iOS-compatible,
 no `//content` dependency) and `content/` (uses `//content` APIs). This follows
@@ -898,6 +926,10 @@ cycles.
 
 ## ✅ Service/Decoder Code Belongs in `services/` Not `components/.../browser/`
 
+**File Patterns:** `services/**`, `components/**/{services,browser,common}/**`.
+Candidate locations; inspect service/decoder code and process-boundary
+dependencies wherever implemented.
+
 **Mojo service implementations and data decoders should live in a `services/`
 directory**, not inside `components/.../browser/`. This follows Chromium
 conventions and keeps service code at the correct architectural layer.
@@ -907,6 +939,10 @@ conventions and keeps service code at the correct architectural layer.
 <a id="ARCH-040"></a>
 
 ## ❌ Utility Process Code Must Not Depend on Browser Process Code
+
+**File Patterns:** `services/**`, `components/**/{services,browser,common}/**`.
+Candidate locations; inspect service/decoder code and process-boundary
+dependencies wherever implemented.
 
 **Code that runs in the utility process must never depend on browser process
 code.** Any code shared between the browser process and the utility process must
@@ -1053,6 +1089,8 @@ for display.
 
 ## ✅ Mojom Interface Naming Should Be UI-Framework Agnostic
 
+**File Patterns:** `**/*.mojom`
+
 **When defining Mojom interfaces that could be consumed by different UI
 frameworks (WebUI, native iOS, etc.), avoid framework-specific naming like
 "PageHandler".** Use more neutral naming like "UIHandler" to remain consistent
@@ -1191,6 +1229,8 @@ GURL GetGate3URL();  // environment-aware, uses GetServicesDomain()
 
 ## ✅ Prefer Non-Optional Arrays Over Optional Arrays in Mojom
 
+**File Patterns:** `**/*.mojom`
+
 **In Mojom interface definitions, prefer a non-optional array (empty for "no
 items") over an optional array (`array<Type>?`).** Only use optional arrays when
 `null` has a distinct semantic meaning from "empty."
@@ -1212,6 +1252,8 @@ struct SearchResult {
 <a id="ARCH-056"></a>
 
 ## ❌ Don't Add New Code to `components/l10n/`
+
+**File Patterns:** `components/l10n/**`
 
 **The `components/l10n/` directory is deprecated.** Use Chromium's built-in
 localization functionality instead. Do not add new files or classes to this
@@ -1673,6 +1715,8 @@ Examples of ride-along changes to avoid:
 
 ## ❌ No Browser-Process-Only APIs in `common/` Directories
 
+**File Patterns:** `**/common/**`
+
 **Code under `components/.../common/` must not depend on APIs that only exist in
 the browser process** — `PrefService`, `content::BrowserContext`, `Profile`,
 `g_browser_process`, etc. `common/` is compiled into any process that links the
@@ -1723,6 +1767,9 @@ always a sign that the helper belongs in `browser/` instead.
 <a id="ARCH-072"></a>
 
 ## ✅ Factory Return Value Must Be Stable Across the Browser Session
+
+**File Patterns:** `**/*_factory.{cc,h,mm}`. Candidates for service factories;
+also inspect factories with other names.
 
 **A `KeyedServiceFactory` may only return `nullptr` (or skip service creation)
 based on attributes that are fixed for the entire browser session** — profile
@@ -1869,6 +1916,10 @@ FooFeature(Profile& profile) : profile_(profile) {}
 <a id="ARCH-074"></a>
 
 ## ✅ Own Tab-Scoped Features in `BraveTabFeatures`
+
+**File Patterns:** `browser/ui/tabs/brave_tab_features.{cc,h}`,
+`browser/android/brave_tab_features.{cc,h}`. Ownership wiring destinations; new
+tab-scoped features elsewhere also trigger this rule.
 
 **A Brave feature scoped to a tab is a plain class held as a `std::unique_ptr`
 member of `BraveTabFeatures` and created in its `Init()`, not a

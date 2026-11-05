@@ -154,6 +154,8 @@ namespace brave_ads { ... }
 
 ## ✅ Add `static_assert` in Public Headers for Build Flag Guards
 
+**File Patterns:** `**/*.h`. Feature-owned public headers.
+
 **When introducing a build flag for a component, add `static_assert` in
 public-facing headers** to catch accidental inclusion when the feature is
 disabled.
@@ -169,6 +171,8 @@ static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 <a id="BS-051"></a>
 
 ## ✅ Forward Declarations Don't Need `BUILDFLAG` Guards
+
+**File Patterns:** `**/*.h`
 
 **Only `#include` directives and actual usages need to be wrapped in
 `#if BUILDFLAG(...)` guards.** Forward declarations are harmless — they don't
