@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel/wallet_panel_ui.h"
 
+#include <memory>
 #include <string>
 #include <string_view>
 
@@ -21,6 +22,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
 #include "build/build_config.h"
@@ -31,7 +33,9 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/content_mock_cert_verifier.h"
 #include "content/public/test/test_utils.h"
+#include "net/test/embedded_test_server/embedded_test_server.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
@@ -129,6 +133,21 @@ namespace brave_wallet {
 
 class WalletPanelUIBrowserTest : public InProcessBrowserTest {
  public:
+  void SetUpInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+    mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+  }
+
+  void TearDownInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
+    mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+  }
+
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpCommandLine(command_line);
+    mock_cert_verifier_.SetUpCommandLine(command_line);
+  }
+
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
@@ -156,7 +175,16 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
                                   ->rpc_endpoints.front()},
         mojom::kNeonEVMMainnetChainId);
 
+    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
+    https_server_ = std::make_unique<net::EmbeddedTestServer>(
+        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
+    https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
+    https_server_->ServeFilesFromDirectory(BraveWalletTestDataFolder());
+    ASSERT_TRUE(https_server_->Start());
+
     CreateWalletTab();
+    CreateDappTab();
+    BindWalletPanelToDapp();
   }
 
   void CreateWalletTab() {
@@ -166,6 +194,15 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
         WindowOpenDisposition::NEW_FOREGROUND_TAB,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
     wallet_index_ = browser()->tab_strip_model()->active_index();
+  }
+
+  void CreateDappTab() {
+    ui_test_utils::NavigateToURLWithDisposition(
+        browser(), https_server_->GetURL("/popup.html"),
+        WindowOpenDisposition::NEW_FOREGROUND_TAB,
+        ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+    dapp_contents_ = browser()->tab_strip_model()->GetActiveWebContents();
+    ActivateWalletTab();
   }
 
   void CreateSettingsTab() {
@@ -190,6 +227,18 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
 
   WalletPanelUI* GetWebUIController() {
     return wallet()->GetWebUI()->GetController()->GetAs<WalletPanelUI>();
+  }
+
+  // The panel resolves its origin from the tab it is bound to. In production
+  // the bubble or side panel binds it to the dapp tab the user is on.
+  void BindWalletPanelToDapp() {
+    GetWebUIController()->SetTabWebContents(dapp());
+  }
+
+  void ReloadWalletTab() {
+    wallet()->GetController().Reload(content::ReloadType::NORMAL, true);
+    EXPECT_TRUE(WaitForLoadStop(wallet()));
+    BindWalletPanelToDapp();
   }
 
   void SetEthChainIdInterceptor(const std::vector<GURL>& network_urls,
@@ -238,6 +287,7 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
   content::WebContents* settings() {
     return browser()->tab_strip_model()->GetWebContentsAt(settings_index_);
   }
+  content::WebContents* dapp() { return dapp_contents_; }
 
   BraveWalletService* brave_wallet_service() {
     return BraveWalletServiceFactory::GetServiceForContext(
@@ -247,7 +297,10 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
  private:
   int wallet_index_ = 0;
   int settings_index_ = 0;
+  raw_ptr<content::WebContents> dapp_contents_ = nullptr;
   network::TestURLLoaderFactory url_loader_factory_;
+  content::ContentMockCertVerifier mock_cert_verifier_;
+  std::unique_ptr<net::EmbeddedTestServer> https_server_;
 };
 
 IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, InitialUIRendered) {
@@ -272,8 +325,7 @@ IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, HideNetworkInSettings) {
       settings(), SelectInNetworkList(NeonEVMNetworkHideButton())));
 
   ActivateWalletTab();
-  wallet()->GetController().Reload(content::ReloadType::NORMAL, true);
-  EXPECT_TRUE(WaitForLoadStop(wallet()));
+  ReloadWalletTab();
   // Wait and click on select network button.
   ASSERT_TRUE(WaitAndClickElement(wallet(), QuerySelectorJS(NetworksButton())));
 
@@ -333,8 +385,7 @@ IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest,
 
   // Chain name for Neon EVM changes to 'Custom Network' in wallet.
   ActivateWalletTab();
-  wallet()->GetController().Reload(content::ReloadType::NORMAL, true);
-  EXPECT_TRUE(WaitForLoadStop(wallet()));
+  ReloadWalletTab();
   ASSERT_TRUE(WaitFor(wallet(), Select(NeonEVMNetwork(), NetworkNameSpan()) +
                                     "?.innerText === 'Custom Network'"));
 }
