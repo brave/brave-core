@@ -58,7 +58,8 @@ AIChatNotificationHelper::~AIChatNotificationHelper() = default;
 
 void AIChatNotificationHelper::ShowCompletionNotification(
     const std::string& conversation_uuid,
-    const std::u16string& conversation_title) {
+    const std::u16string& conversation_title,
+    bool needs_approval) {
   auto* display_service =
       NotificationDisplayServiceFactory::GetForProfile(profile_);
   if (!display_service) {
@@ -73,8 +74,9 @@ void AIChatNotificationHelper::ShowCompletionNotification(
           ? l10n_util::GetStringUTF16(IDS_CHAT_UI_TITLE)
           : l10n_util::GetStringFUTF16(IDS_AI_CHAT_NOTIFICATION_TITLE,
                                        conversation_title);
-  const std::u16string message =
-      l10n_util::GetStringUTF16(IDS_AI_CHAT_NOTIFICATION_BODY);
+  const std::u16string message = l10n_util::GetStringUTF16(
+      needs_approval ? IDS_AI_CHAT_NOTIFICATION_BODY_NEEDS_APPROVAL
+                     : IDS_AI_CHAT_NOTIFICATION_BODY);
 
   message_center::RichNotificationData data;
 

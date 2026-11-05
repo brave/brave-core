@@ -142,17 +142,12 @@ function ConversationItem(props: ConversationItemProps) {
     aiChatContext.editingConversationId === uuid
     && (itemState.editingItemKey ?? uuid) === itemKey
 
-  const generationState = itemState.generationStates?.[uuid]
-
-  const isGenerating =
-    generationState === Mojom.ConversationGenerationState.kGenerating
-  const isCompletedNotViewed =
-    generationState === Mojom.ConversationGenerationState.kCompletedNotViewed
-
   const isActive = uuid === itemState.activeUuid
 
-  const showGenerating = isGenerating && !isActive
-  const showCompleted = isCompletedNotViewed && !isActive
+  // The open conversation shows its own progress, so it gets no indicator.
+  const shownGenerationState = isActive
+    ? undefined
+    : itemState.generationStates?.[uuid]
 
   return (
     <li>
@@ -184,7 +179,8 @@ function ConversationItem(props: ConversationItemProps) {
             </div>
           </div>
 
-          {showGenerating && (
+          {shownGenerationState
+            === Mojom.ConversationGenerationState.kGenerating && (
             <span
               className={styles.generatingIndicator}
               data-testid='generating-indicator'
@@ -195,7 +191,8 @@ function ConversationItem(props: ConversationItemProps) {
               <ProgressRing mode='indeterminate' />
             </span>
           )}
-          {showCompleted && (
+          {shownGenerationState
+            === Mojom.ConversationGenerationState.kCompletedNotViewed && (
             <span
               className={styles.completedIndicator}
               data-testid='completed-indicator'
@@ -203,6 +200,17 @@ function ConversationItem(props: ConversationItemProps) {
               title={getLocale(S.AI_CHAT_CONVERSATION_LIST_RESPONSE_READY)}
               role='img'
             />
+          )}
+          {shownGenerationState
+            === Mojom.ConversationGenerationState.kAwaitingUserInput && (
+            <span
+              className={styles.awaitingUserInputIndicator}
+              aria-label={getLocale(S.AI_CHAT_CONVERSATION_LIST_NEEDS_APPROVAL)}
+              title={getLocale(S.AI_CHAT_CONVERSATION_LIST_NEEDS_APPROVAL)}
+              role='img'
+            >
+              <Icon name='warning-triangle-filled' />
+            </span>
           )}
 
           {/* Stop propagation so clicks don't bubble to the Link and close the sidebar */}
