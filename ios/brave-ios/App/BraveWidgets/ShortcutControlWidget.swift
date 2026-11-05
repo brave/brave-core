@@ -23,8 +23,9 @@ struct ShortcutControlWidget: ControlWidget {
           action: OpenControlWidgetShortcutIntent(shortcut: shortcut)
         ) {
           Label(
-            shortcut?.displayString ?? Strings.Widgets.shortcutControlWidgetTitle,
-            braveSystemImage: shortcut?.braveSystemImageName ?? "leo.brave.icon-monochrome"
+            shortcut?.widgetShortcut.displayString ?? Strings.Widgets.shortcutControlWidgetTitle,
+            braveSystemImage: shortcut?.widgetShortcut.braveSystemImageName
+              ?? "leo.brave.icon-monochrome"
           )
         }
       }
@@ -62,13 +63,13 @@ struct WidgetShortcutControlOptionsProvider: DynamicOptionsProvider {
 
 @available(iOS 26.0, *)
 struct ShortcutControlValueProvider: AppIntentControlValueProvider {
-  func previewValue(configuration: ShortcutControlConfigurationIntent) -> WidgetShortcut? {
+  func previewValue(configuration: ShortcutControlConfigurationIntent) -> ShortcutControlOption? {
     shortcut(for: configuration.shortcut?.widgetShortcut, disabledShortcuts: [])
   }
 
   func currentValue(
     configuration: ShortcutControlConfigurationIntent
-  ) async throws -> WidgetShortcut? {
+  ) async throws -> ShortcutControlOption? {
     let disabledShortcuts = await DisabledShortcutsWidgetData.loadDisabledShortcuts()
     return shortcut(
       for: configuration.shortcut?.widgetShortcut,
@@ -80,11 +81,11 @@ struct ShortcutControlValueProvider: AppIntentControlValueProvider {
   private func shortcut(
     for shortcut: WidgetShortcut?,
     disabledShortcuts: Set<WidgetShortcut>
-  ) -> WidgetShortcut? {
+  ) -> ShortcutControlOption? {
     guard let shortcut else { return nil }
     if disabledShortcuts.contains(shortcut) {
-      return .search
+      return nil
     }
-    return shortcut
+    return ShortcutControlOption(rawValue: shortcut.rawValue) ?? nil
   }
 }
