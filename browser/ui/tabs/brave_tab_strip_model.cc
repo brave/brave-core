@@ -24,6 +24,7 @@
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_delegate.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
+#include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/tabs/public/tab_strip_collection.h"
 #include "components/tabs/public/unpinned_tab_collection.h"
@@ -44,10 +45,17 @@ BraveTabStripModel::BraveTabStripModel(
         brave_tabs::kTreeTabsEnabled, profile->GetPrefs(),
         base::BindRepeating(&BraveTabStripModel::OnTreeTabRelatedPrefChanged,
                             base::Unretained(this)));
-    vertical_tabs_enabled_.Init(
-        brave_tabs::kVerticalTabsEnabled, profile->GetPrefs(),
-        base::BindRepeating(&BraveTabStripModel::OnTreeTabRelatedPrefChanged,
-                            base::Unretained(this)));
+    if (tabs::IsUpstreamVerticalTabsForceEnabled()) {
+      upstream_vertical_tabs_enabled_.Init(
+          prefs::kVerticalTabsEnabled, profile->GetPrefs(),
+          base::BindRepeating(&BraveTabStripModel::OnTreeTabRelatedPrefChanged,
+                              base::Unretained(this)));
+    } else {
+      brave_vertical_tabs_enabled_.Init(
+          brave_tabs::kVerticalTabsEnabled, profile->GetPrefs(),
+          base::BindRepeating(&BraveTabStripModel::OnTreeTabRelatedPrefChanged,
+                              base::Unretained(this)));
+    }
     OnTreeTabRelatedPrefChanged();
   }
 }
@@ -202,7 +210,16 @@ void BraveTabStripModel::CloseTabs(base::span<int> indices,
 }
 
 void BraveTabStripModel::OnTreeTabRelatedPrefChanged() {
-  if (*tree_tabs_enabled_ && *vertical_tabs_enabled_) {
+  const bool should_build_tree_tabs =
+      *tree_tabs_enabled_ && (tabs::IsUpstreamVerticalTabsForceEnabled()
+                                  ? *upstream_vertical_tabs_enabled_
+                                  : *brave_vertical_tabs_enabled_);
+  // Either vertical tabs pref can change without changing the result.
+  if (should_build_tree_tabs == !!tree_tab_model_) {
+    return;
+  }
+
+  if (should_build_tree_tabs) {
     BuildTreeTabs();
   } else {
     FlattenTreeTabs();
