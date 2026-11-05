@@ -1,0 +1,23 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#include "brave/browser/ui/toolbars_small_icons.h"
+
+#include "base/feature_list.h"
+#include "brave/browser/ui/brave_ui_features.h"
+
+namespace brave {
+
+bool IsToolbarsSmallIconsEnabled() {
+  return base::FeatureList::IsEnabled(features::kBraveToolbarsSmallIcons);
+}
+
+std::optional<int> GetToolbarsIconSize() {
+  return IsToolbarsSmallIconsEnabled()
+             ? std::optional<int>(kToolbarsSmallIconSize)
+             : std::nullopt;
+}
+
+}  // namespace brave

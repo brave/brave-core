@@ -16,8 +16,9 @@ class SidebarButtonView : public views::LabelButton {
   // Matches the non-touch kToolbarButtonHeight in layout_constants.cc. The
   // sidebar width is derived from this.
   static constexpr int kSidebarButtonSize = 28;
-  // Value ought to follow kDefaultIconSize in toolbar_button.h
-  static constexpr int kDefaultIconSize = 20;
+  // Ought to follow kToolbarButtonIconSize in layout_constants.cc (20, or 18
+  // with #toolbars-small-icons).
+  static int GetDefaultIconSize();
   // External, meaning favicons for bookmarked pages
   static constexpr int kExternalIconSize = 18;
   // Vertical space between sidebar buttons. Horizontally it is padding inside

@@ -11,6 +11,7 @@
 #include "base/functional/bind.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
+#include "brave/browser/ui/toolbars_small_icons.h"
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "brave/browser/ui/views/workspaces/workspaces_bubble_controller.h"
@@ -112,11 +113,11 @@ void BraveTabStripScrollButton::UpdateIcon() {
   auto* cp = GetColorProvider();
   CHECK(cp);
 
-  SetImageModel(
-      STATE_DISABLED,
-      ui::ImageModel::FromVectorIcon(
-          icon_.get(),
-          cp->GetColor(kColorNewTabButtonCRForegroundFrameInactive), 16));
+  SetImageModel(STATE_DISABLED,
+                ui::ImageModel::FromVectorIcon(
+                    icon_.get(),
+                    cp->GetColor(kColorNewTabButtonCRForegroundFrameInactive),
+                    brave::GetToolbarsIconSize().value_or(16)));
 }
 
 bool BraveTabStripScrollButton::OnMousePressed(const ui::MouseEvent& event) {

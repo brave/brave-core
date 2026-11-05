@@ -1,0 +1,13 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description:
+      'Follow kToolbarButtonIconSize instead of the hardcoded non-touch size, so
+      the icon honors #toolbars-small-icons like other toolbar buttons.'
+    regex:
+      pattern: 'return kDefaultIconSizeChromeRefresh;'
+      replace:
+        'return GetLayoutConstant(LayoutConstant::kToolbarButtonIconSize);'

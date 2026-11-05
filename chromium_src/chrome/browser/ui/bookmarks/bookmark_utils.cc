@@ -10,6 +10,7 @@
 #include "brave/browser/resources/bookmark_icon/grit/bookmark_icon_resources.h"
 #include "brave/browser/ui/brave_scheme_utils.h"
 #include "brave/browser/ui/brave_ui_features.h"
+#include "brave/browser/ui/toolbars_small_icons.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "components/vector_icons/vector_icons.h"
@@ -78,7 +79,8 @@ ui::ImageModel GetBraveBookmarkFolderIcon(BookmarkFolderIconType icon_type,
     color = kColorToolbarButtonIcon;
   }
 
-  return ui::ImageModel::FromVectorIcon(*id, color, 20);
+  return ui::ImageModel::FromVectorIcon(
+      *id, color, brave::GetToolbarsIconSize().value_or(20));
 }
 
 #endif  // defined(TOOLKIT_VIEWS)

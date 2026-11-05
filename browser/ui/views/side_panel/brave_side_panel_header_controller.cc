@@ -10,6 +10,7 @@
 
 #include "base/functional/bind.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/toolbars_small_icons.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -32,7 +33,9 @@
 namespace {
 
 constexpr int kHeaderTitleFontSize = 16;
-constexpr int kHeaderButtonSize = 20;
+int GetHeaderButtonSize() {
+  return brave::GetToolbarsIconSize().value_or(20);
+}
 
 std::unique_ptr<views::ImageButton> CreateHeaderImageButton(
     views::Button::PressedCallback callback,
@@ -43,11 +46,11 @@ std::unique_ptr<views::ImageButton> CreateHeaderImageButton(
   button->SetImageModel(
       views::Button::STATE_NORMAL,
       ui::ImageModel::FromVectorIcon(icon, kColorSidebarPanelHeaderButton,
-                                     kHeaderButtonSize));
+                                     GetHeaderButtonSize()));
   button->SetImageModel(
       views::Button::STATE_HOVERED,
       ui::ImageModel::FromVectorIcon(
-          icon, kColorSidebarPanelHeaderButtonHovered, kHeaderButtonSize));
+          icon, kColorSidebarPanelHeaderButtonHovered, GetHeaderButtonSize()));
   return button;
 }
 

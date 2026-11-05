@@ -25,6 +25,7 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/public/switches.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
+#include "brave/browser/ui/toolbars_small_icons.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/frame/tab_strip_placement_coordinator.h"
@@ -160,7 +161,8 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
     plus_icon_->SetVerticalAlignment(views::ImageView::Alignment::kCenter);
     plus_icon_->SetImage(ui::ImageModel::FromVectorIcon(
         kLeoPlusAddIcon, kColorBraveVerticalTabNTBIconColor,
-        /* icon_size= */ 16));
+        /* icon_size= */
+        brave::GetToolbarsIconSize().value_or(16)));
     plus_icon_->SetProperty(
         views::kFlexBehaviorKey,
         views::FlexSpecification(views::MinimumFlexSizeRule::kPreferred,

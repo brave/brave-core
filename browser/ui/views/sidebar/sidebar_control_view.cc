@@ -221,17 +221,17 @@ void SidebarControlView::UpdateSettingsButtonState() {
   sidebar_settings_view_->SetImageModel(
       views::Button::STATE_NORMAL,
       ui::ImageModel::FromVectorIcon(kLeoSettingsIcon, kColorSidebarButtonBase,
-                                     SidebarButtonView::kDefaultIconSize));
+                                     SidebarButtonView::GetDefaultIconSize()));
   sidebar_settings_view_->SetImageModel(
       views::Button::STATE_PRESSED,
       ui::ImageModel::FromVectorIcon(kLeoSettingsIcon,
                                      kColorSidebarButtonPressed,
-                                     SidebarButtonView::kDefaultIconSize));
+                                     SidebarButtonView::GetDefaultIconSize()));
   sidebar_settings_view_->SetImageModel(
       views::Button::STATE_DISABLED,
       ui::ImageModel::FromVectorIcon(kLeoSettingsIcon,
                                      kColorToolbarButtonIconInactive,
-                                     SidebarButtonView::kDefaultIconSize));
+                                     SidebarButtonView::GetDefaultIconSize()));
 }
 
 bool SidebarControlView::IsItemReorderingInProgress() const {

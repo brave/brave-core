@@ -1210,6 +1210,14 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
           FEATURE_VALUE_TYPE(features::kBraveFilledBookmarkFolderIcon),        \
       },                                                                       \
       {                                                                        \
+          "toolbars-small-icons",                                              \
+          "Small toolbar icons",                                               \
+          "Uses 18px icons in the toolbar, tab strip, vertical tabs, "         \
+          "sidebar, side panel header and bookmarks bar",                      \
+          kOsDesktop,                                                          \
+          FEATURE_VALUE_TYPE(features::kBraveToolbarsSmallIcons),              \
+      },                                                                       \
+      {                                                                        \
           "brave-ntp-refresh-enabled",                                         \
           "New Tab Page refresh",                                              \
           "Enables the refreshed version of the New Tab Page",                 \
