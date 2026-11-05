@@ -118,17 +118,18 @@ Get the service via the factory: RewardsServiceFactory::GetForProfile(profile)
 docs inevitably drift out of sync. If you need project-specific context, add a
 brief note and link to the canonical source.
 
-**Exception: best-practice entries must be self-contained.** In
+**Exception: best-practice entries MUST be self-contained.** In
 `docs/best-practices/*.md`, include the relevant rule, rationale, caveats, and
-code examples directly instead of adding links to PRs, review comments, other
-best-practice entries, or external documentation. Readers must be able to
-understand and apply the practice without following a link. Distill only the
-relevant guidance; do not copy entire source documents.
+code examples directly. NEVER add links to PRs, review comments, other
+best-practice entries, or external documentation. Distill only the relevant
+guidance; NEVER copy entire source documents. Include everything readers need to
+understand and apply the practice.
 
 Keep best practices consistent with other documentation. Resolve conflicting
 guidance by updating the affected documents in the same change.
 
-The following example applies to general project documentation:
+Use the following linking example for general project documentation only. NEVER
+apply it to entries in `docs/best-practices/*.md`.
 
 ```markdown
 # ❌ WRONG - duplicating upstream docs
