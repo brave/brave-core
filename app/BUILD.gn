@@ -150,6 +150,7 @@ source_set("unit_tests") {
     "//chrome/browser:browser_features",
     "//chrome/browser/devtools",
     "//chrome/browser/enterprise",
+    "//chrome/browser/glic/public:features",
     "//chrome/browser/media/webrtc",
     "//chrome/browser/policy:policy_util",
     "//chrome/browser/preloading",
