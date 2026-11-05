@@ -122,6 +122,12 @@ add it there.
 Write the entry following the exact format used in existing docs. Read a few
 entries from the target document first to match its style.
 
+**Make each entry self-contained.** Include the relevant rule, rationale,
+caveats, and code examples directly instead of adding links to PRs, review
+comments, other best-practice entries, or external documentation. Readers must
+be able to understand and apply the practice without following a link. Distill
+only the relevant guidance; do not copy entire source documents.
+
 **Required format:**
 
 ````markdown
@@ -187,6 +193,8 @@ VALIDATION CHECKLIST:
 3. Is the "why" explanation technically correct?
 4. Could the draft be misinterpreted or applied incorrectly?
 5. Does the draft introduce any claims not supported by the source material?
+6. Does the draft include the relevant guidance directly, so readers can
+   understand and apply it without following links?
 
 Return one of:
 - PASS: <brief confirmation of accuracy>
