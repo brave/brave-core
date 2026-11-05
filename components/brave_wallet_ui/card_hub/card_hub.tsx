@@ -34,7 +34,7 @@ import { RewardsCard } from './cards/rewards_card/rewards_card'
 import { HubMenu } from './components/hub_menu/hub_menu'
 import { Settings } from './components/settings/settings'
 import { HideCardPopup } from './components/hide_card_popup/hide_card_popup'
-import { CardDetails } from './components/card_details/card_details'
+import { RewardsCardDetails } from './components/rewards_card_details/rewards_card_details'
 import { VerifyRewardsCard } from './components/verify_rewards_card/verify_rewards_card'
 
 // Styles
@@ -195,7 +195,7 @@ export const CardHub = () => {
         </CardStack>
       </Column>
       {isRewardsCardVerified ? (
-        <CardDetails
+        <RewardsCardDetails
           title={selectedCardTitle}
           visible={detailsOpen}
           slotRef={detailsSlotRef}
