@@ -99,7 +99,8 @@ class MockNotificationDelegate : public AIChatService::NotificationDelegate {
   MOCK_METHOD(void,
               ShowCompletionNotification,
               (const std::string& conversation_uuid,
-               const std::u16string& conversation_title),
+               const std::u16string& conversation_title,
+               bool needs_approval),
               (override));
   MOCK_METHOD(void,
               CloseCompletionNotification,
@@ -400,6 +401,18 @@ void CompleteGeneration(EngineConsumer::GenerationCompletedCallback resolve) {
       mojom::ConversationEntryEvent::NewCompletionEvent(
           mojom::CompletionEvent::New("")),
       std::nullopt)));
+}
+
+// A tool use request that already carries a permission challenge, as one
+// from the server's alignment check does, so no Tool is needed to stop on it.
+mojom::ConversationEntryEventPtr ToolUseNeedingPermission() {
+  return mojom::ConversationEntryEvent::NewToolUseEvent(
+      mojom::ToolUseEvent::New(
+          "test_tool", "tool_id_1", "{}", std::nullopt, std::nullopt,
+          mojom::PermissionChallenge::New(std::nullopt, "plan", std::nullopt,
+                                          std::nullopt, std::nullopt,
+                                          /*supports_allow_session=*/false),
+          false));
 }
 
 }  // namespace
@@ -2094,6 +2107,50 @@ TEST_P(AIChatServiceUnitTest,
 }
 
 TEST_P(AIChatServiceUnitTest,
+       GenerationState_AwaitingUserInput_WhenBackgroundToolNeedsPermission) {
+  ConversationHandler* handler = CreateConversation();
+  auto resolve = StartGeneration(handler, *client_, ToolUseNeedingPermission());
+  ExpectGenerationState(
+      *client_, handler->get_conversation_uuid(),
+      mojom::ConversationGenerationState::kAwaitingUserInput,
+      base::BindOnce(&CompleteGeneration, std::move(resolve)));
+  EXPECT_TRUE(handler->IsAwaitingUserInput());
+}
+
+TEST_P(AIChatServiceUnitTest, GenerationState_ViewingClearsAwaitingUserInput) {
+  ConversationHandler* handler = CreateConversation();
+  const std::string uuid = handler->get_conversation_uuid();
+  auto resolve = StartGeneration(handler, *client_, ToolUseNeedingPermission());
+  ExpectGenerationState(
+      *client_, uuid, mojom::ConversationGenerationState::kAwaitingUserInput,
+      base::BindOnce(&CompleteGeneration, std::move(resolve)));
+
+  std::unique_ptr<MockConversationHandlerClient> client;
+  ExpectGenerationState(*client_, uuid,
+                        mojom::ConversationGenerationState::kIdle,
+                        base::BindLambdaForTesting([&] {
+                          client = CreateConversationClient(handler);
+                        }));
+}
+
+TEST_P(AIChatServiceUnitTest,
+       GenerationState_AwaitingUserInput_ResumesGenerating) {
+  ConversationHandler* handler = CreateConversation();
+  const std::string uuid = handler->get_conversation_uuid();
+  auto resolve = StartGeneration(handler, *client_, ToolUseNeedingPermission());
+  ExpectGenerationState(
+      *client_, uuid, mojom::ConversationGenerationState::kAwaitingUserInput,
+      base::BindOnce(&CompleteGeneration, std::move(resolve)));
+
+  // Answering the challenge restarts the tool loop, which reports in progress.
+  ExpectGenerationState(
+      *client_, uuid, mojom::ConversationGenerationState::kGenerating,
+      base::BindLambdaForTesting([&] {
+        ai_chat_service_->OnRequestInProgressChanged(handler, true);
+      }));
+}
+
+TEST_P(AIChatServiceUnitTest,
        GenerationState_CompletedNotViewedSurvivesUnload) {
   ConversationHandler* handler = CreateConversation();
   const std::string uuid = handler->get_conversation_uuid();
@@ -2139,6 +2196,19 @@ TEST_P(AIChatServiceUnitTest,
   ExpectGenerationIdle(*client_, uuid, base::BindLambdaForTesting([&] {
     prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, false);
   }));
+}
+
+TEST_P(AIChatServiceUnitTest, GenerationState_AwaitingUserInputIsNotUnloaded) {
+  ConversationHandler* handler = CreateConversation();
+  auto resolve = StartGeneration(handler, *client_, ToolUseNeedingPermission());
+  ExpectGenerationState(
+      *client_, handler->get_conversation_uuid(),
+      mojom::ConversationGenerationState::kAwaitingUserInput,
+      base::BindOnce(&CompleteGeneration, std::move(resolve)));
+
+  // Unloading would drop the unpersisted permission challenge.
+  task_environment_.FastForwardBy(base::Seconds(10));
+  EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 1u);
 }
 
 TEST_P(AIChatServiceUnitTest, GenerationState_BindClearsNotViewed) {
@@ -2242,10 +2312,29 @@ TEST_P(AIChatServiceUnitTest, Notification_TriggersOnBackgroundCompletion) {
   auto resolve = StartGeneration(handler, *client_);
   testing::Mock::VerifyAndClearExpectations(notifications);
 
-  EXPECT_CALL(*notifications, ShowCompletionNotification(uuid, _));
+  EXPECT_CALL(*notifications, ShowCompletionNotification(uuid, _, false));
   ExpectGenerationState(
       *client_, uuid, mojom::ConversationGenerationState::kCompletedNotViewed,
       base::BindOnce(&CompleteGeneration, std::move(resolve)));
+}
+
+TEST_P(AIChatServiceUnitTest, Notification_NeedsApprovalOnToolRequest) {
+  auto* notifications = SetMockNotificationDelegate(*ai_chat_service_);
+  ConversationHandler* handler = CreateConversation();
+  const std::string uuid = handler->get_conversation_uuid();
+  auto resolve = StartGeneration(handler, *client_, ToolUseNeedingPermission());
+  EXPECT_CALL(*notifications,
+              ShowCompletionNotification(uuid, _, /*needs_approval=*/true));
+  ExpectGenerationState(
+      *client_, uuid, mojom::ConversationGenerationState::kAwaitingUserInput,
+      base::BindOnce(&CompleteGeneration, std::move(resolve)));
+
+  // Opening the conversation to answer the request closes the notification.
+  base::test::TestFuture<void> closed;
+  EXPECT_CALL(*notifications, CloseCompletionNotification(uuid))
+      .WillOnce(base::test::RunOnceClosure(closed.GetCallback()));
+  auto client = CreateConversationClient(handler);
+  ASSERT_TRUE(closed.Wait());
 }
 
 TEST_P(AIChatServiceUnitTest, Notification_NotTriggeredWhenViewed) {
@@ -2268,7 +2357,7 @@ TEST_P(AIChatServiceUnitTest, Notification_CloseWhenDisablingStorageDropsIt) {
   ConversationHandler* handler = CreateConversation();
   const std::string uuid = handler->get_conversation_uuid();
   auto resolve = StartGeneration(handler, *client_);
-  EXPECT_CALL(*notifications, ShowCompletionNotification(uuid, _));
+  EXPECT_CALL(*notifications, ShowCompletionNotification(uuid, _, false));
   EXPECT_CALL(*notifications, CloseCompletionNotification).Times(0);
   ExpectGenerationState(
       *client_, uuid, mojom::ConversationGenerationState::kCompletedNotViewed,
@@ -2288,7 +2377,7 @@ TEST_P(AIChatServiceUnitTest, Notification_CloseOnBind) {
   ConversationHandler* handler = CreateConversation();
   const std::string uuid = handler->get_conversation_uuid();
   auto resolve = StartGeneration(handler, *client_);
-  EXPECT_CALL(*notifications, ShowCompletionNotification(uuid, _));
+  EXPECT_CALL(*notifications, ShowCompletionNotification(uuid, _, false));
   EXPECT_CALL(*notifications, CloseCompletionNotification(uuid));
   ExpectGenerationState(
       *client_, uuid, mojom::ConversationGenerationState::kCompletedNotViewed,
@@ -2332,7 +2421,7 @@ TEST_P(AIChatServiceUnitTest, Notification_CloseOnDirectHandlerBind) {
   ConversationHandler* handler = CreateConversation();
   const std::string uuid = handler->get_conversation_uuid();
   auto resolve = StartGeneration(handler, *client_);
-  EXPECT_CALL(*notifications, ShowCompletionNotification(uuid, _));
+  EXPECT_CALL(*notifications, ShowCompletionNotification(uuid, _, false));
   EXPECT_CALL(*notifications, CloseCompletionNotification(uuid));
   ExpectGenerationState(
       *client_, uuid, mojom::ConversationGenerationState::kCompletedNotViewed,
@@ -2350,7 +2439,7 @@ TEST_P(AIChatServiceUnitTest, Notification_CloseOnDelete) {
   ConversationHandler* handler = CreateConversation();
   const std::string uuid = handler->get_conversation_uuid();
   auto resolve = StartGeneration(handler, *client_);
-  EXPECT_CALL(*notifications, ShowCompletionNotification(uuid, _));
+  EXPECT_CALL(*notifications, ShowCompletionNotification(uuid, _, false));
   EXPECT_CALL(*notifications, CloseCompletionNotification(uuid));
   ExpectGenerationState(
       *client_, uuid, mojom::ConversationGenerationState::kCompletedNotViewed,
@@ -2365,7 +2454,7 @@ TEST_P(AIChatServiceUnitTest, Notification_CloseWhenGenerationRestarts) {
   ConversationHandler* handler = CreateConversation();
   const std::string uuid = handler->get_conversation_uuid();
   auto resolve = StartGeneration(handler, *client_);
-  EXPECT_CALL(*notifications, ShowCompletionNotification(uuid, _));
+  EXPECT_CALL(*notifications, ShowCompletionNotification(uuid, _, false));
   EXPECT_CALL(*notifications, CloseCompletionNotification).Times(0);
   ExpectGenerationState(
       *client_, uuid, mojom::ConversationGenerationState::kCompletedNotViewed,
