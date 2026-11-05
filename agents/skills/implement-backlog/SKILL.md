@@ -120,10 +120,16 @@ filter, do the following and record each result in the ledger (see
    `git grep -n 'DISABLED_<Name>'` and
    `git grep -n '<Name>' testing/buildbot/filters/` to see whether Chromium also
    disabled it.
-4. **Check Brave's influence.** Look for `chromium_src/` overrides and
+4. **Confirm it still applies to master.** Map each reported Brave version to
+   its Chromium tag (`git show v<version>:package.json`, `chrome` `tag`) and
+   compare with master's. If the failing builds predate master's Chromium, check
+   whether upstream changed the test since (`git log -- <test file>` in `src/`).
+   If it did, skip: a release branch needs an uplift or rebase, not a master
+   disable. Log line numbers must match the current source.
+5. **Check Brave's influence.** Look for `chromium_src/` overrides and
    `patches/` touching the test's files or directory. If Brave code plausibly
    causes the failure, fix that or skip; do not hide it behind a filter.
-5. **Query LUCI Analysis** from `src/brave`, for each failing test and variant:
+6. **Query LUCI Analysis** from `src/brave`, for each failing test and variant:
 
    ```bash
    vpython3 tools/chromium_tests_analysis/check-upstream-flake.py \
@@ -136,9 +142,12 @@ filter, do the following and record each result in the ledger (see
    only for a specific, documented, unfixable Brave-environment cause; otherwise
    skip. For "insufficient data" or "not found", retry with the class name or
    `--days 60`; if there is still none, justify from the failing CI jobs in the
-   issue and state that no flake rate is available. Never invent a rate.
+   issue and state that no flake rate is available. Never invent a rate. The
+   output aggregates all configs, which can hide a sanitizer job's behavior;
+   compare the failing config using `analyze_per_config()` in
+   `update-upstream-flake-filters.py`.
 
-6. **Scope by evidence.** Use the most specific filter file the failing jobs
+7. **Scope by evidence.** Use the most specific filter file the failing jobs
    support (`bot/platform/*`, `bot/arch/*`, sanitizer in the job name); names
    follow `getApplicableFilters()` in `build/commands/lib/testUtils.ts`. List
    individual tests; use a wildcard only when every instance fails. LUCI
@@ -149,6 +158,8 @@ Each filter entry gets a comment with the cause, the scope choice, and the flake
 rate with its lookback; group entries by root cause with a blank line before
 each comment. The commit message states: Chromium test, whether Chromium also
 disabled it, related Brave `chromium_src` modifications, and the flake rate.
+Verify claims in nearby comments before repeating them, and do not cite log line
+numbers in a filter comment.
 
 ## 3. Independently review the fixes
 
