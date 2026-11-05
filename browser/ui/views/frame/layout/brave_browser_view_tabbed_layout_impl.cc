@@ -359,7 +359,9 @@ void BraveBrowserViewTabbedLayoutImpl::AdjustInfobarLayout(
     // infobar's pre-margin bounds (see BrowserViewTabbedLayoutImpl's own
     // CalculateProposedLayout(), called at the top of ours), so shrinking the
     // infobar's bounds here naturally opens up a matching gap above the
-    // contents view without needing to touch its layout too.
+    // contents view without needing to touch its layout too. The container
+    // reserves the height this inset (and its outline) consumes in its
+    // preferred size, so the infobars themselves aren't squeezed.
     infobar_layout->bounds.Inset(kRoundedCornersContentsViewMargin);
   }
 }
@@ -422,6 +424,9 @@ BraveBrowserViewTabbedLayoutImpl::CalculateInfobarCornerRadii() const {
     }
   }
 
+  // These are the radii of the infobars inside the outline; the outline grows
+  // them by its own thickness, as the contents view's outline does.
+  //
   // The infobar floats as its own card (see AdjustInfobarLayout()); it never
   // touches the window's bottom edge, since the contents view is always
   // below it, so the bottom corners always use the smaller "not a window
