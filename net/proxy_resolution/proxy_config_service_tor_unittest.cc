@@ -171,6 +171,23 @@ TEST_F(ProxyConfigServiceTorTest, CircuitAnonymizationKey) {
   }
 }
 
+TEST_F(ProxyConfigServiceTorTest, PendingUntilProxyURIIsKnown) {
+  ProxyConfigServiceTor proxy_config_service;
+  ProxyConfigWithAnnotation config;
+  EXPECT_EQ(proxy_config_service.GetLatestProxyConfig(&config),
+            ProxyConfigService::CONFIG_PENDING);
+
+  proxy_config_service.UpdateProxyURI(proxy_uri());
+  ASSERT_EQ(proxy_config_service.GetLatestProxyConfig(&config),
+            ProxyConfigService::CONFIG_VALID);
+  const ProxyServer proxy_server =
+      config.value().proxy_rules().single_proxies.First().GetProxyServer(
+          /*chain_index=*/0);
+  EXPECT_EQ(proxy_server.scheme(), ProxyServer::SCHEME_SOCKS5);
+  EXPECT_EQ(proxy_server.host_port_pair().host(), "127.0.0.1");
+  EXPECT_EQ(proxy_server.host_port_pair().port(), 5566);
+}
+
 TEST_F(ProxyConfigServiceTorTest, SetNewTorCircuit) {
   const GURL site_url("https://check.torproject.org/");
   const std::string circuit_anonymization_key =
