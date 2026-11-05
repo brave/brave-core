@@ -70,11 +70,6 @@
   }
 }
 
-// A pill that doesn't open the tools dialog (e.g. a workspace).
-.toolPillStatic .toolPillOpen {
-  cursor: default;
-}
-
 .toolPillFavicon {
   width: 16px;
   height: 16px;
@@ -89,15 +84,18 @@
   overflow: hidden;
 }
 
-// Opens the tools dialog, but styled as plain pill content so the pill still
-// reads as a single element.
-.toolPillOpen {
+.toolPillContent {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: var(--leo-spacing-s);
   width: 100%;
   min-width: 0;
+}
+
+// Opens the tools dialog, but styled as plain pill content so the pill still
+// reads as a single element.
+.toolPillOpen {
   appearance: none;
   margin: 0;
   padding: 0;

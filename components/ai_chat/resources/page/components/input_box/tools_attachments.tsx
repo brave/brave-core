@@ -69,11 +69,11 @@ function ToolPill(props: {
         className={styles.toolPillTitleTooltip}
       >
         {isWorkspace ? (
-          <div className={styles.toolPillOpen}>{pillContent}</div>
+          <div className={styles.toolPillContent}>{pillContent}</div>
         ) : (
           <button
             type='button'
-            className={styles.toolPillOpen}
+            className={classnames(styles.toolPillContent, styles.toolPillOpen)}
             onClick={props.onOpen}
           >
             {pillContent}
