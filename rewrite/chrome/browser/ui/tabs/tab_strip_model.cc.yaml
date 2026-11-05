@@ -22,6 +22,7 @@ substitutions:
             case CommandCloseDuplicateTabs:
             case CommandOpenInContainer:
             case CommandRenameTab:
+            case CommandCopyLinks:
               NOTREACHED();\n
 
   - description: |
@@ -42,6 +43,7 @@ substitutions:
             case CommandCloseDuplicateTabs:
             case CommandOpenInContainer:
             case CommandRenameTab:
+            case CommandCopyLinks:
               NOTREACHED();\n
 
   - description: |

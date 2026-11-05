@@ -16,6 +16,7 @@ substitutions:
       CommandCloseDuplicateTabs - Closes duplicate tabs with the same URL
       CommandOpenInContainer - Container submenu
       CommandRenameTab - Allows renaming a tab with custom title
+      CommandCopyLinks - Copies the URLs of the selected tabs
     add_enum_entries:
       enum_name: TabContextMenuCommand
       entries:
@@ -27,3 +28,4 @@ substitutions:
         - CommandCloseDuplicateTabs
         - CommandOpenInContainer
         - CommandRenameTab
+        - CommandCopyLinks
