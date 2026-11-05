@@ -5,7 +5,7 @@ redirect, or modify network requests or responses.
 
 <a id="NET-001"></a>
 
-## Choose the Narrowest Supported Integration
+## ✅ Use Existing Supported Chromium Interception Mechanisms
 
 **Do not add new `*_network_delegate_helper` callbacks or add functionality to
 existing network-delegate helpers. Do not extend
@@ -23,7 +23,7 @@ integration that supports the feature's required stage and request types.
 | Requests constructed by a browser-owned service                    | Apply the behavior at request construction when that covers the feature.                                                                                 |
 | WebSocket connection policy                                        | A browser-side connection decision before invoking the network factory; ordinary URL-loader throttles do not cover WebSockets.                           |
 
-### Examples
+**Examples**
 
 | Need                                                | Bad choice                                               | Good choice                                       |
 | --------------------------------------------------- | -------------------------------------------------------- | ------------------------------------------------- |
@@ -35,3 +35,5 @@ Choose based on the traffic the feature must cover. A navigation-only
 integration is insufficient for subresources or worker fetches. Keepalive,
 prefetch, downloads, browser/system requests, and WebSockets can require
 separate integration points.
+
+---

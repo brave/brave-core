@@ -35,6 +35,7 @@ DOC_PREFIXES = {
     "build-system": "BS",
     "chromium-src-overrides": "CSRC",
     "documentation": "DOC",
+    "network-interception": "NET",
     "frontend": "FE",
     "localization": "L10N",
     "testing-async": "TA",
