@@ -5,22 +5,50 @@
 
 /* #css_wrapper_metadata_start
  * #type=style-lit
+ * #scheme=relative
+ * #import=./brave_account_row_common.css.js
+ * #include=brave-account-row-common
  * #css_wrapper_metadata_end */
 
-cr-link-row {
-  --leo-icon-size: var(--leo-icon-m);
+.row {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  gap: var(--leo-spacing-xl);
+  /* Chromium's settings row inset, so this row lines up with its neighbors. */
+  padding: var(--leo-spacing-l) var(--cr-section-padding);
 
-  font: var(--leo-font-default-semibold);
+  &:hover {
+    background: var(--leo-color-container-highlight);
+  }
+
+  > leo-icon {
+    --leo-icon-size: var(--leo-icon-m);
+  }
+
+  > leo-button {
+    --leo-button-padding: var(--leo-spacing-s);
+
+    margin-inline-end: calc(-1 * var(--leo-spacing-s));
+    /* The row handles hover and clicks. Leo cannot turn off the button's own
+       hover and press effects, so the mouse skips it; keyboard focus still
+       reaches it. */
+    pointer-events: none;
+  }
 }
 
-/* Without containment, cr's #labelWrapper widens to fit the untruncated text,
-   leaving the truncator measuring the text instead of the space for it. */
-.description {
-  contain: inline-size;
-  flex: 1;
-  font: var(--leo-font-small-regular);
+.title-and-description {
+  flex: auto;
 
-  &.action-required {
-    color: var(--leo-color-systemfeedback-error-text);
+  .title {
+    font: var(--leo-font-default-semibold);
+  }
+
+  .description {
+    font: var(--leo-font-small-regular);
+
+    &.action-required {
+      color: var(--leo-color-systemfeedback-error-text);
+    }
   }
 }
