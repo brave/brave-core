@@ -23,8 +23,13 @@ integration that supports the feature's required stage and request types.
 | Requests constructed by a browser-owned service                    | Apply the behavior at request construction when that covers the feature.                                                                                 |
 | WebSocket connection policy                                        | A browser-side connection decision before invoking the network factory; ordinary URL-loader throttles do not cover WebSockets.                           |
 
-For examples of choosing replacements for existing helpers, see
-[brave-browser#57532](https://github.com/brave/brave-browser/issues/57532).
+### Examples
+
+| Need                                                | Bad choice                                               | Good choice                                       |
+| --------------------------------------------------- | -------------------------------------------------------- | ------------------------------------------------- |
+| Require consent before navigation                   | Add consent handling to `BraveProxyingURLLoaderFactory`. | `content::NavigationThrottle`.                    |
+| Change a resource request header                    | Add functionality to a network-delegate helper.          | `blink::URLLoaderThrottle`.                       |
+| Block subresources using compatible filtering rules | Add blocking to `BraveProxyingURLLoaderFactory`.         | Rulesets consumed by `DocumentSubresourceFilter`. |
 
 Choose based on the traffic the feature must cover. A navigation-only
 integration is insufficient for subresources or worker fetches. Keepalive,
