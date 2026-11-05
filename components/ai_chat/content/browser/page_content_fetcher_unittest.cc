@@ -6,6 +6,7 @@
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -753,6 +754,52 @@ TEST_F(PageContentFetcherTest, CallbackRunWhenExtractorDisconnects) {
   EXPECT_TRUE(content.empty());
   EXPECT_FALSE(is_video);
   EXPECT_TRUE(invalidation_token.empty());
+}
+
+// The Brave Search helpers must also answer when the extractor disconnects
+// before replying. Callers read "no result" as nullopt.
+TEST_F(PageContentFetcherTest, SearchSummarizerKeyRunWhenExtractorDisconnects) {
+  NavigateAndCommit(GURL("https://search.brave.com/search?q=query"));
+
+  MockPageContentExtractor* mock_extractor = SetUpMockExtractor();
+
+  mojom::PageContentExtractor::GetSearchSummarizerKeyCallback pending_reply;
+  EXPECT_CALL(*mock_extractor, GetSearchSummarizerKey(_))
+      .WillOnce([&pending_reply](
+                    mojom::PageContentExtractor::GetSearchSummarizerKeyCallback
+                        callback) { pending_reply = std::move(callback); });
+
+  base::test::TestFuture<const std::optional<std::string>&> future;
+  fetcher_->GetSearchSummarizerKey(future.GetCallback());
+  ASSERT_TRUE(base::test::RunUntil([&]() { return !pending_reply.is_null(); }));
+
+  mock_extractor->ResetReceiver();
+  pending_reply.Reset();
+
+  EXPECT_EQ(future.Get(), std::nullopt);
+}
+
+TEST_F(PageContentFetcherTest,
+       OpenAIChatButtonNonceRunWhenExtractorDisconnects) {
+  NavigateAndCommit(GURL("https://search.brave.com/search?q=query"));
+
+  MockPageContentExtractor* mock_extractor = SetUpMockExtractor();
+
+  mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback pending_reply;
+  EXPECT_CALL(*mock_extractor, GetOpenAIChatButtonNonce(_))
+      .WillOnce(
+          [&pending_reply](
+              mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback
+                  callback) { pending_reply = std::move(callback); });
+
+  base::test::TestFuture<const std::optional<std::string>&> future;
+  fetcher_->GetOpenAIChatButtonNonce(future.GetCallback());
+  ASSERT_TRUE(base::test::RunUntil([&]() { return !pending_reply.is_null(); }));
+
+  mock_extractor->ResetReceiver();
+  pending_reply.Reset();
+
+  EXPECT_EQ(future.Get(), std::nullopt);
 }
 
 }  // namespace ai_chat

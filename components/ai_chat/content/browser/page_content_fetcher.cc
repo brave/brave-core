@@ -490,7 +490,12 @@ void PageContentFetcher::GetSearchSummarizerKey(
   mojo::Remote<mojom::PageContentExtractor> extractor;
   primary_rfh->GetRemoteInterfaces()->GetInterface(
       extractor.BindNewPipeAndPassReceiver());
-  fetcher->GetSearchSummarizerKey(std::move(extractor), std::move(callback));
+  // As in FetchPageContent, answer "no result" if the fetcher is deleted on
+  // disconnect before the renderer replies.
+  fetcher->GetSearchSummarizerKey(
+      std::move(extractor),
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+          std::move(callback), std::optional<std::string>()));
 }
 
 void PageContentFetcher::GetOpenAIChatButtonNonce(
@@ -502,7 +507,12 @@ void PageContentFetcher::GetOpenAIChatButtonNonce(
   mojo::Remote<mojom::PageContentExtractor> extractor;
   primary_rfh->GetRemoteInterfaces()->GetInterface(
       extractor.BindNewPipeAndPassReceiver());
-  fetcher->GetOpenAIChatButtonNonce(std::move(extractor), std::move(callback));
+  // The caller defers navigation until this answers, so a dropped callback
+  // would leave it deferred.
+  fetcher->GetOpenAIChatButtonNonce(
+      std::move(extractor),
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+          std::move(callback), std::optional<std::string>()));
 }
 
 }  // namespace ai_chat
