@@ -5,6 +5,24 @@
 
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/prefs/pref_service.h"
+#include "content/public/browser/web_contents.h"
+
+namespace {
+
+// Returns true when the user has turned off "Autofill passwords using Brave" in
+// brave://password-manager/settings. The plaster for this file checks it at the
+// top of ChromePasswordManagerClient::IsFillingEnabled() and
+// IsSavingAndFillingEnabled(), which suppresses the fill dropdown, filling on
+// page load and the "Save password?" prompt.
+bool IsBravePasswordFillingDisabled(content::WebContents* web_contents) {
+  const Profile* profile =
+      Profile::FromBrowserContext(web_contents->GetBrowserContext());
+  return profile &&
+         !profile->GetPrefs()->GetBoolean(kBravePasswordManagerFillEnabled);
+}
+
+}  // namespace
 
 #define IsGuestSession                                                   \
   IsGuestSession() ||                                                    \
