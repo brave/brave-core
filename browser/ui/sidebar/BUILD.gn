@@ -167,6 +167,7 @@ source_set("browser_tests") {
     "//brave/components/brave_news/common/buildflags",
     "//brave/components/brave_talk/buildflags",
     "//brave/components/brave_wallet/common/buildflags",
+    "//brave/components/constants",
     "//brave/components/playlist/core/common/buildflags",
     "//brave/components/sidebar/browser",
     "//brave/components/sidebar/common",
