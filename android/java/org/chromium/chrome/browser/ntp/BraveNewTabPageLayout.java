@@ -146,6 +146,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     private @Nullable PopupWindowTooltip mTopSitesTooltip;
     private boolean mTopSitesTooltipScrolledAway;
     private ViewTreeObserver.@Nullable OnGlobalLayoutListener mTopSitesVisibilityListener;
+    private ViewTreeObserver.@Nullable OnGlobalLayoutListener mTopSitesTooltipCheckListener;
 
     private CopyOnWriteArrayList<FeedItemsCard> mNewsItemsFeedCard =
             new CopyOnWriteArrayList<FeedItemsCard>();
@@ -246,21 +247,21 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     // transitions, so its ViewTreeObserver is used to wait for that to happen.
     private void scheduleTopSitesTooltipCheck() {
         assumeNonNull(mRecyclerView);
+        mTopSitesTooltipCheckListener =
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        assumeNonNull(mMvTilesContainerLayout);
+                        if (!mMvTilesContainerLayout.isShown()) return;
+                        assumeNonNull(mRecyclerView);
+                        mRecyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        mTopSitesTooltipCheckListener = null;
+                        maybeShowTopSitesTooltip();
+                    }
+                };
         mRecyclerView
                 .getViewTreeObserver()
-                .addOnGlobalLayoutListener(
-                        new ViewTreeObserver.OnGlobalLayoutListener() {
-                            @Override
-                            public void onGlobalLayout() {
-                                assumeNonNull(mMvTilesContainerLayout);
-                                if (!mMvTilesContainerLayout.isShown()) return;
-                                assumeNonNull(mRecyclerView);
-                                mRecyclerView
-                                        .getViewTreeObserver()
-                                        .removeOnGlobalLayoutListener(this);
-                                maybeShowTopSitesTooltip();
-                            }
-                        });
+                .addOnGlobalLayoutListener(mTopSitesTooltipCheckListener);
     }
 
     // The tooltip explains switching to "frequently visited", so it is pointless to show if
@@ -294,7 +295,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
     private void maybeShowTopSitesTooltip() {
         assumeNonNull(mMvTilesContainerLayout);
-        if (!NtpUtil.shouldDisplayTopSites()
+        if ((mTopSitesTooltip != null && mTopSitesTooltip.isShowing())
+                || !NtpUtil.shouldDisplayTopSites()
                 || isTopSitesTooltipDismissed()
                 || mTopSitesTooltipScrolledAway
                 || !mMvTilesContainerLayout.isShown()
@@ -868,6 +870,13 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                     .getViewTreeObserver()
                     .removeOnGlobalLayoutListener(mTopSitesVisibilityListener);
             mTopSitesVisibilityListener = null;
+        }
+
+        if (mTopSitesTooltipCheckListener != null) {
+            mRecyclerView
+                    .getViewTreeObserver()
+                    .removeOnGlobalLayoutListener(mTopSitesTooltipCheckListener);
+            mTopSitesTooltipCheckListener = null;
         }
 
         if (mWorkerTask != null && mWorkerTask.getStatus() == AsyncTask.Status.RUNNING) {
