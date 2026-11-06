@@ -19,18 +19,6 @@
 
 @implementation KeyedServiceFactoryWrapper
 
-+ (nullable id)getForPrivateMode:(bool)isPrivateBrowsing {
-  DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  std::vector<ProfileIOS*> profiles =
-      GetApplicationContext()->GetProfileManager()->GetLoadedProfiles();
-  ProfileIOS* last_used_profile = profiles.at(0);
-
-  if (isPrivateBrowsing) {
-    last_used_profile = last_used_profile->GetOffTheRecordProfile();
-  }
-  return [self serviceForProfile:last_used_profile];
-}
-
 + (nullable id)getForProfile:(id<ProfileBridge>)profile {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   ProfileBridgeImpl* holder =
