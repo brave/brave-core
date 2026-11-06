@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveUI
 import DesignSystem
 import Shared
@@ -126,10 +127,19 @@ class SearchURLBarInputView: UIView {
     $0.alignment = .center
   }
 
-  init(privateBrowsingManager: PrivateBrowsingManager, speechRecognizer: SpeechRecognizer) {
+  init(
+    privateBrowsingManager: PrivateBrowsingManager,
+    speechRecognizer: SpeechRecognizer,
+    autocompleteClassifier: (any AutocompleteClassifier)?,
+    urlSanitizerService: (any URLSanitizerService)?
+  ) {
     self.privateBrowsingManager = privateBrowsingManager
     self.speechRecognizer = speechRecognizer
-    self.textField = AutocompleteTextField(privateBrowsingManager: privateBrowsingManager)
+    self.textField = AutocompleteTextField(
+      privateBrowsingManager: privateBrowsingManager,
+      autocompleteClassifier: autocompleteClassifier,
+      urlSanitizerService: urlSanitizerService
+    )
 
     super.init(frame: .zero)
 
