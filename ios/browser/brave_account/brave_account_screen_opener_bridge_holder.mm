@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/ios/browser/brave_account/brave_account_dialog_opener_bridge_holder.h"
+#include "brave/ios/browser/brave_account/brave_account_screen_opener_bridge_holder.h"
 
 namespace brave_account {
 
-BraveAccountDialogOpenerBridgeHolder::BraveAccountDialogOpenerBridgeHolder(
+BraveAccountScreenOpenerBridgeHolder::BraveAccountScreenOpenerBridgeHolder(
     web::WebState*) {}
 
 }  // namespace brave_account

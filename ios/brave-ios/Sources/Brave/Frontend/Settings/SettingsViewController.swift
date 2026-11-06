@@ -59,7 +59,7 @@ protocol SettingsDelegate: AnyObject {
   func settingsCreateFakeHistory()
 }
 
-class SettingsViewController: TableViewController, BraveAccountDialogOpenerBridge {
+class SettingsViewController: TableViewController, BraveAccountScreenOpenerBridge {
   weak var settingsDelegate: SettingsDelegate?
 
   private let profile: LegacyBrowserProfile
@@ -392,7 +392,7 @@ class SettingsViewController: TableViewController, BraveAccountDialogOpenerBridg
     if let dialogMode {
       controller.webView.braveAccountDialogMode = dialogMode
     }
-    controller.webView.braveAccountDialogOpener = self
+    controller.webView.braveAccountScreenOpener = self
     controller.webView.load(URLRequest(url: url))
     controller.navigationItem.rightBarButtonItem = .doneButton { [unowned container] in
       container.dismiss(animated: true)
@@ -400,12 +400,25 @@ class SettingsViewController: TableViewController, BraveAccountDialogOpenerBridg
 
     // Present from whatever is on top rather than from here - UIKit ignores a
     // second presentation from a controller that is already presenting.
-    var presenter: UIViewController = navigationController ?? self
-    while let presented = presenter.presentedViewController {
-      presenter = presented
-    }
-    presenter.present(container, animated: true)
+    topViewController.present(container, animated: true)
     return container
+  }
+
+  private var rootViewController: UIViewController {
+    navigationController ?? self
+  }
+
+  private var topViewController: UIViewController {
+    var top = rootViewController
+    while let presented = top.presentedViewController {
+      top = presented
+    }
+    return top
+  }
+
+  private var isTopViewControllerTransitioning: Bool {
+    let top = topViewController
+    return top.isBeingPresented || top.isBeingDismissed
   }
 
   private func openBraveAccountSettings() {
@@ -414,12 +427,14 @@ class SettingsViewController: TableViewController, BraveAccountDialogOpenerBridg
     )
   }
 
-  // MARK: - BraveAccountDialogOpenerBridge
+  // MARK: - BraveAccountScreenOpenerBridge
 
   // Also called from the WebUI serving the account rows, which asks for the
   // dialog to be opened over it.
   func openBraveAccountDialog(dialogMode: BraveAccount.DialogMode = .default) {
-    if braveAccountDialog?.presentingViewController != nil {
+    if isTopViewControllerTransitioning
+      || braveAccountDialog?.presentingViewController != nil
+    {
       return
     }
 
@@ -427,6 +442,31 @@ class SettingsViewController: TableViewController, BraveAccountDialogOpenerBridg
       url: URL(string: "brave://account")!,
       dialogMode: dialogMode
     )
+  }
+
+  // Called from a WebUI page that only links to `page`, which opens in its
+  // place.
+  func openSettingsPage(page: BraveAccount.SettingsPage) {
+    if isTopViewControllerTransitioning {
+      return
+    }
+
+    let open = { [weak self] in
+      guard let self else { return }
+      switch page {
+      case .braveAccount:
+        openBraveAccountSettings()
+      @unknown default:
+        break
+      }
+    }
+
+    let top = topViewController
+    if top === rootViewController {
+      open()
+    } else {
+      top.dismiss(animated: true, completion: open)
+    }
   }
 
   private func makeFeaturesSection() -> Static.Section {
