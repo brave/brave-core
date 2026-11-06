@@ -197,20 +197,20 @@ state, is renderer-initiated and has the source origin as initiator),
   record (and proxied through Tor in Tor windows). Peek adds no prefs or on-disk
   state of its own. Test: `IncognitoPeekStaysOffTheRecord`.
 - History: pages loaded in Peek are recorded like any other visit, so they're
-  cleared with history. Peek attaches the history tab helper itself, except
-  in private and Tor windows.
+  cleared with history. Peek attaches the history tab helper itself, except in
+  private and Tor windows.
 
 ### Shields
 
-- Shields protection applies in Peek like in a tab. Blocking runs in the
-  network and renderer, keyed by the site's settings, and
+- Shields protection applies in Peek like in a tab. Blocking runs in the network
+  and renderer, keyed by the site's settings, and
   `BraveShieldsWebContentsObserver` is attached to every `WebContents`.
-- The Shields button shows whether Shields is on for the site. It doesn't show
-  a blocked count, which is tracked by the per-tab Shields helper.
+- The Shields button shows whether Shields is on for the site. It doesn't show a
+  blocked count, which is tracked by the per-tab Shields helper.
 - Pressing it moves the page into a tab and opens that tab's Shields panel, the
   same one the toolbar Shields button opens. Turning Shields off or allowing
-  scripts is a decision about the site, so it's made with the tab's full
-  browser UI, like permission prompts.
+  scripts is a decision about the site, so it's made with the tab's full browser
+  UI, like permission prompts.
 
 Test: `ShieldsButtonMovesToTabAndShowsPanel`.
 
@@ -268,5 +268,5 @@ to either move Peek to a tab first or fail closed while the page is in Peek:
   Accepted, like autofill: the system dialog names the site the passkey is for
   (the relying party ID, which must match the requesting site), and the passkey
   only works for that site. Moving Peek to a tab here would need a hook that
-  can't tell these requests from conditional (autofill) passkey requests,
-  which pages start as soon as they load.
+  can't tell these requests from conditional (autofill) passkey requests, which
+  pages start as soon as they load.
