@@ -32,6 +32,7 @@
 #include "components/search_engines/search_engines_pref_names.h"
 #include "components/search_engines/template_url.h"
 #include "components/search_engines/template_url_id.h"
+#include "url/url_constants.h"
 
 namespace settings {
 
@@ -104,7 +105,7 @@ GURL GetProxiedFaviconURL(const TemplateURL& template_url) {
     page_url = page_url.ReplaceComponents(replacements);
   }
   return GURL(base::StrCat(
-      {"https://", kBraveFaviconsProxy,
+      {url::kHttpsScheme, url::kStandardSchemeSeparator, kBraveFaviconsProxy,
        "/faviconV2?client=chrome&nfrp=2&check_seen=true&size=32&min_size=16"
        "&max_size=256&fallback_opts=TYPE,SIZE,URL&url=",
        base::EscapeQueryParamValue(page_url.spec(), /*use_plus=*/false)}));

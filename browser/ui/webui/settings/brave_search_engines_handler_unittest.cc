@@ -312,4 +312,36 @@ TEST_F(BraveSearchEnginesHandlerTest, IconURLProxyStripsWwwForGoogle) {
       << *other_icon_url;
 }
 
+// Verify that non-http(s) and empty favicon URLs are not routed through the
+// favicon proxy.
+TEST_F(BraveSearchEnginesHandlerTest, NonHttpIconURLIsNotProxied) {
+  constexpr char kDataFaviconURL[] = "data:image/png;base64,AAAA";
+  TemplateURLData data_icon_data;
+  data_icon_data.SetShortName(u"engine_f");
+  data_icon_data.SetKeyword(u"engine_f");
+  data_icon_data.SetURL("https://engine-f.example/search?q={searchTerms}");
+  data_icon_data.favicon_url = GURL(kDataFaviconURL);
+  TemplateURL* data_icon_engine = template_url_service()->Add(
+      std::make_unique<TemplateURL>(data_icon_data));
+  ASSERT_TRUE(data_icon_engine);
+
+  TemplateURLData no_icon_data;
+  no_icon_data.SetShortName(u"engine_g");
+  no_icon_data.SetKeyword(u"engine_g");
+  no_icon_data.SetURL("https://engine-g.example/search?q={searchTerms}");
+  TemplateURL* no_icon_engine =
+      template_url_service()->Add(std::make_unique<TemplateURL>(no_icon_data));
+  ASSERT_TRUE(no_icon_engine);
+
+  const base::DictValue data_icon_dict =
+      CreateDictionaryForEngine(data_icon_engine);
+  const std::string* data_icon_url = data_icon_dict.FindString("iconURL");
+  ASSERT_TRUE(data_icon_url);
+  EXPECT_EQ(*data_icon_url, kDataFaviconURL);
+
+  const base::DictValue no_icon_dict =
+      CreateDictionaryForEngine(no_icon_engine);
+  EXPECT_FALSE(no_icon_dict.FindString("iconURL"));
+}
+
 }  // namespace settings
