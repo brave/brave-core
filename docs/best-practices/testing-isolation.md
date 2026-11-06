@@ -2,38 +2,43 @@
 
 <a id="TI-001"></a>
 
-## ✅ Isolate Unit Tests with Fake Dependencies
+## ✅ Prefer Fakes over Real Dependencies or Mocks
 
-**Exercise the real component through its public API; inject fakes for external
-dependencies.** Keeping external storage and network operations out of unit
-tests makes them fast and deterministic and prevents cascading failures when a
-dependency breaks.
+**Prefer lightweight fakes for dependencies in unit tests. Keep the component
+under test real and assert its observable behavior.** A fake is a simplified
+working implementation, such as an in-memory store, configured with test data.
+Reuse existing fakes and configure their state, results, errors, or completion
+timing as needed.
 
-Reuse existing interfaces and fakes. Prefer constructor injection: pass
-dependencies into the component instead of constructing production
-implementations internally. Put reusable fakes in a separate `test_support` GN
-target with `testonly = true` so multiple test targets can share them. NEVER
-make every method virtual solely to enable mocking.
+Real dependencies can add I/O, expensive setup, nondeterminism, and cascading
+failures. Mocks often couple tests to incidental call counts or ordering, so
+harmless changes such as caching or batching break the test. NEVER assert
+incidental interactions; use a mock only when the interaction itself is part of
+the contract being tested.
+
+Here `ReportService` is the real component under test. Its storage dependency
+can be a disk-backed `ReportStoreImpl`, a `MockReportStore`, or an in-memory
+`FakeReportStore` configured with a saved report.
 
 ```cpp
-// ❌ WRONG - starts production storage to test its consumer
+// ❌ WRONG - testing the consumer depends on production storage and disk state
 ReportService service(std::make_unique<ReportStoreImpl>(database_path));
-EXPECT_EQ(service.ReadReport(), "saved report");  // Depends on disk state.
+EXPECT_EQ(service.ReadReport(), "saved report");
 ```
 
 ```cpp
-// ✅ CORRECT - real consumer, controlled dependency through a shared interface
-class ReportStore {
- public:
-  virtual ~ReportStore() = default;
-  virtual std::string ReadReport() const = 0;
-};
+// ❌ WRONG - the consumer's contract does not require exactly one storage read
+// Caching or batching can change this count without changing the result.
+auto store = std::make_unique<MockReportStore>();
+EXPECT_CALL(*store, ReadReport())
+    .Times(1)
+    .WillOnce(testing::Return("saved report"));
+ReportService service(std::move(store));
+EXPECT_EQ(service.ReadReport(), "saved report");
+```
 
-class ReportStoreImpl : public ReportStore {
- public:
-  std::string ReadReport() const override;  // Reads production storage.
-};
-
+```cpp
+// ✅ CORRECT - fake storage supplies data; the real consumer produces the result
 class FakeReportStore : public ReportStore {
  public:
   explicit FakeReportStore(std::string report) : report_(std::move(report)) {}
@@ -43,53 +48,14 @@ class FakeReportStore : public ReportStore {
   std::string report_;
 };
 
-class ReportService {
- public:
-  explicit ReportService(std::unique_ptr<ReportStore> store)
-      : store_(std::move(store)) {}
-  std::string ReadReport() const { return store_->ReadReport(); }
-
- private:
-  std::unique_ptr<ReportStore> store_;
-};
-
-TEST(ReportServiceTest, ReadsSavedReport) {
-  ReportService service(std::make_unique<FakeReportStore>("saved report"));
-  EXPECT_EQ(service.ReadReport(), "saved report");
-}
+ReportService service(std::make_unique<FakeReportStore>("saved report"));
+EXPECT_EQ(service.ReadReport(), "saved report");
+EXPECT_EQ(service.ReadReport(), "saved report");
 ```
 
-For one or two independent operations, inject `base::RepeatingCallback`s
-directly instead of introducing a dependency class/interface. Production binds
-the real operation; tests supply controlled behavior. Use an interface when the
-operations form a larger shared contract.
-
-```cpp
-// ✅ CORRECT - inject the read operation itself without a dependency interface
-class CallbackReportService {
- public:
-  using ReadReportCallback = base::RepeatingCallback<std::string()>;
-
-  explicit CallbackReportService(ReadReportCallback read_report)
-      : read_report_(std::move(read_report)) {}
-  std::string ReadReport() const { return read_report_.Run(); }
-
- private:
-  ReadReportCallback read_report_;
-};
-
-TEST(CallbackReportServiceTest, ReadsSavedReport) {
-  CallbackReportService service(
-      base::BindRepeating([] { return std::string("saved report"); }));
-  EXPECT_EQ(service.ReadReport(), "saved report");
-  EXPECT_EQ(service.ReadReport(), "saved report");
-}
-```
-
-Keep integration/browser tests for real component wiring. A storage
-implementation's own tests may use real storage. NEVER replace the component
-under test with a fake; isolate its external dependencies. Keep simple value
-objects real.
+NEVER replace the component under test with a fake. Use real dependencies in
+integration tests to verify component wiring; a storage implementation's own
+tests may use real storage. Keep simple value objects real.
 
 ---
 
