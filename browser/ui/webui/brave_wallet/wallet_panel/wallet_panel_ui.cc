@@ -22,9 +22,6 @@
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
 #include "brave/components/brave_wallet_panel/resources/grit/brave_wallet_panel_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
 #include "chrome/browser/ui/webui/plural_string_handler.h"
 #include "chrome/browser/ui/webui/sanitized_image/sanitized_image_source.h"
@@ -113,22 +110,25 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
                    profile, chrome::FaviconUrlFormat::kFavicon2));
   content::URLDataSource::Add(
       profile, std::make_unique<brave_wallet::BlockchainImagesSource>(profile));
-
-  // TODO(https://github.com/brave/brave-browser/issues/55074) should be set
-  // externally. Keep the existing last-active lookup for the bubble; do not
-  // CHECK — side-panel construction can run when last-active is unset (e.g.
-  // browser tests). CreatePanelHandler already no-ops if this is null. Proper
-  // tab binding for the side panel in a follow-up.
-  if (BrowserWindowInterface* const bwi =
-          GetLastActiveBrowserWindowInterfaceWithAnyProfile()) {
-    active_web_contents_ =
-        bwi->GetTabStripModel()->GetActiveWebContents()->GetWeakPtr();
-  }
 }
 
 WalletPanelUI::~WalletPanelUI() = default;
 
 WEB_UI_CONTROLLER_TYPE_IMPL(WalletPanelUI)
+
+void WalletPanelUI::SetTabWebContents(content::WebContents* tab_web_contents) {
+  CHECK(tab_web_contents);
+  tab_web_contents_ = tab_web_contents->GetWeakPtr();
+  if (pending_panel_receiver_) {
+    BindPanelHandler(std::move(pending_panel_receiver_));
+  }
+}
+
+void WalletPanelUI::BindPanelHandler(
+    mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> panel_receiver) {
+  panel_handler_ = std::make_unique<WalletPanelHandler>(
+      std::move(panel_receiver), this, tab_web_contents_.get());
+}
 
 void WalletPanelUI::BindInterface(
     mojo::PendingReceiver<brave_wallet::mojom::PanelHandlerFactory> receiver) {
@@ -195,13 +195,11 @@ void WalletPanelUI::CreatePanelHandler(
   auto* profile = Profile::FromWebUI(web_ui());
   CHECK(profile);
 
-  content::WebContents* active_web_contents = active_web_contents_.get();
-  if (!active_web_contents) {
-    return;
+  if (tab_web_contents_) {
+    BindPanelHandler(std::move(panel_receiver));
+  } else {
+    pending_panel_receiver_ = std::move(panel_receiver);
   }
-
-  panel_handler_ = std::make_unique<WalletPanelHandler>(
-      std::move(panel_receiver), this, active_web_contents);
 
   if (auto* wallet_service =
           brave_wallet::BraveWalletServiceFactory::GetServiceForContext(

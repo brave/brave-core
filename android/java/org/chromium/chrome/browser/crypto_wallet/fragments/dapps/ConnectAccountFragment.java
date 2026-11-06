@@ -99,7 +99,8 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
     private void updateAccounts() {
         if (mSelectedAccount == null || mAccountInfos == null) return;
         AccountsPermissionsHelper accountsPermissionsHelper =
-                new AccountsPermissionsHelper(getBraveWalletService(), mAccountInfos);
+                new AccountsPermissionsHelper(
+                        getBraveWalletService(), mOriginInfo.originSpec, mAccountInfos);
         accountsPermissionsHelper.checkAccounts(
                 () -> {
                     mAccountsWithPermissions =
@@ -309,6 +310,7 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
     public void disconnectAccount(final AccountInfo account) {
         getBraveWalletService()
                 .resetPermission(
+                        mOriginInfo.originSpec,
                         account.accountId,
                         success -> {
                             if (!success) {

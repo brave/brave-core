@@ -10,9 +10,12 @@
 #include "base/check.h"
 #include "base/functional/callback.h"
 #include "brave/browser/ui/views/side_panel/wallet/wallet_side_panel_contents_wrapper.h"
+#include "brave/browser/ui/webui/brave_wallet/wallet_panel/wallet_panel_ui.h"
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry_scope.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/tabs/public/tab_interface.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "url/gurl.h"
 
@@ -28,6 +31,8 @@ std::unique_ptr<views::View> WalletSidePanelWebView::CreateView(
   auto contents_wrapper = std::make_unique<WalletSidePanelContentsWrapper>(
       GURL(kBraveUIWalletSidePanelURL), profile, IDS_SIDEBAR_WALLET_ITEM_TITLE,
       /*esc_closes_ui=*/false);
+  contents_wrapper->GetWebUIController()->SetTabWebContents(
+      scope.GetTabInterface().GetContents());
 
   auto web_view = std::make_unique<WalletSidePanelWebView>(
       scope, std::move(contents_wrapper));

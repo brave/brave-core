@@ -5,44 +5,17 @@
 
 #include "brave/browser/brave_wallet/brave_wallet_service_delegate_impl_android.h"
 
-#include <algorithm>
-#include <optional>
 #include <utility>
-#include <vector>
 
-#include "base/check_op.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
-#include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/android/tab_model/tab_model.h"
-#include "chrome/browser/ui/android/tab_model/tab_model_list.h"
 #include "content/public/browser/browser_context.h"
-#include "content/public/browser/web_contents.h"
 
 namespace brave_wallet {
 
-namespace {
-content::WebContents* GetActiveWebContents(content::BrowserContext* context) {
-  auto tab_models = TabModelList::models();
-  auto iter = std::ranges::find_if(
-      tab_models, [](const auto& model) { return model->IsActiveModel(); });
-  if (iter == tab_models.end()) {
-    return nullptr;
-  }
-
-  auto* active_contents = (*iter)->GetActiveWebContents();
-  if (!active_contents) {
-    return nullptr;
-  }
-  DCHECK_EQ(active_contents->GetBrowserContext(), context);
-  return active_contents;
-}
-}  // namespace
-
 BraveWalletServiceDelegateImpl::BraveWalletServiceDelegateImpl(
     content::BrowserContext* context)
-    : BraveWalletServiceDelegateBase(context), weak_ptr_factory_(this) {}
+    : BraveWalletServiceDelegateBase(context) {}
 
 BraveWalletServiceDelegateImpl::~BraveWalletServiceDelegateImpl() = default;
 
@@ -83,14 +56,6 @@ void BraveWalletServiceDelegateImpl::ResetWebSitePermission(
   std::move(callback).Run(
       permissions::BraveWalletPermissionContext::ResetWebSitePermission(
           *type, context_, formed_website));
-}
-
-std::optional<url::Origin> BraveWalletServiceDelegateImpl::GetActiveOrigin() {
-  content::WebContents* contents = GetActiveWebContents(context_);
-  auto origin = contents
-                    ? contents->GetPrimaryMainFrame()->GetLastCommittedOrigin()
-                    : std::optional<url::Origin>();
-  return origin;
 }
 
 }  // namespace brave_wallet
