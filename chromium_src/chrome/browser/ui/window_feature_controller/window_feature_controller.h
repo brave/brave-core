@@ -12,16 +12,22 @@
 #include "build/build_config.h"
 
 // Immersive mode requires special handling for vertical tabs, including
-// tracking the startup state of vertical tabs mode
+// tracking the startup state of vertical tabs mode and freezing the immersive
+// decision while the window is fullscreen.
 #if BUILDFLAG(IS_MAC)
-#define UsesImmersiveFullscreenMode                            \
-  UsesImmersiveFullscreenMode_ChromiumImpl() const;            \
-  bool UsesImmersiveFullscreenTabbedMode_ChromiumImpl() const; \
-                                                               \
- private:                                                      \
-  mutable std::optional<bool> disabled_at_startup_;            \
-                                                               \
- public:                                                       \
+#define UsesImmersiveFullscreenMode                                  \
+  UsesImmersiveFullscreenMode_ChromiumImpl() const;                  \
+  bool UsesImmersiveFullscreenTabbedMode_ChromiumImpl() const;       \
+  void SetImmersiveDecisionFrozenForFullscreen(bool is_fullscreen);  \
+                                                                     \
+ private:                                                            \
+  bool BraveUsesImmersiveFullscreenMode() const;                     \
+  bool BraveUsesImmersiveFullscreenTabbedMode() const;               \
+  mutable std::optional<bool> disabled_at_startup_;                  \
+  std::optional<bool> frozen_uses_immersive_fullscreen_mode_;        \
+  std::optional<bool> frozen_uses_immersive_fullscreen_tabbed_mode_; \
+                                                                     \
+ public:                                                             \
   bool UsesImmersiveFullscreenMode
 #endif
 

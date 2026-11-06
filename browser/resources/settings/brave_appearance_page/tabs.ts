@@ -163,6 +163,15 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
     })
   }
 
+  // The vertical tabs toggle is only disabled on macOS while the browser window
+  // is in immersive fullscreen, so tell the user how to change it.
+  private getVerticalTabsSubLabel_(toggleEnabled: boolean): string {
+    return toggleEnabled
+        ? ''
+        : this.i18n(
+              'SETTINGS_APPEARANCE_SETTINGS_TABS_SHOW_VERTICAL_TABS_DISABLED_IN_FULLSCREEN')
+  }
+
   private isSharedPinnedTabsEnabled_() {
     return loadTimeData.getBoolean('isSharedPinnedTabsEnabled')
   }
