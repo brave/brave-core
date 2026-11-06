@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +49,7 @@ public class BraveExclusiveAccessNotice implements ApplicationStatus.WindowFocus
     private static final int PADDING_VERTICAL_DP = 12;
     private static final int CORNER_RADIUS_DP = 16;
     private static final int MAX_WIDTH_DP = 480;
-    private static final int MAX_LINES = 4;
+    private static final int MAX_LINES = 5;
     private static final int BACKGROUND_COLOR = Color.argb(0xD9, 0x1C, 0x1C, 0x1E);
 
     private final ExclusiveAccessContext mContext;
@@ -77,9 +78,9 @@ public class BraveExclusiveAccessNotice implements ApplicationStatus.WindowFocus
      *     upstream snackbar.
      */
     boolean show(@Nullable String text) {
+        if (getContentContainer() == null) return false;
         if (text != null) mText = text;
         if (mText == null) return true;
-        if (getContentContainer() == null) return false;
         startObserving();
         display();
         return true;
@@ -198,6 +199,7 @@ public class BraveExclusiveAccessNotice implements ApplicationStatus.WindowFocus
         view.setTextAppearance(R.style.TextAppearance_TextMedium_Primary_Baseline_Light);
         view.setGravity(Gravity.CENTER);
         view.setMaxLines(MAX_LINES);
+        view.setEllipsize(TextUtils.TruncateAt.END);
         view.setMaxWidth(dpToPx(activity, MAX_WIDTH_DP));
         view.setPadding(
                 dpToPx(activity, PADDING_HORIZONTAL_DP),
