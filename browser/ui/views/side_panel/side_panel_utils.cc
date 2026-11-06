@@ -7,7 +7,6 @@
 
 #include "brave/browser/ui/views/brave_layout_provider.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
-#include "brave/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
@@ -49,7 +48,8 @@ gfx::RoundedCornersF GetPanelContentsRoundedCorners(
 
   // When Brave's rounded corners are off, the panel has no rounded border, so
   // the content shouldn't be rounded either.
-  if (!prefs->GetBoolean(kWebViewRoundedCorners)) {
+  if (!BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
+          brave_browser_view->browser())) {
     return gfx::RoundedCornersF();
   }
 

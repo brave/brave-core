@@ -63,6 +63,8 @@
 #include "chrome/browser/devtools/devtools_ui_controller.h"
 #include "chrome/browser/devtools/devtools_window.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
+#include "chrome/browser/ui/animation/browser_animation_controller.h"
+#include "chrome/browser/ui/animation/browser_animation_types.h"
 #include "chrome/browser/ui/bookmarks/bookmark_tab_helper.h"
 #include "chrome/browser/ui/browser_actions.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -72,6 +74,7 @@
 #include "chrome/browser/ui/frame/window_frame_util.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/views/animations/side_panel_animations.h"
 #include "chrome/browser/ui/views/frame/browser_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/browser_widget.h"
@@ -302,6 +305,18 @@ bool BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
     return true;
   }
 
+  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
+  if (!browser_view) {
+    return false;
+  }
+
+  // Use rounded corners while the side panel occupies layout space next to the
+  // contents.
+  if (auto* side_panel = browser_view->side_panel();
+      side_panel && side_panel->GetVisible() && !side_panel->IsClosing()) {
+    return true;
+  }
+
   auto* model = browser->GetTabStripModel();
   if (model->empty()) {
     return false;
@@ -311,9 +326,15 @@ bool BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
     return false;
   }
 
+  // Use rounded corners while the side panel occupies layout space next to the
+  // contents.
+  if (auto* side_panel = browser_view->side_panel();
+      side_panel && side_panel->GetVisible() && !side_panel->IsClosing()) {
+    return true;
+  }
+
   // Use rounded corners when browser view shows split view.
-  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
-  return browser_view && browser_view->multi_contents_view()->IsInSplitView();
+  return browser_view->multi_contents_view()->IsInSplitView();
 }
 
 BraveBrowserView::BraveBrowserView(BrowserWindowInterface* browser)
@@ -343,6 +364,19 @@ BraveBrowserView::BraveBrowserView(BrowserWindowInterface* browser)
       kWebViewRoundedCorners,
       base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
                           base::Unretained(this)));
+
+  // A visible side panel enables rounded corners. See
+  // ShouldUseBraveWebViewRoundedCornersForContents(). Visibility alone isn't
+  // enough: the panel stays visible for the whole close animation, so also
+  // watch the animation group to catch its start.
+  side_panel_visible_subscription_ =
+      side_panel_->AddVisibleChangedCallback(base::BindRepeating(
+          &BraveBrowserView::UpdateRoundedCornersUI, base::Unretained(this)));
+  side_panel_animation_subscription_ =
+      BrowserAnimationController::From(browser)->Subscribe(
+          SidePanelAnimations::kSidePanel,
+          base::BindRepeating(&BraveBrowserView::OnSidePanelAnimationUpdated,
+                              base::Unretained(this)));
 
   pref_change_registrar_.Add(
       brave_tabs::kVerticalTabsEnabled,
@@ -1117,6 +1151,18 @@ void BraveBrowserView::UpdateSidePanelBorder() {
     side_panel_->SetRoundedBorderEnabled(
         ShouldUseBraveWebViewRoundedCornersForContents(browser_));
   }
+}
+
+void BraveBrowserView::OnSidePanelAnimationUpdated(
+    const BrowserAnimationController* controller,
+    BrowserAnimationUpdate update) {
+  // Only the motion changing can flip the rounded corners state, so skip the
+  // per-frame updates.
+  if (update == BrowserAnimationUpdate::kProgressed) {
+    return;
+  }
+
+  UpdateRoundedCornersUI();
 }
 
 void BraveBrowserView::OnSidebarControlViewVisibilityChanged() {

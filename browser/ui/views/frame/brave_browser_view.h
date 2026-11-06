@@ -25,6 +25,7 @@
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/commands/browser/accelerator_pref_manager.h"
 #include "build/build_config.h"
+#include "chrome/browser/ui/animation/browser_animation_types.h"
 #include "chrome/browser/ui/bookmarks/bookmark_tab_helper.h"
 #include "chrome/browser/ui/bookmarks/bookmark_tab_helper_observer.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
@@ -301,6 +302,12 @@ class BraveBrowserView : public BrowserView,
   void StopTabCycling();
   void OnCompactModePrefChanged();
   void OnPreferenceChanged(const std::string& pref_name);
+
+  // Re-evaluates the rounded corners state when the side panel's open/close
+  // animation starts or finishes.
+  void OnSidePanelAnimationUpdated(const BrowserAnimationController* controller,
+                                   BrowserAnimationUpdate update);
+
   void UpdateFocusModeState();
   bool ShouldDisableFocusModeForActiveTab() const;
 
@@ -384,6 +391,8 @@ class BraveBrowserView : public BrowserView,
       bookmark_tab_helper_observation_{this};
   base::CallbackListSubscription active_tab_will_discard_contents_subscription_;
   base::CallbackListSubscription active_tab_will_detach_subscription_;
+  base::CallbackListSubscription side_panel_visible_subscription_;
+  base::CallbackListSubscription side_panel_animation_subscription_;
 
   base::WeakPtrFactory<BraveBrowserView> weak_ptr_{this};
 };
