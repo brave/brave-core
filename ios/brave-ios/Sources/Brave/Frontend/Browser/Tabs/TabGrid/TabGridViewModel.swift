@@ -178,15 +178,18 @@ class TabGridViewModel {
 
   func shredSelectedTab() {
     guard let tab = tabManager.selectedTab, let url = tab.visibleURL else { return }
-    tabManager.shredData(for: url, in: tab)
+    tabManager.shredManager.shredData(for: url, in: tab)
   }
 
   func shredSelectedTabs(_ tabs: Set<TabState.ID>) -> Set<TabState.ID> {
-    return tabManager.shredDataForTabs(tabs.compactMap({ tabManager[$0] }))
+    return tabManager.shredManager.shredData(
+      for: tabs.compactMap({ tabManager[$0] }),
+      in: tabManager
+    )
   }
 
   func shredAllTabs() {
-    tabManager.shredAllTabsForCurrentMode()
+    tabManager.shredManager.shredAllTabs(in: tabManager)
   }
 
   func selectTab(_ tab: any TabState) {

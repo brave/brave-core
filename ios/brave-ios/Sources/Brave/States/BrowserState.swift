@@ -66,12 +66,6 @@ public class BrowserState {
     return userInfo[SessionState.windowIDKey] as? String
   }
 
-  /// Shreds sites whose tabs were open in the given discarded windows. Must be called before the
-  /// windows' persisted sessions are deleted.
-  @MainActor public static func forgetDataForDiscardedWindows(_ windowIds: [UUID]) {
-    TabManager.forgetDataForDiscardedWindows(windowIds)
-  }
-
   public static func getNewWindowInfo(from activity: NSUserActivity) -> SessionState {
     guard let userInfo = activity.userInfo else {
       return SessionState(windowId: nil, isPrivate: false, openURL: nil)

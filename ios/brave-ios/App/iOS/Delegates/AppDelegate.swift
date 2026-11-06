@@ -479,7 +479,7 @@ extension AppDelegate {
       }
       return nil
     }
-    BrowserState.forgetDataForDiscardedWindows(windowIds)
+    SceneDelegate.profileState?.shredManager.forgetDataForDiscardedWindows(windowIds)
     windowIds.forEach { SessionWindow.delete(windowId: $0) }
   }
 }
