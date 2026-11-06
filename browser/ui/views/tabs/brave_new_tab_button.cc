@@ -167,7 +167,7 @@ BraveNewTabButton::BraveNewTabButton(
                    fixed_flat_edge,
                    animated_flat_edge,
                    browser_window_interface),
-      original_pressed_callback_(std::move(callback)),
+      callback_(std::move(callback)),
       browser_window_interface_(CHECK_DEREF(browser_window_interface)) {
   views::HighlightPathGenerator::Install(
       this, std::make_unique<BraveNewTabButtonHighlightPathGenerator>(*this));
@@ -229,7 +229,20 @@ void BraveNewTabButton::ShowContextMenuForViewImpl(
     NewTabButton::ShowContextMenuForViewImpl(source, point, source_type);
   }
 }
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
+void BraveNewTabButton::OnPressed(const ui::Event& event) {
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  if (ShouldAskForContainer()) {
+    ShowContextMenuForViewImpl(this, GetBoundsInScreen().bottom_left(),
+                               ui::GetMenuSourceTypeForEvent(event));
+    return;
+  }
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+  callback_.Run(event);
+}
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
 bool BraveNewTabButton::ShouldAskForContainer() const {
   if (!base::FeatureList::IsEnabled(containers::features::kContainers)) {
     return false;
@@ -243,17 +256,6 @@ bool BraveNewTabButton::ShouldAskForContainer() const {
   return target && target->is_ask_each_time();
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
-
-void BraveNewTabButton::OnPressed(const ui::Event& event) {
-#if BUILDFLAG(ENABLE_CONTAINERS)
-  if (ShouldAskForContainer()) {
-    ShowContextMenuForViewImpl(this, GetBoundsInScreen().bottom_left(),
-                               ui::GetMenuSourceTypeForEvent(event));
-    return;
-  }
-#endif  // BUILDFLAG(ENABLE_CONTAINERS)
-  original_pressed_callback_.Run(event);
-}
 
 BEGIN_METADATA(BraveNewTabButton)
 END_METADATA
