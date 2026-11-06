@@ -191,9 +191,8 @@ def _make_valid_builder_dir(tmp_dir, name):
     (builder_dir / 'sync.json').write_text(
         json.dumps(
             {
-                'target_os': 'linux',
-                'target_cpu': 'x64',
-                'gclient_overrides': {},
+                'target_os': [],
+                'target_cpu': [],
             }
         ),
         encoding='utf-8',

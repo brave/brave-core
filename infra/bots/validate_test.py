@@ -63,9 +63,8 @@ def _write_builder(
         'sync.json': sync
         if sync is not None
         else {
-            'target_os': 'linux',
-            'target_cpu': 'x64',
-            'gclient_overrides': {},
+            'target_os': [],
+            'target_cpu': [],
         },
         'targets.json': targets
         if targets is not None
@@ -286,12 +285,21 @@ class ValidatorRunTest(_OutputDirTestCase):
         self.assertEqual(validate._Validator().run(), [])
 
     def test_sync_json_missing_field_is_reported(self):
-        _write_builder(self.output_dir, 'b', sync={'target_os': 'linux'})
+        _write_builder(self.output_dir, 'b', sync={'target_os': []})
+        errs = validate._Validator().run()
+        self.assertEqual(len(errs), 1)
+        self.assertIn("missing 'target_cpu'", errs[0])
+
+    def test_sync_json_field_not_a_list_is_reported(self):
+        _write_builder(
+            self.output_dir,
+            'b',
+            sync={'target_os': 'linux', 'target_cpu': ['x64', 1]},
+        )
         errs = validate._Validator().run()
         self.assertEqual(len(errs), 2)
         self.assertTrue(
-            any("'target_cpu'" in e for e in errs)
-            and any("'gclient_overrides'" in e for e in errs)
+            all('is not a list of strings' in e for e in errs), errs
         )
 
     def test_targets_json_field_not_a_list_is_reported(self):

@@ -26,7 +26,12 @@ sys.path.insert(
 )
 
 import snapshot
-from lib.config import BuildersRegistry, GnArgsRegistry
+from lib.config import (
+    BuildersRegistry,
+    ConfigError,
+    GnArgsRegistry,
+    builder_config,
+)
 
 
 def _make_registries():
@@ -36,8 +41,15 @@ def _make_registries():
     builders_registry = BuildersRegistry(gn_args_registry)
     builders_registry.builder(
         name='test-builder',
-        sync_config=builders_registry.sync_config(
-            target_os='linux', target_cpu='x64'
+        builder_spec=builder_config.builder_spec(
+            gclient_config=builder_config.gclient_config(
+                target_os=['linux', 'android']
+            ),
+            chromium_config=builder_config.chromium_config(
+                target_platform=builder_config.target_platform.LINUX,
+                target_arch=builder_config.target_arch.INTEL,
+                target_bits=64,
+            ),
         ),
         gn_args=gn_args_registry.config(
             configs=['linux', 'x64'], args={'is_asan': True}
@@ -74,6 +86,25 @@ class ComputeFreshOutputTest(unittest.TestCase):
             gn_args_registry.resolve('test-builder'),
         )
 
+    def test_spec_disagreeing_with_gn_args_is_an_error(self):
+        gn_args_registry = GnArgsRegistry()
+        builders_registry = BuildersRegistry(gn_args_registry)
+        builders_registry.builder(
+            name='mismatched',
+            builder_spec=builder_config.builder_spec(
+                gclient_config=builder_config.gclient_config(),
+                chromium_config=builder_config.chromium_config(
+                    target_platform=builder_config.target_platform.ANDROID
+                ),
+            ),
+            gn_args=gn_args_registry.config(
+                args={'target_os': 'linux', 'target_cpu': 'x64'}
+            ),
+            targets=builders_registry.targets(compile=[], tests=[]),
+        )
+        with self.assertRaisesRegex(ConfigError, 'does not match'):
+            snapshot.compute_fresh_output(builders_registry, gn_args_registry)
+
     def test_sync_and_targets_json(self):
         builders_registry, gn_args_registry = _make_registries()
         fresh = snapshot.compute_fresh_output(
@@ -82,9 +113,8 @@ class ComputeFreshOutputTest(unittest.TestCase):
         self.assertEqual(
             json.loads(fresh['test-builder/sync.json']),
             {
-                'target_os': 'linux',
-                'target_cpu': 'x64',
-                'gclient_overrides': {},
+                'target_os': ['android', 'linux'],
+                'target_cpu': [],
             },
         )
         self.assertEqual(

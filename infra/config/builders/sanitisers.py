@@ -4,7 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """The `brave.sanitisers` builder group: the Linux ASan builders."""
 
-from lib.config import builders, gn_args
+from lib.config import builder_config, builders, gn_args
 
 builders.defaults.set(
     builder_group='brave.sanitisers',
@@ -17,7 +17,16 @@ builders.defaults.set(
 
 builders.builder(
     name='linux-x64-asan-brave',
-    sync_config=builders.sync_config(target_os='linux', target_cpu='x64'),
+    builder_spec=builder_config.builder_spec(
+        gclient_config=builder_config.gclient_config(),
+        chromium_config=builder_config.chromium_config(
+            target_platform=builder_config.target_platform.LINUX,
+            host_platform=builder_config.host_platform.LINUX,
+            build_config=builder_config.build_config.RELEASE,
+            target_arch=builder_config.target_arch.INTEL,
+            target_bits=64,
+        ),
+    ),
     gn_args=gn_args.config(
         configs=[
             'release',
@@ -43,7 +52,16 @@ builders.builder(
 
 builders.builder(
     name='linux-x64-asan-chromium',
-    sync_config=builders.sync_config(target_os='linux', target_cpu='x64'),
+    builder_spec=builder_config.builder_spec(
+        gclient_config=builder_config.gclient_config(),
+        chromium_config=builder_config.chromium_config(
+            target_platform=builder_config.target_platform.LINUX,
+            host_platform=builder_config.host_platform.LINUX,
+            build_config=builder_config.build_config.RELEASE,
+            target_arch=builder_config.target_arch.INTEL,
+            target_bits=64,
+        ),
+    ),
     gn_args=gn_args.config(
         configs=[
             'release',
