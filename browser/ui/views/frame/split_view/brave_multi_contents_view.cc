@@ -5,10 +5,12 @@
 
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 
+#include <algorithm>
 #include <utility>
 
 #include "base/check.h"
 #include "base/i18n/rtl.h"
+#include "base/memory/raw_ref.h"
 #include "brave/browser/ui/views/brave_layout_provider.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "chrome/browser/devtools/devtools_ui_controller.h"
@@ -17,14 +19,43 @@
 #include "chrome/browser/ui/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
+#include "chrome/browser/ui/views/frame/multi_contents_resize_area.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view_delegate.h"
 #include "components/split_tabs/split_tab_visual_data.h"
 #include "components/tabs/public/tab_interface.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/views/controls/resize_area.h"
+#include "ui/views/controls/resize_area_delegate.h"
 #include "ui/views/layout/layout_provider.h"
 #include "ui/views/widget/widget.h"
 
 namespace {
+
+constexpr int kWebPanelResizeAreaWidth =
+    MultiContentsResizeArea::kHandleResizeAxisSize +
+    MultiContentsResizeArea::kHandleResizeAxisPadding;
+
+// Self-delegating because BraveMultiContentsView already inherits
+// MultiContentsView's OnResize() for the split view divider.
+class WebPanelResizeArea : public views::ResizeArea,
+                           public views::ResizeAreaDelegate {
+  METADATA_HEADER(WebPanelResizeArea, views::ResizeArea)
+ public:
+  explicit WebPanelResizeArea(BraveMultiContentsView& multi_contents_view)
+      : ResizeArea(this), multi_contents_view_(multi_contents_view) {}
+  ~WebPanelResizeArea() override = default;
+
+ private:
+  // views::ResizeAreaDelegate:
+  void OnResize(int resize_amount, bool done_resizing) override {
+    multi_contents_view_->OnWebPanelResize(resize_amount, done_resizing);
+  }
+
+  const raw_ref<BraveMultiContentsView> multi_contents_view_;
+};
+
+BEGIN_METADATA(WebPanelResizeArea)
+END_METADATA
 
 // Returns |corner_radii| with the corners that meet the split divider replaced
 // by the smaller border radius. Which corners those are depends on |layout|:
@@ -88,6 +119,11 @@ void BraveMultiContentsView::UseContentsContainerViewForWebPanel() {
         AddChildView(std::make_unique<BraveContentsContainerView>(
             browser_view_, /*for_web_panel*/ true));
     contents_container_view_for_web_panel_->SetVisible(false);
+
+    web_panel_resize_area_ =
+        AddChildView(std::make_unique<WebPanelResizeArea>(*this));
+    web_panel_resize_area_->SetVisible(false);
+
     SetWebPanelWidth(SidePanelEntry::kSidePanelDefaultContentWidth);
 
     auto& view_map =
@@ -139,6 +175,25 @@ void BraveMultiContentsView::SetWebPanelOnLeft(bool left) {
   InvalidateLayout();
 }
 
+void BraveMultiContentsView::OnWebPanelResize(int resize_amount,
+                                              bool done_resizing) {
+  if (!web_panel_width_on_resize_start_) {
+    // Not |web_panel_width_|: if the window shrank below it, the drag would
+    // have to make up the difference before the panel moved at all.
+    web_panel_width_on_resize_start_ =
+        ClampWebPanelWidth(GetWebPanelWidth(), width());
+  }
+
+  const int proposed_width =
+      *web_panel_width_on_resize_start_ +
+      (web_panel_on_left_ ? resize_amount : -resize_amount);
+  SetWebPanelWidth(ClampWebPanelWidth(proposed_width, width()));
+
+  if (done_resizing) {
+    web_panel_width_on_resize_start_.reset();
+  }
+}
+
 void BraveMultiContentsView::OnShowActiveContentsDomainChanged() {
   UpdateContentsBorderAndOverlay();
 }
@@ -175,28 +230,37 @@ views::ProposedLayout BraveMultiContentsView::CalculateProposedLayout(
     return MultiContentsView::CalculateProposedLayout(size_bounds);
   }
 
-  views::SizeBounds new_size_bounds = size_bounds;
+  const int host_width = size_bounds.width().value();
+  const int host_height = size_bounds.height().value();
 
-  // Negative to shrink to make room for web panel.
-  const int web_panel_width = GetWebPanelWidth();
-  new_size_bounds.Enlarge(-web_panel_width, 0);
+  // Negative to shrink to make room for web panel and its resize area.
+  const int web_panel_width =
+      ClampWebPanelWidth(GetWebPanelWidth(), host_width);
+  const int resize_area_width = GetWebPanelResizeAreaWidth();
+  const int reserved_width = web_panel_width + resize_area_width;
+  views::SizeBounds new_size_bounds = size_bounds;
+  new_size_bounds.Enlarge(-reserved_width, 0);
   views::ProposedLayout layouts =
       MultiContentsView::CalculateProposedLayout(new_size_bounds);
 
   if (web_panel_on_left_) {
     for (auto& layout : layouts.child_layouts) {
       // Move all other views to right to put web panel on left side.
-      layout.bounds.Offset(web_panel_width, 0);
+      layout.bounds.Offset(reserved_width, 0);
     }
   }
 
-  int host_width = size_bounds.width().value();
-  int host_height = size_bounds.height().value();
   const int web_panel_x = web_panel_on_left_ ? 0 : host_width - web_panel_width;
   gfx::Rect web_panel_rect(web_panel_x, 0, web_panel_width, host_height);
   layouts.child_layouts.emplace_back(
       contents_container_view_for_web_panel_.get(),
       contents_container_view_for_web_panel_->GetVisible(), web_panel_rect);
+
+  const int resize_area_x =
+      web_panel_on_left_ ? web_panel_width : host_width - reserved_width;
+  layouts.child_layouts.emplace_back(
+      web_panel_resize_area_.get(), IsWebPanelVisible(),
+      gfx::Rect(resize_area_x, 0, resize_area_width, host_height));
 
   layouts.host_size = gfx::Size(host_width, host_height);
   return layouts;
@@ -289,6 +353,24 @@ int BraveMultiContentsView::GetWebPanelWidth() const {
   }
 
   return web_panel_width_;
+}
+
+int BraveMultiContentsView::GetWebPanelResizeAreaWidth() const {
+  return IsWebPanelVisible() ? kWebPanelResizeAreaWidth : 0;
+}
+
+int BraveMultiContentsView::ClampWebPanelWidth(int requested_width,
+                                               int host_width) const {
+  if (!IsWebPanelVisible()) {
+    return 0;
+  }
+
+  // Layout clamps too, not just dragging: the window can shrink after a drag
+  // settled on a width that no longer fits.
+  const int max_width =
+      std::max(kMinWebContentsSize,
+               host_width - GetWebPanelResizeAreaWidth() - kMinWebContentsSize);
+  return std::clamp(requested_width, kMinWebContentsSize, max_width);
 }
 
 ContentsContainerView* BraveMultiContentsView::GetActiveContentsContainerView()
