@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index f08d6306f153f55a2de6e186d62451fe24189172..1e1544493163222552f4a0701d3fbb2738e81a8f 100644
+index f08d6306f153f55a2de6e186d62451fe24189172..a5bc2b109b5db2b06c8b0486213fc66e0149f77f 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
 @@ -1228,6 +1228,7 @@ inline constexpr char kSuggestedContentEnabled[] =
@@ -60,14 +60,14 @@ index f08d6306f153f55a2de6e186d62451fe24189172..1e1544493163222552f4a0701d3fbb27
    // Blocking is disallowed on the UI thread after browser startup, and a
    // profile can be loaded after that (e.g. a second profile), so delete the
    // obsolete files in the background.
-@@ -2881,6 +2891,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
-                 profile_path.Append(FILE_PATH_LITERAL("Login Data-journal")));
-             base::DeleteFile(profile_path.Append(
+@@ -2883,6 +2893,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
                  FILE_PATH_LITERAL("Login Data For Account-journal")));
-+#endif
            },
            profile_path));
++#endif
  #endif  // BUILDFLAG(IS_ANDROID)
+ 
+   // Added 09/2025.
 @@ -3270,4 +3281,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
    // doing the migration in feature code that's called by all platforms instead
    // of here, or by calling migration code in the appropriate place for iOS
