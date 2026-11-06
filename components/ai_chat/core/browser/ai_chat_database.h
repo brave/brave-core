@@ -14,6 +14,7 @@
 #include "base/gtest_prod_util.h"
 #include "base/sequence_checker.h"
 #include "base/thread_annotations.h"
+#include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 #include "components/os_crypt/async/common/encryptor.h"
@@ -73,6 +74,21 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   // Returns the uuid of the conversation owning |conversation_entry_uuid|, or
   // nullopt if no such entry exists.
   virtual std::optional<std::string> GetConversationUuidForEntry(
+      std::string_view conversation_entry_uuid);
+
+  // These return when a conversation's title or model, or an entry's content,
+  // last changed. Sync sends the time with each record, so a receiver can tell
+  // which of two copies is newer. Local writes set it to the current time, and
+  // ApplyRemoteConversationMetadata() and ApplyRemoteEntry() store the time
+  // the record carries. Token count updates don't move it. An edit moves the
+  // time of the entry it edits, which is the record sync sends. A null time,
+  // meaning the oldest, is returned when no time is recorded, as for rows
+  // saved before this was added, or when there is no such row. nullopt is
+  // returned when the read fails, so that it can't be taken for a missing row
+  // or time.
+  virtual std::optional<base::Time> GetConversationModifiedTime(
+      std::string_view conversation_uuid);
+  virtual std::optional<base::Time> GetEntryModifiedTime(
       std::string_view conversation_entry_uuid);
 
   // Returns new ID for the provided entry and any provided associated content
@@ -141,11 +157,15 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   // conversation row only, turning a stub into a listed conversation;
   // existing entries and associated content are left untouched (they sync as
   // independent records).
+  // |modified_time| is the time the record carries, not the current time:
+  // with the current time, this device's copy would look newer than the
+  // server's and be uploaded again for nothing.
   // Precondition: the caller has validated the record. Sync enforces this via
   // AIChatSyncBridge::IsEntityDataValid(), which rejects an empty uuid before
   // an entity reaches the bridge's apply path.
   virtual bool ApplyRemoteConversationMetadata(
-      mojom::ConversationPtr conversation);
+      mojom::ConversationPtr conversation,
+      base::Time modified_time);
 
   // Applies a remote conversation entry from sync, replacing any local entry
   // with the same uuid along with its event, uploaded file, associated
@@ -153,6 +173,8 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   // is kept. If the parent conversation does not exist yet a stub row is
   // created, hidden from GetAllConversations() until a metadata record fills
   // it in.
+  // |modified_time| is the time the record carries, stored for the same reason
+  // as in ApplyRemoteConversationMetadata().
   // |associated_content| is the per-entry content metadata and |contents| a
   // parallel vector of texts for each row's last_contents column. Sync may omit
   // data to fit its size budget, so the caller is responsible for fully
@@ -163,6 +185,7 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   virtual bool ApplyRemoteEntry(
       std::string_view conversation_uuid,
       mojom::ConversationTurnPtr entry,
+      base::Time modified_time,
       std::vector<mojom::AssociatedContentPtr> associated_content,
       std::vector<std::string> contents);
 
@@ -225,6 +248,18 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   // called within a transaction.
   bool DeleteEntryAndOwnedRows(std::string_view conversation_entry_uuid,
                                bool keep_workspace_content);
+
+  // Sets the time GetEntryModifiedTime() returns. For an edit, that's the time
+  // of the entry it edits, since sync sends an edited entry as one record
+  // under the original entry's uuid.
+  bool SetEntryModifiedTime(std::string_view conversation_entry_uuid,
+                            base::Time modified_time);
+
+  // Returns whether |content| and |content_text| differ from the stored row in
+  // any field sync sends. A missing row counts as different.
+  bool IsAssociatedContentChanged(std::string_view conversation_uuid,
+                                  const mojom::AssociatedContent& content,
+                                  std::string_view content_text);
 
   // The directory storing the database.
   const base::FilePath db_file_path_;
