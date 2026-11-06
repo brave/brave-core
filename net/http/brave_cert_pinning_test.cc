@@ -5,6 +5,7 @@
 
 #include <algorithm>
 #include <array>
+#include <cmath>
 #include <memory>
 #include <optional>
 #include <string>
@@ -66,10 +67,20 @@ struct Inconclusive {
 };
 using CheckResult = std::variant<testing::AssertionResult, Inconclusive>;
 
+// Maximum fraction of hosts in this process (excluding kSkippedHosts) that
+// may be skipped as inconclusive. Further inconclusive hosts fail instead.
+//
+// By default, each test runner gets 10 hosts to process. Some of those will be
+// kSkippedHosts. A value of .4 allows 4 inconclusive results if none are
+// kSkippedHosts, and 2 inconconclusive results if half are kSkippedHosts.
+constexpr double kMaxInconclusiveFraction = 0.4;
+
 class BraveCertPinningTest : public testing::TestWithParam<std::string_view> {
  protected:
   BraveCertPinningTest()
       : task_environment_(base::test::TaskEnvironment::MainThreadType::IO) {}
+
+  static void SetUpTestSuite();
 
   void SetUp() override {
     // Build a minimal context for the fetcher's own requests (AIA, OCSP, CRL).
@@ -244,6 +255,11 @@ class BraveCertPinningTest : public testing::TestWithParam<std::string_view> {
     cert_net_fetcher_->Shutdown();
   }
 
+  // The test launcher runs batches of tests in separate processes, so these
+  // are per-batch, not per-suite.
+  static inline int inconclusive_count_ = 0;
+  static inline int inconclusive_limit_ = 0;
+
   base::test::TaskEnvironment task_environment_;
   scoped_refptr<net::CertNetFetcherURLRequest> cert_net_fetcher_;
   std::unique_ptr<net::URLRequestContext> fetcher_context_;
@@ -284,9 +300,8 @@ std::vector<std::string_view> GetPinnedHosts() {
 
 // gtest test names may only contain [A-Za-z0-9_], and hostnames are full of
 // dots and dashes.
-std::string HostToTestName(
-    const testing::TestParamInfo<std::string_view>& info) {
-  std::string name(info.param);
+std::string SanitizeTestName(std::string_view host) {
+  std::string name(host);
   std::ranges::replace_if(
       name,
       [](char c) {
@@ -295,6 +310,36 @@ std::string HostToTestName(
       },
       '_');
   return name;
+}
+
+std::string HostToTestName(
+    const testing::TestParamInfo<std::string_view>& info) {
+  return SanitizeTestName(info.param);
+}
+
+bool IsSkippedHostTest(const testing::TestInfo& info) {
+  // Parameterized test names have the form "PinValidates/<SanitizeTestName>".
+  std::string_view name = info.name();
+  name.remove_prefix(name.find('/') + 1);
+  return std::ranges::any_of(kSkippedHosts, [name](std::string_view host) {
+    return SanitizeTestName(host) == name;
+  });
+}
+
+// static
+void BraveCertPinningTest::SetUpTestSuite() {
+  const testing::TestSuite* suite =
+      testing::UnitTest::GetInstance()->current_test_suite();
+  int host_count = 0;
+  for (int i = 0; i < suite->total_test_count(); ++i) {
+    const testing::TestInfo* info = suite->GetTestInfo(i);
+    if (info->should_run() && !IsSkippedHostTest(*info)) {
+      ++host_count;
+    }
+  }
+  inconclusive_count_ = 0;
+  inconclusive_limit_ =
+      static_cast<int>(std::ceil(kMaxInconclusiveFraction * host_count));
 }
 
 TEST_P(BraveCertPinningTest, PinValidates) {
@@ -307,6 +352,13 @@ TEST_P(BraveCertPinningTest, PinValidates) {
   CheckResult result =
       CheckHostWithRetry(host, GetParam() == kUnpinnedTestHost);
   if (auto* inconclusive = std::get_if<Inconclusive>(&result)) {
+    if (++inconclusive_count_ > inconclusive_limit_) {
+      ADD_FAILURE() << host << ": " << inconclusive->reason
+                    << " (would be skipped, but this test runner exceeded its "
+                       "limit of "
+                    << inconclusive_limit_ << " inconclusive hosts)";
+      return;
+    }
     GTEST_SKIP() << host << ": " << inconclusive->reason;
   }
   EXPECT_TRUE(std::get<testing::AssertionResult>(result)) << host;
