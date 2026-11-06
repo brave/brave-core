@@ -28,6 +28,8 @@
 #include "brave/ios/browser/brave_account/brave_account_dialog_mode_holder.h"
 #include "brave/ios/browser/brave_account/brave_account_dialog_opener_bridge.h"
 #include "brave/ios/browser/brave_account/brave_account_dialog_opener_bridge_holder.h"
+#include "brave/ios/browser/brave_account/brave_account_settings_opener_bridge.h"
+#include "brave/ios/browser/brave_account/brave_account_settings_opener_bridge_holder.h"
 #include "brave/ios/browser/brave_ads/ads_tab_helper.h"
 #include "brave/ios/browser/brave_search/brave_search_ad_results_javascript_feature.h"
 #include "brave/ios/browser/brave_search/brave_search_make_default_tab_helper.h"
@@ -283,6 +285,8 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
 @property(nonatomic) BraveAccountDialogMode braveAccountDialogMode;
 @property(nonatomic, weak) id<BraveAccountDialogOpenerBridge>
     braveAccountDialogOpener;
+@property(nonatomic, weak) id<BraveAccountSettingsOpenerBridge>
+    braveAccountSettingsOpener;
 @property(nonatomic, weak) id<WalletPageHandlerBridge> walletPageHandler;
 @property(nonatomic, weak) id<LoginsTabHelperBridge> loginsHelper;
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
@@ -417,6 +421,12 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
   brave_account::BraveAccountDialogOpenerBridgeHolder::FromWebState(
       self.webState)
       ->SetBridge(self.braveAccountDialogOpener);
+
+  brave_account::BraveAccountSettingsOpenerBridgeHolder::CreateForWebState(
+      self.webState);
+  brave_account::BraveAccountSettingsOpenerBridgeHolder::FromWebState(
+      self.webState)
+      ->SetBridge(self.braveAccountSettingsOpener);
 
   brave_wallet::PageHandlerBridgeHolder::CreateForWebState(self.webState);
   brave_wallet::PageHandlerBridgeHolder::FromWebState(self.webState)
@@ -763,6 +773,16 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
   brave_account::BraveAccountDialogOpenerBridgeHolder::FromWebState(
       self.webState)
       ->SetBridge(braveAccountDialogOpener);
+}
+
+- (void)setBraveAccountSettingsOpener:
+    (id<BraveAccountSettingsOpenerBridge>)braveAccountSettingsOpener {
+  _braveAccountSettingsOpener = braveAccountSettingsOpener;
+  brave_account::BraveAccountSettingsOpenerBridgeHolder::CreateForWebState(
+      self.webState);
+  brave_account::BraveAccountSettingsOpenerBridgeHolder::FromWebState(
+      self.webState)
+      ->SetBridge(braveAccountSettingsOpener);
 }
 
 @end

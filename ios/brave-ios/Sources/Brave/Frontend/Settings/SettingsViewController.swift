@@ -59,7 +59,9 @@ protocol SettingsDelegate: AnyObject {
   func settingsCreateFakeHistory()
 }
 
-class SettingsViewController: TableViewController, BraveAccountDialogOpenerBridge {
+class SettingsViewController: TableViewController, BraveAccountDialogOpenerBridge,
+  BraveAccountSettingsOpenerBridge
+{
   weak var settingsDelegate: SettingsDelegate?
 
   private let profile: LegacyBrowserProfile
@@ -393,6 +395,7 @@ class SettingsViewController: TableViewController, BraveAccountDialogOpenerBridg
       controller.webView.braveAccountDialogMode = dialogMode
     }
     controller.webView.braveAccountDialogOpener = self
+    controller.webView.braveAccountSettingsOpener = self
     controller.webView.load(URLRequest(url: url))
     controller.navigationItem.rightBarButtonItem = .doneButton { [unowned container] in
       container.dismiss(animated: true)
@@ -427,6 +430,34 @@ class SettingsViewController: TableViewController, BraveAccountDialogOpenerBridg
       url: URL(string: "brave://account")!,
       dialogMode: dialogMode
     )
+  }
+
+  // MARK: - BraveAccountSettingsOpenerBridge
+
+  // Called from a WebUI page that only links to `page`, which opens in its
+  // place.
+  func openSettingsPage(page: BraveAccount.SettingsPage) {
+    let open = { [weak self] in
+      guard let self else { return }
+      switch page {
+      case .braveAccount:
+        openBraveAccountSettings()
+      @unknown default:
+        break
+      }
+    }
+
+    let root: UIViewController = navigationController ?? self
+    var top = root
+    while let presented = top.presentedViewController {
+      top = presented
+    }
+
+    if top === root {
+      open()
+    } else {
+      top.dismiss(animated: true, completion: open)
+    }
   }
 
   private func makeFeaturesSection() -> Static.Section {

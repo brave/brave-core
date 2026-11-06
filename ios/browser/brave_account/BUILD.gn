@@ -16,6 +16,11 @@ source_set("brave_account") {
     "brave_account_feature_bridge.mm",
     "brave_account_service_factory_ios.h",
     "brave_account_service_factory_ios.mm",
+    "brave_account_settings_opener.h",
+    "brave_account_settings_opener.mm",
+    "brave_account_settings_opener_bridge.h",
+    "brave_account_settings_opener_bridge_holder.h",
+    "brave_account_settings_opener_bridge_holder.mm",
   ]
 
   deps = [
