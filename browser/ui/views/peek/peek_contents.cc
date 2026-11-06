@@ -20,6 +20,7 @@
 #include "components/input/native_web_keyboard_event.h"
 #include "components/web_modal/web_contents_modal_dialog_manager.h"
 #include "content/public/browser/download_item_utils.h"
+#include "content/public/browser/file_select_listener.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/page_navigator.h"
@@ -231,8 +232,18 @@ void PeekContents::RunFileChooser(
     content::RenderFrameHost* render_frame_host,
     scoped_refptr<content::FileSelectListener> listener,
     const blink::mojom::FileChooserParams& params) {
-  browser_delegate_->RunFileChooser(render_frame_host, std::move(listener),
-                                    params);
+  // Which files to give the site is the user's trust decision, so it's made in
+  // a tab, like the permission prompts.
+  content::WebContents* contents =
+      content::WebContents::FromRenderFrameHost(render_frame_host);
+  delegate_->OnPeekMoveToTabRequired();
+  // `this` is gone; the tab's delegate shows the chooser.
+  if (content::WebContentsDelegate* tab_delegate = contents->GetDelegate()) {
+    tab_delegate->RunFileChooser(render_frame_host, std::move(listener),
+                                 params);
+    return;
+  }
+  listener->FileSelectionCanceled();
 }
 
 void PeekContents::RequestMediaAccessPermission(

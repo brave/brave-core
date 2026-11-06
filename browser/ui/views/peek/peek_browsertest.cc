@@ -7,8 +7,10 @@
 #include <optional>
 #include <string>
 
+#include "base/command_line.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
+#include "base/run_loop.h"
 #include "base/synchronization/lock.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
@@ -20,11 +22,11 @@
 #include "brave/browser/ui/views/peek/peek_shields_button.h"
 #include "brave/browser/ui/views/peek/peek_view.h"
 #include "brave/components/containers/buildflags/buildflags.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/download/download_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
 #include "chrome/browser/ssl/chrome_security_state_util.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/split_tab_metrics.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -32,6 +34,9 @@
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/common/content_settings.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/prefs/pref_service.h"
 #include "components/security_interstitials/content/security_interstitial_tab_helper.h"
@@ -43,6 +48,7 @@
 #include "content/public/browser/download_manager.h"
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/render_frame_host.h"
+#include "content/public/browser/render_process_host.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/storage_partition_config.h"
 #include "content/public/browser/web_contents.h"
@@ -51,9 +57,13 @@
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/download_test_observer.h"
 #include "content/public/test/test_navigation_observer.h"
+#include "net/base/net_errors.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
+#include "services/network/public/cpp/features.h"
+#include "services/network/public/cpp/ip_address_space_overrides_test_utils.h"
+#include "services/network/public/mojom/ip_address_space.mojom.h"
 #include "third_party/blink/public/common/input/web_input_event.h"
 #include "third_party/blink/public/common/input/web_mouse_event.h"
 #include "ui/base/page_transition_types.h"
@@ -68,6 +78,8 @@
 #include "ui/gfx/animation/slide_animation.h"
 #include "ui/gfx/geometry/point.h"
 #include "ui/gfx/geometry/point_conversions.h"
+#include "ui/shell_dialogs/fake_select_file_dialog.h"
+#include "ui/shell_dialogs/select_file_dialog.h"
 #include "ui/views/controls/button/image_button.h"
 #include "ui/views/focus/focus_manager.h"
 #include "ui/views/test/button_test_api.h"
@@ -106,6 +118,11 @@ class PeekBrowserTest : public InProcessBrowserTest {
                                              GetURL("a.com", "/title1.html")));
   }
 
+  void TearDownOnMainThread() override {
+    ui::SelectFileDialog::SetFactory(nullptr);
+    InProcessBrowserTest::TearDownOnMainThread();
+  }
+
  protected:
   GURL GetURL(const std::string& host, const std::string& path) {
     return embedded_test_server()->GetURL(host, path);
@@ -125,15 +142,24 @@ class PeekBrowserTest : public InProcessBrowserTest {
     return controller()->GetWebContents();
   }
 
+  // Params for a link click in `frame`.
+  static content::OpenURLParams LinkParamsFrom(content::RenderFrameHost& frame,
+                                               const GURL& url) {
+    content::OpenURLParams params =
+        content::OpenURLParams::CreateRendererInitiated(
+            url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+            ui::PAGE_TRANSITION_LINK, content::Referrer(),
+            frame.GetCurrentInitiatorNavigationState());
+    params.initiator_origin = frame.GetLastCommittedOrigin();
+    params.initiator_frame_token = frame.GetFrameToken();
+    params.initiator_process_id = frame.GetProcess()->GetID().GetUnsafeValue();
+    params.user_gesture = true;
+    return params;
+  }
+
   // Params for a link click on the active tab's page.
   content::OpenURLParams LinkParams(const GURL& url) {
-    content::OpenURLParams params(url, content::Referrer(),
-                                  WindowOpenDisposition::NEW_FOREGROUND_TAB,
-                                  ui::PAGE_TRANSITION_LINK,
-                                  /*is_renderer_initiated=*/true);
-    params.initiator_origin =
-        active_contents()->GetPrimaryMainFrame()->GetLastCommittedOrigin();
-    return params;
+    return LinkParamsFrom(*active_contents()->GetPrimaryMainFrame(), url);
   }
 
   // Opens `url` in Peek and waits for it to load.
@@ -173,6 +199,21 @@ class PeekBrowserTest : public InProcessBrowserTest {
         blink::WebMouseEvent::Button::kLeft,
         gfx::ToFlooredPoint(
             content::GetCenterCoordinatesOfElementWithId(contents, "link")));
+  }
+
+  // Adds a file input to `frame` and clicks it, with a user gesture. The page
+  // sets `window.fileInputCancelled` once the chooser is cancelled.
+  static void ClickFileInput(content::RenderFrameHost& frame) {
+    ASSERT_TRUE(content::ExecJs(&frame, R"(
+          window.fileInputCancelled = new Promise(resolve => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.addEventListener('cancel', () => resolve(true));
+            document.body.appendChild(input);
+            input.click();
+          });
+        )",
+                                content::EXECUTE_SCRIPT_NO_RESOLVE_PROMISES));
   }
 
   std::unique_ptr<TestRenderViewContextMenu> CreateLinkContextMenu(
@@ -447,6 +488,13 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, OpenRequiresHttpInitiatorAndTarget) {
   opaque_initiator.initiator_origin = url::Origin();
   EXPECT_FALSE(controller()->Open(*active_contents(), opaque_initiator));
 
+  // An origin without the initiator's navigation state would skip the
+  // initiator's policies, e.g. Local Network Access.
+  content::OpenURLParams no_initiator_state =
+      LinkParams(GetURL("b.com", "/title2.html"));
+  no_initiator_state.initiator_navigation_state = nullptr;
+  EXPECT_FALSE(controller()->Open(*active_contents(), no_initiator_state));
+
   EXPECT_FALSE(controller()->Open(*active_contents(),
                                   LinkParams(GURL("data:text/html,hi"))));
   EXPECT_FALSE(controller()->Open(*active_contents(),
@@ -625,6 +673,64 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, HttpAuthMovesToTab) {
   WaitForMovedToTab(contents);
 }
 
+// The user picks which files to give the site in a tab, where the omnibox shows
+// the site, not over the tab Peek was opened from.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, FileChooserMovesToTab) {
+  ui::FakeSelectFileDialog::Factory* factory =
+      ui::FakeSelectFileDialog::RegisterFactory();
+  const GURL url = GetURL("b.com", "/title1.html");
+  OpenPeek(url);
+  content::WebContents* contents = peek_contents();
+
+  base::RunLoop dialog_opened;
+  factory->SetOpenCallback(dialog_opened.QuitClosure());
+  ClickFileInput(*contents->GetPrimaryMainFrame());
+  dialog_opened.Run();
+
+  EXPECT_FALSE(controller()->IsShowing());
+  EXPECT_EQ(contents, active_contents());
+  ui::FakeSelectFileDialog* dialog = factory->GetLastDialog();
+  ASSERT_TRUE(dialog);
+  ASSERT_TRUE(dialog->caller());
+  EXPECT_EQ(url, *dialog->caller());
+
+  // Cancelling reaches the page, which stays in the tab.
+  dialog->CallFileSelectionCanceled();
+  EXPECT_EQ(true, content::EvalJs(contents->GetPrimaryMainFrame(),
+                                  "window.fileInputCancelled"));
+  EXPECT_EQ(contents, active_contents());
+}
+
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, FileChooserInCrossSiteFrameMovesToTab) {
+  ui::FakeSelectFileDialog::Factory* factory =
+      ui::FakeSelectFileDialog::RegisterFactory();
+  const GURL url = GetURL("b.com", "/title1.html");
+  OpenPeek(url);
+  content::WebContents* contents = peek_contents();
+  ASSERT_TRUE(content::ExecJs(
+      contents,
+      "const f = document.createElement('iframe'); f.id = 'frame';"
+      "document.body.appendChild(f);"));
+  const GURL frame_url = GetURL("c.com", "/title2.html");
+  ASSERT_TRUE(content::NavigateIframeToURL(contents, "frame", frame_url));
+  content::RenderFrameHost* frame =
+      content::ChildFrameAt(contents->GetPrimaryMainFrame(), 0);
+  ASSERT_TRUE(frame);
+  ASSERT_EQ(url::Origin::Create(frame_url), frame->GetLastCommittedOrigin());
+
+  base::RunLoop dialog_opened;
+  factory->SetOpenCallback(dialog_opened.QuitClosure());
+  ClickFileInput(*frame);
+  dialog_opened.Run();
+
+  EXPECT_FALSE(controller()->IsShowing());
+  EXPECT_EQ(contents, active_contents());
+  ui::FakeSelectFileDialog* dialog = factory->GetLastDialog();
+  ASSERT_TRUE(dialog);
+  dialog->CallFileSelectionCanceled();
+  EXPECT_EQ(true, content::EvalJs(frame, "window.fileInputCancelled"));
+}
+
 IN_PROC_BROWSER_TEST_F(PeekBrowserTest, HttpPageIsNotMarkedSecure) {
   const GURL url = GetURL("b.com", "/title2.html");
   OpenPeek(url);
@@ -734,21 +840,139 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, IncognitoPeekStaysOffTheRecord) {
   content::WebContents* source =
       incognito->GetTabStripModel()->GetActiveWebContents();
   const GURL url = GetURL("b.com", "/title2.html");
-  content::OpenURLParams params(url, content::Referrer(),
-                                WindowOpenDisposition::NEW_FOREGROUND_TAB,
-                                ui::PAGE_TRANSITION_LINK,
-                                /*is_renderer_initiated=*/true);
-  params.initiator_origin =
-      source->GetPrimaryMainFrame()->GetLastCommittedOrigin();
   content::TestNavigationObserver observer(url);
   observer.StartWatchingNewWebContents();
-  ASSERT_TRUE(incognito_controller->Open(*source, params));
+  ASSERT_TRUE(incognito_controller->Open(
+      *source, LinkParamsFrom(*source->GetPrimaryMainFrame(), url)));
   observer.Wait();
 
   content::WebContents* contents = incognito_controller->GetWebContents();
   ASSERT_TRUE(contents);
   EXPECT_TRUE(contents->GetBrowserContext()->IsOffTheRecord());
   EXPECT_EQ(source->GetBrowserContext(), contents->GetBrowserContext());
+}
+
+// A public page links to a server on the local network. Peek loads must carry
+// the page's policies, not only its origin, so Local Network Access applies to
+// them like to a link click in the page.
+class PeekLocalNetworkAccessBrowserTest : public PeekBrowserTest {
+ public:
+  PeekLocalNetworkAccessBrowserTest()
+      : public_server_(net::EmbeddedTestServer::TYPE_HTTPS),
+        local_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
+    lna_features_.InitAndEnableFeatureWithParameters(
+        network::features::kLocalNetworkAccessChecks,
+        {{"LocalNetworkAccessChecksWarn", "false"}});
+    // Main-frame checks are off by default, and the feature is declared in
+    // content/common, so it's enabled by name.
+    lna_navigation_features_.InitFromCommandLine(
+        "LocalNetworkAccessForNavigations", "");
+
+    for (net::EmbeddedTestServer* server : {&public_server_, &local_server_}) {
+      server->SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
+      server->ServeFilesFromSourceDirectory("chrome/test/data");
+      CHECK(server->InitializeAndListen());
+    }
+  }
+
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    PeekBrowserTest::SetUpCommandLine(command_line);
+    network::AddIpAddressSpaceOverridesToCommandLine(
+        {network::GenerateIpAddressSpaceOverride(
+             public_server_, network::mojom::IPAddressSpace::kPublic),
+         network::GenerateIpAddressSpaceOverride(
+             local_server_, network::mojom::IPAddressSpace::kLocal)},
+        *command_line);
+  }
+
+  void SetUpOnMainThread() override {
+    PeekBrowserTest::SetUpOnMainThread();
+    public_server_.StartAcceptingConnections();
+    local_server_.StartAcceptingConnections();
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), public_page_url()));
+  }
+
+ protected:
+  GURL public_page_url() {
+    return public_server_.GetURL("a.test", "/title1.html");
+  }
+
+  GURL local_url() { return local_server_.GetURL("b.test", "/title2.html"); }
+
+  // Sets whether the public page may reach the local network, so no prompt is
+  // shown.
+  void SetLocalNetworkAccess(ContentSetting setting) {
+    HostContentSettingsMap* map =
+        HostContentSettingsMapFactory::GetForProfile(browser()->GetProfile());
+    for (ContentSettingsType type : {ContentSettingsType::LOCAL_NETWORK_ACCESS,
+                                     ContentSettingsType::LOCAL_NETWORK,
+                                     ContentSettingsType::LOOPBACK_NETWORK}) {
+      map->SetContentSettingDefaultScope(public_page_url(), public_page_url(),
+                                         type, setting);
+    }
+  }
+
+  static void ExpectBlockedByLocalNetworkAccess(
+      const content::TestNavigationObserver& observer) {
+    EXPECT_FALSE(observer.last_navigation_succeeded());
+    const net::Error error = observer.last_net_error_code();
+    EXPECT_TRUE(error == net::ERR_BLOCKED_BY_LOCAL_NETWORK_ACCESS_CHECKS ||
+                error == net::ERR_LOCAL_NETWORK_PERMISSION_MISSING)
+        << net::ErrorToString(error);
+  }
+
+ private:
+  net::EmbeddedTestServer public_server_;
+  net::EmbeddedTestServer local_server_;
+  base::test::ScopedFeatureList lna_features_;
+  base::test::ScopedFeatureList lna_navigation_features_;
+};
+
+IN_PROC_BROWSER_TEST_F(PeekLocalNetworkAccessBrowserTest,
+                       ContextMenuPeekIsBlockedFromLocalNetwork) {
+  SetLocalNetworkAccess(CONTENT_SETTING_BLOCK);
+  const GURL target_url = local_url();
+
+  auto menu = CreateLinkContextMenu(active_contents(), target_url);
+  content::TestNavigationObserver observer(target_url);
+  observer.StartWatchingNewWebContents();
+  menu->ExecuteCommand(IDC_CONTENT_CONTEXT_OPENLINKPEEK, 0);
+  observer.Wait();
+  ASSERT_TRUE(controller()->GetWebContents());
+
+  ExpectBlockedByLocalNetworkAccess(observer);
+}
+
+IN_PROC_BROWSER_TEST_F(PeekLocalNetworkAccessBrowserTest,
+                       ShiftClickPeekIsBlockedFromLocalNetwork) {
+  SetLocalNetworkAccess(CONTENT_SETTING_BLOCK);
+  const GURL target_url = local_url();
+
+  content::TestNavigationObserver observer(target_url);
+  observer.StartWatchingNewWebContents();
+  ShiftClickLink(active_contents(), target_url);
+  observer.Wait();
+  ASSERT_TRUE(controller()->GetWebContents());
+
+  ExpectBlockedByLocalNetworkAccess(observer);
+}
+
+// Makes sure the tests above fail because of Local Network Access, not the
+// setup.
+IN_PROC_BROWSER_TEST_F(PeekLocalNetworkAccessBrowserTest,
+                       ContextMenuPeekLoadsWhenLocalNetworkAllowed) {
+  SetLocalNetworkAccess(CONTENT_SETTING_ALLOW);
+  const GURL target_url = local_url();
+
+  auto menu = CreateLinkContextMenu(active_contents(), target_url);
+  content::TestNavigationObserver observer(target_url);
+  observer.StartWatchingNewWebContents();
+  menu->ExecuteCommand(IDC_CONTENT_CONTEXT_OPENLINKPEEK, 0);
+  observer.Wait();
+
+  EXPECT_TRUE(observer.last_navigation_succeeded());
+  ASSERT_TRUE(controller()->IsShowing());
+  EXPECT_EQ(target_url, peek_contents()->GetLastCommittedURL());
 }
 
 #if BUILDFLAG(ENABLE_CONTAINERS)

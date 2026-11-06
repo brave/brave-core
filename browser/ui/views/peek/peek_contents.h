@@ -23,8 +23,8 @@ class Profile;
 
 // Owns the WebContents shown in Peek and acts as its delegate. Same-tab
 // navigations stay in Peek. Anything that needs a tab, e.g. permission
-// prompts, popups, fullscreen or tab-modal dialogs, moves the contents into a
-// tab first so the browser UI for it is attached to that tab.
+// prompts, file choosers, popups, fullscreen or tab-modal dialogs, moves the
+// contents into a tab first so the browser UI for it is attached to that tab.
 class PeekContents : public content::WebContentsDelegate,
                      public web_modal::WebContentsModalDialogManagerDelegate,
                      public permissions::PermissionRequestManager::Observer,
@@ -133,7 +133,7 @@ class PeekContents : public content::WebContentsDelegate,
 
   std::unique_ptr<content::WebContents> web_contents_;
   const raw_ref<BrowserWindowInterface> browser_;
-  // Handles what Peek doesn't, e.g. file choosers and keyboard shortcuts.
+  // Handles what Peek doesn't, e.g. keyboard shortcuts.
   const raw_ref<BrowserWebContentsDelegate> browser_delegate_;
   const raw_ref<Delegate> delegate_;
 

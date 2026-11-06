@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/peek/peek_utils.h"
 
+#include "base/memory/scoped_refptr.h"
+#include "content/public/browser/initiator_navigation_state.h"
 #include "content/public/browser/page_navigator.h"
 #include "content/public/common/referrer.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -14,6 +16,16 @@
 #include "url/origin.h"
 
 namespace peek {
+
+namespace {
+
+// Stands in for the state content/ creates for an initiating document.
+class FakeInitiatorNavigationState : public content::InitiatorNavigationState {
+ private:
+  ~FakeInitiatorNavigationState() override = default;
+};
+
+}  // namespace
 
 TEST(PeekUtilsTest, IsPeekableURL) {
   EXPECT_TRUE(IsPeekableURL(GURL("https://example.com/")));
@@ -73,11 +85,20 @@ TEST(PeekUtilsTest, CanOpenInPeek) {
                                 WindowOpenDisposition::NEW_FOREGROUND_TAB,
                                 ui::PAGE_TRANSITION_LINK,
                                 /*is_renderer_initiated=*/true);
+  params.initiator_navigation_state =
+      base::MakeRefCounted<FakeInitiatorNavigationState>();
   // Without an initiator the load would look browser-initiated.
   EXPECT_FALSE(CanOpenInPeek(params));
 
   params.initiator_origin = url::Origin::Create(GURL("https://a.com/"));
   EXPECT_TRUE(CanOpenInPeek(params));
+
+  // An origin alone doesn't carry the initiator's policies, e.g. for Local
+  // Network Access.
+  params.initiator_navigation_state = nullptr;
+  EXPECT_FALSE(CanOpenInPeek(params));
+  params.initiator_navigation_state =
+      base::MakeRefCounted<FakeInitiatorNavigationState>();
 
   params.initiator_origin = url::Origin();
   EXPECT_FALSE(CanOpenInPeek(params));

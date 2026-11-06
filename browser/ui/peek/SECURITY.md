@@ -125,27 +125,48 @@ Tests: `PopupWithoutGestureIsBlocked`, `PopupWithGestureMovesToTab`,
 - JavaScript dialogs (`alert`, `confirm`, `prompt`, `beforeunload`) are
   suppressed in Peek, because the Peek delegate has no
   `JavaScriptDialogManager`.
-- File choosers are forwarded to the browser and attach to the browser window.
+- File choosers (`<input type=file>`, including in cross-origin frames) move
+  Peek to a tab before the chooser opens, since choosing which files to give
+  the site is a trust decision. If there is no tab delegate after the move,
+  the request is cancelled. Directory enumeration only follows a chooser, so
+  it already runs in the tab; the Peek delegate's default cancels it.
 
-Tests: `HttpAuthMovesToTab`.
+Tests: `HttpAuthMovesToTab`, `FileChooserMovesToTab`,
+`FileChooserInCrossSiteFrameMovesToTab`.
 
 ### Initiator origin and SameSite cookies
 
 Both entry points pass the opener's origin, as required for new ways of
-opening links (see brave/brave-core#39176):
+opening links (see brave/brave-core#39176), and the opener's
+`InitiatorNavigationState`. The state holds the opener's policies; without
+it, `NavigationRequest` builds no client security state for the load and
+Local Network Access isn't checked, even with a correct origin. This is the
+failure in Chromium's Link Preview (crbug.com/497336872).
 
-- Shift+click uses the renderer's `OpenURLParams`, including
-  `initiator_origin` and referrer.
-- The context menu uses `GetOpenURLParamsWithExtraHeaders` with the frame's
-  committed origin, like "Open link in new tab".
+- Shift+click uses the `OpenURLParams` from `RenderFrameHostImpl::OpenURL`.
+  The browser looks the state up from the renderer's tokens and terminates
+  renderers that send missing tokens or tokens from another process, so a
+  compromised renderer can't send an origin without the state.
+- The context menu builds the params in the browser from the frame the menu
+  was opened on: origin, frame token, process, site instance and
+  `RenderFrameHost::GetCurrentInitiatorNavigationState()`, as a
+  renderer-initiated link click. This follows the Lens and side panel link
+  handlers. Nothing is opened if the frame is gone, no longer active or now
+  has a different origin.
+- `peek::CanOpenInPeek` rejects params without the state, so a new entry
+  point that forgets it fails closed instead of skipping the checks.
 
 `PeekControllerImpl::Open` loads with `LoadURLParams(OpenURLParams)`, which
-keeps the initiator and referrer. Cross-site Peek loads therefore get
-`Sec-Fetch-Site: cross-site` and don't send `SameSite=Strict` cookies, exactly
-like a link click. "Open as tab" moves the same `WebContents`, so nothing is
-reloaded.
+keeps the initiator, its state and the referrer. Cross-site Peek loads
+therefore get `Sec-Fetch-Site: cross-site`, don't send `SameSite=Strict`
+cookies and are subject to Local Network Access, exactly like a link click.
+"Open as tab" moves the same `WebContents`, so nothing is reloaded.
 
-Tests: `ShiftClickSendsInitiatorOrigin`, `ContextMenuSendsInitiatorOrigin`.
+Tests: `ShiftClickSendsInitiatorOrigin`, `ContextMenuSendsInitiatorOrigin`,
+`OpenRequiresHttpInitiatorAndTarget`, and `PeekLocalNetworkAccessBrowserTest`
+(Shift+click and context menu from a public page to a local server are
+blocked when the page may not access the local network, and load when it
+may).
 
 ### Contexts: containers, sidebar, split view, private and Tor windows
 
@@ -178,9 +199,10 @@ contracts, dependencies, cryptography, and similar) are omitted.
   URL and initiator checks.
 - Initiator origin for new ways of opening links: done, see above.
 - Origin determination: initiators come from
-  `RenderFrameHost::GetLastCommittedOrigin` (context menu `frame_origin`) or
-  the browser-validated `OpenURLParams.initiator_origin`, never derived from a
-  URL.
+  `RenderFrameHost::GetLastCommittedOrigin` of the frame the context menu was
+  opened on, or the browser-validated `OpenURLParams.initiator_origin`, never
+  derived from a URL. Both carry the initiator's navigation state from
+  content/, not only the origin.
 - No remote content in the browser or WebUI process: previewed pages render in
   a normal renderer, like a tab.
 - Private and Tor mode: no state written to disk, no leak into the regular
@@ -191,14 +213,29 @@ contracts, dependencies, cryptography, and similar) are omitted.
   permissions keep working per origin since they move to the tab.
 - Clipboard: Peek doesn't write to the clipboard.
 
-## Not yet verified
+## Other browser UI
 
-These go through code paths Peek doesn't intercept explicitly. They're expected
-to either fail closed (no dialog host) or show browser-owned UI, but haven't
-been tested in Peek:
+These go through code paths Peek doesn't intercept explicitly. Each was traced
+to either move Peek to a tab first or fail closed while the page is in Peek:
 
-- Device choosers (WebUSB, WebHID, WebSerial, Web Bluetooth).
-- WebAuthn and passkey prompts.
-- Payment Request.
-- FedCM.
-- Autofill and password manager bubbles.
+- Device choosers (WebUSB, WebHID, WebSerial, Web Bluetooth):
+  `chrome::ShowDeviceChooserDialog` only shows the chooser if the requesting
+  contents are the active tab of a browser (`FindBrowserWithTab`). Peek's
+  contents aren't a tab, so the chooser isn't shown and the request ends
+  without a device. Open the page as a tab to use them.
+- WebAuthn and passkey dialogs, Payment Request and Secure Payment
+  Confirmation: shown with `constrained_window::ShowWebModalDialogViews`,
+  i.e. as tab-modal dialogs, so Peek moves to a tab first, as for HTTP auth.
+- FedCM: `IdentityDialogController` needs a `TabInterface` for the account
+  chooser, so FedCM requests fail in Peek. The IdP registration prompt is a
+  permission request and moves Peek to a tab.
+- Password manager bubbles (save, update, manage): only shown for contents
+  that are a tab in a browser (`ManagePasswordsUIController`), so they don't
+  show from Peek.
+- Autofill and password suggestions: the dropdown is shown in Peek, anchored
+  to the field inside the card. This is the page's own UI rather than a
+  prompt attached to the browser window: the card toolbar shows the site it
+  belongs to, and the suggestions are the ones saved for that site.
+
+Not traced: WebAuthn requests that go straight to platform UI (for example
+iCloud Keychain or Windows Hello) without Chrome's tab-modal dialog first.
