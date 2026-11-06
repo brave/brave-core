@@ -55,8 +55,8 @@ void OpenLinkInPeek(BrowserWindowInterface* browser,
   }
 
   // Load the link as if it was clicked in `initiator_frame`, with the frame's
-  // policies and not only its origin. Without them the load skips checks that
-  // apply to the initiator, such as Local Network Access.
+  // policies and not only its origin, like Chromium's own link handlers do.
+  // The state comes from the browser, never from the renderer.
   params.is_renderer_initiated = true;
   params.user_gesture = true;
   params.initiator_navigation_state = std::move(initiator_state);

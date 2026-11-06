@@ -93,8 +93,7 @@ TEST(PeekUtilsTest, CanOpenInPeek) {
   params.initiator_origin = url::Origin::Create(GURL("https://a.com/"));
   EXPECT_TRUE(CanOpenInPeek(params));
 
-  // An origin alone doesn't carry the initiator's policies, e.g. for Local
-  // Network Access.
+  // An origin alone doesn't carry the initiator's policies.
   params.initiator_navigation_state = nullptr;
   EXPECT_FALSE(CanOpenInPeek(params));
   params.initiator_navigation_state =
