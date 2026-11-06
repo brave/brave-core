@@ -1,0 +1,13 @@
+diff --git a/chrome/updater/win/signing/sign.py b/chrome/updater/win/signing/sign.py
+index f0f420cda3d03a945a46df2056971a656867c622..350b3e334dce4b5b25c52405035ac5c900d5e606 100755
+--- a/chrome/updater/win/signing/sign.py
++++ b/chrome/updater/win/signing/sign.py
+@@ -136,7 +136,7 @@ class Signer:
+     def _add_tagging_cert(self, in_file, out_file):
+         """Adds the tagging cert. Returns the path to the tagged file."""
+         subprocess.run(
+-            [self._tagging_exe, '--set-tag', '--out=%s' % out_file, in_file],
++            [os.path.abspath(self._tagging_exe), '--set-tag', '--out=%s' % out_file, in_file],
+             check=True,
+             stdout=subprocess.DEVNULL,
+         )

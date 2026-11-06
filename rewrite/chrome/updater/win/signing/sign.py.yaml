@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Since depot_tools 4cc1ba6be, autoninja sets the environment variable
+      NoDefaultCurrentDirectoryInExePath=1 on Windows. Upstream then fails to
+      launch its tagging tool by bare name, which breaks the updater_tests
+      build. This substitution fixes the problem by launching the tool via its
+      absolute path.
+    regex:
+      pattern: "[self._tagging_exe, '--set-tag'"
+      replace: "[os.path.abspath(self._tagging_exe), '--set-tag'"
