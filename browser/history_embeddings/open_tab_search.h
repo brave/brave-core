@@ -24,7 +24,7 @@ class HistoryService;
 
 class Profile;
 
-namespace history_embeddings {
+namespace brave_history_embeddings {
 
 class HistoryEmbeddingsSearch;
 
@@ -49,7 +49,7 @@ using RankedOpenTabsCallback =
 // Snapshots `profile`'s open HTTP(S) tabs from regular-type windows tracked
 // by the tab_search feature, resolves their URLs to URLIDs via
 // `history_service`, ranks them against `query` with
-// `HistoryEmbeddingsSearch::Search` (`skip_answering=true`), and dispatches
+// `HistoryEmbeddingsSearch::Search`, and dispatches
 // the matched tabs (best first) to `callback`. Dispatches an empty list when
 // there are no such tabs or none of them match.
 // `embeddings_search` is weak because the URL lookup is asynchronous and the
@@ -63,6 +63,6 @@ void SearchOpenTabsByContent(
     RankedOpenTabsCallback callback,
     base::CancelableTaskTracker* task_tracker);
 
-}  // namespace history_embeddings
+}  // namespace brave_history_embeddings
 
 #endif  // BRAVE_BROWSER_HISTORY_EMBEDDINGS_OPEN_TAB_SEARCH_H_

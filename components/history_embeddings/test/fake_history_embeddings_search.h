@@ -13,9 +13,9 @@
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
+#include "brave/components/history_embeddings/core/history_embeddings_search.h"
+#include "brave/components/history_embeddings/core/vector_database.h"
 #include "components/history/core/browser/history_types.h"
-#include "components/history_embeddings/core/history_embeddings_search.h"
-#include "components/history_embeddings/core/vector_database.h"
 
 class GURL;
 
@@ -26,7 +26,7 @@ namespace ai_chat {
 // `ScoredUrlRow`s back asynchronously, so tests don't have to stand up a real
 // `HistoryEmbeddingsService`.
 class FakeHistoryEmbeddingsSearch
-    : public history_embeddings::HistoryEmbeddingsSearch {
+    : public brave_history_embeddings::HistoryEmbeddingsSearch {
  public:
   FakeHistoryEmbeddingsSearch();
   ~FakeHistoryEmbeddingsSearch() override;
@@ -38,18 +38,20 @@ class FakeHistoryEmbeddingsSearch
   // Builds a `ScoredUrlRow` suitable for `SetScoredRows()`. Convenience for
   // tests that need to populate the basic fields without touching the
   // embeddings details.
-  static history_embeddings::ScoredUrlRow MakeRow(history::URLID url_id,
-                                                  const GURL& url,
-                                                  const std::u16string& title,
-                                                  base::Time last_visit,
-                                                  float score);
+  static brave_history_embeddings::ScoredUrlRow MakeRow(
+      history::URLID url_id,
+      const GURL& url,
+      const std::u16string& title,
+      base::Time last_visit,
+      float score);
 
   // Sets the rows that subsequent `Search()` calls will return.
-  void SetScoredRows(std::vector<history_embeddings::ScoredUrlRow> rows);
+  void SetScoredRows(std::vector<brave_history_embeddings::ScoredUrlRow> rows);
 
   // Mirrors `HistoryEmbeddingsService::AsWeakPtr()`, which is how production
   // callers hold the search across asynchronous work.
-  base::WeakPtr<history_embeddings::HistoryEmbeddingsSearch> GetWeakPtr() {
+  base::WeakPtr<brave_history_embeddings::HistoryEmbeddingsSearch>
+  GetWeakPtr() {
     return weak_ptr_factory_.GetWeakPtr();
   }
 
@@ -63,27 +65,24 @@ class FakeHistoryEmbeddingsSearch
     return last_time_range_start_;
   }
   size_t last_count() const { return last_count_; }
-  bool last_skip_answering() const { return last_skip_answering_; }
   const std::vector<history::URLID>& last_url_id_filter() const {
     return last_url_id_filter_;
   }
 
   // `HistoryEmbeddingsSearch`:
-  history_embeddings::SearchResult Search(
-      history_embeddings::SearchResult* previous_search_result,
+  brave_history_embeddings::SearchResult Search(
+      brave_history_embeddings::SearchResult* previous_search_result,
       std::string query,
       std::optional<base::Time> time_range_start,
       size_t count,
-      bool skip_answering,
       std::vector<history::URLID> url_id_filter,
-      history_embeddings::SearchResultCallback callback) override;
+      brave_history_embeddings::SearchResultCallback callback) override;
 
  private:
-  std::vector<history_embeddings::ScoredUrlRow> scored_rows_;
+  std::vector<brave_history_embeddings::ScoredUrlRow> scored_rows_;
   std::string last_query_;
   std::optional<base::Time> last_time_range_start_;
   size_t last_count_ = 0;
-  bool last_skip_answering_ = false;
   std::vector<history::URLID> last_url_id_filter_;
   base::WeakPtrFactory<FakeHistoryEmbeddingsSearch> weak_ptr_factory_{this};
 };
