@@ -15,7 +15,8 @@
 #include "chrome/test/base/testing_profile_manager.h"
 #include "components/permissions/permission_prompt.h"
 #include "components/permissions/permission_request_manager.h"
-#include "components/permissions/permission_request_queue.h"
+#include "components/permissions/request_type.h"
+#include "components/permissions/test/mock_permission_prompt_factory.h"
 #include "components/prefs/pref_registry.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -39,8 +40,8 @@ class WidevinePermissionAndroidTest : public ChromeRenderViewHostTestHarness {
     return permission_request_manager_;
   }
 
-  permissions::PermissionRequestQueue* GetPendingRequestQueue() {
-    return &(permission_request_manager_->pending_permission_requests_);
+  permissions::MockPermissionPromptFactory* prompt_factory() {
+    return prompt_factory_.get();
   }
 
   void SanityCheck() {
@@ -81,10 +82,15 @@ class WidevinePermissionAndroidTest : public ChromeRenderViewHostTestHarness {
     permission_request_manager_ =
         permissions::PermissionRequestManager::FromWebContents(
             web_contents_.get());
+    // Without it, Android's dialog dismisses itself as there is no window.
+    prompt_factory_ =
+        std::make_unique<permissions::MockPermissionPromptFactory>(
+            permission_request_manager_);
     base::RunLoop().RunUntilIdle();
   }
 
   void TearDown() override {
+    prompt_factory_.reset();
     permission_request_manager_ = nullptr;
     tab_helper_.reset();
     web_contents_.reset();
@@ -107,20 +113,21 @@ class WidevinePermissionAndroidTest : public ChromeRenderViewHostTestHarness {
   std::unique_ptr<BraveDrmTabHelper> tab_helper_;
   raw_ptr<permissions::PermissionRequestManager> permission_request_manager_ =
       nullptr;
+  std::unique_ptr<permissions::MockPermissionPromptFactory> prompt_factory_;
 };
 
 TEST_F(WidevinePermissionAndroidTest, BraveDrmTabHelperTest) {
   SanityCheck();
 
-  permissions::PermissionRequestManager* manager = permission_request_manager();
   EXPECT_FALSE(brave_drm_tab_helper()->ShouldShowWidevineOptIn());
 
   SimulateWidevineKeySystemAccessRequest();
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(brave_drm_tab_helper()->ShouldShowWidevineOptIn());
 
-  EXPECT_TRUE(manager->has_pending_requests());
-  EXPECT_EQ(GetPendingRequestQueue()->size(), size_t(1));
+  EXPECT_EQ(prompt_factory()->show_count(), 1);
+  EXPECT_TRUE(
+      prompt_factory()->RequestTypeSeen(permissions::RequestType::kWidevine));
 
   // After navigation
   SimulateNavigation();
@@ -159,10 +166,8 @@ TEST_F(WidevinePermissionAndroidTest, WidevinePermissionRequestTest) {
   SimulateWidevineKeySystemAccessRequest();
   base::RunLoop().RunUntilIdle();
 
-  EXPECT_TRUE(manager->has_pending_requests() &&
-              GetPendingRequestQueue()->size() == 1);
-  GetPendingRequestQueue()->Pop()->PermissionGranted(
-      /*prompt_options=*/std::monostate(), /*is_one_time=*/false);
+  ASSERT_TRUE(prompt_factory()->is_visible());
+  manager->Accept(/*prompt_options=*/std::monostate());
   EXPECT_TRUE(local_state()->GetBoolean(kWidevineEnabled));
 
   // Deny
@@ -171,9 +176,8 @@ TEST_F(WidevinePermissionAndroidTest, WidevinePermissionRequestTest) {
   SimulateWidevineKeySystemAccessRequest();
   base::RunLoop().RunUntilIdle();
 
-  EXPECT_TRUE(manager->has_pending_requests() &&
-              GetPendingRequestQueue()->size() == 1);
-  GetPendingRequestQueue()->Pop()->PermissionDenied();
+  ASSERT_TRUE(prompt_factory()->is_visible());
+  manager->Deny(/*prompt_options=*/std::monostate());
   EXPECT_FALSE(local_state()->GetBoolean(kWidevineEnabled));
 
   // Cancel
@@ -181,9 +185,8 @@ TEST_F(WidevinePermissionAndroidTest, WidevinePermissionRequestTest) {
   SimulateWidevineKeySystemAccessRequest();
   base::RunLoop().RunUntilIdle();
 
-  EXPECT_TRUE(manager->has_pending_requests() &&
-              GetPendingRequestQueue()->size() == 1);
-  GetPendingRequestQueue()->Pop()->Cancelled();
+  ASSERT_TRUE(prompt_factory()->is_visible());
+  manager->Dismiss(/*prompt_options=*/std::monostate());
   EXPECT_FALSE(local_state()->GetBoolean(kWidevineEnabled));
 }
 
