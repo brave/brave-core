@@ -181,9 +181,12 @@ extension Preferences {
       key: "search.show-suggestions-opt-in",
       default: true
     )
-    /// A list of disabled search engines
+    /// A list of disabled search engines, by `shortName`. Superseded by `quickSearchDisabled`;
+    /// nothing writes it anymore, but `migrateQuickSearchIfNeeded` still reads it to carry an
+    /// upgrading user's choices over, so it must outlive that migration.
     static let disabledEngines = Option<[String]?>(key: "search.disabled-engines", default: nil)
-    /// A list of ordered search engines or nil if they have not been set up yet
+    /// Available search engines by `shortName`, default engine first, or nil if they have not
+    /// been set up yet. No longer orders the quick search row — see `quickSearchOrder`.
     static let orderedEngines = Option<[String]?>(key: "search.ordered-engines", default: nil)
     /// The default selected search engine in regular mode
     public static let defaultEngineName = Option<String?>(key: "search.default.name", default: nil)

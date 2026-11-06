@@ -51,22 +51,13 @@ class SearchQuickEnginesViewController: UITableViewController {
     action: #selector(onEditButton)
   )
 
-  /// Every ordered engine except the standard default, which is not a quick search engine.
+  /// Every quick search engine in its stored order. Disabled engines are included — this screen
+  /// is where they are toggled back on.
   private var quickSearchItems: [QuickSearchItem] {
-    var engines = searchEngines.orderedEngines
-    if let defaultEngine = searchEngines.defaultEngine(forType: .standard),
-      let defaultIndex = engines.firstIndex(where: { $0 === defaultEngine })
-    {
-      engines.remove(at: defaultIndex)
-    }
-    return engines.map { QuickSearchItem(source: .engine($0)) }
-  }
-
-  /// Maps a row back to its position in `searchEngines.orderedEngines`, which also contains the
-  /// default engine and so cannot be indexed by row.
-  private func orderedEnginesIndex(forRow row: Int) -> Int? {
-    guard case .engine(let engine) = quickSearchItems[safe: row]?.source else { return nil }
-    return searchEngines.orderedEngines.firstIndex { $0 === engine }
+    QuickSearchItem.quickSearchCatalog(
+      from: searchEngines.orderedEngines,
+      excludingDefault: searchEngines.defaultEngine(forType: .standard)
+    )
   }
 
   // MARK: Lifecycle
@@ -131,7 +122,7 @@ class SearchQuickEnginesViewController: UITableViewController {
     let toggle = UISwitch().then {
       $0.tag = indexPath.item
       $0.addTarget(self, action: #selector(didToggleEngine), for: .valueChanged)
-      $0.isOn = searchEngines.isEngineEnabled(engine)
+      $0.isOn = item.id.isQuickSearchEnabled
       $0.onTintColor = UIColor(braveSystemName: .primitivePrimary40)
     }
 
@@ -162,17 +153,16 @@ class SearchQuickEnginesViewController: UITableViewController {
     moveRowAt indexPath: IndexPath,
     to newIndexPath: IndexPath
   ) {
-    guard let index = orderedEnginesIndex(forRow: indexPath.item),
-      let newIndex = orderedEnginesIndex(forRow: newIndexPath.item)
-    else {
-      assertionFailure("Reordered a row with no backing engine")
+    var items = quickSearchItems
+    guard items.indices.contains(indexPath.item), items.indices.contains(newIndexPath.item) else {
+      assertionFailure("Reordered a row outside the quick search list")
       // The row already moved on screen, so put it back.
       tableView.reloadData()
       return
     }
 
-    let engine = searchEngines.orderedEngines.remove(at: index)
-    searchEngines.orderedEngines.insert(engine, at: newIndex)
+    items.insert(items.remove(at: indexPath.item), at: newIndexPath.item)
+    items.persistQuickSearchOrder()
     tableView.reloadData()
     delegate?.searchQuickEnginesUpdated()
   }
@@ -195,7 +185,8 @@ class SearchQuickEnginesViewController: UITableViewController {
     forRowAt forRowAtIndexPath: IndexPath
   ) {
     if commitEditingStyle == .delete,
-      case .engine(let engine) = quickSearchItems[safe: forRowAtIndexPath.item]?.source
+      let item = quickSearchItems[safe: forRowAtIndexPath.item],
+      case .engine(let engine) = item.source
     {
       Task {
         do {
@@ -230,14 +221,9 @@ class SearchQuickEnginesViewController: UITableViewController {
 extension SearchQuickEnginesViewController {
 
   @objc func didToggleEngine(_ toggle: UISwitch) {
-    guard case .engine(let engine) = quickSearchItems[safe: toggle.tag]?.source
-    else { return }
+    guard let item = quickSearchItems[safe: toggle.tag] else { return }
 
-    if toggle.isOn {
-      searchEngines.enableEngine(engine)
-    } else {
-      searchEngines.disableEngine(engine, type: .standard)
-    }
+    item.id.setQuickSearchEnabled(toggle.isOn)
     delegate?.searchQuickEnginesUpdated()
   }
 

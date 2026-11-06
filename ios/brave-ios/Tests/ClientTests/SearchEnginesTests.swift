@@ -5,6 +5,7 @@
 import Foundation
 import Preferences
 import Shared
+import UIKit
 import XCTest
 
 @testable import Brave
@@ -23,6 +24,8 @@ class SearchEnginesTests: XCTestCase {
     Preferences.Search.disabledEngines.reset()
     Preferences.Search.orderedEngines.reset()
     Preferences.Search.showSuggestions.reset()
+    Preferences.Search.quickSearchOrder.reset()
+    Preferences.Search.quickSearchDisabled.reset()
 
     Preferences.Search.defaultEngineName.reset()
     Preferences.Search.defaultPrivateEngineName.reset()
@@ -145,58 +148,25 @@ class SearchEnginesTests: XCTestCase {
     XCTAssertEqual(engines2.orderedEngines[2].shortName, expectedEngineNames[0])
   }
 
-  func testQuickSearchEngines() async {
+  /// `updateDefaultEngine` re-enables the engine it promotes, so that engine remains in the
+  /// quick search row after it stops being the default.
+  func testUpdateDefaultEngineEnablesItForQuickSearch() {
     let engines = SearchEngines()
-    await engines.loadSearchEngines()
-    let engineSet = engines.orderedEngines
+    engines.orderedEngines = ["Google", "Bing"].map { name in
+      OpenSearchEngine(
+        engineID: name.lowercased(),
+        shortName: name,
+        image: UIImage(),
+        searchTemplate: "https://\(name.lowercased())/?q={searchTerms}",
+        suggestTemplate: nil,
+        isCustomEngine: false
+      )
+    }
+    QuickSearchItemID.engine("bing").setQuickSearchEnabled(false)
 
-    // You can't disable the default engine.
-    engines.updateDefaultEngine(engineSet[1].shortName, forType: .standard)
-    engines.disableEngine(engineSet[1], type: .standard)
-    XCTAssertTrue(engines.isEngineEnabled(engineSet[1]))
+    engines.updateDefaultEngine("Bing", forType: .standard)
 
-    // The default engine is included in the quick search engines.
-    XCTAssertEqual(
-      1,
-      engines.quickSearchEngines.filter { engine in engine.shortName == engineSet[0].shortName }
-        .count
-    )
-
-    // Enable and disable work.
-    engines.enableEngine(engineSet[0])
-    XCTAssertTrue(engines.isEngineEnabled(engineSet[0]))
-    XCTAssertEqual(
-      1,
-      engines.quickSearchEngines.filter { engine in engine.shortName == engineSet[0].shortName }
-        .count
-    )
-
-    engines.disableEngine(engineSet[0], type: .standard)
-    XCTAssertFalse(engines.isEngineEnabled(engineSet[0]))
-    XCTAssertEqual(
-      0,
-      engines.quickSearchEngines.filter { engine in engine.shortName == engineSet[0].shortName }
-        .count
-    )
-
-    // Setting the default engine enables it.
-    engines.updateDefaultEngine(engineSet[0].shortName, forType: .standard)
-    XCTAssertTrue(engines.isEngineEnabled(engineSet[1]))
-
-    // Setting the order may change the default engine, which enables it.
-    engines.orderedEngines = [engineSet[2], engineSet[1], engineSet[0]]
-    XCTAssertTrue(engines.isEngineEnabled(engineSet[2]))
-
-    // The enabling should be persisted.
-    engines.enableEngine(engineSet[2])
-    engines.disableEngine(engineSet[1], type: .standard)
-    engines.enableEngine(engineSet[0])
-
-    let engines2 = SearchEngines()
-    await engines2.loadSearchEngines()
-    XCTAssertTrue(engines2.isEngineEnabled(engineSet[2]))
-    XCTAssertFalse(engines2.isEngineEnabled(engineSet[1]))
-    XCTAssertTrue(engines2.isEngineEnabled(engineSet[0]))
+    XCTAssertTrue(QuickSearchItemID.engine("bing").isQuickSearchEnabled)
   }
 
   func testSearchSuggestionSettings() {
