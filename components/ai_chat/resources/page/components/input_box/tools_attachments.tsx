@@ -15,6 +15,9 @@ import { useConversation } from '../../state/conversation_context'
 import WebsiteToolsModal from '../website_tools_modal'
 import styles from './tools_attachments.module.scss'
 
+const WEBSITE_TOOLS_LEARN_MORE_URL =
+  'https://support.brave.app/hc/en-us/articles/50132604817165'
+
 interface Props {
   toolsContent: Mojom.AssociatedContent[]
   setToolsAttached: (
@@ -123,7 +126,14 @@ export default function ToolsAttachments(props: Props) {
             slot='content'
             className={styles.toolsTooltipContent}
           >
-            {getLocale(S.CHAT_UI_TOOLS_ATTACHMENT_TOOLTIP_INFO)}
+            <p>{getLocale(S.CHAT_UI_TOOLS_ATTACHMENT_TOOLTIP_INFO)}</p>
+            <a
+              href={WEBSITE_TOOLS_LEARN_MORE_URL}
+              target='_blank'
+              className={styles.learnMoreLink}
+            >
+              {getLocale(S.CHAT_UI_LEARN_MORE)}
+            </a>
           </div>
         </Tooltip>
       </div>

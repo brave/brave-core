@@ -35,6 +35,23 @@
   max-width: 320px;
   white-space: normal;
   word-break: break-word;
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-m);
+
+  p {
+    margin: 0;
+  }
+}
+
+.learnMoreLink {
+  align-self: start;
+  color: inherit;
+  text-decoration: underline;
+
+  &:hover {
+    color: var(--leo-color-text-interactive);
+  }
 }
 
 .toolsPills {
