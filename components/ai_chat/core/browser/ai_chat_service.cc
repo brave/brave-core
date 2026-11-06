@@ -1614,7 +1614,8 @@ void AIChatService::NotifyConversationGenerationState(const std::string& uuid) {
   }
 }
 
-bool AIChatService::IsConversationVisible(const std::string& uuid) const {
+bool AIChatService::IsConversationClientConnected(
+    const std::string& uuid) const {
   auto* handler = base::FindPtrOrNull(conversation_handlers_, uuid);
   return handler && handler->IsAnyClientConnected();
 }
@@ -1630,7 +1631,7 @@ void AIChatService::MaybeCompleteGeneration(const std::string& uuid) {
       (handler->IsRequestInProgress() || handler->IsToolUseInProgress())) {
     return;
   }
-  if (IsConversationVisible(uuid)) {
+  if (IsConversationClientConnected(uuid)) {
     conversation_generation_state_.erase(it);
   } else {
     it->second = mojom::ConversationGenerationState::kCompletedNotViewed;

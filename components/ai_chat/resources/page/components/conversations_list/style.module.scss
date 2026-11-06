@@ -261,10 +261,7 @@
   flex-shrink: 0;
   display: flex;
   align-items: center;
-
-  leo-progressring {
-    --leo-progressring-size: 16px;
-  }
+  --leo-progressring-size: 16px;
 }
 
 .completedIndicator {

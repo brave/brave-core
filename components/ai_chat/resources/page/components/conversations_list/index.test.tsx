@@ -12,6 +12,7 @@ import { ActiveChatContext } from '../../state/active_chat_context'
 import { clearAllDataForTesting } from '$web-common/api'
 import ConversationsList from './index'
 import * as Mojom from '../../../common/mojom'
+import { ConversationGenerationState as CG } from '../../../common/mojom'
 
 const mockConversations: Mojom.Conversation[] = [
   {
@@ -555,8 +556,6 @@ describe('ConversationsList', () => {
   })
 
   describe('Generation indicators', () => {
-    const CG = Mojom.ConversationGenerationState
-
     it('shows ProgressRing when generating and not active', async () => {
       await renderConversationsList(
         <MockContext
