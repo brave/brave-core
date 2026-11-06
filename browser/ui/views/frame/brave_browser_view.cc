@@ -470,7 +470,8 @@ void BraveBrowserView::SetStarredState(bool is_starred) {
 }
 
 void BraveBrowserView::URLStarredChanged(content::WebContents* web_contents,
-                                         bool starred) {
+                                         bool starred,
+                                         bool is_bookmark_added_or_removed) {
   if (web_contents == GetActiveWebContents()) {
     SetStarredState(starred);
   }
