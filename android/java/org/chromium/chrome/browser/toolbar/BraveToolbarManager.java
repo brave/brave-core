@@ -521,6 +521,7 @@ public class BraveToolbarManager extends ToolbarManager
         mTabGroupUiBottomControlsCoordinatorSupplier.set(bottomControlsCoordinator);
         mBottomControls.setBottomControlsCoordinatorSupplier(
                 mTabGroupUiBottomControlsCoordinatorSupplier);
+        updateBookmarkButtonStatus();
         updateBraveBottomControlsVisibility();
         if (mIsBraveBottomControlsVisible) {
             mBottomControls.setVisibility(View.VISIBLE);
