@@ -5,35 +5,37 @@
 
 substitutions:
   - description: |-
-      Stale: browser_window.h isn't actually desktop-Android-only, see the
-      next substitution.
+      browser_window_interface.h's owning target isn't is_desktop_android-
+      gated and is already an unconditional dep of :test_support, so
+      nogncheck was never actually needed. Narrow the include to
+      ENABLE_EXTENSIONS_CORE instead of IS_DESKTOP_ANDROID, matching the
+      companion .h declaration: this header is only needed for
+      windowing/internal's extensions unit test, which is gated on
+      enable_extensions_core, not desktop Android specifically.
     regex:
       re_pattern:
         '// "chrome/browser/ui/browser_window" is available on desktop Android,
-        but not\s*// other Android builds\.\s*'
-      replace: ''
+        but not\s*// other Android builds\.\s*#if
+        BUILDFLAG\(IS_DESKTOP_ANDROID\)\s*#include
+        "chrome/browser/ui/browser_window/public/browser_window_interface\.h"\s*//\s*nogncheck\s*#endif'
+      replace: |-
+        // Only windowing/internal's extensions unit test needs this.
+        #if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+        #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+        #endif
 
   - description: |-
-      browser_window_interface.h's owning target,
-      //chrome/browser/ui/browser_window, isn't is_desktop_android-gated and
-      is already an unconditional dep of :test_support, so the include
-      guard (and its nogncheck) were never actually needed. Make it
-      unconditional now that AssociateWithBrowserWindow's body needs it on
-      all Android.
-    regex:
-      re_pattern:
-        '#if BUILDFLAG\(IS_DESKTOP_ANDROID\)\s*(#include
-        "chrome/browser/ui/browser_window/public/browser_window_interface\.h")\s*//\s*nogncheck\s*#endif'
-      replace: '\1'
-
-  - description: |-
-      Widen TestTabModel::AssociateWithBrowserWindow to all Android, matching
-      the production TabModelJniBridge equivalent (unconditional) and the
-      companion .h declaration.
+      Narrow TestTabModel::AssociateWithBrowserWindow to
+      ENABLE_EXTENSIONS_CORE: its only caller is windowing/internal's
+      extensions unit test, which is gated on that flag, not
+      is_desktop_android specifically.
     regex:
       re_pattern:
         '#if BUILDFLAG\(IS_DESKTOP_ANDROID\)\s*(void
         TestTabModel::AssociateWithBrowserWindow\(BrowserWindowInterface\*
         browser\) \{.*?\})\s*#endif'
       re_flags: [DOTALL]
-      replace: '\1'
+      replace: |-
+        #if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+        \1
+        #endif
