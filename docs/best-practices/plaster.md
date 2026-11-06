@@ -209,6 +209,30 @@ instances receive the intended behaviour. Prefer an AST rewriter such as
 `preempt_function_impl` or `after_function_impl` where it fits, calling a helper
 in `chromium_src` for substantive C++.
 
+```cpp
+// ❌ WRONG - redirecting each known construction site to BraveFoo.
+// first_factory.cc
+auto first = std::make_unique<BraveFoo>();
+// second_factory.cc
+auto second = std::make_unique<BraveFoo>();
+// new_factory.cc - added upstream later, bypassing BraveFoo::DoSomething().
+auto third = std::make_unique<Foo>();
+```
+
+```yaml
+# ✅ CORRECT - customise Foo::DoSomething for every construction site.
+# rewrite/foo/foo.cc.yaml
+substitutions:
+  - description: 'Apply the Brave customisation to every Foo instance.'
+    preempt_function_impl:
+      function_name: Foo::DoSomething
+      code: |-
+        ApplyBraveCustomisation(this);
+```
+
+The helper runs whenever `Foo::DoSomething` is called, including on instances
+created by new upstream construction sites.
+
 See also
 [subclassing guidance](../plaster_dos_and_donts.md#when-subclassing-is-appropriate).
 
