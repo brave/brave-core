@@ -73,7 +73,7 @@ export function AllowAddChangeNetworkPanel(props: Props) {
   const [showNetworkDetails, setShowNetworkDetails] = React.useState(false)
 
   // computed from props
-  const originInfo = switchChainRequest
+  const dappOriginInfo = switchChainRequest
     ? switchChainRequest.dappOriginInfo
     : addChainRequest.dappOriginInfo
 
@@ -81,7 +81,7 @@ export function AllowAddChangeNetworkPanel(props: Props) {
   const { data: dappsAccounts } = useGetSelectedDappAccountsQuery()
   const { data: selectedNetwork } = useGetNetworkForAccountOnActiveOriginQuery({
     accountId: dappsAccounts?.ethAccountId,
-    activeOriginSpec: originInfo.originSpec,
+    activeOriginSpec: dappOriginInfo.originSpec,
   })
 
   const { data: switchChainRequestNetwork } = useGetNetworkQuery(
@@ -173,7 +173,7 @@ export function AllowAddChangeNetworkPanel(props: Props) {
           height='100%'
           justifyContent='space-between'
         >
-          <OriginInfoCard origin={originInfo} />
+          <OriginInfoCard origin={dappOriginInfo} />
           <Column
             padding='0px 16px'
             gap='8px'

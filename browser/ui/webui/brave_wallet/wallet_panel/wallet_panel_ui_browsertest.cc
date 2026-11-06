@@ -302,10 +302,10 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
  private:
   int wallet_index_ = 0;
   int settings_index_ = 0;
-  raw_ptr<content::WebContents> dapp_contents_ = nullptr;
   network::TestURLLoaderFactory url_loader_factory_;
   content::ContentMockCertVerifier mock_cert_verifier_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
+  raw_ptr<content::WebContents> dapp_contents_ = nullptr;
 };
 
 IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, InitialUIRendered) {

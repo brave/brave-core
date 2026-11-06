@@ -3039,9 +3039,14 @@ interface BraveWalletService {
       => (AccountId? account_id);
 
   // Setting chain_id fails if the selected account does not support it.
+  // active_origin_spec must be the serialized non-opaque origin_spec from
+  // PanelHandler.GetActivePanelOrigin. An invalid or opaque spec returns null.
   GetNetworkForSelectedAccountOnActiveOrigin(string active_origin_spec)
       => (NetworkInfo? network);
 
+  // active_origin_spec must be the serialized non-opaque origin_spec from
+  // PanelHandler.GetActivePanelOrigin. An invalid or opaque spec returns
+  // false.
   SetNetworkForSelectedAccountOnActiveOrigin(
       string active_origin_spec, string chain_id) => (bool success);
 
@@ -3049,22 +3054,37 @@ interface BraveWalletService {
   // so any account can be used.
   // But in the future we are going to make unique relation
   // between origin, account and chain.
+  // active_origin_spec must be the serialized non-opaque origin_spec from
+  // PanelHandler.GetActivePanelOrigin. An invalid or opaque spec returns
+  // null.
   GetNetworkForAccountOnActiveOrigin(
       string active_origin_spec, AccountId account) => (NetworkInfo? network);
 
+  // active_origin_spec must be the serialized non-opaque origin_spec from
+  // PanelHandler.GetActivePanelOrigin. An invalid or opaque spec returns
+  // false.
   SetNetworkForAccountOnActiveOrigin(
       string active_origin_spec, AccountId account, string chain_id)
       => (bool success);
 
   // Filters accounts with permissions on the specified origin.
+  // active_origin_spec must be the serialized non-opaque origin_spec from
+  // PanelHandler.GetActivePanelOrigin. An invalid or opaque spec returns
+  // false with no accounts.
   HasPermission(string active_origin_spec, array<AccountId> accounts)
       => (bool success, array<AccountId> accounts_with_permission);
 
   // Resets the permission of coin for the account on the specified origin.
+  // active_origin_spec must be the serialized non-opaque origin_spec from
+  // PanelHandler.GetActivePanelOrigin. An invalid or opaque spec returns
+  // false.
   ResetPermission(string active_origin_spec, AccountId account_id)
       => (bool success);
 
   // Checks if permission is denied for the specified origin.
+  // active_origin_spec must be the serialized non-opaque origin_spec from
+  // PanelHandler.GetActivePanelOrigin. An invalid or opaque spec returns
+  // true, i.e. denied.
   IsPermissionDenied(string active_origin_spec, CoinType coin)
       => (bool denied);
 
