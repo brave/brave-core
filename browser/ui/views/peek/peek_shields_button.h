@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_PEEK_PEEK_SHIELDS_BUTTON_H_
 #define BRAVE_BROWSER_UI_VIEWS_PEEK_PEEK_SHIELDS_BUTTON_H_
 
-#include <string>
-
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "ui/base/metadata/metadata_header_macros.h"
