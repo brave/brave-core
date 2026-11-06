@@ -61,12 +61,4 @@ class PsstInfoBarDelegate : public BraveConfirmInfoBarDelegate {
 
 }  // namespace psst
 
-// #if !BUILDFLAG(IS_ANDROID)
-// // Defined in brave/browser/ui/views/infobars/psst_infobar.cc. Declared here
-// // (rather than in a views-layer creator header) since it's only ever used by
-// // PsstInfoBarDelegate::Create().
-// std::unique_ptr<infobars::InfoBar> CreatePsstInfoBar(
-//     std::unique_ptr<psst::PsstInfoBarDelegate> delegate);
-// #endif  // !BUILDFLAG(IS_ANDROID)
-
 #endif  // BRAVE_BROWSER_PSST_PSST_INFOBAR_DELEGATE_H_
