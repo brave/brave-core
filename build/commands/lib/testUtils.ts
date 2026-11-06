@@ -77,17 +77,14 @@ export function getApplicableFilters(
   suite: string,
   { includeMissing = false } = {},
 ) {
-  let result = getSuiteFilters(config, suite, includeMissing)
+  const suites = (additionalSuiteFilters[suite] ?? []).concat(suite)
+  return suites.flatMap((s) => getSuiteFilters(config, s, includeMissing))
+}
 
-  // updater_tests_system runs the same tests as updater_tests, but for a
-  // system-wide install.
-  if (suite === 'updater_tests_system') {
-    result = getSuiteFilters(config, 'updater_tests', includeMissing).concat(
-      result,
-    )
-  }
-
-  return result
+// Suites that run another suite's tests and therefore take its filters too.
+// updater_tests_system is updater_tests for a system-wide install.
+const additionalSuiteFilters: Record<string, string[]> = {
+  updater_tests_system: ['updater_tests'],
 }
 
 function getSuiteFilters(
