@@ -4,47 +4,79 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
-import BraveShields
+import BraveShared
 import Data
 import Favicon
 import Foundation
 import Preferences
 import Shared
-import UIKit
 import Web
 import WebKit
+import os.log
+
+/// The tabs of a window, which `ShredManager` closes when their site is shredded.
+public protocol ShredTabContainer: AnyObject {
+  var windowId: UUID { get }
+  @MainActor var isPrivateBrowsing: Bool { get }
+  @MainActor var allTabs: [any TabState] { get }
+  /// Removes `tabs`, deleting their web views first.
+  @MainActor @discardableResult func removeTabsToShred(_ tabs: [any TabState]) -> [any TabState]
+  @MainActor func removeAllTabsToShred(isPrivate: Bool)
+  @MainActor func websiteDataStore(isPrivate: Bool) -> WKWebsiteDataStore
+}
+
+private struct WeakShredTabContainer {
+  weak var value: (any ShredTabContainer)?
+}
 
 /// Shreds website data and closes the tabs of shredded sites across every window.
 ///
 /// Website data stores are shared between windows, so a single instance per profile is shared by
-/// every `TabManager`, including the pending Auto Shred tasks for sites whose tabs were closed.
+/// every window, including the pending Auto Shred tasks for sites whose tabs were closed.
 public class ShredManager {
-  private let braveCore: BraveProfileController?
+  private let historyAPI: BraveHistoryAPI?
   private let profile: any Profile
+  private let connectedWindowIdsProvider: @MainActor () -> [UUID]
+  private let dormantWindowIdsProvider: @MainActor () -> [UUID]
   private let isShredFeatureEnabled: Bool
   private let braveShieldsSettings: (_ profile: any Profile) -> (any BraveShieldsSettings)?
   private let siteClosedShredDelay: TimeInterval
+  private var registeredContainers: [WeakShredTabContainer] = []
   /// The pending Auto Shred tasks for closed sites, keyed by whether they are private, then by
   /// base domain.
   private(set) var forgetTasks: [Bool: [String: Task<Void, Error>]] = [:]
 
   /// - Parameters:
+  ///   - connectedWindowIds: The ids of windows whose scene is connected.
+  ///   - dormantWindowIds: The ids of windows whose scene is dormant, e.g. a window on a now
+  ///   disconnected external display.
   ///   - siteClosedShredDelay: How long after a site is closed to wait before forgetting its
   ///   data, allowing the user to go back to it.
   public init(
-    braveCore: BraveProfileController?,
+    historyAPI: BraveHistoryAPI?,
     profile: any Profile,
+    connectedWindowIds: @escaping @MainActor () -> [UUID],
+    dormantWindowIds: @escaping @MainActor () -> [UUID],
     isShredFeatureEnabled: Bool = FeatureList.kBraveShredFeature.enabled,
     braveShieldsSettings: @escaping (_ profile: any Profile) -> (any BraveShieldsSettings)? = {
       BraveShieldsSettingsServiceFactory.get(profile: $0)
     },
     siteClosedShredDelay: TimeInterval = 30
   ) {
-    self.braveCore = braveCore
+    self.historyAPI = historyAPI
     self.profile = profile
+    self.connectedWindowIdsProvider = connectedWindowIds
+    self.dormantWindowIdsProvider = dormantWindowIds
     self.isShredFeatureEnabled = isShredFeatureEnabled
     self.braveShieldsSettings = braveShieldsSettings
     self.siteClosedShredDelay = siteClosedShredDelay
+  }
+
+  /// Registers the tabs of a window. `container` is held weakly, and only considered while its
+  /// window's scene is connected.
+  public func register(_ container: some ShredTabContainer) {
+    registeredContainers.removeAll { $0.value == nil }
+    registeredContainers.append(WeakShredTabContainer(value: container))
   }
 
   // MARK: - Site Events
@@ -54,7 +86,7 @@ public class ShredManager {
   ///
   /// Sites set to Auto Shred when the site is closed are forgotten after a short delay, which is
   /// cancelled by `navigated(from:to:in:)` if the user goes back to the site.
-  @MainActor func siteClosed(_ url: URL, in tab: some TabState) {
+  @MainActor public func siteClosed(_ url: URL, in tab: some TabState) {
     guard isShredFeatureEnabled else { return }
     guard let url = url.urlToShred,
       let baseDomain = url.baseDomain
@@ -85,7 +117,7 @@ public class ShredManager {
   ///
   /// Cancels any pending Auto Shred for the site being opened, and treats the previous site as
   /// closed in `tab` if the navigation leaves it.
-  @MainActor func navigated(
+  @MainActor public func navigated(
     from previousURL: URL?,
     to url: URL,
     in tab: some TabState
@@ -117,7 +149,7 @@ public class ShredManager {
     // With no connected window, the next window to restore picks these sites up in
     // `forgetDataWithPendingShredOnStartup()`.
     guard isShredFeatureEnabled, !windowIds.isEmpty,
-      !tabManagersInConnectedWindows.isEmpty
+      let anyContainer = connectedTabContainers.first
     else { return nil }
     var tasks: [Task<Void, Never>] = []
     for isPrivate in [false, true] {
@@ -135,7 +167,7 @@ public class ShredManager {
         return shredLevel(for: url, isPrivate: isPrivate) == .whenSiteClosed
       }
       guard !urlsToShred.isEmpty else { continue }
-      let dataStore = websiteDataStore(isPrivate: isPrivate)
+      let dataStore = anyContainer.websiteDataStore(isPrivate: isPrivate)
       tasks.append(
         Task {
           await forgetData(for: urlsToShred, dataStore: dataStore)
@@ -158,7 +190,7 @@ public class ShredManager {
   /// task started in `siteClosed(_:in:)` does not survive app termination.
   ///
   /// Must be called after tabs are restored so that open tabs are taken into account.
-  func forgetDataWithPendingShredOnStartup() {
+  public func forgetDataWithPendingShredOnStartup() {
     guard isShredFeatureEnabled else { return }
     Task { @MainActor in
       // Private tabs use a non-persistent data store, so only regular tabs can keep a website's
@@ -212,7 +244,7 @@ public class ShredManager {
       if Preferences.Shields.shredHistoryItems.value {
         // if user enabled shred and/or shred history but does not have data
         // in WKWebsiteDataStore, we still need to shred it.
-        if let historyNodes = await braveCore?.historyAPI.search(
+        if let historyNodes = await historyAPI?.search(
           withQuery: nil,
           options: HistorySearchOptions(
             maxCount: 0,
@@ -245,7 +277,7 @@ public class ShredManager {
   ///
   /// - Returns: The task forgetting the site's data, or nil if url cannot be shredded.
   @discardableResult
-  @MainActor func shredData(for url: URL, in tab: some TabState) -> Task<Void, Never>? {
+  @MainActor public func shredData(for url: URL, in tab: some TabState) -> Task<Void, Never>? {
     guard let url = url.urlToShred,
       let baseDomain = url.baseDomain
     else { return nil }
@@ -261,44 +293,44 @@ public class ShredManager {
 
   /// Shreds the sites displayed in `tabs`, closing their tabs in every window.
   ///
-  /// - Returns: The tabs closed in `tabManager`.
-  @MainActor func shredData(
+  /// - Returns: The tabs closed in `container`.
+  @MainActor public func shredData(
     for tabs: [any TabState],
-    in tabManager: TabManager
+    in container: any ShredTabContainer
   ) -> Set<TabState.ID> {
-    let isPrivate = tabManager.isPrivateBrowsing
+    let isPrivate = container.isPrivateBrowsing
     let urlsToShred = Set(tabs.compactMap(\.visibleURL?.urlToShred))
     let baseDomainsToShred = Set(urlsToShred.compactMap(\.baseDomain))
     let shouldClose: (URL) -> Bool = {
       guard let baseDomain = $0.urlToShred?.baseDomain else { return false }
       return baseDomainsToShred.contains(baseDomain)
     }
-    let closedTabs = closeTabsToShred(in: tabManager, isPrivate: isPrivate, where: shouldClose)
-    closeTabsToShredInAllWindows(isPrivate: isPrivate, excluding: tabManager, where: shouldClose)
-    let dataStore = websiteDataStore(isPrivate: isPrivate)
+    let closedTabs = closeTabsToShred(in: container, isPrivate: isPrivate, where: shouldClose)
+    closeTabsToShredInAllWindows(isPrivate: isPrivate, excluding: container, where: shouldClose)
+    let dataStore = container.websiteDataStore(isPrivate: isPrivate)
     Task {
       await forgetData(for: Array(urlsToShred), dataStore: dataStore)
     }
     return Set(closedTabs.map(\.id))
   }
 
-  /// Shreds the sites of every tab in `tabManager` for its current mode, closing all of its tabs
+  /// Shreds the sites of every tab in `container` for its current mode, closing all of its tabs
   /// and the tabs of those sites in every other window.
   ///
   /// - Returns: The task forgetting the sites' data.
   @discardableResult
-  @MainActor func shredAllTabs(in tabManager: TabManager) -> Task<Void, Never> {
-    let isPrivate = tabManager.isPrivateBrowsing
+  @MainActor public func shredAllTabs(in container: any ShredTabContainer) -> Task<Void, Never> {
+    let isPrivate = container.isPrivateBrowsing
     let urlsToShred = Set(
-      tabManager.tabs(isPrivate: isPrivate).compactMap(\.visibleURL?.urlToShred)
+      container.tabs(isPrivate: isPrivate).compactMap(\.visibleURL?.urlToShred)
     )
     let baseDomainsToShred = Set(urlsToShred.compactMap(\.baseDomain))
-    tabManager.removeAllTabsToShred(isPrivate: isPrivate)
-    closeTabsToShredInAllWindows(isPrivate: isPrivate, excluding: tabManager) {
+    container.removeAllTabsToShred(isPrivate: isPrivate)
+    closeTabsToShredInAllWindows(isPrivate: isPrivate, excluding: container) {
       guard let baseDomain = $0.urlToShred?.baseDomain else { return false }
       return baseDomainsToShred.contains(baseDomain)
     }
-    let dataStore = websiteDataStore(isPrivate: isPrivate)
+    let dataStore = container.websiteDataStore(isPrivate: isPrivate)
     return Task {
       await forgetData(for: Array(urlsToShred), dataStore: dataStore)
     }
@@ -308,7 +340,7 @@ public class ShredManager {
 
   /// The Auto Shred level for `url`, for when no `TabState` is available to ask its
   /// `BraveShieldsTabHelper`.
-  @MainActor func shredLevel(for url: URL, isPrivate: Bool) -> SiteShredLevel {
+  @MainActor public func shredLevel(for url: URL, isPrivate: Bool) -> SiteShredLevel {
     let profile = isPrivate ? profile.offTheRecordProfile : profile
     return braveShieldsSettings(profile)?.autoShredMode(
       for: url,
@@ -318,17 +350,15 @@ public class ShredManager {
 
   // MARK: - Windows
 
-  @MainActor private var tabManagersInConnectedWindows: [TabManager] {
-    UIApplication.shared.connectedScenes
-      .compactMap { ($0 as? UIWindowScene)?.browserViewController?.tabManager }
+  @MainActor private var connectedTabContainers: [any ShredTabContainer] {
+    let connectedWindowIds = Set(connectedWindowIdsProvider())
+    return registeredContainers.compactMap(\.value).filter {
+      connectedWindowIds.contains($0.windowId)
+    }
   }
 
-  /// The ids of windows whose scene is dormant, e.g. a window on a now disconnected external
-  /// display.
   @MainActor private var dormantWindowIds: [UUID] {
-    UIApplication.shared.openSessions
-      .filter { $0.scene == nil }
-      .compactMap { BrowserState.getWindowId(from: $0).flatMap(UUID.init(uuidString:)) }
+    dormantWindowIdsProvider()
   }
 
   /// The base domains with an open tab in any window, including windows whose
@@ -346,7 +376,7 @@ public class ShredManager {
     excludingWindows excludedWindowIds: [UUID] = []
   ) -> Set<String> {
     let openURLs =
-      tabManagersInConnectedWindows
+      connectedTabContainers
       .flatMap { $0.tabs(isPrivate: isPrivate) }
       .filter { $0 !== excludedTab }
       .compactMap { $0.visibleURL }
@@ -358,22 +388,22 @@ public class ShredManager {
   }
 
   @MainActor private func isTabOpenInAnyWindow(_ tab: any TabState) -> Bool {
-    tabManagersInConnectedWindows.contains { tabManager in
-      tabManager.allTabs.contains { $0 === tab }
+    connectedTabContainers.contains { container in
+      container.allTabs.contains { $0 === tab }
     }
   }
 
-  /// Closes the tabs in `tabManager` whose URL matches `shouldClose`.
+  /// Closes the tabs in `container` whose URL matches `shouldClose`.
   @discardableResult
   @MainActor private func closeTabsToShred(
-    in tabManager: TabManager,
+    in container: any ShredTabContainer,
     isPrivate: Bool,
     where shouldClose: (URL) -> Bool
   ) -> [any TabState] {
-    let tabsToClose = tabManager.tabs(isPrivate: isPrivate).filter {
+    let tabsToClose = container.tabs(isPrivate: isPrivate).filter {
       $0.visibleURL.map(shouldClose) ?? false
     }
-    return tabManager.removeTabsToShred(tabsToClose)
+    return container.removeTabsToShred(tabsToClose)
   }
 
   /// Closes the tabs whose URL matches `shouldClose` in every window, including windows whose
@@ -385,11 +415,11 @@ public class ShredManager {
   /// deleted instead.
   @MainActor private func closeTabsToShredInAllWindows(
     isPrivate: Bool,
-    excluding excludedTabManager: TabManager? = nil,
+    excluding excludedContainer: (any ShredTabContainer)? = nil,
     where shouldClose: @escaping (URL) -> Bool
   ) {
-    for tabManager in tabManagersInConnectedWindows where tabManager !== excludedTabManager {
-      closeTabsToShred(in: tabManager, isPrivate: isPrivate, where: shouldClose)
+    for container in connectedTabContainers where container !== excludedContainer {
+      closeTabsToShred(in: container, isPrivate: isPrivate, where: shouldClose)
     }
     let dormantWindowIds = dormantWindowIds
     if !dormantWindowIds.isEmpty {
@@ -398,19 +428,6 @@ public class ShredManager {
   }
 
   // MARK: - Forget Data
-
-  private func websiteDataStore(isPrivate: Bool) -> WKWebsiteDataStore {
-    if FeatureList.kUseProfileWebViewConfiguration.enabled, let braveCore {
-      let configuration =
-        isPrivate
-        ? braveCore.defaultWebViewConfiguration : braveCore.nonPersistentWebViewConfiguration
-      return configuration.websiteDataStore
-    } else {
-      let configuration =
-        isPrivate ? TabManager.privateConfiguration : TabManager.defaultConfiguration
-      return configuration.websiteDataStore
-    }
-  }
 
   /// Start a task to delete all data for this url
   /// The task may be delayed in case we want to cancel it
@@ -440,7 +457,7 @@ public class ShredManager {
   @MainActor private func forgetData(for url: URL, in tab: (any TabState)?) async {
     await forgetData(for: [url], dataStore: tab?.configuration?.websiteDataStore)
 
-    ContentBlockerManager.log.debug("Cleared website data for `\(url.baseDomain ?? "")`")
+    Logger.module.debug("Cleared website data for `\(url.baseDomain ?? "")`")
     if let baseDomain = url.baseDomain, let tab {
       forgetTasks[tab.isPrivate]?.removeValue(forKey: baseDomain)
     }
@@ -469,7 +486,7 @@ public class ShredManager {
     }
 
     // Delete the history for forgotten websites
-    if let historyAPI = braveCore?.historyAPI, Preferences.Shields.shredHistoryItems.value {
+    if let historyAPI = historyAPI, Preferences.Shields.shredHistoryItems.value {
       // if we're only forgetting 1 site, we can query history by it's domain
       let query = urls.count == 1 ? urls.first?.baseDomain : nil
 
@@ -497,6 +514,12 @@ public class ShredManager {
     for url in urls {
       await FaviconFetcher.deleteCache(for: url)
     }
+  }
+}
+
+extension ShredTabContainer {
+  @MainActor fileprivate func tabs(isPrivate: Bool) -> [any TabState] {
+    allTabs.filter { $0.isPrivate == isPrivate }
   }
 }
 
