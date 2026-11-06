@@ -14,10 +14,6 @@
 #include "ui/base/models/image_model.h"
 #include "url/gurl.h"
 
-namespace infobars {
-class InfoBar;
-}  // namespace infobars
-
 namespace psst {
 
 class PsstInfoBarDelegate : public BraveConfirmInfoBarDelegate {
