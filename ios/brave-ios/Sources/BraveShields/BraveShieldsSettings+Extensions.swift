@@ -37,6 +37,12 @@ extension BraveShieldsSettings {
     self.defaultAutoShredMode = Preferences.Shields.shredLevel.autoShredMode
   }
 
+  // silence the warnings for deprecated API usage as this is a migration helper.
+  @available(
+    *,
+    deprecated,
+    message: "Domain content settings is deprecated. Migration kept for now."
+  )
   @MainActor public func migrateShieldsToContentSettings(for domains: [Domain]) {
     // First, migrate shield settings that use host pattern.
     // Shields enabled, AdBlockMode, Block Scripts, Block Fingerprinting all

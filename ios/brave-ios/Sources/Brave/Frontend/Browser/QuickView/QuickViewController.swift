@@ -418,7 +418,6 @@ class QuickViewController: UIViewController {
           rootViewController: LegacyShieldsPanelViewController(
             url: url,
             tab: tab,
-            domain: Domain.getOrCreate(forUrl: url, persistent: !tab.isPrivate),
             callback: shieldsPanelActionHandler
           )
         ),
