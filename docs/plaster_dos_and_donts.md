@@ -271,10 +271,11 @@ void BraveDownloadDisplayController::UpdateToolbarButtonState(...) {
 
 ### When subclassing is appropriate
 
-Do not subclass an upstream class instantiated in multiple places. Redirecting
-today's construction sites does not cover new upstream sites, which can silently
-bypass the Brave subclass. Apply the change in the upstream class implementation
-instead; see [PLSTR-006](best-practices/plaster.md#PLSTR-006).
+Only subclass when the upstream class is instantiated in one well-defined
+factory method or another location clearly intended to remain its sole
+construction site. Redirect that single site to the Brave subclass. Otherwise,
+modify the upstream class implementation with a plaster: redirecting scattered
+construction sites can silently miss new upstream sites.
 
 Unlike the `_ChromiumImpl` rename, subclassing can be the more attractive
 option, and there are rewriters to assist with that (e.g. `drop_final`,

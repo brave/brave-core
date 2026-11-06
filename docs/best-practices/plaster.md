@@ -196,18 +196,24 @@ and calls for `re_pattern`.
 
 <a id="PLSTR-006"></a>
 
-## ❌ Don't Subclass Classes Instantiated in Multiple Places
+## ✅ Only Subclass Classes With One Defined Construction Point
 
-**Don't implement a Brave customisation by subclassing an upstream class that is
-instantiated in multiple places.** Replacing the currently known construction
-sites with the Brave subclass is fragile: new upstream sites can still construct
-the original class and silently bypass the customisation. Making methods virtual
-or checking the match count at existing sites does not protect new sites.
+**Only subclass an upstream class when all instances are constructed in one
+well-defined factory method, or another location clearly intended to remain the
+only construction site.** Merely finding one current construction site is not
+enough. Redirect that single point to the Brave subclass so future callers also
+receive the customisation.
 
-Apply the change in the upstream class implementation with a plaster so all
-instances receive the intended behaviour. Prefer an AST rewriter such as
-`preempt_function_impl` or `after_function_impl` where it fits, calling a helper
-in `chromium_src` for substantive C++.
+Replacing scattered construction sites is fragile: new upstream sites can still
+construct the original class and silently bypass the customisation. Making
+methods virtual or checking the match count at existing sites does not protect
+new sites.
+
+If there is no such single construction point, apply the change in the upstream
+class implementation with a plaster so all instances receive the intended
+behaviour. Prefer an AST rewriter such as `preempt_function_impl` or
+`after_function_impl` where it fits, calling a helper in `chromium_src` for
+substantive C++.
 
 ```cpp
 // ❌ WRONG - redirecting each known construction site to BraveFoo.
@@ -232,8 +238,5 @@ substitutions:
 
 The helper runs whenever `Foo::DoSomething` is called, including on instances
 created by new upstream construction sites.
-
-See also
-[subclassing guidance](../plaster_dos_and_donts.md#when-subclassing-is-appropriate).
 
 ---
