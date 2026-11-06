@@ -11,6 +11,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doReturn;
 
 import android.app.Activity;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -89,6 +90,8 @@ public class BraveExclusiveAccessNoticeTest {
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
         assertEquals(Gravity.TOP | Gravity.CENTER_HORIZONTAL, params.gravity);
         assertFalse(view.isClickable());
+        assertEquals(5, view.getMaxLines());
+        assertEquals(TextUtils.TruncateAt.END, view.getEllipsize());
     }
 
     @Test
@@ -242,6 +245,16 @@ public class BraveExclusiveAccessNoticeTest {
         doReturn(null).when(mExclusiveAccessContext).getActivity();
 
         assertFalse(mNotice.update(TEXT));
+        assertFalse(mNotice.isVisible());
+    }
+
+    @Test
+    public void fallbackWithoutActivityDoesNotKeepText() {
+        doReturn(null).when(mExclusiveAccessContext).getActivity();
+        assertFalse(mNotice.show(TEXT));
+
+        doReturn(mActivity).when(mExclusiveAccessContext).getActivity();
+        assertTrue(mNotice.show(null));
         assertFalse(mNotice.isVisible());
     }
 
