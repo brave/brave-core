@@ -118,6 +118,7 @@ public class BraveUndoBarControllerTest {
                 id,
                 title,
                 /* groupId= */ null,
+                /* indexInGroup= */ TabList.INVALID_TAB_INDEX,
                 /* modelIndex= */ TabList.INVALID_TAB_INDEX,
                 /* pinned= */ false,
                 /* wasSelected= */ false);
