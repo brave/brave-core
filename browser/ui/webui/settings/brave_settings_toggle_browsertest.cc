@@ -37,3 +37,8 @@ IN_PROC_BROWSER_TEST_F(BraveSettingsToggleWebUITest, MdSelectStyle) {
   RunTest("settings/settings_toggle_button_test.js",
           "runMochaSuite('BraveMdSelectStyle')");
 }
+
+IN_PROC_BROWSER_TEST_F(BraveSettingsToggleWebUITest, SiteListEntryReset) {
+  RunTest("settings/site_list_entry_test.js",
+          "runMochaSuite('BraveSiteListEntryReset')");
+}
