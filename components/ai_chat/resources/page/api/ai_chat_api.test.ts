@@ -5,10 +5,9 @@
 
 import createAIChatApi from './ai_chat_api'
 import * as Mojom from '../../common/mojom'
+import { ConversationGenerationState as CG } from '../../common/mojom'
 import { clearAllDataForTesting, makeCloseable } from '$web-common/api'
 import { createMockService } from './mock_interfaces'
-
-const CG = Mojom.ConversationGenerationState
 
 function makeApi() {
   const mockService = createMockService()
