@@ -40,9 +40,11 @@ mangle((root) => {
   // Performance lives under System instead.
   getById(root, 'performance').remove()
 
-  // Get Started and Origin follow People, then Appearance, Content, Shields and
-  // Privacy.
-  insertAfter(getById(root, 'people'),
+  // Get Started and Origin lead the menu, then Appearance, Content, Shields and
+  // Privacy. Upstream's People and Home items sit in nested templates, and
+  // Brave hides People.
+  // eslint-disable-next-line no-unsanitized/method
+  getById(root, 'menu').insertAdjacentHTML('afterbegin',
     menuItem('getStarted', '/getStarted', 'rocket', 'braveGetStartedTitle')
     + menuItem('origin', '/origin', 'product-origin', 'braveOriginTitle'))
 
