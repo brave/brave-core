@@ -88,6 +88,17 @@ substitutions:
   # These plaster override the `base::Feature` value for the blink runtime
   # features, and with it the runtime flag. Each must be listed in
   # brave/base/compile_overridden_features.inc. Keep them in alphabetical order.
+  - description: "Ship the Decision Model API's base feature disabled."
+    set_blink_runtime_enabled_feature_state:
+      feature_name: AIDecisionModelAPI
+      value: disabled
+
+  - description:
+      "Ship the Decision Model API's base feature for workers disabled."
+    set_blink_runtime_enabled_feature_state:
+      feature_name: AIDecisionModelAPIForWorkers
+      value: disabled
+
   - description: "Ship the Embeddings API's base feature disabled."
     set_blink_runtime_enabled_feature_state:
       feature_name: AIEmbeddingsAPI
@@ -123,6 +134,15 @@ substitutions:
       feature_name: AIWriterAPI
       value: disabled
 
+  - description: |-
+      Ship approximate geolocation's accuracy mode enabled.
+
+      The flag also needs ApproximateGeolocationPermission, which the browser
+      process sets.
+    set_blink_runtime_enabled_feature_state:
+      feature_name: ApproximateGeolocationPermissionAccuracyMode
+      value: enabled
+
   - description: 'Ship the Controlled Frame tag disabled.'
     set_blink_runtime_enabled_feature_state:
       feature_name: ControlledFrame
@@ -146,6 +166,11 @@ substitutions:
   - description: 'Ship prerendering disabled.'
     set_blink_runtime_enabled_feature_state:
       feature_name: Prerender2
+      value: disabled
+
+  - description: "Ship the JS Self-Profiling API's base feature disabled."
+    set_blink_runtime_enabled_feature_state:
+      feature_name: ProfilerAPI
       value: disabled
 
   - description: |-
