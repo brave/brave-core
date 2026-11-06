@@ -315,8 +315,8 @@ Screenshots are added to the PR. Nala tokens above stand in for color values.
 - Encryption and hashing: none.
 - Persisted sensitive information: none added.
 - Referrer and initiator: Peek loads carry the opener's origin, navigation state
-  and referrer, so SameSite cookies, Fetch Metadata and Local Network Access
-  match a link click.
+  and referrer, so SameSite cookies and Fetch Metadata match a link click and
+  the load has the initiator's policies on record.
 - The security team has reason to review this: it is a new way to browse, with a
   web page rendered inside browser-owned UI. The review is in the PR. The model,
   per-case behavior and the audit checklist results are in

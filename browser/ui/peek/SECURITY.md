@@ -107,7 +107,9 @@ Tests: `BlocksNonHttpNavigations`, `BlocksRedirectToNonHttp`,
 
 ### Popups and fullscreen
 
-- Popups without a user gesture are blocked.
+- Popups without a user gesture are blocked. Chromium's popup blocker is a tab
+  feature that Peek pages don't have, so `PeekContents::AddNewContents` refuses
+  them itself, which closes the new window.
 - Popups with a user gesture move Peek to a tab first, because the new window
   can script its opener; the popup then opens from that tab as usual.
 - Fullscreen, pointer lock and keyboard lock requests move Peek to a tab and are
@@ -138,10 +140,19 @@ Tests: `HttpAuthMovesToTab`, `FileChooserMovesToTab`,
 
 Both entry points pass the opener's origin, as required for new ways of opening
 links (see brave/brave-core#39176), and the opener's `InitiatorNavigationState`.
-The state holds the opener's policies; without it, `NavigationRequest` builds no
-client security state for the load and Local Network Access isn't checked, even
-with a correct origin. This is the failure in Chromium's Link Preview
-(crbug.com/497336872).
+The state is content/'s record of the initiating document, including its
+policies. Without it, `NavigationRequest` builds no client security state for
+the load, even with a correct origin, which is the shape of the failure in
+Chromium's Link Preview (crbug.com/497336872). Chromium also documents the state
+as required for renderer-initiated navigations and plans to enforce it
+(crbug.com/510258191).
+
+Local Network Access doesn't gate these loads today. `ResolveLocalNetworkAccess`
+allows primary main frame navigations by default and only applies the permission
+to subresources and subframe navigations, and a Peek load is a primary main
+frame navigation, the same as a link opened in a tab. So the state keeps Peek
+correct for what Chromium builds on it, rather than changing a visible LNA
+outcome.
 
 - Shift+click uses the `OpenURLParams` from `RenderFrameHostImpl::OpenURL`. The
   browser looks the state up from the renderer's tokens and terminates renderers
@@ -154,18 +165,18 @@ with a correct origin. This is the failure in Chromium's Link Preview
   handlers. Nothing is opened if the frame is gone, no longer active or now has
   a different origin.
 - `peek::CanOpenInPeek` rejects params without the state, so a new entry point
-  that forgets it fails closed instead of skipping the checks.
+  that forgets it fails closed.
 
 `PeekControllerImpl::Open` loads with `LoadURLParams(OpenURLParams)`, which
 keeps the initiator, its state and the referrer. Cross-site Peek loads therefore
-get `Sec-Fetch-Site: cross-site`, don't send `SameSite=Strict` cookies and are
-subject to Local Network Access, exactly like a link click. "Open as tab" moves
-the same `WebContents`, so nothing is reloaded.
+get `Sec-Fetch-Site: cross-site` and don't send `SameSite=Strict` cookies,
+exactly like a link click. "Open as tab" moves the same `WebContents`, so
+nothing is reloaded.
 
 Tests: `ShiftClickSendsInitiatorOrigin`, `ContextMenuSendsInitiatorOrigin`,
-`OpenRequiresHttpInitiatorAndTarget`, and `PeekLocalNetworkAccessBrowserTest`
-(Shift+click and context menu from a public page to a local server are blocked
-when the page may not access the local network, and load when it may).
+`ContextMenuLoadCarriesInitiatorNavigationState` (the context-menu load has the
+state, is renderer-initiated and has the source origin as initiator),
+`OpenRequiresHttpInitiatorAndTarget`, and the `peek_utils` unit tests.
 
 ### Contexts: containers, sidebar, split view, private and Tor windows
 
