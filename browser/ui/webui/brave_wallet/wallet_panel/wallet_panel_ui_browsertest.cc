@@ -187,6 +187,11 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
     BindWalletPanelToDapp();
   }
 
+  void TearDownOnMainThread() override {
+    dapp_contents_ = nullptr;
+    InProcessBrowserTest::TearDownOnMainThread();
+  }
+
   void CreateWalletTab() {
     ui_test_utils::NavigateToURLWithDisposition(
         browser(),
