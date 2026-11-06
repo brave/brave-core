@@ -158,12 +158,9 @@ void BraveContentRendererClient::
     blink::WebRuntimeFeatures::EnableFeatureFromString(
         "FileSystemAccessAPIExperimental", false);
   }
-  blink::WebRuntimeFeatures::EnableFeatureFromString("LanguageDetectionAPI",
-                                                     false);
   blink::WebRuntimeFeatures::EnableFeatureFromString("PrivateStateTokens",
                                                      false);
   blink::WebRuntimeFeatures::EnableFeatureFromString("ProfilerAPI", false);
-  blink::WebRuntimeFeatures::EnableFeatureFromString("TranslationAPI", false);
 }
 
 BraveContentRendererClient::~BraveContentRendererClient() = default;
