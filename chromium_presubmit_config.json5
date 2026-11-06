@@ -227,9 +227,5 @@
       "browser/sources\\.gni",
       "android/android_browser_tests\\.gni",
     ],
-    "//\\s*nogncheck(\\s|$)": [
-      "browser/ui/webui/ai_chat/ai_chat_ui\\.cc",
-      "browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui\\.cc",
-    ],
   },
 }
