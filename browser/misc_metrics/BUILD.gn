@@ -16,8 +16,10 @@ source_set("misc_metrics") {
   ]
 
   deps = [
+    "//base",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/misc_metrics",
+    "//brave/components/p3a_utils",
     "//brave/components/time_period_storage",
     "//chrome/browser/profiles:profile",
     "//components/keyed_service/content",

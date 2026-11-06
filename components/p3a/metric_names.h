@@ -152,6 +152,8 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Shields.DevModeEnabled", {}},
     {"Brave.Shields.DomainAdsSettingsAboveGlobal", {}},
     {"Brave.Shields.DomainAdsSettingsBelowGlobal", {}},
+    // Keep the image metadata metrics in sync with components/misc_metrics/image_metadata_stripper_metrics.h.
+    {"Brave.Shields.DownloadFBMDStripped", MetricConfig{.ephemeral=true}},
     {"Brave.Shields.FPInput.Canvas", MetricConfig{
       .ephemeral = true,
       .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform},
@@ -215,6 +217,8 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Shields.FilterLists.2", {}},
     {"Brave.Shields.FingerprintBlockSetting", {}},
     {"Brave.Shields.ManualShred", {}},
+    // Keep the image metadata metrics in sync with components/misc_metrics/image_metadata_stripper_metrics.h.
+    {"Brave.Shields.UploadFBMDStripped", MetricConfig{.ephemeral=true}},
     {"Brave.Shields.UpgradeHTTPSGlobal", {}},
     {"Brave.Shields.UpgradeHTTPSPerSite.2", {}},
     {"Brave.Shields.UsageStatus", {}},
