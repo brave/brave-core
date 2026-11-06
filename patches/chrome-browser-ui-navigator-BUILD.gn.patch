@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/navigator/BUILD.gn b/chrome/browser/ui/navigator/BUILD.gn
+index 580b0feca88d877e72955b19a9e87698f6047803..af7f58fcde87fd0519be1b3f804b46583884f27d 100644
+--- a/chrome/browser/ui/navigator/BUILD.gn
++++ b/chrome/browser/ui/navigator/BUILD.gn
+@@ -17,6 +17,7 @@ source_set("navigator") {
+ 
+   public_deps = [
+     "//base",
++    "//brave/components/containers/buildflags",
+     "//build:android_buildflags",
+     "//chrome/browser/ui/tabs:tab_enums",
+     "//components/captive_portal/core",

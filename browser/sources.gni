@@ -523,6 +523,7 @@ if (enable_containers) {
       [ "//brave/browser/containers" ]
   brave_chrome_browser_deps += [
     "//brave/browser/containers",
+    "//brave/browser/containers:navigator",
     "//brave/components/containers/content/browser",
     "//brave/components/containers/content/browser:tab_restore",
     "//brave/components/containers/core/browser",

@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Add //brave/components/containers/buildflags to public_deps of the
+      navigator target.
+
+      The chromium_src overrides of browser_navigator_params.h and
+      browser_navigator.cc include the containers buildflags header.
+    insert_into_list:
+      target: navigator
+      list_name: public_deps
+      values: //brave/components/containers/buildflags
