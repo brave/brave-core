@@ -54,12 +54,13 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
       const gfx::Rect& sidebar_bounds,
       const gfx::Rect& panel_bounds,
       const gfx::Rect& visual_client_area);
-  // Returns the adjusted infobar bounds, resetting the width to
-  // |full_window_width| (undoing any panel-driven narrowing upstream applies)
-  // and then insetting by |vtab_insets| when vertical tabs are visible.
+  // Returns the adjusted infobar bounds, resetting the horizontal span to that
+  // of |visual_client_area| (undoing the narrowing and, for a leading panel,
+  // the rightward shift that upstream applies when a side panel is open) and
+  // then insetting by |vtab_insets| when vertical tabs are visible.
   static gfx::Rect ComputeAdjustedInfobarBounds(
       const gfx::Rect& current_bounds,
-      int full_window_width,
+      const gfx::Rect& visual_client_area,
       std::optional<gfx::Insets> vtab_insets);
 
   // BrowserViewTabbedLayoutImpl overrides:
