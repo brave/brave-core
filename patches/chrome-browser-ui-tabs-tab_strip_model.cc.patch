@@ -34,7 +34,7 @@ index c8c7e124660e5d93f95ffdec9fedff3abf6ff5e0..a219bd4fc85651386ee20c6de29ddfb2
      // Also, any tab opened at the end of the TabStrip with a "TYPED"
      // transition inherit opener as well. This covers the cases where the user
      // creates a New Tab (e.g. Ctrl+T, or clicks the New Tab button), or types
-@@ -2684,6 +2693,15 @@ bool TabStripModel::IsContextMenuCommandEnabled(
+@@ -2684,6 +2693,16 @@ bool TabStripModel::IsContextMenuCommandEnabled(
    }
  
    switch (command_id) {
@@ -46,11 +46,12 @@ index c8c7e124660e5d93f95ffdec9fedff3abf6ff5e0..a219bd4fc85651386ee20c6de29ddfb2
 +    case CommandCloseDuplicateTabs:
 +    case CommandOpenInContainer:
 +    case CommandRenameTab:
++    case CommandSelectAllTabs:
 +      NOTREACHED();
      case CommandNewTabToRight:
      case CommandCloseTab:
        return true;
-@@ -2812,6 +2830,15 @@ void TabStripModel::ExecuteContextMenuCommand(int context_index,
+@@ -2812,6 +2831,16 @@ void TabStripModel::ExecuteContextMenuCommand(int context_index,
      return;
    }
    switch (command_id) {
@@ -62,6 +63,7 @@ index c8c7e124660e5d93f95ffdec9fedff3abf6ff5e0..a219bd4fc85651386ee20c6de29ddfb2
 +    case CommandCloseDuplicateTabs:
 +    case CommandOpenInContainer:
 +    case CommandRenameTab:
++    case CommandSelectAllTabs:
 +      NOTREACHED();
      case CommandNewTabToRight: {
        base::UmaHistogramCounts1000(

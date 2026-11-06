@@ -126,6 +126,9 @@ void CloseGroup(BrowserWindowInterface* browser);
 bool CanBringAllTabs(BrowserWindowInterface* browser);
 void BringAllTabs(BrowserWindowInterface* browser);
 
+bool CanSelectAllTabs(BrowserWindowInterface* browser);
+void SelectAllTabs(BrowserWindowInterface* browser);
+
 bool HasDuplicatesOfActiveTab(BrowserWindowInterface* browser);
 void CloseDuplicatesOfActiveTab(BrowserWindowInterface* browser);
 bool HasAnyDuplicateTabs(BrowserWindowInterface* browser);

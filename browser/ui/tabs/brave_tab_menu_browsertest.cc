@@ -113,12 +113,14 @@ IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest, Basics) {
   // All items are disable state when there is only one tab.
   EXPECT_FALSE(menu->IsCommandIdEnabled(TabStripModel::CommandRestoreTab));
   EXPECT_FALSE(menu->IsCommandIdEnabled(TabStripModel::CommandBookmarkAllTabs));
+  EXPECT_FALSE(menu->IsCommandIdEnabled(TabStripModel::CommandSelectAllTabs));
 
   chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
   // Still restore tab menu is disabled because there is no closed tab.
   EXPECT_FALSE(menu->IsCommandIdEnabled(TabStripModel::CommandRestoreTab));
   // Bookmark all tabs item is enabled if the number of tabs are 2 or more.
   EXPECT_TRUE(menu->IsCommandIdEnabled(TabStripModel::CommandBookmarkAllTabs));
+  EXPECT_TRUE(menu->IsCommandIdEnabled(TabStripModel::CommandSelectAllTabs));
 
   // When a tab is closed, restore tab menu item is enabled.
   ASSERT_TRUE(
@@ -126,6 +128,26 @@ IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest, Basics) {
   chrome::CloseTab(browser());
   EXPECT_TRUE(menu->IsCommandIdEnabled(TabStripModel::CommandRestoreTab));
   EXPECT_FALSE(menu->IsCommandIdEnabled(TabStripModel::CommandBookmarkAllTabs));
+  EXPECT_FALSE(menu->IsCommandIdEnabled(TabStripModel::CommandSelectAllTabs));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest, SelectAllTabs) {
+  AddTabs(browser(), 2, 0);
+  EXPECT_EQ(browser()->tab_strip_model()->count(), 3);
+  EXPECT_EQ(
+      browser()->tab_strip_model()->selection_model().selected_tabs().size(),
+      1u);
+
+  auto menu = CreateMenuControllerAt(0);
+  CreateMenuModelAt(menu.get(), 0);
+
+  EXPECT_TRUE(menu->IsCommandIdEnabled(TabStripModel::CommandSelectAllTabs));
+  menu->ExecuteCommand(TabStripModel::CommandSelectAllTabs, 0);
+
+  EXPECT_EQ(
+      browser()->tab_strip_model()->selection_model().selected_tabs().size(),
+      3u);
+  EXPECT_FALSE(menu->IsCommandIdEnabled(TabStripModel::CommandSelectAllTabs));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest,
