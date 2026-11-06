@@ -358,6 +358,9 @@ public class BraveNewsPreferencesDetails extends BravePreferenceFragment
                     getActivity(),
                     assumeNonNull(mSearchViewObserver),
                     this::onSearchQueryChanged);
+            // The search view is open as soon as this page shows, so the settings host has to hide
+            // its own search box, which would otherwise overlap this one.
+            assumeNonNull(mSearchViewObserver).onUpdated(true);
         }
     }
 
@@ -403,6 +406,16 @@ public class BraveNewsPreferencesDetails extends BravePreferenceFragment
                 () -> {
                     initBraveNewsController(null);
                 });
+    }
+
+    @Override
+    public void onDestroyView() {
+        if (mSearchViewObserver != null
+                && mBraveNewsPreferencesType.equalsIgnoreCase(
+                        BraveNewsPreferencesType.Search.toString())) {
+            mSearchViewObserver.onUpdated(false);
+        }
+        super.onDestroyView();
     }
 
     @Override
