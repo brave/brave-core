@@ -9,7 +9,10 @@ import("//third_party/jni_zero/jni_zero.gni")
 assert(is_android)
 
 generate_jni("jni_headers") {
-  sources = [ "java/src/org/chromium/chrome/browser/brave_account/BraveAccountDialogOpener.java" ]
+  sources = [
+    "java/src/org/chromium/chrome/browser/brave_account/BraveAccountDialogOpener.java",
+    "java/src/org/chromium/chrome/browser/brave_account/BraveAccountSettingsOpener.java",
+  ]
 }
 
 # Depends on chrome_java (for BraveAccountCustomTabActivity), so it cannot be
@@ -19,7 +22,10 @@ generate_jni("jni_headers") {
 android_library("java") {
   srcjar_deps = [ "//brave/browser/ui/android/brave_account:jni_headers" ]
 
-  sources = [ "java/src/org/chromium/chrome/browser/brave_account/BraveAccountDialogOpener.java" ]
+  sources = [
+    "java/src/org/chromium/chrome/browser/brave_account/BraveAccountDialogOpener.java",
+    "java/src/org/chromium/chrome/browser/brave_account/BraveAccountSettingsOpener.java",
+  ]
 
   deps = [
     "//brave/components/brave_account/mojom:mojom_java",
