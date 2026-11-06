@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Widen the backend factory's visibility for Brave's test of it.
+
+      Upstream limits the declaration to its own directory, so the test of
+      Brave's `CreatePasswordStoreBackend` override cannot include it.
+    add_literal_to_list:
+      target: backend_factory
+      list_name: visibility
+      literal: brave_password_manager_backend_factory_visibility
+      import: //brave/browser/password_manager/factories/sources.gni

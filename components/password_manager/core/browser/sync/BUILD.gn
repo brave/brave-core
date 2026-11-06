@@ -10,7 +10,10 @@
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "//components/password_manager/core/browser/sync/password_data_type_controller_unittest.cc" ]
+  sources = [
+    "//components/password_manager/core/browser/sync/password_data_type_controller_unittest.cc",
+    "//components/password_manager/core/browser/sync/password_sync_bridge_unittest.cc",
+  ]
 
   deps = [
     "//base/test:test_support",
