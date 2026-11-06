@@ -25,14 +25,14 @@ struct PrivacyReportSettingsView: View {
         Toggle(Strings.PrivacyHub.settingsEnableVPNAlertsTitle, isOn: $vpnAlertsEnabled.value)
           .tint(Color(braveSystemName: .primitivePrimary40))
       }
-      Section(footer: Text(Strings.PrivacyHub.settingsSlearDataFooter)) {
+      Section {
         HStack {
           Button(
             action: {
               showClearDataPrompt = true
             },
             label: {
-              Text(Strings.PrivacyHub.settingsSlearDataTitle)
+              Text(Strings.PrivacyHub.settingsClearDataTitle)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .foregroundColor(Color.red)
             }

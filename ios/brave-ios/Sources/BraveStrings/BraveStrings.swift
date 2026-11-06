@@ -7089,28 +7089,20 @@ extension Strings {
         "This text explains a setting that lets Brave monitor blocked network requests captured by Brave VPN"
     )
 
-    public static let settingsSlearDataTitle = NSLocalizedString(
-      "privacyHub.settingsSlearDataTitle",
+    public static let settingsClearDataTitle = NSLocalizedString(
+      "privacyHub.settingsClearDataTitle",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Clear Shields Data",
+      value: "Clear Privacy Hub Data",
       comment:
         "Button that lets user clear all blocked requests and vpn alerts data that Brave captured for them."
-    )
-
-    public static let settingsSlearDataFooter = NSLocalizedString(
-      "privacyHub.settingsSlearDataFooter",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Resets the count of everything Shields has blocked.",
-      comment: "This text explains what the button to clear datain the Privacy Hub is for."
     )
 
     public static let clearAllDataPrompt = NSLocalizedString(
       "privacyHub.clearAllDataPrompt",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Clear all Shields data?",
+      value: "Clear all Privacy Hub data?",
       comment:
         "A prompt message we show to the user if they want to clear all data gathered by the Privacy Reports Feature"
     )
