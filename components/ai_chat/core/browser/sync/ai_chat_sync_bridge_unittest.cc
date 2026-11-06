@@ -22,6 +22,7 @@
 #include "components/sync/test/mock_data_type_local_change_processor.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
 
 namespace ai_chat {
 namespace {
@@ -76,6 +77,26 @@ class AIChatSyncBridgeTest : public testing::Test {
     entry->created_time = base::Time::Now();
     db_->AddConversation(std::move(conv), {}, std::move(entry));
     return entry_uuid;
+  }
+
+  // Adds a conversation whose single entry is oversized by a field the size
+  // budget cannot omit, so it can never be committed, and gives the entry
+  // persisted sync metadata.
+  void AddEntryTooLargeToCommit(const std::string& conv_uuid,
+                                const std::string& entry_uuid) {
+    auto conv = mojom::Conversation::New();
+    conv->uuid = conv_uuid;
+    auto entry = mojom::ConversationTurn::New();
+    entry->uuid = entry_uuid;
+    entry->character_type = mojom::CharacterType::HUMAN;
+    entry->action_type = mojom::ActionType::QUERY;
+    entry->text = "Hello";
+    entry->selected_text = std::string(kSyncMaxRecordBytes + 1024, 'Z');
+    entry->created_time = base::Time::Now();
+    ASSERT_TRUE(db_->AddConversation(std::move(conv), {}, std::move(entry)));
+    ASSERT_TRUE(db_->UpdateEntityMetadata(syncer::AI_CHAT_CONVERSATION,
+                                          "e:" + entry_uuid,
+                                          sync_pb::EntityMetadata()));
   }
 
   base::FilePath db_file_path() {
@@ -315,6 +336,88 @@ TEST_F(AIChatSyncBridgeTest, NoDatabaseIsInertButStillServesSyncEngine) {
   // Re-attaching restores normal operation.
   bridge_->SetDatabase(db_.get());
   EXPECT_TRUE(bridge_->GetDataForCommit({"c:detached-conv"})->HasNext());
+}
+
+// The bridge must serialize the extracted page text stored alongside the
+// conversation (the archive keeps it separate from the associated-content
+// metadata), otherwise synced entries would arrive with empty last_contents.
+TEST_F(AIChatSyncBridgeTest, GetDataForCommitSerializesAssociatedContentText) {
+  const std::string conv_uuid = "conv-with-content";
+  const std::string entry_uuid = conv_uuid + "-entry-1";
+  const std::string content_uuid = "content-1";
+
+  auto conv = mojom::Conversation::New();
+  conv->uuid = conv_uuid;
+  conv->title = "With content";
+  conv->associated_content.push_back(mojom::AssociatedContent::New(
+      content_uuid, mojom::ContentType::PageContent, "page title", 1,
+      GURL("https://example.com"), 42, entry_uuid, false));
+
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = entry_uuid;
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+  entry->text = "Hello";
+  entry->created_time = base::Time::Now();
+
+  ASSERT_TRUE(db_->AddConversation(std::move(conv), {"the page contents"},
+                                   std::move(entry)));
+  CreateBridge();
+
+  auto batch = bridge_->GetDataForCommit({"e:" + entry_uuid});
+  ASSERT_TRUE(batch->HasNext());
+  auto [key, data] = batch->Next();
+  const auto& entry_proto = data->specifics.ai_chat_conversation().entry();
+  ASSERT_EQ(entry_proto.associated_content_size(), 1);
+  ASSERT_TRUE(entry_proto.associated_content(0).has_last_contents());
+  EXPECT_EQ(
+      ReadCompressibleString(entry_proto.associated_content(0).last_contents()),
+      "the page contents");
+}
+
+// An entry oversized by a plain, un-omittable field can never be committed.
+// Leaving its key out of the batch silently is what Chromium records as
+// Sync.DataTypeOrphanMetadata.GetData, so the bridge untracks it explicitly,
+// and clears the persisted metadata that untracking alone would leave behind.
+TEST_F(AIChatSyncBridgeTest, GetDataForCommitUntracksEntryTooLargeToCommit) {
+  CreateBridge();
+  ASSERT_NO_FATAL_FAILURE(AddEntryTooLargeToCommit("conv", "entry-1"));
+
+  EXPECT_CALL(*mock_processor_, UntrackEntityForStorageKey("e:entry-1"));
+  auto batch = bridge_->GetDataForCommit({"e:entry-1"});
+  EXPECT_FALSE(batch->HasNext());
+
+  syncer::MetadataBatch metadata;
+  ASSERT_TRUE(db_->GetAllSyncMetadata(&metadata));
+  EXPECT_TRUE(metadata.GetAllMetadata().empty());
+}
+
+// An entry edited past the budget has nothing to Put, but stays tracked:
+// untracking one committed earlier would turn a later local delete into a
+// no-op and strand the server's copy.
+TEST_F(AIChatSyncBridgeTest, EntryModifiedLeavesTooLargeEntryTracked) {
+  CreateBridge();
+  ASSERT_NO_FATAL_FAILURE(AddEntryTooLargeToCommit("conv", "entry-1"));
+
+  EXPECT_CALL(*mock_processor_, Put).Times(0);
+  EXPECT_CALL(*mock_processor_, UntrackEntityForStorageKey).Times(0);
+  bridge_->OnConversationEntryModified("conv", "entry-1");
+
+  syncer::MetadataBatch metadata;
+  ASSERT_TRUE(db_->GetAllSyncMetadata(&metadata));
+  EXPECT_EQ(metadata.GetAllMetadata().size(), 1u);
+}
+
+// The first-sync upload builds entries the same way, so an entry that cannot
+// fit is left out while its conversation's metadata record is still sent.
+TEST_F(AIChatSyncBridgeTest, MergeFullSyncDataSkipsEntryTooLargeToCommit) {
+  ASSERT_NO_FATAL_FAILURE(AddEntryTooLargeToCommit("conv", "entry-1"));
+  CreateBridge();
+
+  EXPECT_CALL(*mock_processor_, Put("c:conv", _, _));
+  EXPECT_CALL(*mock_processor_, Put("e:entry-1", _, _)).Times(0);
+  EXPECT_FALSE(bridge_->MergeFullSyncData(bridge_->CreateMetadataChangeList(),
+                                          syncer::EntityChangeList()));
 }
 
 }  // namespace

@@ -564,6 +564,24 @@ mojom::ConversationArchivePtr AIChatDatabase::GetConversationData(
       GetArchiveContentsForConversation(conversation_uuid));
 }
 
+std::optional<std::string> AIChatDatabase::GetConversationUuidForEntry(
+    std::string_view conversation_entry_uuid) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return std::nullopt;
+  }
+
+  static constexpr char kQuery[] =
+      "SELECT conversation_uuid FROM conversation_entry WHERE uuid=?";
+  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE, kQuery));
+  CHECK(statement.is_valid());
+  statement.BindString(0, conversation_entry_uuid);
+  if (!statement.Step()) {
+    return std::nullopt;
+  }
+  return statement.ColumnString(0);
+}
+
 std::vector<mojom::ConversationTurnPtr>
 AIChatDatabase::GetConversationThreadEntries(std::string_view thread_uuid) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
