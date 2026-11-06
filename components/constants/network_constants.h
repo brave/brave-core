@@ -19,6 +19,7 @@ inline constexpr char kBraveSafeBrowsingSslProxy[] = "sb-ssl.brave.com";
 inline constexpr char kBraveRedirectorProxy[] = "redirector.brave.com";
 inline constexpr char kBraveClients4Proxy[] = "clients4.brave.com";
 inline constexpr char kBraveStaticProxy[] = "static1.brave.com";
+inline constexpr char kBraveFaviconsProxy[] = "favicons.proxy.brave.com";
 
 inline constexpr char kAutofillPrefix[] = "https://www.gstatic.com/autofill/*";
 inline constexpr char kClients4Prefix[] = "*://clients4.google.com/";
