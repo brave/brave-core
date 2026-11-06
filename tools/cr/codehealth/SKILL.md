@@ -25,16 +25,20 @@ of upstream code has missed a fix.
   `tools/cr/codehealth/M<milestone>.md`. Anything under `tools/cr/codehealth/`,
   this file, the trackers and the tools alike, is committed as
   `git commit -m 'Version CodeHealth tracker'`.
-- **What the rebase already fixed:**
-  `git log --format='%h %s%n%b' origin/master..origin/cr<milestone>` in
-  `src/brave` (for a branch not on origin yet, `<base>..cr<milestone>` locally).
-  These are the build fixes made during the rebase. Each one names the upstream
-  commit it follows, and shows which patterns recur. A commit marked `[WIP]`
-  isn't a fix yet: list what it leaves to verify as an item. Neither is a commit
-  that drops a hook or a pin. After "Drop the X patch/override", grep that the
-  Brave function the hook called still has a caller. After "Drop the X pin",
-  read the commit that added the pin (`git log origin/master -S'<feature>'`) and
-  check that upstream's clean-up didn't keep the branch Brave avoided.
+- **What the rebase already fixed:** the branch's own commits, from where
+  `brockit rebase` starts them, which
+  `brockit show --from-ref-hash=@previous-major` prints with `cr<milestone>`
+  checked out: `git log --format='%h %s%n%b' <that commit>..HEAD` in
+  `src/brave`. A range from the base would also take in the base's own commits
+  while it is `origin/cr<N-1>`, or once it is rewritten. These are the build
+  fixes made during the rebase. Each one names the upstream commit it follows,
+  and shows which patterns recur. A commit marked `[WIP]` isn't a fix yet: list
+  what it leaves to verify as an item. Neither is a commit that drops a hook or
+  a pin. After "Drop the X patch/override", grep that the Brave function the
+  hook called still has a caller, and grep Brave's tests for one that asserts
+  the dropped behaviour. After "Drop the X pin", read the commit that added the
+  pin (`git log origin/master -S'<feature>'`) and check that upstream's clean-up
+  didn't keep the branch Brave avoided.
 
 If the tracker already exists, update it (see
 [Updating a tracker](#updating-a-tracker)) rather than writing a new one.
@@ -78,7 +82,7 @@ a new directory per range: reusing one mixes a stale `claimed` file into step 3,
 and leaves candidate lists of rules removed since.
 
 ```sh
-A=<old tag>; B=<new tag>; D=/tmp/codehealth_$B
+A=<old tag>; B=<new tag>; D="${TMPDIR:-/tmp}/codehealth_$B"
 vpython3 tools/cr/codehealth/scripts/sweep.py $A..$B --out $D
 ```
 
@@ -106,8 +110,8 @@ the ground rules, its rule files and their `.candidates`. An incremental range
 of a few hundred commits has short lists: sweeps can share a subagent, and a
 range that is only the `chrome/VERSION` bump needs none. For each rule, it reads
 the file, then checks the candidates as "How to check" says. Rules sharing a
-list say so ("Same as …"); read it once. A list that says "read the whole range"
-belongs to a rule with no patterns.
+list say so ("Same as …"); read it once. A list that says "Read the whole range"
+belongs to a rule whose group asks nothing of a commit.
 
 Ask each subagent for method notes (which rules found verified items, which
 lists were noise, and any tooling problem it hit), and for the hashes of the
@@ -116,7 +120,10 @@ not be allowed to write report files, so ask for the items and notes in the
 final reply as well. Don't start step 3 or write the tracker until every
 subagent has sent its final reply: a notice that it still has background work
 running is interim. Tell each subagent not to leave commands running in the
-background once it has replied.
+background once it has replied, and not to start subagents of its own: a sweep
+that splits its list that way can hand back before they report, and their
+results never reach the review. Split a large list (the overlap list) across
+subagents yourself.
 
 #### a. Overlap: commits touching what Brave overrides
 
@@ -201,7 +208,7 @@ The sweeps above cover most of what matters. The rules in
 enforcement, migrations and clean-ups, moves and renames, memory safety and
 crashes, launches and default enables. They are noisy, so skim the subjects and
 open only those naming an area Brave customizes. The noise every group drops is
-the `exclude_subject_expression` in
+the `subject_pattern_exclusion` in
 [`rules/triage/COMMON_METADATA`](rules/triage/COMMON_METADATA): ash, ChromeOS,
 Fuchsia, Perfetto rolls, gardener test disables and test migrations. Keep a
 platform-only subject anyway when a Brave override touches the same code.
@@ -218,7 +225,7 @@ awk 'NR == FNR { seen[substr($1, 1, 12)]; next }
 
 Subagents report hashes of different lengths, hence the fixed-length prefix.
 
-Drop the subjects that the `exclude_subject_expression` in
+Drop the subjects that the `subject_pattern_exclusion` in
 [`rules/triage/COMMON_METADATA`](rules/triage/COMMON_METADATA) matches, then
 skim the remaining subjects. Open the `--stat` of any commit that names an area
 Brave customizes, and read its diff as in sweep
@@ -268,11 +275,13 @@ it applies to, not the whole range:
   as in [Adding a heuristic](#adding-a-heuristic).
 - **`COMMON_METADATA`**, a textproto of `capability_groups`, each naming the
   rules it feeds. A commit is a candidate when a file it touches matches
-  `path_expression`, and a line it changes matches one of the
-  `content_patterns`. `sweep.py`'s docstring has the rest of the fields: an
-  exclusion, files Brave overrides, names Brave mentions, required patterns,
-  ast-grep patterns (C++ read through plaster's macro blanking, `.h` as C++, GN
-  through plaster's grammar, JSON as JS), and tools such as `java_names.py`.
+  `path_expression`, and a line it changes matches one of the `diff_patterns`,
+  which see each line with its `+` or `-` marker (`content_patterns` see added
+  lines only, without it). `scripts/knowledge_base.py`, which `sweep.py` matches
+  the groups with, has the rest of the fields: exclusions, required patterns,
+  files Brave overrides, names Brave mentions, ast-grep patterns spanning an
+  added line, subjects and bodies, and tools such as `java_names.py`. A group
+  with no field but `rules` reads the whole range.
 
 A pattern only has to find the commit; the reviewer finds the item. The tools,
 `sweep.py` included, are in `scripts/`, each with its `_test.py`.
@@ -424,8 +433,8 @@ options. Notes on what a tool should do better are changes to make, not to file.
 - Delete a rule whose newest example is three milestones old and that found
   nothing since.
 - When a list only produced false positives, narrow its patterns (an exclusion,
-  `brave_mentions`, `required_patterns`) and say in a `COMMON_METADATA` comment
-  what the narrowing drops.
+  `brave_mentions`, `required_diff_patterns`) and say in a `COMMON_METADATA`
+  comment what the narrowing drops.
 - When a rule's check is mechanical, turn it into a tool and point the rule at
   it.
 

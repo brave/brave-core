@@ -7,10 +7,6 @@
 
 from __future__ import annotations
 
-import contextlib
-import json
-from pathlib import Path
-import tempfile
 import unittest
 
 from overlap import OverrideIndex, net_zero
@@ -30,36 +26,15 @@ unrelated.cc
 
 class OverrideIndexTest(unittest.TestCase):
     def setUp(self):
-        stack = contextlib.ExitStack()
-        self.addCleanup(stack.close)
-        root = Path(stack.enter_context(tempfile.TemporaryDirectory()))
-        for path, text in (
-            ('chromium_src/chrome/a.cc', ''),
-            ('chromium_src/chrome/BUILD.gn', ''),
-            ('chromium_src/PRESUBMIT.py', ''),
-            ('chromium_src/chrome/PRESUBMIT_test.py', ''),
-            ('chromium_src/ui/b.ts.lit_mangler.ts', ''),
-            ('rewrite/chrome/a.cc.yaml', ''),
-            ('rewrite/DEPS.yaml', ''),
-            (
-                'patches/v8/src-c.cc.patchinfo',
-                json.dumps({'appliesTo': [{'path': 'src/c.cc'}]}),
-            ),
-        ):
-            (root / path).parent.mkdir(parents=True, exist_ok=True)
-            (root / path).write_text(text, encoding='utf-8', newline='')
-        self.index = OverrideIndex(root)
-
-    def test_kinds(self):
-        self.assertEqual(
-            {'chromium_src', 'plaster'}, self.index.kinds['chrome/a.cc']
+        self.index = OverrideIndex(
+            {
+                'chrome/a.cc': {'chromium_src', 'plaster'},
+                'chrome/BUILD.gn': {'chromium_src'},
+                'ui/b.ts': {'lit_mangler'},
+                'DEPS': {'plaster'},
+                'v8/src/c.cc': {'patch'},
+            }
         )
-        self.assertEqual({'lit_mangler'}, self.index.kinds['ui/b.ts'])
-        self.assertEqual({'patch'}, self.index.kinds['v8/src/c.cc'])
-
-    def test_brave_presubmits_are_not_overrides(self):
-        self.assertNotIn('PRESUBMIT.py', self.index.kinds)
-        self.assertNotIn('chrome/PRESUBMIT_test.py', self.index.kinds)
 
     def test_touched_drops_noise(self):
         self.assertEqual(

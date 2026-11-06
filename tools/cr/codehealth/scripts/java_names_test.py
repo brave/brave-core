@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from pathlib import Path
 import unittest
+from unittest import mock
 
 import java_names
 from java_names import JavaSource, Literal, LiteralCollector, Member, Result
@@ -274,6 +275,31 @@ class ResultTest(unittest.TestCase):
 
     def test_only_breakage_fails(self) -> None:
         self.assertEqual(java_names.NameCheck.LISTED[0], 'broke')
+
+
+class DefaultRangeTest(unittest.TestCase):
+    def test_starts_where_the_branch_starts_on_its_upstream(self) -> None:
+        # The upstream had a bump since the branch's last rebase.
+        versions = {
+            'start': '158.0.8127.2',
+            '@{upstream}': '158.0.8127.4',
+            'HEAD': '159.0.8131.1',
+        }
+        with (
+            mock.patch.object(
+                java_names, 'branch_start', return_value='start'
+            ) as start,
+            mock.patch.object(
+                java_names.Version,
+                'from_git',
+                side_effect=lambda ref: java_names.Version(versions[ref]),
+            ),
+        ):
+            self.assertEqual(
+                '158.0.8127.2..159.0.8131.1',
+                java_names.NameCheck.default_range(),
+            )
+        start.assert_called_once_with('HEAD', '@{upstream}')
 
 
 if __name__ == '__main__':
