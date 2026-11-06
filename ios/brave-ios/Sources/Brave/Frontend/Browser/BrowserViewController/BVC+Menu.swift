@@ -477,6 +477,7 @@ extension BrowserViewController {
         let vc = BookmarksViewController(
           folder: bookmarkManager.lastVisitedFolder(),
           bookmarkManager: bookmarkManager,
+          bookmarkImporter: BookmarkImporterFactory.get(profile: profileController.profile),
           isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
         )
         vc.toolbarUrlActionsDelegate = self
