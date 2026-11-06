@@ -234,6 +234,42 @@ class ShadowFileTest(_Base):
         self.assertIn('#include <B/foo.h>', content)
         self.assertNotIn('#include <A/foo.h>', content)
 
+    def test_shadow_edits_are_staged_with_the_move(self) -> None:
+        """The rewritten include and guard are staged, not left as `RM`."""
+        before = self._chromium_head()
+        self._chromium_commit('A/foo.h', '// src\n')
+        self._brave_commit(
+            'chromium_src/A/foo.h',
+            (
+                '#ifndef BRAVE_CHROMIUM_SRC_A_FOO_H_\n'
+                '#define BRAVE_CHROMIUM_SRC_A_FOO_H_\n'
+                '#include <A/foo.h>\n'
+                '#endif  // BRAVE_CHROMIUM_SRC_A_FOO_H_\n'
+            ),
+        )
+        self._chromium_rename('A/foo.h', 'B/foo.h')
+
+        cmd_follow_renames([f'{before}..HEAD'])
+
+        self.assertEqual('', repository.brave.run_git('diff', '--name-only'))
+        staged = repository.brave.run_git('show', ':chromium_src/B/foo.h')
+        self.assertIn('#include <B/foo.h>', staged)
+        self.assertIn('BRAVE_CHROMIUM_SRC_B_FOO_H_', staged)
+
+    def test_formatting_of_moved_files_is_staged(self) -> None:
+        before = self._chromium_head()
+        self._chromium_commit('A/foo.cc', '// impl\n')
+        self._brave_commit('chromium_src/A/foo.cc', '#include <A/foo.cc>\n')
+        self._chromium_rename('A/foo.cc', 'B/foo.cc')
+        moved = self._brave / 'chromium_src/B/foo.cc'
+        self._format_mock.side_effect = lambda _: moved.write_text(
+            '#include <B/foo.cc>  // formatted\n', encoding='utf-8'
+        )
+
+        cmd_follow_renames([f'{before}..HEAD'])
+
+        self.assertEqual('', repository.brave.run_git('diff', '--name-only'))
+
     def test_shadow_cc_moved_no_guard(self) -> None:
         """A .cc shadow file moves but no include guard is inserted."""
         before = self._chromium_head()
