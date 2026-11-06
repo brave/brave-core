@@ -694,28 +694,19 @@ void BraveBrowserViewTabbedLayoutImpl::InsetContentsContainerBounds(
     }
   }
 
-  // If side panel is shown, contents container should have margin
-  // because panel doesn't have margin.
-  if (delegate().IsContentTypeSidePanelVisible()) {
-    contents_container_bounds.Inset(contents_margins);
-    contents_layout->bounds = contents_container_bounds;
-    return;
+  // Likewise on the alignment side: whichever of the sidebar or the side panel
+  // abuts the contents there owns the gap. The panel reserves it as border
+  // insets so its resize strip has room (see SidePanel::UpdateBorder()).
+  if (views().sidebar_container &&
+      (views().sidebar_container->IsSidebarVisible() ||
+       delegate().IsContentTypeSidePanelVisible())) {
+    if (IsSidebarLeading()) {
+      contents_margins.set_left(0);
+    } else {
+      contents_margins.set_right(0);
+    }
   }
 
-  // If sidebar UI is not shown, contents container should have margin.
-  if (!views().sidebar_container ||
-      !views().sidebar_container->IsSidebarVisible()) {
-    contents_container_bounds.Inset(contents_margins);
-    contents_layout->bounds = contents_container_bounds;
-    return;
-  }
-
-  // Sidebar abuts the contents here, so it owns the gap.
-  if (IsSidebarLeading()) {
-    contents_margins.set_left(0);
-  } else {
-    contents_margins.set_right(0);
-  }
   contents_container_bounds.Inset(contents_margins);
   contents_layout->bounds = contents_container_bounds;
 }

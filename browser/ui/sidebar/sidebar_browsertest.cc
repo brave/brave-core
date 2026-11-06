@@ -43,7 +43,6 @@
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel_header.h"
-#include "brave/browser/ui/views/side_panel/brave_side_panel_resize_area.h"
 #include "brave/browser/ui/views/side_panel/side_panel_utils.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
@@ -89,6 +88,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/search_test_utils.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/infobars/content/content_infobar_manager.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "net/dns/mock_host_resolver.h"
@@ -1834,6 +1834,8 @@ void ExpectContentChildLayerCorners(SidePanel* panel,
 //   (a) panel type change (header ↔ no-header entry),
 //   (b) rounded-corners pref toggle while the panel is open,
 //   (c) panel reopened after the pref changed while it was closed.
+// An open panel is itself a rounded-corners trigger, so (b) and (c) assert the
+// pref can no longer square the corners.
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
                        PanelContentCornersUpdateOnStateChange) {
   auto* panel_ui = SidePanelUI::From(browser());
@@ -1847,7 +1849,6 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
       kRoundedCornersBorderRadius);
   const gfx::RoundedCornersF flat_top(0, 0, r, r);
   const gfx::RoundedCornersF all_round(r);
-  const gfx::RoundedCornersF none;
 
   auto wait_for_entry = [&](SidePanelEntryId id,
                             const base::Location& loc = FROM_HERE) {
@@ -1882,12 +1883,12 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
 
   // (b) Pref change while panel is open ---------------------------------
 
-  // Pref OFF: no corners regardless of header (UpdateBorder() path).
+  // Pref OFF: the panel's corners don't depend on the pref.
   prefs->SetBoolean(kWebViewRoundedCorners, false);
-  EXPECT_EQ(none, brave::GetPanelContentsRoundedCorners(browser_view()));
-  ExpectContentChildLayerCorners(side_panel, none);
+  EXPECT_EQ(flat_top, brave::GetPanelContentsRoundedCorners(browser_view()));
+  ExpectContentChildLayerCorners(side_panel, flat_top);
 
-  // Pref ON again: flat top (bookmarks has header).
+  // Pref ON again: unchanged.
   prefs->SetBoolean(kWebViewRoundedCorners, true);
   EXPECT_EQ(flat_top, brave::GetPanelContentsRoundedCorners(browser_view()));
   ExpectContentChildLayerCorners(side_panel, flat_top);
@@ -1898,14 +1899,13 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
   ASSERT_TRUE(
       base::test::RunUntil([&]() { return !side_panel->GetVisible(); }));
 
-  // Toggle pref while the panel is hidden.
   prefs->SetBoolean(kWebViewRoundedCorners, false);
 
-  // Reopen — Open() must re-apply corners with the new pref value.
+  // Reopen with the pref off: the corners come back unchanged.
   panel_ui->Show(SidePanelEntryId::kBookmarks);
   wait_for_entry(SidePanelEntryId::kBookmarks);
-  EXPECT_EQ(none, brave::GetPanelContentsRoundedCorners(browser_view()));
-  ExpectContentChildLayerCorners(side_panel, none);
+  EXPECT_EQ(flat_top, brave::GetPanelContentsRoundedCorners(browser_view()));
+  ExpectContentChildLayerCorners(side_panel, flat_top);
 }
 
 // Verify that toggling the sidebar UI's visibility while a panel is open
@@ -1989,13 +1989,11 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
   }
 }
 
-// Verify that the resize area is positioned correctly for both border states.
-// In both cases the strip starts at the panel's outer edge with width
-// kResizeStripWidth. Border state only affects z-order: without rounded
-// corners the strip is reordered to the top so it wins the hit-test over
-// the overlapping content edge.
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
-                       PanelResizeAreaPositionMatchesBorderState) {
+// Verify that the resize area is positioned correctly while the panel is open:
+// like upstream, the strip fills the border gap on the panel's content-facing
+// edge. An open panel always uses the rounded border, so neither the
+// rounded-corners pref nor the entry type may disturb that.
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PanelResizeAreaPosition) {
   auto* panel_ui = SidePanelUI::From(browser());
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   auto* side_panel = browser_view->side_panel();
@@ -2011,46 +2009,33 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
   auto* resize_area = side_panel->resize_area_for_testing();
   ASSERT_TRUE(resize_area);
 
-  // Verifies resize strip position, width, z-order, and panel insets for the
-  // given border mode. Panel is on the right in LTR, so the content-facing
-  // edge is left and the outer edge is right.
-  auto verify_state = [&](bool rounded_corners,
-                          const base::Location& loc = FROM_HERE) {
+  // Verifies resize strip bounds and panel insets. Panel is on the right in
+  // LTR, so the content-facing edge is left and the outer edge is right.
+  auto verify_state = [&](const base::Location& loc = FROM_HERE) {
     SCOPED_TRACE(loc.ToString());
-    if (rounded_corners) {
-      EXPECT_EQ(1, side_panel->GetInsets().left())
-          << "rounded: 1px gap on the content-facing side, reserved for the "
-             "outline (the content view otherwise owns its margin)";
-      // The sidebar is visible here, so it sits between the panel and the
-      // window edge and supplies the outer margin itself.
-      ASSERT_TRUE(GetSidebarContainerView()->IsSidebarVisible());
-      EXPECT_EQ(kRoundedCornersContentsOutlineThickness,
-                side_panel->GetInsets().right())
-          << "rounded, sidebar visible: outer-side gap is just the outline";
-    } else {
-      EXPECT_EQ(1, side_panel->GetInsets().left())
-          << "plain: 1px separator on the content-facing side";
-      EXPECT_EQ(0, side_panel->GetInsets().right())
-          << "plain: no outer-side inset";
-    }
-    EXPECT_EQ(resize_area->GetBoundsInScreen().origin(),
-              side_panel->GetBoundsInScreen().origin())
-        << "resize strip should sit at the panel's outer edge";
-    EXPECT_EQ(resize_area->width(),
-              views::BraveSidePanelResizeArea::kResizeStripWidth)
-        << "resize strip width should equal kResizeStripWidth";
-    EXPECT_EQ(side_panel->GetIndexOf(resize_area),
-              side_panel->children().size() - 1)
-        << "resize strip should be the top-most child view";
+    const gfx::Insets insets = side_panel->GetInsets();
+    EXPECT_EQ(kRoundedCornersContentsViewMargin +
+                  kRoundedCornersContentsOutlineThickness,
+              insets.left())
+        << "content-facing gap hosts the resize strip; the main contents drop "
+           "their margin on this side in exchange";
+    // The sidebar is visible here, so it sits between the panel and the
+    // window edge and supplies the outer margin itself.
+    ASSERT_TRUE(GetSidebarContainerView()->IsSidebarVisible());
+    EXPECT_EQ(kRoundedCornersContentsOutlineThickness, insets.right())
+        << "sidebar visible: outer-side gap is just the outline";
+    EXPECT_EQ(gfx::Rect(0, 0, insets.left(), side_panel->height()),
+              resize_area->bounds())
+        << "resize strip should fill the content-facing border gap";
   };
 
   prefs->SetBoolean(kWebViewRoundedCorners, true);
   RunScheduledLayouts();
-  verify_state(true);
+  verify_state();
 
   prefs->SetBoolean(kWebViewRoundedCorners, false);
   RunScheduledLayouts();
-  verify_state(false);
+  verify_state();
 
   // Switch to another panel that has brave panel header.
   panel_ui->Show(SidePanelEntryId::kBookmarks);
@@ -2059,7 +2044,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
         SidePanelEntry::Key(SidePanelEntryId::kBookmarks));
   }));
   RunScheduledLayouts();
-  verify_state(false);
+  verify_state();
 
   // Switch to another panel that doesn't have brave panel header.
   panel_ui->Show(SidePanelEntryId::kCustomizeChrome);
@@ -2068,15 +2053,14 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
         SidePanelEntry::Key(SidePanelEntryId::kCustomizeChrome));
   }));
   RunScheduledLayouts();
-  verify_state(false);
+  verify_state();
 }
 
 // Verify that the panel border insets follow the sidebar's horizontal
 // alignment, in both LTR and RTL. Flipping kSidePanelHorizontalAlignment runs
-// through BraveBrowserView::UpdateSideBarHorizontalAlignment(), and toggling
-// kWebViewRoundedCorners runs through UpdateRoundedCornersUI(); both end up in
-// SidePanel::UpdateBorder(). The content-facing edge owns the separator/margin
-// and the outer edge owns the rounded-corner gap.
+// through BraveBrowserView::UpdateSideBarHorizontalAlignment() and ends up in
+// SidePanel::UpdateBorder(). The content-facing edge owns the resize strip's
+// gap and the outer edge owns the rounded-corner gap.
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PanelBorderInsetsFollowAlignment) {
   auto* panel_ui = SidePanelUI::From(browser());
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
@@ -2094,7 +2078,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PanelBorderInsetsFollowAlignment) {
   // mirror-paints the panel in RTL, so the separator still renders against the
   // contents visually. This mirrors SidePanel::UpdateBorder()'s own
   // is_sidebar_leading = (IsRightAligned() == IsRTL()) logic.
-  auto verify_state = [&](bool right_aligned, bool rounded_corners,
+  auto verify_state = [&](bool right_aligned,
                           const base::Location& loc = FROM_HERE) {
     SCOPED_TRACE(loc.ToString());
     const bool is_sidebar_leading = (right_aligned == base::i18n::IsRTL());
@@ -2102,47 +2086,31 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PanelBorderInsetsFollowAlignment) {
     const int content_side =
         is_sidebar_leading ? insets.right() : insets.left();
     const int outer_side = is_sidebar_leading ? insets.left() : insets.right();
-    if (rounded_corners) {
-      EXPECT_EQ(1, content_side)
-          << "rounded: 1px gap on the content-facing side, reserved for the "
-             "outline (the content view otherwise owns its margin)";
-      // The sidebar is visible here, so it sits between the panel and the
-      // window edge and supplies the outer margin itself.
-      ASSERT_TRUE(GetSidebarContainerView()->IsSidebarVisible());
-      EXPECT_EQ(kRoundedCornersContentsOutlineThickness, outer_side)
-          << "rounded, sidebar visible: outer-side gap is just the outline";
-    } else {
-      EXPECT_EQ(1, content_side)
-          << "plain: 1px separator on the content-facing side";
-      EXPECT_EQ(0, outer_side) << "plain: no outer-side inset";
-    }
+    EXPECT_EQ(kRoundedCornersContentsViewMargin +
+                  kRoundedCornersContentsOutlineThickness,
+              content_side)
+        << "content-facing gap hosts the resize strip; the main contents drop "
+           "their margin on this side in exchange";
+    // The sidebar is visible here, so it sits between the panel and the
+    // window edge and supplies the outer margin itself.
+    ASSERT_TRUE(GetSidebarContainerView()->IsSidebarVisible());
+    EXPECT_EQ(kRoundedCornersContentsOutlineThickness, outer_side)
+        << "sidebar visible: outer-side gap is just the outline";
   };
 
-  // Exercises every (alignment x rounded) combination, transitioning one pref
-  // at a time so each step fires OnPreferenceChanged -> UpdateBorder(). Both
-  // alignment directions (right->left and left->right) are covered. The matrix
-  // ends at right-aligned + plain, so the first step of a second call (a
-  // rounded change) is always a real change that recomputes the border.
+  // Both alignment directions (right->left and left->right) are covered. The
+  // matrix ends at left-aligned, so the first step of a second call is always a
+  // real change that recomputes the border.
   auto run_matrix = [&]() {
     prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
-    prefs->SetBoolean(kWebViewRoundedCorners, true);
     RunScheduledLayouts();
     ASSERT_TRUE(side_panel->IsRightAligned());
-    verify_state(/*right_aligned=*/true, /*rounded_corners=*/true);
+    verify_state(/*right_aligned=*/true);
 
     prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
     RunScheduledLayouts();
     ASSERT_FALSE(side_panel->IsRightAligned());
-    verify_state(/*right_aligned=*/false, /*rounded_corners=*/true);
-
-    prefs->SetBoolean(kWebViewRoundedCorners, false);
-    RunScheduledLayouts();
-    verify_state(/*right_aligned=*/false, /*rounded_corners=*/false);
-
-    prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
-    RunScheduledLayouts();
-    ASSERT_TRUE(side_panel->IsRightAligned());
-    verify_state(/*right_aligned=*/true, /*rounded_corners=*/false);
+    verify_state(/*right_aligned=*/false);
   };
 
   // LTR.
@@ -2157,27 +2125,47 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PanelBorderInsetsFollowAlignment) {
   }
 }
 
-// Regression test: the top container separator must remain visible when a
-// side panel opens. Upstream's CalculateSeparatorInfo() would clear
-// `top_container_separator` in this case, but
-// BraveBrowserViewTabbedLayoutImpl::CalculateSeparatorInfo() promotes it back
-// to true when rounded corners are off, so the separator stays shown.
+// The top container separator follows the rounded-corners state, not the side
+// panel's visibility. Upstream clears `top_container_separator` whenever there
+// is no infobar, and BraveBrowserViewTabbedLayoutImpl::CalculateSeparatorInfo()
+// promotes it back to true only while the contents are square -- once the
+// rounded shape is in use it provides the divider itself. Since an open panel
+// is a rounded-corners trigger, opening one hides the separator even with the
+// pref off.
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
-                       TopContainerSeparatorVisibleWhenPanelOpens) {
+                       TopContainerSeparatorFollowsRoundedCorners) {
   browser()->GetProfile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners,
                                                   false);
+
+  // Browser tests start with the P3A notice infobar, and upstream keeps the
+  // top separator for as long as an infobar is visible -- regardless of the
+  // contents' shape. Clear it so the rounded-corners rule is what's measured.
+  auto* infobar_manager = infobars::ContentInfoBarManager::FromWebContents(
+      tab_model()->GetActiveWebContents());
+  infobar_manager->RemoveAllInfoBars(/*animate=*/false);
+  ASSERT_THAT(infobar_manager->infobars(), testing::IsEmpty());
   RunScheduledLayouts();
 
   auto* brave_view =
       BraveBrowserView::From(BrowserView::GetBrowserViewForBrowser(browser()));
   auto* separator = brave_view->top_container_separator_for_testing();
   ASSERT_TRUE(separator);
-  EXPECT_TRUE(separator->GetVisible());
+  EXPECT_TRUE(separator->GetVisible())
+      << "square contents: Brave supplies the separator upstream omits";
 
   auto* panel_ui = SidePanelUI::From(browser());
   panel_ui->Show(SidePanelEntryId::kBookmarks);
   ASSERT_TRUE(
       base::test::RunUntil([&]() { return panel_ui->IsSidePanelShowing(); }));
+  RunScheduledLayouts();
+
+  EXPECT_FALSE(separator->GetVisible())
+      << "open panel rounds the contents, whose shape is the divider";
+
+  panel_ui->Close();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !brave_view->side_panel()->GetVisible(); }));
+  RunScheduledLayouts();
 
   EXPECT_TRUE(separator->GetVisible());
 }
@@ -2425,13 +2413,13 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
 }
 
 // Exercises the side panel's own rounded outline (SidePanel::UpdateBorder(),
-// via the panel's border -- there's no separate overlay view anymore):
-//   * with rounded corners off, the border is a plain 1px separator, no extra
-//     top/inner gap is reserved, and
-//   * with rounded corners on, the border reserves a slim 1px gap on the
-//     top/inner edges (where the header/content would otherwise be flush with
-//     the panel edge) so the outline has room to show on all four sides, and
-//     the outer edge reserves either the slim gap or the wider window margin
+// via the panel's border -- there's no separate overlay view anymore). An open
+// panel is itself a rounded-corners trigger, so the outline is installed even
+// with the pref off:
+//   * the border reserves a slim 1px gap on the top/inner edges (where the
+//     header/content would otherwise be flush with the panel edge) so the
+//     outline has room to show on all four sides, and
+//   * the outer edge reserves either the slim gap or the wider window margin
 //     depending on whether the sidebar is between the panel and the window
 //     edge (see brave::GetPanelOuterEdgeMargin()).
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PanelRoundedOutline) {
@@ -2441,35 +2429,32 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PanelRoundedOutline) {
   auto* prefs = browser()->GetProfile()->GetPrefs();
   auto* service = SidebarServiceFactory::GetForProfile(browser()->GetProfile());
 
-  // Open the panel with rounded corners off: a plain separator, no top gap.
+  // Pref off, so only the open panel can bring the outline in.
   prefs->SetBoolean(kWebViewRoundedCorners, false);
   panel_ui->Toggle();
   ASSERT_TRUE(base::test::RunUntil([&]() { return side_panel->GetVisible(); }));
   RunScheduledLayouts();
 
-  // If panel has header, top insets includeis header height.
+  // If panel has header, top insets include the header height.
   int header_height = 0;
   if (auto* header = side_panel->GetHeaderView<BraveSidePanelHeader>()) {
     header_height = header->height();
   }
-  EXPECT_EQ(0, side_panel->GetInsets().top() - header_height)
 
-      << "no rounded corners: no top gap reserved for an outline";
-
-  // Turn rounded corners on: the border reserves a 1px gap on the top and
-  // content-facing (inner) edges. The sidebar is visible here, so it sits
-  // between the panel and the window edge and supplies the outer gap itself
-  // through its buttons' padding -- the panel only needs the outline there.
-  prefs->SetBoolean(kWebViewRoundedCorners, true);
-  RunScheduledLayouts();
+  // The border reserves a 1px gap on the top edge and the full content margin
+  // on the content-facing (inner) edge, where the resize strip lives. The
+  // sidebar is visible here, so it sits between the panel and the window edge
+  // and supplies the outer gap itself through its buttons' padding -- the panel
+  // only needs the outline there.
   ASSERT_TRUE(GetSidebarContainerView()->IsSidebarVisible());
   {
     const gfx::Insets insets = side_panel->GetInsets();
     constexpr int kOutlineThickness = 1;
     EXPECT_EQ(kOutlineThickness, insets.top() - header_height)
-        << "rounded corners: 1px top gap reserved for the outline";
-    EXPECT_EQ(kOutlineThickness, insets.left())
-        << "rounded corners: 1px content-facing gap reserved for the outline";
+        << "1px top gap reserved for the outline";
+    EXPECT_EQ(kRoundedCornersContentsViewMargin + kOutlineThickness,
+              insets.left())
+        << "content-facing gap matches the main content's margin";
     EXPECT_EQ(kRoundedCornersContentsOutlineThickness, insets.right())
         << "sidebar visible: outer-side gap is just the outline, since the "
            "sidebar supplies the margin";
@@ -2486,12 +2471,6 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PanelRoundedOutline) {
             side_panel->GetInsets().right())
       << "sidebar hidden: outer-side gap matches main content (margin + "
          "outline thickness)";
-
-  // Disabling rounded corners drops the extra top/inner gap again.
-  prefs->SetBoolean(kWebViewRoundedCorners, false);
-  RunScheduledLayouts();
-  EXPECT_EQ(0, side_panel->GetInsets().top() - header_height)
-      << "no rounded corners: no top gap reserved for an outline";
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarItemHighlightState) {
