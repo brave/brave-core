@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShields
 import Preferences
 import Shared
 import UIKit
@@ -137,8 +138,10 @@ open class MockTabManagerDelegate: TabManagerDelegate {
       profile: FakeProfile(),
       privateBrowsingManager: privateBrowsingManager,
       shredManager: ShredManager(
-        braveCore: nil,
-        profile: FakeProfile()
+        historyAPI: nil,
+        profile: FakeProfile(),
+        connectedWindowIds: { [] },
+        dormantWindowIds: { [] }
       ),
       tabCreationFactory: { params in
         let tab = FakeTabState()

@@ -5,6 +5,7 @@
 
 import BraveCore
 import BraveShared
+import BraveShields
 import BraveStrings
 import BraveUI
 import DesignSystem
@@ -950,8 +951,10 @@ extension Animation {
       profile: FakeProfile(),
       privateBrowsingManager: .init(),
       shredManager: ShredManager(
-        braveCore: nil,
-        profile: FakeProfile()
+        historyAPI: nil,
+        profile: FakeProfile(),
+        connectedWindowIds: { [] },
+        dormantWindowIds: { [] }
       ),
       tabCreationFactory: { _ in
         FakeTabState()

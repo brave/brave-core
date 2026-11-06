@@ -132,6 +132,8 @@ class TabManager: NSObject {
     self.tabCreationFactory = tabCreationFactory
     super.init()
 
+    shredManager.register(self)
+
     Preferences.Chromium.syncOpenTabsEnabled.observe(from: self)
 
     domainFrc.delegate = self
@@ -223,7 +225,7 @@ class TabManager: NSObject {
     return tabs(isPrivate: isPrivate).count
   }
 
-  func tabs(isPrivate: Bool, query: String? = nil) -> [any TabState] {
+  private func tabs(isPrivate: Bool, query: String? = nil) -> [any TabState] {
     assert(Thread.isMainThread)
 
     let allTabs = allTabs.filter { $0.isPrivate == isPrivate }
@@ -1395,9 +1397,22 @@ extension TabManager: NSFetchedResultsControllerDelegate {
   }
 }
 
-extension TabManager {
+// Declared in an extension so that only these members, rather than every member witnessing a
+// requirement such as `allTabs`, are inferred to be main actor-isolated.
+extension TabManager: ShredTabContainer {
   var isPrivateBrowsing: Bool {
     privateBrowsingManager.isPrivateBrowsing || Preferences.Privacy.privateBrowsingOnly.value
+  }
+
+  func websiteDataStore(isPrivate: Bool) -> WKWebsiteDataStore {
+    let profile = isPrivate ? profile.offTheRecordProfile : profile
+    if FeatureList.kUseProfileWebViewConfiguration.enabled {
+      let configuration = BraveWebViewConfiguration(profile: profile)
+      return configuration.websiteDataStore
+    }
+    let configuration =
+      profile.isOffTheRecord ? Self.privateConfiguration : Self.defaultConfiguration
+    return configuration.websiteDataStore
   }
 }
 
