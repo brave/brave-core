@@ -49,6 +49,8 @@ source_set("peek") {
     "//brave/components/vector_icons",
     "//brave/ui/color:nala_color_id",
     "//chrome/app:generated_resources",
+    "//chrome/browser/favicon",
+    "//chrome/browser/history",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ssl",
     "//chrome/browser/tab_contents",

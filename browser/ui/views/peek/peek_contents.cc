@@ -12,6 +12,8 @@
 #include "base/check_deref.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/containers/buildflags/buildflags.h"
+#include "chrome/browser/favicon/favicon_utils.h"
+#include "chrome/browser/history/history_tab_helper.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/tab_contents/tab_util.h"
 #include "chrome/browser/ui/browser_web_contents_delegate/browser_web_contents_delegate.h"
@@ -50,6 +52,20 @@ web_modal::WebContentsModalDialogManagerDelegate* GetModalDialogDelegate(
   return manager ? manager->delegate() : nullptr;
 }
 
+// Tab features are only created for contents in a tab, but Peek needs these
+// before then: tab-modal dialogs and permission prompts are how Peek knows to
+// move into a tab, the favicon is shown in the card and visits are recorded in
+// history. Once the contents are in a tab, the tab features reuse them.
+void AttachHelpersFromTabFeatures(content::WebContents& web_contents) {
+  web_modal::WebContentsModalDialogManager::CreateForWebContents(&web_contents);
+  permissions::PermissionRequestManager::CreateForWebContents(&web_contents);
+  favicon::CreateContentFaviconDriverForWebContents(&web_contents);
+  if (!Profile::FromBrowserContext(web_contents.GetBrowserContext())
+           ->IsOffTheRecord()) {
+    HistoryTabHelper::GetOrCreateForWebContents(&web_contents);
+  }
+}
+
 #if BUILDFLAG(ENABLE_CONTAINERS)
 // Peek must load in the source tab's container, like a link opened in a new
 // tab would.
@@ -78,6 +94,7 @@ PeekContents::PeekContents(BrowserWindowInterface& browser,
       delegate_(delegate) {
   CHECK(web_contents_);
   TabHelpers::AttachTabHelpers(web_contents_.get());
+  AttachHelpersFromTabFeatures(*web_contents_);
   web_contents_->SetDelegate(this);
 
   // Without a modal dialog delegate, tab-modal dialogs such as HTTP auth
