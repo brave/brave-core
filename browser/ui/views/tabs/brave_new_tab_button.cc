@@ -33,6 +33,7 @@
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "ui/base/menu_source_utils.h"
 #include "ui/base/mojom/menu_source_type.mojom.h"
 #include "ui/compositor/compositor.h"
 #include "ui/views/controls/menu/menu_runner.h"
@@ -184,31 +185,7 @@ BraveNewTabButton::BraveNewTabButton(
 
 BraveNewTabButton::~BraveNewTabButton() = default;
 
-void BraveNewTabButton::OnPressed(const ui::Event& event) {
 #if BUILDFLAG(ENABLE_CONTAINERS)
-  if (ShouldAskForContainer()) {
-    ShowContextMenuForViewImpl(this, GetBoundsInScreen().bottom_left(),
-                               ui::mojom::MenuSourceType::kMouse);
-    return;
-  }
-#endif  // BUILDFLAG(ENABLE_CONTAINERS)
-  original_pressed_callback_.Run(event);
-}
-
-#if BUILDFLAG(ENABLE_CONTAINERS)
-bool BraveNewTabButton::ShouldAskForContainer() const {
-  if (!base::FeatureList::IsEnabled(containers::features::kContainers)) {
-    return false;
-  }
-  auto* service = ContainersServiceFactory::GetForProfile(
-      browser_window_interface_->GetProfile());
-  if (!service || !service->ShouldShowContainerControls()) {
-    return false;
-  }
-  const auto target = service->GetNewTabTarget();
-  return target && target->is_ask_each_time();
-}
-
 void BraveNewTabButton::ShowContextMenuForViewImpl(
     views::View* source,
     const gfx::Point& point,
@@ -252,7 +229,31 @@ void BraveNewTabButton::ShowContextMenuForViewImpl(
     NewTabButton::ShowContextMenuForViewImpl(source, point, source_type);
   }
 }
+
+bool BraveNewTabButton::ShouldAskForContainer() const {
+  if (!base::FeatureList::IsEnabled(containers::features::kContainers)) {
+    return false;
+  }
+  auto* service = ContainersServiceFactory::GetForProfile(
+      browser_window_interface_->GetProfile());
+  if (!service || !service->ShouldShowContainerControls()) {
+    return false;
+  }
+  const auto target = service->GetNewTabTarget();
+  return target && target->is_ask_each_time();
+}
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
+void BraveNewTabButton::OnPressed(const ui::Event& event) {
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  if (ShouldAskForContainer()) {
+    ShowContextMenuForViewImpl(this, GetBoundsInScreen().bottom_left(),
+                               ui::GetMenuSourceTypeForEvent(event));
+    return;
+  }
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+  original_pressed_callback_.Run(event);
+}
 
 BEGIN_METADATA(BraveNewTabButton)
 END_METADATA

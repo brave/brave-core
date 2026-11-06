@@ -235,6 +235,7 @@ TEST_F(ContainersServiceTest,
   SetContainersToPrefs(synced, prefs_);
   auto target = service_->GetNewTabTarget();
   ASSERT_TRUE(target);
+  ASSERT_TRUE(target->is_container_id());
   EXPECT_EQ(target->get_container_id(), "container-id");
 
   // Removing the chosen container clears it.
