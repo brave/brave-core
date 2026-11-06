@@ -930,9 +930,8 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
   // upstream's InfoBarView.
   void ClickInfobarCloseButton(infobars::InfoBar* infobar) {
     views::test::ButtonTestApi(
-        views::Button::AsButton(
-            static_cast<BraveConfirmInfoBar*>(infobar)
-                ->close_button_for_testing()))
+        views::Button::AsButton(static_cast<BraveConfirmInfoBar*>(infobar)
+                                    ->close_button_for_testing()))
         .NotifyClick(ui::MouseEvent(ui::EventType::kMousePressed, gfx::Point(),
                                     gfx::Point(), base::TimeTicks(),
                                     ui::EF_LEFT_MOUSE_BUTTON,
