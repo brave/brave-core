@@ -177,6 +177,7 @@ private func detailLinkLabel(with text: String) -> LinkLabel {
 private func secondaryButton(title: String?) -> UIButton {
   UIButton().then {
     var configuration = UIButton.Configuration.plain()
+    configuration.baseBackgroundColor = .clear
     configuration.baseForegroundColor = .black
     configuration.contentInsets = NSDirectionalEdgeInsets(
       top: 0,
