@@ -6,15 +6,24 @@
 #include <algorithm>
 #include <array>
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
+#include <utility>
 #include <vector>
 
+#include "base/location.h"
 #include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/run_loop.h"
+#include "base/strings/strcat.h"
+#include "base/strings/string_number_conversions.h"
+#include "base/test/scoped_run_loop_timeout.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_timeouts.h"
 #include "base/threading/platform_thread.h"
 #include "base/time/time.h"
+#include "base/timer/timer.h"
 #include "build/build_config.h"
 #include "net/base/net_errors.h"
 #include "net/base/request_priority.h"
@@ -54,6 +63,26 @@ namespace {
 }  // namespace net
 
 namespace brave {
+
+namespace {
+
+enum class Verdict {
+  // Pinning behaved as expected for the host.
+  kAsExpected,
+  // The request reached a verdict and it was not the expected one. This
+  // includes every certificate error, so a pin violation is never downgraded.
+  kUnexpected,
+  // The request timed out without completing or reporting a certificate
+  // error, so the pin check was never shown to fail.
+  kInconclusive,
+};
+
+struct CheckResult {
+  Verdict verdict;
+  std::string message;
+};
+
+}  // namespace
 
 class BraveCertPinningTest : public testing::TestWithParam<std::string_view> {
  protected:
@@ -107,16 +136,29 @@ class BraveCertPinningTest : public testing::TestWithParam<std::string_view> {
 
   // Performs a single GET request to the host and checks if the pinning
   // result (success or failure) matches the expectation.
-  testing::AssertionResult CheckHostOnce(const std::string& host,
-                                         bool expect_pin_failure) {
+  CheckResult CheckHostOnce(const std::string& host, bool expect_pin_failure) {
     net::TestDelegate delegate;
     GURL url(base::StrCat(
         {url::kHttpsScheme, url::kStandardSchemeSeparator, host, "/"}));
     auto request = context_->CreateRequest(
         url, net::DEFAULT_PRIORITY, &delegate, TRAFFIC_ANNOTATION_FOR_TESTS,
         net::handles::kInvalidNetworkHandle);
-    request->Start();
-    delegate.RunUntilComplete();
+
+    // Bound the wait ourselves. The RunLoop timeout that TaskEnvironment
+    // installs records a test failure when it fires, which neither the retries
+    // nor the inconclusive verdict can undo, so it is disabled for this wait.
+    // The deadline keeps the budget it had: 3 attempts take at most
+    // 3 * action_timeout() + 2s, under the test launcher's 45s default.
+    base::RunLoop run_loop;
+    delegate.set_on_complete(run_loop.QuitClosure());
+    base::OneShotTimer deadline;
+    deadline.Start(FROM_HERE, TestTimeouts::action_timeout(),
+                   run_loop.QuitClosure());
+    {
+      base::test::ScopedDisableRunLoopTimeout disable_run_loop_timeout;
+      request->Start();
+      run_loop.Run();
+    }
 
     // Certificate errors surface via OnSSLCertificateError() during the TLS
     // handshake. TestDelegate records the net error there and then cancels the
@@ -128,62 +170,90 @@ class BraveCertPinningTest : public testing::TestWithParam<std::string_view> {
     int cert_net_error = delegate.certificate_net_error();
     bool is_pin_failure =
         cert_net_error == net::ERR_SSL_PINNED_KEY_NOT_IN_CERT_CHAIN;
+    // The deadline fired before the request completed or reported a
+    // certificate error. Any certificate error, pin violations included, is a
+    // verdict and is never treated as a timeout.
+    bool timed_out =
+        !delegate.response_completed() && !delegate.have_certificate_errors();
+    // OnConnected() only runs once the TLS handshake, which includes the pin
+    // check, has succeeded.
+    bool handshake_succeeded = !delegate.transports().empty();
 
     VLOG(1) << host << ": status=" << net::ErrorToShortString(status)
             << " code=" << delegate.response_code().value_or(0)
             << " cert_net_error=" << net::ErrorToShortString(cert_net_error)
             << (is_pin_failure ? " [pin violated]" : "")
+            << (timed_out ? " [timed out]" : "")
+            << (handshake_succeeded ? " [handshake succeeded]" : "")
             << (expect_pin_failure ? " (expected pin failure)" : "");
 
+    std::string failure;
     if (expect_pin_failure) {
       if (is_pin_failure) {
-        return testing::AssertionSuccess();
+        return {Verdict::kAsExpected, ""};
       }
-      return testing::AssertionFailure()
-             << "Expected pinning failure, got status="
-             << net::ErrorToShortString(status)
-             << ", code=" << delegate.response_code().value_or(0)
-             << ", cert_net_error=" << net::ErrorToShortString(cert_net_error);
+      failure = base::StrCat(
+          {"Expected pinning failure, got status=",
+           net::ErrorToShortString(status), ", code=",
+           base::NumberToString(delegate.response_code().value_or(0)),
+           ", cert_net_error=", net::ErrorToShortString(cert_net_error)});
+    } else {
+      // A pinned host is only healthy if the request completed cleanly. Merely
+      // not tripping the pin check is not enough -- a DNS failure or an
+      // unrelated certificate error would otherwise be reported as a pass.
+      if (status == net::OK && !timed_out) {
+        return {Verdict::kAsExpected, ""};
+      }
+      failure = base::StrCat(
+          {"Expected success, got status=", net::ErrorToShortString(status),
+           ", cert_net_error=", net::ErrorToShortString(cert_net_error)});
     }
-
-    // A pinned host is only healthy if the request completed cleanly. Merely
-    // not tripping the pin check is not enough -- a DNS failure or an unrelated
-    // certificate error would otherwise be reported as a pass.
-    if (status == net::OK) {
-      return testing::AssertionSuccess();
+    if (timed_out) {
+      failure = base::StrCat({failure, " (timed out, handshake succeeded: ",
+                              handshake_succeeded ? "yes" : "no", ")"});
+      // No verdict, unless the host that must fail pinning completed its
+      // handshake: the pin check then accepted the connection.
+      if (!(expect_pin_failure && handshake_succeeded)) {
+        return {Verdict::kInconclusive, failure};
+      }
     }
-    return testing::AssertionFailure()
-           << "Expected success, got status=" << net::ErrorToShortString(status)
-           << ", cert_net_error=" << net::ErrorToShortString(cert_net_error);
+    return {Verdict::kUnexpected, failure};
   }
 
   // Retries the pinning check per the backoff schedule: 0s, 0s, 2s.
-  // Returns the last attempt's result if any attempt matched the
-  // expectation, otherwise returns the final failure.
-  testing::AssertionResult CheckHostWithRetry(const std::string& host,
-                                              bool expect_pin_failure) {
+  // Returns as soon as an attempt matches the expectation. Otherwise returns
+  // the last attempt that reached a verdict, falling back to the last
+  // inconclusive attempt only if every attempt was, so a timeout never hides a
+  // verdict.
+  CheckResult CheckHostWithRetry(const std::string& host,
+                                 bool expect_pin_failure) {
     const int max_attempts = 3;
     // Delays (in seconds) before each attempt: no delay for attempts 1&2, then
     // 2s.
     const std::array<int, 3> delay_seconds_cfg = {0, 0, 2};
     static_assert(delay_seconds_cfg.size() == max_attempts);
 
-    testing::AssertionResult result = testing::AssertionFailure();
+    std::optional<CheckResult> last_unexpected;
+    std::optional<CheckResult> last_inconclusive;
     for (int attempt = 0; attempt < max_attempts; ++attempt) {
       auto delay_seconds = delay_seconds_cfg[attempt];
       if (delay_seconds > 0) {
         base::PlatformThread::Sleep(base::Seconds(delay_seconds));
       }
 
-      result = CheckHostOnce(host, expect_pin_failure);
-      if (result) {
+      CheckResult result = CheckHostOnce(host, expect_pin_failure);
+      if (result.verdict == Verdict::kAsExpected) {
         return result;  // Success on this attempt.
       }
 
+      const bool inconclusive = result.verdict == Verdict::kInconclusive;
       LOG(WARNING) << "Attempt " << (attempt + 1) << " for " << host
-                   << " failed: " << result.message();
+                   << (inconclusive ? " inconclusive: " : " failed: ")
+                   << result.message;
+      (inconclusive ? last_inconclusive : last_unexpected) = std::move(result);
     }
-    return result;  // All attempts failed; return the last failure.
+    return last_unexpected ? *std::move(last_unexpected)
+                           : *std::move(last_inconclusive);
   }
 
   void TearDown() override {
@@ -253,8 +323,13 @@ TEST_P(BraveCertPinningTest, PinValidates) {
     GTEST_SKIP() << "Host is in kSkippedHosts";
   }
 
-  EXPECT_TRUE(CheckHostWithRetry(host, GetParam() == kUnpinnedTestHost))
-      << host;
+  const CheckResult result =
+      CheckHostWithRetry(host, GetParam() == kUnpinnedTestHost);
+  if (result.verdict == Verdict::kInconclusive) {
+    GTEST_SKIP() << host << ": " << result.message;
+  }
+  EXPECT_TRUE(result.verdict == Verdict::kAsExpected)
+      << host << ": " << result.message;
 }
 
 INSTANTIATE_TEST_SUITE_P(All,
