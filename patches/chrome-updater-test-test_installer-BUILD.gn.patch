@@ -1,0 +1,15 @@
+diff --git a/chrome/updater/test/test_installer/BUILD.gn b/chrome/updater/test/test_installer/BUILD.gn
+index 2e1c6197ed0bc4c55b7122d92acbe839bb03cc60..2d8aa674bba14085d4a820623834098a4202575e 100644
+--- a/chrome/updater/test/test_installer/BUILD.gn
++++ b/chrome/updater/test/test_installer/BUILD.gn
+@@ -133,8 +133,8 @@ if (is_win) {
+     relative_path = appid + "." + version + "/" + msi_base_name + ".msi"
+     output_dir = "$root_build_dir/test_installer/"
+     output_installer = output_dir + relative_path
+-    checked_in_msi = "//chrome/updater/test/data/" +
+-                     updater_company_short_name + "MSI/" + relative_path
++    checked_in_msi =
++        "//brave/test/data/updater/BraveSoftwareMSI/" + relative_path
+ 
+     action("test_msi_installer" + target_name) {
+       script = "create_test_msi_installer.py"

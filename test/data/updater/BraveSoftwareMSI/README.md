@@ -7,8 +7,8 @@ exercises Omaha 4 installing an application that is packaged as an MSI.
 `//chrome/updater/test/test_installer:test_msi_installer<version>` looks the
 files up under `//chrome/updater/test/data/${updater_company_short_name}MSI/`,
 and upstream only checks in `ChromiumMSI` and `GoogleMSI`. Without our copy,
-`updater_tests` and `updater_tests_system` do not build.
-`build/commands/lib/branding.js` copies this directory to the upstream location.
+`updater_tests` and `updater_tests_system` do not build. A plaster on that
+`BUILD.gn` points the build at this directory instead.
 
 ## Regenerating
 
@@ -19,9 +19,7 @@ with `checkout_src_internal`, so:
 
 1. Put WiX Toolset v3's `candle.exe` and `light.exe` at `src/third_party/wix/`.
 2. To force regeneration with an unchanged template, delete the two
-   `TestSystemMsiInstaller.wxs` files here and under
-   `src/chrome/updater/test/data/BraveSoftwareMSI/`.
+   `TestSystemMsiInstaller.wxs` files here.
 3. Build `chrome/updater/test/test_installer:test_msi_installer1.0.0.0` and
-   `test_msi_installer2.0.0.0` in a Static configuration.
-4. Copy the regenerated `src/chrome/updater/test/data/BraveSoftwareMSI/` back
-   over this directory.
+   `test_msi_installer2.0.0.0` in a Static configuration. The script writes
+   the regenerated files into this directory.
