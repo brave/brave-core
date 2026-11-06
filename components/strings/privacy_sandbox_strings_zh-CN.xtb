@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="zh-CN">
+<translation id="5725339460980108526">在无痕模式下，Brave 会阻止网站使用第三方 Cookie</translation>
+<translation id="1365023215312302966">网站无法使用第三方 Cookie 为您提供个性化内容和广告，也无法了解您在其他网站上的操作</translation>
+<translation id="7271018957317922139">在无痕模式下，网站无法使用第三方 Cookie。如果某个依赖这些 Cookie 的网站无法正常运行，您可<ph name="BEGIN_LINK"/>尝试授予该网站对第三方 Cookie 的临时访问权限<ph name="END_LINK"/>。</translation>
+<translation id="2004697686368036666">某些网站上的功能可能无法正常运行</translation>
+<translation id="2183376768278472507">如果某个网站无法按预期运行，您可尝试允许您访问的特定网站使用第三方 Cookie</translation>
+<translation id="2235344399760031203">已阻止第三方 Cookie</translation>
+<translation id="2360633687155619995">网站无法使用第三方 Cookie 为您提供个性化内容和广告，也无法了解您在其他网站上的操作。部分网站功能可能无法按预期运行。</translation>
+<translation id="2496115946829713659">网站可以使用第三方 Cookie 为您提供个性化内容和广告，以及了解您在其他网站上的操作</translation>
+<translation id="7220743783949410550">在无痕模式下，网站无法使用第三方 Cookie。如果某个依赖这些 Cookie 的网站无法正常运行，您可<ph name="START_LINK"/>尝试授予该网站对第三方 Cookie 的临时访问权限<ph name="END_LINK"/>。</translation>
+<translation id="3425311689852411591">依赖第三方 Cookie 的网站应该会按预期运行</translation>
+<translation id="3624583033347146597">选择第三方 Cookie 偏好设置</translation>
+<translation id="3918378745482005425">部分功能可能无法正常运行。相关网站仍然可以使用第三方 Cookie。</translation>
+<translation id="4278390842282768270">已允许</translation>
+<translation id="4412992751769744546">允许第三方 Cookie</translation>
+<translation id="4711259472133554310">您可以在“设置”中创建例外情况，始终允许特定网站使用第三方 Cookie</translation>
+<translation id="5677928146339483299">已屏蔽</translation>
+<translation id="6196640612572343990">阻止第三方 Cookie</translation>
+<translation id="6308169245546905162">网站可以使用第三方 Cookie 了解您在其他网站上的操作</translation>
+<translation id="7315780377187123731">详细了解“阻止第三方 Cookie”选项</translation>
+<translation id="7374493521304367420">网站仍可使用 Cookie 查看您在该网站上的浏览活动</translation>
+<translation id="7453144832830554937">依赖第三方 Cookie 的网站功能可能无法正常运行</translation>
+<translation id="7538480403395139206">详细了解“允许第三方 Cookie”选项</translation>
+<translation id="8200078544056087897">依赖第三方 Cookie 的网站功能应该会按预期运行</translation>
+<translation id="839994149685752920">网站可以使用第三方 Cookie 为您提供个性化内容和广告</translation>
+</translationbundle>

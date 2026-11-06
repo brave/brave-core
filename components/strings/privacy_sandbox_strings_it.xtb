@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="it">
+<translation id="5725339460980108526">Quando sei in modalità Incognito, Brave impedisce ai siti di utilizzare i cookie di terze parti</translation>
+<translation id="1365023215312302966">I siti non possono utilizzare i cookie di terze parti per personalizzare contenuti e annunci, né per monitorare le tue attività su altri siti</translation>
+<translation id="7271018957317922139">Quando sei in modalità Incognito, i siti non possono utilizzare i cookie di terze parti. Se un sito che si basa su questi cookie non funziona, puoi <ph name="BEGIN_LINK"/>provare a concedere a quel sito l'accesso temporaneo ai cookie di terze parti<ph name="END_LINK"/>.</translation>
+<translation id="2004697686368036666">Le funzionalità su alcuni siti potrebbero non essere disponibili</translation>
+<translation id="2183376768278472507">Se un sito non funziona come previsto, puoi provare a consentire i cookie di terze parti del sito specifico che stai visitando</translation>
+<translation id="2235344399760031203">I cookie di terze parti sono bloccati</translation>
+<translation id="2360633687155619995">I siti non possono utilizzare i cookie di terze parti per personalizzare contenuti e annunci, né per monitorare le tue attività su altri siti. Alcune funzionalità del sito potrebbero non funzionare come previsto.</translation>
+<translation id="2496115946829713659">I siti possono utilizzare i cookie di terze parti per personalizzare contenuti e annunci e conoscere le azioni che esegui su altri siti</translation>
+<translation id="7220743783949410550">Quando sei in modalità Incognito, i siti non possono utilizzare i cookie di terze parti. Se un sito che si basa su questi cookie non funziona, puoi <ph name="START_LINK"/>provare a concedere a quel sito l'accesso temporaneo ai cookie di terze parti<ph name="END_LINK"/>.</translation>
+<translation id="3425311689852411591">I siti che si basano su cookie di terze parti dovrebbero funzionare come previsto</translation>
+<translation id="3624583033347146597">Scegli le preferenze relative ai cookie di terze parti</translation>
+<translation id="3918378745482005425">Alcune funzionalità potrebbero non essere disponibili. I siti correlati possono comunque utilizzare i cookie di terze parti.</translation>
+<translation id="4278390842282768270">Consentito</translation>
+<translation id="4412992751769744546">Consenti i cookie di terze parti</translation>
+<translation id="4711259472133554310">Puoi creare eccezioni nelle Impostazioni per consentire sempre a siti specifici di utilizzare i cookie di terze parti</translation>
+<translation id="5677928146339483299">Bloccato</translation>
+<translation id="6196640612572343990">Blocca cookie di terze parti</translation>
+<translation id="6308169245546905162">I siti possono utilizzare i cookie di terze parti per conoscere le azioni che esegui su altri siti</translation>
+<translation id="7315780377187123731">Scopri di più sull'opzione Blocca cookie di terze parti</translation>
+<translation id="7374493521304367420">I siti possono comunque utilizzare i cookie per vedere la tua attività di navigazione sul loro sito</translation>
+<translation id="7453144832830554937">Le funzionalità del sito che si basano su cookie di terze parti non avere il comportamento previsto</translation>
+<translation id="7538480403395139206">Scopri di più sull'opzione Consenti cookie di terze parti</translation>
+<translation id="8200078544056087897">Le funzionalità del sito che si basano sui cookie di terze parti dovrebbero funzionare come previsto</translation>
+<translation id="839994149685752920">I siti possono utilizzare cookie di terze parti per personalizzare contenuti e annunci</translation>
+</translationbundle>

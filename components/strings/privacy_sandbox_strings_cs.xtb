@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="cs">
+<translation id="5725339460980108526">V anonymním režimu Brave webům používání souborů cookie třetích stran blokuje</translation>
+<translation id="1365023215312302966">Weby nemůžou používat soubory cookie třetích stran k personalizaci obsahu a reklam ani ke sledování vaší činnosti na jiných webech</translation>
+<translation id="7271018957317922139">V anonymním režimu nemůžou weby používat soubory cookie třetích stran. Pokud web, který se spoléhá na tyhle soubory cookie, ​​nefunguje, můžete mu <ph name="BEGIN_LINK"/>zkusit udělit dočasný přístup k souborům cookie třetích stran<ph name="END_LINK"/>.</translation>
+<translation id="2004697686368036666">Některé weby můžou přestat fungovat</translation>
+<translation id="2183376768278472507">Pokud některý web nefunguje správně, můžete soubory cookie třetích stran zkusit pro konkrétní navštívený web povolit</translation>
+<translation id="2235344399760031203">Soubory cookie třetích stran jsou blokovány</translation>
+<translation id="2360633687155619995">Weby nemůžou používat soubory cookie třetích stran k personalizaci obsahu a reklam ani ke sledování vaší činnosti na jiných webech. Některé weby nemusí fungovat správně.</translation>
+<translation id="2496115946829713659">Weby můžou používat soubory cookie třetích stran k personalizaci obsahu a reklam a k získání informací o akcích, které provádíte na jiných webech</translation>
+<translation id="7220743783949410550">V anonymním režimu nemůžou weby používat soubory cookie třetích stran. Pokud web využívající tyhle soubory cookie ​​nefunguje, můžete mu <ph name="START_LINK"/>zkusit udělit dočasný přístup k souborům cookie třetích stran<ph name="END_LINK"/>.</translation>
+<translation id="3425311689852411591">Weby, které potřebují soubory cookie třetích stran, by měly fungovat správně</translation>
+<translation id="3624583033347146597">Vyberte předvolby pro soubory cookie třetích stran</translation>
+<translation id="3918378745482005425">Některé věci nemusí fungovat. Související weby můžou soubory cookie třetích stran dál používat.</translation>
+<translation id="4278390842282768270">Povoleno</translation>
+<translation id="4412992751769744546">Povolit soubory cookie třetích stran</translation>
+<translation id="4711259472133554310">V Nastavení můžete vytvořit výjimky, které konkrétním webům používání souborů cookie třetích stran vždycky povolí</translation>
+<translation id="5677928146339483299">Blokováno</translation>
+<translation id="6196640612572343990">Blokovat soubory cookie třetích stran</translation>
+<translation id="6308169245546905162">Weby můžou pomocí souborů cookie třetích stran sledovat, co provádíte na jiných webech</translation>
+<translation id="7315780377187123731">Další informace o možnosti Blokovat soubory cookie třetích stran</translation>
+<translation id="7374493521304367420">Weby můžou dál používat soubory cookie ke sledování aktivity procházení na svých stránkách</translation>
+<translation id="7453144832830554937">Weby, které potřebují soubory cookie třetích stran, nemusí fungovat správně</translation>
+<translation id="7538480403395139206">Další informace o možnosti Povolit soubory cookie třetích stran</translation>
+<translation id="8200078544056087897">Funkce webů založené na souborech cookie třetích stran by měly fungovat správně</translation>
+<translation id="839994149685752920">Weby můžou používat soubory cookie třetích stran k personalizaci obsahu a reklam</translation>
+</translationbundle>
