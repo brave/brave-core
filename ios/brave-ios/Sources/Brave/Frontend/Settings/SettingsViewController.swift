@@ -1531,7 +1531,12 @@ class SettingsViewController: TableViewController, BraveAccountDialogOpenerBridg
         Row(
           text: "Leo Logs",
           selection: { [unowned self] in
-            let controller = UIHostingController(rootView: AIChatLeoSkusLogsView())
+            guard let skusService = Skus.SkusServiceFactory.get(profile: braveCore.profile) else {
+              return
+            }
+            let controller = UIHostingController(
+              rootView: AIChatLeoSkusLogsView(skusService: skusService)
+            )
             self.navigationController?.pushViewController(controller, animated: true)
           },
           accessory: .disclosureIndicator,
