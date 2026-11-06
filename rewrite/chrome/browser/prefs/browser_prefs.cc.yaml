@@ -30,7 +30,7 @@ substitutions:
       app start.
     regex:
       re_pattern: |-
-        (profile_prefs->ClearPref\(kObsoleteUpmAutoExportCsvNeedsDeletion\);\n)(.*?Login Data For Account-journal"\)\)\);\n)
+        (profile_prefs->ClearPref\(kObsoleteUpmAutoExportCsvNeedsDeletion\);\n)(.*?Login Data For Account-journal"\)\)\);\n\s*\},\s*profile_path\)\);\n)
       re_flags: [DOTALL]
       replace: |
         \1#if 0
