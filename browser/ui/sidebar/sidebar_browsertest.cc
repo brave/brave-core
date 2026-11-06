@@ -111,6 +111,7 @@
 #include "ui/gfx/geometry/rect_f.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/views/animation/ink_drop.h"
+#include "ui/views/controls/resize_area.h"
 #include "ui/views/layout/layout_provider.h"
 #include "ui/views/view.h"
 #include "ui/views/view_utils.h"
@@ -871,19 +872,26 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithWebPanelTest, WebPanelTest) {
     return contents_container_view_for_web_panel->width() ==
            GetBraveMultiContentsView()->web_panel_width_;
   }));
+  // The resize area sits between the contents area and the panel.
+  const int resize_area_width =
+      GetBraveMultiContentsView()->web_panel_resize_area_for_testing()->width();
+  gfx::Point expected_panel_origin = GetBraveMultiContentsView()
+                                         ->GetActiveContentsContainerView()
+                                         ->bounds()
+                                         .top_right();
+  expected_panel_origin.Offset(resize_area_width, 0);
   EXPECT_EQ(contents_container_view_for_web_panel->bounds().origin(),
-            GetBraveMultiContentsView()
-                ->GetActiveContentsContainerView()
-                ->bounds()
-                .top_right());
+            expected_panel_origin);
 
   GetBraveMultiContentsView()->SetWebPanelOnLeft(true);
   ASSERT_TRUE(base::test::RunUntil([&]() {
-    return contents_container_view_for_web_panel->bounds().top_right() ==
-           GetBraveMultiContentsView()
-               ->GetActiveContentsContainerView()
-               ->bounds()
-               .origin();
+    gfx::Point expected_contents_origin =
+        contents_container_view_for_web_panel->bounds().top_right();
+    expected_contents_origin.Offset(resize_area_width, 0);
+    return expected_contents_origin == GetBraveMultiContentsView()
+                                           ->GetActiveContentsContainerView()
+                                           ->bounds()
+                                           .origin();
   }));
 
   contents_container_view_for_web_panel->SetVisible(false);
@@ -1618,7 +1626,6 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarLayoutInRTLTest) {
   EXPECT_LE(sidebar_container->GetMirroredBounds().right(),
             contents_view->GetMirroredBounds().x());
 }
-
 
 // The upstream side panel is a direct child of browser_view, positioned
 // by CalculateSideBarLayout.  Verify that when the panel is open it sits

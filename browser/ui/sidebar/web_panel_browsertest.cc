@@ -55,7 +55,9 @@
 #include "content/public/test/test_utils.h"
 #include "ui/gfx/animation/animation.h"
 #include "ui/gfx/animation/animation_test_api.h"
+#include "ui/gfx/geometry/size.h"
 #include "ui/views/animation/ink_drop.h"
+#include "ui/views/controls/resize_area.h"
 #include "ui/views/view_utils.h"
 #include "url/gurl.h"
 
@@ -275,6 +277,170 @@ IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
   EXPECT_EQ(
       web_panel_controller()->panel_contents(),
       GetBraveMultiContentsView()->GetActiveContentsView()->GetWebContents());
+}
+
+// Dragging the resize area between the contents area and the panel changes
+// the panel's width.
+IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest, WebPanelResize) {
+  // To prevent item added bubble launching.
+  browser()->GetProfile()->GetPrefs()->SetInteger(
+      kSidebarItemAddedFeedbackBubbleShowCount, 3);
+
+  // The panel's pinned tab opens in the background, so the active contents
+  // container stays the regular contents area.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("about:blank")));
+  ASSERT_TRUE(CanAddCurrentActiveTabToSidebar(browser()));
+  controller()->AddItemWithCurrentTab();
+  const size_t web_panel_item_index = model()->GetAllSidebarItems().size() - 1;
+  ASSERT_TRUE(
+      model()->GetAllSidebarItems()[web_panel_item_index].is_web_panel_type());
+  controller()->OnItemPressed(web_panel_item_index);
+
+  auto* multi_contents_view = GetBraveMultiContentsView();
+  ASSERT_TRUE(multi_contents_view->IsWebPanelVisible());
+
+  auto* resize_area = multi_contents_view->web_panel_resize_area_for_testing();
+  ASSERT_TRUE(resize_area);
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return resize_area->GetVisible() && resize_area->width() > 0; }));
+
+  auto* contents_container =
+      multi_contents_view->GetActiveContentsContainerView();
+
+  auto resize_area_is_between = [&](bool panel_on_left) {
+    const int panel_width = multi_contents_view->web_panel_width_for_testing();
+    const auto resize_bounds = resize_area->bounds();
+    return panel_on_left
+               ? (resize_bounds.x() == panel_width &&
+                  resize_bounds.right() == contents_container->bounds().x())
+               : (resize_bounds.x() == contents_container->bounds().right() &&
+                  resize_bounds.right() ==
+                      multi_contents_view->width() - panel_width);
+  };
+
+  const bool on_left = IsSidebarUIOnLeft();
+  EXPECT_TRUE(resize_area_is_between(on_left));
+
+  // ResizeArea reports positive amounts toward the trailing edge of the
+  // locale, so dragging away from the edge the panel is docked to widens it.
+  const int widen = on_left ? 50 : -50;
+  const int initial_width = multi_contents_view->web_panel_width_for_testing();
+
+  // Both the panel and the contents area keep a usable width, so the two
+  // clamps together always leave room for the other side plus the resize area.
+  multi_contents_view->OnWebPanelResize(widen * 1000, /*done_resizing=*/true);
+  const int max_width = multi_contents_view->web_panel_width_for_testing();
+  multi_contents_view->OnWebPanelResize(-widen * 1000, /*done_resizing=*/true);
+  const int min_width = multi_contents_view->web_panel_width_for_testing();
+  EXPECT_GT(min_width, 0);
+  EXPECT_LT(min_width, max_width);
+  EXPECT_EQ(multi_contents_view->width(),
+            min_width + resize_area->width() + max_width);
+
+  // The exact widths below only hold clear of both clamps.
+  multi_contents_view->SetWebPanelWidth(initial_width);
+  ASSERT_GT(initial_width, min_width);
+  ASSERT_LT(initial_width + 150, max_width);
+
+  multi_contents_view->OnWebPanelResize(widen, /*done_resizing=*/true);
+  EXPECT_EQ(initial_width + 50,
+            multi_contents_view->web_panel_width_for_testing());
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return resize_area_is_between(on_left); }));
+
+  // Cumulative within a gesture, so updates don't stack on each other.
+  multi_contents_view->OnWebPanelResize(widen, /*done_resizing=*/false);
+  multi_contents_view->OnWebPanelResize(widen * 2, /*done_resizing=*/false);
+  EXPECT_EQ(initial_width + 150,
+            multi_contents_view->web_panel_width_for_testing());
+  multi_contents_view->OnWebPanelResize(widen * 2, /*done_resizing=*/true);
+  EXPECT_EQ(initial_width + 150,
+            multi_contents_view->web_panel_width_for_testing());
+
+  multi_contents_view->OnWebPanelResize(-widen, /*done_resizing=*/true);
+  EXPECT_EQ(initial_width + 100,
+            multi_contents_view->web_panel_width_for_testing());
+
+  multi_contents_view->SetWebPanelOnLeft(!on_left);
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return resize_area_is_between(!on_left); }));
+
+  // Closing gives the whole width back to the contents area.
+  controller()->OnItemPressed(web_panel_item_index);
+  ASSERT_FALSE(multi_contents_view->IsWebPanelVisible());
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return !resize_area->GetVisible() &&
+           contents_container->width() == multi_contents_view->width();
+  }));
+}
+
+// Shrinking the host after a drag must not push the resize area outside it.
+// Only the layout-time clamp catches this; the stored width is left alone.
+IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest, WebPanelResizeThenShrinkHost) {
+  // To prevent item added bubble launching.
+  browser()->GetProfile()->GetPrefs()->SetInteger(
+      kSidebarItemAddedFeedbackBubbleShowCount, 3);
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("about:blank")));
+  ASSERT_TRUE(CanAddCurrentActiveTabToSidebar(browser()));
+  controller()->AddItemWithCurrentTab();
+  const size_t web_panel_item_index = model()->GetAllSidebarItems().size() - 1;
+  ASSERT_TRUE(
+      model()->GetAllSidebarItems()[web_panel_item_index].is_web_panel_type());
+  controller()->OnItemPressed(web_panel_item_index);
+
+  auto* multi_contents_view = GetBraveMultiContentsView();
+  ASSERT_TRUE(multi_contents_view->IsWebPanelVisible());
+  auto* resize_area = multi_contents_view->web_panel_resize_area_for_testing();
+  ASSERT_TRUE(resize_area);
+  auto* contents_container =
+      multi_contents_view->GetActiveContentsContainerView();
+  const bool on_left = IsSidebarUIOnLeft();
+
+  // Known sizes, so the clamping doesn't depend on the test window's size.
+  constexpr int kHostWidth = 1200;
+  constexpr int kShrunkHostWidth = 700;
+  constexpr int kHostHeight = 800;
+  multi_contents_view->SetSize(gfx::Size(kHostWidth, kHostHeight));
+  multi_contents_view->DeprecatedLayoutImmediately();
+
+  // What's on screen, as opposed to the stored width.
+  auto displayed_panel_width = [&]() {
+    return on_left
+               ? resize_area->bounds().x()
+               : multi_contents_view->width() - resize_area->bounds().right();
+  };
+
+  multi_contents_view->OnWebPanelResize(on_left ? kHostWidth : -kHostWidth,
+                                        /*done_resizing=*/true);
+  multi_contents_view->DeprecatedLayoutImmediately();
+  const int wide_width = multi_contents_view->web_panel_width_for_testing();
+  ASSERT_GT(wide_width, kShrunkHostWidth);
+  ASSERT_EQ(wide_width, displayed_panel_width());
+
+  // Narrower than the panel alone was using.
+  multi_contents_view->SetSize(gfx::Size(kShrunkHostWidth, kHostHeight));
+  multi_contents_view->DeprecatedLayoutImmediately();
+
+  // The requested width is kept, but the panel lays out narrower.
+  EXPECT_EQ(wide_width, multi_contents_view->web_panel_width_for_testing());
+  EXPECT_LT(displayed_panel_width(), wide_width);
+  EXPECT_GE(resize_area->bounds().x(), 0);
+  EXPECT_LE(resize_area->bounds().right(), kShrunkHostWidth);
+  EXPECT_GT(contents_container->width(), 0);
+  if (on_left) {
+    EXPECT_EQ(contents_container->bounds().x(), resize_area->bounds().right());
+  } else {
+    EXPECT_EQ(contents_container->width(), resize_area->bounds().x());
+  }
+
+  // The next gesture starts from the displayed width, not the stored one.
+  const int displayed_before_drag = displayed_panel_width();
+  multi_contents_view->OnWebPanelResize(on_left ? -10 : 10,
+                                        /*done_resizing=*/true);
+  multi_contents_view->DeprecatedLayoutImmediately();
+  EXPECT_LT(multi_contents_view->web_panel_width_for_testing(),
+            displayed_before_drag);
 }
 
 // A web panel item is the active sidebar item while its panel is open, and
