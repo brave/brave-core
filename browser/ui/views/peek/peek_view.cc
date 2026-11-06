@@ -11,6 +11,7 @@
 #include "base/functional/bind.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
+#include "brave/browser/ui/views/brave_layout_provider.h"
 #include "brave/browser/ui/views/peek/peek_shields_button.h"
 #include "brave/browser/ui/views/view_shadow.h"
 #include "brave/components/vector_icons/vector_icons.h"
@@ -88,7 +89,7 @@ constexpr int kDividerThickness = 1;
 // uses the same radius as the browser's rounded contents area.
 float GetCardCornerRadius() {
   return views::LayoutProvider::Get()->GetCornerRadiusMetric(
-      views::ShapeContextTokensOverride::kRoundedCornersBorderRadius);
+      ExtendedShapeContextTokens::kRoundedCornersBorderRadius);
 }
 
 gfx::RoundedCornersF GetCardCorners() {
