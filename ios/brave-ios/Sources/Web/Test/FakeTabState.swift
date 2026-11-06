@@ -30,7 +30,8 @@ public final class FakeTabState: TabState {
   public var webViewProxy: WebViewProxy? { nil }
   public var isWebViewCreated: Bool { false }
   public func createWebView() {}
-  public func deleteWebView() {}
+  public private(set) var deleteWebViewCallCount = 0
+  public func deleteWebView() { deleteWebViewCallCount += 1 }
 
   // MARK: - Restoration
 
@@ -106,7 +107,7 @@ public final class FakeTabState: TabState {
     in frame: WKFrameInfo?,
     contentWorld: WKContentWorld
   ) async throws -> Any? { nil }
-  public var configuration: WKWebViewConfiguration? { nil }
+  public var configuration: WKWebViewConfiguration?
   public var viewPrintFormatter: UIViewPrintFormatter? { nil }
   public var dataForDisplayedPDF: Data? { nil }
   public var sampledPageTopColor: UIColor? { nil }
