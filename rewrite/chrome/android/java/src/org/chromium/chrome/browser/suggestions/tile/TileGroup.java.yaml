@@ -45,10 +45,9 @@ substitutions:
       See the PendingChanges.isUserTriggered substitution above for why.
     regex:
       re_pattern:
-        'boolean dataChanged =\s*isInitialLoad \|\|
-        !tileListAreEqual\(oldPersonalizedTiles, newPersonalizedTiles\);'
+        '(boolean dataChanged =\s*isInitialLoad)\s*(\|\|
+        !tileListAreEqual\(oldPersonalizedTiles, newPersonalizedTiles\);)'
       replace: |-
-        boolean dataChanged =
-                        isInitialLoad
+        \1
                                 || mPendingChanges.isUserTriggered
-                                || !tileListAreEqual(oldPersonalizedTiles, newPersonalizedTiles);
+                                \2
