@@ -16,7 +16,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
-#include "components/history_embeddings/core/history_embeddings_search.h"
+#include "brave/components/history_embeddings/core/history_embeddings_search.h"
 
 class Profile;
 
@@ -32,7 +32,7 @@ namespace internal {
 // returned by HistorySearchTool. Exposed for unit tests.
 std::string BuildHistorySearchResultJson(
     const std::string& query,
-    const history_embeddings::SearchResult& result,
+    const brave_history_embeddings::SearchResult& result,
     bool include_all_passages);
 
 }  // namespace internal
@@ -66,20 +66,21 @@ class HistorySearchTool : public Tool {
   // Tests inject a fake search interface to bypass the factory lookup and
   // the per-profile enablement gate. The pointer must outlive any UseTool
   // call made on this instance.
-  void SetSearchForTesting(history_embeddings::HistoryEmbeddingsSearch* search);
+  void SetSearchForTesting(
+      brave_history_embeddings::HistoryEmbeddingsSearch* search);
 
  private:
-  // SearchResultCallback is a RepeatingCallback but with `skip_answering=true`
-  // it's expected to fire once. `callback` is heap-allocated and owned by the
+  // SearchResultCallback is a RepeatingCallback but is expected to fire
+  // once. `callback` is heap-allocated and owned by the
   // bound closure; the first invocation moves it out and runs the
   // UseToolCallback, any further invocations are no-ops.
   void OnSearchResult(UseToolCallback* callback,
                       bool include_all_passages,
-                      history_embeddings::SearchResult result);
+                      brave_history_embeddings::SearchResult result);
 
   raw_ptr<Profile> profile_;
-  raw_ptr<history_embeddings::HistoryEmbeddingsSearch> search_for_testing_ =
-      nullptr;
+  raw_ptr<brave_history_embeddings::HistoryEmbeddingsSearch>
+      search_for_testing_ = nullptr;
   bool user_has_granted_permission_ = false;
 
   base::WeakPtrFactory<HistorySearchTool> weak_ptr_factory_{this};

@@ -52,7 +52,6 @@ source_set("ai_chat") {
     "//chrome/browser/bookmarks",
     "//chrome/browser/favicon",
     "//chrome/browser/history",
-    "//chrome/browser/history_embeddings",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/navigator",
@@ -61,8 +60,6 @@ source_set("ai_chat") {
     "//chrome/browser/ui/webui:theme_source",
     "//components/favicon/core",
     "//components/favicon_base",
-    "//components/history_embeddings/content",
-    "//components/history_embeddings/core",
     "//components/keyed_service/core",
     "//components/prefs",
     "//components/strings:components_strings",
@@ -97,7 +94,12 @@ source_set("ai_chat") {
   if (enable_local_ai) {
     # SearchForTabs ranks the user's open tabs with on-device history
     # embeddings; open_tab_search is desktop only.
-    deps += [ "//brave/browser/history_embeddings:open_tab_search" ]
+    deps += [
+      "//brave/browser/history_embeddings:open_tab_search",
+      "//brave/browser/history_embeddings:service",
+      "//brave/components/history_embeddings/content",
+      "//brave/components/history_embeddings/core",
+    ]
   }
 
   if (enable_brave_ai_chat_agent_profile) {

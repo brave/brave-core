@@ -10,11 +10,11 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/history_embeddings/core/history_embeddings_features.h"
 #include "brave/components/local_ai/core/pref_names.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
-#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
@@ -25,7 +25,7 @@
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
-namespace history_embeddings {
+namespace brave_history_embeddings {
 
 // The setting is captured at profile setup, so each test picks the value the
 // embedding services would have been built with before building `profile_`.
@@ -179,4 +179,4 @@ TEST_F(BraveHistoryEmbeddingsStatusTest,
 
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
-}  // namespace history_embeddings
+}  // namespace brave_history_embeddings

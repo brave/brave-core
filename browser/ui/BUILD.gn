@@ -150,7 +150,6 @@ source_set("ui") {
     "//chrome/browser:file_select_helper",
     "//chrome/browser/contextual_search",
     "//chrome/browser/history",
-    "//chrome/browser/history_embeddings",
     "//chrome/browser/image_fetcher",
     "//chrome/browser/regional_capabilities",
     "//chrome/browser/ui:tab_modal_confirm_dialog_delegate",
@@ -191,6 +190,7 @@ source_set("ui") {
   if (enable_local_ai) {
     deps += [
       "//brave/browser/history_embeddings:status",
+      "//brave/browser/history_embeddings:utils",
       "//brave/browser/ui/webui/local_ai",
       "//brave/components/local_ai/core",
     ]

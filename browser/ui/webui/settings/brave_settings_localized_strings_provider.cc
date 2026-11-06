@@ -44,7 +44,6 @@
 #include "brave/ui/webui/custom_profile_image/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #include "chrome/browser/media/router/media_router_feature.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/pref_names.h"
@@ -73,9 +72,9 @@
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
 #include "brave/browser/history_embeddings/brave_history_embeddings_status.h"
+#include "brave/browser/history_embeddings/history_embeddings_utils.h"
 #include "brave/components/local_ai/core/on_device_speech_models_state.h"
 #include "brave/components/local_ai/core/utils.h"
-#include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #include "ui/base/text/bytes_formatting.h"
 #endif
 
@@ -1197,9 +1196,13 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
 
   // The Local AI master switch lives in local state and only takes effect on
   // relaunch, so the page reads it once here rather than binding a pref.
+#if BUILDFLAG(ENABLE_LOCAL_AI)
   html_source->AddBoolean(
       "isHistoryEmbeddingsFeatureEnabled",
-      history_embeddings::IsHistoryEmbeddingsFeatureEnabled());
+      brave_history_embeddings::IsHistoryEmbeddingsFeatureEnabled());
+#else
+  html_source->AddBoolean("isHistoryEmbeddingsFeatureEnabled", false);
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
   html_source->AddString("braveLeoAssistantTabOrganizationDesc",
                          l10n_util::GetStringFUTF16(
@@ -1227,13 +1230,14 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
 
   html_source->AddBoolean(
       "isSemanticHistorySearchAvailable",
-      history_embeddings::IsHistoryEmbeddingsFeatureEnabled());
+      brave_history_embeddings::IsHistoryEmbeddingsFeatureEnabled());
 
   // The value the embedding services were built with, so the page can tell
   // whether the toggle is waiting on a relaunch.
   html_source->AddBoolean(
       "semanticHistorySearchEnabledAtStartup",
-      history_embeddings::BraveHistoryEmbeddingsStatus::GetForProfile(profile)
+      brave_history_embeddings::BraveHistoryEmbeddingsStatus::GetForProfile(
+          profile)
           ->IsEnabled());
 
   html_source->AddString(

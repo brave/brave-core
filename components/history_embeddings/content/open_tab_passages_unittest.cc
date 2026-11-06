@@ -16,25 +16,20 @@
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/time/time.h"
-#include "components/feature_engagement/test/mock_tracker.h"
+#include "brave/components/history_embeddings/content/history_embeddings_service.h"
+#include "brave/components/history_embeddings/core/vector_database.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
 #include "components/history/core/test/history_service_test_util.h"
-#include "components/history_embeddings/content/history_embeddings_service.h"
-#include "components/history_embeddings/core/mock_answerer.h"
-#include "components/history_embeddings/core/mock_intent_classifier.h"
-#include "components/history_embeddings/core/vector_database.h"
-#include "components/optimization_guide/core/delivery/test_optimization_guide_model_provider.h"
 #include "components/os_crypt/async/browser/test_utils.h"
 #include "components/page_content_annotations/content/page_content_extraction_service.h"
 #include "components/page_content_annotations/content/page_embeddings_service.h"
-#include "components/page_content_annotations/core/test_page_content_annotations_service.h"
 #include "components/passage_embeddings/core/passage_embeddings_test_util.h"
 #include "components/passage_embeddings/core/passage_embeddings_types.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
-namespace history_embeddings {
+namespace brave_history_embeddings {
 
 namespace {
 
@@ -67,27 +62,17 @@ class OpenTabPassagesTest : public testing::Test {
 
     os_crypt_ = os_crypt_async::GetTestOSCryptAsyncForTesting(
         /*is_sync_for_unittests=*/true);
-    optimization_guide_model_provider_ = std::make_unique<
-        optimization_guide::TestOptimizationGuideModelProvider>();
-    page_content_annotations_service_ =
-        page_content_annotations::TestPageContentAnnotationsService::Create(
-            optimization_guide_model_provider_.get(), history_service_.get());
-    ASSERT_TRUE(page_content_annotations_service_);
     page_content_extraction_service_ = std::make_unique<
         page_content_annotations::PageContentExtractionService>(
-        nullptr, base::FilePath(), &mock_tracker_);
+        nullptr, base::FilePath(), nullptr);
     page_embeddings_service_ =
         std::make_unique<page_content_annotations::PageEmbeddingsService>(
             page_content_extraction_service_.get());
 
     service_ = std::make_unique<HistoryEmbeddingsServicePublic>(
-        os_crypt_.get(), history_service_.get(),
-        page_content_annotations_service_.get(),
-        /*optimization_guide_decider=*/nullptr, page_embeddings_service_.get(),
+        os_crypt_.get(), history_service_.get(), page_embeddings_service_.get(),
         passage_embeddings_test_env_.embedder_metadata_provider(),
-        passage_embeddings_test_env_.embedder(),
-        std::make_unique<MockAnswerer>(),
-        std::make_unique<MockIntentClassifier>());
+        passage_embeddings_test_env_.embedder());
   }
 
   void TearDown() override {
@@ -135,11 +120,6 @@ class OpenTabPassagesTest : public testing::Test {
   base::ScopedTempDir history_dir_;
   std::unique_ptr<history::HistoryService> history_service_;
   std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_;
-  std::unique_ptr<optimization_guide::TestOptimizationGuideModelProvider>
-      optimization_guide_model_provider_;
-  std::unique_ptr<page_content_annotations::PageContentAnnotationsService>
-      page_content_annotations_service_;
-  feature_engagement::test::MockTracker mock_tracker_;
   std::unique_ptr<page_content_annotations::PageContentExtractionService>
       page_content_extraction_service_;
   std::unique_ptr<page_content_annotations::PageEmbeddingsService>
@@ -285,4 +265,4 @@ TEST_F(OpenTabPassagesTest, ServiceShutDownDuringUrlLookup) {
   EXPECT_EQ(future.Take(), (std::vector<std::vector<std::string>>{{}}));
 }
 
-}  // namespace history_embeddings
+}  // namespace brave_history_embeddings

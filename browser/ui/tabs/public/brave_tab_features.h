@@ -184,6 +184,9 @@ class BraveTabFeatures : public TabFeatures {
 
   // Records searches. Null when SERP metrics are disabled or off the record.
   std::unique_ptr<ContentsObservingTabFeature> serp_metrics_tab_helper_;
+  // Hands history visits to the semantic history search index. Null when the
+  // profile has no index.
+  std::unique_ptr<ContentsObservingTabFeature> history_embeddings_tab_helper_;
   // Notifies the ads service of tab events. Null without Brave Ads.
   std::unique_ptr<ContentsObservingTabFeature> ads_tab_helper_;
   // Handles search result ads. Null without Brave Ads or off the record.

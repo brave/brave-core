@@ -26,6 +26,7 @@
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/components/misc_metrics/features.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -91,6 +92,10 @@
 #include "brave/browser/containers/container_tab_tracker.h"
 #include "brave/browser/ui/views/page_action/partitioned_storage_page_action_controller.h"
 #include "brave/components/containers/core/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/browser/history_embeddings/history_embeddings_tab_helper.h"
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -323,6 +328,11 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
   onboarding_tab_helper_ = OnboardingTabHelper::MaybeCreate(tab);
   serp_metrics_tab_helper_ =
       serp_metrics::SerpMetricsTabHelper::MaybeCreate(tab);
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  history_embeddings_tab_helper_ =
+      brave_history_embeddings::HistoryEmbeddingsTabHelper::MaybeCreate(tab);
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   ads_tab_helper_ = std::make_unique<brave_ads::AdsTabHelper>(tab);

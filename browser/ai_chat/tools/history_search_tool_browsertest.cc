@@ -29,13 +29,13 @@
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/history_embeddings/core/history_embeddings_features.h"
+#include "brave/components/history_embeddings/core/history_embeddings_search.h"
+#include "brave/components/history_embeddings/core/vector_database.h"
 #include "brave/components/history_embeddings/test/fake_history_embeddings_search.h"
 #include "brave/components/local_ai/core/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/history/core/browser/url_row.h"
-#include "components/history_embeddings/core/history_embeddings_features.h"
-#include "components/history_embeddings/core/history_embeddings_search.h"
-#include "components/history_embeddings/core/vector_database.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -71,7 +71,7 @@ class HistorySearchToolBrowserTest
  public:
   HistorySearchToolBrowserTest() {
     scoped_feature_list_.InitAndEnableFeature(
-        history_embeddings::kHistoryEmbeddings);
+        brave_history_embeddings::kHistoryEmbeddings);
   }
 
   void SetUpOnMainThread() override {
@@ -173,9 +173,6 @@ IN_PROC_BROWSER_TEST_F(HistorySearchToolBrowserTest,
 
   EXPECT_EQ(fake.last_query(), "kittens article");
   EXPECT_EQ(fake.last_count(), 3u);
-  EXPECT_TRUE(fake.last_skip_answering())
-      << "The tool must request the embeddings-only path -- answering is "
-         "handled by the Leo model itself.";
   ASSERT_TRUE(fake.last_time_range_start().has_value());
   EXPECT_LT(base::Time::Now() - *fake.last_time_range_start(),
             base::Days(7) + base::Minutes(5));
