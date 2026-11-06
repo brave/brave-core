@@ -128,13 +128,16 @@ Tests: `PopupWithoutGestureIsBlocked`, `PopupWithGestureMovesToTab`,
   suppressed in Peek, because the Peek delegate has no
   `JavaScriptDialogManager`.
 - File choosers (`<input type=file>`, including in cross-origin frames) move
-  Peek to a tab before the chooser opens, since choosing which files to give the
-  site is a trust decision. If there is no tab delegate after the move, the
-  request is cancelled. Directory enumeration only follows a chooser, so it
-  already runs in the tab; the Peek delegate's default cancels it.
+  Peek to a tab, since choosing which files to give the site is a trust
+  decision. The chooser itself is cancelled (the page receives `cancel`), not
+  forwarded to the tab: the tab's own checks (visible, active tab, minimum
+  window size) run after the move, so forwarding would make whether the user
+  sees a chooser depend on timing. The user presses the file input again in the
+  tab. Directory enumeration only follows a chooser, so it already runs in the
+  tab; the Peek delegate's default cancels it.
 
-Tests: `HttpAuthMovesToTab`, `FileChooserMovesToTab`,
-`FileChooserInCrossSiteFrameMovesToTab`.
+Tests: `HttpAuthMovesToTab`, `FileChooserMovesToTabAndCancels`,
+`FileChooserInCrossSiteFrameMovesToTabAndCancels`.
 
 ### Initiator origin and SameSite cookies
 

@@ -250,16 +250,12 @@ void PeekContents::RunFileChooser(
     scoped_refptr<content::FileSelectListener> listener,
     const blink::mojom::FileChooserParams& params) {
   // Which files to give the site is the user's trust decision, so it's made in
-  // a tab, like the permission prompts.
-  content::WebContents* contents =
-      content::WebContents::FromRenderFrameHost(render_frame_host);
+  // a tab, like the permission prompts. The chooser that was asked for is
+  // cancelled rather than handed to the tab: the tab's own checks (visibility,
+  // active tab, window size) run after the move and would decide whether the
+  // user ever sees it. The user presses the file input again in the tab.
   delegate_->OnPeekMoveToTabRequired();
-  // `this` is gone; the tab's delegate shows the chooser.
-  if (content::WebContentsDelegate* tab_delegate = contents->GetDelegate()) {
-    tab_delegate->RunFileChooser(render_frame_host, std::move(listener),
-                                 params);
-    return;
-  }
+  // `this` is gone; `listener` is independent of it.
   listener->FileSelectionCanceled();
 }
 
