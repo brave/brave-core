@@ -16,8 +16,6 @@ enum PendingRequest: Equatable {
   case addSuggestedToken(BraveWallet.AddSuggestTokenRequest)
   case signMessage([SignMessageRequestItem])
   case signMessageError([BraveWallet.SignMessageError])
-  case getEncryptionPublicKey(GetEncryptionPublicKeyRequestItem)
-  case decrypt(DecryptRequestItem)
   case signTransactions([SignTransactionRequestItem])
 }
 
@@ -36,10 +34,6 @@ extension PendingRequest: Identifiable {
       return "signMessage-\(signRequests.map(\.id))"
     case .signMessageError(let signMessageErrorRequests):
       return "signMessageError-\(signMessageErrorRequests.map(\.id))"
-    case .getEncryptionPublicKey(let item):
-      return "getEncryptionPublicKey-\(item.request.accountId.uniqueKey)-\(item.request.requestId)"
-    case .decrypt(let item):
-      return "decrypt-\(item.request.accountId.uniqueKey)-\(item.request.requestId)"
     case .signTransactions(let requests):
       return "signTransactions-\(requests.map(\.id))"
     }
@@ -52,8 +46,6 @@ enum WebpageRequestResponse: Equatable {
   case addSuggestedToken(approved: Bool, token: BraveWallet.BlockchainToken)
   case signMessage(approved: Bool, id: Int32)
   case signMessageError(errorId: String)
-  case getEncryptionPublicKey(approved: Bool, requestId: String)
-  case decrypt(approved: Bool, requestId: String)
   case signSolTransactions(approved: Bool, id: Int32)
   case signCardanoTransactions(approved: Bool, id: Int32)
 }
@@ -556,18 +548,6 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       return .addSuggestedToken(addTokenRequest)
     }
 
-    if let item = await walletService.pendingGetEncryptionPublicKeyRequests(
-      allAccounts: allAccounts
-    ) {
-      return .getEncryptionPublicKey(item)
-    }
-
-    if let item = await walletService.pendingDecryptRequests(
-      allAccounts: allAccounts
-    ) {
-      return .decrypt(item)
-    }
-
     return nil
   }
 
@@ -634,10 +614,6 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       )
     case .signMessageError(let errorId):
       walletService.notifySignMessageErrorProcessed(errorId: errorId)
-    case .getEncryptionPublicKey(let approved, let requestId):
-      walletService.notifyGetPublicKeyRequestProcessed(requestId: requestId, approved: approved)
-    case .decrypt(let approved, let requestId):
-      walletService.notifyDecryptRequestProcessed(requestId: requestId, approved: approved)
     case .signSolTransactions(let approved, let id):
       walletService.notifySignSolTransactionsRequestProcessed(
         approved: approved,
@@ -673,17 +649,6 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       let pendingAddSuggestedTokenRequets = await walletService.pendingAddSuggestTokenRequests()
       pendingAddSuggestedTokenRequets.forEach {
         handleWebpageRequestResponse(.addSuggestedToken(approved: false, token: $0.token))
-      }
-      let pendingGetEncryptionPublicKeyRequests =
-        await walletService.pendingGetEncryptionPublicKeyRequests()
-      pendingGetEncryptionPublicKeyRequests.forEach {
-        handleWebpageRequestResponse(
-          .getEncryptionPublicKey(approved: false, requestId: $0.requestId)
-        )
-      }
-      let pendingDecryptRequests = await walletService.pendingDecryptRequests()
-      pendingDecryptRequests.forEach {
-        handleWebpageRequestResponse(.decrypt(approved: false, requestId: $0.requestId))
       }
     }
   }

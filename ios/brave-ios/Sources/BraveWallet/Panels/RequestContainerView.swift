@@ -64,20 +64,6 @@ struct RequestContainerView<DismissContent: ToolbarContent>: View {
               signMessageErrors: signMessageErrors,
               cryptoStore: cryptoStore
             )
-          case .getEncryptionPublicKey(let item):
-            EncryptionView(
-              request: .getEncryptionPublicKey(item.request),
-              account: item.account,
-              cryptoStore: cryptoStore,
-              onDismiss: onDismiss
-            )
-          case .decrypt(let item):
-            EncryptionView(
-              request: .decrypt(item.request),
-              account: item.account,
-              cryptoStore: cryptoStore,
-              onDismiss: onDismiss
-            )
           case .signTransactions(let requests):
             SignTransactionView(
               networkStore: cryptoStore.networkStore,

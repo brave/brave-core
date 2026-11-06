@@ -393,13 +393,6 @@
   <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_EIP712_MESSAGE_HIDE_DETAILS" desc="Sign panel EIP-712 message hide details" formatter_data="webui=Wallet">Hide details</message>
   <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_EIP712_MESSAGE_DOMAIN" desc="Sign panel EIP-712 message domain" formatter_data="webui=Wallet">Domain</message>
   <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_BUTTON" desc="Sign panel sign button" formatter_data="webui=Wallet">Sign</message>
-  <message name="IDS_BRAVE_WALLET_PUBLIC_ENCRYPTION_KEY" desc="Public encryption key title" formatter_data="webui=Wallet">Public encryption key</message>
-  <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_TITLE" desc="Provide Encryption Key Panel Title" formatter_data="webui=Wallet">A DApp is requesting your public encryption key</message>
-  <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_DESCRIPTION" desc="Provide Encryption Key Panel Details" formatter_data="webui=Wallet"><ph name="URL">$1</ph> is requesting your wallet's public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.</message>
-  <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_BUTTON" desc="Provide Encryption Key Panel Provide Button" formatter_data="webui=Wallet">Provide</message>
-  <message name="IDS_BRAVE_WALLET_READ_ENCRYPTED_MESSAGE_TITLE" desc="Read Encrypted Message Panel Title" formatter_data="webui=Wallet">This DApp would like to read this message to complete your request</message>
-  <message name="IDS_BRAVE_WALLET_READ_ENCRYPTED_MESSAGE_DECRYPT_BUTTON" desc="Read Encrypted Message Panel Decrypt Button" formatter_data="webui=Wallet">Decrypt message</message>
-  <message name="IDS_BRAVE_WALLET_READ_ENCRYPTED_MESSAGE_BUTTON" desc="Read Encrypted Message Panel Allow Button" formatter_data="webui=Wallet">Allow</message>
   <message name="IDS_BRAVE_WALLET_ALLOW_SPEND_TITLE" desc="Allow spend panel Title" formatter_data="webui=Wallet">Allow this app to spend your <ph name="TOKEN_SYMBOL"><ex>ETH</ex>$1</ph>?</message>
   <message name="IDS_BRAVE_WALLET_ALLOW_SPEND_DESCRIPTION" desc="Allow spend panel description" formatter_data="webui=Wallet">By granting this permission, you are allowing this app to withdraw your <ph name="VALUE"><ex>ETH</ex>$1</ph> and automate transactions for you.</message>
   <message name="IDS_BRAVE_WALLET_ALLOW_SPEND_BOX_TITLE" desc="Allow spend panel edit permissions button" formatter_data="webui=Wallet">Edit permissions</message>
