@@ -461,7 +461,7 @@ class AIChatService : public KeyedService,
   void NotifyConversationGenerationState(const std::string& uuid);
   // Whether |uuid| has a loaded ConversationHandler with a connected client.
   // This doesn't mean the conversation is on screen.
-  bool IsConversationVisible(const std::string& uuid) const;
+  bool IsConversationClientConnected(const std::string& uuid) const;
   // Moves |uuid| out of kGenerating once its handler is neither generating nor
   // running tools: to kIdle if a client is connected, otherwise to
   // kAwaitingUserInput if it stopped on a permission challenge, or else to
