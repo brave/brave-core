@@ -2777,7 +2777,7 @@
 # WebFrameWidgetImpl::UpdateLifecycle only on a full (kAll) lifecycle update,
 # while content::WaitForLoadStop() waits only for DidStopLoading -- so on a
 # loaded bot the assertion can run first and see nullopt instead of
-# SK_ColorTRANSPARENT. check-upstream-flake.py reports 0.9% over 30 days, but
+# SK_ColorTRANSPARENT. LUCI Analysis reports 0.9% over 30 days, but
 # that aggregate is diluted by high-volume CQ trybots: the CI waterfall shows
 # 15.0% (Linux Tests), 15.3% (Mac13 Tests) and 53.8% (win11-arm64-rel-tests),
 # while the Windows x64 bots stay at or below 0.2%. Per config, the averages

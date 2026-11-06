@@ -105,7 +105,7 @@ PR 33936: 1 failing Jenkins check(s)
 
          - WebUIURLLoaderFactoryTest.RangeRequest
            Location: chromium
-           Upstream flake: known_upstream_flake
+           Upstream flake: confirmed_upstream_flake
            PR correlation: likely_unrelated (Chromium test with no related chromium_src overrides in PR)
            >> SUGGEST FILING ISSUE: "Test failure: WebUIURLLoaderFactoryTest.RangeRequest"
            Stack trace (last 20 lines):

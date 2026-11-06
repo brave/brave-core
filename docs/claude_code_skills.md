@@ -13,7 +13,7 @@ of truth) and linked into the generated `.claude/skills/` discovery dir by
 | `/add-best-practice`      | Add a new best practice entry to the docs                                         |
 | `/fix-bp-docs`            | Audit and fix stale references, duplicates, and formatting in best practices docs |
 | `/check-milestones`       | Check/fix milestones on PRs and issues                                            |
-| `/check-upstream-flake`   | Check LUCI Analysis for upstream test flakiness                                   |
+| `/check-upstream-flake`   | Check LUCI Analysis for confirmed upstream test flakes                            |
 | `/clean-branches`         | Delete local branches whose PRs are merged (Experimental)                         |
 | `/commit`                 | Create atomic git commits                                                         |
 | `/create-contributor-prs` | Dispatch the rebase-from-fork workflow so CI runs on contributor PRs              |

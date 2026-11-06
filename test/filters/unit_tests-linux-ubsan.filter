@@ -40,8 +40,7 @@
 # everywhere else.
 # Upstream flake data: LUCI Analysis reports STABLE UPSTREAM at a flake rate of
 # 0.1% or less over a 60 day lookback for the SiteSettingsHelperTest methods,
-# queried one at a time because script/check-upstream-flake.py truncates a
-# suite-wide query to five test IDs. That is expected for an abort that depends
+# queried one test at a time. That is expected for an abort that depends
 # on which test runs first in a test launcher batch rather than on the test
 # body.
 # Brave code is not implicated in the D-Bus call: no code under src/brave

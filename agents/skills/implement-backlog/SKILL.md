@@ -129,37 +129,39 @@ filter, do the following and record each result in the ledger (see
 5. **Check Brave's influence.** Look for `chromium_src/` overrides and
    `patches/` touching the test's files or directory. If Brave code plausibly
    causes the failure, fix that or skip; do not hide it behind a filter.
-6. **Query LUCI Analysis** from `src/brave`, for each failing test and variant:
+6. **Query LUCI Analysis** from `src/brave`, for each failing test, narrowed to
+   the failing platform:
 
    ```bash
-   vpython3 tools/chromium_tests_analysis/check-upstream-flake.py \
-     'Suite.Test' --days 30 --json
+   vpython3 tools/chromium_tests_analysis/is_upstream_flake.py \
+     'Suite.Test' --os windows --json
    ```
 
-   Flake rate is `(failed + flaky) / (passed + failed + flaky)`. At 1% or more
-   (5% or more is a "known upstream flake") the disable is justified. Under 1%
-   the test is stable upstream: investigate Brave-specific causes, and disable
-   only for a specific, documented, unfixable Brave-environment cause; otherwise
-   skip. For "insufficient data" or "not found", retry with the class name or
-   `--days 60`; if there is still none, justify from the failing CI jobs in the
-   issue and state that no flake rate is available. Never invent a rate. The
-   output aggregates all configs, which can hide a sanitizer job's behavior;
-   compare the failing config using `analyze_per_config()` in
-   `update-upstream-flake-filters.py`.
+   It reports each variant (builder, OS, test suite) on the branch the Chromium
+   checkout is at; pass `--ref <chromium tag>` for the tag mapped in step 4.
+   Read each `variants[].status` (JSON shape in
+   `agents/skills/check-upstream-flake/SKILL.md`). A variant that is `flaky` or
+   `failing` meets Chromium's own CQ exoneration criteria, and the disable is
+   justified for the platforms of those builders. `stable` means the test is
+   reliable upstream: investigate Brave-specific causes, and disable only for a
+   specific, documented, unfixable Brave-environment cause; otherwise skip. When
+   no variant has data, retry with `--ref main`; if there is still none, justify
+   from the failing CI jobs in the issue and state that no upstream confirmation
+   is available. Never invent a result.
 
 7. **Scope by evidence.** Use the most specific filter file the failing jobs
    support (`bot/platform/*`, `bot/arch/*`, sanitizer in the job name); names
    follow `getApplicableFilters()` in `build/commands/lib/testUtils.ts`. List
-   individual tests; use a wildcard only when every instance fails. LUCI
-   aggregates all configs, so avoid a sanitizer-specific file when upstream also
-   flakes without the sanitizer.
+   individual tests; use a wildcard only when every instance fails. Avoid a
+   sanitizer-specific file when non-sanitizer builders are also `flaky` or
+   `failing` upstream.
 
-Each filter entry gets a comment with the cause, the scope choice, and the flake
-rate with its lookback; group entries by root cause with a blank line before
-each comment. The commit message states: Chromium test, whether Chromium also
-disabled it, related Brave `chromium_src` modifications, and the flake rate.
-Verify claims in nearby comments before repeating them, and do not cite log line
-numbers in a filter comment.
+Each filter entry gets a comment with the cause, the scope choice, and the
+upstream status with the builders and branch it applies to; group entries by
+root cause with a blank line before each comment. The commit message states:
+Chromium test, whether Chromium also disabled it, related Brave `chromium_src`
+modifications, and the upstream status. Verify claims in nearby comments before
+repeating them, and do not cite log line numbers in a filter comment.
 
 ## 3. Independently review the fixes
 
