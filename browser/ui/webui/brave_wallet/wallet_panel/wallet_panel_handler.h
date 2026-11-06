@@ -10,13 +10,22 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
+#include "base/types/expected.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/polkadot_bridge.mojom.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
+
+namespace brave_wallet {
+class PolkadotWalletService;
+}  // namespace brave_wallet
 
 class WalletPanelHandler : public brave_wallet::mojom::PanelHandler,
                            public content::WebContentsObserver {
@@ -49,14 +58,35 @@ class WalletPanelHandler : public brave_wallet::mojom::PanelHandler,
       IsSolanaAccountConnectedCallback callback) override;
   void RequestPermission(brave_wallet::mojom::AccountIdPtr account_id,
                          RequestPermissionCallback callback) override;
+  void GetPolkadotSignRequestDetails(
+      int32_t request_id,
+      GetPolkadotSignRequestDetailsCallback callback) override;
 
  private:
   // content::WebContentsObserver:
   void PrimaryPageChanged(content::Page& page) override;
 
+  brave_wallet::PolkadotWalletService* GetPolkadotWalletService();
+
+  void DescribePolkadotSignRequest(
+      int32_t request_id,
+      GetPolkadotSignRequestDetailsCallback callback,
+      bool bridge_ready);
+
+  void OnPolkadotPayloadDecoded(
+      int32_t request_id,
+      GetPolkadotSignRequestDetailsCallback callback,
+      brave_wallet::mojom::PolkadotDecodedPayloadPtr decoded);
+
+  void OnPolkadotFeeEstimated(
+      std::string as_human,
+      GetPolkadotSignRequestDetailsCallback callback,
+      base::expected<brave_wallet::uint128_t, std::string> partial_fee);
+
   mojo::Receiver<brave_wallet::mojom::PanelHandler> receiver_;
   const raw_ptr<TopChromeWebUIController> webui_controller_;
   mojo::RemoteSet<brave_wallet::mojom::PanelHandlerObserver> observers_;
+  base::WeakPtrFactory<WalletPanelHandler> weak_ptr_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_WALLET_PANEL_WALLET_PANEL_HANDLER_H_
