@@ -178,6 +178,11 @@ fixed answer are resolved as the rebase goes:
 * A raw patch (one without a plaster file) that the base changed only in its
   context takes the commit's version. These patches are listed at the end of the
   rebase, as candidates for conversion to plaster.
+* A commit that comes out empty, its change already on the base, is skipped,
+  and a `squash` or `fixup` that leaves its commit empty drops it. What would
+  have folded into the commit that goes is picked instead: a pinned group
+  carries on from its next commit, and an attached `fixup!` or `amend!` keeps
+  its change, on its own, rather than folding into the commit before.
 
 Any other conflict stops the rebase, listing the commit and the files left.
 Resolve them, `git add` them, and carry on with:
@@ -2480,7 +2485,11 @@ class Rebase(Task):
                     'rebase',
                     '--interactive',
                     '--autosquash',
-                    '--empty=drop',
+                    # A commit that comes out empty stops the rebase rather
+                    # than vanish, so that `_settle_empty_stop` keeps what
+                    # would have squashed into it from folding into the
+                    # commit before.
+                    '--empty=stop',
                     '--onto',
                     to_ref,
                     from_ref,
@@ -2520,6 +2529,9 @@ class Rebase(Task):
             self._run_git_rebase('--skip', env)
         while repository.brave.is_rebase_in_progress():
             step = conflict_resolution.ConflictedStep.load()
+            if step is None and self._settle_empty_stop():
+                self._run_git_rebase('--skip', env)
+                continue
             try:
                 left = self._resolve(step, state) if step is not None else []
             finally:
@@ -2530,19 +2542,96 @@ class Rebase(Task):
                 self._stop(step, left)
             self._run_git_rebase('--continue', env)
 
-    @staticmethod
-    def _run_git_rebase(action: str, env: dict[str, str]) -> None:
+    # The todo commands that fold a commit into the one before it.
+    _FOLDING = frozenset({'squash', 'fixup', 'fixup -C', 'fixup -c'})
+
+    @classmethod
+    def _empty_stop(cls) -> rebase.EntryLine | None:
+        """The `done` line of a stop on a commit that came out empty, which
+        `--empty=stop` makes: a `pick` whose own change is already on HEAD, or
+        a `squash`/`fixup` that leaves HEAD changing nothing. A commit that
+        was empty to begin with doesn't stop, and isn't one."""
+        brave = repository.brave
+        done = brave.rebase_merge_dir() / 'done'
+        if not done.is_file():
+            return None
+        lines = [
+            entry
+            for line in done.read_text(encoding='utf-8').splitlines()
+            if (entry := rebase.EntryLine.parse(line)) is not None
+        ]
+        if not lines:
+            return None
+
+        def unchanged(*args: str) -> bool:
+            return not subprocess.run(
+                ['git', '-C', str(brave.root), 'diff', '--quiet', *args],
+                check=False,
+            ).returncode
+
+        last = lines[-1]
+        if last.command == 'pick':
+            # Nothing staged, from a commit that did change something.
+            if unchanged('--cached', 'HEAD') and not unchanged(
+                f'{last.hash}^', last.hash
+            ):
+                return last
+        elif last.command in cls._FOLDING and unchanged('--cached', 'HEAD~1'):
+            return last
+        return None
+
+    @classmethod
+    def _settle_empty_stop(cls) -> bool:
+        """Settles a stop on a commit that came out empty, for a `--skip`,
+        and returns whether it was one.
+
+        A `squash`/`fixup` that emptied its commit drops that commit. Either
+        way, the next todo line, if it would fold into the commit going away,
+        becomes a `pick`: a pinned group's next commit then starts the group,
+        and an attached `fixup!` or `amend!` keeps its change, on its own,
+        rather than folding into the commit before.
+        """
+        last = cls._empty_stop()
+        if last is None:
+            return False
+        brave = repository.brave
+        if last.command != 'pick':
+            brave.run_git('reset', '--soft', 'HEAD~1')
+        todo = brave.rebase_merge_dir() / 'git-rebase-todo'
+        lines = todo.read_text(encoding='utf-8').splitlines(keepends=True)
+        for index, line in enumerate(lines):
+            entry = rebase.EntryLine.parse(line)
+            if entry is None:
+                continue
+            if entry.command in cls._FOLDING:
+                entry.command = 'pick'
+                lines[index] = entry.out + '\n'
+                todo.write_text(''.join(lines), encoding='utf-8', newline='')
+                terminal.log_task(
+                    f'{escape(last.out)} came out empty: picking '
+                    f'{escape(entry.out)} in its place.'
+                )
+                return True
+            break
+        terminal.log_task(f'{escape(last.out)} came out empty: dropped.')
+        return True
+
+    @classmethod
+    def _run_git_rebase(cls, action: str, env: dict[str, str]) -> None:
         """Runs `git rebase <action>`, until git finishes or stops the rebase.
 
         Raises InvalidInputException when git stops for anything other than a
-        conflict, which the caller resolves.
+        conflict, or a commit that came out empty, which the caller resolves.
         """
         try:
             # `interactive=True`, as git may open an editor for the commit
             # message.
             terminal.run(['git', 'rebase', action], env=env, interactive=True)
         except subprocess.CalledProcessError as e:
-            if conflict_resolution.ConflictedStep.load() is None:
+            if (
+                conflict_resolution.ConflictedStep.load() is None
+                and cls._empty_stop() is None
+            ):
                 raise InvalidInputException(
                     'The rebase stopped without conflicts. Check '
                     '[bold cyan]git status[/], and then rerun '

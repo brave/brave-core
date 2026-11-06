@@ -2120,6 +2120,83 @@ class RebaseStopTest(unittest.TestCase):
             'log', '--reverse', '--format=%s', f'{DEFAULT_BRANCH}..HEAD'
         ).splitlines()
 
+    def changed(self, commit: str) -> list[str]:
+        return self.git('show', '--format=', '--name-only', commit).splitlines()
+
+    # The base's own commit also changes `other`, so that none of the
+    # branch's commits is patch-identical to it, which git would leave out of
+    # the plan: they only come out empty.
+
+    def test_a_pinned_group_whose_pick_is_on_the_base_stays_its_own(self):
+        fork = self.build(
+            ancestor={DATA: 'ancestor\n'},
+            base={'tool': 'x\n', 'other': 'o\n'},
+            commits=[
+                ('Version CodeHealth tracker', {'tracker': 't\n'}),
+                ('Version lift updates', {'tool': 'x\n'}),
+                ('Version lift updates', {'tool': 'x\ny\n'}),
+            ],
+        )
+
+        self.rebase(fork, squash_minor_bumps=True)
+
+        self.assertEqual(
+            ['Version CodeHealth tracker', 'Version lift updates'],
+            self.subjects(),
+        )
+        self.assertEqual(['tool'], self.changed('HEAD'))
+        self.assertEqual(['tracker'], self.changed('HEAD~1'))
+        self.assertEqual('x\ny\n', self.committed('tool'))
+
+    def test_a_pinned_group_that_cancels_out_is_dropped(self):
+        fork = self.build(
+            ancestor={'snap': 'a\n'},
+            base={'other': 'o\n'},
+            commits=[
+                ('Version CodeHealth tracker', {'tracker': 't\n'}),
+                ('Update Lit mangler snapshot', {'snap': 'b\n'}),
+                ('Update Lit mangler snapshot', {'snap': 'a\n'}),
+            ],
+        )
+
+        self.rebase(fork, squash_minor_bumps=True)
+
+        self.assertEqual(['Version CodeHealth tracker'], self.subjects())
+
+    def test_a_fixup_of_a_commit_that_came_out_empty_keeps_its_change(self):
+        fork = self.build(
+            ancestor={DATA: 'ancestor\n'},
+            base={'tool': 'x\n', 'other': 'o\n'},
+            commits=[
+                ('Add the tool', {'tool': 'x\n'}),
+                ('fixup! Add the tool', {'tool': 'x\ny\n'}),
+            ],
+        )
+
+        self.rebase(fork)
+
+        # On its own, rather than amending the base's commit.
+        self.assertEqual(['fixup! Add the tool'], self.subjects())
+        self.assertEqual('x\ny\n', self.committed('tool'))
+        self.assertEqual(
+            'Change the files upstream',
+            self.git('log', '-1', '--format=%s', DEFAULT_BRANCH),
+        )
+
+    def test_a_commit_that_came_out_empty_is_dropped(self):
+        fork = self.build(
+            ancestor={DATA: 'ancestor\n'},
+            base={'tool': 'x\n', 'other': 'o\n'},
+            commits=[
+                ('Add the tool', {'tool': 'x\n'}),
+                ('Add a feature', {'feature': 'f\n'}),
+            ],
+        )
+
+        self.rebase(fork)
+
+        self.assertEqual(['Add a feature'], self.subjects())
+
     def test_resolves_the_conflicts_with_a_fixed_answer(self):
         fork = self.build(
             ancestor={RAW_PATCH: _raw_patch('// ancestor')},
