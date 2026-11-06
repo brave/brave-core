@@ -7,9 +7,11 @@ import './settings_menu_test-chromium.js'
 
 import type {SettingsMenuElement} from 'chrome://settings/settings.js'
 import {
+  getTopLevelRoute,
   loadTimeData,
   resetPageVisibilityForTesting,
   resetRouterForTesting,
+  routes,
 } from 'chrome://settings/settings.js'
 import {
   assertDeepEquals,
@@ -48,10 +50,10 @@ suite('BraveSettingsMenu', () => {
     resetPageVisibilityForTesting()
   })
 
-  test('Brave items follow People in order', () => {
+  test('Brave items lead the menu in order', () => {
     const ids = getItemIds()
+    assertEquals('getStarted', ids[0])
     const braveItems = [
-      'people',
       'getStarted',
       'origin',
       'appearance',
@@ -74,6 +76,10 @@ suite('BraveSettingsMenu', () => {
         assertTrue(ids.indexOf(id) < ids.indexOf('braveSync'))
       }
     }
+  })
+
+  test('Get Started is the top level route', () => {
+    assertEquals(routes.GET_STARTED, getTopLevelRoute())
   })
 
   test('Autofill is listed with the advanced items', () => {
