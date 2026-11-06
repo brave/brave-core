@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/constants/pref_names.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "components/prefs/pref_service.h"
 
 // Prevent detached tab has unnecessary tab restore steps.
@@ -13,7 +13,7 @@
 // actually. It could make ShouldRestore() give true when creating
 // new browser by detaching a tab.
 #define BRAVE_SESSION_SERVICE_TAB_CLOSED \
-  if (profile()->GetPrefs()->GetBoolean(kEnableClosingLastTab))
+  if (profile()->GetPrefs()->GetBoolean(brave_tabs::kEnableClosingLastTab))
 
 #include <chrome/browser/sessions/session_service.cc>
 

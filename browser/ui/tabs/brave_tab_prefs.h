@@ -55,6 +55,10 @@ inline constexpr char kAlwaysHideTabCloseButton[] =
 inline constexpr char kMiddleClickCloseTabEnabled[] =
     "brave.tabs.middle_click_close_tab_enabled";
 
+// When false, closing the last tab of a normal window opens a new tab instead
+// of closing the window.
+inline constexpr char kEnableClosingLastTab[] = "brave.enable_closing_last_tab";
+
 inline constexpr char kTabMinWidthMode[] = "brave.tabs.min_width_mode";
 
 // When true (and kBraveScrollableTabStrip is enabled), the horizontal tab strip

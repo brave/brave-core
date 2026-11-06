@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/check_deref.h"
 #include "base/check_op.h"
 #include "base/feature_list.h"
 #include "base/functional/callback_helpers.h"
@@ -29,11 +30,11 @@
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
-#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
+#include "brave/browser/ui/tabs/public/closing_last_tab_controller.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
@@ -880,8 +881,8 @@ void BringAllTabs(BrowserWindowInterface* browser) {
   std::ranges::for_each(browsers, [&detached_pinned_tabs,
                                    &detached_unpinned_tabs, &browsers_to_close,
                                    shared_pinned_tab_enabled](auto* other) {
-    static_cast<BraveBrowser*>(other)
-        ->set_ignore_enable_closing_last_tab_pref();
+    CHECK_DEREF(ClosingLastTabController::From(other))
+        .set_ignore_enable_closing_last_tab_pref();
 
     auto* tab_strip_model = other->tab_strip_model();
     const int pinned_tab_count = tab_strip_model->IndexOfFirstNonPinnedTab();

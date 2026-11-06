@@ -32,6 +32,7 @@ source_set("tabs_public") {
   ]
 
   public_deps = [
+    "//base",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/psst/buildflags",
     "//chrome/browser/ui/browser_window",
@@ -53,6 +54,11 @@ source_set("tabs_public") {
     "//brave/components/web_discovery/buildflags",
     "//third_party/widevine/cdm:buildflags",
   ]
+
+  if (!is_android) {
+    sources += [ "public/closing_last_tab_controller.h" ]
+    public_deps += [ "//chrome/browser/ui/tabs:tab_strip_model_observer" ]
+  }
 }
 
 if (!is_android) {
@@ -61,6 +67,7 @@ if (!is_android) {
 
     sources = [
       "brave_tab_features.cc",
+      "closing_last_tab_controller.cc",
       "shared_pinned_tab_utils.cc",
       "vertical_tab_controller.cc",
     ]
@@ -93,6 +100,7 @@ if (!is_android) {
       "//chrome/browser/content_settings:content_settings_factory",
       "//chrome/browser/profiles",
       "//chrome/browser/ui:browser_commands",
+      "//chrome/browser/ui:browser_tabstrip",
       "//chrome/browser/ui:ui_features",
       "//chrome/browser/ui:unload_controller",
       "//chrome/browser/ui/browser_window",

@@ -22,6 +22,7 @@ class BraveShieldsUIContentsCache;
 class BraveVPNController;
 class BrowserView;
 class BrowserWindowInterface;
+class ClosingLastTabController;
 class PlaylistSidePanelCoordinator;
 class TreeTabSessionManager;
 class WindowClosingConfirmController;
@@ -104,6 +105,8 @@ class BraveBrowserWindowFeatures {
 
   std::unique_ptr<WindowClosingConfirmController>
       window_closing_confirm_controller_;
+
+  std::unique_ptr<ClosingLastTabController> closing_last_tab_controller_;
 };
 
 #endif  // BRAVE_BROWSER_UI_BROWSER_WINDOW_INTERNAL_BRAVE_BROWSER_WINDOW_FEATURES_H_
