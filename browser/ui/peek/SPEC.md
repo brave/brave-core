@@ -11,13 +11,13 @@ The security model and the per-case security behavior are in
 
 ## Team
 
-| Role | Who |
-| --- | --- |
-| Developer (Desktop) | Agustín Ruiz |
-| QA | Not assigned yet |
-| Design | Not assigned yet |
-| PM | Not assigned yet |
-| Security | Reviewing in the PR |
+| Role                | Who                 |
+| ------------------- | ------------------- |
+| Developer (Desktop) | Agustín Ruiz        |
+| QA                  | Not assigned yet    |
+| Design              | Not assigned yet    |
+| PM                  | Not assigned yet    |
+| Security            | Reviewing in the PR |
 
 ## Objective
 
@@ -54,8 +54,8 @@ right away. It adds no accounts, services, or data collection.
 
 ## Target platforms
 
-Desktop: macOS, Windows, Linux. Android and iOS are not supported. The
-feature flag is only listed on desktop (`kOsDesktop`) and the code is under
+Desktop: macOS, Windows, Linux. Android and iOS are not supported. The feature
+flag is only listed on desktop (`kOsDesktop`) and the code is under
 `TOOLKIT_VIEWS`.
 
 ## Channels and feature flag
@@ -68,27 +68,27 @@ Shift+click behaves as it did.
 
 ## Changes from the current behavior
 
-| Today | With Peek |
-| --- | --- |
-| Shift+click on a link opens it in a new window | Opens it in Peek (flag on) when the source is a tab in this window and the link is http(s) |
-| Link context menu has no preview item | Adds "Open Link in Peek" for http(s) links on http(s) pages |
-| A link can only be previewed by opening it in a tab | Peek loads it without adding a tab or changing the active tab |
-| The page info bubble shows the combined Shields view for any contents | Contents that are not tabs, such as Peek, get the plain page info bubble |
-| A Shields panel always controls the active tab | `ShieldsPanelUI::SetTargetWebContents()` lets it control another `WebContents` |
+| Today                                                                 | With Peek                                                                                  |
+| --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| Shift+click on a link opens it in a new window                        | Opens it in Peek (flag on) when the source is a tab in this window and the link is http(s) |
+| Link context menu has no preview item                                 | Adds "Open Link in Peek" for http(s) links on http(s) pages                                |
+| A link can only be previewed by opening it in a tab                   | Peek loads it without adding a tab or changing the active tab                              |
+| The page info bubble shows the combined Shields view for any contents | Contents that are not tabs, such as Peek, get the plain page info bubble                   |
+| A Shields panel always controls the active tab                        | `ShieldsPanelUI::SetTargetWebContents()` lets it control another `WebContents`             |
 
 ## Behavior
 
 ### States
 
-| State | What the user sees | Leaves the state when |
-| --- | --- | --- |
-| Closed | Nothing | A Peek is opened |
-| Opening | Card grows from 90% to full size and the dim backdrop fades in over 200 ms. Skipped when reduced motion is on | The animation ends, or the user acts |
-| Loading | Card with toolbar. The page loads inside it | The page commits or fails |
-| Open | The loaded page. Toolbar shows security state, favicon, title, host, Shields count, "Open as tab", close | Any of the exits below |
-| Open, error | The browser's error page or certificate interstitial, inside the card | The user leaves, or moves it to a tab |
-| Moving to tab | The page moves to a new tab next to the current one and the card goes away | Done |
-| Closed by user | The card and its page are discarded | Done |
+| State          | What the user sees                                                                                            | Leaves the state when                 |
+| -------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| Closed         | Nothing                                                                                                       | A Peek is opened                      |
+| Opening        | Card grows from 90% to full size and the dim backdrop fades in over 200 ms. Skipped when reduced motion is on | The animation ends, or the user acts  |
+| Loading        | Card with toolbar. The page loads inside it                                                                   | The page commits or fails             |
+| Open           | The loaded page. Toolbar shows security state, favicon, title, host, Shields count, "Open as tab", close      | Any of the exits below                |
+| Open, error    | The browser's error page or certificate interstitial, inside the card                                         | The user leaves, or moves it to a tab |
+| Moving to tab  | The page moves to a new tab next to the current one and the card goes away                                    | Done                                  |
+| Closed by user | The card and its page are discarded                                                                           | Done                                  |
 
 Exits from Open:
 
@@ -104,8 +104,8 @@ Exits from Open:
 
 ### Persistent and non-persistent state
 
-Nothing in Peek is persisted by Peek itself. There are no preferences, no
-files, and no new per-profile data.
+Nothing in Peek is persisted by Peek itself. There are no preferences, no files,
+and no new per-profile data.
 
 - A Peek page is a normal page load in the window's profile, or in the source
   tab's container. Its history entry, cookies, and site storage behave like any
@@ -116,18 +116,18 @@ files, and no new per-profile data.
 
 ### Clearing browsing data
 
-Peek has no data of its own to clear. History, cookies, and site data from
-pages loaded in Peek are cleared with the normal "Clear browsing data" actions,
+Peek has no data of its own to clear. History, cookies, and site data from pages
+loaded in Peek are cleared with the normal "Clear browsing data" actions,
 because Peek pages use the normal tab helpers and storage.
 
 ### Window types
 
-| Window | Behavior |
-| --- | --- |
-| Normal | As described |
-| Private | Peek uses the private window's profile, so it is off the record |
-| Tor | Peek uses the Tor window's profile. Not tested with a Tor window yet |
-| Another window | A window's Peek can only be opened from tabs in that window |
+| Window         | Behavior                                                             |
+| -------------- | -------------------------------------------------------------------- |
+| Normal         | As described                                                         |
+| Private        | Peek uses the private window's profile, so it is off the record      |
+| Tor            | Peek uses the Tor window's profile. Not tested with a Tor window yet |
+| Another window | A window's Peek can only be opened from tabs in that window          |
 
 Container tabs: the Peek page loads in the same container storage as the tab it
 was opened from. Split view: the card covers the whole contents area, both
@@ -136,27 +136,27 @@ panels cannot open Peek.
 
 ### Errors and edge cases
 
-| Condition | Behavior |
-| --- | --- |
-| Target is not http(s) | Not offered in the context menu. `Open()` refuses it |
-| Source page is not http(s) (`chrome://`, `file:`, extension, opaque origin) | Not offered. `Open()` refuses it |
-| Source is a Peek, a sidebar panel, or a tab from another window | Not offered |
-| The Peek page navigates to a non-http(s) URL, or redirects to one | Navigation is cancelled. The page stays on its last URL |
-| The page loads `about:blank`, `data:` or `blob:` at top level | Cancelled |
-| Certificate error | The normal interstitial shows in the card. Security button shows the dangerous state. "Open as tab" keeps the interstitial |
-| HTTP page | Security button shows not secure |
-| Network error | The browser's error page shows in the card |
-| Page requests a permission, camera/mic, wallet, fullscreen, pointer or keyboard lock | Peek moves to a tab, then the request continues |
-| Page opens a popup with a user gesture | Peek moves to a tab, then the popup opens |
-| Page opens a popup without a gesture | Blocked |
-| HTTP auth or another tab-modal dialog | Peek moves to a tab, then the dialog shows |
-| `alert`, `confirm`, `prompt`, `beforeunload` | Suppressed while in Peek |
-| The peeked link is a download | Peek closes and the download proceeds |
-| The page starts a download | Peek moves to a tab |
-| File chooser | Peek moves to a tab, then the chooser opens |
-| Device chooser (USB, HID, serial, Bluetooth), FedCM | Not shown while in Peek; works after "Open as tab" |
-| Peek is opened while another is open | The new one replaces it |
-| The active tab changes | Peek closes |
+| Condition                                                                            | Behavior                                                                                                                   |
+| ------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
+| Target is not http(s)                                                                | Not offered in the context menu. `Open()` refuses it                                                                       |
+| Source page is not http(s) (`chrome://`, `file:`, extension, opaque origin)          | Not offered. `Open()` refuses it                                                                                           |
+| Source is a Peek, a sidebar panel, or a tab from another window                      | Not offered                                                                                                                |
+| The Peek page navigates to a non-http(s) URL, or redirects to one                    | Navigation is cancelled. The page stays on its last URL                                                                    |
+| The page loads `about:blank`, `data:` or `blob:` at top level                        | Cancelled                                                                                                                  |
+| Certificate error                                                                    | The normal interstitial shows in the card. Security button shows the dangerous state. "Open as tab" keeps the interstitial |
+| HTTP page                                                                            | Security button shows not secure                                                                                           |
+| Network error                                                                        | The browser's error page shows in the card                                                                                 |
+| Page requests a permission, camera/mic, wallet, fullscreen, pointer or keyboard lock | Peek moves to a tab, then the request continues                                                                            |
+| Page opens a popup with a user gesture                                               | Peek moves to a tab, then the popup opens                                                                                  |
+| Page opens a popup without a gesture                                                 | Blocked                                                                                                                    |
+| HTTP auth or another tab-modal dialog                                                | Peek moves to a tab, then the dialog shows                                                                                 |
+| `alert`, `confirm`, `prompt`, `beforeunload`                                         | Suppressed while in Peek                                                                                                   |
+| The peeked link is a download                                                        | Peek closes and the download proceeds                                                                                      |
+| The page starts a download                                                           | Peek moves to a tab                                                                                                        |
+| File chooser                                                                         | Peek moves to a tab, then the chooser opens                                                                                |
+| Device chooser (USB, HID, serial, Bluetooth), FedCM                                  | Not shown while in Peek; works after "Open as tab"                                                                         |
+| Peek is opened while another is open                                                 | The new one replaces it                                                                                                    |
+| The active tab changes                                                               | Peek closes                                                                                                                |
 
 Not specified yet: what Peek shows if its renderer crashes. See open questions.
 
@@ -174,14 +174,15 @@ separate widget is used.
   fake card inside its own content.
 - Left, right, bottom: inset by the larger of 24 px or 7.5% of the covered width
   (left and right) or height (bottom).
-- Bottom corners: the browser's contents radius
-  (`kRoundedCornersBorderRadius`, 6 px), so the card matches the rounded page
-  area around it. Top corners: 0, because the card is attached to the toolbar.
-- Backdrop: only the contents area is dimmed. The browser toolbar and omnibox are
-  not.
+- Bottom corners: the browser's contents radius (`kRoundedCornersBorderRadius`,
+  6 px), so the card matches the rounded page area around it. Top corners: 0,
+  because the card is attached to the toolbar.
+- Backdrop: only the contents area is dimmed. The browser toolbar and omnibox
+  are not.
 - Toolbar inside the card: 40 px high, 12 px horizontal padding, 8 px between
   items. The title and host shrink (and elide) when space runs out, so the site
-  info, Shields, Open as tab and Close buttons always stay visible. Uses the browser toolbar color.
+  info, Shields, Open as tab and Close buttons always stay visible. Uses the
+  browser toolbar color.
 - Divider: 1 px, full card width, between the card toolbar and the page.
 - Icons and favicon: 16 px.
 - Shadow: offset y 4 px, blur 24 px, 24% opacity.
@@ -195,8 +196,8 @@ separate widget is used.
    otherwise (HTTP, certificate errors).
 2. Favicon.
 3. Title, left aligned, tail elided.
-4. Host, left aligned, head elided. Formatted with
-   `FormatUrlForSecurityDisplay` and without the scheme for http(s).
+4. Host, left aligned, head elided. Formatted with `FormatUrlForSecurityDisplay`
+   and without the scheme for http(s).
 5. Shields button. Opens the Shields panel for the Peek page, not the tab
    behind. Its tooltip reports the Shields state of the Peek page.
 6. "Open as tab" button.
@@ -206,26 +207,26 @@ separate widget is used.
 
 All Nala tokens, so light and dark themes follow the browser.
 
-| Part | Token |
-| --- | --- |
-| Card background | `nala::kColorContainerBackground` |
-| Card toolbar | `kColorToolbar` |
-| Divider | `nala::kColorDividerSubtle` |
-| Title | `nala::kColorTextPrimary` |
-| Host | `nala::kColorTextTertiary` |
-| Icons | `nala::kColorIconDefault`, `nala::kColorIconDisabled` |
-| Backdrop | `nala::kColorDialogsScrimBackground`, scaled by animation progress |
-| Shadow | `nala::kColorSchemesShadow` at 24% |
+| Part            | Token                                                              |
+| --------------- | ------------------------------------------------------------------ |
+| Card background | `nala::kColorContainerBackground`                                  |
+| Card toolbar    | `kColorToolbar`                                                    |
+| Divider         | `nala::kColorDividerSubtle`                                        |
+| Title           | `nala::kColorTextPrimary`                                          |
+| Host            | `nala::kColorTextTertiary`                                         |
+| Icons           | `nala::kColorIconDefault`, `nala::kColorIconDisabled`              |
+| Backdrop        | `nala::kColorDialogsScrimBackground`, scaled by animation progress |
+| Shadow          | `nala::kColorSchemesShadow` at 24%                                 |
 
 `nala::kColorDividerFaint` was too close to white in the light theme to be seen
 against the toolbar and page, so the divider uses subtle.
 
 ### Responsive behavior
 
-The card is sized from the contents area, so it follows window resizes and
-split view. The 24 px minimum inset keeps a visible backdrop on small windows.
-The toolbar keeps the buttons at a fixed size. When the card is narrow or the
-title is long, the host elides first, then the title.
+The card is sized from the contents area, so it follows window resizes and split
+view. The 24 px minimum inset keeps a visible backdrop on small windows. The
+toolbar keeps the buttons at a fixed size. When the card is narrow or the title
+is long, the host elides first, then the title.
 
 ### Platform differences
 
@@ -243,18 +244,19 @@ Linux.
 - Colors come from Nala tokens, which are designed for contrast in both themes.
 
 Not checked yet: where focus returns to when Peek closes, and screen reader
-announcements when it opens. The Tab-out-of-page test has not been run. See open questions.
+announcements when it opens. The Tab-out-of-page test has not been run. See open
+questions.
 
 ### Strings
 
-| ID | Text | Use |
-| --- | --- | --- |
-| `IDS_PEEK_ACCESSIBLE_NAME` | Peek | Accessible name of the card. "Peek" is the feature name |
-| `IDS_PEEK_OPEN_AS_TAB` | Open as tab | Tooltip and accessible name of the button |
-| `IDS_CONTENT_CONTEXT_OPENLINKPEEK` | Open Link in Peek (title case variant on macOS) | Context menu item |
-| `IDS_APP_CLOSE` | Close | Existing string, reused for the close button |
-| Flag name | Brave Peek | `brave://flags` |
-| Flag description | See below | `brave://flags` |
+| ID                                 | Text                                            | Use                                                     |
+| ---------------------------------- | ----------------------------------------------- | ------------------------------------------------------- |
+| `IDS_PEEK_ACCESSIBLE_NAME`         | Peek                                            | Accessible name of the card. "Peek" is the feature name |
+| `IDS_PEEK_OPEN_AS_TAB`             | Open as tab                                     | Tooltip and accessible name of the button               |
+| `IDS_CONTENT_CONTEXT_OPENLINKPEEK` | Open Link in Peek (title case variant on macOS) | Context menu item                                       |
+| `IDS_APP_CLOSE`                    | Close                                           | Existing string, reused for the close button            |
+| Flag name                          | Brave Peek                                      | `brave://flags`                                         |
+| Flag description                   | See below                                       | `brave://flags`                                         |
 
 The flag description in `about_flags.cc` still says Peek is triggered by
 "cross-site links in pinned tabs", which Peek no longer does. The description
@@ -275,11 +277,11 @@ Screenshots are added to the PR. Nala tokens above stand in for color values.
 - `//brave/browser/ui/peek` has the shared logic: URL and initiator checks
   (`peek_utils`) and `PeekNavigationThrottle`.
 - `//brave/browser/ui/peek:context_menu` has two small hooks that the
-  `chromium_src` override of `render_view_context_menu.cc` calls, so the override
-  does not include Peek headers.
+  `chromium_src` override of `render_view_context_menu.cc` calls, so the
+  override does not include Peek headers.
 - `//brave/browser/ui/views/peek` has `PeekControllerImpl`, `PeekView`,
-  `PeekShieldsButton`, and `PeekContents`. `PeekContents` owns the page and is its
-  `WebContentsDelegate`, `WebContentsModalDialogManagerDelegate`,
+  `PeekShieldsButton`, and `PeekContents`. `PeekContents` owns the page and is
+  its `WebContentsDelegate`, `WebContentsModalDialogManagerDelegate`,
   `PermissionRequestManager::Observer` and `DownloadManager::Observer`.
 - Peek pages get the full tab helper set. A rewrite rule and patch for
   `tab_helpers.h` make `PeekContents` a friend of `TabHelpers`.
@@ -292,7 +294,8 @@ Screenshots are added to the PR. Nala tokens above stand in for color values.
   points the Shields panel at the Peek page.
 - Shared code that changed: `ShieldsPanelUI::SetTargetWebContents()`,
   `BraveShieldsActionController` icon and tooltip helpers,
-  `BravePageInfoBubbleView` for non-tab contents, and `ViewShadow` moved to its own target.
+  `BravePageInfoBubbleView` for non-tab contents, and `ViewShadow` moved to its
+  own target.
 - `BraveContentBrowserClient` registers `PeekNavigationThrottle`, including for
   commits without a URL loader.
 - Brave Wallet's provider delegate moves Peek into a tab before it shows a panel
@@ -304,9 +307,9 @@ Screenshots are added to the PR. Nala tokens above stand in for color values.
   tab, through the window's profile network context (Tor in Tor windows).
 - Encryption and hashing: none.
 - Persisted sensitive information: none added.
-- Referrer and initiator: Peek loads carry the opener's origin, navigation
-  state and referrer, so SameSite cookies, Fetch Metadata and Local Network
-  Access match a link click.
+- Referrer and initiator: Peek loads carry the opener's origin, navigation state
+  and referrer, so SameSite cookies, Fetch Metadata and Local Network Access
+  match a link click.
 - The security team has reason to review this: it is a new way to browse, with a
   web page rendered inside browser-owned UI. The review is in the PR. The model,
   per-case behavior and the audit checklist results are in
@@ -322,12 +325,12 @@ None added. Whether to measure Peek usage is an open question.
 
 ## Testing and QA
 
-- Unit tests: `peek_utils_unittest.cc` (URL and initiator eligibility, Shift+click
-  rules).
-- Browser tests: `peek_browsertest.cc`. They cover each trigger, dismissal,
-  open as tab, the site info and Shields buttons, the card attachment, each
-  security case in [SECURITY.md](SECURITY.md), containers, split view, nested
-  Peek, other windows and incognito.
+- Unit tests: `peek_utils_unittest.cc` (URL and initiator eligibility,
+  Shift+click rules).
+- Browser tests: `peek_browsertest.cc`. They cover each trigger, dismissal, open
+  as tab, the site info and Shields buttons, the card attachment, each security
+  case in [SECURITY.md](SECURITY.md), containers, split view, nested Peek, other
+  windows and incognito.
 - A QA plan has not been written yet. Manual steps to start from:
   - Enable `brave://flags/#brave-peek`.
   - Shift+click a link and use "Open Link in Peek", in a normal tab.
@@ -343,8 +346,8 @@ None added. Whether to measure Peek usage is an open question.
 
 ## Phases
 
-1. Peek with Shift+click, the context menu, the toolbar, Shields and open as tab.
-   This is in the PR.
+1. Peek with Shift+click, the context menu, the toolbar, Shields and open as
+   tab. This is in the PR.
 2. Security hardening: toolbar anchoring, navigation blocking, promotion to tab,
    initiator origin, containers. Also in the PR.
 3. Later: a better opening animation (the card is resized each frame today,
@@ -369,8 +372,8 @@ Containers, Shields and Brave Wallet, and the interactions are described above.
 
 1. Who are the QA, design and PM owners, and who is the co-maintainer for
    security reports?
-2. Should Peek record any P3A metric, such as how often it opens and how often it
-   becomes a tab?
+2. Should Peek record any P3A metric, such as how often it opens and how often
+   it becomes a tab?
 3. What should Peek show if its renderer crashes?
 4. Where should focus go when Peek closes, and should screen readers announce it
    when it opens?

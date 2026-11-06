@@ -15,7 +15,8 @@ class PeekNavigationThrottle : public content::NavigationThrottle {
  public:
   static void MaybeCreateAndAdd(content::NavigationThrottleRegistry& registry);
 
-  explicit PeekNavigationThrottle(content::NavigationThrottleRegistry& registry);
+  explicit PeekNavigationThrottle(
+      content::NavigationThrottleRegistry& registry);
   PeekNavigationThrottle(const PeekNavigationThrottle&) = delete;
   PeekNavigationThrottle& operator=(const PeekNavigationThrottle&) = delete;
   ~PeekNavigationThrottle() override;
