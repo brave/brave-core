@@ -1876,6 +1876,7 @@ public class BytecodeTest {
                         OmniboxSuggestionsDropdownScrollListener.class,
                         MonotonicObservableSupplier.class,
                         TopInsetProvider.class,
+                        MonotonicObservableSupplier.class,
                         LocationBarEmbedder.class,
                         LocationBarEmbedderUiOverrides.class,
                         View.class,
