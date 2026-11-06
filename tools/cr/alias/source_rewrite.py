@@ -205,8 +205,8 @@ def update_references(old_path: Path, new_path: Path) -> None:
       _update_gn_references for the per-file-type rules)
     - BUILD.gn / .gni source-list entries in the ancestor chain of the old file
     - For moved .mojom files: derived generated-header paths
-    - For moved .java files: class references in .java files (see
-      _JavaClassRename)
+    - For moved .java files: class references in .java and ProGuard .flags
+      files (see _JavaClassRename)
 
     Skips directories in SEARCH_EXCLUDE_DIRS and files in
     SEARCH_EXCLUDE_EXTENSIONS.
@@ -243,7 +243,8 @@ def update_references(old_path: Path, new_path: Path) -> None:
 
     for fpath in _walk_brave_core():
         ext = fpath.suffix.lower()
-        if ext == '.java':
+        # ProGuard `.flags` name classes by their dotted name too.
+        if ext in ('.java', '.flags'):
             if java_rename:
                 java_rename.rewrite_file(fpath)
             continue
@@ -320,6 +321,13 @@ def _walk_brave_core() -> Iterator[Path]:
             yield fpath
 
 
+def java_fqn(path: Path) -> str | None:
+    """The fully qualified name of the class a .java path holds, or None."""
+    if path.suffix != '.java':
+        return None
+    return _JavaClassRename.fqn_for(path)
+
+
 class _JavaClassRename:
     """Rewrites references to a Java class whose source file moved.
 
@@ -359,14 +367,14 @@ class _JavaClassRename:
         """Returns the rename for two .java paths, or None if not derivable."""
         if old_path.suffix != '.java' or new_path.suffix != '.java':
             return None
-        old_fqn = cls._fqn_for(old_path)
-        new_fqn = cls._fqn_for(new_path)
+        old_fqn = cls.fqn_for(old_path)
+        new_fqn = cls.fqn_for(new_path)
         if not old_fqn or not new_fqn or old_fqn == new_fqn:
             return None
         return cls(old_fqn, new_fqn)
 
     @classmethod
-    def _fqn_for(cls, path: Path) -> str | None:
+    def fqn_for(cls, path: Path) -> str | None:
         parts = path.with_suffix('').parts
         root = next(
             (i for i, p in enumerate(parts) if p in cls._PACKAGE_ROOTS), None
@@ -495,17 +503,24 @@ def _update_gn_references(old_path: Path, new_path: Path) -> None:
 
     old_quoted = f'"//{old_path.as_posix()}"'
     new_quoted = f'"//{new_path.as_posix()}"'
+    # Java source lists also spell a file from `src` up, as
+    # `"../../brave/android/java/...java"` in `brave_java_sources.gni`.
+    relative = (
+        re.compile(r'"((?:\.\./)+)' + re.escape(old_path.as_posix()) + '"')
+        if suffix == '.java'
+        else None
+    )
     for fpath in _walk_brave_core():
         if fpath.suffix not in _GN_EXTENSIONS:
             continue
         content = fpath.read_bytes().decode('utf-8')
-        if old_quoted not in content:
-            continue
-        fpath.write_text(
-            content.replace(old_quoted, new_quoted),
-            encoding='utf-8',
-            newline='\n',
-        )
+        new_content = content.replace(old_quoted, new_quoted)
+        if relative:
+            new_content = relative.sub(
+                lambda m: f'"{m.group(1)}{new_path.as_posix()}"', new_content
+            )
+        if new_content != content:
+            fpath.write_text(new_content, encoding='utf-8', newline='\n')
 
 
 def _update_build_ancestors(

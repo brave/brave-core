@@ -498,6 +498,98 @@ class ReferencesTest(_Base):
             (java_dir / 'BraveOther.java').read_text(encoding='utf-8'),
         )
 
+    def test_brave_subclass_follows_its_base_to_a_new_package(self) -> None:
+        """A Brave subclass in the moved class's package moves with it."""
+        old_dir = 'org/chromium/chrome/browser/dom_distiller'
+        new_dir = 'org/chromium/chrome/browser/reader_mode'
+        upstream = 'chrome/android/java/src/{}/ReaderModeManager.java'
+        brave_java = 'android/java/{}/BraveReaderModeManager.java'
+        before = self._chromium_head()
+        self._chromium_commit(
+            upstream.format(old_dir), 'class ReaderModeManager {}\n'
+        )
+        self._brave_commit(
+            brave_java.format(old_dir),
+            (
+                'package org.chromium.chrome.browser.dom_distiller;\n'
+                '\n'
+                'public class BraveReaderModeManager\n'
+                '        extends ReaderModeManager {\n'
+                '}\n'
+            ),
+        )
+        self._brave_commit(
+            'android/java/{}/BraveOther.java'.format(old_dir),
+            'package org.chromium.chrome.browser.dom_distiller;\n\n'
+            'class BraveOther {}\n',
+        )
+        self._brave_commit(
+            'android/brave_java_sources.gni',
+            'brave_java_sources = [\n'
+            f'  "../../brave/{brave_java.format(old_dir)}",\n'
+            ']\n',
+        )
+        adapter = (
+            'build/android/bytecode/java/org/brave/bytecode/'
+            'BraveReaderModeManagerClassAdapter.java'
+        )
+        self._brave_commit(
+            adapter,
+            (
+                'package org.brave.bytecode;\n\n'
+                'class A {\n'
+                f'    String a = "{old_dir}/ReaderModeManager";\n'
+                f'    String b = "{old_dir}/BraveReaderModeManager";\n'
+                '}\n'
+            ),
+        )
+        flags = 'android/java/apk_for_test.flags'
+        self._brave_commit(
+            flags,
+            (
+                '-keep class org.chromium.chrome.browser.dom_distiller.'
+                'ReaderModeManager {\n}\n'
+                '-keep class org.chromium.chrome.browser.dom_distiller.'
+                'BraveReaderModeManager {\n}\n'
+            ),
+        )
+        self._chromium_rename(
+            upstream.format(old_dir), upstream.format(new_dir)
+        )
+
+        cmd_follow_renames([f'{before}..HEAD'])
+
+        self.assertFalse((self._brave / brave_java.format(old_dir)).exists())
+        content = (self._brave / brave_java.format(new_dir)).read_text(
+            encoding='utf-8'
+        )
+        self.assertIn(
+            'package org.chromium.chrome.browser.reader_mode;', content
+        )
+        self.assertNotIn('import', content)
+        self.assertTrue(
+            (self._brave / f'android/java/{old_dir}/BraveOther.java').exists()
+        )
+        self.assertIn(
+            f'"../../brave/{brave_java.format(new_dir)}"',
+            (self._brave / 'android/brave_java_sources.gni').read_text(
+                encoding='utf-8'
+            ),
+        )
+        adapter_text = (self._brave / adapter).read_text(encoding='utf-8')
+        self.assertIn(f'"{new_dir}/ReaderModeManager"', adapter_text)
+        self.assertIn(f'"{new_dir}/BraveReaderModeManager"', adapter_text)
+        self.assertNotIn('dom_distiller', adapter_text)
+        self.assertNotIn(
+            'dom_distiller',
+            (self._brave / flags).read_text(encoding='utf-8'),
+        )
+        # The move is staged with its `package` line.
+        self.assertNotIn(
+            brave_java.format(new_dir),
+            repository.brave.run_git('diff', '--name-only'),
+        )
+
 
 # ---------------------------------------------------------------------------
 # Multiple renames in a single range
