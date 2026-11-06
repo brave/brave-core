@@ -44,7 +44,7 @@ from plaster import AST_GREP_BIN  # noqa: E402  -- after _boot
 from rich.table import Table  # noqa: E402  -- after _boot
 import repository  # noqa: E402  -- after _boot
 from terminal import console  # noqa: E402  -- after _boot
-from versioning import Version  # noqa: E402  -- after _boot
+from versioning import Version, branch_start  # noqa: E402  -- after _boot
 
 _BYTECODE_TEST = Path(
     'android/javatests/org/chromium/chrome/browser/BytecodeTest.java'
@@ -714,8 +714,12 @@ class NameCheck:
 
     @staticmethod
     def default_range() -> str:
-        """The branch's range: its upstream's Chromium tag to HEAD's."""
-        return f'{Version.from_git("@{upstream}")}..{Version.from_git("HEAD")}'
+        """The branch's range: the Chromium tag its own commits start from on
+        its upstream, as `brockit rebase` finds it, to HEAD's. The upstream's
+        own tag is past that start once the upstream has a bump the branch
+        isn't rebased over yet."""
+        start = branch_start('HEAD', '@{upstream}')
+        return f'{Version.from_git(start)}..{Version.from_git("HEAD")}'
 
     def run(self, literals: list[Literal]) -> list[Result]:
         """Each literal's result."""
