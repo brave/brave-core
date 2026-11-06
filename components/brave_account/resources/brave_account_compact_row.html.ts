@@ -6,36 +6,20 @@
 import { html, nothing } from '//resources/lit/v3_0/lit.rollup.js'
 import { loadTimeData } from '//resources/js/load_time_data.js'
 
+import './brave_account_link_row.js'
 import { BraveAccountCompactRowElement } from './brave_account_compact_row.js'
 import { BraveAccountSettingsStrings } from './brave_components_webui_strings.js'
 
 export function getHtml(this: BraveAccountCompactRowElement) {
   return html`${this.description
-    ? html`<div
-        class="row"
-        @click=${this.navigateToAccountSection}
+    ? html`<brave-account-link-row
+        class=${this.actionRequired ? 'action-required' : ''}
+        icon="social-brave-release-favicon-fullheight-color"
+        .label=${loadTimeData.getString(
+          BraveAccountSettingsStrings.BRAVE_ACCOUNT_TITLE,
+        )}
+        .description=${this.description}
       >
-        <leo-icon name="social-brave-release-favicon-fullheight-color">
-        </leo-icon>
-        <div class="title-and-description">
-          <div class="title">
-            ${loadTimeData.getString(
-              BraveAccountSettingsStrings.BRAVE_ACCOUNT_TITLE,
-            )}
-          </div>
-          <div
-            class="description ${this.actionRequired ? 'action-required' : ''}"
-          >
-            ${this.displayDescription}
-          </div>
-        </div>
-        <leo-button
-          kind="plain-faint"
-          size="medium"
-          fab
-        >
-          <leo-icon name="carat-right"></leo-icon>
-        </leo-button>
-      </div>`
+      </brave-account-link-row>`
     : nothing}`
 }

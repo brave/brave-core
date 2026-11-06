@@ -1,0 +1,52 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* #css_wrapper_metadata_start
+ * #type=style-lit
+ * #scheme=relative
+ * #import=./brave_account_row_common.css.js
+ * #include=brave-account-row-common
+ * #css_wrapper_metadata_end */
+
+.row {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  gap: var(--leo-spacing-xl);
+  /* Chromium's settings row inset, so this row lines up with its neighbors. */
+  padding: var(--leo-spacing-l) var(--cr-section-padding);
+
+  &:hover {
+    background: var(--leo-color-container-highlight);
+  }
+
+  > leo-icon {
+    --leo-icon-size: var(--leo-icon-m);
+
+    color: var(--leo-color-icon-default);
+  }
+
+  > leo-button {
+    --leo-button-padding: var(--leo-spacing-s);
+
+    margin-inline-end: calc(-1 * var(--leo-button-padding));
+    /* The row handles hover and clicks. Leo cannot turn off the button's own
+       hover and press effects, so the mouse skips it; keyboard focus still
+       reaches it. */
+    pointer-events: none;
+  }
+}
+
+.title-and-description {
+  flex: auto;
+
+  .title {
+    font: var(--leo-font-default-semibold);
+  }
+
+  .description {
+    font: var(--leo-font-small-regular);
+  }
+}
