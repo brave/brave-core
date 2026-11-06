@@ -103,9 +103,7 @@ void RewardsTabHelper::OnRewardsInitialized(RewardsService* rewards_service) {
 }
 
 void RewardsTabHelper::MaybeSavePublisherInfo() {
-  if (!rewards_service_) {
-    return;
-  }
+  CHECK(rewards_service_);
 
   // The Rewards system currently assumes that the |publisher_info| table is
   // populated by calling `NotifyPublisherPageVisit` as the user navigates
