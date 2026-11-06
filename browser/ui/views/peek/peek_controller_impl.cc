@@ -159,6 +159,10 @@ void PeekControllerImpl::OnPeekViewOpenAsTabRequested() {
   PostTask(&PeekControllerImpl::OpenAsTab);
 }
 
+void PeekControllerImpl::OnPeekViewShieldsRequested() {
+  PostTask(&PeekControllerImpl::OpenAsTabAndShowShields);
+}
+
 void PeekControllerImpl::OnTabStripModelChanged(
     TabStripModel* tab_strip_model,
     const TabStripModelChange& change,
@@ -209,6 +213,16 @@ void PeekControllerImpl::OpenAsTabOrClose() {
   OpenAsTab();
 }
 
+void PeekControllerImpl::OpenAsTabAndShowShields() {
+  if (!contents_) {
+    return;
+  }
+  // Shields settings are a decision about the site, so they're changed in a
+  // tab, with the panel the tab's own Shields button opens.
+  OpenAsTab();
+  shields_panel_provider_->ShowShieldsPanelForActiveTab();
+}
+
 void PeekControllerImpl::CreateWidget() {
   CHECK(shields_panel_provider_);
   views::Widget::InitParams params(
@@ -224,8 +238,8 @@ void PeekControllerImpl::CreateWidget() {
   widget_->Init(std::move(params));
   widget_->MakeCloseSynchronous(base::BindOnce(
       &PeekControllerImpl::OnWidgetCloseRequested, weak_factory_.GetWeakPtr()));
-  peek_view_ = widget_->SetContentsView(
-      std::make_unique<PeekView>(*this, *browser_, *shields_panel_provider_));
+  peek_view_ =
+      widget_->SetContentsView(std::make_unique<PeekView>(*this, *browser_));
 
   contents_area_observation_.Observe(browser_view_->contents_container());
   browser_widget_observation_.Observe(browser_view_->GetWidget());

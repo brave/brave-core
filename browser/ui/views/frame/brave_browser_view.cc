@@ -16,6 +16,7 @@
 #include "base/check.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
+#include "base/memory/raw_ref.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/sparkle_buildflags.h"
@@ -27,6 +28,7 @@
 #include "brave/browser/ui/focus_mode/focus_mode_utils.h"
 #include "brave/browser/ui/page_info/features.h"
 #include "brave/browser/ui/peek/public/peek_controller.h"
+#include "brave/browser/ui/peek/public/peek_shields_panel_provider.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -47,7 +49,6 @@
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/toolbar/screenshot_button.h"
-#include "brave/browser/ui/webui/brave_shields/shields_panel_peek_provider.h"
 #include "brave/browser/ui/window_closing_confirm/window_closing_confirm_controller.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -110,6 +111,7 @@
 #include "ui/events/event_observer.h"
 #include "ui/views/border.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
+#include "ui/views/controls/button/menu_button_controller.h"
 #include "ui/views/controls/native/native_view_host.h"
 #include "ui/views/event_monitor.h"
 #include "ui/views/layout/fill_layout.h"
@@ -149,6 +151,24 @@ bool IsUnsupportedCommand(int command_id, BrowserWindowInterface* browser) {
              command_id,
              browser->GetType() == BrowserWindowInterface::Type::TYPE_POPUP);
 }
+
+class PeekShieldsPanelProviderImpl : public PeekShieldsPanelProvider {
+ public:
+  explicit PeekShieldsPanelProviderImpl(BraveBrowserView& browser_view)
+      : browser_view_(browser_view) {}
+  PeekShieldsPanelProviderImpl(const PeekShieldsPanelProviderImpl&) = delete;
+  PeekShieldsPanelProviderImpl& operator=(const PeekShieldsPanelProviderImpl&) =
+      delete;
+  ~PeekShieldsPanelProviderImpl() override = default;
+
+  // PeekShieldsPanelProvider:
+  bool ShowShieldsPanelForActiveTab() override {
+    return browser_view_->ShowShieldsPanelForActiveTab();
+  }
+
+ private:
+  const raw_ref<BraveBrowserView> browser_view_;
+};
 
 }  // namespace
 
@@ -332,7 +352,7 @@ BraveBrowserView::BraveBrowserView(BrowserWindowInterface* browser)
 
   if (auto* peek_controller = PeekController::From(browser_)) {
     peek_controller->SetShieldsPanelProvider(
-        std::make_unique<ShieldsPanelPeekProvider>());
+        std::make_unique<PeekShieldsPanelProviderImpl>(*this));
   }
 
   tab_strip_placement_ = std::make_unique<TabStripPlacementCoordinator>(
@@ -564,6 +584,33 @@ gfx::Rect BraveBrowserView::GetShieldsBubbleRect() {
   }
 
   return bubble_widget->GetClientAreaBoundsInScreen();
+}
+
+bool BraveBrowserView::ShowShieldsPanelForActiveTab() {
+  if (page_info::features::IsShowBraveShieldsInPageInfoEnabled()) {
+    // Page Info opens on its Shields tab.
+    LocationBarView* location_bar = GetLocationBarView();
+    return location_bar && location_bar->ShowPageInfoDialog();
+  }
+
+  views::Button* shields_button = nullptr;
+  if (web_app::AppBrowserController::IsWebApp(browser())) {
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+    shields_button = GetPwaShieldsToolbarButton();
+#endif
+  } else if (auto* location_bar =
+                 static_cast<BraveLocationBarView*>(GetLocationBarView())) {
+    if (auto* actions = location_bar->brave_actions_contatiner_view()) {
+      shields_button = actions->GetShieldsActionView();
+    }
+  }
+  if (!shields_button || !shields_button->GetVisible()) {
+    return false;
+  }
+  // Both Shields buttons open their panel from a MenuButtonController.
+  return static_cast<views::MenuButtonController*>(
+             shields_button->button_controller())
+      ->Activate(nullptr);
 }
 
 bool BraveBrowserView::GetTabStripVisible() const {

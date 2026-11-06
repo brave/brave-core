@@ -127,6 +127,10 @@ class BraveBrowserView : public BrowserView,
   void StartTabCycling() override;
   views::View* GetAnchorViewForBraveVPNPanel();
   gfx::Rect GetShieldsBubbleRect() override;
+
+  // Opens the Shields panel for the active tab, as the window's Shields
+  // button does. Returns false if the window has no Shields button.
+  bool ShowShieldsPanelForActiveTab();
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   // Give active tab's reader mode toolbar.
   ReaderModeToolbarView* reader_mode_toolbar();

@@ -111,9 +111,7 @@ std::unique_ptr<views::ImageButton> CreateToolbarButton(
 
 }  // namespace
 
-PeekView::PeekView(Delegate& delegate,
-                   BrowserWindowInterface& browser,
-                   PeekShieldsPanelProvider& shields_panel_provider)
+PeekView::PeekView(Delegate& delegate, BrowserWindowInterface& browser)
     : AnimationDelegateViews(this), delegate_(delegate), browser_(browser) {
   open_animation_.SetSlideDuration(kOpenDuration);
   open_animation_.SetTweenType(gfx::Tween::EASE_OUT);
@@ -190,8 +188,9 @@ PeekView::PeekView(Delegate& delegate,
           .WithOrder(3));
   spacer->SetProperty(views::kMarginsKey, gfx::Insets());
 
-  shields_button_ = toolbar->AddChildView(
-      std::make_unique<PeekShieldsButton>(browser, shields_panel_provider));
+  shields_button_ = toolbar->AddChildView(std::make_unique<PeekShieldsButton>(
+      browser, base::BindRepeating(&Delegate::OnPeekViewShieldsRequested,
+                                   base::Unretained(&delegate))));
 
   open_as_tab_button_ = toolbar->AddChildView(CreateToolbarButton(
       base::BindRepeating(&Delegate::OnPeekViewOpenAsTabRequested,
@@ -279,6 +278,7 @@ void PeekView::UpdateToolbar() {
   }
   favicon_->SetImage(favicon);
   favicon_->SetVisible(!favicon.IsEmpty());
+  shields_button_->UpdateImage();
 }
 
 void PeekView::FocusContents() {

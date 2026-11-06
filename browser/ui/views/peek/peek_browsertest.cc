@@ -16,6 +16,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/peek/peek_features.h"
 #include "brave/browser/ui/peek/public/peek_controller.h"
 #include "brave/browser/ui/views/peek/peek_controller_impl.h"
@@ -330,6 +331,8 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, ContextMenuOpensPeek) {
 
 IN_PROC_BROWSER_TEST_F(PeekBrowserTest, EscapeClosesPeek) {
   OpenPeek(GetURL("b.com", "/title2.html"));
+  // Input sent while the new page is still paint-holding is dropped.
+  content::SimulateEndOfPaintHoldingOnPrimaryMainFrame(peek_contents());
   content::SimulateKeyPress(peek_contents(), ui::DomKey::ESCAPE,
                             ui::DomCode::ESCAPE, ui::VKEY_ESCAPE,
                             /*control=*/false, /*shift=*/false, /*alt=*/false,
@@ -424,23 +427,21 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, SiteInfoButtonShowsPageInfoForPeek) {
   EXPECT_EQ(peek_contents(), bubble->web_contents());
 }
 
-IN_PROC_BROWSER_TEST_F(PeekBrowserTest, ShieldsButtonShowsPanel) {
+// Changing Shields is a decision about the site, so it happens in a tab, with
+// the panel the tab's own Shields button opens.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, ShieldsButtonMovesToTabAndShowsPanel) {
   OpenPeek(GetURL("b.com", "/title2.html"));
+  content::WebContents* contents = peek_contents();
 
-  PeekShieldsButton* button =
-      controller()->peek_view_for_testing()->shields_button_for_testing();
-  views::test::ButtonTestApi(button).NotifyDefaultMouseClick();
-  ASSERT_TRUE(button->GetBubbleWidget());
+  views::test::ButtonTestApi(
+      controller()->peek_view_for_testing()->shields_button_for_testing())
+      .NotifyDefaultMouseClick();
+  WaitForMovedToTab(contents);
 
-  // Pressing again while the panel is still loading doesn't cancel it.
-  views::test::ButtonTestApi(button).NotifyDefaultMouseClick();
-  ASSERT_TRUE(base::test::RunUntil([&] {
-    return button->GetBubbleWidget() && button->GetBubbleWidget()->IsVisible();
-  }));
-
-  // Closing Peek also tears down the panel.
-  controller()->Close();
-  EXPECT_FALSE(controller()->IsShowing());
+  BraveBrowserWindow* window = BraveBrowserWindow::FromBrowser(browser());
+  ASSERT_TRUE(window);
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return !window->GetShieldsBubbleRect().IsEmpty(); }));
 }
 
 IN_PROC_BROWSER_TEST_F(PeekBrowserTest, OpenGrowsCard) {

@@ -25,6 +25,7 @@ source_set("brave_actions") {
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser/brave_shields",
     "//brave/components/brave_origin/buildflags",
+    "//brave/components/brave_shields/core/browser",
     "//brave/components/resources:strings_grit",
     "//brave/components/vector_icons",
     "//chrome/browser/ui/extensions",

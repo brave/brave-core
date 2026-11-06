@@ -20,8 +20,7 @@
 
 namespace content {
 class BrowserContext;
-class WebContents;
-}  // namespace content
+}
 
 class ShieldsPanelUI : public TopChromeWebUIController,
                        public brave_shields::mojom::PanelHandlerFactory {
@@ -38,11 +37,6 @@ class ShieldsPanelUI : public TopChromeWebUIController,
           receiver);
 
   static constexpr std::string_view GetWebUIName() { return "ShieldsPanel"; }
-
-  // Makes the panel hosted in `panel_contents` control `target` instead of
-  // the active tab. Must be called before the panel page finishes loading.
-  static void SetTargetWebContents(content::WebContents* panel_contents,
-                                   content::WebContents* target);
 
  private:
   void CreatePanelHandler(

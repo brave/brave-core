@@ -484,8 +484,6 @@ source_set("ui") {
       "webui/brave_shields/shields_panel_data_handler.h",
       "webui/brave_shields/shields_panel_handler.cc",
       "webui/brave_shields/shields_panel_handler.h",
-      "webui/brave_shields/shields_panel_peek_provider.cc",
-      "webui/brave_shields/shields_panel_peek_provider.h",
       "webui/brave_shields/shields_panel_ui.cc",
       "webui/brave_shields/shields_panel_ui.h",
       "webui/new_tab_page/brave_new_tab_message_handler.cc",

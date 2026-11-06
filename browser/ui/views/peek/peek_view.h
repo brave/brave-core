@@ -17,7 +17,6 @@
 
 class BrowserWindowInterface;
 class PeekShieldsButton;
-class PeekShieldsPanelProvider;
 class ViewShadow;
 
 namespace content {
@@ -42,14 +41,14 @@ class PeekView : public views::View, public views::AnimationDelegateViews {
    public:
     virtual void OnPeekViewCloseRequested() = 0;
     virtual void OnPeekViewOpenAsTabRequested() = 0;
+    // Moves the page into a tab and opens the Shields panel for it.
+    virtual void OnPeekViewShieldsRequested() = 0;
 
    protected:
     virtual ~Delegate() = default;
   };
 
-  PeekView(Delegate& delegate,
-           BrowserWindowInterface& browser,
-           PeekShieldsPanelProvider& shields_panel_provider);
+  PeekView(Delegate& delegate, BrowserWindowInterface& browser);
   PeekView(const PeekView&) = delete;
   PeekView& operator=(const PeekView&) = delete;
   ~PeekView() override;

@@ -63,6 +63,7 @@ class PeekControllerImpl : public PeekController,
   // PeekView::Delegate:
   void OnPeekViewCloseRequested() override;
   void OnPeekViewOpenAsTabRequested() override;
+  void OnPeekViewShieldsRequested() override;
 
   // TabStripModelObserver:
   void OnTabStripModelChanged(
@@ -81,6 +82,7 @@ class PeekControllerImpl : public PeekController,
  private:
   void Show(std::unique_ptr<content::WebContents> contents);
   void OpenAsTabOrClose();
+  void OpenAsTabAndShowShields();
   void CreateWidget();
   void UpdateWidgetBounds();
   gfx::Rect GetTargetBoundsInScreen() const;
@@ -91,8 +93,7 @@ class PeekControllerImpl : public PeekController,
 
   void OnWidgetCloseRequested(views::Widget::ClosedReason reason);
 
-  // `contents_` must outlive `widget_`, which shows it, and the provider is
-  // used by the widget's views.
+  // `contents_` must outlive `widget_`, which shows it.
   std::unique_ptr<PeekShieldsPanelProvider> shields_panel_provider_;
   std::unique_ptr<PeekContents> contents_;
   std::unique_ptr<views::Widget> widget_;
