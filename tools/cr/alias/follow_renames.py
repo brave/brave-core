@@ -95,9 +95,10 @@ def cmd_follow_renames(args: list[str]) -> int:
     renames = _get_chromium_renames(parsed.ref_or_range)
     changed = ChangedFiles() if renames and not parsed.no_format else None
 
+    moved: list[Path] = []
     for old_chromium, new_chromium in renames:
-        _repair_chromium_src(old_chromium, new_chromium, parsed.no_git)
-        _repair_plaster_files(
+        moved += _repair_chromium_src(old_chromium, new_chromium, parsed.no_git)
+        moved += _repair_plaster_files(
             old_chromium, new_chromium, parsed.no_git, not parsed.no_run_plaster
         )
         update_references(old_chromium, new_chromium)
@@ -105,6 +106,11 @@ def cmd_follow_renames(args: list[str]) -> int:
 
     if changed is not None:
         _run_format(changed.since())
+
+    # `git mv` stages the move, but not the edits made to the moved files
+    # afterwards, so the rename would otherwise be committed without them.
+    if moved and not parsed.no_git:
+        terminal.run_git('add', *(str(path) for path in moved))
 
     console.log(f'[bold green]✔[/] {len(renames)} rename(s) processed')
     return 0
@@ -159,14 +165,16 @@ def _collapse_renames(renames: list[_RenamePair]) -> list[_RenamePair]:
 
 def _repair_chromium_src(
     old_chromium: Path, new_chromium: Path, no_git: bool
-) -> None:
-    """Moves and repairs the chromium_src/ shadow file for one rename.
+) -> list[Path]:
+    """Moves and repairs the chromium_src/ shadow file for one rename, and
+    returns the files it moved, at their new paths.
 
     If no shadow file exists at chromium_src/old_chromium, this is a no-op.
     For moved files: updates the shadow #include line (C++ files) and
     regenerates the include guard (.h files only). A `.lit_mangler.ts` for the
     old file moves along with it.
     """
+    moved = []
     old_mangler = (
         repository.brave.root
         / 'chromium_src'
@@ -183,10 +191,11 @@ def _repair_chromium_src(
             old_mangler.rename(new_mangler)
         else:
             terminal.run_git('mv', str(old_mangler), str(new_mangler))
+        moved.append(new_mangler)
 
     old_shadow = repository.brave.root / 'chromium_src' / old_chromium
     if not old_shadow.exists():
-        return
+        return moved
 
     new_shadow = repository.brave.root / 'chromium_src' / new_chromium
     new_shadow.parent.mkdir(parents=True, exist_ok=True)
@@ -195,6 +204,7 @@ def _repair_chromium_src(
         old_shadow.rename(new_shadow)
     else:
         terminal.run_git('mv', str(old_shadow), str(new_shadow))
+    moved.append(new_shadow)
 
     if new_shadow.suffix.lower() in CPP_EXTENSIONS:
         update_shadow_include(new_shadow, old_chromium, new_chromium)
@@ -209,6 +219,7 @@ def _repair_chromium_src(
             rewrite_guard_in_file(new_shadow, old_guard, new_guard)
         else:
             insert_guard(new_shadow, new_guard)
+    return moved
 
 
 def _repair_plaster_files(
@@ -216,8 +227,9 @@ def _repair_plaster_files(
     new_chromium: Path,
     no_git: bool,
     run_plaster: bool = True,
-) -> None:
-    """Moves the plaster file and deletes the corresponding patch file.
+) -> list[Path]:
+    """Moves the plaster file and deletes the corresponding patch file, and
+    returns the plaster file moved, at its new path.
 
     Plaster file convention: chromium path A/foo.h lives at
     rewrite/A/foo.h.yaml. If no plaster file exists, this is a no-op. The
@@ -228,7 +240,7 @@ def _repair_plaster_files(
     old_plaster = old_dir / (old_chromium.name + '.yaml')
     new_plaster = new_dir / (new_chromium.name + '.yaml')
     if not old_plaster.exists():
-        return
+        return []
 
     new_plaster.parent.mkdir(parents=True, exist_ok=True)
 
@@ -264,6 +276,7 @@ def _repair_plaster_files(
         # we should better constrain this to only catch plaster exceptions.
         except Exception as e:
             logging.warning('plaster failed to apply %s: %s', new_plaster, e)
+    return [new_plaster]
 
 
 def _repair_patch_files(
