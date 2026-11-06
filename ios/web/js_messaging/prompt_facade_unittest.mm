@@ -13,10 +13,10 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
-#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/memory/raw_ptr.h"
 #include "base/test/gtest_util.h"
+#include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "ios/web/js_messaging/java_script_feature_manager.h"
 #include "ios/web/public/js_messaging/content_world.h"
@@ -24,6 +24,7 @@
 #include "ios/web/public/js_messaging/script_message.h"
 #include "ios/web/public/test/fakes/fake_web_state.h"
 #include "ios/web/public/test/web_test.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -205,10 +206,7 @@ TEST_F(PromptFacadeTest, ValidPromptDispatchesToFeature) {
 
   base::Value* body = feature_->last_message()->legacy_body();
   ASSERT_TRUE(body);
-  ASSERT_TRUE(body->is_dict());
-  const std::string* key_value = body->GetDict().FindString("key");
-  ASSERT_TRUE(key_value);
-  EXPECT_EQ("value", *key_value);
+  EXPECT_THAT(*body, base::test::IsJson(R"({"key": "value"})"));
 }
 
 // Tests that `is_main_frame=false` is propagated to the dispatched message.
@@ -244,13 +242,7 @@ TEST_F(PromptFacadeTest, DictReplyIsJsonEncoded) {
   std::string prompt = BuildPromptJSON(kHandlerName, base::DictValue());
   std::optional<std::string> result = HandlePrompt(prompt);
   ASSERT_TRUE(result.has_value());
-
-  std::optional<base::Value> parsed =
-      base::JSONReader::Read(*result, base::JSONParserOptions::JSON_PARSE_RFC);
-  ASSERT_TRUE(parsed);
-  ASSERT_TRUE(parsed->is_dict());
-  EXPECT_EQ(true, parsed->GetDict().FindBool("ok"));
-  EXPECT_EQ(42, parsed->GetDict().FindInt("value"));
+  EXPECT_THAT(*result, base::test::IsJson(R"({"ok": true, "value": 42})"));
 }
 
 }  // namespace web
