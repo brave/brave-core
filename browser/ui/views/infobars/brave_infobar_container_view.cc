@@ -143,6 +143,12 @@ void BraveInfoBarContainerView::OnThemeChanged() {
   }
 }
 
+void BraveInfoBarContainerView::PlatformSpecificRemoveInfoBar(
+    infobars::InfoBar* infobar) {
+  InfoBarContainerView::PlatformSpecificRemoveInfoBar(infobar);
+  OnInfoBarStateChanged(/*is_animating=*/false);
+}
+
 void BraveInfoBarContainerView::SetRoundedBorderEnabled(
     bool enabled,
     const gfx::RoundedCornersF& contents_corner_radii) {

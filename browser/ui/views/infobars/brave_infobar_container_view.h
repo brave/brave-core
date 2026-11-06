@@ -26,6 +26,9 @@ class BraveInfoBarContainerView : public InfoBarContainerView {
       const views::SizeBounds& available_size) const override;
   void OnThemeChanged() override;
 
+  // InfoBarContainer:
+  void PlatformSpecificRemoveInfoBar(infobars::InfoBar* infobar) override;
+
   // When `enabled`, replaces the flat bottom divider with a floating-card
   // look: margin from the window edges (applied by the browser view's layout;
   // see BraveBrowserViewTabbedLayoutImpl::AdjustInfobarLayout()) plus a

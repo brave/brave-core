@@ -8,7 +8,10 @@ import("//brave/components/psst/buildflags/buildflags.gni")
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "brave_confirm_infobar_unittest.cc" ]
+  sources = [
+    "brave_confirm_infobar_unittest.cc",
+    "brave_infobar_container_view_unittest.cc",
+  ]
 
   deps = [
     "//base",
