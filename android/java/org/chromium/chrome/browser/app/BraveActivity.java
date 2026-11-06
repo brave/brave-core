@@ -2665,8 +2665,9 @@ public abstract class BraveActivity extends ChromeActivity
         BraveDbUtil dbUtil = BraveDbUtil.getInstance();
         if (dbUtil.dbOperationRequested()) {
             AlertDialog dialog =
-                    new AlertDialog.Builder(this)
-                            .setMessage(dbUtil.performDbExportOnStart()
+                    new AlertDialog.Builder(this, R.style.ThemeOverlay_BrowserUI_AlertDialog)
+                            .setMessage(
+                                    dbUtil.performDbExportOnStart()
                                             ? getString(
                                                     R.string.brave_db_processing_export_alert_info)
                                             : getString(

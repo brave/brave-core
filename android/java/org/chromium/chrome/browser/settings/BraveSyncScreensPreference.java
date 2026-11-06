@@ -1041,11 +1041,16 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         });
     }
 
-    private enum FinalWarningFor { QR_CODE, CODE_WORDS }
+    private enum FinalWarningFor {
+        QR_CODE,
+        CODE_WORDS
+    }
+
     private void showFinalSecurityWarning(
             FinalWarningFor warningFor, Runnable runWhenYes, Runnable runWhenCancel) {
         ThreadUtils.assertOnUiThread();
-        AlertDialog.Builder confirmDialog = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder confirmDialog =
+                new AlertDialog.Builder(getActivity(), R.style.ThemeOverlay_BrowserUI_AlertDialog);
         confirmDialog.setTitle(
                 getActivity().getResources().getString(R.string.sync_final_warning_title));
 
