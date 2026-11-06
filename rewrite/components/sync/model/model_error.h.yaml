@@ -5,9 +5,10 @@
 
 substitutions:
   - description: |-
-      Append the AI Chat model error as the new kMaxValue.
+      Append the AI Chat model errors; the last becomes the new kMaxValue.
     add_enum_entries:
       enum_name: Type
       max_value: kMaxValue
       entries:
         - kAIChatFailedToLoadMetadata
+        - kAIChatFailedToApplyRemoteChange

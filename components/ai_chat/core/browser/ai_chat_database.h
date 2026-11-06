@@ -76,6 +76,11 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   virtual std::optional<std::string> GetConversationUuidForEntry(
       std::string_view conversation_entry_uuid);
 
+  // Returns the uuid of the conversation owning the associated content
+  // |content_uuid|, or nullopt if there is no such content or the read failed.
+  virtual std::optional<std::string> GetConversationUuidForAssociatedContent(
+      std::string_view content_uuid);
+
   // These return when a conversation's title or model, or an entry's content,
   // last changed. Sync sends the time with each record, so a receiver can tell
   // which of two copies is newer. Local writes set it to the current time, and

@@ -14,7 +14,12 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "base/containers/flat_set.h"
+#include "base/containers/map_util.h"
+#include "base/containers/to_vector.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_util.h"
+#include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 #include "brave/components/ai_chat/core/browser/sync/ai_chat_sync_conversions.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -88,8 +93,10 @@ base::Time TimeToSend(const std::optional<base::Time>& modified_time) {
 }  // namespace
 
 AIChatSyncBridge::AIChatSyncBridge(
-    std::unique_ptr<syncer::DataTypeLocalChangeProcessor> change_processor)
-    : syncer::DataTypeSyncBridge(std::move(change_processor)) {
+    std::unique_ptr<syncer::DataTypeLocalChangeProcessor> change_processor,
+    RemoteChangesAppliedCallback on_remote_changes_applied)
+    : syncer::DataTypeSyncBridge(std::move(change_processor)),
+      on_remote_changes_applied_(std::move(on_remote_changes_applied)) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 }
 
@@ -202,18 +209,21 @@ void AIChatSyncBridge::ForEachLocalEntity(
   }
 }
 
-std::unique_ptr<syncer::MetadataChangeList>
-AIChatSyncBridge::CreateMetadataChangeList() {
+std::unique_ptr<syncer::SyncMetadataStoreChangeList>
+AIChatSyncBridge::CreateMetadataStoreChangeList() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  // Without a database (storage disabled) there is nowhere to persist metadata;
-  // fall back to the in-memory change list so any changes are simply dropped.
-  if (!database_) {
-    return syncer::DataTypeSyncBridge::CreateMetadataChangeList();
-  }
+  CHECK(database_);
   return std::make_unique<syncer::SyncMetadataStoreChangeList>(
       database_, syncer::AI_CHAT_CONVERSATION,
       base::BindRepeating(&AIChatSyncBridge::ReportError,
                           weak_ptr_factory_.GetWeakPtr()));
+}
+
+void AIChatSyncBridge::ApplyMetadataChanges(
+    std::unique_ptr<syncer::MetadataChangeList> metadata_change_list) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  metadata_change_list->TransferChangesTo(
+      CreateMetadataStoreChangeList().get());
 }
 
 std::optional<syncer::ModelError> AIChatSyncBridge::MergeFullSyncData(
@@ -221,19 +231,27 @@ std::optional<syncer::ModelError> AIChatSyncBridge::MergeFullSyncData(
     syncer::EntityChangeList entity_data) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!database_) {
+    // Nothing is stored, so neither is the metadata, and the records download
+    // again on the next start.
+    metadata_change_list->DropAllChanges();
     return std::nullopt;
+  }
+
+  if (!ApplyRemoteChanges(entity_data, *metadata_change_list)) {
+    // First sync runs again on the next start and applies the server's records
+    // over this device's, so no local update is sent this session.
+    skip_all_local_puts_ = true;
+    return syncer::ModelError(
+        FROM_HERE, syncer::ModelError::Type::kAIChatFailedToApplyRemoteChange);
   }
 
   // Track which storage keys we already have from remote so we don't
   // re-upload them.
   absl::flat_hash_set<std::string> remote_storage_keys;
   for (const auto& change : entity_data) {
-    if (change->type() == syncer::EntityChange::ACTION_DELETE) {
-      continue;
+    if (change->type() != syncer::EntityChange::ACTION_DELETE) {
+      remote_storage_keys.insert(change->storage_key());
     }
-    remote_storage_keys.insert(change->storage_key());
-    // TODO(https://github.com/brave/brave-browser/issues/53978): apply
-    // remote ADD/UPDATE to local database.
   }
 
   // Upload every non-temporary local conversation: its metadata plus each of
@@ -248,6 +266,7 @@ std::optional<syncer::ModelError> AIChatSyncBridge::MergeFullSyncData(
                                 metadata_change_list.get());
       });
 
+  ApplyMetadataChanges(std::move(metadata_change_list));
   return std::nullopt;
 }
 
@@ -255,8 +274,21 @@ std::optional<syncer::ModelError> AIChatSyncBridge::ApplyIncrementalSyncChanges(
     std::unique_ptr<syncer::MetadataChangeList> metadata_change_list,
     syncer::EntityChangeList entity_changes) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  // TODO(https://github.com/brave/brave-browser/issues/53978): apply remote
-  // ADD/UPDATE/DELETE to the local database.
+  if (!database_) {
+    // Nothing is stored, so neither is the metadata, and the changes download
+    // again on the next start.
+    metadata_change_list->DropAllChanges();
+    return std::nullopt;
+  }
+
+  // The processor also calls this with metadata changes alone, for example
+  // after every commit. Those are saved like any other batch's.
+  if (!ApplyRemoteChanges(entity_changes, *metadata_change_list)) {
+    return syncer::ModelError(
+        FROM_HERE, syncer::ModelError::Type::kAIChatFailedToApplyRemoteChange);
+  }
+
+  ApplyMetadataChanges(std::move(metadata_change_list));
   return std::nullopt;
 }
 
@@ -382,6 +414,8 @@ AIChatSyncBridge::TrimAllSupportedFieldsFromRemoteSpecifics(
 void AIChatSyncBridge::ApplyDisableSyncChanges(
     std::unique_ptr<syncer::MetadataChangeList> delete_metadata_change_list) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  // Clearing every row covers each change the list holds.
+  delete_metadata_change_list->DropAllChanges();
   if (!database_) {
     return;
   }
@@ -406,7 +440,7 @@ void AIChatSyncBridge::OnConversationDeleted(const std::string& uuid) {
   if (!database_ || !change_processor()->IsTrackingMetadata()) {
     return;
   }
-  auto metadata_change_list = CreateMetadataChangeList();
+  auto metadata_change_list = CreateMetadataStoreChangeList();
 
   // Emit a Delete for every entry of the conversation BEFORE deleting the
   // conversation itself. This must run while the entries still exist in the
@@ -446,17 +480,157 @@ void AIChatSyncBridge::OnConversationEntryModified(
 void AIChatSyncBridge::OnConversationEntryDeleted(
     const std::string& entry_uuid) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (!change_processor()->IsTrackingMetadata()) {
+  if (!database_ || !change_processor()->IsTrackingMetadata()) {
     return;
   }
-  auto metadata_change_list = CreateMetadataChangeList();
+  auto metadata_change_list = CreateMetadataStoreChangeList();
   change_processor()->Delete(base::StrCat({kEntryStorageKeyPrefix, entry_uuid}),
                              syncer::DeletionOrigin::Unspecified(),
                              metadata_change_list.get());
 }
 
+bool AIChatSyncBridge::ApplyRemoteChanges(
+    const syncer::EntityChangeList& changes,
+    syncer::MetadataChangeList& metadata_change_list) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  base::flat_set<std::string> affected_conversation_uuids;
+  for (auto it = changes.begin(); it != changes.end(); ++it) {
+    const auto& change = *it;
+    const bool ok =
+        change->type() == syncer::EntityChange::ACTION_DELETE
+            ? ApplyRemoteTombstone(change->storage_key(),
+                                   affected_conversation_uuids)
+            : ApplyRemoteRecord(change->data().specifics.ai_chat_conversation(),
+                                affected_conversation_uuids);
+    if (!ok) {
+      // Leave the batch unsaved, so it downloads again on the next start.
+      // The records from this one on weren't written, so a local update must
+      // not save their new versions either.
+      metadata_change_list.DropAllChanges();
+      for (; it != changes.end(); ++it) {
+        storage_keys_skipping_local_puts_.insert((*it)->storage_key());
+      }
+      NotifyRemoteChangesApplied(std::move(affected_conversation_uuids));
+      return false;
+    }
+  }
+  NotifyRemoteChangesApplied(std::move(affected_conversation_uuids));
+  return true;
+}
+
+bool AIChatSyncBridge::ShouldSkipLocalPut(
+    const std::string& storage_key) const {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  return skip_all_local_puts_ ||
+         storage_keys_skipping_local_puts_.contains(storage_key);
+}
+
+bool AIChatSyncBridge::ApplyRemoteRecord(
+    const sync_pb::AIChatConversationSpecifics& specifics,
+    base::flat_set<std::string>& affected_conversation_uuids) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  // Stored as the record's own time, not the time it arrived. Otherwise this
+  // device's copy would look newer than the server's.
+  const base::Time modified_time = GetModifiedTimeFromSpecifics(specifics);
+
+  if (auto conversation = SpecificsToConversationMetadata(specifics)) {
+    std::string uuid = conversation->uuid;
+    if (!database_->ApplyRemoteConversationMetadata(std::move(conversation),
+                                                    modified_time)) {
+      return false;
+    }
+    affected_conversation_uuids.insert(std::move(uuid));
+    return true;
+  }
+
+  std::vector<mojom::AssociatedContentPtr> associated_content;
+  base::flat_map<std::string, std::string> associated_content_texts;
+  auto entry = SpecificsToEntry(specifics, associated_content,
+                                &associated_content_texts);
+  if (!entry) {
+    return true;
+  }
+
+  // An associated content uuid is unique across conversations, but
+  // AIChatDatabase::AddOrUpdateAssociatedContent() updates only a row in the
+  // same conversation, so a uuid another conversation holds would collide on
+  // insert. A failed lookup reads as no owner, which leaves the write to report
+  // any collision.
+  const std::string& conversation_uuid = specifics.entry().conversation_uuid();
+  for (const auto& content : associated_content) {
+    auto owner =
+        database_->GetConversationUuidForAssociatedContent(content->uuid);
+    if (owner && *owner != conversation_uuid) {
+      return true;
+    }
+  }
+
+  // TODO(https://github.com/brave/brave-browser/issues/53978): carry this
+  // device's edit revisions, and the values the sender omitted for size, over
+  // from the local entry. The write replaces the whole entry, so until then
+  // both are lost.
+  std::vector<std::string> contents = base::ToVector(
+      associated_content, [&](const mojom::AssociatedContentPtr& content) {
+        const std::string* text =
+            base::FindOrNull(associated_content_texts, content->uuid);
+        return text ? *text : std::string();
+      });
+  if (!database_->ApplyRemoteEntry(conversation_uuid, std::move(entry),
+                                   modified_time, std::move(associated_content),
+                                   std::move(contents))) {
+    return false;
+  }
+  affected_conversation_uuids.insert(conversation_uuid);
+  return true;
+}
+
+bool AIChatSyncBridge::ApplyRemoteTombstone(
+    std::string_view storage_key,
+    base::flat_set<std::string>& affected_conversation_uuids) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  // Tombstones bypass IsEntityDataValid(), so the uuid taken from the storage
+  // key isn't validated. Skip an empty one rather than pass it to the
+  // database, which requires a non-empty uuid.
+  if (auto uuid =
+          base::RemovePrefix(storage_key, kConversationStorageKeyPrefix)) {
+    if (uuid->empty()) {
+      return true;
+    }
+    if (!database_->DeleteConversation(*uuid)) {
+      return false;
+    }
+    affected_conversation_uuids.emplace(*uuid);
+    return true;
+  }
+  if (auto uuid = base::RemovePrefix(storage_key, kEntryStorageKeyPrefix)) {
+    if (uuid->empty()) {
+      return true;
+    }
+    // A tombstone carries only the entry's uuid, so look up its conversation
+    // while the row is still there.
+    auto conversation_uuid = database_->GetConversationUuidForEntry(*uuid);
+    if (!database_->DeleteConversationEntry(*uuid)) {
+      return false;
+    }
+    if (conversation_uuid) {
+      affected_conversation_uuids.insert(std::move(*conversation_uuid));
+    }
+  }
+  return true;
+}
+
+void AIChatSyncBridge::NotifyRemoteChangesApplied(
+    base::flat_set<std::string> affected_conversation_uuids) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!affected_conversation_uuids.empty()) {
+    on_remote_changes_applied_.Run(
+        std::move(affected_conversation_uuids).extract());
+  }
+}
+
 void AIChatSyncBridge::PutConversationMetadata(const std::string& uuid) {
-  if (!database_) {
+  std::string storage_key = base::StrCat({kConversationStorageKeyPrefix, uuid});
+  if (!database_ || ShouldSkipLocalPut(storage_key)) {
     return;
   }
   auto conversation = FindSyncableConversation(*database_, uuid);
@@ -465,15 +639,15 @@ void AIChatSyncBridge::PutConversationMetadata(const std::string& uuid) {
   }
   auto specifics = ConversationMetadataToSpecifics(
       *conversation, TimeToSend(database_->GetConversationModifiedTime(uuid)));
-  auto metadata_change_list = CreateMetadataChangeList();
-  change_processor()->Put(base::StrCat({kConversationStorageKeyPrefix, uuid}),
-                          CreateEntityDataFromSpecifics(specifics),
+  auto metadata_change_list = CreateMetadataStoreChangeList();
+  change_processor()->Put(storage_key, CreateEntityDataFromSpecifics(specifics),
                           metadata_change_list.get());
 }
 
 void AIChatSyncBridge::PutEntry(const std::string& conversation_uuid,
                                 const std::string& entry_uuid) {
-  if (!database_) {
+  std::string storage_key = base::StrCat({kEntryStorageKeyPrefix, entry_uuid});
+  if (!database_ || ShouldSkipLocalPut(storage_key)) {
     return;
   }
   auto conversation = FindSyncableConversation(*database_, conversation_uuid);
@@ -500,8 +674,8 @@ void AIChatSyncBridge::PutEntry(const std::string& conversation_uuid,
     // server's copy. GetDataForCommit() untracks it if a commit asks for it.
     return;
   }
-  auto metadata_change_list = CreateMetadataChangeList();
-  change_processor()->Put(base::StrCat({kEntryStorageKeyPrefix, entry_uuid}),
+  auto metadata_change_list = CreateMetadataStoreChangeList();
+  change_processor()->Put(storage_key,
                           CreateEntityDataFromSpecifics(*specifics),
                           metadata_change_list.get());
 }

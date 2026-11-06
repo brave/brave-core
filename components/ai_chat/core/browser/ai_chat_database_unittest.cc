@@ -2103,6 +2103,36 @@ TEST_F(AIChatDatabaseSyncTest, GetConversationUuidForEntry) {
   EXPECT_EQ(db_->GetConversationUuidForEntry("no-such-entry"), std::nullopt);
 }
 
+TEST_F(AIChatDatabaseSyncTest, GetConversationUuidForAssociatedContent) {
+  auto make_content = [](std::string_view uuid, std::string_view entry_uuid) {
+    auto content = mojom::AssociatedContent::New();
+    content->uuid = std::string(uuid);
+    content->content_type = mojom::ContentType::PageContent;
+    content->title = "Page";
+    content->url = GURL("https://example.com");
+    content->conversation_turn_uuid = std::string(entry_uuid);
+    return content;
+  };
+
+  auto conv_a = mojom::Conversation::New();
+  conv_a->uuid = "conv-a";
+  conv_a->associated_content.push_back(make_content("content-a", "entry-a"));
+  ASSERT_TRUE(db_->AddConversation(std::move(conv_a), {"Page text"},
+                                   CreateQueryEntry("entry-a")));
+  auto conv_b = mojom::Conversation::New();
+  conv_b->uuid = "conv-b";
+  conv_b->associated_content.push_back(make_content("content-b", "entry-b"));
+  ASSERT_TRUE(db_->AddConversation(std::move(conv_b), {"Page text"},
+                                   CreateQueryEntry("entry-b")));
+
+  EXPECT_EQ(db_->GetConversationUuidForAssociatedContent("content-a"),
+            "conv-a");
+  EXPECT_EQ(db_->GetConversationUuidForAssociatedContent("content-b"),
+            "conv-b");
+  EXPECT_EQ(db_->GetConversationUuidForAssociatedContent("no-such-content"),
+            std::nullopt);
+}
+
 // No such row reads as the null time, not as a failed read.
 TEST_F(AIChatDatabaseSyncTest, MissingRowHasNullModifiedTime) {
   EXPECT_EQ(db_->GetConversationModifiedTime("no-such-conv"), base::Time());
