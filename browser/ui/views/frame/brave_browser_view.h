@@ -150,7 +150,8 @@ class BraveBrowserView : public BrowserView,
 
   // BookmarkTabHelperObserver:
   void URLStarredChanged(content::WebContents* web_contents,
-                         bool starred) override;
+                         bool starred,
+                         bool is_bookmark_added_or_removed) override;
 
   // commands::AcceleratorService:
   void OnAcceleratorsChanged(
