@@ -88,7 +88,7 @@ import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator.VisibilityDelegate;
 import org.chromium.chrome.browser.toolbar.optional_button.ButtonDataProvider;
 import org.chromium.chrome.browser.toolbar.top.ActionModeController;
-import org.chromium.chrome.browser.toolbar.top.BottomTabSwitcherActionMenuCoordinator;
+import org.chromium.chrome.browser.toolbar.top.TabSwitcherActionMenuCoordinator;
 import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl;
 import org.chromium.chrome.browser.toolbar.top.BraveTopToolbarCoordinator;
 import org.chromium.chrome.browser.toolbar.top.ToolbarActionModeCallback;
@@ -447,7 +447,7 @@ public class BraveToolbarManager extends ToolbarManager
         var bottomControlsCoordinator =
                 new BraveBottomControlsCoordinator(
                         mLayoutStateProviderSupplier,
-                        BottomTabSwitcherActionMenuCoordinator.createOnLongClickListener(
+                        TabSwitcherActionMenuCoordinator.createOnLongClickListener(
                                 id -> ((ChromeActivity) mActivity).onOptionsItemSelected(id, null),
                                 mProfileSupplier,
                                 mTabModelSelectorSupplier,
