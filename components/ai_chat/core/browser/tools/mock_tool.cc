@@ -70,7 +70,7 @@ std::optional<base::DictValue> MockTool::ExtraParams() const {
   return std::nullopt;
 }
 
-bool MockTool::IsSupportedByModel(
+bool MockTool::IsSupportedByModelImpl(
     const mojom::Model& model,
     const ConversationCapabilitySet& conversation_capabilities) const {
   return is_supported_by_model_;

@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/functional/callback.h"
+#include "brave/components/ai_chat/core/browser/tools/mock_tool.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -19,7 +20,7 @@ namespace ai_chat {
 
 namespace {
 
-// Uses the base IsSupportedByModel, unlike MockTool which overrides it.
+// Uses the default tool-specific model checks.
 class TestTool : public Tool {
  public:
   TestTool() = default;
@@ -76,6 +77,67 @@ TEST(ToolTest, IsSupportedByModel_ServerHintsDoNotGate) {
 
   EXPECT_TRUE(tool.IsSupportedByModel(
       *model, {mojom::ConversationCapability::MATH_ML}));
+}
+
+TEST(ToolTest, IsSupportedByModel_PermissiveToolRequiresToolSupport) {
+  MockTool permissive_tool("test_tool");
+  const Tool& tool = permissive_tool;
+  auto model = CreateModel(/*supports_tools=*/false,
+                           {mojom::ConversationCapability::DEEP_RESEARCH});
+
+  EXPECT_FALSE(tool.IsSupportedByModel(
+      *model, {mojom::ConversationCapability::DEEP_RESEARCH}));
+  EXPECT_FALSE(tool.IsSupportedByModel(*model, {}));
+}
+
+TEST(ToolTest, IsSupportedByModel_PermissiveToolRequiresEveryCapability) {
+  MockTool permissive_tool("test_tool");
+  const Tool& tool = permissive_tool;
+  auto model = CreateModel(/*supports_tools=*/true,
+                           {mojom::ConversationCapability::DEEP_RESEARCH});
+
+  EXPECT_FALSE(tool.IsSupportedByModel(
+      *model, {mojom::ConversationCapability::CONTENT_AGENT}));
+  EXPECT_FALSE(tool.IsSupportedByModel(
+      *model, {mojom::ConversationCapability::DEEP_RESEARCH,
+               mojom::ConversationCapability::CONTENT_AGENT}));
+}
+
+TEST(ToolTest, IsSupportedByModel_ToolSpecificChecksCanReject) {
+  MockTool restrictive_tool("test_tool");
+  const Tool& tool = restrictive_tool;
+  auto model = CreateModel(/*supports_tools=*/true,
+                           {mojom::ConversationCapability::DEEP_RESEARCH});
+
+  EXPECT_TRUE(tool.IsSupportedByModel(
+      *model, {mojom::ConversationCapability::DEEP_RESEARCH}));
+  restrictive_tool.set_is_supported_by_model(false);
+  EXPECT_FALSE(tool.IsSupportedByModel(
+      *model, {mojom::ConversationCapability::DEEP_RESEARCH}));
+}
+
+TEST(ToolTest, IsSupportedByModel_ServerHintsCannotBypassToolSupport) {
+  MockTool permissive_tool("test_tool");
+  const Tool& tool = permissive_tool;
+  auto model = CreateModel(/*supports_tools=*/false, {});
+
+  EXPECT_FALSE(tool.IsSupportedByModel(
+      *model, {mojom::ConversationCapability::MATH_ML,
+               mojom::ConversationCapability::WORKSPACES}));
+}
+
+TEST(ToolTest, IsSupportedByModel_ToolSpecificChecksAllowServerHints) {
+  MockTool permissive_tool("test_tool");
+  const Tool& tool = permissive_tool;
+  auto model = CreateModel(/*supports_tools=*/true, {});
+
+  EXPECT_TRUE(tool.IsSupportedByModel(*model, {}));
+  EXPECT_TRUE(tool.IsSupportedByModel(
+      *model, {mojom::ConversationCapability::MATH_ML,
+               mojom::ConversationCapability::WORKSPACES}));
+  EXPECT_FALSE(tool.IsSupportedByModel(
+      *model, {mojom::ConversationCapability::MATH_ML,
+               mojom::ConversationCapability::CONTENT_AGENT}));
 }
 
 }  // namespace ai_chat
