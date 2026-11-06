@@ -33,7 +33,9 @@ bool IsShiftClickOpen(const content::OpenURLParams& params);
 // so the load is treated like a link click rather than a browser-initiated
 // navigation. The params must also carry the initiator's navigation state,
 // which content/ creates from the initiating document; without it the load
-// skips the initiator's policies, e.g. Local Network Access checks.
+// has no record of the initiator's policies. Chromium builds the navigation's
+// client security state from it, and is moving to require it for every
+// renderer-initiated navigation.
 bool CanOpenInPeek(const content::OpenURLParams& params);
 
 }  // namespace peek
