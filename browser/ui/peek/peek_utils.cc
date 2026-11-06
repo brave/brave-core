@@ -30,7 +30,8 @@ bool IsShiftClickOpen(const content::OpenURLParams& params) {
 
 bool CanOpenInPeek(const content::OpenURLParams& params) {
   return IsPeekableURL(params.url) && params.initiator_origin.has_value() &&
-         IsPeekableInitiator(*params.initiator_origin);
+         IsPeekableInitiator(*params.initiator_origin) &&
+         params.initiator_navigation_state;
 }
 
 }  // namespace peek

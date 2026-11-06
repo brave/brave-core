@@ -153,7 +153,8 @@ panels cannot open Peek.
 | `alert`, `confirm`, `prompt`, `beforeunload` | Suppressed while in Peek |
 | The peeked link is a download | Peek closes and the download proceeds |
 | The page starts a download | Peek moves to a tab |
-| File chooser | Forwarded to the browser and attached to the browser window |
+| File chooser | Peek moves to a tab, then the chooser opens |
+| Device chooser (USB, HID, serial, Bluetooth), FedCM | Not shown while in Peek; works after "Open as tab" |
 | Peek is opened while another is open | The new one replaces it |
 | The active tab changes | Peek closes |
 
@@ -286,7 +287,7 @@ Screenshots are added to the PR. Nala tokens above stand in for color values.
   The context menu uses `IDC_CONTENT_CONTEXT_OPENLINKPEEK`.
 - `PeekController::Open(source, params)` returns false unless the source is a
   tab in this window and the params pass `CanOpenInPeek` (http(s) target,
-  non-opaque http(s) initiator).
+  non-opaque http(s) initiator, and the initiator's navigation state).
 - `BraveBrowserView` gives the controller a `ShieldsPanelPeekProvider`, which
   points the Shields panel at the Peek page.
 - Shared code that changed: `ShieldsPanelUI::SetTargetWebContents()`,
@@ -303,8 +304,9 @@ Screenshots are added to the PR. Nala tokens above stand in for color values.
   tab, through the window's profile network context (Tor in Tor windows).
 - Encryption and hashing: none.
 - Persisted sensitive information: none added.
-- Referrer and initiator: Peek loads carry the opener's origin and referrer, so
-  SameSite cookies and Fetch Metadata match a link click.
+- Referrer and initiator: Peek loads carry the opener's origin, navigation
+  state and referrer, so SameSite cookies, Fetch Metadata and Local Network
+  Access match a link click.
 - The security team has reason to review this: it is a new way to browse, with a
   web page rendered inside browser-owned UI. The review is in the PR. The model,
   per-case behavior and the audit checklist results are in
