@@ -1,0 +1,32 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Upstream derives these values from Google's Omaha 3 or from COMPANY_SHORTNAME.
+# Our Omaha 3 fork uses different ones. Omaha 4 needs them to shut down, take
+# over from, and clean up Omaha 3.
+substitutions:
+  - description: Use our Omaha 3 fork's kShutdownEvent
+    regex:
+      pattern: 'L"{A0C1F415-D2CE-4ddc-9B48-14E56FD55162}"'
+      replace: 'L"{4613C8D6-D26E-4F10-B494-72CFF6F0BF0B}"'
+
+  - description: Use our Omaha 3 fork's executable name
+    regex:
+      pattern: 'COMPANY_SHORTNAME_STRING L"Update.exe"'
+      replace: 'L"BraveUpdate.exe"'
+
+  - description: |-
+      Use our Omaha 3 fork's English service display name
+
+      We actually believe that upstream's related code contains a bug: The code
+      only deletes services whose display name starts with
+      kLegacyServiceDisplayNamePrefix. On non-English systems, the name is
+      translated, so the services stay behind. They keep launching
+      BraveUpdate.exe, which rejects their command line and logs an error. This
+      is harmless, so we accept it rather than take the risk of changing
+      upstream's critical migration code.
+    regex:
+      pattern: 'COMPANY_SHORTNAME_STRING L" Update Service"'
+      replace: 'L"Brave Update Service"'
