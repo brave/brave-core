@@ -356,6 +356,7 @@ const update = () => {
       'icon_bookmark.svg',
     ),
   ])
+
   // When the channel is set, we need to copy the channel-specific files.
   let channelSpecificSourceFiles = new Set()
   for (const branding of ['brave', 'brave_origin']) {
