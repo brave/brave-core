@@ -7,12 +7,15 @@ package org.chromium.chrome.browser.tabbed_mode;
 
 import android.app.Activity;
 
+import androidx.appcompat.content.res.AppCompatResources;
+
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.base.supplier.NullableObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.bookmarks.TabBookmarker;
@@ -25,8 +28,12 @@ import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tabstrip.StripVisibilityState;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarBehavior;
+import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarButtonController;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarButtonVariant;
+import org.chromium.chrome.browser.toolbar.adaptive.OptionalNewTabButtonController;
+import org.chromium.chrome.browser.ui.bottombar.BottomBarConfigUtils;
 import org.chromium.chrome.browser.ui.browser_window.ChromeAndroidTask;
+import org.chromium.components.feature_engagement.Tracker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +42,8 @@ import java.util.function.Supplier;
 
 /**
  * Brave-specific {@link TabbedAdaptiveToolbarBehavior} that allows Brave-only toolbar variants to
- * be selected by segmentation.
+ * be selected by segmentation, hides Tab grouping while tab groups are disabled, and keeps New tab
+ * available with the bottom bar on, as Brave's bottom bar has a search button instead of New tab.
  */
 @NullMarked
 public class BraveTabbedAdaptiveToolbarBehavior extends TabbedAdaptiveToolbarBehavior {
@@ -48,6 +56,11 @@ public class BraveTabbedAdaptiveToolbarBehavior extends TabbedAdaptiveToolbarBeh
                     AdaptiveToolbarButtonVariant.WALLET);
 
     private final Activity mActivity;
+    private final ActivityLifecycleDispatcher mActivityLifecycleDispatcher;
+    private final Supplier<@Nullable TabCreatorManager> mTabCreatorManagerSupplier;
+    private final ActivityTabProvider mActivityTabProvider;
+    private final MonotonicObservableSupplier<@StripVisibilityState Integer>
+            mTabStripVisibilitySupplier;
 
     public BraveTabbedAdaptiveToolbarBehavior(
             Activity activity,
@@ -82,6 +95,29 @@ public class BraveTabbedAdaptiveToolbarBehavior extends TabbedAdaptiveToolbarBeh
                 isVerticalTabsActiveSupplier,
                 isGlicPinnedSupplier);
         mActivity = activity;
+        mActivityLifecycleDispatcher = activityLifecycleDispatcher;
+        mTabCreatorManagerSupplier = tabCreatorManagerSupplier;
+        mActivityTabProvider = activityTabProvider;
+        mTabStripVisibilitySupplier = tabStripVisibilitySupplier;
+    }
+
+    @Override
+    public void registerPerSurfaceButtons(
+            AdaptiveToolbarButtonController controller,
+            Supplier<@Nullable Tracker> trackerSupplier) {
+        super.registerPerSurfaceButtons(controller, trackerSupplier);
+        if (BottomBarConfigUtils.isBottomBarEnabled(mActivity)) {
+            controller.addButtonVariant(
+                    AdaptiveToolbarButtonVariant.NEW_TAB,
+                    new OptionalNewTabButtonController(
+                            mActivity,
+                            AppCompatResources.getDrawable(mActivity, R.drawable.new_tab_icon),
+                            mActivityLifecycleDispatcher,
+                            mTabCreatorManagerSupplier,
+                            mActivityTabProvider,
+                            trackerSupplier,
+                            mTabStripVisibilitySupplier));
+        }
     }
 
     @Override
@@ -111,6 +147,10 @@ public class BraveTabbedAdaptiveToolbarBehavior extends TabbedAdaptiveToolbarBeh
         // "Enable tab groups" master switch is off.
         if (!isTabGroupsEnabled() && manualOverride == AdaptiveToolbarButtonVariant.TAB_GROUPING) {
             return false;
+        }
+        if (manualOverride == AdaptiveToolbarButtonVariant.NEW_TAB
+                && BottomBarConfigUtils.isBottomBarEnabled(mActivity)) {
+            return true;
         }
         return super.canShowManualOverride(manualOverride);
     }

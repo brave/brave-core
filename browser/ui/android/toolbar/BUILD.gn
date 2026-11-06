@@ -24,6 +24,7 @@ android_library("java") {
     "//chrome/browser/android/lifecycle:java",
     "//chrome/browser/flags:java",
     "//chrome/browser/profiles/android:java",
+    "//chrome/browser/ui/android/bottombar:config_java",
     "//chrome/browser/ui/android/toolbar:adaptive_features_java",
     "//chrome/browser/ui/android/toolbar:core_java",
     "//chrome/browser/ui/android/toolbar:optional_button_java",

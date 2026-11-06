@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Make isVariantEnabled() overridable.
+
+      BraveAdaptiveToolbarStatePredictor keeps the New tab variant enabled
+      with the bottom bar on, as Brave's bottom bar has no New tab button.
+    regex:
+      re_pattern: |-
+        private (boolean isVariantEnabled\()
+      replace: |-
+        protected \1

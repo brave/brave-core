@@ -12,6 +12,7 @@ import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.ui.bottombar.BottomBarConfigUtils;
 import org.chromium.ui.permissions.AndroidPermissionDelegate;
 
 /**
@@ -21,6 +22,7 @@ import org.chromium.ui.permissions.AndroidPermissionDelegate;
 @NullMarked
 public class BraveAdaptiveToolbarStatePredictor
         extends BraveAdaptiveToolbarStatePredictorDummySuper {
+    private final Context mContext;
 
     public BraveAdaptiveToolbarStatePredictor(
             Context context,
@@ -28,6 +30,17 @@ public class BraveAdaptiveToolbarStatePredictor
             @Nullable AndroidPermissionDelegate androidPermissionDelegate,
             @Nullable AdaptiveToolbarBehavior behavior) {
         super(context, profile, androidPermissionDelegate, behavior);
+        mContext = context;
+    }
+
+    @Override
+    protected boolean isVariantEnabled(@AdaptiveToolbarButtonVariant int variant) {
+        // Brave's bottom bar has no New tab button, unlike upstream's.
+        if (variant == AdaptiveToolbarButtonVariant.NEW_TAB
+                && BottomBarConfigUtils.isBottomBarEnabled(mContext)) {
+            return true;
+        }
+        return super.isVariantEnabled(variant);
     }
 
     /**

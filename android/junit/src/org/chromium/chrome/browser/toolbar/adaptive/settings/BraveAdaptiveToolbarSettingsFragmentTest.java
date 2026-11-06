@@ -10,9 +10,11 @@ import static org.mockito.Mockito.doReturn;
 
 import static org.chromium.chrome.browser.preferences.ChromePreferenceKeys.ADAPTIVE_TOOLBAR_CUSTOMIZATION_ENABLED;
 import static org.chromium.chrome.browser.preferences.ChromePreferenceKeys.ADAPTIVE_TOOLBAR_CUSTOMIZATION_SETTINGS;
+import static org.chromium.chrome.browser.preferences.ChromePreferenceKeys.BOTTOM_BAR_ENABLED;
 
 import android.os.Bundle;
 import android.util.Pair;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -31,6 +33,8 @@ import org.mockito.junit.MockitoRule;
 import org.robolectric.annotation.Config;
 
 import org.chromium.base.test.BaseRobolectricTestRunner;
+import org.chromium.base.test.util.Features.EnableFeatures;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.glic.GlicEnabling;
 import org.chromium.chrome.browser.glic.GlicEnablingJni;
 import org.chromium.chrome.browser.omnibox.voice.VoiceRecognitionUtil;
@@ -94,6 +98,36 @@ public class BraveAdaptiveToolbarSettingsFragmentTest {
         AdaptiveToolbarStatePredictor.setSegmentationResultsForTesting(null);
         ChromeSharedPreferences.getInstance().removeKey(ADAPTIVE_TOOLBAR_CUSTOMIZATION_ENABLED);
         ChromeSharedPreferences.getInstance().removeKey(ADAPTIVE_TOOLBAR_CUSTOMIZATION_SETTINGS);
+        ChromeSharedPreferences.getInstance().removeKey(BOTTOM_BAR_ENABLED);
+    }
+
+    @Test
+    @EnableFeatures(ChromeFeatureList.ANDROID_BOTTOM_BAR)
+    public void testNewTabAvailableWithBottomBar() {
+        ChromeSharedPreferences.getInstance().writeBoolean(BOTTOM_BAR_ENABLED, true);
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(ADAPTIVE_TOOLBAR_CUSTOMIZATION_ENABLED, true);
+        ChromeSharedPreferences.getInstance()
+                .writeInt(
+                        ADAPTIVE_TOOLBAR_CUSTOMIZATION_SETTINGS,
+                        AdaptiveToolbarButtonVariant.NEW_TAB);
+
+        FragmentScenario<AdaptiveToolbarSettingsFragment> scenario = buildFragmentScenario();
+        scenario.onFragment(
+                fragment -> {
+                    mRadioPreference =
+                            (RadioButtonGroupAdaptiveToolbarPreference)
+                                    fragment.findPreference(
+                                            AdaptiveToolbarSettingsFragment
+                                                    .PREF_ADAPTIVE_RADIO_GROUP);
+
+                    Assert.assertEquals(
+                            View.VISIBLE,
+                            getButton(AdaptiveToolbarButtonVariant.NEW_TAB).getVisibility());
+                    assertButtonCheckedCorrectly("New tab", AdaptiveToolbarButtonVariant.NEW_TAB);
+                    Assert.assertEquals(
+                            AdaptiveToolbarButtonVariant.NEW_TAB, mRadioPreference.getSelection());
+                });
     }
 
     @Test
