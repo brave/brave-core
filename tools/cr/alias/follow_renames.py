@@ -31,6 +31,7 @@ from __future__ import annotations
 import argparse
 import logging
 from pathlib import Path
+import re
 import subprocess
 
 import _boot  # noqa: F401
@@ -44,6 +45,7 @@ from alias.source_rewrite import (
     compute_guard,
     find_guard,
     insert_guard,
+    java_fqn,
     patch_name_for,
     rewrite_guard_in_file,
     update_references,
@@ -103,6 +105,7 @@ def cmd_follow_renames(args: list[str]) -> int:
         )
         update_references(old_chromium, new_chromium)
         _repair_patch_files(old_chromium, new_chromium, parsed.no_git)
+    moved += _follow_moved_packages(renames, parsed.no_git)
 
     if changed is not None:
         _run_format(changed.since())
@@ -114,6 +117,87 @@ def cmd_follow_renames(args: list[str]) -> int:
 
     console.log(f'[bold green]✔[/] {len(renames)} rename(s) processed')
     return 0
+
+
+_PACKAGE = re.compile(r'^package\s+([\w.]+)\s*;', re.MULTILINE)
+_EXTENDS = re.compile(r'\bclass\s+\w+(?:\s*<[^>{]*>)?\s+extends\s+([\w.]+)')
+
+
+def _follow_moved_packages(
+    renames: list[_RenamePair], no_git: bool
+) -> list[Path]:
+    """Moves Brave's Java subclasses of classes upstream moved to another
+    package along with them, and returns them at their new paths.
+
+    A subclass in the class's old package relies on its package-private
+    members, so it has to share the new package. The `package` line goes with
+    it, and so does every reference `update_references` rewrites (imports,
+    bytecode adapters' slashed names, ProGuard flags, `.gni` source lists).
+    """
+    moved_classes: dict[str, str] = {}
+    for old, new in renames:
+        old_fqn, new_fqn = java_fqn(old), java_fqn(new)
+        if (
+            old_fqn
+            and new_fqn
+            and old_fqn.rpartition('.')[0] != new_fqn.rpartition('.')[0]
+        ):
+            moved_classes[old_fqn] = new_fqn
+    if not moved_classes:
+        return []
+    brave_root = repository.brave.root.resolve()
+    brave_in_src = brave_root.relative_to(repository.chromium.root.resolve())
+    moved = []
+    for path in sorted((brave_root / 'android').rglob('*.java')):
+        text = path.read_bytes().decode('utf-8')
+        package = _PACKAGE.search(text)
+        base = _EXTENDS.search(text)
+        if not package or not base:
+            continue
+        old_package = package.group(1)
+        base_name = base.group(1).rpartition('.')[2]
+        # The pass over upstream's renames may already have renamed the base.
+        new_fqn = next(
+            (
+                new
+                for old, new in moved_classes.items()
+                if old.rpartition('.')[0] == old_package
+                and base_name
+                in (old.rpartition('.')[2], new.rpartition('.')[2])
+            ),
+            None,
+        )
+        old_dir = old_package.replace('.', '/')
+        rel = path.relative_to(brave_root)
+        if new_fqn is None or not rel.parent.as_posix().endswith(old_dir):
+            continue
+        new_package = new_fqn.rpartition('.')[0]
+        new_rel = (
+            Path(
+                rel.parent.as_posix()[: -len(old_dir)]
+                + new_package.replace('.', '/')
+            )
+            / rel.name
+        )
+        new_path = brave_root / new_rel
+        new_path.parent.mkdir(parents=True, exist_ok=True)
+        if no_git:
+            path.rename(new_path)
+        else:
+            terminal.run_git('mv', str(path), str(new_path))
+        text = text[: package.start(1)] + new_package + text[package.end(1) :]
+        # Imports from what is now its own package, which the pass over
+        # upstream's renames added while it was in the old one.
+        text = re.sub(
+            r'^import\s+' + re.escape(new_package) + r'\.\w+\s*;\n',
+            '',
+            text,
+            flags=re.MULTILINE,
+        )
+        new_path.write_text(text, encoding='utf-8', newline='\n')
+        update_references(brave_in_src / rel, brave_in_src / new_rel)
+        moved.append(new_path)
+    return moved
 
 
 def _run_format(paths: list[str]) -> None:
