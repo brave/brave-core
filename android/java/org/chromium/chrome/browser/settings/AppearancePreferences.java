@@ -280,6 +280,14 @@ public class AppearancePreferences extends AppearanceSettingsFragment
 
         // Update the UI theme preference icon.
         updatePreferenceIcon(AppearanceSettingsFragment.PREF_UI_THEME, R.drawable.ic_theme_system);
+
+        // The bookmarks bar NTP feature picks which of these two rows is on the screen (a page
+        // link when enabled, a switch when disabled). The other is not found and is skipped.
+        updatePreferenceIcon(
+                AppearanceSettingsFragment.PREF_BOOKMARK_BAR, R.drawable.ic_product_bookmarks);
+        updatePreferenceIcon(
+                AppearanceSettingsFragment.PREF_BOOKMARK_BAR_SWITCH,
+                R.drawable.ic_product_bookmarks);
     }
 
     @Override
