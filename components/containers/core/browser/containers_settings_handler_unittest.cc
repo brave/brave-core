@@ -442,10 +442,12 @@ TEST_F(ContainersSettingsHandlerTest, SetNewTabTarget_PersistsAndNotifies) {
   EXPECT_EQ(future.Get(), std::nullopt);
   auto stored_target = GetNewTabTargetFromPrefs(prefs_);
   ASSERT_TRUE(stored_target);
+  ASSERT_TRUE(stored_target->is_container_id());
   EXPECT_EQ(stored_target->get_container_id(), "id-1");
   EXPECT_EQ(mock_observer_->new_tab_target_changed_count(), 1);
   const auto& notified_target = mock_observer_->last_new_tab_target();
   ASSERT_TRUE(notified_target);
+  ASSERT_TRUE(notified_target->is_container_id());
   EXPECT_EQ(notified_target->get_container_id(), "id-1");
 
   // Switching to a temporary container is a second notification.
