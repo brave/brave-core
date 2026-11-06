@@ -32,9 +32,10 @@ url::Origin MockAssociatedContent::GetOrigin() const {
 }
 
 void MockAssociatedContent::GetContent(GetPageContentCallback callback) {
-  set_cached_page_content(
-      PageContent(text_content_, is_video_ ? mojom::ContentType::VideoTranscript
-                                           : mojom::ContentType::PageContent));
+  set_cached_page_content(PageContent(
+      text_content_,
+      content_type_.value_or(is_video_ ? mojom::ContentType::VideoTranscript
+                                       : mojom::ContentType::PageContent)));
   std::move(callback).Run(cached_page_content_);
 }
 
