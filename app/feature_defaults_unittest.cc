@@ -355,6 +355,8 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
 TEST(FeatureDefaultsTest, DisabledBlinkRuntimeEnabledFeatures) {
   // Please, keep alphabetized.
   const base::Feature* disabled_features[] = {
+      &blink::features::kAIDecisionModelAPI,
+      &blink::features::kAIDecisionModelAPIForWorkers,
       &blink::features::kAIEmbeddingsAPI,
       &blink::features::kAIProofreadingAPI,
       &blink::features::kAIPromptAPI,
@@ -367,6 +369,7 @@ TEST(FeatureDefaultsTest, DisabledBlinkRuntimeEnabledFeatures) {
       &blink::features::kFencedFramesRuntime,
       &blink::features::kLanguageDetectionAPI,
       &blink::features::kPrerender2,
+      &blink::features::kProfilerAPI,
       &blink::features::kTranslationAPI,
       &blink::features::kUserMediaElement,
   };
@@ -379,6 +382,7 @@ TEST(FeatureDefaultsTest, DisabledBlinkRuntimeEnabledFeatures) {
 TEST(FeatureDefaultsTest, EnabledBlinkRuntimeEnabledFeatures) {
   // Please, keep alphabetized.
   const base::Feature* enabled_features[] = {
+      &blink::features::kApproximateGeolocationPermissionAccuracyMode,
       &blink::features::kReduceUserAgentMinorVersion,
   };
 
