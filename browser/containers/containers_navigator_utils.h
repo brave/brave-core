@@ -14,6 +14,8 @@ struct NavigateParams;
 
 namespace containers {
 
+// Returns the Containers StoragePartitionConfig a navigation should inherit, or
+// std::nullopt if not applicable.
 std::optional<content::StoragePartitionConfig>
 GetStoragePartitionConfigToInherit(const NavigateParams& params);
 
