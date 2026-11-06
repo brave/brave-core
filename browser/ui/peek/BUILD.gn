@@ -55,6 +55,7 @@ source_set("context_menu") {
   deps = [
     ":peek",
     ":public",
+    "//base",
     "//content/public/browser",
     "//url",
   ]

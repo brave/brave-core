@@ -99,7 +99,9 @@ bool CanOpenLinkInPeek(BrowserWindowInterface* browser,
                        const url::Origin& frame_origin);
 void OpenLinkInPeek(BrowserWindowInterface* browser,
                     content::WebContents* source,
-                    const content::OpenURLParams& params);
+                    content::RenderFrameHost* initiator_frame,
+                    const url::Origin& frame_origin,
+                    content::OpenURLParams params);
 }  // namespace peek
 
 namespace {
@@ -443,7 +445,8 @@ void RenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
     }; break;
     case IDC_CONTENT_CONTEXT_OPENLINKPEEK:
       peek::OpenLinkInPeek(
-          GetBrowser(), embedder_web_contents_,
+          GetBrowser(), embedder_web_contents_, GetRenderFrameHost(),
+          params_.frame_origin,
           GetOpenURLParamsWithExtraHeaders(
               params_.link_url, params_.frame_url, params_.frame_origin,
               WindowOpenDisposition::NEW_FOREGROUND_TAB,
