@@ -40,3 +40,5 @@ list them for the privacy review.
 - M159, 8140.0: the new `kIPHTabGroupsNonGroupFocusingFeature`, enabled from the
   start, and Java `newFlag(..., FeatureState.ENABLED_IN_PROD)` for
   `kPlatformAgnosticXGeo`.
+- M160, 8157.1: Ambient Autofill's `FEATURE_ENABLED_FOR_COUNTRIES` "us" flip,
+  which Brave's locale-derived variations country turns on.

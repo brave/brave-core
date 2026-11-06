@@ -15,6 +15,7 @@ import tempfile
 import unittest
 from unittest import mock
 
+import obsolete
 from obsolete import (
     CitedBugs,
     Git,
@@ -257,6 +258,44 @@ class PatchAdoptionsTest(unittest.TestCase):
             lines[-2:],
         )
 
+    def test_a_moved_file_is_read_at_its_old_path(self):
+        """A patch that moved with its file had its lines before the range,
+        under the file's old path."""
+        brave = FakeGit(
+            {
+                (
+                    None,
+                    'patches/a.patch',
+                ): 'diff --git a/new/x.cc b/new/x.cc\n+Lines(argument);\n'
+            }
+        )
+        chromium = FakeGit(
+            {
+                ('old', 'old/x.cc'): 'Lines(argument);\n',
+                ('new', 'new/x.cc'): 'Lines(argument);\nLines(argument);\n',
+            },
+            log='R100\told/x.cc\tnew/x.cc\n',
+        )
+        self.assertEqual(
+            [
+                'adopted (1 -> 2)\tpatches/a.patch\tnew/x.cc\t'
+                '+Lines(argument);',
+                '0 patched files outside chromium/src skipped',
+                '1 patched files already upstream',
+                '    (list them with --debt)',
+            ],
+            PatchAdoptions(FakeRange(brave, chromium)).run(),
+        )
+        chromium.files_at[('new', 'new/x.cc')] = 'Lines(argument);\n'
+        self.assertEqual(
+            [
+                '0 patched files outside chromium/src skipped',
+                '1 patched files already upstream',
+                '    (list them with --debt)',
+            ],
+            PatchAdoptions(FakeRange(brave, chromium)).run(),
+        )
+
     def test_subdirectories_and_missing_files(self):
         brave = FakeGit(
             {
@@ -360,6 +399,8 @@ class TestFiltersTest(unittest.TestCase):
         self.assertEqual(
             ('Suite', 'Test', True), (entry.suite, entry.test, entry.prefixed)
         )
+        entry = TestFilters.parse('f:1', '-Suite.Test # reason')
+        self.assertEqual(('Suite', 'Test'), (entry.suite, entry.test))
         entry = TestFilters.parse('f:1', 'Typed/1.Test')
         self.assertEqual(('Typed', False), (entry.suite, entry.prefixed))
         self.assertIsNone(TestFilters.parse('f:1', '# -Suite.Test'))
@@ -522,6 +563,35 @@ class TestFiltersTest(unittest.TestCase):
             [line for line in filters.run() if 'new subclass suite' in line],
         )
 
+    def test_new_subclass_suite_in_another_binary_is_not_reported(self):
+        """A filter of one binary doesn't run a subclass that the source's
+        name puts in another."""
+        brave = FakeGit(
+            {
+                (None, 'test/filters/unit_tests.filter'): '-FooTest.*\n',
+                (None, 'test/filters/interactive_ui_tests-linux.filter'): (
+                    '-FooTest.*\n'
+                ),
+            }
+        )
+        log = (
+            '@@@ 18d83271faee\n'
+            '+++ b/foo_interactive_uitest.cc\n'
+            '+class NewVisualTest : public FooTest {\n'
+        )
+        filters = TestFilters(
+            FakeRange(brave, FakeGit(log=log)),
+            TestIndex(_OLD_TESTS),
+            TestIndex(_NEW_TESTS + ['TEST_F(NewVisualTest, Case) {']),
+        )
+        self.assertEqual(
+            [
+                'test/filters/interactive_ui_tests-linux.filter:1\t-FooTest.*'
+                '\tnew subclass suite NewVisualTest (18d83271faee)'
+            ],
+            [line for line in filters.run() if 'new subclass suite' in line],
+        )
+
     def test_new_subclass_suite_needs_the_filtered_test(self):
         log = (
             '@@@ 18d83271faee\n'
@@ -575,11 +645,13 @@ class RemovedNamesTest(unittest.TestCase):
             'OriginalProfileSupplier',
             'kChromeUntrustedPrefix',
             'TreatAsPublicAddress',
+            'IDS_UPGRADE_ERROR_DETAILS',
         ):
             self.assertTrue(api.fullmatch(name), name)
         for name in (
             'has_initialized',
             'REMOVING',
+            'IDR_BRAVE_LOGO',
             'Bluetooth',
             'mOnResetListener',
         ):
@@ -610,17 +682,33 @@ class RemovedNamesTest(unittest.TestCase):
                 git(repo, 'init', '-q', '-b', 'main')
             (chromium / 'ios').mkdir()
             (chromium / 'ios/a.mm').write_text('void SetUpHTTPSServer();\n')
+            (chromium / 'chrome').mkdir()
+            (chromium / 'chrome/a.grd').write_text(
+                '<message name="IDS_UPGRADE_ERROR_DETAILS">x</message>\n'
+                '<message name="IDS_KEPT_MESSAGE">y</message>\n'
+            )
             git(chromium, 'add', '.')
             git(chromium, 'commit', '-q', '-m', 'old')
             git(chromium, 'tag', 'old')
             (chromium / 'ios/a.mm').write_text('void Other();\n')
+            (chromium / 'chrome/a.grd').write_text(
+                '<message name="IDS_KEPT_MESSAGE">y</message>\n'
+            )
             git(chromium, 'commit', '-q', '-am', 'new')
             git(chromium, 'tag', 'new')
             (brave / 'b.cc').write_text('void SetUpHTTPSServer() override;\n')
+            (brave / 'c.mm').write_text(
+                'GetStringUTF16(IDS_UPGRADE_ERROR_DETAILS);\n'
+                'GetStringUTF16(IDS_KEPT_MESSAGE);\n'
+            )
             git(brave, 'add', '.')
             names = RemovedNames(FakeRange(Git(brave), Git(chromium))).names()
         self.assertEqual(
-            ['name\tSetUpHTTPSServer\tupstream: ios/a.mm\tbrave: b.cc:1'],
+            [
+                'name\tIDS_UPGRADE_ERROR_DETAILS\tupstream: chrome/a.grd'
+                '\tbrave: c.mm:1',
+                'name\tSetUpHTTPSServer\tupstream: ios/a.mm\tbrave: b.cc:1',
+            ],
             names,
         )
 
@@ -706,6 +794,15 @@ class RemovedNamesTest(unittest.TestCase):
 
 
 class LiftOverridesTest(unittest.TestCase):
+    def setUp(self):
+        self.start = self.enterContext(
+            mock.patch.object(
+                obsolete.versioning,
+                'branch_start',
+                side_effect=lambda ref, on: f'start-on-{on}',
+            )
+        )
+
     def test_overrides_the_range_does_not_touch_are_counted(self):
         brave = FakeGit(log='chromium_src/a.cc\nchromium_src/b.cc\n')
         overrides = LiftOverrides(FakeRange(brave))
@@ -724,7 +821,7 @@ class LiftOverridesTest(unittest.TestCase):
                 overrides.run(),
             )
 
-    def test_diffs_from_the_branch_upstream(self):
+    def test_diffs_from_where_the_branch_starts_on_its_upstream(self):
         class UpstreamGit(FakeGit):
             def __init__(self, upstream):
                 super().__init__()
@@ -736,7 +833,7 @@ class LiftOverridesTest(unittest.TestCase):
                     if self.upstream is None:
                         raise subprocess.CalledProcessError(128, args)
                     return f'{self.upstream}\n'
-                self.spans += [a for a in args if '...' in a]
+                self.spans += [a for a in args if '..' in a]
                 return ''
 
         for upstream, base in (
@@ -745,7 +842,8 @@ class LiftOverridesTest(unittest.TestCase):
         ):
             brave = UpstreamGit(upstream)
             LiftOverrides(FakeRange(brave)).run()
-            self.assertEqual([f'{base}...HEAD'] * 2, brave.spans)
+            self.start.assert_called_with('HEAD', base)
+            self.assertEqual([f'start-on-{base}..HEAD'] * 2, brave.spans)
 
 
 if __name__ == '__main__':

@@ -188,6 +188,32 @@ class CampaignIndexTest(unittest.TestCase):
         self.assertIn('by hand, on a header Brave includes: bbb', report)
         self.assertNotIn('2000001', report)
 
+    def test_report_lists_every_whole_file_replacement(self) -> None:
+        cluster = campaigns.Cluster(
+            ['1'],
+            [Commit('a', 'Migrate X', ['1'])],
+            overridden=[f'w{i}.cc *' for i in range(5)]
+            + [f'p{i}.cc' for i in range(4)],
+        )
+        report = self.index.report([cluster])
+        self.assertIn(
+            'Brave overrides: w0.cc *, w1.cc *, w2.cc *, w3.cc *, w4.cc * '
+            '(+4, none whole-file)',
+            report,
+        )
+
+    def test_report_truncates_overrides_without_replacements(self) -> None:
+        cluster = campaigns.Cluster(
+            ['1'],
+            [Commit('a', 'Migrate X', ['1'])],
+            overridden=['w.cc *'] + [f'p{i}.cc' for i in range(4)],
+        )
+        report = self.index.report([cluster])
+        self.assertIn(
+            'Brave overrides: w.cc *, p0.cc, p1.cc (+2, none whole-file)',
+            report,
+        )
+
     def test_small_and_non_campaign_clusters_are_dropped(self) -> None:
         commits = [
             Commit('a', 'Add a thing', ['1']),
@@ -203,6 +229,30 @@ class CampaignIndexTest(unittest.TestCase):
             Commit('a', 'Media: Use JniUniquePtr in Foo', ['1']),
             Commit('b', 'Autofill: Use JniUniquePtr in Bar', ['1']),
             Commit('c', '[android] content/browser: Use JniRawPtr', ['1']),
+        ]
+        clusters = self.index.clusters(commits)
+        self.assertEqual(['1'], [b for c in clusters for b in c.bugs])
+
+    def test_added_overloads_count_as_campaign_verbs(self) -> None:
+        commits = [
+            Commit('a', '[TabStripModel] Add TabHandle overloads for X', ['1']),
+            Commit('b', '[TabStripModel] Add TabHandle overloads for Y', ['1']),
+            Commit('c', '[TabStripModel] Migrate Z to TabHandle', ['1']),
+            Commit('d', '[TabStripModel] Decouple W from indices', ['1']),
+        ]
+        clusters = self.index.clusters(commits)
+        self.assertEqual(['1'], [b for c in clusters for b in c.bugs])
+
+    def test_adopt_and_drop_count_as_campaign_verbs(self) -> None:
+        # M160, 8158.0: the safe JNI pointers cluster.
+        commits = [
+            Commit('a', 'AppBannerManager: Adopt JniRawPtr', ['1']),
+            Commit(
+                'b', 'Media: Drop native ptr from AudioManagerAndroid', ['1']
+            ),
+            Commit('c', 'Content: Use JniRawPtr in TextSuggestionHost', ['1']),
+            Commit('d', 'ContextMenu: Destroy header LargeIconBridge', ['1']),
+            Commit('e', 'SelectPopup: Cancel on null context', ['1']),
         ]
         clusters = self.index.clusters(commits)
         self.assertEqual(['1'], [b for c in clusters for b in c.bugs])
