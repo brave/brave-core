@@ -29,9 +29,6 @@ namespace {
 
 constexpr int kContentSeparatorHeightDip = 1;
 
-// The same 1px ring the contents view wears, so the floating infobar card
-// reads as its sibling. Fills its own rounded path with the band's backdrop
-// colour and strokes it, leaving the area outside the corners untouched.
 std::unique_ptr<views::Border> CreateOutlineBorder(
     const ui::ColorProvider* color_provider,
     const gfx::RoundedCornersF& corner_radii) {
@@ -45,12 +42,7 @@ std::unique_ptr<views::Border> CreateOutlineBorder(
       gfx::Insets(kRoundedCornersContentsOutlineThickness));
 }
 
-// Upstream draws a heavy BubbleBorder drop shadow here; Brave wants a
-// flatter look, but removing it entirely leaves no browser-drawn line
-// between the infobar and the page, which a malicious page can exploit to
-// make itself look like a continuation of the infobar. Paint a thin
-// hairline instead so the boundary stays visible (and unspoofable, since
-// it's painted by the browser, not the page).
+// A thin 1px line between infobars and page content.
 class ContentSeparator : public views::View {
   METADATA_HEADER(ContentSeparator, views::View)
 
@@ -67,9 +59,8 @@ class ContentSeparator : public views::View {
   }
 
   void OnPaint(gfx::Canvas* canvas) override {
-    canvas->FillRect(
-        GetLocalBounds(),
-        GetColorProvider()->GetColor(kColorInfoBarContentAreaSeparator));
+    canvas->FillRect(GetLocalBounds(), GetColorProvider()->GetColor(
+                                           kColorInfoBarContentAreaSeparator));
   }
 
   void OnThemeChanged() override {

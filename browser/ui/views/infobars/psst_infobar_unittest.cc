@@ -110,9 +110,9 @@ TEST_F(PsstInfoBarTest, GrowsTargetHeightToFitSubtitleRow) {
   FakeInfoBarManager manager;
   auto* infobar = CreateInfoBar(&manager);
 
-  EXPECT_GT(infobar->target_height(),
-            ChromeLayoutProvider::Get()->GetDistanceMetric(
-                DISTANCE_INFOBAR_HEIGHT));
+  EXPECT_GT(
+      infobar->target_height(),
+      ChromeLayoutProvider::Get()->GetDistanceMetric(DISTANCE_INFOBAR_HEIGHT));
 }
 
 TEST_F(PsstInfoBarTest, LayoutStacksSubtitleBelowTitle) {

@@ -158,12 +158,7 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
 
   // Returns the corner radii of the infobars inside the infobar container's
   // rounded-corners outline border (the border itself is rounded by its own
-  // thickness more). The infobar floats as its own card (see
-  // AdjustInfobarLayout()); its top corners use the window/border radius the
-  // same way CalculateContentsCornerRadii() does for the contents view when
-  // it's at the top edge, but its bottom corners always use the smaller
-  // radius, since the infobar never touches the window's bottom edge (the
-  // contents view is always below it).
+  // thickness more).
   gfx::RoundedCornersF CalculateInfobarCornerRadii() const;
 
   // Brave's sidebar icon strip (SidebarControlView) has its own compositor
@@ -171,8 +166,7 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
   // order, so it paints over (hides) BraveInfoBarContainerView's bottom
   // divider wherever the two overlap horizontally. Pushes a small
   // browser-painted patch into the sidebar itself so the divider still reads
-  // as continuous under it. See
-  // SidebarContainerView::SetInfobarBottomDividerY().
+  // as continuous under it.
   void UpdateSidebarBottomDivider() const;
 
   // Whether the sidebar / vertical tab strip occupies the leading (lowest-X)

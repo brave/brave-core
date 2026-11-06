@@ -20,6 +20,13 @@
 #include "chrome/browser/infobars/confirm_infobar_creator.h"
 #endif  // BUILDFLAG(IS_ANDROID)
 
+#if !BUILDFLAG(IS_ANDROID)
+// Defined in brave/browser/ui/views/infobars/psst_infobar.cc. Declared here
+// since it's only ever used by PsstInfoBarDelegate::Create().
+std::unique_ptr<infobars::InfoBar> CreatePsstInfoBar(
+    std::unique_ptr<psst::PsstInfoBarDelegate> delegate);
+#endif  // !BUILDFLAG(IS_ANDROID)
+
 namespace psst {
 // static
 void PsstInfoBarDelegate::Create(infobars::InfoBarManager* infobar_manager,
@@ -74,10 +81,11 @@ PsstInfoBarDelegate::GetIdentifier() const {
 }
 
 ui::ImageModel PsstInfoBarDelegate::GetIcon() const {
-  // Drawn on top of a branded badge background (see PsstInfoBar), so it
-  // always needs to contrast with that fixed color, not the theme's
+  // Drawn on top of a branded badge background, so it always
+  // needs to contrast with that fixed color, not the theme's
   // default icon color.
-  return ui::ImageModel::FromVectorIcon(kLeoPsstIcon, nala::kColorPrimitivePrimary30,
+  return ui::ImageModel::FromVectorIcon(kLeoPsstIcon,
+                                        nala::kColorPrimitivePrimary30,
                                         /*icon_size=*/32);
 }
 
