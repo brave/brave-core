@@ -274,6 +274,24 @@ class AIChatService : public KeyedService,
   RestoreWorkspaceAssociatedContentFromUrl(const GURL& url,
                                            const std::string& content_uuid);
 
+  using ShowCompletionNotificationCallback =
+      base::RepeatingCallback<void(const std::string& uuid,
+                                   const std::u16string& title)>;
+  using CloseCompletionNotificationCallback =
+      base::RepeatingCallback<void(const std::string& uuid)>;
+  void SetCompletionNotificationCallbacks(
+      ShowCompletionNotificationCallback show,
+      CloseCompletionNotificationCallback close);
+
+  void SetCompletionNotificationCallbackForTesting(
+      ShowCompletionNotificationCallback show) {
+    show_completion_notification_callback_ = std::move(show);
+  }
+  void SetCloseCompletionNotificationCallbackForTesting(
+      CloseCompletionNotificationCallback close) {
+    close_completion_notification_callback_ = std::move(close);
+  }
+
   std::unique_ptr<EngineConsumer> GetDefaultAIEngine();
   std::unique_ptr<EngineConsumer> GetEngineForModel(
       const std::string& model_key);
@@ -449,6 +467,8 @@ class AIChatService : public KeyedService,
   void MaybeCompleteGeneration(const std::string& uuid);
   // Deletes a conversation without notifying the conversation list.
   void EraseConversation(const std::string& id);
+  void MaybeShowCompletionNotification(const std::string& uuid);
+  void MaybeCloseCompletionNotification(const std::string& uuid);
 
   raw_ptr<ModelService> model_service_;
   raw_ptr<TabTrackerService> tab_tracker_service_;
@@ -565,6 +585,9 @@ class AIChatService : public KeyedService,
   // can hand out a proxy delegate before the bridge itself exists; the bridge
   // is owned, accessed, and destroyed only on |db_task_runner_|.
   scoped_refptr<AIChatSyncBackend> sync_backend_;
+
+  ShowCompletionNotificationCallback show_completion_notification_callback_;
+  CloseCompletionNotificationCallback close_completion_notification_callback_;
 
   base::WeakPtrFactory<AIChatService> weak_ptr_factory_{this};
 };

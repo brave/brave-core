@@ -13,6 +13,7 @@
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/no_destructor.h"
+#include "brave/browser/ai_chat/ai_chat_notification_helper.h"
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/ai_chat/browser_tool_provider_factory.h"
 #include "brave/browser/ai_chat/model_service_factory.h"
@@ -157,6 +158,13 @@ AIChatServiceFactory::BuildServiceInstanceForBrowserContext(
         },
         context));
   }
+
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+  Profile* profile = Profile::FromBrowserContext(context);
+  service->SetCompletionNotificationCallbacks(
+      base::BindRepeating(&ShowAIChatCompletionNotification, profile),
+      base::BindRepeating(&CloseAIChatCompletionNotification, profile));
+#endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
   return service;
 }
