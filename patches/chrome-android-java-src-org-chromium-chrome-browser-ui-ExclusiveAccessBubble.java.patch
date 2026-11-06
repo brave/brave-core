@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ui/ExclusiveAccessBubble.java b/chrome/android/java/src/org/chromium/chrome/browser/ui/ExclusiveAccessBubble.java
-index 4f68c538219298d717284fb4af32a58d50c9e8b7..eddb1f0297442a6b9896748b9c0d855806f2b317 100644
+index 4f68c538219298d717284fb4af32a58d50c9e8b7..df9ceda64df487dade0ed1f48a7a2d4ec361c011 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ui/ExclusiveAccessBubble.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ui/ExclusiveAccessBubble.java
 @@ -24,6 +24,7 @@ import org.chromium.ui.base.DeviceInput;
@@ -10,14 +10,14 @@ index 4f68c538219298d717284fb4af32a58d50c9e8b7..eddb1f0297442a6b9896748b9c0d8558
      private static final int EXCLUSIVE_ACCESS_SNACKBAR_DURATION_MS = 3800;
  
      private final ExclusiveAccessContext mParentContext;
-@@ -40,6 +41,7 @@ public class ExclusiveAccessBubble {
+@@ -39,6 +40,7 @@ public class ExclusiveAccessBubble {
+     private @Nullable String mText;
  
      private ExclusiveAccessBubble(ExclusiveAccessContext parentContext) {
-         mParentContext = parentContext;
 +        mBraveNotice = new BraveExclusiveAccessNotice(parentContext);
+         mParentContext = parentContext;
      }
  
-     @CalledByNative
 @@ -49,6 +51,7 @@ public class ExclusiveAccessBubble {
  
      @CalledByNative
