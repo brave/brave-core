@@ -3,13 +3,9 @@ include_rules = [
   "+brave/components/history_embeddings/core",
   "+brave/components/history_embeddings/proto",
   "+components/keyed_service/core",
-  "+components/optimization_guide/core",
-  "+components/optimization_guide/proto",
   "+components/os_crypt/async",
   "+components/page_content_annotations/content",
-  "+components/page_content_annotations/core",
   "+components/passage_embeddings",
-  "+components/prefs",
   "+content/public/browser",
   "+mojo/public/cpp/bindings",
   "+services/passage_embeddings",
@@ -18,8 +14,3 @@ include_rules = [
   "+third_party/zlib",
   "+url",
 ]
-specific_include_rules = {
-  "history_embeddings_service_unittest.cc": [
-    "+components/feature_engagement/test",
-  ]
-}

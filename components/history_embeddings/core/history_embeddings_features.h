@@ -18,10 +18,9 @@
 
 namespace brave_history_embeddings {
 
-// Upstream still defines these features. A second `BASE_FEATURE` with the
+// Upstream still defines this feature. A second `BASE_FEATURE` with the
 // same name would fail `FeatureList::CheckFeatureIdentity`.
 using history_embeddings::kHistoryEmbeddings;
-using history_embeddings::kHistoryEmbeddingsAnswers;
 
 // Contains feature configuration state. Can be set using Finch or overridden
 // for testing. Prefer to use this struct instead of feature parameters
@@ -33,37 +32,10 @@ struct FeatureParameters {
   FeatureParameters& operator=(const FeatureParameters&);
   FeatureParameters& operator=(FeatureParameters&&);
 
-  // Displays source passages in the UI on chrome://history for debug purposes.
-  bool show_source_passages = false;
-
-  // Number of milliseconds to wait after `DidFinishLoad` before extracting
-  // passages, computing and storing their embeddings, etc. Note, the
-  // extraction will only begin if no tabs are loading. If any are
-  // loading then the delay is applied again to reschedule extraction.
-  // To avoid CPU churn from rescheduling, keep this value well above zero.
-  int passage_extraction_delay = 5000;
-
-  // Specifies the `max_words_per_aggregate_passage` parameter for the
-  // DocumentChunker passage extraction algorithm. A passage from a single
-  // node can exceed this maximum, but aggregation keeps within the limit.
-  int passage_extraction_max_words_per_aggregate_passage = 200;
-
   // The minimum number of words a query or passage must have in order to be
   // included in similarity search.
   int search_query_minimum_word_count = 2;
   int search_passage_minimum_word_count = 5;
-
-  // The minimum number of words to gather from several passages used as
-  // context for the Answerer. Top passages will be included until the sum
-  // of word counts meets this minimum.
-  int context_passages_minimum_word_count = 1000;
-
-  // Specifies the number of best matching items to take from the search.
-  int search_result_item_count = 3;
-
-  // Specifies the content visibility threshold that can be shown to the user.
-  // This is for safety filtering.
-  double content_visibility_threshold = 0;
 
   // Specifies the similarity score threshold that embeddings must pass in order
   // for their results to be shown to the user. This is for general search
@@ -74,42 +46,6 @@ struct FeatureParameters {
   // the total score does not meet the `search_score_threshold`.
   double search_word_match_score_threshold = 0.2;
 
-  // Specifies whether to use the intent classifier to gate answer generation.
-  bool enable_intent_classifier = true;
-
-  // Specifies the delay in milliseconds to use for the mock intent classifier
-  // for local development.
-  int mock_intent_classifier_delay_ms = 0;
-
-  // Specifies the delay in milliseconds to use for the mock answerer for local
-  // development.
-  int mock_answerer_delay_ms = 0;
-
-  // Specifies the answer status to use for the mock answerer for local
-  // development.
-  int mock_answerer_status = 2;
-
-  // Specifies whether to show images in results for search results on the
-  // chrome://history page.
-  bool enable_images_for_results = false;
-
-  // Whether history embedding results should be shown in the omnibox when in
-  // the '@history' scope.
-  bool omnibox_scoped = true;
-
-  // Whether history embedding results should be shown in the omnibox when not
-  // in the '@history' scope. If true, behaves as if `kOmniboxScoped` is also
-  // true.
-  bool omnibox_unscoped = false;
-
-  // Whether history embedding answers should be shown in the omnibox when in
-  // the '@history' scope. No-op if `kOmniboxScoped` is false.
-  bool answers_in_omnibox_scoped = true;
-
-  // Whether quality logging data should be sent.
-  bool send_quality_log = true;
-  bool send_quality_log_v2 = true;
-
   // These parameters control deletion and rebuilding of the embeddings
   // database. If `kDeleteEmbeddings` is true, the embeddings table will
   // be cleared on startup, effectively simulating a model version change.
@@ -119,20 +55,9 @@ struct FeatureParameters {
   bool delete_embeddings = false;
   bool rebuild_embeddings = true;
 
-  // Whether to enable the URL filter to skip blocked URLs to improve
-  // performance.
-  bool use_url_filter = false;
-
-  // Specifies whether the history clusters side panel UI also searches and
-  // shows history embeddings.
-  bool enable_side_panel = true;
-
   // Specifies whether history embedding results should show just the hostname
   // of the result's URL.
   bool trim_after_host_in_results = true;
-
-  // The maximum number of URLs to use when building context for answerer.
-  int max_answerer_context_url_count = 1;
 
   // These control score boosting from passage text word matching.
   // See comments for `SearchParams` struct for more details about each value.
@@ -143,10 +68,6 @@ struct FeatureParameters {
   int word_match_smoothing_factor = 0;
   int word_match_max_term_count = 10;
   double word_match_required_term_ratio = 1.0;
-
-  // Whether to include scroll to text fragment directives with answer
-  // citations.
-  bool scroll_tags_enabled = false;
 
   // Whether to erase non-ASCII characters from passages before sending them to
   // the ML embedder. When false, passages are embedded without modification but

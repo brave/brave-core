@@ -27,19 +27,6 @@ FeatureParameters& GetFeatureParametersMutable() {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-const base::FeatureParam<bool> kShowSourcePassages(&kHistoryEmbeddings,
-                                                   "ShowSourcePassages",
-                                                   false);
-
-const base::FeatureParam<int> kPassageExtractionDelay(&kHistoryEmbeddings,
-                                                      "PassageExtractionDelay",
-                                                      5000);
-
-const base::FeatureParam<int> kPassageExtractionMaxWordsPerAggregatePassage(
-    &kHistoryEmbeddings,
-    "PassageExtractionMaxWordsPerAggregatePassage",
-    200);
-
 const base::FeatureParam<int> kSearchQueryMinimumWordCount(
     &kHistoryEmbeddings,
     "SearchQueryMinimumWordCount",
@@ -48,22 +35,6 @@ const base::FeatureParam<int> kSearchPassageMinimumWordCount(
     &kHistoryEmbeddings,
     "SearchPassageMinimumWordCount",
     5);
-
-// TODO(b/352384806): Take model metadata from Answerer when available,
-//  and eliminate this parameter as it will then be unnecessary.
-const base::FeatureParam<int> kContextPassagesMinimumWordCount(
-    &kHistoryEmbeddings,
-    "ContextPassagesMinimumWordCount",
-    1000);
-
-const base::FeatureParam<int> kSearchResultItemCount(&kHistoryEmbeddings,
-                                                     "SearchResultItemCount",
-                                                     3);
-
-const base::FeatureParam<double> kContentVisibilityThreshold(
-    &kHistoryEmbeddings,
-    "ContentVisibilityThreshold",
-    0);
 
 // See comment at `brave_history_embeddings::GetScoreThreshold()`.
 const base::FeatureParam<double> kSearchScoreThreshold(&kHistoryEmbeddings,
@@ -75,49 +46,6 @@ const base::FeatureParam<double> kSearchWordMatchScoreThreshold(
     "SearchWordMatchScoreThreshold",
     0.4);
 
-// This one defaults true because we generally want it whenever v2 is enabled
-// and it will only be used if applicable.
-const base::FeatureParam<bool> kEnableIntentClassifier(&kHistoryEmbeddings,
-                                                       "EnableIntentClassifier",
-                                                       true);
-
-const base::FeatureParam<int> kMockIntentClassifierDelayMS(
-    &kHistoryEmbeddings,
-    "MockIntentClassifierDelayMS",
-    0);
-
-const base::FeatureParam<int> kMockAnswererDelayMS(&kHistoryEmbeddings,
-                                                   "MockAnswererDelayMS",
-                                                   0);
-
-// Default to `ComputeAnswerStatus::SUCCESS`.
-const base::FeatureParam<int> kMockAnswererStatus(&kHistoryEmbeddings,
-                                                  "MockAnswererStatus",
-                                                  2);
-
-const base::FeatureParam<bool> kEnableImagesForResults(&kHistoryEmbeddings,
-                                                       "EnableImagesForResults",
-                                                       true);
-
-const base::FeatureParam<bool> kOmniboxScoped(&kHistoryEmbeddings,
-                                              "OmniboxScoped",
-                                              true);
-
-const base::FeatureParam<bool> kOmniboxUnscoped(&kHistoryEmbeddings,
-                                                "OmniboxUnscoped",
-                                                false);
-
-const base::FeatureParam<bool> kAnswersInOmniboxScoped(&kHistoryEmbeddings,
-                                                       "AnswersInOmniboxScoped",
-                                                       true);
-
-const base::FeatureParam<bool> kSendQualityLog(&kHistoryEmbeddings,
-                                               "SendQualityLog",
-                                               false);
-const base::FeatureParam<bool> kSendQualityLogV2(&kHistoryEmbeddings,
-                                                 "SendQualityLogV2",
-                                                 false);
-
 const base::FeatureParam<bool> kDeleteEmbeddings(&kHistoryEmbeddings,
                                                  "DeleteEmbeddings",
                                                  false);
@@ -125,22 +53,9 @@ const base::FeatureParam<bool> kRebuildEmbeddings(&kHistoryEmbeddings,
                                                   "RebuildEmbeddings",
                                                   true);
 
-const base::FeatureParam<bool> kUseUrlFilter(&kHistoryEmbeddings,
-                                             "UseUrlFilter",
-                                             false);
-
-const base::FeatureParam<bool> kEnableSidePanel(&kHistoryEmbeddings,
-                                                "EnableSidePanel",
-                                                true);
-
 const base::FeatureParam<bool> kTrimAfterHostInResults(&kHistoryEmbeddings,
                                                        "TrimAfterHostInResults",
                                                        true);
-
-const base::FeatureParam<int> kMaxAnswererContextUrlCount(
-    &kHistoryEmbeddings,
-    "MaxAnswererContextUrlCount",
-    1);
 
 const base::FeatureParam<double> kWordMatchMinEmbeddingScore(
     &kHistoryEmbeddings,
@@ -174,10 +89,6 @@ const base::FeatureParam<double> kWordMatchRequiredTermRatio(
     "WordMatchRequiredTermRatio",
     1.0);
 
-const base::FeatureParam<bool> kScrollTagsEnabled(&kHistoryEmbeddings,
-                                                  "ScrollTagsEnabled",
-                                                  false);
-
 const base::FeatureParam<bool> kEraseNonAsciiCharacters(
     &kHistoryEmbeddings,
     "EraseNonAsciiCharacters",
@@ -192,33 +103,13 @@ FeatureParameters::FeatureParameters(bool load_finch) {
   if (!load_finch) {
     return;
   }
-  show_source_passages = kShowSourcePassages.Get();
-  passage_extraction_delay = kPassageExtractionDelay.Get();
-  passage_extraction_max_words_per_aggregate_passage =
-      kPassageExtractionMaxWordsPerAggregatePassage.Get();
   search_query_minimum_word_count = kSearchQueryMinimumWordCount.Get();
   search_passage_minimum_word_count = kSearchPassageMinimumWordCount.Get();
-  context_passages_minimum_word_count = kContextPassagesMinimumWordCount.Get();
-  search_result_item_count = kSearchResultItemCount.Get();
-  content_visibility_threshold = kContentVisibilityThreshold.Get();
   search_score_threshold = kSearchScoreThreshold.Get();
   search_word_match_score_threshold = kSearchWordMatchScoreThreshold.Get();
-  enable_intent_classifier = kEnableIntentClassifier.Get();
-  mock_intent_classifier_delay_ms = kMockIntentClassifierDelayMS.Get();
-  mock_answerer_delay_ms = kMockAnswererDelayMS.Get();
-  mock_answerer_status = kMockAnswererStatus.Get();
-  enable_images_for_results = kEnableImagesForResults.Get();
-  omnibox_scoped = kOmniboxScoped.Get();
-  omnibox_unscoped = kOmniboxUnscoped.Get();
-  answers_in_omnibox_scoped = kAnswersInOmniboxScoped.Get();
-  send_quality_log = kSendQualityLog.Get();
-  send_quality_log_v2 = kSendQualityLogV2.Get();
   delete_embeddings = kDeleteEmbeddings.Get();
   rebuild_embeddings = kRebuildEmbeddings.Get();
-  use_url_filter = kUseUrlFilter.Get();
-  enable_side_panel = kEnableSidePanel.Get();
   trim_after_host_in_results = kTrimAfterHostInResults.Get();
-  max_answerer_context_url_count = kMaxAnswererContextUrlCount.Get();
   word_match_min_embedding_score = kWordMatchMinEmbeddingScore.Get();
   word_match_min_term_length = kWordMatchMinTermLength.Get();
   word_match_score_boost_factor = kWordMatchScoreBoostFactor.Get();
@@ -226,7 +117,6 @@ FeatureParameters::FeatureParameters(bool load_finch) {
   word_match_smoothing_factor = kWordMatchSmoothingFactor.Get();
   word_match_max_term_count = kWordMatchMaxTermCount.Get();
   word_match_required_term_ratio = kWordMatchRequiredTermRatio.Get();
-  scroll_tags_enabled = kScrollTagsEnabled.Get();
   erase_non_ascii_characters = kEraseNonAsciiCharacters.Get();
   word_match_search_non_ascii_passages = kWordMatchSearchNonAsciiPassages.Get();
 }

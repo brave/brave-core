@@ -27,9 +27,7 @@
 #include "base/threading/sequence_bound.h"
 #include "base/time/time.h"
 #include "base/timer/elapsed_timer.h"
-#include "brave/components/history_embeddings/core/answerer.h"
 #include "brave/components/history_embeddings/core/history_embeddings_search.h"
-#include "brave/components/history_embeddings/core/intent_classifier.h"
 #include "brave/components/history_embeddings/core/sql_database.h"
 #include "brave/components/history_embeddings/core/vector_database.h"
 #include "components/history/core/browser/history_service.h"
@@ -38,19 +36,11 @@
 #include "components/history/core/browser/url_database.h"
 #include "components/history/core/browser/url_row.h"
 #include "components/keyed_service/core/keyed_service.h"
-#include "components/optimization_guide/core/model_quality/model_quality_log_entry.h"
-#include "components/optimization_guide/proto/features/common_quality_data.pb.h"
 #include "components/os_crypt/async/common/encryptor.h"
 #include "components/page_content_annotations/content/page_embeddings_service.h"
 #include "components/passage_embeddings/core/passage_embeddings_types.h"
 
-namespace optimization_guide {
-class OptimizationGuideDecider;
-}  // namespace optimization_guide
-
 namespace page_content_annotations {
-class BatchAnnotationResult;
-class PageContentAnnotationsService;
 class PageEmbeddingsService;
 }  // namespace page_content_annotations
 
@@ -63,9 +53,6 @@ namespace brave_history_embeddings {
 using UrlDataCallback = base::OnceCallback<void(std::optional<UrlData>)>;
 
 using PassagesStoredCallback = base::RepeatingCallback<void(UrlData)>;
-
-using QualityLogEntry =
-    std::unique_ptr<optimization_guide::ModelQualityLogEntry>;
 
 class HistoryEmbeddingsService
     : public KeyedService,
@@ -90,20 +77,12 @@ class HistoryEmbeddingsService
   HistoryEmbeddingsService(
       os_crypt_async::OSCryptAsync* os_crypt_async,
       history::HistoryService* history_service,
-      page_content_annotations::PageContentAnnotationsService*
-          page_content_annotations_service,
-      optimization_guide::OptimizationGuideDecider* optimization_guide_decider,
       page_content_annotations::PageEmbeddingsService* page_embeddings_service,
       passage_embeddings::EmbedderMetadataProvider* embedder_metadata_provider,
-      passage_embeddings::Embedder* embedder,
-      std::unique_ptr<Answerer> answerer,
-      std::unique_ptr<IntentClassifier> intent_classifier);
+      passage_embeddings::Embedder* embedder);
   HistoryEmbeddingsService(const HistoryEmbeddingsService&) = delete;
   HistoryEmbeddingsService& operator=(const HistoryEmbeddingsService&) = delete;
   ~HistoryEmbeddingsService() override;
-
-  // Identify if the given URL is eligible for history embeddings.
-  bool IsEligible(const GURL& url);
 
   // Updates the current history visit metadata for the current navigation in
   // the WebContents. std::nullopt should be passed if the navigation does not
@@ -116,20 +95,11 @@ class HistoryEmbeddingsService
                       std::string query,
                       std::optional<base::Time> time_range_start,
                       size_t count,
-                      bool skip_answering,
                       std::vector<history::URLID> url_id_filter,
                       SearchResultCallback callback) override;
 
   // Weak `this` provider method.
   base::WeakPtr<HistoryEmbeddingsService> AsWeakPtr();
-
-  // Submit quality logging data after user selects an item from search result.
-  // Note, the `result` contains a log entry that will be consumed by this call.
-  void SendQualityLog(SearchResult& result,
-                      std::set<size_t> selections,
-                      size_t num_entered_characters,
-                      optimization_guide::proto::UserFeedback user_feedback,
-                      optimization_guide::proto::UiSurface ui_surface);
 
   // KeyedService:
   void Shutdown() override;
@@ -144,9 +114,6 @@ class HistoryEmbeddingsService
   page_content_annotations::PageEmbeddingsService::UsageMode GetUsageMode()
       const override;
   void OnPageEmbeddingsAvailable(content::Page& page) override;
-
-  // This can be overridden to gate answer generation for some accounts.
-  virtual bool IsAnswererUseAllowed() const;
 
   // Asynchronously gets passages and embeddings from storage for given
   // `url_id`. Calls `callback` with the data or nullopt if no data is found in
@@ -230,10 +197,6 @@ class HistoryEmbeddingsService
 
   void OnOsCryptAsyncReady(scoped_refptr<os_crypt_async::Encryptor> encryptor);
 
-  // This can be overridden to prepare a log entry that will then be filled
-  // with data and sent on destruction. Default implementation returns null.
-  virtual QualityLogEntry PrepareQualityLogEntry();
-
   // Stores the passages and embeddings for the URL in the database.
   void StorePassageEmbeddings(
       history::URLID url_id,
@@ -269,42 +232,6 @@ class HistoryEmbeddingsService
                          SearchResult result,
                          std::vector<ScoredUrlRow> scored_url_rows);
 
-  // Calls `page_content_annotation_service_` to determine whether the passage
-  // of each ScoredUrl should be shown to the user.
-  void DeterminePassageVisibility(SearchResultCallback callback,
-                                  SearchResult result,
-                                  std::vector<ScoredUrlRow> scored_url_rows);
-
-  // Called after `page_content_annotation_service_` has determined visibility
-  // for the passage of each ScoredUrl. This will filter `scored_urls` to only
-  // contain entries that can be shown to the user.
-  void OnPassageVisibilityCalculated(
-      SearchResultCallback callback,
-      SearchResult result,
-      std::vector<ScoredUrlRow> scored_url_rows,
-      const std::vector<page_content_annotations::BatchAnnotationResult>&
-          annotation_results);
-
-  // Called on main sequence after the history worker thread finalizes
-  // the initial search result with URL rows. Calls the `callback` and
-  // then proceeds to intent check and v2 answer generation if needed.
-  void OnPrimarySearchResultReady(SearchResultCallback callback,
-                                  SearchResult result);
-
-  // Invoked after the intent classifier computes query answerability.
-  void OnQueryIntentComputed(SearchResultCallback callback,
-                             SearchResult result,
-                             ComputeIntentStatus status,
-                             bool query_is_answerable);
-
-  // Called after the answerer finishes computing an answer. Combines
-  // the `answer_result` into `search_result` and invokes `callback`
-  // with new search result complete with answer.
-  void OnAnswerComputed(base::Time start_time,
-                        SearchResultCallback callback,
-                        SearchResult search_result,
-                        AnswererResult answerer_result);
-
   // Rebuild absent embeddings from source passages.
   void RebuildAbsentEmbeddings(std::vector<UrlData> all_url_passages);
 
@@ -320,18 +247,6 @@ class HistoryEmbeddingsService
   // specified in HistoryEmbeddingsServiceFactory.
   raw_ptr<history::HistoryService> history_service_;
 
-  // The page content annotations service is used to determine whether the
-  // content is safe. It strictly outlives this due to the dependency specified
-  // in `HistoryEmbeddingsServiceFactory`. Can be nullptr if the underlying
-  // capabilities are not supported.
-  raw_ptr<page_content_annotations::PageContentAnnotationsService>
-      page_content_annotations_service_;
-
-  // Used to determine whether a page should be excluded from history
-  // embeddings.
-  raw_ptr<optimization_guide::OptimizationGuideDecider>
-      optimization_guide_decider_;
-
   raw_ptr<page_content_annotations::PageEmbeddingsService>
       page_embeddings_service_;
 
@@ -342,13 +257,6 @@ class HistoryEmbeddingsService
 
   // The embedder used to compute embeddings. Outlives this.
   raw_ptr<passage_embeddings::Embedder> embedder_;
-
-  // The answerer used to answer queries with context. May be nullptr if
-  // the kHistoryEmbeddingsAnswers feature is disabled.
-  std::unique_ptr<Answerer> answerer_;
-
-  // The intent classifier used to determine query intent and answerability.
-  std::unique_ptr<IntentClassifier> intent_classifier_;
 
   // If the current navigation in the WebContents corresponds to a history
   // visit, holds information about the visit.
