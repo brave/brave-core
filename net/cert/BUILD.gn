@@ -22,10 +22,7 @@ action("root_cert_list_generated") {
   output = "$target_gen_dir/root_cert_list_generated.h"
   outputs = [ output ]
 
-  deps = [
-    "//net/cert:root_store_proto_full_gen",
-    "//third_party/protobuf:py_proto",
-  ]
+  deps = [ "//net/cert:root_store_proto_full_gen" ]
 
   args = [
     "--root-stores",

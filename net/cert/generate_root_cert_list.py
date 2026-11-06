@@ -47,6 +47,11 @@ import re
 import sys
 from pathlib import Path
 
+sys.path.insert(
+    0, str(Path(__file__).resolve().parents[3] / 'third_party/protobuf/python')
+)
+from google.protobuf import text_format  # pylint: disable=wrong-import-position
+
 # Keeps CRS-derived IDs clear of the upstream NetTrustAnchors range.
 CRS_HISTOGRAM_ID_BASE = 10000
 MAX_HISTOGRAM_ID = (1 << 14) - 1  # int16_t histogram_id : 15
@@ -94,18 +99,14 @@ PEM_RE = re.compile(
 
 
 def import_protos(pyproto_dir: Path) -> None:
-    """Puts the generated root_store_pb2 and its protobuf runtime first."""
-    sys.path[0:0] = [
-        str(pyproto_dir),
-        str(pyproto_dir / 'net/cert/root_store_proto_full'),
-    ]
+    """Makes the generated root_store_pb2 importable."""
+    sys.path.insert(0, str(pyproto_dir / 'net/cert/root_store_proto_full'))
 
 
 def parse_trust_anchors(textproto: Path) -> dict[str, int]:
     """Returns {cert sha256 hex: crs_root_id} for top-level trust_anchors."""
     # pylint: disable=import-error
     import root_store_pb2
-    from google.protobuf import text_format
 
     root_store = text_format.Parse(
         textproto.read_text(), root_store_pb2.RootStore()
