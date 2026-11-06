@@ -43,6 +43,7 @@ function checkReadability() {
       // Short circuit in case we already ran Readability. This mostly happens when going
       // back/forward: the page will be cached and the result will still be there.
       if (readabilityResult && readabilityResult.content) {
+        readabilityResult.uri = { spec: document.location.href, host: document.location.host };
         debug({Type: "ReaderModeStateChange", Value: "Available"});
         webkit.messageHandlers.readerModeMessageHandler.postMessage({"securityToken": SECURITY_TOKEN, "data": {Type: "ReaderModeStateChange", Value: "Available"}});
         webkit.messageHandlers.readerModeMessageHandler.postMessage({"securityToken": SECURITY_TOKEN, "data": {Type: "ReaderContentParsed", Value: readabilityResult}});
@@ -79,7 +80,9 @@ function checkReadability() {
         return;
       }
 
-      
+      // The native side uses this to match the result to the page that produced it.
+      readabilityResult.uri = { spec: uri.spec, host: uri.host };
+
       // Extract only the CSP policy value; the native side constructs the
       // meta tag to prevent raw HTML injection via a crafted tag.
       delete document.querySelector;

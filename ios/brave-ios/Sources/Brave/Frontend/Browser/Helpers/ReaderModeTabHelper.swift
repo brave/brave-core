@@ -21,7 +21,18 @@ extension TabDataValues {
 class ReaderModeTabHelper {
   private weak var tab: (any TabState)?
   private let readerModeCache: any ReaderModeCache
-  private(set) var readabilityResult: ReadabilityResult?
+  private var readabilityResult: ReadabilityResult?
+  private var readabilityResultURL: URL?
+
+  /// Parsing is asynchronous, so a result may arrive after the page that produced it has been
+  /// navigated away from. Results are only used while their source URL is still committed.
+  private var currentReadabilityResult: ReadabilityResult? {
+    guard let readabilityResult, let readabilityResultURL,
+      let committedURL = tab?.lastCommittedURL,
+      readabilityResultURL.withoutFragment == committedURL.withoutFragment
+    else { return nil }
+    return readabilityResult
+  }
 
   var onStateChanged: (() -> Void)?
   var onReaderModeDisplayed: (() -> Void)?
@@ -53,7 +64,7 @@ class ReaderModeTabHelper {
     if let url = tab?.visibleURL.flatMap(InternalURL.init), url.isReaderModePage {
       return .active
     }
-    return readabilityResult != nil ? .available : .unavailable
+    return currentReadabilityResult != nil ? .available : .unavailable
   }
 
   /// Checks the web views readability then assigns `readabilityResult`
@@ -73,7 +84,10 @@ class ReaderModeTabHelper {
         onStateChanged?()
         return
       }
-      guard let result = await webView.checkReadability() else {
+      let result = await webView.checkReadability()
+      // A newer check owns the state if the page changed while this one was running.
+      guard tab.lastCommittedURL == url else { return }
+      guard let result else {
         // No Reader Mode
         readabilityResult = nil
         onStateChanged?()
@@ -82,6 +96,7 @@ class ReaderModeTabHelper {
       do {
         let jsonObject = try JSONSerialization.jsonObject(with: Data(result.utf8)) as AnyObject
         readabilityResult = ReadabilityResult(object: jsonObject)
+        readabilityResultURL = url
         onStateChanged?()
       } catch {
         readabilityResult = nil
@@ -143,7 +158,7 @@ class ReaderModeTabHelper {
 
     Self.recordTimeBasedNumberReaderModeUsedP3A(activated: true)
 
-    if let readabilityResult {
+    if let readabilityResult = currentReadabilityResult {
       Task { @MainActor in
         try? await readerModeCache.put(currentURL, readabilityResult)
         tab.loadRequest(PrivilegedRequest(url: readerModeURL) as URLRequest)
@@ -253,6 +268,9 @@ extension ReaderModeTabHelper: ReaderModeScriptHandlerDelegate {
     didChangeReaderModeState state: ReaderModeState,
     forTab tab: some TabState
   ) {
+    if state == .unavailable {
+      readabilityResult = nil
+    }
     onStateChanged?()
   }
 
@@ -268,7 +286,10 @@ extension ReaderModeTabHelper: ReaderModeScriptHandlerDelegate {
     didParseReadabilityResult readabilityResult: ReadabilityResult,
     forTab tab: some TabState
   ) {
+    guard let url = URL(string: readabilityResult.url) else { return }
     self.readabilityResult = readabilityResult
+    readabilityResultURL = url
+    onStateChanged?()
   }
 }
 
