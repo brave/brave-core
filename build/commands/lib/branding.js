@@ -295,6 +295,27 @@ const update = () => {
       'icon_bookmark.svg',
     ),
   ])
+  // Test MSI installers for Omaha 4's `updater_tests`. Upstream looks them up
+  // under `${updater_company_short_name}MSI` and only checks in Chromium and
+  // Google variants. Ours were generated with the same script upstream uses,
+  // chrome/updater/test/test_installer/create_test_msi_installer.py.
+  fileMap.add([
+    path.join(
+      config.braveCoreDir,
+      'test',
+      'data',
+      'updater',
+      'BraveSoftwareMSI',
+    ),
+    path.join(
+      config.srcDir,
+      'chrome',
+      'updater',
+      'test',
+      'data',
+      'BraveSoftwareMSI',
+    ),
+  ])
 
   // When the channel is set, we need to copy the channel-specific files.
   let channelSpecificSourceFiles = new Set()

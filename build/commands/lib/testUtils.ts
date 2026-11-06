@@ -77,6 +77,24 @@ export function getApplicableFilters(
   suite: string,
   { includeMissing = false } = {},
 ) {
+  let result = getSuiteFilters(config, suite, includeMissing)
+
+  // updater_tests_system runs the same tests as updater_tests, but for a
+  // system-wide install.
+  if (suite === 'updater_tests_system') {
+    result = getSuiteFilters(config, 'updater_tests', includeMissing).concat(
+      result,
+    )
+  }
+
+  return result
+}
+
+function getSuiteFilters(
+  config: Config,
+  suite: string,
+  includeMissing: boolean,
+) {
   let filterFilePaths: string[] = []
 
   let possibleFilters: string[] = [
