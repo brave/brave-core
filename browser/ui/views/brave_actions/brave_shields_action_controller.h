@@ -68,14 +68,13 @@ class BraveShieldsActionController
   std::u16string GetTooltipText() const;
 
   // Returns the Shields icon, with its blocked count badge, for
-  // `web_contents`.
+  // `web_contents`. Contents that aren't tabs, e.g. Peek, have no Shields tab
+  // helper, so they get the icon for the site's Shields setting and no badge.
   static ui::ImageModel GetImageModelForWebContents(
       content::WebContents* web_contents,
       Profile& profile,
       const gfx::Size& preferred_size,
       int icon_size);
-  static std::u16string GetTooltipTextForWebContents(
-      content::WebContents* web_contents);
 
   void OnButtonPressed();
   views::Widget* GetBubbleWidget();

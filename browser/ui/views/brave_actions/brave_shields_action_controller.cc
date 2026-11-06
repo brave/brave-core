@@ -11,8 +11,10 @@
 #include "base/check_deref.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/ui/views/brave_actions/brave_icon_with_badge_image_source.h"
 #include "brave/components/brave_origin/buildflags/buildflags.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -198,6 +200,17 @@ BraveShieldsActionController::GetImageSource(content::WebContents* web_contents,
           badge_text, color_provider->GetColor(nala::kColorPrimitiveNeutral100),
           color_provider->GetColor(nala::kColorPrimitiveNeutral40));
     }
+  } else if (web_contents) {
+    // Contents that aren't tabs, e.g. Peek, have no Shields tab helper and so
+    // no blocked count, but still show whether Shields is on for the site.
+    if (auto* shields_settings =
+            BraveShieldsSettingsServiceFactory::GetForProfile(
+                Profile::FromBrowserContext(
+                    web_contents->GetBrowserContext()))) {
+      is_enabled = shields_settings->IsBraveShieldsEnabled(
+                       web_contents->GetLastCommittedURL()) &&
+                   !IsPageInReaderMode(web_contents);
+    }
   }
 
   image_source->SetIcon(
@@ -311,13 +324,8 @@ views::Widget* BraveShieldsActionController::GetBubbleWidget() {
 }
 
 std::u16string BraveShieldsActionController::GetTooltipText() const {
-  return GetTooltipTextForWebContents(tab_strip_model_->GetActiveWebContents());
-}
-
-// static
-std::u16string BraveShieldsActionController::GetTooltipTextForWebContents(
-    content::WebContents* web_contents) {
-  if (web_contents) {
+  if (content::WebContents* web_contents =
+          tab_strip_model_->GetActiveWebContents()) {
     if (auto* shields_data_controller =
             brave_shields::BraveShieldsTabHelper::From(
                 tabs::TabInterface::MaybeGetFromContents(web_contents))) {

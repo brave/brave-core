@@ -41,8 +41,8 @@ class PeekController {
   PeekController& operator=(const PeekController&) = delete;
   virtual ~PeekController();
 
-  // Sets what the Shields button of the Peek card shows. Must be called before
-  // the first `Open()`.
+  // Sets how the Shields button of the Peek card opens the Shields panel. Must
+  // be called before the first `Open()`.
   virtual void SetShieldsPanelProvider(
       std::unique_ptr<PeekShieldsPanelProvider> provider) = 0;
 

@@ -50,7 +50,8 @@ right away. It adds no accounts, services, or data collection.
   open windows without leaving Peek. Those move the page into a tab.
 - Growing the card from the position of the clicked link. Possible later.
 - Triggers other than Shift+click and the context menu.
-- Keeping the Shields panel loaded between Peeks.
+- Changing Shields settings without leaving Peek. The Shields button moves the
+  page into a tab first.
 
 ## Target platforms
 
@@ -74,7 +75,6 @@ Shift+click behaves as it did.
 | Link context menu has no preview item                                 | Adds "Open Link in Peek" for http(s) links on http(s) pages                                |
 | A link can only be previewed by opening it in a tab                   | Peek loads it without adding a tab or changing the active tab                              |
 | The page info bubble shows the combined Shields view for any contents | Contents that are not tabs, such as Peek, get the plain page info bubble                   |
-| A Shields panel always controls the active tab                        | `ShieldsPanelUI::SetTargetWebContents()` lets it control another `WebContents`             |
 
 ## Behavior
 
@@ -85,7 +85,7 @@ Shift+click behaves as it did.
 | Closed         | Nothing                                                                                                       | A Peek is opened                      |
 | Opening        | Card grows from 90% to full size and the dim backdrop fades in over 200 ms. Skipped when reduced motion is on | The animation ends, or the user acts  |
 | Loading        | Card with toolbar. The page loads inside it                                                                   | The page commits or fails             |
-| Open           | The loaded page. Toolbar shows security state, favicon, title, host, Shields count, "Open as tab", close      | Any of the exits below                |
+| Open           | The loaded page. Toolbar shows security state, favicon, title, host, Shields state, "Open as tab", close      | Any of the exits below                |
 | Open, error    | The browser's error page or certificate interstitial, inside the card                                         | The user leaves, or moves it to a tab |
 | Moving to tab  | The page moves to a new tab next to the current one and the card goes away                                    | Done                                  |
 | Closed by user | The card and its page are discarded                                                                           | Done                                  |
@@ -198,8 +198,10 @@ separate widget is used.
 3. Title, left aligned, tail elided.
 4. Host, left aligned, head elided. Formatted with `FormatUrlForSecurityDisplay`
    and without the scheme for http(s).
-5. Shields button. Opens the Shields panel for the Peek page, not the tab
-   behind. Its tooltip reports the Shields state of the Peek page.
+5. Shields button. Shows whether Shields is on for the Peek page. Pressing it
+   moves the page into a tab and opens that tab's Shields panel (the toolbar
+   Shields button, or Page Info when Shields is shown there), because changing
+   Shields is a decision about the site.
 6. "Open as tab" button.
 7. Close button.
 
@@ -272,8 +274,8 @@ Screenshots are added to the PR. Nala tokens above stand in for color values.
 ## Technical design
 
 - `//brave/browser/ui/peek:public` has `PeekController`, a per-window interface
-  owned by `BraveBrowserWindowFeatures`, and the `PeekShieldsPanelProvider`
-  interface.
+  owned by `BraveBrowserWindowFeatures`, and `PeekShieldsPanelProvider`, which
+  `BraveBrowserView` implements to open the window's own Shields panel.
 - `//brave/browser/ui/peek` has the shared logic: URL and initiator checks
   (`peek_utils`) and `PeekNavigationThrottle`.
 - `//brave/browser/ui/peek:context_menu` has two small hooks that the
@@ -283,17 +285,22 @@ Screenshots are added to the PR. Nala tokens above stand in for color values.
   `PeekShieldsButton`, and `PeekContents`. `PeekContents` owns the page and is
   its `WebContentsDelegate`, `WebContentsModalDialogManagerDelegate`,
   `PermissionRequestManager::Observer` and `DownloadManager::Observer`.
-- Peek pages get the full tab helper set. A rewrite rule and patch for
-  `tab_helpers.h` make `PeekContents` a friend of `TabHelpers`.
+- Peek pages get the tab helpers that still attach to any `WebContents`. A
+  rewrite rule and patch for `tab_helpers.h` make `PeekContents` a friend of
+  `TabHelpers`. Helpers that moved to `TabFeatures`, which only tabs get, are
+  not attached, except the ones Peek relies on: `PeekContents` creates the
+  tab-modal dialog manager, the permission request manager, the favicon driver
+  and the history tab helper itself, and `TabFeatures` reuses them once the page
+  is in a tab. Peek is deliberately not a `TabInterface`: tab features attach
+  browser UI (omnibox page actions, tab dialogs) to the tab they belong to.
 - Shift+click goes through `BraveBrowserWebContentsDelegate::OpenURLFromTab`.
   The context menu uses `IDC_CONTENT_CONTEXT_OPENLINKPEEK`.
 - `PeekController::Open(source, params)` returns false unless the source is a
   tab in this window and the params pass `CanOpenInPeek` (http(s) target,
   non-opaque http(s) initiator, and the initiator's navigation state).
-- `BraveBrowserView` gives the controller a `ShieldsPanelPeekProvider`, which
-  points the Shields panel at the Peek page.
-- Shared code that changed: `ShieldsPanelUI::SetTargetWebContents()`,
-  `BraveShieldsActionController` icon and tooltip helpers,
+- Shared code that changed: `BraveShieldsActionController` icon and tooltip
+  helpers (which show the site's Shields state for contents without a Shields
+  tab helper), `BraveBrowserView::ShowShieldsPanelForActiveTab()`,
   `BravePageInfoBubbleView` for non-tab contents, and `ViewShadow` moved to its
   own target.
 - `BraveContentBrowserClient` registers `PeekNavigationThrottle`, including for
@@ -336,7 +343,8 @@ None added. Whether to measure Peek usage is an open question.
   - Shift+click a link and use "Open Link in Peek", in a normal tab.
   - Dismiss with Escape, the close button, a click outside, and switching tabs.
   - "Open as tab" keeps the page without reloading.
-  - Site info and Shields act on the Peek page.
+  - Site info acts on the Peek page. Shields moves it into a tab and opens the
+    Shields panel there.
   - Open https://permission.site/ and https://badssl.com/ pages in Peek.
   - From a Peek page try a download, `window.open`, fullscreen and a link to a
     `data:` URL.
@@ -349,10 +357,9 @@ None added. Whether to measure Peek usage is an open question.
 1. Peek with Shift+click, the context menu, the toolbar, Shields and open as
    tab. This is in the PR.
 2. Security hardening: toolbar anchoring, navigation blocking, promotion to tab,
-   initiator origin, containers. Also in the PR.
+   initiator origin and navigation state, containers. Also in the PR.
 3. Later: a better opening animation (the card is resized each frame today,
-   which resizes the web view), growing from the clicked link, keeping the
-   Shields panel loaded across Peeks, more triggers.
+   which resizes the web view), growing from the clicked link, more triggers.
 
 No time estimate is given for phase 3.
 
