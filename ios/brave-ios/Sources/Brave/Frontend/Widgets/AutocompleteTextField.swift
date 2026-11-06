@@ -341,7 +341,7 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
     else {
       return nil
     }
-    if let match = AutocompleteClassifier.classify(text),
+    if let match = LegacyAutocompleteClassifier.classify(text),
       match.type != .searchWhatYouTyped,
       let service = URLSanitizerServiceFactory.get(
         privateMode: privateBrowsingManager.isPrivateBrowsing

@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 // From:
 // https://source.chromium.org/chromium/chromium/src/+/main:components/omnibox/browser/autocomplete_match_type.h
-NS_SWIFT_NAME(AutocompleteMatch.Type)
+NS_SWIFT_NAME(LegacyAutocompleteMatch.Type)
 typedef NS_ENUM(NSUInteger, BraveIOSAutocompleteMatchType) {
   BraveIOSAutocompleteMatchTypeUrlWhatYouTyped = 0,  // The input as a URL.
   BraveIOSAutocompleteMatchTypeHistoryUrl =
@@ -35,7 +35,7 @@ typedef NS_ENUM(NSUInteger, BraveIOSAutocompleteMatchType) {
 };
 
 OBJC_EXPORT
-NS_SWIFT_NAME(AutocompleteMatch)
+NS_SWIFT_NAME(LegacyAutocompleteMatch)
 @interface BraveIOSAutocompleteMatch : NSObject
 @property(nonatomic, readonly)
     NSString* text;  // The text passed into the classifier
@@ -46,7 +46,7 @@ NS_SWIFT_NAME(AutocompleteMatch)
 @end
 
 OBJC_EXPORT
-NS_SWIFT_NAME(AutocompleteClassifier)
+NS_SWIFT_NAME(LegacyAutocompleteClassifier)
 @interface BraveIOSAutocompleteClassifier : NSObject
 + (nullable BraveIOSAutocompleteMatch*)classify:(NSString*)text;
 + (bool)isSearchType:(BraveIOSAutocompleteMatchType)type;
