@@ -25,8 +25,6 @@ substitutions:
   - description: |-
       chrome://extensions needs cr_shortcut_input and managed_footnote on
       non-desktop Android too, which upstream only bundles for desktop.
-      color_change_listener isn't listed here: upstream now bundles it
-      unconditionally for every non-iOS platform already.
     append_to_target:
       target: build_grd
       code: |-

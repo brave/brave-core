@@ -16,6 +16,10 @@ public class BraveExtensionUiBackendUtil {
     private static final String BRAVE_ANDROID_EXTENSIONS = "BraveAndroidExtensions";
 
     public static boolean isEnabled() {
+        // The Extensions entry in the 3-dot menu and its UI aren't designed for
+        // phones yet, so they're kept tablet-only for now even though the
+        // underlying extension support (enable_extensions_core) is compiled in
+        // for all Android form factors.
         return ChromeFeatureList.isEnabled(BRAVE_ANDROID_EXTENSIONS)
                 && DeviceFormFactor.isNonMultiDisplayContextOnTablet(
                         ContextUtils.getApplicationContext());
