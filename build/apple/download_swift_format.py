@@ -23,7 +23,7 @@ def main():
     url = f'{DEPS_PACKAGES_URL}/swift-format/swift-format-{args.version}.zip'
     # Overwrite Chromium's swift-format version as it very out of date and
     # we will not be editing Chromium swift files to format anyways.
-    output_dir = wspath('//third_party/swift-format')
+    output_dir = wspath('//third_party/swift-toolchain/usr/bin')
     swift_format_bin = os.path.join(output_dir, 'swift-format')
     if get_swift_format_hash(swift_format_bin) != args.sha256hash:
         deps.DownloadAndUnpack(url, output_dir)
