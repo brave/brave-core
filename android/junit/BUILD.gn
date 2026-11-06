@@ -268,7 +268,9 @@ if (is_android) {
   robolectric_library(
       "brave_junit_tests_org.chromium.chrome.browser.suggestions.tile") {
     sources = [
+      "src/org/chromium/chrome/browser/suggestions/tile/BraveTileInteractionDelegateImplTest.java",
       "src/org/chromium/chrome/browser/suggestions/tile/BraveTileViewTest.java",
+      "src/org/chromium/chrome/browser/suggestions/tile/TileRendererTest.java",
     ]
     deps = [
       "//brave/browser/ui/android/ntp_widgets:java",

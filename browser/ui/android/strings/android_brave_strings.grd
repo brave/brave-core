@@ -1359,6 +1359,9 @@ Are you sure you want to do this?
       <message name="IDS_BRAVE_NTP_SHOW_FAVORITES" desc="Menu item to switch the NTP top-sites widget to show pinned shortcuts (favorites).">
         Show favorites
       </message>
+      <message name="IDS_BRAVE_NTP_TOP_SITES_TOOLTIP_DESC" desc="Tooltip shown below the NTP top-sites widget explaining the long-press menu.">
+        Long press an icon to switch between your favorites and frequently visited sites
+      </message>
       <message name="IDS_BRAVE_NTP_HIDE_WIDGET" desc="Menu item to hide the NTP top-sites widget entirely.">
         Hide widget
       </message>
