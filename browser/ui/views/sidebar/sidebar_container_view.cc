@@ -91,9 +91,8 @@ class InfobarBottomDividerView : public views::View {
 
   // views::View:
   void OnPaint(gfx::Canvas* canvas) override {
-    canvas->FillRect(
-        GetLocalBounds(),
-        GetColorProvider()->GetColor(kColorInfoBarContentAreaSeparator));
+    canvas->FillRect(GetLocalBounds(), GetColorProvider()->GetColor(
+                                           kColorInfoBarContentAreaSeparator));
   }
 
   void OnThemeChanged() override {
