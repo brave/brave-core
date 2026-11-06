@@ -31,6 +31,7 @@ class BraveSearchEnginesHandler : public SearchEnginesHandler {
   void RegisterMessages() override;
   void OnTemplateURLServiceChanged() override;
   base::DictValue GetSearchEnginesList() override;
+  base::DictValue CreateDictionaryForEngine(TemplateURL* template_url) override;
 
   base::ListValue GetPrivateSearchEnginesList();
   void HandleGetPrivateSearchEnginesList(const base::ListValue& args);
