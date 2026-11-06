@@ -13,9 +13,11 @@
 #include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-#include "brave/components/containers/content/browser/storage_partition_utils.h"
-#include "brave/components/containers/core/common/features.h"
-#include "content/public/browser/security_principal.h"
+namespace containers {
+// Implemented in brave/browser/containers/containers_navigator_utils.cc.
+std::optional<content::StoragePartitionConfig>
+GetStoragePartitionConfigToInherit(const NavigateParams& params);
+}  // namespace containers
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 namespace {
@@ -40,27 +42,15 @@ void UpdateParams(NavigateParams* params) {
   MaybeOverridePopupDisposition(params);
 }
 
-#if BUILDFLAG(ENABLE_CONTAINERS)
 std::optional<content::StoragePartitionConfig>
 GetStoragePartitionConfigToInherit(const NavigateParams& params) {
-  if (!base::FeatureList::IsEnabled(containers::features::kContainers)) {
-    return std::nullopt;
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  if (auto config = containers::GetStoragePartitionConfigToInherit(params)) {
+    return config;
   }
-
-  if (params.storage_partition_config) {
-    return containers::MaybeInheritStoragePartition(
-        *params.storage_partition_config);
-  }
-
-  if (params.source_site_instance) {
-    return containers::MaybeInheritStoragePartition(
-        params.source_site_instance->GetSecurityPrincipal()
-            .GetStoragePartitionConfig());
-  }
-
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
   return std::nullopt;
 }
-#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 }  // namespace
 

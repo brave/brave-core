@@ -36,6 +36,22 @@ source_set("containers") {
   ]
 }
 
+source_set("navigator") {
+  sources = [
+    "containers_navigator_utils.cc",
+    "containers_navigator_utils.h",
+  ]
+
+  deps = [
+    ":containers",
+    "//brave/components/containers/content/browser",
+    "//brave/components/containers/core/browser",
+    "//brave/components/containers/core/common",
+    "//chrome/browser/ui/navigator",
+    "//content/public/browser",
+  ]
+}
+
 source_set("browser_tests") {
   testonly = true
 
