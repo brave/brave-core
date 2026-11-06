@@ -477,24 +477,51 @@ class PlasterRuleTest(_RebaseStopTestCase):
         )
         self.assertEqual(self.read(FOO_PATCH), commit[FOO_PATCH])
 
-    def test_leaves_the_patch_when_chromium_is_on_another_version(self):
+    def test_takes_the_commit_patch_when_chromium_is_on_another_version(self):
         ancestor = self.plastered('BraveThing')
         commit = self.plastered('BraveOtherThing')
+        # The base's patch only differs in the blob hashes it records.
         base = {FOO_PATCH: ancestor[FOO_PATCH].replace('index ', 'index 0')}
         step = self.stop_rebase(ancestor=ancestor, base=base, commit=commit)
-        conflicted_patch = self.read(FOO_PATCH)
         self.repo.add_tag('158.0.8130.1')
 
         with self.assertLogs(level='WARNING') as logs:
-            self.assertEqual(step.resolve(), [])
+            resolutions = step.resolve()
 
-        self.assertEqual(self.read(FOO_PATCH), conflicted_patch)
+        self.assertEqual(
+            resolutions,
+            [
+                Resolution(
+                    path=FOO_PATCH, rule=Rule.CONTEXT_ONLY_PLASTERED_PATCH
+                )
+            ],
+        )
+        self.assertEqual(self.read(FOO_PATCH), commit[FOO_PATCH])
         self.assertEqual(len(logs.output), 1)
         self.assertIn(
             f'checked out at 158.0.8130.1, but the rebase is at '
             f'{CHROMIUM_VERSION}',
             logs.output[0],
         )
+
+    def test_leaves_the_patch_the_base_changed_on_another_version(self):
+        """The base's plaster change shows in its patch's lines, so the
+        commit's patch would drop it."""
+        ancestor = self.plastered('BraveThing')
+        commit = self.plastered('BraveOtherThing')
+        base = {
+            FOO_PATCH: ancestor[FOO_PATCH].replace(
+                'BraveThing', 'BraveBaseThing'
+            )
+        }
+        step = self.stop_rebase(ancestor=ancestor, base=base, commit=commit)
+        conflicted_patch = self.read(FOO_PATCH)
+        self.repo.add_tag('158.0.8130.1')
+
+        with self.assertLogs(level='WARNING'):
+            self.assertEqual(step.resolve(), [])
+
+        self.assertEqual(self.read(FOO_PATCH), conflicted_patch)
 
     def test_leaves_the_patch_when_its_plaster_is_conflicted_too(self):
         ancestor = self.plastered('BraveThing')
@@ -506,8 +533,9 @@ class PlasterRuleTest(_RebaseStopTestCase):
         self.assertEqual(step.resolve(), [])
 
     def test_leaves_the_patch_when_its_plaster_fails(self):
-        """The base only changed the patch's context here, but a patch with a
-        plaster is only ever regenerated, never taken from the commit."""
+        """The base only changed the patch's context here, but with Chromium on
+        the version rebased so far, a patch with a plaster is only ever
+        regenerated, never taken from the commit."""
         ancestor = self.plastered('BraveThing')
         commit = {
             # Nothing in the source matches this plaster anymore.
