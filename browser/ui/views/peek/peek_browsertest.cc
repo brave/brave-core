@@ -11,7 +11,6 @@
 #include "base/functional/bind.h"
 #include "base/run_loop.h"
 #include "base/synchronization/lock.h"
-#include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/threading/thread_restrictions.h"
@@ -711,38 +710,26 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, HttpAuthMovesToTab) {
   WaitForMovedToTab(contents);
 }
 
-// The user picks which files to give the site in a tab, where the omnibox shows
-// the site, not over the tab Peek was opened from.
-IN_PROC_BROWSER_TEST_F(PeekBrowserTest, FileChooserMovesToTab) {
+// Which files to give the site is decided in a tab, where the omnibox shows the
+// site. Peek moves there and cancels the chooser, so the page gets `cancel` and
+// the user presses the input again.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, FileChooserMovesToTabAndCancels) {
   ui::FakeSelectFileDialog::Factory* factory =
       ui::FakeSelectFileDialog::RegisterFactory();
-  const GURL url = GetURL("b.com", "/title1.html");
-  OpenPeek(url);
+  OpenPeek(GetURL("b.com", "/title1.html"));
   content::WebContents* contents = peek_contents();
 
-  base::RunLoop dialog_opened;
-  factory->SetOpenCallback(dialog_opened.QuitClosure());
   ClickFileInput(*contents->GetPrimaryMainFrame());
-  dialog_opened.Run();
 
-  EXPECT_FALSE(controller()->IsShowing());
-  EXPECT_EQ(contents, active_contents());
-  ui::FakeSelectFileDialog* dialog = factory->GetLastDialog();
-  ASSERT_TRUE(dialog);
-  ASSERT_TRUE(dialog->caller());
-  EXPECT_EQ(url, *dialog->caller());
-
-  // Cancelling reaches the page, which stays in the tab.
-  dialog->CallFileSelectionCanceled();
+  WaitForMovedToTab(contents);
   EXPECT_EQ(true, content::EvalJs(contents->GetPrimaryMainFrame(),
                                   "window.fileInputCancelled"));
   EXPECT_EQ(contents, active_contents());
+  EXPECT_FALSE(factory->GetLastDialog());
 }
 
-// What Peek guarantees is the move to a tab before any chooser exists. Whether
-// FileSelectHelper then shows a dialog for a subframe is its own decision, so
-// this only requires that a dialog never opens while Peek is still showing.
-IN_PROC_BROWSER_TEST_F(PeekBrowserTest, FileChooserInCrossSiteFrameMovesToTab) {
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest,
+                       FileChooserInCrossSiteFrameMovesToTabAndCancels) {
   ui::FakeSelectFileDialog::Factory* factory =
       ui::FakeSelectFileDialog::RegisterFactory();
   const GURL url = GetURL("b.com", "/title1.html");
@@ -759,13 +746,12 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, FileChooserInCrossSiteFrameMovesToTab) {
   ASSERT_TRUE(frame);
   ASSERT_EQ(url::Origin::Create(frame_url), frame->GetLastCommittedOrigin());
 
-  bool peek_showing_when_dialog_opened = false;
-  factory->SetOpenCallback(base::BindLambdaForTesting(
-      [&] { peek_showing_when_dialog_opened = controller()->IsShowing(); }));
   ClickFileInput(*frame);
 
   WaitForMovedToTab(contents);
-  EXPECT_FALSE(peek_showing_when_dialog_opened);
+  EXPECT_EQ(true, content::EvalJs(frame, "window.fileInputCancelled"));
+  EXPECT_EQ(contents, active_contents());
+  EXPECT_FALSE(factory->GetLastDialog());
 }
 
 IN_PROC_BROWSER_TEST_F(PeekBrowserTest, HttpPageIsNotMarkedSecure) {

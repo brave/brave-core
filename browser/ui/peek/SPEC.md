@@ -153,7 +153,7 @@ panels cannot open Peek.
 | `alert`, `confirm`, `prompt`, `beforeunload`                                         | Suppressed while in Peek                                                                                                   |
 | The peeked link is a download                                                        | Peek closes and the download proceeds                                                                                      |
 | The page starts a download                                                           | Peek moves to a tab                                                                                                        |
-| File chooser                                                                         | Peek moves to a tab, then the chooser opens                                                                                |
+| File chooser                                                                         | Peek moves to a tab and the chooser is cancelled; the user presses the input again                                         |
 | Device chooser (USB, HID, serial, Bluetooth), FedCM                                  | Not shown while in Peek; works after "Open as tab"                                                                         |
 | Peek is opened while another is open                                                 | The new one replaces it                                                                                                    |
 | The active tab changes                                                               | Peek closes                                                                                                                |
