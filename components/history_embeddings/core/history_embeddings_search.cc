@@ -89,9 +89,6 @@ SearchResult::~SearchResult() = default;
 SearchResult& SearchResult::operator=(SearchResult&&) = default;
 
 SearchResult SearchResult::Clone() {
-  // Cannot copy `answerer_result`; it should not have substance.
-  CHECK(!answerer_result.log_entry);
-
   SearchResult clone;
   clone.session_id = session_id;
   clone.query = query;
@@ -104,21 +101,6 @@ SearchResult SearchResult::Clone() {
 
 bool SearchResult::IsContinuationOf(const SearchResult& other) {
   return session_id == other.session_id && query == other.query;
-}
-
-const std::string& SearchResult::AnswerText() const {
-  return answerer_result.answer.text();
-}
-
-size_t SearchResult::AnswerIndex() const {
-  for (size_t i = 0; i < scored_url_rows.size(); i++) {
-    // Note, the spec isn't used because there may be minor differences between
-    // the strings, for example "http://other.com" versus "http://other.com/".
-    if (scored_url_rows[i].row.url() == GURL(answerer_result.url)) {
-      return i;
-    }
-  }
-  return 0;
 }
 
 }  // namespace brave_history_embeddings

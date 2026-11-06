@@ -99,9 +99,6 @@ struct SearchParams {
   // match text search only.
   bool word_match_search_non_ascii_passages = false;
 
-  // If true, answering step will be skipped even if the query is answerable.
-  bool skip_answering = false;
-
   // If non-empty, restricts the search to UrlData rows whose `url_id` is in
   // this set. Empty means no restriction (search the full corpus). Storage
   // backends use this to short-circuit a full scan when the caller already

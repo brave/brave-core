@@ -28,19 +28,15 @@
 #include "base/time/time.h"
 #include "base/timer/elapsed_timer.h"
 #include "base/token.h"
-#include "base/uuid.h"
 #include "brave/components/history_embeddings/core/history_embeddings_features.h"
-#include "brave/components/history_embeddings/core/search_strings_update_listener.h"
 #include "brave/components/history_embeddings/core/sql_database.h"
 #include "brave/components/history_embeddings/core/vector_database.h"
 #include "components/history/core/browser/history_backend.h"
 #include "components/history/core/browser/history_types.h"
 #include "components/history/core/browser/url_database.h"
 #include "components/history/core/browser/url_row.h"
-#include "components/optimization_guide/core/hints/optimization_guide_decider.h"
 #include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/os_crypt/async/common/encryptor.h"
-#include "components/page_content_annotations/core/page_content_annotations_service.h"
 #include "components/passage_embeddings/core/passage_embeddings_types.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
@@ -127,22 +123,13 @@ float GetScoreThreshold(
 HistoryEmbeddingsService::HistoryEmbeddingsService(
     os_crypt_async::OSCryptAsync* os_crypt_async,
     history::HistoryService* history_service,
-    page_content_annotations::PageContentAnnotationsService*
-        page_content_annotations_service,
-    optimization_guide::OptimizationGuideDecider* optimization_guide_decider,
     page_content_annotations::PageEmbeddingsService* page_embeddings_service,
     passage_embeddings::EmbedderMetadataProvider* embedder_metadata_provider,
-    passage_embeddings::Embedder* embedder,
-    std::unique_ptr<Answerer> answerer,
-    std::unique_ptr<IntentClassifier> intent_classifier)
+    passage_embeddings::Embedder* embedder)
     : os_crypt_async_(os_crypt_async),
       history_service_(history_service),
-      page_content_annotations_service_(page_content_annotations_service),
-      optimization_guide_decider_(optimization_guide_decider),
       page_embeddings_service_(page_embeddings_service),
       embedder_(embedder),
-      answerer_(std::move(answerer)),
-      intent_classifier_(std::move(intent_classifier)),
       query_id_weak_ptr_factory_(&query_id_),
       weak_ptr_factory_(this) {
   // The history service is never nullptr; even unit tests should provide it.
@@ -156,19 +143,6 @@ HistoryEmbeddingsService::HistoryEmbeddingsService(
       GetFeatureParameters().delete_embeddings);
   history_service_observation_.Observe(history_service_);
 
-  // Notify page content annotations service that we will need the content
-  // visibility model during the session.
-  if (page_content_annotations_service_) {
-    page_content_annotations_service_->RequestAndNotifyWhenModelAvailable(
-        page_content_annotations::AnnotationType::kContentVisibility,
-        base::DoNothing());
-  }
-
-  if (optimization_guide_decider_) {
-    optimization_guide_decider_->RegisterOptimizationTypes(
-        {optimization_guide::proto::HISTORY_EMBEDDINGS});
-  }
-
   page_embeddings_observation_.Observe(page_embeddings_service_);
 
   // Observation needs to be set up after the `storage_` construction since the
@@ -179,24 +153,6 @@ HistoryEmbeddingsService::HistoryEmbeddingsService(
 }
 
 HistoryEmbeddingsService::~HistoryEmbeddingsService() = default;
-
-bool HistoryEmbeddingsService::IsEligible(const GURL& url) {
-  bool eligible;
-  if (!GetFeatureParameters().use_url_filter || !optimization_guide_decider_) {
-    eligible = true;
-  } else {
-    eligible = optimization_guide_decider_->CanApplyOptimization(
-                   url, optimization_guide::proto::HISTORY_EMBEDDINGS,
-                   /*optimization_metadata=*/nullptr) !=
-               optimization_guide::OptimizationGuideDecision::kFalse;
-  }
-
-  if (!eligible) {
-    passages_stored_callback_for_tests_.Run(UrlData(0, 0, base::Time()));
-  }
-
-  return eligible;
-}
 
 void HistoryEmbeddingsService::UpdateVisitMetadata(
     content::WebContents* web_contents,
@@ -225,7 +181,6 @@ SearchResult HistoryEmbeddingsService::Search(
     std::string query,
     std::optional<base::Time> time_range_start,
     size_t count,
-    bool skip_answering,
     std::vector<history::URLID> url_id_filter,
     SearchResultCallback callback) {
   SearchResult result;
@@ -252,7 +207,6 @@ SearchResult HistoryEmbeddingsService::Search(
   result.count = count;
 
   // Set search parameters, kept within result for caller convenience.
-  result.search_params.skip_answering = skip_answering;
   result.search_params.erase_non_ascii_characters =
       GetFeatureParameters().erase_non_ascii_characters;
   result.search_params.word_match_search_non_ascii_passages =
@@ -349,125 +303,6 @@ base::WeakPtr<HistoryEmbeddingsService> HistoryEmbeddingsService::AsWeakPtr() {
   return weak_ptr_factory_.GetWeakPtr();
 }
 
-void HistoryEmbeddingsService::SendQualityLog(
-    SearchResult& result,
-    std::set<size_t> selections,
-    size_t num_entered_characters,
-    optimization_guide::proto::UserFeedback user_feedback,
-    optimization_guide::proto::UiSurface ui_surface) {
-  // Exit early if logging is not enabled.
-  if (!GetFeatureParameters().send_quality_log ||
-      !embedder_metadata_.IsValid()) {
-    return;
-  }
-
-  // V1 HistoryQueryLoggingData:
-  {
-    // Prepare log entry and record a histogram for whether it's prepared.
-    QualityLogEntry log_entry = PrepareQualityLogEntry();
-    base::UmaHistogramBoolean("History.Embeddings.Quality.LogEntryPrepared",
-                              !!log_entry);
-    if (!log_entry) {
-      return;
-    }
-
-    optimization_guide::proto::LogAiDataRequest* request =
-        log_entry->log_ai_data_request();
-    if (!request) {
-      return;
-    }
-
-    request->mutable_model_execution_info()->set_execution_id(base::StrCat({
-        "history-search-embeddings:",
-        base::Uuid::GenerateRandomV4().AsLowercaseString(),
-    }));
-
-    optimization_guide::proto::HistoryQueryQuality* query_quality =
-        request->mutable_history_query()->mutable_quality();
-    if (!query_quality) {
-      return;
-    }
-
-    // Fill the quality proto with data.
-    size_t num_days =
-        result.time_range_start.has_value()
-            ? (base::Time::Now() - result.time_range_start.value()).InDays() + 1
-            : 0;
-    query_quality->set_session_id(result.session_id);
-    query_quality->set_user_feedback(user_feedback);
-    query_quality->set_embedding_model_version(
-        embedder_metadata_.model_version);
-    query_quality->set_query(result.query);
-    query_quality->set_num_days(num_days);
-    query_quality->set_num_entered_characters(num_entered_characters);
-    query_quality->set_ui_surface(ui_surface);
-
-    bool any_document_clicked = false;
-    for (size_t row_index = 0; row_index < result.scored_url_rows.size();
-         ++row_index) {
-      const ScoredUrlRow& scored_url_row = result.scored_url_rows[row_index];
-      optimization_guide::proto::DocumentShown* document_shown =
-          query_quality->add_top_documents_shown();
-      document_shown->set_url(scored_url_row.row.url().spec());
-      document_shown->set_was_clicked(selections.contains(row_index));
-      any_document_clicked |= document_shown->was_clicked();
-      if (!scored_url_row.scores.empty()) {
-        document_shown->set_best_embedding_score(
-            std::ranges::max(scored_url_row.scores));
-      }
-      document_shown->set_total_document_score(scored_url_row.scored_url.score);
-
-      // Log the top passages that may be used as context for the Answerer.
-      for (size_t passage_index : scored_url_row.GetBestScoreIndices(
-               0, GetFeatureParameters().context_passages_minimum_word_count)) {
-        optimization_guide::proto::PassageData* passage_data =
-            document_shown->add_passages();
-        passage_data->set_text(
-            scored_url_row.url_data.passages.passages(passage_index));
-        passage_data->set_score(scored_url_row.scores[passage_index]);
-        const std::vector<float>& embedding =
-            scored_url_row.url_data.passage_embeddings[passage_index]
-                ->embedding.GetData();
-        passage_data->mutable_embedding()
-            ->mutable_floats()
-            ->mutable_values()
-            ->Add(embedding.begin(), embedding.end());
-      }
-    }
-    if (result.scored_url_rows.size() > 0) {
-      query_quality->set_final_model_status(
-          any_document_clicked ? optimization_guide::proto::FinalModelStatus::
-                                     FINAL_MODEL_STATUS_SUCCESS
-                               : optimization_guide::proto::FinalModelStatus::
-                                     FINAL_MODEL_STATUS_FAILURE);
-    }
-
-    // The data is sent when `log_entry` destructs.
-    // `ModelQualityLogEntry::Drop(std::move(log_entry))` would be required to
-    // avoid logging if `log_entry` escapes the service, but it only exists
-    // within this method so we log proactively by destructing it here.
-  }
-
-  // V2 HistoryAnswerLoggingData:
-  if (GetFeatureParameters().send_quality_log_v2) {
-    if (result.answerer_result.log_entry) {
-      optimization_guide::proto::HistoryAnswerQuality* answer_quality =
-          result.answerer_result.log_entry->log_ai_data_request()
-              ->mutable_history_answer()
-              ->mutable_quality();
-      if (answer_quality) {
-        answer_quality->set_session_id(result.session_id);
-        answer_quality->set_url(result.answerer_result.url);
-
-        // Take the entry out from the SearchResult so that it will log on
-        // destruction at the end of this block.
-        std::unique_ptr<optimization_guide::ModelQualityLogEntry> log_entry =
-            std::move(result.answerer_result.log_entry);
-      }
-    }
-  }
-}
-
 void HistoryEmbeddingsService::Shutdown() {
   query_id_weak_ptr_factory_.InvalidateWeakPtrs();
   weak_ptr_factory_.InvalidateWeakPtrs();
@@ -522,10 +357,6 @@ void HistoryEmbeddingsService::EmbedderMetadataUpdated(
   os_crypt_async_->GetInstance(
       base::BindOnce(&HistoryEmbeddingsService::OnOsCryptAsyncReady,
                      weak_ptr_factory_.GetWeakPtr()));
-}
-
-bool HistoryEmbeddingsService::IsAnswererUseAllowed() const {
-  return true;
 }
 
 void HistoryEmbeddingsService::GetUrlData(history::URLID url_id,
@@ -717,12 +548,6 @@ std::vector<UrlData> HistoryEmbeddingsService::Storage::GetUrlDataInTimeRange(
   return sql_database.GetUrlDataInTimeRange(from_time, to_time, limit, offset);
 }
 
-QualityLogEntry HistoryEmbeddingsService::PrepareQualityLogEntry() {
-  // This requires some Chrome machinery to upload the log entry, so it's
-  // implemented in ChromeHistoryEmbeddingsService.
-  return nullptr;
-}
-
 void HistoryEmbeddingsService::StorePassageEmbeddings(
     history::URLID url_id,
     history::VisitID visit_id,
@@ -829,218 +654,18 @@ void HistoryEmbeddingsService::OnSearchCompleted(
           << num_added_by_word_match << " added by word match and "
           << num_kept_by_word_match << " kept by word match after capping";
 
-  DeterminePassageVisibility(std::move(callback), std::move(result),
-                             std::move(filtered));
-}
-
-void HistoryEmbeddingsService::DeterminePassageVisibility(
-    SearchResultCallback callback,
-    SearchResult result,
-    std::vector<ScoredUrlRow> scored_url_rows) {
-  bool is_visibility_model_available =
-      page_content_annotations_service_ &&
-      page_content_annotations_service_->GetModelInfoForType(
-          page_content_annotations::AnnotationType::kContentVisibility);
   base::UmaHistogramCounts100("History.Embeddings.NumUrlsMatched",
-                              scored_url_rows.size());
-  base::UmaHistogramBoolean(
-      "History.Embeddings.VisibilityModelAvailableAtQuery",
-      is_visibility_model_available);
+                              filtered.size());
 
-  if (!is_visibility_model_available || scored_url_rows.empty()) {
-    OnPassageVisibilityCalculated(std::move(callback), std::move(result),
-                                  std::move(scored_url_rows), {});
-    return;
-  }
-
-  std::vector<std::string> inputs;
-  inputs.reserve(scored_url_rows.size());
-  for (const ScoredUrlRow& url_row : scored_url_rows) {
-    inputs.emplace_back(url_row.GetBestPassage());
-  }
-  page_content_annotations_service_->BatchAnnotate(
-      base::BindOnce(&HistoryEmbeddingsService::OnPassageVisibilityCalculated,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
-                     std::move(result), std::move(scored_url_rows)),
-      std::move(inputs),
-      page_content_annotations::AnnotationType::kContentVisibility);
-}
-
-void HistoryEmbeddingsService::OnPassageVisibilityCalculated(
-    SearchResultCallback callback,
-    SearchResult result,
-    std::vector<ScoredUrlRow> scored_url_rows,
-    const std::vector<page_content_annotations::BatchAnnotationResult>&
-        annotation_results) {
-  if (annotation_results.empty()) {
-    scored_url_rows.clear();
-  } else {
-    CHECK_EQ(scored_url_rows.size(), annotation_results.size());
-
-    // Filter for scored URLs that are ok to be shown to the user.
-    auto url_rows_it = scored_url_rows.begin();
-    for (const page_content_annotations::BatchAnnotationResult&
-             annotation_result : annotation_results) {
-      // Note, if threshold is configured at exactly zero then it's
-      // intentionally allowing everything through.
-      if (annotation_result.visibility_score().value_or(0.0) <
-          GetFeatureParameters().content_visibility_threshold) {
-        url_rows_it = scored_url_rows.erase(url_rows_it);
-      } else {
-        ++url_rows_it;
-      }
-    }
-  }
-
-  base::UmaHistogramCounts100("History.Embeddings.NumMatchedUrlsVisible",
-                              scored_url_rows.size());
-
-  if (scored_url_rows.empty()) {
+  if (filtered.empty()) {
     std::move(callback).Run(std::move(result));
     return;
   }
 
   history_service_->ScheduleDBTaskForUI(base::BindOnce(
       &FinishSearchResultWithHistory,
-      base::SequencedTaskRunner::GetCurrentDefault(),
-      base::BindRepeating(&HistoryEmbeddingsService::OnPrimarySearchResultReady,
-                          weak_ptr_factory_.GetWeakPtr(), std::move(callback)),
-      std::move(result), std::move(scored_url_rows)));
-}
-
-void HistoryEmbeddingsService::OnPrimarySearchResultReady(
-    SearchResultCallback callback,
-    SearchResult result) {
-  callback.Run(result.Clone());
-
-  // Do no intent classification or answering if `Search` caller requested
-  // to `skip_answering`.
-  if (result.search_params.skip_answering) {
-    return;
-  }
-
-  // TODO(b/369446266): Intent classification can execute in parallel with
-  //  initial query embedding computation and search. This doesn't make
-  //  much difference when the mock is used but could save time when the
-  //  real ML intent classifier is working.
-  if (answerer_ && intent_classifier_ && IsAnswererUseAllowed()) {
-    std::string query = result.query;
-    VLOG(3) << "ComputeQueryIntent for '" << query << "'";
-    intent_classifier_->ComputeQueryIntent(
-        std::move(query),
-        base::BindOnce(&HistoryEmbeddingsService::OnQueryIntentComputed,
-                       weak_ptr_factory_.GetWeakPtr(), callback,
-                       std::move(result)));
-  } else {
-    // Intent classification is explicitly disabled; bypass to answerer.
-    OnQueryIntentComputed(callback, std::move(result),
-                          ComputeIntentStatus::SUCCESS,
-                          /*query_is_answerable=*/true);
-  }
-}
-
-void HistoryEmbeddingsService::OnQueryIntentComputed(
-    SearchResultCallback callback,
-    SearchResult result,
-    ComputeIntentStatus status,
-    bool query_is_answerable) {
-  const bool answerable = status == ComputeIntentStatus::SUCCESS &&
-                          query_is_answerable && answerer_ &&
-                          IsAnswererUseAllowed();
-  VLOG(3) << "OnQueryIntentComputed for '" << result.query << "' ("
-          << query_is_answerable << "," << answerable << ")";
-  VLOG(3) << "ComputeIntentStatus: " << static_cast<int>(status);
-  base::UmaHistogramBoolean("History.Embeddings.QueryAnswerable", answerable);
-  if (!answerable) {
-    return;
-  }
-
-  // Send a result indicating that an answer generation is being attempted so
-  // that the UI can show a loading state.
-  SearchResult loadingResult = result.Clone();
-  loadingResult.answerer_result =
-      AnswererResult(ComputeAnswerStatus::kLoading, result.query,
-                     optimization_guide::proto::Answer());
-  callback.Run(std::move(loadingResult));
-
-  Answerer::Context context(result.session_id);
-  for (size_t url_index = 0;
-       url_index <
-       std::min(result.scored_url_rows.size(),
-                static_cast<size_t>(
-                    GetFeatureParameters().max_answerer_context_url_count));
-       url_index++) {
-    const ScoredUrlRow& scored_url_row = result.scored_url_rows[url_index];
-    std::vector<size_t> best_indices = scored_url_row.GetBestScoreIndices(
-        0, GetFeatureParameters().context_passages_minimum_word_count);
-    std::vector<std::string>& best_passages =
-        context.url_passages_map[scored_url_row.row.url().spec()];
-    best_passages.reserve(best_indices.size());
-    for (size_t index : best_indices) {
-      best_passages.push_back(scored_url_row.url_data.passages.passages(index));
-    }
-  }
-  std::string query = result.query;
-  VLOG(3) << "ComputeAnswer for '" << query << "'";
-  answerer_->ComputeAnswer(
-      std::move(query), std::move(context),
-      base::BindOnce(&HistoryEmbeddingsService::OnAnswerComputed,
-                     weak_ptr_factory_.GetWeakPtr(), base::Time::Now(),
-                     callback, std::move(result)));
-}
-
-void HistoryEmbeddingsService::OnAnswerComputed(
-    base::Time start_time,
-    SearchResultCallback callback,
-    SearchResult search_result,
-    AnswererResult answerer_result) {
-  base::TimeDelta waited = base::Time::Now() - start_time;
-  search_result.answerer_result = std::move(answerer_result);
-  VLOG(3) << "Query '" << search_result.answerer_result.query
-          << "' computed answer '" << search_result.AnswerText() << "'";
-  VLOG(3) << "ComputeAnswerStatus: "
-          << static_cast<int>(search_result.answerer_result.status) << " ("
-          << waited.InMilliseconds() << " ms)";
-
-  base::UmaHistogramEnumeration("History.Embeddings.ComputeAnswerStatus",
-                                answerer_result.status);
-  const std::string compute_answer_time_histogram_name =
-      "History.Embeddings.ComputeAnswerTime";
-  base::UmaHistogramTimes(compute_answer_time_histogram_name, waited);
-  switch (answerer_result.status) {
-    case ComputeAnswerStatus::kLoading:
-      base::UmaHistogramTimes(compute_answer_time_histogram_name + ".Loading",
-                              waited);
-      break;
-    case ComputeAnswerStatus::kSuccess:
-      base::UmaHistogramTimes(compute_answer_time_histogram_name + ".Success",
-                              waited);
-      break;
-    case ComputeAnswerStatus::kUnanswerable:
-      base::UmaHistogramTimes(
-          compute_answer_time_histogram_name + ".Unanswerable", waited);
-      break;
-    case ComputeAnswerStatus::kModelUnavailable:
-      base::UmaHistogramTimes(
-          compute_answer_time_histogram_name + ".ModelUnavailable", waited);
-      break;
-    case ComputeAnswerStatus::kExecutionFailure:
-      base::UmaHistogramTimes(
-          compute_answer_time_histogram_name + ".ExecutionFailure", waited);
-      break;
-    case ComputeAnswerStatus::kExecutionCancelled:
-      base::UmaHistogramTimes(
-          compute_answer_time_histogram_name + ".ExecutionCancelled", waited);
-      break;
-    case ComputeAnswerStatus::kFiltered:
-      base::UmaHistogramTimes(compute_answer_time_histogram_name + ".Filtered",
-                              waited);
-      break;
-    case ComputeAnswerStatus::kUnspecified:
-      break;
-  }
-
-  callback.Run(std::move(search_result));
+      base::SequencedTaskRunner::GetCurrentDefault(), std::move(callback),
+      std::move(result), std::move(filtered)));
 }
 
 void HistoryEmbeddingsService::RebuildAbsentEmbeddings(
@@ -1077,29 +702,9 @@ bool HistoryEmbeddingsService::QueryIsFiltered(
     RecordQueryFiltered(QueryFiltered::FILTERED_NOT_ASCII);
     return true;
   }
-  const absl::flat_hash_set<uint32_t>& stop_words_hashes =
-      SearchStringsUpdateListener::GetInstance()->stop_words_hashes();
   size_t min_term_length = GetFeatureParameters().word_match_min_term_length;
   std::vector<std::string> query_terms =
-      SplitQueryToTerms(stop_words_hashes, raw_query, min_term_length);
-  const absl::flat_hash_set<uint32_t>& filter_words_hashes =
-      SearchStringsUpdateListener::GetInstance()->filter_words_hashes();
-  if (std::ranges::any_of(query_terms, [&](std::string_view query_term) {
-        uint32_t hash = HashString(query_term);
-        return filter_words_hashes.contains(hash);
-      })) {
-    RecordQueryFiltered(QueryFiltered::FILTERED_ONE_WORD_HASH_MATCH);
-    return true;
-  }
-  for (size_t i = 1; i < query_terms.size(); i++) {
-    std::string two_terms =
-        base::StrCat({query_terms[i - 1], " ", query_terms[i]});
-    uint32_t hash = HashString(two_terms);
-    if (filter_words_hashes.contains(hash)) {
-      RecordQueryFiltered(QueryFiltered::FILTERED_TWO_WORD_HASH_MATCH);
-      return true;
-    }
-  }
+      SplitQueryToTerms(/*stop_words_hashes=*/{}, raw_query, min_term_length);
   RecordQueryFiltered(QueryFiltered::NOT_FILTERED);
   search_params.query_terms = std::move(query_terms);
   return false;
