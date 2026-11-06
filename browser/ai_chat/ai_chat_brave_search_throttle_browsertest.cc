@@ -148,6 +148,8 @@ class AIChatBraveSearchThrottleBrowserTest : public InProcessBrowserTest {
       return prompt_factory_->show_count() == expected_prompt_count &&
              IsLeoOpened() == expected_leo_opened;
     }));
+    EXPECT_EQ(expected_prompt_count, prompt_factory_->show_count());
+    EXPECT_EQ(IsLeoOpened(), expected_leo_opened);
     EXPECT_EQ(observer.last_navigation_url().path(), kLeoPath);
     EXPECT_EQ(GetActiveWebContents()->GetLastCommittedURL().path(),
               expected_last_committed_path);
