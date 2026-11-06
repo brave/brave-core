@@ -135,30 +135,6 @@ public class DappsModel implements KeyringServiceObserver {
         }
     }
 
-    public void processPublicEncryptionKey(
-            String requestId, boolean isApproved, Callback1<Boolean> hasMoreRequests) {
-        synchronized (mLock) {
-            if (mBraveWalletService == null) {
-                return;
-            }
-            mBraveWalletService.notifyGetPublicKeyRequestProcessed(requestId, isApproved);
-            mBraveWalletService.getPendingGetEncryptionPublicKeyRequests(
-                    requests -> hasMoreRequests.call(requests != null && requests.length > 0));
-        }
-    }
-
-    public void processDecryptRequest(
-            String requestId, boolean isApproved, Callback1<Boolean> hasMoreRequests) {
-        synchronized (mLock) {
-            if (mBraveWalletService == null) {
-                return;
-            }
-            mBraveWalletService.notifyDecryptRequestProcessed(requestId, isApproved);
-            mBraveWalletService.getPendingDecryptRequests(
-                    requests -> hasMoreRequests.call(requests != null && requests.length > 0));
-        }
-    }
-
     public void setWalletBadgeVisible() {
         mMutableWalletIconNotificationVisible.setValue(true);
     }
@@ -235,12 +211,6 @@ public class DappsModel implements KeyringServiceObserver {
                         setWalletBadgeVisible();
                     }
                 });
-        mBraveWalletService.getPendingGetEncryptionPublicKeyRequests(
-                requests -> {
-                    if (requests != null && requests.length > 0) {
-                        setWalletBadgeVisible();
-                    }
-                });
         mJsonRpcService.getPendingAddChainRequests(
                 networks -> {
                     if (networks != null && networks.length > 0) {
@@ -248,12 +218,6 @@ public class DappsModel implements KeyringServiceObserver {
                     }
                 });
         mJsonRpcService.getPendingSwitchChainRequests(
-                requests -> {
-                    if (requests != null && requests.length > 0) {
-                        setWalletBadgeVisible();
-                    }
-                });
-        mBraveWalletService.getPendingDecryptRequests(
                 requests -> {
                     if (requests != null && requests.length > 0) {
                         setWalletBadgeVisible();

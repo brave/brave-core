@@ -56,8 +56,6 @@ constexpr char kEthSendRawTransaction[] = "eth_sendRawTransaction";
 constexpr char kEthSign[] = "eth_sign";
 constexpr char kPersonalSign[] = "personal_sign";
 constexpr char kPersonalEcRecover[] = "personal_ecRecover";
-constexpr char kEthGetEncryptionPublicKey[] = "eth_getEncryptionPublicKey";
-constexpr char kEthDecrypt[] = "eth_decrypt";
 constexpr char kWalletWatchAsset[] = "wallet_watchAsset";
 constexpr char kMetamaskWatchAsset[] = "metamask_watchAsset";
 constexpr char kWeb3ClientVersion[] = "web3_clientVersion";
@@ -78,8 +76,7 @@ constexpr auto kMethodsRequireInteraction =
         {kEthRequestAccounts, kAddEthereumChainMethod,
          kSwitchEthereumChainMethod, kEthSendTransaction, kEthSignTransaction,
          kEthSign, kPersonalSign, kPersonalEcRecover, kEthSignTypedDataV3,
-         kEthSignTypedDataV4, kEthGetEncryptionPublicKey, kEthDecrypt,
-         kWalletWatchAsset, kRequestPermissionsMethod});
+         kEthSignTypedDataV4, kWalletWatchAsset, kRequestPermissionsMethod});
 
 void RejectUnsupportedMethod(
     base::Value id,
@@ -604,83 +601,6 @@ bool EthereumProviderImpl::UnsubscribeLogObserver(
   return false;
 }
 
-void EthereumProviderImpl::GetEncryptionPublicKey(const std::string& address,
-                                                  RequestCallback callback,
-                                                  base::Value id) {
-  const auto account_id =
-      FindAuthenticatedAccountByAddress(address, id, callback);
-  if (!account_id) {
-    return;
-  }
-
-  // Only show bubble when there is no immediate error
-  brave_wallet_service_->AddGetPublicKeyRequest(
-      account_id, dapp_origin_, std::move(callback), std::move(id));
-  delegate_->ShowPanel(dapp_origin_);
-}
-
-void EthereumProviderImpl::Decrypt(
-    const std::string& untrusted_encrypted_data_json,
-    const std::string& address,
-    RequestCallback callback,
-    base::Value id) {
-  const auto account_id =
-      FindAuthenticatedAccountByAddress(address, id, callback);
-  if (!account_id) {
-    return;
-  }
-
-  api_request_helper::ParseJsonNonBlocking(
-      untrusted_encrypted_data_json,
-      base::BindOnce(&EthereumProviderImpl::ContinueDecryptWithSanitizedJson,
-                     weak_factory_.GetWeakPtr(), std::move(callback),
-                     std::move(id), account_id->Clone()));
-}
-
-void EthereumProviderImpl::ContinueDecryptWithSanitizedJson(
-    RequestCallback callback,
-    base::Value id,
-    const mojom::AccountIdPtr& account_id,
-    base::expected<base::Value, std::string> result) {
-  if (!result.has_value() || !result->is_dict()) {
-    SendErrorOnRequest(mojom::ProviderError::kInvalidParams,
-                       l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
-                       std::move(callback), std::move(id));
-    return;
-  }
-
-  auto eth_decrypt_data = ParseEthDecryptData(result->GetDict());
-  if (!eth_decrypt_data) {
-    SendErrorOnRequest(mojom::ProviderError::kInvalidParams,
-                       l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
-                       std::move(callback), std::move(id));
-    return;
-  }
-
-  std::optional<std::vector<uint8_t>> unsafe_message_bytes =
-      keyring_service_
-          ->DecryptCipherFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
-              account_id, eth_decrypt_data->version, eth_decrypt_data->nonce,
-              eth_decrypt_data->ephemeral_public_key,
-              eth_decrypt_data->ciphertext);
-  if (!unsafe_message_bytes.has_value()) {
-    return RejectInvalidParams(std::move(id), std::move(callback));
-  }
-
-  std::string unsafe_message(unsafe_message_bytes->begin(),
-                             unsafe_message_bytes->end());
-  // If the string was not UTF8 then it should have already failed on the
-  // JSON sanitization, but we add this check for extra safety.
-  if (!base::IsStringUTF8(unsafe_message)) {
-    return RejectInvalidParams(std::move(id), std::move(callback));
-  }
-
-  brave_wallet_service_->AddDecryptRequest(account_id, dapp_origin_,
-                                           std::move(unsafe_message),
-                                           std::move(callback), std::move(id));
-  delegate_->ShowPanel(dapp_origin_);
-}
-
 void EthereumProviderImpl::SignTypedMessage(
     mojom::EthSignTypedDataPtr eth_sign_typed_data,
     RequestCallback callback,
@@ -883,9 +803,6 @@ void EthereumProviderImpl::SetupMethodHandlers() {
               &EthereumProviderImpl::HandleEthSignTypedDataV3Method);
   add_handler(kEthSignTypedDataV4,
               &EthereumProviderImpl::HandleEthSignTypedDataV4Method);
-  add_handler(kEthGetEncryptionPublicKey,
-              &EthereumProviderImpl::HandleEthGetEncryptionPublicKeyMethod);
-  add_handler(kEthDecrypt, &EthereumProviderImpl::HandleEthDecryptMethod);
   add_handler(kWalletWatchAsset,
               &EthereumProviderImpl::HandleWalletWatchAssetMethod);
   add_handler(kMetamaskWatchAsset,
@@ -1037,29 +954,6 @@ void EthereumProviderImpl::HandleEthSignTypedDataV4Method(
 
   SignTypedMessage(std::move(eth_sign_typed_data), std::move(callback),
                    std::move(request.id));
-}
-
-void EthereumProviderImpl::HandleEthGetEncryptionPublicKeyMethod(
-    JsonRpcRequest request,
-    RequestCallback callback) {
-  auto address = ParseEthGetEncryptionPublicKeyParams(request.params);
-  if (!address) {
-    RejectUnsupportedMethod(std::move(request.id), std::move(callback));
-    return;
-  }
-  GetEncryptionPublicKey(*address, std::move(callback), std::move(request.id));
-}
-
-void EthereumProviderImpl::HandleEthDecryptMethod(JsonRpcRequest request,
-                                                  RequestCallback callback) {
-  auto eth_decrypt_params = ParseEthDecryptParams(request.params);
-  if (!eth_decrypt_params) {
-    RejectUnsupportedMethod(std::move(request.id), std::move(callback));
-    return;
-  }
-  Decrypt(eth_decrypt_params->untrusted_encrypted_data_json,
-          eth_decrypt_params->address, std::move(callback),
-          std::move(request.id));
 }
 
 void EthereumProviderImpl::HandleWalletWatchAssetMethod(
