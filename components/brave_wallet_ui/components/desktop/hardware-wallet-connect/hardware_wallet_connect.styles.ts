@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import { LoaderIcon } from 'brave-ui/components/icons'
 import * as leo from '@brave/leo/tokens/css/variables'
 import Checkbox from '@brave/leo/react/checkbox'
+import LeoDropdown from '@brave/leo/react/dropdown'
 
 // Shared Styles
 import { Text } from '../../shared/style'
@@ -47,9 +48,7 @@ export const HardwareWalletGraphic = styled.div<{
   position: relative;
 `
 
-export const HardwareWalletCaption = styled.div`
-  font: ${leo.font.large.regular};
-  text-align: left;
+export const HardwareWalletCaption = styled(Text)`
   flex-shrink: 0;
   max-width: 200px;
 `
@@ -248,4 +247,13 @@ export const Divider = styled.div`
   width: 100%;
   height: 1px;
   background: ${leo.color.divider.subtle};
+`
+
+export const Dropdown = styled(LeoDropdown)`
+  & leo-option {
+    color: ${leo.color.text.primary};
+    &[aria-selected] {
+      color: ${leo.color.text.interactive};
+    }
+  }
 `

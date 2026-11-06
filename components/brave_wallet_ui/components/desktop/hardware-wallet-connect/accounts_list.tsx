@@ -6,7 +6,6 @@
 import { assert, assertNotReached } from 'chrome://resources/js/assert.js'
 import * as React from 'react'
 import { EntityId } from '@reduxjs/toolkit'
-import Dropdown from '@brave/leo/react/dropdown'
 
 // Types
 import { BraveWallet } from '../../../constants/types'
@@ -52,6 +51,7 @@ import {
   DropdownLabel,
   HardwareWalletCaption,
   HelpLink,
+  Dropdown,
 } from './hardware_wallet_connect.styles'
 import {
   ContinueButton, //
@@ -267,7 +267,13 @@ export const HardwareWalletAccountsList = ({
               isV2
             />
             {deviceName ? (
-              <HardwareWalletCaption>{deviceName}</HardwareWalletCaption>
+              <HardwareWalletCaption
+                textColor='primary'
+                variant='default.regular'
+                textAlign='left'
+              >
+                {deviceName}
+              </HardwareWalletCaption>
             ) : null}
           </Row>
           {coin === BraveWallet.CoinType.ETH ? (
