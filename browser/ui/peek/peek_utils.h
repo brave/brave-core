@@ -31,7 +31,9 @@ bool IsShiftClickOpen(const content::OpenURLParams& params);
 
 // Whether `params` can be loaded in Peek: an http(s) URL from an http(s) page,
 // so the load is treated like a link click rather than a browser-initiated
-// navigation.
+// navigation. The params must also carry the initiator's navigation state,
+// which content/ creates from the initiating document; without it the load
+// skips the initiator's policies, e.g. Local Network Access checks.
 bool CanOpenInPeek(const content::OpenURLParams& params);
 
 }  // namespace peek
