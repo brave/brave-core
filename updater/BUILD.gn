@@ -13,12 +13,6 @@ if (is_win || is_mac || is_linux) {
       "ping_configurator_unittest.cc",
       "run_all_unittests.cc",
     ]
-    if (is_win) {
-      sources += [
-        "com_classes_legacy_unittest.cc",
-        "win_constants_unittest.cc",
-      ]
-    }
     if (is_mac) {
       sources += [ "keystone_install_sh_mac_unittest.cc" ]
       data = [
@@ -37,6 +31,10 @@ if (is_win || is_mac || is_linux) {
       "//testing/gtest",
     ]
     if (is_win) {
+      sources += [
+        "com_classes_legacy_unittest.cc",
+        "win_constants_unittest.cc",
+      ]
       deps += [ "//chrome/updater/app/server/win:updater_legacy_idl" ]
     }
   }
