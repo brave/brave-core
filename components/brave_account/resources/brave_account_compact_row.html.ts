@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import '//resources/cr_elements/cr_link_row/cr_link_row.js'
 import { html, nothing } from '//resources/lit/v3_0/lit.rollup.js'
 import { loadTimeData } from '//resources/js/load_time_data.js'
 
@@ -12,19 +11,31 @@ import { BraveAccountSettingsStrings } from './brave_components_webui_strings.js
 
 export function getHtml(this: BraveAccountCompactRowElement) {
   return html`${this.description
-    ? html` <cr-link-row
-        start-icon="social-brave-release-favicon-fullheight-color"
-        .label=${loadTimeData.getString(
-          BraveAccountSettingsStrings.BRAVE_ACCOUNT_TITLE,
-        )}
+    ? html`<div
+        class="row"
         @click=${this.navigateToAccountSection}
       >
-        <div
-          class="description ${this.actionRequired ? 'action-required' : ''}"
-          slot="sub-label"
-        >
-          ${this.displayDescription}
+        <leo-icon name="social-brave-release-favicon-fullheight-color">
+        </leo-icon>
+        <div class="title-and-description">
+          <div class="title">
+            ${loadTimeData.getString(
+              BraveAccountSettingsStrings.BRAVE_ACCOUNT_TITLE,
+            )}
+          </div>
+          <div
+            class="description ${this.actionRequired ? 'action-required' : ''}"
+          >
+            ${this.displayDescription}
+          </div>
         </div>
-      </cr-link-row>`
+        <leo-button
+          kind="plain-faint"
+          size="medium"
+          fab
+        >
+          <leo-icon name="carat-right"></leo-icon>
+        </leo-button>
+      </div>`
     : nothing}`
 }
