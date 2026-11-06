@@ -13,9 +13,8 @@ import threading
 from collections import deque
 from collections.abc import Iterable, Iterator
 from contextlib import contextmanager
-from dataclasses import dataclass, replace
+from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
-from enum import Enum
 from typing import Any
 
 # A JSON object decoded from an API response, or built to send as one.
@@ -44,10 +43,7 @@ MAX_PAGE_SIZE = 1000
 # back with exactly this many was very likely cut short upstream.
 MAX_CLUSTER_FAILURES = 2000
 
-# Flake rate thresholds used to classify upstream flakiness. See
-# docs/best-practices/testing-upstream-failures.md.
-KNOWN_FLAKE_RATE = 0.05
-OCCASIONAL_FLAKE_RATE = 0.01
+# The fewest pass, fail or flaky verdicts a flake rate is computed from.
 MIN_MEANINGFUL_VERDICTS = 10
 
 
@@ -106,80 +102,6 @@ class Window:
 # -- What the numbers mean -----------------------------------------------
 
 
-class Verdict(Enum):
-    """How a test's upstream history reads, and what to do about it."""
-
-    KNOWN_FLAKE = "known_upstream_flake"
-    OCCASIONAL = "occasional_upstream_failures"
-    INSUFFICIENT_DATA = "insufficient_data"
-    STABLE = "stable_upstream"
-
-    @property
-    def severity(self) -> int:
-        """Ordering for "the worst verdict across several tests"."""
-        return _VERDICT_SEVERITY[self]
-
-    @property
-    def headline(self) -> str:
-        """The verdict as a report heading."""
-        return _VERDICT_HEADLINE[self]
-
-    @property
-    def recommendation(self) -> str:
-        """What a reader should do about this verdict."""
-        return _VERDICT_RECOMMENDATION[self]
-
-    @property
-    def style(self) -> str:
-        """How to colour the verdict in a terminal."""
-        return _VERDICT_STYLE[self]
-
-
-# Declared outside the enum body, where a plain assignment would become
-# another member rather than a class attribute.
-_VERDICT_SEVERITY = {
-    Verdict.KNOWN_FLAKE: 0,
-    Verdict.OCCASIONAL: 1,
-    Verdict.INSUFFICIENT_DATA: 2,
-    Verdict.STABLE: 3,
-}
-
-_VERDICT_HEADLINE = {
-    Verdict.KNOWN_FLAKE: "KNOWN UPSTREAM FLAKE",
-    Verdict.OCCASIONAL: "OCCASIONAL UPSTREAM FAILURES",
-    Verdict.INSUFFICIENT_DATA: "INSUFFICIENT DATA",
-    Verdict.STABLE: "STABLE UPSTREAM",
-}
-
-_VERDICT_STYLE = {
-    Verdict.KNOWN_FLAKE: "bold red",
-    Verdict.OCCASIONAL: "yellow",
-    Verdict.INSUFFICIENT_DATA: "dim",
-    Verdict.STABLE: "green",
-}
-
-_VERDICT_RECOMMENDATION = {
-    Verdict.KNOWN_FLAKE: (
-        "Safe to filter -- this test has a confirmed"
-        " flakiness pattern in Chromium upstream."
-    ),
-    Verdict.OCCASIONAL: (
-        "Consider filtering -- test shows some upstream"
-        " instability. Document findings in filter"
-        " comment."
-    ),
-    Verdict.INSUFFICIENT_DATA: (
-        "Cannot determine -- insufficient upstream"
-        " data for this test in the lookback"
-        " period."
-    ),
-    Verdict.STABLE: (
-        "Investigate Brave-specific causes -- test appears"
-        " stable in Chromium upstream."
-    ),
-}
-
-
 @dataclass(frozen=True)
 class VerdictCounts:
     """How a test's runs turned out, tallied.
@@ -209,10 +131,6 @@ class VerdictCounts:
     # build failed.
     precluded: int = 0
 
-    # Statuses none of the above covers. Counted in the total, never in
-    # the flake rate.
-    other: int = 0
-
     @classmethod
     def from_api(cls, counts: JsonDict) -> VerdictCounts:
         """Read a `verdictCounts` object. Values arrive as strings."""
@@ -235,7 +153,6 @@ class VerdictCounts:
                 self.execution_errored + other.execution_errored
             ),
             precluded=self.precluded + other.precluded,
-            other=self.other + other.other,
         )
 
     @property
@@ -248,7 +165,6 @@ class VerdictCounts:
             + self.skipped
             + self.execution_errored
             + self.precluded
-            + self.other
         )
 
     @property
@@ -269,104 +185,24 @@ class VerdictCounts:
 
 
 @dataclass(frozen=True)
-class DailyCounts:
-    """One day of a test's history, across every variant."""
-
-    # The day, as "YYYY-MM-DD".
-    date: str
-    # That day's verdicts, summed over every variant.
-    counts: VerdictCounts
-
-
-@dataclass(frozen=True)
 class Flakiness:
-    """What a test's history adds up to, and how it reads.
-
-    Build one with `of_groups` (the usual path, from QueryStats) or
-    `of_verdicts` (the fallback, from Query).
-    """
+    """What a test's history adds up to. Build one with `of_groups`."""
 
     # Every verdict in the window, summed.
     counts: VerdictCounts = VerdictCounts()
 
-    # The same verdicts split by day, oldest first, with empty days
-    # left out. Only the single-test report renders this.
-    daily: tuple[DailyCounts, ...] = ()
-
     @classmethod
     def of_groups(cls, groups: Iterable[StatsGroup]) -> Flakiness:
-        """Aggregate per-day, per-variant stats into one reading."""
-        by_date: dict[str, VerdictCounts] = {}
+        """Sum per-day, per-variant stats into one reading."""
+        total = VerdictCounts()
         for group in groups:
-            by_date[group.date] = (
-                by_date.get(group.date, VerdictCounts()) + group.counts
-            )
-        daily = tuple(
-            DailyCounts(date, counts)
-            for date, counts in sorted(by_date.items())
-            if counts.total
-        )
-        total = VerdictCounts()
-        for day in daily:
-            total += day.counts
-        return cls(counts=total, daily=daily)
-
-    @classmethod
-    def of_verdicts(cls, verdicts: Iterable[TestVerdict]) -> Flakiness:
-        """Tally individual verdicts, for when QueryStats has nothing."""
-        total = VerdictCounts()
-        for verdict in verdicts:
-            total += verdict.as_counts()
+            total += group.counts
         return cls(counts=total)
 
     @property
     def flake_rate(self) -> float:
         """Share of meaningful verdicts that did not simply pass."""
         return self.counts.flake_rate
-
-    @property
-    def verdict(self) -> Verdict:
-        """How this history reads."""
-        if self.counts.meaningful < MIN_MEANINGFUL_VERDICTS:
-            return Verdict.INSUFFICIENT_DATA
-        if self.flake_rate >= KNOWN_FLAKE_RATE:
-            return Verdict.KNOWN_FLAKE
-        if self.flake_rate >= OCCASIONAL_FLAKE_RATE:
-            return Verdict.OCCASIONAL
-        return Verdict.STABLE
-
-    def as_json(self) -> JsonDict:
-        """The shape `check-upstream-flake.py --json` publishes.
-
-        Other tooling reads these keys, so they are a contract; see
-        agents/skills/make-ci-green/retrigger-ci.py.
-        """
-        return {
-            "total_verdicts": self.counts.total,
-            "meaningful_verdicts": self.counts.meaningful,
-            "passed": self.counts.passed,
-            "failed": self.counts.failed,
-            "flaky": self.counts.flaky,
-            "skipped": self.counts.skipped,
-            "execution_errored": self.counts.execution_errored,
-            "precluded": self.counts.precluded,
-            "flake_rate": self.flake_rate,
-            "verdict": self.verdict.value,
-            "recommendation": self.verdict.recommendation,
-            "daily_breakdown": [
-                {
-                    "date": day.date,
-                    "passed": day.counts.passed,
-                    "failed": day.counts.failed,
-                    "flaky": day.counts.flaky,
-                    "skipped": day.counts.skipped,
-                    "execution_errored": day.counts.execution_errored,
-                    "precluded": day.counts.precluded,
-                    "total": day.counts.total,
-                }
-                for day in self.daily
-            ],
-        }
 
 
 # -- What the service returns --------------------------------------------
@@ -394,29 +230,6 @@ class StatsGroup:
             variant_hash=group.get("variantHash", ""),
             counts=VerdictCounts.from_api(group.get("verdictCounts", {})),
         )
-
-
-@dataclass(frozen=True)
-class TestVerdict:
-    """How one invocation of a test turned out."""
-
-    # Upper-cased status name, e.g. "PASSED" or "EXECUTION_ERRORED".
-    status: str
-
-    @classmethod
-    def from_api(cls, verdict: JsonDict) -> TestVerdict:
-        """Read a Query verdict."""
-        return cls(status=verdict.get("status", "").upper())
-
-    def as_counts(self) -> VerdictCounts:
-        """This verdict as a tally of one."""
-        field = {
-            "PASSED": "passed",
-            "FAILED": "failed",
-            "FLAKY": "flaky",
-            "SKIPPED": "skipped",
-        }.get(self.status, "other")
-        return replace(VerdictCounts(), **{field: 1})
 
 
 @dataclass(frozen=True)
@@ -852,19 +665,6 @@ class LuciAnalysis:
             predicate=window.as_predicate(),
         )
         return [StatsGroup.from_api(g) for g in request.gather("groups")]
-
-    def verdicts(self, test_id: str, window: Window) -> list[TestVerdict]:
-        """A test's individual verdicts.
-
-        The fallback for when `history` comes back empty.
-        """
-        request = self.paged_request(
-            TEST_HISTORY_SERVICE,
-            "Query",
-            testId=test_id,
-            predicate=window.as_predicate(),
-        )
-        return [TestVerdict.from_api(v) for v in request.gather("verdicts")]
 
     def variants(self, test_id: str) -> list[TestVariant]:
         """The bot configurations a test has run on."""

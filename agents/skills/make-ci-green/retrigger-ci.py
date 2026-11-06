@@ -19,6 +19,7 @@ import base64
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import urllib.error
@@ -536,8 +537,19 @@ def get_test_source_files(test_class_name):
     return files
 
 
-def check_upstream_flake(test_name):
-    """Run check-upstream-flake.py for a Chromium test.
+# is_upstream_flake.py variant filters for a Jenkins platform prefix. Android
+# and iOS tests run on Ubuntu and Mac bots, so those match on the builder.
+UPSTREAM_FLAKE_FILTERS = {
+    "linux": ["--os", "Ubuntu"],
+    "win": ["--os", "Windows"],
+    "mac": ["--os", "Mac"],
+    "android": ["--builder", "android"],
+    "ios": ["--builder", "ios"],
+}
+
+
+def is_upstream_flake(test_name, platform):
+    """Run is_upstream_flake.py for a Chromium test on a platform.
 
     Returns:
         Dict with verdict info, or None on error.
@@ -551,32 +563,79 @@ def check_upstream_flake(test_name):
             "..",
             "tools",
             "chromium_tests_analysis",
-            "check-upstream-flake.py",
+            "is_upstream_flake.py",
         )
     )
 
     if not os.path.exists(flake_script):
         print(
-            f"  Warning: check-upstream-flake.py not found at {flake_script}",
+            f"  Warning: is_upstream_flake.py not found at {flake_script}",
             file=sys.stderr,
         )
         return None
 
+    # The script's dependencies come from its directory's vpython spec.
+    vpython = shutil.which("vpython3")
+    if not vpython:
+        print("  Warning: vpython3 not found on PATH", file=sys.stderr)
+        return None
+
+    filters = next(
+        (
+            args
+            for prefix, args in UPSTREAM_FLAKE_FILTERS.items()
+            if platform.startswith(prefix)
+        ),
+        [],
+    )
     try:
         result = subprocess.run(
-            [sys.executable, flake_script, test_name, "--json"],
+            [vpython, flake_script, test_name, "--json", *filters],
             capture_output=True,
             text=True,
-            timeout=60,
+            timeout=120,
             check=False,
         )
-        if result.returncode in (0, 2):
-            # 0 = found, 2 = not found (both produce valid JSON)
+        # 0 = confirmed on some variant, 3 = not confirmed on any.
+        if result.returncode in (0, 3):
             data = json.loads(result.stdout)
+            confirmed_on = sorted(
+                {
+                    v["variant"].get("builder", "")
+                    for v in data.get("variants", [])
+                    if v.get("status") in ("flaky", "failing")
+                }
+            )
+            if confirmed_on:
+                return {
+                    "verdict": "confirmed_upstream_flake",
+                    "recommendation": (
+                        "Safe to filter -- LUCI Analysis confirms this test"
+                        f" is unstable upstream on {data['ref']} on: "
+                        + ", ".join(confirmed_on)
+                    ),
+                    "confirmed_on": confirmed_on,
+                }
+            if not any(
+                v.get("status") == "stable" for v in data.get("variants", [])
+            ):
+                return {
+                    "verdict": "no_upstream_data",
+                    "recommendation": (
+                        "Cannot determine from upstream data -- LUCI Analysis"
+                        f" has no results for this test near {data['ref']};"
+                        " try --ref main."
+                    ),
+                    "confirmed_on": [],
+                }
             return {
-                "verdict": data.get("overall_verdict", "unknown"),
-                "recommendation": data.get("overall_recommendation", ""),
-                "matched_tests": len(data.get("matched_tests", [])),
+                "verdict": "not_confirmed_upstream",
+                "recommendation": (
+                    "Investigate Brave-specific causes -- LUCI Analysis does"
+                    f" not confirm this test as unstable upstream on"
+                    f" {data['ref']}."
+                ),
+                "confirmed_on": [],
             }
     except (
         subprocess.TimeoutExpired,
@@ -857,7 +916,7 @@ def analyze_test_failures(check, job, branch, build, auth_header, pr_number):
         upstream = None
         if location == "chromium":
             print("    Checking upstream flakiness...", file=sys.stderr)
-            upstream = check_upstream_flake(test_name)
+            upstream = is_upstream_flake(test_name, platform)
 
         # Assess PR correlation
         correlation, correlation_reason = assess_pr_correlation(

@@ -3,7 +3,9 @@
 This directory contains scripts for querying Chromium's LUCI Analysis service
 about upstream tests that Brave runs on CI:
 
-- `check-upstream-flake.py` reports how flaky a single upstream test is.
+- `is_upstream_flake.py` asks whether a test is a confirmed flake per variant,
+  on the branch the Chromium checkout is at (see
+  [Confirmed flakes](#confirmed-flakes)).
 - `update-upstream-flake-filters.py` regenerates the filter files in
   `test/filters/generated/` that exclude flaky upstream tests from Brave's test
   runs.
@@ -89,6 +91,26 @@ The keys divide up "how the test ran" as follows:
 Caution: `os` is the machine's OS, not the tested platform. iOS simulator bots
 report a Mac `os`, ChromeOS builds run on Ubuntu machines. The builder name is
 what disambiguates these.
+
+### Confirmed flakes
+
+Chromium's CQ does not use a flake rate across all of a test's results. To
+decide whether a failure is a known flake, it calls
+`TestVariants.QueryStability` for one test, one variant and one position on one
+branch. LUCI Analysis applies the project's `TestStabilityCriteria`
+(`infra/config/luci-analysis.cfg`) to the 14 days of source verdicts around that
+position. For Chromium:
+
+- _flaky_: at least 3 source verdicts with both expected and unexpected runs
+  within ±7 days, and at least 1 within ±1 weekday.
+- _failing_: at least 6 unexpected runs out of 10 around the position, or at
+  least 3 consecutive unexpected runs.
+
+`is_upstream_flake.py` makes the same call and reports the answer. Branch
+results are stored in a separate LUCI project per milestone: `chromium-m157`
+holds `refs/branch-heads/8103`, and `chromium` holds `refs/heads/main`. The
+14-day window is always counted back from today, so a branch position older than
+that has no data.
 
 ### Clusters
 

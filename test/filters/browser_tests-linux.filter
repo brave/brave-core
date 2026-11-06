@@ -152,8 +152,8 @@
 # MLInstallabilityPromoter::StartPipeline() bail out before it starts any of
 # its tasks.
 #
-# tools/chromium_tests_analysis/check-upstream-flake.py reports "STABLE UPSTREAM" (0.8% over 60 days),
-# i.e. below the 1% bar, so this entry rests on the mechanism above and on
+# LUCI Analysis reports an aggregate flake rate of 0.8% over 60 days, i.e.
+# below the 1% bar, so this entry rests on the mechanism above and on
 # Brave being provably not at fault, not on the flake rate. The rate only
 # decides which file the entry belongs in: over that window linux-rel and
 # win-rel both sit at ~0.2%, the Linux ASAN/LSAN builders show no failures at
@@ -242,9 +242,9 @@
 # tab in browser1 (browser2 is tracked too, but this test never gives it a
 # tab).
 #
-# script/check-upstream-flake.py reports "STABLE UPSTREAM" (0.2% over 30
-# days), below the 1% bar, so this entry rests on the mechanism above and on
-# Brave being ruled out rather than on the aggregate rate. That aggregate is
+# LUCI Analysis reports an aggregate flake rate of 0.2% over 30 days, below
+# the 1% bar, so this entry rests on the mechanism above and on Brave being
+# ruled out rather than on the aggregate rate. That aggregate is
 # diluted by two high-volume CQ trybots, linux-rel (~29k verdicts) and win-rel
 # (~28k), together ~66% of all verdicts, whose events are all "failed" and
 # none "flaky", i.e. attributable to the CL under test. Counting only flaky
@@ -298,9 +298,9 @@
 # already call SimulateEndOfPaintHoldingOnPrimaryMainFrame() before clicking.
 # Both mitigations are in our tree and neither closes this window.
 #
-# script/check-upstream-flake.py reports STABLE UPSTREAM for both — 0.6% and
-# 0.4% over 30 days, 0.7% and 0.5% over 60 — i.e. below the 1% bar, so the
-# flake rate alone does not justify the entry. The TUF-002 checks come back
+# LUCI Analysis reports aggregate flake rates for both of 0.6% and 0.4% over
+# 30 days, 0.7% and 0.5% over 60 — i.e. below the 1% bar, so the flake rate
+# alone does not justify the entry. The TUF-002 checks come back
 # clean: no chromium_src override under chrome/browser/ui/views/payments/ or
 # components/payments/, no patch touching either tree, and no Brave override
 # of the payments::features::kPaymentRequestMandatoryPaymentAppUi default that

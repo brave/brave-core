@@ -22,14 +22,11 @@ from pathlib import Path
 from typing import Any
 from unittest import mock
 
-from rich.style import Style
-
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 # pylint: disable=wrong-import-position
 from luci_analysis import (
     MAX_PAGE_SIZE,
-    MIN_MEANINGFUL_VERDICTS,
     ClusterFailure,
     ClusterSummary,
     ConnectionPool,
@@ -42,8 +39,6 @@ from luci_analysis import (
     RequestStats,
     StatsGroup,
     TestVariant,
-    TestVerdict,
-    Verdict,
     VerdictCounts,
     Window,
 )
@@ -112,38 +107,6 @@ class WindowTest(unittest.TestCase):
         )
 
 
-class VerdictTest(unittest.TestCase):
-    def test_severity_ranks_worst_first(self) -> None:
-        by_severity = sorted(Verdict, key=lambda v: v.severity)
-
-        self.assertEqual(
-            by_severity,
-            [
-                Verdict.KNOWN_FLAKE,
-                Verdict.OCCASIONAL,
-                Verdict.INSUFFICIENT_DATA,
-                Verdict.STABLE,
-            ],
-        )
-
-    def test_every_verdict_has_a_headline_and_advice(self) -> None:
-        for verdict in Verdict:
-            with self.subTest(verdict=verdict):
-                self.assertTrue(verdict.headline.isupper())
-                self.assertTrue(verdict.recommendation.endswith("."))
-
-    def test_every_verdict_has_a_style_rich_understands(self) -> None:
-        for verdict in Verdict:
-            with self.subTest(verdict=verdict):
-                # Parsing rejects nonsense, so a typo fails here rather
-                # than at the first attempt to print a report.
-                self.assertTrue(Style.parse(verdict.style))
-
-    def test_the_wire_value_is_the_published_name(self) -> None:
-        self.assertEqual(Verdict.KNOWN_FLAKE.value, "known_upstream_flake")
-        self.assertEqual(Verdict.STABLE.value, "stable_upstream")
-
-
 class VerdictCountsTest(unittest.TestCase):
     def test_reads_the_string_counts_the_api_sends(self) -> None:
         counts = VerdictCounts.from_api(
@@ -179,14 +142,13 @@ class VerdictCountsTest(unittest.TestCase):
             skipped=4,
             execution_errored=5,
             precluded=6,
-            other=7,
         )
 
-        self.assertEqual(counts.total, 28)
+        self.assertEqual(counts.total, 21)
 
     def test_only_pass_fail_flaky_are_meaningful(self) -> None:
         counts = VerdictCounts(
-            passed=1, failed=2, flaky=3, skipped=40, precluded=50, other=60
+            passed=1, failed=2, flaky=3, skipped=40, precluded=50
         )
 
         self.assertEqual(counts.meaningful, 6)
@@ -208,145 +170,25 @@ def group(date: str, variant_hash: str = "h", **counts: int) -> StatsGroup:
 
 
 class FlakinessTest(unittest.TestCase):
-    def test_aggregates_variants_of_the_same_day(self) -> None:
+    def test_sums_every_group(self) -> None:
         flakiness = Flakiness.of_groups(
             [
                 group("2026-02-07", "h1", passed=8, flaky=2),
                 group("2026-02-07", "h2", passed=10),
+                group("2026-02-08", "h1", passed=9, failed=1),
             ]
         )
 
-        self.assertEqual(flakiness.counts.passed, 18)
+        self.assertEqual(flakiness.counts.passed, 27)
         self.assertEqual(flakiness.counts.flaky, 2)
+        self.assertEqual(flakiness.counts.failed, 1)
         self.assertAlmostEqual(flakiness.flake_rate, 0.1)
-        self.assertEqual(len(flakiness.daily), 1)
-        self.assertEqual(flakiness.daily[0].date, "2026-02-07")
-        self.assertEqual(flakiness.daily[0].counts.total, 20)
 
-    def test_daily_breakdown_is_sorted_by_date(self) -> None:
-        flakiness = Flakiness.of_groups(
-            [
-                group("2026-02-09", passed=1),
-                group("2026-02-07", passed=1),
-                group("2026-02-08", passed=1),
-            ]
-        )
+    def test_no_history_at_all(self) -> None:
+        flakiness = Flakiness.of_groups([])
 
-        self.assertEqual(
-            [day.date for day in flakiness.daily],
-            ["2026-02-07", "2026-02-08", "2026-02-09"],
-        )
-
-    def test_days_without_verdicts_are_dropped(self) -> None:
-        flakiness = Flakiness.of_groups(
-            [group("2026-02-07", passed=1), group("2026-02-08")]
-        )
-
-        self.assertEqual([day.date for day in flakiness.daily], ["2026-02-07"])
-
-    def test_tallies_individual_verdicts(self) -> None:
-        flakiness = Flakiness.of_verdicts(
-            [TestVerdict("PASSED")] * 90
-            + [TestVerdict("FAILED")] * 5
-            + [TestVerdict("FLAKY")] * 5
-            + [TestVerdict("SKIPPED")] * 3
-        )
-
-        self.assertEqual(flakiness.counts.passed, 90)
-        self.assertEqual(flakiness.counts.skipped, 3)
-        self.assertAlmostEqual(flakiness.flake_rate, 0.1)
-        self.assertEqual(flakiness.daily, ())
-
-    def test_unknown_statuses_are_counted_but_not_meaningful(self) -> None:
-        flakiness = Flakiness.of_verdicts(
-            [TestVerdict("PASSED")] * 10 + [TestVerdict("PRECLUDED")]
-        )
-
-        self.assertEqual(flakiness.counts.meaningful, 10)
-        self.assertEqual(flakiness.counts.total, 11)
-
-    def test_a_confirmed_flake(self) -> None:
-        flakiness = Flakiness(VerdictCounts(passed=90, failed=5, flaky=5))
-
-        self.assertIs(flakiness.verdict, Verdict.KNOWN_FLAKE)
-
-    def test_the_known_flake_threshold_is_inclusive(self) -> None:
-        flakiness = Flakiness(VerdictCounts(passed=95, failed=5))
-
-        self.assertAlmostEqual(flakiness.flake_rate, 0.05)
-        self.assertIs(flakiness.verdict, Verdict.KNOWN_FLAKE)
-
-    def test_the_occasional_threshold_is_inclusive(self) -> None:
-        flakiness = Flakiness(VerdictCounts(passed=99, failed=1))
-
-        self.assertIs(flakiness.verdict, Verdict.OCCASIONAL)
-
-    def test_a_stable_test(self) -> None:
-        flakiness = Flakiness(VerdictCounts(passed=1000, failed=1))
-
-        self.assertIs(flakiness.verdict, Verdict.STABLE)
-
-    def test_too_little_history_is_inconclusive(self) -> None:
-        flakiness = Flakiness(VerdictCounts(failed=MIN_MEANINGFUL_VERDICTS - 1))
-
-        self.assertIs(flakiness.verdict, Verdict.INSUFFICIENT_DATA)
-
-    def test_exactly_enough_history_is_conclusive(self) -> None:
-        flakiness = Flakiness(VerdictCounts(passed=MIN_MEANINGFUL_VERDICTS))
-
-        self.assertIs(flakiness.verdict, Verdict.STABLE)
-
-    def test_no_history_at_all_is_inconclusive(self) -> None:
-        flakiness = Flakiness()
-
-        self.assertIs(flakiness.verdict, Verdict.INSUFFICIENT_DATA)
         self.assertEqual(flakiness.counts.total, 0)
         self.assertEqual(flakiness.flake_rate, 0.0)
-
-    def test_the_published_json_keeps_its_shape(self) -> None:
-        # Other tooling reads these keys; see
-        # agents/skills/make-ci-green/retrigger-ci.py.
-        flakiness = Flakiness.of_groups(
-            [group("2026-02-07", passed=90, failed=10)]
-        )
-
-        published = flakiness.as_json()
-
-        self.assertEqual(
-            sorted(published),
-            [
-                "daily_breakdown",
-                "execution_errored",
-                "failed",
-                "flake_rate",
-                "flaky",
-                "meaningful_verdicts",
-                "passed",
-                "precluded",
-                "recommendation",
-                "skipped",
-                "total_verdicts",
-                "verdict",
-            ],
-        )
-        self.assertEqual(published["verdict"], "known_upstream_flake")
-        self.assertEqual(published["passed"], 90)
-        self.assertEqual(
-            sorted(published["daily_breakdown"][0]),
-            [
-                "date",
-                "execution_errored",
-                "failed",
-                "flaky",
-                "passed",
-                "precluded",
-                "skipped",
-                "total",
-            ],
-        )
-
-    def test_the_published_verdict_is_the_wire_string(self) -> None:
-        self.assertEqual(Flakiness().as_json()["verdict"], "insufficient_data")
 
 
 # -- Reading what the service sends --------------------------------------
@@ -368,11 +210,6 @@ class FromApiTest(unittest.TestCase):
 
     def test_a_stats_group_without_a_timestamp(self) -> None:
         self.assertEqual(StatsGroup.from_api({}).date, "unknown")
-
-    def test_test_verdict_is_upper_cased(self) -> None:
-        self.assertEqual(
-            TestVerdict.from_api({"status": "passed"}).status, "PASSED"
-        )
 
     def test_test_variant(self) -> None:
         parsed = TestVariant.from_api(
@@ -967,21 +804,6 @@ class QueriesTest(ClientTestCase):
         predicates = [body["predicate"] for body in self.bodies()]
         self.assertEqual(predicates[0], predicates[1])
 
-    def test_verdicts_returns_test_verdicts(self) -> None:
-        self.transport.add_reply(
-            {"verdicts": [{"status": "PASSED"}, {"status": "FAILED"}]}
-        )
-
-        verdicts = self.client.verdicts("test-id", self.WINDOW)
-
-        self.assertEqual(
-            verdicts, [TestVerdict("PASSED"), TestVerdict("FAILED")]
-        )
-        self.assertEqual(
-            self.transport.requests[0]["path"],
-            "/prpc/luci.analysis.v1.TestHistory/Query",
-        )
-
     def test_variants_returns_test_variants(self) -> None:
         self.transport.add_reply(
             {
@@ -1052,12 +874,11 @@ class QueriesTest(ClientTestCase):
         )
 
     def test_an_empty_answer_is_an_empty_list(self) -> None:
-        for _ in range(5):
+        for _ in range(4):
             self.transport.add_reply({})
 
         self.assertEqual(self.client.tests_matching("x"), [])
         self.assertEqual(self.client.history("t", self.WINDOW), [])
-        self.assertEqual(self.client.verdicts("t", self.WINDOW), [])
         self.assertEqual(self.client.variants("t"), [])
         self.assertEqual(self.client.cluster_summaries("f", self.WINDOW), [])
 
