@@ -147,7 +147,7 @@ class BraveCertPinningTest : public testing::TestWithParam<std::string_view> {
     // Bound the wait ourselves. The RunLoop timeout that TaskEnvironment
     // installs records a test failure when it fires, which neither the retries
     // nor the inconclusive verdict can undo, so it is disabled for this wait.
-    // The deadline keeps the budget it had: 3 attempts take at most
+    // Each attempt waits at most action_timeout(), so 3 attempts take at most
     // 3 * action_timeout() + 2s, under the test launcher's 45s default.
     base::RunLoop run_loop;
     delegate.set_on_complete(run_loop.QuitClosure());
@@ -209,8 +209,8 @@ class BraveCertPinningTest : public testing::TestWithParam<std::string_view> {
            ", cert_net_error=", net::ErrorToShortString(cert_net_error)});
     }
     if (timed_out) {
-      failure = base::StrCat({failure, " (timed out, handshake succeeded: ",
-                              handshake_succeeded ? "yes" : "no", ")"});
+      base::StrAppend(&failure, {" (timed out, handshake succeeded: ",
+                                 handshake_succeeded ? "yes" : "no", ")"});
       // No verdict, unless the host that must fail pinning completed its
       // handshake: the pin check then accepted the connection.
       if (!(expect_pin_failure && handshake_succeeded)) {
