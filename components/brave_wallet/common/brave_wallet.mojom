@@ -512,6 +512,11 @@ interface PanelHandler {
   // and we need to call ConnectToSite or CancelConnectToSite based on user
   // decision.
   RequestPermission(AccountId account_id) => (bool success);
+
+  // Get the human-friendly JSON describing a Polkadot transaction along with
+  // the estimated fee.
+  GetPolkadotSignRequestDetails(int32 request_id)
+      => (PolkadotSignRequestDetails? details);
 };
 
 // Browser-side handler for requests from WebUI page.
@@ -2286,6 +2291,20 @@ struct PolkadotAccountInfo {
 
 struct PolkadotAssetAccountInfo {
   uint128 balance;
+};
+
+struct PolkadotFeeEstimate {
+  uint128 partial_fee;
+};
+
+// What the sign panel needs in order to describe a pending dApp signing
+// request to the user.
+struct PolkadotSignRequestDetails {
+  // The request's call data as polkadot-js `Call.toHuman()`, JSON-serialized.
+  string as_human;
+
+  // Null when the fee query failed.
+  PolkadotFeeEstimate? fee;
 };
 
 enum PolkadotValidationStatus {
