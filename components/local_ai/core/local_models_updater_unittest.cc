@@ -21,11 +21,11 @@
 #include "base/values.h"
 #include "base/version.h"
 #include "brave/components/brave_component_updater/browser/mock_on_demand_updater.h"
+#include "brave/components/history_embeddings/core/history_embeddings_features.h"
 #include "brave/components/local_ai/core/pref_names.h"
 #include "components/component_updater/component_updater_paths.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/component_updater/mock_component_updater_service.h"
-#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/update_client/update_client.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -55,8 +55,8 @@ class LocalModelsUpdaterUnitTest : public testing::Test {
  public:
   LocalModelsUpdaterUnitTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {
-    feature_list_.InitWithFeatures({history_embeddings::kHistoryEmbeddings},
-                                   {});
+    feature_list_.InitWithFeatures(
+        {brave_history_embeddings::kHistoryEmbeddings}, {});
   }
 
   ~LocalModelsUpdaterUnitTest() override = default;
@@ -135,7 +135,8 @@ TEST_F(LocalModelsUpdaterUnitTest, DeleteComponent) {
   EXPECT_TRUE(PathExists(install_dir_));
 
   base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndDisableFeature(history_embeddings::kHistoryEmbeddings);
+  feature_list.InitAndDisableFeature(
+      brave_history_embeddings::kHistoryEmbeddings);
   EXPECT_CALL(*cus_, RegisterComponent(testing::_)).Times(0);
   // Nothing was registered, so the directory is ours to remove.
   EXPECT_CALL(*cus_, UnregisterComponent(kComponentId))
@@ -152,7 +153,8 @@ TEST_F(LocalModelsUpdaterUnitTest, DeleteComponent) {
 // Tests that the component is not registered when the feature is disabled.
 TEST_F(LocalModelsUpdaterUnitTest, NoRegisterWhenFeatureDisabled) {
   base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndDisableFeature(history_embeddings::kHistoryEmbeddings);
+  feature_list.InitAndDisableFeature(
+      brave_history_embeddings::kHistoryEmbeddings);
 
   EXPECT_CALL(*cus_, RegisterComponent(testing::_)).Times(0);
   EXPECT_CALL(*cus_, UnregisterComponent(kComponentId))

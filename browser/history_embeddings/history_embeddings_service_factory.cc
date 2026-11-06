@@ -10,43 +10,26 @@
 
 #include "brave/browser/history_embeddings/history_embeddings_service_factory.h"
 
+#include "brave/browser/history_embeddings/brave_history_embeddings_status.h"
 #include "brave/components/history_embeddings/content/history_embeddings_service.h"
-#include "brave/components/history_embeddings/core/history_embeddings_features.h"
-#include "brave/components/history_embeddings/core/mock_answerer.h"
-#include "brave/components/history_embeddings/core/mock_intent_classifier.h"
-#include "build/build_config.h"
 #include "chrome/browser/app_mode/app_mode_utils.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/history/history_service_factory.h"
-#include "chrome/browser/history_embeddings/chrome_history_embeddings_service.h"
-#include "chrome/browser/history_embeddings/history_embeddings_utils.h"
-#include "chrome/browser/optimization_guide/optimization_guide_keyed_service.h"
-#include "chrome/browser/optimization_guide/optimization_guide_keyed_service_factory.h"
-#include "chrome/browser/page_content_annotations/page_content_annotations_service_factory.h"
 #include "chrome/browser/page_content_annotations/page_embeddings_service_factory.h"
 #include "chrome/browser/passage_embeddings/chrome_passage_embeddings_service_controller.h"
 #include "chrome/browser/passage_embeddings/passage_embedder_model_observer_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_attributes_entry.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
-#include "chrome/browser/profiles/profile_manager.h"  // nogncheck
+#include "chrome/browser/profiles/profile_manager.h"
 #include "components/keyed_service/core/service_access_type.h"
 #include "components/passage_embeddings/core/passage_embeddings_service_controller.h"
 
-#if BUILDFLAG(IS_CHROMEOS)
-#include "chrome/browser/ash/profiles/profile_helper.h"
-#endif
+namespace brave_history_embeddings {
 
 namespace {
 
 bool IsEphemeralProfile(Profile* profile) {
-#if BUILDFLAG(IS_CHROMEOS)
-  if (ash::ProfileHelper::IsEphemeralUserProfile(profile)) {
-    return true;
-  }
-#endif
-
-  // Catch additional logic that may not be caught by the existing Ash check.
   ProfileAttributesStorage& storage =
       g_browser_process->profile_manager()->GetProfileAttributesStorage();
   ProfileAttributesEntry* entry =
@@ -55,8 +38,9 @@ bool IsEphemeralProfile(Profile* profile) {
 }
 
 bool ShouldBuildServiceInstance(Profile* profile) {
-  // Do NOT construct the service if the feature flag is disabled.
-  if (!brave_history_embeddings::IsHistoryEmbeddingsFeatureEnabled()) {
+  // The setting the profile started with, not the live pref: the index is
+  // built once per session, and a change only applies after relaunch.
+  if (!BraveHistoryEmbeddingsStatus::GetForProfile(profile)->IsEnabled()) {
     return false;
   }
 
@@ -77,9 +61,9 @@ bool ShouldBuildServiceInstance(Profile* profile) {
 }  // namespace
 
 // static
-brave_history_embeddings::HistoryEmbeddingsService*
-HistoryEmbeddingsServiceFactory::GetForProfile(Profile* profile) {
-  return static_cast<brave_history_embeddings::HistoryEmbeddingsService*>(
+HistoryEmbeddingsService* HistoryEmbeddingsServiceFactory::GetForProfile(
+    Profile* profile) {
+  return static_cast<HistoryEmbeddingsService*>(
       GetInstance()->GetServiceForBrowserContext(profile, /*create=*/true));
 }
 
@@ -90,46 +74,13 @@ HistoryEmbeddingsServiceFactory::GetInstance() {
   return instance.get();
 }
 
-// static
-std::unique_ptr<KeyedService> HistoryEmbeddingsServiceFactory::
-    BuildServiceInstanceForBrowserContextForTesting(
-        content::BrowserContext* context,
-        passage_embeddings::EmbedderMetadataProvider*
-            embedder_metadata_provider,
-        passage_embeddings::Embedder* embedder,
-        std::unique_ptr<brave_history_embeddings::Answerer> answerer,
-        std::unique_ptr<brave_history_embeddings::IntentClassifier>
-            intent_classifier) {
-  Profile* profile = Profile::FromBrowserContext(context);
-  if (!ShouldBuildServiceInstance(profile)) {
-    return nullptr;
-  }
-
-  return std::make_unique<
-      brave_history_embeddings::ChromeHistoryEmbeddingsService>(
-      profile,
-      HistoryServiceFactory::GetForProfile(profile,
-                                           ServiceAccessType::EXPLICIT_ACCESS),
-      PageContentAnnotationsServiceFactory::GetForProfile(profile),
-      OptimizationGuideKeyedServiceFactory::GetForProfile(profile),
-      page_content_annotations::PageEmbeddingsServiceFactory::GetForProfile(
-          profile),
-      embedder_metadata_provider, embedder, std::move(answerer),
-      std::move(intent_classifier));
-}
-
 HistoryEmbeddingsServiceFactory::HistoryEmbeddingsServiceFactory()
     : ProfileKeyedServiceFactory(
-          "HistoryEmbeddingsService",
+          "BraveHistoryEmbeddingsService",
           ProfileSelections::Builder()
               .WithRegular(ProfileSelection::kOriginalOnly)
-              // TODO(https://github.com/brave/brave-browser/issues/61789):
-              // Check if this service is needed for Ash Internals.
-              .WithAshInternals(ProfileSelection::kOriginalOnly)
               .Build()) {
   DependsOn(HistoryServiceFactory::GetInstance());
-  DependsOn(PageContentAnnotationsServiceFactory::GetInstance());
-  DependsOn(OptimizationGuideKeyedServiceFactory::GetInstance());
   DependsOn(
       passage_embeddings::PassageEmbedderModelObserverFactory::GetInstance());
   DependsOn(
@@ -146,38 +97,17 @@ HistoryEmbeddingsServiceFactory::BuildServiceInstanceForBrowserContext(
     return nullptr;
   }
 
-  OptimizationGuideKeyedService* optimization_guide_keyed_service =
-      OptimizationGuideKeyedServiceFactory::GetForProfile(profile);
-
   auto* passage_embeddings_service_controller =
       passage_embeddings::GetChromePassageEmbeddingsServiceController();
 
-  // TODO(https://github.com/brave/brave-browser/issues/61789): Launch or
-  // remove the answerer functionality.
-  std::unique_ptr<brave_history_embeddings::Answerer> answerer;
-  if (brave_history_embeddings::IsHistoryEmbeddingsAnswersFeatureEnabled()) {
-    answerer = std::make_unique<brave_history_embeddings::MockAnswerer>();
-  }
-
-  // TODO(https://github.com/brave/brave-browser/issues/61789): Launch or
-  // remove the intent classifier functionality.
-  std::unique_ptr<brave_history_embeddings::IntentClassifier> intent_classifier;
-  if (brave_history_embeddings::GetFeatureParameters()
-          .enable_intent_classifier) {
-    intent_classifier =
-        std::make_unique<brave_history_embeddings::MockIntentClassifier>();
-  }
-
-  return std::make_unique<
-      brave_history_embeddings::ChromeHistoryEmbeddingsService>(
-      profile,
+  return std::make_unique<HistoryEmbeddingsService>(
+      g_browser_process->os_crypt_async(),
       HistoryServiceFactory::GetForProfile(profile,
                                            ServiceAccessType::EXPLICIT_ACCESS),
-      PageContentAnnotationsServiceFactory::GetForProfile(profile),
-      optimization_guide_keyed_service,
       page_content_annotations::PageEmbeddingsServiceFactory::GetForProfile(
           profile),
-      passage_embeddings_service_controller,
-      passage_embeddings_service_controller->GetEmbedder(), std::move(answerer),
-      std::move(intent_classifier));
+      /*embedder_metadata_provider=*/passage_embeddings_service_controller,
+      passage_embeddings_service_controller->GetEmbedder());
 }
+
+}  // namespace brave_history_embeddings
