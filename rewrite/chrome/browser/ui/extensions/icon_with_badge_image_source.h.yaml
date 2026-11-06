@@ -1,0 +1,41 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Make PaintBadge virtual'
+    make_virtual:
+      class_name: IconWithBadgeImageSource
+      method_name: PaintBadge
+
+  - description: 'Make GetIconAreaRect virtual'
+    make_virtual:
+      class_name: IconWithBadgeImageSource
+      method_name: GetIconAreaRect
+
+  - description: |-
+      Friend brave::BraveIconWithBadgeImageSource.
+
+      The forward declaration of brave::BraveIconWithBadgeImageSource is
+      supplied by the chromium_src override, which must be included before the
+      upstream header.
+    add_friend:
+      class_name: IconWithBadgeImageSource
+      friend_type: class brave::BraveIconWithBadgeImageSource
+
+  - description: |-
+      Add hooks for customizing the icon graphic drawn by Draw().
+
+      GetCustomGraphicSize/XOffset/YOffset are virtual so that
+      BraveIconWithBadgeImageSource can override them. Their default
+      implementations, and ApplyCustomGraphicOffsets, are defined in the
+      chromium_src override of icon_with_badge_image_source.cc. <optional> is
+      included by the chromium_src override of this header.
+    add_to_protected:
+      class_name: IconWithBadgeImageSource
+      code: |-
+        virtual std::optional<int> GetCustomGraphicSize();
+        virtual std::optional<int> GetCustomGraphicXOffset();
+        virtual std::optional<int> GetCustomGraphicYOffset();
+        void ApplyCustomGraphicOffsets(int& x_offset, int& y_offset);
