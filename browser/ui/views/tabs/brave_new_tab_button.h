@@ -60,13 +60,6 @@ class BraveNewTabButton : public NewTabButton {
       const views::SizeBounds& available_size) const override;
 
  private:
-  // Left-click handler. When the Containers "open new tabs in" setting is
-  // "ask every time", shows the container menu anchored to the button
-  // instead of opening a tab; otherwise runs the upstream pressed callback.
-  void OnPressed(const ui::Event& event);
-
-  PressedCallback original_pressed_callback_;
-
 #if BUILDFLAG(ENABLE_CONTAINERS)
   friend class containers::ContainersBrowserTest;
 
@@ -84,6 +77,12 @@ class BraveNewTabButton : public NewTabButton {
   bool skip_containers_context_menu_runner_for_testing_ = false;
 #endif
 
+  // Left-click handler. When the Containers "open new tabs in" setting is
+  // "ask every time", shows the container menu anchored to the button
+  // instead of opening a tab; otherwise runs the upstream pressed callback.
+  void OnPressed(const ui::Event& event);
+
+  PressedCallback original_pressed_callback_;
   const raw_ref<BrowserWindowInterface> browser_window_interface_;
 };
 

@@ -440,9 +440,13 @@ TEST_F(ContainersSettingsHandlerTest, SetNewTabTarget_PersistsAndNotifies) {
   handler_->SetNewTabTarget(mojom::NewTabTarget::NewContainerId("id-1"),
                             future.GetCallback());
   EXPECT_EQ(future.Get(), std::nullopt);
-  EXPECT_EQ(GetNewTabTargetFromPrefs(prefs_)->get_container_id(), "id-1");
+  auto stored_target = GetNewTabTargetFromPrefs(prefs_);
+  ASSERT_TRUE(stored_target);
+  EXPECT_EQ(stored_target->get_container_id(), "id-1");
   EXPECT_EQ(mock_observer_->new_tab_target_changed_count(), 1);
-  EXPECT_EQ(mock_observer_->last_new_tab_target()->get_container_id(), "id-1");
+  const auto& notified_target = mock_observer_->last_new_tab_target();
+  ASSERT_TRUE(notified_target);
+  EXPECT_EQ(notified_target->get_container_id(), "id-1");
 
   // Switching to a temporary container is a second notification.
   base::test::TestFuture<std::optional<mojom::ContainerOperationError>>
@@ -450,7 +454,9 @@ TEST_F(ContainersSettingsHandlerTest, SetNewTabTarget_PersistsAndNotifies) {
   handler_->SetNewTabTarget(mojom::NewTabTarget::NewTemporaryContainer(true),
                             temporary_future.GetCallback());
   EXPECT_EQ(temporary_future.Get(), std::nullopt);
-  EXPECT_TRUE(GetNewTabTargetFromPrefs(prefs_)->is_temporary_container());
+  auto temporary_target = GetNewTabTargetFromPrefs(prefs_);
+  ASSERT_TRUE(temporary_target);
+  EXPECT_TRUE(temporary_target->is_temporary_container());
   EXPECT_EQ(mock_observer_->new_tab_target_changed_count(), 2);
 
   // Null resets to no container.
@@ -478,7 +484,9 @@ TEST_F(ContainersSettingsHandlerTest, SetNewTabTarget_AskEachTime) {
   handler_->SetNewTabTarget(mojom::NewTabTarget::NewAskEachTime(true),
                             future.GetCallback());
   EXPECT_EQ(future.Get(), std::nullopt);
-  EXPECT_TRUE(GetNewTabTargetFromPrefs(prefs_)->is_ask_each_time());
+  auto target = GetNewTabTargetFromPrefs(prefs_);
+  ASSERT_TRUE(target);
+  EXPECT_TRUE(target->is_ask_each_time());
 }
 
 }  // namespace containers
