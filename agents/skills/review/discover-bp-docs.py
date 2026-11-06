@@ -27,7 +27,7 @@ Output (JSON):
 
 Category mapping (based on filename prefixes/keywords):
     cpp:          coding-standards*, style-guide*
-    test:         testing-*
+    test:         testing*
     chromium_src: chromium-src*
     build:        build-*
     frontend:     frontend*
@@ -48,7 +48,7 @@ import sys
 CATEGORY_RULES = [
     ("coding-standards", "cpp"),
     ("style-guide", "cpp"),
-    ("testing-", "test"),
+    ("testing", "test"),
     ("chromium-src", "chromium_src"),
     ("build-", "build"),
     ("frontend", "frontend"),

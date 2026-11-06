@@ -361,8 +361,8 @@ echo "$CHANGED_FILES" | python3 ./.claude/skills/review/discover-bp-docs.py \
 ```
 
 The script outputs JSON with each applicable doc's path and category. Documents
-are matched to file types by naming convention (e.g., `testing-*.md` applies
-when test files are changed, `android.md` when `.java`/`.kt` files are changed).
+are matched to file types by naming convention (e.g., `testing*.md` applies when
+test files are changed, `android.md` when `.java`/`.kt` files are changed).
 Documents that don't match any specific category (like `architecture.md`,
 `documentation.md`) are always included.
 
