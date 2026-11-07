@@ -395,6 +395,7 @@ import conflict_resolution
 from exceptions import (
     ActionNeededException,
     BadOutcomeException,
+    ContinuationNeededException,
     InvalidInputException,
     RebaseNeededException,
 )
@@ -1523,18 +1524,18 @@ class Upgrade(Versioned):
 
         status = GitStatus()
         if status.has_deleted_patch_files():
-            raise InvalidInputException(
+            raise ContinuationNeededException(
                 'Deleted patches detected. These should be committed as their '
                 'own changes:\n%s'
                 % '\n'.join(status.staged.deleted + status.unstaged.deleted)
             )
         if status.has_untracked_patch_files():
-            raise InvalidInputException(
+            raise ContinuationNeededException(
                 'Untracked patch files detected. These should be committed as '
                 'their own changes:\n%s' % '\n'.join(status.unstaged.added)
             )
         if status.has_staged_files():
-            raise InvalidInputException(
+            raise ContinuationNeededException(
                 'Staged files detected after running update_patches. Please '
                 'make sure to commit or unstage any changes, to avoid '
                 'committing changes unintentionally.\n'
@@ -1582,7 +1583,7 @@ class Upgrade(Versioned):
                     for patch, b, a in patches_with_hunk_changes
                 ]
             )
-            raise InvalidInputException(
+            raise ContinuationNeededException(
                 'The following modified patches have changes in the number of '
                 'hunks, and are expected to be submitted separately as fixes '
                 'with Chromium culprits:\n'
@@ -3771,7 +3772,12 @@ def main():
             show(args)
     except RebaseNeededException:
         return RebaseNeededException.EXIT_CODE
-    except (InvalidInputException, BadOutcomeException, ActionNeededException):
+    except (
+        InvalidInputException,
+        BadOutcomeException,
+        ActionNeededException,
+        ContinuationNeededException,
+    ):
         return 1
 
     return 0
