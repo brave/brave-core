@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.ntp;
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -81,6 +82,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private int mNewContentHeight;
     private int mTopMarginImageCredit;
     private float mImageCreditAlpha = 1f;
+    private boolean mIsNewTabTakeoverDisclosureVisible;
 
     private static final int TYPE_STATS = 1;
     private static final int TYPE_TOP_SITES = 2;
@@ -97,6 +99,10 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     // Matches @dimen/mvt_container_lateral_margin used on the New Tab Page layout.
     static final int CARD_MARGIN_DP = 16;
+
+    private static final int LEO_DARK_ELEVATION_SECONDARY_TEXT_SHADOW_RADIUS_DP = 3;
+    private static final int LEO_DARK_ELEVATION_SECONDARY_TEXT_SHADOW_OFFSET_Y_DP = 1;
+    private static final int LEO_DARK_ELEVATION_SECONDARY_TEXT_SHADOW_COLOR = 0x54000000;
 
     public BraveNtpAdapter(
             Activity activity,
@@ -270,9 +276,27 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         });
             }
 
+            TextView sponsoredLabel = imageCreditViewHolder.mSponsoredLabel;
+            if (mIsNewTabTakeoverDisclosureVisible) {
+                sponsoredLabel.setVisibility(View.VISIBLE);
+                sponsoredLabel.setAlpha(mImageCreditAlpha);
+                sponsoredLabel.setOnClickListener(
+                        view -> mOnBraveNtpListener.toggleNewTabTakeoverDisclosureTooltip(view));
+                sponsoredLabel.setOnLongClickListener(
+                        view -> {
+                            mOnBraveNtpListener.toggleNewTabTakeoverDisclosureTooltip(view);
+                            return true;
+                        });
+            } else {
+                sponsoredLabel.setVisibility(View.GONE);
+                sponsoredLabel.setOnClickListener(null);
+                sponsoredLabel.setOnLongClickListener(null);
+            }
+
             if (mRecyclerViewHeight > 0) {
                 LinearLayout.LayoutParams layoutParams =
-                        new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                        new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
                                 LinearLayout.LayoutParams.WRAP_CONTENT);
 
                 int extraMarginForNews =
@@ -600,6 +624,18 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         notifyItemChanged(getStatsCount() + getTopSitesCount() + getNewContentCount());
     }
 
+    public void setNewTabTakeoverDisclosureVisible(boolean isVisible) {
+        if (mIsNewTabTakeoverDisclosureVisible == isVisible) {
+            return;
+        }
+        mIsNewTabTakeoverDisclosureVisible = isVisible;
+        notifyItemChanged(getStatsCount() + getTopSitesCount() + getNewContentCount());
+    }
+
+    public boolean isImageCreditPositioned() {
+        return mRecyclerViewHeight > 0;
+    }
+
     public void setBraveNewsController(BraveNewsController braveNewsController) {
         mBraveNewsController = braveNewsController;
         notifyItemChanged(
@@ -689,6 +725,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         FrameLayout mImageCreditLayout;
         TextView mCreditTv;
         ImageView mSponsoredLogo;
+        TextView mSponsoredLabel;
 
         ImageCreditViewHolder(View itemView) {
             super(itemView);
@@ -697,7 +734,15 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             this.mImageCreditLayout = (FrameLayout) itemView.findViewById(R.id.image_credit_layout);
             this.mCreditTv = (TextView) itemView.findViewById(R.id.credit_text);
             this.mSponsoredLogo = (ImageView) itemView.findViewById(R.id.sponsored_logo);
+            this.mSponsoredLabel = (TextView) itemView.findViewById(R.id.sponsored_label);
             BraveTouchUtils.ensureMinTouchTarget(this.mCreditTv);
+            BraveTouchUtils.ensureMinTouchTarget(this.mSponsoredLabel);
+            Context context = itemView.getContext();
+            this.mSponsoredLabel.setShadowLayer(
+                    dpToPx(context, LEO_DARK_ELEVATION_SECONDARY_TEXT_SHADOW_RADIUS_DP),
+                    /* dx= */ 0,
+                    dpToPx(context, LEO_DARK_ELEVATION_SECONDARY_TEXT_SHADOW_OFFSET_Y_DP),
+                    LEO_DARK_ELEVATION_SECONDARY_TEXT_SHADOW_COLOR);
         }
     }
 

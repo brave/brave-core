@@ -214,8 +214,8 @@ if (is_android) {
   robolectric_library("brave_junit_tests_org.chromium.chrome.browser.ntp") {
     resources_package = "org.chromium.chrome.browser.ntp"
     sources = [
-      "src/org/chromium/chrome/browser/ntp/BraveNewTabTakeoverInfobarTest.java",
       "src/org/chromium/chrome/browser/ntp/BraveNtpTopSitesModeUnitTest.java",
+      "src/org/chromium/chrome/browser/ntp/NewTabTakeoverDisclosureTooltipControllerTest.java",
       "src/org/chromium/chrome/browser/ntp/NewTabTakeoverSafeAreaReporterTest.java",
     ]
 
@@ -441,10 +441,7 @@ if (is_android) {
 
   robolectric_library(
       "brave_junit_tests_org.chromium.chrome.browser.ui.messages.snackbar") {
-    sources = [
-      "src/org/chromium/chrome/browser/ui/messages/snackbar/BraveSnackbarManagerNewTabTakeoverTest.java",
-      "src/org/chromium/chrome/browser/ui/messages/snackbar/BraveSnackbarViewTest.java",
-    ]
+    sources = [ "src/org/chromium/chrome/browser/ui/messages/snackbar/BraveSnackbarViewTest.java" ]
 
     deps = [
       ":brave_multiwindow_junit_test_utils",
