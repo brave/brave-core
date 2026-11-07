@@ -1,0 +1,44 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//third_party/protobuf/proto_library.gni")
+
+# Generates a replacement root cert list that also includes the Chrome Root
+# Store. See brave/net/cert/generate_root_cert_list.py for details.
+action("root_cert_list_generated") {
+  script = "generate_root_cert_list.py"
+
+  root_stores = "//net/data/ssl/root_stores/root_stores.json"
+  chrome_root_store = "//net/data/ssl/chrome_root_store/root_store.textproto"
+  chrome_root_store_certs = "//net/data/ssl/chrome_root_store/root_store.certs"
+  inputs = [
+    root_stores,
+    chrome_root_store,
+    chrome_root_store_certs,
+  ]
+
+  output = "$target_gen_dir/root_cert_list_generated.h"
+  outputs = [ output ]
+
+  deps = [ "//net/cert:root_store_proto_full_gen" ]
+
+  args = [
+    "--root-stores",
+    rebase_path(root_stores, root_build_dir),
+    "--chrome-root-store",
+    rebase_path(chrome_root_store, root_build_dir),
+    "--chrome-root-store-certs",
+    rebase_path(chrome_root_store_certs, root_build_dir),
+    "--pyproto-dir",
+    rebase_path(proto_python_root, root_build_dir),
+    "--output",
+    rebase_path(output, root_build_dir),
+  ]
+}
+
+source_set("root_cert_list") {
+  sources = get_target_outputs(":root_cert_list_generated")
+  deps = [ ":root_cert_list_generated" ]
+}
