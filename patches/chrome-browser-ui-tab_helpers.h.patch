@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/tab_helpers.h b/chrome/browser/ui/tab_helpers.h
+index c6e05eb620dd216529c32d6b3660fc44c8b47baf..eeceb4eb507718276d5d512b56f1b1a320474b89 100644
+--- a/chrome/browser/ui/tab_helpers.h
++++ b/chrome/browser/ui/tab_helpers.h
+@@ -54,6 +54,7 @@ class TabModel;
+ 
+ class TabHelpers {
+  private:
++  friend class PeekContents;
+ #if BUILDFLAG(IS_ANDROID)
+   // ThinWebView is used to host WebContents on non-tab UIs in Android. Most
+   // clients of ThinWebView will need a major subset of the tab helpers.

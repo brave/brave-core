@@ -91,6 +91,7 @@ source_set("brave_wallet_delegate") {
     ]
     deps += [
       "//brave/browser/ui",
+      "//brave/browser/ui/peek:public",
       "//chrome/browser/notifications",
       "//chrome/browser/ui:browser_tab_strip",
       "//chrome/browser/ui/tabs:tab_strip",

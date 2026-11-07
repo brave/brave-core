@@ -11,12 +11,15 @@
 #include "base/types/to_address.h"
 #include "base/unguessable_token.h"
 #include "brave/browser/ui/brave_browser_window.h"
+#include "brave/browser/ui/peek/peek_features.h"
+#include "brave/browser/ui/peek/public/peek_controller.h"
 #include "brave/browser/ui/screenshot/screenshot_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/tree_tab_session_manager.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/page_info/brave_shields_ui_contents_cache.h"
+#include "brave/browser/ui/views/peek/peek_controller_impl.h"
 #include "brave/browser/ui/views/toolbar/screenshot_preview_dialog.h"
 #include "brave/browser/ui/views/workspaces/workspaces_bubble_controller.h"
 #include "brave/browser/ui/window_closing_confirm/window_closing_confirm_controller.h"
@@ -184,6 +187,12 @@ void BraveBrowserWindowFeatures::InitPostBrowserViewConstruction(
             *browser_, browser_->GetUnownedUserDataHost());
   }
 
+  if (base::FeatureList::IsEnabled(peek::features::kBravePeek) &&
+      browser_->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL) {
+    peek_controller_ = GetUserDataFactory().CreateInstance<PeekControllerImpl>(
+        *browser_, *browser_, *browser_view);
+  }
+
 #if BUILDFLAG(ENABLE_AI_CHAT)
   if (base::FeatureList::IsEnabled(
           ai_chat::features::kAIChatMoveFullPageToSidePanel) &&
@@ -198,6 +207,7 @@ void BraveBrowserWindowFeatures::InitPostBrowserViewConstruction(
 }
 
 void BraveBrowserWindowFeatures::TearDownPreBrowserWindowDestruction() {
+  peek_controller_.reset();
   screenshot_controller_.reset();
 #if BUILDFLAG(ENABLE_AI_CHAT)
   ai_chat_side_panel_tab_transfer_bridge_.reset();
