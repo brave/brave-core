@@ -15,12 +15,14 @@
 #include "base/time/time.h"
 #include "brave/components/misc_metrics/features.h"
 #include "brave/components/misc_metrics/pref_names.h"
+#include "brave/components/p3a_utils/bucket.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/webui_url_constants.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/language/core/browser/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
@@ -38,32 +40,32 @@ constexpr base::TimeDelta kReportInterval = base::Days(7);
 constexpr base::TimeDelta kStartDelay = base::Seconds(30);
 constexpr base::TimeDelta kExecutionTimeout = base::Seconds(30);
 
-constexpr char kTotalCountKey[] = "total";
+constexpr int kUniqueHashBuckets[] = {0, 1, 5, 11, 15};
 
 struct FingerprintMetricEntry {
-  std::string_view count_key;
+  std::string_view hash_key;
   const char* histogram_name;
-  bool report_if_zero = false;
+  bool is_combined = false;
 };
 
 constexpr FingerprintMetricEntry kFingerprintMetrics[] = {
-    {"canvas", kCanvasFingerprintPercentHistogramName},
-    {"fonts", kFontsFingerprintPercentHistogramName},
-    {"timezone", kTimezoneFingerprintPercentHistogramName},
-    {"navigator_deviceMemory", kDeviceMemoryFingerprintPercentHistogramName},
+    {"canvas", kCanvasFingerprintHistogramName},
+    {"combined", kCombinedFingerprintHistogramName, true},
+    {"fonts", kFontsFingerprintHistogramName},
+    {"timezone", kTimezoneFingerprintHistogramName},
+    {"navigator_deviceMemory", kDeviceMemoryFingerprintHistogramName},
     {"navigator_hardwareConcurrency",
-     kHardwareConcurrencyFingerprintPercentHistogramName},
-    {"navigator_languages", kLanguagesFingerprintPercentHistogramName},
-    {"navigator_userAgent", kUserAgentFingerprintPercentHistogramName},
-    {"screenAvailSize", kScreenAvailSizeFingerprintPercentHistogramName},
-    {"screenSize", kScreenSizeFingerprintPercentHistogramName, true},
-    {"screen_pixelDepth", kScreenPixelDepthFingerprintPercentHistogramName},
-    {"webAudio", kWebAudioFingerprintPercentHistogramName},
-    {"webglExtensions", kWebGLExtensionsFingerprintPercentHistogramName},
-    {"webglRendererUnmasked", kWebGLRendererFingerprintPercentHistogramName},
-    {"webglVendorUnmasked", kWebGLVendorFingerprintPercentHistogramName},
-    {"windowDevicePixelRatio",
-     kDevicePixelRatioFingerprintPercentHistogramName},
+     kHardwareConcurrencyFingerprintHistogramName},
+    {"navigator_languages", kLanguagesFingerprintHistogramName},
+    {"navigator_userAgent", kUserAgentFingerprintHistogramName},
+    {"screenAvailSize", kScreenAvailSizeFingerprintHistogramName},
+    {"screenSize", kScreenSizeFingerprintHistogramName},
+    {"screen_pixelDepth", kScreenPixelDepthFingerprintHistogramName},
+    {"webAudio", kWebAudioFingerprintHistogramName},
+    {"webglExtensions", kWebGLExtensionsFingerprintHistogramName},
+    {"webglRendererUnmasked", kWebGLRendererFingerprintHistogramName},
+    {"webglVendorUnmasked", kWebGLVendorFingerprintHistogramName},
+    {"windowDevicePixelRatio", kDevicePixelRatioFingerprintHistogramName},
 };
 
 }  // namespace
@@ -71,19 +73,29 @@ constexpr FingerprintMetricEntry kFingerprintMetrics[] = {
 // static
 void FingerprintFrequencyMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(kMiscMetricsFingerprintHashes);
-  registry->RegisterDictionaryPref(kMiscMetricsFingerprintChangeCounts);
   registry->RegisterTimePref(kMiscMetricsFingerprintReportFrameStartTime, {});
   registry->RegisterTimePref(kMiscMetricsFingerprintLastExecutionTime, {});
+}
+
+// static
+void FingerprintFrequencyMetrics::RegisterPrefsForMigration(
+    PrefRegistrySimple* registry) {
+  // Added 11/2026
+  registry->RegisterDictionaryPref(kMiscMetricsFingerprintChangeCounts);
+}
+
+// static
+void FingerprintFrequencyMetrics::MigrateObsoletePrefs(
+    PrefService* local_state) {
+  // Added 11/2026
+  local_state->ClearPref(kMiscMetricsFingerprintChangeCounts);
 }
 
 FingerprintFrequencyMetrics::FingerprintFrequencyMetrics(
     PrefService* local_state,
     Profile* profile)
-    : PagePercentageMetrics(local_state,
-                            kMiscMetricsFingerprintChangeCounts,
-                            kMiscMetricsFingerprintReportFrameStartTime,
-                            kReportInterval),
-      content::WebContentsObserver(nullptr),
+    : content::WebContentsObserver(nullptr),
+      local_state_(local_state),
       profile_(profile) {
   ReportAllMetrics();
   renderer_timer_.Start(FROM_HERE, base::Time::Now() + kStartDelay, this,
@@ -102,17 +114,26 @@ void FingerprintFrequencyMetrics::ReportAllMetrics() {
     return;
   }
 
-  const base::DictValue& counts =
-      local_state_->GetDict(kMiscMetricsFingerprintChangeCounts);
-  int total = counts.FindInt(kTotalCountKey).value_or(0);
-  if (total > 0) {
-    for (const auto& metric : kFingerprintMetrics) {
-      RecordPercentageHistogram(counts, total, metric.count_key,
-                                metric.histogram_name, metric.report_if_zero);
+  const base::DictValue& hashes =
+      local_state_->GetDict(kMiscMetricsFingerprintHashes);
+  for (const auto& metric : kFingerprintMetrics) {
+    const base::ListValue* hash_list = hashes.FindList(metric.hash_key);
+    if (!hash_list) {
+      continue;
     }
+    int unique_count = static_cast<int>(hash_list->size());
+    // Only the combined metric reports the 1 bucket. For other metrics, the 1
+    // bucket is inferred virtually by subtracting their total from the total
+    // of the combined metric.
+    if (unique_count < (metric.is_combined ? 1 : 2)) {
+      continue;
+    }
+    p3a_utils::RecordToHistogramBucket(metric.histogram_name,
+                                       kUniqueHashBuckets, unique_count);
   }
 
-  ResetCounts();
+  local_state_->ClearPref(kMiscMetricsFingerprintHashes);
+  local_state_->SetTime(kMiscMetricsFingerprintReportFrameStartTime, now);
   report_timer_.Start(FROM_HERE, now + kReportInterval, this,
                       &FingerprintFrequencyMetrics::ReportAllMetrics);
 }
@@ -126,6 +147,17 @@ void FingerprintFrequencyMetrics::ExecuteRendererForTesting(
     base::OnceCallback<void(base::DictValue)> callback) {
   result_callback_for_testing_ = std::move(callback);
   RunScriptInRenderer();
+}
+
+bool FingerprintFrequencyMetrics::HasReportIntervalElapsed() {
+  base::Time frame_start =
+      local_state_->GetTime(kMiscMetricsFingerprintReportFrameStartTime);
+  if (frame_start.is_null()) {
+    local_state_->SetTime(kMiscMetricsFingerprintReportFrameStartTime,
+                          base::Time::Now());
+    return false;
+  }
+  return base::Time::Now() - frame_start >= kReportInterval;
 }
 
 void FingerprintFrequencyMetrics::StartExecution() {
@@ -207,21 +239,19 @@ void FingerprintFrequencyMetrics::HandleResult(base::Value result) {
   }
 
   const base::DictValue& new_hashes = result.GetDict();
-  const base::DictValue& previous_hashes =
-      local_state_->GetDict(kMiscMetricsFingerprintHashes);
-
-  IncrementDictCount(kTotalCountKey);
-
-  if (!previous_hashes.empty()) {
+  {
+    ScopedDictPrefUpdate update(local_state_, kMiscMetricsFingerprintHashes);
     for (const auto [key, new_val] : new_hashes) {
-      const base::Value* prev_val = previous_hashes.Find(key);
-      if (prev_val && *prev_val != new_val) {
-        IncrementDictCount(key);
+      if (!new_val.is_int()) {
+        continue;
+      }
+      base::ListValue* hash_list = update->EnsureList(key);
+      if (!hash_list->contains(new_val.GetInt())) {
+        hash_list->Append(new_val.GetInt());
       }
     }
   }
 
-  local_state_->SetDict(kMiscMetricsFingerprintHashes, new_hashes.Clone());
   Cleanup();
 
   if (result_callback_for_testing_) {
