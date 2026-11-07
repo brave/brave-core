@@ -5,6 +5,8 @@
 
 #include "net/socket/socks5_client_socket.h"
 
+#include <stdint.h>
+
 #include <memory>
 #include <string>
 
@@ -12,12 +14,14 @@
 #include "base/memory/raw_ptr.h"
 #include "net/base/address_list.h"
 #include "net/base/test_completion_callback.h"
+#include "net/base/winsock_init.h"
 #include "net/socket/socket_test_util.h"
 #include "net/socket/tcp_client_socket.h"
 #include "net/socket/transport_connect_job.h"
 #include "net/test/gtest_util.h"
 #include "net/test/test_with_task_environment.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "testing/platform_test.h"
 
@@ -86,8 +90,8 @@ TEST_F(BraveSocks5ClientSocketAuthTest, AuthenticatesWithUsernameAndPassword) {
       MockRead(ASYNC, base::span(kConnectResponse)),
   };
 
-  auto socket = BuildSocket(reads, writes,
-                            HostPortPair("alice", "secret", "proxy.test", 1080));
+  auto socket = BuildSocket(
+      reads, writes, HostPortPair("alice", "secret", "proxy.test", 1080));
   TestCompletionCallback callback;
   int rv = socket->Connect(callback.callback());
   EXPECT_THAT(rv, IsError(ERR_IO_PENDING));
@@ -132,8 +136,8 @@ TEST_F(BraveSocks5ClientSocketAuthTest, RejectsAuthenticationFailure) {
       MockRead(ASYNC, base::span(kAuthRejected)),
   };
 
-  auto socket = BuildSocket(reads, writes,
-                            HostPortPair("alice", "secret", "proxy.test", 1080));
+  auto socket = BuildSocket(
+      reads, writes, HostPortPair("alice", "secret", "proxy.test", 1080));
   TestCompletionCallback callback;
   int rv = socket->Connect(callback.callback());
   EXPECT_THAT(rv, IsError(ERR_IO_PENDING));
