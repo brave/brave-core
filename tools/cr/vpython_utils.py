@@ -21,20 +21,26 @@ def _compute_vpython3_path() -> Path:
     """Resolves the `vpython3` interpreter for use by tools/cr scripts.
 
     Precedence:
-      1. POSIX with `vpython3` on `$PATH` — `Path('vpython3')` so callers
+      1. The vendored `vendor/depot_tools/vpython3` (`vpython3.bat` on
+         Windows), when present. It self-updates with the checkout, so it
+         understands the specs the checkout uses (e.g. `vpython.toml`), unlike
+         a possibly stale depot_tools on `$PATH`. Already absolute since it's
+         derived from `_BRAVE_ROOT`.
+      2. POSIX with `vpython3` on `$PATH` — `Path('vpython3')` so callers
          do a fresh `$PATH` lookup at invocation time.
-      2. Windows with `vpython3` on `$PATH` — the absolute path returned
+      3. Windows with `vpython3` on `$PATH` — the absolute path returned
          by `shutil.which`, because git's bundled bash (used to execute
          `!`-prefixed aliases) doesn't reliably resolve `.bat` wrappers
          like `vpython3.bat` via `$PATH`.
-      3. Neither — the vendored `vendor/depot_tools/vpython3`
-         (`vpython3.bat` on Windows), already absolute since it's derived
-         from `_BRAVE_ROOT`.
+      4. Neither — the (missing) vendored path, so failures name it.
     """
+    name = 'vpython3.bat' if platform.system() == 'Windows' else 'vpython3'
+    vendored = _BRAVE_ROOT / 'vendor' / 'depot_tools' / name
+    if vendored.is_file():
+        return vendored
     found = shutil.which('vpython3')
     if found is None:
-        name = 'vpython3.bat' if platform.system() == 'Windows' else 'vpython3'
-        return _BRAVE_ROOT / 'vendor' / 'depot_tools' / name
+        return vendored
     if platform.system() == 'Windows':
         return Path(found)
     return Path('vpython3')
