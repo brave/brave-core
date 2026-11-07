@@ -203,8 +203,9 @@ public protocol TabState: AnyObject {
   /// Takes a snapshot of the web contents with the given rect. Pass in a `null` rect to capture
   /// the entire page. `handler` may be called more than once
   func takeSnapshot(rect: CGRect, handler: @escaping (UIImage?) -> Void)
-  /// Creates a full page PDF of the web contents
-  func createFullPagePDF() async throws -> Data?
+  /// Creates a PDF of the web contents in the given rect, in the document's coordinate space. Pass
+  /// in a `null` rect to create a PDF of the entire page
+  func createPDF(rect: CGRect) async throws -> Data?
   /// Downloads the last committed page to `fileURL` using the web view's network session.
   ///
   /// Throws `CancellationError` if the calling task is cancelled.
