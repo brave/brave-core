@@ -29,6 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol AIChatUIHandlerBridge;
 @protocol BraveAccountDialogOpenerBridge;
+@protocol BraveAccountSettingsOpenerBridge;
 @protocol WalletPageHandlerBridge;
 @protocol AIChatAssociatedContentPageFetcher;
 @protocol ProfileBridge;
@@ -193,6 +194,9 @@ CWV_EXPORT
 /// A bridge for opening the Brave Account dialog over the WebUI page.
 @property(nonatomic, weak, nullable) id<BraveAccountDialogOpenerBridge>
     braveAccountDialogOpener;
+/// A bridge for opening a settings page in place of the WebUI page.
+@property(nonatomic, weak, nullable) id<BraveAccountSettingsOpenerBridge>
+    braveAccountSettingsOpener;
 @end
 
 CWV_EXPORT
