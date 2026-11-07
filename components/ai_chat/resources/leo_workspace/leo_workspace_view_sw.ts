@@ -3,7 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { kReadFileRequest, kReadFileResponse } from './message_handler'
+import {
+  kReadFileRequest,
+  kReadFileResponse,
+  workspaceOrigin,
+} from './message_handler'
 
 interface ExtendableEvent extends Event {
   waitUntil(promise: Promise<unknown>): void
@@ -45,6 +49,23 @@ const pendingRequests = new Map<
     reject: (error: Error) => void
   }
 >()
+
+const kFileContentSecurityPolicy = [
+  "default-src 'none'",
+  "script-src 'self' 'unsafe-inline'",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: blob:",
+  "media-src 'self' data: blob:",
+  "font-src 'self' data:",
+  "connect-src 'none'",
+  "frame-src 'none'",
+  "worker-src 'none'",
+  "object-src 'none'",
+  "form-action 'none'",
+  "base-uri 'none'",
+  `frame-ancestors 'self' ${workspaceOrigin(self.location.origin)} chrome://leo-ai`,
+  'sandbox allow-scripts allow-same-origin',
+].join('; ')
 
 const kStaticResources = new Set([
   '/leo_workspace_view.bundle.js',
@@ -182,7 +203,15 @@ self.addEventListener('fetch', (event) => {
   }
 
   console.debug('[leo-workspace-view-sw] intercepting fetch for', filePath)
-  event.respondWith(requestFileFromParent(filePath))
+  event.respondWith(
+    requestFileFromParent(filePath).then((response) => {
+      response.headers.set(
+        'Content-Security-Policy',
+        kFileContentSecurityPolicy,
+      )
+      return response
+    }),
+  )
 })
 
 self.addEventListener('activate', (event) => {
