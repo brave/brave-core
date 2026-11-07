@@ -13,3 +13,41 @@ substitutions:
         new (TileInteractionDelegateImpl\()
       replace: |-
         new Brave\1
+
+  - description: |-
+      Track whether a pending tile-data update was user-triggered.
+
+      loadTiles() otherwise only compares tile-list content to decide
+      whether to re-render, which misses a Brave-only display-mode switch
+      between two equally-empty lists (e.g. shortcuts mode with 0 pinned
+      tiles, switched to frequent mode with 0 frequent tiles).
+    regex:
+      re_pattern: '(public static class PendingChanges \{)'
+      replace: |-
+        \1
+                /** Whether the most recently stored update was user-triggered. */
+                public boolean isUserTriggered;
+
+  - description:
+      'Record isUserTriggered on PendingChanges for loadTiles() to use.'
+    regex:
+      re_pattern:
+        '(mPendingChanges\.siteSuggestions = new
+        ArrayList<>\(siteSuggestions\);)'
+      replace: |-
+        \1
+                mPendingChanges.isUserTriggered = isUserTriggered;
+
+  - description: |-
+      Force a tile re-render on a user-triggered update, even if the tile
+      list content itself is unchanged.
+
+      See the PendingChanges.isUserTriggered substitution above for why.
+    regex:
+      re_pattern:
+        '(boolean dataChanged =\s*isInitialLoad)\s*(\|\|
+        !tileListAreEqual\(oldPersonalizedTiles, newPersonalizedTiles\);)'
+      replace: |-
+        \1
+                                || mPendingChanges.isUserTriggered
+                                \2
