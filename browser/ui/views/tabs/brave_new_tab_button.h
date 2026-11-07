@@ -64,7 +64,21 @@ class BraveNewTabButton : public NewTabButton {
   friend class containers::ContainersBrowserTest;
 
   class NewTabButtonContainersMenuDelegate;
+#endif
 
+  // Left-click handler. When the Containers "open new tabs in" setting is
+  // "ask every time", shows the container menu anchored to the button
+  // instead of opening a tab; otherwise runs the upstream pressed callback.
+  void OnPressed(const ui::Event& event);
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  bool ShouldAskForContainer() const;
+#endif
+
+  PressedCallback callback_;
+  const raw_ref<BrowserWindowInterface> browser_window_interface_;
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
   std::unique_ptr<NewTabButtonContainersMenuDelegate> containers_menu_delegate_;
   std::unique_ptr<containers::ContainersMenuModel> containers_menu_model_;
   std::unique_ptr<views::MenuRunner> containers_context_menu_runner_;
@@ -74,8 +88,6 @@ class BraveNewTabButton : public NewTabButton {
   // MenuRunner's nested loop.
   bool skip_containers_context_menu_runner_for_testing_ = false;
 #endif
-
-  const raw_ref<BrowserWindowInterface> browser_window_interface_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_NEW_TAB_BUTTON_H_

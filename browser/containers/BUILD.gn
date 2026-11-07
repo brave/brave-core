@@ -47,8 +47,13 @@ source_set("navigator") {
     "//brave/components/containers/content/browser",
     "//brave/components/containers/core/browser",
     "//brave/components/containers/core/common",
+    "//brave/components/containers/core/mojom",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui:browser_tabstrip",
+    "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/navigator",
     "//content/public/browser",
+    "//ui/base",
   ]
 }
 

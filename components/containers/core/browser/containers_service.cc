@@ -161,8 +161,13 @@ void ContainersService::ScheduleOrphanedContainersCleanupForTesting() {
   ScheduleOrphanedContainersCleanup();
 }
 
+mojom::NewTabTargetPtr ContainersService::GetNewTabTarget() const {
+  return GetNewTabTargetFromPrefs(*prefs_);
+}
+
 void ContainersService::OnSyncedContainersChanged() {
   RefreshLocallyUsedContainersFromSyncedList();
+  ClearNewTabTargetIfContainerRemoved();
   observers_.Notify(&ContainersServiceObserver::OnContainersListChanged);
 }
 
@@ -177,6 +182,15 @@ void ContainersService::RefreshLocallyUsedContainersFromSyncedList() {
       // removed with a separate cleanup logic later.
     }
   }
+}
+
+void ContainersService::ClearNewTabTargetIfContainerRemoved() {
+  auto target = GetNewTabTargetFromPrefs(*prefs_);
+  if (!target || !target->is_container_id() ||
+      GetContainerFromPrefs(*prefs_, target->get_container_id())) {
+    return;
+  }
+  SetNewTabTargetToPrefs(nullptr, *prefs_);
 }
 
 std::optional<std::string>
