@@ -720,6 +720,21 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_CLOSE_TABS_ON_EXIT_SUMMARY" desc="Summary for closing tabs on exit.">
         Don't persist tabs between browsing sessions
       </message>
+      <message name="IDS_BRAVE_BROWSER_LOCK_TITLE" desc="Title for the browser biometrics lock setting.">
+        Browser lock
+      </message>
+      <message name="IDS_BRAVE_PRIVATE_TABS_LOCKED" desc="Status label shown on the private tabs lock screen.">
+        Private tabs locked
+      </message>
+      <message name="IDS_BRAVE_UNLOCK_PRIVATE_TABS" desc="Button label to unlock private tabs via biometrics.">
+        Unlock private tabs
+      </message>
+      <message name="IDS_BRAVE_OPEN_NORMAL_TABS" desc="Button label on the private tabs lock screen to navigate to regular tabs instead.">
+        Open normal tabs
+      </message>
+      <message name="IDS_BRAVE_BROWSER_LOCK_SCREEN_DESCRIPTION" desc="Description at the top of the Browser Lock settings screen.">
+        Lock private tabs or the entire Brave app with your device's screen lock
+      </message>
       <message name="IDS_SEND_P3A_ANALYTICS_TITLE" desc="Title for checkbox of send p3a analytics.">
         Allow privacy-preserving product analytics (P3A)
       </message>
@@ -3762,12 +3777,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_SAFEBROWSING_ERRORS_PREF" desc="A preferences to show Safe Browsing errors">
       Show Safe Browsing errors
-    </message>
-    <message name="IDS_PRIVATE_TAB_SCREENSHOT_TITLE" desc="A title to show private tab screenshot">
-      Allow screenshots in private tabs
-    </message>
-    <message name="IDS_PRIVATE_TAB_SCREENSHOT_SUMMARY" desc="A summary to show private tab screenshot">
-      If allowed, private tabs will also be visible when multiple apps are open.
     </message>
     <message name="IDS_BRAVE_HOMEPAGE_MOBILE_BOOKMARKS_TEXT" desc="Text for `Mobile bookmarks` setting in `Homepage` settings">
       Mobile bookmarks

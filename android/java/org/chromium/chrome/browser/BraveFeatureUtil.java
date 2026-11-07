@@ -27,7 +27,7 @@ public abstract class BraveFeatureUtil {
     }
 
     @NativeMethods
-    interface Natives {
+    public interface Natives {
         void enableFeature(String featureName, boolean enabled, boolean fallbackToDefault);
     }
 }

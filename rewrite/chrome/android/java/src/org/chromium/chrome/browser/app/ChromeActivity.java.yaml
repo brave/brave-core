@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Instantiate Brave's snackbar manager. Fully-qualified instead of
+      imported to avoid colliding with the upstream SnackbarManager import,
+      which is still needed elsewhere in this file.
+    regex:
+      re_pattern: |-
+        new (SnackbarManager\()
+      replace: |-
+        new org.chromium.chrome.browser.ui.messages.snackbar.Brave\1
+  - description: |-
+      Add a hook called once tab state has been restored, so Brave-side code
+      can act on it without having to patch every ChromeActivity subclass.
+    regex:
+      re_pattern: |-
+        ( +)(private void clearToolbarResourceCache\(\) \{)
+      replace: |-
+        \1public void onTabStateInitializedHandler() {}
+        \1\2
