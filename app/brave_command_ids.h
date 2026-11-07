@@ -6,8 +6,6 @@
 #ifndef BRAVE_APP_BRAVE_COMMAND_IDS_H_
 #define BRAVE_APP_BRAVE_COMMAND_IDS_H_
 
-#include "brave/components/containers/buildflags/buildflags.h"
-
 // First brave id must be higher than last chrome command.
 // Check chrome/app/chrome_command_ids.h when rebase.
 // ID of IDC_BRAVE_COMANDS_START and first brave command should be same.
@@ -150,10 +148,7 @@
 #define IDC_SHOW_EMAIL_ALIASES 56456
 
 #define IDC_TOGGLE_FOCUS_MODE 56457
-
-#if BUILDFLAG(ENABLE_CONTAINERS)
 #define IDC_NEW_TEMPORARY_CONTAINER 56458
-#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 // PSST
 #define IDC_PSST_DONT_SHOW_FOR_THIS_SITE 56461
@@ -172,7 +167,6 @@
 #define IDC_BLOCK_ELEMENTS 56470
 
 // Brave Containers: Open a new tab directly in the nth container.
-#if BUILDFLAG(ENABLE_CONTAINERS)
 #define IDC_NEW_TAB_IN_CONTAINER_1 56471
 #define IDC_NEW_TAB_IN_CONTAINER_2 56472
 #define IDC_NEW_TAB_IN_CONTAINER_3 56473
@@ -182,7 +176,6 @@
 #define IDC_NEW_TAB_IN_CONTAINER_7 56477
 #define IDC_NEW_TAB_IN_CONTAINER_8 56478
 #define IDC_NEW_TAB_IN_CONTAINER_9 56479
-#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 #define IDC_BRAVE_COMMANDS_LAST 57000
 
