@@ -20,7 +20,9 @@ use futures::task::LocalSpawnExt;
 use log::debug;
 use tracing_log::LogTracer;
 
-pub use skus;
+chromium::import! {
+    pub "//brave/components/skus/browser/rs/lib:rust_lib" as skus;
+}
 
 use crate::httpclient::{HttpRoundtripContext, WakeupContext};
 use crate::storage::{StorageGetContext, StoragePurgeContext, StorageSetContext};
