@@ -490,8 +490,8 @@ void PageContentFetcher::GetSearchSummarizerKey(
   mojo::Remote<mojom::PageContentExtractor> extractor;
   primary_rfh->GetRemoteInterfaces()->GetInterface(
       extractor.BindNewPipeAndPassReceiver());
-  // As in FetchPageContent, answer "no result" if the fetcher is deleted on
-  // disconnect before the renderer replies.
+  // The fetcher deletes itself on disconnect without replying, so guarantee an
+  // answer or the caller waits forever.
   fetcher->GetSearchSummarizerKey(
       std::move(extractor),
       mojo::WrapCallbackWithDefaultInvokeIfNotRun(
@@ -507,8 +507,8 @@ void PageContentFetcher::GetOpenAIChatButtonNonce(
   mojo::Remote<mojom::PageContentExtractor> extractor;
   primary_rfh->GetRemoteInterfaces()->GetInterface(
       extractor.BindNewPipeAndPassReceiver());
-  // The caller defers navigation until this answers, so a dropped callback
-  // would leave it deferred.
+  // The fetcher deletes itself on disconnect without replying, so guarantee an
+  // answer or the caller waits forever.
   fetcher->GetOpenAIChatButtonNonce(
       std::move(extractor),
       mojo::WrapCallbackWithDefaultInvokeIfNotRun(
