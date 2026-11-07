@@ -22,10 +22,17 @@ import {
   formatCount,
   formatMonthYear,
   formatTimeSaved,
+  joinValue,
 } from '../format'
+import { renderShareCard } from '../share_card'
 import '../strings'
 
-const SLIDES = ['intro', 'blocked', 'time', 'data'] as const
+// TODO: replace with an attributed download link once growth provides one.
+const DOWNLOAD_URL = 'https://brave.com/download/'
+// Same-origin so it doesn't taint the share card canvas.
+const LOGO_URL = '/brave-icon.svg'
+
+const SLIDES = ['intro', 'blocked', 'time', 'data', 'share'] as const
 type Slide = (typeof SLIDES)[number]
 
 const COUNT_UP_MS = 1400
@@ -185,6 +192,198 @@ function DataSlide({ stats }: { stats: RecapStats }) {
   )
 }
 
+function getShareText(stats: RecapStats) {
+  const text = formatLocale(S.BRAVE_RECAP_SHARE_POST_TEXT, {
+    $1: formatCount(stats.adsBlocked),
+    $2: joinValue(formatTimeSaved(getTimeSavedMs(stats))),
+    $3: joinValue(formatBandwidth(stats.bandwidthSavedBytes)),
+  })
+  return `${text} ${DOWNLOAD_URL}`
+}
+
+function openShareIntent(url: string) {
+  window.open(url, '_blank', 'noopener')
+}
+
+function ShareSlide({ stats }: { stats: RecapStats }) {
+  const [card, setCard] = React.useState<Blob>()
+  const [cardUrl, setCardUrl] = React.useState<string>()
+  const [copied, setCopied] = React.useState<'image' | 'text'>()
+
+  React.useEffect(() => {
+    let url: string | undefined
+    let cancelled = false
+    renderShareCard(
+      {
+        title: getLocale(S.BRAVE_RECAP_CARD_TITLE),
+        subtitle: stats.firstRunTime
+          ? formatLocale(S.BRAVE_RECAP_CARD_SINCE, {
+              $1: formatMonthYear(stats.firstRunTime),
+            })
+          : '',
+        stats: [
+          {
+            value: formatCount(stats.adsBlocked),
+            label: getLocale(S.BRAVE_RECAP_BLOCKED_HEADING),
+          },
+          {
+            value: joinValue(formatTimeSaved(getTimeSavedMs(stats))),
+            label: getLocale(S.BRAVE_RECAP_TIME_HEADING),
+          },
+          {
+            value: joinValue(formatBandwidth(stats.bandwidthSavedBytes)),
+            label: getLocale(S.BRAVE_RECAP_DATA_HEADING),
+          },
+        ],
+        cta: getLocale(S.BRAVE_RECAP_CARD_CTA),
+      },
+      LOGO_URL,
+    )
+      .then((blob) => {
+        if (cancelled) {
+          return
+        }
+        url = URL.createObjectURL(blob)
+        setCard(blob)
+        setCardUrl(url)
+      })
+      .catch((e) => {
+        console.error('[brave-recap] failed to render share card:', e)
+      })
+    return () => {
+      cancelled = true
+      if (url) {
+        URL.revokeObjectURL(url)
+      }
+    }
+  }, [stats])
+
+  const flashCopied = (what: 'image' | 'text') => {
+    setCopied(what)
+    setTimeout(() => setCopied(undefined), 2000)
+  }
+
+  const copyImage = async () => {
+    if (!card) {
+      return
+    }
+    await navigator.clipboard.write([new ClipboardItem({ 'image/png': card })])
+    flashCopied('image')
+  }
+
+  const download = () => {
+    if (!cardUrl) {
+      return
+    }
+    const link = document.createElement('a')
+    link.href = cardUrl
+    link.download = 'brave-recap.png'
+    link.click()
+  }
+
+  const shareText = getShareText(stats)
+  const encodedText = encodeURIComponent(shareText)
+
+  return (
+    <div className='share'>
+      <div className='card-preview'>
+        {cardUrl && (
+          <img
+            src={cardUrl}
+            alt={getLocale(S.BRAVE_RECAP_CARD_TITLE)}
+          />
+        )}
+      </div>
+      <div className='share-actions'>
+        <h1>{getLocale(S.BRAVE_RECAP_SHARE_HEADING)}</h1>
+        <p>{getLocale(S.BRAVE_RECAP_SHARE_TEXT)}</p>
+        <div className='button-row'>
+          <Button
+            kind='filled'
+            size='large'
+            onClick={copyImage}
+            isDisabled={!card}
+          >
+            <Icon
+              slot='icon-before'
+              name={copied === 'image' ? 'check-normal' : 'copy'}
+            />
+            {getLocale(
+              copied === 'image'
+                ? S.BRAVE_RECAP_COPIED
+                : S.BRAVE_RECAP_COPY_IMAGE,
+            )}
+          </Button>
+          <Button
+            kind='outline'
+            size='large'
+            onClick={download}
+            isDisabled={!cardUrl}
+          >
+            <Icon
+              slot='icon-before'
+              name='download'
+            />
+            {getLocale(S.BRAVE_RECAP_DOWNLOAD)}
+          </Button>
+        </div>
+        <div className='button-row'>
+          <Button
+            kind='outline'
+            onClick={() =>
+              openShareIntent(`https://x.com/intent/post?text=${encodedText}`)
+            }
+          >
+            <Icon
+              slot='icon-before'
+              name='social-x-color'
+            />
+            {getLocale(S.BRAVE_RECAP_POST_ON_X)}
+          </Button>
+          <Button
+            kind='outline'
+            onClick={() =>
+              openShareIntent(
+                `https://www.reddit.com/submit?url=${encodeURIComponent(
+                  DOWNLOAD_URL,
+                )}&title=${encodeURIComponent(
+                  formatLocale(S.BRAVE_RECAP_SHARE_POST_TITLE, {
+                    $1: formatCount(stats.adsBlocked),
+                  }),
+                )}`,
+              )
+            }
+          >
+            <Icon
+              slot='icon-before'
+              name='social-reddit-color'
+            />
+            {getLocale(S.BRAVE_RECAP_POST_ON_REDDIT)}
+          </Button>
+          <Button
+            kind='plain'
+            onClick={async () => {
+              await navigator.clipboard.writeText(shareText)
+              flashCopied('text')
+            }}
+          >
+            <Icon
+              slot='icon-before'
+              name={copied === 'text' ? 'check-normal' : 'link-normal'}
+            />
+            {getLocale(
+              copied === 'text'
+                ? S.BRAVE_RECAP_COPIED
+                : S.BRAVE_RECAP_COPY_LINK,
+            )}
+          </Button>
+        </div>
+        <PrivacyNote />
+      </div>
+    </div>
+  )
+}
+
 function renderSlide(slide: Slide, stats: RecapStats) {
   switch (slide) {
     case 'intro':
@@ -195,6 +394,8 @@ function renderSlide(slide: Slide, stats: RecapStats) {
       return <TimeSlide stats={stats} />
     case 'data':
       return <DataSlide stats={stats} />
+    case 'share':
+      return <ShareSlide stats={stats} />
   }
 }
 
@@ -260,7 +461,7 @@ export function App({ stats }: { stats: RecapStats }) {
       <div
         className='slide'
         key={slide}
-        onClick={next}
+        onClick={slide === 'share' ? undefined : next}
       >
         {renderSlide(slide, stats)}
       </div>

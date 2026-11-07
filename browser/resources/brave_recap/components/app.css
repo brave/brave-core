@@ -10,6 +10,7 @@
   --recap-hero-background: var(--leo-gradient-hero);
   --recap-hero-text: var(--leo-color-white);
   --recap-card-shadow: var(--leo-effect-elevation-05);
+  --recap-card-placeholder: var(--leo-color-container-highlight);
   /* Nala's marketing font-display-primary-hero; browser tokens stop at 46px. */
   --recap-stat-font:
     600 120px/130px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
@@ -51,6 +52,11 @@ body {
   box-sizing: border-box;
   cursor: pointer;
   animation: slide-in var(--leo-duration-l) var(--leo-easing-out);
+}
+
+.slide-share .slide {
+  cursor: default;
+  max-width: 1200px;
 }
 
 @keyframes slide-in {
@@ -139,6 +145,39 @@ p.lead {
   flex: 0 0 auto;
 }
 
+.share {
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-6xl);
+}
+
+.card-preview {
+  flex: 0 0 auto;
+  width: min(40vh, 400px);
+  aspect-ratio: 4 / 5;
+  border-radius: var(--leo-radius-xxl);
+  overflow: hidden;
+  background: var(--recap-card-placeholder);
+  box-shadow: var(--recap-card-shadow);
+}
+
+.card-preview img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.share-actions h1 {
+  font: var(--leo-font-heading-display2);
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--leo-spacing-l);
+  margin-top: var(--leo-spacing-xl);
+}
+
 .privacy-note {
   display: flex;
   align-items: center;
@@ -150,6 +189,11 @@ p.lead {
 }
 
 @media (max-width: 800px) {
+  .share {
+    flex-direction: column;
+    gap: var(--leo-spacing-3xl);
+  }
+
   .big-value {
     font: var(--leo-font-heading-display1);
   }
