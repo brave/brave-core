@@ -52,6 +52,8 @@ public class ShieldsPanelViewModel: ObservableObject {
       tab.braveShieldsHelper?.setShredLevel(autoShredLevel, for: tab.visibleURL)
     }
   }
+  /// Whether the element picker has blocked any elements on the current site
+  @Published public var hasBlockedElements: Bool = false
   /// Indicates if Advanced Controls are visible
   public let isAdvancedControlsEnabled: Bool
   /// Indicates if Shred is enabled

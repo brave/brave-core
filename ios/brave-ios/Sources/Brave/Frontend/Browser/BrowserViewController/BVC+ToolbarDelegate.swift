@@ -473,6 +473,7 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
     }
 
     weak var weakShieldsPanelVC: UIViewController?
+    weak var weakShieldsPanelViewModel: ShieldsPanelViewModel?
     let shieldsPanelActionHandler: (ShieldsPanelAction) -> Void = {
       [weak self, weak selectedTab] action in
       guard let self, let selectedTab else { return }
@@ -495,6 +496,17 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
         weakShieldsPanelVC?.dismiss(animated: true) {
           selectedTab.elementPickerTabHelper?.showPicker()
         }
+      case .clearBlockedElements:
+        Task {
+          let storage = CustomFilterListStorage.shared
+          do {
+            try await storage.clearBlockedElements(for: url)
+          } catch {
+            Logger.module.error("Failed to clear blocked elements: \(error.localizedDescription)")
+          }
+          weakShieldsPanelViewModel?.hasBlockedElements = await storage.hasBlockedElements(for: url)
+          selectedTab.reload()
+        }
       case .openURLInNewTab(let url):
         weakShieldsPanelVC?.dismiss(animated: true) {
           self.tabManager.addTabAndSelect(
@@ -506,16 +518,22 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
       }
     }
     if FeatureList.kShowUpdatedShieldsPanel.enabled {
+      let viewModel = ShieldsPanelViewModel(
+        tab: selectedTab,
+        stats: selectedTab.contentBlocker?.$stats.eraseToAnyPublisher()
+          ?? Just(.init()).eraseToAnyPublisher(),
+        blockedRequests: selectedTab.contentBlocker?.$blockedRequests.map(Array.init)
+          .eraseToAnyPublisher() ?? Just([]).eraseToAnyPublisher(),
+        isShredEnabled: FeatureList.kBraveShredFeature.enabled
+      )
+      weakShieldsPanelViewModel = viewModel
+      Task { [weak viewModel] in
+        let hasBlockedElements = await CustomFilterListStorage.shared.hasBlockedElements(for: url)
+        viewModel?.hasBlockedElements = hasBlockedElements
+      }
       let shieldsPanelViewController = ShieldsPanelViewController(
         url: url,
-        viewModel: ShieldsPanelViewModel(
-          tab: selectedTab,
-          stats: selectedTab.contentBlocker?.$stats.eraseToAnyPublisher()
-            ?? Just(.init()).eraseToAnyPublisher(),
-          blockedRequests: selectedTab.contentBlocker?.$blockedRequests.map(Array.init)
-            .eraseToAnyPublisher() ?? Just([]).eraseToAnyPublisher(),
-          isShredEnabled: FeatureList.kBraveShredFeature.enabled
-        ),
+        viewModel: viewModel,
         action: shieldsPanelActionHandler
       )
       weakShieldsPanelVC = shieldsPanelViewController

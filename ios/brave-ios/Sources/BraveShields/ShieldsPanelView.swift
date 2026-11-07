@@ -211,13 +211,25 @@ public struct ShieldsPanelView: View {
     // The element picker is driven by a Chromium JavaScriptFeature, which is
     // only wired up under the profile web view configuration.
     if FeatureList.kUseProfileWebViewConfiguration.enabled,
-       FeatureList.kBraveShieldsElementPicker.enabled,
-       !viewModel.isPrivateBrowsing
+      FeatureList.kBraveShieldsElementPicker.enabled,
+      !viewModel.isPrivateBrowsing
     {
       Button {
         action(.blockElement)
       } label: {
         Text(Strings.Shields.blockElementButtonTitle)
+          .frame(maxWidth: .infinity, alignment: .leading)
+          .multilineTextAlignment(.leading)
+          .contentShape(Rectangle())
+      }
+      .buttonStyle(.plain)
+    }
+
+    if viewModel.hasBlockedElements {
+      Button {
+        action(.clearBlockedElements)
+      } label: {
+        Text(Strings.Shields.clearBlockedElementsButtonTitle)
           .frame(maxWidth: .infinity, alignment: .leading)
           .multilineTextAlignment(.leading)
           .contentShape(Rectangle())
