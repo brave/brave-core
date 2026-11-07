@@ -6,16 +6,14 @@
 #ifndef BRAVE_IOS_BROWSER_BRAVE_ADS_ADS_TAB_HELPER_H_
 #define BRAVE_IOS_BROWSER_BRAVE_ADS_ADS_TAB_HELPER_H_
 
+#include <string>
+
 #include "base/containers/flat_set.h"
 #include "base/memory/raw_ptr.h"
 #include "ios/web/public/web_state_observer.h"
 #include "ios/web/public/web_state_user_data.h"
 
 class GURL;
-
-namespace base {
-class Value;
-}
 
 namespace web {
 class NavigationContext;
@@ -70,7 +68,7 @@ class AdsTabHelper : public web::WebStateUserData<AdsTabHelper>,
   bool ShouldNotifyTabContentDidChange() const;
   void OnMaybeNotifyTabTextContentDidChange(
       const std::vector<GURL>& redirect_chain,
-      const base::Value* value);
+      std::string text);
 
   raw_ptr<web::WebState> web_state_;
   int32_t tab_id_;
