@@ -102,6 +102,14 @@ IN_PROC_BROWSER_TEST_F(WalletButtonButtonBrowserTest,
 
 class WalletButtonBrowserUITest : public DialogBrowserTest {
  public:
+  WalletButtonBrowserUITest() {
+    // The wallet panel is a fixed 390x650 WebUI bubble below the toolbar. It
+    // autosizes after being shown and can end past the work area of a short
+    // display, so the bounds check depends on the host and on timing
+    // (https://crbug.com/41419544).
+    set_should_verify_dialog_bounds(false);
+  }
+
   // DialogBrowserTest:
   void ShowUi(const std::string& name) override {
     auto* wallet_button = WalletButton::From(browser());
