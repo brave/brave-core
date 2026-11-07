@@ -379,16 +379,6 @@ class FromCheckoutIntegrationTest(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, 'No gclient solution'):
             runner._solution_vars('nonexistent')
 
-    def test_ignores_cache_dir_inside_the_root(self):
-        """A `cache_dir` that depot_tools rejects for a sync doesn't stop
-        `from_checkout`, which never uses the git cache."""
-        gclient_file = self.repo.base_path / '.gclient'
-        gclient_file.write_text(
-            gclient_file.read_text() + 'cache_dir = "cache/git"\n'
-        )
-        runner = m.ExtraDepsRunner.from_checkout()
-        self.assertEqual(runner._solution_vars('src')['host_os'], 'linux')
-
     def test_missing_gclient_root_raises(self):
         """`from_checkout` raises when no `.gclient` is found walking upward."""
         with tempfile.TemporaryDirectory() as orphan:

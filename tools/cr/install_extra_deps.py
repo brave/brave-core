@@ -30,7 +30,9 @@ _SRC_DIR = Path(__file__).resolve().parents[3]
 # front so its `third_party` package (which provides `third_party.schema`,
 # needed by gclient_eval) is not shadowed by the `third_party` package in the
 # vpython virtualenv.
-sys.path.insert(0, str(_SRC_DIR / 'third_party' / 'depot_tools'))
+sys.path.insert(
+    0, str(Path(__file__).resolve().parents[2] / 'vendor' / 'depot_tools')
+)
 
 import gclient  # pylint: disable=wrong-import-position,import-error  # noqa: E402
 import gclient_eval  # pylint: disable=wrong-import-position,import-error  # noqa: E402
@@ -240,24 +242,6 @@ def setdep(revisions: list[str], extra_deps_file: Path | None = None) -> None:
     )
 
 
-def _without_cache_dir(config: str) -> str:
-    """Drop `.gclient`'s `cache_dir`, which `SetConfig` rejects when it is
-    inside the checkout, as CI's is: the runner never touches the git cache."""
-    module = ast.parse(config)
-    module.body = [
-        statement
-        for statement in module.body
-        if not (
-            isinstance(statement, ast.Assign)
-            and any(
-                isinstance(target, ast.Name) and target.id == 'cache_dir'
-                for target in statement.targets
-            )
-        )
-    ]
-    return ast.unparse(module)
-
-
 class ExtraDepsRunner:
     """Installs `EXTRA_DEPS` entries with gclient-resolved conditions.
 
@@ -292,9 +276,7 @@ class ExtraDepsRunner:
             )
         client = gclient.GClient(root, options)
         client.SetConfig(
-            _without_cache_dir(
-                gclient_utils.FileRead(Path(root) / options.config_filename)
-            )
+            gclient_utils.FileRead(Path(root) / options.config_filename)
         )
         return cls(client)
 
