@@ -6,6 +6,8 @@
 #include "base/path_service.h"
 #include "base/strings/pattern.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/test/scoped_feature_list.h"
+#include "brave/browser/ui/brave_ui_features.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/brave_paths.h"
 #include "build/build_config.h"
@@ -317,6 +319,22 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
   EXPECT_FALSE(IsURLAllowedInIncognito(GURL("chrome://rewards")));
   EXPECT_TRUE(IsURLAllowedInIncognito(GURL("http://rewards")));
   TestURLIsNotLoadedInPrivateWindow("brave://rewards");
+}
+
+class BraveSchemeLoadRecapBrowserTest : public BraveSchemeLoadBrowserTest {
+ public:
+  BraveSchemeLoadRecapBrowserTest() {
+    feature_list_.InitAndEnableFeature(features::kBraveRecap);
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(BraveSchemeLoadRecapBrowserTest,
+                       RecapPageIsNotAllowedInPrivateWindow) {
+  EXPECT_FALSE(IsURLAllowedInIncognito(GURL("chrome://recap")));
+  TestURLIsNotLoadedInPrivateWindow("brave://recap");
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
