@@ -8,19 +8,28 @@ import {
   PropertyValues,
 } from '//resources/lit/v3_0/lit.rollup.js'
 
-import { SettingsPage } from './brave_account.mojom-webui.js'
+import {
+  // <if expr="is_android or is_ios">
+  SettingsOpener,
+  // </if>
+  SettingsPage,
+} from './brave_account.mojom-webui.js'
 import { getCss } from './brave_account_link_row.css.js'
 import { getHtml } from './brave_account_link_row.html.js'
 import { TextTruncator } from './brave_account_text_truncator.js'
+// <if expr="not is_android and not is_ios">
 import { routes } from './route.js'
 import { Router } from './router.js'
+// </if>
 
+// <if expr="not is_android and not is_ios">
 function getRoute(page: SettingsPage) {
   switch (page) {
     case SettingsPage.kBraveAccount:
       return routes.GET_STARTED
   }
 }
+// </if>
 
 export class BraveAccountLinkRowElement extends CrLitElement {
   static get is() {
@@ -78,7 +87,12 @@ export class BraveAccountLinkRowElement extends CrLitElement {
   }
 
   protected openSettingsPage() {
+    // <if expr="not is_android and not is_ios">
     Router.getInstance().navigateTo(getRoute(this.page))
+    // </if>
+    // <if expr="is_android or is_ios">
+    SettingsOpener.getRemote().openSettings(this.page)
+    // </if>
   }
 }
 

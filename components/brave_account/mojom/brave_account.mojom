@@ -254,3 +254,9 @@ interface DialogOpener {
 enum SettingsPage {
   kBraveAccount,
 };
+
+// Interface for opening settings pages from a page that only links to them.
+interface SettingsOpener {
+  // Opens `page` in place of the page that hosts the link.
+  OpenSettings(SettingsPage page);
+};
