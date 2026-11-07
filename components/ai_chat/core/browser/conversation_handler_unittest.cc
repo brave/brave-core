@@ -3660,8 +3660,8 @@ TEST_F(ConversationHandlerUnitTest,
   // Verify it's never called after the tool response generation has started.
   EXPECT_CALL(observer, OnConversationEntryAdded)
       .Times(2)
-      .WillRepeatedly(testing::InvokeWithoutArgs(
-          [&]() { EXPECT_FALSE(tool_response_generation_started); }));
+      .WillRepeatedly(
+          [&]() { EXPECT_FALSE(tool_response_generation_started); });
 
   base::RunLoop run_loop;
   testing::Sequence seq;
@@ -3968,8 +3968,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .InSequence(seq)
       .WillOnce(testing::DoAll(
-          testing::InvokeWithoutArgs(
-              [&]() { second_generation_started = true; }),
+          [&]() { second_generation_started = true; },
           testing::WithArg<6>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
@@ -3993,10 +3992,10 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
   EXPECT_CALL(
       untrusted_client,
       OnEntriesUIStateChanged(ConversationEntriesStateIsGenerating(false)))
-      .WillRepeatedly(testing::InvokeWithoutArgs([&]() {
+      .WillRepeatedly([&]() {
         // This should only be called after the second generation has started
         EXPECT_TRUE(second_generation_started);
-      }));
+      });
 
   EXPECT_CALL(*tool2, UseTool).Times(0);
 
@@ -4413,8 +4412,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_HandleErrorResponse) {
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .InSequence(seq)
       .WillOnce(testing::DoAll(
-          testing::InvokeWithoutArgs(
-              [&]() { second_generation_started = true; }),
+          [&]() { second_generation_started = true; },
 
           testing::WithArg<7>(
               [&](EngineConsumer::GenerationCompletedCallback callback) {
@@ -4427,10 +4425,10 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_HandleErrorResponse) {
   EXPECT_CALL(
       untrusted_client,
       OnEntriesUIStateChanged(ConversationEntriesStateIsGenerating(false)))
-      .WillRepeatedly(testing::InvokeWithoutArgs([&]() {
+      .WillRepeatedly([&]() {
         // This should only be called after the second generation has started
         EXPECT_TRUE(second_generation_started);
-      }));
+      });
 
   // Submit a human entry to trigger the tool use
   conversation_handler_->SubmitHumanConversationEntry(
@@ -5289,7 +5287,7 @@ TEST_F(ConversationHandlerUnitTest,
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .Times(1)
       .WillOnce(testing::DoAll(
-          testing::InvokeWithoutArgs([&] { generation_started = true; }),
+          [&] { generation_started = true; },
           testing::WithArg<7>(
               [&](EngineConsumer::GenerationCompletedCallback callback) {
                 std::move(callback).Run(
@@ -7363,8 +7361,7 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge) {
   // Expect final generation to be triggered after both tools complete
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .InSequence(seq)
-      .WillOnce(
-          testing::InvokeWithoutArgs([&second_loop]() { second_loop.Quit(); }));
+      .WillOnce([&second_loop]() { second_loop.Quit(); });
 
   // The tool is told which challenge the user answered, so it can tell the
   // server's alignment check from one of its own.
@@ -7827,8 +7824,7 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge_UserDeniesPermission) {
   // Engine should be called with the denial response
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .InSequence(seq)
-      .WillOnce(
-          testing::InvokeWithoutArgs([&second_loop]() { second_loop.Quit(); }));
+      .WillOnce([&second_loop]() { second_loop.Quit(); });
 
   // Neither tool should be called
   EXPECT_CALL(*tool1, UseTool).Times(0);
@@ -7959,8 +7955,7 @@ TEST_F(ConversationHandlerUnitTest,
   // Final generation after tool completes
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .InSequence(seq)
-      .WillOnce(
-          testing::InvokeWithoutArgs([&second_loop]() { second_loop.Quit(); }));
+      .WillOnce([&second_loop]() { second_loop.Quit(); });
 
   // User approves client-side challenge - tool should now execute
   conversation_handler_->ProcessPermissionChallenge(

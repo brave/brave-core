@@ -13,6 +13,7 @@
 #include "base/check_op.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
@@ -346,9 +347,10 @@ void MetricLogStore::ReevaluateDeferredEntries() {
   }
 }
 
-const metrics::LogMetadata MetricLogStore::staged_log_metadata() const {
+const metrics::LogMetadata& MetricLogStore::staged_log_metadata() const {
   DCHECK(has_staged_log());
-  return {};
+  static const base::NoDestructor<metrics::LogMetadata> kEmptyMetadata;
+  return *kEmptyMetadata;
 }
 
 void MetricLogStore::InsertUnsentEntry(std::string_view histogram_name) {

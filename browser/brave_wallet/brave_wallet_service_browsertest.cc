@@ -204,7 +204,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, ActiveOrigin) {
   expected_origin_info = MakeOriginInfo(url::Origin::Create(url));
   observer.Reset();
   ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser(), url, WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   wallet_service()->GetActiveOrigin(base::BindOnce(
       &OnGetActiveOrigin, &callback_called, expected_origin_info->Clone()));
@@ -216,7 +216,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, ActiveOrigin) {
   expected_origin_info = MakeOriginInfo(url::Origin::Create(url));
   observer.Reset();
   ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url, WindowOpenDisposition::NEW_WINDOW,
+      browser(), url, WindowOpenDisposition::kNewWindow,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   wallet_service()->GetActiveOrigin(base::BindOnce(
       &OnGetActiveOrigin, &callback_called, expected_origin_info->Clone()));

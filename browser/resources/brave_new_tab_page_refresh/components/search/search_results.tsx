@@ -20,7 +20,7 @@ function MatchImage(props: { match: AutocompleteMatch }) {
   const imageUrl = suggestTemplate.image?.url
 
   if (
-    suggestTemplate.secondaryText.text
+    suggestTemplate.secondaryText?.text
     === getString(S.OMNIBOX_ASK_LEO_DESCRIPTION)
   ) {
     return (
@@ -57,7 +57,7 @@ function MatchText(props: { match: AutocompleteMatch }) {
   return (
     <>
       {primaryText.text}
-      <span className='description'>{secondaryText.text}</span>
+      <span className='description'>{secondaryText?.text}</span>
     </>
   )
 }

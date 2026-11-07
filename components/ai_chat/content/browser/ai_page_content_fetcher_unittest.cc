@@ -78,7 +78,8 @@ TEST_F(AIPageContentFetcherTest, Error_RunsCallbackWithEmpty) {
   base::test::TestFuture<std::string, bool, std::string> future;
   fetcher_->FetchPageContent("", future.GetCallback());
   ASSERT_TRUE(fetcher_->was_called());
-  fetcher_->RespondWith(base::unexpected(std::string("test error")));
+  fetcher_->RespondWith(base::unexpected(
+      optimization_guide::AIPageContentError{.message = "test error"}));
   const auto& [content, is_video, invalidation_token] = future.Get();
   EXPECT_EQ(content, "");
   EXPECT_FALSE(is_video);

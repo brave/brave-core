@@ -26,7 +26,7 @@ source_set("status") {
   deps = [
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/local_ai/core",
-    "//chrome/browser:browser_public_dependencies",
+    "//chrome/browser:browser_process",
     "//chrome/browser/history_embeddings",
     "//chrome/browser/profiles:profile",
   ]
@@ -160,7 +160,6 @@ source_set("history_embeddings") {
   deps = [
     "//brave/components/history_embeddings",
     "//brave/components/local_ai/core",
-    "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/profiles",
     "//components/history_embeddings/core",
     "//components/optimization_guide/core",

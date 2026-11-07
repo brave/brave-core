@@ -329,6 +329,10 @@
 # https://github.com/brave/brave-browser/issues/58147
 -PaymentHandlerWebFlowViewMandatoryUiEnabledTest.DialogClosedOnErrorAfterUserInteraction
 
+# Fails under Xvfb without a window manager: hiding the browser deactivates
+# the inactive bubble, which closes with kLostFocus and launches the survey.
+-ScheduledRestartHatsBrowserTest.HatsSurveyNotTriggeredOnBrowserClose
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccessCodeCastHandlerBrowserTest.*
 -AdsPageLoadMetricsObserverBrowserTest.*

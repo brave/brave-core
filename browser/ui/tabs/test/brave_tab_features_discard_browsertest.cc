@@ -58,7 +58,7 @@ tabs::TabInterface* BraveTabFeaturesDiscardBrowserTest::OpenBackgroundTab(
     base::Location location) {
   SCOPED_TRACE(location.ToString());
   EXPECT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url, WindowOpenDisposition::NEW_BACKGROUND_TAB,
+      browser(), url, WindowOpenDisposition::kNewBackgroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   TabStripModel* tab_strip_model = browser()->GetTabStripModel();
   return tab_strip_model->GetTabAtIndex(tab_strip_model->count() - 1);

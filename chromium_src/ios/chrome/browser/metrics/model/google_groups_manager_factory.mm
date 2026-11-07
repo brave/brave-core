@@ -5,28 +5,14 @@
 
 #import "ios/chrome/browser/metrics/model/google_groups_manager_factory.h"
 
-#import "base/no_destructor.h"
-#import "components/keyed_service/ios/browser_state_dependency_manager.h"
 #import "components/variations/service/google_groups_manager.h"
 #import "ios/chrome/browser/shared/model/profile/profile_ios.h"
 
-// static
-GoogleGroupsManager* GoogleGroupsManagerFactory::GetForProfile(
-    ProfileIOS* profile) {
-  return nullptr;
-}
-
-// static
-GoogleGroupsManagerFactory*
-GoogleGroupsManagerFactory::GetInstance() {
-  static base::NoDestructor<GoogleGroupsManagerFactory> instance;
-  return instance.get();
-}
-
-GoogleGroupsManagerFactory::GoogleGroupsManagerFactory()
-    : ProfileKeyedServiceFactoryIOS("GoogleGroupsManager",
-                                    ServiceCreation::kCreateWithProfile,
-                                    TestingCreation::kNoServiceForTests) {}
+GoogleGroupsManagerFactory::GoogleGroupsManagerFactory(PassKey key)
+    : TypedProfileKeyedServiceFactoryIOS(std::move(key),
+                                         "GoogleGroupsManager",
+                                         ServiceCreation::kCreateWithProfile,
+                                         TestingCreation::kNoServiceForTests) {}
 
 std::unique_ptr<KeyedService>
 GoogleGroupsManagerFactory::BuildServiceInstanceFor(ProfileIOS* profile) const {

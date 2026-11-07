@@ -1,8 +1,8 @@
 diff --git a/ui/views/widget/widget.h b/ui/views/widget/widget.h
-index 2de787c406d4a8a03326b209e5cbda9e44752345..3799250a634c759dd3cf76908ca7b3dad0b3185a 100644
+index 30114c58ff96a3a4c3ecb56d1423a6aee9c03e77..26dfc828e9a1edf6df5c1b973ce9516f3170ff52 100644
 --- a/ui/views/widget/widget.h
 +++ b/ui/views/widget/widget.h
-@@ -663,7 +663,7 @@ class VIEWS_EXPORT Widget : public internal::NativeWidgetDelegate,
+@@ -660,7 +660,7 @@ class VIEWS_EXPORT Widget : public internal::NativeWidgetDelegate,
  
    // Initializes the widget, and in turn, the native widget. |params| should be
    // moved to Init() by the caller.

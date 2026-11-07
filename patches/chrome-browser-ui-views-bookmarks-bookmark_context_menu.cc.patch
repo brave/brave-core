@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/bookmarks/bookmark_context_menu.cc b/chrome/browser/ui/views/bookmarks/bookmark_context_menu.cc
-index 0300c271aac772a553428be8cacc0eb8dc7fd07f..74f108ad88a913c2d131d52898c17d554753ecff 100644
+index a4fb9c53f1dbb416c9977223b8009f1e80ec0dcf..3f0dd84507765fce3a25144ce091e2c7c4748daf 100644
 --- a/chrome/browser/ui/views/bookmarks/bookmark_context_menu.cc
 +++ b/chrome/browser/ui/views/bookmarks/bookmark_context_menu.cc
 @@ -51,7 +51,7 @@ BookmarkContextMenu::BookmarkContextMenu(

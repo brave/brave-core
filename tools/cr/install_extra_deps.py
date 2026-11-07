@@ -32,16 +32,16 @@ _SRC_DIR = Path(__file__).resolve().parents[3]
 # vpython virtualenv.
 sys.path.insert(0, str(_SRC_DIR / 'third_party' / 'depot_tools'))
 
-import gclient  # pylint: disable=wrong-import-position,import-error
-import gclient_eval  # pylint: disable=wrong-import-position,import-error
-import gclient_paths  # pylint: disable=wrong-import-position,import-error
-import gclient_utils  # pylint: disable=wrong-import-position,import-error
+import gclient  # pylint: disable=wrong-import-position,import-error  # noqa: E402
+import gclient_eval  # pylint: disable=wrong-import-position,import-error  # noqa: E402
+import gclient_paths  # pylint: disable=wrong-import-position,import-error  # noqa: E402
+import gclient_utils  # pylint: disable=wrong-import-position,import-error  # noqa: E402
 
-from extra_deps import (  # pylint: disable=wrong-import-position
+from extra_deps import (  # pylint: disable=wrong-import-position  # noqa: E402
     EXTRA_DEPS,
     EXTRA_DEPS_FILE,
 )
-from tarball_installer import (  # pylint: disable=wrong-import-position
+from tarball_installer import (  # pylint: disable=wrong-import-position  # noqa: E402
     TarballInstaller,
 )
 
