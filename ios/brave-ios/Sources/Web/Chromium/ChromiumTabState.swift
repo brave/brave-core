@@ -438,8 +438,8 @@ class ChromiumTabState: TabState, TabStateImpl {
     webView.takeSnapshot(with: rect, completionHandler: handler)
   }
 
-  @MainActor func createFullPagePDF() async throws -> Data? {
-    return await webView?.createFullPagePDF()
+  @MainActor func createPDF(rect: CGRect) async throws -> Data? {
+    return await webView?.createPDF(with: rect)
   }
 
   @MainActor func downloadCurrentPage(to fileURL: URL) async throws {

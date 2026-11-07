@@ -20,6 +20,7 @@
 #include "ios/web/public/navigation/navigation_item.h"
 #include "ios/web/public/navigation/navigation_manager.h"
 #include "ios/web/public/ui/crw_web_view_proxy.h"
+#include "ios/web/public/web_state.h"
 #include "ios/web/web_state/ui/crw_web_controller.h"
 #include "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
 #include "ios/web/web_state/web_state_impl.h"
@@ -129,8 +130,13 @@ const CWVUserAgentType CWVUserAgentTypeDesktop =
   config_provider.UpdateScripts();
 }
 
-- (void)createFullPagePDF:(void (^)(NSData* _Nullable))completionHandler {
-  self.webState->CreateFullPagePdf(base::BindOnce(completionHandler));
+- (void)createPDFWithRect:(CGRect)rect
+        completionHandler:(void (^)(NSData* _Nullable))completionHandler {
+  web::WebState::CreatePdfParams params;
+  if (!CGRectIsNull(rect)) {
+    params.document_rect = rect;
+  }
+  self.webState->CreatePdf(params, base::BindOnce(completionHandler));
 }
 
 - (CWVWebViewDownload*)downloadCurrentPageToPath:(NSString*)path
