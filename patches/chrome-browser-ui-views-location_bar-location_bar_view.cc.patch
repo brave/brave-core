@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.cc b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-index 5cc2f4fc7e13963fd3730d36e19edf53d47c70cb..c7756a8758e45dd255a27bd2b2de7400ef55c5a2 100644
+index 83bdb7af05204b34f304a23b827d32b82cba48ed..7d26504b236742586a7202f00ca379b8ee82a18f 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.cc
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-@@ -324,7 +324,7 @@ void LocationBarView::Init() {
+@@ -336,7 +336,7 @@ void LocationBarView::Init() {
        CONTEXT_OMNIBOX_PRIMARY, views::style::STYLE_PRIMARY);
  
    const gfx::FontList& omnibox_chip_font_list = typography_provider.GetFont(
@@ -11,7 +11,7 @@ index 5cc2f4fc7e13963fd3730d36e19edf53d47c70cb..c7756a8758e45dd255a27bd2b2de7400
    const gfx::FontList& page_action_font_list = typography_provider.GetFont(
        CONTEXT_OMNIBOX_PRIMARY, views::style::STYLE_BODY_3_EMPHASIS);
  
-@@ -341,9 +341,9 @@ void LocationBarView::Init() {
+@@ -353,9 +353,9 @@ void LocationBarView::Init() {
  
    // Create the controller and the view and wire them together.
    omnibox_controller_ =
@@ -23,7 +23,7 @@ index 5cc2f4fc7e13963fd3730d36e19edf53d47c70cb..c7756a8758e45dd255a27bd2b2de7400
        is_popup_mode_, omnibox_controller_.get(),
        /*location_bar_view=*/this, font_list);
  
-@@ -397,7 +397,7 @@ void LocationBarView::Init() {
+@@ -409,7 +409,7 @@ void LocationBarView::Init() {
    // ensure that a null `omnibox_popup_view_` doesn't cause any issues (or aim
    // for a cleaner solution).
    if (!omnibox_popup_view_) {
@@ -32,7 +32,7 @@ index 5cc2f4fc7e13963fd3730d36e19edf53d47c70cb..c7756a8758e45dd255a27bd2b2de7400
          /*omnibox_view=*/omnibox_view_, omnibox_controller_.get(),
          /*location_bar_view=*/this);
    }
-@@ -799,6 +799,10 @@ void LocationBarView::Layout(PassKey) {
+@@ -816,6 +816,10 @@ void LocationBarView::Layout(PassKey) {
    const bool should_indent = ShouldUsePopupOpenAppearance() &&
                               !location_icon_view_->ShouldShowLabel() &&
                               !ShouldShowKeywordBubble();
@@ -43,7 +43,7 @@ index 5cc2f4fc7e13963fd3730d36e19edf53d47c70cb..c7756a8758e45dd255a27bd2b2de7400
    if (should_indent) {
      icon_left += GetLayoutConstant(LayoutConstant::kLocationBarInputIconIndent);
      text_left += GetLayoutConstant(LayoutConstant::kLocationBarInputTextIndent);
-@@ -845,6 +849,12 @@ void LocationBarView::Layout(PassKey) {
+@@ -864,6 +868,12 @@ void LocationBarView::Layout(PassKey) {
          vertical_padding, location_height, false, kLeadingDecorationMaxFraction,
          /*intra_item_padding=*/0, icon_left, selected_keyword_view_);
      selected_keyword_view_->SetKeyword(keyword);
@@ -56,7 +56,7 @@ index 5cc2f4fc7e13963fd3730d36e19edf53d47c70cb..c7756a8758e45dd255a27bd2b2de7400
    } else if (location_icon_view_->GetShowText() &&
               !ShouldChipOverrideLocationIcon()) {
      location_icon_view_->SetVisible(true);
-@@ -890,6 +900,12 @@ void LocationBarView::Layout(PassKey) {
+@@ -909,6 +919,12 @@ void LocationBarView::Layout(PassKey) {
      // When the AIM page action is shown as the right-most page action in the
      // location bar, it should be positioned flush against the right edge of the
      // location bar.
@@ -69,7 +69,7 @@ index 5cc2f4fc7e13963fd3730d36e19edf53d47c70cb..c7756a8758e45dd255a27bd2b2de7400
      add_trailing_decoration(
          page_action_container_,
          /*intra_item_padding=*/0,
-@@ -910,6 +926,12 @@ void LocationBarView::Layout(PassKey) {
+@@ -929,6 +945,12 @@ void LocationBarView::Layout(PassKey) {
  
    add_trailing_decoration(clear_all_button_, /*intra_item_padding=*/0,
                            /*edge_padding=*/trailing_decorations_edge_padding);
@@ -82,7 +82,7 @@ index 5cc2f4fc7e13963fd3730d36e19edf53d47c70cb..c7756a8758e45dd255a27bd2b2de7400
  
    // Perform layout.
    int entry_width = width();
-@@ -1412,8 +1434,8 @@ void LocationBarView::RefreshBackground() {
+@@ -1432,8 +1454,8 @@ void LocationBarView::RefreshBackground() {
      // Under CR23 guidelines, if the Omnibox is unfocused, but still contains
      // in-progress user input, the background color matches the popup (unless
      // high-contrast mode is enabled).

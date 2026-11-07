@@ -1,5 +1,5 @@
 diff --git a/content/browser/file_system_access/file_system_access_handle_base.cc b/content/browser/file_system_access/file_system_access_handle_base.cc
-index 7ab2735af4f1fa3927763ec76e655a485cb0bdf6..ec3c64273de967472f2bec6cf74873480f2c4aba 100644
+index 7c8d13c21c8c808f56fa2b1070fa8c710db07a18..30e2e8c73d82c3fa70a3dec4483ef5970a65e2ea 100644
 --- a/content/browser/file_system_access/file_system_access_handle_base.cc
 +++ b/content/browser/file_system_access/file_system_access_handle_base.cc
 @@ -350,6 +350,11 @@ void FileSystemAccessHandleBase::DoMove(

@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index b264ed711208d96a8382c8cc43c946af75c31a84..bb607f30ee37fb5f88c5e07711b79c2f68151e02 100644
+index 72720705aa2cb1061f0c3ff121501015fe2c1ae3..328e3f485c9b43af4f948147febfa4c39e428d16 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
 @@ -185,6 +185,14 @@
@@ -165,7 +165,7 @@ index b264ed711208d96a8382c8cc43c946af75c31a84..bb607f30ee37fb5f88c5e07711b79c2f
        status: {"default": "stable"},
      },
      {
-@@ -4141,7 +4173,8 @@
+@@ -4145,7 +4177,8 @@
          "Android": "stable",
          "default": "",
        },
@@ -175,7 +175,7 @@ index b264ed711208d96a8382c8cc43c946af75c31a84..bb607f30ee37fb5f88c5e07711b79c2f
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -5277,6 +5310,8 @@
+@@ -5281,6 +5314,8 @@
        //
        // It also has some feature params defined throughout the codebase.
        name: "Prerender2",
@@ -184,7 +184,7 @@ index b264ed711208d96a8382c8cc43c946af75c31a84..bb607f30ee37fb5f88c5e07711b79c2f
        status: "stable",
      },
      {
-@@ -5351,6 +5386,8 @@
+@@ -5355,6 +5390,8 @@
      },
      {
        name: "ProfilerAPI",
@@ -193,7 +193,7 @@ index b264ed711208d96a8382c8cc43c946af75c31a84..bb607f30ee37fb5f88c5e07711b79c2f
        status: "stable",
      },
      {
-@@ -5485,6 +5522,8 @@
+@@ -5489,6 +5526,8 @@
      // but we still keep this flag for future phase tests.
      {
        name: "ReduceUserAgentMinorVersion",
@@ -202,7 +202,7 @@ index b264ed711208d96a8382c8cc43c946af75c31a84..bb607f30ee37fb5f88c5e07711b79c2f
        status: "stable",
      },
      {
-@@ -7069,7 +7108,8 @@
+@@ -7073,7 +7112,8 @@
          "ChromeOS": "stable",
          "default": "",
        },
@@ -212,7 +212,7 @@ index b264ed711208d96a8382c8cc43c946af75c31a84..bb607f30ee37fb5f88c5e07711b79c2f
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -7257,6 +7297,8 @@
+@@ -7261,6 +7301,8 @@
      },
      {
        name: "UserMediaElement",
@@ -221,7 +221,7 @@ index b264ed711208d96a8382c8cc43c946af75c31a84..bb607f30ee37fb5f88c5e07711b79c2f
        status: "stable",
        public: true,
      },
-@@ -8183,5 +8225,10 @@
+@@ -8187,5 +8229,10 @@
        // crbug.com/435623334.
        name: "XSLTSpecialTrial",
      },

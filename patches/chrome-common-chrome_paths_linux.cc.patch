@@ -1,5 +1,5 @@
 diff --git a/chrome/common/chrome_paths_linux.cc b/chrome/common/chrome_paths_linux.cc
-index 5575c049b222f52b529ded1a6e7f739eba68e33b..801d506cab5b328ee9bfdb214ee54ad1d4225982 100644
+index e8dd5145349295d18019186deb8b8448c711f539..4bf8b893033b4f77bf440a7b42255afe46f84c43 100644
 --- a/chrome/common/chrome_paths_linux.cc
 +++ b/chrome/common/chrome_paths_linux.cc
 @@ -78,6 +78,7 @@ bool GetUserMediaDirectory(const std::string& xdg_name,

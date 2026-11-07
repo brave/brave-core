@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/common/features.cc b/third_party/blink/common/features.cc
-index 54b44614e1d949ada3a9c99381d7b9544c3e9db6..4cc49571e932433f769be3c44d5bfaecd3009332 100644
+index 8012d7e5c691d55970bab2650ea50e2e15c1f4aa..5dd6aff0ebb2c492e4ecd3feb84c06100fd1fcda 100644
 --- a/third_party/blink/common/features.cc
 +++ b/third_party/blink/common/features.cc
-@@ -133,7 +133,7 @@ BASE_FEATURE(kAllowDatapipeDrainedAsBytesConsumerInBFCache,
+@@ -137,7 +137,7 @@ BASE_FEATURE(kAllowDatapipeDrainedAsBytesConsumerInBFCache,
  
  // Enables URN URLs like those produced by Protected Audience auctions to be
  // displayed by iframes (instead of requiring fenced frames).
@@ -11,7 +11,7 @@ index 54b44614e1d949ada3a9c99381d7b9544c3e9db6..4cc49571e932433f769be3c44d5bfaec
  
  // A console warning is shown when the opaque url returned from Protected
  // Audience/selectUrl is used to navigate an iframe. Since fenced frames are not
-@@ -198,7 +198,7 @@ BASE_FEATURE_PARAM(std::string,
+@@ -202,7 +202,7 @@ BASE_FEATURE_PARAM(std::string,
  
  // Enable background resource fetch in Blink. See https://crbug.com/1379780 for
  // more details.
@@ -20,7 +20,7 @@ index 54b44614e1d949ada3a9c99381d7b9544c3e9db6..4cc49571e932433f769be3c44d5bfaec
  BASE_FEATURE_PARAM(bool,
                     kBackgroundFontResponseProcessor,
                     &kBackgroundResourceFetch,
-@@ -673,7 +673,7 @@ BASE_FEATURE_PARAM(bool,
+@@ -677,7 +677,7 @@ BASE_FEATURE_PARAM(bool,
  // this feature does not automatically expose this element to the web, it only
  // allows the element to be enabled by the runtime enabled feature, for origin
  // trials.
@@ -29,7 +29,7 @@ index 54b44614e1d949ada3a9c99381d7b9544c3e9db6..4cc49571e932433f769be3c44d5bfaec
  
  // Enable sending event-level reports through reportEvent() in cross-origin
  // subframes. This requires opt-in both from the cross-origin subframe that is
-@@ -1514,7 +1514,7 @@ BASE_FEATURE_PARAM(
+@@ -1531,7 +1531,7 @@ BASE_FEATURE_PARAM(
      "low_pri_async_exec_opt_out_high_fetch_priority_hint",
      true);
  
@@ -38,7 +38,7 @@ index 54b44614e1d949ada3a9c99381d7b9544c3e9db6..4cc49571e932433f769be3c44d5bfaec
               "AutoupgradeMixedContent",
               base::FEATURE_ENABLED_BY_DEFAULT);
  
-@@ -1831,8 +1831,8 @@ BASE_FEATURE_PARAM(base::TimeDelta,
+@@ -1848,8 +1848,8 @@ BASE_FEATURE_PARAM(base::TimeDelta,
                     &kPreloadingEagerHoverHeuristics,
                     "hover_dwell_time",
                     base::Milliseconds(10));
@@ -49,7 +49,7 @@ index 54b44614e1d949ada3a9c99381d7b9544c3e9db6..4cc49571e932433f769be3c44d5bfaec
  BASE_FEATURE_PARAM(bool,
                     kPreloadingEagerViewportHeuristicsForDevToolsEmulation,
                     &kPreloadingEagerViewportHeuristics,
-@@ -1843,8 +1843,8 @@ BASE_FEATURE_PARAM(base::TimeDelta,
+@@ -1860,8 +1860,8 @@ BASE_FEATURE_PARAM(base::TimeDelta,
                     "viewport_present_time",
                     base::Milliseconds(50));
  
@@ -60,7 +60,7 @@ index 54b44614e1d949ada3a9c99381d7b9544c3e9db6..4cc49571e932433f769be3c44d5bfaec
  BASE_FEATURE_PARAM(bool,
                     kPreloadingModerateViewportHeuristicsEnactCandidates,
                     &kPreloadingModerateViewportHeuristics,
-@@ -1906,7 +1906,7 @@ BASE_FEATURE(kLocalCompileHints, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -1923,7 +1923,7 @@ BASE_FEATURE(kLocalCompileHints, base::FEATURE_ENABLED_BY_DEFAULT);
  
  // Reduce the amount of information in the default 'referer' header for
  // cross-origin requests.
@@ -69,7 +69,7 @@ index 54b44614e1d949ada3a9c99381d7b9544c3e9db6..4cc49571e932433f769be3c44d5bfaec
  
  // When disabled, cropTo() is rejected while other tracks share the source, as
  // it was before per-track cropping was supported.
-@@ -2279,7 +2279,7 @@ BASE_FEATURE(kThrottleFullscreenVideoActiveTab,
+@@ -2296,7 +2296,7 @@ BASE_FEATURE(kThrottleFullscreenVideoActiveTab,
  
  // Changes behavior of User-Agent Client Hints to send blank headers when the
  // User-Agent string is overridden, instead of disabling the headers altogether.

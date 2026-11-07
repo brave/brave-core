@@ -1,8 +1,8 @@
 diff --git a/content/browser/webui/web_ui_data_source_unittest.cc b/content/browser/webui/web_ui_data_source_unittest.cc
-index 9e95e405aead3f3bcefc7f9db9fd49255a5c37e6..bb3371216b73fc622e70a21f5c58c2532756c742 100644
+index 34f399998eed13858d8ad18e24fe6e30cd8c8212..25164ea16d92f17f72ec45267ed87eea438cdbc1 100644
 --- a/content/browser/webui/web_ui_data_source_unittest.cc
 +++ b/content/browser/webui/web_ui_data_source_unittest.cc
-@@ -451,7 +451,7 @@ TEST_F(WebUIDataSourceTest, SetCspValues) {
+@@ -450,7 +450,7 @@ TEST_F(WebUIDataSourceTest, SetCspValues) {
                  network::mojom::CSPDirectiveName::RequireTrustedTypesFor));
    source()->OverrideContentSecurityPolicy(
        network::mojom::CSPDirectiveName::TrustedTypes, "trusted-types test;");

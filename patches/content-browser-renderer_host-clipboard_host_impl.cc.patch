@@ -1,5 +1,5 @@
 diff --git a/content/browser/renderer_host/clipboard_host_impl.cc b/content/browser/renderer_host/clipboard_host_impl.cc
-index 2118dfe7f6153e256a2385f7d152996682a621d0..0d849750fac77b04d8d611d8f78ef2b0bfe3f8a5 100644
+index 9cb3e7367a1060136e072dec9d82e865f3f8f3af..96578d355118e38896b4b11547c0b5ffb292cdc3 100644
 --- a/content/browser/renderer_host/clipboard_host_impl.cc
 +++ b/content/browser/renderer_host/clipboard_host_impl.cc
 @@ -144,6 +144,8 @@ class FrameClipboardContext : public ClipboardHostImpl::Context {

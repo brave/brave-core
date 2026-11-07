@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/glic/public/android/java/src/org/chromium/chrome/browser/glic/GlicEnabling.java b/chrome/browser/glic/public/android/java/src/org/chromium/chrome/browser/glic/GlicEnabling.java
-index 857ac96774c3c92cff68f313e0681b195b2ef29d..2d9c94c34f704afcac6cc7f860df68191d49b3f5 100644
+index 5afdda3f088780102132b2c3c9fa156abc35d11c..3a36a0dfc8a44c024c8921f1778cd49c2ff2632b 100644
 --- a/chrome/browser/glic/public/android/java/src/org/chromium/chrome/browser/glic/GlicEnabling.java
 +++ b/chrome/browser/glic/public/android/java/src/org/chromium/chrome/browser/glic/GlicEnabling.java
 @@ -26,7 +26,7 @@ public class GlicEnabling {

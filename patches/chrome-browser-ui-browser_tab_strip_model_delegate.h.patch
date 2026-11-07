@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_tab_strip_model_delegate.h b/chrome/browser/ui/browser_tab_strip_model_delegate.h
-index 832846506c0fc6781a8d7c1422c87bb221ce1969..d7f5cb95bb6a791f4d5dd6d8c71fdc7a37ae07ee 100644
+index c124ed930b0123343e9557d5a20a5deb980793d5..6181313ae64335b53a75c7d6968bffbb8710fdb1 100644
 --- a/chrome/browser/ui/browser_tab_strip_model_delegate.h
 +++ b/chrome/browser/ui/browser_tab_strip_model_delegate.h
 @@ -38,6 +38,7 @@ class BrowserTabStripModelDelegate : public TabStripModelDelegate {

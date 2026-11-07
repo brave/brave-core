@@ -1,5 +1,5 @@
 diff --git a/ios/web/web_state/ui/crw_web_controller.mm b/ios/web/web_state/ui/crw_web_controller.mm
-index 5e6174e972d418cf705e22bf31525b5ebfcc8bac..fae6a2bf1e5ad38e74d35b0af10a4a78b19a1c8d 100644
+index abc7eb853c5d66503a4430b801638e6d6873f93e..6b69dbcfde1e2d9041ef345f4a9a4d90f63b7c3c 100644
 --- a/ios/web/web_state/ui/crw_web_controller.mm
 +++ b/ios/web/web_state/ui/crw_web_controller.mm
 @@ -346,11 +346,11 @@ JavaScriptCompletionBlock WrapCompletionBlock(

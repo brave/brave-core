@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/side_panel/side_panel_coordinator.h b/chrome/browser/ui/views/side_panel/side_panel_coordinator.h
-index 73bad76d1e3f736cdcdc741afb304b9871a8fb77..6a3b1be91c2efc70f1a9b158456d8c76d0141ee6 100644
+index 26a8f2949c82929901bae4496dbd76a18f666359..cd17f18d6afd3340249d7e476a5097079fdd0ed8 100644
 --- a/chrome/browser/ui/views/side_panel/side_panel_coordinator.h
 +++ b/chrome/browser/ui/views/side_panel/side_panel_coordinator.h
 @@ -36,7 +36,7 @@ class View;

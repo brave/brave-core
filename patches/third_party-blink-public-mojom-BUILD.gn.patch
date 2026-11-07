@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/public/mojom/BUILD.gn b/third_party/blink/public/mojom/BUILD.gn
-index 485c9cbaae9885672942dc26fd4d5a7bffb7b230..52a2476853eaf934c6a5f2bf1f59ac1a198b184a 100644
+index 08a4ca9e430569eb39ab7e9202a64f620d57678f..162282ae42daff165dfefa95d73dbcabff09b0c6 100644
 --- a/third_party/blink/public/mojom/BUILD.gn
 +++ b/third_party/blink/public/mojom/BUILD.gn
 @@ -2,6 +2,7 @@

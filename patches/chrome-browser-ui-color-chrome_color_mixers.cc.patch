@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/color/chrome_color_mixers.cc b/chrome/browser/ui/color/chrome_color_mixers.cc
-index 8432f4946834648a5f63ddee567ee63174e26b0f..6ac23bece228e5a939135b6c51506af81b77b66e 100644
+index 721cb586c20bdd4c7ab8a0d6f0d51e9041b486e5..3f1d85f3a4348f07a542c60668138d15ea135715 100644
 --- a/chrome/browser/ui/color/chrome_color_mixers.cc
 +++ b/chrome/browser/ui/color/chrome_color_mixers.cc
-@@ -79,11 +79,11 @@ void AddChromeColorMixers(ui::ColorProvider* provider,
+@@ -57,11 +57,11 @@ void AddChromeColorMixers(ui::ColorProvider* provider,
    AddProductSpecificationsColorMixer(provider, key);
    AddTabStripColorMixer(provider, key);
  

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/startup/startup_browser_creator_impl.cc b/chrome/browser/ui/startup/startup_browser_creator_impl.cc
-index 7fc9d33c6c51ef1014d16182f22b9759293ba75b..879966eac22eb6b3ea93681efeb5b7ff42ed5379 100644
+index de0213de70da820dd9c39aa594f9f5088ed4f4d9..b826d9dd26f7fce5b971115a49af658f7757372c 100644
 --- a/chrome/browser/ui/startup/startup_browser_creator_impl.cc
 +++ b/chrome/browser/ui/startup/startup_browser_creator_impl.cc
-@@ -425,6 +425,7 @@ BrowserWindowInterface* StartupBrowserCreatorImpl::OpenTabsInBrowser(
+@@ -438,6 +438,7 @@ BrowserWindowInterface* StartupBrowserCreatorImpl::OpenTabsInBrowser(
        params.disposition = ui::mojom::WindowOpenDisposition::kCurrentTab;
        params.tabstrip_add_types = ADD_NONE;
        first_tab = false;
@@ -10,7 +10,7 @@ index 7fc9d33c6c51ef1014d16182f22b9759293ba75b..879966eac22eb6b3ea93681efeb5b7ff
        Navigate(&params);
        continue;
      }
-@@ -460,6 +461,7 @@ BrowserWindowInterface* StartupBrowserCreatorImpl::OpenTabsInBrowser(
+@@ -473,6 +474,7 @@ BrowserWindowInterface* StartupBrowserCreatorImpl::OpenTabsInBrowser(
      }
  #endif  // BUILDFLAG(ENABLE_RLZ)
  

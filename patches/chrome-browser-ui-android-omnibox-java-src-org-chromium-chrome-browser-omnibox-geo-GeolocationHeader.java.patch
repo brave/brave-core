@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/geo/GeolocationHeader.java b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/geo/GeolocationHeader.java
-index 69bc3df23655db71669b2ac7bb1092110e3682b1..cc25a67632fa9aa882d4f1f976f468e9eb6bf113 100644
+index d3f1b31b4e4db6ef6f6341b83489d0656d7ecc5f..7c02ebc4ef7d99c47c5380f245443a8dc7a476a6 100644
 --- a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/geo/GeolocationHeader.java
 +++ b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/geo/GeolocationHeader.java
-@@ -212,6 +212,9 @@ public class GeolocationHeader {
+@@ -217,6 +217,9 @@ public class GeolocationHeader {
  
      private static @HeaderState int geoHeaderStateForDse(
              Profile profile, TemplateUrlService templateService) {
@@ -12,7 +12,7 @@ index 69bc3df23655db71669b2ac7bb1092110e3682b1..cc25a67632fa9aa882d4f1f976f468e9
          return geoHeaderStateForUrl(
                  profile, templateService, templateService.getUrlForSearchQuery(DUMMY_URL_QUERY));
      }
-@@ -225,6 +228,7 @@ public class GeolocationHeader {
+@@ -230,6 +233,7 @@ public class GeolocationHeader {
  
              // Only send X-Geo to search engines associated with the current profile.
              if (profile == null || service == null) return HeaderState.UNSUITABLE_URL;

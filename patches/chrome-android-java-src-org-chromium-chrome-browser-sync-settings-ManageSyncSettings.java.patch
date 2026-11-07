@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-index 6ffd1fb2bb32c10668054134c552f0933e3382bf..2d7306623a6098a8eacb84d3e847b2372f918828 100644
+index 5ad90bdb96f47b5f0c914f2870f9180d540ecb50..06f7b8bf5be1372a1c687b25508fa4a7c6fbf26e 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 @@ -211,10 +211,10 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment

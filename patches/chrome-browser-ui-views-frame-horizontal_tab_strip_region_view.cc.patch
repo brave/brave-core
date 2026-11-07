@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc b/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
-index 1e8642e4cdf1e72846480d4458cf026309fe8b47..57aaf3025a999dc82f42f236c244d783fdcabde1 100644
+index 66f4c19f2e439a73b7d8cd56b708682ccb233f48..65ecb9edb108b0bc72b60f0352e1dc694214a361 100644
 --- a/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
 +++ b/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
 @@ -142,13 +142,13 @@ void UpdateBorderInsetsIfNeeded(views::View* view,
@@ -55,7 +55,7 @@ index 1e8642e4cdf1e72846480d4458cf026309fe8b47..57aaf3025a999dc82f42f236c244d783
    const int top_inset = extra_vertical_space / 2;
    const int bottom_inset =
        extra_vertical_space - top_inset +
-@@ -1098,13 +1098,16 @@ void HorizontalTabStripRegionViewNew::AdjustViewBoundsRect(View* view,
+@@ -1107,13 +1107,16 @@ void HorizontalTabStripRegionViewNew::AdjustViewBoundsRect(View* view,
    view->SetBoundsRect(new_bounds);
  }
  

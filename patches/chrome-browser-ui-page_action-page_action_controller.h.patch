@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/page_action/page_action_controller.h b/chrome/browser/ui/page_action/page_action_controller.h
-index 4cd73ec060d4d344340049037df0d7e2fe65b160..525c630c49c0afdac817433e73d14f747720189f 100644
+index 335462d98c01ca86f90821cc49fa33fa1dcabd49..038ed7a5019a8574d298a6784eeb3537a27b760f 100644
 --- a/chrome/browser/ui/page_action/page_action_controller.h
 +++ b/chrome/browser/ui/page_action/page_action_controller.h
 @@ -394,10 +394,10 @@ class PageActionController {

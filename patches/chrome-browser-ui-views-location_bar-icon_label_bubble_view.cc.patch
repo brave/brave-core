@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc b/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc
-index 8dc5172864131480017d466ce985bed5c0af68bc..02f53aee657c09815bd6ecad4df65fc07865b5a3 100644
+index 76e80aef310281b85f70fba052400029dd1c53c2..c5668899c3ba3e21713ab5f5e93b50e9d0aa8f0d 100644
 --- a/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc
 +++ b/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc
-@@ -804,8 +804,10 @@ SkPath IconLabelBubbleView::GetHighlightPath() const {
+@@ -813,8 +813,10 @@ SkPath IconLabelBubbleView::GetHighlightPath() const {
    }
    highlight_bounds = GetMirroredRect(highlight_bounds);
  
