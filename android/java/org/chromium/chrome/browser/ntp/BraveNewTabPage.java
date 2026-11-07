@@ -224,4 +224,11 @@ public class BraveNewTabPage extends NewTabPage {
         // Search provider logo is not used in Brave's NTP.
         mSearchProviderHasLogo = false;
     }
+
+    /** Dismisses the top-sites tooltip if it is currently showing. */
+    public void dismissTopSitesTooltip() {
+        if (mNewTabPageLayout instanceof BraveNewTabPageLayout) {
+            ((BraveNewTabPageLayout) mNewTabPageLayout).dismissTopSitesTooltip();
+        }
+    }
 }
