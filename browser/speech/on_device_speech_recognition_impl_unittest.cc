@@ -18,6 +18,7 @@
 #include "brave/components/local_ai/core/features.h"
 #include "brave/components/local_ai/core/on_device_speech_models_state.h"
 #include "brave/components/local_ai/core/pref_names.h"
+#include "brave/components/local_ai/core/utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -34,7 +35,9 @@ namespace speech {
 
 namespace {
 
+using local_ai::OnDeviceSpeechModel;
 using ResponseType = permissions::PermissionRequestManager::AutoResponseType;
+using AvailabilityStatus = media::mojom::AvailabilityStatus;
 
 }  // namespace
 
@@ -44,8 +47,9 @@ class BraveOnDeviceSpeechInstallPromptUnitTest
     : public ChromeRenderViewHostTestHarness {
  public:
   BraveOnDeviceSpeechInstallPromptUnitTest() {
-    feature_list_.InitAndEnableFeature(
-        local_ai::kBraveOnDeviceSpeechRecognition);
+    feature_list_.InitWithFeatures({local_ai::kBraveOnDeviceSpeechRecognition,
+                                    local_ai::kBraveOnDeviceSpeechMultilingual},
+                                   {});
   }
 
  protected:
@@ -59,10 +63,15 @@ class BraveOnDeviceSpeechInstallPromptUnitTest
     DeleteContents();
     guest_profile_.reset();
     soda_installer_.reset();
-    local_ai::OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(
-        local_ai::OnDeviceSpeechModel::kEnglish, base::FilePath());
+    auto* state = local_ai::OnDeviceSpeechModelsState::GetInstance();
+    state->SetInstallDir(local_ai::OnDeviceSpeechModel::kEnglish,
+                         base::FilePath());
+    state->SetInstallDir(local_ai::OnDeviceSpeechModel::kMultilingual,
+                         base::FilePath());
     local_state()->ClearPref(
         local_ai::prefs::kOnDeviceSpeechEnglishModelEnabled);
+    local_state()->ClearPref(
+        local_ai::prefs::kOnDeviceSpeechMultilingualModelEnabled);
     ChromeRenderViewHostTestHarness::TearDown();
   }
 
@@ -121,11 +130,29 @@ class BraveOnDeviceSpeechInstallPromptUnitTest
     return installed.Get();
   }
 
+  // Calls `available()` from the open page.
+  AvailabilityStatus Available(const std::vector<std::string>& languages) {
+    base::test::TestFuture<AvailabilityStatus> status;
+    OnDeviceSpeechRecognitionImpl::GetOrCreateForCurrentDocument(main_rfh())
+        ->Available(languages, media::mojom::SpeechRecognitionQuality::kCommand,
+                    status.GetCallback());
+    return status.Get();
+  }
+
+  // Enables the multilingual model and puts it on disk.
+  void InstallMultilingualModel() {
+    local_state()->SetBoolean(
+        local_ai::prefs::kOnDeviceSpeechMultilingualModelEnabled, true);
+    local_ai::OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(
+        local_ai::OnDeviceSpeechModel::kMultilingual,
+        base::FilePath(FILE_PATH_LITERAL("/brave/speech/models")));
+  }
+
   int show_count() { return prompt_factory_->show_count(); }
 
-  bool IsEnabled() {
+  bool IsEnabled(OnDeviceSpeechModel model) {
     return local_state()->GetBoolean(
-        local_ai::prefs::kOnDeviceSpeechEnglishModelEnabled);
+        local_ai::GetOnDeviceSpeechModelEnabledPref(model));
   }
 
   bool AsksAgain() {
@@ -145,13 +172,33 @@ class BraveOnDeviceSpeechInstallPromptUnitTest
 TEST_F(BraveOnDeviceSpeechInstallPromptUnitTest, AllowEnablesTheModel) {
   Install({"en-US"});
   EXPECT_EQ(1, show_count());
-  EXPECT_TRUE(IsEnabled());
+  EXPECT_TRUE(IsEnabled(OnDeviceSpeechModel::kEnglish));
+  EXPECT_FALSE(IsEnabled(OnDeviceSpeechModel::kMultilingual));
+}
+
+// Each model has its own prompt.
+TEST_F(BraveOnDeviceSpeechInstallPromptUnitTest,
+       MultilingualLanguagePromptsForItsModel) {
+  local_state()->SetBoolean(local_ai::prefs::kOnDeviceSpeechEnglishModelEnabled,
+                            true);
+  Install({"es-US"});
+  EXPECT_EQ(1, show_count());
+  EXPECT_TRUE(IsEnabled(OnDeviceSpeechModel::kMultilingual));
+}
+
+// One prompt for each model, one after the other.
+TEST_F(BraveOnDeviceSpeechInstallPromptUnitTest,
+       LanguagesOfBothModelsPromptForEach) {
+  Install({"en-US", "es-US"});
+  EXPECT_EQ(2, show_count());
+  EXPECT_TRUE(IsEnabled(OnDeviceSpeechModel::kEnglish));
+  EXPECT_TRUE(IsEnabled(OnDeviceSpeechModel::kMultilingual));
 }
 
 TEST_F(BraveOnDeviceSpeechInstallPromptUnitTest, DenyPromptsOnce) {
   EXPECT_FALSE(Install({"en-US"}, ResponseType::DENY_ALL));
   EXPECT_EQ(1, show_count());
-  EXPECT_FALSE(IsEnabled());
+  EXPECT_FALSE(IsEnabled(OnDeviceSpeechModel::kEnglish));
 }
 
 TEST_F(BraveOnDeviceSpeechInstallPromptUnitTest, NoPromptWhenEnabled) {
@@ -165,8 +212,17 @@ TEST_F(BraveOnDeviceSpeechInstallPromptUnitTest, NoPromptWhenEnabled) {
 TEST_F(BraveOnDeviceSpeechInstallPromptUnitTest, NoPromptForWhatIsRefused) {
   EXPECT_FALSE(Install({}));
   EXPECT_EQ(0, show_count());
-  EXPECT_FALSE(Install({"en-US", "fr-FR"}));
+  EXPECT_FALSE(Install({"en-US", "th-TH"}));
   EXPECT_EQ(0, show_count());
+}
+
+TEST_F(BraveOnDeviceSpeechInstallPromptUnitTest,
+       NoPromptForMultilingualWhenItsFeatureOff) {
+  base::test::ScopedFeatureList disabled;
+  disabled.InitAndDisableFeature(local_ai::kBraveOnDeviceSpeechMultilingual);
+  EXPECT_FALSE(Install({"es-US"}));
+  EXPECT_EQ(0, show_count());
+  EXPECT_FALSE(IsEnabled(OnDeviceSpeechModel::kMultilingual));
 }
 
 TEST_F(BraveOnDeviceSpeechInstallPromptUnitTest, NoPromptAfterDontAskAgain) {
@@ -186,7 +242,7 @@ TEST_F(BraveOnDeviceSpeechInstallPromptUnitTest,
     EXPECT_FALSE(Install({"en-US"}));
     EXPECT_EQ(0, show_count());
   }
-  EXPECT_FALSE(IsEnabled());
+  EXPECT_FALSE(IsEnabled(OnDeviceSpeechModel::kEnglish));
 }
 
 // They get false with the model turned on and on disk too, where a regular
@@ -208,6 +264,26 @@ TEST_F(BraveOnDeviceSpeechInstallPromptUnitTest,
   }
 }
 
+// `install()` records the page tag's locale for the origin, and only that one,
+// although one model serves all of them.
+TEST_F(BraveOnDeviceSpeechInstallPromptUnitTest, InstallRecordsItsLocale) {
+  InstallMultilingualModel();
+  EXPECT_TRUE(Install({"de-AT"}));
+  EXPECT_EQ(0, show_count());
+  EXPECT_EQ(AvailabilityStatus::kAvailable, Available({"de-DE"}));
+  EXPECT_EQ(AvailabilityStatus::kDownloadable, Available({"fr-FR"}));
+}
+
+// A failed download settles `install()` for a locale with a code that Brave
+// adds to SODA's codes.
+TEST_F(BraveOnDeviceSpeechInstallPromptUnitTest,
+       FailedDownloadSettlesALocaleWithABraveCode) {
+  local_state()->SetBoolean(
+      local_ai::prefs::kOnDeviceSpeechMultilingualModelEnabled, true);
+  EXPECT_FALSE(Install({"uk-UA"}));
+  EXPECT_EQ(0, show_count());
+}
+
 // A tab closing with the prompt open still answers `install()`, and saves
 // nothing.
 TEST_F(BraveOnDeviceSpeechInstallPromptUnitTest, TabClosedWithPromptOpen) {
@@ -221,7 +297,7 @@ TEST_F(BraveOnDeviceSpeechInstallPromptUnitTest, TabClosedWithPromptOpen) {
 
   ASSERT_TRUE(installed.IsReady());
   EXPECT_FALSE(installed.Get());
-  EXPECT_FALSE(IsEnabled());
+  EXPECT_FALSE(IsEnabled(OnDeviceSpeechModel::kEnglish));
   EXPECT_TRUE(AsksAgain());
 }
 
@@ -237,7 +313,7 @@ TEST_F(BraveOnDeviceSpeechInstallPromptUnitTest, TwoInstallsShareOnePrompt) {
   ASSERT_TRUE(first.Wait());
   ASSERT_TRUE(second.Wait());
   EXPECT_EQ(1, show_count());
-  EXPECT_TRUE(IsEnabled());
+  EXPECT_TRUE(IsEnabled(OnDeviceSpeechModel::kEnglish));
 }
 
 }  // namespace speech

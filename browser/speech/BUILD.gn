@@ -162,6 +162,7 @@ if (enable_local_ai) {
       "//base",
       "//base/i18n:language_tag",
       "//base/test:test_support",
+      "//brave/app:brave_generated_resources_grit",
       "//brave/components/brave_component_updater/browser:test_support",
       "//brave/components/local_ai/core",
       "//brave/components/local_ai/core:features",
@@ -185,6 +186,7 @@ if (enable_local_ai) {
       "//services/on_device_model/public/mojom",
       "//testing/gmock",
       "//testing/gtest",
+      "//ui/base",
     ]
   }
 }

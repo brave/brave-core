@@ -27,9 +27,11 @@ enum class OnDeviceSpeechModel {
 // installer policy verifies the directory this class hands out.
 std::string_view GetModelDirName(OnDeviceSpeechModel model);
 
-// About how much the model takes on disk, for telling a user what they would
-// download. Only has to be close, so it need not follow every model update.
+// About how much the English and the multilingual model take on disk, for
+// telling a user what they would download. Only has to be close, so it need not
+// follow every model update.
 inline constexpr base::ByteSize kApproxModelSize = base::MiB(636);
+inline constexpr base::ByteSize kApproxMultilingualModelSize = base::MiB(697);
 
 // Singleton holding the install directory of each of Brave's on-device speech
 // recognition models. The component installer of each model populates its
