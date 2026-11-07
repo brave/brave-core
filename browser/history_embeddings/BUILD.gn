@@ -8,6 +8,21 @@ import("//brave/components/local_ai/buildflags/buildflags.gni")
 
 assert(enable_local_ai)
 
+# Whether semantic history search is available and enabled for a profile.
+source_set("utils") {
+  public = [ "history_embeddings_utils.h" ]
+  sources = [ "history_embeddings_utils.cc" ]
+
+  deps = [
+    "//base",
+    "//brave/components/history_embeddings/core",
+    "//brave/components/local_ai/core",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/profiles:profile",
+    "//components/prefs",
+  ]
+}
+
 # Holds the setting the embedding services were built with, so the Semantic
 # history search toggle can prompt for a relaunch once it diverges, and owns the
 # BraveHistoryEmbeddingsEnabledAtStartup() hook the chromium_src overrides
@@ -24,16 +39,54 @@ source_set("status") {
   ]
 
   deps = [
+    ":utils",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/local_ai/core",
     "//chrome/browser:browser_process",
-    "//chrome/browser/history_embeddings",
     "//chrome/browser/profiles:profile",
   ]
 
   if (enable_ai_chat) {
     deps += [ "//brave/components/ai_chat/core/common" ]
   }
+}
+
+# The profile's HistoryEmbeddingsService and the tab feature that feeds it
+# history visits.
+source_set("service") {
+  public = [
+    "history_embeddings_service_factory.h",
+    "history_embeddings_tab_helper.h",
+  ]
+  sources = [
+    "history_embeddings_service_factory.cc",
+    "history_embeddings_tab_helper.cc",
+  ]
+
+  public_deps = [
+    ":utils",
+    "//base",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/tabs:tabs_public",
+    "//components/history/core/browser",
+    "//url",
+  ]
+
+  deps = [
+    ":status",
+    "//brave/components/history_embeddings/content",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/app_mode",
+    "//chrome/browser/history",
+    "//chrome/browser/page_content_annotations:page_embeddings",
+    "//chrome/browser/passage_embeddings",
+    "//chrome/browser/profiles:profile_manager",
+    "//chrome/browser/profiles:profile_util",
+    "//components/keyed_service/core",
+    "//components/passage_embeddings/core",
+    "//components/tabs:public",
+    "//content/public/browser",
+  ]
 }
 
 # Resolves open-tab URLs to URLIDs via HistoryService and ranks them with
@@ -49,13 +102,13 @@ source_set("open_tab_search") {
   ]
 
   deps = [
+    "//brave/components/history_embeddings/content",
+    "//brave/components/history_embeddings/core",
     "//chrome/browser/profiles",
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/tabs:tab_strip",
     "//chrome/browser/ui/tabs:tabs_public",
     "//components/history/core/browser",
-    "//components/history_embeddings/content",
-    "//components/history_embeddings/core",
     "//components/tabs:public",
     "//content/public/browser",
   ]
@@ -74,11 +127,11 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/history_embeddings/core",
     "//brave/components/local_ai/core",
     "//chrome/browser/prefs",
     "//chrome/test:test_support",
     "//chrome/test/base:testing_browser_process",
-    "//components/history_embeddings/core",
     "//components/optimization_guide/core",
     "//components/optimization_guide/proto:optimization_guide_proto",
     "//components/passage_embeddings/core",
@@ -98,6 +151,7 @@ source_set("browser_tests") {
   sources = [
     "brave_history_ui_embeddings_browsertest.cc",
     "history_embeddings_omnibox_browsertest.cc",
+    "history_embeddings_service_factory_browsertest.cc",
     "open_tab_search_browsertest.cc",
   ]
 
@@ -105,10 +159,12 @@ source_set("browser_tests") {
 
   deps = [
     ":open_tab_search",
+    ":service",
     "//base",
     "//base/test:test_support",
     "//brave/components/constants",
     "//brave/components/history_embeddings:test_support",
+    "//brave/components/history_embeddings/core",
     "//brave/components/local_ai/core",
     "//chrome/browser/autocomplete",
     "//chrome/browser/history",
@@ -120,7 +176,6 @@ source_set("browser_tests") {
     "//chrome/common:constants",
     "//chrome/test:test_support",
     "//components/history/core/browser",
-    "//components/history_embeddings/core",
     "//components/keyed_service/core",
     "//components/omnibox/browser",
     "//components/omnibox/browser:test_support",
@@ -137,31 +192,19 @@ source_set("browser_tests") {
 }
 
 source_set("history_embeddings") {
-  public = [
-    "brave_history_embeddings_service.h",
-    "brave_passage_embeddings_service_controller.h",
-  ]
-  sources = [
-    "brave_history_embeddings_service.cc",
-    "brave_passage_embeddings_service_controller.cc",
-  ]
+  public = [ "brave_passage_embeddings_service_controller.h" ]
+  sources = [ "brave_passage_embeddings_service_controller.cc" ]
 
   public_deps = [
     "//base",
-    "//chrome/browser/history_embeddings",
     "//chrome/browser/passage_embeddings",
-    "//components/history_embeddings/content",
-    "//components/page_content_annotations/core",
     "//components/passage_embeddings/core",
     "//mojo/public/cpp/bindings",
     "//services/passage_embeddings/public/mojom",
   ]
 
   deps = [
-    "//brave/components/history_embeddings",
     "//brave/components/local_ai/core",
-    "//chrome/browser/profiles",
-    "//components/history_embeddings/core",
     "//components/optimization_guide/core",
     "//components/optimization_guide/proto:optimization_guide_proto",
     "//content/public/browser",

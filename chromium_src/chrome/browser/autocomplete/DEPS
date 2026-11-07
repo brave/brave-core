@@ -4,4 +4,5 @@ include_rules = [
   "+brave/components/ai_chat/core/common",
   "+brave/components/commander/common/buildflags",
   "+brave/components/commander/browser",
+  "+brave/components/local_ai/buildflags",
 ]

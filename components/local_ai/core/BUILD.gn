@@ -86,10 +86,10 @@ static_library("core") {
 
   deps = [
     "//brave/components/brave_component_updater/browser:public",
+    "//brave/components/history_embeddings/core",
     "//brave/components/resources:strings_grit",
     "//components/component_updater",
     "//components/component_updater:component_updater_paths",
-    "//components/history_embeddings/core",
     "//components/prefs",
     "//components/update_client",
     "//crypto",
@@ -111,8 +111,8 @@ source_set("unit_tests") {
     "//base/test:test_support",
     "//brave/components/brave_component_updater/browser:public",
     "//brave/components/brave_component_updater/browser:test_support",
+    "//brave/components/history_embeddings/core",
     "//components/component_updater:test_support",
-    "//components/history_embeddings/core",
     "//components/prefs:test_support",
     "//components/update_client",
     "//testing/gmock",

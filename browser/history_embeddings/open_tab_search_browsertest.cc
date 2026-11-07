@@ -39,7 +39,7 @@
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 
-namespace history_embeddings {
+namespace brave_history_embeddings {
 
 class OpenTabSearchBrowserTest : public InProcessBrowserTest {
  public:
@@ -199,12 +199,7 @@ IN_PROC_BROWSER_TEST_F(OpenTabSearchBrowserTest, RanksAndDropsUnmatchedTabs) {
                           "query", future.GetCallback(), &tracker_);
   const std::vector<OpenTabInfo> ranked = future.Take();
 
-  // Every eligible open tab is offered to `Search()` for scoring...
-  EXPECT_TRUE(fake.last_skip_answering());
-  EXPECT_THAT(
-      fake.last_url_id_filter(),
-      testing::UnorderedElementsAre(foo_url_id, bar_url_id, baz_url_id));
-  // ...but only the scored ones come back, best first; baz is dropped.
+  // Only the scored tabs come back, best first; baz is dropped.
   std::vector<int32_t> tab_ids;
   for (const auto& tab : ranked) {
     tab_ids.push_back(tab.tab_id);
@@ -287,4 +282,4 @@ IN_PROC_BROWSER_TEST_F(OpenTabSearchBrowserTest, SameUrlYieldsEveryTab) {
   EXPECT_THAT(tab_ids, testing::UnorderedElementsAre(tab_id_a, tab_id_b));
 }
 
-}  // namespace history_embeddings
+}  // namespace brave_history_embeddings

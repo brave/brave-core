@@ -10,6 +10,7 @@ import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
+import("//brave/components/local_ai/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/request_otr/common/buildflags/buildflags.gni")
@@ -82,6 +83,7 @@ if (!is_android) {
       "//brave/components/brave_rewards/core/buildflags",
       "//brave/components/brave_wallet/common/buildflags",
       "//brave/components/image_metadata_stripper/common",
+      "//brave/components/local_ai/buildflags",
       "//brave/components/misc_metrics",
       "//brave/components/request_otr/common/buildflags",
       "//brave/components/web_discovery/buildflags",
@@ -111,6 +113,10 @@ if (!is_android) {
 
     if (enable_web_discovery) {
       deps += [ "//brave/browser/web_discovery" ]
+    }
+
+    if (enable_local_ai) {
+      deps += [ "//brave/browser/history_embeddings:service" ]
     }
 
     if (is_win || is_mac || is_linux) {

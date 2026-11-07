@@ -1,0 +1,28 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Brave files compiled into Chromium's brave://history build_webui(). They are
+# preprocessed by //brave/browser/resources/history:preprocess into the same
+# folder as Chromium's own sources, so Chromium skips preprocessing them.
+brave_history_ts_files = [
+  "history_embeddings/history_embeddings.html.ts",
+  "history_embeddings/history_embeddings.ts",
+]
+
+brave_history_css_files = [ "history_embeddings/history_embeddings.css" ]
+
+brave_history_icons_html_files = [ "history_embeddings/icons.html" ]
+
+brave_history_exclude_html_css_preprocess_files =
+    brave_history_css_files + brave_history_icons_html_files
+
+brave_history_preprocess_deps =
+    [ "//brave/browser/resources/history:preprocess" ]
+
+brave_history_mojo_files = [ "$root_gen_dir/brave/browser/ui/webui/history_embeddings/history_embeddings.mojom-webui.ts" ]
+
+brave_history_mojo_files_deps = [
+  "//brave/browser/ui/webui/history_embeddings:mojo_bindings_ts__generator",
+]
