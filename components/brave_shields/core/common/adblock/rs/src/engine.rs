@@ -12,6 +12,7 @@ use adblock::url_parser::ResolvesDomain;
 use adblock::Engine as InnerEngine;
 use cxx::{let_cxx_string, CxxString, CxxVector};
 
+use crate::convert::to_blocker_result;
 use crate::ffi::{
     resolve_domain_position, BlockerResult, BoxEngineResult, ContentBlockingRulesResult, DebugInfo,
     FilterListMetadata, RegexManagerDiscardPolicy, VecStringResult,
@@ -24,6 +25,8 @@ use crate::ffi::ContentBlockingRules;
 
 pub struct Engine {
     engine: InnerEngine,
+    /// Indexed by `source_index`; empty unless built from a debug `FilterSet`.
+    source_titles: Vec<String>,
 }
 
 impl Default for Box<Engine> {
@@ -32,8 +35,22 @@ impl Default for Box<Engine> {
     }
 }
 
+fn wrap_engine(engine: InnerEngine, debug: bool) -> Box<Engine> {
+    let source_titles = if debug {
+        engine
+            .get_debug_info()
+            .source_info
+            .into_iter()
+            .map(|source| source.title.unwrap_or_default())
+            .collect()
+    } else {
+        Vec::new()
+    };
+    Box::new(Engine { engine, source_titles })
+}
+
 pub fn new_engine() -> Box<Engine> {
-    Box::new(Engine { engine: InnerEngine::default() })
+    wrap_engine(InnerEngine::default(), false)
 }
 
 pub fn engine_with_rules(rules: &CxxVector<u8>) -> BoxEngineResult {
@@ -43,8 +60,7 @@ pub fn engine_with_rules(rules: &CxxVector<u8>) -> BoxEngineResult {
             std::str::from_utf8(rules.as_slice())?.to_string(),
             Default::default(),
         );
-        let engine = InnerEngine::new_with_filter_set(filter_set);
-        Ok(Box::new(Engine { engine }))
+        Ok(wrap_engine(InnerEngine::new_with_filter_set(filter_set), false))
     }()
     .into()
 }
@@ -52,8 +68,8 @@ pub fn engine_with_rules(rules: &CxxVector<u8>) -> BoxEngineResult {
 /// Creates a new engine with rules from a given filter set.
 pub fn engine_from_filter_set(filter_set: Box<FilterSet>) -> BoxEngineResult {
     || -> Result<Box<Engine>, InternalError> {
-        let engine = InnerEngine::new_with_filter_set(filter_set.0);
-        Ok(Box::new(Engine { engine }))
+        let debug = filter_set.debug;
+        Ok(wrap_engine(InnerEngine::new_with_filter_set(filter_set.inner), debug))
     }()
     .into()
 }
@@ -93,14 +109,15 @@ pub fn convert_rules_to_content_blocking(rules: &CxxString) -> ContentBlockingRu
             ParseOptions { rule_types: RuleTypes::NetworkOnly, ..Default::default() },
         );
 
-        // `unwrap` is safe here because `into_content_blocking` only panics if the
-        // `FilterSet` was not created in debug mode
+        // `unwrap` is safe here because `into_content_blocking` only panics if
+        // the `FilterSet` was not created in debug mode
         let (mut cb_rules, _) = filter_set.into_content_blocking().unwrap();
         let rules_len = cb_rules.len();
         let truncated = if rules_len > MAX_CB_LIST_SIZE {
-            // Note that the last rule is always the first-party document exception rule,
-            // which we want to keep. Otherwise, we can arbitrarily truncate rules
-            // before that to ensure that the list can actually compile.
+            // Note that the last rule is always the first-party document
+            // exception rule, which we want to keep. Otherwise, we
+            // can arbitrarily truncate rules before that to ensure
+            // that the list can actually compile.
             cb_rules.swap(rules_len - 1, MAX_CB_LIST_SIZE - 1);
             cb_rules.truncate(MAX_CB_LIST_SIZE);
             true
@@ -140,20 +157,23 @@ impl Engine {
     ) -> BlockerResult {
         // The following strings are guaranteed to be
         // UTF-8, so unwrapping directly should be okay.
-        self.engine
-            .check_network_request_subset(
-                &adblock::request::Request::preparsed(
-                    url.to_str().unwrap(),
-                    hostname.to_str().unwrap(),
-                    initiator_hostname.to_str().unwrap(),
-                    request_type.to_str().unwrap(),
-                    third_party_request,
-                    method.to_str().unwrap_or_default(),
-                ),
-                previously_matched_rule,
-                force_check_exceptions,
-            )
-            .into()
+        let result = self.engine.check_network_request_subset(
+            &adblock::request::Request::preparsed(
+                url.to_str().unwrap(),
+                hostname.to_str().unwrap(),
+                initiator_hostname.to_str().unwrap(),
+                request_type.to_str().unwrap(),
+                third_party_request,
+                method.to_str().unwrap_or_default(),
+            ),
+            previously_matched_rule,
+            force_check_exceptions,
+        );
+        to_blocker_result(result, &|source_index| self.source_title(source_index))
+    }
+
+    fn source_title(&self, source_index: u32) -> String {
+        self.source_titles.get(source_index as usize).cloned().unwrap_or_default()
     }
 
     pub fn get_csp_directives(
@@ -185,6 +205,7 @@ impl Engine {
     }
 
     pub fn deserialize(&mut self, serialized: &CxxVector<u8>) -> bool {
+        self.source_titles.clear();
         self.engine.deserialize(serialized.as_slice()).is_ok()
     }
 
