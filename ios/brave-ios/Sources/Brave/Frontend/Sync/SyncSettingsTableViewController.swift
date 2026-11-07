@@ -30,6 +30,7 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate,
     case history
     case passwords
     case openTabs
+    case preferences
 
     var title: String {
       switch self {
@@ -41,6 +42,8 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate,
         return Strings.passwordsMenuItem
       case .openTabs:
         return Strings.openTabsMenuItem
+      case .preferences:
+        return Strings.Sync.preferencesSyncTypeTitle
       }
     }
   }
@@ -309,6 +312,8 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate,
         Preferences.Chromium.syncPasswordsEnabled.value = !toggleExistingStatus
       case .openTabs:
         Preferences.Chromium.syncOpenTabsEnabled.value = !toggleExistingStatus
+      case .preferences:
+        Preferences.Chromium.syncPreferencesEnabled.value = !toggleExistingStatus
       }
 
       syncAPI.enableSyncTypes(syncProfileService: syncProfileService)
@@ -466,7 +471,10 @@ extension SyncSettingsTableViewController {
   func tableView(_ tableView: UITableView, viewForFooterInSection sectionIndex: Int) -> UIView? {
     switch sectionIndex {
     case Sections.syncTypes.rawValue:
-      return makeInformationFooterTextView(with: Strings.Sync.configurationInformationText)
+      return makeInformationFooterTextView(
+        with:
+          "\(Strings.Sync.configurationInformationText)\n\n\(Strings.Sync.preferencesSyncTypeInformationText)"
+      )
     default:
       return nil
     }
@@ -562,6 +570,8 @@ extension SyncSettingsTableViewController {
         return Preferences.Chromium.syncPasswordsEnabled.value
       case .openTabs:
         return Preferences.Chromium.syncOpenTabsEnabled.value
+      case .preferences:
+        return Preferences.Chromium.syncPreferencesEnabled.value
       }
     }
   }
