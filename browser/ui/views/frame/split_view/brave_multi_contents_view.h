@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_SPLIT_VIEW_BRAVE_MULTI_CONTENTS_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_SPLIT_VIEW_BRAVE_MULTI_CONTENTS_VIEW_H_
 
+#include <optional>
 #include <vector>
 
 #include "base/gtest_prod_util.h"
@@ -21,6 +22,7 @@ FORWARD_DECLARE_TEST(SidebarBrowserWithWebPanelTest, WebPanelTest);
 class BraveContentsContainerView;
 
 namespace views {
+class ResizeArea;
 class WebView;
 }  // namespace views
 
@@ -38,10 +40,15 @@ class BraveMultiContentsView : public MultiContentsView {
 
   void SetWebPanelWidth(int width);
   void SetWebPanelOnLeft(bool left);
+  void OnWebPanelResize(int resize_amount, bool done_resizing);
 
   void set_web_panel_active(bool active) { is_web_panel_active_ = active; }
   bool is_web_panel_active_for_testing() const { return is_web_panel_active_; }
   views::View* GetWebPanelContentsViewForTesting() const;
+  int web_panel_width_for_testing() const { return web_panel_width_; }
+  views::ResizeArea* web_panel_resize_area_for_testing() const {
+    return web_panel_resize_area_;
+  }
 
   // Notifies the multi-contents view that the browser's active content domain
   // display state has changed.
@@ -78,6 +85,8 @@ class BraveMultiContentsView : public MultiContentsView {
   // Creates the web panel's container on first use.
   void UseContentsContainerViewForWebPanel();
   int GetWebPanelWidth() const;
+  int GetWebPanelResizeAreaWidth() const;
+  int ClampWebPanelWidth(int requested_width, int host_width) const;
 
   std::vector<ContentsContainerView*> contents_container_views_for_testing()
       const {
@@ -87,11 +96,13 @@ class BraveMultiContentsView : public MultiContentsView {
 
   int web_panel_width_ = 0;
   bool web_panel_on_left_ = false;
+  std::optional<int> web_panel_width_on_resize_start_;
 
   // true when web panel is activated.
   bool is_web_panel_active_ = false;
   raw_ptr<BraveContentsContainerView> contents_container_view_for_web_panel_ =
       nullptr;
+  raw_ptr<views::ResizeArea> web_panel_resize_area_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_SPLIT_VIEW_BRAVE_MULTI_CONTENTS_VIEW_H_
