@@ -91,6 +91,10 @@ are declared in tools/grit/grit_args.gni.
   </translations>
   <release seq="1">
     <messages fallback_to_english="true">
+      <if expr="not is_android">
+        <part file="action_synonym_strings_override.grdp" />
+      </if>
+
       <part file="app_management_strings_override.grdp" />
 
       <part file="bookmarks_strings_override.grdp" />
@@ -169,10 +173,6 @@ are declared in tools/grit/grit_args.gni.
           New &amp;Private window
         </message>
 
-        <message name="IDS_INCOGNITO" desc="The text label for the Private button in the block header section of the App Menu">
-          Private
-        </message>
-
         <if expr="not use_titlecase">
           <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD" desc="The name of the open a link in Private window command">
             Open link in &amp;private window
@@ -206,8 +206,7 @@ are declared in tools/grit/grit_args.gni.
           <if expr="is_macosx">
             </if>
           </if>
-
-        </if>
+      </if>
 
       <if expr="not use_titlecase">
         </if>
@@ -219,9 +218,6 @@ are declared in tools/grit/grit_args.gni.
         </if>
 
       <if expr="not is_android">
-        <message name="IDS_APP_MENU_INCOGNITO" desc="Label for the Private block button in the main App Menu">
-          Private
-        </message>
         <message name="IDS_APP_MENU_BLOCK_INCOGNITO" desc="Label with a keyboard mnemonic for the Private block button in the main App Menu">
           &amp;Private
         </message>
@@ -265,10 +261,6 @@ are declared in tools/grit/grit_args.gni.
         </message>
         </if>
 
-      <if expr="not use_titlecase">
-        </if>
-      <if expr="use_titlecase">
-        </if>
       <if expr="not use_titlecase">
         </if>
       <if expr="use_titlecase">
@@ -377,9 +369,7 @@ are declared in tools/grit/grit_args.gni.
         </if>
 
       <if expr="not use_titlecase">
-        </if>
-      <if expr="use_titlecase">
-        </if>
+      </if>
 
       <if expr="is_macosx">
         </if>
@@ -449,13 +439,10 @@ are declared in tools/grit/grit_args.gni.
           Private PDF Subframe: <ph name="SUBFRAME_SITE">$1<ex>https://example.com/document.pdf</ex></ph>
         </message>
       </if>
-      <message name="IDS_TASK_MANAGER_PORTAL_INCOGNITO_PREFIX" desc="The prefix for a Private portal row in the Task Manager (these processes are created when portals is enabled, in Private mode)">
-        Private Portal: <ph name="SUBFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
-      </message>
       <if expr="not is_android">
         </if>
       <if expr="is_win">
-        </if>
+      </if>
       <if expr="enable_extensions">
         <if expr="reven">
           </if>
@@ -485,8 +472,6 @@ are declared in tools/grit/grit_args.gni.
         </if>
 
       <if expr="enable_extensions_core">
-        <if expr="is_macosx">
-          </if>
         <if expr="not is_chromeos and not is_macosx">
           </if>
         <if expr="is_chromeos">
@@ -497,9 +482,6 @@ are declared in tools/grit/grit_args.gni.
         <if expr="is_android">
           </if>
 
-        </if>
-
-      <if expr="not is_android">
         </if>
 
       <if expr="enable_extensions_core">
@@ -570,9 +552,7 @@ are declared in tools/grit/grit_args.gni.
       <if expr="use_titlecase">
         </if>
 
-       <if expr="is_android">
-        </if>
-      <if expr="use_titlecase">
+       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
         </if>
@@ -634,11 +614,6 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_NTP_WEBSTORE_TOAST_MESSAGE" desc="The message displayed on the New Tab Page toast that directs users to the Brave webstore themes.">
         You can find older colors in the Web Store
       </message>
-      <if expr="use_titlecase">
-        </if>
-      <if expr="not use_titlecase">
-        </if>
-
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
@@ -713,15 +688,6 @@ are declared in tools/grit/grit_args.gni.
         </if>
       <if expr="not is_android">
         </if>
-
-      <if expr="_google_chrome">
-        <if expr="not is_android">
-          <if expr="use_titlecase">
-            </if>
-          <if expr="not use_titlecase">
-            </if>
-          </if>
-      </if>
 
       <if expr="not is_android">
         <if expr="use_titlecase">
@@ -881,11 +847,6 @@ are declared in tools/grit/grit_args.gni.
         </if>
 
         <if expr="use_titlecase">
-          </if>
-        <if expr="not use_titlecase">
-          </if>
-
-      <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
         </if>
@@ -1007,15 +968,6 @@ are declared in tools/grit/grit_args.gni.
         </if>
 
       <if expr="is_win or is_macosx or is_linux or is_chromeos">
-        </if>
-
-      <if expr="not use_titlecase">
-        </if>
-      <if expr="use_titlecase">
-        </if>
-      <if expr="not use_titlecase">
-        </if>
-      <if expr="use_titlecase">
         </if>
 
       <if expr="not is_chromeos and not is_android">
@@ -1373,7 +1325,7 @@ are declared in tools/grit/grit_args.gni.
     <if expr="is_android">
         </if>
 
-    <if expr="is_chromeos">
+    <if expr="enable_smart_card">
       </if>
 
     <if expr="is_chromeos">

@@ -71,6 +71,30 @@
   <message name="IDS_CONTEXTUAL_TASKS_SIDE_PANEL_HISTORY_TOOL_TIP" desc="Tool tip text displayed on the history button on the side panel to show history threads.">
     AI Mode history
   </message>
+  <message name="IDS_CONTEXTUAL_TASKS_AVATAR_TOOLTIP_HEADER" desc="Header of the tooltip shown when hovering over the profile avatar in the side panel toolbar. The tooltip also shows the name and email of the Brave sync chain the user is signed in to on the web.">
+    Brave sync chain
+  </message>
+  <message name="IDS_CONTEXTUAL_TASKS_ACCOUNT_MENU_BUTTON_ACCESSIBLE_NAME" desc="Accessible name for the profile avatar button in the side panel toolbar that opens a menu with the user's Brave sync chain information.">
+    Brave sync chain
+  </message>
+  <message name="IDS_CONTEXTUAL_TASKS_ACCOUNT_MENU_NAME_AND_EMAIL" desc="Text in the side panel toolbar account menu that shows the full name and email address of the Brave sync chain the user is signed in to on the web.">
+    <ph name="FULL_NAME">$1<ex>Jane Doe</ex></ph> - <ph name="EMAIL">$2<ex>janedoe@gmail.com</ex></ph>
+  </message>
+  <message name="IDS_CONTEXTUAL_TASKS_ACCOUNT_MENU_MANAGE_ACCOUNT" desc="Item in the side panel toolbar account menu that opens the Brave sync chain management page in a new tab.">
+    Manage your Brave sync chain
+  </message>
+  <message name="IDS_CONTEXTUAL_TASKS_ACCOUNT_MENU_SIGN_OUT" desc="Item in the side panel toolbar account menu that signs the user out of their Brave sync chain on the web. Shown when the user is signed in to one Brave sync chain on the web.">
+    Sign out
+  </message>
+  <message name="IDS_CONTEXTUAL_TASKS_ACCOUNT_MENU_SIGN_OUT_OF_ALL_ACCOUNTS" desc="Item in the side panel toolbar account menu that signs the user out of all their Brave sync chains on the web. Shown when the user is signed in to two or more Brave sync chains on the web.">
+    Sign out of all accounts
+  </message>
+  <message name="IDS_CONTEXTUAL_TASKS_ACCOUNT_MENU_SIGN_OUT_OF_GOOGLE_COM" desc="Item in the side panel toolbar account menu that signs the user out of their Brave sync chain on google.com. Shown when the user is signed in to one Brave sync chain on the web.">
+    Sign out of google.com
+  </message>
+  <message name="IDS_CONTEXTUAL_TASKS_ACCOUNT_MENU_SIGN_OUT_OF_ALL_GOOGLE_COM_ACCOUNTS" desc="Item in the side panel toolbar account menu that signs the user out of all their Brave sync chains on google.com. Shown when the user is signed in to two or more Brave sync chains on the web.">
+    Sign out of all google.com accounts
+  </message>
   <message name="IDS_CONTEXTUAL_TASKS_SIDE_PANEL_CONTEXT_TOOL_TIP" desc="Tool tip text displayed on the context button on the side panel to show tabs and files context attached to the current thread.">
     Tabs and files
   </message>
@@ -118,5 +142,13 @@
   </message>
   <message name="IDS_CONTEXTUAL_TASKS_LENS_REGION_CHIP_DISMISS_LABEL" desc="Accessible tooltip and label for the close button on the Lens region selection chip.">
     Remove selected region
+  </message>
+
+  <!-- Search journey cue -->
+  <message name="IDS_CONTEXTUAL_TASKS_SEARCH_JOURNEY_CUE_ANCHORED_MESSAGE" desc="Text of a suggestion shown next to the address bar when the user returns to a tab after searching on Brave in another tab. 'Brave AI search answer' is the AI-generated answer that Brave Search showed for that search, which the suggestion opens in the side panel.">
+    See your Brave AI search answer on this tab
+  </message>
+  <message name="IDS_CONTEXTUAL_TASKS_SEARCH_JOURNEY_CUE_ACTION" desc="Label of a button in the address bar, shown when the user returns to a tab after searching on Brave in another tab. Clicking it opens the side panel with the AI-generated answer that Brave Search showed for that search. Also used as the button's tooltip and accessible name.">
+    Open side panel
   </message>
 </grit-part>
