@@ -8,8 +8,8 @@ use futures::channel::oneshot;
 use futures::lock::MutexGuard;
 use log::debug;
 
+use crate::skus::{errors::InternalError, Environment, KVClient, KVStore};
 use crate::{ffi, NativeClient, NativeClientInner};
-use skus::{errors::InternalError, Environment, KVClient, KVStore};
 
 pub struct StoragePurgeContext {
     tx: oneshot::Sender<Result<(), InternalError>>,
