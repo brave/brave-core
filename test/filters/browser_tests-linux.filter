@@ -86,6 +86,16 @@
 # LegacyInfobar instance has been reported failing.
 -All/DevToolsProcessPerSiteTest.PausedDebuggerFocus/LegacyInfobar
 
+# Chromium test, new in Chromium 157 (landed 2026-10-09). The Glic selection
+# prompt widget is never shown, so the test times out after 30s. Reported 22
+# times between 2026-10-29 and 2026-11-05 on Linux x64 builds with Chromium
+# 157 (master, beta and release), always with the same failure. It passes
+# upstream (0.08% over 30 days per LUCI Analysis). The cause in Brave is not
+# identified: the widget does not depend on the Glic extension Brave denies
+# and no Brave override on this path was found.
+# https://github.com/brave/brave-browser/issues/60298
+-GlicSelectionPromptContextMenuBrowserTest.ContextMenuDismissesSelectionWidget
+
 # These tests fail on Linux because kPromptForDownload defaults to true,
 # triggering the GTK file chooser dialog which causes g_malloc leaks
 # detected by LSan on ASAN builds and timeouts.
