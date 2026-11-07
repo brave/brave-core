@@ -602,6 +602,7 @@ source_set("ui") {
       "//chrome/browser/ui/views/side_panel",
       "//chrome/browser/ui/webui:favicon_source",
       "//chrome/browser/ui/webui:theme_source",
+      "//chrome/browser/ui/webui/new_tab_page_third_party",
       "//chrome/browser/ui/webui/sanitized_image:sanitized_image_source",
       "//chrome/browser/ui/webui/searchbox",
       "//chrome/browser/ui/webui/settings",
