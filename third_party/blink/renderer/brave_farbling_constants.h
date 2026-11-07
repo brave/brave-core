@@ -6,8 +6,8 @@
 #ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_BRAVE_FARBLING_CONSTANTS_H_
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_BRAVE_FARBLING_CONSTANTS_H_
 
-#include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
+#include "components/content_settings/core/common/content_settings.mojom.h"
 
-using BraveFarblingLevel = brave_shields::mojom::FarblingLevel;
+using BraveFarblingLevel = content_settings::mojom::FarblingLevel;
 
 #endif  // BRAVE_THIRD_PARTY_BLINK_RENDERER_BRAVE_FARBLING_CONSTANTS_H_

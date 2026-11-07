@@ -68,6 +68,7 @@
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/content/browser/domain_block_navigation_throttle.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
@@ -947,7 +948,7 @@ BraveContentBrowserClient::WorkerGetBraveShieldSettings(
     const GURL& url,
     content::BrowserContext* browser_context,
     const content::StoragePartitionConfig* storage_partition_config) {
-  const brave_shields::mojom::FarblingLevel farbling_level =
+  const content_settings::mojom::FarblingLevel farbling_level =
       brave_shields::GetFarblingLevel(
           HostContentSettingsMapFactory::GetForProfile(browser_context), url);
   std::string additional_entropy;
@@ -963,7 +964,7 @@ BraveContentBrowserClient::WorkerGetBraveShieldSettings(
       BraveShieldsSettingsServiceFactory::GetForProfile(
           Profile::FromBrowserContext(browser_context));
   const base::Token farbling_token =
-      farbling_level != brave_shields::mojom::FarblingLevel::OFF &&
+      farbling_level != content_settings::mojom::FarblingLevel::OFF &&
               shields_settings_service
           ? shields_settings_service->GetFarblingToken(
                 url, base::as_byte_span(additional_entropy))
@@ -972,10 +973,19 @@ BraveContentBrowserClient::WorkerGetBraveShieldSettings(
   PrefService* pref_service = user_prefs::UserPrefs::Get(browser_context);
 
   return brave_shields::mojom::ShieldsSettings::New(
-      farbling_level, farbling_token, std::vector<std::string>(),
+      farbling_token, std::vector<std::string>(),
       brave_shields::IsReduceLanguageEnabledForProfile(pref_service),
       IsJsBlockingEnforced(browser_context, url),
       brave_user_agent::ShouldHideBraveBrand(url));
+}
+
+int32_t BraveContentBrowserClient::WorkerGetBraveFarblingLevel(
+    const GURL& url,
+    content::BrowserContext* browser_context,
+    int32_t webcompat_settings_type) {
+  return static_cast<int32_t>(brave_shields::GetFarblingLevel(
+      HostContentSettingsMapFactory::GetForProfile(browser_context), url,
+      static_cast<ContentSettingsType>(webcompat_settings_type)));
 }
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)

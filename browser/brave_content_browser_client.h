@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_BRAVE_CONTENT_BROWSER_CLIENT_H_
 #define BRAVE_BROWSER_BRAVE_CONTENT_BROWSER_CLIENT_H_
 
+#include <cstdint>
 #include <memory>
 #include <optional>
 #include <string>
@@ -92,6 +93,10 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       const GURL& url,
       content::BrowserContext* browser_context,
       const content::StoragePartitionConfig* storage_partition_config) override;
+
+  int32_t WorkerGetBraveFarblingLevel(const GURL& url,
+                                      content::BrowserContext* browser_context,
+                                      int32_t webcompat_settings_type) override;
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
   mojo::PendingRemote<local_ai::mojom::AsrSession> GetAsrSession() override;

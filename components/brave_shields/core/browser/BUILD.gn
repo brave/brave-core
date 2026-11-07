@@ -66,6 +66,7 @@ static_library("browser") {
   public_deps = [
     "//base",
     "//brave/components/brave_shields/core/common/adblock",
+    "//components/content_settings/core/common:mojo_bindings",
   ]
 }
 

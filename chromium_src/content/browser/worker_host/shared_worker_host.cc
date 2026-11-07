@@ -23,4 +23,13 @@ void SharedWorkerHost::GetBraveShieldsSettings(
           storage_partition_config));
 }
 
+void SharedWorkerHost::GetBraveFarblingLevel(
+    const GURL& url,
+    int32_t webcompat_settings_type,
+    base::OnceCallback<void(int32_t)> callback) {
+  std::move(callback).Run(
+      GetContentClient()->browser()->WorkerGetBraveFarblingLevel(
+          url, GetProcessHost()->GetBrowserContext(), webcompat_settings_type));
+}
+
 }  // namespace content

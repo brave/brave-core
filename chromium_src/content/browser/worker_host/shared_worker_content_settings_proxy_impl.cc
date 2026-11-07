@@ -14,4 +14,12 @@ void SharedWorkerContentSettingsProxyImpl::GetBraveShieldsSettings(
   owner_->GetBraveShieldsSettings(url, std::move(callback));
 }
 
+void SharedWorkerContentSettingsProxyImpl::GetBraveFarblingLevel(
+    int32_t webcompat_settings_type,
+    GetBraveFarblingLevelCallback callback) {
+  const GURL url = origin_.GetTupleOrPrecursorTupleIfOpaque().GetURL();
+  owner_->GetBraveFarblingLevel(url, webcompat_settings_type,
+                                std::move(callback));
+}
+
 }  // namespace content

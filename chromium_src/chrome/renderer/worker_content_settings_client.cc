@@ -5,12 +5,13 @@
 
 #include "chrome/renderer/worker_content_settings_client.h"
 
+#include <cstdint>
 #include <optional>
 
 #include "base/check.h"
 #include "base/debug/crash_logging.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/logging.h"
+#include "base/notreached.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
 #include "components/content_settings/renderer/content_settings_agent_impl.h"
@@ -53,45 +54,48 @@ WorkerContentSettingsClient_BraveImpl::GetBraveShieldsSettings(
 
   EnsureShieldsSettings();
 
-  brave_shields::mojom::FarblingLevel farbling_level =
-      shields_settings_ ? shields_settings_->farbling_level
-                        : brave_shields::mojom::FarblingLevel::OFF;
-  if (content_setting_rules_ && shields_settings_ &&
-      shields_settings_->farbling_level !=
-          brave_shields::mojom::FarblingLevel::OFF &&
-      webcompat_settings_type != ContentSettingsType::BRAVE_WEBCOMPAT_NONE) {
-    auto webcompat_setting =
-        brave_shields::GetBraveWebcompatContentSettingFromRules(
-            content_setting_rules_->webcompat_rules, primary_url,
-            webcompat_settings_type);
-    if (webcompat_setting == CONTENT_SETTING_ALLOW) {
-      farbling_level = brave_shields::mojom::FarblingLevel::OFF;
-    }
+  if (shields_settings_) {
+    return shields_settings_.Clone();
   }
 
-  DVLOG(1) << "farbling_level=" << farbling_level << " @ " << primary_url;
-  if (shields_settings_) {
-    auto shields_settings = shields_settings_.Clone();
-    shields_settings->farbling_level = farbling_level;
-    return shields_settings;
-  } else {
-    // This should not happen now, but send dumps for now if that's the case in
-    // some scenario.
-    DCHECK(!HasContentSettingsRules());
-    // Trigger a crash in DCHECK-enabled builds.
-    DCHECK(false);
-    // Add top frame and current frame origins to the crash dump.
-    SCOPED_CRASH_KEY_STRING64("BraveShieldsSettings", "top_frame_origin",
-                              top_frame_origin_.GetDebugString(false));
-    SCOPED_CRASH_KEY_STRING64("BraveShieldsSettings", "frame_origin",
-                              document_origin_.GetDebugString(false));
-    SCOPED_CRASH_KEY_BOOL("BraveShieldsSettings", "has_cs_rules",
-                          HasContentSettingsRules());
-    base::debug::DumpWithoutCrashing();
-    return brave_shields::mojom::ShieldsSettings::New(
-        farbling_level, base::Token(), std::vector<std::string>(), false, false,
-        false);
+  // This should not happen now, but send dumps for now if that's the case in
+  // some scenario.
+  DCHECK(!HasContentSettingsRules());
+  // Trigger a crash in DCHECK-enabled builds.
+  DCHECK(false);
+  // Add top frame and current frame origins to the crash dump.
+  SCOPED_CRASH_KEY_STRING64("BraveShieldsSettings", "top_frame_origin",
+                            top_frame_origin_.GetDebugString(false));
+  SCOPED_CRASH_KEY_STRING64("BraveShieldsSettings", "frame_origin",
+                            document_origin_.GetDebugString(false));
+  SCOPED_CRASH_KEY_BOOL("BraveShieldsSettings", "has_cs_rules",
+                        HasContentSettingsRules());
+  DUMP_WILL_BE_NOTREACHED();
+  return brave_shields::mojom::ShieldsSettings::New(
+      base::Token(), std::vector<std::string>(), false, false, false);
+}
+
+content_settings::mojom::FarblingLevel
+WorkerContentSettingsClient_BraveImpl::GetBraveFarblingLevel(
+    ContentSettingsType webcompat_settings_type) {
+  const GURL& primary_url = top_frame_origin_.GetURL();
+  if (content_setting_rules_) {
+    const auto level = brave_shields::GetBraveFarblingLevelFromRules(
+        *content_setting_rules_, primary_url, webcompat_settings_type);
+    DVLOG(1) << "farbling_level=" << level << " @ " << primary_url;
+    return level;
   }
+
+  EnsureContentSettingsManager();
+  int32_t level =
+      static_cast<int32_t>(content_settings::mojom::FarblingLevel::OFF);
+  if (!content_settings_manager_->GetBraveFarblingLevel(
+          frame_token_, static_cast<int32_t>(webcompat_settings_type),
+          &level)) {
+    return content_settings::mojom::FarblingLevel::OFF;
+  }
+  DVLOG(1) << "farbling_level=" << level << " @ " << primary_url;
+  return static_cast<content_settings::mojom::FarblingLevel>(level);
 }
 
 blink::WebSecurityOrigin

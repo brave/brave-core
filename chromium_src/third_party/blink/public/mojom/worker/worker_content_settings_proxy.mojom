@@ -13,4 +13,10 @@ interface WorkerContentSettingsProxy {
   // could be used for fingerprinting.
   [Sync]
   GetBraveShieldsSettings() => (brave_shields.mojom.ShieldsSettings result);
+
+  // |webcompat_settings_type| is a ContentSettingsType value. The result is a
+  // content_settings.mojom.FarblingLevel value.
+  [Sync]
+  GetBraveFarblingLevel(int32 webcompat_settings_type)
+      => (int32 farbling_level);
 };

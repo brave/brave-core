@@ -10,6 +10,8 @@ component("renderer") {
     "brave_font_whitelist.h",
   ]
 
+  public_deps = [ "//components/content_settings/core/common:mojo_bindings" ]
+
   deps = [
     "//brave/components/brave_drm:brave_drm_blink",
     "//brave/components/brave_shields/core/common:mojom",

@@ -68,6 +68,8 @@ class BraveContentSettingsAgentImpl
 
   brave_shields::mojom::ShieldsSettingsPtr GetBraveShieldsSettings(
       ContentSettingsType webcompat_settings_type) override;
+  content_settings::mojom::FarblingLevel GetBraveFarblingLevel(
+      ContentSettingsType webcompat_settings_type) override;
 
   bool IsReduceLanguageEnabled() override;
 

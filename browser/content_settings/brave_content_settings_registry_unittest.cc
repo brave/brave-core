@@ -89,6 +89,7 @@ TEST_F(BraveContentSettingsRegistryTest, Inheritance) {
       ContentSettingsType::BRAVE_TRACKERS,
       ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES,
       ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+      ContentSettingsType::BRAVE_FARBLING_LEVEL,
       ContentSettingsType::BRAVE_SHIELDS,
       ContentSettingsType::BRAVE_REFERRERS,
       ContentSettingsType::BRAVE_COOKIES,

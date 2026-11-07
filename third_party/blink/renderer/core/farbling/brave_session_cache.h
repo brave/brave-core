@@ -12,6 +12,7 @@
 
 #include "base/containers/span.h"
 #include "brave/components/brave_shields/core/common/farbling_prng.h"
+#include "brave/components/brave_shields/core/common/shields_settings.mojom-forward.h"
 #include "brave/third_party/blink/renderer/bindings/core/webgl/webgl_farbled_extension_handler.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "brave/third_party/blink/renderer/platform/brave_audio_farbling_helper.h"
@@ -85,7 +86,7 @@ class CORE_EXPORT BraveSessionCache final
   static const char kSupplementName[];
 
   explicit BraveSessionCache(ExecutionContext&);
-  ~BraveSessionCache() = default;
+  ~BraveSessionCache();
 
   static BraveSessionCache& From(ExecutionContext&);
   static void Init();
@@ -103,9 +104,7 @@ class CORE_EXPORT BraveSessionCache final
                      int max_random_offset);
   bool AllowFontFamily(blink::WebContentSettingsClient* settings,
                        const blink::AtomicString& family_name);
-  bool ShouldHideBraveBrand() const {
-    return default_shields_settings_->hide_brave_brand;
-  }
+  bool ShouldHideBraveBrand() const;
   brave_shields::FarblingPRNG MakePseudoRandomGenerator(
       FarbleKey key = FarbleKey::kNone);
   std::optional<blink::BraveAudioFarblingHelper> GetAudioFarblingHelper();
@@ -131,6 +130,7 @@ class CORE_EXPORT BraveSessionCache final
 
   blink::HashMap<FarbleKey, int> farbled_integers_;
   brave_shields::mojom::ShieldsSettingsPtr default_shields_settings_;
+  BraveFarblingLevel default_farbling_level_ = BraveFarblingLevel::OFF;
   std::optional<blink::BraveAudioFarblingHelper> audio_farbling_helper_;
   // A handler to farble the webgl supported extensions.
   std::unique_ptr<blink::WebGLFarbledExtensionHandler>

@@ -11,6 +11,7 @@
 #include "brave/components/brave_shields/core/common/brave_shields_panel.mojom-data-view.h"
 #include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
+#include "components/content_settings/core/common/content_settings.mojom.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 
@@ -125,8 +126,11 @@ bool IsWebcompatEnabled(HostContentSettingsMap* map,
                         ContentSettingsType webcompat_settings_type,
                         const GURL& url);
 
-mojom::FarblingLevel GetFarblingLevel(HostContentSettingsMap* map,
-                                      const GURL& primary_url);
+content_settings::mojom::FarblingLevel GetFarblingLevel(
+    HostContentSettingsMap* map,
+    const GURL& primary_url,
+    ContentSettingsType webcompat_settings_type =
+        ContentSettingsType::BRAVE_WEBCOMPAT_NONE);
 
 bool IsDeveloperModeEnabled(PrefService* profile_state);
 

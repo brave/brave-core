@@ -57,6 +57,10 @@ class MockContentSettingsManagerImpl : public mojom::ContentSettingsManager {
       const blink::LocalFrameToken& frame_token,
       GetBraveShieldsSettingsCallback callback) override {}
 
+  void GetBraveFarblingLevel(const blink::LocalFrameToken& frame_token,
+                             int32_t webcompat_settings_type,
+                             GetBraveFarblingLevelCallback callback) override {}
+
   void OnContentBlocked(const blink::LocalFrameToken& frame_token,
                         ContentSettingsType type) override {
     ++log_->on_content_blocked_count;

@@ -386,7 +386,7 @@ bool BraveShieldsSettingsService::MakePseudoRandomGeneratorForURL(
     base::span<const uint8_t> additional_entropy,
     FarblingPRNG* prng) {
   if (brave_shields::GetFarblingLevel(&*host_content_settings_map_, url) ==
-      brave_shields::mojom::FarblingLevel::OFF) {
+      content_settings::mojom::FarblingLevel::OFF) {
     return false;
   }
   const base::Token farbling_token = GetFarblingToken(url, additional_entropy);

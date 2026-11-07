@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/debug/dump_without_crashing.h"
+#include "base/notreached.h"
 
 #include <content/public/browser/content_browser_client.cc>
 
@@ -31,6 +32,14 @@ ContentBrowserClient::WorkerGetBraveShieldSettings(
   // reached somehow, add dumps to see if it's true.
   base::debug::DumpWithoutCrashing();
   return brave_shields::mojom::ShieldsSettingsPtr();
+}
+
+int32_t ContentBrowserClient::WorkerGetBraveFarblingLevel(
+    const GURL& url,
+    BrowserContext* browser_context,
+    int32_t webcompat_settings_type) {
+  DUMP_WILL_BE_NOTREACHED();
+  return 0;
 }
 
 void ContentBrowserClient::CreateWebSocketWithFrameId(

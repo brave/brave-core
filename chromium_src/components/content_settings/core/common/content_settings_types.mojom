@@ -55,4 +55,6 @@ enum ContentSettingsType {
   BRAVE_CARDANO,
   BRAVE_PSST,
   BRAVE_POLKADOT,
+
+  BRAVE_FARBLING_LEVEL,
 };
