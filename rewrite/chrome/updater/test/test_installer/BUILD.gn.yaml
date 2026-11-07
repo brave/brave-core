@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      updater_tests does not build under Brave branding because the test MSI
+      installers it needs are missing. This substitution fixes the problem by
+      taking them from brave/test/data/updater instead.
+    regex:
+      re_pattern:
+        'checked_in_msi = "//chrome/updater/test/data/"
+        \+\s+updater_company_short_name \+ "MSI/" \+ relative_path'
+      replace: |-
+        checked_in_msi =
+                "//brave/test/data/updater/BraveSoftwareMSI/" + relative_path
