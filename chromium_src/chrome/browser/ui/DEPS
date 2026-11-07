@@ -3,6 +3,7 @@ inline_file("//chrome/browser/ui/DEPS", globals(), locals())
 
 include_rules += [
   "+brave/components/vector_icons",
+  "+brave/components/brave_recap/common",
   "+brave/components/commander/common",
   "+brave/components/constants",
   "+brave/components/containers/buildflags",
