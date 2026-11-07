@@ -88,10 +88,13 @@ if (enable_speedreader) {
 }
 
 if (enable_email_aliases) {
-  brave_ui_allow_circular_includes_from += [
-    "//brave/browser/ui/email_aliases",
-    "//brave/browser/ui/webui/email_aliases",
-  ]
+  brave_ui_allow_circular_includes_from +=
+      [ "//brave/browser/ui/webui/email_aliases" ]
+
+  if (!is_android) {
+    brave_ui_allow_circular_includes_from +=
+        [ "//brave/browser/ui/email_aliases" ]
+  }
 }
 
 if (enable_brave_wallet) {

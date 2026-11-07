@@ -10,6 +10,7 @@ namespace email_aliases {
 
 inline constexpr char kEmailAliasesSettingsURL[] =
     "brave://settings/email-aliases";
+inline constexpr char kEmailAliasesSettingsHost[] = "email-aliases";
 
 }  // namespace email_aliases
 

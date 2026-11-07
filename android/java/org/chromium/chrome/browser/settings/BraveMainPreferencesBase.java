@@ -124,6 +124,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
 
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
     private @Nullable BraveAccountSectionController mAccountController;
+    private @Nullable BraveEmailAliasesSectionController mEmailAliasesController;
     private @Nullable VpnCalloutPreference mVpnCalloutPreference;
     private boolean mNotificationClicked;
 
@@ -147,6 +148,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         CustomizeBraveMenu.propagateMenuItemExtras(findPreference(PREF_APPEARANCE), getArguments());
 
         mAccountController = BraveAccountSectionController.maybeCreate(this);
+        mEmailAliasesController = BraveEmailAliasesSectionController.maybeCreate(this);
 
         overrideChromiumPreferences();
         initRateBrave();
@@ -160,6 +162,10 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     @Override
     public void onResume() {
         super.onResume();
+
+        if (mEmailAliasesController != null) {
+            mEmailAliasesController.updateVisibility();
+        }
 
         // We need to organise the Brave preferences right away so all the theming is applied
         // correctly.
@@ -419,10 +425,15 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         if (ChromeFeatureList.isEnabled(ChromeFeatureList.YOUR_SAVED_INFO_SETTINGS_PAGE_ANDROID)) {
             setPreferenceOrder(
                     MainSettings.PREF_AUTOFILL_AND_PASSWORDS, ++passwordsAndAutofillSectionOrder);
+            // Email Aliases stays a separate row, right below Autofill and passwords.
+            passwordsAndAutofillSectionOrder =
+                    arrangeEmailAliasesPreference(passwordsAndAutofillSectionOrder);
         } else {
             setPreferenceOrder(
                     MainSettings.PREF_AUTOFILL_SECTION, ++passwordsAndAutofillSectionOrder);
             setPreferenceOrder(PREF_PASSWORDS, ++passwordsAndAutofillSectionOrder);
+            passwordsAndAutofillSectionOrder =
+                    arrangeEmailAliasesPreference(passwordsAndAutofillSectionOrder);
             setPreferenceOrder(
                     MainSettings.PREF_AUTOFILL_OPTIONS, ++passwordsAndAutofillSectionOrder);
             setPreferenceOrder(PREF_PAYMENT_METHODS, ++passwordsAndAutofillSectionOrder);
@@ -458,6 +469,22 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         removePreferenceIfPresent(MainSettings.PREF_APPEARANCE);
 
         resortPreferenceScreenChildren();
+    }
+
+    /**
+     * Places the Email Aliases row right after {@code previousOrder}, or removes it when Email
+     * Aliases is unavailable.
+     *
+     * @return The order of the last row placed.
+     */
+    private int arrangeEmailAliasesPreference(int previousOrder) {
+        if (mEmailAliasesController == null) {
+            removePreferenceIfPresent(BraveEmailAliasesSectionController.PREF_EMAIL_ALIASES);
+            return previousOrder;
+        }
+        setPreferenceOrder(
+                BraveEmailAliasesSectionController.PREF_EMAIL_ALIASES, ++previousOrder);
+        return previousOrder;
     }
 
     /** Whether any toolbar carries a home button, which the homepage setting applies to. */
@@ -507,6 +534,8 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
 
     private void updatePreferenceIcons() {
         updatePreferenceIcon(PREF_PASSWORDS, R.drawable.ic_key);
+        updatePreferenceIcon(
+                BraveEmailAliasesSectionController.PREF_EMAIL_ALIASES, R.drawable.ic_email_shield);
         updatePreferenceIcon(PREF_CONTENT_SETTINGS, R.drawable.ic_tune);
         updatePreferenceIcon(PREF_PAYMENT_METHODS, R.drawable.ic_credit_card);
         updatePreferenceIcon(PREF_DOWNLOADS, R.drawable.ic_download);
@@ -872,6 +901,10 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                     if (!BraveAccountFeatures.isBraveAccountEnabled()) {
                         indexData.removeEntry(
                                 getUniqueId(BraveAccountSectionController.PREF_BRAVE_ACCOUNT));
+                    }
+                    if (!BraveEmailAliasesSectionController.isEnabled(profile)) {
+                        indexData.removeEntry(
+                                getUniqueId(BraveEmailAliasesSectionController.PREF_EMAIL_ALIASES));
                     }
                     // Brave leaf switches/actions in main settings have no sub-screen to
                     // navigate to from search results, so exclude them from the index.
