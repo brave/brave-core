@@ -1,8 +1,8 @@
 diff --git a/chrome/updater/test/integration_tests_win.cc b/chrome/updater/test/integration_tests_win.cc
-index 41a7747b1aab36500225b8efe5fd6b9fafa88243..c8bb93c827bc1c009c4966b3d0b520b96e9f76fa 100644
+index 02bfda29e7e9c81babf6b498e2fd76e78ab6f57f..09645aa795ed8a1d6b013651dd6623064631591c 100644
 --- a/chrome/updater/test/integration_tests_win.cc
 +++ b/chrome/updater/test/integration_tests_win.cc
-@@ -1780,6 +1780,7 @@ void InvokeTestServiceFunction(const std::string& function_name,
+@@ -1782,6 +1782,7 @@ void InvokeTestServiceFunction(const std::string& function_name,
  
  std::vector<TestUpdaterVersion> GetRealUpdaterLowerVersions(
      const std::string& arch_suffix) {
@@ -10,7 +10,7 @@ index 41a7747b1aab36500225b8efe5fd6b9fafa88243..c8bb93c827bc1c009c4966b3d0b520b9
    std::vector<std::string> supported_archs;
  
  #if defined(ARCH_CPU_ARM64)
-@@ -2358,3 +2359,8 @@ void DeleteScheduledTask(const std::string& task_name,
+@@ -2360,3 +2361,8 @@ void DeleteScheduledTask(const std::string& task_name,
  }
  
  }  // namespace updater::test
