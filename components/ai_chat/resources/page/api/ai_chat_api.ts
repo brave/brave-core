@@ -42,6 +42,25 @@ export default function createAIChatApi(
   let conversationEntriesFrameObserver: Mojom.ParentUIFrameInterface
   let tabDataObserver: Mojom.TabDataObserverInterface
 
+  // Generation state events that arrive before the BindObserver snapshot. The
+  // snapshot comes on a different pipe, so it can be older than these events
+  // and they are replayed on top of it.
+  let pendingGenerationEvents:
+    | Array<[string, Mojom.ConversationGenerationState]>
+    | undefined = []
+
+  const applyGenerationState = (
+    states: Map<string, Mojom.ConversationGenerationState>,
+    uuid: string,
+    state: Mojom.ConversationGenerationState,
+  ) => {
+    if (state === Mojom.ConversationGenerationState.kIdle) {
+      states.delete(uuid)
+    } else {
+      states.set(uuid, state)
+    }
+  }
+
   // Define the API layout and what to do with the interface data:
   // - which functions should be exposed to the UI as subscribable with hooks
   // - which should be prefetched,
@@ -159,6 +178,10 @@ export default function createAIChatApi(
       isStandalone: state<boolean | undefined>(undefined),
 
       tabs: state<Mojom.TabData[]>([]),
+
+      conversationGenerationState: state<
+        Map<string, Mojom.ConversationGenerationState>
+      >(new Map()),
     },
 
     // actions are passed through to consumers as-is, no caching or result handling
@@ -183,7 +206,7 @@ export default function createAIChatApi(
       >,
     },
 
-    // Events are subscribable data and offers an easy hook to wrap the subscription
+    // Events are subscribable data and offer an easy hook to wrap the subscription
     events: {
       // Provide a partial implementation of a receiver,
       // and eventsFor will optionally generate events
@@ -193,6 +216,21 @@ export default function createAIChatApi(
         {
           onConversationListChanged: (conversations) => {
             api.getConversations.update(conversations)
+          },
+          onConversationGenerationStateChanged: (
+            uuid: string,
+            state: Mojom.ConversationGenerationState,
+          ) => {
+            pendingGenerationEvents?.push([uuid, state])
+            api.conversationGenerationState.update(
+              (
+                old: Map<string, Mojom.ConversationGenerationState> = new Map(),
+              ) => {
+                const next = new Map(old)
+                applyGenerationState(next, uuid, state)
+                return next
+              },
+            )
           },
           onStateChanged: (state) => {
             api.state.update(state)
@@ -266,6 +304,19 @@ export default function createAIChatApi(
     chatUIObserver: chatUIObserver!,
     conversationEntriesFrameObserver: conversationEntriesFrameObserver!,
     tabDataObserver: tabDataObserver!,
+
+    // Applies the generation states returned from BindObserver, then replays
+    // any events received before it.
+    setInitialGenerationStates: (snapshot: {
+      [uuid: string]: Mojom.ConversationGenerationState
+    }) => {
+      const states = new Map(Object.entries(snapshot))
+      for (const [uuid, state] of pendingGenerationEvents ?? []) {
+        applyGenerationState(states, uuid, state)
+      }
+      pendingGenerationEvents = undefined
+      api.conversationGenerationState.update(states)
+    },
 
     close: () => {
       api.close()

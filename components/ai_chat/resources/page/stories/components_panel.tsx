@@ -362,6 +362,8 @@ type CustomArgs = {
   inputText: Content
   editingConversationId: string | null
   deletingConversationId: string | null
+  generatingConversationId: string | null
+  completedNotViewedConversationId: string | null
   conversationListCount: number
   hasSuggestedQuestions: boolean
   hasAssociatedContent: boolean
@@ -417,6 +419,8 @@ const args: CustomArgs = {
   hasAttachedTools: false,
   editingConversationId: null,
   deletingConversationId: null,
+  generatingConversationId: null,
+  completedNotViewedConversationId: null,
   isFeedbackFormVisible: false,
   isStorageNoticeDismissed: false,
   canShowPremiumPrompt: false,
@@ -457,6 +461,11 @@ const args: CustomArgs = {
   selectedSkill: undefined,
 }
 
+const CONVERSATION_ID_CONTROL = {
+  options: CONVERSATIONS.map((conversation) => conversation.uuid),
+  control: { type: 'select' as const },
+}
+
 const meta: Meta<CustomArgs> = {
   title: 'AI Chat/Conversation',
   parameters: {
@@ -491,10 +500,9 @@ const meta: Meta<CustomArgs> = {
     conversationListCount: {
       control: { type: 'number' },
     },
-    deletingConversationId: {
-      options: CONVERSATIONS.map((conversation) => conversation.uuid),
-      control: { type: 'select' },
-    },
+    deletingConversationId: CONVERSATION_ID_CONTROL,
+    generatingConversationId: CONVERSATION_ID_CONTROL,
+    completedNotViewedConversationId: CONVERSATION_ID_CONTROL,
     ratingTurnUuid: {
       options: [{ isLiked: true, turnUuid: 'turn-uuid' }],
       control: { type: 'select' },
@@ -565,6 +573,23 @@ async function getConversationContent(
   }
 
   return []
+}
+
+function getGenerationStateMap(args: CustomArgs) {
+  const states = new Map<string, Mojom.ConversationGenerationState>()
+  if (args.generatingConversationId) {
+    states.set(
+      args.generatingConversationId,
+      Mojom.ConversationGenerationState.kGenerating,
+    )
+  }
+  if (args.completedNotViewedConversationId) {
+    states.set(
+      args.completedNotViewedConversationId,
+      Mojom.ConversationGenerationState.kCompletedNotViewed,
+    )
+  }
+  return states
 }
 
 function StoryContext(
@@ -650,6 +675,7 @@ function StoryContext(
       initialState={React.useMemo(
         () => ({
           tabs: SAMPLE_TABS,
+          conversationGenerationState: getGenerationStateMap(args),
           isStandalone: args.isStandalone,
           serviceState: {
             hasAcceptedAgreement: args.hasAcceptedAgreement,
@@ -868,6 +894,15 @@ export const _FullPage = {
         <FullPage />
       </div>
     )
+  },
+}
+
+export const _FullPageWithGenerationStatus = {
+  ..._FullPage,
+  args: {
+    ..._FullPage.args,
+    generatingConversationId: CONVERSATIONS[0].uuid,
+    completedNotViewedConversationId: CONVERSATIONS[2].uuid,
   },
 }
 

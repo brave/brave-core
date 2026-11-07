@@ -28,8 +28,9 @@ export default function bindWebUiServices() {
   )
   serviceRemote
     .bindObserver(serviceObserverReceiver.$.bindNewPipeAndPassRemote())
-    .then(({ state }) => {
+    .then(({ state, generationStates }) => {
       aiChat.api.state.update(state)
+      aiChat.setInitialGenerationStates(generationStates)
     })
 
   const chatUIReceiver = new Mojom.ChatUIReceiver(aiChat.chatUIObserver)
