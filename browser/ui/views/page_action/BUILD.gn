@@ -10,6 +10,7 @@ import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
+import("//build/config/features.gni")
 
 source_set("page_action") {
   # TODO(https://github.com/brave/brave-browser/issues/52829)
@@ -238,6 +239,12 @@ source_set("unit_tests") {
       "//ui/base",
       "//ui/menus",
     ]
+
+    # For `dbus_thread_linux::Shutdown()` in psst_action_controller_unittest.cc.
+    deps += [ "//build/config/linux/dbus:buildflags" ]
+    if (is_linux && use_dbus) {
+      deps += [ "//components/dbus" ]
+    }
   }
 
   if (enable_brave_wayback_machine) {

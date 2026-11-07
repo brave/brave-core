@@ -14,6 +14,8 @@
 #include "brave/browser/ui/views/page_action/page_action_test_observer.h"
 #include "brave/components/psst/core/common/features.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "build/build_config.h"
+#include "build/config/linux/dbus/buildflags.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "chrome/browser/ui/page_action/page_action_controller.h"
 #include "chrome/browser/ui/page_action/page_action_icon_type.h"
@@ -29,6 +31,10 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/events/event_constants.h"
 #include "ui/menus/simple_menu_model.h"
+
+#if BUILDFLAG(IS_LINUX) && BUILDFLAG(USE_DBUS)
+#include "components/dbus/thread_linux/dbus_thread_linux.h"
+#endif
 
 namespace page_actions {
 
@@ -102,6 +108,15 @@ class PsstActionControllerTest : public testing::Test {
     page_action_controller_.reset();
     tab_interface_.reset();
     pinned_actions_model_.reset();
+
+#if BUILDFLAG(IS_LINUX) && BUILDFLAG(USE_DBUS)
+    // The shared D-Bus thread is a plain base::Thread that `task_environment_`
+    // does not track, so a reply to a D-Bus call made during the test can be
+    // posted to the main thread after the final RunUntilIdle() in
+    // ~BrowserTaskEnvironment(), failing its CHECK(MainThreadIsIdle()). Stop
+    // the thread here, as content::RenderViewHostTestHarness::TearDown() does.
+    dbus_thread_linux::Shutdown();
+#endif  // BUILDFLAG(IS_LINUX) && BUILDFLAG(USE_DBUS)
   }
 
   PsstActionController* controller() { return controller_.get(); }
