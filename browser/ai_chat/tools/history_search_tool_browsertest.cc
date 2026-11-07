@@ -102,7 +102,8 @@ class HistorySearchToolBrowserTest
       const std::string& tool_id,
       base::Location location = base::Location::Current()) {
     SCOPED_TRACE(location.ToString());
-    ASSERT_TRUE(base::test::RunUntil([this]() {
+    std::optional<std::string> implications;
+    ASSERT_TRUE(base::test::RunUntil([this, &implications]() {
       for (const auto& turn : conversation_handler_->GetConversationHistory()) {
         if (!turn->events.has_value()) {
           continue;
@@ -110,12 +111,16 @@ class HistorySearchToolBrowserTest
         for (const auto& event : *turn->events) {
           if (event->is_tool_use_event() &&
               event->get_tool_use_event()->permission_challenge) {
+            implications =
+                event->get_tool_use_event()->permission_challenge->implications;
             return true;
           }
         }
       }
       return false;
     }));
+    EXPECT_THAT(implications, testing::Optional(testing::HasSubstr(
+                                  "The search runs locally on your device")));
     conversation_handler_->ProcessPermissionChallenge(
         tool_id, mojom::PermissionChallengeDecision::kAllowOnce);
   }
