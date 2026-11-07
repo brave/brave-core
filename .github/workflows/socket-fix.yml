@@ -87,6 +87,9 @@ jobs:
           git config gpg.program /usr/local/bin/gpg-sign
           git config commit.gpgsign true
 
+      - name: Install yarn
+        run: npm install -g yarn
+
       - name: Run Socket Fix
         env:
           GHSA_IDS: ${{ inputs.ghsa_ids }}
@@ -171,3 +174,35 @@ jobs:
               --title 'fix: address security advisories' --body "$PR_BODY" \
               --label "CI/skip" --label "security"
           fi
+
+      - name: Merge WDP-only bump
+        if: inputs.wdp_ref != ''
+        env:
+          GH_TOKEN: ${{ secrets.BRAVE_WORKFLOWS_AUTHOR_PR_PAT }}
+          PR_BRANCH: ${{ steps.branch.outputs.name }}
+        run: |
+          set -euo pipefail
+
+          # Bypass merges are reserved for WDP-only DEPS bumps: any other
+          # change in the PR still requires @brave/deps-reviewers review via
+          # CODEOWNERS. Re-dispatching this workflow later re-runs this step
+          # once a reviewer has approved.
+          PR_NUMBER=$(gh pr view "$PR_BRANCH" --json number --jq .number)
+          CHANGED=$(gh pr diff "$PR_NUMBER" | grep -E '^[+-][^+-]' || true)
+          NON_WDP=$(printf '%s' "$CHANGED" | grep -vE '^[+-][[:space:]]*"vendor/web-discovery-project"' || true)
+          if [[ -n "$NON_WDP" ]]; then
+            echo "PR contains non-WDP changes — leaving for normal review."
+            exit 0
+          fi
+
+          APPROVERS=$(gh api "repos/brave/brave-core/pulls/$PR_NUMBER/reviews" --paginate \
+            --jq '[.[] | {u: .user.login, s: .state}] | group_by(.u) | map(last) | map(select(.s == "APPROVED") | .u) | unique | sort')
+          MEMBERS=$(gh api 'orgs/brave/teams/js-deps-reviewers/members?per_page=100' --jq '.[].login' | sort)
+          OK=$(comm -12 <(printf '%s' "$APPROVERS") <(printf '%s' "$MEMBERS") | head -1)
+          if [[ -z "$OK" ]]; then
+            echo "No approval from @brave/js-deps-reviewers yet — PR left open."
+            exit 0
+          fi
+
+          echo "Approved by $OK (@brave/js-deps-reviewers) — merging."
+          gh pr merge "$PR_NUMBER" --squash --auto
