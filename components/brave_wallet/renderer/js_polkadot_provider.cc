@@ -58,7 +58,7 @@ JSPolkadotProvider::~JSPolkadotProvider() = default;
 gin::ObjectTemplateBuilder JSPolkadotProvider::GetObjectTemplateBuilder(
     v8::Isolate* isolate) {
   return gin::Wrappable<JSPolkadotProvider>::GetObjectTemplateBuilder(isolate)
-      .SetProperty("version", &JSPolkadotProvider::GetVersion);
+      .SetProperty<&JSPolkadotProvider::GetVersion>("version");
 }
 
 const gin::WrapperInfo* JSPolkadotProvider::wrapper_info() const {

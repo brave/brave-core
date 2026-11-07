@@ -108,8 +108,6 @@ class BraveBrowserView : public BrowserView,
   static bool ShouldUseBraveWebViewRoundedCornersForContents(
       const BrowserWindowInterface* browser);
 
-  void ShowUpdateChromeDialog() override;
-
   // Returns the bounding rectangle, in screen coordinates, used to detect
   // mouse-over events that control sidebar visibility. The bounds of a
   // specific view are used here so that sidebar show/hide behavior is
@@ -146,7 +144,6 @@ class BraveBrowserView : public BrowserView,
   bool AcceleratorPressed(const ui::Accelerator& accelerator) override;
   bool IsInTabDragging() const override;
   void ReadyToListenFullscreenChanges() override;
-  bool IsWebPanelContents(content::WebContents* contents) override;
   ClientFrameElementInfo GetFrameElementInfo() const override;
 
   void OnImmersiveFullscreenExited() override;

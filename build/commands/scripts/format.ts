@@ -12,6 +12,7 @@ import { spawnSync, type SpawnSyncReturns } from 'node:child_process'
 // eslint-disable-next-line import/default
 import prettier from 'prettier'
 
+import * as buildOptions from '../lib/buildOptions.ts'
 import config from '../lib/config.ts'
 import util from '../lib/util.ts'
 import * as Log from '../lib/log.ts'
@@ -46,7 +47,26 @@ program
     'format all files, not just the changed files.'
       + 'Only for prettier and mojom formatters.',
   )
+  .argument(
+    '[paths...]',
+    'only format the changes in these files or directories',
+  )
+  .apply(buildOptions.supportQuiet)
   .action(runFormat)
+
+// The paths relative to brave-core. pnpm runs scripts from the package root,
+// and records where it was started in INIT_CWD.
+const toBraveCorePaths = (paths: string[]) => {
+  const cwd = process.env.INIT_CWD ?? process.cwd()
+  return paths.map((p) => {
+    const relative = path.relative(config.braveCoreDir, path.resolve(cwd, p))
+    if (relative.startsWith('..') || path.isAbsolute(relative)) {
+      Log.error(`Fatal: ${p} is outside brave-core`)
+      process.exit(1)
+    }
+    return relative.split(path.sep).join('/') || '.'
+  })
+}
 
 // Replace the first 4 lines of the diff output with the before/after
 // format header.
@@ -80,17 +100,21 @@ const formatOutput = (result: SpawnSyncReturns<string | NonSharedBuffer>) => {
 
 // A function that formats the code in the current diff with base branch.
 // It uses git cl format and prettier, then aggregates the results.
-async function runFormat(options: {
-  base?: string
-  full?: boolean
-  presubmit?: boolean
-  dryRun?: boolean
-  onlyPrettier?: boolean
-  allFiles?: boolean
-}) {
+async function runFormat(
+  rawPaths: string[],
+  options: {
+    base?: string
+    full?: boolean
+    presubmit?: boolean
+    dryRun?: boolean
+    onlyPrettier?: boolean
+    allFiles?: boolean
+  },
+) {
   if (!options.base) {
     options.base = 'origin/master'
   }
+  const paths = toBraveCorePaths(rawPaths)
   const skipLogging = options.presubmit
 
   let cmdOptions = config.defaultOptions
@@ -124,7 +148,7 @@ async function runFormat(options: {
   const shouldRunMojomFormat = !options.onlyPrettier
 
   if (shouldRunGitClFormat) {
-    const clFormatResult = util.run('git', [...args], {
+    const clFormatResult = util.run('git', [...args, ...paths], {
       ...cmdOptions,
       continueOnFail: true,
       skipLogging,
@@ -149,7 +173,12 @@ async function runFormat(options: {
 
   const filesToFormat = options.allFiles
     ? getAllFiles()
-    : util.getChangedFiles(config.braveCoreDir, options.base, skipLogging)
+    : util.getChangedFiles(
+        config.braveCoreDir,
+        options.base,
+        skipLogging,
+        paths,
+      )
 
   if (shouldRunPrettier) {
     formatIssues.push(
@@ -223,7 +252,7 @@ const runPrettier = async (
   files: string[],
   dryRun: boolean,
 ): Promise<string[]> => {
-  console.log('run prettier for', files.length, 'files')
+  Log.detail(`run prettier for ${files.length} files`)
   const ignorePath = path.join(config.braveCoreDir, '.prettierignore')
   if (!fs.existsSync(ignorePath)) {
     throw new Error(`${ignorePath} file not found`)

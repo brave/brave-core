@@ -127,10 +127,18 @@ void SidebarController::TearDownPreBrowserWindowDestruction() {
   sidebar_ = nullptr;
 }
 
-void SidebarController::CloseWebPanel() {
+void SidebarController::CloseWebPanelForShutdown() {
   if (web_panel_controller_) {
-    web_panel_controller_->CloseWebPanel();
+    web_panel_controller_->CloseWebPanelForShutdown();
   }
+}
+
+bool SidebarController::IsWebPanelTab(
+    const content::WebContents* contents) const {
+  // Deliberately not GetWebPanelController(), which would lazily create a
+  // controller for a window that never opened a panel.
+  return web_panel_controller_ &&
+         web_panel_controller_->panel_contents() == contents;
 }
 
 void SidebarController::OnItemPressed(size_t index,
@@ -168,8 +176,8 @@ void SidebarController::OnItemPressed(size_t index,
     return;
   }
 
-  if (disposition != WindowOpenDisposition::CURRENT_TAB) {
-    DCHECK_NE(WindowOpenDisposition::UNKNOWN, disposition);
+  if (disposition != WindowOpenDisposition::kCurrentTab) {
+    DCHECK_NE(WindowOpenDisposition::kUnknown, disposition);
     NavigateParams params(profile_, item.url,
                           ui::PAGE_TRANSITION_AUTO_BOOKMARK);
     params.disposition = disposition;
@@ -237,7 +245,7 @@ void SidebarController::IterateOrLoadAtActiveTab(const GURL& url) {
 
     // Load at current active tab if there is no tab that loaded |url|.
     auto params = GetSingletonTabNavigateParams(browser_, url);
-    params.disposition = WindowOpenDisposition::CURRENT_TAB;
+    params.disposition = WindowOpenDisposition::kCurrentTab;
     Navigate(&params);
     return;
   }
@@ -261,7 +269,7 @@ void SidebarController::LoadAtTab(const GURL& url) {
     tab_strip_model_->ActivateTabAt(tab_index);
   } else {
     // Load on current tab.
-    params.disposition = WindowOpenDisposition::CURRENT_TAB;
+    params.disposition = WindowOpenDisposition::kCurrentTab;
     Navigate(&params);
   }
 }

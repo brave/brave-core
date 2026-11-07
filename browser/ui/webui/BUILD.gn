@@ -7,6 +7,7 @@ import("//brave/browser/updater/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/ui/webui/custom_profile_image/buildflags/buildflags.gni")
+import("//ui/webui/webui_features.gni")
 
 source_set("favicon_source_chromium_impl") {
   sources = [ "favicon_source.cc" ]
@@ -59,6 +60,16 @@ source_set("browser_tests") {
     }
   }
 
+  if (enable_webui_history) {
+    sources += [ "history/brave_history_sync_promo_browsertest.cc" ]
+    deps += [
+      "//base/test:test_support",
+      "//chrome/browser/ui/tabs:tab_strip",
+      "//chrome/common:constants",
+      "//components/sync/base",
+    ]
+  }
+
   if (enable_brave_custom_profile_image_webui) {
     deps += [ "//brave/browser/ui/webui/signin:browser_tests" ]
   }
@@ -69,6 +80,7 @@ source_set("unit_tests") {
 
   sources = [
     "brave_sanitized_image_source_unittest.cc",
+    "brave_theme_source_unittest.cc",
     "untrusted_sanitized_image_source_unittest.cc",
   ]
   deps = [
@@ -76,7 +88,10 @@ source_set("unit_tests") {
     "//base/test:test_support",
     "//brave/browser/ui",
     "//brave/components/brave_wallet/common/buildflags",
+    "//chrome/browser/themes",
+    "//chrome/browser/ui/webui:theme_source",
     "//chrome/test:test_support",
+    "//chrome/test/base:testing_browser_process",
     "//content/test:test_support",
     "//services/data_decoder/public/cpp:test_support",
     "//services/network:test_support",

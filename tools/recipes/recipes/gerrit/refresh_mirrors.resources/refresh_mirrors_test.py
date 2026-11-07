@@ -12,6 +12,7 @@ pushes are real git operations against the filesystem rather than network calls.
 """
 
 import contextlib
+import os
 import shutil
 import subprocess
 import tempfile
@@ -23,10 +24,25 @@ import refresh_mirrors
 from refresh_mirrors import Repo, discover_cache_repos, project_name_for
 
 
+def _git_env() -> dict[str, str]:
+    """Isolates git from the user's config, e.g. `tag.gpgsign` opening an
+    editor that hangs the test."""
+    return {
+        **os.environ,
+        'GIT_CONFIG_GLOBAL': os.devnull,
+        'GIT_CONFIG_NOSYSTEM': '1',
+    }
+
+
 def _git(*cmd: str, cwd: Path) -> str:
     """Run a git command and return stripped stdout, raising on failure."""
     return subprocess.run(
-        ['git', *cmd], cwd=cwd, capture_output=True, text=True, check=True
+        ['git', *cmd],
+        cwd=cwd,
+        capture_output=True,
+        text=True,
+        check=True,
+        env=_git_env(),
     ).stdout.strip()
 
 
@@ -38,7 +54,10 @@ def _make_cache_repo(path: Path, upstream_url: str) -> tuple[str, str]:
     """
     work = path.parent / f'{path.name}.work'
     subprocess.run(
-        ['git', 'init', '-q', str(work)], check=True, capture_output=True
+        ['git', 'init', '-q', str(work)],
+        check=True,
+        capture_output=True,
+        env=_git_env(),
     )
     _git('config', 'user.email', 'test@example.com', cwd=work)
     _git('config', 'user.name', 'Test', cwd=work)
@@ -52,6 +71,7 @@ def _make_cache_repo(path: Path, upstream_url: str) -> tuple[str, str]:
         ['git', 'clone', '-q', '--bare', str(work), str(path)],
         check=True,
         capture_output=True,
+        env=_git_env(),
     )
     _git('config', 'remote.origin.url', upstream_url, cwd=path)
     return branch, head
@@ -69,6 +89,7 @@ def _add_commits(bare_repo: Path, count: int) -> None:
             ['git', 'clone', '-q', str(bare_repo), str(work)],
             check=True,
             capture_output=True,
+            env=_git_env(),
         )
         _git('config', 'user.email', 'test@example.com', cwd=work)
         _git('config', 'user.name', 'Test', cwd=work)
@@ -110,6 +131,7 @@ def _make_shallow_clone(path: Path, source: Path, upstream_url: str) -> None:
         ],
         check=True,
         capture_output=True,
+        env=_git_env(),
     )
     _git('config', 'remote.origin.url', upstream_url, cwd=path)
     _git('config', f'url.{source}.insteadOf', upstream_url, cwd=path)
@@ -139,6 +161,7 @@ class FakeGerrit:
             ['git', 'init', '-q', '--bare', str(path)],
             check=True,
             capture_output=True,
+            env=_git_env(),
         )
         # A real Gerrit advertises push options; enable it so pushes carrying
         # `-o skip-validation` are accepted instead of rejected outright.
@@ -285,7 +308,10 @@ class TestRefreshRepo(unittest.TestCase):
         # Rewrite the cache branch to an unrelated commit (non-fast-forward).
         work = self.tmp / 'rewrite'
         subprocess.run(
-            ['git', 'init', '-q', str(work)], check=True, capture_output=True
+            ['git', 'init', '-q', str(work)],
+            check=True,
+            capture_output=True,
+            env=_git_env(),
         )
         _git('config', 'user.email', 'test@example.com', cwd=work)
         _git('config', 'user.name', 'Test', cwd=work)
@@ -379,6 +405,7 @@ class TestRefreshRepo(unittest.TestCase):
             ['git', 'init', '-q', '--bare', str(empty)],
             check=True,
             capture_output=True,
+            env=_git_env(),
         )
         _git(
             'config',
@@ -612,6 +639,7 @@ class TestPushNewTags(unittest.TestCase):
             ['git', 'init', '-q', '--bare', str(self.server)],
             check=True,
             capture_output=True,
+            env=_git_env(),
         )
         _git('config', 'receive.advertisePushOptions', 'true', cwd=self.server)
         # Server: `same` at the same object, `changed` at a different one.

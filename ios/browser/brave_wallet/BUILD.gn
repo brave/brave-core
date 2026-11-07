@@ -33,7 +33,6 @@ source_set("brave_wallet") {
   deps = [
     ":cardano_provider_js",
     ":ethereum_provider_js",
-    "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:constants",
     "//brave/components/brave_wallet/browser:pref_names",
     "//brave/components/brave_wallet/common",
@@ -60,6 +59,7 @@ source_set("brave_wallet") {
   ]
   public_deps = [
     "//base",
+    "//brave/components/brave_wallet/browser",
     "//brave/ios/web/js_messaging:message_handler_token",
     "//components/prefs",
     "//ios/web/public/js_messaging",

@@ -439,7 +439,6 @@ class FakeChromiumRepo:
                     '--ignore-submodules',
                     '--diff-filter=M',
                     '--name-only',
-                    '--ignore-space-at-eol',
                 ],
                 repo_path,
             ).splitlines()
@@ -471,7 +470,6 @@ class FakeChromiumRepo:
                         '--dst-prefix=b/',
                         '--default-prefix',
                         '--full-index',
-                        '--ignore-space-at-eol',
                         filename,
                     ],
                     stdout=subprocess.PIPE,

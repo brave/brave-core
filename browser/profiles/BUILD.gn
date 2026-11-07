@@ -25,6 +25,12 @@ source_set("util") {
   ]
 }
 
+source_set("chromium_impl") {
+  visibility = [ "//brave/browser:core" ]
+  sources = [ "profile_avatar_icon_util.cc" ]
+  deps = [ "//brave/app/vector_icons" ]
+}
+
 source_set("unit_tests") {
   testonly = true
   sources = [ "//brave/browser/profiles/profile_attributes_entry_unittest.cc" ]

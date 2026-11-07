@@ -268,7 +268,7 @@ bool CoseSign1::IsSignatureAlgorithmAcceptable(
   return true;
 }
 
-bool CoseSign1::IsPublicKeyAcceptable(EVP_PKEY* public_key,
+bool CoseSign1::IsPublicKeyAcceptable(const EVP_PKEY* public_key,
                                       bssl::CertErrors* errors) {
   return true;
 }

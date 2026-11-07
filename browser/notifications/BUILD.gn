@@ -33,7 +33,6 @@ static_library("notifications") {
     deps += [
       "//brave/android:brave_android_java_enums_srcjar",
       "//chrome/browser:browser_process",
-      "//chrome/browser:browser_public_dependencies",
     ]
   }
 }

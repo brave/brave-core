@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/color/chrome_color_mixer.cc b/chrome/browser/ui/color/chrome_color_mixer.cc
-index 91571ae7850cd14c0e0af19ce2ff432783695bfe..e06b602f3ab4ee9023fdacf67283a8659e5a4c43 100644
+index ebcd9911e0223c514395df98b29a32fb91de0f33..a0e50e19c8cf83310043b841019a96799a2a96d4 100644
 --- a/chrome/browser/ui/color/chrome_color_mixer.cc
 +++ b/chrome/browser/ui/color/chrome_color_mixer.cc
 @@ -204,6 +204,7 @@ TabGroupColorParams CreateColorParams(
@@ -10,7 +10,7 @@ index 91571ae7850cd14c0e0af19ce2ff432783695bfe..e06b602f3ab4ee9023fdacf67283a865
    const bool dark_mode =
        key.color_mode == ui::ColorProviderKey::ColorMode::kDark;
    ui::ColorMixer& mixer = provider->AddMixer();
-@@ -1219,4 +1220,6 @@ void AddChromeColorMixer(ui::ColorProvider* provider,
+@@ -1244,4 +1245,6 @@ void AddChromeColorMixer(ui::ColorProvider* provider,
                                                             : SK_ColorLTGRAY};
    mixer[ui::kColorFrameActive] = {SK_ColorDKGRAY};
    mixer[ui::kColorFrameInactive] = {SK_ColorGRAY};

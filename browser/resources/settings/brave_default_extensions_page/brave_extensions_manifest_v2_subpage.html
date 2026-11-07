@@ -58,7 +58,7 @@
     <settings-toggle-button id="[[item.id]]" class="cr-row"
       label="[[item.name]]" sub-label="[[item.description]]" learn-more-url="[[item.sources]]"
       on-settings-boolean-control-change="onExtensionV2EnabledChange_" checked="[[item.enabled]]"
-      pref="[[itemPref_(item.enabled)]]" no-pref-set disabled="[[installInProgress_]]">
+      disabled="[[installInProgress_]]">
       <template is="dom-if" if="[[showRemoveButton_(item)]]" restamp>
         <cr-button on-click="removeExtension_" id="[[item.id]]" slot="more-actions">
           $i18n{extensionsV2RemoveButtonLabel}

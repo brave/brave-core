@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/side_panel/BUILD.gn b/chrome/browser/ui/views/side_panel/BUILD.gn
-index 26996525e7b014fd91da6fb7073201af1f0c2020..80680eff2439dc6bea1674c2de6125d242a5fda5 100644
+index 3b9d6f58cc2006c38da5cbe61594d9ef8d0b7ad3..b876d171982b54abcac1b70a9fe7e2e6bade3ae6 100644
 --- a/chrome/browser/ui/views/side_panel/BUILD.gn
 +++ b/chrome/browser/ui/views/side_panel/BUILD.gn
 @@ -2,6 +2,8 @@
@@ -11,7 +11,7 @@ index 26996525e7b014fd91da6fb7073201af1f0c2020..80680eff2439dc6bea1674c2de6125d2
  assert(is_win || is_mac || is_linux || is_chromeos)
  
  import("//chrome/common/features.gni")
-@@ -88,6 +90,7 @@ source_set("side_panel") {
+@@ -91,6 +93,7 @@ source_set("side_panel") {
      "//ui/webui/resources/cr_components/history_embeddings:mojo_bindings",
      "//url",
    ]
@@ -19,7 +19,7 @@ index 26996525e7b014fd91da6fb7073201af1f0c2020..80680eff2439dc6bea1674c2de6125d2
    deps = [
      "//base:i18n",
      "//chrome/app:generated_resources",
-@@ -173,6 +176,7 @@ source_set("side_panel") {
+@@ -176,6 +179,7 @@ source_set("side_panel") {
      "//ui/gfx/geometry:geometry_skia",
      "//ui/webui",
    ]

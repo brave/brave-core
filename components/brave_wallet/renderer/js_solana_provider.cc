@@ -178,23 +178,23 @@ gin::ObjectTemplateBuilder JSSolanaProvider::GetObjectTemplateBuilder(
   // Note: When adding a new method, you would need to update the list in
   // kSolanaProxyHandlerScript too otherwise the function call would fail.
   return gin::Wrappable<JSSolanaProvider>::GetObjectTemplateBuilder(isolate)
-      .SetProperty("isPhantom", &JSSolanaProvider::GetIsPhantom)
-      .SetProperty("isBraveWallet", &JSSolanaProvider::GetIsBraveWallet)
-      .SetProperty("isConnected", &JSSolanaProvider::GetIsConnected)
-      .SetProperty("publicKey", &JSSolanaProvider::GetPublicKey)
-      .SetMethod("connect", &JSSolanaProvider::Connect)
-      .SetMethod("disconnect", &JSSolanaProvider::Disconnect)
-      .SetMethod("signAndSendTransaction",
-                 &JSSolanaProvider::SignAndSendTransaction)
-      .SetMethod("signMessage", &JSSolanaProvider::SignMessage)
-      .SetMethod("request", &JSSolanaProvider::Request)
+      .SetProperty<&JSSolanaProvider::GetIsPhantom>("isPhantom")
+      .SetProperty<&JSSolanaProvider::GetIsBraveWallet>("isBraveWallet")
+      .SetProperty<&JSSolanaProvider::GetIsConnected>("isConnected")
+      .SetProperty<&JSSolanaProvider::GetPublicKey>("publicKey")
+      .SetMethod<&JSSolanaProvider::Connect>("connect")
+      .SetMethod<&JSSolanaProvider::Disconnect>("disconnect")
+      .SetMethod<&JSSolanaProvider::SignAndSendTransaction>(
+          "signAndSendTransaction")
+      .SetMethod<&JSSolanaProvider::SignMessage>("signMessage")
+      .SetMethod<&JSSolanaProvider::Request>("request")
       // Deprecated
-      .SetMethod("signTransaction", &JSSolanaProvider::SignTransaction)
+      .SetMethod<&JSSolanaProvider::SignTransaction>("signTransaction")
       // Deprecated
-      .SetMethod("signAllTransactions", &JSSolanaProvider::SignAllTransactions)
+      .SetMethod<&JSSolanaProvider::SignAllTransactions>("signAllTransactions")
       // Internal function used to load and initialize wallet-standard natively.
       // It only function once and further calls do nothing.
-      .SetMethod("walletStandardInit", &JSSolanaProvider::WalletStandardInit);
+      .SetMethod<&JSSolanaProvider::WalletStandardInit>("walletStandardInit");
 }
 
 const gin::WrapperInfo* JSSolanaProvider::wrapper_info() const {

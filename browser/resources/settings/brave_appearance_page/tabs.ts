@@ -8,7 +8,7 @@ import '../settings_vars.css.js'
 
 import {PrefServiceObserverMixin, PrefServiceObserverMixinInterface} from '/shared/settings/prefs2/pref_service_observer_mixin.js';
 import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
-import {WebUiListenerMixin, WebUiListenerMixinInterface} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
+import {WebUiListenerMixin, WebUiListenerMixinInterface} from '/shared/settings/web_ui_listener_mixin.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import {OpenWindowProxyImpl} from 'chrome://resources/js/open_window_proxy.js';
 import {sendWithPromise} from 'chrome://resources/js/cr.js'

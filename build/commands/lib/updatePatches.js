@@ -5,6 +5,7 @@
 
 import path from 'node:path'
 import fs from 'fs-extra'
+import * as Log from './log.ts'
 import rootDir from './rootDir.cjs'
 import util from './util.ts'
 
@@ -36,7 +37,6 @@ async function getModifiedPaths(gitRepoPath, filter, onlyFiles) {
     '--ignore-submodules',
     '--diff-filter=M',
     '--numstat',
-    '--ignore-space-at-eol',
   ]
   const cmdOutput = await util.runAsync('git', modifiedDiffArgs, {
     cwd: gitRepoPath,
@@ -137,7 +137,8 @@ async function writePatchFiles(
       '--dst-prefix=b/',
       '--default-prefix',
       '--full-index',
-      '--ignore-space-at-eol',
+      // No `--ignore-space-at-eol`, as in plaster: it hides a newline added at
+      // the end of a file, which `git apply` then glues onto the last line.
       old,
     ]
     // Cancelling global git settings to make sure we get reproducible output
@@ -176,7 +177,7 @@ async function writePatchFiles(
 
     writeOpsDoneCount++
     const logRepoName = path.basename(gitRepoPath)
-    console.log(
+    Log.detail(
       `updatePatches [${logRepoName}] wrote ${writeOpsDoneCount} / ${writeTotal}: ${patchFilename}`,
     )
   })
@@ -226,7 +227,7 @@ async function removeStalePatchFiles(
     const fullPath = path.join(patchDirPath, filename)
     fs.removeSync(fullPath)
     removedProgress++
-    console.log(
+    Log.detail(
       `updatePatches *REMOVED* ${removedProgress}/${toRemoveFilenames.length}: ${filename}`,
     )
   }

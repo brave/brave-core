@@ -185,7 +185,7 @@ void WelcomeDOMHandler::HandleOpenSettingsPage(const base::ListValue& args) {
   if (browser) {
     content::OpenURLParams open_params(
         GURL("brave://settings/privacy"), content::Referrer(),
-        WindowOpenDisposition::NEW_BACKGROUND_TAB,
+        WindowOpenDisposition::kNewBackgroundTab,
         ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false);
     browser->OpenURL(open_params, /*navigation_handle_callback=*/{});
   }

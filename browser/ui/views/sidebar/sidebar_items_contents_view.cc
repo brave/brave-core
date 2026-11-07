@@ -534,7 +534,7 @@ void SidebarItemsContentsView::OnItemPressed(const views::View* item,
   auto index = GetIndexOf(item);
   CHECK(index);
 
-  auto open_disposition = WindowOpenDisposition::CURRENT_TAB;
+  auto open_disposition = WindowOpenDisposition::kCurrentTab;
   if (event_utils::IsPossibleDispositionEvent(event)) {
     open_disposition = ui::DispositionFromEventFlags(event.flags());
   }

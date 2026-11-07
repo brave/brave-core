@@ -24,6 +24,10 @@ class TabFeatures {
   enterprise_data_protection::DataProtectionNavigationController*
   data_protection_controller();
 
+  tasks::TaskTabHelper* task_tab_helper();
+
+  SupervisedUserNavigationObserver* supervised_user_navigation_observer();
+
  private:
   friend BraveTabFeatures;
   std::unique_ptr<BraveTabFeatures> brave_tab_features_;

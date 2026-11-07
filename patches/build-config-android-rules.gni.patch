@@ -1,8 +1,8 @@
 diff --git a/build/config/android/rules.gni b/build/config/android/rules.gni
-index 27523619df263adeeb1ea2c3eea86076910a6386..38ec312a8d4953b3534a60930159cb3f3c005f11 100644
+index a3829f7f3af10720ff7459ba4ebb43605d679ed7..0b04cebfb49c5d65c50bbac8fd6e0bdad6f6cf4b 100644
 --- a/build/config/android/rules.gni
 +++ b/build/config/android/rules.gni
-@@ -412,6 +412,11 @@ if (!is_robolectric && enable_java_templates) {
+@@ -413,6 +413,11 @@ if (!is_robolectric && enable_java_templates) {
    #     output = "$target_gen_dir/AndroidManifest.xml"
    #   }
    template("jinja_template") {

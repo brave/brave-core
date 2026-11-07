@@ -58,6 +58,7 @@ static_library("ai_chat") {
   deps = [
     "//brave/brave_domains",
     "//brave/browser:browser_process",
+    "//brave/browser:tab_helpers_header",
     "//brave/browser/misc_metrics",
     "//brave/browser/skus",
     "//brave/common:webui_url_constants",
@@ -235,7 +236,6 @@ if (enable_brave_ai_chat_agent_profile) {
       "//brave/components/ai_chat/core/common/mojom",
       "//brave/components/brave_origin",
       "//chrome/browser:browser_process",
-      "//chrome/browser:browser_public_dependencies",
       "//chrome/browser/actor",
       "//chrome/browser/actor:types",
       "//chrome/browser/actor/ui",
@@ -418,6 +418,7 @@ source_set("browser_tests") {
       "//brave/components/l10n/common:test_support",
       "//brave/components/resources:strings_grit",
       "//brave/components/sidebar/browser",
+      "//brave/components/speedreader/common/buildflags",
       "//brave/components/text_recognition/common/buildflags",
       "//brave/components/tor/buildflags",
       "//chrome/browser",

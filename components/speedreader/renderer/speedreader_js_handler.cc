@@ -73,8 +73,8 @@ void SpeedreaderJSHandler::Install(content::RenderFrame* render_frame,
 gin::ObjectTemplateBuilder SpeedreaderJSHandler::GetObjectTemplateBuilder(
     v8::Isolate* isolate) {
   return gin::Wrappable<SpeedreaderJSHandler>::GetObjectTemplateBuilder(isolate)
-      .SetMethod("showOriginalPage", &SpeedreaderJSHandler::ShowOriginalPage)
-      .SetMethod("ttsPlayPause", &SpeedreaderJSHandler::TtsPlayPause);
+      .SetMethod<&SpeedreaderJSHandler::ShowOriginalPage>("showOriginalPage")
+      .SetMethod<&SpeedreaderJSHandler::TtsPlayPause>("ttsPlayPause");
 }
 
 void SpeedreaderJSHandler::ShowOriginalPage(v8::Isolate* isolate) {

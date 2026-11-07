@@ -23,6 +23,7 @@ if (!is_android) {
 
     deps = [
       "//brave/browser",
+      "//brave/browser:browser_process",
       "//brave/browser/brave_shields:test_support",
       "//brave/components/brave_component_updater/browser",
       "//brave/components/brave_shields/content/browser",

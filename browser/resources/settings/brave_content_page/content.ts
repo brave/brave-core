@@ -108,8 +108,19 @@ export class SettingsBraveContentContentElement extends SettingsBraveAppearanceC
         JSON.parse(loadTimeData.getString('presetZoomFactors'));
   }
 
+  private hasConnectedBefore_ = false;
+
   override connectedCallback() {
     super.connectedCallback();
+    // dom-repeat re-inserts its <option>s on reconnect, which resets the
+    // <select> to its last option without Polymer's `selected` bindings
+    // noticing. Wait for the re-insertion, then resync.
+    if (this.hasConnectedBefore_ && this.defaultZoom_ !== undefined) {
+      queueMicrotask(() => {
+        this.$.zoomLevel.value = String(this.defaultZoom_);
+      });
+    }
+    this.hasConnectedBefore_ = true;
     this.addPrefObserver<number>(
         'webkit.webprefs.default_font_size',
         pref => this.defaultFontSizeChanged_(pref.value));
@@ -153,7 +164,8 @@ export class SettingsBraveContentContentElement extends SettingsBraveAppearanceC
   }
 
   private onZoomLevelChange_() {
-    chrome.settingsPrivate.setDefaultZoom(parseFloat(this.$.zoomLevel.value));
+    this.defaultZoom_ = parseFloat(this.$.zoomLevel.value);
+    chrome.settingsPrivate.setDefaultZoom(this.defaultZoom_);
   }
 
   /** @see blink::PageZoomValuesEqual(). */
