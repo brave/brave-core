@@ -52,6 +52,7 @@ source_set("impl") {
   deps = [
     ":brave_ads",
     "//base",
+    "//brave/browser:browser_process",
     "//brave/browser/brave_adaptive_captcha",
     "//brave/browser/brave_ads/device_id",
     "//brave/browser/brave_ads/services",
@@ -64,7 +65,6 @@ source_set("impl") {
     "//brave/components/brave_rewards/core/buildflags",
     "//brave/components/p3a_utils",
     "//chrome/browser:browser_process",
-    "//chrome/browser:browser_public_dependencies",
     "//chrome/browser:fullscreen",
     "//chrome/browser:primitives",
     "//chrome/browser/content_settings:content_settings_factory",
@@ -72,6 +72,7 @@ source_set("impl") {
     "//chrome/browser/lifetime",
     "//chrome/browser/lifetime:termination_notification",
     "//chrome/browser/notifications",
+    "//chrome/browser/policy",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/profiles:profile_manager",
     "//chrome/browser/profiles:profile_util",
@@ -167,6 +168,7 @@ source_set("browser_tests") {
   deps = [
     ":brave_ads",
     ":impl",
+    "//brave/browser:browser_process",
     "//brave/components/brave_ads/core/browser/service:test_support",
     "//chrome/browser",
     "//chrome/browser/lifetime",

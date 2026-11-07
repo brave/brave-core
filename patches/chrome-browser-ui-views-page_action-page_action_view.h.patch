@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/page_action/page_action_view.h b/chrome/browser/ui/views/page_action/page_action_view.h
-index 3b3d90a72e032bde1792281d0adb28259cc29461..31350a9fdb8f99beb135e1beab3eb05e948473da 100644
+index ed18f5c15927da22f4b8d94e2a44595de479dd0a..c9f934f9fe35e1902db39ae0c1799aa4419ad027 100644
 --- a/chrome/browser/ui/views/page_action/page_action_view.h
 +++ b/chrome/browser/ui/views/page_action/page_action_view.h
 @@ -156,6 +156,21 @@ class PageActionView : public IconLabelBubbleView,

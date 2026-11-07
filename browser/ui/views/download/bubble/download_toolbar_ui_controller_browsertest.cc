@@ -15,6 +15,7 @@
 #include "chrome/browser/ui/download/download_display.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
+#include "chrome/browser/ui/views/toolbar/pinned_action_toolbar_button.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/download/public/common/download_item.h"
@@ -25,6 +26,10 @@
 #include "content/public/test/browser_test.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/models/image_model.h"
+#include "ui/color/color_id.h"
+#include "ui/color/color_provider.h"
+#include "ui/views/view_utils.h"
 
 using ::testing::NiceMock;
 using ::testing::Return;
@@ -144,4 +149,35 @@ IN_PROC_BROWSER_TEST_F(DownloadToolbarInsecureIconTest, InsecureDownloadIcon) {
   EXPECT_TRUE(btn->HasIconEnabledColorsOverride()) << "state: BLOCK";
   EXPECT_EQ(&btn->GetVectorIcon(), &vector_icons::kNotSecureWarningOldIcon)
       << "state: BLOCK";
+}
+
+// Upstream's own icon refreshes, such as the one `SetEngagedIndicatorStyle()`
+// makes, keep the insecure-download colour while the action is engaged.
+IN_PROC_BROWSER_TEST_F(DownloadToolbarInsecureIconTest,
+                       InsecureDownloadColorSurvivesEngagedIconUpdate) {
+  auto* ctrl = controller();
+  ASSERT_NE(nullptr, ctrl);
+  ctrl->Show();
+  auto* btn = views::AsViewClass<PinnedActionToolbarButton>(download_button());
+  ASSERT_NE(nullptr, btn);
+
+  NiceMock<download::MockDownloadItem> item;
+  ON_CALL(item, GetInsecureDownloadStatus())
+      .WillByDefault(
+          Return(download::DownloadItem::InsecureDownloadStatus::WARN));
+  fake_service()->AddItem(&item);
+  ctrl->UpdateDownloadIcon(
+      {.new_state = DownloadDisplay::IconState::kProgress});
+  ASSERT_TRUE(btn->HasIconEnabledColorsOverride());
+
+  btn->SetActionEngaged(true);
+  btn->SetEngagedIndicatorStyle(
+      ActionItemEngagedIndicatorStyle::kCircleHighlight);
+
+  const SkColor warning_color =
+      btn->GetColorProvider()->GetColor(ui::kColorAlertMediumSeverityIcon);
+  const std::optional<ui::ImageModel>& image =
+      btn->GetImageModel(views::Button::STATE_NORMAL);
+  ASSERT_TRUE(image.has_value());
+  EXPECT_TRUE(image->GetVectorIcon().color() == warning_color);
 }

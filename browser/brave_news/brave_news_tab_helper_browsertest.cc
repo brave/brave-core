@@ -243,7 +243,7 @@ IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, NonExistingFeedsAreRemoved) {
     WaitForFeedsChanged waiter(tab_helper, 1);
 
     ui_test_utils::NavigateToURLWithDisposition(
-        browser(), rss_page_url, WindowOpenDisposition::CURRENT_TAB,
+        browser(), rss_page_url, WindowOpenDisposition::kCurrentTab,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
     auto result = waiter.WaitForFeeds();
 
@@ -280,7 +280,7 @@ IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, FeedsAreFoundWhenTheyExist) {
     WaitForFeedsChanged waiter(tab_helper, 1);
 
     ui_test_utils::NavigateToURLWithDisposition(
-        browser(), rss_page_url, WindowOpenDisposition::CURRENT_TAB,
+        browser(), rss_page_url, WindowOpenDisposition::kCurrentTab,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
     auto result = waiter.WaitForFeeds();
 
@@ -311,7 +311,7 @@ IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, FeedsAreNotFoundWhenNotOptedIn) {
       tabs::TabInterface::MaybeGetFromContents(contents()));
 
   ui_test_utils::NavigateToURLWithDisposition(
-      browser(), rss_page_url, WindowOpenDisposition::CURRENT_TAB,
+      browser(), rss_page_url, WindowOpenDisposition::kCurrentTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // We run until idle here rather than using the Waiter because we want the

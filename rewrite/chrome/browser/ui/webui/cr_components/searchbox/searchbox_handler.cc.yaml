@@ -5,27 +5,28 @@
 
 substitutions:
   - description: |
-      Add Leo omnibox icons to `AutocompleteIconToResourceName`.
+      Add Leo omnibox icons to `VectorIconToResourceName`.
 
-      This regex looks for the DUMP_WILL_BE_NOTREACHED at the end of the
-      function, making sure it is in fact the last one, and inserts our code
-      just before it, meaning, at the end of the function.
+      Brave's icons are checked where upstream gives up on an icon with no
+      resource. This function is used for the WebUI Omnibox, which isn't
+      enabled in Brave, so other icons fall back to the default icon instead
+      of hitting `DUMP_WILL_BE_NOTREACHED`.
     regex:
-      re_pattern:
-        '(SearchboxHandler::AutocompleteIconToResourceName\(.*?\) const
-        \{.*?)(DUMP_WILL_BE_NOTREACHED\b.*?;)(?=(?:(?!DUMP_WILL_BE_NOTREACHED).)*?\n\})'
+      # Scoped to the `resource_name.empty()` block of
+      # `VectorIconToResourceName`; the match can't leave the function.
+      re_pattern: |-
+        (std::string SearchboxHandler::VectorIconToResourceName\((?:(?!\n\}\n).)*?\n  if \(resource_name\.empty\(\)\) \{\n)(    DUMP_WILL_BE_NOTREACHED\(\))
       re_flags: [DOTALL]
       replace: |-
-        \1if (icon.name == kLeoWindowTabNewIcon.name) {
-            return kLeoWindowTabNewIconResourceName;
-          } else if (icon.name == kLeoMessageBubbleAskIcon.name) {
-            return kLeoMessageBubbleAskIconResourceName;
-          }
-          // This function is used for the WebUI Omnibox which isn't enabled in
-          // Brave, so its okay to disable the DUMP_WILL_BE_NOTREACHED() check
-          // here and use the default icon instead.
-          if ((true)) return "";
-          \2
+        \1    if (icon.name == kLeoWindowTabNewIcon.name) {
+              return kLeoWindowTabNewIconResourceName;
+            } else if (icon.name == kLeoMessageBubbleAskIcon.name) {
+              return kLeoMessageBubbleAskIconResourceName;
+            }
+            if ((true)) {
+              return "";
+            }
+        \2
 
   - description: |
       Force keyword mode in the NTP realbox.

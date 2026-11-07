@@ -1,17 +1,17 @@
 diff --git a/chrome/browser/share/android/java/src/org/chromium/chrome/browser/share/send_tab_to_self/EnhancedTargetDevicePickerView.java b/chrome/browser/share/android/java/src/org/chromium/chrome/browser/share/send_tab_to_self/EnhancedTargetDevicePickerView.java
-index beab09f61ad39f8cda7e6f84154a176b45a7cf87..88bf8508b193d18638cd8405aab90895d8d96b43 100644
+index f720c1577f54f8fae7930e3bd6168c1875d441cc..bd68619414bb030f02160b487b84fe159b474f12 100644
 --- a/chrome/browser/share/android/java/src/org/chromium/chrome/browser/share/send_tab_to_self/EnhancedTargetDevicePickerView.java
 +++ b/chrome/browser/share/android/java/src/org/chromium/chrome/browser/share/send_tab_to_self/EnhancedTargetDevicePickerView.java
-@@ -139,7 +139,7 @@ class EnhancedTargetDevicePickerView extends BottomSheetListViewBase {
+@@ -148,7 +148,7 @@ class EnhancedTargetDevicePickerView extends BottomSheetListViewBase {
+         int sendButtonHeight = getElementHeightWithMarginsPx(mSendButton);
          height += paddingTop + sendButtonHeight + paddingBottom;
-         boolean isDesktop = getBottomSheetController().isLargeFormFactorUiEnabled(this);
-         if (!forHalfState || isDesktop) {
+         if (showManageDevices) {
 -            height += getElementHeightWithMarginsPx(mManageDevicesBlock);
 +            height += 0;  // Never showing the footer
          }
          return height;
      }
-@@ -353,6 +353,7 @@ class EnhancedTargetDevicePickerView extends BottomSheetListViewBase {
+@@ -363,6 +363,7 @@ class EnhancedTargetDevicePickerView extends BottomSheetListViewBase {
       * Updates the visibility of the manage devices footer block if it differs from current state.
       */
      private void updateManageDevicesVisibility(boolean visible) {

@@ -17,7 +17,14 @@ import {
   SettingsSearchPageElement as SettingsSearchPageElementChromium
 } from './search_page-chromium.js'
 
+// Upstream's HTMLElementTagNameMap entry for this tag points at the upstream
+// class, and TypeScript rejects a second entry with a different type.
+// eslint-disable-next-line @webui-eslint/lit-element-structure
 class SettingsSearchPageElement extends SettingsSearchPageElementChromium {
+  static override get is() {
+    return 'settings-search-page'
+  }
+
   override currentRouteChanged(newRoute: Route, oldRoute?: Route) {
     super.currentRouteChanged(newRoute, oldRoute)
     this.showSearchEngineListDialog_ = newRoute === routes.DEFAULT_SEARCH

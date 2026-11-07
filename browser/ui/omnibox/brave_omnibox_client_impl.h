@@ -12,6 +12,7 @@
 #include "brave/components/time_period_storage/weekly_storage.h"
 #include "chrome/browser/ui/omnibox/chrome_omnibox_client.h"
 #include "components/prefs/pref_change_registrar.h"
+#include "ui/base/window_open_disposition.h"
 
 class BrowserWindowInterface;
 class PrefRegistrySimple;

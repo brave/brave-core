@@ -18,6 +18,8 @@ public class BraveSingleCategorySettings extends BaseSiteSettingsFragment
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {}
 
+    // Not redirected into SingleCategorySettings: its resetList asserts a 0 for Brave categories.
+    // The AUTOPLAY / BRAVE_GOOGLE_SIGN_IN ids reach upstream via AddExceptionPreference's ctor.
     public int getAddExceptionDialogMessageResourceId() {
         int resource = 0;
         SiteSettingsCategory mCategory =

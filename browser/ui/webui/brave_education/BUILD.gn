@@ -41,13 +41,15 @@ source_set("brave_education") {
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/resources:strings_grit",
-    "//chrome/browser:browser_public_dependencies",
+    "//chrome/app:branded_strings",
+    "//chrome/app:generated_resources",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/side_panel",
     "//chrome/browser/ui/side_panel:side_panel_views_dependent",
     "//chrome/browser/ui/webui:webui_util",
     "//components/language/core/browser",
+    "//components/prefs",
     "//ui/webui",
   ]
 
@@ -61,7 +63,9 @@ source_set("brave_education") {
 
   public_deps = [
     "//brave/browser/ui/webui/brave_education:mojo_bindings",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_education",
+    "//brave/components/constants",
     "//brave/ui/webui/resources/js/brave_browser_command:mojo_bindings",
   ]
 }

@@ -1250,8 +1250,8 @@ bool MaybeAddTabAtInheritingActiveContainer(
 
   // Use Navigate directly to set storage_partition_config
   NavigateParams params(browser, url, ui::PAGE_TRANSITION_TYPED);
-  params.disposition = foreground ? WindowOpenDisposition::NEW_FOREGROUND_TAB
-                                  : WindowOpenDisposition::NEW_BACKGROUND_TAB;
+  params.disposition = foreground ? WindowOpenDisposition::kNewForegroundTab
+                                  : WindowOpenDisposition::kNewBackgroundTab;
   params.tabstrip_index = index;
   params.group = group;
   if (pinned) {
@@ -1294,7 +1294,7 @@ void OpenUrlInContainer(BrowserWindowInterface* bwi,
 
   NavigateParams params(
       bwi, url, is_link ? ui::PAGE_TRANSITION_LINK : ui::PAGE_TRANSITION_TYPED);
-  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.disposition = WindowOpenDisposition::kNewForegroundTab;
   params.initiator_origin = std::move(initiator_origin);
   params.started_from_context_menu = started_from_context_menu;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
@@ -1330,7 +1330,7 @@ void OpenUrlWithoutContainer(BrowserWindowInterface* bwi,
 
   NavigateParams params(
       bwi, url, is_link ? ui::PAGE_TRANSITION_LINK : ui::PAGE_TRANSITION_TYPED);
-  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.disposition = WindowOpenDisposition::kNewForegroundTab;
   params.initiator_origin = std::move(initiator_origin);
   params.started_from_context_menu = started_from_context_menu;
   Navigate(&params);

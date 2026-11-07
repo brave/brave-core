@@ -33,7 +33,7 @@ void AIChatFullPageLinkObserver::DidOpenRequestedURL(
   // leave the conversation visible where it is, so they must not move it, and
   // neither should a browser-driven open such as a context menu item.
   if (!renderer_initiated || started_from_context_menu ||
-      disposition != WindowOpenDisposition::NEW_FOREGROUND_TAB) {
+      disposition != WindowOpenDisposition::kNewForegroundTab) {
     return;
   }
 

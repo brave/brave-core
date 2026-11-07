@@ -1,5 +1,5 @@
 diff --git a/ios/web/js_messaging/java_script_content_world.h b/ios/web/js_messaging/java_script_content_world.h
-index e34c81554d276d35ad4d54a0cef1372e5d45d394..445edba8e8bb1391b452fa49561cf8bf3415c1e4 100644
+index 06bad8e89372c1ce885ce849f32ed558f751cbe0..ac7e3badebc03e495599dfa4b6488d5faf5252dd 100644
 --- a/ios/web/js_messaging/java_script_content_world.h
 +++ b/ios/web/js_messaging/java_script_content_world.h
 @@ -49,6 +49,15 @@ class JavaScriptContentWorld {

@@ -154,7 +154,7 @@ IN_PROC_BROWSER_TEST_F(BraveProxyingURLLoaderFactoryBrowserTest,
       GURL("chrome-extension://" + extension_id() + "/callback.html?code=test");
 
   content::RenderFrameHost* rfh = ui_test_utils::NavigateToURLWithDisposition(
-      browser(), redirect_url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser(), redirect_url, WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_TRUE(rfh);
   content::WebContents* new_tab =

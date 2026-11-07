@@ -1,5 +1,5 @@
 diff --git a/front_end/panels/timeline/components/LiveMetricsView.ts b/front_end/panels/timeline/components/LiveMetricsView.ts
-index ba88b2a053f3a82de22f0ebc33a3a5cc5f449542..f7f4efdf76f1eea76882b8151374bde20d2da23b 100644
+index 54bb6250619192fc7e3329fc94ce011717cba501..a0d879be4e48c53952e3143a2534d20d3ffb2c77 100644
 --- a/front_end/panels/timeline/components/LiveMetricsView.ts
 +++ b/front_end/panels/timeline/components/LiveMetricsView.ts
 @@ -1043,7 +1043,7 @@ export const DEFAULT_VIEW: View = (input, output, target) => {

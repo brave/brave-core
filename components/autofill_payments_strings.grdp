@@ -1354,12 +1354,6 @@
   </if>
 
   <!-- Credit card and promo code offers and rewards-related strings -->
-  <message name="IDS_AUTOFILL_CARD_LINKED_OFFER_REMINDER_TITLE" desc="Title of the bubble/infobar shown on the merchant website when a GPay-activated card linked offer is available to use.">
-    Reminder: saved offer available
-  </message>
-  <message name="IDS_AUTOFILL_OFFERS_REMINDER_POSITIVE_BUTTON_LABEL" desc="Label for the positive button for the bubble/infobar shown on the merchant website when an offer is available to use.">
-    Got it
-  </message>
   <message name="IDS_AUTOFILL_PROMO_CODE_SUGGESTION_CODE_LABEL" desc="Label for the promo code in the autofill suggestions popup.">
     Code: <ph name="PROMO_CODE">$1<ex>WELCOME15</ex></ph>
   </message>
@@ -1380,8 +1374,8 @@
       Offer available
     </message>
   </if>
-  <if expr="not is_ios">
-    <message name="IDS_AUTOFILL_OFFERS_REMINDER_DESCRIPTION_TEXT" desc="Secondary explanatory text for the Desktop bubble and Android message shown on the merchant website when an offer is available to use.">
+  <if expr="is_android">
+    <message name="IDS_AUTOFILL_OFFERS_REMINDER_DESCRIPTION_TEXT" desc="Secondary explanatory text for the Android message shown on the merchant website when an offer is available to use.">
       Pay with <ph name="CARD_DETAIL">$1<ex>Visa - 1234</ex></ph> at checkout
     </message>
   </if>
@@ -1394,18 +1388,6 @@
     </message>
   </if>
   <if expr="toolkit_views">
-    <message name="IDS_AUTOFILL_GPAY_PROMO_CODE_OFFERS_REMINDER_TITLE" desc="Title of the bubble shown on the merchant website when a GPay merchant promo code offer is available to use, and the user can click on the promo code field to autofill it.">
-      Reminder: Saved promo code available
-    </message>
-    <message name="IDS_AUTOFILL_PROMO_CODE_OFFER_BUTTON_TOOLTIP_NORMAL" desc="The tooltip message for a button containing a copyable promo code in the merchant promo code offer notification bubble on Desktop. This message is shown when the button is hovered over and if the button has not been clicked.">
-      Click to copy
-    </message>
-    <message name="IDS_AUTOFILL_PROMO_CODE_OFFER_BUTTON_TOOLTIP_CLICKED" desc="The tooltip message for a button containing a copyable promo code in the merchant promo code offer notification bubble on Desktop. This message is shown when the button is hovered over and if the button has been clicked.">
-      Copied to clipboard
-    </message>
-    <message name="IDS_AUTOFILL_GPAY_PROMO_CODE_OFFERS_REMINDER_VALUE_PROP_TEXT" desc="The first line of the GPay promo code notification bubble, consisting of the value prop text and a see details link">
-      <ph name="VALUE_PROP">$1<ex>5% off on shoes. Up to $50.</ex></ph> <ph name="DETAILS">$2<ex>See Details</ex></ph>
-    </message>
     <message name="IDS_AUTOFILL_WALLET_DIRECT_OFFER_REMINDER_BODY_TEXT" desc="The body text of the bubble shown on the merchant website when an offer saved in the user's Google Wallet is available to use. It explains that the offer can be filled into the promo code field at checkout. The text between BEGIN_LINK and END_LINK is a link which opens a page describing the terms and conditions of the offer.">
       Your saved offer will be available at checkout using autofill. <ph name="BEGIN_LINK">$1</ph>View terms and conditions<ph name="END_LINK">$2</ph>
     </message>
@@ -1798,6 +1780,20 @@ To hide pay later options, go to <ph name="BEGIN_LINK">&lt;link&gt;</ph>payment 
   <if expr="is_ios">
     <message name="IDS_AUTOFILL_SAVE_CARD_CONFIRMATION_SUCCESS_ACCESSIBLE_NAME" desc="Accessible name announced by the screenreader for a checkmark shown on save card infobar modal for card upload success ">
       Card info saved
+    </message>
+  </if>
+  <if expr="not is_android and not is_ios">
+    <message name="IDS_AUTOFILL_SAVE_CARDHOLDER_NAME_CONFIRMATION_SUCCESS_TITLE_TEXT" desc="Title text for confirmation shown after cardholder name is successfully uploaded and saved to Google Wallet.">
+      Cardholder name updated
+    </message>
+    <message name="IDS_AUTOFILL_SAVE_CARDHOLDER_NAME_CONFIRMATION_SUCCESS_DESCRIPTION_TEXT" desc="Description text for confirmation shown after cardholder name is successfully uploaded and saved to Google Wallet.">
+      It's saved with your card info so it will be automatically filled at checkout
+    </message>
+    <message name="IDS_AUTOFILL_SAVE_CARDHOLDER_NAME_CONFIRMATION_FAILURE_TITLE_TEXT" desc="Title text for confirmation shown after uploading and saving cardholder name to Google Wallet was unsuccessful.">
+      Something went wrong
+    </message>
+    <message name="IDS_AUTOFILL_SAVE_CARDHOLDER_NAME_CONFIRMATION_FAILURE_DESCRIPTION_TEXT" desc="Description text for confirmation shown after uploading and saving cardholder name to Google Wallet was unsuccessful.">
+      Can't save cardholder name right now
     </message>
   </if>
 

@@ -10,6 +10,7 @@
 #include "base/containers/span.h"
 #import "brave/ios/browser/api/net/certificate_utility.h"
 #include "net/http/transport_security_state.h"
+#include "net/http/transport_security_state_pins_source.h"  // IWYU pragma: keep
 #include "net/net_buildflags.h"
 #import "testing/gtest/include/gtest/gtest.h"
 #import "testing/gtest_mac.h"

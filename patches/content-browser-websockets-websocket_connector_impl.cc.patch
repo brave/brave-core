@@ -1,5 +1,5 @@
 diff --git a/content/browser/websockets/websocket_connector_impl.cc b/content/browser/websockets/websocket_connector_impl.cc
-index e756aaf3ee05579c495f971c3eeed547fc30944e..2a8719984493017f51232f92b97a61975750ee2b 100644
+index eaf7d1eb13d3d5893d0dc6cfc190edec0250aba2..59927b02b87b9e7bd64940c0ce5ecb2d4cc2c6d6 100644
 --- a/content/browser/websockets/websocket_connector_impl.cc
 +++ b/content/browser/websockets/websocket_connector_impl.cc
 @@ -144,9 +144,10 @@ void WebSocketConnectorImpl::Connect(

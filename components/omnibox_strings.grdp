@@ -449,6 +449,15 @@
   <message name="IDS_FUSEBOX_CANVAS_SUBTEXT" desc="Subtext displayed under the Canvas button in the Fusebox popup." formatter_data="android_java">
     Build and code
   </message>
+  <message name="IDS_NTP_SEARCH_BOX_HINT_MAKE_A_PLAN" desc="Cycling hint text displayed inside the New Tab Page search box to suggest using AI Mode to make a plan." formatter_data="android_java">
+    Make a plan
+  </message>
+  <message name="IDS_NTP_SEARCH_BOX_HINT_ASK_ABOUT_TAB" desc="Cycling hint text displayed inside the New Tab Page search box to suggest asking about a browser tab." formatter_data="android_java">
+    Ask about a tab
+  </message>
+  <message name="IDS_FUSEBOX_ATTACHMENT_BUTTON_IPH" desc="Text displayed in the in-product help bubble pointing to the (+) button in the Omnibox." formatter_data="android_java">
+    Add a tab or image to enhance your search
+  </message>
 
   <!-- Accessibility labels for autocomplete match types.
        These are parameterized on the text being completed into the omnibox.
@@ -684,6 +693,12 @@
   <!-- NTP Action Chips -->
   <message name="IDS_NTP_ACTION_CHIP_CREATE_IMAGE" desc="Label of the create image merchandising chip on the NTP." formatter_data="android_java">
     Create
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_CREATE_IMAGE_ACCESSIBILITY" desc="Accessibility content description of the create image merchandising chip on the NTP. Announced by screen readers instead of the short visible label." formatter_data="android_java" is_accessibility_with_no_ui="true">
+    Create image
+  </message>
+  <message name="IDS_NTP_ACTION_CHIP_ADD_IMAGE_ACCESSIBILITY" desc="Accessibility content description of the add image (gallery) merchandising chip on the NTP, which lets the user add images to their search. Announced by screen readers instead of the short visible label." formatter_data="android_java" is_accessibility_with_no_ui="true">
+    Add images to your search
   </message>
   <!-- NTP Action Chips Fallback Prompts -->
   <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_1" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">

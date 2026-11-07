@@ -176,8 +176,8 @@ void SidebarController::OnItemPressed(size_t index,
     return;
   }
 
-  if (disposition != WindowOpenDisposition::CURRENT_TAB) {
-    DCHECK_NE(WindowOpenDisposition::UNKNOWN, disposition);
+  if (disposition != WindowOpenDisposition::kCurrentTab) {
+    DCHECK_NE(WindowOpenDisposition::kUnknown, disposition);
     NavigateParams params(profile_, item.url,
                           ui::PAGE_TRANSITION_AUTO_BOOKMARK);
     params.disposition = disposition;
@@ -245,7 +245,7 @@ void SidebarController::IterateOrLoadAtActiveTab(const GURL& url) {
 
     // Load at current active tab if there is no tab that loaded |url|.
     auto params = GetSingletonTabNavigateParams(browser_, url);
-    params.disposition = WindowOpenDisposition::CURRENT_TAB;
+    params.disposition = WindowOpenDisposition::kCurrentTab;
     Navigate(&params);
     return;
   }
@@ -269,7 +269,7 @@ void SidebarController::LoadAtTab(const GURL& url) {
     tab_strip_model_->ActivateTabAt(tab_index);
   } else {
     // Load on current tab.
-    params.disposition = WindowOpenDisposition::CURRENT_TAB;
+    params.disposition = WindowOpenDisposition::kCurrentTab;
     Navigate(&params);
   }
 }

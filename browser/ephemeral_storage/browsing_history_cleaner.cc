@@ -12,6 +12,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "chrome/browser/history/history_service_factory.h"
+#include "chrome/browser/history/web_history_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sync/sync_service_factory.h"
 #include "net/base/url_util.h"
@@ -28,7 +29,8 @@ BrowsingHistoryCleaner::BrowsingHistoryCleaner(
   // No device tracker is needed as the service is not used to call
   // `GetAllSyncedClientsGroupedByName`.
   browsing_history_service_ = std::make_unique<history::BrowsingHistoryService>(
-      this, history_service, sync_service, /*device_info_tracker=*/nullptr);
+      this, history_service, WebHistoryServiceFactory::GetForProfile(profile),
+      sync_service, /*device_info_tracker=*/nullptr);
 }
 
 BrowsingHistoryCleaner::~BrowsingHistoryCleaner() = default;
