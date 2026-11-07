@@ -117,9 +117,10 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
   base::ElapsedTimer elapsed_timer_;
 
  public:
-  AdblockCnameResolveHostClient(const ResponseCallback& next_callback,
-                                T<BraveRequestInfo> ctx,
-                                EngineFlags previous_result) {
+  AdblockCnameResolveHostClient(
+      const ResponseCallback& next_callback,
+      T<BraveRequestInfo> ctx,
+      EngineFlags previous_result) {
     DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
     cb_ = base::BindOnce(&UseCnameResult<T>, std::move(next_callback), ctx,
                          previous_result);
