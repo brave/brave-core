@@ -60,21 +60,7 @@ substitutions:
               name: "CompositorTimelineTrigger",
               status: "experimental", // Brave: revert when crbug.com/541924666 is fixed.
 
-  - description: |-
-      Hold XMLRustForNonXslt at experimental.
-
-      The Rust parser is slower than libxml2 on some images, and
-      upstream moved the flag back to experimental on main while that is
-      investigated (crbug.com/578167868).
-    regex:
-      pattern: |2-
-              name: "XMLRustForNonXslt",
-              status: "stable",
-      replace: |2-
-              name: "XMLRustForNonXslt",
-              status: "experimental", // Brave: revert when crbug.com/578167868 is fixed.
-
-  # The three following entries are plastered to generate no `base::Feature` at
+  # The two following entries are plastered to generate no `base::Feature` at
   # all.
   - description:
       'Generate no base::Feature for FileSystemAccessAPIExperimental.'
@@ -86,12 +72,6 @@ substitutions:
   - description: 'Generate no base::Feature for FileSystemAccessLocal.'
     regex:
       re_pattern: '^( *)(name: "FileSystemAccessLocal",)'
-      re_flags: [MULTILINE]
-      replace: '\1\2\n\1base_feature: "none",'
-
-  - description: 'Generate no base::Feature for MiddleClickAutoscroll.'
-    regex:
-      re_pattern: '^( *)(name: "MiddleClickAutoscroll",)'
       re_flags: [MULTILINE]
       replace: '\1\2\n\1base_feature: "none",'
 
@@ -108,9 +88,20 @@ substitutions:
   # These plaster override the `base::Feature` value for the blink runtime
   # features, and with it the runtime flag. Each must be listed in
   # brave/base/compile_overridden_features.inc. Keep them in alphabetical order.
-  - description: 'Ship the interest-group ad-targeting API disabled.'
+  - description: "Ship the Decision Model API's base feature disabled."
     set_blink_runtime_enabled_feature_state:
-      feature_name: AdInterestGroupAPI
+      feature_name: AIDecisionModelAPI
+      value: disabled
+
+  - description:
+      "Ship the Decision Model API's base feature for workers disabled."
+    set_blink_runtime_enabled_feature_state:
+      feature_name: AIDecisionModelAPIForWorkers
+      value: disabled
+
+  - description: "Ship the Embeddings API's base feature disabled."
+    set_blink_runtime_enabled_feature_state:
+      feature_name: AIEmbeddingsAPI
       value: disabled
 
   - description: "Ship the Prompt API's base feature disabled."
@@ -143,6 +134,15 @@ substitutions:
       feature_name: AIWriterAPI
       value: disabled
 
+  - description: |-
+      Ship approximate geolocation's accuracy mode enabled.
+
+      The flag also needs ApproximateGeolocationPermission, which the browser
+      process sets.
+    set_blink_runtime_enabled_feature_state:
+      feature_name: ApproximateGeolocationPermissionAccuracyMode
+      value: enabled
+
   - description: 'Ship the Controlled Frame tag disabled.'
     set_blink_runtime_enabled_feature_state:
       feature_name: ControlledFrame
@@ -151,11 +151,6 @@ substitutions:
   - description: 'Ship extension content script tagging disabled.'
     set_blink_runtime_enabled_feature_state:
       feature_name: ExtensionScriptTagging
-      value: disabled
-
-  - description: 'Ship the Protected Audience ad auction API disabled.'
-    set_blink_runtime_enabled_feature_state:
-      feature_name: Fledge
       value: disabled
 
   - description: 'Ship the fenced frames API disabled.'
@@ -168,14 +163,14 @@ substitutions:
       feature_name: LanguageDetectionAPI
       value: disabled
 
-  - description: 'Ship the PARAKEET ad serving API disabled.'
-    set_blink_runtime_enabled_feature_state:
-      feature_name: Parakeet
-      value: disabled
-
   - description: 'Ship prerendering disabled.'
     set_blink_runtime_enabled_feature_state:
       feature_name: Prerender2
+      value: disabled
+
+  - description: "Ship the JS Self-Profiling API's base feature disabled."
+    set_blink_runtime_enabled_feature_state:
+      feature_name: ProfilerAPI
       value: disabled
 
   - description: |-

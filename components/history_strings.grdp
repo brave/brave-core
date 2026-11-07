@@ -57,11 +57,11 @@
   <message name="IDS_HISTORY_OTHER_FORMS_OF_HISTORY_GMA_ONLY" desc="The notification at the bottom of the history page indicating that deleting Brave browsing history will not delete other forms of history stored at Brave My Activity.">
     Your Brave sync chain may have other forms of browsing history at <ph name="BEGIN_LINK_GMA">&lt;a target="_blank" id="footerBraveMyActivityLink" href="$1"&gt;</ph>myactivity.google.com<ph name="END_LINK_GMA">&lt;/a&gt;</ph>
   </message>
-  <message name="IDS_HISTORY_OTHER_FORMS_OF_HISTORY_GAA_ONLY" desc="The notification at the bottom of the history page indicating that deleting Brave browsing history will not delete other forms of history stored at Gemini Apps Activity.">
-    Your Brave sync chain may have your <ph name="BEGIN_LINK_GAA">&lt;a target="_blank" id="footerGeminiAppsActivityLink" href="$1"&gt;</ph>Gemini Apps Activity<ph name="END_LINK_GAA">&lt;/a&gt;</ph>
+  <message name="IDS_HISTORY_OTHER_FORMS_OF_HISTORY_GAA_ONLY" desc="The notification at the bottom of the history page indicating that deleting Brave browsing history will not delete other forms of history stored in Gemini History. 'Gemini History' is the name of a Gemini setting, formerly called 'Gemini Apps Activity'.">
+    Your Brave sync chain may have your <ph name="BEGIN_LINK_GAA">&lt;a target="_blank" id="footerGeminiAppsActivityLink" href="$1"&gt;</ph>Gemini History<ph name="END_LINK_GAA">&lt;/a&gt;</ph>
   </message>
-  <message name="IDS_HISTORY_OTHER_FORMS_OF_HISTORY_GMA_AND_GAA" desc="The notification at the bottom of the history page indicating that deleting Brave browsing history will not delete other forms of history stored at Brave My Activity and Gemini Apps Activity.">
-    Your Brave sync chain may have other forms of browsing history at <ph name="BEGIN_LINK_GMA">&lt;a target="_blank" id="footerBraveMyActivityLink" href="$1"&gt;</ph>myactivity.google.com<ph name="END_LINK_GMA">&lt;/a&gt;</ph>, such as your <ph name="BEGIN_LINK_GAA">&lt;a target="_blank" id="footerGeminiAppsActivityLink" href="$2"&gt;</ph>Gemini Apps Activity<ph name="END_LINK_GAA">&lt;/a&gt;</ph>
+  <message name="IDS_HISTORY_OTHER_FORMS_OF_HISTORY_GMA_AND_GAA" desc="The notification at the bottom of the history page indicating that deleting Brave browsing history will not delete other forms of history stored at Brave My Activity and in Gemini History. 'Gemini History' is the name of a Gemini setting, formerly called 'Gemini Apps Activity'.">
+    Your Brave sync chain may have other forms of browsing history at <ph name="BEGIN_LINK_GMA">&lt;a target="_blank" id="footerBraveMyActivityLink" href="$1"&gt;</ph>myactivity.google.com<ph name="END_LINK_GMA">&lt;/a&gt;</ph>, such as your <ph name="BEGIN_LINK_GAA">&lt;a target="_blank" id="footerGeminiAppsActivityLink" href="$2"&gt;</ph>Gemini History<ph name="END_LINK_GAA">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_HISTORY_LOADING" desc="Text shown when we're loading the user's history">
     Loading...
@@ -100,6 +100,18 @@
   <message name="IDS_HISTORY_OTHER_SESSIONS_OPEN_ALL" desc="In the 'Other Sessions' menu on the history page, the label for the command to open all tabs and windows from a session.">
     Open all
   </message>
+    <message name="IDS_HISTORY_OTHER_SESSIONS_OPEN_WINDOW_PLURAL" desc="In the 'Other Sessions' section of the history page, the tooltip and accessibility label for the button that opens all tabs from a single synced window when the window contains multiple tabs.">
+      Open Window <ph name="WINDOW_INDEX">$1<ex>1</ex></ph> (<ph name="NUM_TABS">$2<ex>22</ex></ph> tabs) in a new window
+    </message>
+    <message name="IDS_HISTORY_OTHER_SESSIONS_OPEN_WINDOW_SINGULAR" desc="In the 'Other Sessions' section of the history page, the tooltip and accessibility label for the button that opens all tabs from a single synced window when the window contains 1 tab.">
+      Open Window <ph name="WINDOW_INDEX">$1<ex>1</ex></ph> (1 tab) in a new window
+    </message>
+  <message name="IDS_HISTORY_OTHER_SESSIONS_WINDOW_HEADER_SINGULAR" desc="In the 'Other Sessions' section on the history page, the subheader title for a synced window containing 1 tab.">
+    Window <ph name="WINDOW_NUMBER">$1<ex>1</ex></ph> · 1 tab
+  </message>
+  <message name="IDS_HISTORY_OTHER_SESSIONS_WINDOW_HEADER_PLURAL" desc="In the 'Other Sessions' section on the history page, the subheader title for a synced window containing multiple tabs.">
+    Window <ph name="WINDOW_NUMBER">$1<ex>1</ex></ph> · <ph name="NUM_TABS">$2<ex>3</ex></ph> tabs
+  </message>
   <message name="IDS_HISTORY_REMOVE_BOOKMARK" desc="Tooltip shown when hovered over a history entry's bookmark star. When clicked, removes the bookmark.">
     Delete bookmark
   </message>
@@ -121,32 +133,19 @@
   <message name="IDS_HISTORY_SEARCH_RESULTS" desc="Used when plural/multiple results are found.">
     search results
   </message>
-  <message name="IDS_HISTORY_SEARCH_EXACT_MATCH_RESULT" desc="Used when a single exact match result is found." translateable="false">
-    exact match
-  </message>
-  <message name="IDS_HISTORY_SEARCH_EXACT_MATCH_RESULTS" desc="Used when plural/multiple exact match results is found." translateable="false">
-    exact matches
-  </message>
-  <message name="IDS_HISTORY_SEARCH_EMBEDDINGS_MATCH_RESULT" desc="Used when a single result is found by history search powered by AI." translateable="false">
-    best match
-  </message>
-  <message name="IDS_HISTORY_SEARCH_EMBEDDINGS_MATCH_RESULTS" desc="Used when plural/multiple results are found by history search powered by AI." translateable="false">
-    best matches
-  </message>
-  <!-- TODO(b/573481189): Make translatable when strings are finalized. -->
-  <message name="IDS_HISTORY_TIME_PERIOD_FILTER_ALL_TIME" desc="Option in the time period filter dropdown on the history page. Selecting it shows history from all time, i.e. no time period filtering is applied. This is the default option." translateable="false">
+  <message name="IDS_HISTORY_TIME_PERIOD_FILTER_ALL_TIME" desc="Option in the time period filter dropdown on the history page. Selecting it shows history from all time, i.e. no time period filtering is applied. This is the default option.">
     All time
   </message>
-  <message name="IDS_HISTORY_TIME_PERIOD_FILTER_YESTERDAY" desc="Option in the time period filter dropdown on the history page. Selecting it shows only history from yesterday (the day before today)." translateable="false">
+  <message name="IDS_HISTORY_TIME_PERIOD_FILTER_YESTERDAY" desc="Option in the time period filter dropdown on the history page. Selecting it shows only history from yesterday (the day before today).">
     Yesterday
   </message>
-  <message name="IDS_HISTORY_TIME_PERIOD_FILTER_EARLIER_THIS_WEEK" desc="Option in the time period filter dropdown on the history page. Selecting it shows only history from Monday of the current week up to now." translateable="false">
+  <message name="IDS_HISTORY_TIME_PERIOD_FILTER_EARLIER_THIS_WEEK" desc="Option in the time period filter dropdown on the history page. Selecting it shows only history from Monday of the current week up to now.">
     Earlier this week
   </message>
-  <message name="IDS_HISTORY_TIME_PERIOD_FILTER_LAST_WEEK" desc="Option in the time period filter dropdown on the history page. Selecting it shows only history from the previous calendar week (Monday to Sunday)." translateable="false">
+  <message name="IDS_HISTORY_TIME_PERIOD_FILTER_LAST_WEEK" desc="Option in the time period filter dropdown on the history page. Selecting it shows only history from the previous calendar week (Monday to Sunday).">
     Last week
   </message>
-  <message name="IDS_HISTORY_TIME_PERIOD_FILTER_TWO_WEEKS_AGO" desc="Option in the time period filter dropdown on the history page. Selecting it shows only history from the calendar week (Monday to Sunday) before the previous one." translateable="false">
+  <message name="IDS_HISTORY_TIME_PERIOD_FILTER_TWO_WEEKS_AGO" desc="Option in the time period filter dropdown on the history page. Selecting it shows only history from the calendar week (Monday to Sunday) before the previous one.">
     2 weeks ago
   </message>
   <message name="IDS_HISTORY_SHOW_HISTORY" desc="The show history menu in the app menu">
@@ -203,114 +202,12 @@
   <message name="IDS_HISTORY_SYNC_PROMO_BODY_SIGNED_IN" desc="The promo body text for signed in users with sync history off.">
     To get your history from your other devices, sync your history and tabs to <ph name="ACCOUNT_EMAIL">$1<ex>john@google.com</ex></ph>. You can stop syncing anytime in settings. Brave may personalize Search and other services based on your history.
   </message>
-
-  <message name="IDS_HISTORY_EMBEDDINGS_DISCLAIMER" desc="On the history page, the persistent disclaimer text shown below the search box indicating what content is sent to Brave for the history search feature.">
-    Your searches, best matches, and their page contents are sent to Brave and may be seen by human reviewers to improve this feature.
-  </message>
-  <message name="IDS_HISTORY_EMBEDDINGS_DISCLAIMER_LOGGING_OFF" desc="On the history page, the persistent disclaimer text shown below the search box indicating what content is sent to Brave for the history search feature when logging is disabled by policy.">
-    Your searches, best matches, and their page contents are sent to Brave. It will not be used by human reviewers to improve AI. Your organization may change these settings at any time.
-  </message>
-  <message name="IDS_HISTORY_EMBEDDINGS_PROMO_LABEL" desc="On the history page, the accessiblility label for the promo for history search powered by AI." translateable="false">
-    Promo
-  </message>
-  <message name="IDS_HISTORY_EMBEDDINGS_PROMO_CLOSE" desc="On the history page, the accessiblility label for the close button for the history promos." translateable="false">
+  <message name="IDS_HISTORY_PROMO_CLOSE" desc="On the history page, the accessiblility label for the close button for the history promos." translateable="false">
     Close promo
   </message>
-  <message name="IDS_HISTORY_EMBEDDINGS_PROMO_HEADING" desc="On the history page, the heading of the promo for history search powered by AI.">
-    Search your history, powered by AI
-  </message>
-  <message name="IDS_HISTORY_EMBEDDINGS_PROMO_BODY" desc="On the history page, the body text of the promo for history search powered by AI." translateable="false">
-    In a few words, describe what you’re looking for, like "comfortable walking shoes" or "vegetarian pasta recipes." As you visit more sites on this device, you’ll see more results powered by AI.
-  </message>
-  <message name="IDS_HISTORY_EMBEDDINGS_ANSWERS_PROMO_HEADING" desc="On the history page, the heading of the promo for history search powered by AI with answerer." translateable="false">
-    Get answers from your history, powered by AI
-  </message>
-  <message name="IDS_HISTORY_EMBEDDINGS_ANSWERS_PROMO_BODY" desc="On the history page, the body text of the promo for history search powered by AI with answerer." translateable="false">
-    You can ask questions like "what ingredients were in that pasta recipe?" Using question words like "what" or "where" helps Brave give you better answers. Or describe what you're looking for in a few words. As you visit more sites, you'll see more AI-powered results.
-  </message>
-  <message name="IDS_HISTORY_EMBEDDIGNS_PROMO_SETTINGS_LINK_TEXT" desc="On the history page, the text of the link to edit the user's history search setting." translateable="false">
-    Manage your history search setting
-  </message>
-  <message name="IDS_HISTORY_EMBEDDINGS_SHOW_BY_ARIA_LABEL" desc="On the history page, the accessibility label on the menu to select whether to filter results grouped by date or by group." translateable="false">
-    Filter
-  </message>
-  <message name="IDS_HISTORY_EMBEDDINGS_SHOW_BY_DATE" desc="On the history page, the label on the option to show history results grouped by date.">
-    Show by date
-  </message>
-  <message name="IDS_HISTORY_EMBEDDINGS_SHOW_BY_GROUP" desc="On the history page, the label on the option to show history results grouped by history clusters.">
-    Show by group
-  </message>
-  <message name="IDS_HISTORY_EMBEDDINGS_SUGGESTION_1" desc="On the history page, the text inside of a suggestion chip that a user can click to update their search to show results from yesterday">
-    Yesterday
-  </message>
-  <message name="IDS_HISTORY_EMBEDDINGS_SUGGESTION_2" desc="On the history page, the text inside of a suggestion chip that a user can click to update their search to show results from last 7 days">
-    Last 7 days
-  </message>
-  <message name="IDS_HISTORY_EMBEDDINGS_SUGGESTION_3" desc="On the history page, the text inside of a suggestion chip that a user can click to update their search to show results from last 30 days">
-    Last 30 days
-  </message>
-  <message name="IDS_HISTORY_EMBEDDINGS_SUGGESTION_1_ARIA_LABEL" desc="On the history page, the accessibility label for a suggestion chip that a user can click to update their search to show results from yesterday">
-    Show results from yesterday
-  </message>
-  <message name="IDS_HISTORY_EMBEDDINGS_SUGGESTION_2_ARIA_LABEL" desc="On the history page, the accessibility label for a suggestion chip that a user can click to update their search to show results from last 7 days">
-    Show results from last 7 days
-  </message>
-  <message name="IDS_HISTORY_EMBEDDINGS_SUGGESTION_3_ARIA_LABEL" desc="On the history page, the accessibility label for a suggestion chip that a user can click to update their search to show results from last 30 days">
-    Show results from last 30 days
-  </message>
-  <message name="IDS_HISTORY_EMBEDDINGS_HEADING" desc="Heading for history search results powered by AI showing the best matches for a search query.">
-    Best matches for "<ph name="SEARCH_QUERY"><ex>pizza</ex>$1</ph>"
-  </message>
-  <message name="IDS_HISTORY_EMBEDDINGS_HEADING_LOADING" desc="Heading for history search results powered by AI while loading.">
-    Searching for "<ph name="SEARCH_QUERY"><ex>pizza</ex>$1</ph>"
-  </message>
-  <message name="IDS_HISTORY_EMBEDDINGS_WITH_ANSWERS_RESULTS_HEADING" desc="Heading for history search results powered by AI showing the best matches for a search query when answers are enabled." translateable="false">
-    Best matches from your history
-  </message>
-  <message name="IDS_HISTORY_EMBEDDINGS_FOOTER" desc="Footer text for history search results powered by AI.">
-    This is an experimental feature and won’t always get it right.
-  </message>
+
   <message name="IDS_HISTORY_EMBEDDINGS_FEEDBACK_PLACEHOLDER" desc="Placeholder text in feedback from for history search">
     Send feedback for history search powered by AI
-  </message>
-  <message name="IDS_HISTORY_EMBEDDINGS_IPH_BODY" desc="Text for the IPH bubble for searching history using AI and everyday language." translateable="false">
-    For a more powerful way to search your browsing history, turn on History search, powered by AI
-  </message>
-  <message name="IDS_HISTORY_EMBEDDINGS_IPH_ACTION" desc="Text for the button in the IPH bubble for searching history using AI that takes user to Settings." translateable="false">
-    Turn on
-  </message>
-  <message name="IDS_HISTORY_EMBEDDINGS_SEARCH_PROMPT" desc="Placeholder text/label for the search input field in the history page when history embeddings is enabled." translateable="false">
-    In a few words, describe what you're searching for
-  </message>
-  <message name="IDS_HISTORY_EMBEDDINGS_SEARCH_ANSWERS_ALTERNATIVE_PROMPT_1" desc="Alternative placeholder text/label for the search input field in the history page when ahistory embeddings answerer is enabled." translateable="false">
-    Try something like "what was that square pizza place in Chicago?"
-  </message>
-  <message name="IDS_HISTORY_EMBEDDINGS_SEARCH_ANSWERS_ALTERNATIVE_PROMPT_2" desc="Alternative placeholder text/label for the search input field in the history page when ahistory embeddings answerer is enabled." translateable="false">
-    Try something like "what ingredients were in that pasta recipe?"
-  </message>
-  <message name="IDS_HISTORY_EMBEDDINGS_SEARCH_ANSWERS_ALTERNATIVE_PROMPT_3" desc="Alternative placeholder text/label for the search input field in the history page when ahistory embeddings answerer is enabled." translateable="false">
-    Try something like "what was the time of the comedy show?"
-  </message>
-  <message name="IDS_HISTORY_EMBEDDINGS_SEARCH_ANSWERS_ALTERNATIVE_PROMPT_4" desc="Alternative placeholder text/label for the search input field in the history page when ahistory embeddings answerer is enabled." translateable="false">
-    Try something like "how much was the cargo bike?"
-  </message>
-  <message name="IDS_HISTORY_EMBEDDINGS_ANSWER_HEADING" desc="Heading for answer section in history search results." translateable="false">
-    Summary
-  </message>
-  <message name="IDS_HISTORY_EMBEDDINGS_ANSWER_LOADING_HEADING" desc="Heading for answer section in history search results when the answer is loading." translateable="false">
-    Searching for a summary...
-  </message>
-  <message name="IDS_HISTORY_EMBEDDINGS_ANSWER_SOURCE_VISIT_DATE_LABEL" desc="Label for visited date for answer section in history search results." translateable="false">
-    Visited <ph name="DATE"><ex>Oct 4, 2024</ex>$1</ph>
-  </message>
-  <message name="IDS_HISTORY_EMBEDDINGS_ANSWERER_ERROR_UNANSWERABLE" desc="Error message for when history embeddings answerer determines a question cannot be answered." translateable="false">
-    Sorry, I can't help you with that.
-  </message>
-  <message name="IDS_HISTORY_EMBEDDINGS_ANSWERER_ERROR_MODEL_UNAVAILABLE" desc="Error message for when the files necessary for the history embeddings answerer to generate answers to questions are not yet available. User should be encouraged to try again later" translateable="false">
-    Preparing AI-powered summary...check back in a few minutes.
-  </message>
-  <message name="IDS_HISTORY_EMBEDDINGS_ANSWERER_ERROR_TRY_AGAIN" desc="Error message for when history embeddings answerer fails and the user can try again later." translateable="false">
-    Something went wrong. Please try again later.
   </message>
 
   <!-- For Compare -->
@@ -349,8 +246,8 @@
   <message name="IDS_HISTORY_GO_TO_GEMINI_CHAT_ERROR" desc="Toast notification shown when opening Gemini chat fails.">
     Couldn't open Gemini chat
   </message>
-  <message name="IDS_HISTORY_OTHER_FORMS_OF_HISTORY_GMA_AND_GAA_CRITICAL_ACTIONS" desc="The notification at the bottom of the history page indicating that deleting Brave browsing history will not delete other forms of history stored at Brave My Activity and Gemini Apps Activity, shown when critical actions are enabled.">
-    Your Brave sync chain may have other forms of browsing history at <ph name="BEGIN_LINK_GMA">&lt;a target="_blank" id="footerBraveMyActivityLink" href="$1"&gt;</ph>myactivity.google.com<ph name="END_LINK_GMA">&lt;/a&gt;</ph>, such as auto browse visits in your <ph name="BEGIN_LINK_GAA">&lt;a target="_blank" id="footerGeminiAppsActivityLink" href="$2"&gt;</ph>Gemini Apps Activity<ph name="END_LINK_GAA">&lt;/a&gt;</ph>
+  <message name="IDS_HISTORY_OTHER_FORMS_OF_HISTORY_GMA_AND_GAA_CRITICAL_ACTIONS" desc="The notification at the bottom of the history page indicating that deleting Brave browsing history will not delete other forms of history stored at Brave My Activity and in Gemini History, shown when critical actions are enabled. 'Gemini History' is the name of a Gemini setting, formerly called 'Gemini Apps Activity'.">
+    Your Brave sync chain may have other forms of browsing history at <ph name="BEGIN_LINK_GMA">&lt;a target="_blank" id="footerBraveMyActivityLink" href="$1"&gt;</ph>myactivity.google.com<ph name="END_LINK_GMA">&lt;/a&gt;</ph>, such as auto browse visits in your <ph name="BEGIN_LINK_GAA">&lt;a target="_blank" id="footerGeminiAppsActivityLink" href="$2"&gt;</ph>Gemini History<ph name="END_LINK_GAA">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_HISTORY_GEMINI_KEY_BROWSING_ACTIONS_TITLE" desc="Tooltip text for the expand button on history items for Gemini actor visits.">
     Gemini key browsing actions

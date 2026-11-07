@@ -123,6 +123,9 @@ GURL BraveResolveSelectionNavigationURL(Profile* profile,
 
 std::optional<GURL> GetSelectedURL(Profile* profile,
                                    const std::u16string& text) {
+  if (text.empty()) {
+    return std::nullopt;
+  }
   auto match = GetAutocompleteMatchForText(profile, text);
   if (match.type != omnibox::AutocompleteMatchType::kUrlWhatYouTyped) {
     return std::nullopt;

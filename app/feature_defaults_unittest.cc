@@ -9,7 +9,6 @@
 #include "chrome/browser/browser_features.h"
 #include "chrome/browser/devtools/features.h"
 #include "chrome/browser/glic/public/features.h"
-#include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #include "chrome/browser/policy/policy_util.h"
 #include "chrome/browser/preloading/preloading_features.h"
 #include "chrome/browser/ttc/core/features.h"
@@ -32,7 +31,6 @@
 #include "components/history/core/browser/features.h"
 #include "components/history_clusters/core/features.h"
 #include "components/history_clusters/core/on_device_clustering_features.h"
-#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "components/lens/lens_features.h"
 #include "components/manta/features.h"
 #include "components/metrics/metrics_features.h"
@@ -202,7 +200,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kDevToolsUseGcaApi,
       &features::kDigitalGoodsApi,
       &features::kEmailVerificationProtocol,
-      &features::kEnterpriseReleaseNotes,
       &features::kFedCm,
       &features::kGlicTextSelectionContextMenu,
       &features::kHttpsFirstBalancedMode,
@@ -247,9 +244,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &history_clusters::internal::kHistoryClustersNavigationContextClustering,
       &history_clusters::internal::kJourneysImages,
       &history_clusters::internal::kOmniboxHistoryClusterProvider,
-      &history_embeddings::kHistoryEmbeddings,
-      &history_embeddings::kHistoryEmbeddingsAnswers,
-      &history_embeddings::kLaunchedHistoryEmbeddings,
       &lens::features::kLensOverlay,
       &lens::features::kLensOverlayOmniboxEntryPoint,
       &lens::features::kLensStandalone,
@@ -361,7 +355,9 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
 TEST(FeatureDefaultsTest, DisabledBlinkRuntimeEnabledFeatures) {
   // Please, keep alphabetized.
   const base::Feature* disabled_features[] = {
-      &blink::features::kAdInterestGroupAPI,
+      &blink::features::kAIDecisionModelAPI,
+      &blink::features::kAIDecisionModelAPIForWorkers,
+      &blink::features::kAIEmbeddingsAPI,
       &blink::features::kAIProofreadingAPI,
       &blink::features::kAIPromptAPI,
       &blink::features::kAIPromptAPIMultimodalInput,
@@ -371,10 +367,9 @@ TEST(FeatureDefaultsTest, DisabledBlinkRuntimeEnabledFeatures) {
       &blink::features::kControlledFrame,
       &blink::features::kExtensionScriptTagging,
       &blink::features::kFencedFramesRuntime,
-      &blink::features::kFledge,
       &blink::features::kLanguageDetectionAPI,
-      &blink::features::kParakeet,
       &blink::features::kPrerender2,
+      &blink::features::kProfilerAPI,
       &blink::features::kTranslationAPI,
       &blink::features::kUserMediaElement,
   };
@@ -387,6 +382,7 @@ TEST(FeatureDefaultsTest, DisabledBlinkRuntimeEnabledFeatures) {
 TEST(FeatureDefaultsTest, EnabledBlinkRuntimeEnabledFeatures) {
   // Please, keep alphabetized.
   const base::Feature* enabled_features[] = {
+      &blink::features::kApproximateGeolocationPermissionAccuracyMode,
       &blink::features::kReduceUserAgentMinorVersion,
   };
 

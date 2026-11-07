@@ -47,6 +47,7 @@
 #include "net/dns/mock_host_resolver.h"
 #include "pdf/buildflags.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "url/url_constants.h"
 
 namespace ai_chat {
@@ -510,7 +511,7 @@ IN_PROC_BROWSER_TEST_F(AIChatGlobalSidePanelPageHandlerBrowserTest,
   // URL and skip observation — the subsequent navigation then goes unnoticed.
   GURL url2 = https_server_.GetURL("b.test", "/simple.html");
   ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url2, WindowOpenDisposition::kNewBackgroundTab,
+      browser(), url2, ui::mojom::WindowOpenDisposition::kNewBackgroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_EQ(tab_strip->count(), 2);
   // Explicitly wait for the background tab to finish loading.
@@ -583,7 +584,7 @@ IN_PROC_BROWSER_TEST_F(AIChatGlobalSidePanelPageHandlerBrowserTest,
   // as in TabSwitchNotifiesFrontend.
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL("chrome://version"),
-      WindowOpenDisposition::kNewBackgroundTab,
+      ui::mojom::WindowOpenDisposition::kNewBackgroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_EQ(tab_strip->count(), 2);
   content::WaitForLoadStop(tab_strip->GetWebContentsAt(1));

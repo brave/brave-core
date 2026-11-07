@@ -1,5 +1,5 @@
 diff --git a/components/sync/protocol/proto_visitors.h b/components/sync/protocol/proto_visitors.h
-index db77a64df58e6c8377652480875fb5a874ec36c9..8a4810a7c9dd61ed3a6162761763bfedaac4ff55 100644
+index 9cbef663be87ed8907cda8428e5cf41159243034..fa912c7463ae3bae389c7b41879cb99e5a902aa3 100644
 --- a/components/sync/protocol/proto_visitors.h
 +++ b/components/sync/protocol/proto_visitors.h
 @@ -624,6 +624,7 @@ VISIT_PROTO_FIELDS(const sync_pb::DeviceInfoSpecifics& proto) {
@@ -18,7 +18,7 @@ index db77a64df58e6c8377652480875fb5a874ec36c9..8a4810a7c9dd61ed3a6162761763bfed
  VISIT_PROTO_FIELDS(const sync_pb::SharingSpecificFields& proto) {
    VISIT_REP(enabled_features);
    VISIT(sender_id_fcm_token_v2);
-@@ -764,7 +766,7 @@ VISIT_PROTO_FIELDS(
+@@ -765,7 +767,7 @@ VISIT_PROTO_FIELDS(
  }
  
  VISIT_PROTO_FIELDS(const sync_pb::EntitySpecifics& proto) {
@@ -27,7 +27,7 @@ index db77a64df58e6c8377652480875fb5a874ec36c9..8a4810a7c9dd61ed3a6162761763bfed
                  "When adding a new protocol type, you will likely need to add "
                  "it here as well.");
    VISIT(encrypted);
-@@ -831,6 +833,7 @@ VISIT_PROTO_FIELDS(const sync_pb::EntitySpecifics& proto) {
+@@ -832,6 +834,7 @@ VISIT_PROTO_FIELDS(const sync_pb::EntitySpecifics& proto) {
    VISIT(contextual_task);
    VISIT(skill);
    VISIT(gemini_thread);

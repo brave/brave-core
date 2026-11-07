@@ -1,0 +1,20 @@
+diff --git a/content/public/browser/permission_request_description.cc b/content/public/browser/permission_request_description.cc
+index 170cf3a7dd0d42fd623683f8bea45278d78ab9d4..b08d67ae7ff4864d7b97aa1062843d5dae61bb79 100644
+--- a/content/public/browser/permission_request_description.cc
++++ b/content/public/browser/permission_request_description.cc
+@@ -34,6 +34,7 @@ PermissionRequestDescription::PermissionRequestDescription(
+     permissions.push_back(permission.Clone());
+   }
+   user_gesture = other.user_gesture;
++  requesting_origin = other.requesting_origin;
+   if (other.embedded_permission_request_descriptor) {
+     embedded_permission_request_descriptor =
+         other.embedded_permission_request_descriptor.Clone();
+@@ -51,6 +52,7 @@ PermissionRequestDescription::~PermissionRequestDescription() = default;
+ bool PermissionRequestDescription::operator==(
+     const PermissionRequestDescription& other) const {
+   return user_gesture == other.user_gesture &&
++         requesting_origin == other.requesting_origin &&
+          permissions == other.permissions &&
+          embedded_permission_request_descriptor ==
+              other.embedded_permission_request_descriptor;

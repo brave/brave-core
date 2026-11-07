@@ -8,13 +8,11 @@
 #include <memory>
 #include <vector>
 
-#include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/test/run_until.h"
-#include "base/test/scoped_feature_list.h"
 #include "base/test/scoped_path_override.h"
 #include "base/test/task_environment.h"
 #include "base/threading/thread_restrictions.h"
@@ -25,7 +23,6 @@
 #include "components/component_updater/component_updater_paths.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/component_updater/mock_component_updater_service.h"
-#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/update_client/update_client.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -55,8 +52,7 @@ class LocalModelsUpdaterUnitTest : public testing::Test {
  public:
   LocalModelsUpdaterUnitTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {
-    feature_list_.InitWithFeatures({history_embeddings::kHistoryEmbeddings},
-                                   {});
+    SetLocalModelsNeededForTesting(true);
   }
 
   ~LocalModelsUpdaterUnitTest() override = default;
@@ -76,6 +72,7 @@ class LocalModelsUpdaterUnitTest : public testing::Test {
     // the registrar's pointers to the per-test cus and local state.
     ShutdownLocalModelsComponentRegistration();
     LocalModelsUpdaterState::GetInstance()->SetInstallDir(base::FilePath());
+    SetLocalModelsNeededForTesting(false);
   }
 
   bool PathExists(const base::FilePath& file_path) {
@@ -98,10 +95,9 @@ class LocalModelsUpdaterUnitTest : public testing::Test {
  private:
   base::ScopedPathOverride scoped_path_override_{
       component_updater::DIR_COMPONENT_USER};
-  base::test::ScopedFeatureList feature_list_;
 };
 
-// Tests that the component is registered when the feature is enabled.
+// Tests that the component is registered when a feature needs the models.
 TEST_F(LocalModelsUpdaterUnitTest, Register) {
   base::RunLoop run_loop;
   EXPECT_CALL(*cus_, RegisterComponent(testing::_))
@@ -129,13 +125,13 @@ TEST_F(LocalModelsUpdaterUnitTest, ComponentReady) {
                 .AppendASCII(kEmbeddingGemmaLitertDir));
 }
 
-// Tests that the component directory is deleted when the feature is disabled.
+// Tests that an already downloaded component directory is deleted when no
+// feature needs the models, as in production.
 TEST_F(LocalModelsUpdaterUnitTest, DeleteComponent) {
   CreateDirectory(install_dir_);
   EXPECT_TRUE(PathExists(install_dir_));
 
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndDisableFeature(history_embeddings::kHistoryEmbeddings);
+  SetLocalModelsNeededForTesting(false);
   EXPECT_CALL(*cus_, RegisterComponent(testing::_)).Times(0);
   // Nothing was registered, so the directory is ours to remove.
   EXPECT_CALL(*cus_, UnregisterComponent(kComponentId))
@@ -149,10 +145,10 @@ TEST_F(LocalModelsUpdaterUnitTest, DeleteComponent) {
   EXPECT_FALSE(PathExists(install_dir_));
 }
 
-// Tests that the component is not registered when the feature is disabled.
-TEST_F(LocalModelsUpdaterUnitTest, NoRegisterWhenFeatureDisabled) {
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndDisableFeature(history_embeddings::kHistoryEmbeddings);
+// Tests that the component is not registered when no feature needs the models,
+// as in production.
+TEST_F(LocalModelsUpdaterUnitTest, NoRegisterWhenNotNeeded) {
+  SetLocalModelsNeededForTesting(false);
 
   EXPECT_CALL(*cus_, RegisterComponent(testing::_)).Times(0);
   EXPECT_CALL(*cus_, UnregisterComponent(kComponentId))

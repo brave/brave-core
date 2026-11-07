@@ -15,6 +15,7 @@
 # only allow moving temp files.
 -All/FileSystemAccessFileHandleImplMoveWriteModeTest.RequestsCorrectPermissions/*
 -All/FileSystemAccessFileHandleImplRenameWriteModeTest.RequestsCorrectPermissions/*
+-FileSystemAccessDirectoryHandleImplRevokedMountTest.ChildOperations_ReturnNotFound
 -FileSystemAccessDirectoryHandleImplTest.MoveNoReadAccess
 -FileSystemAccessFileHandleImplMoveTest.NoReadAccess
 -FileSystemAccessFileHandleImplMoveTest.NoReadAccessWriteOnlyDest

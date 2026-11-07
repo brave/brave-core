@@ -9,6 +9,7 @@
 
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/blink/public/platform/web_runtime_features.h"
+#include "third_party/blink/renderer/platform/testing/runtime_enabled_features_test_helpers.h"
 
 namespace blink {
 
@@ -48,7 +49,9 @@ TEST(BraveRuntimeEnabledFeaturesTest, DisabledFlags) {
   // Please, keep alphabetized.
   ExpectRuntimeFlagsFollowBaseFeatures(
       {
-          RUNTIME_FLAG(AdInterestGroupAPI),
+          RUNTIME_FLAG(AIDecisionModelAPI),
+          RUNTIME_FLAG(AIDecisionModelAPIForWorkers),
+          RUNTIME_FLAG(AIEmbeddingsAPI),
           RUNTIME_FLAG(AIPromptAPI),
           RUNTIME_FLAG(AIPromptAPIMultimodalInput),
           RUNTIME_FLAG(AIProofreadingAPI),
@@ -58,10 +61,9 @@ TEST(BraveRuntimeEnabledFeaturesTest, DisabledFlags) {
           RUNTIME_FLAG(ControlledFrame),
           RUNTIME_FLAG(ExtensionScriptTagging),
           RUNTIME_FLAG(FencedFrames),
-          RUNTIME_FLAG(Fledge),
           RUNTIME_FLAG(LanguageDetectionAPI),
-          RUNTIME_FLAG(Parakeet),
           RUNTIME_FLAG(Prerender2),
+          RUNTIME_FLAG(ProfilerAPI),
           RUNTIME_FLAG(TranslationAPI),
           RUNTIME_FLAG(UserMediaElement),
       },
@@ -73,6 +75,17 @@ TEST(BraveRuntimeEnabledFeaturesTest, EnabledFlags) {
   ExpectRuntimeFlagsFollowBaseFeatures(
       {
           RUNTIME_FLAG(ReduceUserAgentMinorVersion),
+      },
+      true);
+}
+
+// Its flag also depends on ApproximateGeolocationPermission, which the browser
+// process sets, so it is checked with that flag on.
+TEST(BraveRuntimeEnabledFeaturesTest, EnabledFlagsWithDependencies) {
+  ScopedApproximateGeolocationPermissionForTest approximate_geolocation(true);
+  ExpectRuntimeFlagsFollowBaseFeatures(
+      {
+          RUNTIME_FLAG(ApproximateGeolocationPermissionAccuracyMode),
       },
       true);
 }

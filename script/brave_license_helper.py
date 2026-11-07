@@ -488,7 +488,7 @@ def IsBraveRustCrate(path):
             sep=sep, nonsep=f'[^{sep}]'
         )
     )
-    return path_regex.fullmatch(path) != None
+    return path_regex.fullmatch(path) is not None
 
 
 def ReportBraveIncompleteMetadataFile(path):

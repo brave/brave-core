@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_education/buildflags.gni")
+
+brave_webui_test_grdp_deps = []
+brave_webui_test_grdp_files = []
+
+if (enable_brave_education) {
+  brave_webui_test_grdp_deps +=
+      [ "//brave/test/data/webui/brave_education:build_grdp" ]
+  brave_webui_test_grdp_files +=
+      [ "$root_gen_dir/brave/test/data/webui/brave_education/resources.grdp" ]
+}

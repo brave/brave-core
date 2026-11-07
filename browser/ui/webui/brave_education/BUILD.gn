@@ -73,7 +73,10 @@ source_set("brave_education") {
 source_set("browser_tests") {
   testonly = true
 
-  sources = [ "brave_education_page_ui_browsertest.cc" ]
+  sources = [
+    "brave_education_page_ui_browsertest.cc",
+    "brave_education_page_ui_mocha_browsertest.cc",
+  ]
 
   deps = [
     ":brave_education",

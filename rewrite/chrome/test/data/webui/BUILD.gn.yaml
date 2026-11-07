@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Import Brave's WebUI test resource lists.
+    add_import:
+      import: //brave/test/data/webui/webui_tests.gni
+  - description: |-
+      Bundle Brave's WebUI tests into the chrome://webui-test resources.
+
+      Brave's mocha tests of Brave-only WebUIs live under brave/test/data/webui.
+    append_to_target:
+      target: build_grd
+      type: generate_grd
+      code: |-
+        deps += brave_webui_test_grdp_deps
+        grdp_files += brave_webui_test_grdp_files

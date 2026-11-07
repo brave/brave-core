@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/bookmarks/bookmark_utils.cc b/chrome/browser/ui/bookmarks/bookmark_utils.cc
-index 3e7c4f60802da108e976923c07cd715fe354ae10..0922bf1a82a6c771b401f644261a2a922b28a639 100644
+index bd5f7ccf15a8305dcad5add992201b3c4a4215c2..2d75d923e34e8038b34569e477db6e4952c81495 100644
 --- a/chrome/browser/ui/bookmarks/bookmark_utils.cc
 +++ b/chrome/browser/ui/bookmarks/bookmark_utils.cc
-@@ -256,6 +256,7 @@ void UpdateBookmarkBarVisibilityPrefOnUserAction(Profile* profile) {
+@@ -186,6 +186,7 @@ bool GetURLAndTitleToBookmark(content::WebContents* web_contents,
  }
  
  std::u16string FormatBookmarkURLForDisplay(const GURL& url) {
@@ -10,7 +10,7 @@ index 3e7c4f60802da108e976923c07cd715fe354ae10..0922bf1a82a6c771b401f644261a2a92
    // Because this gets re-parsed by FixupURL(), it's safe to omit the scheme
    // and trailing slash, and unescape most characters. However, it's
    // important not to drop any username/password, or unescape anything that
-@@ -272,9 +273,13 @@ std::u16string FormatBookmarkURLForDisplay(const GURL& url) {
+@@ -202,6 +203,9 @@ std::u16string FormatBookmarkURLForDisplay(const GURL& url) {
  
    return url_formatter::FormatUrl(url, format_types, base::UnescapeRule::SPACES,
                                    nullptr, nullptr, nullptr);
@@ -19,20 +19,8 @@ index 3e7c4f60802da108e976923c07cd715fe354ae10..0922bf1a82a6c771b401f644261a2a92
 +  return url_string;
  }
  
- bool IsAppsShortcutEnabled(Profile* profile) {
-+  if ((true)) return false;
- #if BUILDFLAG(IS_CHROMEOS)
-   // Chrome OS uses the app list / app launcher.
-   return false;
-@@ -284,6 +289,7 @@ bool IsAppsShortcutEnabled(Profile* profile) {
- }
- 
- bool ShouldShowAppsShortcutInBookmarkBar(Profile* profile) {
-+  if ((true)) return false;
-   return IsAppsShortcutEnabled(profile) &&
-          profile->GetPrefs()->GetBoolean(
-              bookmarks::prefs::kShowAppsShortcutInBookmarkBar);
-@@ -385,6 +391,9 @@ bool CanAllBeEditedByUser(
+ int GetBookmarkDragOperation(content::BrowserContext* browser_context,
+@@ -295,6 +299,9 @@ bool CanAllBeEditedByUser(
  
  ui::ImageModel GetBookmarkFolderIcon(BookmarkFolderIconType icon_type,
                                       ui::ColorVariant color) {

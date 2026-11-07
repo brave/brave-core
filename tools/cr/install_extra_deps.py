@@ -30,7 +30,9 @@ _SRC_DIR = Path(__file__).resolve().parents[3]
 # front so its `third_party` package (which provides `third_party.schema`,
 # needed by gclient_eval) is not shadowed by the `third_party` package in the
 # vpython virtualenv.
-sys.path.insert(0, str(_SRC_DIR / 'third_party' / 'depot_tools'))
+sys.path.insert(
+    0, str(Path(__file__).resolve().parents[2] / 'vendor' / 'depot_tools')
+)
 
 import gclient  # pylint: disable=wrong-import-position,import-error  # noqa: E402
 import gclient_eval  # pylint: disable=wrong-import-position,import-error  # noqa: E402

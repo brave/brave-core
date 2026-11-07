@@ -116,6 +116,10 @@ export default defineConfig([
     '**/*.d.ts',
     'tools/chromium_src/lit_mangler/*.ts',
 
+    // Built and type-checked by GN's `build_webui_tests`, with `chrome://`
+    // path mappings that `tsconfig-lint.json` can't resolve.
+    'test/data/webui/',
+
     // External or vendored code; not maintained in this repo
     'vendor/',
     'third_party/',

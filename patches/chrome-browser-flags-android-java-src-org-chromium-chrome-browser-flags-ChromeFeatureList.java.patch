@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/flags/android/java/src/org/chromium/chrome/browser/flags/ChromeFeatureList.java b/chrome/browser/flags/android/java/src/org/chromium/chrome/browser/flags/ChromeFeatureList.java
-index 6d16dca93432a6e8b60d6aea3f033c7d5894ec6f..d0d1553ea6d6de3406e05d0be8e05391779db7f7 100644
+index ecfcfc569832842324f56c43d8a72fcf5d4b10bd..973f069a77313d314920a3c10439615127d2c825 100644
 --- a/chrome/browser/flags/android/java/src/org/chromium/chrome/browser/flags/ChromeFeatureList.java
 +++ b/chrome/browser/flags/android/java/src/org/chromium/chrome/browser/flags/ChromeFeatureList.java
-@@ -1718,7 +1718,7 @@ public abstract class ChromeFeatureList {
+@@ -1805,7 +1805,7 @@ public abstract class ChromeFeatureList {
      public static final MutableFlagWithSafeDefault sAndroidTabDeclutterArchiveOnDesktop =
              newMutableFlagWithSafeDefault(ANDROID_TAB_DECLUTTER_ARCHIVE_ON_DESKTOP, false);
      public static final MutableFlagWithSafeDefault sAndroidTipsNotifications =
@@ -10,4 +10,4 @@ index 6d16dca93432a6e8b60d6aea3f033c7d5894ec6f..d0d1553ea6d6de3406e05d0be8e05391
 +            newMutableFlagWithSafeDefault(ANDROID_TIPS_NOTIFICATIONS, false);
      public static final MutableFlagWithSafeDefault sAndroidTipsNotificationsV2 =
              newMutableFlagWithSafeDefault(ANDROID_TIPS_NOTIFICATIONS_V2, false);
-     public static final MutableFlagWithSafeDefault sAndroidUserEducationFramework =
+     public static final MutableFlagWithSafeDefault sAndroidUnifiedKeyboardShortcuts =

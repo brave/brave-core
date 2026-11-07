@@ -11,6 +11,10 @@ use url::Url;
 
 use super::speedreader::*;
 
+chromium::import! {
+    "//brave/components/speedreader/rust/lib/src/readability:lib" as readability;
+}
+
 use readability::{extractor, statistics};
 
 const MOZ_SCORE_THRESHOLD: f64 = 30.0;

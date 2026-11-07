@@ -1,12 +1,13 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/media/ui/ChromeMediaNotificationManager.java b/chrome/android/java/src/org/chromium/chrome/browser/media/ui/ChromeMediaNotificationManager.java
-index e8508e2d658dfd7e0729198a9c4621c764188481..008e9d67f0bfcb90f33097f7886ae2c9ab640543 100644
+index 7d6a2507b9ee0374988c01b620ab8d7fc66efe5d..90902bc6e390d7ec2a500883b54862afd257635f 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/media/ui/ChromeMediaNotificationManager.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/media/ui/ChromeMediaNotificationManager.java
-@@ -22,6 +22,6 @@ public class ChromeMediaNotificationManager {
+@@ -31,7 +31,7 @@ public class ChromeMediaNotificationManager {
          MediaNotificationManager.setMultipleMediaNotificationsEnabled(
                  ChromeFeatureList.isEnabled(ChromeFeatureList.ALLOW_MULTIPLE_MEDIA_NOTIFICATIONS));
          MediaNotificationManager.show(
 -                notificationInfo, ChromeMediaNotificationControllerDelegate::new);
 +                notificationInfo, BraveMediaNotificationControllerDelegate::new);
-     }
- }
+         if (MediaNotificationManager.isMultipleMediaNotificationsEnabled()
+                 && !sHasCleanedUpStaleNotifications) {
+             sHasCleanedUpStaleNotifications = true;

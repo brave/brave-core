@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-index 2eee4b992490386e93c4f34772468102b775e927..a8beabbccc9117e0d6e95fb3c118fcc7d8bfea86 100644
+index 5ad90bdb96f47b5f0c914f2870f9180d540ecb50..06f7b8bf5be1372a1c687b25508fa4a7c6fbf26e 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-@@ -209,10 +209,10 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+@@ -211,10 +211,10 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
      private boolean mShouldUpdatePrefs;
  
      /** Maps {@link UserSelectableType} to the corresponding preference. */
@@ -16,7 +16,7 @@ index 2eee4b992490386e93c4f34772468102b775e927..a8beabbccc9117e0d6e95fb3c118fcc7
      private @Nullable SignoutButtonPreference mSignOutPreference;
  
      private final SettableMonotonicObservableSupplier<String> mPageTitle =
-@@ -321,6 +321,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+@@ -323,6 +323,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
  
      @Override
      public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -24,17 +24,17 @@ index 2eee4b992490386e93c4f34772468102b775e927..a8beabbccc9117e0d6e95fb3c118fcc7
          if (mSyncService.isUsingExplicitPassphrase()
                  && preference
                          .getKey()
-@@ -402,6 +403,9 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+@@ -401,6 +402,9 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+     }
+ 
+     private void setupCentralAccountCardPreference(Profile profile) {
++        if (getIdentityManager(profile).getPrimaryAccountInfo() == null) {
++            return;
++        }
          CentralAccountCardPreference centralAccountCardPreference =
                  findPreference(PREF_CENTRAL_ACCOUNT_CARD_PREFERENCE);
          IdentityManager identityManager = getIdentityManager(profile);
-+        if (identityManager.getPrimaryAccountInfo() == null) {
-+            return;
-+        }
-         centralAccountCardPreference.initialize(
-                 assumeNonNull(identityManager.getPrimaryAccountInfo()),
-                 ProfileDataCache.createWithDefaultImageSizeAndNoBadge(
-@@ -594,7 +598,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+@@ -615,7 +619,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
       * this state.
       */
      private void updateSyncPreferences() {
@@ -43,7 +43,7 @@ index 2eee4b992490386e93c4f34772468102b775e927..a8beabbccc9117e0d6e95fb3c118fcc7
          // May happen if account is removed from the device while this screen is shown.
          if (primaryAccount == null) {
              finishCurrentSettings();
-@@ -1030,6 +1034,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+@@ -1051,6 +1055,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
  
      /** Whether there is no primary account, leaving this page with nothing to describe. */
      private boolean isSignedOut() {

@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Register Brave's notification handlers.
+
+      Brave Ads and Brave Wallet show notifications of their own types, which
+      need handlers alongside upstream's for every profile.
+    regex:
+      re_pattern:
+        '(NotificationDisplayServiceImpl::NotificationDisplayServiceImpl\(.*?\n\s*if
+        \(profile_\) \{)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+            AddBraveNotificationHandlers(*this, *profile_);

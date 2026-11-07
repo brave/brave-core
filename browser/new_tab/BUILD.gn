@@ -36,7 +36,7 @@ if (!is_android) {
       "//brave/app:brave_generated_resources_grit",
       "//brave/components/constants",
       "//chrome/browser/profiles:profile",
-      "//chrome/browser/ui/webui/ntp",
+      "//chrome/browser/search",
       "//chrome/common",
       "//components/prefs",
       "//content/public/browser",

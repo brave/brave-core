@@ -43,6 +43,7 @@
 #include "components/optimization_guide/content/browser/page_content_proto_provider.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/base/page_transition_types.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
@@ -197,7 +198,7 @@ void ContentAgentToolProvider::GetOrCreateTabHandleForTask(
     // of acting on existing tabs.
     NavigateParams params(profile_, GURL(url::kAboutBlankURL),
                           ui::PAGE_TRANSITION_FROM_API);
-    params.disposition = WindowOpenDisposition::kNewForegroundTab;
+    params.disposition = ui::mojom::WindowOpenDisposition::kNewForegroundTab;
 #if BUILDFLAG(ENABLE_CONTAINERS)
     // Navigations from this tab, and tabs it opens, inherit the container.
     if (const std::string& container_id = GetOrCreateContainerId();

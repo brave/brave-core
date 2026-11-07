@@ -41,8 +41,8 @@ import repository
 sys.path.insert(
     0,
     str(
-        Path(__file__).resolve().parents[3]
-        / 'third_party'
+        Path(__file__).resolve().parents[2]
+        / 'vendor'
         / 'depot_tools'
         / 'third_party'
     ),

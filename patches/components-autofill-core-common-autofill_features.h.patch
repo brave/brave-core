@@ -1,5 +1,5 @@
 diff --git a/components/autofill/core/common/autofill_features.h b/components/autofill/core/common/autofill_features.h
-index 296903835018fdc187f7737afff57c17927091be..f0abbc599d8103a9b123bb89cd0a1672d6d047ed 100644
+index c17079d441b0e9306106a05803bdb931e80f6981..4b6b947090ce9fe802783a86f09b742c7e63f03b 100644
 --- a/components/autofill/core/common/autofill_features.h
 +++ b/components/autofill/core/common/autofill_features.h
 @@ -110,7 +110,7 @@ COMPONENT_EXPORT(AUTOFILL)
@@ -11,7 +11,7 @@ index 296903835018fdc187f7737afff57c17927091be..f0abbc599d8103a9b123bb89cd0a1672
  COMPONENT_EXPORT(AUTOFILL)
  BASE_DECLARE_FEATURE_PARAM(base::TimeDelta, kAutofillAiServerModelCacheAge);
  COMPONENT_EXPORT(AUTOFILL)
-@@ -166,7 +166,7 @@ COMPONENT_EXPORT(AUTOFILL)
+@@ -168,7 +168,7 @@ COMPONENT_EXPORT(AUTOFILL)
  DECLARE_FEATURE_WITH_MOBILE_COUNTRY_RESTRICTION(
      kAutofillAiWalletVehicleRegistration);
  COMPONENT_EXPORT(AUTOFILL)

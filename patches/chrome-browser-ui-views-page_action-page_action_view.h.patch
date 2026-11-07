@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/page_action/page_action_view.h b/chrome/browser/ui/views/page_action/page_action_view.h
-index ed18f5c15927da22f4b8d94e2a44595de479dd0a..c9f934f9fe35e1902db39ae0c1799aa4419ad027 100644
+index 23f2f81454d9e93c843c0f3271a17e9855147239..948592b4b8dc0d72135cd8a23ec5bbf76ac66852 100644
 --- a/chrome/browser/ui/views/page_action/page_action_view.h
 +++ b/chrome/browser/ui/views/page_action/page_action_view.h
-@@ -156,6 +156,21 @@ class PageActionView : public IconLabelBubbleView,
+@@ -157,6 +157,21 @@ class PageActionView : public IconLabelBubbleView,
  
    static PageActionPassKey PassKeyForTesting() { return PageActionPassKey(); }
  

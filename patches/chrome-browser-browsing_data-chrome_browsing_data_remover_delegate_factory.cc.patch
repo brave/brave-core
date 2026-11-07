@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.cc b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.cc
-index ef8629f2c6144cb50ea433fd5d517561eb8b3d8e..6c0c6247b1fc5c871835e154a89694ab9381bbb4 100644
+index 64a4baac7b898317d2544388ade9570026d345ff..8c935825abd271e008f7631a5725f0ebf1cffe7d 100644
 --- a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.cc
 +++ b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.cc
 @@ -69,9 +69,9 @@ ChromeBrowsingDataRemoverDelegateFactory::GetInstance() {
@@ -14,7 +14,7 @@ index ef8629f2c6144cb50ea433fd5d517561eb8b3d8e..6c0c6247b1fc5c871835e154a89694ab
        GetInstance()->GetServiceForBrowserContext(profile, true));
  }
  
-@@ -122,6 +122,10 @@ ChromeBrowsingDataRemoverDelegateFactory::
+@@ -123,6 +123,10 @@ ChromeBrowsingDataRemoverDelegateFactory::
    DependsOn(WebDataServiceFactory::GetInstance());
    DependsOn(WebHistoryServiceFactory::GetInstance());
    DependsOn(ZeroSuggestCacheServiceFactory::GetInstance());
@@ -25,7 +25,7 @@ index ef8629f2c6144cb50ea433fd5d517561eb8b3d8e..6c0c6247b1fc5c871835e154a89694ab
  
  #if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
    DependsOn(extensions::ActivityLog::GetFactoryInstance());
-@@ -153,5 +157,5 @@ ChromeBrowsingDataRemoverDelegateFactory::BuildServiceInstanceForBrowserContext(
+@@ -154,5 +158,5 @@ ChromeBrowsingDataRemoverDelegateFactory::BuildServiceInstanceForBrowserContext(
    Profile* profile = static_cast<Profile*>(context);
    CHECK(!profile->IsGuestSession() || profile->IsOffTheRecord(),
          base::NotFatalUntil::M161);

@@ -20,7 +20,7 @@ agentic_review {
     rules: "tools/cr/codehealth/rules/triage/memory-safety-and-crashes.md"
   }
   capability_groups {
-    subject_patterns: "(?i)\\blaunch|enable .* by default"
+    subject_patterns: "(?i)\\blaunch|enable .* by default|\\bdefault[- ]enabl"
     exclude_subject_expression: "(?i)^\\[?ash\\b|\\bash(?:::|/)|chrome ?os|\\bcros\\b|fuchsia|perfetto|gardener|^(?:\\[[^\\]]*\\]\\s*)*disable .*tests?\\b|migrate .*tests?\\b|tests? .*(?:to|onto) (?:batch|robolectric|junit)"
     rules: "tools/cr/codehealth/rules/triage/launches-and-default-enables.md"
   }

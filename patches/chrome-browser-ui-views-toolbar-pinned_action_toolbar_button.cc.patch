@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/toolbar/pinned_action_toolbar_button.cc b/chrome/browser/ui/views/toolbar/pinned_action_toolbar_button.cc
-index 31da4534bb1a311a8aefe694357eb93b4d6a6adb..188a53ca2aefa863237616031e51200ea2935bbd 100644
+index 5d7ce619d6d950ba20e904594edcb8935e37f559..9128b33f26e3fa98b0aa984544e691cf692cf33d 100644
 --- a/chrome/browser/ui/views/toolbar/pinned_action_toolbar_button.cc
 +++ b/chrome/browser/ui/views/toolbar/pinned_action_toolbar_button.cc
-@@ -244,6 +244,10 @@ void PinnedActionToolbarButton::OnMouseReleased(const ui::MouseEvent& event) {
+@@ -263,6 +263,10 @@ int PinnedActionToolbarButton::GetIconSize() const {
  }
  
  void PinnedActionToolbarButton::UpdateIcon() {

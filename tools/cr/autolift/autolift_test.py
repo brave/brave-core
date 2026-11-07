@@ -2707,6 +2707,7 @@ class LiftCommandTest(unittest.TestCase):
         directory: Path | None = None,
         package_range: str | None = None,
         asked_to_continue: bool | None = None,
+        kept_continuation: bool = False,
     ):
         """Runs `lift`, with Brockit printing `log_text`. A `--continue` run
         resumes a lift that asked to continue, unless `asked_to_continue`
@@ -2743,6 +2744,11 @@ class LiftCommandTest(unittest.TestCase):
             ) as run_mock,
             mock.patch.object(
                 autolift, '_package_range', return_value=package_range
+            ),
+            mock.patch.object(
+                autolift,
+                '_brockit_kept_continuation',
+                return_value=kept_continuation,
             ),
             mock.patch.object(
                 autolift.FixSources,
@@ -2812,6 +2818,34 @@ class LiftCommandTest(unittest.TestCase):
         )
         self.assertIn('has nothing to resume', section)
         result, run_mock, _ = self._lift(_CONTINUE_LOG, directory=directory)
+        self.assertEqual(result, 1)
+        run_mock.assert_not_called()
+
+    def test_a_stop_that_keeps_the_continuation_can_be_resumed(self):
+        log = (
+            '🔥🔥 The following modified patches have changes in the number '
+            'of hunks, and are expected to be submitted separately as fixes '
+            'with Chromium culprits:\n'
+        )
+        _, _, report = self._lift(
+            log, returncode=1, continue_=False, kept_continuation=True
+        )
+        self.assertIn(
+            'then run `autolift.py lift --continue`', self._last_section(report)
+        )
+        result, run_mock, _ = self._lift(
+            '💥 Done!\n', directory=report.parent.parent
+        )
+        self.assertEqual(result, 0)
+        run_mock.assert_called_once()
+
+    def test_a_finished_lift_is_not_resumed_from_a_stale_continuation(self):
+        _, _, report = self._lift(
+            '💥 Done!\n', continue_=False, kept_continuation=True
+        )
+        result, run_mock, _ = self._lift(
+            _CONTINUE_LOG, directory=report.parent.parent
+        )
         self.assertEqual(result, 1)
         run_mock.assert_not_called()
 

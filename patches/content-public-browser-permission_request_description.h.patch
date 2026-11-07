@@ -1,0 +1,14 @@
+diff --git a/content/public/browser/permission_request_description.h b/content/public/browser/permission_request_description.h
+index a8a6282ee33c0a2b67eb0fe88cb05736e344cc60..2285cefafcd90ddea2cee2da00bf3d4027e66546 100644
+--- a/content/public/browser/permission_request_description.h
++++ b/content/public/browser/permission_request_description.h
+@@ -49,6 +49,9 @@ struct CONTENT_EXPORT PermissionRequestDescription {
+   // Indicates the request is initiated by a user gesture.
+   bool user_gesture;
+ 
++  // The origin on whose behalf this permission request is being made.
++  GURL requesting_origin;
++
+   // If not null, this request comes from an embedded permission element,
+   // and this struct holds element-specific data.
+   blink::mojom::EmbeddedPermissionRequestDescriptorPtr

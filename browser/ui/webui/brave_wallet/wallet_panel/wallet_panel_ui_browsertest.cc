@@ -39,6 +39,7 @@
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 
 using content::EvalJsResult;
 
@@ -196,7 +197,7 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
     ui_test_utils::NavigateToURLWithDisposition(
         browser(),
         GURL(std::string(kBraveUIWalletPanelURL) + "crypto/connections"),
-        WindowOpenDisposition::kNewForegroundTab,
+        ui::mojom::WindowOpenDisposition::kNewForegroundTab,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
     wallet_index_ = browser()->tab_strip_model()->active_index();
   }
@@ -204,7 +205,7 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
   void CreateDappTab() {
     ui_test_utils::NavigateToURLWithDisposition(
         browser(), https_server_->GetURL("/popup.html"),
-        WindowOpenDisposition::kNewForegroundTab,
+        ui::mojom::WindowOpenDisposition::kNewForegroundTab,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
     dapp_contents_ = browser()->tab_strip_model()->GetActiveWebContents();
     ActivateWalletTab();
@@ -213,7 +214,7 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
   void CreateSettingsTab() {
     ui_test_utils::NavigateToURLWithDisposition(
         browser(), GURL(std::string(kWalletSettingsURL) + "/networks"),
-        WindowOpenDisposition::kNewForegroundTab,
+        ui::mojom::WindowOpenDisposition::kNewForegroundTab,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
     settings_index_ = browser()->tab_strip_model()->active_index();
     // Overriding native confirmation dialog so it always confirms.

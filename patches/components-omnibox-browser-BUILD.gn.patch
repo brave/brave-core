@@ -1,8 +1,8 @@
 diff --git a/components/omnibox/browser/BUILD.gn b/components/omnibox/browser/BUILD.gn
-index f7aaba4a989da2663c8ef1692e5ad7fbb9ff3f3c..683075294c3d5c59b1ca6147143ce71723eed5e3 100644
+index d95821c7b89af6180fdaabd81cb500290abbf8cb..510dde40fe3966b5657931548041fea0a98dc72a 100644
 --- a/components/omnibox/browser/BUILD.gn
 +++ b/components/omnibox/browser/BUILD.gn
-@@ -376,6 +376,7 @@ static_library("browser") {
+@@ -378,6 +378,7 @@ static_library("browser") {
      "zero_suggest_verbatim_match_provider.cc",
      "zero_suggest_verbatim_match_provider.h",
    ]
@@ -10,7 +10,7 @@ index f7aaba4a989da2663c8ef1692e5ad7fbb9ff3f3c..683075294c3d5c59b1ca6147143ce717
  
    public_deps = [
      ":aim_eligibility_service_features",
-@@ -403,6 +404,7 @@ static_library("browser") {
+@@ -405,6 +406,7 @@ static_library("browser") {
      "//third_party/tflite_support:tflite_support_proto",
      "//url",
    ]
@@ -18,7 +18,7 @@ index f7aaba4a989da2663c8ef1692e5ad7fbb9ff3f3c..683075294c3d5c59b1ca6147143ce717
  
    deps = [
      "//build:android_buildflags",
-@@ -450,6 +452,7 @@ static_library("browser") {
+@@ -451,6 +453,7 @@ static_library("browser") {
      "//ui/base",
      "//ui/gfx",
    ]
@@ -26,27 +26,3 @@ index f7aaba4a989da2663c8ef1692e5ad7fbb9ff3f3c..683075294c3d5c59b1ca6147143ce717
  
    if (is_android) {
      deps += [ "//components/location/android:settings" ]
-@@ -1151,6 +1154,7 @@ mojom("mojo_bindings") {
-       ":suggest_template_info_mojo_bindings",
-     ]
-   }
-+  generate_legacy_js_bindings = true
- }
- 
- if (!is_ios) {
-@@ -1171,6 +1175,7 @@ if (!is_ios) {
-         traits_deps = [ "//third_party/omnibox_proto" ]
-       },
-     ]
-+    generate_legacy_js_bindings = true
-   }
- 
-   mojom("suggest_template_info_mojo_bindings") {
-@@ -1181,6 +1186,7 @@ if (!is_ios) {
-       "//mojo/public/mojom/base",
-       "//url/mojom:url_mojom_gurl",
-     ]
-+    generate_legacy_js_bindings = true
-   }
- 
-   source_set("suggest_template_info_mojo_utils") {

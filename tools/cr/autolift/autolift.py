@@ -3856,6 +3856,11 @@ def summarize_lift(log: str) -> LiftSummary:
     )
 
 
+def _brockit_kept_continuation() -> bool:
+    """Whether Brockit's `lift --continue` has a continuation to resume."""
+    return (repository.brave.root / '.version_upgrade').exists()
+
+
 def _package_range() -> str | None:
     """`<upstream tag>..<HEAD tag>` from `package.json`, if they differ."""
     old = Version.from_git('@{upstream}')
@@ -3958,6 +3963,14 @@ def _cmd_lift(args: argparse.Namespace) -> int:
             check=False,
         ).returncode
     summary = summarize_lift(log.read_bytes().decode('utf-8', errors='replace'))
+    # Brockit can stop on an error in `--continue` (a patch whose hunk count
+    # changed) without saying so, keeping its continuation for the rerun.
+    if (
+        not summary.resumable
+        and not summary.done
+        and _brockit_kept_continuation()
+    ):
+        summary = dataclasses.replace(summary, resumable=True)
     if summary.resumable:
         stopped.touch()
     else:

@@ -8,7 +8,7 @@ import re
 import logging
 import time
 
-from typing import List, Optional
+from typing import Optional
 
 from components.perf_test_utils import GetProcessOutput
 from components import path_util

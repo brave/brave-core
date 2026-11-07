@@ -385,6 +385,25 @@ class PatchAdoptions:
 
     def __init__(self, range_: Range):
         self._range = range_
+        self._renames: dict[str, str] | None = None
+
+    def renamed_from(self, path: str) -> str | None:
+        """The path at the old tag of a file the range moved to `path`."""
+        if self._renames is None:
+            out = self._range.chromium.run(
+                'diff',
+                '--name-status',
+                '-M',
+                '--diff-filter=R',
+                self._range.old,
+                self._range.new,
+            )
+            self._renames = {}
+            for line in out.splitlines():
+                parts = line.split('\t')
+                if len(parts) == 3 and parts[0].startswith('R'):
+                    self._renames[parts[2]] = parts[1]
+        return self._renames.get(path)
 
     @staticmethod
     def upstream_path(patch: str, path: str) -> str:
@@ -442,6 +461,8 @@ class PatchAdoptions:
                 # A sub-repository (V8, DevTools), or deleted upstream.
                 outside += old is None
                 continue
+            if old is None and (moved := self.renamed_from(path)):
+                old = chromium.show(moved, self._range.old)
             old_lines = Counter(
                 line.strip() for line in (old or '').splitlines()
             )
@@ -588,6 +609,30 @@ class TestFilters:
     # `using Alias = [ns::]Base[<...>];`, a new suite name for the same fixture.
     _ALIAS = re.compile(r'\busing\s+(\w+)\s*=\s*(?:\w+::)*(\w+)\s*[<;]')
 
+    @staticmethod
+    def _file_kind(path: str) -> str | None:
+        """The kind of test binary a source's name says it builds into."""
+        stem = Path(path).stem
+        if stem.endswith('_interactive_uitest'):
+            return 'interactive'
+        if stem.endswith(('_browsertest', '_browser_test')):
+            return 'browser'
+        if stem.endswith(('_unittest', '_unit_test')):
+            return 'unit'
+        return None
+
+    @staticmethod
+    def _binary_kind(entry: FilterEntry) -> str | None:
+        """The kind of test binary a filter entry's file is for."""
+        binary = Path(entry.where.rsplit(':', 1)[0]).stem.split('-')[0]
+        if binary == 'interactive_ui_tests':
+            return 'interactive'
+        if binary.endswith(('browsertests', 'browser_tests')):
+            return 'browser'
+        if binary.endswith(('unittests', 'unit_tests')):
+            return 'unit'
+        return None
+
     def __init__(
         self,
         range_: Range,
@@ -712,9 +757,9 @@ class TestFilters:
                     moved[suite].append(name)
         return moved
 
-    def new_subclasses(self) -> dict[str, list[tuple[str, str]]]:
-        """Base class -> `(subclass, commit)` for each class, or alias of a
-        class, the range's commits declare."""
+    def new_subclasses(self) -> dict[str, list[tuple[str, str, str]]]:
+        """Base class -> `(subclass, commit, file)` for each class, or alias of
+        a class, the range's commits declare."""
         out = self._range.chromium.run(
             'log',
             '-p',
@@ -729,14 +774,14 @@ class TestFilters:
             '*.h',
             '*.mm',
         )
-        found: dict[str, list[tuple[str, str]]] = defaultdict(list)
-        sha, added = '', []
+        found: dict[str, list[tuple[str, str, str]]] = defaultdict(list)
+        sha, path, added = '', '', []
 
         def flush() -> None:
             text = ' '.join(added)
             for pattern in (self._SUBCLASS, self._ALIAS):
                 for match in pattern.finditer(text):
-                    found[match.group(2)].append((match.group(1), sha))
+                    found[match.group(2)].append((match.group(1), sha, path))
             added.clear()
 
         for line in out.splitlines():
@@ -746,6 +791,8 @@ class TestFilters:
             flush()
             if line.startswith('@@@ '):
                 sha = line[4:]
+            elif line.startswith('+++ b/'):
+                path = line[6:]
         flush()
         return found
 
@@ -775,21 +822,26 @@ class TestFilters:
         bases = {
             derived: base
             for base, subclasses in new_subclasses.items()
-            for derived, _ in subclasses
+            for derived, _, _ in subclasses
         }
         for base, subclasses in sorted(new_subclasses.items()):
-            for derived, sha in subclasses:
+            for derived, sha, path in subclasses:
                 if (
                     derived not in self._new.suites
                     or derived in self._old.suites
                 ):
                     continue
-                # Only an entry naming a test the new suite defines applies.
+                # Only an entry naming a test the new suite defines applies,
+                # from the filter of a binary the suite's source can build into.
                 names = self._new.suites[derived]
+                kind = self._file_kind(path)
 
                 def applies(e: FilterEntry, suite: str) -> bool:
-                    return fnmatch.fnmatchcase(suite, e.suite) and any(
-                        fnmatch.fnmatchcase(n, e.test) for n in names
+                    binary = self._binary_kind(e)
+                    return (
+                        (kind is None or binary is None or kind == binary)
+                        and fnmatch.fnmatchcase(suite, e.suite)
+                        and any(fnmatch.fnmatchcase(n, e.test) for n in names)
                     )
 
                 if any(applies(e, derived) for e in patterns):

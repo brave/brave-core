@@ -25,6 +25,7 @@
 #include "components/page_info/page_info.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_navigation_observer.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/events/test/test_event.h"
 #include "ui/views/controls/button/button.h"
 #include "ui/views/test/button_test_api.h"
@@ -333,7 +334,7 @@ IN_PROC_BROWSER_TEST_F(BravePageInfoBubbleViewRepeatedReloadsBrowserTest,
   auto reload = [&]() {
     content::TestNavigationObserver reload_observer(
         browser()->tab_strip_model()->GetActiveWebContents());
-    chrome::Reload(browser(), WindowOpenDisposition::kCurrentTab);
+    chrome::Reload(browser(), ui::mojom::WindowOpenDisposition::kCurrentTab);
     reload_observer.Wait();
   };
 

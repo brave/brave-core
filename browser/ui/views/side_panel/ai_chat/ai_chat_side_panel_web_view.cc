@@ -28,8 +28,8 @@
 #include "content/public/browser/web_contents_delegate.h"
 #include "content/public/common/referrer.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/base/page_transition_types.h"
-#include "ui/base/window_open_disposition.h"
 #include "ui/views/widget/widget.h"
 #include "url/gurl.h"
 
@@ -152,7 +152,7 @@ content::WebContents* AIChatSidePanelWebView::AddNewContents(
     content::WebContents* source,
     std::unique_ptr<content::WebContents> new_contents,
     const GURL& target_url,
-    WindowOpenDisposition disposition,
+    ui::mojom::WindowOpenDisposition disposition,
     const blink::mojom::WindowFeatures& window_features,
     bool user_gesture,
     bool* was_blocked) {
@@ -176,7 +176,7 @@ void AIChatSidePanelWebView::DidOpenRequestedURL(
     content::RenderFrameHost* source_render_frame_host,
     const GURL& url,
     const content::Referrer& referrer,
-    WindowOpenDisposition disposition,
+    ui::mojom::WindowOpenDisposition disposition,
     ui::PageTransition transition,
     bool started_from_context_menu,
     bool renderer_initiated) {
@@ -205,10 +205,12 @@ content::WebContents* AIChatSidePanelWebView::OpenURLFromTab(
         navigation_handle_callback) {
   auto* browser = FindNormalBrowser(source->GetBrowserContext());
   if (browser &&
-      (params.disposition == WindowOpenDisposition::kNewForegroundTab ||
-       params.disposition == WindowOpenDisposition::kNewBackgroundTab ||
-       params.disposition == WindowOpenDisposition::kNewWindow ||
-       params.disposition == WindowOpenDisposition::kOffTheRecord)) {
+      (params.disposition ==
+           ui::mojom::WindowOpenDisposition::kNewForegroundTab ||
+       params.disposition ==
+           ui::mojom::WindowOpenDisposition::kNewBackgroundTab ||
+       params.disposition == ui::mojom::WindowOpenDisposition::kNewWindow ||
+       params.disposition == ui::mojom::WindowOpenDisposition::kOffTheRecord)) {
     return browser->OpenURL(params, std::move(navigation_handle_callback));
   }
   return WebUIContentsWrapper::Host::OpenURLFromTab(

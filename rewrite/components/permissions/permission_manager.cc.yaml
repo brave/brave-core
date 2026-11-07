@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Request for the description's `requesting_origin`, when it names one.
+
+      Brave Wallet requests account permissions for a per-account origin
+      derived from the requesting frame's, so the prompt and the stored grant
+      are keyed on that origin rather than the frame's.
+    regex:
+      re_pattern:
+        '(const GURL requesting_origin
+        =\s*)(render_frame_host->GetLastCommittedOrigin\(\)\.GetURL\(\));'
+      replace: |-
+        \1request_description.requesting_origin.is_empty()
+                  ? \2
+                  : request_description.requesting_origin;

@@ -25,13 +25,12 @@ namespace {
 // When updating also update the array in the overload below.
 constexpr auto kBraveDisabledTrialNames =
     base::MakeFixedFlatSet<std::string_view>({
-        "AdInterestGroupAPI",
+        "AISemanticEmbedderAPI",
         "DeviceAttributes",
         "DigitalGoodsV2",
         "InterestCohortAPI",
         "FencedFrames",
         "Fledge",
-        "Parakeet",
         "Prerender2CrossOriginIframes",
         "SignedExchangeSubresourcePrefetch",
         "SubresourceWebBundles",
@@ -39,9 +38,7 @@ constexpr auto kBraveDisabledTrialNames =
 
 constexpr auto kBraveDisabledTrialFeatures =
     base::MakeFixedFlatSet<blink::mojom::OriginTrialFeature>({
-        blink::mojom::OriginTrialFeature::kAdInterestGroupAPI,
         blink::mojom::OriginTrialFeature::kDigitalGoods,
-        blink::mojom::OriginTrialFeature::kParakeet,
         blink::mojom::OriginTrialFeature::kPrerender2CrossOriginIframes,
     });
 

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/image_editor/screenshot_flow.cc b/chrome/browser/image_editor/screenshot_flow.cc
-index 4c30cfe9ca02cfec1eed21d433e3e914e18a55ee..0694bf2d1005d055783f34b77b7be92375b59f91 100644
+index 4c30cfe9ca02cfec1eed21d433e3e914e18a55ee..4da187eb407a9695efd04aeca3382381b887096a 100644
 --- a/chrome/browser/image_editor/screenshot_flow.cc
 +++ b/chrome/browser/image_editor/screenshot_flow.cc
 @@ -132,7 +132,7 @@ void ScreenshotFlow::CreateAndAddUIOverlay() {
@@ -7,7 +7,7 @@ index 4c30cfe9ca02cfec1eed21d433e3e914e18a55ee..0694bf2d1005d055783f34b77b7be923
    const gfx::NativeWindow& native_window = web_contents_->GetNativeView();
    ui::Layer* content_layer = native_window->layer();
 -  const gfx::Rect bounds = native_window->bounds();
-+  const gfx::Rect bounds = AdjustScreenshotOverlayBounds(native_window->bounds());
++  const gfx::Rect bounds(native_window->bounds().size());
    // Capture mouse down and drag events on our window.
    event_capture_.Observe(native_window);
  #endif
@@ -16,7 +16,7 @@ index 4c30cfe9ca02cfec1eed21d433e3e914e18a55ee..0694bf2d1005d055783f34b77b7be923
  #else
    const gfx::NativeWindow& native_window = web_contents_->GetNativeView();
 -  const gfx::Rect bounds = native_window->bounds();
-+  const gfx::Rect bounds = AdjustScreenshotOverlayBounds(native_window->bounds());
++  const gfx::Rect bounds(native_window->bounds().size());
  #endif
    screen_capture_layer_->SetBounds(bounds);
  }

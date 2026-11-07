@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/system_page/system_page.ts b/chrome/browser/resources/settings/system_page/system_page.ts
-index 62c47ec50801abb759a907577a668799d434bede..95ffbad0651143dd2c61871767274ae7fad7905a 100644
+index 5a1fc7e8def088e6d31f414959debd617923eb49..8d763a83cc9b893db6135ee6ae3ccdec8ff34f78 100644
 --- a/chrome/browser/resources/settings/system_page/system_page.ts
 +++ b/chrome/browser/resources/settings/system_page/system_page.ts
 @@ -270,4 +270,3 @@ declare global {

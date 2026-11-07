@@ -8,7 +8,7 @@ import { TabSearchPageElement } from './tab_search_page-chromium.js'
 import { setSemanticOpenTabsContext } from '/tab_group_shared/search.js'
 import type { SplitViewData } from './tab_data.js'
 import { TabData } from './tab_data.js'
-import { BraveTabSearchApiProxyImpl } from './tab_search_api_proxy.js'
+import { browserProxyFactory } from './tab_search.mojom-webui.js'
 
 // Augments the substring-filtered open-tab list with on-device semantic
 // matches from `searchTabsByContent`. A monotonic token discards stale
@@ -44,8 +44,8 @@ class BraveTabSearchPageElement extends TabSearchPageElement {
       return
     }
     const token = ++this.semanticSearchToken_
-    const proxy = BraveTabSearchApiProxyImpl.getInstance()
-    void proxy.searchTabsByContent(searchText).then(({tabIds}) => {
+    const handler = browserProxyFactory.getInstance().handler
+    void handler.searchTabsByContent(searchText).then(({tabIds}) => {
       if (token !== this.semanticSearchToken_) {
         return
       }

@@ -248,7 +248,7 @@ EXISTING_TRANSLATIONS = {
     "IDC_NEW_SPLIT_TAB": "IDS_TAB_CXMENU_NEW_SPLIT_WITH_CURRENT",
     "IDC_OPEN_GUEST_PROFILE": "IDS_OPEN_GUEST_PROFILE",  # &amp;Open Guest profile
     "IDC_OPEN_IN_CHROME": "IDS_OPEN_IN_CHROME",  # &amp;Open in Brave
-    "IDC_OPTIONS": "IDS_OPTIONS",  # &amp;Options
+    "IDC_OPTIONS": "IDS_SETTINGS",  # &amp;Settings
     # Pa&amp;ste and go to
     # <ph name="URL">$1<ex>http://www.google.com/</ex></ph>
     "IDC_PASTE_AND_GO": "IDS_PASTE_AND_GO",

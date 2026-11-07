@@ -100,6 +100,8 @@ class BraveLocationBarView : public LocationBarView {
   friend class ::RewardsBrowserTest;
 
   void SetupShadow();
+  // Updates visibility of Brave-specific views from the omnibox state.
+  void UpdateBraveViews();
 
   // Prevent layout with invalid rect.
   // It also could make omnibox popup have wrong position.

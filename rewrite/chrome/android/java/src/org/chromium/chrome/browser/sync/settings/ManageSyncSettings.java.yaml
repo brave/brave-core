@@ -43,19 +43,19 @@ substitutions:
       Skip initializing the central account card when there is no primary account
 
       Brave Sync does not use a Google account, so getPrimaryAccountInfo() is
-      null here and the surrounding assumeNonNull() is a no-op at runtime.
-      BraveManageSyncSettings drops this card anyway, but it can only do so
-      after super.onCreatePreferences() has returned, and initialize() now
+      null here and the assumeNonNull() passed to initialize() is a no-op at
+      runtime. BraveManageSyncSettings drops this card anyway, but it can only
+      do so after super.onCreatePreferences() has returned, and initialize()
       dereferences the account eagerly instead of at bind time.
     regex:
       re_pattern: |-
-        (IdentityManager identityManager = getIdentityManager\(profile\);)\n( *)(centralAccountCardPreference\.initialize\()
+        (private void setupCentralAccountCardPreference\(Profile profile\) \{)\n( *)
       replace: |-
         \1
-        \2if (identityManager.getPrimaryAccountInfo() == null) {
+        \2if (getIdentityManager(profile).getPrimaryAccountInfo() == null) {
         \2    return;
         \2}
-        \2\3
+        \2
 
   - description: |-
       Never treat the page as signed out

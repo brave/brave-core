@@ -10,6 +10,7 @@
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
+#include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
@@ -31,7 +32,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
-#include "ui/base/window_open_disposition.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "url/gurl.h"
 
 class OnboardingBrowserTest : public InProcessBrowserTest {
@@ -64,6 +65,9 @@ class OnboardingBrowserTest : public InProcessBrowserTest {
   void TearDownOnMainThread() override {
     can_highlight_callback_reset_.reset();
     did_stop_loading_callback_reset_.reset();
+    // The tabs close after this, and would leave the sets dangling.
+    can_highlight_contents_.clear();
+    did_stop_loading_contents_.clear();
     InProcessBrowserTest::TearDownOnMainThread();
   }
 
@@ -77,7 +81,7 @@ class OnboardingBrowserTest : public InProcessBrowserTest {
   // again with a same-document navigation, which keeps the blocked count.
   // Returns once the tab's helper has considered the highlight for that load.
   void LoadPageWithBlockedAd(
-      WindowOpenDisposition disposition,
+      ui::mojom::WindowOpenDisposition disposition,
       base::Location location = base::Location::Current()) {
     SCOPED_TRACE(location.ToString());
     const GURL url = embedded_test_server()->GetURL("/title1.html");
@@ -114,10 +118,10 @@ class OnboardingBrowserTest : public InProcessBrowserTest {
 
  private:
   // Tabs, by contents, whose helper completed its first-run check.
-  std::set<content::WebContents*> can_highlight_contents_;
+  std::set<raw_ptr<content::WebContents>> can_highlight_contents_;
   // Tabs, by contents, whose helper considered the highlight when loading
   // stopped.
-  std::set<content::WebContents*> did_stop_loading_contents_;
+  std::set<raw_ptr<content::WebContents>> did_stop_loading_contents_;
   std::optional<base::AutoReset<OnboardingTabHelper::WebContentsCallback>>
       can_highlight_callback_reset_;
   std::optional<base::AutoReset<OnboardingTabHelper::WebContentsCallback>>
@@ -138,8 +142,8 @@ IN_PROC_BROWSER_TEST_F(OnboardingBrowserTest, HighlightsShieldsInActiveTab) {
                   }
                 }));
 
-  ASSERT_NO_FATAL_FAILURE(
-      LoadPageWithBlockedAd(WindowOpenDisposition::kNewForegroundTab));
+  ASSERT_NO_FATAL_FAILURE(LoadPageWithBlockedAd(
+      ui::mojom::WindowOpenDisposition::kNewForegroundTab));
 
   ASSERT_TRUE(highlight_future.Wait());
   EXPECT_FALSE(GetLastHighlightTime().is_null());
@@ -147,8 +151,8 @@ IN_PROC_BROWSER_TEST_F(OnboardingBrowserTest, HighlightsShieldsInActiveTab) {
 
 IN_PROC_BROWSER_TEST_F(OnboardingBrowserTest,
                        DoesNotHighlightShieldsInBackgroundTab) {
-  ASSERT_NO_FATAL_FAILURE(
-      LoadPageWithBlockedAd(WindowOpenDisposition::kNewBackgroundTab));
+  ASSERT_NO_FATAL_FAILURE(LoadPageWithBlockedAd(
+      ui::mojom::WindowOpenDisposition::kNewBackgroundTab));
 
   EXPECT_TRUE(GetLastHighlightTime().is_null());
 }

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/bookmarks/bookmark_button.cc b/chrome/browser/ui/views/bookmarks/bookmark_button.cc
-index 99b91c34ea6bd369bfc07942c2c9642788bed130..82ca8f33c4bcd37c260454374add0f8de62ce8fd 100644
+index e5ff822802bc4273e37db492b65d805eb4c03876..818d8dcb2b10d0602dc5ec8c363190f1627ced67 100644
 --- a/chrome/browser/ui/views/bookmarks/bookmark_button.cc
 +++ b/chrome/browser/ui/views/bookmarks/bookmark_button.cc
-@@ -66,7 +66,7 @@ BookmarkButtonBase::BookmarkButtonBase(PressedCallback callback,
+@@ -65,7 +65,7 @@ BookmarkButtonBase::BookmarkButtonBase(PressedCallback callback,
    SetImageLabelSpacing(
        GetLayoutConstant(LayoutConstant::kBookmarkBarButtonImageLabelPadding));
  

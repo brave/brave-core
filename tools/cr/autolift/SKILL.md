@@ -628,7 +628,10 @@ finishes, Brockit lists what it resolved, by rule. Recipes for what it leaves:
   cr<N> and then extended (check with `git diff origin/<base> -- <paths>`): take
   the base's version. A commit left empty is dropped with
   `brockit rebase --skip`; one left partly applied gets an `amend!` that rewords
-  it to what remains.
+  it to what remains. Before a `--skip`, check the todo
+  (`$(git rev-parse --git-path rebase-merge)/git-rebase-todo`) for the skipped
+  commit's `fixup` lines next: they would fold into the commit before it. Delete
+  those whose change the base has too.
 - **The "Update from Chromium" commit**, when Brockit leaves it because more
   than the version bump conflicts: in `package.json`, keep the commit's
   `projects.chrome.tag`. In
@@ -749,6 +752,10 @@ Then fix:
 
 After `--continue` (or the first `lift`, when nothing needed action):
 
+- "🔥 ... modified patches have changes in the number of hunks": the refresh
+  changed a raw patch beyond its context. Commit each listed patch on its own
+  with its culprit (`git cr commit --culprit`), leaving the other refreshed
+  patches unstaged, and run `lift --continue` again.
 - "❌ GitHub issue update." The lift is done; run
   `brockit update-version-issue --infra-mode` into a log once `gh` works again.
 - "❌ Plaster check. Please investigate it." Run `plaster apply --all` (the one
@@ -1244,8 +1251,9 @@ report, not with `autolift.py step`.
    unstable test stages, or its first aborted stage and why it was aborted, a
    GitHub Actions job's failed steps), with their problems, failed tests and the
    end of the failed step's log. Read that file, not the CI logs, and the logs
-   only for what it cuts. `vpython3 tools/cr/ci/cli.py checks <N>` lists every
-   check.
+   only for what it cuts. `vpython3 tools/cr/ci/cli.py checks <branch>`, with
+   the run's branch (`cr<N>`), lists every check. It takes a branch or a pull
+   request number, so `<N>` alone names another pull request.
 3. Triage each failed build. Its `infra`, `tests` or `build` label is a hint
    from the log; check it against the log tail.
    - **Infra** (the CI machine or its workspace: disk, agent, a workspace built

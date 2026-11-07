@@ -41,7 +41,7 @@ _REPO_DIR = os.path.normpath(os.path.join(_SCRIPT_DIR, "..", "..", ".."))
 sys.path.insert(0, os.path.join(_SCRIPT_DIR, "scripts"))
 sys.path.insert(0, _SCRIPT_DIR)
 
-from lib.repo_lock import repo_lock
+from lib.repo_lock import repo_lock  # noqa: E402
 
 # Import fetch-prs functions (the module uses if __name__ guard)
 _fp_spec = importlib.util.spec_from_file_location(

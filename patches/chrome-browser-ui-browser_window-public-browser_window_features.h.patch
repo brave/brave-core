@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_window/public/browser_window_features.h b/chrome/browser/ui/browser_window/public/browser_window_features.h
-index ad03f3e0b0dbe98eba8c1f41c54fc38aa023ed4e..de0377c2d844a251c7017c73215d57806e82549a 100644
+index 2cc7c9a27c45943afb7e981672cb13f71af29c36..993b043af6b59f6607be130470035464c31b2004 100644
 --- a/chrome/browser/ui/browser_window/public/browser_window_features.h
 +++ b/chrome/browser/ui/browser_window/public/browser_window_features.h
-@@ -298,7 +298,12 @@ class BrowserWindowFeatures {
+@@ -301,7 +301,12 @@ class BrowserWindowFeatures {
    static ui::UserDataFactoryWithOwner<BrowserWindowInterface>&
    GetUserDataFactoryForTesting();
  

@@ -1,11 +1,9 @@
-import json
 import os
 import re
 import sys
 
 import requests
 
-from argparse import RawTextHelpFormatter
 from distutils.version import LooseVersion
 from functools import cmp_to_key
 

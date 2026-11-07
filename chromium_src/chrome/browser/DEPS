@@ -12,7 +12,6 @@ include_rules += [
   "+brave/components/brave_origin/buildflags",
   "+brave/components/commands/common",
   "+brave/components/constants",
-  "+brave/components/history_embeddings",
   "+brave/components/local_ai/buildflags",
   "+brave/components/local_ai/core",
   "+brave/components/playlist/core/common/buildflags",

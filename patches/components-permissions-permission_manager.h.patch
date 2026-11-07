@@ -1,0 +1,16 @@
+diff --git a/components/permissions/permission_manager.h b/components/permissions/permission_manager.h
+index d112e7c2acb0a2c641c3780c572ae2c6a89f2b16..1037d27932fc10ed2a9af3573d8a14fdc0af23b9 100644
+--- a/components/permissions/permission_manager.h
++++ b/components/permissions/permission_manager.h
+@@ -76,6 +76,11 @@ class PermissionManager : public KeyedService,
+     return permission_contexts_;
+   }
+ 
++  content::PermissionResult GetPermissionResultForEmbeddedRequester(
++      const blink::mojom::PermissionDescriptorPtr& permission_descriptor,
++      content::RenderFrameHost* render_frame_host,
++      const url::Origin& requesting_origin) override;
++
+  private:
+   friend class PermissionManagerTest;
+   friend class ::GeolocationPermissionContextDelegateTests;

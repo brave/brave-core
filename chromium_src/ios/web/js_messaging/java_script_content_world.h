@@ -7,8 +7,9 @@
 #define BRAVE_CHROMIUM_SRC_IOS_WEB_JS_MESSAGING_JAVA_SCRIPT_CONTENT_WORLD_H_
 
 #include "base/containers/flat_map.h"
+#include "base/memory/raw_ptr.h"
 
-// The plastered header declares a `base::flat_map` member.
+// The plastered header declares a `base::flat_map` member of `raw_ptr`s.
 #include <ios/web/js_messaging/java_script_content_world.h>  // IWYU pragma: export
 
 #endif  // BRAVE_CHROMIUM_SRC_IOS_WEB_JS_MESSAGING_JAVA_SCRIPT_CONTENT_WORLD_H_

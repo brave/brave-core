@@ -16,6 +16,10 @@ namespace brave_vpn {
 
 void LoadLocaleResources();
 
+// The OS locale ICU reads, as a BCP 47 tag such as "en-US", "es-419" or
+// "zh-CN", the names of the locale paks.
+std::string GetSystemLocale();
+
 base::FilePath FindPakFilePath(const base::FilePath& assets_path,
                                const std::string& locale);
 

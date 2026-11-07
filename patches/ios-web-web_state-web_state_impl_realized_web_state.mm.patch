@@ -1,5 +1,5 @@
 diff --git a/ios/web/web_state/web_state_impl_realized_web_state.mm b/ios/web/web_state/web_state_impl_realized_web_state.mm
-index 1880d96d50f2edfc166bf1b2952506b54ba66cb1..05489aa364fa4f08d58121508b0a9f6f3e89a987 100644
+index 02cb29f6b20753dbe13fd84ff8df2c0142fbe7c4..043631bd9d8b229eb0bb97f2fe411c9fe25a0c9b 100644
 --- a/ios/web/web_state/web_state_impl_realized_web_state.mm
 +++ b/ios/web/web_state/web_state_impl_realized_web_state.mm
 @@ -336,7 +336,7 @@ void WebStateImpl::RealizedWebState::OnNavigationFinished(
@@ -55,7 +55,7 @@ index 1880d96d50f2edfc166bf1b2952506b54ba66cb1..05489aa364fa4f08d58121508b0a9f6f
  }
  
  void WebStateImpl::RealizedWebState::SetContentsMimeType(
-@@ -1136,7 +1139,7 @@ std::unique_ptr<WebUIIOS> WebStateImpl::RealizedWebState::CreateWebUIIOS(
+@@ -1138,7 +1141,7 @@ std::unique_ptr<WebUIIOS> WebStateImpl::RealizedWebState::CreateWebUIIOS(
    if (!factory) {
      return nullptr;
    }

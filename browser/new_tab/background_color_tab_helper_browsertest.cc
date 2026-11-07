@@ -16,6 +16,7 @@
 #include "content/public/test/browser_test_utils.h"
 #include "ui/aura/window.h"
 #include "ui/aura/window_tree_host.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/color/color_provider.h"
 #include "ui/compositor/compositor.h"
 #include "ui/gfx/native_ui_types.h"
@@ -44,7 +45,7 @@ IN_PROC_BROWSER_TEST_P(BackgroundColorTabHelperBrowserTest,
                        BackgroundColorIsSet) {
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL(chrome::kChromeUINewTabPageURL),
-      WindowOpenDisposition::kNewForegroundTab,
+      ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Expected colors:

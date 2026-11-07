@@ -32,6 +32,7 @@
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
 #include "net/dns/mock_host_resolver.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/resource_coordinator/lifecycle_unit_state.mojom.h"
@@ -459,7 +460,7 @@ IN_PROC_BROWSER_TEST_F(CreatorDetectionBrowserTest, ClearsCreatorOnDiscard) {
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
       browser(),
       embedded_https_test_server().GetURL("example-creator.com", "/"),
-      WindowOpenDisposition::kNewBackgroundTab,
+      ui::mojom::WindowOpenDisposition::kNewBackgroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   TabStripModel* const tab_strip_model = browser()->tab_strip_model();
   tabs::TabInterface* const tab =

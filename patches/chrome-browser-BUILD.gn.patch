@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index f0f529901a3fcde87402a508a627cdfc2419be42..18d28c041cf4f08eef35d03ea069f4a086996310 100644
+index 38f1a252b26678a4078de3f80581aee5fde548f8..97ca348cbc24be0b46afd5e188efe35771d1fa80 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -2212,6 +2212,7 @@ source_set("browser") {
+@@ -2215,6 +2215,7 @@ source_set("browser") {
    public_deps = [
      ":browser_features",
      ":buildflags",
@@ -10,7 +10,7 @@ index f0f529901a3fcde87402a508a627cdfc2419be42..18d28c041cf4f08eef35d03ea069f4a0
      "//chrome/browser/accessibility/accessibility_prefs",
      "//chrome/browser/browsing_data",
      "//chrome/browser/download",
-@@ -4119,7 +4120,7 @@ source_set("browser") {
+@@ -4113,7 +4114,7 @@ source_set("browser") {
  
    # TODO(https://crbug.com/356905053): Add more dependencies here and merge this
    # block with the `enable_extensions` block above.

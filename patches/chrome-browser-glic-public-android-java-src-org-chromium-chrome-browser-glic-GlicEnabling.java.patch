@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/glic/public/android/java/src/org/chromium/chrome/browser/glic/GlicEnabling.java b/chrome/browser/glic/public/android/java/src/org/chromium/chrome/browser/glic/GlicEnabling.java
-index 7fd0ce45f42fd0fa550ed66d09a41ea3b7b1e4d8..b3309baad1d8366e232a4771259996c56ceb0e06 100644
+index 5afdda3f088780102132b2c3c9fa156abc35d11c..3a36a0dfc8a44c024c8921f1778cd49c2ff2632b 100644
 --- a/chrome/browser/glic/public/android/java/src/org/chromium/chrome/browser/glic/GlicEnabling.java
 +++ b/chrome/browser/glic/public/android/java/src/org/chromium/chrome/browser/glic/GlicEnabling.java
 @@ -26,7 +26,7 @@ public class GlicEnabling {
@@ -11,7 +11,7 @@ index 7fd0ce45f42fd0fa550ed66d09a41ea3b7b1e4d8..b3309baad1d8366e232a4771259996c5
      }
  
      /**
-@@ -37,14 +37,14 @@ public class GlicEnabling {
+@@ -37,21 +37,21 @@ public class GlicEnabling {
      public static boolean isProfileEligible(@Nullable Profile profile) {
          if (profile == null) return false;
          if (sIsEnabledForTesting != null) return sIsEnabledForTesting;
@@ -28,6 +28,14 @@ index 7fd0ce45f42fd0fa550ed66d09a41ea3b7b1e4d8..b3309baad1d8366e232a4771259996c5
      }
  
      /** Returns true if the given profile has Glic enabled and the user has consented. */
+     public static boolean isEnabledAndConsentForProfile(@Nullable Profile profile) {
+         if (profile == null) return false;
+         if (sIsEnabledForTesting != null) return sIsEnabledForTesting;
+-        return GlicEnablingJni.get().isEnabledAndConsentForProfile(profile);
++        return false;
+     }
+ 
+     /** Returns true if the user was previously determined to be ineligible for Glic. */
 @@ -65,14 +65,14 @@ public class GlicEnabling {
      public static boolean shouldShowSettingsPage(@Nullable Profile profile) {
          if (profile == null) return false;
@@ -45,7 +53,15 @@ index 7fd0ce45f42fd0fa550ed66d09a41ea3b7b1e4d8..b3309baad1d8366e232a4771259996c5
      }
  
      /**
-@@ -89,7 +89,7 @@ public class GlicEnabling {
+@@ -82,14 +82,14 @@ public class GlicEnabling {
+     public static boolean shouldShowExperimentalTriggeringToggle(@Nullable Profile profile) {
+         if (profile == null) return false;
+         if (sIsEnabledForTesting != null) return sIsEnabledForTesting;
+-        return GlicEnablingJni.get().shouldShowExperimentalTriggeringToggle(profile);
++        return false;
+     }
+ 
+     /** Returns true if Glic is ready to be used for the given profile. */
      public static boolean isReadyForProfile(@Nullable Profile profile) {
          if (profile == null) return false;
          if (sIsEnabledForTesting != null) return sIsEnabledForTesting;

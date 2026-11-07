@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: "Copy Brave's `requesting_origin` in the copy constructor."
+    regex:
+      re_pattern: '(\n  user_gesture = other\.user_gesture;\n)'
+      replace: |
+        \1  requesting_origin = other.requesting_origin;
+
+  - description: "Compare Brave's `requesting_origin` in `operator==`."
+    regex:
+      re_pattern: '(return user_gesture == other\.user_gesture &&)'
+      replace: |-
+        \1
+                 requesting_origin == other.requesting_origin &&

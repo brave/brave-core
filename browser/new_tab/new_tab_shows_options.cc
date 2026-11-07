@@ -13,7 +13,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/webui/ntp/new_tab_ui.h"
+#include "chrome/browser/search/search.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/common/webui_url_constants.h"
 #include "components/prefs/pref_service.h"
@@ -79,7 +79,7 @@ base::ListValue GetNewTabShowsOptionsList(Profile* profile) {
 bool ShouldUseNewTabURLForNewTab(Profile* profile) {
   const GURL url = GetNewTabPageURL(profile);
   return url.is_empty() || url.host() == chrome::kChromeUINewTabHost ||
-         NewTabUI::IsNewTab(url);
+         search::IsNewTabOrigin(url);
 }
 
 bool ShouldNewTabShowDashboard(Profile* profile) {

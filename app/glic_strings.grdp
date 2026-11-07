@@ -30,6 +30,9 @@
   <message name="IDS_GLIC_PROMO_BODY" desc="Text for a promo pointing to the Gemini icon in Brave.">
     Chat with voice or text to get answers, key takeaways, and more as you browse
   </message>
+  <message name="IDS_GEIC_PROMO_BODY" desc="Text for a promo pointing to the Gemini Enterprise icon in Brave.">
+    Ask about anything as you browse and get answers grounded in the info you need for work
+  </message>
   <if expr="is_win or is_linux or is_chromeos or is_android">
     <message name="IDS_GLIC_STATUS_ICON_MENU_CUSTOMIZE_KEYBOARD_SHORTCUT" desc="Menu text for the Gemini icon on the system try to open Brave settings and change the keyboard shortcut for opening Gemini in Brave.">
       Customize keyboard shortcut
@@ -123,6 +126,33 @@
   </message>
   <message name="IDS_GLIC_INELIGIBLE_ACCOUNT_NOTICE" desc="This is the text of the Gemini ineligible account notice.">
     Check that you're eligible and meet the requirements
+  </message>
+  <message name="IDS_GLIC_RELAUNCH_REQUIRED_GEMINI_TO_GEIC_HEADER" desc="Headline on the notice shown in the Gemini side panel when an administrator has configured Gemini Enterprise and Brave must be relaunched to apply the change.">
+    Relaunch to start browsing with Gemini Enterprise
+  </message>
+  <message name="IDS_GLIC_RELAUNCH_REQUIRED_GEMINI_TO_GEIC_BODY" desc="Body text on the notice shown in the Gemini side panel when an administrator has configured Gemini Enterprise and Brave must be relaunched to apply the change.">
+    Ask Gemini about anything as you browse, and get answers grounded in files and services across your organization
+  </message>
+  <message name="IDS_GLIC_RELAUNCH_REQUIRED_ACTION_BUTTON" desc="Button label on the notice shown in the Gemini side panel that relaunches Brave to apply a provider change.">
+    Relaunch Brave
+  </message>
+  <message name="IDS_GLIC_RELAUNCH_REQUIRED_GEIC_TO_GEMINI_HEADER" desc="Headline on the notice shown in the Gemini Enterprise side panel when an administrator has turned off Gemini Enterprise and Brave must be relaunched to apply the change.">
+    Gemini Enterprise not available for Gemini in Brave
+  </message>
+  <message name="IDS_GLIC_RELAUNCH_REQUIRED_GEIC_TO_GEMINI_BODY_1" desc="First paragraph of the body text on the notice shown in the Gemini Enterprise side panel when an administrator has turned off Gemini Enterprise but still allows Gemini in Brave, and Brave must be relaunched to switch to Gemini in Brave. Explains why Gemini Enterprise is unavailable.">
+    Gemini Enterprise in Brave isn't available due to your organization's policies.
+  </message>
+  <message name="IDS_GLIC_RELAUNCH_REQUIRED_GEIC_TO_GEMINI_BODY_2" desc="Second paragraph of the body text on the notice shown in the Gemini Enterprise side panel when an administrator has turned off Gemini Enterprise but still allows Gemini in Brave. Explains what changes after switching to Gemini in Brave.">
+    You can continue using Gemini in Brave, but it will no longer find or reference information managed by your organization. Your chat history may not carry over.
+  </message>
+  <message name="IDS_GLIC_RELAUNCH_REQUIRED_GEIC_TO_GEMINI_BODY_3" desc="Third paragraph of the body text on the notice shown in the Gemini Enterprise side panel when an administrator has turned off Gemini Enterprise but still allows Gemini in Brave. Shown above a 'Relaunch Brave' button.">
+    Switching requires relaunching Brave.
+  </message>
+  <message name="IDS_GLIC_RELAUNCH_REQUIRED_GEIC_TO_OTHER_GEIC_HEADER" desc="Headline on the notice shown in the Gemini Enterprise side panel when an administrator has changed the Gemini Enterprise configuration and Brave must be relaunched to apply the change.">
+    Relaunch required to continue browsing with Gemini
+  </message>
+  <message name="IDS_GLIC_RELAUNCH_REQUIRED_GEIC_TO_OTHER_GEIC_BODY" desc="Body text on the notice shown in the Gemini Enterprise side panel when an administrator has changed the Gemini Enterprise configuration and Brave must be relaunched to apply the change.">
+    Your organization has updated policies and requires you to relaunch Brave to continue using Gemini Enterprise in Brave
   </message>
 
   <message name="IDS_GLIC_MANAGED_BY_ORGANIZATION" desc="Text shown when the feature is managed by the organization but not disabled." formatter_data="android_java">
@@ -257,7 +287,7 @@
     Use your microphone to chat with Gemini. When you speak to Gemini, audio is saved in Gemini History (if it’s on).
   </message>
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_MICROPHONE_TOGGLE_SUBLABEL_DATA_PROTECTED" desc="Sublabel describing that this setting will enable using the microphone to have a voice chat with Gemini, but the user's data is not used to improve the model">
-    Use your microphone to chat with Gemini. When you speak to Gemini, audio is saved in Gemini History (if it’s on). Your data is not used to improve generative AI models.
+    Use your microphone to chat with Gemini. When you speak to Gemini, audio is saved in Gemini History (if it’s on). Your data is not used to train generative AI models.
   </message>
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_MICROPHONE_TOGGLE_SUBLABEL_DATA_PROTECTED_ANDROID" desc="Sublabel describing that this setting will enable using the microphone to have a voice chat with Gemini, but the user's data is not used to improve the model" formatter_data="android_java">
     Use your microphone to chat with Gemini. Your data is not used to improve generative AI models.
@@ -541,14 +571,12 @@
 
   <!-- Content area context menu. -->
   <if expr="use_titlecase">
-    <message name="IDS_CONTENT_CONTEXT_GLICSHAREIMAGE" desc="Share image with Gemini and recreate based on user-selected prompt">Create Image with Gemini</message>
     <message name="IDS_GLIC_CONTEXT_MENU_SUMMARIZE_PAGE_WITH_GEMINI" desc="In Title Case: Text for the 'Summarize this page' context menu item.">Summarize This Page with Gemini</message>
     <message name="IDS_GLIC_CONTEXT_MENU_ASK_ABOUT_SELECTION" desc="In Title Case: Text for the context menu item that provides smart suggestions about the selected text.">Ask About “<ph name="SELECTION">$1<ex>selected text</ex></ph>”</message>
     <message name="IDS_GLIC_CONTEXT_MENU_ASK_ABOUT_THIS" desc="In Title Case: Text for the context menu item that provides smart suggestions about an image.">Ask About This</message>
     <message name="IDS_GLIC_CONTEXT_MENU_ASK_ABOUT_THIS_PAGE" desc="In Title Case: Text for the context menu item that provides smart suggestions about a page.">Ask About This Page</message>
   </if>
   <if expr="not use_titlecase">
-    <message name="IDS_CONTENT_CONTEXT_GLICSHAREIMAGE" desc="Share image with Gemini and recreate based on user-selected prompt">Create image with Gemini</message>
     <message name="IDS_GLIC_CONTEXT_MENU_SUMMARIZE_PAGE_WITH_GEMINI" desc="Text for the 'Summarize this page' context menu item.">Summarize this page with Gemini</message>
     <message name="IDS_GLIC_CONTEXT_MENU_ASK_ABOUT_SELECTION" desc="Text for the context menu item that provides smart suggestions about the selected text.">Ask about “<ph name="SELECTION">$1<ex>selected text</ex></ph>”</message>
     <message name="IDS_GLIC_CONTEXT_MENU_ASK_ABOUT_THIS" desc="Text for the context menu item that provides smart suggestions about an image.">Ask about this</message>
@@ -591,6 +619,9 @@
   </message>
   <message name="IDS_GLIC_SELECTION_SUBMIT_PROMPT" desc="Accessibility label for the arrow button in the selection prompt box that sends the typed prompt to Gemini.">
     Send
+  </message>
+  <message name="IDS_GLIC_SELECTION_FETCHING_PAGE_CONTENT" desc="Tooltip for the disabled arrow button in the selection prompt box while Brave is still getting the page content to send with the prompt.">
+    Fetching the page content
   </message>
   <message name="IDS_GLIC_SELECTION_SHARING_DISCLAIMER" desc="Notice at the bottom of the explanation card telling the user that the current page and the highlighted text are shared with Brave.">
     This page and highlighted text are shared with Brave
@@ -649,6 +680,9 @@
   <message name="IDS_GLIC_CHAT_HIDDEN_DESCRIPTION" desc="Subtitle description of the snackbar message shown when Glic chat is hidden due to window resizing.">
     Increase window size to resume chat
   </message>
+  <message name="IDS_GLIC_TOAST_TITLE_AND_DESCRIPTION" desc="Text shown in a single-line toast combining a short title and a longer description.">
+    <ph name="TITLE">$1<ex>Chat hidden</ex></ph>: <ph name="DESCRIPTION">$2<ex>Increase window size to resume chat</ex></ph>
+  </message>
   <message name="IDS_GLIC_TASK_PAUSED_TITLE" desc="Title of the snackbar message shown when a Glic task is paused due to window resizing.">
     Task paused
   </message>
@@ -680,20 +714,17 @@
     <message name="IDS_GLIC_FRE_DIALOG_TITLE" desc="Headline of the dialog that asks the user to turn on Gemini in Brave the first time they open it." formatter_data="android_java">
       Ask anything, right where you are, with Gemini in Brave
     </message>
-    <message name="IDS_GLIC_FRE_DIALOG_TAB_SHARING_DESCRIPTION" desc="Description in the Gemini in Brave opt-in dialog explaining that the content and URL of the open tab are shared with Brave when starting a new chat." formatter_data="android_java">
-      Tabs are shared for more relevant answers. Brave uses the content and URL of your open tab when you start a new chat. You can change this setting anytime.
+    <message name="IDS_GLIC_FRE_DIALOG_TAB_SHARING_DESCRIPTION" desc="Description in the Gemini in Brave opt-in dialog explaining that Brave uses the content and URL of shared tabs and that the current tab is shared in new chats." formatter_data="android_java">
+      Tabs are shared for more relevant answers. Brave uses the content and URL of shared tabs. Your current tab is shared in new chats. You can change this setting anytime.
     </message>
-    <message name="IDS_GLIC_FRE_DIALOG_TAB_SHARING_DESCRIPTION_BOLD" desc="Description in the Gemini in Brave opt-in dialog explaining that the content and URL of the open tab are shared with Brave when starting a new chat, with bold lead-in." formatter_data="android_java">
-      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Tabs are shared for more relevant answers.<ph name="END_BOLD">&lt;/b&gt;</ph> Brave uses the content and URL of your open tab when you start a new chat. You can change this setting anytime.
+    <message name="IDS_GLIC_FRE_DIALOG_TAB_SHARING_DESCRIPTION_BOLD" desc="Description in the Gemini in Brave opt-in dialog explaining that Brave uses the content and URL of shared tabs and that the current tab is shared in new chats, with bold lead-in." formatter_data="android_java">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Tabs are shared for more relevant answers.<ph name="END_BOLD">&lt;/b&gt;</ph> Brave uses the content and URL of shared tabs. Your current tab is shared in new chats. You can change this setting anytime.
     </message>
     <message name="IDS_GLIC_FRE_DIALOG_ENTERPRISE_DESCRIPTION" desc="Description in the Gemini in Brave opt-in dialog for enterprise users explaining that their organization's data is private and secure." formatter_data="android_java">
-      Tabs are shared for more relevant answers. Brave uses the content and URL of your open tab when you start a new chat. You can change this setting anytime. Your organization’s data is private and secure. It won’t be used to improve generative AI models.
+      Tabs are shared for more relevant answers. Brave uses the content and URL of shared tabs. Your current tab is shared in new chats. You can change this setting anytime. Your organization’s data is private and secure. It won’t be used to improve generative AI models.
     </message>
     <message name="IDS_GLIC_FRE_DIALOG_ENTERPRISE_DESCRIPTION_BOLD" desc="Description in the Gemini in Brave opt-in dialog for enterprise users explaining that their organization's data is private and secure, with bold lead-in." formatter_data="android_java">
-      <ph name="BEGIN_BOLD_1">&lt;b1&gt;</ph>Tabs are shared for more relevant answers.<ph name="END_BOLD_1">&lt;/b1&gt;</ph> Brave uses the content and URL of your open tab when you start a new chat. You can change this setting anytime. <ph name="BEGIN_BOLD_2">&lt;b2&gt;</ph>Your organization’s data is private and secure.<ph name="END_BOLD_2">&lt;/b2&gt;</ph> It won’t be used to improve generative AI models.
-    </message>
-    <message name="IDS_GLIC_FRE_DIALOG_LEGAL" desc="Legal text in the Gemini in Brave opt-in dialog. Each link opens the named legal document." formatter_data="android_java">
-      <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>Brave Terms<ph name="END_LINK1">&lt;/link1&gt;</ph> and the <ph name="BEGIN_LINK2">&lt;link2&gt;</ph>Gemini Apps Privacy Notice<ph name="END_LINK2">&lt;/link2&gt;</ph> apply.
+      <ph name="BEGIN_BOLD_1">&lt;b1&gt;</ph>Tabs are shared for more relevant answers.<ph name="END_BOLD_1">&lt;/b1&gt;</ph> Brave uses the content and URL of shared tabs. Your current tab is shared in new chats. You can change this setting anytime. <ph name="BEGIN_BOLD_2">&lt;b2&gt;</ph>Your organization’s data is private and secure.<ph name="END_BOLD_2">&lt;/b2&gt;</ph> It won’t be used to improve generative AI models.
     </message>
     <message name="IDS_GLIC_FRE_DIALOG_ACCEPT" desc="Button in the Gemini in Brave opt-in dialog. Turns on Gemini in Brave and opens it. [CHAR_LIMIT=32]" formatter_data="android_java">
       Start chat
@@ -704,5 +735,11 @@
     <message name="IDS_GLIC_FRE_DIALOG_PRIVACY_NOTICE_URL" desc="URL of the Gemini Apps Privacy Notice, opened from the Gemini in Brave opt-in dialog." translateable="false" formatter_data="android_java">
       https://support.google.com/gemini/answer/13594961
     </message>
+    <message name="IDS_GLIC_FRE_BOTTOM_SHEET_BODY" desc="Body text and legal links in the Gemini in Brave bottom-sheet opt-in card. DESCRIPTION is the tab-sharing or enterprise privacy disclosure paragraph. Each link opens the named legal document. [CHAR_LIMIT=NONE]" formatter_data="android_java">
+      <ph name="DESCRIPTION">%1$s<ex>Tabs are shared for more relevant answers.</ex></ph> <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>Brave Terms<ph name="END_LINK1">&lt;/link1&gt;</ph> and the <ph name="BEGIN_LINK2">&lt;link2&gt;</ph>Gemini Apps Privacy Notice<ph name="END_LINK2">&lt;/link2&gt;</ph> apply.
+    </message>
   </if>
+  <message name="IDS_SETTINGS_GEIC_ROW_SUBLABEL" desc="Sublabel of the Gemini Enterprise row button in Brave settings leading to the Gemini Enterprise subpage.">
+    Ask Gemini anything as you browse, and get answers grounded in files and services across your organization, all with enterprise-level protections
+  </message>
 </grit-part>

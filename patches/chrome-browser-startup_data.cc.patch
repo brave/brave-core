@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/startup_data.cc b/chrome/browser/startup_data.cc
-index 66d5eeb02bcc5c70a342a272b0ac6e5e2155359a..b9d83a3d1332d68de89a6428afa00531cd636854 100644
+index 64a85c7a5cd3f22b4983f0eda260b453db44510a..13f6819c5ce3f54f817d64abbc2c2e3aa0874003 100644
 --- a/chrome/browser/startup_data.cc
 +++ b/chrome/browser/startup_data.cc
-@@ -56,7 +56,7 @@
+@@ -58,7 +58,7 @@
  #include "mojo/public/cpp/bindings/pending_remote.h"
  #include "services/preferences/public/mojom/tracked_preference_validation_delegate.mojom.h"
  
@@ -11,7 +11,7 @@ index 66d5eeb02bcc5c70a342a272b0ac6e5e2155359a..b9d83a3d1332d68de89a6428afa00531
  #include "chrome/browser/extensions/chrome_extensions_browser_client.h"
  #include "extensions/browser/extensions_browser_client.h"
  #endif
-@@ -209,7 +209,7 @@ StartupData::TakeProtoDatabaseProvider() {
+@@ -224,7 +224,7 @@ StartupData::TakeProtoDatabaseProvider() {
  void StartupData::PreProfilePrefServiceInit() {
    pref_registry_ = base::MakeRefCounted<user_prefs::PrefRegistrySyncable>();
  
@@ -20,7 +20,7 @@ index 66d5eeb02bcc5c70a342a272b0ac6e5e2155359a..b9d83a3d1332d68de89a6428afa00531
    // On desktop Android the ExtensionsBrowserClient is created here because it
    // must be initialized before BrowserContextKeyedServiceFactories are built.
    // Some factories use ExtensionsBrowserClient::Get() in their DependsOn().
-@@ -292,7 +292,7 @@ void StartupData::CreateServicesInternal() {
+@@ -311,7 +311,7 @@ void StartupData::SetProfilePathForTesting(const base::FilePath& profile_path) {
  }
  #endif
  

@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Don't forward memory limit updates once the async handle is gone.
+
+      The handle's destruction leaves this half registered whenever the main
+      thread no longer runs its `DeleteSoon`, as at shutdown. The memory
+      coordinator's teardown then notifies it after the thread pool has shut
+      down, and posting to a `BLOCK_SHUTDOWN` sequence fails a DCHECK
+      (the Ads and Rewards databases).
+    preempt_function_impl:
+      function_name: OnUpdateMemoryLimit
+      return_if: 'async_handle_destroyed_.load(std::memory_order_acquire)'
+
+  - description: |-
+      Don't forward memory release requests once the async handle is gone.
+
+      Same as for `OnUpdateMemoryLimit()`.
+    preempt_function_impl:
+      function_name: OnReleaseMemory
+      return_if: 'async_handle_destroyed_.load(std::memory_order_acquire)'

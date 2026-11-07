@@ -131,6 +131,7 @@ import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
 import org.chromium.chrome.browser.tab_ui.TabContentManager;
 import org.chromium.chrome.browser.tab_ui.TabListFaviconProvider;
+import org.chromium.chrome.browser.tab_ui.undo_tab_close_snackbar.UndoBarThrottle;
 import org.chromium.chrome.browser.tabmodel.AsyncTabParamsManager;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabCreator;
@@ -174,7 +175,6 @@ import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityClient;
 import org.chromium.chrome.browser.ui.signin.SigninAndHistorySyncActivityLauncher;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController.StatusBarColorProvider;
-import org.chromium.chrome.browser.undo_tab_close_snackbar.UndoBarThrottle;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.components.bookmarks.BookmarkItem;
@@ -373,8 +373,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/share/send_tab_to_self/ManageAccountDevicesLinkView")); // presubmit: ignore-long-line
-        Assert.assertTrue(
-                classExists("org/chromium/chrome/browser/dom_distiller/ReaderModeManager"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/reader_mode/ReaderModeManager"));
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/download/dialogs/DownloadLocationDialogCoordinator")); // presubmit: ignore-long-line
@@ -418,8 +417,6 @@ public class BytecodeTest {
                 classExists("org/chromium/chrome/browser/tracing/settings/DeveloperSettings"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator"));
-        Assert.assertTrue(
-                classExists("org/chromium/chrome/browser/tab/TabBrowserControlsConstraintsHelper"));
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/incognito/reauth/TabSwitcherIncognitoReauthCoordinator")); // presubmit: ignore-long-line
@@ -635,7 +632,7 @@ public class BytecodeTest {
                         void.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/dom_distiller/ReaderModeManager",
+                        "org/chromium/chrome/browser/reader_mode/ReaderModeManager",
                         "shouldUseReaderModeMessages",
                         MethodModifier.STATIC,
                         boolean.class,
@@ -1411,13 +1408,6 @@ public class BytecodeTest {
                         MethodModifier.STATIC,
                         int.class,
                         int.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/tab/TabBrowserControlsConstraintsHelper",
-                        "getObservableConstraints",
-                        MethodModifier.STATIC,
-                        MonotonicObservableSupplier.class,
-                        Tab.class));
         // NOTE: Add new checks above. For each new check in this method add proguard exception in
         // `brave/android/java/proguard.flags` file under `Add methods for invocation below`
         // section. Both test and regular apks should have the same exceptions.
@@ -1721,7 +1711,8 @@ public class BytecodeTest {
                         Runnable.class,
                         NonNullObservableSupplier.class,
                         Runnable.class,
-                        boolean.class));
+                        boolean.class,
+                        OmniboxResourceProvider.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator", // presubmit: ignore-long-line
@@ -1834,8 +1825,8 @@ public class BytecodeTest {
                         Runnable.class));
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/chrome/browser/dom_distiller/ReaderModeManager",
-                        "org/chromium/chrome/browser/dom_distiller/BraveReaderModeManager",
+                        "org/chromium/chrome/browser/reader_mode/ReaderModeManager",
+                        "org/chromium/chrome/browser/reader_mode/BraveReaderModeManager",
                         Tab.class,
                         Supplier.class));
         Assert.assertTrue(
@@ -1885,6 +1876,7 @@ public class BytecodeTest {
                         OmniboxSuggestionsDropdownScrollListener.class,
                         MonotonicObservableSupplier.class,
                         TopInsetProvider.class,
+                        MonotonicObservableSupplier.class,
                         LocationBarEmbedder.class,
                         LocationBarEmbedderUiOverrides.class,
                         View.class,
@@ -2055,7 +2047,8 @@ public class BytecodeTest {
                         BottomBarHostManager.class,
                         VerticalTabsActionDelegate.class,
                         Supplier.class,
-                        Runnable.class));
+                        Runnable.class,
+                        BooleanSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkToolbar",
@@ -2650,7 +2643,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/multiwindow/MultiInstanceManagerApi31",
                         "mInstanceId"));
         Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/dom_distiller/ReaderModeManager", "mTab"));
+                fieldExists("org/chromium/chrome/browser/reader_mode/ReaderModeManager", "mTab"));
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/download/dialogs/DownloadLocationDialogCoordinator", // presubmit: ignore-long-line
@@ -2703,10 +2696,6 @@ public class BytecodeTest {
                         "mIsLocationBarFocusedFromNtpScroll"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/omnibox/LocationBarMediator", "mContext"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/omnibox/LocationBarMediator",
-                        "mBrandedColorScheme"));
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/omnibox/LocationBarMediator",

@@ -415,6 +415,9 @@ void RegisterProfilePrefsForMigration(
   // Added 10/2026.
   registry->RegisterBooleanPref(kMRUCyclingEnabled, false);
 
+  // Added 2026-11
+  registry->RegisterBooleanPref(kBraveHistoryEmbeddingsEnabled, false);
+
 #if BUILDFLAG(ENABLE_TOR)
   tor::TorProfileService::RegisterProfilePrefsForMigration(registry);
 #endif

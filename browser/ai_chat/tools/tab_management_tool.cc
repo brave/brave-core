@@ -43,10 +43,6 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
-#include "brave/components/local_ai/buildflags/buildflags.h"
-#include "chrome/browser/history/history_service_factory.h"
-#include "chrome/browser/history_embeddings/history_embeddings_service_factory.h"
-#include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
@@ -56,8 +52,6 @@
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/grit/brave_components_strings.h"
-#include "components/history_embeddings/content/history_embeddings_service.h"
-#include "components/keyed_service/core/service_access_type.h"
 #include "components/tab_groups/tab_group_color.h"
 #include "components/tab_groups/tab_group_id.h"
 #include "components/tab_groups/tab_group_visual_data.h"
@@ -67,10 +61,6 @@
 #include "content/public/browser/web_contents_observer.h"
 #include "ui/base/base_window.h"
 #include "ui/base/l10n/l10n_util.h"
-
-#if BUILDFLAG(ENABLE_LOCAL_AI)
-#include "brave/components/history_embeddings/content/open_tab_passages.h"
-#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 static_assert(BUILDFLAG(ENABLE_AI_CHAT_TAB_MANAGEMENT_TOOL));
 static_assert(!BUILDFLAG(IS_ANDROID));
@@ -626,28 +616,10 @@ std::string TabManagementTool::PageContentChallengeImplications() {
       IDS_CHAT_UI_TOOL_TAB_MANAGEMENT_PAGE_CONTENT_PERMISSION_IMPLICATIONS);
 }
 
-void TabManagementTool::SetTabPassagesFetcherForTesting(
-    TabPassagesFetcher fetcher) {
-  tab_passages_fetcher_for_testing_ = std::move(fetcher);
-}
-
 bool TabManagementTool::CanReadPageContent() const {
-#if BUILDFLAG(ENABLE_LOCAL_AI)
-  // The embeddings service is original-profile only, so an off-the-record
-  // profile would otherwise attach the regular profile's page text.
-  if (profile_->IsOffTheRecord() ||
-      !history_embeddings::IsHistoryEmbeddingsEnabledForProfile(profile_)) {
-    return false;
-  }
-  if (tab_passages_fetcher_for_testing_) {
-    return true;
-  }
-  return HistoryServiceFactory::GetForProfile(
-             profile_, ServiceAccessType::EXPLICIT_ACCESS) &&
-         HistoryEmbeddingsServiceFactory::GetForProfile(profile_);
-#else
+  // Page excerpts came from the history embeddings index, which upstream
+  // removed.
   return false;
-#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 }
 
 void TabManagementTool::UseTool(const std::string& input_json,
@@ -860,69 +832,7 @@ void TabManagementTool::PostTaskSendResultWithTabList(
 }
 
 void TabManagementTool::HandleListTabs(UseToolCallback callback) {
-#if BUILDFLAG(ENABLE_LOCAL_AI)
-  if (user_has_granted_page_content_permission_ && CanReadPageContent()) {
-    // Only web pages are indexed, so nothing else is worth a lookup.
-    base::flat_set<GURL> unique_urls;
-    for (BrowserWindowInterface* browser : GetAllBrowserWindowInterfaces()) {
-      if (browser->GetProfile() != profile_ || !browser->GetTabStripModel()) {
-        continue;
-      }
-      TabStripModel* tab_strip = browser->GetTabStripModel();
-      for (int i = 0; i < tab_strip->count(); ++i) {
-        const GURL& url = tab_strip->GetWebContentsAt(i)->GetURL();
-        if (url.SchemeIsHTTPOrHTTPS()) {
-          unique_urls.insert(url);
-        }
-      }
-    }
-    if (!unique_urls.empty()) {
-      std::vector<GURL> urls(unique_urls.begin(), unique_urls.end());
-      auto on_ready = base::BindOnce(&TabManagementTool::OnListPassagesReady,
-                                     weak_ptr_factory_.GetWeakPtr(),
-                                     std::move(callback), urls);
-      if (tab_passages_fetcher_for_testing_) {
-        tab_passages_fetcher_for_testing_.Run(urls, std::move(on_ready));
-      } else {
-        history_embeddings::GetPassagesForUrls(
-            HistoryServiceFactory::GetForProfile(
-                profile_, ServiceAccessType::EXPLICIT_ACCESS),
-            HistoryEmbeddingsServiceFactory::GetForProfile(profile_)
-                ->AsWeakPtr(),
-            urls, kMaxPassagesPerTab, kMaxPassageBytes, std::move(on_ready),
-            &passages_task_tracker_);
-      }
-      return;
-    }
-  }
-#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
   PostTaskSendResultWithTabList(std::move(callback), base::DictValue());
-}
-
-void TabManagementTool::OnListPassagesReady(
-    UseToolCallback callback,
-    std::vector<GURL> urls,
-    std::vector<std::vector<std::string>> passages) {
-  CHECK_EQ(urls.size(), passages.size());
-  PassagesByUrl passages_by_url;
-  // The read is asynchronous, so re-check that page content is still
-  // readable before attaching what it returned.
-  if (CanReadPageContent()) {
-    std::vector<std::pair<GURL, std::vector<std::string>>> entries;
-    for (size_t i = 0; i < urls.size(); ++i) {
-      if (!passages[i].empty()) {
-        entries.emplace_back(std::move(urls[i]), std::move(passages[i]));
-      }
-    }
-    passages_by_url = PassagesByUrl(std::move(entries));
-  }
-  // Matched by URL rather than position, since tabs may have moved or
-  // closed while the read was in flight.
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE,
-      base::BindOnce(&TabManagementTool::SendResultWithTabList,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
-                     base::DictValue(), std::move(passages_by_url)));
 }
 
 void TabManagementTool::HandleMoveTabs(UseToolCallback callback,

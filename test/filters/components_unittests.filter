@@ -83,7 +83,8 @@
 -FeaturedSearchProviderTest.*
 
 # These tests fail because we stub out
-# optimization_guide::IsUserPermittedToFetchRemoteOptimizationGuide and
+# optimization_guide::IsUserPermittedToFetchRemoteOptimizationGuide,
+# optimization_guide::ShouldSkipGoogleApiKeyConfigurationCheck and
 # optimization_guide::features::IsModelDownloadingEnabled
 -All/OnDeviceModelServiceControllerBackgroundDownloadTest.Run/ConfigNotAvailableIfBackgroundDownloadEnabledAndAssetPending
 -HintsManagerFetchingTest.*
@@ -91,9 +92,11 @@
 -ModelBrokerClientTest.*
 -OnDeviceAssetManagerTest.*
 -OptimizationGuidePermissionsUtilTest.IsUserPermittedToFetchHintsDefaultUserAnonymousDataCollectionEnabled
+-OptimizationGuidePermissionsUtilTest.IsUserPermittedToFetchHintsRequiresGoogleChromeApiKey
 -PDPMetricsTest.TestFalseOptGuideResponseIsRecorded
 -PDPMetricsTest.TestPDPIsRecorded
 -PredictionManagerTest.*
+-PredictionModelDownloadManagerTest.ShouldFetchModelsRequiresGoogleChromeApiKey
 
 # These tests enable kPredictionModelComponentDelivery and expect a component
 # config, but we make optimization_guide::GetPredictionModelComponentConfig
@@ -105,7 +108,7 @@
 -PredictionModelComponentUpdateListenerTest.*
 
 # These tests fail because we disable commerce::kShoppingList
--All/ShoppingServiceTest.TestShoppingList*/*
+-ShoppingServiceTest.TestShoppingListEligible_CountryAndLocale_RegionLaunched
 
 # These tests fail because we override SyncAuthManager::DetermineAccountToUse.
 -SyncServiceImplStartupWithDetermineAccountTypeTest.StartupWithConsumerAccount
@@ -204,6 +207,10 @@
 -All/ClientSideDetectionServiceBaseOnlyESBTest.TestReceivingImageClassifierUpdatesAfterResubscription/*
 -All/ClientSideDetectionServiceOnlyESBTest.TestReceivingImageClassifierUpdatesAfterResubscription/*
 -ClientSideDetectionHostBaseTest.*
+-ClientSideDetectionHostBaseVisualClassificationTest.BrowserSideImageEmbeddingEmptyResultRecordsFailed
+-ClientSideDetectionHostBaseVisualClassificationTest.BrowserSideImageEmbeddingUsesRetainedImage
+-ClientSideDetectionHostBaseVisualClassificationTest.EnhancedProtectionUpgradesTriggerModelsToImageEmbeddingMatch
+-ClientSideDetectionServiceBaseScorerTest.ImageEmbeddingModelGatedOnEnhancedProtection
 -ClientSideDetectionServiceBaseTest.TestReceivingImageEmbedderUpdatesAfterResubscription
 -GetUserPopulationTest.PopulatesPopulation_WithoutSBERDeprecation
 -RealTimeUrlLookupServiceTest.TestCanSendRTSampleRequest_FeatureEnabled
@@ -228,8 +235,10 @@
 # These tests fail because we disable kAimEnabled.
 -AimEligibilityServiceTest.*
 
-# This test fails because we have a different set of regional search engines.
+# These tests fail because we have a different set of regional search engines.
 -RegionalCapabilitiesUtilsTest.GetPrepopulatedEngines
+-RegionalCapabilitiesUtilsTest.GetPrepopulatedEnginesInRegionalLists
+-TemplateURLPrepopulateDataTest.GetAllPrepopulatedEngines_ExcludesEnginesNotInRegionalLists
 
 # These tests fail because they use raw
 # TemplateURLPrepopulateData::kCurrentDataVersion to compare with the version

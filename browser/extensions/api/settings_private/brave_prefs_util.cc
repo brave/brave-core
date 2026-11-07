@@ -317,12 +317,6 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)
       [ai_chat::prefs::kBraveAIChatTabOrganizationSendPageContent] =
           settings_api::PrefType::kBoolean;
-#if BUILDFLAG(ENABLE_LOCAL_AI)
-  // Owned by the chrome://history toggle; the Leo settings page reads it to
-  // disable the send-page-content sub-option.
-  (*s_brave_allowlist)[local_ai::prefs::kBraveHistoryEmbeddingsEnabled] =
-      settings_api::PrefType::kBoolean;
-#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
   (*s_brave_allowlist)[ai_chat::prefs::kBraveAIChatTabOrganizationModelKey] =
       settings_api::PrefType::kString;
   (*s_brave_allowlist)[ai_chat::prefs::kBraveAIChatUserCustomizationEnabled] =
@@ -334,8 +328,6 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
   // On-device AI pref
-  (*s_brave_allowlist)[local_ai::prefs::kBraveHistoryEmbeddingsEnabled] =
-      settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[local_ai::prefs::kOnDeviceSpeechModelEnabled] =
       settings_api::PrefType::kBoolean;
 #endif

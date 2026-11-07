@@ -34,6 +34,7 @@
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/infobars/confirm_infobar_creation_allowlist.h"
 #include "chrome/browser/infobars/confirm_infobar_creator.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_command_controller.h"
@@ -91,8 +92,9 @@ class TestInfoBarDelegate : public ConfirmInfoBarDelegate {
  public:
   // Helper to construct and inject the infobar
   static void Create(infobars::ContentInfoBarManager* infobar_manager) {
-    infobar_manager->AddInfoBar(
-        CreateConfirmInfoBar(std::make_unique<TestInfoBarDelegate>()));
+    infobar_manager->AddInfoBar(CreateConfirmInfoBar(
+        ConfirmInfoBarCreationAllowlist::GetPassKeyForTesting(),
+        std::make_unique<TestInfoBarDelegate>()));
   }
 
   TestInfoBarDelegate() = default;
