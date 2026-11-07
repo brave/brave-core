@@ -8,7 +8,9 @@
 
 int main(int argc, char** argv) {
   base::TestSuite test_suite(argc, argv);
+  // No launcher retries; each test case retries internally.
   return base::LaunchUnitTests(
       argc, argv,
-      base::BindOnce(&base::TestSuite::Run, base::Unretained(&test_suite)));
+      base::BindOnce(&base::TestSuite::Run, base::Unretained(&test_suite)),
+      /*retry_limit=*/0);
 }
