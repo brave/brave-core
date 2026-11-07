@@ -8,28 +8,39 @@
 
 #include <memory>
 
-#include "brave/ios/browser/brave_ads/ads_service_impl_ios.h"
-#include "ios/chrome/browser/shared/model/profile/typed_profile_keyed_service_factory_ios.h"
+#include "ios/chrome/browser/shared/model/profile/profile_keyed_service_factory_ios.h"
 
-class KeyedService;
 class ProfileIOS;
+class KeyedService;
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace brave_ads {
 
-class AdsServiceFactoryIOS
-    : public TypedProfileKeyedServiceFactoryIOS<AdsServiceFactoryIOS,
-                                                AdsServiceImplIOS> {
- public:
-  explicit AdsServiceFactoryIOS(PassKey key);
+class AdsServiceImplIOS;
 
+class AdsServiceFactoryIOS : public ProfileKeyedServiceFactoryIOS {
+ public:
   AdsServiceFactoryIOS(const AdsServiceFactoryIOS&) = delete;
   AdsServiceFactoryIOS& operator=(const AdsServiceFactoryIOS&) = delete;
 
   AdsServiceFactoryIOS(AdsServiceFactoryIOS&&) = delete;
   AdsServiceFactoryIOS& operator=(AdsServiceFactoryIOS&&) = delete;
 
+  static AdsServiceImplIOS* GetForProfile(ProfileIOS* profile);
+
+  static AdsServiceFactoryIOS* GetInstance();
+
  private:
-  // TypedProfileKeyedServiceFactoryIOS:
+  friend base::NoDestructor<AdsServiceFactoryIOS>;
+
+  AdsServiceFactoryIOS();
+  ~AdsServiceFactoryIOS() override;
+
+  // ProfileKeyedServiceFactoryIOS:
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
       ProfileIOS* profile) const override;
 };

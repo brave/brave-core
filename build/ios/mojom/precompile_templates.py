@@ -18,7 +18,7 @@ sys.path.insert(
 )
 
 # pylint: disable=import-error,wrong-import-position
-from mojom.generate import template_expander  # noqa: E402
+from mojom.generate import template_expander
 
 
 def parse_args():

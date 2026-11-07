@@ -18,7 +18,7 @@
 #include "base/memory/weak_ptr.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/views/tabs/dragging/tab_drag_context.h"
-#include "chrome/browser/ui/views/tabs/tab_container.h"
+#include "chrome/browser/ui/views/tabs/tab_container_impl.h"
 #include "components/prefs/pref_member.h"
 #include "ui/gfx/canvas.h"
 #include "ui/views/controls/scroll_view.h"
@@ -31,9 +31,9 @@ class ScrollView;
 
 class BraveVerticalTabStripRegionView;
 
-class BraveTabContainer : public TabContainer,
+class BraveTabContainer : public TabContainerImpl,
                           public views::ScrollBarController {
-  METADATA_HEADER(BraveTabContainer, TabContainer)
+  METADATA_HEADER(BraveTabContainer, TabContainerImpl)
  public:
   BraveTabContainer(TabContainerController& controller,
                     TabHoverCardController* hover_card_controller,
@@ -95,7 +95,7 @@ class BraveTabContainer : public TabContainer,
   // Call this when those constants change.
   void RefreshGroupHeaderVisuals();
 
-  // TabContainer:
+  // TabContainerImpl:
   gfx::Size CalculatePreferredSize(
       const views::SizeBounds& available_size) const override;
   std::vector<Tab*> AddTabs(

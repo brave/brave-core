@@ -5,8 +5,6 @@
 
 #include "brave/ios/browser/api/webcompat_reporter/webcompat_reporter_service_factory.h"
 
-#include <utility>
-
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
 #include "brave/components/webcompat_reporter/common/pref_names.h"
 #include "brave/ios/browser/api/webcompat_reporter/webcompat_reporter_service_delegate.h"
@@ -19,20 +17,29 @@ namespace webcompat_reporter {
 // static
 mojo::PendingRemote<mojom::WebcompatReporterHandler>
 WebcompatReporterServiceFactory::GetHandlerForContext(ProfileIOS* profile) {
-  auto* service = GetForProfile(profile);
+  auto* service =
+      GetInstance()->GetServiceForProfileAs<WebcompatReporterService>(profile,
+                                                                      true);
   if (!service) {
     return mojo::PendingRemote<mojom::WebcompatReporterHandler>();
   }
   return service->MakeRemote();
 }
 
-WebcompatReporterServiceFactory::WebcompatReporterServiceFactory(PassKey key)
-    : TypedProfileKeyedServiceFactoryIOS(
-          std::move(key),
-          "WebcompatReporterService",
-          ProfileSelection::kOwnInstanceInIncognito,
-          ServiceCreation::kCreateLazily,
-          TestingCreation::kCreateService) {}
+// static
+WebcompatReporterServiceFactory*
+WebcompatReporterServiceFactory::GetInstance() {
+  static base::NoDestructor<WebcompatReporterServiceFactory> instance;
+  return instance.get();
+}
+
+WebcompatReporterServiceFactory::WebcompatReporterServiceFactory()
+    : ProfileKeyedServiceFactoryIOS("WebcompatReporterService",
+                                    ProfileSelection::kOwnInstanceInIncognito,
+                                    ServiceCreation::kCreateLazily,
+                                    TestingCreation::kCreateService) {}
+
+WebcompatReporterServiceFactory::~WebcompatReporterServiceFactory() {}
 
 void WebcompatReporterServiceFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {

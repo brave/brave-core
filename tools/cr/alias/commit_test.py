@@ -167,15 +167,19 @@ class TestCommitIntegration(unittest.TestCase):
         self.assertIn('issues/999', msg)
 
     def test_fixup_commit_skips_hook_processing(self) -> None:
-        """A plain fixup! commit goes through, and the hook leaves it alone."""
+        """fixup! commits bypass tag insertion (hook behaviour)."""
+        # First commit to have something to fixup.
         self._sandbox.stage_change('v1\n')
         self._sandbox.run_gc(['commit', '-m', 'Base commit'])
         self._sandbox.stage_change('v2\n')
-        result = self._sandbox.run_gc(['commit', '-m', 'fixup! Base commit'])
-        self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
-        self.assertEqual(
-            'fixup! Base commit', self._sandbox.last_commit_message()
+        result = self._sandbox.run_gc(
+            ['commit', '--tagged', 'WIP', '-m', 'fixup! Base commit']
         )
+        self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
+        msg = self._sandbox.last_commit_message()
+        # The hook skips fixup! commits — no tag should be added.
+        self.assertNotIn('[WIP]', msg)
+        self.assertTrue(msg.startswith('fixup!'))
 
     def test_empty_message_rejected(self) -> None:
         """A commit with only whitespace in the message is rejected."""
@@ -196,24 +200,12 @@ class TestCulpritLinks(unittest.TestCase):
 
     A bare hash resolves against the Chromium checkout ('../'); a
     '<subrepo>:<hash>' value (e.g. 'v8/src:...') resolves against that subrepo
-    (e.g. '../v8/src'). Each links through its checkout's origin push URL.
+    (e.g. '../v8/src') and links to its own googlesource project.
     """
 
     def setUp(self) -> None:
         self._sandbox = self.enterContext(_Sandbox())
         self._sandbox.install_hook()
-        self._set_origin(
-            self._sandbox.repo.chromium,
-            'https://chromium.googlesource.com/chromium/src.git',
-        )
-
-    def _set_origin(
-        self, repo_path: Path, url: str, push_url: str | None = None
-    ) -> None:
-        git = self._sandbox.repo._run_git_command
-        git(['remote', 'add', 'origin', url], repo_path)
-        if push_url:
-            git(['remote', 'set-url', '--push', 'origin', push_url], repo_path)
 
     def _commit_in(self, subject: str, repo_path: Path) -> str:
         """Create an empty commit in repo_path and return its hash."""
@@ -243,10 +235,6 @@ class TestCulpritLinks(unittest.TestCase):
         """A 'v8/src:<hash>' culprit resolves in ../v8/src, links to v8/v8."""
         repo = self._sandbox.repo
         repo.add_repo('v8/src')
-        self._set_origin(
-            repo.chromium / 'v8' / 'src',
-            'https://chromium.googlesource.com/v8/v8',
-        )
         culprit_hash = self._commit_in(
             'Some v8 change', repo.chromium / 'v8' / 'src'
         )
@@ -268,10 +256,6 @@ class TestCulpritLinks(unittest.TestCase):
         repo = self._sandbox.repo
         chromium_hash = self._commit_in('Chromium side', repo.chromium)
         repo.add_repo('v8/src')
-        self._set_origin(
-            repo.chromium / 'v8' / 'src',
-            'https://chromium.googlesource.com/v8/v8.git',
-        )
         v8_hash = self._commit_in('V8 side', repo.chromium / 'v8' / 'src')
         self._sandbox.stage_change()
         result = self._sandbox.run_gc(
@@ -295,89 +279,16 @@ class TestCulpritLinks(unittest.TestCase):
         self.assertIn('Chromium side', msg)
         self.assertIn('V8 side', msg)
 
-    def test_subrepo_that_is_not_a_checkout_is_rejected(self) -> None:
-        """A subrepo with no git checkout aborts the commit."""
+    def test_unknown_subrepo_is_rejected(self) -> None:
+        """An unknown subrepo prefix aborts the commit with a helpful error."""
         self._sandbox.stage_change()
         result = self._sandbox.run_gc(
             ['commit', '--culprit', 'skia:deadbeef', '-m', 'Fix']
         )
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn(
-            "Culprit subrepo 'skia' is not a git checkout", result.stderr
-        )
-
-    def test_github_subrepo_links_to_github(self) -> None:
-        """A subrepo on GitHub, over ssh, links to its GitHub commit page."""
-        repo = self._sandbox.repo
-        repo.add_repo('third_party/foo')
-        self._set_origin(
-            repo.chromium / 'third_party' / 'foo',
-            'git@github.com:example/foo.git',
-        )
-        culprit_hash = self._commit_in(
-            'A foo change', repo.chromium / 'third_party' / 'foo'
-        )
-        self._sandbox.stage_change()
-        result = self._sandbox.run_gc(
-            [
-                'commit',
-                '--culprit',
-                f'third_party/foo:{culprit_hash}',
-                '-m',
-                'x',
-            ]
-        )
-        self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
-        self.assertIn(
-            f'https://github.com/example/foo/commit/{culprit_hash}',
-            self._sandbox.last_commit_message(),
-        )
-
-    def test_push_url_wins_over_a_git_cache_fetch_url(self) -> None:
-        """A checkout fetching from a local mirror links through its push
-        URL, as in CI."""
-        repo = self._sandbox.repo
-        repo.add_repo('v8/src')
-        self._set_origin(
-            repo.chromium / 'v8' / 'src',
-            str(repo.chromium / 'v8' / 'src'),
-            push_url='https://chromium.googlesource.com/a/v8/v8.git',
-        )
-        culprit_hash = self._commit_in(
-            'Some v8 change', repo.chromium / 'v8' / 'src'
-        )
-        self._sandbox.stage_change()
-        result = self._sandbox.run_gc(
-            ['commit', '--culprit', f'v8/src:{culprit_hash}', '-m', 'Fix']
-        )
-        self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
-        self.assertIn(
-            f'https://chromium.googlesource.com/v8/v8/+/{culprit_hash}',
-            self._sandbox.last_commit_message(),
-        )
-
-    def test_remote_on_another_host_is_rejected(self) -> None:
-        """A remote neither on googlesource nor on GitHub can't be linked."""
-        repo = self._sandbox.repo
-        repo.add_repo('third_party/bar')
-        self._set_origin(
-            repo.chromium / 'third_party' / 'bar', 'https://gitlab.com/x/bar'
-        )
-        culprit_hash = self._commit_in(
-            'A bar change', repo.chromium / 'third_party' / 'bar'
-        )
-        self._sandbox.stage_change()
-        result = self._sandbox.run_gc(
-            [
-                'commit',
-                '--culprit',
-                f'third_party/bar:{culprit_hash}',
-                '-m',
-                'x',
-            ]
-        )
-        self.assertNotEqual(result.returncode, 0)
-        self.assertIn("Can't link to commits in", result.stderr)
+        self.assertIn("Unknown culprit subrepo 'skia'", result.stderr)
+        # The known subrepos are listed to guide the user.
+        self.assertIn('v8/src', result.stderr)
 
     def test_culprit_already_in_message_is_not_duplicated(self) -> None:
         """A culprit whose hash is already in the message adds no link block."""
@@ -397,199 +308,6 @@ class TestCulpritLinks(unittest.TestCase):
         msg = self._sandbox.last_commit_message()
         self.assertNotIn('Chromium changes:', msg)
         self.assertNotIn('Should not be inlined', msg)
-
-    def test_short_hash_is_written_in_full(self) -> None:
-        """A culprit given as a short hash links with the full one."""
-        repo = self._sandbox.repo
-        culprit_hash = self._commit_in('Upstream change', repo.chromium)
-        self._sandbox.stage_change()
-        result = self._sandbox.run_gc(
-            ['commit', '--culprit', culprit_hash[:9], '-m', 'Fix']
-        )
-        self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
-        self.assertIn(
-            f'chromium/src/+/{culprit_hash}\n',
-            self._sandbox.last_commit_message() + '\n',
-        )
-
-    def test_hash_that_is_not_a_commit_is_rejected(self) -> None:
-        """A culprit that doesn't resolve aborts the commit."""
-        self._sandbox.stage_change()
-        result = self._sandbox.run_gc(
-            ['commit', '--culprit', 'deadbeef1234', '-m', 'Fix']
-        )
-        self.assertNotEqual(result.returncode, 0)
-        self.assertIn("Culprit 'deadbeef1234' is not a commit", result.stderr)
-
-    def _cr_branch(self, tag_both: bool = True) -> dict[str, str]:
-        """A `cr158` branch on `158.0.8127.4` whose upstream pins
-        `158.0.8127.2`, over a Chromium history of before, the old tag, in
-        range, the new tag, and after. Returns those commits by name."""
-        repo = self._sandbox.repo
-        git = repo._run_git_command
-        commits = {'before': self._commit_in('Before', repo.chromium)}
-        commits['old'] = self._commit_in('Old tag', repo.chromium)
-        git(['tag', '158.0.8127.2'], repo.chromium)
-        commits['in_range'] = self._commit_in('In range', repo.chromium)
-        commits['new'] = self._commit_in('New tag', repo.chromium)
-        if tag_both:
-            git(['tag', '158.0.8127.4'], repo.chromium)
-        commits['after'] = self._commit_in('After', repo.chromium)
-        repo.update_brave_version('158.0.8127.2')
-        git(['branch', 'base'], repo.brave)
-        git(['checkout', '-q', '-b', 'cr158'], repo.brave)
-        git(['branch', '--set-upstream-to=base'], repo.brave)
-        repo.update_brave_version('158.0.8127.4')
-        return commits
-
-    def _commit_with_culprit(self, culprit: str):
-        self._sandbox.stage_change(f'{culprit}\n')
-        return self._sandbox.run_gc(
-            ['commit', '--culprit', culprit, '-m', 'Fix']
-        )
-
-    def test_cr_branch_accepts_a_culprit_in_its_range(self) -> None:
-        commits = self._cr_branch()
-        for name in ('in_range', 'new'):
-            with self.subTest(name):
-                result = self._commit_with_culprit(commits[name])
-                self.assertEqual(
-                    result.returncode, 0, msg=f'stderr: {result.stderr}'
-                )
-
-    def test_cr_branch_rejects_a_culprit_outside_its_range(self) -> None:
-        commits = self._cr_branch()
-        for name in ('before', 'old', 'after'):
-            with self.subTest(name):
-                result = self._commit_with_culprit(commits[name])
-                self.assertNotEqual(result.returncode, 0)
-                self.assertIn(
-                    "not in the branch's Chromium range, "
-                    '158.0.8127.2..158.0.8127.4',
-                    result.stderr,
-                )
-
-    def test_range_is_not_checked_without_the_tags(self) -> None:
-        commits = self._cr_branch(tag_both=False)
-        result = self._commit_with_culprit(commits['after'])
-        self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
-        self.assertIn("tag 158.0.8127.4 isn't in", result.stderr)
-
-
-# ---------------------------------------------------------------------------
-# Tests: where the hook bails out, and --force-commit-hook
-# ---------------------------------------------------------------------------
-
-
-class TestForceCommitHook(unittest.TestCase):
-    """`git cr commit` refuses where the hook would leave the message alone,
-    and `--force-commit-hook` runs it there anyway."""
-
-    _HINT = 'Pass --force-commit-hook'
-
-    def setUp(self) -> None:
-        self._sandbox = self.enterContext(_Sandbox())
-        self._sandbox.install_hook()
-        repo = self._sandbox.repo
-        repo._run_git_command(
-            [
-                'remote',
-                'add',
-                'origin',
-                'https://chromium.googlesource.com/chromium/src.git',
-            ],
-            repo.chromium,
-        )
-        self._culprit = repo.commit_empty('Upstream change', repo.chromium)
-
-    def _git(self, *args: str, env: dict[str, str] | None = None) -> None:
-        subprocess.run(
-            ['git', *args],
-            cwd=self._sandbox.root,
-            check=True,
-            capture_output=True,
-            text=True,
-            env={**os.environ, **_GIT_ENV_OVERRIDES, **(env or {})},
-        )
-
-    def _stop_rebase_on_cr158(self) -> None:
-        """A `cr158` branch whose rebase is stopped on its last commit."""
-        self._git('checkout', '-q', '-b', 'cr158')
-        self._sandbox.stage_change('to rebase\n')
-        self._git('commit', '--no-verify', '-q', '-m', 'To rebase')
-        editor = (
-            f'"{sys.executable}" -c "import pathlib, sys; '
-            'p = pathlib.Path(sys.argv[1]); '
-            "p.write_text(p.read_text().replace('pick', 'edit', 1))\""
-        )
-        self._git(
-            'rebase', '-q', '-i', 'HEAD~1', env={'GIT_SEQUENCE_EDITOR': editor}
-        )
-
-    def test_rebase_in_progress_is_refused(self) -> None:
-        self._stop_rebase_on_cr158()
-        self._sandbox.stage_change('during rebase\n')
-        result = self._sandbox.run_gc(['commit', '-m', 'Fix'])
-        self.assertNotEqual(result.returncode, 0)
-        self.assertIn('a rebase is in progress', result.stderr)
-        self.assertIn(self._HINT, result.stderr)
-
-    def test_forced_during_rebase_tags_and_links(self) -> None:
-        self._stop_rebase_on_cr158()
-        self._sandbox.stage_change('during rebase\n')
-        result = self._sandbox.run_gc(
-            [
-                'commit',
-                '--force-commit-hook',
-                '--culprit',
-                self._culprit,
-                '-m',
-                'Fix',
-            ]
-        )
-        self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
-        msg = self._sandbox.last_commit_message()
-        self.assertTrue(msg.startswith('[cr158] Fix'), msg=msg)
-        self.assertIn(f'chromium/src/+/{self._culprit}', msg)
-
-    def test_cherry_pick_in_progress_is_refused(self) -> None:
-        (self._sandbox.root / '.git' / 'CHERRY_PICK_HEAD').write_text(
-            'HEAD\n', encoding='utf-8', newline=''
-        )
-        self._sandbox.stage_change()
-        result = self._sandbox.run_gc(['commit', '-m', 'Fix'])
-        self.assertNotEqual(result.returncode, 0)
-        self.assertIn('a cherry-pick is in progress', result.stderr)
-
-    def test_fixup_with_hook_flags_is_refused(self) -> None:
-        self._sandbox.stage_change()
-        result = self._sandbox.run_gc(
-            ['commit', '--culprit', self._culprit, '-m', 'fixup! Add file.txt']
-        )
-        self.assertNotEqual(result.returncode, 0)
-        self.assertIn('fixup!/amend!', result.stderr)
-        self.assertIn(self._HINT, result.stderr)
-
-    def test_forced_fixup_links_without_tags(self) -> None:
-        self._git('checkout', '-q', '-b', 'cr158')
-        self._sandbox.stage_change()
-        result = self._sandbox.run_gc(
-            [
-                'commit',
-                '--force-commit-hook',
-                '--tagged',
-                'WIP',
-                '--culprit',
-                self._culprit,
-                '-m',
-                'fixup! Add file.txt',
-            ]
-        )
-        self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
-        msg = self._sandbox.last_commit_message()
-        self.assertTrue(msg.startswith('fixup! Add file.txt'), msg=msg)
-        self.assertNotIn('[WIP]', msg)
-        self.assertIn(f'chromium/src/+/{self._culprit}', msg)
 
 
 # ---------------------------------------------------------------------------

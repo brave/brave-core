@@ -13,8 +13,6 @@ from typing import Any, TYPE_CHECKING
 from recipe_api import RecipeApi
 
 if TYPE_CHECKING:
-    from pathlib import Path
-
     from recipe_modules import osx_sdk
 
 # Path to `EphemeralXcode`.

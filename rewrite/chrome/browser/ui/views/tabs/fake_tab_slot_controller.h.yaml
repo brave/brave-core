@@ -15,7 +15,8 @@ substitutions:
       code: |-
         bool should_always_hide_close_button_ = false;
         bool can_close_tab_via_middle_button_click_ = true;
-        brave_tabs::TabMinWidthMode tab_min_width_mode_{};
+        brave_tabs::TabMinWidthMode tab_min_width_mode_ =
+            brave_tabs::TabMinWidthMode::kDefault;
         bool horizontal_scrolling_enabled_ = false;
 
   - description: |-

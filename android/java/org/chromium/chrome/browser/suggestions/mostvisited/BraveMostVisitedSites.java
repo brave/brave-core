@@ -60,7 +60,7 @@ public class BraveMostVisitedSites implements MostVisitedSites {
     private final SharedPreferences.OnSharedPreferenceChangeListener mPrefListener;
 
     public BraveMostVisitedSites(Profile profile) {
-        this(new MostVisitedSitesBridge(profile));
+        this(new MostVisitedSitesBridge(profile, /* enableCustomLinks= */ true));
     }
 
     // The chromium wrapper is not usable for us, it has no listener registration API.

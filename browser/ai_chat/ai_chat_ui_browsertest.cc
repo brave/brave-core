@@ -271,7 +271,7 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, FetchPageContentPDF) {
   // Test pdf tab loaded in background.
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), https_server_.GetURL("a.com", "/dummy.pdf"),
-      WindowOpenDisposition::kNewBackgroundTab,
+      WindowOpenDisposition::NEW_BACKGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_EQ(2, browser()->tab_strip_model()->count());
 

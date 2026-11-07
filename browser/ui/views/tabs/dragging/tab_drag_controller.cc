@@ -24,7 +24,6 @@
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/tabs/dragging/tab_drag_context.h"
 #include "chrome/browser/ui/views/tabs/dragging/window_finder.h"
-#include "chrome/browser/ui/views/tabs/tab.h"
 #include "components/prefs/pref_service.h"
 #include "components/tabs/public/tab_group.h"
 #include "ui/views/view_utils.h"
@@ -35,8 +34,8 @@ BraveTabDragController::~BraveTabDragController() = default;
 
 BraveTabDragController::Liveness BraveTabDragController::Init(
     TabDragContext* source_context,
-    views::View* source_view,
-    const std::vector<views::View*>& dragging_views,
+    TabSlotView* source_view,
+    const std::vector<TabSlotView*>& dragging_views,
     const gfx::Point& offset_from_source_view,
     ui::ListSelectionModel initial_selection_model,
     ui::mojom::DragEventSource event_source) {
@@ -58,10 +57,11 @@ BraveTabDragController::Liveness BraveTabDragController::Init(
   if (base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs) &&
       browser->GetProfile()->GetPrefs()->GetBoolean(
           brave_tabs::kSharedPinnedTab)) {
-    if (std::ranges::any_of(dragging_views, [](views::View* view) {
+    if (std::ranges::any_of(dragging_views, [](TabSlotView* slot_view) {
           // We don't allow sharable pinned tabs to be detached.
-          const Tab* tab = views::AsViewClass<Tab>(view);
-          return tab && tab->data().pinned;
+          return slot_view->GetTabSlotViewType() ==
+                     TabSlotView::ViewType::kTab &&
+                 views::AsViewClass<Tab>(slot_view)->data().pinned;
         })) {
       detach_behavior_ = DetachBehavior::kNotDetachable;
     }

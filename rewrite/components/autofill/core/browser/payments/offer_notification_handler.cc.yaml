@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Also require the offer to not be a promo code offer.
+
+      BraveIsOfferValid (defined in the chromium_src override) replicates
+      the functionality that the removed upstream flag
+      kAutofillEnableOfferNotificationForPromoCodes used to have.
+    after_function_impl:
+      function_name: OfferNotificationHandler::ValidOfferExistsForUrl
+      result_var: valid_offer_exists
+      code: |-
+        return valid_offer_exists &&
+               BraveIsOfferValid(offer_manager_->GetOfferForUrl(url));

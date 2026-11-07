@@ -6,12 +6,13 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_SESSION_CRASHED_BUBBLE_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_SESSION_CRASHED_BUBBLE_H_
 
+#define ShowIfNotOffTheRecordProfile                                 \
+  ShowIfNotOffTheRecordProfileBrave(BrowserWindowInterface* browser, \
+                                    bool skip_tab_checking);         \
+  static void ShowIfNotOffTheRecordProfile
+
 #include <chrome/browser/ui/session_crashed_bubble.h>  // IWYU pragma: export
 
-// Shows the crash report permission dialog instead, when it's due; that dialog
-// shows the session crashed bubble once it closes.
-void ShowSessionCrashedBubbleIfNotOffTheRecordProfileBrave(
-    BrowserWindowInterface* browser,
-    bool skip_tab_checking);
+#undef ShowIfNotOffTheRecordProfile
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_SESSION_CRASHED_BUBBLE_H_

@@ -183,7 +183,8 @@ void AIChatUI::BindInterfaceParentUIFrame(
 void AIChatUI::BindInterfaceHistoryUIHandler(
     mojo::PendingReceiver<ai_chat::mojom::HistoryUIHandler> receiver) {
   history_ui_handler_ = std::make_unique<ai_chat::HistoryUIHandler>(
-      std::move(receiver), ios::HistoryServiceFactory::GetForProfile(profile_));
+      std::move(receiver), ios::HistoryServiceFactory::GetForProfile(
+                               profile_, ServiceAccessType::EXPLICIT_ACCESS));
   CHECK(history_ui_handler_);
 }
 

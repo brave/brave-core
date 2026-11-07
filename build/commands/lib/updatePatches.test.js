@@ -30,6 +30,7 @@ async function writePatchAsPlaster(repoPath, patchDirPath, repoRelativePath) {
     '--dst-prefix=b/',
     '--default-prefix',
     '--full-index',
+    '--ignore-space-at-eol',
     repoRelativePath,
   ])
   const patchFilename = repoRelativePath.replace(/\//g, '-') + '.patch'
@@ -115,30 +116,6 @@ describe('updatePatches plaster detection', function () {
     expect(errors).toEqual([sourceName])
     // Plaster owns the patch: update_patches must not overwrite it.
     expect(await fs.readFile(patchFile, 'utf-8')).toBe(stale)
-  })
-
-  test('writes a plaster-managed patch as plaster would without the filter', async () => {
-    // As under `--no-plaster-check`: the newline added at the end of a file
-    // that lacked one has to be in the patch, byte for byte as plaster has it.
-    await fs.writeFile(sourcePath, 'list =\n    []')
-    await runGit(repoPath, ['commit', '-am', 'no trailing newline'])
-    await fs.writeFile(sourcePath, 'list =\n    []\nlist += extra')
-    const expected = await fs.readFile(
-      path.join(
-        patchPath,
-        await writePatchAsPlaster(repoPath, patchPath, sourceName),
-      ),
-      'utf-8',
-    )
-    const patchFile = path.join(patchPath, sourceName + '.patch')
-    await fs.writeFile(patchFile, 'stale\n')
-
-    const errors = await updatePatches(repoPath, patchPath, [])
-
-    expect(errors).toEqual([])
-    const patch = await fs.readFile(patchFile, 'utf-8')
-    expect(patch).toBe(expected)
-    expect(patch).toContain('-    []\n\\ No newline at end of file\n')
   })
 
   test('reports an error when a plaster-managed patch is missing', async () => {

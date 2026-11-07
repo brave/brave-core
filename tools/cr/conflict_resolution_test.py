@@ -36,8 +36,7 @@ from test.fake_chromium_repo import DEFAULT_BRANCH, FakeChromiumRepo
 from test.fake_terminal import ConsoleCapture
 
 # The milestone tracker, and a file next to it the tracker rule leaves alone.
-TRACKER = 'tools/cr/codehealth/M158.md'
-OLD_TRACKER = 'tools/cr/M158_codehealth.md'
+TRACKER = 'tools/cr/M158_codehealth.md'
 NOT_A_TRACKER = 'tools/cr/README.md'
 
 # A Chromium source brave patches with a plaster, its plaster, and its patch.
@@ -477,51 +476,24 @@ class PlasterRuleTest(_RebaseStopTestCase):
         )
         self.assertEqual(self.read(FOO_PATCH), commit[FOO_PATCH])
 
-    def test_takes_the_commit_patch_when_chromium_is_on_another_version(self):
+    def test_leaves_the_patch_when_chromium_is_on_another_version(self):
         ancestor = self.plastered('BraveThing')
         commit = self.plastered('BraveOtherThing')
-        # The base's patch only differs in the blob hashes it records.
         base = {FOO_PATCH: ancestor[FOO_PATCH].replace('index ', 'index 0')}
         step = self.stop_rebase(ancestor=ancestor, base=base, commit=commit)
+        conflicted_patch = self.read(FOO_PATCH)
         self.repo.add_tag('158.0.8130.1')
 
         with self.assertLogs(level='WARNING') as logs:
-            resolutions = step.resolve()
+            self.assertEqual(step.resolve(), [])
 
-        self.assertEqual(
-            resolutions,
-            [
-                Resolution(
-                    path=FOO_PATCH, rule=Rule.CONTEXT_ONLY_PLASTERED_PATCH
-                )
-            ],
-        )
-        self.assertEqual(self.read(FOO_PATCH), commit[FOO_PATCH])
+        self.assertEqual(self.read(FOO_PATCH), conflicted_patch)
         self.assertEqual(len(logs.output), 1)
         self.assertIn(
             f'checked out at 158.0.8130.1, but the rebase is at '
             f'{CHROMIUM_VERSION}',
             logs.output[0],
         )
-
-    def test_leaves_the_patch_the_base_changed_on_another_version(self):
-        """The base's plaster change shows in its patch's lines, so the
-        commit's patch would drop it."""
-        ancestor = self.plastered('BraveThing')
-        commit = self.plastered('BraveOtherThing')
-        base = {
-            FOO_PATCH: ancestor[FOO_PATCH].replace(
-                'BraveThing', 'BraveBaseThing'
-            )
-        }
-        step = self.stop_rebase(ancestor=ancestor, base=base, commit=commit)
-        conflicted_patch = self.read(FOO_PATCH)
-        self.repo.add_tag('158.0.8130.1')
-
-        with self.assertLogs(level='WARNING'):
-            self.assertEqual(step.resolve(), [])
-
-        self.assertEqual(self.read(FOO_PATCH), conflicted_patch)
 
     def test_leaves_the_patch_when_its_plaster_is_conflicted_too(self):
         ancestor = self.plastered('BraveThing')
@@ -533,9 +505,8 @@ class PlasterRuleTest(_RebaseStopTestCase):
         self.assertEqual(step.resolve(), [])
 
     def test_leaves_the_patch_when_its_plaster_fails(self):
-        """The base only changed the patch's context here, but with Chromium on
-        the version rebased so far, a patch with a plaster is only ever
-        regenerated, never taken from the commit."""
+        """The base only changed the patch's context here, but a patch with a
+        plaster is only ever regenerated, never taken from the commit."""
         ancestor = self.plastered('BraveThing')
         commit = {
             # Nothing in the source matches this plaster anymore.
@@ -555,16 +526,16 @@ class PlasterRuleTest(_RebaseStopTestCase):
 class CodeHealthTrackerRuleTest(_RebaseStopTestCase):
     """A tracker the base doesn't have is taken from the branch."""
 
-    def _takes_the_branch_version(self, tracker: str) -> None:
+    def test_takes_the_branch_version_of_its_own_tracker(self):
         """Rebasing the tracker's later commits without the one adding it is
         the simplest way to have a rebase stop on a tracker the base (here, the
         default branch) doesn't have."""
         self.git('checkout', '--quiet', '-b', 'feature')
         added = self.commit(
-            {tracker: '- [ ] one\n', NOT_A_TRACKER: 'one\n'}, 'Add a tracker'
+            {TRACKER: '- [ ] one\n', NOT_A_TRACKER: 'one\n'}, 'Add a tracker'
         )
-        self.commit({tracker: '- [x] one\n', NOT_A_TRACKER: 'two\n'}, 'Tick it')
-        self.commit({tracker: '- [x] one\n- [ ] two\n'}, 'Add an item')
+        self.commit({TRACKER: '- [x] one\n', NOT_A_TRACKER: 'two\n'}, 'Tick it')
+        self.commit({TRACKER: '- [x] one\n- [ ] two\n'}, 'Add an item')
         with self.assertRaises(subprocess.CalledProcessError):
             self.git('rebase', '--onto', DEFAULT_BRANCH, added)
         step = conflict_resolution.ConflictedStep.load()
@@ -573,18 +544,10 @@ class CodeHealthTrackerRuleTest(_RebaseStopTestCase):
 
         self.assertEqual(
             resolutions,
-            [Resolution(path=tracker, rule=Rule.CODEHEALTH_TRACKER)],
+            [Resolution(path=TRACKER, rule=Rule.CODEHEALTH_TRACKER)],
         )
-        self.assertEqual(self.read(tracker), '- [x] one\n- [ ] two\n')
+        self.assertEqual(self.read(TRACKER), '- [x] one\n- [ ] two\n')
         self.assertIn(NOT_A_TRACKER, self.conflicted())
-
-    def test_takes_the_branch_version_of_its_own_tracker(self):
-        self._takes_the_branch_version(TRACKER)
-
-    def test_takes_the_branch_version_at_the_old_tracker_path(self):
-        """Branches from before the trackers moved still edit them at
-        `tools/cr/M<N>_codehealth.md`."""
-        self._takes_the_branch_version(OLD_TRACKER)
 
     def test_leaves_a_tracker_the_base_has(self):
         step = self.stop_rebase(

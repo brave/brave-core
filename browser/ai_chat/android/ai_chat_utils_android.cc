@@ -65,7 +65,7 @@ static void JNI_BraveLeoUtils_OpenLeoQuery(
 
   content::OpenURLParams params(
       ConversationUrl(conversation->get_conversation_uuid()),
-      content::Referrer(), WindowOpenDisposition::kCurrentTab,
+      content::Referrer(), WindowOpenDisposition::CURRENT_TAB,
       ui::PAGE_TRANSITION_FROM_API, false);
   web_contents->OpenURL(params, {});
 }
@@ -88,7 +88,7 @@ static void JNI_BraveLeoUtils_OpenLeoUrlForTab(
 
   content::OpenURLParams params(
       ConversationUrl(conversation->get_conversation_uuid()),
-      content::Referrer(), WindowOpenDisposition::kNewForegroundTab,
+      content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui::PAGE_TRANSITION_FROM_API, false);
   web_contents->OpenURL(params, {});
 }

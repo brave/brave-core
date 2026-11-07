@@ -21,16 +21,6 @@ source_set("download") {
   ]
 }
 
-source_set("chromium_impl") {
-  visibility = [ "//brave/browser:core" ]
-  sources = [ "background_download_service_factory.cc" ]
-  deps = [
-    "//base",
-    "//brave/browser:browser_process",
-    "//brave/components/brave_shields/content/browser",
-  ]
-}
-
 source_set("browser_tests") {
   testonly = true
 

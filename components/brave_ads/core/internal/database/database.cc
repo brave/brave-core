@@ -458,12 +458,8 @@ void Database::SetSqliteResult(
       result_code, db_.GetDiagnosticInfo(result_code, /*statement=*/nullptr));
 }
 
-void Database::OnMemoryPressure(base::MemoryPressureLevel level) {
+void Database::OnMemoryPressure(base::MemoryPressureLevel /*level*/) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  if (level == base::MEMORY_PRESSURE_LEVEL_NONE) {
-    return;
-  }
 
   db_.TrimMemory();
 }

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/frame/vertical_tab_strip_region_view.cc b/chrome/browser/ui/views/frame/vertical_tab_strip_region_view.cc
-index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098591b895d 100644
+index f3ab4f166bc179704f5d8ff79ded1165678f9ec9..0d463560347aa954f36a71926b9daabbb0405ca4 100644
 --- a/chrome/browser/ui/views/frame/vertical_tab_strip_region_view.cc
 +++ b/chrome/browser/ui/views/frame/vertical_tab_strip_region_view.cc
-@@ -118,10 +118,10 @@ constexpr base::TimeDelta kVerticalTabsExpandOnHoverVelocityHeuristicEdgeDelay =
+@@ -117,10 +117,10 @@ constexpr base::TimeDelta kVerticalTabsExpandOnHoverVelocityHeuristicEdgeDelay =
  
  }  // namespace
  
@@ -15,7 +15,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
      tabs::VerticalTabStripStateController* state_controller,
      actions::ActionItem* root_action_item,
      BrowserView* browser_view)
-@@ -177,7 +177,7 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
+@@ -176,7 +176,7 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
        std::make_unique<VerticalTabStripBottomContainer>(
            state_controller_, root_action_item, browser_view->browser(),
            base::BindRepeating(
@@ -24,7 +24,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
                base::Unretained(this))));
    bottom_button_container_->SetProperty(
        views::kFlexBehaviorKey,
-@@ -209,7 +209,7 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
+@@ -208,7 +208,7 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
    OnCollapseStateChanged(state_controller_->GetCollapseState());
    collapsed_state_changed_subscription_ =
        state_controller_->RegisterOnCollapseChanged(base::BindRepeating(
@@ -33,7 +33,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
            base::Unretained(this)));
  
    SetProperty(views::kElementIdentifierKey, kTabStripRegionElementId);
-@@ -233,7 +233,7 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
+@@ -232,7 +232,7 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
    SetNotifyEnterExitOnChild(true);
  }
  
@@ -42,7 +42,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
    for (const auto& lock : hover_locks_) {
      lock->ClearRegionViewOnDestruction();
    }
-@@ -243,12 +243,12 @@ VerticalTabStripRegionView::~VerticalTabStripRegionView() {
+@@ -242,12 +242,12 @@ VerticalTabStripRegionView::~VerticalTabStripRegionView() {
    state_controller_->SetDelegate(nullptr);
  }
  
@@ -57,7 +57,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
      const BrowserAnimationController* controller,
      BrowserAnimationUpdate status) {
    switch (status) {
-@@ -308,7 +308,7 @@ void VerticalTabStripRegionView::OnAnimationProgressed(
+@@ -307,7 +307,7 @@ void VerticalTabStripRegionView::OnAnimationProgressed(
    }
  }
  
@@ -66,7 +66,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
      const gfx::Point& point) {
    // Check the resize area first, it should always take precedence over other
    // children regardless of order.
-@@ -364,22 +364,22 @@ bool VerticalTabStripRegionView::IsPositionInWindowCaption(
+@@ -346,22 +346,22 @@ bool VerticalTabStripRegionView::IsPositionInWindowCaption(
    return true;
  }
  
@@ -90,10 +90,10 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
  
 -void VerticalTabStripRegionView::SetTransitionButtonOpacity(float opacity) {
 +void VerticalTabStripRegionView_ChromiumImpl::SetTransitionButtonOpacity(float opacity) {
-   if (views::LabelButton* label_button =
-           top_button_container_->GetCollapseButton()) {
-     auto* button = static_cast<TopContainerButton*>(label_button);
-@@ -395,30 +395,30 @@ void VerticalTabStripRegionView::SetTransitionButtonOpacity(float opacity) {
+   for (views::LabelButton* label_button :
+        {top_button_container_->GetCollapseButton(),
+         top_button_container_->GetUnfocusButton()}) {
+@@ -380,30 +380,30 @@ void VerticalTabStripRegionView::SetTransitionButtonOpacity(float opacity) {
    }
  }
  
@@ -129,7 +129,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
      const views::SizeBounds& size_bounds) const {
    views::ProposedLayout layout;
  
-@@ -431,7 +431,7 @@ views::ProposedLayout VerticalTabStripRegionView::CalculateProposedLayout(
+@@ -416,7 +416,7 @@ views::ProposedLayout VerticalTabStripRegionView::CalculateProposedLayout(
    const bool blending_with_organizer_tray =
        !organizer_panel_view_ && organizer_panel_show_percent_ > 0.0;
    const int blend_target_width = state_controller_->IsCollapsed()
@@ -138,7 +138,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
                                       : state_controller_->GetUncollapsedWidth();
  
    views::SizeBounds button_available_size = size_bounds;
-@@ -502,7 +502,7 @@ views::ProposedLayout VerticalTabStripRegionView::CalculateProposedLayout(
+@@ -488,7 +488,7 @@ views::ProposedLayout VerticalTabStripRegionView::CalculateProposedLayout(
    return layout;
  }
  
@@ -147,7 +147,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
    LayoutSuperclass<BaseTabStripRegionView>(this);
  
    // Manually position the resize area as it overlaps views handled by the flex
-@@ -520,7 +520,7 @@ void VerticalTabStripRegionView::Layout(PassKey) {
+@@ -505,7 +505,7 @@ void VerticalTabStripRegionView::Layout(PassKey) {
    }
  }
  
@@ -156,7 +156,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
    tabs::TabInterface* active_tab = tab_strip_model()->GetActiveTab();
    if (active_tab) {
      return GetTabAnchorView(active_tab->GetHandle());
-@@ -529,15 +529,15 @@ views::View* VerticalTabStripRegionView::GetDefaultFocusableChild() {
+@@ -514,15 +514,15 @@ views::View* VerticalTabStripRegionView::GetDefaultFocusableChild() {
    return top_button_container_;
  }
  
@@ -175,7 +175,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
      const views::SizeBounds& available_size) const {
    auto size = BaseTabStripRegionView::CalculatePreferredSize(available_size);
    const auto* controller =
-@@ -546,18 +546,18 @@ gfx::Size VerticalTabStripRegionView::CalculatePreferredSize(
+@@ -531,18 +531,18 @@ gfx::Size VerticalTabStripRegionView::CalculatePreferredSize(
        controller->GetCurrentMotion(TabStripAnimations::kVerticalTabStrip);
    const int expand_amount =
        std::max(0, target_collapse_state_.uncollapsed_width -
@@ -197,7 +197,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
    if (resize_area_->HasFocus()) {
      int resize_amount = 0;
  
-@@ -590,7 +590,7 @@ bool VerticalTabStripRegionView::OnKeyPressed(const ui::KeyEvent& event) {
+@@ -575,7 +575,7 @@ bool VerticalTabStripRegionView::OnKeyPressed(const ui::KeyEvent& event) {
    return BaseTabStripRegionView::OnKeyPressed(event);
  }
  
@@ -206,7 +206,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
    if (mouse_exit_timer_.IsRunning()) {
      mouse_exit_timer_.Stop();
      return;
-@@ -598,18 +598,18 @@ void VerticalTabStripRegionView::OnMouseEntered(const ui::MouseEvent& event) {
+@@ -583,18 +583,18 @@ void VerticalTabStripRegionView::OnMouseEntered(const ui::MouseEvent& event) {
    UpdateExpandOnHoverState(true);
  }
  
@@ -228,7 +228,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
      std::unique_ptr<views::View> panel_view) {
    CHECK(!organizer_panel_view_);
    panel_view->SetVisible(false);
-@@ -618,7 +618,7 @@ void VerticalTabStripRegionView::SetOrganizerPanelView(
+@@ -603,26 +603,26 @@ void VerticalTabStripRegionView::SetOrganizerPanelView(
  }
  
  std::unique_ptr<views::View>
@@ -236,8 +236,6 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
 +VerticalTabStripRegionView_ChromiumImpl::TakeOrganizerPanelView() {
    CHECK(organizer_panel_view_);
    organizer_panel_show_percent_ = 0.0;
-   // Since we mess with the opacity when animating the panel in/out, return it
-@@ -627,20 +627,20 @@ VerticalTabStripRegionView::TakeOrganizerPanelView() {
    return RemoveChildViewT(std::exchange(organizer_panel_view_, nullptr));
  }
  
@@ -262,7 +260,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
                         base::Unretained(this)));
      return;
    }
-@@ -649,12 +649,12 @@ void VerticalTabStripRegionView::HandleMouseExited() {
+@@ -631,12 +631,12 @@ void VerticalTabStripRegionView::HandleMouseExited() {
  }
  
  std::unique_ptr<ExpandOnHoverLock>
@@ -277,7 +275,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
      const std::optional<BrowserRootView::DropIndex>& index) {
    SetLinkDropArrow(index);
    UpdateExpandOnHoverState(true);
-@@ -664,13 +664,13 @@ void VerticalTabStripRegionView::HandleDragUpdate(
+@@ -646,13 +646,13 @@ void VerticalTabStripRegionView::HandleDragUpdate(
    }
  }
  
@@ -293,7 +291,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
      const BrowserRootView::DropIndex& drop_index,
      DropArrow::Direction* direction) {
    int target_x = GetBoundsInScreen().x();
-@@ -738,7 +738,7 @@ gfx::Point VerticalTabStripRegionView::GetLinkDropArrowPosition(
+@@ -720,7 +720,7 @@ gfx::Point VerticalTabStripRegionView::GetLinkDropArrowPosition(
    return gfx::Point(target_x, target_y);
  }
  
@@ -302,7 +300,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
                                            bool done_resizing) {
    CHECK(tab_strip_view());
    tab_strip_view()->SetIsAnimatingSize(!done_resizing);
-@@ -789,7 +789,7 @@ void VerticalTabStripRegionView::OnResize(int resize_amount,
+@@ -771,7 +771,7 @@ void VerticalTabStripRegionView::OnResize(int resize_amount,
                              : "VerticalTabs_TabStrip_ResizeToUncollapsed"));
      base::UmaHistogramCounts1000("Tabs.VerticalTabs.TabStripSize",
                                   new_state.collapsed
@@ -311,7 +309,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
                                       : new_state.uncollapsed_width);
    }
  
-@@ -804,18 +804,18 @@ void VerticalTabStripRegionView::OnResize(int resize_amount,
+@@ -786,18 +786,18 @@ void VerticalTabStripRegionView::OnResize(int resize_amount,
    }
  }
  
@@ -333,7 +331,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
    target_collapse_state_.collapsed = collapse;
    if (collapse) {
      suppress_expand_on_hover_ = IsCollapseButtonHovered();
-@@ -837,7 +837,7 @@ void VerticalTabStripRegionView::RequestCollapse(bool collapse) {
+@@ -819,7 +819,7 @@ void VerticalTabStripRegionView::RequestCollapse(bool collapse) {
        ->Start(TabStripAnimations::kVerticalTabStrip, motion);
  }
  
@@ -342,17 +340,17 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
    if (organizer_panel_show_percent_ == percent) {
      return;
    }
-@@ -845,7 +845,7 @@ void VerticalTabStripRegionView::SetOrganizerPanelShowPercent(double percent) {
+@@ -827,7 +827,7 @@ void VerticalTabStripRegionView::SetOrganizerPanelShowPercent(double percent) {
    InvalidateLayout(/*avoid_propagate_during_layout=*/true);
  }
  
--void VerticalTabStripRegionView::UpdatePanelClipAndOpacity() {
-+void VerticalTabStripRegionView_ChromiumImpl::UpdatePanelClipAndOpacity() {
+-void VerticalTabStripRegionView::UpdatePanelClips() {
++void VerticalTabStripRegionView_ChromiumImpl::UpdatePanelClips() {
+   auto* const bg = background()->AsA<CustomCornersBackground>();
    if (organizer_panel_view_) {
-     auto* const bg = background()->AsA<CustomCornersBackground>();
      bg->ClipViewToBackground(organizer_panel_view_);
-@@ -854,11 +854,11 @@ void VerticalTabStripRegionView::UpdatePanelClipAndOpacity() {
-   content_area_view_->layer()->SetOpacity(1.0 - organizer_panel_show_percent_);
+@@ -835,11 +835,11 @@ void VerticalTabStripRegionView::UpdatePanelClips() {
+   bg->ClipViewToBackground(content_area_view_);
  }
  
 -VerticalTabStripRegionView::RegionViewFocusListener::RegionViewFocusListener(
@@ -366,7 +364,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
      views::View* focused_before,
      views::View* focused_now) {
    if ((focused_before && region_view_->Contains(focused_before)) ||
-@@ -867,7 +867,7 @@ void VerticalTabStripRegionView::RegionViewFocusListener::OnDidChangeFocus(
+@@ -848,7 +848,7 @@ void VerticalTabStripRegionView::RegionViewFocusListener::OnDidChangeFocus(
    }
  }
  
@@ -375,7 +373,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
      std::unique_ptr<views::View> view) {
    view->SetProperty(
        views::kFlexBehaviorKey,
-@@ -897,19 +897,19 @@ void VerticalTabStripRegionView::AddTabStripView(
+@@ -878,19 +878,19 @@ void VerticalTabStripRegionView::AddTabStripView(
  
    on_animation_update_subscription_ = animation_controller->Subscribe(
        TabStripAnimations::kVerticalTabStrip,
@@ -398,7 +396,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
      views::View* view) {
    on_animation_update_subscription_.reset();
    expand_on_hover_enabled_changed_subscription_.reset();
-@@ -919,7 +919,7 @@ std::unique_ptr<views::View> VerticalTabStripRegionView::RemoveTabStripView(
+@@ -900,7 +900,7 @@ std::unique_ptr<views::View> VerticalTabStripRegionView::RemoveTabStripView(
    return BaseTabStripRegionView::RemoveTabStripView(view);
  }
  
@@ -407,7 +405,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
      tabs::VerticalTabStripCollapseState state) {
    // Apply padding immediately at the start of the animation by including
    // the collapsing state.
-@@ -958,14 +958,14 @@ void VerticalTabStripRegionView::OnCollapseStateChanged(
+@@ -942,14 +942,14 @@ void VerticalTabStripRegionView::OnCollapseStateChanged(
    }
  }
  
@@ -424,7 +422,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
    // Tabs should be draggable from the top of the tab strip to the bottom of the
    // tab strip's max size, saving space for the bottom button container and
    // padding.
-@@ -979,13 +979,13 @@ gfx::Rect VerticalTabStripRegionView::GetTabStripDraggableBounds() const {
+@@ -963,13 +963,13 @@ gfx::Rect VerticalTabStripRegionView::GetTabStripDraggableBounds() const {
    return tab_strip_draggable_bounds;
  }
  
@@ -440,7 +438,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
      std::optional<bool> hovered) {
    // If not collapsed, then we shouldn't be in or entering the expand on hover
    // state.
-@@ -1036,7 +1036,7 @@ void VerticalTabStripRegionView::UpdateExpandOnHoverState(
+@@ -1020,7 +1020,7 @@ void VerticalTabStripRegionView::UpdateExpandOnHoverState(
    const bool should_expand =
        !suppress_expand_on_hover_ &&
        state_controller_->IsExpandOnHoverEnabled() &&
@@ -449,7 +447,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
         (GetFocusManager() && Contains(GetFocusManager()->GetFocusedView())));
  
    if (!should_expand) {
-@@ -1061,10 +1061,10 @@ void VerticalTabStripRegionView::UpdateExpandOnHoverState(
+@@ -1045,10 +1045,10 @@ void VerticalTabStripRegionView::UpdateExpandOnHoverState(
    CalculateMouseVelocityForExpandOnHover();
  }
  
@@ -462,7 +460,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
         (GetFocusManager() && Contains(GetFocusManager()->GetFocusedView())));
  
    if (!should_expand || is_expanded_on_hover_) {
-@@ -1075,7 +1075,7 @@ void VerticalTabStripRegionView::OnMouseVelocityHeuristicInterval() {
+@@ -1059,7 +1059,7 @@ void VerticalTabStripRegionView::OnMouseVelocityHeuristicInterval() {
    CalculateMouseVelocityForExpandOnHover();
  }
  
@@ -471,7 +469,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
    gfx::Point current_point = display::Screen::Get()->GetCursorScreenPoint();
    ConvertPointFromScreen(this, &current_point);
  
-@@ -1087,7 +1087,7 @@ void VerticalTabStripRegionView::CalculateMouseVelocityForExpandOnHover() {
+@@ -1071,7 +1071,7 @@ void VerticalTabStripRegionView::CalculateMouseVelocityForExpandOnHover() {
      expand_on_hover_heuristic_timer_.Start(
          FROM_HERE, kVerticalTabsExpandOnHoverVelocityHeuristicInterval,
          base::BindRepeating(
@@ -480,7 +478,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
              base::Unretained(this)));
      return;
    }
-@@ -1129,7 +1129,7 @@ void VerticalTabStripRegionView::CalculateMouseVelocityForExpandOnHover() {
+@@ -1113,7 +1113,7 @@ void VerticalTabStripRegionView::CalculateMouseVelocityForExpandOnHover() {
    }
  }
  
@@ -489,7 +487,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
    hover_card_animation_lock_.reset();
  
    expand_on_hover_heuristic_timer_.Stop();
-@@ -1138,7 +1138,7 @@ void VerticalTabStripRegionView::ResetExpandOnHoverTimers() {
+@@ -1122,7 +1122,7 @@ void VerticalTabStripRegionView::ResetExpandOnHoverTimers() {
    expand_on_hover_heuristic_samples_ = 0;
  }
  
@@ -498,7 +496,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
    is_expanded_on_hover_ = expand;
    ResetExpandOnHoverTimers();
  
-@@ -1163,7 +1163,7 @@ void VerticalTabStripRegionView::AnimateExpandOnHover(bool expand) {
+@@ -1147,7 +1147,7 @@ void VerticalTabStripRegionView::AnimateExpandOnHover(bool expand) {
                       : TabStripAnimations::kCollapseOnHover);
  }
  
@@ -507,7 +505,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
      VerticalTabStripExpandOnHoverLock* lock) {
    hover_locks_.insert(lock);
    ExpandOnHoverLockType lock_type = lock->lock_type();
-@@ -1184,7 +1184,7 @@ void VerticalTabStripRegionView::RegisterExpandOnHoverLock(
+@@ -1168,7 +1168,7 @@ void VerticalTabStripRegionView::RegisterExpandOnHoverLock(
    UpdateExpandOnHoverState();
  }
  
@@ -516,7 +514,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
      VerticalTabStripExpandOnHoverLock* lock) {
    hover_locks_.erase(lock);
    ExpandOnHoverLockType lock_type = lock->lock_type();
-@@ -1216,7 +1216,7 @@ void VerticalTabStripRegionView::UnregisterExpandOnHoverLock(
+@@ -1200,7 +1200,7 @@ void VerticalTabStripRegionView::UnregisterExpandOnHoverLock(
    }
  }
  
@@ -525,7 +523,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
    if (is_open) {
      if (!omnibox_open_lock_) {
        omnibox_open_lock_ =
-@@ -1228,7 +1228,7 @@ void VerticalTabStripRegionView::OnOmniboxPopupVisibilityChanged(bool is_open) {
+@@ -1212,7 +1212,7 @@ void VerticalTabStripRegionView::OnOmniboxPopupVisibilityChanged(bool is_open) {
    }
  }
  
@@ -534,7 +532,7 @@ index 338178e75c4cd0f82708153edf434945b2cd0c58..d97b72a7516a150aed0b2f4acdf12098
      const tabs::TabInterface* active_tab) {
    BaseTabStripRegionView::OnActiveTabChanged(active_tab);
    omnibox_tab_helper_observation_.Reset();
-@@ -1242,5 +1242,5 @@ void VerticalTabStripRegionView::OnActiveTabChanged(
+@@ -1226,5 +1226,5 @@ void VerticalTabStripRegionView::OnActiveTabChanged(
    }
  }
  

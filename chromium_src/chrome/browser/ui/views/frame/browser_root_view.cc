@@ -5,23 +5,28 @@
 
 #include "chrome/browser/ui/views/frame/browser_root_view.h"
 
+#include "base/feature_list.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "chrome/browser/defaults.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/tabs/features.h"
+#include "components/prefs/pref_service.h"
 
-class PrefService;
+namespace {
 
-// Defined in //brave/browser/ui:brave_tab_prefs, linked through
-// //brave/browser:core.
-namespace brave_tabs {
-bool IsScrollableHorizontalTabStripEnabled(const PrefService* prefs);
-}  // namespace brave_tabs
+bool IsScrollableHorizontalTabStripEnabled(Profile* profile) {
+  return base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip) &&
+         profile->GetPrefs()->GetBoolean(
+             brave_tabs::kScrollableHorizontalTabStrip);
+}
+
+}  // namespace
 
 // Disable scroll-event-changes-tab when the scrollable horizontal tab strip is
 // active (feature and user pref).
-#define kScrollEventChangesTab                             \
-  kScrollEventChangesTab &&                                \
-      (!brave_tabs::IsScrollableHorizontalTabStripEnabled( \
-           browser_view_->GetProfile()->GetPrefs()) ||     \
+#define kScrollEventChangesTab                                                \
+  kScrollEventChangesTab &&                                                   \
+      (!IsScrollableHorizontalTabStripEnabled(browser_view_->GetProfile()) || \
        event.IsControlDown())
 
 #include <chrome/browser/ui/views/frame/browser_root_view.cc>

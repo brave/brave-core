@@ -34,7 +34,6 @@ class FakeGh:
         *,
         logged_in: bool = True,
         issue_list: list | None = None,
-        issue_list_error: Exception | None = None,
         issue_create_url: str = ISSUE_URL,
         pr_list: list | None = None,
         pr_create_url: str = PR_URL,
@@ -44,7 +43,6 @@ class FakeGh:
     ) -> None:
         self.logged_in = logged_in
         self.issue_list = issue_list if issue_list is not None else []
-        self.issue_list_error = issue_list_error
         self.issue_create_url = issue_create_url
         self.pr_list = pr_list if pr_list is not None else []
         self.pr_create_url = pr_create_url
@@ -67,8 +65,6 @@ class FakeGh:
                 stdout='Logged in to github.com account fake'
             )
         if verb == ['issue', 'list']:
-            if self.issue_list_error is not None:
-                raise self.issue_list_error
             return SimpleNamespace(stdout=json.dumps(self.issue_list))
         if verb == ['issue', 'create']:
             return SimpleNamespace(stdout=f'{self.issue_create_url}\n')

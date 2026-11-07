@@ -6,7 +6,7 @@
 import './privacy_page_test-chromium.js'
 
 import {ClearBrowsingDataBrowserProxyImpl} from 'chrome://settings/lazy_load.js'
-import type {SettingsPrivacyPageElement, SettingsToggleButtonElement} from 'chrome://settings/settings.js'
+import type {SettingsPrivacyPageElement} from 'chrome://settings/settings.js'
 import {
   loadTimeData,
   MetricsBrowserProxyImpl,
@@ -42,7 +42,6 @@ function getBravePrefs(): chrome.settingsPrivate.PrefObject[] {
     pref('brave.request_otr.request_otr_action_option', NUMBER, 0),
     pref('brave.psst.settings.enable_psst', BOOLEAN, true),
     pref('enable_do_not_track', BOOLEAN, false),
-    pref('brave.local_ai.on_device_speech_model_enabled', BOOLEAN, false),
   ]
 }
 
@@ -51,7 +50,6 @@ function getBravePrefs(): chrome.settingsPrivate.PrefObject[] {
 // silently if upstream changes the template.
 suite('BravePrivacyPage', () => {
   let page: SettingsPrivacyPageElement
-  let prefsProxy: TestPrefsBrowserProxy
 
   async function createPage() {
     document.body.replaceChildren()
@@ -64,11 +62,10 @@ suite('BravePrivacyPage', () => {
     loadTimeData.overrideValues({showPrivacyGuide: true})
     resetRouterForTesting()
 
-    prefsProxy = new TestPrefsBrowserProxy([
+    PrefsBrowserProxy.setInstance(new TestPrefsBrowserProxy([
       ...getInitialPrivacyGuideTestPrefs(),
       ...getBravePrefs(),
-    ])
-    PrefsBrowserProxy.setInstance(prefsProxy)
+    ]))
     PrefService.resetInstanceForTesting()
     await PrefService.getInstance().whenInitialized()
 
@@ -89,7 +86,10 @@ suite('BravePrivacyPage', () => {
   })
 
   test('the personalization options follow the site settings row', () => {
-    const options = page.$.siteSettingsLinkRow.nextElementSibling
+    const siteSettings =
+        page.shadowRoot.querySelector<HTMLElement>('#siteSettingsLinkRow')
+    assertTrue(!!siteSettings)
+    const options = siteSettings.nextElementSibling
     assertTrue(!!options)
     assertEquals(
         'settings-brave-personalization-options',
@@ -118,34 +118,5 @@ suite('BravePrivacyPage', () => {
     assertTrue(!!row)
     assertTrue(row.hidden)
     assertFalse(isChildVisible(page, '#privacyGuideLinkRow'))
-  })
-
-  test('the on-device speech model toggle reflects and saves its pref',
-       async function() {
-    const key = 'brave.local_ai.on_device_speech_model_enabled'
-    loadTimeData.overrideValues({isOnDeviceSpeechModelAvailable: true})
-
-    document.body.replaceChildren()
-    const options =
-        document.createElement('settings-brave-personalization-options')
-    document.body.appendChild(options)
-    await microtasksFinished()
-
-    const toggle = options.shadowRoot!.querySelector<
-        SettingsToggleButtonElement>('#onDeviceSpeechModelEnabled')
-    // Only built with local AI.
-    if (!toggle) {
-      this.skip()
-    }
-    assertFalse(toggle.checked)
-
-    toggle.click()
-    await microtasksFinished()
-    assertTrue(toggle.checked)
-    assertTrue((await prefsProxy.getPref(key)).value as boolean)
-
-    prefsProxy.fakeApi.sendPrefChanges([{key, value: false}])
-    await microtasksFinished()
-    assertFalse(toggle.checked)
   })
 })

@@ -14,6 +14,7 @@ export type BraveDeviceInfo = {
   type: string
   chromeVersion: string
   lastUpdatedTimestamp: number
+  sendTabToSelfReceivingEnabled: boolean
   supportsSelfDelete: boolean
   isCurrentDevice: boolean
   hasSharingInfo: boolean

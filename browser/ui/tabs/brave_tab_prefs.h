@@ -77,8 +77,6 @@ enum class TabMinWidthMode {
   kLarge = 3,
   kFull = 4,
 };
-// Upstream code that only sees an opaque declaration value-initializes it.
-static_assert(TabMinWidthMode{} == TabMinWidthMode::kDefault);
 
 void RegisterBraveProfilePrefs(PrefRegistrySimple* registry);
 void MigrateBraveProfilePrefs(PrefService* prefs);

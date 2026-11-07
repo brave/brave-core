@@ -70,7 +70,7 @@ void OpenJapanWelcomePage(base::WeakPtr<content::WebContents> web_contents) {
   }
   web_contents->OpenURL(
       content::OpenURLParams(GURL(kJapanWelcomeURL), content::Referrer(),
-                             WindowOpenDisposition::kNewBackgroundTab,
+                             WindowOpenDisposition::NEW_BACKGROUND_TAB,
                              ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false),
       /*navigation_handle_callback=*/{});
 }

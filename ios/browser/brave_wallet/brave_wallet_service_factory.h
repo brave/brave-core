@@ -8,25 +8,35 @@
 
 #include <memory>
 
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "ios/chrome/browser/shared/model/profile/typed_profile_keyed_service_factory_ios.h"
+#include "ios/chrome/browser/shared/model/profile/profile_keyed_service_factory_ios.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 
 class ProfileIOS;
+class KeyedService;
+
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace brave_wallet {
 
-class BraveWalletServiceFactory
-    : public TypedProfileKeyedServiceFactoryIOS<BraveWalletServiceFactory,
-                                                BraveWalletService> {
+class BraveWalletService;
+
+class BraveWalletServiceFactory : public ProfileKeyedServiceFactoryIOS {
  public:
   static BraveWalletService* GetServiceForState(ProfileIOS* profile);
 
-  explicit BraveWalletServiceFactory(PassKey key);
+  static BraveWalletServiceFactory* GetInstance();
 
  private:
-  // TypedProfileKeyedServiceFactoryIOS implementation.
+  friend base::NoDestructor<BraveWalletServiceFactory>;
+
+  BraveWalletServiceFactory();
+  ~BraveWalletServiceFactory() override;
+
+  // ProfileKeyedServiceFactoryIOS implementation.
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
       ProfileIOS* profile) const override;
 

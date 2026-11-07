@@ -124,7 +124,7 @@ void BraveBrowserCommandHandler::ExecuteCommand(
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
     case brave_browser_command::mojom::Command::kOpenWalletOnboarding:
       delegate_->OpenURL(GURL(kBraveUIWalletURL),
-                         WindowOpenDisposition::kNewForegroundTab);
+                         WindowOpenDisposition::NEW_FOREGROUND_TAB);
       break;
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
     case brave_browser_command::mojom::Command::kOpenRewardsOnboarding:

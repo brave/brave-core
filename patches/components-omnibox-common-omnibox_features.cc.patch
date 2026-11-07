@@ -1,8 +1,8 @@
 diff --git a/components/omnibox/common/omnibox_features.cc b/components/omnibox/common/omnibox_features.cc
-index 8681bda5d4accb62fb65dd43d3c067aa6ad7a6a5..79904ac907f3e31f322f97382f9389d46e620b12 100644
+index 5f7afdbfc77cc65a08a0b923b9fe9e9defa9fcc2..1ce23cf771de42ae41e93372c46bba21c5bc37dd 100644
 --- a/components/omnibox/common/omnibox_features.cc
 +++ b/components/omnibox/common/omnibox_features.cc
-@@ -175,7 +175,7 @@ BASE_FEATURE(kMostVisitedTilesHorizontalRenderGroup,
+@@ -173,7 +173,7 @@ BASE_FEATURE(kMostVisitedTilesHorizontalRenderGroup,
  // suggestion titles and non-prefixes as opposed to be restricted to URL
  // prefixes. Will also adjust the location bar UI and omnibox text selection to
  // accommodate the autocompletions.
@@ -11,7 +11,7 @@ index 8681bda5d4accb62fb65dd43d3c067aa6ad7a6a5..79904ac907f3e31f322f97382f9389d4
  
  // Enables the AIM eligibility diagnostic component extension.
  BASE_FEATURE(kAimEligibilityComponentExtension, DISABLED);
-@@ -405,7 +405,7 @@ BASE_FEATURE(kMlUrlScoreCaching, enable_if(!IS_ANDROID));
+@@ -408,7 +408,7 @@ BASE_FEATURE(kMlUrlScoreCaching, enable_if(!IS_ANDROID));
  
  // If enabled, runs the ML scoring model to assign new relevance scores to the
  // URL suggestions and reranks them.
@@ -20,7 +20,7 @@ index 8681bda5d4accb62fb65dd43d3c067aa6ad7a6a5..79904ac907f3e31f322f97382f9389d4
  
  // If enabled, specifies how URL model scores integrate with search traditional
  // scores.
-@@ -441,7 +441,7 @@ BASE_FEATURE(kAndroidTabSearchCloseTabButton, DISABLED);
+@@ -435,7 +435,7 @@ BASE_FEATURE(kOmniboxSearchPrefetchOnEnterKeyDown, DISABLED);
  BASE_FEATURE(kOmniboxSiteSearch, DISABLED);
  
  // Enables additional site search providers for the Site search Starter Pack.
@@ -29,7 +29,7 @@ index 8681bda5d4accb62fb65dd43d3c067aa6ad7a6a5..79904ac907f3e31f322f97382f9389d4
  
  // Enables an informational IPH message at the bottom of the Omnibox directing
  // users to certain starter pack engines.
-@@ -451,7 +451,7 @@ BASE_FEATURE(kStarterPackIPH, DISABLED);
+@@ -445,7 +445,7 @@ BASE_FEATURE(kStarterPackIPH, DISABLED);
  BASE_FEATURE(kAiModeStartPack, DISABLED);
  
  // If enabled, |SearchProvider| will not function in Zero Suggest.
@@ -38,7 +38,7 @@ index 8681bda5d4accb62fb65dd43d3c067aa6ad7a6a5..79904ac907f3e31f322f97382f9389d4
  
  // If enabled, hl= is reported in search requests (applicable to iOS only).
  BASE_FEATURE(kReportApplicationLanguageInSearchRequest, ENABLED);
-@@ -480,7 +480,13 @@ BASE_FEATURE(kOmniboxMobileParityUpdate, ENABLED);
+@@ -474,7 +474,13 @@ BASE_FEATURE(kOmniboxMobileParityUpdate, ENABLED);
  
  // Updates various NTP/Omnibox assets and descriptions for visual alignment on
  // Android and iOS, V2.
@@ -51,5 +51,5 @@ index 8681bda5d4accb62fb65dd43d3c067aa6ad7a6a5..79904ac907f3e31f322f97382f9389d4
 +#endif
 +);
  
- // Kill switch. If enabled, the Android X-Geo header is dropped when the device
- // hands back a precise fix for a site that only holds approximate location
+ // If enabled, the X-Geo header will include permission granularity.
+ BASE_FEATURE(kOmniboxXGeoPermissionGranularity, ENABLED);

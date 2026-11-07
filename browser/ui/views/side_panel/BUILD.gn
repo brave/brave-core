@@ -39,7 +39,6 @@ source_set("side_panel_impl") {
     ":side_panel",
     "//base",
     "//brave/app:brave_generated_resources_grit_grit",
-    "//brave/browser/ui:ui_features",
     "//brave/browser/ui/views:layout_provider",
     "//brave/components/vector_icons",
     "//chrome/app:generated_resources",

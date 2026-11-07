@@ -8,29 +8,34 @@
 
 #include <memory>
 
-#include "brave/ios/browser/favicon/brave_ios_favicon_loader.h"
-#include "ios/chrome/browser/shared/model/profile/typed_profile_keyed_service_factory_ios.h"
+#include "base/no_destructor.h"
+#include "ios/chrome/browser/shared/model/profile/profile_keyed_service_factory_ios.h"
 
 class ProfileIOS;
 
 namespace brave_favicon {
+class BraveFaviconLoader;
 
 // Singleton that owns all FaviconLoaders and associates them with
 // ProfileIOS.
-class BraveIOSFaviconLoaderFactory
-    : public TypedProfileKeyedServiceFactoryIOS<BraveIOSFaviconLoaderFactory,
-                                                BraveFaviconLoader> {
+class BraveIOSFaviconLoaderFactory : public ProfileKeyedServiceFactoryIOS {
  public:
+  static BraveFaviconLoader* GetForProfile(ProfileIOS* profile);
+  static BraveFaviconLoader* GetForProfileIfExists(ProfileIOS* profile);
+  static BraveIOSFaviconLoaderFactory* GetInstance();
   static TestingFactory GetDefaultFactory();
-
-  explicit BraveIOSFaviconLoaderFactory(PassKey key);
 
   BraveIOSFaviconLoaderFactory(const BraveIOSFaviconLoaderFactory&) = delete;
   BraveIOSFaviconLoaderFactory& operator=(const BraveIOSFaviconLoaderFactory&) =
       delete;
 
  private:
-  // TypedProfileKeyedServiceFactoryIOS implementation.
+  friend class base::NoDestructor<BraveIOSFaviconLoaderFactory>;
+
+  BraveIOSFaviconLoaderFactory();
+  ~BraveIOSFaviconLoaderFactory() override;
+
+  // ProfileKeyedServiceFactoryIOS implementation.
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
       ProfileIOS* profile) const override;
 };

@@ -106,6 +106,7 @@ std::string BraveURLDataSourceIOS::GetContentSecurityPolicy(
     case network::mojom::CSPDirectiveName::StyleSrcAttr:
     case network::mojom::CSPDirectiveName::StyleSrcElem:
     case network::mojom::CSPDirectiveName::UpgradeInsecureRequests:
+    case network::mojom::CSPDirectiveName::TreatAsPublicAddress:
     case network::mojom::CSPDirectiveName::WorkerSrc:
     case network::mojom::CSPDirectiveName::ReportTo:
     case network::mojom::CSPDirectiveName::Unknown:

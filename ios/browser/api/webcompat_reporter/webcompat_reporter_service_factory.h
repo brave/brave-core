@@ -8,21 +8,23 @@
 
 #include <memory>
 
-#include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
 #include "brave/components/webcompat_reporter/common/webcompat_reporter.mojom.h"
-#include "ios/chrome/browser/shared/model/profile/typed_profile_keyed_service_factory_ios.h"
+#include "ios/chrome/browser/shared/model/profile/profile_keyed_service_factory_ios.h"
 
 class ProfileIOS;
 
+namespace base {
+template <typename T>
+class NoDestructor;
+}  // namespace base
+
 namespace webcompat_reporter {
 
-class WebcompatReporterServiceFactory
-    : public TypedProfileKeyedServiceFactoryIOS<WebcompatReporterServiceFactory,
-                                                WebcompatReporterService> {
+class WebcompatReporterServiceFactory : public ProfileKeyedServiceFactoryIOS {
  public:
   static mojo::PendingRemote<mojom::WebcompatReporterHandler>
   GetHandlerForContext(ProfileIOS* profile);
-  explicit WebcompatReporterServiceFactory(PassKey key);
+  static WebcompatReporterServiceFactory* GetInstance();
 
   WebcompatReporterServiceFactory(const WebcompatReporterServiceFactory&) =
       delete;
@@ -30,10 +32,14 @@ class WebcompatReporterServiceFactory
       const WebcompatReporterServiceFactory&) = delete;
 
  private:
+  friend class base::NoDestructor<WebcompatReporterServiceFactory>;
   void RegisterProfilePrefs(
       user_prefs::PrefRegistrySyncable* registry) override;
 
-  // TypedProfileKeyedServiceFactoryIOS implementation.
+  WebcompatReporterServiceFactory();
+  ~WebcompatReporterServiceFactory() override;
+
+  // ProfileKeyedServiceFactoryIOS implementation.
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
       ProfileIOS* profile) const override;
 };

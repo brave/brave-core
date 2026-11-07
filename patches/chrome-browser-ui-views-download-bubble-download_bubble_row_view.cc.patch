@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/download/bubble/download_bubble_row_view.cc b/chrome/browser/ui/views/download/bubble/download_bubble_row_view.cc
-index 877765717be2283831e309fcf32e23424c867014..5f4d72aa4ecb6ebbb9839f1c7c08d64b030d1f77 100644
+index 5949c0061d4fe4dfbad9cf9caa7ac3ecc4fa135f..69d86d4565cb928eebbde68134f0797a0b15ed72 100644
 --- a/chrome/browser/ui/views/download/bubble/download_bubble_row_view.cc
 +++ b/chrome/browser/ui/views/download/bubble/download_bubble_row_view.cc
 @@ -451,6 +451,7 @@ DownloadBubbleRowView::DownloadBubbleRowView(

@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import argparse
 import logging
+import subprocess
 from pathlib import Path
 
 import _boot  # noqa: F401
@@ -31,7 +32,7 @@ from alias.source_rewrite import (
     update_references,
     update_shadow_include,
 )
-from alias.base import ChangedFiles, UserValidationError, format_files
+from alias.base import UserValidationError
 
 # Only .h files receive include-guard processing (spec §1.2 Step 2).
 _HEADER_EXTENSIONS: frozenset[str] = frozenset({'.h'})
@@ -87,9 +88,7 @@ def cmd_mv(args: list[str]) -> int:
     src = (cwd / parsed.source).resolve()
     dest = (cwd / parsed.destination).resolve()
 
-    _validate_move(src, dest, parsed.mkdir)
-    changed = None if parsed.no_format else ChangedFiles()
-    file_pairs = _step1_move(src, dest, parsed.no_git)
+    file_pairs = _step1_move(src, dest, parsed.mkdir, parsed.no_git)
 
     _step2_guards(file_pairs)
     _step3_shadow_includes(file_pairs)
@@ -101,21 +100,34 @@ def cmd_mv(args: list[str]) -> int:
 
     _step5_plaster(file_pairs, parsed.no_git, not parsed.no_run_plaster)
 
-    if changed is not None:
-        _run_format(changed.since())
+    if not parsed.no_format:
+        _run_format()
 
     console.log(f'[bold green]✔[/] {parsed.source} → {parsed.destination}')
     return 0
 
 
-def _run_format(paths: list[str]) -> None:
-    """Formats the files the move changed, and no others."""
-    format_files(paths)
+def _run_format() -> None:
+    """Runs `pnpm run format` to clean up files touched by the move.
+
+    Failures are downgraded to warnings: format must not block a successful
+    move.
+    """
+    try:
+        terminal.run_pnpm_command('format')
+    except (subprocess.CalledProcessError, FileNotFoundError) as e:
+        logging.warning('pnpm run format failed: %s', e)
 
 
-def _validate_move(src: Path, dest: Path, mkdir: bool) -> None:
-    """Checks the move can go ahead, creating the destination's parent when
-    `mkdir` allows."""
+def _step1_move(
+    src: Path, dest: Path, mkdir: bool, no_git: bool
+) -> list[_FilePair]:
+    """Validates paths and performs the move.
+
+    Returns a list of (old_abs, new_abs) pairs for every file moved.
+    All pairs are collected before the move so old paths are available
+    for later artefact repair steps.
+    """
     rewrite_path = plaster.PLASTER_FILES_PATH.resolve()
 
     if not src.exists():
@@ -142,14 +154,6 @@ def _validate_move(src: Path, dest: Path, mkdir: bool) -> None:
             f'rewrite/ ({rewrite_path})'
         )
 
-
-def _step1_move(src: Path, dest: Path, no_git: bool) -> list[_FilePair]:
-    """Performs the move `_validate_move` checked.
-
-    Returns a list of (old_abs, new_abs) pairs for every file moved.
-    All pairs are collected before the move so old paths are available
-    for later artefact repair steps.
-    """
     if src.is_dir():
         file_pairs: list[_FilePair] = [
             (f, dest / f.relative_to(src))

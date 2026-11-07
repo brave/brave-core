@@ -8,7 +8,7 @@ source_set("browser_tests") {
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   sources = []
-  deps = [ "//brave/browser:browser_process" ]
+  deps = []
 
   if (!is_android) {
     sources += [

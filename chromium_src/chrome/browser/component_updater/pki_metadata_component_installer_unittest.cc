@@ -14,11 +14,9 @@ TEST_F(PKIMetadataComponentInstallerKeyPinningTest,
   content::GetNetworkService();
   task_environment_.RunUntilIdle();
   WriteKPConfigToFile();
-  // Brave ignores the update, but must still reply so observers are notified.
-  KeyPinsListWaiter waiter;
   policy_->ComponentReady(base::Version("1.2.3.4"),
                           component_install_dir_.GetPath(), base::DictValue());
-  waiter.Wait();
+  task_environment_.RunUntilIdle();
 
   network::NetworkService* network_service =
       network::NetworkService::GetNetworkServiceForTesting();

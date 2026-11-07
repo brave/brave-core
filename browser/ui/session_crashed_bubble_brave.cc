@@ -9,7 +9,7 @@
 #include "chrome/browser/ui/session_crashed_bubble.h"
 
 // static
-void ShowSessionCrashedBubbleIfNotOffTheRecordProfileBrave(
+void SessionCrashedBubble::ShowIfNotOffTheRecordProfileBrave(
     BrowserWindowInterface* browser,
     bool skip_tab_checking) {
   // If crash report permission ask dialog is launched, tab restore bubble will
@@ -19,5 +19,5 @@ void ShowSessionCrashedBubbleIfNotOffTheRecordProfileBrave(
     return;
   }
 
-  ShowSessionCrashedBubbleIfNotOffTheRecordProfile(browser, skip_tab_checking);
+  ShowIfNotOffTheRecordProfile(browser, skip_tab_checking);
 }

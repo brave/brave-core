@@ -6,7 +6,7 @@
 
 from __future__ import annotations
 
-from config import ConfigGroup, Dict, Set, Static, config_item_context
+from config import ConfigGroup, Dict, Static, config_item_context
 
 # The remote build execution service.
 RBE_SERVICE = 'rbe.ba.brave.com:443'
@@ -18,9 +18,6 @@ def BaseConfig(USE_REMOTEEXEC=False, SISO_CACHE_DIR=''):
     return ConfigGroup(
         # A `None` value is left out of the rendered `.env`.
         dotenv=Dict(value_type=(str, type(None))),
-        # The OSes whose deps every `pnpm run init`/`sync` checks out, as
-        # depot_tools' `gclient` config names them; none for the host's alone.
-        target_os=Set(str),
         USE_REMOTEEXEC=Static(bool(USE_REMOTEEXEC)),
         SISO_CACHE_DIR=Static(str(SISO_CACHE_DIR)),
     )
@@ -48,25 +45,8 @@ def asan(c):
 
 
 @config_ctx()
-def android(c):
-    c.target_os.add('android')
-
-
-@config_ctx()
-def linux(c):
-    c.target_os.add('linux')
-
-
-@config_ctx()
 def brave(c):
     # The configuration of a brave-core checkout. `BASE` applies underneath; the
     # defaults to share between builds belong here.
-    #
-    # Every `pnpm run init`/`sync` reads it, the recipe's and those a run makes
-    # later alike.
-    c.dotenv['lean_sync'] = 'true'
-    # `gn gen --check` on every build, so that a header dependency missing from
-    # GN fails it rather than only `gn check` later.
-    c.dotenv['brave_extra_gn_gen_opts'] = '--check'
     if c.USE_REMOTEEXEC:
         rbe(c)

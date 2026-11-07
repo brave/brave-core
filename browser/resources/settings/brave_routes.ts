@@ -150,8 +150,7 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   if (r.SYNC) {
     delete r.SYNC
   }
-  // Delete identity docs and travel autofill routes. Also remove their views in
-  // autofill_page_index.html.ts.lit_mangler.ts.
+  // Delete identity docs and travel autofill routes
   if (r.IDENTITY_DOCS) {
     delete r.IDENTITY_DOCS
   }

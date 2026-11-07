@@ -5,8 +5,7 @@
 
 #include "brave/ios/browser/ai_chat/tab_tracker_service_factory.h"
 
-#include <utility>
-
+#include "base/no_destructor.h"
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -14,13 +13,26 @@
 
 namespace ai_chat {
 
-TabTrackerServiceFactory::TabTrackerServiceFactory(PassKey key)
-    : TypedProfileKeyedServiceFactoryIOS(
-          std::move(key),
-          "TabTrackerService",
-          ProfileSelection::kNoInstanceInIncognito,
-          ServiceCreation::kCreateWithProfile,
-          TestingCreation::kNoServiceForTests) {}
+// static
+TabTrackerService* TabTrackerServiceFactory::GetForProfile(
+    ProfileIOS* profile) {
+  return GetInstance()->GetServiceForProfileAs<TabTrackerService>(profile,
+                                                                  true);
+}
+
+// static
+TabTrackerServiceFactory* TabTrackerServiceFactory::GetInstance() {
+  static base::NoDestructor<TabTrackerServiceFactory> instance;
+  return instance.get();
+}
+
+TabTrackerServiceFactory::TabTrackerServiceFactory()
+    : ProfileKeyedServiceFactoryIOS("TabTrackerService",
+                                    ProfileSelection::kNoInstanceInIncognito,
+                                    ServiceCreation::kCreateWithProfile,
+                                    TestingCreation::kNoServiceForTests) {}
+
+TabTrackerServiceFactory::~TabTrackerServiceFactory() = default;
 
 std::unique_ptr<KeyedService> TabTrackerServiceFactory::BuildServiceInstanceFor(
     ProfileIOS* profile) const {

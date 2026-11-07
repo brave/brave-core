@@ -5,6 +5,7 @@
 
 #include "brave/ios/browser/debounce/debounce_service_factory.h"
 
+#include "base/no_destructor.h"
 #include "brave/components/debounce/core/browser/debounce_component_installer.h"
 #include "brave/components/debounce/core/browser/debounce_service.h"
 #include "brave/components/debounce/core/common/features.h"
@@ -33,16 +34,23 @@ namespace debounce {
 // static
 debounce::DebounceService* DebounceServiceFactory::GetServiceForState(
     ProfileIOS* browser_state) {
-  return GetForProfile(browser_state);
+  return GetInstance()->GetServiceForProfileAs<debounce::DebounceService>(
+      browser_state, true);
 }
 
-DebounceServiceFactory::DebounceServiceFactory(PassKey key)
-    : TypedProfileKeyedServiceFactoryIOS(
-          std::move(key),
-          "DebounceService",
-          ProfileSelection::kRedirectedInIncognito,
-          ServiceCreation::kCreateLazily,
-          TestingCreation::kCreateService) {}
+// static
+DebounceServiceFactory* DebounceServiceFactory::GetInstance() {
+  static base::NoDestructor<DebounceServiceFactory> instance;
+  return instance.get();
+}
+
+DebounceServiceFactory::DebounceServiceFactory()
+    : ProfileKeyedServiceFactoryIOS("DebounceService",
+                                    ProfileSelection::kRedirectedInIncognito,
+                                    ServiceCreation::kCreateLazily,
+                                    TestingCreation::kCreateService) {}
+
+DebounceServiceFactory::~DebounceServiceFactory() = default;
 
 std::unique_ptr<KeyedService> DebounceServiceFactory::BuildServiceInstanceFor(
     ProfileIOS* profile) const {

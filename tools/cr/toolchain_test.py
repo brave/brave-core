@@ -22,8 +22,8 @@ Layers:
   network), validating the file rewrite *and* the `tags=toolchain` /
   `culprit=<hash>` commit.
 
-* CI delegation -- `Toolchain.trigger` fans out to `ci.jenkins.JenkinsCi` with
-  the toolchain's frozen job URLs.
+* CI delegation -- `Toolchain.trigger` fans out to `ci.JenkinsCi` with the
+  toolchain's frozen job URLs.
 """
 
 from __future__ import annotations
@@ -205,7 +205,7 @@ class ProvenanceCommentTest(unittest.TestCase):
 
 
 class TriggerTest(unittest.TestCase):
-    """`Toolchain.trigger` fans out to `JenkinsCi` with the frozen URLs."""
+    """`Toolchain.trigger` fans out to `ci.JenkinsCi` with the frozen URLs."""
 
     def _trigger(self, target, **properties):
         launcher = MagicMock()
@@ -322,16 +322,6 @@ class _FakeRepoTest(unittest.TestCase):
         self.repo.setup()
         self.addCleanup(self.repo.cleanup)
         self.repo._run_git_command(['checkout', '-b', 'cr150'], self.repo.brave)
-        # The hook links culprits through Chromium's origin.
-        self.repo._run_git_command(
-            [
-                'remote',
-                'add',
-                'origin',
-                'https://chromium.googlesource.com/chromium/src.git',
-            ],
-            self.repo.chromium,
-        )
         self._install_commit_msg_hook()
 
     def _install_commit_msg_hook(self) -> None:

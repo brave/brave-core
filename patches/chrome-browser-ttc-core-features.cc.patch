@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ttc/core/features.cc b/chrome/browser/ttc/core/features.cc
+index f52ac6ef939b59be4c1e1ede0a070ea0efc526d2..734d0dac9d865b5d3818962a0c815c9138ad72ff 100644
+--- a/chrome/browser/ttc/core/features.cc
++++ b/chrome/browser/ttc/core/features.cc
+@@ -6,6 +6,6 @@
+ 
+ namespace ttc {
+ 
+-BASE_FEATURE(kTtc, base::FEATURE_DISABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kTtc, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ }  // namespace ttc

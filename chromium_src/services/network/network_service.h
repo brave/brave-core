@@ -12,9 +12,9 @@
   GetDnsRequestCountsAndReset(GetDnsRequestCountsAndResetCallback callback) \
       override;                                                             \
   void DisableQuic
-#define UpdateKeyPinsList                                                      \
-  UpdateKeyPinsList_Unused(mojom::PinListPtr pin_list, base::Time update_time, \
-                           UpdateKeyPinsListCallback callback);                \
+#define UpdateKeyPinsList                              \
+  UpdateKeyPinsList_Unused(mojom::PinListPtr pin_list, \
+                           base::Time update_time);    \
   void UpdateKeyPinsList
 
 #include <services/network/network_service.h>  // IWYU pragma: export

@@ -30,7 +30,7 @@ public class BraveMultiWindowUtils extends MultiWindowUtils {
     }
 
     public boolean shouldShowEnableWindow(Activity activity) {
-        return isLinkNavigationToOtherWindowSupportedChromiumImpl(activity)
+        return super.isLinkNavigationToOtherWindowSupported(activity)
                 || MultiWindowUtils.canEnterMultiWindowMode();
     }
 
@@ -41,6 +41,21 @@ public class BraveMultiWindowUtils extends MultiWindowUtils {
     // Unlike shouldShowManageWindowsMenu(), doesn't depend on the current window count.
     public static boolean isWindowManagerAvailable() {
         return shouldEnableMultiWindows() && !MultiWindowUtils.isWindowManagerDeprecated();
+    }
+
+    public static boolean isLinkNavigationToNewWindowSupported() {
+        return shouldEnableMultiWindows()
+                && MultiWindowUtils.isLinkNavigationToNewWindowSupported();
+    }
+
+    public static boolean isLinkNavigationToIncognitoWindowSupported() {
+        return shouldEnableMultiWindows()
+                && MultiWindowUtils.isLinkNavigationToIncognitoWindowSupported();
+    }
+
+    @Override
+    public boolean isLinkNavigationToOtherWindowSupported(Activity activity) {
+        return shouldEnableMultiWindows() && super.isLinkNavigationToOtherWindowSupported(activity);
     }
 
     @Override

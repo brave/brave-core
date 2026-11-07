@@ -18,9 +18,6 @@ class BraveInfoBarContainerView : public InfoBarContainerView {
   BraveInfoBarContainerView& operator=(const BraveInfoBarContainerView&) =
       delete;
   ~BraveInfoBarContainerView() override;
-
-  // InfoBarContainerView:
-  void PlatformSpecificRemoveInfoBar(infobars::InfoBar* infobar) override;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_INFOBARS_BRAVE_INFOBAR_CONTAINER_VIEW_H_

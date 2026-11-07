@@ -8,7 +8,6 @@
 #include <AppKit/AppKit.h>
 #include <Carbon/Carbon.h>
 
-#include "base/test/run_until.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/toasts/toast_features.h"
@@ -36,9 +35,6 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
 
   auto* ns_window =
       browser_view->GetWidget()->GetNativeWindow().GetNativeNSWindow();
-  // Activation is async on Mac; otherwise Cmd+W can still reach browser().
-  ASSERT_TRUE(base::test::RunUntil([&] { return [ns_window isKeyWindow]; }));
-  const int original_browser_tab_count = browser->tab_strip_model()->count();
 
   // When Command + w is pressed
   NSEvent* event = [NSEvent keyEventWithType:NSEventTypeKeyDown
@@ -59,7 +55,6 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
 
   // Then the tab should not be closed.
   EXPECT_EQ(browser->tab_strip_model()->count(), 2);
-  EXPECT_EQ(browser->tab_strip_model()->count(), original_browser_tab_count);
 
   // When other ways to close the tab are tried
   chrome::ExecuteCommand(browser, IDC_CLOSE_TAB);

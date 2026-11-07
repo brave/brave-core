@@ -31,8 +31,8 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.chrome.browser.tabwindow.TabWindowManager;
 import org.chromium.chrome.browser.toolbar.R;
-import org.chromium.chrome.browser.toolbar.top.TabSwitcherActionMenuCoordinator.TabGroupExistenceChecker;
 import org.chromium.ui.listmenu.ListItemType;
 import org.chromium.ui.listmenu.ListMenuItemProperties;
 import org.chromium.ui.modelutil.MVCListAdapter.ListItem;
@@ -53,7 +53,7 @@ public class BraveTabSwitcherActionMenuCoordinatorTest {
     @Mock private TabModel mIncognitoTabModel;
     @Mock private TabModel mNormalTabModel;
     @Mock private Tab mTab;
-    @Mock private TabGroupExistenceChecker mTabGroupExistenceChecker;
+    @Mock private TabWindowManager mTabWindowManager;
 
     private final SettableMonotonicObservableSupplier<TabModelSelector> mTabModelSelectorSupplier =
             ObservableSuppliers.createMonotonic();
@@ -80,7 +80,7 @@ public class BraveTabSwitcherActionMenuCoordinatorTest {
 
         mCoordinator =
                 new BraveTabSwitcherActionMenuCoordinator(
-                        mProfile, mTabModelSelectorSupplier, mTabGroupExistenceChecker);
+                        mProfile, mTabModelSelectorSupplier, mTabWindowManager);
     }
 
     @After
@@ -92,7 +92,7 @@ public class BraveTabSwitcherActionMenuCoordinatorTest {
     @Test
     public void testBuildMenuItems_TabGroupsEnabled_ShowsAddToNewGroup() {
         // Default state: the master switch is on, so "Add to new group" is present.
-        when(mTabGroupExistenceChecker.hasOtherTabGroups(mNormalTabModel, null)).thenReturn(false);
+        when(mNormalTabModel.getTabGroupCount()).thenReturn(0);
 
         ModelList items = mCoordinator.buildMenuItems();
 
@@ -104,7 +104,7 @@ public class BraveTabSwitcherActionMenuCoordinatorTest {
     public void testBuildMenuItems_TabGroupsDisabled_NoGroups_OmitsAddToNewGroup() {
         ChromeSharedPreferences.getInstance()
                 .writeBoolean(BravePreferenceKeys.BRAVE_TAB_GROUPS_FEATURE_ENABLED, false);
-        when(mTabGroupExistenceChecker.hasOtherTabGroups(mNormalTabModel, null)).thenReturn(false);
+        when(mNormalTabModel.getTabGroupCount()).thenReturn(0);
 
         ModelList items = mCoordinator.buildMenuItems();
 
@@ -117,7 +117,7 @@ public class BraveTabSwitcherActionMenuCoordinatorTest {
     public void testBuildMenuItems_TabGroupsDisabled_GroupsExist_OmitsAddToGroup() {
         ChromeSharedPreferences.getInstance()
                 .writeBoolean(BravePreferenceKeys.BRAVE_TAB_GROUPS_FEATURE_ENABLED, false);
-        when(mTabGroupExistenceChecker.hasOtherTabGroups(mNormalTabModel, null)).thenReturn(true);
+        when(mNormalTabModel.getTabGroupCount()).thenReturn(1);
 
         ModelList items = mCoordinator.buildMenuItems();
 
@@ -126,7 +126,7 @@ public class BraveTabSwitcherActionMenuCoordinatorTest {
 
     @Test
     public void testBuildMenuItems_TabGroupsEnabled_GroupsExist_ShowsAddToGroup() {
-        when(mTabGroupExistenceChecker.hasOtherTabGroups(mNormalTabModel, null)).thenReturn(true);
+        when(mNormalTabModel.getTabGroupCount()).thenReturn(1);
 
         ModelList items = mCoordinator.buildMenuItems();
 

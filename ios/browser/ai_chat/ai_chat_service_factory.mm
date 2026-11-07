@@ -5,8 +5,7 @@
 
 #include "brave/ios/browser/ai_chat/ai_chat_service_factory.h"
 
-#include <utility>
-
+#include "base/no_destructor.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
@@ -26,16 +25,27 @@
 
 namespace ai_chat {
 
-AIChatServiceFactory::AIChatServiceFactory(PassKey key)
-    : TypedProfileKeyedServiceFactoryIOS(
-          std::move(key),
-          "AIChatService",
-          ProfileSelection::kNoInstanceInIncognito,
-          ServiceCreation::kCreateLazily,
-          TestingCreation::kCreateService) {
+// static
+AIChatService* AIChatServiceFactory::GetForProfile(ProfileIOS* profile) {
+  return GetInstance()->GetServiceForProfileAs<AIChatService>(profile, true);
+}
+
+// static
+AIChatServiceFactory* AIChatServiceFactory::GetInstance() {
+  static base::NoDestructor<AIChatServiceFactory> instance;
+  return instance.get();
+}
+
+AIChatServiceFactory::AIChatServiceFactory()
+    : ProfileKeyedServiceFactoryIOS("AIChatService",
+                                    ProfileSelection::kNoInstanceInIncognito,
+                                    ServiceCreation::kCreateLazily,
+                                    TestingCreation::kCreateService) {
   DependsOn(misc_metrics::ProfileMiscMetricsServiceFactory::GetInstance());
   DependsOn(TabTrackerServiceFactory::GetInstance());
 }
+
+AIChatServiceFactory::~AIChatServiceFactory() {}
 
 std::unique_ptr<KeyedService> AIChatServiceFactory::BuildServiceInstanceFor(
     ProfileIOS* profile) const {

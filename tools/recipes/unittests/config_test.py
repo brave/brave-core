@@ -17,6 +17,7 @@ import unittest
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # pylint: disable=wrong-import-position
+import config
 import engine
 from config import (
     BadConf,
@@ -31,6 +32,7 @@ from config import (
     Static,
     config_item_context,
 )
+from recipe_api import RecipeApi
 
 
 def _schema(TARGET='Bob'):
