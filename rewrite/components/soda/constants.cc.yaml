@@ -1,0 +1,49 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Resolve a language to the Brave locale that serves it, and to no locale
+      when no Brave model does.
+
+      Brave's own models serve on-device speech, not SODA. `available()` and
+      `install()` refuse a language that resolves to nothing before they ask
+      Brave, so this keeps them from offering one Brave cannot transcribe. The
+      multilingual model has a prompt for each locale, and SODA has no desktop
+      pack for many of them, so SODA's match on the language subtag alone
+      cannot find them.
+
+      `GetBraveOnDeviceSpeechLanguageConfig` is defined in the chromium_src
+      override of this source.
+    preempt_function_impl:
+      function_name: GetLanguageComponentConfigMatchingLanguageSubtag
+      code: |-
+        return GetBraveOnDeviceSpeechLanguageConfig(language_name);
+
+  - description: |-
+      Give the code of a Brave locale.
+
+      `install()` finds out from the code whether a locale is installed.
+      `FindBraveOnDeviceSpeechLocaleByName` is defined in the chromium_src
+      override of this source.
+    preempt_function_impl:
+      function_name: GetLanguageCode
+      code: |-
+        if (const auto* locale = FindBraveOnDeviceSpeechLocaleByName(language_name)) {
+          return locale->language_code;
+        }
+
+  - description: |-
+      Give the Brave locale of a code.
+
+      `install()` settles the reply for a locale from the code that the
+      installer reports. `FindBraveOnDeviceSpeechLocaleByCode` is defined in
+      the chromium_src override of this source.
+    preempt_function_impl:
+      function_name: GetLanguageName
+      code: |-
+        if (const auto* locale = FindBraveOnDeviceSpeechLocaleByCode(language_code)) {
+          return std::string(locale->locale);
+        }

@@ -71,6 +71,8 @@ if (enable_local_ai) {
     sources = [
       "brave_soda_installer.cc",
       "brave_soda_installer.h",
+      "on_device_speech_languages.cc",
+      "on_device_speech_languages.h",
       "on_device_speech_model_permission_request.cc",
       "on_device_speech_model_permission_request.h",
       "on_device_speech_recognition_controller.cc",
@@ -147,6 +149,7 @@ if (enable_local_ai) {
     testonly = true
 
     sources = [
+      "brave_soda_constants_unittest.cc",
       "brave_soda_installer_unittest.cc",
       "on_device_speech_model_permission_request_unittest.cc",
       "on_device_speech_recognition_controller_unittest.cc",
@@ -158,6 +161,7 @@ if (enable_local_ai) {
       ":chromium_impl",
       ":speech",
       "//base",
+      "//base/i18n:language_tag",
       "//base/test:test_support",
       "//brave/components/brave_component_updater/browser:test_support",
       "//brave/components/local_ai/core",
