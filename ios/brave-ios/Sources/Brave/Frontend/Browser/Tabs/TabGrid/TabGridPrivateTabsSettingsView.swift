@@ -16,6 +16,8 @@ struct TabGridPrivateTabsSettings: View {
   @Environment(\.dismiss) private var dismiss
   @ObservedObject private var persistentPrivateBrowsing = Preferences.Privacy
     .persistentPrivateBrowsing
+  @ObservedObject private var rememberBrowsingMode = Preferences.Privacy
+    .rememberBrowsingMode
   @ObservedObject private var privateBrowsingLock = Preferences.Privacy.privateBrowsingLock
 
   private var authenticationKind: LABiometryType? {
@@ -63,6 +65,27 @@ struct TabGridPrivateTabsSettings: View {
           }
         }
         .tint(Color(braveSystemName: .primitivePrimary40))
+        if persistentPrivateBrowsing.value {
+          Toggle(isOn: $rememberBrowsingMode.value) {
+            Label {
+              Text(Strings.TabsSettings.rememberBrowsingModeTitle)
+                .foregroundStyle(Color(braveSystemName: .textPrimary))
+              Text(Strings.TabsSettings.rememberBrowsingModeDescription)
+                .foregroundStyle(Color(braveSystemName: .textTertiary))
+                .font(.footnote)
+            } icon: {
+              Image(braveSystemName: "leo.product.private-window")
+                .foregroundStyle(Color(braveSystemName: .iconDefault))
+            }
+          }
+          .onChange(of: rememberBrowsingMode.value) { _, newValue in
+            BrowserState.handleRememberBrowsingModeToggled(
+              enabled: newValue,
+              isCurrentlyPrivate: viewModel.isPrivateBrowsing
+            )
+          }
+          .tint(Color(braveSystemName: .primitivePrimary40))
+        }
 
         if let authenticationKind {
           Toggle(isOn: privateBrowsingLockBinding) {
