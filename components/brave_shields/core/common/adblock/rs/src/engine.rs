@@ -5,7 +5,6 @@
 
 use std::collections::HashSet;
 use std::str::Utf8Error;
-use std::sync::OnceLock;
 
 use crate::resource_storage::BraveCoreResourceStorage;
 use adblock::lists::FilterSet as InnerFilterSet;
@@ -26,9 +25,8 @@ use crate::ffi::ContentBlockingRules;
 
 pub struct Engine {
     engine: InnerEngine,
-    /// Indexed by `SourceLocation::source_index`. Filled on first use, so
-    /// engines that record no source locations never build it.
-    source_titles: OnceLock<Vec<String>>,
+    /// Indexed by `source_index`; empty unless built from a debug `FilterSet`.
+    source_titles: Vec<String>,
 }
 
 impl Default for Box<Engine> {
@@ -37,12 +35,22 @@ impl Default for Box<Engine> {
     }
 }
 
-fn wrap_engine(engine: InnerEngine) -> Box<Engine> {
-    Box::new(Engine { engine, source_titles: OnceLock::new() })
+fn wrap_engine(engine: InnerEngine, debug: bool) -> Box<Engine> {
+    let source_titles = if debug {
+        engine
+            .get_debug_info()
+            .source_info
+            .into_iter()
+            .map(|source| source.title.unwrap_or_default())
+            .collect()
+    } else {
+        Vec::new()
+    };
+    Box::new(Engine { engine, source_titles })
 }
 
 pub fn new_engine() -> Box<Engine> {
-    wrap_engine(InnerEngine::default())
+    wrap_engine(InnerEngine::default(), false)
 }
 
 pub fn engine_with_rules(rules: &CxxVector<u8>) -> BoxEngineResult {
@@ -52,7 +60,7 @@ pub fn engine_with_rules(rules: &CxxVector<u8>) -> BoxEngineResult {
             std::str::from_utf8(rules.as_slice())?.to_string(),
             Default::default(),
         );
-        Ok(wrap_engine(InnerEngine::new_with_filter_set(filter_set)))
+        Ok(wrap_engine(InnerEngine::new_with_filter_set(filter_set), false))
     }()
     .into()
 }
@@ -60,7 +68,8 @@ pub fn engine_with_rules(rules: &CxxVector<u8>) -> BoxEngineResult {
 /// Creates a new engine with rules from a given filter set.
 pub fn engine_from_filter_set(filter_set: Box<FilterSet>) -> BoxEngineResult {
     || -> Result<Box<Engine>, InternalError> {
-        Ok(wrap_engine(InnerEngine::new_with_filter_set(filter_set.0)))
+        let debug = filter_set.debug;
+        Ok(wrap_engine(InnerEngine::new_with_filter_set(filter_set.inner), debug))
     }()
     .into()
 }
@@ -100,14 +109,15 @@ pub fn convert_rules_to_content_blocking(rules: &CxxString) -> ContentBlockingRu
             ParseOptions { rule_types: RuleTypes::NetworkOnly, ..Default::default() },
         );
 
-        // `unwrap` is safe here because `into_content_blocking` only panics if the
-        // `FilterSet` was not created in debug mode
+        // `unwrap` is safe here because `into_content_blocking` only panics if
+        // the `FilterSet` was not created in debug mode
         let (mut cb_rules, _) = filter_set.into_content_blocking().unwrap();
         let rules_len = cb_rules.len();
         let truncated = if rules_len > MAX_CB_LIST_SIZE {
-            // Note that the last rule is always the first-party document exception rule,
-            // which we want to keep. Otherwise, we can arbitrarily truncate rules
-            // before that to ensure that the list can actually compile.
+            // Note that the last rule is always the first-party document
+            // exception rule, which we want to keep. Otherwise, we
+            // can arbitrarily truncate rules before that to ensure
+            // that the list can actually compile.
             cb_rules.swap(rules_len - 1, MAX_CB_LIST_SIZE - 1);
             cb_rules.truncate(MAX_CB_LIST_SIZE);
             true
@@ -163,18 +173,7 @@ impl Engine {
     }
 
     fn source_title(&self, source_index: u32) -> String {
-        self.source_titles
-            .get_or_init(|| {
-                self.engine
-                    .get_debug_info()
-                    .source_info
-                    .into_iter()
-                    .map(|source| source.title.unwrap_or_default())
-                    .collect()
-            })
-            .get(source_index as usize)
-            .cloned()
-            .unwrap_or_default()
+        self.source_titles.get(source_index as usize).cloned().unwrap_or_default()
     }
 
     pub fn get_csp_directives(
@@ -206,9 +205,8 @@ impl Engine {
     }
 
     pub fn deserialize(&mut self, serialized: &CxxVector<u8>) -> bool {
-        let result = self.engine.deserialize(serialized.as_slice());
-        self.source_titles = OnceLock::new();
-        result.is_ok()
+        self.source_titles.clear();
+        self.engine.deserialize(serialized.as_slice()).is_ok()
     }
 
     pub fn use_resource_storage(&mut self, storage: &BraveCoreResourceStorage) {
