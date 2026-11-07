@@ -1218,6 +1218,14 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
           FEATURE_VALUE_TYPE(features::kBraveToolbarsSmallIcons),              \
       },                                                                       \
       {                                                                        \
+          "brave-recap",                                                       \
+          "Brave Recap",                                                       \
+          "Enables brave://recap, a shareable summary of what Shields has "    \
+          "blocked over the lifetime of the profile",                          \
+          kOsDesktop,                                                          \
+          FEATURE_VALUE_TYPE(features::kBraveRecap),                           \
+      },                                                                       \
+      {                                                                        \
           "brave-ntp-refresh-enabled",                                         \
           "New Tab Page refresh",                                              \
           "Enables the refreshed version of the New Tab Page",                 \
