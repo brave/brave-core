@@ -490,7 +490,12 @@ void PageContentFetcher::GetSearchSummarizerKey(
   mojo::Remote<mojom::PageContentExtractor> extractor;
   primary_rfh->GetRemoteInterfaces()->GetInterface(
       extractor.BindNewPipeAndPassReceiver());
-  fetcher->GetSearchSummarizerKey(std::move(extractor), std::move(callback));
+  // The fetcher deletes itself on disconnect without replying, so guarantee an
+  // answer or the caller waits forever.
+  fetcher->GetSearchSummarizerKey(
+      std::move(extractor),
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+          std::move(callback), std::optional<std::string>()));
 }
 
 void PageContentFetcher::GetOpenAIChatButtonNonce(
@@ -502,7 +507,12 @@ void PageContentFetcher::GetOpenAIChatButtonNonce(
   mojo::Remote<mojom::PageContentExtractor> extractor;
   primary_rfh->GetRemoteInterfaces()->GetInterface(
       extractor.BindNewPipeAndPassReceiver());
-  fetcher->GetOpenAIChatButtonNonce(std::move(extractor), std::move(callback));
+  // The fetcher deletes itself on disconnect without replying, so guarantee an
+  // answer or the caller waits forever.
+  fetcher->GetOpenAIChatButtonNonce(
+      std::move(extractor),
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+          std::move(callback), std::optional<std::string>()));
 }
 
 }  // namespace ai_chat
