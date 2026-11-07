@@ -176,6 +176,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTests) {
       panel_ids.push_back(sidebar::SidePanelIdFromSideBarItem(item));
     }
   }
+  panel_ids.push_back(SidePanelEntryId::kReadAnything);
 
   // Load all builtin panel items.
   auto* side_panel_ui = SidePanelUI::From(browser());

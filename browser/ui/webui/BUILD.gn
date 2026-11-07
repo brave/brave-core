@@ -45,6 +45,7 @@ source_set("browser_tests") {
     ]
 
     deps += [
+      "//brave/browser/ui/webui/side_panel/read_anything:browser_tests",
       "//brave/components/ai_chat/core/common/buildflags",
       "//brave/components/brave_search/common",
       "//chrome/browser/ui/webui/searchbox",

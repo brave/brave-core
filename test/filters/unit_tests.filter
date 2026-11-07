@@ -170,7 +170,7 @@
 -ContentAnnotatorServiceFactoryTest.CreatesServiceWithFlagEnabled
 -ContentAnnotatorTabHelperTest.PropagatesLanguageEvent
 -ContextHubPageHandlerTest.*
--ContextHubPageHandlerTopicsExportTest.GenerateTopicsFeedbackBundle 
+-ContextHubPageHandlerTopicsExportTest.GenerateTopicsFeedbackBundle
 -ContextHubServiceFactoryTest.CreatesDatabaseStorageWhenMemoryBanksDisabled
 -ContextHubServiceFactoryTest.CreatesServiceWithDatabaseMemoryBankWhenFlagEnabled
 -ContextHubServiceFactoryTest.CreatesServiceWithFlagEnabled
@@ -764,8 +764,17 @@
 -EntryPointEligibilityManagerTest.IsPinningEligible_True
 -EntryPointEligibilityManagerTest.NotifyEntryPointEligibilityChanged*
 
-# Read anything is disabled
+# Read anything is disabled by default
 -All/RenderViewContextMenuReadAnythingTest.AppendPageItems/*
+
+# We only ship a subset of the Read Anything fonts, and add our own.
+-ReadAnythingAppControllerTest.GetValidatedFontName_FontWithQuotes
+-ReadAnythingAppControllerTest.GetValidatedFontName_InvalidFont
+-ReadAnythingAppControllerTest.GetValidatedFontName_UnsupportedFont
+-ReadAnythingAppModelTest.SupportedFonts_BeforeLanguageSet_ReturnsDefaultFonts
+-ReadAnythingAppModelTest.SupportedFonts_InvalidLanguageCode_ReturnsDefaultFonts
+-ReadAnythingAppModelTest.SupportedFonts_SetBaseLanguageCode_ReturnsExpectedDefaultFonts
+
 -RenderViewContextMenuExtensionsTest.*
 -RenderViewContextMenuListenToThisPageTest.MenuItemPresentWhenEnabled
 
@@ -866,7 +875,7 @@
 -DefaultBrowserNotificationObserverTest.ShowsNotificationWhenNotDefault
 -SiteSettingsHelperChooserExceptionTest.GetChooserExceptionListFromProfile
 
-# These tests are related to MV2 extension deprecation, which is disabled until 
+# These tests are related to MV2 extension deprecation, which is disabled until
 # MV2 extensions are removed from the Web Store.
 -ManifestV2ExperimentManagerDisableWithReEnableAndPolicyUnitTest.*
 -ExtensionInstallStatusTestWithMV2Deprecation.*
@@ -948,7 +957,7 @@
 # This test fails because we suppress kLinkCopied toast.
 -ToastControllerUnitTest.RecordToastDismissReasonHistogram
 
-# Thit test fails because we override MenuConfig so the expected values don't 
+# Thit test fails because we override MenuConfig so the expected values don't
 # match.
 -ActionAppMenuTest.HeaderAndMenuItemBorderLayout
 
