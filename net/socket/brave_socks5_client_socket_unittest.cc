@@ -100,7 +100,7 @@ TEST_F(BraveSocks5ClientSocketAuthTest, AuthenticatesWithUsernameAndPassword) {
   EXPECT_TRUE(socket->IsConnected());
 }
 
-TEST_F(BraveSocks5ClientSocketAuthTest, RejectsInvalidCredentialsWithoutLooping) {
+TEST_F(BraveSocks5ClientSocketAuthTest, RejectsOversizedCredentials) {
   constexpr uint8_t kGreetingRequest[] = {0x05, 0x01, 0x02};
   constexpr uint8_t kGreetingResponse[] = {0x05, 0x02};
 
