@@ -51,7 +51,8 @@ media::mojom::AvailabilityStatus GetBraveOnDeviceSpeechAvailability(
     return media::mojom::AvailabilityStatus::kUnavailable;
   }
 
-  return local_ai::OnDeviceSpeechModelsState::GetInstance()->IsModelInstalled()
+  return local_ai::OnDeviceSpeechModelsState::GetInstance()->IsModelInstalled(
+             local_ai::OnDeviceSpeechModel::kEnglish)
              ? media::mojom::AvailabilityStatus::kAvailable
              : media::mojom::AvailabilityStatus::kDownloadable;
 }

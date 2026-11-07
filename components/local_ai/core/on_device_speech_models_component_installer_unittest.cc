@@ -45,6 +45,8 @@ namespace local_ai {
 
 namespace {
 
+constexpr OnDeviceSpeechModel kEnglish = OnDeviceSpeechModel::kEnglish;
+
 constexpr base::FilePath::CharType kComponentInstallDir[] =
     FILE_PATH_LITERAL("BraveOnDeviceSpeechModels");
 
@@ -86,7 +88,8 @@ class OnDeviceSpeechModelsComponentInstallerUnitTest : public testing::Test {
   void TearDown() override {
     // Clear singleton state to avoid polluting other test suites.
     ShutdownOnDeviceSpeechModelsComponentRegistration();
-    OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(base::FilePath());
+    OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(kEnglish,
+                                                            base::FilePath());
   }
 
   // Drives the registrar to where a request will park on the update service,
@@ -165,8 +168,8 @@ class OnDeviceSpeechModelsComponentInstallerUnitTest : public testing::Test {
     CreateDirectory(install_dir_);
     ASSERT_TRUE(PathExists(install_dir_));
     auto* state = OnDeviceSpeechModelsState::GetInstance();
-    state->SetInstallDir(install_dir_);
-    ASSERT_TRUE(state->IsModelInstalled());
+    state->SetInstallDir(kEnglish, install_dir_);
+    ASSERT_TRUE(state->IsModelInstalled(kEnglish));
 
     EXPECT_CALL(*cus_, RegisterComponent(testing::_)).Times(0);
     EXPECT_CALL(on_demand_updater_,
@@ -180,7 +183,7 @@ class OnDeviceSpeechModelsComponentInstallerUnitTest : public testing::Test {
                                                     local_state_.get());
     // Reported gone before the files are, so nothing acts on a model whose
     // files are on their way out.
-    EXPECT_FALSE(state->IsModelInstalled());
+    EXPECT_FALSE(state->IsModelInstalled(kEnglish));
     // Whatever stopped the model also leaves it not enabled.
     EXPECT_FALSE(IsEnabled());
     ASSERT_TRUE(
@@ -196,7 +199,8 @@ class OnDeviceSpeechModelsComponentInstallerUnitTest : public testing::Test {
     policy.ComponentReady(base::Version("1.0.0"), install_dir_,
                           base::DictValue());
 
-    EXPECT_FALSE(OnDeviceSpeechModelsState::GetInstance()->IsModelInstalled());
+    EXPECT_FALSE(
+        OnDeviceSpeechModelsState::GetInstance()->IsModelInstalled(kEnglish));
   }
 
   // Asks `MaybeRegisterOnDeviceSpeechModelsComponent` for the model while it is
@@ -217,15 +221,15 @@ class OnDeviceSpeechModelsComponentInstallerUnitTest : public testing::Test {
                                                     local_state_.get());
 
     auto* state = OnDeviceSpeechModelsState::GetInstance();
-    state->SetInstallDir(install_dir_);
-    ASSERT_TRUE(state->IsModelInstalled());
+    state->SetInstallDir(kEnglish, install_dir_);
+    ASSERT_TRUE(state->IsModelInstalled(kEnglish));
 
     base::test::TestFuture<bool> future;
     MaybeRegisterOnDeviceSpeechModelsComponent(future.GetCallback());
     EXPECT_FALSE(future.IsReady());
 
     EXPECT_FALSE(future.Get());
-    EXPECT_TRUE(state->IsModelInstalled());
+    EXPECT_TRUE(state->IsModelInstalled(kEnglish));
   }
 
   // Starts a registration, then runs `disable`, which turns off the switch or
@@ -287,7 +291,8 @@ TEST_F(OnDeviceSpeechModelsComponentInstallerUnitTest, VerifyInstallation) {
   // A mis-packaged component should not report as installed.
   EXPECT_FALSE(policy.VerifyInstallation(base::DictValue(), install_dir_));
 
-  ASSERT_TRUE(CreateDirectory(install_dir_.AppendASCII(kModelDirName)));
+  ASSERT_TRUE(
+      CreateDirectory(install_dir_.AppendASCII(GetModelDirName(kEnglish))));
   EXPECT_TRUE(policy.VerifyInstallation(base::DictValue(), install_dir_));
 }
 
@@ -300,23 +305,24 @@ TEST_F(OnDeviceSpeechModelsComponentInstallerUnitTest, ComponentReady) {
                         base::DictValue());
 
   auto* state = OnDeviceSpeechModelsState::GetInstance();
-  EXPECT_EQ(state->GetInstallDir(), install_dir_);
-  EXPECT_EQ(state->GetModelDir(), install_dir_.AppendASCII(kModelDirName));
+  EXPECT_EQ(state->GetInstallDir(kEnglish), install_dir_);
+  EXPECT_EQ(state->GetModelDir(kEnglish),
+            install_dir_.AppendASCII(GetModelDirName(kEnglish)));
 }
 
 // Tests the early return for an empty dir.
 TEST_F(OnDeviceSpeechModelsComponentInstallerUnitTest,
        ComponentReady_EmptyDirDoesNotRemove) {
   auto* state = OnDeviceSpeechModelsState::GetInstance();
-  state->SetInstallDir(install_dir_);
-  ASSERT_TRUE(state->IsModelInstalled());
+  state->SetInstallDir(kEnglish, install_dir_);
+  ASSERT_TRUE(state->IsModelInstalled(kEnglish));
 
   OnDeviceSpeechModelsComponentInstallerPolicy policy(local_state_.get());
   policy.ComponentReady(base::Version("1.0.0"), base::FilePath(),
                         base::DictValue());
 
-  EXPECT_EQ(install_dir_, state->GetInstallDir());
-  EXPECT_TRUE(state->IsModelInstalled());
+  EXPECT_EQ(install_dir_, state->GetInstallDir(kEnglish));
+  EXPECT_TRUE(state->IsModelInstalled(kEnglish));
 }
 
 // Tests that a download already in flight when the feature goes off does not
@@ -421,8 +427,8 @@ TEST_F(
     ManageOnDeviceSpeechModelsComponentRegistration_RemovesWhenLocalAIPrefChanges) {
   ASSERT_TRUE(CreateDirectory(install_dir_));
   auto* state = OnDeviceSpeechModelsState::GetInstance();
-  state->SetInstallDir(install_dir_);
-  ASSERT_TRUE(state->IsModelInstalled());
+  state->SetInstallDir(kEnglish, install_dir_);
+  ASSERT_TRUE(state->IsModelInstalled(kEnglish));
 
   base::RunLoop run_loop;
   EXPECT_CALL(*cus_, RegisterComponent(testing::_))
@@ -449,7 +455,7 @@ TEST_F(
       .WillOnce(testing::Return(true));
   local_state_->SetBoolean(prefs::kBraveLocalAIEnabled, false);
 
-  EXPECT_FALSE(state->IsModelInstalled());
+  EXPECT_FALSE(state->IsModelInstalled(kEnglish));
   EXPECT_FALSE(IsEnabled());
 
   // Shutting down drops the references the registrar holds, which is what
@@ -457,10 +463,10 @@ TEST_F(
   // is not followed after that.
   testing::Mock::VerifyAndClearExpectations(cus_.get());
   ShutdownOnDeviceSpeechModelsComponentRegistration();
-  state->SetInstallDir(install_dir_);
+  state->SetInstallDir(kEnglish, install_dir_);
   local_state_->SetBoolean(prefs::kBraveLocalAIEnabled, true);
   local_state_->SetBoolean(prefs::kBraveLocalAIEnabled, false);
-  EXPECT_TRUE(state->IsModelInstalled());
+  EXPECT_TRUE(state->IsModelInstalled(kEnglish));
 }
 
 // The other direction, and the one a first run takes: the switch is off while
@@ -519,13 +525,13 @@ TEST_F(
 
   // Disabling it takes it away again, the same as turning the switch off does.
   auto* state = OnDeviceSpeechModelsState::GetInstance();
-  state->SetInstallDir(install_dir_);
-  ASSERT_TRUE(state->IsModelInstalled());
+  state->SetInstallDir(kEnglish, install_dir_);
+  ASSERT_TRUE(state->IsModelInstalled(kEnglish));
   EXPECT_CALL(*cus_, UnregisterComponent(kOnDeviceSpeechModelsComponentId))
       .Times(1)
       .WillOnce(testing::Return(true));
   local_state_->ClearPref(prefs::kOnDeviceSpeechModelEnabled);
-  EXPECT_FALSE(state->IsModelInstalled());
+  EXPECT_FALSE(state->IsModelInstalled(kEnglish));
 }
 
 // Toggling the switch, and enabling the model again, while a
@@ -687,16 +693,18 @@ TEST_F(
   EXPECT_CALL(on_demand_updater_,
               EnsureInstalled(kOnDeviceSpeechModelsComponentId, testing::_))
       .Times(1)
-      .WillOnce([this](const std::string& id,
-                       component_updater::Callback callback) {
-        OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(install_dir_);
-        std::move(callback).Run(update_client::Error::NONE);
-      });
+      .WillOnce(
+          [this](const std::string& id, component_updater::Callback callback) {
+            OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(
+                kEnglish, install_dir_);
+            std::move(callback).Run(update_client::Error::NONE);
+          });
 
   base::test::TestFuture<bool> future;
   MaybeRegisterOnDeviceSpeechModelsComponent(future.GetCallback());
   EXPECT_TRUE(future.Get());
-  EXPECT_TRUE(OnDeviceSpeechModelsState::GetInstance()->IsModelInstalled());
+  EXPECT_TRUE(
+      OnDeviceSpeechModelsState::GetInstance()->IsModelInstalled(kEnglish));
 }
 
 // Two requests made before a registration lands wait on that one registration
@@ -713,11 +721,12 @@ TEST_F(
   EXPECT_CALL(on_demand_updater_,
               EnsureInstalled(kOnDeviceSpeechModelsComponentId, testing::_))
       .Times(1)
-      .WillOnce([this](const std::string& id,
-                       component_updater::Callback callback) {
-        OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(install_dir_);
-        std::move(callback).Run(update_client::Error::NONE);
-      });
+      .WillOnce(
+          [this](const std::string& id, component_updater::Callback callback) {
+            OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(
+                kEnglish, install_dir_);
+            std::move(callback).Run(update_client::Error::NONE);
+          });
   ManageOnDeviceSpeechModelsComponentRegistration(cus_.get(),
                                                   local_state_.get());
 
@@ -791,11 +800,12 @@ TEST_F(OnDeviceSpeechModelsComponentInstallerUnitTest,
   EXPECT_CALL(on_demand_updater_,
               EnsureInstalled(kOnDeviceSpeechModelsComponentId, testing::_))
       .Times(1)
-      .WillOnce([this](const std::string& id,
-                       component_updater::Callback callback) {
-        OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(install_dir_);
-        std::move(callback).Run(update_client::Error::NONE);
-      });
+      .WillOnce(
+          [this](const std::string& id, component_updater::Callback callback) {
+            OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(
+                kEnglish, install_dir_);
+            std::move(callback).Run(update_client::Error::NONE);
+          });
   ManageOnDeviceSpeechModelsComponentRegistration(cus_.get(),
                                                   local_state_.get());
 
@@ -806,7 +816,8 @@ TEST_F(OnDeviceSpeechModelsComponentInstallerUnitTest,
   local_state_->SetBoolean(prefs::kOnDeviceSpeechModelEnabled, true);
 
   EXPECT_TRUE(future.Get());
-  EXPECT_TRUE(OnDeviceSpeechModelsState::GetInstance()->IsModelInstalled());
+  EXPECT_TRUE(
+      OnDeviceSpeechModelsState::GetInstance()->IsModelInstalled(kEnglish));
 }
 
 // Shutting down while a registration is in flight leaves the model where it
@@ -816,8 +827,8 @@ TEST_F(OnDeviceSpeechModelsComponentInstallerUnitTest,
 TEST_F(OnDeviceSpeechModelsComponentInstallerUnitTest,
        MaybeRegisterOnDeviceSpeechModelsComponent_ShutdownDuringRegistration) {
   auto* state = OnDeviceSpeechModelsState::GetInstance();
-  state->SetInstallDir(install_dir_);
-  ASSERT_TRUE(state->IsModelInstalled());
+  state->SetInstallDir(kEnglish, install_dir_);
+  ASSERT_TRUE(state->IsModelInstalled(kEnglish));
 
   base::test::TestFuture<void> registered;
   EXPECT_CALL(*cus_, RegisterComponent(testing::_))
@@ -841,7 +852,7 @@ TEST_F(OnDeviceSpeechModelsComponentInstallerUnitTest,
   EXPECT_TRUE(future.Get());
   // The registration still lands, on the installer the shutdown let go of.
   EXPECT_TRUE(registered.Wait());
-  EXPECT_TRUE(state->IsModelInstalled());
+  EXPECT_TRUE(state->IsModelInstalled(kEnglish));
 }
 
 // The update service, which reports how a download that was already running
@@ -895,7 +906,8 @@ TEST_F(OnDeviceSpeechModelsComponentInstallerUnitTest,
 
   // What `ComponentReady` publishes when the download lands, which the update
   // service reports as over right after.
-  OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(install_dir_);
+  OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(kEnglish,
+                                                          install_dir_);
   SendEvent(update_client::ComponentState::kUpdated, ComponentId());
 
   EXPECT_TRUE(future.Get());
@@ -971,7 +983,8 @@ TEST_F(OnDeviceSpeechModelsComponentInstallerUnitTest,
   MaybeRegisterOnDeviceSpeechModelsComponent(future.GetCallback());
 
   EXPECT_FALSE(future.Get());
-  EXPECT_FALSE(OnDeviceSpeechModelsState::GetInstance()->IsModelInstalled());
+  EXPECT_FALSE(
+      OnDeviceSpeechModelsState::GetInstance()->IsModelInstalled(kEnglish));
   // Watched only for a request waiting on a download, so nothing is left
   // watching once none is.
   EXPECT_EQ(nullptr, cus_observer_);

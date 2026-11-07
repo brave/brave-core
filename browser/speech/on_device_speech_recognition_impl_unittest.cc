@@ -60,7 +60,7 @@ class BraveOnDeviceSpeechInstallPromptUnitTest
     guest_profile_.reset();
     soda_installer_.reset();
     local_ai::OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(
-        base::FilePath());
+        local_ai::OnDeviceSpeechModel::kEnglish, base::FilePath());
     local_state()->ClearPref(local_ai::prefs::kOnDeviceSpeechModelEnabled);
     ChromeRenderViewHostTestHarness::TearDown();
   }
@@ -193,6 +193,7 @@ TEST_F(BraveOnDeviceSpeechInstallPromptUnitTest,
        RefusedOutsideRegularProfilesWithTheModel) {
   local_state()->SetBoolean(local_ai::prefs::kOnDeviceSpeechModelEnabled, true);
   local_ai::OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(
+      local_ai::OnDeviceSpeechModel::kEnglish,
       base::FilePath(FILE_PATH_LITERAL("/brave/speech/models")));
   EXPECT_TRUE(Install({"en-US"}));
 

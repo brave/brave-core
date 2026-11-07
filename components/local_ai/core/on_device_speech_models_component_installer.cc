@@ -223,7 +223,8 @@ class OnDeviceSpeechModelsComponentRegistrar
         cus_ && cus_->UnregisterComponent(kOnDeviceSpeechModelsComponentId);
     // Published before the files go, so nothing acts on a model whose files
     // are on their way out.
-    OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(base::FilePath());
+    OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(
+        OnDeviceSpeechModel::kEnglish, base::FilePath());
     if (!was_registered && !registration_pending_) {
       EnsureInstaller();
       installer_->Uninstall();
@@ -245,7 +246,8 @@ class OnDeviceSpeechModelsComponentRegistrar
       return;
     }
     const bool success =
-        OnDeviceSpeechModelsState::GetInstance()->IsModelInstalled();
+        OnDeviceSpeechModelsState::GetInstance()->IsModelInstalled(
+            OnDeviceSpeechModel::kEnglish);
     std::vector<base::OnceCallback<void(bool)>> callbacks;
     callbacks.swap(pending_callbacks_);
     for (auto& callback : callbacks) {
@@ -292,7 +294,8 @@ OnDeviceSpeechModelsComponentInstallerPolicy::
 bool OnDeviceSpeechModelsComponentInstallerPolicy::VerifyInstallation(
     const base::DictValue& manifest,
     const base::FilePath& install_dir) const {
-  return base::DirectoryExists(install_dir.AppendASCII(kModelDirName));
+  return base::DirectoryExists(
+      install_dir.AppendASCII(GetModelDirName(OnDeviceSpeechModel::kEnglish)));
 }
 
 bool OnDeviceSpeechModelsComponentInstallerPolicy::
@@ -327,7 +330,8 @@ void OnDeviceSpeechModelsComponentInstallerPolicy::ComponentReady(
   if (!ShouldInstallOnDeviceSpeechModel(local_state_)) {
     return;
   }
-  OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(install_dir);
+  OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(
+      OnDeviceSpeechModel::kEnglish, install_dir);
 }
 
 base::FilePath
