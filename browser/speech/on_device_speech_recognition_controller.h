@@ -9,6 +9,7 @@
 #include <memory>
 #include <vector>
 
+#include "base/containers/flat_set.h"
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
@@ -17,6 +18,7 @@
 #include "base/timer/timer.h"
 #include "brave/browser/local_ai/background_web_contents_factory.h"
 #include "brave/components/local_ai/core/background_web_contents.h"
+#include "brave/components/local_ai/core/on_device_speech_models_state.h"
 #include "brave/components/local_ai/core/on_device_speech_recognition.mojom.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager_observer.h"
@@ -48,6 +50,12 @@ namespace speech {
 // crash, factory/session disconnect, or profile/contents destruction; the
 // next Start() restarts the pipeline. A Start() that arrives before kReady is
 // queued in pending_sessions_ and forwarded once Ready.
+//
+// The worker holds one model, the one the language of its first session needs.
+// A Start() for the other model is refused while a started session is still
+// connected. When none is, the worker stops, so that its model leaves memory,
+// and a new worker starts with the other model. Only sessions on audio tracks
+// can overlap, because a new microphone session ends the one before.
 class OnDeviceSpeechRecognitionController
     : public local_ai::mojom::SpeechRecognitionFactoryHost,
       public local_ai::mojom::AsrSession,
@@ -82,6 +90,10 @@ class OnDeviceSpeechRecognitionController
   // Returns a remote the engine holds for one recognition. Dropping it ends
   // the session.
   mojo::PendingRemote<local_ai::mojom::AsrSession> GetAsrSession();
+
+  size_t started_session_count_for_testing() const {
+    return started_sessions_.size();
+  }
 
   // Binds the FactoryHost receiver for the ORT worker WebUI.
   void BindFactoryHost(
@@ -161,11 +173,23 @@ class OnDeviceSpeechRecognitionController
 
   void OnFactoryDisconnected();
   void OnAsrSessionDisconnected();
+  // Stops the worker and returns to kIdle. The AsrSessions stay connected.
+  void StopWorker();
+  // Stops the worker and drops every AsrSession, which the engines report as
+  // a recognition failure.
   void TearDown();
 
   CreateBackgroundWebContentsCallback create_background_web_contents_;
 
   State state_ = State::kIdle;
+
+  // The model the worker holds, or is starting with.
+  local_ai::OnDeviceSpeechModel model_ =
+      local_ai::OnDeviceSpeechModel::kEnglish;
+
+  // The AsrSessions that called Start() and are still connected. While the
+  // worker runs, they are all for `model_`.
+  base::flat_set<mojo::ReceiverId> started_sessions_;
 
   // Set once the profile manager is gone. TearDown() returns state_ to kIdle,
   // so this is what keeps a later Start() from booting a worker that has no

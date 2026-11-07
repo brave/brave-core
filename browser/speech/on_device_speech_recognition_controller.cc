@@ -6,6 +6,8 @@
 #include "brave/browser/speech/on_device_speech_recognition_controller.h"
 
 #include <optional>
+#include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -14,9 +16,11 @@
 #include "base/logging.h"
 #include "base/memory/ptr_util.h"
 #include "base/no_destructor.h"
+#include "base/strings/string_util.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/local_ai/background_web_contents_factory.h"
+#include "brave/browser/speech/on_device_speech_languages.h"
 #include "brave/components/local_ai/core/on_device_speech_models_state.h"
 #include "brave/components/local_ai/core/url_constants.h"
 #include "brave/components/local_ai/core/utils.h"
@@ -88,6 +92,18 @@ local_ai::mojom::OrtModelFilesPtr ReadNemotronOrtFiles(
   files->mel_filters = std::move(*filterbank);
   files->tokens = std::move(*tokens);
   return files;
+}
+
+// The model for a session in `language`: the English model for an English tag
+// and the multilingual model for any other tag, the same as in the speech
+// worker. `start()` refuses a language that no model serves before the session
+// gets here.
+local_ai::OnDeviceSpeechModel GetModelForLanguage(std::string_view language) {
+  return base::EqualsCaseInsensitiveASCII(language, "en") ||
+                 base::StartsWith(language, "en-",
+                                  base::CompareCase::INSENSITIVE_ASCII)
+             ? local_ai::OnDeviceSpeechModel::kEnglish
+             : local_ai::OnDeviceSpeechModel::kMultilingual;
 }
 
 }  // namespace
@@ -176,14 +192,40 @@ void OnDeviceSpeechRecognitionController::Start(
     on_device_model::mojom::AsrStreamOptionsPtr options,
     mojo::PendingReceiver<on_device_model::mojom::AsrStreamInput> stream,
     mojo::PendingRemote<on_device_model::mojom::AsrStreamResponder> responder) {
-  // No model installed: don't spin up a guest profile + cross-origin-isolated
-  // renderer just to discover the files are missing in OnOrtFilesRead.
-  // Dropping the stream/responder pipes here surfaces to the engine as a
-  // recognition failure, the same outcome as a failed load.
-  if (!local_ai::OnDeviceSpeechModelsState::GetInstance()->IsModelInstalled(
-          local_ai::OnDeviceSpeechModel::kEnglish)) {
+  // No model for the language installed: don't spin up a guest profile +
+  // cross-origin-isolated renderer just to discover the files are missing in
+  // OnOrtFilesRead. Dropping the stream/responder pipes here surfaces to the
+  // engine as a recognition failure, the same outcome as a failed load. A
+  // session without a language is served as en-US, the same as in the worker.
+  const std::optional<std::string_view> locale =
+      GetOnDeviceSpeechLocale(options->language.value_or("en-US"));
+  if (!locale) {
     return;
   }
+  const local_ai::OnDeviceSpeechModel model = GetModelForLanguage(*locale);
+  if (!local_ai::OnDeviceSpeechModelsState::GetInstance()->IsModelInstalled(
+          model)) {
+    return;
+  }
+  // The worker finds its prompt from the canonical tag of the locale, such as
+  // "de-DE" for a page's "de-AT".
+  options->language = std::string(*locale);
+
+  if (state_ != State::kIdle && model != model_) {
+    // The worker holds the other model, and a live session keeps it. Only
+    // sessions on audio tracks can overlap, because a new microphone session
+    // ends the one before, so refusing the session is rare.
+    if (!started_sessions_.empty()) {
+      return;
+    }
+    // No session needs the worker's model, so stop the worker. Its model
+    // leaves memory before the other one loads.
+    StopWorker();
+  }
+  if (state_ == State::kIdle) {
+    model_ = model;
+  }
+  started_sessions_.insert(asr_session_receivers_.current_receiver());
 
   // Worker is ready, forward session to worker.
   if (state_ == State::kReady) {
@@ -207,6 +249,7 @@ void OnDeviceSpeechRecognitionController::Start(
 void OnDeviceSpeechRecognitionController::OnAsrSessionDisconnected() {
   // A consumer dropped its AsrSession remote, so that session ended. When the
   // last one goes, arm the idle timer to tear the worker down.
+  started_sessions_.erase(asr_session_receivers_.current_receiver());
   if (asr_session_receivers_.empty()) {
     StartIdleTimer();
   }
@@ -305,9 +348,7 @@ void OnDeviceSpeechRecognitionController::LoadOrtModel() {
   // reset or superseded factory.
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
-      base::BindOnce(
-          &ReadNemotronOrtFiles,
-          state->GetModelDir(local_ai::OnDeviceSpeechModel::kEnglish)),
+      base::BindOnce(&ReadNemotronOrtFiles, state->GetModelDir(model_)),
       base::BindOnce(&OnDeviceSpeechRecognitionController::OnOrtFilesRead,
                      weak_factory_.GetWeakPtr()));
 }
@@ -317,7 +358,7 @@ void OnDeviceSpeechRecognitionController::OnOrtFilesRead(
   if (!files) {
     VLOG(1) << "OnDeviceSpeechRecognition: failed to read ORT model files from "
             << local_ai::OnDeviceSpeechModelsState::GetInstance()->GetModelDir(
-                   local_ai::OnDeviceSpeechModel::kEnglish);
+                   model_);
     TearDown();
     return;
   }
@@ -393,7 +434,7 @@ void OnDeviceSpeechRecognitionController::OnFactoryDisconnected() {
   TearDown();
 }
 
-void OnDeviceSpeechRecognitionController::TearDown() {
+void OnDeviceSpeechRecognitionController::StopWorker() {
   // Drop outstanding weak-bound replies (BWC creation, deferred teardown, the
   // model-file read) so none from this cycle can land in a later one. The
   // singleton is never destroyed, so nothing else invalidates them.
@@ -406,9 +447,14 @@ void OnDeviceSpeechRecognitionController::TearDown() {
   profile_manager_observation_.Reset();
   otr_profile_ = nullptr;
   pending_sessions_.clear();
-  asr_session_receivers_.Clear();
   factory_host_receiver_.reset();
   state_ = State::kIdle;
+}
+
+void OnDeviceSpeechRecognitionController::TearDown() {
+  StopWorker();
+  asr_session_receivers_.Clear();
+  started_sessions_.clear();
 }
 
 }  // namespace speech
