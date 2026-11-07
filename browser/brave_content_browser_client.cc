@@ -180,6 +180,8 @@
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
 #include "brave/browser/speech/on_device_speech_recognition_controller.h"
+#include "brave/browser/ui/webui/history_embeddings/history_embeddings.mojom.h"
+#include "brave/browser/ui/webui/history_embeddings/history_embeddings_handler.h"
 #include "brave/browser/ui/webui/local_ai/on_device_speech_recognition_worker_ui.h"
 #include "brave/components/local_ai/content/no_network_connection_allowlist_throttle.h"
 #include "brave/components/local_ai/core/features.h"
@@ -1086,6 +1088,10 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         local_ai::mojom::SpeechRecognitionFactoryHost,
         local_ai::UntrustedOnDeviceSpeechRecognitionWorkerUI>(map);
   }
+  map->Add<brave_history_embeddings::mojom::PageHandlerFactory>(
+      base::BindRepeating(
+          &brave_history_embeddings::HistoryEmbeddingsPageHandlerFactory::
+              BindForFrame));
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   map->Add<brave_vpn::mojom::ServiceHandler>(

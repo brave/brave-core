@@ -421,6 +421,7 @@ if (enable_local_ai) {
     "//brave/browser/history_embeddings:service",
     "//brave/browser/history_embeddings:status",
     "//brave/browser/speech",
+    "//brave/browser/ui/webui/history_embeddings",
     "//brave/browser/ui/webui/local_ai",
     "//brave/components/history_embeddings:open_tab_passages",
     "//brave/components/history_embeddings/core",
