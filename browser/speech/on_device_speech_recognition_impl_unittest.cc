@@ -9,6 +9,7 @@
 #include <string>
 #include <string_view>
 #include <utility>
+#include <variant>
 #include <vector>
 
 #include "base/files/file_path.h"
@@ -103,6 +104,7 @@ class BraveOnDeviceSpeechInstallPromptUnitTest
 
   // Opens a page that answers the prompt with `response`.
   void OpenPage(ResponseType response) {
+    prompt_factory_.reset();
     NavigateAndCommit(GURL("https://example.com/"));
     permissions::PermissionRequestManager::CreateForWebContents(web_contents());
     prompt_factory_ =
@@ -149,9 +151,9 @@ class BraveOnDeviceSpeechInstallPromptUnitTest
 
   int show_count() { return prompt_factory_->show_count(); }
 
-  bool IsEnabled() {
+  bool IsEnabled(OnDeviceSpeechModel model) {
     return local_state()->GetBoolean(
-        local_ai::prefs::kOnDeviceSpeechEnglishModelEnabled);
+        local_ai::GetOnDeviceSpeechModelEnabledPref(model));
   }
 
   bool AsksAgain() {
@@ -171,27 +173,81 @@ class BraveOnDeviceSpeechInstallPromptUnitTest
 TEST_F(BraveOnDeviceSpeechInstallPromptUnitTest, AllowEnablesTheModel) {
   Install({"en-US"});
   EXPECT_EQ(1, show_count());
-  EXPECT_TRUE(IsEnabled());
+  EXPECT_TRUE(IsEnabled(OnDeviceSpeechModel::kEnglish));
+}
+
+// With the English model installed, a page that also needs the multilingual
+// model gets the prompt for the multilingual model.
+TEST_F(BraveOnDeviceSpeechInstallPromptUnitTest,
+       PromptsForTheModelThatIsNotInstalled) {
+  InstallModel(OnDeviceSpeechModel::kEnglish);
+  Install({"en-US", "es-US"});  // The default ACCEPT_ALL allows the prompt.
+  EXPECT_EQ(1, show_count());
+  EXPECT_TRUE(IsEnabled(OnDeviceSpeechModel::kMultilingual));
+}
+
+// One prompt for each model, in the order of the page's languages. Allow on
+// the first prompt runs `install()` again, which shows the second prompt.
+TEST_F(BraveOnDeviceSpeechInstallPromptUnitTest,
+       LanguagesOfBothModelsPromptForEach) {
+  OpenPage(ResponseType::NONE);
+  auto* manager =
+      permissions::PermissionRequestManager::FromWebContents(web_contents());
+  base::test::TestFuture<bool> installed;
+  StartInstall({"en-US", "es-US"}, installed.GetCallback());
+
+  prompt_factory_->WaitForPermissionBubble();
+  ASSERT_EQ(1, show_count());
+  manager->Accept(std::monostate());
+  EXPECT_TRUE(IsEnabled(OnDeviceSpeechModel::kEnglish));
+  EXPECT_FALSE(IsEnabled(OnDeviceSpeechModel::kMultilingual));
+
+  prompt_factory_->WaitForPermissionBubble();
+  ASSERT_EQ(2, show_count());
+  manager->Accept(std::monostate());
+  EXPECT_TRUE(IsEnabled(OnDeviceSpeechModel::kMultilingual));
+  EXPECT_FALSE(installed.Get());
 }
 
 TEST_F(BraveOnDeviceSpeechInstallPromptUnitTest, DenyPromptsOnce) {
   EXPECT_FALSE(Install({"en-US"}, ResponseType::DENY_ALL));
   EXPECT_EQ(1, show_count());
-  EXPECT_FALSE(IsEnabled());
+  EXPECT_FALSE(IsEnabled(OnDeviceSpeechModel::kEnglish));
 }
 
+// A model that the user enabled is downloading, so `install()` does not prompt
+// for it. The page denies any prompt, so `install()` always answers.
 TEST_F(BraveOnDeviceSpeechInstallPromptUnitTest, NoPromptWhenEnabled) {
   local_state()->SetBoolean(local_ai::prefs::kOnDeviceSpeechEnglishModelEnabled,
                             true);
-  Install({"en-US"});
+  Install({"en-US"}, ResponseType::DENY_ALL);
   EXPECT_EQ(0, show_count());
 }
 
-// Upstream refuses these, so a prompt would be for nothing.
+// A model on disk needs no download, so `install()` does not prompt for it.
+// Its pref is not set, so only its place on disk stops the prompt. The page
+// denies any prompt, so `install()` always answers.
+TEST_F(BraveOnDeviceSpeechInstallPromptUnitTest, NoPromptForAModelOnDisk) {
+  local_ai::OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(
+      OnDeviceSpeechModel::kEnglish,
+      base::FilePath(FILE_PATH_LITERAL("/brave/speech/models")));
+  Install({"en-US"}, ResponseType::DENY_ALL);
+  EXPECT_EQ(0, show_count());
+}
+
+// Upstream `install()` fails for these, so no prompt shows.
 TEST_F(BraveOnDeviceSpeechInstallPromptUnitTest, NoPromptForWhatIsRefused) {
   EXPECT_FALSE(Install({}));
   EXPECT_EQ(0, show_count());
   EXPECT_FALSE(Install({"en-US", "th-TH"}));
+  EXPECT_EQ(0, show_count());
+
+  // en-US is downloadable, but es-US is unavailable while
+  // `kBraveOnDeviceSpeechMultilingual` is off.
+  base::test::ScopedFeatureList multilingual_off;
+  multilingual_off.InitAndDisableFeature(
+      local_ai::kBraveOnDeviceSpeechMultilingual);
+  EXPECT_FALSE(Install({"en-US", "es-US"}));
   EXPECT_EQ(0, show_count());
 }
 
@@ -212,7 +268,7 @@ TEST_F(BraveOnDeviceSpeechInstallPromptUnitTest,
     EXPECT_FALSE(Install({"en-US"}));
     EXPECT_EQ(0, show_count());
   }
-  EXPECT_FALSE(IsEnabled());
+  EXPECT_FALSE(IsEnabled(OnDeviceSpeechModel::kEnglish));
 }
 
 // They get false with the model turned on and on disk too, where a regular
@@ -292,7 +348,7 @@ TEST_F(BraveOnDeviceSpeechInstallPromptUnitTest, TabClosedWithPromptOpen) {
 
   ASSERT_TRUE(installed.IsReady());
   EXPECT_FALSE(installed.Get());
-  EXPECT_FALSE(IsEnabled());
+  EXPECT_FALSE(IsEnabled(OnDeviceSpeechModel::kEnglish));
   EXPECT_TRUE(AsksAgain());
 }
 
@@ -308,7 +364,7 @@ TEST_F(BraveOnDeviceSpeechInstallPromptUnitTest, TwoInstallsShareOnePrompt) {
   ASSERT_TRUE(first.Wait());
   ASSERT_TRUE(second.Wait());
   EXPECT_EQ(1, show_count());
-  EXPECT_TRUE(IsEnabled());
+  EXPECT_TRUE(IsEnabled(OnDeviceSpeechModel::kEnglish));
 }
 
 }  // namespace speech

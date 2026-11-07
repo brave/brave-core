@@ -22,10 +22,10 @@ inline constexpr char kBraveHistoryEmbeddingsEnabled[] =
 // dormant regardless of the per-profile toggle.
 inline constexpr char kBraveLocalAIEnabled[] = "brave.local_ai_enabled";
 
-// Profile-scoped: whether to ask this user before downloading the on-device
-// speech recognition model. False once the user blocks the prompt with "Don't
-// ask again". One person's choice, so it does not follow the model, which every
-// profile shares.
+// Profile-scoped: whether to ask this user before downloading an on-device
+// speech recognition model. False once the user blocks a prompt with "Don't ask
+// again", which stops the prompts of every model. One person's choice, so it
+// does not follow the models, which every profile shares.
 inline constexpr char kAskEnableOnDeviceSpeechModel[] =
     "brave.local_ai.ask_enable_on_device_speech_model";
 

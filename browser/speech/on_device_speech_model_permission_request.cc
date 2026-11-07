@@ -12,6 +12,7 @@
 #include "base/functional/bind.h"
 #include "brave/components/local_ai/core/on_device_speech_models_state.h"
 #include "brave/components/local_ai/core/pref_names.h"
+#include "brave/components/local_ai/core/utils.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "components/permissions/permission_decision.h"
 #include "components/permissions/permission_prompt_decision.h"
@@ -24,6 +25,7 @@
 namespace speech {
 
 OnDeviceSpeechModelPermissionRequest::OnDeviceSpeechModelPermissionRequest(
+    local_ai::OnDeviceSpeechModel model,
     PrefService& local_state,
     PrefService& profile_prefs,
     const GURL& requesting_origin,
@@ -36,6 +38,7 @@ OnDeviceSpeechModelPermissionRequest::OnDeviceSpeechModelPermissionRequest(
           base::BindRepeating(
               &OnDeviceSpeechModelPermissionRequest::PermissionDecided,
               base::Unretained(this))),
+      model_(model),
       callback_(std::move(callback)),
       local_state_(local_state),
       profile_prefs_(profile_prefs) {
@@ -45,8 +48,21 @@ OnDeviceSpeechModelPermissionRequest::OnDeviceSpeechModelPermissionRequest(
 OnDeviceSpeechModelPermissionRequest::~OnDeviceSpeechModelPermissionRequest() =
     default;
 
+bool OnDeviceSpeechModelPermissionRequest::IsDuplicateOf(
+    permissions::PermissionRequest* other_request) const {
+  // The same request type is only ever this class.
+  return PermissionRequest::IsDuplicateOf(other_request) &&
+         static_cast<OnDeviceSpeechModelPermissionRequest*>(other_request)
+                 ->model_ == model_;
+}
+
 std::u16string OnDeviceSpeechModelPermissionRequest::GetMessageTextFragment()
     const {
+  if (model_ == local_ai::OnDeviceSpeechModel::kMultilingual) {
+    return l10n_util::GetStringFUTF16(
+        IDS_ON_DEVICE_SPEECH_MULTILINGUAL_MODEL_PERMISSION_FRAGMENT,
+        ui::FormatBytes(local_ai::kApproxMultilingualModelSize));
+  }
   return l10n_util::GetStringFUTF16(
       IDS_ON_DEVICE_SPEECH_MODEL_PERMISSION_FRAGMENT,
       ui::FormatBytes(local_ai::kApproxModelSize));
@@ -64,7 +80,7 @@ void OnDeviceSpeechModelPermissionRequest::PermissionDecided(
 
   if (decision.overall_decision == PermissionDecision::kAllow) {
     local_state_->SetBoolean(
-        local_ai::prefs::kOnDeviceSpeechEnglishModelEnabled, true);
+        local_ai::GetOnDeviceSpeechModelEnabledPref(model_), true);
   } else if (decision.overall_decision == PermissionDecision::kDeny) {
     profile_prefs_->SetBoolean(local_ai::prefs::kAskEnableOnDeviceSpeechModel,
                                !get_dont_ask_again());

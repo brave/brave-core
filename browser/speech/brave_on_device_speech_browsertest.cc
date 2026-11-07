@@ -9,6 +9,7 @@
 #include <string_view>
 #include <tuple>
 #include <utility>
+#include <vector>
 
 #include "base/command_line.h"
 #include "base/files/file_path.h"
@@ -24,6 +25,7 @@
 #include "brave/components/local_ai/core/on_device_speech_recognition.mojom.h"
 #include "brave/components/local_ai/core/pref_names.h"
 #include "brave/components/local_ai/core/test/fake_asr_session.h"
+#include "brave/components/local_ai/core/utils.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/test/base/chrome_test_utils.h"
@@ -75,6 +77,29 @@ struct Expected {
   std::string_view start;
 };
 
+// A model, and the language that a page asks for it with.
+struct ModelCase {
+  local_ai::OnDeviceSpeechModel model;
+  std::string_view language;
+};
+
+constexpr ModelCase kEnglishCase{local_ai::OnDeviceSpeechModel::kEnglish,
+                                 "en-US"};
+constexpr ModelCase kMultilingualCase{
+    local_ai::OnDeviceSpeechModel::kMultilingual, "uk-UA"};
+
+std::string ComponentIdOf(local_ai::OnDeviceSpeechModel model) {
+  return model == local_ai::OnDeviceSpeechModel::kEnglish
+             ? local_ai::kOnDeviceSpeechEnglishModelComponentId
+             : local_ai::kOnDeviceSpeechMultilingualModelComponentId;
+}
+
+auto IsSpeechModelComponentId() {
+  return testing::AnyOf(
+      ComponentIdOf(local_ai::OnDeviceSpeechModel::kEnglish),
+      ComponentIdOf(local_ai::OnDeviceSpeechModel::kMultilingual));
+}
+
 // Hands out the fake worker session in place of the real controller, which
 // would boot a renderer and read a 600 MB model off disk.
 class TestContentBrowserClient : public BraveContentBrowserClient {
@@ -96,10 +121,18 @@ class TestContentBrowserClient : public BraveContentBrowserClient {
 
 }  // namespace
 
+// Runs with the model of `model_case` enabled, and asks for its language.
 class BraveOnDeviceSpeechBrowserTest : public InProcessBrowserTest {
  public:
-  BraveOnDeviceSpeechBrowserTest() {
-    feature_list_.InitWithFeatures({local_ai::kBraveOnDeviceSpeechRecognition},
+  explicit BraveOnDeviceSpeechBrowserTest(
+      const ModelCase& model_case = kEnglishCase)
+      : model_case_(model_case) {
+    std::vector<base::test::FeatureRef> enabled = {
+        local_ai::kBraveOnDeviceSpeechRecognition};
+    if (model_case_.model == local_ai::OnDeviceSpeechModel::kMultilingual) {
+      enabled.push_back(local_ai::kBraveOnDeviceSpeechMultilingual);
+    }
+    feature_list_.InitWithFeatures(enabled,
                                    {media::kOnDeviceWebSpeechSmallExpertModel,
                                     media::kOnDeviceWebSpeechGeminiNano});
   }
@@ -128,9 +161,7 @@ class BraveOnDeviceSpeechBrowserTest : public InProcessBrowserTest {
     // Brave components register and ask it for their downloads too.
     EXPECT_CALL(
         *on_demand_updater_,
-        EnsureInstalled(
-            testing::Ne(local_ai::kOnDeviceSpeechEnglishModelComponentId),
-            testing::_))
+        EnsureInstalled(testing::Not(IsSpeechModelComponentId()), testing::_))
         .Times(testing::AnyNumber());
 
     // Browser tests run with `--disable-component-update`
@@ -138,17 +169,15 @@ class BraveOnDeviceSpeechBrowserTest : public InProcessBrowserTest {
     // components and the registrar has no update service. Start it here
     // instead, as a user who enabled the model leaves it.
     g_browser_process->local_state()->SetBoolean(
-        local_ai::prefs::kOnDeviceSpeechEnglishModelEnabled, true);
+        local_ai::GetOnDeviceSpeechModelEnabledPref(model_case_.model), true);
     local_ai::ManageOnDeviceSpeechModelsComponentRegistration(
         g_browser_process->component_updater(),
         g_browser_process->local_state());
     DrainRegistrationRequest();
     // Only a test that calls `AnswerDownloadWith` expects a download. Set after
     // the drain, so it also takes over from the drain's expectation.
-    EXPECT_CALL(
-        *on_demand_updater_,
-        EnsureInstalled(local_ai::kOnDeviceSpeechEnglishModelComponentId,
-                        testing::_))
+    EXPECT_CALL(*on_demand_updater_,
+                EnsureInstalled(IsSpeechModelComponentId(), testing::_))
         .Times(0);
 
     original_client_ = content::SetBrowserClientForTesting(&client_);
@@ -162,8 +191,11 @@ class BraveOnDeviceSpeechBrowserTest : public InProcessBrowserTest {
     // call can start it again.
     local_ai::ShutdownOnDeviceSpeechModelsComponentRegistration();
     // Process-wide, so leave it as a fresh browser would have it.
-    local_ai::OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(
-        local_ai::OnDeviceSpeechModel::kEnglish, base::FilePath());
+    auto* state = local_ai::OnDeviceSpeechModelsState::GetInstance();
+    state->SetInstallDir(local_ai::OnDeviceSpeechModel::kEnglish,
+                         base::FilePath());
+    state->SetInstallDir(local_ai::OnDeviceSpeechModel::kMultilingual,
+                         base::FilePath());
     on_demand_updater_.reset();
     InProcessBrowserTest::TearDownOnMainThread();
   }
@@ -173,23 +205,22 @@ class BraveOnDeviceSpeechBrowserTest : public InProcessBrowserTest {
     return chrome_test_utils::GetActiveWebContents(this)->GetPrimaryMainFrame();
   }
 
-  // What the component installer publishes once a model is on disk. Nothing
+  // What the component installer publishes once the model is on disk. Nothing
   // reads the files, because the worker that would is replaced by the test
   // client.
   void PublishModel() {
     local_ai::OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(
-        local_ai::OnDeviceSpeechModel::kEnglish,
+        model_case_.model,
         base::FilePath(FILE_PATH_LITERAL("/brave/speech/models")));
   }
 
-  // Answers the download `BraveSodaInstaller::InstallLanguage` asks for, and
-  // expects to be asked once. A success publishes the model first, as a real
-  // download does before the request it answers is settled.
+  // Answers the download of the model that `BraveSodaInstaller::
+  // InstallLanguage` asks for, and expects to be asked once. A success
+  // publishes the model first, as a real download does before the request it
+  // answers is settled.
   void AnswerDownloadWith(update_client::Error error) {
-    EXPECT_CALL(
-        *on_demand_updater_,
-        EnsureInstalled(local_ai::kOnDeviceSpeechEnglishModelComponentId,
-                        testing::_))
+    EXPECT_CALL(*on_demand_updater_,
+                EnsureInstalled(ComponentIdOf(model_case_.model), testing::_))
         .WillOnce([this, error](const std::string& id,
                                 component_updater::Callback callback) {
           if (error == update_client::Error::NONE) {
@@ -210,9 +241,9 @@ class BraveOnDeviceSpeechBrowserTest : public InProcessBrowserTest {
   content::EvalJsResult Available(std::string_view quality) {
     return content::EvalJs(
         main_frame(),
-        content::JsReplace("SpeechRecognition.available({langs: ['en-US'], "
-                           "processLocally: true, quality: $1})",
-                           quality));
+        content::JsReplace("SpeechRecognition.available({langs: [$1], "
+                           "processLocally: true, quality: $2})",
+                           model_case_.language, quality));
   }
 
   // Sets `processLocally`, because without it the renderer resolves `false`
@@ -221,9 +252,9 @@ class BraveOnDeviceSpeechBrowserTest : public InProcessBrowserTest {
   content::EvalJsResult Install(std::string_view quality) {
     return content::EvalJs(
         main_frame(),
-        content::JsReplace("SpeechRecognition.install({langs: ['en-US'], "
-                           "processLocally: true, quality: $1})",
-                           quality));
+        content::JsReplace("SpeechRecognition.install({langs: [$1], "
+                           "processLocally: true, quality: $2})",
+                           model_case_.language, quality));
   }
 
   // Runs a recognition over a MediaStreamTrack and resolves with the first
@@ -233,8 +264,9 @@ class BraveOnDeviceSpeechBrowserTest : public InProcessBrowserTest {
   // same way.
   content::EvalJsResult StartRecognition(std::string_view quality,
                                          bool process_locally) {
-    return content::EvalJs(main_frame(),
-                           content::JsReplace(R"JS(
+    return content::EvalJs(
+        main_frame(),
+        content::JsReplace(R"JS(
       (async () => {
         const context = new AudioContext();
         const destination = context.createMediaStreamDestination();
@@ -243,9 +275,9 @@ class BraveOnDeviceSpeechBrowserTest : public InProcessBrowserTest {
         oscillator.start();
 
         const recognition = new SpeechRecognition();
-        recognition.lang = 'en-US';
-        recognition.quality = $1;
-        recognition.processLocally = $2;
+        recognition.lang = $1;
+        recognition.quality = $2;
+        recognition.processLocally = $3;
         return await new Promise(resolve => {
           recognition.onresult = e => resolve(e.results[0][0].transcript);
           recognition.onerror = e => resolve('error: ' + e.error);
@@ -253,7 +285,7 @@ class BraveOnDeviceSpeechBrowserTest : public InProcessBrowserTest {
         });
       })()
   )JS",
-                                              quality, process_locally));
+                           model_case_.language, quality, process_locally));
   }
 
   // Makes one page's calls in order and checks each answer. A transcript can
@@ -274,23 +306,22 @@ class BraveOnDeviceSpeechBrowserTest : public InProcessBrowserTest {
 
   local_ai::FakeAsrSession fake_session_;
   TestContentBrowserClient client_{fake_session_};
+  const ModelCase model_case_;
 
  private:
   // Starting the registrar asks for a download of its own while the feature
   // is on. Draining it leaves a test body's request to start a fresh one
   // rather than join this.
   void DrainRegistrationRequest() {
-    EXPECT_CALL(
-        *on_demand_updater_,
-        EnsureInstalled(local_ai::kOnDeviceSpeechEnglishModelComponentId,
-                        testing::_))
+    EXPECT_CALL(*on_demand_updater_,
+                EnsureInstalled(ComponentIdOf(model_case_.model), testing::_))
         .WillRepeatedly(
             [](const std::string& id, component_updater::Callback callback) {
               std::move(callback).Run(update_client::Error::NONE);
             });
     base::test::TestFuture<bool> answered;
     local_ai::MaybeRegisterOnDeviceSpeechModelsComponent(
-        local_ai::OnDeviceSpeechModel::kEnglish, answered.GetCallback());
+        model_case_.model, answered.GetCallback());
     ASSERT_TRUE(answered.Wait());
   }
 
@@ -357,9 +388,9 @@ constexpr ServedCase kServedCases[] = {
 };
 
 std::string ServedCaseName(
-    const testing::TestParamInfo<std::tuple<std::string_view, ServedCase>>&
-        info) {
-  const auto& [quality, served_case] = info.param;
+    const testing::TestParamInfo<
+        std::tuple<ModelCase, std::string_view, ServedCase>>& info) {
+  const auto& [model_case, quality, served_case] = info.param;
   return std::string(quality == "command" ? "Command" : "Dictation") +
          (served_case.model_on_disk ? "WithModel" : "WithoutModel") +
          (served_case.download &&
@@ -372,15 +403,20 @@ std::string ServedCaseName(
 
 }  // namespace
 
-// Runs every served case for each quality Brave's model serves.
+// Runs every served case for each model, and for each quality Brave's models
+// serve.
 class BraveOnDeviceSpeechServedBrowserTest
     : public BraveOnDeviceSpeechBrowserTest,
       public testing::WithParamInterface<
-          std::tuple<std::string_view, ServedCase>> {};
+          std::tuple<ModelCase, std::string_view, ServedCase>> {
+ public:
+  BraveOnDeviceSpeechServedBrowserTest()
+      : BraveOnDeviceSpeechBrowserTest(std::get<0>(GetParam())) {}
+};
 
 IN_PROC_BROWSER_TEST_P(BraveOnDeviceSpeechServedBrowserTest,
                        AvailableInstallStart) {
-  const auto& [quality, served_case] = GetParam();
+  const auto& [model_case, quality, served_case] = GetParam();
   if (served_case.model_on_disk) {
     PublishModel();
   }
@@ -392,10 +428,20 @@ IN_PROC_BROWSER_TEST_P(BraveOnDeviceSpeechServedBrowserTest,
   ExpectPageIsTold(quality, served_case.process_locally, served_case.expected);
 }
 
-INSTANTIATE_TEST_SUITE_P(All,
+INSTANTIATE_TEST_SUITE_P(English,
                          BraveOnDeviceSpeechServedBrowserTest,
-                         testing::Combine(testing::Values("command",
+                         testing::Combine(testing::Values(kEnglishCase),
+                                          testing::Values("command",
                                                           "dictation"),
+                                          testing::ValuesIn(kServedCases)),
+                         ServedCaseName);
+
+// One quality is enough, because the quality that Brave serves does not
+// depend on the model.
+INSTANTIATE_TEST_SUITE_P(Multilingual,
+                         BraveOnDeviceSpeechServedBrowserTest,
+                         testing::Combine(testing::Values(kMultilingualCase),
+                                          testing::Values("command"),
                                           testing::ValuesIn(kServedCases)),
                          ServedCaseName);
 
@@ -436,14 +482,19 @@ INSTANTIATE_TEST_SUITE_P(
     });
 
 // A user who has not enabled the model yet, so `install()` prompts before it
-// downloads.
+// downloads. Runs for each model, and for each quality Brave's models serve.
 class BraveOnDeviceSpeechPromptBrowserTest
-    : public BraveOnDeviceSpeechQualityBrowserTest {
+    : public BraveOnDeviceSpeechBrowserTest,
+      public testing::WithParamInterface<
+          std::tuple<ModelCase, std::string_view>> {
  public:
+  BraveOnDeviceSpeechPromptBrowserTest()
+      : BraveOnDeviceSpeechBrowserTest(std::get<0>(GetParam())) {}
+
   void SetUpOnMainThread() override {
-    BraveOnDeviceSpeechQualityBrowserTest::SetUpOnMainThread();
+    BraveOnDeviceSpeechBrowserTest::SetUpOnMainThread();
     g_browser_process->local_state()->ClearPref(
-        local_ai::prefs::kOnDeviceSpeechEnglishModelEnabled);
+        local_ai::GetOnDeviceSpeechModelEnabledPref(model_case_.model));
     prompt_factory_ =
         std::make_unique<permissions::MockPermissionPromptFactory>(
             permissions::PermissionRequestManager::FromWebContents(
@@ -452,13 +503,15 @@ class BraveOnDeviceSpeechPromptBrowserTest
 
   void TearDownOnMainThread() override {
     prompt_factory_.reset();
-    BraveOnDeviceSpeechQualityBrowserTest::TearDownOnMainThread();
+    BraveOnDeviceSpeechBrowserTest::TearDownOnMainThread();
   }
 
  protected:
+  std::string_view quality() const { return std::get<1>(GetParam()); }
+
   bool IsEnabled() {
     return g_browser_process->local_state()->GetBoolean(
-        local_ai::prefs::kOnDeviceSpeechEnglishModelEnabled);
+        local_ai::GetOnDeviceSpeechModelEnabledPref(model_case_.model));
   }
 
   std::unique_ptr<permissions::MockPermissionPromptFactory> prompt_factory_;
@@ -472,9 +525,9 @@ IN_PROC_BROWSER_TEST_P(BraveOnDeviceSpeechPromptBrowserTest, AllowDownloads) {
   AnswerDownloadWith(update_client::Error::NONE);
   NavigateToUrl("foo.com");
 
-  EXPECT_EQ(kDownloadable, Available(GetParam()));
-  EXPECT_EQ(true, Install(GetParam()));
-  EXPECT_EQ(kAvailable, Available(GetParam()));
+  EXPECT_EQ(kDownloadable, Available(quality()));
+  EXPECT_EQ(true, Install(quality()));
+  EXPECT_EQ(kAvailable, Available(quality()));
   EXPECT_EQ(1, prompt_factory_->show_count());
   EXPECT_TRUE(IsEnabled());
 }
@@ -485,20 +538,33 @@ IN_PROC_BROWSER_TEST_P(BraveOnDeviceSpeechPromptBrowserTest, DenyRefuses) {
       permissions::PermissionRequestManager::DENY_ALL);
   NavigateToUrl("foo.com");
 
-  EXPECT_EQ(kDownloadable, Available(GetParam()));
-  EXPECT_EQ(false, Install(GetParam()));
-  EXPECT_EQ(kDownloadable, Available(GetParam()));
+  EXPECT_EQ(kDownloadable, Available(quality()));
+  EXPECT_EQ(false, Install(quality()));
+  EXPECT_EQ(kDownloadable, Available(quality()));
   EXPECT_EQ(1, prompt_factory_->show_count());
   EXPECT_FALSE(IsEnabled());
 }
 
-INSTANTIATE_TEST_SUITE_P(
-    All,
-    BraveOnDeviceSpeechPromptBrowserTest,
-    testing::Values("command", "dictation"),
-    [](const testing::TestParamInfo<std::string_view>& info) {
-      return info.param == "command" ? "Command" : "Dictation";
-    });
+std::string PromptCaseName(
+    const testing::TestParamInfo<std::tuple<ModelCase, std::string_view>>&
+        info) {
+  return std::get<1>(info.param) == "command" ? "Command" : "Dictation";
+}
+
+INSTANTIATE_TEST_SUITE_P(English,
+                         BraveOnDeviceSpeechPromptBrowserTest,
+                         testing::Combine(testing::Values(kEnglishCase),
+                                          testing::Values("command",
+                                                          "dictation")),
+                         PromptCaseName);
+
+// One quality is enough, because the quality that Brave serves does not
+// depend on the model.
+INSTANTIATE_TEST_SUITE_P(Multilingual,
+                         BraveOnDeviceSpeechPromptBrowserTest,
+                         testing::Combine(testing::Values(kMultilingualCase),
+                                          testing::Values("command")),
+                         PromptCaseName);
 
 // Runs with and without the model on disk, and with and without
 // `processLocally`.

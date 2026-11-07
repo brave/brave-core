@@ -10,6 +10,7 @@
 
 #include "base/functional/callback.h"
 #include "base/memory/raw_ref.h"
+#include "brave/components/local_ai/core/on_device_speech_models_state.h"
 #include "components/permissions/permission_request.h"
 
 class GURL;
@@ -22,13 +23,14 @@ struct PermissionRequestData;
 
 namespace speech {
 
-// Asks to download Brave's on-device speech recognition model. There is no
-// content setting to remember the answer in, because the model is shared by
+// Asks to download one of Brave's on-device speech recognition models. There is
+// no content setting to remember the answer in, because the model is shared by
 // every site, so this records it itself:
-//   - Allow sets `kOnDeviceSpeechEnglishModelEnabled`, which is what makes the
-//     component registrar register the model for download.
+//   - Allow sets the model's enabled pref, which is what makes the component
+//     registrar register the model for download.
 //   - Block, with "Don't ask again" checked, sets
-//     `kAskEnableOnDeviceSpeechModel` to false in the profile.
+//     `kAskEnableOnDeviceSpeechModel` to false in the profile. That stops the
+//     prompt for both models.
 //   - Dismissing saves nothing, the same as upstream permission prompts.
 class OnDeviceSpeechModelPermissionRequest
     : public permissions::PermissionRequest {
@@ -37,7 +39,8 @@ class OnDeviceSpeechModelPermissionRequest
 
   // `callback` runs once, with the final decision: whether the user allowed
   // the download. `local_state` and `profile_prefs` must outlive the request.
-  OnDeviceSpeechModelPermissionRequest(PrefService& local_state,
+  OnDeviceSpeechModelPermissionRequest(local_ai::OnDeviceSpeechModel model,
+                                       PrefService& local_state,
                                        PrefService& profile_prefs,
                                        const GURL& requesting_origin,
                                        ConsentCallback callback);
@@ -46,12 +49,18 @@ class OnDeviceSpeechModelPermissionRequest
 
  private:
   // permissions::PermissionRequest:
+  // Only a request for the same model is a duplicate. A duplicate gets the
+  // answer of the request it joined, which would allow a model that prompt did
+  // not name.
+  bool IsDuplicateOf(
+      permissions::PermissionRequest* other_request) const override;
   std::u16string GetMessageTextFragment() const override;
 
   void PermissionDecided(
       const permissions::PermissionPromptDecision& decision,
       const permissions::PermissionRequestData& request_data);
 
+  const local_ai::OnDeviceSpeechModel model_;
   ConsentCallback callback_;
   const raw_ref<PrefService> local_state_;
   const raw_ref<PrefService> profile_prefs_;
