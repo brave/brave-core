@@ -243,8 +243,14 @@ void ProxyConfigServiceTor::RemoveObserver(Observer* observer) {
 ProxyConfigServiceTor::ConfigAvailability
 ProxyConfigServiceTor::GetLatestProxyConfig(
     net::ProxyConfigWithAnnotation* config) {
-  if (!proxy_server_.is_valid() || bypass_tor_proxy_config_for_testing_) {
+  if (bypass_tor_proxy_config_for_testing_) {
     return CONFIG_UNSET;
+  }
+  // Until Tor's SOCKS endpoint is known, report the config as pending rather
+  // than unset. Proxy resolution treats an unset config as DIRECT, and a
+  // pending one holds requests until UpdateProxyURI() supplies the proxy.
+  if (!proxy_server_.is_valid()) {
+    return CONFIG_PENDING;
   }
 
   ProxyConfig proxy_config;
