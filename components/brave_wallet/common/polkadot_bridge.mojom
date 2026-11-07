@@ -1,0 +1,47 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_wallet.mojom;
+
+import "brave/components/brave_wallet/common/brave_wallet.mojom";
+
+// What the bridge frame derives from one signer payload. All of it comes out of
+// the same polkadot-js type registry, so it is produced together: a description
+// the browser cannot price is only half an answer, and a price or a signature
+// for something the user was never shown is worse.
+struct PolkadotDecodedPayload {
+  // The payload's call data as `Call.toHuman()`, JSON-serialized. Display only:
+  // it is untrusted input once it reaches the browser.
+  string? as_human;
+
+  // The payload re-encoded as an extrinsic bearing a dummy signature, for
+  // TransactionPaymentApi_query_info. Never submitted to a chain. polkadot-js
+  // assembles this from the same metadata, which is what keeps the signed
+  // extensions in the order the runtime declares them.
+  array<uint8>? mock_signed_extrinsic;
+
+  // The bytes a signer signs over, with `method` encoded bare so the
+  // SCALE-encoded call is this payload's own prefix, which is what lets the
+  // browser check this against the call the dapp declared. Delivered un-hashed;
+  // `PolkadotWalletService::SignSignaturePayload` hashes it when over-long.
+  array<uint8>? signature_payload;
+
+  string? error;
+};
+
+interface PolkadotBridge {
+  // Decodes `raw_payload_json` against `metadata_bytes`, denominated per
+  // `chain_properties`. The frame does no networking of its own: everything it
+  // needs arrives on this call. Null when the payload cannot be decoded, which
+  // must fail the signing flow closed.
+  Decode(array<uint8> metadata_bytes,
+         PolkadotChainProperties chain_properties,
+         string raw_payload_json)
+      => (PolkadotDecodedPayload? decoded);
+};
+
+interface PolkadotBridgeUIHandler {
+  BindPolkadotBridge(pending_remote<PolkadotBridge> bridge);
+};
