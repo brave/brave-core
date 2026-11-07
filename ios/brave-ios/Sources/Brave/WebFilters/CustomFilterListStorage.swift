@@ -266,6 +266,20 @@ struct CustomScriptlet: Identifiable, Hashable {
     await AdBlockGroupsManager.shared.updateImmediately(fileInfo: fileInfo)
   }
 
+  /// Whether any elements were blocked with the element picker on the given URL's host.
+  func hasBlockedElements(for url: URL) async -> Bool {
+    guard let host = url.host, let rules = try? await loadCustomRules() else { return false }
+    return BlockedElementFilters.hasFilters(for: host, in: rules)
+  }
+
+  /// Removes all elements blocked with the element picker on the given URL's host.
+  func clearBlockedElements(for url: URL) async throws {
+    guard let host = url.host, let rules = try await loadCustomRules(),
+      let updatedRules = BlockedElementFilters.removingFilters(for: host, from: rules)
+    else { return }
+    try await save(customRules: updatedRules)
+  }
+
   /// Delete the saved custom filter list rules
   func deleteCustomRules() async throws {
     guard let fileURL = try savedCustomRulesFileURL() else { return }

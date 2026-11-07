@@ -15,5 +15,6 @@ public enum ShieldsPanelAction {
   case changedShieldSettings
   case shredSiteData
   case blockElement
+  case clearBlockedElements
   case openURLInNewTab(URL)
 }

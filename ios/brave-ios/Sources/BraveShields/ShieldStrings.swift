@@ -1043,6 +1043,14 @@ extension Strings.Shields {
     comment: "Title of a button in the shields panel that starts the element picker."
   )
 
+  public static let clearBlockedElementsButtonTitle = NSLocalizedString(
+    "ClearBlockedElementsButtonTitle",
+    bundle: .module,
+    value: "Clear All Blocked Elements",
+    comment:
+      "Title of a button in the shields panel that removes all elements blocked with the element picker on the current site."
+  )
+
   public static let elementPickerCreateDisabledTitle = NSLocalizedString(
     "ElementPickerCreateDisabledTitle",
     bundle: .module,
