@@ -11,7 +11,7 @@ rust_static_library("zcash_protocol") {
     "//brave/components/brave_wallet/browser/zcash/rust:rust_lib",
     "//brave/components/brave_wallet/browser/zcash/rust:rust_lib_cxx_generated",
   ]
-  crate_name = "zcash_protocol"
+  unsafe_globally_unique_crate_name = "zcash_protocol"
   edition = "2021"
   crate_root = "src/components/zcash_protocol/src/lib.rs"
   sources = [
@@ -39,7 +39,7 @@ rust_static_library("zcash_encoding") {
     ":zcash_primitives",
     ":zcash_protocol",
   ]
-  crate_name = "zcash_encoding"
+  unsafe_globally_unique_crate_name = "zcash_encoding"
   crate_root = "src/components/zcash_encoding/src/lib.rs"
   sources = [ "src/components/zcash_encoding/src/lib.rs" ]
   allow_unsafe = true
@@ -56,7 +56,7 @@ rust_static_library("zcash_primitives") {
     "//brave/components/brave_wallet/browser/zcash/rust:rust_lib",
     "//brave/components/brave_wallet/browser/zcash/rust:rust_lib_cxx_generated",
   ]
-  crate_name = "zcash_primitives"
+  unsafe_globally_unique_crate_name = "zcash_primitives"
   crate_root = "src/zcash_primitives/src/lib.rs"
   sources = [
     "src/zcash_primitives/src/encoding.rs",
@@ -91,7 +91,7 @@ rust_static_library("zcash_client_backend") {
     "//brave/components/brave_wallet/browser/zcash/rust:rust_lib",
     "//brave/components/brave_wallet/browser/zcash/rust:rust_lib_cxx_generated",
   ]
-  crate_name = "zcash_client_backend"
+  unsafe_globally_unique_crate_name = "zcash_client_backend"
   crate_root = "src/zcash_client_backend/src/lib.rs"
   sources = [
     "src/zcash_client_backend/src/lib.rs",

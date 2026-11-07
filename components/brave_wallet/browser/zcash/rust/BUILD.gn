@@ -115,7 +115,6 @@ rust_static_library("rust_lib") {
     ":test_support_impl",
   ]
 
-  crate_name = "zcash"
   crate_root = "lib.rs"
   allow_unsafe = true
   sources = [ "lib.rs" ]
