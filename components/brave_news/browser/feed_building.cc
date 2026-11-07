@@ -406,8 +406,8 @@ bool BuildFeed(const std::vector<mojom::FeedItemPtr>& feed_items,
   for (auto const& deal : deals) {
     auto category = deal->offers_category;
     if (!category.empty()) {
-      auto existing_count = category_counts[category];
-      category_counts[category] = existing_count + 1;
+      auto existing_count = deal_category_counts[category]; 
+      deal_category_counts[category] = existing_count + 1;
     }
   }
   // Ordered by # of occurrences
