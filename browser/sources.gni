@@ -468,6 +468,7 @@ if (!is_android) {
     "//brave/browser/ui/views/page_action:impl",
     "//brave/browser/ui/webui/brave_new_tab_page_refresh",
     "//brave/browser/ui/webui/brave_new_tab_page_refresh:mojom",
+    "//brave/browser/ui/webui/brave_recap",
     "//brave/browser/ui/webui/brave_welcome_page",
     "//brave/browser/ui/webui/brave_welcome_page:mojom",
     "//brave/browser/workspaces",

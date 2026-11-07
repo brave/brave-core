@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <message name="IDS_BRAVE_RECAP_TITLE" desc="Title of the Brave Recap page" formatter_data="webui=BraveRecap">
+    Brave Recap
+  </message>
+  <message name="IDS_BRAVE_RECAP_INTRO_HEADING" desc="Heading of the first Brave Recap slide" formatter_data="webui=BraveRecap">
+    Your Brave Recap
+  </message>
+  <message name="IDS_BRAVE_RECAP_INTRO_NO_DATE" desc="Text on the first slide when the install date is unknown." formatter_data="webui=BraveRecap">
+    Brave Shields keeps you safe by blocking third-party ads and trackers.
+  </message>
+  <message name="IDS_BRAVE_RECAP_PRIVACY_NOTE" desc="Note on the first and last slides that the stats are stored only on the device and Brave never receives them" formatter_data="webui=BraveRecap">
+    Brave never sees your browsing. These rough counts stay on your device.
+  </message>
+  <message name="IDS_BRAVE_RECAP_EMPTY_HEADING" desc="Heading when there are no stats yet" formatter_data="webui=BraveRecap">
+    Nothing to recap yet
+  </message>
+  <message name="IDS_BRAVE_RECAP_EMPTY_TEXT" desc="Text when there are no stats yet" formatter_data="webui=BraveRecap">
+    Brave hasn't blocked much yet. Browse for a while and come back to see what Shields has done for you.
+  </message>
+</grit-part>
