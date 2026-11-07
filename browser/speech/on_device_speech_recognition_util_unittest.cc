@@ -39,6 +39,8 @@ class BraveOnDeviceSpeechAvailabilityUnitTest : public testing::Test {
   // Initialized before the task environment starts its threads.
   base::test::ScopedFeatureList feature_list_{
       local_ai::kBraveOnDeviceSpeechRecognition};
+  base::test::ScopedFeatureList multilingual_feature_list_{
+      local_ai::kBraveOnDeviceSpeechMultilingual};
   content::BrowserTaskEnvironment task_environment_;
   TestingProfile profile_;
 };
@@ -119,22 +121,56 @@ TEST_F(BraveOnDeviceSpeechAvailabilityUnitTest, ServesCommandAndDictation) {
                                                Quality::kConversation));
 }
 
-TEST_F(BraveOnDeviceSpeechAvailabilityUnitTest, EnglishLocalesOnly) {
+// `start()` asks with the page's own tag, not the SODA name.
+TEST_F(BraveOnDeviceSpeechAvailabilityUnitTest, ResolvesThePageTag) {
+  EXPECT_EQ(AvailabilityStatus::kDownloadable,
+            GetBraveOnDeviceSpeechAvailability(&profile_, "de-AT",
+                                               Quality::kCommand));
+  EXPECT_EQ(AvailabilityStatus::kUnavailable,
+            GetBraveOnDeviceSpeechAvailability(&profile_, "zh-TW",
+                                               Quality::kCommand));
+}
+
+// With its feature off, the multilingual model serves no locale. English is
+// not affected.
+TEST_F(BraveOnDeviceSpeechAvailabilityUnitTest,
+       MultilingualUnavailableWhenItsFeatureOff) {
+  base::test::ScopedFeatureList disabled;
+  disabled.InitAndDisableFeature(local_ai::kBraveOnDeviceSpeechMultilingual);
+  EXPECT_EQ(AvailabilityStatus::kUnavailable,
+            GetBraveOnDeviceSpeechAvailability(&profile_, "es-US",
+                                               Quality::kCommand));
   EXPECT_EQ(AvailabilityStatus::kDownloadable,
             GetBraveOnDeviceSpeechAvailability(&profile_, "en-US",
                                                Quality::kCommand));
+}
+
+// A locale is available only with its own model on disk.
+TEST_F(BraveOnDeviceSpeechAvailabilityUnitTest, AvailableWithItsOwnModel) {
+  const base::FilePath install_dir(FILE_PATH_LITERAL("/brave/speech/models"));
+  auto* state = local_ai::OnDeviceSpeechModelsState::GetInstance();
+
+  state->SetInstallDir(local_ai::OnDeviceSpeechModel::kEnglish, install_dir);
+  EXPECT_EQ(AvailabilityStatus::kAvailable,
+            GetBraveOnDeviceSpeechAvailability(&profile_, "en-AU",
+                                               Quality::kCommand));
   EXPECT_EQ(AvailabilityStatus::kDownloadable,
-            GetBraveOnDeviceSpeechAvailability(&profile_, "EN-GB",
+            GetBraveOnDeviceSpeechAvailability(&profile_, "es-US",
                                                Quality::kCommand));
-  EXPECT_EQ(
-      AvailabilityStatus::kDownloadable,
-      GetBraveOnDeviceSpeechAvailability(&profile_, "en", Quality::kCommand));
-  EXPECT_EQ(AvailabilityStatus::kUnavailable,
-            GetBraveOnDeviceSpeechAvailability(&profile_, "fr-FR",
+
+  state->SetInstallDir(local_ai::OnDeviceSpeechModel::kEnglish,
+                       base::FilePath());
+  state->SetInstallDir(local_ai::OnDeviceSpeechModel::kMultilingual,
+                       install_dir);
+  EXPECT_EQ(AvailabilityStatus::kAvailable,
+            GetBraveOnDeviceSpeechAvailability(&profile_, "es-US",
                                                Quality::kCommand));
-  EXPECT_EQ(
-      AvailabilityStatus::kUnavailable,
-      GetBraveOnDeviceSpeechAvailability(&profile_, "", Quality::kCommand));
+  EXPECT_EQ(AvailabilityStatus::kDownloadable,
+            GetBraveOnDeviceSpeechAvailability(&profile_, "en-AU",
+                                               Quality::kCommand));
+
+  state->SetInstallDir(local_ai::OnDeviceSpeechModel::kMultilingual,
+                       base::FilePath());
 }
 
 }  // namespace speech

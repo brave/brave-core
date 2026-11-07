@@ -10,8 +10,7 @@
 #include <optional>
 #include <string_view>
 
-#include "base/i18n/language_tag.h"
-#include "base/i18n/tag_converters.h"
+#include "brave/browser/speech/on_device_speech_languages.h"
 #include "brave/components/local_ai/core/on_device_speech_models_state.h"
 #include "brave/components/local_ai/core/utils.h"
 #include "chrome/browser/browser_process.h"
@@ -37,22 +36,20 @@ media::mojom::AvailabilityStatus GetBraveOnDeviceSpeechAvailability(
     return media::mojom::AvailabilityStatus::kUnavailable;
   }
 
-  // The qualities Brave's model supports.
+  // The qualities Brave's models support.
   if (quality != media::mojom::SpeechRecognitionQuality::kCommand &&
       quality != media::mojom::SpeechRecognitionQuality::kDictation) {
     return media::mojom::AvailabilityStatus::kUnavailable;
   }
 
-  // English only for now. Parsing the tag normalizes case, so a plain compare
-  // covers "EN-GB" too.
-  std::optional<base::i18n::LanguageTag> tag =
-      base::i18n::GetLanguageTagFromString(language);
-  if (!tag || tag->language_subtag() != "en") {
+  std::optional<local_ai::OnDeviceSpeechModel> model =
+      GetOnDeviceSpeechModelForLanguage(language);
+  if (!model) {
     return media::mojom::AvailabilityStatus::kUnavailable;
   }
 
   return local_ai::OnDeviceSpeechModelsState::GetInstance()->IsModelInstalled(
-             local_ai::OnDeviceSpeechModel::kEnglish)
+             *model)
              ? media::mojom::AvailabilityStatus::kAvailable
              : media::mojom::AvailabilityStatus::kDownloadable;
 }

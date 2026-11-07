@@ -5,9 +5,11 @@
 
 #include "brave/browser/speech/brave_soda_installer.h"
 
+#include <algorithm>
 #include <memory>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/files/file_path.h"
 #include "base/test/scoped_feature_list.h"
@@ -40,6 +42,12 @@ constexpr OnDeviceSpeechModel kEnglish = OnDeviceSpeechModel::kEnglish;
 constexpr OnDeviceSpeechModel kMultilingual =
     OnDeviceSpeechModel::kMultilingual;
 
+int MultilingualLocaleCount() {
+  return std::ranges::count(GetBraveOnDeviceSpeechLocales(),
+                            BraveOnDeviceSpeechModelKind::kMultilingual,
+                            &BraveOnDeviceSpeechLocale::model);
+}
+
 // OnDeviceSpeechRecognitionImpl is the real observer, and settles the reply
 // parked by SpeechRecognition.install() from exactly these notifications.
 class MockSodaObserver : public SodaInstaller::Observer {
@@ -60,8 +68,9 @@ class MockSodaObserver : public SodaInstaller::Observer {
 class BraveSodaInstallerUnitTest : public testing::Test {
  public:
   BraveSodaInstallerUnitTest() {
-    feature_list_.InitAndEnableFeature(
-        local_ai::kBraveOnDeviceSpeechRecognition);
+    feature_list_.InitWithFeatures({local_ai::kBraveOnDeviceSpeechRecognition,
+                                    local_ai::kBraveOnDeviceSpeechMultilingual},
+                                   {});
   }
 
   // Starts the registrar the way startup does, so every test runs with one.
@@ -157,12 +166,24 @@ class BraveSodaInstallerUnitTest : public testing::Test {
 
 // The list `IsLanguageInstallable` gates `install()` on, and that
 // `InstallLanguage` refuses anything outside.
-TEST_F(BraveSodaInstallerUnitTest, OffersEnglishOnly) {
+TEST_F(BraveSodaInstallerUnitTest, OffersSupportedLanguages) {
   CreateInstaller();
+  const std::vector<std::string> languages =
+      installer_->GetLiveCaptionEnabledLanguages();
+  EXPECT_EQ(GetBraveOnDeviceSpeechLocales().size(), languages.size());
+  // Both models, and locales with SODA's and with Brave's own codes.
+  EXPECT_THAT(languages, testing::IsSupersetOf({"en-US", "de-DE", "uk-UA"}));
+  EXPECT_EQ(languages, installer_->GetAvailableLanguages());
+}
+
+TEST_F(BraveSodaInstallerUnitTest,
+       OffersEnglishOnlyWithMultilingualFeatureOff) {
+  base::test::ScopedFeatureList disabled;
+  disabled.InitAndDisableFeature(local_ai::kBraveOnDeviceSpeechMultilingual);
+  CreateInstaller();
+
   EXPECT_THAT(installer_->GetLiveCaptionEnabledLanguages(),
-              testing::ElementsAre(GetLanguageName(LanguageCode::kEnUs)));
-  EXPECT_EQ(installer_->GetLiveCaptionEnabledLanguages(),
-            installer_->GetAvailableLanguages());
+              testing::ElementsAre("en-US"));
 }
 
 TEST_F(BraveSodaInstallerUnitTest, OffersNothingWithLocalAIOff) {
@@ -190,15 +211,19 @@ TEST_F(BraveSodaInstallerUnitTest, ModelArrivingReportsInstalled) {
   InstallModel();
 
   EXPECT_TRUE(installer_->IsSodaInstalled(LanguageCode::kEnUs));
+  EXPECT_FALSE(installer_->IsSodaInstalled(LanguageCode::kUkUa));
 }
 
-// Only the English model serves a language for now, so the multilingual
-// model installs none.
-TEST_F(BraveSodaInstallerUnitTest, MultilingualModelInstallsNoLanguage) {
+// The multilingual model reports each of its locales, so that `install()`
+// settles a reply for any of them.
+TEST_F(BraveSodaInstallerUnitTest,
+       MultilingualModelArrivingReportsItsLocalesInstalled) {
   CreateInstaller();
+  EXPECT_CALL(observer_, OnSodaInstalled).Times(MultilingualLocaleCount());
 
   InstallModel(kMultilingual);
 
+  EXPECT_TRUE(installer_->IsSodaInstalled(LanguageCode::kUkUa));
   EXPECT_FALSE(installer_->IsSodaInstalled(LanguageCode::kEnUs));
 }
 
@@ -212,6 +237,29 @@ TEST_F(BraveSodaInstallerUnitTest, ModelRemovalClearsInstalled) {
   EXPECT_FALSE(installer_->IsSodaInstalled(LanguageCode::kEnUs));
 }
 
+// Each model installs and removes only its own locales. Removing one model
+// leaves the locales of the other installed.
+TEST_F(BraveSodaInstallerUnitTest, EachModelInstallsOnlyItsOwnLocales) {
+  CreateInstaller();
+  EXPECT_CALL(observer_, OnSodaInstalled(LanguageCode::kEnUs));
+  InstallModel(kEnglish);
+  testing::Mock::VerifyAndClearExpectations(&observer_);
+
+  // Only the multilingual locales are reported. en-US is not reported again.
+  EXPECT_CALL(observer_, OnSodaInstalled(testing::Ne(LanguageCode::kEnUs)))
+      .Times(MultilingualLocaleCount());
+  InstallModel(kMultilingual);
+  EXPECT_TRUE(installer_->IsSodaInstalled(LanguageCode::kEnUs));
+  EXPECT_TRUE(installer_->IsSodaInstalled(LanguageCode::kUkUa));
+
+  RemoveModel(kEnglish);
+  EXPECT_FALSE(installer_->IsSodaInstalled(LanguageCode::kEnUs));
+  EXPECT_TRUE(installer_->IsSodaInstalled(LanguageCode::kUkUa));
+
+  RemoveModel(kMultilingual);
+  EXPECT_FALSE(installer_->IsSodaInstalled(LanguageCode::kUkUa));
+}
+
 // `InstallLanguage` must not start a registration for a language Brave does
 // not serve. To see whether it did, the test waits on a request of its own,
 // which joins any registration still pending. That registration ends without
@@ -220,7 +268,7 @@ TEST_F(BraveSodaInstallerUnitTest, ModelRemovalClearsInstalled) {
 // and the test fails.
 TEST_F(BraveSodaInstallerUnitTest, InstallLanguageIgnoresOtherLanguages) {
   CreateInstaller();
-  installer_->InstallLanguage("fr-FR", local_state());
+  installer_->InstallLanguage("th-TH", local_state());
 
   AnswerDownloadWith(update_client::Error::UPDATE_CHECK_ERROR);
   base::test::TestFuture<bool> answered;
@@ -265,6 +313,22 @@ TEST_F(BraveSodaInstallerUnitTest, InstallLanguageWithoutAModelReportsAnError) {
       .WillOnce([&] { reported.SetValue(); });
 
   installer_->InstallLanguage("en-US", local_state());
+
+  EXPECT_TRUE(reported.Wait());
+}
+
+// With only the English model on disk, a multilingual locale still asks for
+// its own model. The error names the locale that `install()` waits on.
+TEST_F(BraveSodaInstallerUnitTest, InstallLanguageAsksForTheModelItNeeds) {
+  InstallModel(kEnglish);
+  CreateInstaller();
+  base::test::TestFuture<void> reported;
+  EXPECT_CALL(observer_,
+              OnSodaInstallError(LanguageCode::kUkUa,
+                                 SodaInstaller::ErrorCode::kUnspecifiedError))
+      .WillOnce([&] { reported.SetValue(); });
+
+  installer_->InstallLanguage("uk-UA", local_state());
 
   EXPECT_TRUE(reported.Wait());
 }

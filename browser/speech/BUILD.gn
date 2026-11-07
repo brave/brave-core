@@ -52,7 +52,6 @@ source_set("chromium_impl") {
 
     deps += [
       ":speech",
-      "//base/i18n:language_tag",
       "//brave/components/local_ai/core",
       "//chrome/browser:browser_process",
       "//chrome/browser/profiles:profile",
