@@ -53,6 +53,7 @@ void RegisterBraveProfilePrefs(PrefRegistrySimple* registry) {
 
   registry->RegisterBooleanPref(kAlwaysHideTabCloseButton, false);
   registry->RegisterBooleanPref(kMiddleClickCloseTabEnabled, true);
+  registry->RegisterBooleanPref(kDoubleClickCloseTabEnabled, false);
   registry->RegisterIntegerPref(kTabMinWidthMode,
                                 static_cast<int>(TabMinWidthMode::kMinimum));
   registry->RegisterBooleanPref(kScrollableHorizontalTabStrip, false);
