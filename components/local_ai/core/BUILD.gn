@@ -57,6 +57,7 @@ static_library("core") {
   public = [
     "background_web_contents.h",
     "local_models_updater.h",
+    "on_device_speech_locales.h",
     "on_device_speech_models_component_installer.h",
     "on_device_speech_models_state.h",
     "pref_names.h",
@@ -68,6 +69,8 @@ static_library("core") {
     "background_web_contents.h",
     "local_models_updater.cc",
     "local_models_updater.h",
+    "on_device_speech_locales.cc",
+    "on_device_speech_locales.h",
     "on_device_speech_models_component_installer.cc",
     "on_device_speech_models_component_installer.h",
     "on_device_speech_models_state.cc",
@@ -85,6 +88,7 @@ static_library("core") {
   ]
 
   deps = [
+    "//base/i18n:language_tag",
     "//brave/components/brave_component_updater/browser:public",
     "//brave/components/resources:strings_grit",
     "//components/component_updater",
@@ -101,6 +105,7 @@ source_set("unit_tests") {
   testonly = true
   sources = [
     "local_models_updater_unittest.cc",
+    "on_device_speech_locales_unittest.cc",
     "on_device_speech_models_component_installer_unittest.cc",
     "on_device_speech_models_state_unittest.cc",
   ]
