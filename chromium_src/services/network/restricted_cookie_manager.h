@@ -26,8 +26,19 @@
       const CookieSettings& cookie_settings) const;             \
   void RemoveChangeListener
 
+#define GetCookiesString                                                     \
+  GetCookiesString_ChromiumImpl(                                             \
+      const GURL& url, const net::SiteForCookies& site_for_cookies,          \
+      const url::Origin& top_frame_origin,                                   \
+      net::StorageAccessApiStatus storage_access_api_status,                 \
+      bool get_version_shared_memory, bool is_ad_tagged,                     \
+      bool apply_devtools_overrides, bool force_disable_third_party_cookies, \
+      GetCookiesStringCallback callback);                                    \
+  void GetCookiesString
+
 #include <services/network/restricted_cookie_manager.h>  // IWYU pragma: export
 
+#undef GetCookiesString
 #undef RemoveChangeListener
 
 #endif  // BRAVE_CHROMIUM_SRC_SERVICES_NETWORK_RESTRICTED_COOKIE_MANAGER_H_
