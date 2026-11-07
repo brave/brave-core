@@ -9,12 +9,20 @@
 #include <variant>
 
 #include "base/test/test_future.h"
+#include "brave/components/local_ai/core/on_device_speech_models_state.h"
 #include "brave/components/local_ai/core/pref_names.h"
+#include "brave/components/local_ai/core/utils.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
 namespace speech {
+
+namespace {
+
+using local_ai::OnDeviceSpeechModel;
+
+}  // namespace
 
 class OnDeviceSpeechModelPermissionRequestUnitTest : public testing::Test {
  public:
@@ -24,15 +32,16 @@ class OnDeviceSpeechModelPermissionRequestUnitTest : public testing::Test {
   }
 
  protected:
-  std::unique_ptr<OnDeviceSpeechModelPermissionRequest> CreateRequest() {
+  std::unique_ptr<permissions::PermissionRequest> CreateRequest(
+      OnDeviceSpeechModel model = OnDeviceSpeechModel::kEnglish,
+      const GURL& origin = GURL("https://example.com")) {
     return std::make_unique<OnDeviceSpeechModelPermissionRequest>(
-        local_state_, profile_prefs_, GURL("https://example.com"),
-        allowed_.GetCallback());
+        model, local_state_, profile_prefs_, origin, allowed_.GetCallback());
   }
 
-  bool IsEnabled() {
+  bool IsEnabled(OnDeviceSpeechModel model) {
     return local_state_.GetBoolean(
-        local_ai::prefs::kOnDeviceSpeechEnglishModelEnabled);
+        local_ai::GetOnDeviceSpeechModelEnabledPref(model));
   }
 
   bool IsAskEnabled() {
@@ -51,7 +60,46 @@ TEST_F(OnDeviceSpeechModelPermissionRequestUnitTest, AllowEnablesTheModel) {
 
   ASSERT_TRUE(allowed_.IsReady());
   EXPECT_TRUE(allowed_.Get());
-  EXPECT_TRUE(IsEnabled());
+  EXPECT_TRUE(IsEnabled(OnDeviceSpeechModel::kEnglish));
+}
+
+TEST_F(OnDeviceSpeechModelPermissionRequestUnitTest,
+       AllowEnablesOnlyTheModelAskedFor) {
+  auto request = CreateRequest(OnDeviceSpeechModel::kMultilingual);
+  request->PermissionGranted(std::monostate(), /*is_one_time=*/false);
+
+  ASSERT_TRUE(allowed_.IsReady());
+  EXPECT_TRUE(allowed_.Get());
+  EXPECT_TRUE(IsEnabled(OnDeviceSpeechModel::kMultilingual));
+  EXPECT_FALSE(IsEnabled(OnDeviceSpeechModel::kEnglish));
+}
+
+// The prompt names the model it asks for, with that model's size.
+TEST_F(OnDeviceSpeechModelPermissionRequestUnitTest,
+       MessageNamesTheModelAndItsSize) {
+  EXPECT_EQ(
+      u"Download a speech recognition model (636 MB) to process speech on "
+      u"this device",
+      CreateRequest()->GetMessageTextFragment());
+  EXPECT_EQ(
+      u"Download a multilingual speech recognition model (697 MB) to process "
+      u"speech on this device",
+      CreateRequest(OnDeviceSpeechModel::kMultilingual)
+          ->GetMessageTextFragment());
+}
+
+// Only a request for the same model from the same origin is a duplicate. A
+// duplicate joins the open prompt and gets its answer.
+TEST_F(OnDeviceSpeechModelPermissionRequestUnitTest,
+       DuplicateOnlyForTheSameModelAndOrigin) {
+  auto english = CreateRequest();
+
+  EXPECT_TRUE(english->IsDuplicateOf(CreateRequest().get()));
+  EXPECT_FALSE(english->IsDuplicateOf(
+      CreateRequest(OnDeviceSpeechModel::kMultilingual).get()));
+  EXPECT_FALSE(english->IsDuplicateOf(
+      CreateRequest(OnDeviceSpeechModel::kEnglish, GURL("https://other.com"))
+          .get()));
 }
 
 // "Don't ask again" is kept only on a block.
@@ -62,7 +110,7 @@ TEST_F(OnDeviceSpeechModelPermissionRequestUnitTest, DenyWithDontAskAgain) {
 
   ASSERT_TRUE(allowed_.IsReady());
   EXPECT_FALSE(allowed_.Get());
-  EXPECT_FALSE(IsEnabled());
+  EXPECT_FALSE(IsEnabled(OnDeviceSpeechModel::kEnglish));
   EXPECT_FALSE(IsAskEnabled());
 }
 
@@ -74,7 +122,7 @@ TEST_F(OnDeviceSpeechModelPermissionRequestUnitTest,
 
   ASSERT_TRUE(allowed_.IsReady());
   EXPECT_FALSE(allowed_.Get());
-  EXPECT_FALSE(IsEnabled());
+  EXPECT_FALSE(IsEnabled(OnDeviceSpeechModel::kEnglish));
   EXPECT_TRUE(IsAskEnabled());
 }
 
@@ -86,7 +134,7 @@ TEST_F(OnDeviceSpeechModelPermissionRequestUnitTest, DismissSavesNothing) {
 
   ASSERT_TRUE(allowed_.IsReady());
   EXPECT_FALSE(allowed_.Get());
-  EXPECT_FALSE(IsEnabled());
+  EXPECT_FALSE(IsEnabled(OnDeviceSpeechModel::kEnglish));
   EXPECT_TRUE(IsAskEnabled());
 }
 
