@@ -2,7 +2,7 @@ Name: zcash_client_backend
 URL: https://crates.io/crates/zcash_client_backend
 Version: 0.24.0-rc.1
 License: Apache-2.0
-License File:
+License File: //brave/components/brave_wallet/browser/zcash/rust/librustzcash/src/zcash_client_backend/LICENSE-APACHE
 Shipped: yes
 Security Critical: yes
 

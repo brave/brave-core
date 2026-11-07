@@ -1,0 +1,36 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Read a local crate's license files where the crate is.
+
+      Brave takes crates from Chromium's vendor dir, and its own crates from
+      the Brave tree, as path dependencies, which `gnrt vendor` leaves out of
+      Brave's vendor dir. For these, `license_files` in `gnrt_config.toml` are
+      relative to the crate's own dir.
+    regex:
+      pattern: >-
+        let crate_vendor_dir = get_vendor_dir_for_package(paths, package.name(),
+        package.version());
+      replace: |-
+        let crate_vendor_dir = if package.source().is_local() {
+                let manifest_dir = package.manifest_path().parent().context("No crate dir")?;
+                manifest_dir.canonicalize()?.strip_prefix(paths.root.canonicalize()?)?.to_path_buf()
+            } else {
+                get_vendor_dir_for_package(paths, package.name(), package.version())
+            };
+
+  - description: "Add the licenses Brave's crates use to `LicenseKind`."
+    regex:
+      re_pattern: '(enum LicenseKind \{\n.*?\n)(\}\n)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1    #[strum(serialize = "Unicode-DFS-2016")]
+            UnicodeDfs2016,
+
+            #[strum(serialize = "BSD-2-Clause")]
+            BSD2,
+        \2
