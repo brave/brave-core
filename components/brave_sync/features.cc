@@ -8,7 +8,11 @@
 namespace brave_sync::features {
 
 BASE_FEATURE(kBraveSync, base::FEATURE_ENABLED_BY_DEFAULT);
-BASE_FEATURE(kBraveSyncDefaultPasswords,
-             base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveSyncDefaultPasswords, base::FEATURE_ENABLED_BY_DEFAULT);
+// Android only: sync passwords via the profile store (like desktop) instead of
+// the account store, migrating existing account-store passwords to the profile
+// store on startup. Staged rollout; not cleanly reversible once migrated.
+BASE_FEATURE(kBraveAndroidSyncPasswordsInProfileStore,
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace brave_sync::features
