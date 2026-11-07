@@ -6,7 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_ACCOUNT_BRAVE_ACCOUNT_SETTINGS_OPENER_ANDROID_H_
 #define BRAVE_BROWSER_UI_BRAVE_ACCOUNT_BRAVE_ACCOUNT_SETTINGS_OPENER_ANDROID_H_
 
-#include "brave/components/brave_account/mojom/brave_account.mojom.h"
+#include "brave/components/brave_account/mojom/brave_account.mojom-forward.h"
 
 namespace content {
 class WebContents;
@@ -14,6 +14,9 @@ class WebContents;
 
 namespace brave_account {
 
+// Opens the native settings screen for `page` and, if it opened, closes
+// `web_contents`, the page that linked to it. Does nothing if `web_contents`
+// has no window or activity, or if `page` isn't handled.
 void OpenSettingsPage(content::WebContents& web_contents,
                       mojom::SettingsPage page);
 
