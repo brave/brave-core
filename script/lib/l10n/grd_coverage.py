@@ -63,6 +63,9 @@ ALLOWLIST = {
     'chrome/browser/indigo/resources/indigo_strings.grd': (
         'Names Google as the content generator'
     ),
+    'ui/accessibility/extensions/strings/accessibility_extensions_strings.grd': (
+        'Standalone accessibility extensions for the web store, not bundled'
+    ),
 }
 
 
