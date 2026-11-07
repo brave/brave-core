@@ -45,8 +45,47 @@
   <message name="IDS_BRAVE_RECAP_DATA_TEXT_SHORT" desc="Explanation of data saved when it is less than one hour of video" formatter_data="webui=BraveRecap">
     Bandwidth you didn't spend downloading ads and trackers.
   </message>
+  <message name="IDS_BRAVE_RECAP_SHARE_HEADING" desc="Heading of the share slide" formatter_data="webui=BraveRecap">
+    Share your Brave Recap
+  </message>
+  <message name="IDS_BRAVE_RECAP_SHARE_TEXT" desc="Text on the share slide" formatter_data="webui=BraveRecap">
+    Show your friends what Brave blocked for you. Copy the image, then paste it into your post.
+  </message>
   <message name="IDS_BRAVE_RECAP_PRIVACY_NOTE" desc="Note on the first and last slides that the stats are stored only on the device and Brave never receives them" formatter_data="webui=BraveRecap">
     Brave never sees your browsing. These rough counts stay on your device.
+  </message>
+  <message name="IDS_BRAVE_RECAP_COPY_IMAGE" desc="Button to copy the share image" formatter_data="webui=BraveRecap">
+    Copy image
+  </message>
+  <message name="IDS_BRAVE_RECAP_COPIED" desc="Confirmation after copying" formatter_data="webui=BraveRecap">
+    Copied
+  </message>
+  <message name="IDS_BRAVE_RECAP_DOWNLOAD" desc="Button to download the share image" formatter_data="webui=BraveRecap">
+    Download
+  </message>
+  <message name="IDS_BRAVE_RECAP_POST_ON_X" desc="Button to share on X" formatter_data="webui=BraveRecap">
+    Post on X
+  </message>
+  <message name="IDS_BRAVE_RECAP_POST_ON_REDDIT" desc="Button to share on Reddit" formatter_data="webui=BraveRecap">
+    Post on Reddit
+  </message>
+  <message name="IDS_BRAVE_RECAP_COPY_LINK" desc="Button to copy the share text and link" formatter_data="webui=BraveRecap">
+    Copy text
+  </message>
+  <message name="IDS_BRAVE_RECAP_SHARE_POST_TEXT" desc="Prefilled social post. $1 is a count of ads and trackers, $2 a duration, $3 an amount of data." formatter_data="webui=BraveRecap">
+    Brave has blocked <ph name="BLOCKED">$1<ex>184,213</ex></ph> ads and trackers for me, saving <ph name="TIME_SAVED">$2<ex>2.14 days</ex></ph> and <ph name="DATA_SAVED">$3<ex>6.9 GB</ex></ph> of data. Try it:
+  </message>
+  <message name="IDS_BRAVE_RECAP_SHARE_POST_TITLE" desc="Prefilled Reddit post title. $1 is a count of ads and trackers." formatter_data="webui=BraveRecap">
+    Brave has blocked <ph name="BLOCKED">$1<ex>184,213</ex></ph> ads and trackers for me
+  </message>
+  <message name="IDS_BRAVE_RECAP_CARD_TITLE" desc="Title on the share image" formatter_data="webui=BraveRecap">
+    My Brave Recap
+  </message>
+  <message name="IDS_BRAVE_RECAP_CARD_SINCE" desc="Subtitle on the share image. $1 is a month and year." formatter_data="webui=BraveRecap">
+    Since <ph name="MONTH_YEAR">$1<ex>October 2024</ex></ph>
+  </message>
+  <message name="IDS_BRAVE_RECAP_CARD_CTA" desc="Call to action at the bottom of the share image" formatter_data="webui=BraveRecap">
+    Get Brave at brave.com
   </message>
   <message name="IDS_BRAVE_RECAP_NEXT" desc="Button to go to the next slide" formatter_data="webui=BraveRecap">
     Next

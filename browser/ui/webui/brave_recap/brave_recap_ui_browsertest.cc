@@ -42,6 +42,31 @@ constexpr char kGetHeading[] = R"(
   })
 )";
 
+// Jumps to the share slide and resolves once the card preview has rendered.
+constexpr char kWaitForShareCard[] = R"(
+  new Promise((resolve) => {
+    for (let i = 0; i < 10; i++) {
+      window.dispatchEvent(new KeyboardEvent('keydown', {key: 'ArrowRight'}))
+    }
+    const rendered = () => {
+      const img = document.querySelector('.card-preview img')
+      return img && img.src.startsWith('blob:')
+    }
+    if (rendered()) {
+      resolve(true)
+      return
+    }
+    const observer = new MutationObserver(() => {
+      if (rendered()) {
+        observer.disconnect()
+        resolve(true)
+      }
+    })
+    observer.observe(document.body,
+                     {childList: true, subtree: true, attributes: true})
+  })
+)";
+
 }  // namespace
 
 class BraveRecapUIBrowserTest : public InProcessBrowserTest {
@@ -89,6 +114,34 @@ IN_PROC_BROWSER_TEST_F(BraveRecapUIBrowserTest, ShowsEmptyStateWithoutStats) {
   EXPECT_EQ("0", GetLoadTimeString("adsBlocked"));
   EXPECT_EQ("Nothing to recap yet",
             content::EvalJs(web_contents(), kGetHeading));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveRecapUIBrowserTest, RendersShareCard) {
+  GetProfile()->GetPrefs()->SetUint64(brave_shields::prefs::kAdsBlocked, 1000);
+  NavigateToRecap();
+  EXPECT_EQ(true, content::EvalJs(web_contents(), kWaitForShareCard));
+}
+
+// A cross-origin logo would taint the canvas and break exporting the card.
+IN_PROC_BROWSER_TEST_F(BraveRecapUIBrowserTest, LogoDoesNotTaintCanvas) {
+  NavigateToRecap();
+  EXPECT_EQ(true, content::EvalJs(web_contents(), R"(
+    new Promise((resolve) => {
+      const img = new Image()
+      img.onload = () => {
+        const canvas = document.createElement('canvas')
+        canvas.getContext('2d').drawImage(img, 0, 0)
+        try {
+          canvas.toDataURL()
+          resolve(true)
+        } catch (e) {
+          resolve(e.name)
+        }
+      }
+      img.onerror = () => resolve('load failed')
+      img.src = '/brave-icon.svg'
+    })
+  )"));
 }
 
 class BraveRecapUIDisabledBrowserTest : public InProcessBrowserTest {
