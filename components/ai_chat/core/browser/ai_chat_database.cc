@@ -83,6 +83,29 @@ void BindOptionalString(sql::Statement& statement,
   }
 }
 
+// Binds a modified_time column, keeping NULL as the only stored form of an
+// unknown time.
+void BindModifiedTime(sql::Statement& statement, int index, base::Time time) {
+  if (time.is_null()) {
+    statement.BindNull(index);
+  } else {
+    statement.BindTime(index, time);
+  }
+}
+
+// Reads the result of a query for one row's modified_time. Returns nullopt
+// when the query fails, and the null time when there is no such row.
+std::optional<base::Time> ReadModifiedTime(sql::Statement& statement) {
+  if (!statement.Step()) {
+    if (!statement.Succeeded()) {
+      return std::nullopt;
+    }
+    return base::Time();
+  }
+  // A NULL column reads as 0, which is the null time.
+  return statement.ColumnTime(0);
+}
+
 bool MigrateFrom1To2(sql::Database* db) {
   // Add a new column to the associated_content table to store the content type.
   static constexpr char kAddPromptColumnQuery[] =
@@ -236,6 +259,19 @@ bool MigrateFrom12to13(sql::Database* db) {
   return statement.is_valid() && statement.Run();
 }
 
+// Existing rows keep a NULL modified_time, which reads as unknown: sync treats
+// those as older than any copy that has a time.
+bool MigrateFrom13to14(sql::Database* db) {
+  for (const char* table : {"conversation", "conversation_entry"}) {
+    sql::Statement statement(db->GetUniqueStatement(absl::StrFormat(
+        "ALTER TABLE %s ADD COLUMN modified_time INTEGER", table)));
+    if (!statement.is_valid() || !statement.Run()) {
+      return false;
+    }
+  }
+  return true;
+}
+
 // Key in sql::MetaTable for the serialized DataTypeState.
 const char kAIChatDataTypeStateKey[] = "ai_chat_data_type_state";
 
@@ -251,7 +287,7 @@ constexpr int kLowestSupportedDatabaseVersion = 1;
 constexpr int kCompatibleDatabaseVersionNumber = 7;
 
 // Current version of the database. Increase if breaking changes are made.
-constexpr int kCurrentDatabaseVersion = 13;
+constexpr int kCurrentDatabaseVersion = 14;
 
 AIChatDatabase::AIChatDatabase(
     const base::FilePath& db_file_path,
@@ -424,6 +460,15 @@ sql::InitStatus AIChatDatabase::InitInternal() {
       }
       current_version = 13;
     }
+    if (migration_success && current_version == 13) {
+      migration_success = MigrateFrom13to14(&GetDB());
+      if (migration_success) {
+        migration_success = meta_table.SetCompatibleVersionNumber(
+                                kCompatibleDatabaseVersionNumber) &&
+                            meta_table.SetVersionNumber(14);
+      }
+      current_version = 14;
+    }
     // Migration unsuccessful, raze the database and re-init
     if (!migration_success) {
       transaction.Rollback();
@@ -580,6 +625,36 @@ std::optional<std::string> AIChatDatabase::GetConversationUuidForEntry(
     return std::nullopt;
   }
   return statement.ColumnString(0);
+}
+
+std::optional<base::Time> AIChatDatabase::GetConversationModifiedTime(
+    std::string_view conversation_uuid) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return std::nullopt;
+  }
+
+  static constexpr char kQuery[] =
+      "SELECT modified_time FROM conversation WHERE uuid=?";
+  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE, kQuery));
+  CHECK(statement.is_valid());
+  statement.BindString(0, conversation_uuid);
+  return ReadModifiedTime(statement);
+}
+
+std::optional<base::Time> AIChatDatabase::GetEntryModifiedTime(
+    std::string_view conversation_entry_uuid) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return std::nullopt;
+  }
+
+  static constexpr char kQuery[] =
+      "SELECT modified_time FROM conversation_entry WHERE uuid=?";
+  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE, kQuery));
+  CHECK(statement.is_valid());
+  statement.BindString(0, conversation_entry_uuid);
+  return ReadModifiedTime(statement);
 }
 
 std::vector<mojom::ConversationTurnPtr>
@@ -933,8 +1008,8 @@ bool AIChatDatabase::AddConversation(mojom::ConversationPtr conversation,
 
   static constexpr char kInsertConversationQuery[] =
       "INSERT INTO conversation(uuid, title, model_key, total_tokens, "
-      "trimmed_tokens) "
-      "VALUES(?, ?, ?, ?, ?)";
+      "trimmed_tokens, modified_time) "
+      "VALUES(?, ?, ?, ?, ?, ?)";
   sql::Statement statement(
       GetDB().GetUniqueStatement(kInsertConversationQuery));
   CHECK(statement.is_valid());
@@ -945,6 +1020,7 @@ bool AIChatDatabase::AddConversation(mojom::ConversationPtr conversation,
   BindOptionalString(statement, 2, conversation->model_key);
   statement.BindInt64(3, conversation->total_tokens);
   statement.BindInt64(4, conversation->trimmed_tokens);
+  statement.BindTime(5, base::Time::Now());
 
   if (!statement.Run()) {
     DVLOG(0) << "Failed to execute 'conversation' insert statement: "
@@ -1021,6 +1097,7 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
     existing_ids_set = existing_ids;
   }
 
+  const base::Time now = base::Time::Now();
   for (size_t i = 0; i < associated_content.size(); ++i) {
     auto& content = associated_content[i];
 
@@ -1035,6 +1112,12 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
 
     sql::Statement insert_or_update_statement;
     bool exists = existing_ids_set.contains(content->uuid);
+    // Each new entry saves every content of the conversation again, mostly
+    // unchanged, so only a change moves the modified time of the entry that
+    // the content belongs to.
+    const bool changed =
+        !exists ||
+        IsAssociatedContentChanged(conversation_uuid, *content, content_text);
     if (exists) {
       DVLOG(4) << "Updating associated content for conversation "
                << conversation_uuid << " with id " << content->uuid;
@@ -1089,6 +1172,12 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
       transaction.Rollback();
       return false;
     }
+
+    if (changed &&
+        !SetEntryModifiedTime(*content->conversation_turn_uuid, now)) {
+      transaction.Rollback();
+      return false;
+    }
   }
 
   if (!transaction.Commit()) {
@@ -1098,6 +1187,36 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
   }
 
   return true;
+}
+
+bool AIChatDatabase::IsAssociatedContentChanged(
+    std::string_view conversation_uuid,
+    const mojom::AssociatedContent& content,
+    std::string_view content_text) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  static constexpr char kQuery[] =
+      "SELECT content_type, content_used_percentage, conversation_entry_uuid,"
+      " title, url, last_contents"
+      " FROM associated_content WHERE uuid=? AND conversation_uuid=?";
+  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE, kQuery));
+  CHECK(statement.is_valid());
+  statement.BindString(0, content.uuid);
+  statement.BindString(1, conversation_uuid);
+  if (!statement.Step()) {
+    return true;
+  }
+  // Empty strings are stored as NULL. The page text is compared last as it's
+  // the largest.
+  return statement.ColumnInt(0) != std::to_underlying(content.content_type) ||
+         statement.ColumnInt(1) != content.content_used_percentage ||
+         statement.ColumnString(2) !=
+             content.conversation_turn_uuid.value_or("") ||
+         DecryptOptionalColumnToString(statement, 3).value_or("") !=
+             content.title ||
+         DecryptOptionalColumnToString(statement, 4).value_or("") !=
+             content.url.spec() ||
+         DecryptOptionalColumnToString(statement, 5).value_or("") !=
+             content_text;
 }
 
 bool AIChatDatabase::AddConversationEntry(
@@ -1204,6 +1323,11 @@ bool AIChatDatabase::AddConversationEntry(
   if (!insert_conversation_entry_statement.Run()) {
     DVLOG(0) << "Failed to execute 'conversation_entry' insert statement: "
              << db_.GetErrorMessage();
+    return false;
+  }
+
+  // For an edit, this moves the time of the entry being edited.
+  if (!SetEntryModifiedTime(entry->uuid.value(), base::Time::Now())) {
     return false;
   }
 
@@ -1450,6 +1574,12 @@ bool AIChatDatabase::UpdateToolUseEvent(std::string_view entry_uuid,
     return false;
   }
 
+  sql::Transaction transaction(&GetDB());
+  if (!transaction.Begin()) {
+    DVLOG(0) << "Transaction cannot begin";
+    return false;
+  }
+
   static constexpr char kUpdateToolUseEventQuery[] =
       "UPDATE conversation_entry_event_tool_use"
       " SET tool_use_serialized=?"
@@ -1472,7 +1602,14 @@ bool AIChatDatabase::UpdateToolUseEvent(std::string_view entry_uuid,
   }
   statement.BindString(1, entry_uuid);
   statement.BindInt(2, static_cast<int>(event_order));
-  return statement.Run();
+  if (!statement.Run()) {
+    return false;
+  }
+  if (GetDB().GetLastChangeCount() > 0 &&
+      !SetEntryModifiedTime(entry_uuid, base::Time::Now())) {
+    return false;
+  }
+  return transaction.Commit();
 }
 
 bool AIChatDatabase::UpdateConversationTitle(std::string_view conversation_uuid,
@@ -1485,7 +1622,7 @@ bool AIChatDatabase::UpdateConversationTitle(std::string_view conversation_uuid,
   }
 
   static constexpr char kUpdateConversationTitleQuery[] =
-      "UPDATE conversation SET title=? WHERE uuid=?";
+      "UPDATE conversation SET title=?, modified_time=? WHERE uuid=?";
   sql::Statement statement(
       GetDB().GetCachedStatement(SQL_FROM_HERE, kUpdateConversationTitleQuery));
   CHECK(statement.is_valid());
@@ -1493,7 +1630,8 @@ bool AIChatDatabase::UpdateConversationTitle(std::string_view conversation_uuid,
   if (!BindAndEncryptString(statement, 0, title)) {
     return false;
   }
-  statement.BindString(1, conversation_uuid);
+  statement.BindTime(1, base::Time::Now());
+  statement.BindString(2, conversation_uuid);
 
   return statement.Run();
 }
@@ -1508,14 +1646,19 @@ bool AIChatDatabase::UpdateConversationModelKey(
     return false;
   }
 
-  static constexpr char kUpdateConversationTitleQuery[] =
-      "UPDATE conversation SET model_key=? WHERE uuid=?";
-  sql::Statement statement(
-      GetDB().GetCachedStatement(SQL_FROM_HERE, kUpdateConversationTitleQuery));
+  // Called for every new entry, mostly with an unchanged model, so only a
+  // change is written and moves the modified time.
+  static constexpr char kUpdateConversationModelKeyQuery[] =
+      "UPDATE conversation SET model_key=?, modified_time=?"
+      " WHERE uuid=? AND model_key IS NOT ?";
+  sql::Statement statement(GetDB().GetCachedStatement(
+      SQL_FROM_HERE, kUpdateConversationModelKeyQuery));
   CHECK(statement.is_valid());
 
   BindOptionalString(statement, 0, model_key);
-  statement.BindString(1, conversation_uuid);
+  statement.BindTime(1, base::Time::Now());
+  statement.BindString(2, conversation_uuid);
+  BindOptionalString(statement, 3, model_key);
 
   return statement.Run();
 }
@@ -1779,6 +1922,12 @@ AIChatDatabase::DeleteAssociatedWebContent(std::optional<base::Time> begin_time,
            << begin_time.value_or(base::Time()) << " to "
            << end_time.value_or(base::Time::Max());
 
+  sql::Transaction transaction(&GetDB());
+  if (!transaction.Begin()) {
+    DVLOG(0) << "Transaction cannot begin";
+    return std::nullopt;
+  }
+
   // Collect the entries whose associated content is about to be cleared (only
   // rows that actually still hold content), so the caller can propagate the
   // change. This must run before the UPDATE below.
@@ -1822,6 +1971,19 @@ AIChatDatabase::DeleteAssociatedWebContent(std::optional<base::Time> begin_time,
   if (!statement.Run()) {
     DVLOG(0) << "Failed to execute 'associated_content' update statement for "
                 "DeleteAssociatedWebContent: "
+             << db_.GetErrorMessage();
+    return std::nullopt;
+  }
+
+  const base::Time now = base::Time::Now();
+  for (const auto& entry : cleared) {
+    if (!SetEntryModifiedTime(entry.entry_uuid, now)) {
+      return std::nullopt;
+    }
+  }
+
+  if (!transaction.Commit()) {
+    DVLOG(0) << "Transaction commit failed with reason: "
              << db_.GetErrorMessage();
     return std::nullopt;
   }
@@ -1904,7 +2066,10 @@ bool AIChatDatabase::CreateSchema() {
       "trimmed_tokens INTEGER NOT NULL,"
       // Set while the row only holds synced entries whose conversation
       // metadata record hasn't arrived. GetAllConversations() skips these.
-      "is_sync_stub INTEGER NOT NULL DEFAULT 0)";
+      "is_sync_stub INTEGER NOT NULL DEFAULT 0,"
+      // When the title or model last changed, on whichever device changed it.
+      // NULL when unknown. See GetConversationModifiedTime().
+      "modified_time INTEGER)";
   CHECK(GetDB().IsSQLValid(kCreateConversationTableQuery));
   if (!GetDB().Execute(kCreateConversationTableQuery)) {
     return false;
@@ -1979,7 +2144,11 @@ bool AIChatDatabase::CreateSchema() {
       // Encrypted skill data
       // Note: Column name kept as 'smart_mode_data' for backward compatibility
       "smart_mode_data BLOB,"
-      "is_near_verified INTEGER)";
+      "is_near_verified INTEGER,"
+      // When this entry or one of its edits last changed, on whichever device
+      // changed it. NULL when unknown, and on edit rows. See
+      // GetEntryModifiedTime().
+      "modified_time INTEGER)";
   // TODO(petemill): Forking can be achieved by associating each
   // ConversationEntry with a parent ConversationEntry.
   // TODO(petemill): Store a model name with each entry to know when
@@ -2094,7 +2263,8 @@ bool AIChatDatabase::CreateSchema() {
 }
 
 bool AIChatDatabase::ApplyRemoteConversationMetadata(
-    mojom::ConversationPtr conversation) {
+    mojom::ConversationPtr conversation,
+    base::Time modified_time) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(conversation);
   CHECK(!conversation->uuid.empty());
@@ -2110,11 +2280,11 @@ bool AIChatDatabase::ApplyRemoteConversationMetadata(
   // created ahead of this record.
   static constexpr char kUpdateConversationQuery[] =
       "UPDATE conversation SET title=?, model_key=?, total_tokens=?,"
-      " trimmed_tokens=?, is_sync_stub=0 WHERE uuid=?";
+      " trimmed_tokens=?, modified_time=?, is_sync_stub=0 WHERE uuid=?";
   static constexpr char kInsertConversationQuery[] =
       "INSERT INTO conversation"
-      "  (title, model_key, total_tokens, trimmed_tokens, uuid)"
-      "  VALUES(?, ?, ?, ?, ?)";
+      "  (title, model_key, total_tokens, trimmed_tokens, modified_time, uuid)"
+      "  VALUES(?, ?, ?, ?, ?, ?)";
   // Both statements take the same parameters in the same order.
   auto bind = [&](sql::Statement& statement) {
     // Fail on an encryption error rather than bind NULL over the stored title.
@@ -2126,7 +2296,8 @@ bool AIChatDatabase::ApplyRemoteConversationMetadata(
     BindOptionalString(statement, 1, conversation->model_key);
     statement.BindInt64(2, conversation->total_tokens);
     statement.BindInt64(3, conversation->trimmed_tokens);
-    statement.BindString(4, conversation->uuid);
+    BindModifiedTime(statement, 4, modified_time);
+    statement.BindString(5, conversation->uuid);
     return true;
   };
 
@@ -2162,6 +2333,7 @@ bool AIChatDatabase::ApplyRemoteConversationMetadata(
 bool AIChatDatabase::ApplyRemoteEntry(
     std::string_view conversation_uuid,
     mojom::ConversationTurnPtr entry,
+    base::Time modified_time,
     std::vector<mojom::AssociatedContentPtr> associated_content,
     std::vector<std::string> contents) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -2204,7 +2376,8 @@ bool AIChatDatabase::ApplyRemoteEntry(
   // not carry edit revisions, so the only ones written back are those the
   // caller passes in |entry->edits|. Workspace content is device-local and
   // never synced, so its rows stay attached to the re-inserted entry.
-  if (!DeleteEntryAndOwnedRows(*entry->uuid,
+  const std::string entry_uuid = *entry->uuid;
+  if (!DeleteEntryAndOwnedRows(entry_uuid,
                                /*keep_workspace_content=*/true)) {
     return false;
   }
@@ -2222,7 +2395,29 @@ bool AIChatDatabase::ApplyRemoteEntry(
     return false;
   }
 
+  // AddConversationEntry() and AddOrUpdateAssociatedContent() are local write
+  // paths that stamp the current time; replace it with the record's own time.
+  if (!SetEntryModifiedTime(entry_uuid, modified_time)) {
+    return false;
+  }
+
   return transaction.Commit();
+}
+
+bool AIChatDatabase::SetEntryModifiedTime(
+    std::string_view conversation_entry_uuid,
+    base::Time modified_time) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  static constexpr char kQuery[] =
+      "UPDATE conversation_entry SET modified_time=?"
+      " WHERE uuid=COALESCE("
+      "  (SELECT editing_entry_uuid FROM conversation_entry WHERE uuid=?), ?)";
+  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE, kQuery));
+  CHECK(statement.is_valid());
+  BindModifiedTime(statement, 0, modified_time);
+  statement.BindString(1, conversation_entry_uuid);
+  statement.BindString(2, conversation_entry_uuid);
+  return statement.Run();
 }
 
 bool AIChatDatabase::GetAllSyncMetadata(syncer::MetadataBatch* metadata_batch) {
