@@ -41,9 +41,6 @@ class MockTool : public Tool {
   std::optional<base::DictValue> InputProperties() const override;
   std::optional<std::vector<std::string>> RequiredProperties() const override;
   std::optional<base::DictValue> ExtraParams() const override;
-  bool IsSupportedByModel(const mojom::Model& model,
-                          const ConversationCapabilitySet&
-                              conversation_capabilities) const override;
   bool SupportsConversation(bool is_temporary,
                             bool has_untrusted_content,
                             const ConversationCapabilitySet&
@@ -92,6 +89,11 @@ class MockTool : public Tool {
               UseTool,
               (const std::string& input_json, UseToolCallback callback),
               (override));
+
+ protected:
+  bool IsSupportedByModelImpl(const mojom::Model& model,
+                              const ConversationCapabilitySet&
+                                  conversation_capabilities) const override;
 
  private:
   std::string name_;
