@@ -1183,7 +1183,7 @@ TEST_P(BraveVPNServiceImplSystemInstallTest,
   TestBraveVpnServiceObserver observer;
   AddObserver(observer.GetReceiver());
   EXPECT_CALL(*service_, OnInstallSystemServicesCompleted(is_success))
-      .WillOnce(testing::InvokeWithoutArgs([&run_loop]() { run_loop.Quit(); }));
+      .WillOnce([&run_loop]() { run_loop.Quit(); });
 
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,

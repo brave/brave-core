@@ -6,11 +6,11 @@
 #include "brave/ios/browser/brave_origin/brave_origin_service_factory.h"
 
 #include <memory>
+#include <utility>
 
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/map_util.h"
 #include "base/functional/callback.h"
-#include "base/no_destructor.h"
 #include "base/notimplemented.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
@@ -144,24 +144,13 @@ constexpr auto kBraveOriginProfileMetadata =
 
 }  // namespace
 
-// static
-BraveOriginService* BraveOriginServiceFactory::GetForProfile(
-    ProfileIOS* profile) {
-  return GetInstance()->GetServiceForProfileAs<BraveOriginService>(profile,
-                                                                   true);
-}
-
-// static
-BraveOriginServiceFactory* BraveOriginServiceFactory::GetInstance() {
-  static base::NoDestructor<BraveOriginServiceFactory> instance;
-  return instance.get();
-}
-
-BraveOriginServiceFactory::BraveOriginServiceFactory()
-    : ProfileKeyedServiceFactoryIOS("BraveOriginService",
-                                    ProfileSelection::kRedirectedInIncognito,
-                                    ServiceCreation::kCreateWithProfile,
-                                    TestingCreation::kNoServiceForTests) {
+BraveOriginServiceFactory::BraveOriginServiceFactory(PassKey key)
+    : TypedProfileKeyedServiceFactoryIOS(
+          std::move(key),
+          "BraveOriginService",
+          ProfileSelection::kRedirectedInIncognito,
+          ServiceCreation::kCreateWithProfile,
+          TestingCreation::kNoServiceForTests) {
   DependsOn(skus::SkusServiceFactory::GetInstance());
   auto* policy_manager = BraveOriginPolicyManager::GetInstance();
   policy_manager->SetExpectedToBeInitialized();
@@ -173,8 +162,6 @@ BraveOriginServiceFactory::BraveOriginServiceFactory()
                          application_context->GetLocalState());
   }
 }
-
-BraveOriginServiceFactory::~BraveOriginServiceFactory() = default;
 
 std::unique_ptr<KeyedService>
 BraveOriginServiceFactory::BuildServiceInstanceFor(ProfileIOS* profile) const {

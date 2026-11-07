@@ -295,7 +295,8 @@ class PatchfileTest(unittest.TestCase):
         target_file.write_text(
             target_file.read_text().replace(
                 'FROM_STORE', 'FROM_STORE,\n    FROM_BRAVE_STORE'
-            )
+            ),
+            newline='\n',
         )
         self.fake_chromium_src.run_update_patches()
         # clearing out our custom change so we can have upstream changes piling

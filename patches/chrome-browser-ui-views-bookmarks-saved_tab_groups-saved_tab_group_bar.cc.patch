@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/bookmarks/saved_tab_groups/saved_tab_group_bar.cc b/chrome/browser/ui/views/bookmarks/saved_tab_groups/saved_tab_group_bar.cc
-index 201ac592240d6f8882fd20ae560ae2e0d18ddd33..6c1aca1c73bbb7630cc348ec33e162deeb3e9e0c 100644
+index e9b4deb8da7870ae648baf6ceb43736a69267483..7022ba4af7ab2836a59aa86dc73cf86b15715894 100644
 --- a/chrome/browser/ui/views/bookmarks/saved_tab_groups/saved_tab_group_bar.cc
 +++ b/chrome/browser/ui/views/bookmarks/saved_tab_groups/saved_tab_group_bar.cc
 @@ -380,7 +380,7 @@ void SavedTabGroupBar::AddTabGroupButton(const SavedTabGroup& group,

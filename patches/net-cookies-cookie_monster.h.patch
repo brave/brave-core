@@ -1,8 +1,8 @@
 diff --git a/net/cookies/cookie_monster.h b/net/cookies/cookie_monster.h
-index c5249984334c44b593b3bd9e7d834be82260cea2..d3122d11c365f1dc8eed8afe7a0905d5f8e4cfc5 100644
+index def3c97a3fb65352c0932c671663ef95e9b5ad14..82d09282c869b883472edde24c1059abfca4d0af 100644
 --- a/net/cookies/cookie_monster.h
 +++ b/net/cookies/cookie_monster.h
-@@ -58,7 +58,7 @@ class CookieInclusionStatus;
+@@ -59,7 +59,7 @@ class CookieInclusionStatus;
  // latter case, the cookie callback will be queued in tasks_pending_for_key_
  // while PermanentCookieStore loads cookies for the specified domain key on DB
  // thread.
@@ -11,7 +11,7 @@ index c5249984334c44b593b3bd9e7d834be82260cea2..d3122d11c365f1dc8eed8afe7a0905d5
   public:
    class PersistentCookieStore;
  
-@@ -182,29 +182,29 @@ class NET_EXPORT CookieMonster : public CookieStore {
+@@ -183,29 +183,29 @@ class NET_EXPORT CookieMonster : public CookieStore {
    // this class, but it must remain valid for the duration of the cookie
    // monster's existence. If |store| is NULL, then no backing store will be
    // updated. |net_log| must outlive the CookieMonster and can be null.
@@ -47,7 +47,7 @@ index c5249984334c44b593b3bd9e7d834be82260cea2..d3122d11c365f1dc8eed8afe7a0905d5
  
    // Writes all the cookies in |list| into the store, replacing all cookies
    // currently present in store.
-@@ -627,7 +627,7 @@ class NET_EXPORT CookieMonster : public CookieStore {
+@@ -628,7 +628,7 @@ class NET_EXPORT CookieMonster : public CookieStore {
    // web observable. Different `CookieChangeCause` will be dispatched based on
    // the `observability` value.
    std::variant<CookieMap::iterator,
@@ -56,7 +56,7 @@ index c5249984334c44b593b3bd9e7d834be82260cea2..d3122d11c365f1dc8eed8afe7a0905d5
    InternalInsertCookie(const std::string& key,
                         std::unique_ptr<CanonicalCookie> cc,
                         bool sync_to_store,
-@@ -920,13 +920,13 @@ class NET_EXPORT CookieMonster : public CookieStore {
+@@ -921,13 +921,13 @@ class NET_EXPORT CookieMonster : public CookieStore {
  
    THREAD_CHECKER(thread_checker_);
  

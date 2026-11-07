@@ -135,6 +135,10 @@ export function createWebpackConfig(
     optimization: deterministicOptimization,
     experiments,
     externals: [chromeUrlExternals, reactExternals],
+    // The "web" preset loads `//` specifiers, such as Mojo bindings'
+    // `//resources/mojo` imports, as external modules, which a script bundle
+    // can't import: bundle them through the path map instead.
+    externalsPresets: { web: !!options.output_module },
     plugins: [
       options.grd_path
         && new GenerateDepfilePlugin({

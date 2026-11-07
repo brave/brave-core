@@ -8,39 +8,28 @@
 
 #include <memory>
 
-#include "ios/chrome/browser/shared/model/profile/profile_keyed_service_factory_ios.h"
+#include "brave/components/serp_metrics/serp_metrics_service.h"
+#include "ios/chrome/browser/shared/model/profile/typed_profile_keyed_service_factory_ios.h"
 
 class KeyedService;
 class ProfileIOS;
 
-namespace base {
-template <typename T>
-class NoDestructor;
-}  // namespace base
-
 namespace serp_metrics {
-
-class SerpMetricsService;
 
 // A factory that creates `SerpMetricsService` which is used to store SERP
 // metrics for a profile.
-class SerpMetricsServiceFactoryIOS : public ProfileKeyedServiceFactoryIOS {
+class SerpMetricsServiceFactoryIOS
+    : public TypedProfileKeyedServiceFactoryIOS<SerpMetricsServiceFactoryIOS,
+                                                SerpMetricsService> {
  public:
   SerpMetricsServiceFactoryIOS(const SerpMetricsServiceFactoryIOS&) = delete;
   SerpMetricsServiceFactoryIOS& operator=(const SerpMetricsServiceFactoryIOS&) =
       delete;
 
-  static SerpMetricsServiceFactoryIOS* GetInstance();
-
-  static SerpMetricsService* GetForProfile(ProfileIOS* profile);
+  explicit SerpMetricsServiceFactoryIOS(PassKey key);
 
  private:
-  friend base::NoDestructor<SerpMetricsServiceFactoryIOS>;
-
-  SerpMetricsServiceFactoryIOS();
-  ~SerpMetricsServiceFactoryIOS() override;
-
-  // ProfileKeyedServiceFactoryIOS:
+  // TypedProfileKeyedServiceFactoryIOS:
   void RegisterProfilePrefs(
       user_prefs::PrefRegistrySyncable* registry) override;
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(

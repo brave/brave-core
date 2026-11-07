@@ -1,0 +1,26 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Ship kPredictionModelComponentDelivery disabled.
+
+      Brave stubs out PredictionManager, and component delivery is a second
+      path to the same Google-served on-device models.
+    set_feature_flag_default_state:
+      feature_name: kPredictionModelComponentDelivery
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: |-
+      Never offer a prediction model for component delivery.
+
+      Brave never downloads Google's on-device prediction models, whether or
+      not kPredictionModelComponentDelivery is on.
+    preempt_function_impl:
+      function_name: GetPredictionModelComponentConfig
+      code: |-
+        if ((true)) {
+          return std::nullopt;
+        }

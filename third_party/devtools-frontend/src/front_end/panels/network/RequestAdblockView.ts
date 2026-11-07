@@ -5,14 +5,11 @@
 
 import * as SDK from '../../core/sdk/sdk.js'
 import * as Lit from '../../ui/lit/lit.js'
-import * as RenderCoordinator from '../../ui/components/render_coordinator/render_coordinator.js';
-import * as LegacyWrapper from '../../ui/components/legacy_wrapper/legacy_wrapper.js'
+import * as UI from '../../ui/legacy/legacy.js'
 
 const { render, html } = Lit
 
-export class RequestAdblockView extends LegacyWrapper.LegacyWrapper
-  .WrappableComponent {
-  readonly #shadow = this.attachShadow({ mode: 'open' })
+export class RequestAdblockView extends UI.Widget.VBox {
   readonly #request: SDK.NetworkRequest.NetworkRequest
   #manager: SDK.NetworkManager.NetworkManager | null
 
@@ -22,29 +19,27 @@ export class RequestAdblockView extends LegacyWrapper.LegacyWrapper
     this.#manager = SDK.NetworkManager.NetworkManager.forRequest(this.#request)
   }
 
-  override async render(): Promise<void> {
-    return RenderCoordinator.write(() => {
-      if (!this.#manager) {
-        render(html``, this.#shadow, { host: this })
-      } else {
-        const adblockInfo = (this.#manager.dispatcher as any).adblockInfoForId(
-          this.#request.requestId()
-        )
-        render(
-          html` ${Object.entries(adblockInfo ? adblockInfo : {}).map(
-            ([key, value]) => {
-              const displayValue =
-                value && typeof value === 'object'
-                  ? JSON.stringify(value)
-                  : `${value}`
-              return this.#renderRow(key, displayValue)
-            }
-          )}`,
-          this.#shadow,
-          { host: this }
-        )
-      }
-    })
+  override performUpdate(): void {
+    if (!this.#manager) {
+      render(html``, this.contentElement, { host: this })
+      return
+    }
+    const adblockInfo = (this.#manager.dispatcher as any).adblockInfoForId(
+      this.#request.requestId()
+    )
+    render(
+      html` ${Object.entries(adblockInfo ? adblockInfo : {}).map(
+        ([key, value]) => {
+          const displayValue =
+            value && typeof value === 'object'
+              ? JSON.stringify(value)
+              : `${value}`
+          return this.#renderRow(key, displayValue)
+        }
+      )}`,
+      this.contentElement,
+      { host: this }
+    )
   }
 
   #renderRow(title: string, value: string): Lit.LitTemplate {
@@ -75,10 +70,11 @@ export class RequestAdblockView extends LegacyWrapper.LegacyWrapper
   }
 
   #refresh(): void {
-    void this.render()
+    this.requestUpdate()
   }
 
   override wasShown(): void {
+    super.wasShown()
     this.#request.addEventListener(
       SDK.NetworkRequest.Events.FINISHED_LOADING,
       this.#refresh,
@@ -87,18 +83,11 @@ export class RequestAdblockView extends LegacyWrapper.LegacyWrapper
   }
 
   override willHide(): void {
+    super.willHide()
     this.#request.removeEventListener(
       SDK.NetworkRequest.Events.FINISHED_LOADING,
       this.#refresh,
       this
     )
-  }
-}
-
-customElements.define('devtools-request-adblock-info', RequestAdblockView)
-
-declare global {
-  interface HTMLElementTagNameMap {
-    'devtools-request-adblock-info': RequestAdblockView
   }
 }

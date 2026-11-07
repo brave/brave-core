@@ -10,6 +10,20 @@ mangle((root) => {
   if (!viewManager) {
     throw new Error(`[Settings] Autofill page index: couldn't find #viewManager`)
   }
+
+  // brave_routes.ts deletes the identity docs and travel autofill routes so
+  // they can't be navigated to (we don't support those Autofill AI data
+  // types). Remove their views too, since this element unconditionally reads
+  // `this.routes_.IDENTITY_DOCS.path` / `.TRAVEL.path`, which throws once
+  // those routes are gone.
+  for (const id of ['identityDocs', 'travel']) {
+    const view = root.getElementById(id)
+    if (!view) {
+      throw new Error(`[Settings] Autofill page index: couldn't find #${id}`)
+    }
+    view.remove()
+  }
+
   viewManager.insertAdjacentHTML(
       'beforeend',
       `\${this.isEmailAliasesEnabled_() ? html\`

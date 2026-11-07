@@ -9,25 +9,20 @@
 #include <memory>
 
 #include "brave/components/brave_origin/brave_origin_policy_info.h"
-#include "ios/chrome/browser/shared/model/profile/profile_keyed_service_factory_ios.h"
-
-namespace base {
-template <typename T>
-class NoDestructor;
-}  // namespace base
+#include "brave/components/brave_origin/brave_origin_service.h"
+#include "ios/chrome/browser/shared/model/profile/typed_profile_keyed_service_factory_ios.h"
 
 class KeyedService;
 class ProfileIOS;
 
 namespace brave_origin {
 
-class BraveOriginService;
-
 // Factory for BraveOriginService keyed service.
-class BraveOriginServiceFactory : public ProfileKeyedServiceFactoryIOS {
+class BraveOriginServiceFactory
+    : public TypedProfileKeyedServiceFactoryIOS<BraveOriginServiceFactory,
+                                                BraveOriginService> {
  public:
-  static BraveOriginService* GetForProfile(ProfileIOS* profile);
-  static BraveOriginServiceFactory* GetInstance();
+  explicit BraveOriginServiceFactory(PassKey key);
 
   // Build browser-level policy definitions.
   // This is done in this layer because of all the dependencies needed
@@ -63,12 +58,7 @@ class BraveOriginServiceFactory : public ProfileKeyedServiceFactoryIOS {
   };
 
  private:
-  friend base::NoDestructor<BraveOriginServiceFactory>;
-
-  BraveOriginServiceFactory();
-  ~BraveOriginServiceFactory() override;
-
-  // ProfileKeyedServiceFactoryIOS:
+  // TypedProfileKeyedServiceFactoryIOS:
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
       ProfileIOS* profile) const override;
 };

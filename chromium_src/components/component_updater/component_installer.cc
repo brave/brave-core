@@ -53,6 +53,13 @@ void ComponentInstaller::Register(
           "pficcddpglkpaaihklmahepgjmefdnom",  // Captcha Provider
           "fklghjjljmnfjoepjmlobpekiapffcja",  // OptGuideOnDeviceModel
           "ceofaddefefcbblgcgnibnonglccbfja",  // OptGuideOnDeviceModelsManifest
+          "kpfeefaldebcckpkaeelpiecbjfpbmle",  // Geolocation Permission
+                                               // Predictions
+          "fmkegdflifakmolfcmpbohjhgpicfbol",  // Notification Permission
+                                               // Predictions
+          "omccndhloelimkeacgjfjaipjhnnogmb",  // Client Side Phishing
+          "chjfeldfbijdbdeojjhodnibjnaohpdh",  // Client Side Phishing Image
+                                               // Embedder
 #if BUILDFLAG(IS_ANDROID)
           "lmelglejhemejginpboagddgdfbepgmp",  // Optimization Hints
           "obedbbhbpmojnkanicioggnmelmoomoc"   // OnDeviceHeadSuggest

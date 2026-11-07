@@ -188,7 +188,7 @@ class TabSearchPageHandlerBrowserTest : public InProcessBrowserTest {
                           ui_test_utils::BrowserTestWaitFlags wait_flags =
                               ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP) {
     ui_test_utils::NavigateToURLWithDisposition(
-        browser, url, WindowOpenDisposition::NEW_FOREGROUND_TAB, wait_flags);
+        browser, url, WindowOpenDisposition::kNewForegroundTab, wait_flags);
     content::WebContents* web_contents =
         browser->tab_strip_model()->GetActiveWebContents();
     web_contents->UpdateTitleForEntry(

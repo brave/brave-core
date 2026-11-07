@@ -1,5 +1,5 @@
 diff --git a/components/sessions/BUILD.gn b/components/sessions/BUILD.gn
-index 6d965f35ec9f2886182ae056c48921916a33191c..4837a0cea24156afe61dbb28b1aedb5ca20723e0 100644
+index 6cd7e695e54e9cdfa58dad6225e0ddd357e3ac12..381f81b7010495df35fa6eefe57f2aac780852ce 100644
 --- a/components/sessions/BUILD.gn
 +++ b/components/sessions/BUILD.gn
 @@ -2,6 +2,7 @@

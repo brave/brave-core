@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/window_feature_controller/window_feature_controller.cc b/chrome/browser/ui/window_feature_controller/window_feature_controller.cc
-index ec7bd3ea6cd00a5093b9bac2cfca9fe1a0bc4bfb..cdb2d8261abddd4168b91b43ba6348449283a74e 100644
+index 438022226545d544b4485dbb525b643b517cbefe..f650278ba07e3ea829020a818b398ccfb9d97877 100644
 --- a/chrome/browser/ui/window_feature_controller/window_feature_controller.cc
 +++ b/chrome/browser/ui/window_feature_controller/window_feature_controller.cc
 @@ -22,7 +22,8 @@ WindowFeatureController::WindowFeatureController(
@@ -12,7 +12,7 @@ index ec7bd3ea6cd00a5093b9bac2cfca9fe1a0bc4bfb..cdb2d8261abddd4168b91b43ba634844
  
  WindowFeatureController::~WindowFeatureController() = default;
  
-@@ -77,6 +78,13 @@ bool WindowFeatureController::UsesImmersiveFullscreenTabbedMode() const {
+@@ -78,6 +79,13 @@ bool WindowFeatureController::UsesImmersiveFullscreenTabbedMode() const {
  bool WindowFeatureController::NormalBrowserSupportsWindowFeature(
      WindowFeature feature,
      bool check_can_support) const {

@@ -1,5 +1,5 @@
 diff --git a/third_party/android_deps/BUILD.gn b/third_party/android_deps/BUILD.gn
-index 252001ea2452ee297c35bdfdb64693271029a3de..05d8c97ca67018c50c91af0fa14d0f040562da6e 100644
+index 24247cc14dff250f6e2872e424423dec74b8db8e..f8a6c79647161b80d97e4950c279308a66a687e2 100644
 --- a/third_party/android_deps/BUILD.gn
 +++ b/third_party/android_deps/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 252001ea2452ee297c35bdfdb64693271029a3de..05d8c97ca67018c50c91af0fa14d0f04
  import("//build/config/android/rules.gni")
  import("overrides.gni")
  
-@@ -1241,6 +1242,7 @@ if (!limit_android_deps) {
+@@ -1250,6 +1251,7 @@ if (!limit_android_deps) {
          ":*",
          "//third_party/androidx:*",
        ]
@@ -18,7 +18,7 @@ index 252001ea2452ee297c35bdfdb64693271029a3de..05d8c97ca67018c50c91af0fa14d0f04
        deps = [
          "$google_play_services_package:google_android_datatransport_transport_api_java",
          "$google_play_services_package:google_android_datatransport_transport_runtime_java",
-@@ -1265,6 +1267,7 @@ if (!limit_android_deps) {
+@@ -1274,6 +1276,7 @@ if (!limit_android_deps) {
          ":*",
          "//third_party/androidx:*",
        ]

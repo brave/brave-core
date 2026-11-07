@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/ui/views/frame/layout/browser_view_layout_delegate_impl.cc b/chrome/browser/ui/views/frame/layout/browser_view_layout_delegate_impl.cc
+index 301e617b1026cc44a46ec76e820c635db39bdf91..f9d0dfe8d0ed4a987951b505715a4823a0fdfb94 100644
+--- a/chrome/browser/ui/views/frame/layout/browser_view_layout_delegate_impl.cc
++++ b/chrome/browser/ui/views/frame/layout/browser_view_layout_delegate_impl.cc
+@@ -95,6 +95,10 @@ bool BrowserViewLayoutDelegateImpl::GetUnframedModeEnabled() const {
+ 
+ BrowserLayoutParams BrowserViewLayoutDelegateImpl::GetBrowserLayoutParams(
+     bool use_browser_bounds) const {
++  if (ShouldWaitForFrameToPlaceBrowserView(
++          *this, GetFrameView(), browser_view(), use_browser_bounds)) {
++    return BrowserLayoutParams();
++  }
+   if (auto* const frame = GetFrameView()) {
+     const auto params = frame->GetBrowserLayoutParams();
+     if (params.IsEmpty()) {

@@ -70,12 +70,12 @@ CSVSafariPassword::CSVSafariPassword(const ColumnMap& map,
   CSVFieldParser parser(row);
   status_ = Status::kOK;
 
-  while (parser.HasMoreFields()) {
-    std::string_view field;
-    if (!parser.NextField(&field)) {
+  while (auto next = parser.NextField()) {
+    if (!next->has_value()) {
       status_ = Status::kSyntaxError;
       return;
     }
+    std::string_view field = next->value();
     auto meaning_it = map.find(field_idx++);
     if (meaning_it == map.end()) {
       continue;

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/navigator/browser_navigator_params_utils.cc b/chrome/browser/ui/navigator/browser_navigator_params_utils.cc
-index aa6893ff719f244fd758d2117f3b6941e6d84d56..336f21fe1f457e608a7bc1ec3920a4cdf7483050 100644
+index 647d62113c20fce469092d75f4ab75c763708bae..6bd3b54d3dec07b9a175cd75dd812ee324b83d3d 100644
 --- a/chrome/browser/ui/navigator/browser_navigator_params_utils.cc
 +++ b/chrome/browser/ui/navigator/browser_navigator_params_utils.cc
 @@ -79,7 +79,6 @@ content::NavigationController::LoadURLParams LoadURLParamsFromNavigateParams(

@@ -30,8 +30,8 @@ namespace {
 // arrives as a new-tab disposition) or via `window.open()`. Everything else
 // (plain link clicks) should navigate the main browser's active tab.
 bool ShouldOpenInNewTab(WindowOpenDisposition disposition) {
-  return disposition == WindowOpenDisposition::NEW_FOREGROUND_TAB ||
-         disposition == WindowOpenDisposition::NEW_BACKGROUND_TAB;
+  return disposition == WindowOpenDisposition::kNewForegroundTab ||
+         disposition == WindowOpenDisposition::kNewBackgroundTab;
 }
 
 }  // namespace
@@ -78,8 +78,8 @@ content::WebContents* BraveNewsSidePanelWebView::AddNewContents(
   // the main browser's active tab.
   NavigateParams params(browser, target_url, ui::PAGE_TRANSITION_LINK);
   params.disposition = ShouldOpenInNewTab(disposition)
-                           ? WindowOpenDisposition::NEW_FOREGROUND_TAB
-                           : WindowOpenDisposition::CURRENT_TAB;
+                           ? WindowOpenDisposition::kNewForegroundTab
+                           : WindowOpenDisposition::kCurrentTab;
   params.window_action = NavigateParams::WindowAction::kNoAction;
   params.user_gesture = user_gesture;
   Navigate(&params);
@@ -103,7 +103,7 @@ content::WebContents* BraveNewsSidePanelWebView::OpenURLFromTab(
   // everything else navigates its active tab.
   content::OpenURLParams new_params(params);
   if (!ShouldOpenInNewTab(new_params.disposition)) {
-    new_params.disposition = WindowOpenDisposition::CURRENT_TAB;
+    new_params.disposition = WindowOpenDisposition::kCurrentTab;
   }
   return browser->OpenURL(new_params, std::move(navigation_handle_callback));
 }

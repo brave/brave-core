@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/startup/infobar_utils.cc b/chrome/browser/ui/startup/infobar_utils.cc
+index 94d977bdfcc44454f27542ac3cd8d7f72055d7da..e5593367c4b6f043e26af6cad8935ba075d3dfef 100644
+--- a/chrome/browser/ui/startup/infobar_utils.cc
++++ b/chrome/browser/ui/startup/infobar_utils.cc
+@@ -218,7 +218,7 @@ void AddInfoBarsIfNecessary(BrowserWindowInterface* browser,
+       !is_web_app && HasPendingUncleanExit(browser->GetProfile());
+   base::UmaHistogramBoolean("Startup.CrashBubbleShown", should_display_bubble);
+   if (should_display_bubble) {
+-    ShowSessionCrashedBubbleIfNotOffTheRecordProfile(
++    ShowSessionCrashedBubbleIfNotOffTheRecordProfileBrave(
+         browser,
+         /*skip_tab_checking=*/false);
+   }

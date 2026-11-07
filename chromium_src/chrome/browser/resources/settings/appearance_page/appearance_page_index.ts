@@ -31,8 +31,15 @@ injectStyle(SettingsAppearancePageIndexElementChromium, css`
   }
 `)
 
+// Upstream's HTMLElementTagNameMap entry for this tag points at the upstream
+// class, and TypeScript rejects a second entry with a different type.
+// eslint-disable-next-line @webui-eslint/lit-element-structure
 class SettingsAppearancePageIndexElement extends
     SettingsAppearancePageIndexElementChromium {
+  static override get is() {
+    return 'settings-appearance-page-index'
+  }
+
   override currentRouteChanged(newRoute: Route) {
     // Mirror SearchableViewContainerMixinLit's own currentRouteChanged
     // (which just records the route, for search purposes) instead of

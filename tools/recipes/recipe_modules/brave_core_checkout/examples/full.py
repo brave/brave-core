@@ -50,8 +50,18 @@ def RunSteps(api: DEPS):
         api.brave_core_checkout.apply_config('rbe')
         api.brave_core_checkout.ensure_checkout()
         return
+    if mode == 'target_os':
+        api.brave_core_checkout.set_config('brave')
+        api.brave_core_checkout.apply_config('linux')
+        api.brave_core_checkout.apply_config('android')
+        api.brave_core_checkout.ensure_checkout()
+        return
     if mode == 'ensure_checkout':
         api.brave_core_checkout.ensure_checkout()
+        return
+    if mode == 'commit_hook':
+        api.brave_core_checkout.ensure_checkout()
+        api.brave_core_checkout.install_commit_hook()
         return
     if mode:
         api.brave_core_checkout.checkout()
@@ -143,7 +153,33 @@ def GenTests(api: TEST_DEPS):
         api.post_process(
             post_process.MustRun, 'brave-core restore origin push url'
         ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'brave-core checkout branch',
+            ['checkout', '--force', '-B', '1.80.x'],
+        ),
+        api.post_process(
+            post_process.DoesNotRun, 'brave-core drop stopped rebase'
+        ),
         api.post_process(post_process.StatusSuccess),
+    )
+    # A branch an earlier job left in a stopped rebase is reset all the same.
+    yield api.test(
+        'checkout branch with stopped rebase',
+        api.env.set('MODE', 'checkout'),
+        api.brave_core_checkout.brave_core_ref('refs/heads/1.80.x'),
+        api.brave_core_checkout.with_git_cache(),
+        api.brave_core_checkout.git_cache_populated(),
+        api.brave_core_checkout.existing_checkout(),
+        api.path.dirs('b/src/brave/.git/rebase-merge'),
+        api.post_process(
+            post_process.StepCommandContains,
+            'brave-core drop stopped rebase',
+            ['rebase', '--quit'],
+        ),
+        api.post_process(post_process.MustRun, 'brave-core checkout branch'),
+        api.post_process(post_process.StatusSuccess),
+        api.post_process(post_process.DropExpectation),
     )
     # A release tag is mirrored and checked out by its fully-qualified name.
     yield api.test(
@@ -225,10 +261,13 @@ def GenTests(api: TEST_DEPS):
             'read chromium tag',
             ['show', 'refs/heads/master:package.json'],
         ),
+        # The deploy itself doesn't sync, so this is the only one.
         api.post_process(post_process.MustRun, 'pnpm run sync'),
+        api.post_process(post_process.DoesNotRun, 'pnpm run sync (2)'),
         api.post_process(post_process.StatusSuccess),
     )
-    # Chromium already deployed (`chrome/VERSION` present): no sync.
+    # Chromium already deployed (`chrome/VERSION` present), maybe on another
+    # version: synced all the same, once.
     yield api.test(
         'ensure_checkout chromium present',
         api.env.set('MODE', 'ensure_checkout'),
@@ -236,7 +275,25 @@ def GenTests(api: TEST_DEPS):
         api.brave_core_checkout.git_cache_populated(),
         api.chromium_checkout.existing_checkout(),
         api.post_process(post_process.DoesNotRun, 'clone from git cache'),
-        api.post_process(post_process.DoesNotRun, 'pnpm run sync'),
+        api.post_process(post_process.MustRun, 'pnpm run sync'),
+        api.post_process(post_process.DoesNotRun, 'pnpm run sync (2)'),
+        # Only on request: a checkout alone installs no hook.
+        api.post_process(post_process.DoesNotRun, 'install commit-msg hook'),
+        api.post_process(post_process.StatusSuccess),
+    )
+    # `git cr`'s commit-msg hook, installed from the checkout's root with the
+    # `bootstrap` shims on PATH.
+    yield api.test(
+        'commit hook',
+        api.env.set('MODE', 'commit_hook'),
+        api.brave_core_checkout.with_git_cache(),
+        api.brave_core_checkout.git_cache_populated(),
+        api.chromium_checkout.existing_checkout(),
+        api.post_process(
+            post_process.StepCommandContains,
+            'install commit-msg hook',
+            ['git', 'cr', 'install-hook'],
+        ),
         api.post_process(post_process.StatusSuccess),
     )
     # The `.env` is composed from the module's properties and config items, and
@@ -248,8 +305,36 @@ def GenTests(api: TEST_DEPS):
         api.brave_core_checkout.git_cache_populated(),
         api.brave_core_checkout.chromium_mirror_populated(),
         api.brave_core_checkout.rbe(siso_cache_dir='/b/siso'),
-        api.post_process(post_process.MustRun, 'write .env'),
+        # Lean, so that every sync of the run, its own included, is.
+        api.post_process(
+            post_process.StepCommandContains,
+            'write .env',
+            [
+                'brave_extra_gn_gen_opts=--check\nis_asan=true\nlean_sync=true\n'
+                'rbe_service=rbe.ba.brave.com:443\nsiso_cache_dir=/b/siso\n'
+                'use_remoteexec=true\n'
+            ],
+        ),
         api.post_process(post_process.StatusSuccess),
+    )
+    # The OSes to check out go to gclient through `.env`, for every sync.
+    yield api.test(
+        'target_os',
+        api.env.set('MODE', 'target_os'),
+        api.brave_core_checkout.with_git_cache(),
+        api.brave_core_checkout.git_cache_populated(),
+        api.brave_core_checkout.chromium_mirror_populated(),
+        api.post_process(
+            post_process.StepCommandContains,
+            'write .env',
+            [
+                'brave_extra_gn_gen_opts=--check\n'
+                'gclient_global_vars_target_os=["android", "linux"]\n'
+                'lean_sync=true\nuse_remoteexec=false\n'
+            ],
+        ),
+        api.post_process(post_process.StatusSuccess),
+        api.post_process(post_process.DropExpectation),
     )
     # The `rbe` item can be applied by itself, whatever the properties say.
     yield api.test(
@@ -261,7 +346,10 @@ def GenTests(api: TEST_DEPS):
         api.post_process(
             post_process.StepCommandContains,
             'write .env',
-            ['rbe_service=rbe.ba.brave.com:443\nuse_remoteexec=true\n'],
+            [
+                'brave_extra_gn_gen_opts=--check\nlean_sync=true\n'
+                'rbe_service=rbe.ba.brave.com:443\nuse_remoteexec=true\n'
+            ],
         ),
         api.post_process(post_process.StatusSuccess),
     )
