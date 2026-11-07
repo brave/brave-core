@@ -252,7 +252,10 @@
     Minimum tab width
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_MIN_WIDTH_MINIMUM" desc="Tab minimum width option: narrowest tabs">
-    Minimum (Default)
+    Minimum
+  </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_MIN_WIDTH_SMALL" desc="Tab minimum width option: wider scrolling-friendly tabs">
+    Small (Default)
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_MIN_WIDTH_MEDIUM" desc="Tab minimum width option: medium width">
     Medium

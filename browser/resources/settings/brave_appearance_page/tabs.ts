@@ -46,8 +46,12 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
               hidden: true,
             },
             {
-              value: 1,
+              value: 5,
               name: loadTimeData.getString('appearanceSettingsTabMinWidthMinimum'),
+            },
+            {
+              value: 1,
+              name: loadTimeData.getString('appearanceSettingsTabMinWidthSmall'),
             },
             {
               value: 2,
