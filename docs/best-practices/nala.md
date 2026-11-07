@@ -299,18 +299,32 @@ SetBackground(views::CreateThemedSolidBackground(nala::kColorContainerBackground
 
 **NEVER work around a problem with the `@brave/leo` npm package in brave-core.
 Post an issue on [brave/leo](https://github.com/brave/leo/issues) that describes
-the problem instead.** Local workarounds hide the bug from the Leo team, make
-brave-core diverge from the design system, and leave every other Leo consumer to
-hit the same problem.
+the problem instead.** This covers any Leo defect: wrong or surprising component
+behavior and timing, bad types, and packaging. Local workarounds hide the bug
+from the Leo team, make brave-core diverge from the design system, and leave
+every other Leo consumer to hit the same problem.
 
-Under no circumstances patch or edit `node_modules`, copy or re-implement a Leo
-component or style locally, or suppress Leo type errors with `@ts-ignore`,
-`@ts-expect-error`, or `any` casts to get around a Leo defect.
+When the cause is a Leo defect, you MUST NOT patch or edit `node_modules`, copy
+or re-implement a Leo component or style locally, suppress Leo type errors with
+`@ts-ignore`, `@ts-expect-error`, or `any` casts, or add application-side
+compensation (refs, stable-callback wrappers, extra effects, delays, retries).
+Adding a tracking `TODO` does not make a Leo workaround acceptable; the fix
+belongs in Leo.
+
+Ordinary refs, `useCallback`, and local components that do not compensate for a
+Leo defect are fine. Flag them only when the code or PR description ties them to
+a Leo problem.
 
 ```tsx
 // ❌ WRONG - silencing a Leo problem locally
 // @ts-ignore Leo's types reject this usage
 <Dropdown onChange={(e: any) => onChange(e.detail.value)} />
+
+// ❌ WRONG - ref indirection added to compensate for Leo's component behavior
+const sendRef = React.useRef<() => void>(() => {})
+const onSendClick = React.useCallback(() => sendRef.current(), [])
+sendRef.current = () => props.onSend(amount)
+<Button onClick={onSendClick}>Send</Button>
 ```
 
 ```bash
