@@ -271,6 +271,12 @@ void BraveDownloadDisplayController::UpdateToolbarButtonState(...) {
 
 ### When subclassing is appropriate
 
+Only subclass when the upstream class is instantiated in one well-defined
+factory method or another location clearly intended to remain its sole
+construction site. Redirect that single site to the Brave subclass. Otherwise,
+modify the upstream class implementation with a plaster: redirecting scattered
+construction sites can silently miss new upstream sites.
+
 Unlike the `_ChromiumImpl` rename, subclassing can be the more attractive
 option, and there are rewriters to assist with that (e.g. `drop_final`,
 `make_virtual`, `add_friend`). The following may help in deciding when to use
