@@ -1,0 +1,30 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Needed by the ENABLE_EXTENSIONS_CORE check below.
+    add_after_line:
+      line: '#include "content/public/test/browser_test_utils.h"'
+      code: |-
+        #include "extensions/buildflags/buildflags.h"
+
+  - description: |-
+      TestTabModel::AssociateWithBrowserWindow is desktop-Android-only test
+      scaffolding; its only caller is windowing/internal's extensions unit
+      test, which is gated on enable_extensions_core, not is_desktop_android
+      specifically. Widen it to match, now that enable_extensions_core
+      compiles that unit test on regular Android too.
+    regex:
+      re_pattern:
+        '// BrowserWindowInterface is available on desktop Android, but not
+        other Android\s*// builds\.\s*#if
+        BUILDFLAG\(IS_DESKTOP_ANDROID\)\s*(void
+        AssociateWithBrowserWindow\(BrowserWindowInterface\*
+        browser_window\);)\s*#endif'
+      replace: |-
+        // Only windowing/internal's extensions unit test needs this.
+        #if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+          \1
+        #endif

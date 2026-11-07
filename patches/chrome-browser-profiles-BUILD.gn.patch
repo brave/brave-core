@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/profiles/BUILD.gn b/chrome/browser/profiles/BUILD.gn
+index f569264cf0e530634f9e064054511b25ca2273d2..933da4e61049f282ecdaa10b0ea40d711449e255 100644
+--- a/chrome/browser/profiles/BUILD.gn
++++ b/chrome/browser/profiles/BUILD.gn
+@@ -528,7 +528,7 @@ source_set("profile_manager_impl") {
+     "//google_apis",
+   ]
+ 
+-  if (enable_extensions) {
++  if (enable_extensions_core) {
+     deps += [ "//chrome/browser/extensions" ]
+   }
+ 

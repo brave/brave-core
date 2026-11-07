@@ -1,6 +1,7 @@
 include_rules = [
   "+brave/components/brave_extension/grit",
   "+brave/components/update_client/buildflags.h",
+  "+extensions/strings/grit/extensions_strings.h",
 ]
 
 specific_include_rules = {

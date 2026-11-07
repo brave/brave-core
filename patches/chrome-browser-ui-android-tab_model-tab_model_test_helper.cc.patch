@@ -1,0 +1,27 @@
+diff --git a/chrome/browser/ui/android/tab_model/tab_model_test_helper.cc b/chrome/browser/ui/android/tab_model/tab_model_test_helper.cc
+index 5e26419b40b6b3ff563ce95faf497821c11c1cbf..ab7eab89e1b5f4aa79e5a7a6d8b2b777102dd347 100644
+--- a/chrome/browser/ui/android/tab_model/tab_model_test_helper.cc
++++ b/chrome/browser/ui/android/tab_model/tab_model_test_helper.cc
+@@ -40,10 +40,9 @@
+ #include "ui/gfx/range/range.h"
+ #include "url/gurl.h"
+ 
+-// "chrome/browser/ui/browser_window" is available on desktop Android, but not
+-// other Android builds.
+-#if BUILDFLAG(IS_DESKTOP_ANDROID)
+-#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"  // nogncheck
++// Only windowing/internal's extensions unit test needs this.
++#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
++#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+ #endif
+ 
+ TestTabModel::TestTabModel(Profile* profile,
+@@ -356,7 +355,7 @@ bool TestTabModel::IsClosingAllTabs() {
+   return false;
+ }
+ 
+-#if BUILDFLAG(IS_DESKTOP_ANDROID)
++#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+ void TestTabModel::AssociateWithBrowserWindow(BrowserWindowInterface* browser) {
+   scoped_unowned_user_data_ =
+       std::make_unique<ui::ScopedUnownedUserData<TabListInterface>>(

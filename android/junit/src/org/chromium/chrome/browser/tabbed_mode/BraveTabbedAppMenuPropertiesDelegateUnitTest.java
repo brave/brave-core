@@ -132,6 +132,7 @@ import java.util.List;
     ChromeFeatureList.SUBMENUS_IN_APP_MENU,
     ChromeFeatureList.SUBMENUS_IN_APP_MENU_LFF,
     ChromeFeatureList.TTC,
+    BraveFeatureList.BRAVE_ANDROID_EXTENSIONS,
     BraveFeatureList.BRAVE_SHRED,
     BraveFeatureList.BRAVE_ANDROID_MERGE_INSTALL_PWA_AND_CREATE_SHORTCUT,
 })
