@@ -142,6 +142,9 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner,
       bool is_for_network_service) override;
 
+  content::ContentBrowserClient::WebSocketOptions GetWebSocketOptions(
+      content::RenderFrameHost* frame) override;
+
   bool WillInterceptWebSocket(content::RenderFrameHost* frame) override;
 
   void WillCreateWebTransport(

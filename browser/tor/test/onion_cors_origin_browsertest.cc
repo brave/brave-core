@@ -28,7 +28,9 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
+#include "net/test/embedded_test_server/install_default_websocket_handlers.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace {
 
@@ -38,9 +40,57 @@ constexpr char kAllowNullOriginPath[] = "/allow-null-origin";
 constexpr char kSameSiteCredentialsPath[] = "/same-site-credentials";
 constexpr char kSameSiteCorpPath[] = "/same-site-corp";
 constexpr char kRedirectPath[] = "/redirect";
+constexpr char kSharedWorkerPath[] = "/shared-worker.js";
 
 constexpr char kFetchScript[] =
     "fetch($1, $2).then(() => 'allowed', () => 'blocked')";
+
+// Opens a WebSocket to the URL posted on the port and relays the first message
+// received from the server back to the page.
+constexpr char kSharedWorkerScript[] = R"(
+  onconnect = event => {
+    const port = event.ports[0];
+    port.onmessage = event => {
+      const socket = new WebSocket(event.data);
+      socket.onmessage = message => {
+        port.postMessage(message.data);
+        socket.close();
+      };
+      socket.onerror = () => port.postMessage('WebSocket error');
+    };
+  };
+)";
+
+// Resolves with the Origin header received by the server during the WebSocket
+// handshake.
+constexpr char kFrameWebSocketScript[] = R"(
+  new Promise((resolve, reject) => {
+    const ws = new WebSocket($1);
+    ws.onmessage = (e) => {
+      resolve(JSON.parse(e.data).origin ?? '');
+      ws.close();
+    };
+    ws.onerror = () => reject('WebSocket error');
+  });
+)";
+
+// Same as above, but the WebSocket is opened from a SharedWorker, which has no
+// RenderFrameHost.
+constexpr char kSharedWorkerWebSocketScript[] = R"(
+  new Promise((resolve, reject) => {
+    const worker = new SharedWorker('/shared-worker.js',
+                                    `websocket-${crypto.randomUUID()}`);
+    worker.port.onmessage = (e) => {
+      try {
+        resolve(JSON.parse(e.data).origin ?? '');
+      } catch {
+        reject(e.data);
+      }
+    };
+    worker.onerror = () => reject('SharedWorker error');
+    worker.port.postMessage($1);
+  });
+)";
 
 }  // namespace
 
@@ -57,6 +107,7 @@ class OnionCorsOriginBrowserTest : public InProcessBrowserTest {
         &OnionCorsOriginBrowserTest::RecordRequest, base::Unretained(this)));
     https_server_.RegisterRequestHandler(base::BindRepeating(
         &OnionCorsOriginBrowserTest::HandleRequest, base::Unretained(this)));
+    net::test_server::InstallDefaultWebSocketHandlers(&https_server_);
     ASSERT_TRUE(https_server_.Start());
 
     net::ProxyConfigServiceTor::SetBypassTorProxyConfigForTesting(true);
@@ -89,6 +140,12 @@ class OnionCorsOriginBrowserTest : public InProcessBrowserTest {
 
   GURL CrossOriginURL(std::string_view path, std::string_view host = "a.com") {
     return https_server_.GetURL(host, path);
+  }
+
+  // A WebSocket URL whose server replies with the handshake's request headers.
+  GURL EchoRequestHeadersWebSocketURL(std::string_view host) {
+    return net::test_server::GetWebSocketURL(https_server_, host,
+                                             "/echo-request-headers");
   }
 
   // The Origin header of the last `method` request for `path` on `host`, or ""
@@ -154,6 +211,9 @@ class OnionCorsOriginBrowserTest : public InProcessBrowserTest {
       response->set_content_type("application/javascript");
       response->set_content("// A same-site resource.\n");
       response->AddCustomHeader("Cross-Origin-Resource-Policy", "same-site");
+    } else if (path == kSharedWorkerPath) {
+      response->set_content_type("application/javascript");
+      response->set_content(kSharedWorkerScript);
     } else if (path == kRedirectPath) {
       // Redirects to the URL in the query, keeping the request's method.
       response->set_code(net::HTTP_TEMPORARY_REDIRECT);
@@ -283,4 +343,29 @@ IN_PROC_BROWSER_TEST_F(OnionCorsOriginBrowserTest,
   EXPECT_EQ(LastHeader("Sec-Fetch-Site", "GET", kSameSiteCorpPath,
                        "sub.foobar.onion"),
             "same-site");
+}
+
+IN_PROC_BROWSER_TEST_F(OnionCorsOriginBrowserTest, WebSocketOrigin) {
+  content::WebContents* web_contents = OpenOnionPage();
+  const std::string onion_origin =
+      url::Origin::Create(web_contents->GetLastCommittedURL()).Serialize();
+
+  for (const char* script :
+       {kFrameWebSocketScript, kSharedWorkerWebSocketScript}) {
+    SCOPED_TRACE(script);
+
+    // Same-origin WebSockets keep the .onion origin.
+    EXPECT_EQ(onion_origin,
+              content::EvalJs(
+                  web_contents,
+                  content::JsReplace(
+                      script, EchoRequestHeadersWebSocketURL("foobar.onion"))));
+
+    // Cross-origin WebSockets must not disclose the .onion origin.
+    EXPECT_EQ(
+        "null",
+        content::EvalJs(web_contents,
+                        content::JsReplace(
+                            script, EchoRequestHeadersWebSocketURL("a.com"))));
+  }
 }
