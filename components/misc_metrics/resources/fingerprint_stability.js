@@ -722,6 +722,7 @@ const getCanvasFingerprint = (() => {
   for (const [key, value] of Object.entries(rawData)) {
     processedData[key] = hashValue(value)
   }
+  processedData.combined = hashValue(Object.values(processedData).join(''))
 
   return processedData
 })()

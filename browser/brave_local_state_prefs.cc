@@ -144,6 +144,8 @@ void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
 #endif
 
   misc_metrics::UptimeMonitorImpl::RegisterPrefsForMigration(registry);
+  misc_metrics::FingerprintFrequencyMetrics::RegisterPrefsForMigration(
+      registry);
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   brave_wallet::RegisterLocalStatePrefsForMigration(registry);
 #endif
