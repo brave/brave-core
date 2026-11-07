@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Use the Leo icon for the actor tab alerts.
+
+      Upstream vends a Gemini-branded auto-browse icon for these, but the
+      agent doing the browsing is Leo. Preempting `GetAlertIcon` also covers
+      `GetAlertImageModel`, which calls it.
+
+      The icon symbol is brought into scope by the chromium_src shadow
+      file's `brave/components/vector_icons/vector_icons.h` include —
+      keeping this plaster to the in-function insertion that cannot be
+      expressed at file scope.
+    preempt_function_impl:
+      function_name: GetAlertIcon
+      code: |-
+        if (alert_state == TabAlert::kActorAccessing ||
+            alert_state == TabAlert::kActorWaitingOnUser) {
+          return kLeoProductBraveLeoIcon;
+        }
