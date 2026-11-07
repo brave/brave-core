@@ -29,8 +29,7 @@
 
 namespace {
 
-void AddStats(content::WebUIDataSource* source, Profile* profile) {
-  PrefService* prefs = profile->GetOriginalProfile()->GetPrefs();
+void AddStats(content::WebUIDataSource* source, PrefService* prefs) {
   // Matches the NTP stats widget, which shows ads + trackers as one number.
   const uint64_t blocked =
       prefs->GetUint64(brave_shields::prefs::kAdsBlocked) +
@@ -68,7 +67,7 @@ BraveRecapUI::BraveRecapUI(content::WebUI* web_ui)
       network::mojom::CSPDirectiveName::ImgSrc,
       "img-src 'self' chrome://resources blob: data:;");
   source->AddLocalizedStrings(webui::kBraveRecapStrings);
-  AddStats(source, profile);
+  AddStats(source, profile->GetOriginalProfile()->GetPrefs());
 }
 
 BraveRecapUI::~BraveRecapUI() = default;

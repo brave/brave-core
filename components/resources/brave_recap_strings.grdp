@@ -4,7 +4,7 @@
     Brave Recap
   </message>
   <message name="IDS_BRAVE_RECAP_INTRO_HEADING" desc="Heading of the first Brave Recap slide" formatter_data="webui=BraveRecap">
-    Your Brave recap
+    Your Brave Recap
   </message>
   <message name="IDS_BRAVE_RECAP_INTRO_SINCE" desc="Text on the first slide. $1 is a month and year, e.g. 'October 2024'." formatter_data="webui=BraveRecap">
     Since <ph name="MONTH_YEAR">$1<ex>October 2024</ex></ph>, Brave Shields has been keeping you safe by blocking third-party ads and trackers.
@@ -13,7 +13,7 @@
     That's <ph name="DAYS">$1<ex>731</ex></ph> days of browsing with peace of mind.
   </message>
   <message name="IDS_BRAVE_RECAP_INTRO_NO_DATE" desc="Text on the first slide when the install date is unknown." formatter_data="webui=BraveRecap">
-    Brave Shields has been keeping you safe by blocking third-party ads and trackers.
+    Brave Shields keeps you safe by blocking third-party ads and trackers.
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_HEADING" desc="Label under the number of ads and trackers blocked" formatter_data="webui=BraveRecap">
     ads &amp; trackers blocked
@@ -25,13 +25,13 @@
     of waiting saved
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_TEXT" desc="Fun comparison for time saved. $1 is a number of feature-length movies." formatter_data="webui=BraveRecap">
-    Pages load faster without the junk. That's about <ph name="MOVIES">$1<ex>21</ex></ph> movies you could have watched instead.
+    Pages load faster without ads and trackers. That's about <ph name="MOVIES">$1<ex>21</ex></ph> movies you could have watched instead.
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_TEXT_ONE" desc="Fun comparison for time saved when it is about one feature-length movie" formatter_data="webui=BraveRecap">
-    Pages load faster without the junk. That's about a whole movie you could have watched instead.
+    Pages load faster without ads and trackers. That's about a whole movie you could have watched instead.
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_TEXT_SHORT" desc="Explanation of time saved when it is less than one movie" formatter_data="webui=BraveRecap">
-    Pages load faster without the junk, and it adds up.
+    Pages load faster without ads and trackers, and the time saved grows as you browse.
   </message>
   <message name="IDS_BRAVE_RECAP_DATA_HEADING" desc="Label under the amount of data saved" formatter_data="webui=BraveRecap">
     of data saved
@@ -67,7 +67,7 @@
     Post on X
   </message>
   <message name="IDS_BRAVE_RECAP_POST_ON_REDDIT" desc="Button to share on Reddit" formatter_data="webui=BraveRecap">
-    Reddit
+    Post on Reddit
   </message>
   <message name="IDS_BRAVE_RECAP_COPY_LINK" desc="Button to copy the share text and link" formatter_data="webui=BraveRecap">
     Copy text
