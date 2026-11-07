@@ -54,6 +54,13 @@ export function PaymentForm(props: Props) {
   const [customAmount, setCustomAmount] = React.useState(0)
   const [isRecurring, setIsRecurring] = React.useState(false)
 
+  // Leo's React wrapper enables the button in a layout effect but attaches its
+  // `onClick` in a later passive effect, so a click in between would run the
+  // previous render's handler (with its stale amount). Keep the listener
+  // stable and read the latest values when it fires.
+  const sendRef = React.useRef<() => void>(() => {})
+  const onSendClick = React.useCallback(() => sendRef.current(), [])
+
   const otherOptionValue = -1
 
   if (!externalWallet || !parameters) {
@@ -62,6 +69,7 @@ export function PaymentForm(props: Props) {
 
   const sendValue =
     selectedOption === otherOptionValue ? customAmount : selectedOption
+  sendRef.current = () => props.onSend(sendValue, isRecurring)
 
   function onCustomAmountChange(event: React.FormEvent<HTMLInputElement>) {
     const textValue = event.currentTarget.value
@@ -249,7 +257,7 @@ export function PaymentForm(props: Props) {
         <Button
           className='send-button'
           isDisabled={isSendDisabled()}
-          onClick={() => props.onSend(sendValue, isRecurring)}
+          onClick={onSendClick}
         >
           {renderSendText()}
         </Button>
