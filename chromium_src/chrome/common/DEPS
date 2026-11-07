@@ -7,5 +7,7 @@ include_rules += [
   "+brave/components/brave_wallet/common",
   "+brave/components/constants",
   "+brave/components/ipfs/buildflags",
+  "+brave/components/psst/buildflags",
+  "+brave/components/psst/core/common/constants.h",
   "+brave/grit",
 ]
