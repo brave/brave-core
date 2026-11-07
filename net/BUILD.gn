@@ -30,8 +30,8 @@ source_set("unit_tests") {
     "//net:test_support",
     "//net/http:transport_security_state_unittest_data_default",
     "//net/tools/huffman_trie:huffman_trie_generator_sources",
-    "//testing/gtest",
     "//testing/gmock",
+    "//testing/gtest",
     "//url",
   ]
 }
