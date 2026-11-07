@@ -1536,6 +1536,7 @@ test("brave_browser_tests") {
       "//brave/browser/ui/views/tabs:browser_tests",
       "//brave/browser/ui/views/toolbar:screenshot",
       "//brave/browser/ui/views/workspaces:browser_tests",
+      "//brave/browser/workspaces:browser_tests",
       "//brave/components/containers/buildflags",
       "//brave/components/sidebar/browser",
       "//brave/test/views/snapshot",

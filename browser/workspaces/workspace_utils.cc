@@ -7,6 +7,8 @@
 
 #include <algorithm>
 #include <memory>
+#include <optional>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -14,36 +16,47 @@
 #include "base/json/values_util.h"
 #include "base/logging.h"
 #include "base/time/time.h"
+#include "base/uuid.h"
 #include "components/sessions/core/command_storage_read_status.h"
 
 namespace {
 
 constexpr const char kWorkspaceName[] = "name";
-constexpr const char kWorkspaceWindowCount[] = "number-of-windows";
 constexpr const char kWorkspaceTabCount[] = "number-of-tabs";
 constexpr const char kWorkspaceModifiedAt[] = "modified-at";
 
 }  // namespace
 
+std::optional<WorkspaceMetadata> WorkspaceMetadataFromDictEntry(
+    std::string_view key,
+    const base::Value& value) {
+  const base::DictValue* entry = value.GetIfDict();
+  if (!entry) {
+    return std::nullopt;
+  }
+  base::Uuid id = base::Uuid::ParseLowercase(key);
+  if (!id.is_valid()) {
+    return std::nullopt;
+  }
+  const std::string* name = entry->FindString(kWorkspaceName);
+  if (!name || name->empty()) {
+    return std::nullopt;
+  }
+  return WorkspaceMetadata{
+      .id = std::move(id),
+      .name = *name,
+      .modified_at = base::ValueToTime(entry->Find(kWorkspaceModifiedAt))
+                         .value_or(base::Time::Now()),
+      .number_of_tabs = entry->FindInt(kWorkspaceTabCount).value_or(0)};
+}
+
 std::vector<WorkspaceMetadata> ListWorkspacesFromDict(
     const base::DictValue& dict) {
   std::vector<WorkspaceMetadata> result;
   for (const auto [key, value] : dict) {
-    const base::DictValue* entry = value.GetIfDict();
-    if (!entry) {
-      continue;
+    if (auto info = WorkspaceMetadataFromDictEntry(key, value)) {
+      result.push_back(std::move(*info));
     }
-    const std::string* name = entry->FindString(kWorkspaceName);
-    if (!name || name->empty()) {
-      continue;
-    }
-    WorkspaceMetadata info = {
-        .name = *name,
-        .modified_at = base::ValueToTime(entry->Find(kWorkspaceModifiedAt))
-                           .value_or(base::Time::Now()),
-        .number_of_windows = entry->FindInt(kWorkspaceWindowCount).value_or(1),
-        .number_of_tabs = entry->FindInt(kWorkspaceTabCount).value_or(0)};
-    result.push_back(std::move(info));
   }
 
   std::sort(result.begin(), result.end(),
@@ -54,9 +67,9 @@ std::vector<WorkspaceMetadata> ListWorkspacesFromDict(
 }
 
 base::DictValue WorkspaceMetadataToDictEntry(const WorkspaceMetadata& meta) {
+  // |meta.id| is the dictionary key, so it is not repeated in the entry.
   return base::DictValue()
       .Set(kWorkspaceName, meta.name)
-      .Set(kWorkspaceWindowCount, meta.number_of_windows)
       .Set(kWorkspaceTabCount, meta.number_of_tabs)
       .Set(kWorkspaceModifiedAt, base::TimeToValue(meta.modified_at));
 }
@@ -77,18 +90,17 @@ void WriteWorkspaceToDisk(
                           std::move(on_error));
 }
 
-std::vector<std::unique_ptr<sessions::SessionCommand>> ReadWorkspaceFromDisk(
-    const base::FilePath& workspace_path,
-    scoped_refptr<sessions::CommandStorageBackend> backend) {
+std::optional<std::vector<std::unique_ptr<sessions::SessionCommand>>>
+ReadWorkspaceFromDisk(const base::FilePath& workspace_path,
+                      scoped_refptr<sessions::CommandStorageBackend> backend) {
   // Only do file I/O here.  Callers must call RestoreSessionFromCommands() on
   // the UI thread because SessionTab/SessionWindow constructors call
   // SessionID::NewUnique() which is sequence-checked to the UI thread.
   sessions::CommandStorageBackend::ReadCommandsResult result =
       backend->ReadLastSessionCommands();
-  if (sessions::IsCommandStorageReadError(result.status) ||
-      result.commands.empty()) {
+  if (sessions::IsCommandStorageReadError(result.status)) {
     DVLOG(1) << "Could not read workspace session from: " << workspace_path;
-    return {};
+    return std::nullopt;
   }
   return std::move(result.commands);
 }
