@@ -1,5 +1,5 @@
 diff --git a/chrome/updater/test/test_installer/BUILD.gn b/chrome/updater/test/test_installer/BUILD.gn
-index 2e1c6197ed0bc4c55b7122d92acbe839bb03cc60..2d8aa674bba14085d4a820623834098a4202575e 100644
+index 8d58726608825030194a7fb6f96d91643c77bb2b..3cc8523b2a2f8e0437c15c2710f75dd22376b5a3 100644
 --- a/chrome/updater/test/test_installer/BUILD.gn
 +++ b/chrome/updater/test/test_installer/BUILD.gn
 @@ -133,8 +133,8 @@ if (is_win) {
