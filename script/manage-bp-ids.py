@@ -38,7 +38,7 @@ DOC_PREFIXES = {
     "frontend": "FE",
     "localization": "L10N",
     "testing-async": "TA",
-    "testing-isolation": "TI",
+    "testing": "TI",
     "testing-upstream-failures": "TUF",
     "testing-javascript": "TJ",
     "testing-navigation": "TN",
