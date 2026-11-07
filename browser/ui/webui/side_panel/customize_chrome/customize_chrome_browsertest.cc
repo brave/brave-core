@@ -71,11 +71,11 @@ class CustomizeChromeSidePanelBrowserTest : public InProcessBrowserTest {
   base::ListValue ListActions(content::WebContents* web_contents) {
     constexpr char kScript[] = R"(
         (async () => {
-          const {browserProxyFactory} = await import(
+          const {CustomizeToolbarApiProxy} = await import(
               'chrome://customize-chrome-side-panel.top-chrome/' +
-              'customize_toolbar.mojom-webui.js');
+              'customize_toolbar/customize_toolbar_api_proxy.js');
           const {actions} =
-              await browserProxyFactory.getInstance().handler
+              await CustomizeToolbarApiProxy.getInstance().handler
                   .listActions();
           return actions.map(a => ({id: a.id, category: a.category}));
         })()
@@ -188,11 +188,11 @@ IN_PROC_BROWSER_TEST_F(CustomizeChromeSidePanelBrowserTest,
   // Listen for the WebUI client being notified that actions changed.
   ASSERT_TRUE(content::ExecJs(web_contents, R"(
       (async () => {
-        const {browserProxyFactory} = await import(
+        const {CustomizeToolbarApiProxy} = await import(
             'chrome://customize-chrome-side-panel.top-chrome/' +
-            'customize_toolbar.mojom-webui.js');
+            'customize_toolbar/customize_toolbar_api_proxy.js');
         window.notified = false;
-        browserProxyFactory.getInstance()
+        CustomizeToolbarApiProxy.getInstance()
             .callbackRouter.notifyActionsUpdated.addListener(() => {
               window.notified = true;
             });

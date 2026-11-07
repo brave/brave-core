@@ -75,7 +75,6 @@ source_set("unit_tests") {
     ":ads",
     "//base",
     "//base/test:test_support",
-    "//brave/components/brave_ads/core/browser/network",
     "//brave/components/brave_ads/core/mojom",
     "//brave/components/brave_ads/core/public:headers",
     "//brave/components/brave_news/common",

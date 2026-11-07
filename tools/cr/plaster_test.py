@@ -1451,46 +1451,6 @@ class PlasterTest(unittest.TestCase):
         self.assertIn('Profile::~Profile()', hunk_header)
         self.assertNotIn('AssignTestingFactories', hunk_header)
 
-    def test_patch_keeps_newline_added_at_end_of_file(self):
-        """Appending after a last line lacking a newline must round-trip."""
-        test_file = Path('build/no_trailing_newline.gn')
-        self.fake_chromium_src.write_and_stage_file(
-            test_file, 'list =\n    []', self.fake_chromium_src.chromium
-        )
-        self.fake_chromium_src.commit(
-            'Add no_trailing_newline.gn', self.fake_chromium_src.chromium
-        )
-
-        plaster_path = plaster.PLASTER_FILES_PATH / (str(test_file) + '.yaml')
-        plaster_path.parent.mkdir(parents=True, exist_ok=True)
-        plaster_path.write_text(
-            'substitutions:\n'
-            '  - description: Append after the last line\n'
-            '    regex:\n'
-            "      re_pattern: '    \\[\\]$'\n"
-            "      replace: \"    []\\nlist += extra\"\n"
-        )
-        plaster.PlasterFile(plaster_path).apply()
-
-        source = self.fake_chromium_src.chromium / test_file
-        expected = source.read_text(encoding='utf-8')
-        self.assertEqual(expected, 'list =\n    []\nlist += extra')
-
-        patch = plaster.PatchinfoBuilder(plaster_path).patch.path
-        self.fake_chromium_src._run_git_command(
-            ['checkout', '--', str(test_file)], self.fake_chromium_src.chromium
-        )
-        self.fake_chromium_src._run_git_command(
-            [
-                'apply',
-                '--ignore-space-change',
-                '--ignore-whitespace',
-                str(patch.resolve()),
-            ],
-            self.fake_chromium_src.chromium,
-        )
-        self.assertEqual(source.read_text(encoding='utf-8'), expected)
-
 
 class RewriterFormsTest(unittest.TestCase):
     """End-to-end tests for the substitution envelope and its rewriters.

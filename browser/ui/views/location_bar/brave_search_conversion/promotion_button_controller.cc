@@ -202,7 +202,7 @@ void PromotionButtonController::SetDefaultAndLoadBraveSearchWithCurrentInput() {
           omnibox_view_->GetText());
 
   NavigateParams params(&*browser_, url, ui::PAGE_TRANSITION_TYPED);
-  params.disposition = WindowOpenDisposition::kCurrentTab;
+  params.disposition = WindowOpenDisposition::CURRENT_TAB;
   Navigate(&params);
 
   // Once user set brave as a default, we'll not show this button again.

@@ -282,7 +282,7 @@ def scan_filter_files(
                 filters_to_write = section_filters
                 if sort and apply and section_has_kept_filter:
                     filters_to_write = sorted(
-                        section_filters, key=lambda line: line.strip()
+                        section_filters, key=lambda l: l.strip()
                     )
                 new_lines.extend(filters_to_write)
                 new_lines.append("")

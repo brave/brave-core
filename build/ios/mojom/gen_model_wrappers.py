@@ -20,7 +20,7 @@ sys.path.insert(
 )
 
 # pylint: disable=import-error,wrong-import-position
-from mojom.generate.module import Module  # noqa: E402
+from mojom.generate.module import Module
 
 
 def parse_args():

@@ -9,7 +9,6 @@
 #include <memory>
 #include <utility>
 
-#include "base/containers/flat_set.h"
 #include "base/feature_list.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/renderer/rss_link_reader.h"
@@ -79,10 +78,8 @@
 #endif
 
 namespace {
-void MaybeRemoveWidevineSupport(
-    media::GetSupportedKeySystemsCB cb,
-    media::KeySystemInfos key_systems,
-    base::flat_set<std::string> pending_key_systems) {
+void MaybeRemoveWidevineSupport(media::GetSupportedKeySystemsCB cb,
+                                media::KeySystemInfos key_systems) {
 #if BUILDFLAG(ENABLE_WIDEVINE)
   auto dynamic_params = BraveRenderThreadObserver::GetDynamicParams();
   if (!dynamic_params.widevine_enabled) {
@@ -94,7 +91,7 @@ void MaybeRemoveWidevineSupport(
     key_systems.erase(to_remove.begin(), to_remove.end());
   }
 #endif
-  cb.Run(std::move(key_systems), std::move(pending_key_systems));
+  cb.Run(std::move(key_systems));
 }
 
 class Web3MetricsDelegate

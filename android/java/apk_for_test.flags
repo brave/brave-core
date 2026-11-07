@@ -558,6 +558,8 @@
 -keep class org.chromium.chrome.browser.multiwindow.MultiWindowUtils {
     *** shouldShowManageWindowsMenu(...);
     *** isLinkNavigationToOtherWindowSupported(...);
+    *** isLinkNavigationToNewWindowSupported(...);
+    *** isLinkNavigationToIncognitoWindowSupported(...);
     *** isMoveToOtherWindowSupported(...);
     *** canEnterMultiWindowMode(...);
     <init>(...);
@@ -966,6 +968,10 @@
 
 -keep class org.chromium.chrome.browser.ui.system.BraveStatusBarColorController {
     public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.styles.OmniboxResourceProvider {
+    *** getToolbarSidePaddingForNtp(...);
 }
 
 -keep class org.chromium.chrome.browser.password_manager.PasswordManagerHelper {

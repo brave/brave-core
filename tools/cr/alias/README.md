@@ -35,7 +35,7 @@ vpython3 tools/cr/alias/cmd.py setup-alias
 
 ### `git cr commit`
 
-A wrapper around `git commit` that adds a few convenience flags. All other
+A wrapper around `git commit` that adds three convenience flags. All other
 arguments are forwarded verbatim to `git commit`.
 
 ```sh
@@ -62,23 +62,6 @@ This creates the empty `reassign!<hash>!` commit that `brockit rebase` later
 squashes onto its target to swap authorship. Because brockit owns the resulting
 commit, this mode must stand alone — combining it with any other argument is an
 error.
-
-#### `--force-commit-hook`
-
-The commit-msg hook leaves the message alone during a rebase or cherry-pick, and
-for `fixup!`/`amend!` commits. `git cr commit` refuses a commit where that would
-lose something: any commit while a rebase or cherry-pick is in progress, and a
-`fixup!`/`amend!` commit given `--tagged`, `--issue` or `--culprit`.
-`--force-commit-hook` runs the hook anyway, e.g. for a fix committed while a
-rebase is stopped:
-
-```sh
-git cr commit --force-commit-hook --culprit abc123 -m "Adjust to the new API"
-```
-
-During a rebase, the tags and the culprit range come from the branch being
-rebased. A `fixup!` or `amend!` commit still gets no tags, so that autosquash
-finds its target, but gets its culprit links and issues.
 
 ### `git cr mv`
 

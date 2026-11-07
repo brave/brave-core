@@ -9,6 +9,7 @@
 
 #include "base/check_op.h"
 #include "base/values.h"
+#include "brave/app/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
 #include "chrome/grit/theme_resources.h"
@@ -20,15 +21,8 @@
 #include "brave/grit/brave_theme_resources.h"
 #endif
 
-namespace gfx {
-struct VectorIcon;
-}  // namespace gfx
-
 // First, define anything that patches will rely on.
 namespace profiles {
-
-// Defined in //brave/browser/profiles:chromium_impl.
-const gfx::VectorIcon& GetBraveGuestAvatarIcon();
 
 struct IconResourceInfo;
 
@@ -196,8 +190,8 @@ bool IsDefaultAvatarIconUrl(std::string_view url, size_t* icon_index) {
 }
 
 ui::ImageModel GetGuestAvatar(int size) {
-  return ui::ImageModel::FromVectorIcon(GetBraveGuestAvatarIcon(),
-                                        ui::kColorIcon, size);
+  return ui::ImageModel::FromVectorIcon(kUserMenuGuestIcon, ui::kColorIcon,
+                                        size);
 }
 
 gfx::Image GetPlaceholderAvatarIconWithColors(

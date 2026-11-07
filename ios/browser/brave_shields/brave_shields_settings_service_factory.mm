@@ -5,8 +5,7 @@
 
 #include "brave/ios/browser/brave_shields/brave_shields_settings_service_factory.h"
 
-#include <utility>
-
+#include "base/no_destructor.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "ios/chrome/browser/content_settings/model/host_content_settings_map_factory.h"
@@ -15,16 +14,29 @@
 
 namespace brave_shields {
 
-BraveShieldsSettingsServiceFactory::BraveShieldsSettingsServiceFactory(
-    PassKey key)
-    : TypedProfileKeyedServiceFactoryIOS(
-          std::move(key),
-          "BraveShieldsSettingsService",
-          ProfileSelection::kOwnInstanceInIncognito,
-          ServiceCreation::kCreateLazily,
-          TestingCreation::kCreateService) {
+// static
+BraveShieldsSettingsService* BraveShieldsSettingsServiceFactory::GetForProfile(
+    ProfileIOS* profile) {
+  return GetInstance()->GetServiceForProfileAs<BraveShieldsSettingsService>(
+      profile, true);
+}
+
+// static
+BraveShieldsSettingsServiceFactory*
+BraveShieldsSettingsServiceFactory::GetInstance() {
+  static base::NoDestructor<BraveShieldsSettingsServiceFactory> instance;
+  return instance.get();
+}
+
+BraveShieldsSettingsServiceFactory::BraveShieldsSettingsServiceFactory()
+    : ProfileKeyedServiceFactoryIOS("BraveShieldsSettingsService",
+                                    ProfileSelection::kOwnInstanceInIncognito,
+                                    ServiceCreation::kCreateLazily,
+                                    TestingCreation::kCreateService) {
   DependsOn(ios::HostContentSettingsMapFactory::GetInstance());
 }
+
+BraveShieldsSettingsServiceFactory::~BraveShieldsSettingsServiceFactory() {}
 
 std::unique_ptr<KeyedService>
 BraveShieldsSettingsServiceFactory::BuildServiceInstanceFor(

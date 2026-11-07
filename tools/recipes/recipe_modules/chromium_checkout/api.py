@@ -15,8 +15,6 @@ from typing import TYPE_CHECKING
 from recipe_api import RecipeApi
 
 if TYPE_CHECKING:
-    from pathlib import Path
-
     from recipe_modules import chromium_checkout
     from recipe_modules.git.api import GitRef
 

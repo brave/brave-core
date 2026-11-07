@@ -20,6 +20,7 @@ class BraveGoogleKeysInfoBarDelegate {
   }
 };
 
+#define ShowIfNotOffTheRecordProfile ShowIfNotOffTheRecordProfileBrave
 #define GoogleApiKeysInfoBarDelegate BraveGoogleKeysInfoBarDelegate
 
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
@@ -33,3 +34,4 @@ class BraveGoogleKeysInfoBarDelegate {
 #endif
 
 #undef GoogleApiKeysInfoBarDelegate
+#undef ShowIfNotOffTheRecordProfile

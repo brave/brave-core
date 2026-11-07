@@ -72,10 +72,6 @@
 #include "net/test/embedded_test_server/http_response.h"
 #include "services/network/public/cpp/network_switches.h"
 #include "ui/events/base_event_utils.h"
-#include "ui/events/event.h"
-#include "ui/events/event_constants.h"
-#include "ui/events/keycodes/keyboard_codes.h"
-#include "ui/views/view.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/common/features.h"
@@ -287,14 +283,14 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
 
   void GoBack(BrowserWindowInterface* browser) {
     content::TestNavigationObserver observer(ActiveWebContents());
-    chrome::GoBack(browser, WindowOpenDisposition::kCurrentTab);
+    chrome::GoBack(browser, WindowOpenDisposition::CURRENT_TAB);
     observer.Wait();
   }
 
   void NavigateToPageSynchronously(
       std::string_view path,
       WindowOpenDisposition disposition =
-          WindowOpenDisposition::kNewForegroundTab) {
+          WindowOpenDisposition::NEW_FOREGROUND_TAB) {
     const GURL url = GURL("https://a.test").Resolve(path);
     ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
         browser(), url, disposition,
@@ -310,7 +306,7 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, PRE_RestoreSpeedreaderPage) {
   EnableSpeedreaderAllowedForAllSites();
   NavigateToPageSynchronously(kTestPageReadable,
-                              WindowOpenDisposition::kCurrentTab);
+                              WindowOpenDisposition::CURRENT_TAB);
   EXPECT_TRUE(speedreader::IsDistilled(tab_helper()->PageDistillState()));
 }
 
@@ -324,7 +320,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, RestoreSpeedreaderPage) {
 // which must distill the page that the new contents loads.
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, FollowsDiscardedContents) {
   NavigateToPageSynchronously(kTestPageReadable,
-                              WindowOpenDisposition::kNewBackgroundTab);
+                              WindowOpenDisposition::NEW_BACKGROUND_TAB);
   TabStripModel* const tab_strip_model = browser()->tab_strip_model();
   const int index = tab_strip_model->count() - 1;
   tabs::TabInterface* const tab = tab_strip_model->GetTabAtIndex(index);
@@ -354,7 +350,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, NavigationNostickTest) {
   NavigateToPageSynchronously(kTestPageSimple);
   EXPECT_FALSE(speedreader::IsDistilled(tab_helper()->PageDistillState()));
   NavigateToPageSynchronously(kTestPageReadable,
-                              WindowOpenDisposition::kCurrentTab);
+                              WindowOpenDisposition::CURRENT_TAB);
   EXPECT_TRUE(speedreader::IsDistilled(tab_helper()->PageDistillState()));
 
   // Ensure distill state doesn't stick when we back-navigate from a readable
@@ -387,7 +383,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, DISABLED_SmokeTest) {
   // Check that disabled speedreader doesn't affect the page.
   EXPECT_FALSE(speedreader_service()->IsAllowedForAllReadableSites());
   NavigateToPageSynchronously(kTestPageReadable,
-                              WindowOpenDisposition::kCurrentTab);
+                              WindowOpenDisposition::CURRENT_TAB);
   const auto first_load_page_length =
       content::EvalJs(ActiveWebContents(), kGetContentLength,
                       content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
@@ -404,7 +400,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, DISABLED_SmokeTest) {
         return message.log_level == blink::mojom::ConsoleMessageLevel::kError;
       }));
   NavigateToPageSynchronously(kTestPageReadable,
-                              WindowOpenDisposition::kCurrentTab);
+                              WindowOpenDisposition::CURRENT_TAB);
 
   const std::string kGetStyleLength =
       "document.getElementById('brave_speedreader_style').innerHTML.length";
@@ -971,23 +967,6 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Toolbar) {
   }
 }
 
-IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ToolbarProcessesAccelerators) {
-  EnableSpeedreaderAllowedForAllSites();
-  NavigateToPageSynchronously(kTestPageReadable);
-  ASSERT_TRUE(WaitDistilled());
-
-  auto* toolbar_view = BraveBrowserView::GetBrowserViewForBrowser(browser())
-                           ->reader_mode_toolbar();
-  ASSERT_TRUE(WaitToolbarVisibility(toolbar_view, true));
-  ASSERT_TRUE(toolbar_view->GetWebContentsForTesting());
-
-  // Browser accelerators reach the focus manager before the toolbar's renderer.
-  views::View* toolbar = toolbar_view->toolbar();
-  ui::KeyEvent new_tab(ui::EventType::kKeyPressed, ui::VKEY_T,
-                       ui::EF_PLATFORM_ACCELERATOR);
-  EXPECT_FALSE(toolbar->SkipDefaultKeyEventProcessing(new_tab));
-}
-
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ToolbarLangs) {
   language::LanguagePrefs language_prefs(browser()->GetProfile()->GetPrefs());
   language_prefs.SetUserSelectedLanguagesList(
@@ -1041,20 +1020,20 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, TTS) {
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ErrorPage) {
   EnableSpeedreaderAllowedForAllSites();
   NavigateToPageSynchronously(kTestErrorPage,
-                              WindowOpenDisposition::kCurrentTab);
+                              WindowOpenDisposition::CURRENT_TAB);
   EXPECT_TRUE(ActiveWebContents()->GetPrimaryMainFrame()->IsErrorDocument());
   EXPECT_FALSE(GetReaderButton().GetVisible());
 
   // Navigate to the non-automatic distillable page.
   NavigateToPageSynchronously(kTestPageReadableOnUnreadablePath,
-                              WindowOpenDisposition::kCurrentTab);
+                              WindowOpenDisposition::CURRENT_TAB);
   EXPECT_TRUE(speedreader::IsViewOriginal(tab_helper()->PageDistillState()));
   ASSERT_TRUE(WaitDistillable(tab_helper()));
   EXPECT_TRUE(GetReaderButton().GetVisible());
 
   GoBack(browser());
   NavigateToPageSynchronously(kTestPageReadable,
-                              WindowOpenDisposition::kCurrentTab);
+                              WindowOpenDisposition::CURRENT_TAB);
   ASSERT_TRUE(WaitDistilled());
   EXPECT_TRUE(GetReaderButton().GetVisible());
   EXPECT_TRUE(speedreader::IsDistilled(tab_helper()->PageDistillState()));
@@ -1073,7 +1052,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Csp) {
         "following Content Security Policy directive: \"img-src "
         "'none'\".*");
 
-    NavigateToPageSynchronously(page, WindowOpenDisposition::kCurrentTab);
+    NavigateToPageSynchronously(page, WindowOpenDisposition::CURRENT_TAB);
 
     static constexpr char kCheckNoMaliciousContent[] = R"js(
       !document.getElementById('malicious1') &&
@@ -1095,7 +1074,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, CspOrder) {
   {
     content::WebContentsConsoleObserver console_observer(ActiveWebContents());
     NavigateToPageSynchronously(kTestCSPOrderPage1,
-                                WindowOpenDisposition::kCurrentTab);
+                                WindowOpenDisposition::CURRENT_TAB);
     EXPECT_TRUE(console_observer.messages().empty());
   }
 
@@ -1107,7 +1086,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, CspOrder) {
         "following Content Security Policy directive: "
         "\"base-uri 'none'\".*");
     NavigateToPageSynchronously(kTestCSPOrderPage2,
-                                WindowOpenDisposition::kCurrentTab);
+                                WindowOpenDisposition::CURRENT_TAB);
     EXPECT_TRUE(console_observer.Wait());
   }
 }
@@ -1116,7 +1095,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, CspInBody) {
   EnableSpeedreaderAllowedForAllSites();
 
   NavigateToPageSynchronously(kTestCSPInBodyPage,
-                              WindowOpenDisposition::kCurrentTab);
+                              WindowOpenDisposition::CURRENT_TAB);
   static constexpr char kCheckCsp[] = R"js(
     document.querySelectorAll('meta[content="CSP in body"]').length === 0
   )js";
@@ -1147,7 +1126,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest,
           testing::InvokeWithoutArgs(&run_loop, &base::RunLoop::Quit));
 
   NavigateToPageSynchronously(kTestPageReadableOnUnreadablePath,
-                              WindowOpenDisposition::kCurrentTab);
+                              WindowOpenDisposition::CURRENT_TAB);
   run_loop.Run();
   tab_helper()->speedreader::PageDistiller::RemoveObserver(&observer);
 
@@ -1168,7 +1147,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest,
   EXPECT_TRUE(speedreader::IsDistilled(tab_helper()->PageDistillState()));
 
   // Go to home page.
-  NavigateToPageSynchronously("/", WindowOpenDisposition::kCurrentTab);
+  NavigateToPageSynchronously("/", WindowOpenDisposition::CURRENT_TAB);
   EXPECT_TRUE(speedreader::IsViewOriginal(tab_helper()->PageDistillState()));
 }
 
@@ -1181,7 +1160,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ToolbarWithRoundedCorners) {
   // Load distilled page at tab 0.
   EXPECT_EQ(0, tab_strip_model->active_index());
   NavigateToPageSynchronously(kTestPageReadable,
-                              WindowOpenDisposition::kCurrentTab);
+                              WindowOpenDisposition::CURRENT_TAB);
   EXPECT_TRUE(speedreader::IsDistilled(tab_helper()->PageDistillState()));
 
   const bool rounded_contents =
@@ -1243,7 +1222,7 @@ class SpeedReaderContentSpoofBrowserTest : public SpeedReaderBrowserTest {
   // |mode| ("redirect" or "attachment").
   void NavigateToReadablePage(std::string_view mode) {
     NavigateToPageSynchronously(base::StrCat({kTestPageReadable, "?", mode}),
-                                WindowOpenDisposition::kCurrentTab);
+                                WindowOpenDisposition::CURRENT_TAB);
     ASSERT_TRUE(WaitDistillable());
   }
 
@@ -1470,7 +1449,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderWithSplitViewBrowserTest, SplitView) {
   // Load a distillabe page in first tab.
   browser()->tab_strip_model()->ActivateTabAt(0);
   NavigateToPageSynchronously(kTestPageReadable,
-                              WindowOpenDisposition::kCurrentTab);
+                              WindowOpenDisposition::CURRENT_TAB);
 
   ASSERT_TRUE(WaitToolbarVisibility(GetPrimaryToolbar(), true));
   ASSERT_TRUE(WaitToolbarVisibility(GetSecondaryToolbar(), false));
@@ -1482,7 +1461,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderWithSplitViewBrowserTest, SplitView) {
 
   // Load a distillabe page in second tab.
   NavigateToPageSynchronously(kTestPageReadable,
-                              WindowOpenDisposition::kCurrentTab);
+                              WindowOpenDisposition::CURRENT_TAB);
   ASSERT_TRUE(WaitToolbarVisibility(GetPrimaryToolbar(), true));
   ASSERT_TRUE(WaitToolbarVisibility(GetSecondaryToolbar(), true));
 
@@ -1536,7 +1515,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderWithSplitViewBrowserTest, SplitViewClicking) {
   browser()->tab_strip_model()->ActivateTabAt(0);
   EXPECT_EQ(0, browser()->tab_strip_model()->active_index());
   NavigateToPageSynchronously(kTestPageReadable,
-                              WindowOpenDisposition::kCurrentTab);
+                              WindowOpenDisposition::CURRENT_TAB);
 
   // Check clicking view makes its tab activate.
   browser()->tab_strip_model()->ActivateTabAt(1);

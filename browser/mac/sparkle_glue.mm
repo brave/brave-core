@@ -59,9 +59,6 @@ std::string GetDescriptionFromAppcastItem(id item) {
   return base::SysNSStringToUTF8(description);
 }
 
-bool g_tried_creating_shared_sparkle_glue = false;
-SparkleGlue* __strong g_shared_sparkle_glue = nil;
-
 }  // namespace
 
 @implementation SparkleGlue
@@ -81,26 +78,20 @@ SparkleGlue* __strong g_shared_sparkle_glue = nil;
 #pragma mark - SparkleGlue
 
 + (instancetype)sharedSparkleGlue {
-  if (brave::UpdateEnabled() && !g_tried_creating_shared_sparkle_glue) {
-    g_tried_creating_shared_sparkle_glue = true;
+  static bool sTriedCreatingSharedSparkleGlue = false;
+  static SparkleGlue* shared = nil;
 
-    g_shared_sparkle_glue = [[SparkleGlue alloc] init];
-    [g_shared_sparkle_glue loadParameters];
-    if (![g_shared_sparkle_glue loadSparkleFramework]) {
+  if (brave::UpdateEnabled() && !sTriedCreatingSharedSparkleGlue) {
+    sTriedCreatingSharedSparkleGlue = true;
+
+    shared = [[SparkleGlue alloc] init];
+    [shared loadParameters];
+    if (![shared loadSparkleFramework]) {
       VLOG(0) << "brave update: Failed to load sparkle framework";
-      g_shared_sparkle_glue = nil;
+      shared = nil;
     }
   }
-  return g_shared_sparkle_glue;
-}
-
-+ (void)setSharedSparkleGlueForTesting:(SparkleGlue*)glue {
-  g_tried_creating_shared_sparkle_glue = true;
-  g_shared_sparkle_glue = glue;
-}
-
-- (void)setUpdaterForTesting:(id)updater {
-  _su_updater = updater;
+  return shared;
 }
 
 - (instancetype)init {

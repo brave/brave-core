@@ -113,7 +113,7 @@ def post_comments(
 
         for report in reports:
             # Check that the report has a message key
-            if not isinstance(report, dict) or 'message' not in report:
+            if not isinstance(report, dict) or not 'message' in report:
                 continue
 
             # Hashing of the report is done so we can add it to the comment

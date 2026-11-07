@@ -1517,18 +1517,18 @@ std::optional<GURL> BraveContentBrowserClient::GetEffectiveURL(
     const GURL& url) {
   Profile* profile = Profile::FromBrowserContext(browser_context);
   if (!profile) {
-    return std::nullopt;
+    return url;
   }
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   if (extensions::ChromeContentBrowserClientExtensionsPart::
           AreExtensionsDisabledForProfile(profile)) {
-    return std::nullopt;
+    return url;
   }
   return ChromeContentBrowserClientExtensionsPart::GetEffectiveURL(profile,
                                                                    url);
 #else
-  return std::nullopt;
+  return url;
 #endif
 }
 

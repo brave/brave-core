@@ -167,11 +167,7 @@ class Patchfile:
                     return self.plaster_apply()
                 return self.ApplyStatus.CONFLICT
             error_line = next(
-                (
-                    line
-                    for line in e.stderr.splitlines()
-                    if line.startswith('error:')
-                ),
+                (l for l in e.stderr.splitlines() if l.startswith('error:')),
                 None,
             )
             if error_line is not None:

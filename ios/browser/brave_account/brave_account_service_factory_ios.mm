@@ -5,8 +5,6 @@
 
 #include "brave/ios/browser/brave_account/brave_account_service_factory_ios.h"
 
-#include <utility>
-
 #include "brave/components/brave_account/brave_account_service.h"
 #include "brave/components/brave_account/features.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
@@ -17,19 +15,27 @@
 namespace brave_account {
 
 // static
-BraveAccountService* BraveAccountServiceFactoryIOS::GetFor(
-    ProfileIOS* profile) {
-  CHECK(profile);
-  return GetForProfile(profile);
+BraveAccountServiceFactoryIOS* BraveAccountServiceFactoryIOS::GetInstance() {
+  static base::NoDestructor<BraveAccountServiceFactoryIOS> instance;
+  return instance.get();
 }
 
-BraveAccountServiceFactoryIOS::BraveAccountServiceFactoryIOS(PassKey key)
-    : TypedProfileKeyedServiceFactoryIOS(std::move(key),
-                                         "BraveAccountService",
-                                         ServiceCreation::kCreateWithProfile,
-                                         TestingCreation::kNoServiceForTests) {
+// static
+BraveAccountService* BraveAccountServiceFactoryIOS::GetFor(
+    web::BrowserState* state) {
+  CHECK(state);
+  return static_cast<BraveAccountService*>(
+      GetInstance()->GetServiceForContext(state, true));
+}
+
+BraveAccountServiceFactoryIOS::BraveAccountServiceFactoryIOS()
+    : ProfileKeyedServiceFactoryIOS("BraveAccountService",
+                                    ServiceCreation::kCreateWithProfile,
+                                    TestingCreation::kNoServiceForTests) {
   CHECK(features::IsBraveAccountEnabled());
 }
+
+BraveAccountServiceFactoryIOS::~BraveAccountServiceFactoryIOS() = default;
 
 std::unique_ptr<KeyedService>
 BraveAccountServiceFactoryIOS::BuildServiceInstanceFor(

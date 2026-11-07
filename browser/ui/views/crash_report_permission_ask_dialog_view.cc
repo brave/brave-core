@@ -25,7 +25,6 @@
 #include "components/constrained_window/constrained_window_views.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/image_model.h"
 #include "ui/base/mojom/dialog_button.mojom.h"
 #include "ui/color/color_id.h"
@@ -52,7 +51,7 @@ void ScheduleSessionCrashedBubble() {
   // It's ok to use lastly used browser because there will be only one when
   // this launched after un-cleaned exit.
   if (auto* browser = GetLastActiveBrowserWindowInterfaceWithAnyProfile()) {
-    ShowSessionCrashedBubbleIfNotOffTheRecordProfile(
+    SessionCrashedBubble::ShowIfNotOffTheRecordProfile(
         browser, /*skip_tab_checking=*/false);
   }
 }
@@ -247,6 +246,3 @@ void CrashReportPermissionAskDialogView::OnWindowClosing() {
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(&ScheduleSessionCrashedBubble));
 }
-
-BEGIN_METADATA(CrashReportPermissionAskDialogView)
-END_METADATA

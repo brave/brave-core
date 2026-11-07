@@ -18,6 +18,7 @@
 #include "base/functional/bind.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/browser/brave_browser_features.h"
+#include "brave/browser/sparkle_buildflags.h"
 #include "brave/browser/translate/brave_translate_utils.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/commands/accelerator_service.h"
@@ -121,6 +122,10 @@
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_SPARKLE)
+#include "brave/browser/ui/views/update_recommended_message_box_mac.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -657,6 +662,15 @@ void BraveBrowserView::UpdateReaderModeToolbar() {
       is_distilled(contents_container->contents_view()->web_contents()));
 }
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
+
+void BraveBrowserView::ShowUpdateChromeDialog() {
+#if BUILDFLAG(ENABLE_SPARKLE)
+  // On mac, sparkle frameworks's relaunch api is used.
+  UpdateRecommendedMessageBoxMac::Show(GetNativeWindow());
+#else
+  BrowserView::ShowUpdateChromeDialog();
+#endif
+}
 
 gfx::Rect BraveBrowserView::GetBoundingBoxInScreenForMouseOverHandling() const {
   gfx::Rect browser_bounds = GetBoundsInScreen();

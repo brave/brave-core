@@ -105,13 +105,12 @@ CSVSafariPasswordSequence::CSVSafariPasswordSequence(std::string csv)
   // Mapping "note column index" -> "header name priority".
   size_t note_column_index, note_column_priority = kMaxPriority;
 
-  for (CSVFieldParser parser(first); auto next = parser.NextField();
-       ++col_index) {
-    if (!next->has_value()) {
+  for (CSVFieldParser parser(first); parser.HasMoreFields(); ++col_index) {
+    std::string_view name;
+    if (!parser.NextField(&name)) {
       result_ = CSVSafariPassword::Status::kSyntaxError;
       return;
     }
-    std::string_view name = next->value();
 
     if (const CSVSafariPassword::Label* label = NameToLabel(name)) {
       // If there are multiple columns matching one of the accepted "note" field

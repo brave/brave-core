@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/download/download_ui_context_menu_view.cc b/chrome/browser/ui/views/download/download_ui_context_menu_view.cc
-index 75354e2be129ff24b815c459d714f17f2f33eed2..1d640db82dee01316581a6173189e53e81e8e5dc 100644
+index 842a1e3552ac13d5291a833b27130a4f80137703..fb8353dd5f2ece098f1a31491539f699bea0c76c 100644
 --- a/chrome/browser/ui/views/download/download_ui_context_menu_view.cc
 +++ b/chrome/browser/ui/views/download/download_ui_context_menu_view.cc
 @@ -89,11 +89,13 @@ void DownloadUiContextMenuView::OnMenuWillShow(ui::SimpleMenuModel* source) {

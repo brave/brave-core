@@ -5,15 +5,12 @@
 
 package org.chromium.chrome.browser.ui.bottombar;
 
-import android.view.View;
 import android.view.ViewGroup;
 
 import org.chromium.base.Callback;
 import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.base.supplier.NullableObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
-import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider.ControlsPosition;
-import org.chromium.chrome.browser.browser_controls.BrowserControlsVisibilityManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
@@ -22,7 +19,6 @@ import org.chromium.chrome.browser.ui.actions.ActionButtonBinder;
 import org.chromium.chrome.browser.ui.actions.ActionId;
 import org.chromium.chrome.browser.ui.actions.ActionRegistry;
 import org.chromium.chrome.browser.ui.bottombar.BottomBarButtonManager.ActionConfig;
-import org.chromium.components.browser_ui.widget.scrim.ScrimManager;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.util.ArrayList;
@@ -61,12 +57,7 @@ public class BraveBottomBarCoordinator extends BottomBarCoordinator {
             NullableObservableSupplier<Profile> profileSupplier,
             NonNullObservableSupplier<Boolean> omniboxFocusStateSupplier,
             NonNullObservableSupplier<ModalDialogManager> modalDialogManagerSupplier,
-            LayoutStateProvider layoutStateProvider,
-            NonNullObservableSupplier<@ControlsPosition Integer> toolbarPositionSupplier,
-            BrowserControlsVisibilityManager browserControlsVisibilityManager,
-            ScrimManager scrimManager,
-            View controlContainer,
-            View bottomAppBarContainer) {
+            LayoutStateProvider layoutStateProvider) {
         super(
                 parent,
                 actionRegistry,
@@ -77,12 +68,7 @@ public class BraveBottomBarCoordinator extends BottomBarCoordinator {
                 profileSupplier,
                 omniboxFocusStateSupplier,
                 modalDialogManagerSupplier,
-                layoutStateProvider,
-                toolbarPositionSupplier,
-                browserControlsVisibilityManager,
-                scrimManager,
-                controlContainer,
-                bottomAppBarContainer);
+                layoutStateProvider);
 
         mHomepageEnabledSupplier = homepageEnabledSupplier;
         mHomepageEnabledSupplier.addSyncObserverAndCallIfNonNull(mHomepageEnabledObserver);

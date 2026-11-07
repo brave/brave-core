@@ -6,13 +6,11 @@
 
 from __future__ import annotations
 
-import logging
 import subprocess
 from pathlib import Path
 
 import _boot  # noqa: F401
 import repository
-from terminal import terminal
 
 
 class UserValidationError(Exception):
@@ -63,54 +61,3 @@ def check_hooks_path() -> None:
         'git ignores .git/hooks/ while this is set.\n'
         'Unset core.hooksPath or point it to .git/hooks/.'
     )
-
-
-class ChangedFiles:
-    """The brave-core files a command changes, so that only those get
-    formatted: `pnpm run format` alone reflows everything the branch touched.
-
-    Created before the command writes anything, it records the files already
-    uncommitted, and their contents.
-    """
-
-    def __init__(self) -> None:
-        self._before = self._uncommitted()
-
-    @staticmethod
-    def _uncommitted() -> dict[str, str]:
-        """Uncommitted files, untracked ones included, and their hashes."""
-        brave = repository.brave
-        paths = brave.run_git(
-            'diff', '--name-only', '--diff-filter=d', 'HEAD'
-        ).splitlines()
-        paths += brave.run_git(
-            'ls-files', '--others', '--exclude-standard'
-        ).splitlines()
-        if not paths:
-            return {}
-        hashes = brave.run_git('hash-object', '--', *paths).splitlines()
-        return dict(zip(paths, hashes))
-
-    def since(self) -> list[str]:
-        """The files changed or added since, deleted ones left out."""
-        return sorted(
-            path
-            for path, digest in self._uncommitted().items()
-            if self._before.get(path) != digest
-        )
-
-
-def format_files(paths: list[str]) -> None:
-    """Runs `pnpm run format` on `paths` (relative to brave-core).
-
-    Failures are downgraded to warnings: format must not block a command that
-    otherwise succeeded.
-    """
-    if not paths:
-        return
-    # Absolute, as pnpm resolves them against wherever it was started.
-    root = repository.brave.root.resolve()
-    try:
-        terminal.run_pnpm_command('format', *(str(root / p) for p in paths))
-    except (subprocess.CalledProcessError, FileNotFoundError) as e:
-        logging.warning('pnpm run format failed: %s', e)

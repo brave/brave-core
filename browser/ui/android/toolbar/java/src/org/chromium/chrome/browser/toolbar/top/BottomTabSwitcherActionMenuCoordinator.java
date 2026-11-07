@@ -11,6 +11,7 @@ import org.chromium.base.Callback;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.chrome.browser.tabwindow.TabWindowManager;
 import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
 
 /**
@@ -21,15 +22,15 @@ public class BottomTabSwitcherActionMenuCoordinator extends TabSwitcherActionMen
     public BottomTabSwitcherActionMenuCoordinator(
             Profile profile,
             MonotonicObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
-            TabGroupExistenceChecker tabGroupExistenceChecker) {
-        super(profile, tabModelSelectorSupplier, tabGroupExistenceChecker);
+            TabWindowManager tabWindowManager) {
+        super(profile, tabModelSelectorSupplier, tabWindowManager);
     }
 
     public static OnLongClickListener createOnLongClickListener(
             Callback<Integer> onItemClicked,
             MonotonicObservableSupplier<Profile> profileSupplier,
             MonotonicObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
-            TabGroupExistenceChecker tabGroupExistenceChecker) {
+            TabWindowManager tabWindowManager) {
         return view -> {
             // Resolve the profile per press: one captured when the listener is built is
             // not guaranteed to still be available by the time the menu is shown.
@@ -39,7 +40,7 @@ public class BottomTabSwitcherActionMenuCoordinator extends TabSwitcherActionMen
             }
             return createOnLongClickListener(
                             new BottomTabSwitcherActionMenuCoordinator(
-                                    profile, tabModelSelectorSupplier, tabGroupExistenceChecker),
+                                    profile, tabModelSelectorSupplier, tabWindowManager),
                             profile,
                             onItemClicked)
                     .onLongClick(view);

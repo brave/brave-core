@@ -222,9 +222,9 @@ void BraveNewTabPageHandler::UseBraveBackground(
 void BraveNewTabPageHandler::TryBraveSearchPromotion(const std::string& input,
                                                      bool open_new_tab) {
   const GURL promo_url = brave_search_conversion::GetPromoURL(input);
-  auto window_open_disposition = WindowOpenDisposition::kCurrentTab;
+  auto window_open_disposition = WindowOpenDisposition::CURRENT_TAB;
   if (open_new_tab) {
-    window_open_disposition = WindowOpenDisposition::kNewBackgroundTab;
+    window_open_disposition = WindowOpenDisposition::NEW_BACKGROUND_TAB;
   }
 
   web_contents_->OpenURL(

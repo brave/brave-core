@@ -73,7 +73,7 @@ void WalletPageHandler::OpenTab(const GURL& url) {
 
   wc->OpenURL(
       content::OpenURLParams(url, content::Referrer(),
-                             WindowOpenDisposition::kNewForegroundTab,
+                             WindowOpenDisposition::NEW_FOREGROUND_TAB,
                              ui::PageTransition::PAGE_TRANSITION_LINK, false),
       /*navigation_handle_callback=*/{});
 }

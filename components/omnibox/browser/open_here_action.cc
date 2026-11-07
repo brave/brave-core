@@ -26,7 +26,7 @@ OpenHereAction::OpenHereAction(GURL url)
 OpenHereAction::~OpenHereAction() = default;
 
 void OpenHereAction::Execute(ExecutionContext& context) const {
-  context.disposition_ = WindowOpenDisposition::kCurrentTab;
+  context.disposition_ = WindowOpenDisposition::CURRENT_TAB;
   OpenURL(context, url_);
 }
 

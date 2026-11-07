@@ -6,17 +6,18 @@
 """Tests for git_cr_follow_renames.py."""
 
 import logging
+import os
 import unittest
 from pathlib import Path
 from unittest.mock import patch
 
 import _boot  # noqa: F401
 import repository
-from alias.base import format_files
 from alias.follow_renames import (
     _collapse_renames,
     _get_chromium_renames,
     _repair_patch_files,
+    _repair_plaster_files,
     cmd_follow_renames,
 )
 from test.fake_chromium_repo import FakeChromiumRepo
@@ -234,42 +235,6 @@ class ShadowFileTest(_Base):
         self.assertIn('#include <B/foo.h>', content)
         self.assertNotIn('#include <A/foo.h>', content)
 
-    def test_shadow_edits_are_staged_with_the_move(self) -> None:
-        """The rewritten include and guard are staged, not left as `RM`."""
-        before = self._chromium_head()
-        self._chromium_commit('A/foo.h', '// src\n')
-        self._brave_commit(
-            'chromium_src/A/foo.h',
-            (
-                '#ifndef BRAVE_CHROMIUM_SRC_A_FOO_H_\n'
-                '#define BRAVE_CHROMIUM_SRC_A_FOO_H_\n'
-                '#include <A/foo.h>\n'
-                '#endif  // BRAVE_CHROMIUM_SRC_A_FOO_H_\n'
-            ),
-        )
-        self._chromium_rename('A/foo.h', 'B/foo.h')
-
-        cmd_follow_renames([f'{before}..HEAD'])
-
-        self.assertEqual('', repository.brave.run_git('diff', '--name-only'))
-        staged = repository.brave.run_git('show', ':chromium_src/B/foo.h')
-        self.assertIn('#include <B/foo.h>', staged)
-        self.assertIn('BRAVE_CHROMIUM_SRC_B_FOO_H_', staged)
-
-    def test_formatting_of_moved_files_is_staged(self) -> None:
-        before = self._chromium_head()
-        self._chromium_commit('A/foo.cc', '// impl\n')
-        self._brave_commit('chromium_src/A/foo.cc', '#include <A/foo.cc>\n')
-        self._chromium_rename('A/foo.cc', 'B/foo.cc')
-        moved = self._brave / 'chromium_src/B/foo.cc'
-        self._format_mock.side_effect = lambda _: moved.write_text(
-            '#include <B/foo.cc>  // formatted\n', encoding='utf-8'
-        )
-
-        cmd_follow_renames([f'{before}..HEAD'])
-
-        self.assertEqual('', repository.brave.run_git('diff', '--name-only'))
-
     def test_shadow_cc_moved_no_guard(self) -> None:
         """A .cc shadow file moves but no include guard is inserted."""
         before = self._chromium_head()
@@ -284,21 +249,6 @@ class ShadowFileTest(_Base):
         self.assertTrue(new_path.exists())
         content = new_path.read_text(encoding='utf-8')
         self.assertNotIn('#ifndef', content)
-
-    def test_lit_mangler_moved(self) -> None:
-        """A .lit_mangler.ts for the renamed file follows it."""
-        before = self._chromium_head()
-        self._chromium_commit('A/foo.html', '<div></div>\n')
-        self._brave_commit(
-            'chromium_src/A/foo.html.lit_mangler.ts', '// mangler\n'
-        )
-        self._chromium_rename('A/foo.html', 'A/foo.html.ts')
-
-        cmd_follow_renames([f'{before}..HEAD'])
-
-        chromium_src = self._brave / 'chromium_src' / 'A'
-        self.assertTrue((chromium_src / 'foo.html.ts.lit_mangler.ts').exists())
-        self.assertFalse((chromium_src / 'foo.html.lit_mangler.ts').exists())
 
     def test_no_shadow_file_is_noop(self) -> None:
         """Chromium rename with no matching shadow file does not raise."""
@@ -429,166 +379,6 @@ class ReferencesTest(_Base):
         )
         self.assertIn('"//base/sub/foo.h"', content)
         self.assertNotIn('"//base/foo.h"', content)
-
-    _OLD_JAVA = 'chrome/android/java/src/org/chromium/chrome/browser/Mgr.java'
-    _NEW_JAVA = (
-        'chrome/android/java/src/org/chromium/chrome/browser/recent/Mgr.java'
-    )
-
-    def test_java_import_and_class_name_updated_on_java_rename(self) -> None:
-        """Imports, qualified uses and slashed names follow a moved class."""
-        before = self._chromium_head()
-        self._chromium_commit(self._OLD_JAVA, 'class Mgr {}\n')
-        self._brave_commit(
-            'android/junit/src/org/chromium/brave/UserTest.java',
-            (
-                'package org.chromium.brave;\n'
-                '\n'
-                'import org.chromium.chrome.browser.Mgr;\n'
-                'import org.chromium.chrome.browser.MgrFactory;\n'
-                '\n'
-                'class UserTest {\n'
-                '    org.chromium.chrome.browser.Mgr.Inner mInner;\n'
-                '    String mName = "org/chromium/chrome/browser/Mgr";\n'
-                '}\n'
-            ),
-        )
-        self._chromium_rename(self._OLD_JAVA, self._NEW_JAVA)
-
-        cmd_follow_renames([f'{before}..HEAD'])
-
-        content = (
-            self._brave / 'android/junit/src/org/chromium/brave/UserTest.java'
-        ).read_text(encoding='utf-8')
-        self.assertIn('import org.chromium.chrome.browser.recent.Mgr;', content)
-        self.assertIn('import org.chromium.chrome.browser.MgrFactory;', content)
-        self.assertIn('org.chromium.chrome.browser.recent.Mgr.Inner', content)
-        self.assertIn('"org/chromium/chrome/browser/recent/Mgr"', content)
-        self.assertNotIn('browser.Mgr;', content)
-
-    def test_java_import_added_for_same_package_user(self) -> None:
-        """A file in the class's old package gains an import for it."""
-        before = self._chromium_head()
-        self._chromium_commit(self._OLD_JAVA, 'class Mgr {}\n')
-        self._brave_commit(
-            'android/java/org/chromium/chrome/browser/BraveUser.java',
-            (
-                'package org.chromium.chrome.browser;\n'
-                '\n'
-                'class BraveUser {\n'
-                '    Mgr mMgr;\n'
-                '}\n'
-            ),
-        )
-        self._brave_commit(
-            'android/java/org/chromium/chrome/browser/BraveOther.java',
-            'package org.chromium.chrome.browser;\n\nclass BraveOther {}\n',
-        )
-        self._chromium_rename(self._OLD_JAVA, self._NEW_JAVA)
-
-        cmd_follow_renames([f'{before}..HEAD'])
-
-        java_dir = self._brave / 'android/java/org/chromium/chrome/browser'
-        self.assertIn(
-            'import org.chromium.chrome.browser.recent.Mgr;',
-            (java_dir / 'BraveUser.java').read_text(encoding='utf-8'),
-        )
-        self.assertNotIn(
-            'import',
-            (java_dir / 'BraveOther.java').read_text(encoding='utf-8'),
-        )
-
-    def test_brave_subclass_follows_its_base_to_a_new_package(self) -> None:
-        """A Brave subclass in the moved class's package moves with it."""
-        old_dir = 'org/chromium/chrome/browser/dom_distiller'
-        new_dir = 'org/chromium/chrome/browser/reader_mode'
-        upstream = 'chrome/android/java/src/{}/ReaderModeManager.java'
-        brave_java = 'android/java/{}/BraveReaderModeManager.java'
-        before = self._chromium_head()
-        self._chromium_commit(
-            upstream.format(old_dir), 'class ReaderModeManager {}\n'
-        )
-        self._brave_commit(
-            brave_java.format(old_dir),
-            (
-                'package org.chromium.chrome.browser.dom_distiller;\n'
-                '\n'
-                'public class BraveReaderModeManager\n'
-                '        extends ReaderModeManager {\n'
-                '}\n'
-            ),
-        )
-        self._brave_commit(
-            'android/java/{}/BraveOther.java'.format(old_dir),
-            'package org.chromium.chrome.browser.dom_distiller;\n\n'
-            'class BraveOther {}\n',
-        )
-        self._brave_commit(
-            'android/brave_java_sources.gni',
-            'brave_java_sources = [\n'
-            f'  "../../brave/{brave_java.format(old_dir)}",\n'
-            ']\n',
-        )
-        adapter = (
-            'build/android/bytecode/java/org/brave/bytecode/'
-            'BraveReaderModeManagerClassAdapter.java'
-        )
-        self._brave_commit(
-            adapter,
-            (
-                'package org.brave.bytecode;\n\n'
-                'class A {\n'
-                f'    String a = "{old_dir}/ReaderModeManager";\n'
-                f'    String b = "{old_dir}/BraveReaderModeManager";\n'
-                '}\n'
-            ),
-        )
-        flags = 'android/java/apk_for_test.flags'
-        self._brave_commit(
-            flags,
-            (
-                '-keep class org.chromium.chrome.browser.dom_distiller.'
-                'ReaderModeManager {\n}\n'
-                '-keep class org.chromium.chrome.browser.dom_distiller.'
-                'BraveReaderModeManager {\n}\n'
-            ),
-        )
-        self._chromium_rename(
-            upstream.format(old_dir), upstream.format(new_dir)
-        )
-
-        cmd_follow_renames([f'{before}..HEAD'])
-
-        self.assertFalse((self._brave / brave_java.format(old_dir)).exists())
-        content = (self._brave / brave_java.format(new_dir)).read_text(
-            encoding='utf-8'
-        )
-        self.assertIn(
-            'package org.chromium.chrome.browser.reader_mode;', content
-        )
-        self.assertNotIn('import', content)
-        self.assertTrue(
-            (self._brave / f'android/java/{old_dir}/BraveOther.java').exists()
-        )
-        self.assertIn(
-            f'"../../brave/{brave_java.format(new_dir)}"',
-            (self._brave / 'android/brave_java_sources.gni').read_text(
-                encoding='utf-8'
-            ),
-        )
-        adapter_text = (self._brave / adapter).read_text(encoding='utf-8')
-        self.assertIn(f'"{new_dir}/ReaderModeManager"', adapter_text)
-        self.assertIn(f'"{new_dir}/BraveReaderModeManager"', adapter_text)
-        self.assertNotIn('dom_distiller', adapter_text)
-        self.assertNotIn(
-            'dom_distiller',
-            (self._brave / flags).read_text(encoding='utf-8'),
-        )
-        # The move is staged with its `package` line.
-        self.assertNotIn(
-            brave_java.format(new_dir),
-            repository.brave.run_git('diff', '--name-only'),
-        )
 
 
 # ---------------------------------------------------------------------------
@@ -882,36 +672,6 @@ class FormatTest(_Base):
         cmd_follow_renames([f'{before}..HEAD'])
 
         self._format_mock.assert_called_once()
-
-    def test_format_gets_only_the_files_the_renames_changed(self) -> None:
-        before = self._chromium_head()
-        self._chromium_commit('A/foo.h', '// src\n')
-        self._brave_commit(
-            'chromium_src/A/foo.h',
-            '#include <A/foo.h>  // IWYU pragma: export\n',
-        )
-        self._brave_commit('browser/user.cc', '#include "A/foo.h"\n')
-        # Uncommitted work the rename doesn't touch, as in a lift.
-        self._brave_commit('tracker.md', 'old\n')
-        self._brave_write('tracker.md', 'edited\n')
-        self._chromium_rename('A/foo.h', 'B/foo.h')
-
-        cmd_follow_renames([f'{before}..HEAD'])
-
-        (paths,) = self._format_mock.call_args.args
-        self.assertIn('chromium_src/B/foo.h', paths)
-        self.assertIn('browser/user.cc', paths)
-        self.assertNotIn('tracker.md', paths)
-        self.assertNotIn('chromium_src/A/foo.h', paths)
-
-    def test_format_files_passes_absolute_paths(self) -> None:
-        with patch('alias.base.terminal.run_pnpm_command') as run:
-            format_files([])
-            run.assert_not_called()
-            format_files(['browser/user.cc'])
-        run.assert_called_once_with(
-            'format', str(self._brave.resolve() / 'browser/user.cc')
-        )
 
     def test_format_skipped_with_no_format_flag(self) -> None:
         before = self._chromium_head()

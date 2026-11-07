@@ -627,8 +627,8 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
   // requested disposition, so handle the new tab dispositions here to match
   // Chrome.
   const bool inBackground =
-      params.disposition == WindowOpenDisposition::kNewBackgroundTab;
-  if ((params.disposition == WindowOpenDisposition::kNewForegroundTab ||
+      params.disposition == WindowOpenDisposition::NEW_BACKGROUND_TAB;
+  if ((params.disposition == WindowOpenDisposition::NEW_FOREGROUND_TAB ||
        inBackground) &&
       [self.UIDelegate
           respondsToSelector:

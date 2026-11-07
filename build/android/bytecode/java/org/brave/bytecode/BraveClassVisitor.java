@@ -67,13 +67,15 @@ class BraveClassVisitor extends ClassVisitor {
         }
 
         @Override
-        public void visitMethodInsn(
-                int opcode,
-                java.lang.String owner,
-                java.lang.String name,
-                java.lang.String descriptor,
-                boolean isInterface) {
-            if (shouldMakePublicMethod(owner, name) && opcode == INVOKESPECIAL) {
+        public void visitMethodInsn(int opcode,
+                                    java.lang.String owner,
+                                    java.lang.String name,
+                                    java.lang.String descriptor,
+                                    boolean isInterface) {
+            if (shouldMakePublicMethod(owner, name) &&
+                    opcode == INVOKESPECIAL) {
+                System.out.println("use invoke virtual for call to method " +
+                        owner + "." + name);
                 // use invoke virtual because other classes can override
                 // the method now
                 opcode = INVOKEVIRTUAL;
@@ -85,12 +87,17 @@ class BraveClassVisitor extends ClassVisitor {
         @Override
         public void visitTypeInsn(int opcode, String type) {
             if (opcode == NEW && mRedirectConstructors.containsKey(type)) {
-                type = mRedirectConstructors.get(type);
+                String newType = mRedirectConstructors.get(type);
+                System.out.println("redirecting constructor from " + type + " to " + newType);
+                type = newType;
             }
             // Point one type in method to another
             Map<String, String> types = getMapForRedirectTypeInMethod(mName, mMethod.name);
             if (types != null && types.containsKey(type)) {
-                type = types.get(type);
+                String newType = types.get(type);
+                System.out.println("redirecting type in method " + mMethod.name + " in class "
+                        + mName + " from " + type + " to " + newType);
+                type = newType;
             }
             super.visitTypeInsn(opcode, type);
         }
@@ -206,6 +213,8 @@ class BraveClassVisitor extends ClassVisitor {
             if (methods.containsKey(methodName)) {
                 String newOwner = methods.get(methodName);
                 if (!newOwner.equals(mName)) {
+                    System.out.println("changing owner for " + owner + "." + methodName + " in "
+                            + mName + " - new owner " + newOwner);
                     return newOwner;
                 }
             }
@@ -214,6 +223,8 @@ class BraveClassVisitor extends ClassVisitor {
         if (mSuperName.equals(owner) && mSuperNames.containsKey(mName)) {
             String newSuperOwner = mSuperNames.get(mName);
             if (!newSuperOwner.equals(mSuperName)) {
+                System.out.println("redirecting ownership for " + mSuperName + "." + methodName
+                        + " in " + mName + " - new owner " + newSuperOwner);
                 return newSuperOwner;
             }
         }
@@ -385,10 +396,12 @@ class BraveClassVisitor extends ClassVisitor {
         mName = name;
         mSuperName = superName;
         if (shouldMakeNonFinalClass(name)) {
+            System.out.println("make Class " + name + " non final");
             access &= ~ACC_FINAL;
         }
         if (mSuperNames.containsKey(name)) {
             superName = mSuperNames.get(name);
+            System.out.println("change superclass of " + name + " to " + superName);
         }
 
         visitImpl(version, access, name, signature, superName, interfaces);
@@ -406,10 +419,12 @@ class BraveClassVisitor extends ClassVisitor {
     @Override
     public void visitInnerClass(String name, String outerName, String innerName, int access) {
         if (shouldDeleteInnerClass(innerName)) {
+            System.out.println("delete InnerClass " + innerName + " from " + mName);
             return;
         }
 
         if (shouldMakePublicInnerClass(innerName)) {
+            System.out.println("make InnerClass " + innerName + " public in " + mName);
             access &= ~ACC_PRIVATE;
             access |= ACC_PUBLIC;
         }
@@ -417,17 +432,18 @@ class BraveClassVisitor extends ClassVisitor {
     }
 
     @Override
-    public FieldVisitor visitField(
-            int access,
-            java.lang.String name,
-            java.lang.String descriptor,
-            java.lang.String signature,
-            java.lang.Object value) {
+    public FieldVisitor visitField(int access,
+                                   java.lang.String name,
+                                   java.lang.String descriptor,
+                                   java.lang.String signature,
+                                   java.lang.Object value) {
         if (shouldDeleteField(name)) {
+            System.out.println("delete " + name + " from " + mName);
             return null;
         }
 
         if (shouldMakeProtectedField(name)) {
+            System.out.println("make " + name + " public in " + mName);
             access &= ~ACC_FINAL;
             access &= ~ACC_PRIVATE;
             access |= ACC_PROTECTED;
@@ -450,17 +466,23 @@ class BraveClassVisitor extends ClassVisitor {
                 if (desc.contains(originalTypeName)) {
                     // Use literal replacement like other methods in the class
                     desc = desc.replace(originalTypeName, newTypeName);
+                    System.out.println("redirecting type in method declaration " + name
+                            + " in class " + mName + " from " + originalTypeName + " to "
+                            + newTypeName);
                 }
             }
         }
         Method method = new Method(access, name, desc, signature, exceptions);
         if (shouldDeleteMethod(name)) {
+            System.out.println("delete " + name + " from " + mName);
             return null;
         }
 
         if (shouldMakePublicMethod(name)) {
+            System.out.println("make " + name + " public in " + mName);
             method.makePublic();
         } else if (shouldMakePrivateMethod(name)) {
+            System.out.println("make " + name + " private in " + mName);
             method.makePrivate();
         }
         return visitMethodImpl(method);
@@ -490,6 +512,13 @@ class BraveClassVisitor extends ClassVisitor {
                 }
                 for (String annotation : annotations) {
                     method.visibleAnnotations.add(new AnnotationNode(annotation));
+                    System.out.println(
+                            "add "
+                                    + annotation
+                                    + " annotation to "
+                                    + method.name
+                                    + " in "
+                                    + source.name);
                 }
             }
         }

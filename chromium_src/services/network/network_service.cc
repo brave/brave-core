@@ -25,10 +25,7 @@ void NetworkService::GetDnsRequestCountsAndReset(
 
 #if BUILDFLAG(CHROME_KEY_PINNING_SUPPORTED)
 void NetworkService::UpdateKeyPinsList(mojom::PinListPtr pin_list,
-                                       base::Time update_time,
-                                       UpdateKeyPinsListCallback callback) {
-  std::move(callback).Run();
-}
+                                       base::Time update_time) {}
 #endif  // BUILDFLAG(CHROME_KEY_PINNING_SUPPORTED)
 
 }  // namespace network

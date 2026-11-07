@@ -36,12 +36,6 @@ export function generatePathMap(genPath: string): PathMap {
       genPath,
       'brave/ui/webui/resources/tsc',
     ),
-    // The bindings library TypeScript Mojo bindings import, which `tsc/mojo`
-    // only has the declarations of.
-    ...allPrefixes(
-      '//resources/mojo/mojo/public/js/bindings.js$',
-      path.join(genPath, 'mojo/public/js/bindings.js'),
-    ),
     ...allPrefixes(
       '//resources/mojo',
       path.join(genPath, 'ui/webui/resources/tsc/mojo'),
@@ -86,6 +80,10 @@ export const generatePathMapWithWebMocks = (genPath: string): PathMap => {
   const webMocksRoot = path.resolve(dirName, '../../web/mocks')
 
   return {
+    '//resources/mojo/mojo/public/js/bindings.js': path.join(
+      genPath,
+      'mojo/public/js/bindings.js',
+    ),
     ...basePathMap,
     'chrome://resources': [
       path.join(webMocksRoot, 'chrome-resources'),

@@ -9,6 +9,7 @@ import subprocess
 import unittest
 from unittest.mock import patch
 
+import gh_cli
 from gh_cli import GhCli
 
 
@@ -38,16 +39,6 @@ class GhCliTest(unittest.TestCase):
         self.run.return_value = _completed(stdout='ok')
         self.gh._run(['pr', 'view'])
         self.assertEqual(self._last_cmd(), ['gh', 'pr', 'view'])
-
-    def test_api_returns_the_body(self):
-        self.run.return_value = _completed(stdout='{"id": 1}')
-        self.assertEqual(self.gh.api('repos/o/r/actions/jobs/1'), '{"id": 1}')
-        self.assertEqual(
-            self._last_cmd(),
-            ['gh', 'api', '--method', 'GET', 'repos/o/r/actions/jobs/1'],
-        )
-        self.gh.api('repos/o/r/actions/jobs/1/rerun', method='POST')
-        self.assertEqual(self._last_cmd()[2:4], ['--method', 'POST'])
 
     def test_is_logged_in_true(self):
         self.run.return_value = _completed(

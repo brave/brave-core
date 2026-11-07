@@ -10,8 +10,6 @@ constexpr char kHistogramPrerenderPredictionStatusDefaultSearchEngine[] =
     "Prerender.Experimental.PredictionStatus.DefaultSearchEngine";
 constexpr char kHistogramPrerenderPredictionStatusDirectUrlInput[] =
     "Prerender.Experimental.PredictionStatus.DirectUrlInput";
-constexpr char kHistogramSearchPrewarmOutcome[] =
-    "PageLoad.Clients.GoogleSearch.PrewarmOutcome";
 }  // namespace internal
 
 PrerenderManager::~PrerenderManager() = default;

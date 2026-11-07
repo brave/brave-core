@@ -298,35 +298,28 @@ public class ImageLoader {
             serializer.setOutput(writer);
 
             while (eventType != XmlPullParser.END_DOCUMENT) {
-                switch (eventType) {
-                    case XmlPullParser.START_TAG:
-                        serializer.startTag(null, parser.getName());
+                if (eventType == XmlPullParser.START_TAG) {
+                    serializer.startTag(null, parser.getName());
 
-                        for (int i = 0; i < parser.getAttributeCount(); i++) {
-                            String name = parser.getAttributeName(i);
-                            String value = parser.getAttributeValue(i);
-                            serializer.attribute(null, name, value);
+                    for (int i = 0; i < parser.getAttributeCount(); i++) {
+                        String name = parser.getAttributeName(i);
+                        String value = parser.getAttributeValue(i);
+                        serializer.attribute(null, name, value);
+                    }
+                    if (parser.getName().equalsIgnoreCase(SVG_TAG)) {
+                        if (!widthFound) {
+                            serializer.attribute(null, ConfigurationUtils.WIDTH, width);
                         }
-                        if (parser.getName().equalsIgnoreCase(SVG_TAG)) {
-                            if (!widthFound) {
-                                serializer.attribute(null, ConfigurationUtils.WIDTH, width);
-                            }
-                            if (!heightFound) {
-                                serializer.attribute(null, ConfigurationUtils.HEIGHT, height);
-                            }
+                        if (!heightFound) {
+                            serializer.attribute(null, ConfigurationUtils.HEIGHT, height);
                         }
-                        break;
-                    case XmlPullParser.TEXT:
-                        serializer.text(parser.getText());
-                        break;
-                    case XmlPullParser.END_TAG:
-                        serializer.endTag(null, parser.getName());
-                        break;
-                    case XmlPullParser.IGNORABLE_WHITESPACE:
-                        serializer.ignorableWhitespace(parser.getText());
-                        break;
-                    default:
-                        break;
+                    }
+                } else if (eventType == XmlPullParser.TEXT) {
+                    serializer.text(parser.getText());
+                } else if (eventType == XmlPullParser.END_TAG) {
+                    serializer.endTag(null, parser.getName());
+                } else if (eventType == XmlPullParser.IGNORABLE_WHITESPACE) {
+                    serializer.ignorableWhitespace(parser.getText());
                 }
 
                 eventType = parser.next();

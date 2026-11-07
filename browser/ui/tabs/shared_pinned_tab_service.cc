@@ -7,7 +7,6 @@
 
 #include <algorithm>
 #include <utility>
-#include <vector>
 
 #include "base/check.h"
 #include "base/check_op.h"
@@ -694,15 +693,7 @@ void SharedPinnedTabService::SynchronizeDeletedPinnedTab(int index) {
   DVLOG(2) << __FUNCTION__;
   DCHECK(change_source_model_);
 
-  // Closing a browser's last tab closes the browser, which erases it from
-  // |browsers_| via BrowserClosing(), so iterate over a copy.
-  const std::vector<raw_ptr<BrowserWindowInterface>> browsers(browsers_.begin(),
-                                                              browsers_.end());
-  for (BrowserWindowInterface* browser : browsers) {
-    if (!browsers_.contains(browser)) {
-      continue;
-    }
-
+  for (BrowserWindowInterface* browser : browsers_) {
     auto* model = browser->GetTabStripModel();
     if (model == change_source_model_) {
       continue;

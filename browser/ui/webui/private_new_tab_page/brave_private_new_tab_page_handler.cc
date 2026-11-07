@@ -127,10 +127,10 @@ void BravePrivateNewTabPageHandler::GoToBraveSearch(const std::string& input,
       TemplateURLRef::SearchTermsArgs(base::UTF8ToUTF16(input)),
       search_terms_data));
 
-  auto window_open_disposition = WindowOpenDisposition::kCurrentTab;
+  auto window_open_disposition = WindowOpenDisposition::CURRENT_TAB;
 
   if (open_new_tab) {
-    window_open_disposition = WindowOpenDisposition::kNewBackgroundTab;
+    window_open_disposition = WindowOpenDisposition::NEW_BACKGROUND_TAB;
   }
 
   web_contents_->OpenURL(
@@ -160,7 +160,7 @@ void BravePrivateNewTabPageHandler::GoToBraveSupport() {
   web_contents->OpenURL(
       content::OpenURLParams(GURL("https://support.brave.app/"),
                              content::Referrer(),
-                             WindowOpenDisposition::kNewForegroundTab,
+                             WindowOpenDisposition::NEW_FOREGROUND_TAB,
                              ui::PageTransition::PAGE_TRANSITION_LINK, false),
       /*navigation_handle_callback=*/{});
 }

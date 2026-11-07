@@ -5,6 +5,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import unittest
+from unittest.mock import patch
 
 from versioning import (
     load_package_file,

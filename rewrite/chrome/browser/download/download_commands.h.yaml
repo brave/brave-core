@@ -18,6 +18,6 @@ substitutions:
       enum_name: Command
       max_value: kMaxValue
       entries:
-        - REMOVE_FROM_LIST = 24
-        - DELETE_LOCAL_FILE = 25
-        - COPY_DOWNLOAD_LINK = 26
+        - REMOVE_FROM_LIST = 23
+        - DELETE_LOCAL_FILE = 24
+        - COPY_DOWNLOAD_LINK = 25

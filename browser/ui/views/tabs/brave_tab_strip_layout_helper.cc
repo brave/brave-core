@@ -250,20 +250,11 @@ std::pair<std::vector<gfx::Rect>, LayoutDomain> CalculateVerticalTabBounds(
 }
 
 std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
-    const std::vector<views::View*>& dragged_views,
+    const std::vector<TabSlotView*>& views,
     int drag_area_width,
     bool is_vertical_tabs_floating) {
   // Fan-out offset between successively stacked pinned tabs.
   constexpr int kStackedOffset = 4;
-
-  std::vector<const TabSlotView*> views;
-  views.reserve(dragged_views.size());
-  for (const views::View* dragged_view : dragged_views) {
-    const TabSlotView* slot_view =
-        views::AsViewClass<TabSlotView>(dragged_view);
-    CHECK(slot_view);
-    views.push_back(slot_view);
-  }
 
   std::vector<gfx::Rect> bounds;
   int x = 0;
@@ -318,7 +309,7 @@ std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
 }
 
 std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
-    const std::vector<views::View*>& views,
+    const std::vector<TabSlotView*>& views,
     TabStrip* tab_strip) {
   const bool is_vertical_tabs_floating =
       views::AsViewClass<BraveTabStrip>(tab_strip)->IsVerticalTabsFloating();
@@ -330,10 +321,10 @@ std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
 }
 
 void ReorderDraggedViewsForStacking(views::View* parent,
-                                    const std::vector<views::View*>& views) {
-  for (views::View* view : std::views::reverse(views)) {
-    const Tab* tab = views::AsViewClass<Tab>(view);
-    if (tab && tab->data().pinned) {
+                                    const std::vector<TabSlotView*>& views) {
+  for (TabSlotView* view : std::views::reverse(views)) {
+    if (view->GetTabSlotViewType() == TabSlotView::ViewType::kTab &&
+        views::AsViewClass<Tab>(view)->data().pinned) {
       // As can't drag pinned tabs and unpinned tabs together, we don't need to
       // continue.
       return;

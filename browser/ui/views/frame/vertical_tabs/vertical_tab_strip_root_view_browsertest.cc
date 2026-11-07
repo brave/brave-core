@@ -20,7 +20,6 @@
 #include "ui/base/dragdrop/mojom/drag_drop_types.mojom.h"
 #include "ui/base/dragdrop/os_exchange_data.h"
 #include "ui/base/mojom/menu_source_type.mojom.h"
-#include "ui/compositor/layer_tree_owner.h"
 
 class VerticalTabStripRootViewBrowserTest : public InProcessBrowserTest {
  public:

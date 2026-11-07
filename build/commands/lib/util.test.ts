@@ -597,25 +597,6 @@ describe('util', () => {
       // Deleted files are left out.
       expect(util.getChangedFiles(repo, 'main', true)).toEqual(['added.txt'])
     })
-
-    it('keeps only the changes under the given paths', () => {
-      const repo = path.join(tmpDir, 'repo')
-      initRepo(repo)
-      git(repo, 'checkout', '-q', '-b', 'feature')
-      fs.mkdirSync(path.join(repo, 'dir'))
-      write(path.join(repo, 'dir', 'in.txt'), 'in')
-      write(path.join(repo, 'out.txt'), 'out')
-      write(path.join(repo, 'named.txt'), 'named')
-      git(repo, 'add', '-A')
-      git(repo, 'commit', '-q', '-m', 'change')
-
-      expect(
-        util.getChangedFiles(repo, 'main', true, ['dir', 'named.txt']),
-      ).toEqual(['dir/in.txt', 'named.txt'])
-      expect(util.getChangedFiles(repo, 'main', true, ['first.txt'])).toEqual(
-        [],
-      )
-    })
   })
 
   describe('git exclusions', () => {

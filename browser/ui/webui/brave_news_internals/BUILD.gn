@@ -17,8 +17,6 @@ source_set("brave_news_internals") {
     "//brave/components/brave_news/browser",
     "//brave/components/brave_news/browser/resources:generated_resources",
     "//brave/components/brave_news/common:mojom",
-    "//brave/components/resources:static_resources",
+    "//chrome/browser:browser_public_dependencies",
   ]
-
-  public_deps = [ "//content/public/browser" ]
 }

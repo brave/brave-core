@@ -346,7 +346,6 @@ class PatternMatchTest(unittest.TestCase):
             ('resource_ids', '[cr149] Bump resource_ids'),
             ('lit_mangler', '[cr149] Update Lit mangler snapshot'),
             ('codehealth_tracker', '[cr149] Version CodeHealth tracker'),
-            ('lift_updates', '[cr149] Version lift updates.'),
             ('disable_tests', '[cr149] Disable failing upstream tests'),
             ('disable_tests', '[cr149] Filter upstream tests as needed'),
             (
@@ -850,62 +849,6 @@ class RewritePlanTest(unittest.TestCase):
         rebase.rewrite_plan(todo_file=path, pinned_squashed=True)
 
         self.assertEqual(path.read_text(), 'pick aaa # [cr148] Feature A\n')
-
-    def test_squashed_drop_of_a_pinned_commit(self):
-        """A `drop!` of a commit in a pinned group removes it from the group,
-        rather than being discarded as orphaned, which would keep the target
-        and lose a `drop --revert`'s revert."""
-        path = self._todo(
-            'pick aaa # [cr158] Feature A\n'
-            'pick ccc # [cr158] Version CodeHealth tracker\n'
-            'pick ddd # [cr158] Version CodeHealth tracker\n'
-            'pick zzz # drop!ddd! [cr158] Version CodeHealth tracker\n'
-        )
-
-        rebase.rewrite_plan(todo_file=path, pinned_squashed=True)
-
-        self.assertEqual(
-            path.read_text(),
-            'pick ccc # [cr158] Version CodeHealth tracker\n'
-            'pick aaa # [cr158] Feature A\n',
-        )
-
-    def test_squashed_drop_of_a_pinned_group_first_commit(self):
-        """Dropping a group's first commit makes the next one its `pick`."""
-        path = self._todo(
-            'pick ccc # [cr158] Version CodeHealth tracker\n'
-            'pick ddd # [cr158] Version CodeHealth tracker\n'
-            'pick zzz # drop!ccc! [cr158] Version CodeHealth tracker\n'
-        )
-
-        rebase.rewrite_plan(todo_file=path, pinned_squashed=True)
-
-        self.assertEqual(
-            path.read_text(), 'pick ddd # [cr158] Version CodeHealth tracker\n'
-        )
-
-    def test_squashed_drop_removes_the_target_fixups(self):
-        """The `fixup`/`fixup -C`/`squash` lines git attached to the target go
-        with it, rather than squashing into the commit before it."""
-        path = self._todo(
-            'pick aaa # [cr148] Feature A\n'
-            'pick bbb # [cr148] Feature B\n'
-            'fixup ccc # fixup! [cr148] Feature B\n'
-            'fixup -C ddd # amend! [cr148] Feature B\n'
-            'squash eee # squash! [cr148] Feature B\n'
-            'pick fff # [cr148] Feature F\n'
-            'fixup ggg # fixup! [cr148] Feature F\n'
-            'pick zzz # drop!bbb! [cr148] Feature B\n'
-        )
-
-        rebase.rewrite_plan(todo_file=path, pinned_squashed=True)
-
-        self.assertEqual(
-            path.read_text(),
-            'pick aaa # [cr148] Feature A\n'
-            'pick fff # [cr148] Feature F\n'
-            'fixup ggg # fixup! [cr148] Feature F\n',
-        )
 
     def test_squashed_drop_falls_back_to_message_match(self):
         """A non-matching hash falls back to dropping the commit whose
@@ -2119,83 +2062,6 @@ class RebaseStopTest(unittest.TestCase):
         return self.git(
             'log', '--reverse', '--format=%s', f'{DEFAULT_BRANCH}..HEAD'
         ).splitlines()
-
-    def changed(self, commit: str) -> list[str]:
-        return self.git('show', '--format=', '--name-only', commit).splitlines()
-
-    # The base's own commit also changes `other`, so that none of the
-    # branch's commits is patch-identical to it, which git would leave out of
-    # the plan: they only come out empty.
-
-    def test_a_pinned_group_whose_pick_is_on_the_base_stays_its_own(self):
-        fork = self.build(
-            ancestor={DATA: 'ancestor\n'},
-            base={'tool': 'x\n', 'other': 'o\n'},
-            commits=[
-                ('Version CodeHealth tracker', {'tracker': 't\n'}),
-                ('Version lift updates', {'tool': 'x\n'}),
-                ('Version lift updates', {'tool': 'x\ny\n'}),
-            ],
-        )
-
-        self.rebase(fork, squash_minor_bumps=True)
-
-        self.assertEqual(
-            ['Version CodeHealth tracker', 'Version lift updates'],
-            self.subjects(),
-        )
-        self.assertEqual(['tool'], self.changed('HEAD'))
-        self.assertEqual(['tracker'], self.changed('HEAD~1'))
-        self.assertEqual('x\ny\n', self.committed('tool'))
-
-    def test_a_pinned_group_that_cancels_out_is_dropped(self):
-        fork = self.build(
-            ancestor={'snap': 'a\n'},
-            base={'other': 'o\n'},
-            commits=[
-                ('Version CodeHealth tracker', {'tracker': 't\n'}),
-                ('Update Lit mangler snapshot', {'snap': 'b\n'}),
-                ('Update Lit mangler snapshot', {'snap': 'a\n'}),
-            ],
-        )
-
-        self.rebase(fork, squash_minor_bumps=True)
-
-        self.assertEqual(['Version CodeHealth tracker'], self.subjects())
-
-    def test_a_fixup_of_a_commit_that_came_out_empty_keeps_its_change(self):
-        fork = self.build(
-            ancestor={DATA: 'ancestor\n'},
-            base={'tool': 'x\n', 'other': 'o\n'},
-            commits=[
-                ('Add the tool', {'tool': 'x\n'}),
-                ('fixup! Add the tool', {'tool': 'x\ny\n'}),
-            ],
-        )
-
-        self.rebase(fork)
-
-        # On its own, rather than amending the base's commit.
-        self.assertEqual(['fixup! Add the tool'], self.subjects())
-        self.assertEqual('x\ny\n', self.committed('tool'))
-        self.assertEqual(
-            'Change the files upstream',
-            self.git('log', '-1', '--format=%s', DEFAULT_BRANCH),
-        )
-
-    def test_a_commit_that_came_out_empty_is_dropped(self):
-        fork = self.build(
-            ancestor={DATA: 'ancestor\n'},
-            base={'tool': 'x\n', 'other': 'o\n'},
-            commits=[
-                ('Add the tool', {'tool': 'x\n'}),
-                ('Add a feature', {'feature': 'f\n'}),
-            ],
-        )
-
-        self.rebase(fork)
-
-        self.assertEqual(['Add a feature'], self.subjects())
 
     def test_resolves_the_conflicts_with_a_fixed_answer(self):
         fork = self.build(

@@ -18,6 +18,7 @@ import os
 import subprocess
 import shlex
 import sys
+from pathlib import Path
 
 
 # Paths prefixed with abs@ will be converted to absolute paths.

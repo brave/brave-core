@@ -10,7 +10,6 @@ import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
 import { writeTsConfig } from '../webpack/ts-config.ts'
 import { fallback } from '../webpack/polyfill.ts'
 import { generatePathMapWithWebMocks } from '../webpack/path-map.ts'
-import { tsMojoExtensionAlias } from '../webpack/resolve.ts'
 import { cssRules, tsLoaderRule, ifdefLoaderRule } from '../webpack/rules.ts'
 import {
   provideNodeGlobals,
@@ -100,7 +99,6 @@ export default async ({
   )
 
   config.resolve!.alias = pathMap
-  config.resolve!.extensionAlias = tsMojoExtensionAlias
   config.resolve!.fallback = fallback
 
   config.plugins!.push(

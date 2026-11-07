@@ -6,7 +6,6 @@
 import { Argument, Command, Option } from 'commander'
 import './commanderApply.ts'
 import { collect, parseBoolean, parseInteger } from './commandsUtils.ts'
-import config from './config.ts'
 import * as Log from './log.ts'
 
 export function supportQuiet<
@@ -18,8 +17,7 @@ export function supportQuiet<
     .option(
       '--quiet',
       'leave out output not needed to follow the result, and pass quiet '
-        + 'flags to depot_tools (the default under an AI agent, unless '
-        + '`quiet=false` is set in .env)',
+        + 'flags to depot_tools (the default under an AI agent)',
     )
     .option('--no-quiet', 'print all output, even under an AI agent')
     .option('--verbose', 'print all output, even under an AI agent')
@@ -28,10 +26,7 @@ export function supportQuiet<
         quiet?: boolean
         verbose?: boolean
       }
-      Log.setQuiet(
-        quiet ?? (verbose ? false : config.quiet),
-        actionCommand.name(),
-      )
+      Log.setQuiet(quiet ?? (verbose ? false : undefined), actionCommand.name())
     })
 }
 

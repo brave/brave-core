@@ -152,44 +152,16 @@
   },
   {
     "cmd": [
-      "git",
-      "checkout",
-      "--force",
-      "-B",
-      "master"
-    ],
-    "cwd": "[WORKSPACE]/b/src/brave",
-    "name": "brave-core checkout branch"
-  },
-  {
-    "cmd": [
       "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
       "RECIPE_MODULE[file]/resources/fileutil.py",
       "--json-output",
       "/path/to/tmp/json",
       "copy",
-      "brave_extra_gn_gen_opts=--check\nlean_sync=true\nuse_remoteexec=false\n",
+      "use_remoteexec=false\n",
       "[WORKSPACE]/b/src/brave/.env"
     ],
     "name": "write .env"
-  },
-  {
-    "cmd": [
-      "pnpm",
-      "run",
-      "sync"
-    ],
-    "cwd": "[WORKSPACE]/b/src/brave",
-    "env": {
-      "CHROME_HEADLESS": "1"
-    },
-    "env_prefixes": {
-      "PATH": [
-        "[WORKSPACE]/b/src/brave/tools/cr/bootstrap"
-      ]
-    },
-    "name": "pnpm run sync"
   },
   {
     "cmd": [

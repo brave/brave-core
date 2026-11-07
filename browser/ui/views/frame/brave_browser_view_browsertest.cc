@@ -5,14 +5,11 @@
 
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 
-#include <algorithm>
-#include <memory>
 #include <string>
 
 #include "base/functional/callback.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/browser/infobars/brave_confirm_infobar_creator.h"
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
@@ -23,14 +20,12 @@
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
-#include "brave/browser/ui/views/infobars/brave_confirm_infobar.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/toolbar/screenshot_button.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/infobars/core/brave_confirm_infobar_delegate.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
@@ -69,7 +64,6 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
-#include "testing/gmock/include/gmock/gmock.h"
 #include "ui/base/accelerators/accelerator.h"
 #include "ui/compositor/layer.h"
 #include "ui/events/keycodes/keyboard_codes.h"
@@ -77,7 +71,6 @@
 #include "ui/gfx/animation/animation_test_api.h"
 #include "ui/views/layout/layout_provider.h"
 #include "ui/views/view_class_properties.h"
-#include "ui/views/view_utils.h"
 #include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_delegate.h"
 
@@ -85,6 +78,7 @@
 #include "base/mac/mac_util.h"
 #include "chrome/browser/ui/fullscreen_util_mac.h"
 #endif  // BUILDFLAG(IS_MAC)
+
 
 namespace {
 class TestInfoBarDelegate : public ConfirmInfoBarDelegate {
@@ -108,26 +102,6 @@ class TestInfoBarDelegate : public ConfirmInfoBarDelegate {
     return u"This is a test InfoBar injected from a browser test.";
   }
 };
-
-class StubBraveConfirmInfoBarDelegate : public BraveConfirmInfoBarDelegate {
- public:
-  StubBraveConfirmInfoBarDelegate() = default;
-  ~StubBraveConfirmInfoBarDelegate() override = default;
-
-  // BraveConfirmInfoBarDelegate:
-  infobars::InfoBarDelegate::InfoBarIdentifier GetIdentifier() const override {
-    return TEST_INFOBAR;
-  }
-
-  std::u16string GetMessageText() const override { return u"Test message"; }
-};
-
-bool HasBraveConfirmInfoBarView(const views::View* infobar_container) {
-  return std::ranges::any_of(
-      infobar_container->children(), [](const views::View* child) {
-        return views::IsViewClass<BraveConfirmInfoBar>(child);
-      });
-}
 
 }  // namespace
 
@@ -326,29 +300,6 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
                 gfx::Vector2d(0, top_contents_separator_height));
   EXPECT_EQ(vertical_tab_strip_host_view()->bounds().top_right(),
             contents_area_origin());
-}
-
-IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
-                       RemovesBraveConfirmInfoBarViewWhenInfoBarIsRemoved) {
-  auto disable_rich_animation =
-      gfx::AnimationTestApi::SetRichAnimationRenderMode(
-          gfx::Animation::RichAnimationRenderMode::FORCE_DISABLED);
-
-  infobars::ContentInfoBarManager* infobar_manager =
-      infobars::ContentInfoBarManager::FromWebContents(
-          browser()->tab_strip_model()->GetActiveWebContents());
-  infobar_manager->RemoveAllInfoBars(/*animate=*/false);
-
-  infobars::InfoBar* infobar =
-      infobar_manager->AddInfoBar(CreateBraveConfirmInfoBar(
-          std::make_unique<StubBraveConfirmInfoBarDelegate>()));
-  ASSERT_TRUE(infobar);
-  ASSERT_TRUE(HasBraveConfirmInfoBarView(infobar_container()));
-
-  infobar_manager->RemoveInfoBar(infobar);
-
-  EXPECT_THAT(infobar_manager->infobars(), testing::IsEmpty());
-  EXPECT_FALSE(HasBraveConfirmInfoBarView(infobar_container()));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, TopSeparatorWithPanelTest) {

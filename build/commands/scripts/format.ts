@@ -47,26 +47,8 @@ program
     'format all files, not just the changed files.'
       + 'Only for prettier and mojom formatters.',
   )
-  .argument(
-    '[paths...]',
-    'only format the changes in these files or directories',
-  )
   .apply(buildOptions.supportQuiet)
   .action(runFormat)
-
-// The paths relative to brave-core. pnpm runs scripts from the package root,
-// and records where it was started in INIT_CWD.
-const toBraveCorePaths = (paths: string[]) => {
-  const cwd = process.env.INIT_CWD ?? process.cwd()
-  return paths.map((p) => {
-    const relative = path.relative(config.braveCoreDir, path.resolve(cwd, p))
-    if (relative.startsWith('..') || path.isAbsolute(relative)) {
-      Log.error(`Fatal: ${p} is outside brave-core`)
-      process.exit(1)
-    }
-    return relative.split(path.sep).join('/') || '.'
-  })
-}
 
 // Replace the first 4 lines of the diff output with the before/after
 // format header.
@@ -100,21 +82,17 @@ const formatOutput = (result: SpawnSyncReturns<string | NonSharedBuffer>) => {
 
 // A function that formats the code in the current diff with base branch.
 // It uses git cl format and prettier, then aggregates the results.
-async function runFormat(
-  rawPaths: string[],
-  options: {
-    base?: string
-    full?: boolean
-    presubmit?: boolean
-    dryRun?: boolean
-    onlyPrettier?: boolean
-    allFiles?: boolean
-  },
-) {
+async function runFormat(options: {
+  base?: string
+  full?: boolean
+  presubmit?: boolean
+  dryRun?: boolean
+  onlyPrettier?: boolean
+  allFiles?: boolean
+}) {
   if (!options.base) {
     options.base = 'origin/master'
   }
-  const paths = toBraveCorePaths(rawPaths)
   const skipLogging = options.presubmit
 
   let cmdOptions = config.defaultOptions
@@ -148,7 +126,7 @@ async function runFormat(
   const shouldRunMojomFormat = !options.onlyPrettier
 
   if (shouldRunGitClFormat) {
-    const clFormatResult = util.run('git', [...args, ...paths], {
+    const clFormatResult = util.run('git', [...args], {
       ...cmdOptions,
       continueOnFail: true,
       skipLogging,
@@ -173,12 +151,7 @@ async function runFormat(
 
   const filesToFormat = options.allFiles
     ? getAllFiles()
-    : util.getChangedFiles(
-        config.braveCoreDir,
-        options.base,
-        skipLogging,
-        paths,
-      )
+    : util.getChangedFiles(config.braveCoreDir, options.base, skipLogging)
 
   if (shouldRunPrettier) {
     formatIssues.push(

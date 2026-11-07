@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+blank_macros_for_ast_parsing: true
+
+substitutions:
+  - description: |-
+      Add a setter for the session country code.
+
+      Mirrors the existing `ClearSessionCountry`, so a new country can be
+      applied to clients using the in-memory seed-file cache without a full
+      seed store.
+    add_to_public:
+      class_name: SeedReaderWriter
+      code: |-
+        void SetSessionCountry(std::string_view country_code);

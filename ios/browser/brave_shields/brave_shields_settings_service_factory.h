@@ -8,20 +8,27 @@
 
 #include <memory>
 
-#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
+#include "base/no_destructor.h"
 #include "components/keyed_service/core/keyed_service.h"
-#include "ios/chrome/browser/shared/model/profile/typed_profile_keyed_service_factory_ios.h"
+#include "ios/chrome/browser/shared/model/profile/profile_keyed_service_factory_ios.h"
 
 class ProfileIOS;
 
+namespace base {
+
+template <typename T>
+class NoDestructor;
+}  // namespace base
+
 namespace brave_shields {
 
+class BraveShieldsSettingsService;
+
 class BraveShieldsSettingsServiceFactory
-    : public TypedProfileKeyedServiceFactoryIOS<
-          BraveShieldsSettingsServiceFactory,
-          BraveShieldsSettingsService> {
+    : public ProfileKeyedServiceFactoryIOS {
  public:
-  explicit BraveShieldsSettingsServiceFactory(PassKey key);
+  static BraveShieldsSettingsService* GetForProfile(ProfileIOS* profile);
+  static BraveShieldsSettingsServiceFactory* GetInstance();
 
   BraveShieldsSettingsServiceFactory(
       const BraveShieldsSettingsServiceFactory&) = delete;
@@ -29,7 +36,12 @@ class BraveShieldsSettingsServiceFactory
       const BraveShieldsSettingsServiceFactory&) = delete;
 
  private:
-  // TypedProfileKeyedServiceFactoryIOS:
+  friend class base::NoDestructor<BraveShieldsSettingsServiceFactory>;
+
+  BraveShieldsSettingsServiceFactory();
+  ~BraveShieldsSettingsServiceFactory() override;
+
+  // ProfileKeyedServiceFactoryIOS implementation.
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
       ProfileIOS* context) const override;
 };

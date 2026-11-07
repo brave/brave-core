@@ -151,17 +151,6 @@
     "name": "brave-core restore origin push url"
   },
   {
-    "cmd": [
-      "git",
-      "checkout",
-      "--force",
-      "-B",
-      "master"
-    ],
-    "cwd": "[WORKSPACE]/b/src/brave",
-    "name": "brave-core checkout branch"
-  },
-  {
     "name": "$result"
   }
 ]
