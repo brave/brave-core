@@ -1586,7 +1586,9 @@ class Upgrade(Versioned):
                 'The following modified patches have changes in the number of '
                 'hunks, and are expected to be submitted separately as fixes '
                 'with Chromium culprits:\n'
-                f'{list_str}'
+                f'{list_str}\n'
+                'Commit each of these with its culprit, and then rerun '
+                '[italic]🚀Brockit![/] with [bold cyan]--continue[/].'
             )
 
         return status

@@ -1375,6 +1375,8 @@ class LiftConflictResolutionTest(LiftTestCase):
             'hunks, and are expected to be submitted separately as fixes with '
             'Chromium culprits:',
             f'* {FOO_PATCH}: 1 hunks before, 2 hunks after',
+            'Commit each of these with its culprit, and then rerun '
+            '🚀Brockit! with --continue.',
         )
 
     def test_conflict_in_a_dependency_is_reported_and_resolved(self):
