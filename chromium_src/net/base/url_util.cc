@@ -5,10 +5,12 @@
 
 #include <iostream>
 #include <string>
+#include <string_view>
 
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/origin.h"
 #include "url/third_party/mozilla/url_parse.h"
+#include "url/url_canon.h"
 #include "url/url_canon_ip.h"
 
 #include <net/base/url_util.cc>
@@ -33,7 +35,7 @@ std::string URLToEphemeralStorageDomain(const GURL& url) {
 
 bool IsOnion(const GURL& url) {
   return (url.SchemeIsWSOrWSS() || url.SchemeIsHTTPOrHTTPS()) &&
-         url.DomainIs(kOnionDomain);
+         IsOnionHostname(url.host());
 }
 
 bool IsOnion(const url::Origin& origin) {
@@ -48,6 +50,11 @@ bool IsOnion(const url::Origin& origin) {
 
 bool IsLocalhostOrOnion(const GURL& url) {
   return IsLocalhost(url) || IsOnion(url);
+}
+
+bool IsOnionHostname(std::string_view host) {
+  url::CanonHostInfo host_info;
+  return url::DomainIs(CanonicalizeHost(host, &host_info), kOnionDomain);
 }
 
 }  // namespace net

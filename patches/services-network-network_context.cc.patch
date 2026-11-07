@@ -1,0 +1,13 @@
+diff --git a/services/network/network_context.cc b/services/network/network_context.cc
+index 7c2bc9f9011a5fca8fcb3340620a208fb47f81d9..049c8ed07387672e78cf8d793f8a83f05bf38752 100644
+--- a/services/network/network_context.cc
++++ b/services/network/network_context.cc
+@@ -814,6 +814,8 @@ NetworkContext::NetworkContext(
+       std::move(on_url_request_context_builder_configured),
+       params_->bound_network);
+   url_request_context_ = url_request_context_owner_.url_request_context.get();
++  url_request_context_->set_tor_mode(
++      ToURLRequestContextTorMode(params_->tor_mode));
+ 
+   cookie_manager_ = std::make_unique<CookieManager>(
+       url_request_context_, std::move(session_cleanup_cookie_store),
