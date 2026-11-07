@@ -1263,6 +1263,14 @@ source_set("ui") {
       deps += [ "//brave/browser/web_discovery" ]
     }
 
+    if (enable_psst) {
+      sources += [
+        "views/infobars/psst_infobar.cc",
+        "views/infobars/psst_infobar.h",
+      ]
+      deps += [ "//brave/browser/psst" ]
+    }
+
     deps += [
       "//brave/browser/ui/views/brave_tooltips",
       "//brave/browser/ui/views/page_info",
