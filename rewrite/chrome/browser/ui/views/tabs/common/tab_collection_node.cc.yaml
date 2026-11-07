@@ -20,7 +20,8 @@ substitutions:
   - description: |-
       Never create a view for a TREE_NODE in CreateViewForNode().
 
-      We don't have speciali view for TREE_NODE yet.
+      Tree tab node collections are unwrapped in the view model, see
+      brave/browser/ui/views/tabs/tree_tab_view_utils.h.
     regex:
       re_pattern: |-
         (TabCollectionNode::CreateViewForNode\([^)]*\)\s*\{.*?\n\s*switch[^{]*\{)
@@ -29,3 +30,16 @@ substitutions:
         \1
             case Type::TREE_NODE:
               NOTREACHED();
+
+  - description: |-
+      Walk the children without tree tab node collections
+
+      In TabCollectionNode::Initialize() and TabCollectionNode::Deinitialize(),
+      TabCollectionNode iterate all children. But we don't want for 
+      ViewModel(TabCollectionNode) to know about tree node. So we should iterate
+      skipping tree node.
+    count: 2
+    regex:
+      pattern: 'for (const auto& child_data : collection->GetChildren())'
+      replace: |-
+        for (const tabs::Child& child_data : tree_tab_view_utils::GetUnwrappedChildren(*collection))

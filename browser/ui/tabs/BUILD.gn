@@ -14,6 +14,7 @@ import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+import("//brave/components/tabs//buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
@@ -193,6 +194,10 @@ if (!is_android) {
       # bubble UI). A leaf node dependency will be added in the future to avoid
       # this.
       deps += [ "//brave/browser/ui" ]
+    }
+
+    if (enable_brave_tree_tabs) {
+      deps += [ "//brave/browser/ui/views/tabs:tree_tab_view_utils" ]
     }
   }
 

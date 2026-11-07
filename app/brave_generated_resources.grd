@@ -1341,6 +1341,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
             Minimize tabs
           </message>
         </if>
+        <message name="IDS_TREE_TAB_EXPAND_BUTTON" desc="The tooltip and accessible name of the button on a tab that shows the tabs opened from it in the tab tree">
+          Expand tab tree
+        </message>
+        <message name="IDS_TREE_TAB_COLLAPSE_BUTTON" desc="The tooltip and accessible name of the button on a tab that hides the tabs opened from it in the tab tree">
+          Collapse tab tree
+        </message>
       </if>
 
       <message name="IDS_BOOKMARKS_SORT_CUSTOM" desc="Label for the custom order sort type">

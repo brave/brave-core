@@ -27,6 +27,12 @@ class TreeTabNodeTabCollection;
 // override certain behaviors such as adding, removing, and moving tabs
 // recursively. This is useful for implementing custom tab strip behaviors in
 // Brave, while still leveraging the existing TabStripCollection logic.
+//
+// While the delegate handles the tab manipulation, observers are notified of
+// the hierarchy with tree tab node collections unwrapped, i.e. as if their
+// children were the children of their parents. The changes made through the
+// delegate are made without notifications, and the difference of the
+// unwrapped hierarchy is notified at the end of each operation instead.
 class BraveTabStripCollection : public TabStripCollection {
  public:
   BraveTabStripCollection();
@@ -37,8 +43,8 @@ class BraveTabStripCollection : public TabStripCollection {
   void SetDelegate(std::unique_ptr<BraveTabStripCollectionDelegate> delegate);
 
   // Exposes APIs for delegate to override behaviors ---------------------------
-  // Theses methods call the default behavior of TabStripCollection for on
-  // behalf of the delegate.
+  // Theses methods do what TabStripCollection does on behalf of the delegate,
+  // without notifications. See the class comment.
   tabs::TabCollection* GetParentCollection(
       TabInterface* tab,
       base::PassKey<BraveTabStripCollectionDelegate> pass_key) const;
@@ -66,6 +72,8 @@ class BraveTabStripCollection : public TabStripCollection {
   std::unique_ptr<TabGroupTabCollection> PopDetachedGroupCollectionForDelegate(
       tab_groups::TabGroupId group_id,
       base::PassKey<BraveTabStripCollectionDelegate> pass_key);
+  // Unlike the others, notifies the moves as TabStripCollection does. Only for
+  // tabs in a group, where there are no tree tab node collections.
   void MoveTabsRecursiveForDelegate(
       const std::vector<int>& tab_indices,
       size_t destination_index,
@@ -78,31 +86,6 @@ class BraveTabStripCollection : public TabStripCollection {
   void MoveCollectionAndNotify(TabCollection* collection,
                                TabCollection* new_parent,
                                size_t index);
-
-  // Notification APIs for the delegate. The delegate manipulates the
-  // collection hierarchy directly, so it should use these to notify observers
-  // of the changes, as TabStripCollection does for its own operations. See
-  // TabCollection::NotifyOnChild*() for the meaning of the arguments.
-  void NotifyOnChildrenAdded(
-      TabCollection& collection,
-      const TabCollection::NodeHandles& handles,
-      const TabCollection::Position& insertion_position,
-      TabCollection* stop_notification_root,
-      bool insert_from_detached,
-      base::PassKey<BraveTabStripCollectionDelegate> pass_key);
-  void NotifyOnChildrenRemoved(
-      TabCollection& collection,
-      const TabCollection::Position& position,
-      const TabCollection::NodeHandles& handles,
-      TabCollection* stop_notification_root,
-      base::PassKey<BraveTabStripCollectionDelegate> pass_key);
-  void NotifyOnChildMoved(
-      TabCollection& collection,
-      const TabCollection::NodeHandle& handle,
-      const TabCollection::Position& src_position,
-      const TabCollection::Position& dst_position,
-      TabCollection* stop_notification_root,
-      base::PassKey<BraveTabStripCollectionDelegate> pass_key);
 
   // TabStripCollection:
   void AddTabRecursive(ScopedTab tab,
@@ -141,9 +124,36 @@ class BraveTabStripCollection : public TabStripCollection {
       TreeTabNodeTabCollection& subtree_root) override;
   void InsertDetachedTreeTabNode(std::unique_ptr<TabCollection> collection,
                                  int index) override;
+  std::unique_ptr<TabCollection> RemoveTabCollection(
+      TabCollection* collection) override;
 
  private:
+  class ScopedUnwrappedNotifications;
+  struct UnwrappedHierarchy;
+
+  bool ShouldDelegate() const;
+
+  // TabStripCollection::AddTabCollectionImpl() and RemoveTabCollectionImpl()
+  // without notifications.
+  void AddTabCollectionSilently(std::unique_ptr<TabCollection> collection,
+                                const TabCollection::Position& position);
+  std::unique_ptr<TabCollection> RemoveTabCollectionSilently(
+      TabCollection* collection);
+
+  // Notifies observers of the changes of the unwrapped hierarchy since
+  // |notified_hierarchy_|, which is updated to the current one.
+  void NotifyUnwrappedChanges();
+  void NotifyRemovedNodes(const UnwrappedHierarchy& current,
+                          const TabCollectionHandle& parent);
+  void NotifyPlacedNodes(const UnwrappedHierarchy& current,
+                         const TabCollectionHandle& parent);
+
   std::unique_ptr<BraveTabStripCollectionDelegate> delegate_;
+
+  // The unwrapped hierarchy that observers know of. Set while the delegate is
+  // handling an operation. See ScopedUnwrappedNotifications.
+  std::unique_ptr<UnwrappedHierarchy> notified_hierarchy_;
+  int unwrapped_notifications_depth_ = 0;
 };
 
 }  // namespace tabs

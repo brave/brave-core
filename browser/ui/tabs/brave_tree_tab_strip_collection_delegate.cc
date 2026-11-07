@@ -57,35 +57,21 @@ void BraveTreeTabStripCollectionDelegate::AddTabAndNotify(
     tabs::TabCollection* parent,
     tabs::ScopedTab tab,
     size_t index) const {
-  auto* added_tab = parent->AddTab(std::move(tab), index);
-  collection_->NotifyOnChildrenAdded(
-      *parent, {added_tab->GetHandle()}, {parent->GetHandle(), index},
-      /*stop_notification_root=*/nullptr, /*insert_from_detached=*/false,
-      GetPassKey());
+  parent->AddTab(std::move(tab), index);
 }
 
 void BraveTreeTabStripCollectionDelegate::AddCollectionAndNotify(
     tabs::TabCollection* parent,
     std::unique_ptr<tabs::TabCollection> collection,
     size_t index) const {
-  auto* added_collection = parent->AddCollection(std::move(collection), index);
-  collection_->NotifyOnChildrenAdded(
-      *parent, {added_collection->GetHandle()}, {parent->GetHandle(), index},
-      /*stop_notification_root=*/nullptr,
-      /*insert_from_detached=*/added_collection->TabCountRecursive() > 0,
-      GetPassKey());
+  parent->AddCollection(std::move(collection), index);
 }
 
 tabs::ScopedTab BraveTreeTabStripCollectionDelegate::RemoveTabAndNotify(
     tabs::TabCollection* parent,
     tabs::TabInterface* tab) const {
-  const tabs::TabCollection::Position position = {
-      parent->GetHandle(), parent->GetIndexOfTab(tab).value()};
   auto removed_tab = parent->MaybeRemoveTab(tab);
   CHECK(removed_tab);
-  collection_->NotifyOnChildrenRemoved(
-      *parent, position, {removed_tab->GetHandle()},
-      /*stop_notification_root=*/nullptr, GetPassKey());
   return removed_tab;
 }
 
@@ -93,14 +79,8 @@ std::unique_ptr<tabs::TabCollection>
 BraveTreeTabStripCollectionDelegate::RemoveCollectionAndNotify(
     tabs::TabCollection* parent,
     tabs::TabCollection* collection) const {
-  const tabs::TabCollection::Position position = {
-      parent->GetHandle(), parent->GetIndexOfCollection(collection).value()};
-  const auto handle = collection->GetHandle();
   auto removed_collection = parent->MaybeRemoveCollection(collection);
   CHECK(removed_collection);
-  collection_->NotifyOnChildrenRemoved(*parent, position, {handle},
-                                       /*stop_notification_root=*/nullptr,
-                                       GetPassKey());
   return removed_collection;
 }
 
@@ -109,18 +89,7 @@ void BraveTreeTabStripCollectionDelegate::MoveTabToAncestorAndNotify(
     tabs::TabInterface* tab,
     tabs::TabCollection* dst_parent,
     size_t dst_index) const {
-  const tabs::TabCollection::Position src_position = {
-      src_parent->GetHandle(), src_parent->GetIndexOfTab(tab).value()};
-  const tabs::TabCollection::Position dst_position = {dst_parent->GetHandle(),
-                                                      dst_index};
-  const auto handle = tab->GetHandle();
   dst_parent->AddTab(src_parent->MaybeRemoveTab(tab), dst_index);
-
-  collection_->NotifyOnChildrenRemoved(*src_parent, src_position, {handle},
-                                       dst_parent, GetPassKey());
-  collection_->NotifyOnChildMoved(
-      *dst_parent, handle, src_position, dst_position,
-      /*stop_notification_root=*/nullptr, GetPassKey());
 }
 
 void BraveTreeTabStripCollectionDelegate::MoveCollectionToAncestorAndNotify(
@@ -128,20 +97,8 @@ void BraveTreeTabStripCollectionDelegate::MoveCollectionToAncestorAndNotify(
     tabs::TabCollection* collection,
     tabs::TabCollection* dst_parent,
     size_t dst_index) const {
-  const tabs::TabCollection::Position src_position = {
-      src_parent->GetHandle(),
-      src_parent->GetIndexOfCollection(collection).value()};
-  const tabs::TabCollection::Position dst_position = {dst_parent->GetHandle(),
-                                                      dst_index};
-  const auto handle = collection->GetHandle();
   dst_parent->AddCollection(src_parent->MaybeRemoveCollection(collection),
                             dst_index);
-
-  collection_->NotifyOnChildrenRemoved(*src_parent, src_position, {handle},
-                                       dst_parent, GetPassKey());
-  collection_->NotifyOnChildMoved(
-      *dst_parent, handle, src_position, dst_position,
-      /*stop_notification_root=*/nullptr, GetPassKey());
 }
 
 void BraveTreeTabStripCollectionDelegate::AddTabRecursive(
@@ -1480,9 +1437,6 @@ void BraveTreeTabStripCollectionDelegate::MoveChildrenOfTreeTabNodeToNode(
     size_t target_index) const {
   CHECK_LT(target_index, target_collection->ChildCount());
 
-  // Moves the children in order, so that the notifications are sent in order
-  // as well. Observers place each item after the one before it, which has to
-  // be placed already.
   size_t moved_count = 0;
   auto children = tree_tab_node_collection->GetTreeNodeChildren();
   for (auto& child : children) {
@@ -1528,7 +1482,6 @@ void BraveTreeTabStripCollectionDelegate::
       tree_tab_node_collection);
   CHECK(local_index.has_value());
 
-  // See MoveChildrenOfTreeTabNodeToNode() for why this moves in order.
   size_t moved_count = 0;
   auto children = tree_tab_node_collection->GetTreeNodeChildren();
   for (auto& child : children) {
@@ -1546,6 +1499,15 @@ void BraveTreeTabStripCollectionDelegate::
                                          *local_index + moved_count++);
             },
             [&](tabs::TabCollection* collection) {
+              if (tree_tab_node_collection->current_value_type() !=
+                      tabs::TreeTabNodeTabCollection::CurrentValueType::kTab &&
+                  collection ==
+                      tree_tab_node_collection->GetCurrentCollection()) {
+                // The node's own value, e.g. the group containing a moving
+                // split, always stays in the node.
+                return;
+              }
+
               auto recursive_tabs = collection->GetTabsRecursive();
               if (!recursive_tabs.empty() &&
                   std::ranges::all_of(recursive_tabs, [&](auto* tab) {

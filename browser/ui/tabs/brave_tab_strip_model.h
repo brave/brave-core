@@ -122,7 +122,10 @@ class BraveTabStripModel : public TabStripModel {
   std::vector<int> mru_cycle_list_;
 
   BooleanPrefMember tree_tabs_enabled_;
-  BooleanPrefMember vertical_tabs_enabled_;
+
+  BooleanPrefMember brave_vertical_tabs_enabled_;
+  // Chromium's vertical tabs pref (prefs::kVerticalTabsEnabled).
+  BooleanPrefMember upstream_vertical_tabs_enabled_;
 
   // The model for tree tabs hosted within this TabStripModel. When the feature
   // flag is disabled or the feature is turned off via related preferences,
