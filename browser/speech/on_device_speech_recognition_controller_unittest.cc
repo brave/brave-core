@@ -148,7 +148,7 @@ class OnDeviceSpeechRecognitionControllerTest : public testing::Test {
     // The models state is a process-wide singleton, so clear it to avoid
     // polluting other suites.
     local_ai::OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(
-        base::FilePath());
+        local_ai::OnDeviceSpeechModel::kEnglish, base::FilePath());
   }
 
   // Injected BackgroundWebContents factory. Three modes drive the states the
@@ -196,11 +196,14 @@ class OnDeviceSpeechRecognitionControllerTest : public testing::Test {
   void SetInstalled(bool installed) {
     auto* state = local_ai::OnDeviceSpeechModelsState::GetInstance();
     if (!installed) {
-      state->SetInstallDir(base::FilePath());
+      state->SetInstallDir(local_ai::OnDeviceSpeechModel::kEnglish,
+                           base::FilePath());
       return;
     }
-    state->SetInstallDir(temp_dir_.GetPath());
-    base::FilePath model_dir = state->GetModelDir();
+    state->SetInstallDir(local_ai::OnDeviceSpeechModel::kEnglish,
+                         temp_dir_.GetPath());
+    base::FilePath model_dir =
+        state->GetModelDir(local_ai::OnDeviceSpeechModel::kEnglish);
     ASSERT_TRUE(base::CreateDirectory(model_dir));
     // ReadNemotronOrtFiles only needs these to exist and be non-empty; the
     // contents are ignored by the fake factory's Init.
@@ -575,7 +578,7 @@ TEST_F(OnDeviceSpeechRecognitionControllerTest, ModelFileReadFailureTearsDown) {
   // Install dir is set (so Start proceeds) but the model files are absent, so
   // ReadNemotronOrtFiles returns null and the worker tears down without Init.
   local_ai::OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(
-      temp_dir_.GetPath());
+      local_ai::OnDeviceSpeechModel::kEnglish, temp_dir_.GetPath());
   Session s = StartSession();
   ASSERT_NE(nullptr, last_bwc_.get());
   RegisterFactory();

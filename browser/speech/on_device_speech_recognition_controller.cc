@@ -180,7 +180,8 @@ void OnDeviceSpeechRecognitionController::Start(
   // renderer just to discover the files are missing in OnOrtFilesRead.
   // Dropping the stream/responder pipes here surfaces to the engine as a
   // recognition failure, the same outcome as a failed load.
-  if (!local_ai::OnDeviceSpeechModelsState::GetInstance()->IsModelInstalled()) {
+  if (!local_ai::OnDeviceSpeechModelsState::GetInstance()->IsModelInstalled(
+          local_ai::OnDeviceSpeechModel::kEnglish)) {
     return;
   }
 
@@ -304,7 +305,9 @@ void OnDeviceSpeechRecognitionController::LoadOrtModel() {
   // reset or superseded factory.
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
-      base::BindOnce(&ReadNemotronOrtFiles, state->GetModelDir()),
+      base::BindOnce(
+          &ReadNemotronOrtFiles,
+          state->GetModelDir(local_ai::OnDeviceSpeechModel::kEnglish)),
       base::BindOnce(&OnDeviceSpeechRecognitionController::OnOrtFilesRead,
                      weak_factory_.GetWeakPtr()));
 }
@@ -312,9 +315,9 @@ void OnDeviceSpeechRecognitionController::LoadOrtModel() {
 void OnDeviceSpeechRecognitionController::OnOrtFilesRead(
     local_ai::mojom::OrtModelFilesPtr files) {
   if (!files) {
-    VLOG(1)
-        << "OnDeviceSpeechRecognition: failed to read ORT model files from "
-        << local_ai::OnDeviceSpeechModelsState::GetInstance()->GetModelDir();
+    VLOG(1) << "OnDeviceSpeechRecognition: failed to read ORT model files from "
+            << local_ai::OnDeviceSpeechModelsState::GetInstance()->GetModelDir(
+                   local_ai::OnDeviceSpeechModel::kEnglish);
     TearDown();
     return;
   }

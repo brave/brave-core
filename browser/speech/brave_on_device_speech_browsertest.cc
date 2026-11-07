@@ -161,7 +161,7 @@ class BraveOnDeviceSpeechBrowserTest : public InProcessBrowserTest {
     local_ai::ShutdownOnDeviceSpeechModelsComponentRegistration();
     // Process-wide, so leave it as a fresh browser would have it.
     local_ai::OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(
-        base::FilePath());
+        local_ai::OnDeviceSpeechModel::kEnglish, base::FilePath());
     on_demand_updater_.reset();
     InProcessBrowserTest::TearDownOnMainThread();
   }
@@ -176,6 +176,7 @@ class BraveOnDeviceSpeechBrowserTest : public InProcessBrowserTest {
   // client.
   void PublishModel() {
     local_ai::OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(
+        local_ai::OnDeviceSpeechModel::kEnglish,
         base::FilePath(FILE_PATH_LITERAL("/brave/speech/models")));
   }
 
