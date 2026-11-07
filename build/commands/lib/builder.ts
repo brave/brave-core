@@ -29,11 +29,8 @@ const BUILDER_NAME_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/
 export type Builder = {
   name: string
   gnArgs: { gn_args: Record<string, unknown>; secrets?: Record<string, string> }
-  sync: {
-    target_os: string
-    target_cpu: string
-    gclient_overrides: Record<string, unknown>
-  }
+  // What the checkout syncs besides the host, which gclient always syncs.
+  sync: { target_os: string[]; target_cpu: string[] }
   targets: { compile: string[]; tests: string[] }
 }
 
@@ -68,6 +65,38 @@ export function loadBuilder(name: string, dir = buildersDir): Builder {
   }
 }
 
+// Returns the `target_os` and `target_cpu` lists `init`/`sync` write into
+// `.gclient` for a builder: what its checkout syncs besides the host.
+export function getBuilderGclientTargets(builder: Builder) {
+  return {
+    targetOSList: builder.sync.target_os,
+    targetArchList: builder.sync.target_cpu,
+  }
+}
+
+// Returns the one platform a builder builds for, from its GN args. Its OS has
+// to be synced, so it has to be the host's or in the builder's gclient lists.
+// Its CPU need not be: as upstream, a cross CPU is rarely listed.
+export function getBuilderBuildTarget(builder: Builder, hostOS: string) {
+  const targetOS = getBuildTarget(builder, 'target_os')
+  const targetArch = getBuildTarget(builder, 'target_cpu')
+  if (targetOS !== hostOS && !builder.sync.target_os.includes(targetOS)) {
+    throw new Error(
+      `builder ${builder.name} builds for target_os ${targetOS}, which is `
+        + `neither the host's (${hostOS}) nor in its sync.json`,
+    )
+  }
+  return { targetOS, targetArch }
+}
+
+function getBuildTarget(builder: Builder, field: 'target_os' | 'target_cpu') {
+  const value = builder.gnArgs.gn_args[field]
+  if (typeof value !== 'string') {
+    throw new Error(`builder ${builder.name}: gn-args.json has no ${field}`)
+  }
+  return value
+}
+
 // Returns the flags and positional arguments given on the command line, other
 // than `--builder` itself and `allowed` option attribute names.
 export function findBuilderConflicts(
@@ -92,7 +121,8 @@ export function findBuilderConflicts(
 // Adds `--builder <name>`. The builder config is authoritative, so when it is
 // given nothing else may be passed, except the `allowed` option attribute
 // names (e.g. the `--init` that `pnpm run init` implies). `dir` is where the
-// builders are looked up.
+// builders are looked up. The action receives the loaded `Builder` as the
+// `builder` option.
 export function supportBuilder<
   Args extends any[],
   Opts extends {},
@@ -127,8 +157,7 @@ export function supportBuilder<
         )
       }
       try {
-        // Not consumed yet; this fails early on an unknown or broken builder.
-        loadBuilder(name, dir)
+        thisCommand.setOptionValue('builder', loadBuilder(name, dir))
       } catch (e) {
         thisCommand.error(`error: ${(e as Error).message}`)
       }
