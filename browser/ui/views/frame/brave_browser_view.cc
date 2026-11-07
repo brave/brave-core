@@ -69,7 +69,6 @@
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
-#include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/frame/browser_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -489,10 +488,6 @@ BraveBrowserView::~BraveBrowserView() {
   }
 }
 
-void BraveBrowserView::ToggleSidebar() {
-  SidePanelUI::From(browser_)->Toggle();
-}
-
 void BraveBrowserView::ShowBraveVPNBubble(bool show_select) {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   vpn_panel_controller_.ShowBraveVPNPanel(show_select);
@@ -711,13 +706,6 @@ void BraveBrowserView::CleanAndCopySelectedURL() {
   }
   brave_omnibox_view->CleanAndCopySelectedURL();
 }
-
-#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
-void BraveBrowserView::ShowPlaylistBubble() {
-  static_cast<BraveLocationBarView*>(GetLocationBarView())
-      ->ShowPlaylistBubble();
-}
-#endif
 
 void BraveBrowserView::OnAcceleratorsChanged(
     const commands::AcceleratorPrefManager::Accelerators& changed) {

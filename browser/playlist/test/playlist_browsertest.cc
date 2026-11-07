@@ -14,6 +14,7 @@
 #include "base/test/mock_callback.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/app/brave_command_ids.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
@@ -221,6 +222,20 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PanelToggleTestWhilePlaying) {
   ASSERT_TRUE(
       base::test::RunUntil([&]() { return !panel_ui->IsSidePanelShowing(); }));
   EXPECT_FALSE(coordinator->contents_wrapper_);
+}
+
+IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, ShowPlaylistBubbleCommand) {
+  ASSERT_TRUE(content::NavigateToURL(GetActiveWebContents(),
+                                     GetURL("/playlist/site_with_video.html")));
+
+  auto playlist_icon = GetPlaylistIcon();
+  WaitUntil(
+      base::BindLambdaForTesting([&]() { return playlist_icon.GetVisible(); }));
+
+  chrome::BrowserCommandController::From(browser())->ExecuteCommand(
+      IDC_SHOW_PLAYLIST_BUBBLE);
+  WaitUntil(base::BindLambdaForTesting([&]() { return !!GetBubble(); }));
+  EXPECT_TRUE(views::IsViewClass<PlaylistAddBubbleView>(GetBubble()));
 }
 
 IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, AddItemsToList) {

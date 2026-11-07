@@ -91,6 +91,7 @@
 #include "url/origin.h"
 
 #if defined(TOOLKIT_VIEWS)
+#include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
@@ -131,6 +132,12 @@
 #if BUILDFLAG(ENABLE_COMMANDER)
 #include "brave/browser/ui/commander/commander_service.h"
 #include "brave/browser/ui/commander/commander_service_factory.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+#include "brave/browser/ui/tabs/public/brave_tab_features.h"
+#include "brave/browser/ui/views/page_action/playlist_page_action_controller.h"
+#include "brave/browser/ui/views/playlist/playlist_bubbles_controller.h"
 #endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
@@ -491,13 +498,13 @@ void ToggleSidebarPosition(BrowserWindowInterface* browser) {
 }
 
 void ToggleSidebar(BrowserWindowInterface* browser) {
-  if (!browser) {
+#if defined(TOOLKIT_VIEWS)
+  if (!browser || !sidebar::SidebarController::From(browser)) {
     return;
   }
 
-  if (auto* brave_browser_window = BraveBrowserWindow::FromBrowser(browser)) {
-    brave_browser_window->ToggleSidebar();
-  }
+  SidePanelUI::From(browser)->Toggle();
+#endif
 }
 
 bool HasSelectedURL(BrowserWindowInterface* browser) {
@@ -572,8 +579,16 @@ void ToggleCommander(BrowserWindowInterface* browser) {
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 void ShowPlaylistBubble(BrowserWindowInterface* browser) {
-  if (auto* brave_browser_window = BraveBrowserWindow::FromBrowser(browser)) {
-    brave_browser_window->ShowPlaylistBubble();
+  tabs::TabInterface* const tab = browser->GetActiveTabInterface();
+  if (!tab) {
+    return;
+  }
+
+  if (auto* controller =
+          tabs::BraveTabFeatures::FromTabFeatures(tab->GetTabFeatures())
+              ->playlist_page_action_controller()) {
+    controller->ShowBubble(
+        playlist::PlaylistBubblesController::BubbleType::kInfer);
   }
 }
 #endif
