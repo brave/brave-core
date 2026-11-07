@@ -11,9 +11,12 @@ repo."""
 import argparse
 import json
 import os
+import re
 import subprocess
 import shutil
 import sys
+import tempfile
+import urllib.error
 import urllib.request
 
 
@@ -37,6 +40,13 @@ NPM_EXCLUDE_PATHS = [
     os.path.join('node_modules'),
     os.path.join('tools', 'crates'),
 ]
+
+# Matches `github:owner/repo#revision` and
+# `git+https://github.com/owner/repo.git#revision` dependency specifiers.
+GIT_DEP_PATTERN = re.compile(
+    r'^(?:github:|git\+https://github\.com/)'
+    r'([^/]+)/([^#/]+?)(?:\.git)?#(.+)$'
+)
 
 # Only check Cargo.lock for these paths.
 CARGO_INCLUDE_PATHS = [
@@ -78,6 +88,8 @@ def main():
             full_path = os.path.join(dir_path, dir_name)
             errors += audit_path(full_path, args)
 
+    errors += audit_git_dependencies(args)
+
     for p in CARGO_INCLUDE_PATHS:
         print(f'Auditing (cargo) {p}')
         errors += cargo_audit_deps(os.path.join(args.source_root, p), args)
@@ -117,6 +129,101 @@ def audit_path(path, args):
         errors += pnpm_audit_deps(path, args)
 
     return errors
+
+
+def audit_git_dependencies(args):
+    """Audit every git-hosted dependency against its own lockfile.
+
+    A git dependency's dev dependencies are installed by its `prepare` script
+    and appear in neither brave-core's lockfile nor the packed copy under
+    node_modules, so no other pass in this script can see them. The same is
+    true of git dependencies nested inside those manifests, so the whole graph
+    is walked.
+    """
+    errors = 0
+    manifest_path = os.path.join(args.source_root, 'package.json')
+    with open(manifest_path, encoding='utf-8') as f:
+        manifest = json.load(f)
+
+    visited = set()
+    queue = git_dependencies(manifest)
+    while queue:
+        name, owner, repo, revision = queue.pop(0)
+        if (owner, repo, revision) in visited:
+            continue
+        visited.add((owner, repo, revision))
+        dep_errors, nested = audit_git_dependency(
+            name, owner, repo, revision, args
+        )
+        errors += dep_errors
+        queue += nested
+
+    return errors
+
+
+def git_dependencies(manifest):
+    """List the (name, owner, repo, revision) git deps a manifest declares."""
+
+    deps = {}
+    for section in ('dependencies', 'devDependencies', 'optionalDependencies'):
+        deps.update(manifest.get(section) or {})
+
+    found = []
+    for name, specifier in sorted(deps.items()):
+        match = GIT_DEP_PATTERN.match(specifier)
+        if match:
+            found.append((name, *match.groups()))
+    return found
+
+
+def audit_git_dependency(name, owner, repo, revision, args):
+    """Audit a single git-hosted dependency at its pinned revision.
+
+    Returns the error count and the git dependencies of its manifest.
+    """
+
+    base_url = f'https://raw.githubusercontent.com/{owner}/{repo}/{revision}'
+    manifest = fetch_file(f'{base_url}/package.json')
+    if manifest is None:
+        print(f'Result: {name} has no package.json at {revision}')
+        return 1, []
+
+    # Let corepack use the ambient package manager rather than downloading the
+    # one the dependency pins; only the lockfile is being read.
+    manifest = json.loads(manifest)
+    manifest.pop('packageManager', None)
+    nested = git_dependencies(manifest)
+
+    for lockfile, audit in (
+        ('pnpm-lock.yaml', pnpm_audit_deps),
+        ('package-lock.json', npm_audit_deps),
+    ):
+        lock = fetch_file(f'{base_url}/{lockfile}')
+        if lock is None:
+            continue
+        with tempfile.TemporaryDirectory() as path:
+            with open(
+                os.path.join(path, 'package.json'), 'w', encoding='utf-8'
+            ) as f:
+                json.dump(manifest, f)
+            with open(os.path.join(path, lockfile), 'wb') as f:
+                f.write(lock)
+            print(f'Auditing (git) {name} at {revision}')
+            return audit(path, args), nested
+
+    print(f'Skipping {name}: no lockfile at {revision}')
+    return 0, nested
+
+
+def fetch_file(url):
+    """Fetch a URL, returning None if it does not exist."""
+
+    try:
+        return urllib.request.urlopen(url).read()
+    except urllib.error.HTTPError as e:
+        if e.code == 404:
+            return None
+        raise
 
 
 def npm_audit_deps(path, args):
