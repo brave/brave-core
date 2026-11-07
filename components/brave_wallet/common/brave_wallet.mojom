@@ -1724,19 +1724,6 @@ struct SwitchChainRequest {
   string chain_id;
 };
 
-struct GetEncryptionPublicKeyRequest {
-  string request_id;
-  DappOriginInfo dapp_origin_info;
-  AccountId account_id;
-};
-
-struct DecryptRequest {
-  string request_id;
-  DappOriginInfo dapp_origin_info;
-  AccountId account_id;
-  string unsafe_message;
-};
-
 struct OptionalMaxRetries {
   uint64 max_retries;
 };
@@ -3198,19 +3185,6 @@ interface BraveWalletService {
   GetPendingAddSuggestTokenRequests()
       => (array<AddSuggestTokenRequest> requests);
 
-  // This is used for UI notifying native when the user approves or
-  // rejects getting the public key for an origin
-  NotifyGetPublicKeyRequestProcessed(string request_id, bool approved);
-
-  GetPendingGetEncryptionPublicKeyRequests()
-      => (array<GetEncryptionPublicKeyRequest> requests);
-
-  // This is used for UI notifying native when the user approves or
-  // rejects decrypting data for an origin
-  NotifyDecryptRequestProcessed(string request_id, bool approved);
-
-  GetPendingDecryptRequests() => (array<DecryptRequest> requests);
-
   IsBase58EncodedSolanaPubkey(string key) => (bool result);
 
   Base58Encode(array<array<uint8>> addresses) => (array<string> addresses);
@@ -3266,12 +3240,6 @@ enum DefaultWallet {
   CryptoWalletsDeprecated = 2,
   BraveWalletPreferExtension = 3,
   BraveWallet = 4,
-};
-
-struct EncryptionKeyRequest {
-  string origin;
-  string address;
-  string? message;
 };
 
 struct OptionalUint8 {

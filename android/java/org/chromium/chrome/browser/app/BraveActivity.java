@@ -840,37 +840,6 @@ public abstract class BraveActivity extends ChromeActivity
 
                         return;
                     }
-                    maybeShowGetEncryptionPublicKeyRequestLayout(openWalletPanelRunnable);
-                });
-    }
-
-    private void maybeShowGetEncryptionPublicKeyRequestLayout(
-            @NonNull final Runnable openWalletPanelRunnable) {
-        assert mBraveWalletService != null;
-        mBraveWalletService.getPendingGetEncryptionPublicKeyRequests(
-                requests -> {
-                    if (requests != null && requests.length != 0) {
-                        openBraveWalletDAppsActivity(
-                                BraveWalletDAppsActivity.ActivityType
-                                        .GET_ENCRYPTION_PUBLIC_KEY_REQUEST);
-
-                        return;
-                    }
-                    maybeShowDecryptRequestLayout(openWalletPanelRunnable);
-                });
-    }
-
-    private void maybeShowDecryptRequestLayout(@NonNull final Runnable openWalletPanelRunnable) {
-        assert mBraveWalletService != null;
-        mBraveWalletService.getPendingDecryptRequests(
-                requests -> {
-                    if (requests != null && requests.length != 0) {
-                        openBraveWalletDAppsActivity(
-                                BraveWalletDAppsActivity.ActivityType.DECRYPT_REQUEST);
-
-                        return;
-                    }
-                    openWalletPanelRunnable.run();
                 });
     }
 

@@ -364,21 +364,6 @@
 /* The singular word that will be used in `manageSiteConnectionsAccount`. */
 "wallet.dappsSettingsWebsiteSingular" = "ιστότοπος";
 
-/* The message displayed when the user takes a screenshot of their dapp decrypt request. */
-"wallet.decryptMessageScreenshotDetectedMessage" = "Προειδοποίηση: Ενδέχεται να δημιουργηθεί αντίγραφο ασφαλείας ενός στιγμιοτύπου οθόνης του μηνύματός σας σε μια υπηρεσία αρχείων cloud και να είναι αναγνώσιμο από οποιαδήποτε εφαρμογή με πρόσβαση στις φωτογραφίες. Η Brave συνιστά να μην αποθηκεύσετε αυτό το στιγμιότυπο οθόνης και να το διαγράψετε το συντομότερο δυνατό.";
-
-/* The title of the button to approve a decrypt request from a dapps website. */
-"wallet.decryptRequestApprove" = "Να επιτρέπεται";
-
-/* The title of the button to show the message of a decrypt request from a dapps website. */
-"wallet.decryptRequestReveal" = "Αποκάλυψη";
-
-/* A subtitle of the view shown over a dapps website that requests the user decrypt a message. */
-"wallet.decryptRequestSubtitle" = "Αυτό το DApp θα ήθελε να διαβάσει αυτό το μήνυμα για να ολοκληρώσει το αίτημά σας";
-
-/* A title of the view shown over a dapps website that requests the user decrypt a message. */
-"wallet.decryptRequestTitle" = "Αίτημα αποκρυπτογράφησης";
-
 /* The default account name when adding an account and not entering a custom name. '%@' refers to a coin type and '%lld' refers to a number (for example "Ethereum Account 2") */
 "wallet.defaultAccountName" = "Λογαριασμός %2$lld %1$@";
 
@@ -549,18 +534,6 @@
 
 /* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom */
 "wallet.gasFeePredefinedLimitOptimal" = "Βέλτιστη";
-
-/* The title of the button to approve a encryption public key request from a dapps website. */
-"wallet.getEncryptionPublicKeyRequestApprove" = "Παροχή";
-
-/* The text shown beside the URL origin of a get public encryption key request from a dapp site. Ex 'https://brave.com is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.' */
-"wallet.getEncryptionPublicKeyRequestMessage" = "ζητάει το δημόσιο κλειδί κρυπτογράφησης του πορτοφολιού σας. Αν συναινέσετε στην παροχή αυτού του κλειδιού, ο ιστότοπος θα μπορεί να συντάσσει κρυπτογραφημένα μηνύματα προς εσάς.";
-
-/* A subtitle of the view shown over a dapps website that requests the users public encryption key. */
-"wallet.getEncryptionPublicKeyRequestSubtitle" = "Μια DApp ζητά το δημόσιο κλειδί κρυπτογράφησής σας";
-
-/* A title of the view shown over a dapps website that requests the users public encryption key. */
-"wallet.getEncryptionPublicKeyRequestTitle" = "Αίτημα δημόσιου κλειδιού κρυπτογράφησης";
 
 /* The title of the Help Center option inside the menu when user clicks the three dots button beside assets search button or on wallet panel. */
 "wallet.helpCenter" = "Κέντρο βοήθειας:";

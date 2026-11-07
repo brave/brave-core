@@ -5,8 +5,6 @@
 
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
-import static org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity.ActivityType.GET_ENCRYPTION_PUBLIC_KEY_REQUEST;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -29,7 +27,6 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.WalletFragmentCallbac
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.AddSwitchChainNetworkFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.AddTokenFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.ConnectAccountFragment;
-import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.EncryptionKeyFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.SignMessageErrorFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.SignMessageFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.SignSolTransactionsFragment;
@@ -67,8 +64,6 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         ADD_TOKEN,
         CONNECT_ACCOUNT,
         CONFIRM_TRANSACTION,
-        DECRYPT_REQUEST,
-        GET_ENCRYPTION_PUBLIC_KEY_REQUEST,
         SIGN_TRANSACTION_DEPRECATED,
         SIGN_SOL_TRANSACTIONS,
         SIWE_MESSAGE,
@@ -263,9 +258,6 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
             mFragment = new SignSolTransactionsFragment();
         } else if (mActivityType == ActivityType.CONNECT_ACCOUNT) {
             mFragment = new ConnectAccountFragment();
-        } else if (mActivityType == GET_ENCRYPTION_PUBLIC_KEY_REQUEST
-                || mActivityType == ActivityType.DECRYPT_REQUEST) {
-            mFragment = EncryptionKeyFragment.newInstance(mActivityType);
         }
         showCurrentFragment();
     }

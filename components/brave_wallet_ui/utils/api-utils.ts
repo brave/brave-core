@@ -73,18 +73,6 @@ export const getHasPendingRequests = async () => {
     return true
   }
 
-  const { requests: decryptRequests } =
-    await braveWalletService.getPendingDecryptRequests()
-  if (decryptRequests.length) {
-    return true
-  }
-
-  const { requests: publicKeyRequests } =
-    await braveWalletService.getPendingGetEncryptionPublicKeyRequests()
-  if (publicKeyRequests.length) {
-    return true
-  }
-
   const { requests: addChainRequests } =
     await jsonRpcService.getPendingAddChainRequests()
   if (addChainRequests.length) {

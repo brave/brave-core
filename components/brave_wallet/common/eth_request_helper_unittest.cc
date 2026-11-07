@@ -47,18 +47,8 @@ TEST(EthRequestHelperUnitTest, CommonParseErrors) {
     EXPECT_FALSE(ParseWalletWatchAssetParams(list_params, message));
     std::string signature;
     EXPECT_FALSE(ParsePersonalEcRecoverParams(list_params));
-    EXPECT_FALSE(ParseEthGetEncryptionPublicKeyParams(list_params));
-    EXPECT_FALSE(ParseEthDecryptParams(list_params));
     EXPECT_FALSE(ParseEthSignTypedDataParams(
         list_params, EthSignTypedDataHelper::Version::kV4));
-  }
-
-  auto dict_error_cases =
-      std::to_array({"{\"params\":[{},{}]}", "{\"params\":[0]}", "{}"});
-  for (const auto& error_case : dict_error_cases) {
-    auto dict_params = base::test::ParseJsonDict(error_case);
-
-    EXPECT_FALSE(ParseEthDecryptData(dict_params));
   }
 }
 
@@ -436,89 +426,6 @@ TEST(EthResponseHelperUnitTest, ParsePersonalEcRecoverParams) {
       recover_params->signature,
       "0xeb0c4e96c69a98dbdd61ac6871e39c12c90e9fa4420a017a23c67f4cc4fd06f43c32ad"
       "e58cd19ed438ce7e2d7360b59020489e9ac05e56e8637d3e516165c3f11c");
-}
-
-TEST(EthResponseHelperUnitTest, ParseEthGetEncryptionPublicKeyParams) {
-  const std::string json(
-      R"({
-        "params": [
-          "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83"
-        ]
-      })");
-  const std::string json_extra_entry(
-      R"({
-        "params": [
-          "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83",
-          "12345",
-          null,
-          123
-        ]
-      })");
-
-  EXPECT_EQ(ParseEthGetEncryptionPublicKeyParams(ParseParamsList(json)),
-            "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
-  EXPECT_EQ(
-      ParseEthGetEncryptionPublicKeyParams(ParseParamsList(json_extra_entry)),
-      "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
-}
-
-TEST(EthResponseHelperUnitTest, ParseEthDecryptParams) {
-  const std::string json(
-      R"({
-        "params": [
-          "0x7b2276657273696f6e223a227832353531392d7873616c736132302d706f6c7931333035222c226e6f6e6365223a224f702f7353626241455474506d704c42337a4933686430693969486e62682f38222c22657068656d5075626c69634b6579223a22474e62315a4d635436335235687962483034563344537551677137674d4d5937705a61354235546b66446f3d222c2263697068657274657874223a224b454a72325564686d4237663838514b7a6a413151666a3650586932784f34357a3377766d673d3d227d",
-          "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83"
-        ]
-      })");
-  const std::string json_extra_entry(
-      R"({
-        "params": [
-          "0x7b2276657273696f6e223a227832353531392d7873616c736132302d706f6c7931333035222c226e6f6e6365223a224f702f7353626241455474506d704c42337a4933686430693969486e62682f38222c22657068656d5075626c69634b6579223a22474e62315a4d635436335235687962483034563344537551677137674d4d5937705a61354235546b66446f3d222c2263697068657274657874223a224b454a72325564686d4237663838514b7a6a413151666a3650586932784f34357a3377766d673d3d227d",
-          "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83",
-          null,
-          123
-        ]
-      })");
-  const std::string json_extra_first_entry(
-      R"({
-        "params": [
-          "extra_front",
-          "0x7b2276657273696f6e223a227832353531392d7873616c736132302d706f6c7931333035222c226e6f6e6365223a224f702f7353626241455474506d704c42337a4933686430693969486e62682f38222c22657068656d5075626c69634b6579223a22474e62315a4d635436335235687962483034563344537551677137674d4d5937705a61354235546b66446f3d222c2263697068657274657874223a224b454a72325564686d4237663838514b7a6a413151666a3650586932784f34357a3377766d673d3d227d",
-          "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83",
-        ]
-      })");
-
-  auto decrypt_params = ParseEthDecryptParams(ParseParamsList(json));
-  EXPECT_TRUE(decrypt_params);
-  EXPECT_EQ(
-      decrypt_params->untrusted_encrypted_data_json,
-      R"({"version":"x25519-xsalsa20-poly1305","nonce":"Op/sSbbAETtPmpLB3zI3hd0i9iHnbh/8","ephemPublicKey":"GNb1ZMcT63R5hybH04V3DSuQgq7gMMY7pZa5B5TkfDo=","ciphertext":"KEJr2UdhmB7f88QKzjA1Qfj6PXi2xO45z3wvmg=="})");
-  EXPECT_EQ(decrypt_params->address,
-            "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
-
-  decrypt_params = ParseEthDecryptParams(ParseParamsList(json_extra_entry));
-  EXPECT_TRUE(decrypt_params);
-  EXPECT_EQ(
-      decrypt_params->untrusted_encrypted_data_json,
-      R"({"version":"x25519-xsalsa20-poly1305","nonce":"Op/sSbbAETtPmpLB3zI3hd0i9iHnbh/8","ephemPublicKey":"GNb1ZMcT63R5hybH04V3DSuQgq7gMMY7pZa5B5TkfDo=","ciphertext":"KEJr2UdhmB7f88QKzjA1Qfj6PXi2xO45z3wvmg=="})");
-  EXPECT_EQ(decrypt_params->address,
-            "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
-  EXPECT_FALSE(ParseEthDecryptParams(ParseParamsList(json_extra_first_entry)));
-}
-
-TEST(EthResponseHelperUnitTest, ParseEthDecryptData) {
-  const std::string json(
-      R"({"version":"x25519-xsalsa20-poly1305","nonce":"Op/sSbbAETtPmpLB3zI3hd0i9iHnbh/8","ephemPublicKey":"GNb1ZMcT63R5hybH04V3DSuQgq7gMMY7pZa5B5TkfDo=","ciphertext":"KEJr2UdhmB7f88QKzjA1Qfj6PXi2xO45z3wvmg=="})");
-
-  auto eth_decrypt_data = ParseEthDecryptData(base::test::ParseJsonDict(json));
-  ASSERT_TRUE(eth_decrypt_data);
-  EXPECT_EQ(eth_decrypt_data->version, "x25519-xsalsa20-poly1305");
-  EXPECT_EQ(base::Base64Encode(eth_decrypt_data->nonce),
-            "Op/sSbbAETtPmpLB3zI3hd0i9iHnbh/8");
-  EXPECT_EQ(base::Base64Encode(eth_decrypt_data->ephemeral_public_key),
-            "GNb1ZMcT63R5hybH04V3DSuQgq7gMMY7pZa5B5TkfDo=");
-  EXPECT_EQ(base::Base64Encode(eth_decrypt_data->ciphertext),
-            "KEJr2UdhmB7f88QKzjA1Qfj6PXi2xO45z3wvmg==");
 }
 
 TEST(EthResponseHelperUnitTest, GetEthJsonRequestInfo) {

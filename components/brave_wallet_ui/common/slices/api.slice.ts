@@ -34,7 +34,6 @@ import { fiatCurrencyEndpoints } from './endpoints/fiat_currency.endpoints'
 import { sitePermissionEndpoints } from './endpoints/site_permissions.endpoints'
 import { transactionEndpoints } from './endpoints/transaction.endpoints'
 import { swapEndpoints } from './endpoints/swap.endpoints'
-import { encryptionEndpoints } from './endpoints/encryption.endpoints'
 import { signingEndpoints } from './endpoints/signing.endpoints'
 import { meldIntegrationEndpoints } from './endpoints/meld_integration.endpoints'
 import { zcashEndpoints } from './endpoints/zcash.endpoints'
@@ -137,8 +136,6 @@ export function createWalletApi() {
       .injectEndpoints({ endpoints: sitePermissionEndpoints })
       // Brave Swap endpoints
       .injectEndpoints({ endpoints: swapEndpoints })
-      // Encryption endpoints
-      .injectEndpoints({ endpoints: encryptionEndpoints })
       // Message Signing endpoints
       .injectEndpoints({ endpoints: signingEndpoints })
       // meld integration endpoints
@@ -212,8 +209,6 @@ export const {
   useGetNftDiscoveryEnabledStatusQuery,
   useGetNftMetadataQuery,
   useGetPendingAddChainRequestQuery,
-  useGetPendingDecryptRequestQuery,
-  useGetPendingGetEncryptionPublicKeyRequestQuery,
   useGetPendingSignSolTransactionsRequestsQuery,
   useGetPendingSignCardanoTransactionRequestsQuery,
   useGetPendingSignMessageErrorsQuery,
@@ -285,8 +280,6 @@ export const {
   useNewUnapprovedTxAddedMutation,
   useOpenPanelUIMutation,
   usePrefetch,
-  useProcessPendingDecryptRequestMutation,
-  useProcessPendingGetEncryptionPublicKeyRequestMutation,
   useProcessSignSolTransactionsRequestHardwareMutation,
   useProcessSignSolTransactionsRequestMutation,
   useProcessSignCardanoTransactionRequestMutation,
