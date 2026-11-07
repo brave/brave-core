@@ -177,8 +177,7 @@ PRACTICE_RULES = [
         'TA-008',
         _BROWSER,
         False,
-        '`EvalJs`/`ExecJs` or another blocking IPC inside a `RunUntil` '
-        'lambda.',
+        '`EvalJs`/`ExecJs` or another blocking IPC inside a `RunUntil` lambda.',
     ),
     (
         'TA-009',
@@ -570,7 +569,7 @@ def _load_rules():
             rules[m.group(1)] = {
                 'doc': doc.name,
                 'title': title or m.group(1),
-                'text': body[head.end():].strip() if head else body,
+                'text': body[head.end() :].strip() if head else body,
             }
     return rules
 
