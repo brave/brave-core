@@ -292,3 +292,36 @@ SetBackground(views::CreateThemedSolidBackground(nala::kColorContainerBackground
 ```
 
 ---
+
+<a id="NA-013"></a>
+
+## ❌ Don't Work Around `@brave/leo` npm Problems — File an Issue on brave/leo
+
+**NEVER work around a problem with the `@brave/leo` npm package in brave-core.
+Post an issue on [brave/leo](https://github.com/brave/leo/issues) that describes
+the problem instead.** Local workarounds hide the bug from the Leo team, make
+brave-core diverge from the design system, and leave every other Leo consumer to
+hit the same problem.
+
+Under no circumstances patch or edit `node_modules`, copy or re-implement a Leo
+component or style locally, or suppress Leo type errors with `@ts-ignore`,
+`@ts-expect-error`, or `any` casts to get around a Leo defect.
+
+```tsx
+// ❌ WRONG - silencing a Leo problem locally
+// @ts-ignore Leo's types reject this usage
+<Dropdown onChange={(e: any) => onChange(e.detail.value)} />
+```
+
+```bash
+# ✅ CORRECT - report it on brave/leo and leave the brave-core code alone
+gh issue create --repo brave/leo \
+  --title "<component>: <short description of the problem>" \
+  --body "<steps to reproduce, @brave/leo version, expected vs. actual>"
+```
+
+Include the `@brave/leo` version, the affected component or import path, steps
+to reproduce, and expected vs. actual behavior so the Leo team can act on the
+issue without follow-up questions.
+
+---
