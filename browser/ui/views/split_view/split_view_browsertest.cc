@@ -21,6 +21,7 @@
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view_mini_toolbar.h"
 #include "brave/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/search/search.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window.h"
@@ -40,7 +41,6 @@
 #include "chrome/browser/ui/views/tabs/tab.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/browser/ui/views/tabs/tab_style_views.h"
-#include "chrome/browser/ui/webui/ntp/new_tab_ui.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -894,8 +894,10 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, BookmarksBarVisibilityTest) {
 
   // Wait newly created tab to get its valid url via GetLastCommittedURL().
   EXPECT_TRUE(content::WaitForLoadStop(GetWebContentsAt(1)));
-  EXPECT_FALSE(NewTabUI::IsNewTab(GetWebContentsAt(0)->GetLastCommittedURL()));
-  EXPECT_TRUE(NewTabUI::IsNewTab(GetWebContentsAt(1)->GetLastCommittedURL()));
+  EXPECT_FALSE(
+      search::IsNewTabOrigin(GetWebContentsAt(0)->GetLastCommittedURL()));
+  EXPECT_TRUE(
+      search::IsNewTabOrigin(GetWebContentsAt(1)->GetLastCommittedURL()));
   EXPECT_EQ(1, tab_strip_model->active_index());
   EXPECT_EQ(BookmarkBar::HIDDEN,
             BookmarkBarController::From(browser())->bookmark_bar_state());
