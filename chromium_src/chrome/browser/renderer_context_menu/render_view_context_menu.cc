@@ -17,7 +17,6 @@
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
-#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/cosmetic_filters/cosmetic_filters_tab_helper.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"

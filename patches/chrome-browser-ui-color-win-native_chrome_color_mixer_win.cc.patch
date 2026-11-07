@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/color/win/native_chrome_color_mixer_win.cc b/chrome/browser/ui/color/win/native_chrome_color_mixer_win.cc
-index 2b076def23c091586a23dc155b1b1cc26d13fa1e..5ad0fd4cc7e7bcb34292ed5f8cd18ac25f8d0dd5 100644
+index e8105e370b7540f249a2f86d7ffeb405e1f655c3..33970aaa3d4e847b9ff5e2b4d7c5a6a2f3933c30 100644
 --- a/chrome/browser/ui/color/win/native_chrome_color_mixer_win.cc
 +++ b/chrome/browser/ui/color/win/native_chrome_color_mixer_win.cc
 @@ -63,7 +63,7 @@ struct FrameTransforms {

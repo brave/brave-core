@@ -27,8 +27,17 @@ declare module './profile_customization_app-chromium.js' {
 // element. Upstream's customElements.define is patched out; we register this
 // subclass instead. Listen on inputElement (the real <input> in the shadow
 // root) so the key event is received reliably.
+//
+// Upstream's HTMLElementTagNameMap entry for this tag points at the upstream
+// class, and TypeScript rejects a second entry with a different type, so the
+// registration check can't be satisfied here.
+// eslint-disable-next-line @webui-eslint/lit-element-structure
 class ProfileCustomizationAppElement extends
     ProfileCustomizationAppElementChromium {
+  static override get is() {
+    return 'profile-customization-app'
+  }
+
   static override get styles() {
     return [super.styles, css`
       br-custom-profile-image-row {

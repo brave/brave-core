@@ -26,6 +26,7 @@
 #include "net/cert/x509_util.h"
 #include "net/cert/x509_util_apple.h"
 #include "net/http/transport_security_state.h"
+#include "net/http/transport_security_state_pins_source.h"  // IWYU pragma: keep
 #include "net/log/net_log_with_source.h"
 #include "net/net_buildflags.h"
 #include "net/tools/transport_security_state_generator/cert_util.h"

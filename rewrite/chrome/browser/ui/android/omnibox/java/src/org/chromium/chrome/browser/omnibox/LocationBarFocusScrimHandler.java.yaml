@@ -40,6 +40,5 @@ substitutions:
       The focused omnibox hides Brave's bottom toolbar, so it must not reserve
       the bottom-chin area. This keeps the gesture-navigation region covered.
     regex:
-      re_pattern: 'mScrimModel\.set\(\s*ScrimProperties\.BOTTOM_MARGIN,.*?\);'
-      re_flags: [DOTALL]
+      re_pattern: 'mScrimModel\.set\(\s*ScrimProperties\.BOTTOM_MARGIN,[^;]+;'
       replace: 'mScrimModel.set(ScrimProperties.BOTTOM_MARGIN, 0);'

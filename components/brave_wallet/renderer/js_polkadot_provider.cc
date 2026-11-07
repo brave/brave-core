@@ -96,9 +96,9 @@ JSPolkadotProvider::~JSPolkadotProvider() = default;
 gin::ObjectTemplateBuilder JSPolkadotProvider::GetObjectTemplateBuilder(
     v8::Isolate* isolate) {
   return gin::Wrappable<JSPolkadotProvider>::GetObjectTemplateBuilder(isolate)
-      .SetProperty("version", &JSPolkadotProvider::GetVersion)
-      .SetLazyDataProperty("enable", &JSPolkadotProvider::GetEnableObject)
-      .SetLazyDataProperty("connect", &JSPolkadotProvider::GetConnectObject);
+      .SetProperty<&JSPolkadotProvider::GetVersion>("version")
+      .SetLazyDataProperty<&JSPolkadotProvider::GetEnableObject>("enable")
+      .SetLazyDataProperty<&JSPolkadotProvider::GetConnectObject>("connect");
 }
 
 const gin::WrapperInfo* JSPolkadotProvider::wrapper_info() const {
@@ -210,7 +210,8 @@ std::string JSPolkadotProvider::GetVersion() {
 JSPolkadotProvider* JSPolkadotProvider::ProviderFromCallbackData(
     const v8::FunctionCallbackInfo<v8::Value>& info) {
   JSPolkadotProvider* provider = nullptr;
-  if (!gin::ConvertFromV8(info.GetIsolate(), info.Data(), &provider)) {
+  if (!gin::ConvertFromV8(info.GetIsolate(), info.DataV2().As<v8::Value>(),
+                          &provider)) {
     return nullptr;
   }
   return provider;

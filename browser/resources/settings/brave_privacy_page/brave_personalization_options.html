@@ -1,4 +1,3 @@
-<link rel="import" href="chrome://resources/cr_elements/md_select.css.html">
 <style include="settings-shared md-select">
   .settings-box {
     display: flex;
@@ -121,12 +120,12 @@
   <template is="dom-if" if="[[isWindowsRecallAvailable_]]">
     <settings-toggle-button id="windowsRecallDisabled"
         class="cr-row"
-        pref="[[windowsRecallDisabledPref_]]"
+        checked="[[windowsRecallDisabled_]]"
         on-settings-boolean-control-change="windowsRecallDisabledChange_"
         label="$i18n{windowsRecallDisabledLabel}"
         sub-label="$i18n{windowsRecallDisabledSubLabel}">
         <template is="dom-if"
-                  if="[[shouldShowRestartWindowsRecall_(windowsRecallDisabledPref_.value)]]">
+                  if="[[shouldShowRestartWindowsRecall_(windowsRecallDisabled_)]]">
             <cr-button on-click="restartBrowser_" slot="more-actions">
               $i18n{restart}
             </cr-button>

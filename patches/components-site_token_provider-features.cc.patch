@@ -1,8 +1,8 @@
 diff --git a/components/site_token_provider/features.cc b/components/site_token_provider/features.cc
-index 5230b30ec79f48cbea3b86c1be6d7c7c7b7e4845..b16652da6c3e8d9eaa3e3c865faf97863db30864 100644
+index 71a793d0c173ae5cda834df33106a1626bbc586a..bb7b15cbccf9554f3d681985589705c09c993e92 100644
 --- a/components/site_token_provider/features.cc
 +++ b/components/site_token_provider/features.cc
-@@ -7,7 +7,7 @@
+@@ -13,7 +13,7 @@
  namespace site_token_provider::features {
  
  // Enables the registration and creation of the SiteTokenProvider component.
@@ -10,4 +10,4 @@ index 5230b30ec79f48cbea3b86c1be6d7c7c7b7e4845..b16652da6c3e8d9eaa3e3c865faf9786
 +BASE_OVERRIDDEN_FEATURE(kSiteTokenProviderEnabled, base::FEATURE_DISABLED_BY_DEFAULT);
  
  // The OAuth2 scope used to request site tokens. Configured via Finch.
- const base::FeatureParam<std::string> kSiteTokenOAuth2Scope{
+ constexpr base::FeatureParam<std::string> kSiteTokenOAuth2Scope{

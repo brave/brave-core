@@ -73,13 +73,13 @@ std::string JSCardanoProvider::GetApiVersion() {
 gin::ObjectTemplateBuilder JSCardanoProvider::GetObjectTemplateBuilder(
     v8::Isolate* isolate) {
   return gin::Wrappable<JSCardanoProvider>::GetObjectTemplateBuilder(isolate)
-      .SetMethod("enable", &JSCardanoProvider::Enable)
-      .SetMethod("isEnabled", &JSCardanoProvider::IsEnabled)
-      .SetProperty("supportedExtensions",
-                   &JSCardanoProvider::GetSupportedExtensions)
-      .SetProperty("name", &JSCardanoProvider::GetName)
-      .SetProperty("apiVersion", &JSCardanoProvider::GetApiVersion)
-      .SetProperty("icon", &JSCardanoProvider::GetIcon);
+      .SetMethod<&JSCardanoProvider::Enable>("enable")
+      .SetMethod<&JSCardanoProvider::IsEnabled>("isEnabled")
+      .SetProperty<&JSCardanoProvider::GetSupportedExtensions>(
+          "supportedExtensions")
+      .SetProperty<&JSCardanoProvider::GetName>("name")
+      .SetProperty<&JSCardanoProvider::GetApiVersion>("apiVersion")
+      .SetProperty<&JSCardanoProvider::GetIcon>("icon");
 }
 
 JSCardanoProvider::~JSCardanoProvider() = default;

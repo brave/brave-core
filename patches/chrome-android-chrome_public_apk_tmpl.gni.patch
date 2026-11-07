@@ -1,17 +1,8 @@
 diff --git a/chrome/android/chrome_public_apk_tmpl.gni b/chrome/android/chrome_public_apk_tmpl.gni
-index a6828d39a1022134b6ac9851b06e16da814fa7b5..564cfd21a26f837792b4f8853bff58984f7d4fc4 100644
+index 8b91ba8ed76c8eebb779d4aea3535343c04b9903..1febdc7e8408b71c6fe5eced73d4c05b808383b9 100644
 --- a/chrome/android/chrome_public_apk_tmpl.gni
 +++ b/chrome/android/chrome_public_apk_tmpl.gni
-@@ -153,7 +153,7 @@ template("chrome_common_apk_or_module_tmpl") {
-   # both 64-bit and 32-bit ABIs. The 32-bit ABI remains the primary one via
-   # use32bitAbi="true".
-   _is_32_bit_multiarch_browser =
--      !_is_trichrome && !_is_test && !_is_64_bit_browser &&
-+      is_chrome_branded && !_is_trichrome && !_is_test && !_is_64_bit_browser &&
-       (android_64bit_target_cpu || defined(android_app_64bit_placeholder_abi))
- 
-   if (_is_trichrome) {
-@@ -310,6 +310,7 @@ template("chrome_common_apk_or_module_tmpl") {
+@@ -304,6 +304,7 @@ template("chrome_common_apk_or_module_tmpl") {
  
      resource_exclusion_regex = common_resource_exclusion_regex
      resource_exclusion_exceptions = common_resource_exclusion_exceptions
@@ -19,15 +10,15 @@ index a6828d39a1022134b6ac9851b06e16da814fa7b5..564cfd21a26f837792b4f8853bff5898
  
      # Exceptions (rationale in https://crbug.com/41301595):
      resource_exclusion_exceptions += [
-@@ -348,6 +349,7 @@ template("chrome_common_apk_or_module_tmpl") {
-       if (!_is_bundle && optimize_android_resources) {
-         resources_config_paths = [ "//chrome/android/aapt2.config" ]
+@@ -341,6 +342,7 @@ template("chrome_common_apk_or_module_tmpl") {
+       if (!_is_bundle && !_is_test) {
+         disallowed_library_classes = chrome_disallowed_library_classes
        }
 +      proguard_configs += [ "//brave/android/java/proguard.flags" ]
      }
  
      # Java and native targets form two independent compile graphs. Deps from
-@@ -712,6 +714,14 @@ template("chrome_common_apk_or_module_tmpl") {
+@@ -705,6 +707,14 @@ template("chrome_common_apk_or_module_tmpl") {
                                   "version_code",
                                   "version_name",
                                 ])

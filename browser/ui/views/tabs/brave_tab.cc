@@ -13,6 +13,7 @@
 #include "base/feature_list.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/containers/container_model.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
@@ -718,10 +719,10 @@ void BraveTab::OnTabDataChanged(TabChangeType tab_change_type,
 
   // Our vertical tab uses CompoundTabContainer.
   // When tab is moved from the group by pinning, it's moved to
-  // pinned TabContainerImpl before its tab group id is cleared.
-  // And it causes runtime crash as using this tab from pinned TabContainerImpl
+  // pinned TabContainer before its tab group id is cleared.
+  // And it causes runtime crash as using this tab from pinned TabContainer
   // has assumption that it's not included in any group.
-  // So, clear in-advance when tab enters to pinned TabContainerImpl.
+  // So, clear in-advance when tab enters to pinned TabContainer.
   auto* vtc =
       VerticalTabController::From(controller()->GetBrowserWindowInterface());
   if (data_changed && vtc && vtc->ShouldShowBraveVerticalTabs() &&

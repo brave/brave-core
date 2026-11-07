@@ -74,7 +74,7 @@ export function getHtml(this: TabFocusPageElement) {
                 type="text"
                 value=${this.topic}
                 @input=${this.onTopicInputChanged_}
-                ?disabled=${this.errorMessage !== ''}
+                ?disabled="${this.errorMessage !== ''}"
               >
               </leo-input>
               <leo-button
@@ -82,7 +82,7 @@ export function getHtml(this: TabFocusPageElement) {
                 size="medium"
                 fab
                 @click=${this.onFocusTabsClick_}
-                ?isDisabled=${this.errorMessage !== ''}
+                ?isDisabled="${this.errorMessage !== ''}"
               >
                 ${this.getSubmitButtonLabel_()}
               </leo-button>
@@ -125,7 +125,7 @@ export function getHtml(this: TabFocusPageElement) {
                     ${this.getSuggestedTopicsSubtitle_()}
                   </div>
                   ${this.isLoadingTopics
-                    ? [1, 2, 3, 4, 5].map(
+                    ? html`${[1, 2, 3, 4, 5].map(
                         (key) => html`
                           <leo-button
                             key=${key}
@@ -144,8 +144,8 @@ export function getHtml(this: TabFocusPageElement) {
                             </div>
                           </leo-button>
                         `,
-                      )
-                    : this.topics_.map(
+                      )}`
+                    : html`${this.topics_.map(
                         (entry, index) => html`
                           <leo-button
                             id="${this.getTopicId_(index)}"
@@ -163,7 +163,7 @@ export function getHtml(this: TabFocusPageElement) {
                             </div>
                           </leo-button>
                         `,
-                      )}
+                      )}`}
                 </div>
               `
             : html`

@@ -33,6 +33,8 @@ inline constexpr char kUntrustedMarketURL[] =
 inline constexpr char kUntrustedTrezorHost[] = "trezor-bridge";
 inline constexpr char kUntrustedTrezorURL[] =
     "chrome-untrusted://trezor-bridge/";
+inline constexpr char kTrezorConnectHost[] = "connect.trezor.io";
+inline constexpr char kTrezorConnectURL[] = "https://connect.trezor.io/";
 inline constexpr char kUntrustedSnapHost[] = "snap-host";
 inline constexpr char kUntrustedSnapURL[] = "chrome-untrusted://snap-host/";
 inline constexpr char kSnapsContainerHost[] = "snaps-container";

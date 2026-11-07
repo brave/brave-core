@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/bottombar/BottomBarContainerCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/bottombar/BottomBarContainerCoordinator.java
-index d6aa41a50c946e086e1d4161b29ae3c08b740857..e4df4d85a49ad4afa9fb90b03b3d0f81fe55246f 100644
+index 4bdd037094df16b99bfe0fb99891c5351f6b24f8..713dcc8b431cd21cf26a797a5cd2b4516ff1631a 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/bottombar/BottomBarContainerCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/bottombar/BottomBarContainerCoordinator.java
 @@ -4,6 +4,7 @@
@@ -10,7 +10,7 @@ index d6aa41a50c946e086e1d4161b29ae3c08b740857..e4df4d85a49ad4afa9fb90b03b3d0f81
  import android.content.ComponentCallbacks;
  import android.content.Context;
  import android.content.res.Configuration;
-@@ -124,7 +125,7 @@ public class BottomBarContainerCoordinator
+@@ -143,7 +144,7 @@ public class BottomBarContainerCoordinator
          mRequestLayerUpdateCallback = requestLayerUpdateCallback;
  
          mBottomBarCoordinator =

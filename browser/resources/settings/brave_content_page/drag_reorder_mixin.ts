@@ -8,6 +8,9 @@ import type { CSSResultGroup } from 'chrome://resources/lit/v3_0/lit.rollup.js'
 import {
   CrLitElement,
   css,
+  // The template is rendered by a mixin method, so it can't live in a
+  // .html.ts file.
+  // eslint-disable-next-line @webui-eslint/lit-element-structure
   html,
   TemplateResult,
 } from 'chrome://resources/lit/v3_0/lit.rollup.js'

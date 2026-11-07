@@ -1,0 +1,14 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/recent_tabs/RecentTabsRowAdapter.java b/chrome/android/java/src/org/chromium/chrome/browser/recent_tabs/RecentTabsRowAdapter.java
+index 9d75e639d8e69a123827e88c09f891a1527455e8..0cb0b480d588b24b5a334f0b9a29dbf219b793ed 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/recent_tabs/RecentTabsRowAdapter.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/recent_tabs/RecentTabsRowAdapter.java
+@@ -1107,8 +1107,7 @@ public class RecentTabsRowAdapter extends BaseExpandableListAdapter {
+         if (mRecentTabsManager.shouldShowPromo()) {
+             addGroup(new SigninPromoGroup());
+         } else {
+-            boolean recentlyClosedGroupIsOnlyHeader =
+-                    mRecentlyClosedTabsGroup.getChildrenCount() == 1;
++            boolean recentlyClosedGroupIsOnlyHeader = false;
+             if (recentlyClosedGroupIsOnlyHeader) {
+                 addGroup(new EmptyStatePromoGroup());
+             }

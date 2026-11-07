@@ -1,0 +1,13 @@
+diff --git a/ui/accessibility/accessibility_features.cc b/ui/accessibility/accessibility_features.cc
+index 16c9b83bee4c2af44302848415196e7a811c0b5f..1a461c58d4042308d4b3bfd6f6a430d73c0eb71e 100644
+--- a/ui/accessibility/accessibility_features.cc
++++ b/ui/accessibility/accessibility_features.cc
+@@ -375,7 +375,7 @@ bool IsReadAnythingReadAloudPhraseHighlightingEnabled() {
+       ::features::kReadAnythingReadAloudPhraseHighlighting);
+ }
+ 
+-BASE_FEATURE(kReadAnythingOmniboxChip, base::FEATURE_ENABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kReadAnythingOmniboxChip, base::FEATURE_DISABLED_BY_DEFAULT);
+ bool IsReadAnythingOmniboxChipEnabled() {
+   return base::FeatureList::IsEnabled(::features::kReadAnythingOmniboxChip);
+ }

@@ -404,48 +404,53 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
-        if (viewType == TYPE_STATS) {
-            view = LayoutInflater.from(parent.getContext())
-                           .inflate(R.layout.brave_stats_layout, parent, false);
-            return new StatsViewHolder(view);
 
-        } else if (viewType == TYPE_TOP_SITES) {
-            // mMvTilesContainerLayout may have been placed in the NTP layout tree by
-            // initializeSiteSectionView (via ViewStub inflation). Detach it first so
-            // RecyclerView can adopt it as an item view without an "already has a parent" error.
-            ViewGroup existingParent = (ViewGroup) mMvTilesContainerLayout.getParent();
-            if (existingParent != null) existingParent.removeView(mMvTilesContainerLayout);
-            return new TopSitesViewHolder(mMvTilesContainerLayout);
-
-        } else if (viewType == TYPE_NEW_CONTENT) {
-            view = LayoutInflater.from(parent.getContext())
-                           .inflate(R.layout.brave_news_load_new_content, parent, false);
-            return new NewContentViewHolder(view);
-
-        } else if (viewType == TYPE_IMAGE_CREDIT) {
-            view = LayoutInflater.from(parent.getContext())
-                           .inflate(R.layout.ntp_image_credit, parent, false);
-            return new ImageCreditViewHolder(view);
-
-        } else if (viewType == TYPE_NEWS_OPTIN) {
-            view = LayoutInflater.from(parent.getContext())
-                           .inflate(R.layout.optin_layout, parent, false);
-            return new NewsOptinViewHolder(view);
-
-        } else if (viewType == TYPE_NEWS_LOADING) {
-            view = LayoutInflater.from(parent.getContext())
-                           .inflate(R.layout.news_loading, parent, false);
-            return new NewsLoadingViewHolder(view);
-
-        } else if (viewType == TYPE_NEWS_NO_CONTENT_SOURCES) {
-            view = LayoutInflater.from(parent.getContext())
-                           .inflate(R.layout.brave_news_no_sources, parent, false);
-            return new NoSourcesViewHolder(view);
-
-        } else {
-            view = LayoutInflater.from(parent.getContext())
-                           .inflate(R.layout.brave_news_row, parent, false);
-            return new NewsViewHolder(view);
+        switch (viewType) {
+            case TYPE_STATS:
+                view =
+                        LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.brave_stats_layout, parent, false);
+                return new StatsViewHolder(view);
+            case TYPE_TOP_SITES:
+                {
+                    // mMvTilesContainerLayout may have been placed in the NTP layout tree by
+                    // initializeSiteSectionView (via ViewStub inflation). Detach it first so
+                    // RecyclerView can adopt it as an item view without an "already has a parent"
+                    // error.
+                    ViewGroup existingParent = (ViewGroup) mMvTilesContainerLayout.getParent();
+                    if (existingParent != null) existingParent.removeView(mMvTilesContainerLayout);
+                    return new TopSitesViewHolder(mMvTilesContainerLayout);
+                }
+            case TYPE_NEW_CONTENT:
+                view =
+                        LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.brave_news_load_new_content, parent, false);
+                return new NewContentViewHolder(view);
+            case TYPE_IMAGE_CREDIT:
+                view =
+                        LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.ntp_image_credit, parent, false);
+                return new ImageCreditViewHolder(view);
+            case TYPE_NEWS_OPTIN:
+                view =
+                        LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.optin_layout, parent, false);
+                return new NewsOptinViewHolder(view);
+            case TYPE_NEWS_LOADING:
+                view =
+                        LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.news_loading, parent, false);
+                return new NewsLoadingViewHolder(view);
+            case TYPE_NEWS_NO_CONTENT_SOURCES:
+                view =
+                        LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.brave_news_no_sources, parent, false);
+                return new NoSourcesViewHolder(view);
+            default:
+                view =
+                        LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.brave_news_row, parent, false);
+                return new NewsViewHolder(view);
         }
     }
 

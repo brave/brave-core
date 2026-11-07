@@ -7,7 +7,6 @@
 
 #include <cstdint>
 #include <optional>
-#include <utility>
 
 #include "base/check.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
@@ -31,8 +30,7 @@ std::vector<uint8_t> MakeSerializedProtectedHeaders(
   protected_headers.emplace(kKidHeaderKey, payment_address.ToCborBytes());
   protected_headers.emplace(kAddressHeaderKey, payment_address.ToCborBytes());
 
-  auto protected_headers_serialized =
-      cbor::Writer::Write(cbor::Value(std::move(protected_headers)));
+  auto protected_headers_serialized = cbor::Writer::Write(protected_headers);
   CHECK(protected_headers_serialized);
   return *protected_headers_serialized;
 }
@@ -52,8 +50,7 @@ std::vector<uint8_t> CardanoCip30Serializer::SerializedSignPayload(
   sign_payload.emplace_back(std::vector<uint8_t>());  // external_aad
   sign_payload.emplace_back(message);
 
-  auto sign_payload_serialized =
-      cbor::Writer::Write(cbor::Value(std::move(sign_payload)));
+  auto sign_payload_serialized = cbor::Writer::Write(sign_payload);
   CHECK(sign_payload_serialized);
   return *sign_payload_serialized;
 }
@@ -79,8 +76,7 @@ std::vector<uint8_t> CardanoCip30Serializer::SerializeSignedDataKey(
   cose_key.emplace(kAlgKey, kAlgValueEdDSA);
   cose_key.emplace(kCrvKey, kCrvValue);
   cose_key.emplace(kXKey, pubkey);
-  auto cose_key_serialized =
-      cbor::Writer::Write(cbor::Value(std::move(cose_key)));
+  auto cose_key_serialized = cbor::Writer::Write(cose_key);
   CHECK(cose_key_serialized);
   return *cose_key_serialized;
 }
@@ -101,8 +97,7 @@ std::vector<uint8_t> CardanoCip30Serializer::SerializeSignedDataSignature(
   cose_sign.emplace_back(unprotected_headers);
   cose_sign.emplace_back(message);
   cose_sign.emplace_back(signature);
-  auto cose_sign_serialized =
-      cbor::Writer::Write(cbor::Value(std::move(cose_sign)));
+  auto cose_sign_serialized = cbor::Writer::Write(cose_sign);
   CHECK(cose_sign_serialized);
   return *cose_sign_serialized;
 }

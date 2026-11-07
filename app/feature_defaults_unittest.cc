@@ -8,6 +8,7 @@
 #include "base/features.h"
 #include "chrome/browser/browser_features.h"
 #include "chrome/browser/devtools/features.h"
+#include "chrome/browser/glic/public/features.h"
 #include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #include "chrome/browser/policy/policy_util.h"
 #include "chrome/browser/preloading/preloading_features.h"
@@ -19,7 +20,7 @@
 #include "components/autofill/core/common/autofill_debug_features.h"
 #include "components/autofill/core/common/autofill_features.h"
 #include "components/autofill/core/common/autofill_payments_features.h"
-#include "components/browser_actuator/internal/features.h"
+#include "components/browser_actuator/internal/transport/features.h"
 #include "components/browser_actuator/public/features.h"
 #include "components/commerce/core/commerce_feature_list.h"
 #include "components/compose/core/browser/compose_features.h"
@@ -43,6 +44,7 @@
 #include "components/omnibox/browser/aim_eligibility_service_features.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/one_time_tokens/core/common/one_time_token_features.h"
+#include "components/optimization_guide/core/delivery/prediction_model_component_configs.h"
 #include "components/optimization_guide/core/optimization_guide_features.h"
 #include "components/page_info/core/features.h"
 #include "components/passage_embeddings/core/passage_embeddings_features.h"
@@ -87,6 +89,7 @@
 #include "components/security_interstitials/core/features.h"
 #else
 #include "chrome/browser/child_module/features.h"
+#include "chrome/browser/default_browser/default_browser_features.h"
 #include "chrome/browser/enterprise/data_protection/data_protection_features.h"
 #include "chrome/browser/sharing_hub/sharing_hub_features.h"
 #include "chrome/browser/ui/toasts/toast_features.h"
@@ -144,12 +147,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kPreloadingEagerViewportHeuristics,
       &blink::features::kPreloadingModerateViewportHeuristics,
       &browser_actuator::kBrowserActuator,
-      &browser_actuator::kBrowserActuatorProtoStreamTransport,
+      &browser_actuator::transport::kBrowserActuatorProtoStreamTransport,
 #if !BUILDFLAG(IS_ANDROID)
       &child_module::features::kDynamicPatching,
-#endif
-#if BUILDFLAG(IS_ANDROID)
-      &chrome::android::kAndroidPageInfoAsAppMenuItem,
 #endif
 #if BUILDFLAG(ENABLE_PDF_SAVE_TO_DRIVE)
       &chrome_pdf::features::kPdfSaveToDrive,
@@ -166,6 +166,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &contextual_tasks::kContextualTasksCookiePrefetch,
       &critical_actions::features::kCriticalActionHistory,
 #if !BUILDFLAG(IS_ANDROID)
+      &default_browser::kDefaultBrowserPromptSurfaces,
       &enterprise_data_protection::kEnableForceDownloadToCloud,
       &extensions_features::kApiGlicPrivate,
 #endif
@@ -203,9 +204,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kEmailVerificationProtocol,
       &features::kEnterpriseReleaseNotes,
       &features::kFedCm,
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-      &features::kFewerUpdateConfirmations,
-#endif
+      &features::kGlicTextSelectionContextMenu,
       &features::kHttpsFirstBalancedMode,
       &features::kIndigo,
 #if BUILDFLAG(IS_WIN)
@@ -220,6 +219,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kPrivacySandboxAdsAPIsM1Override,
 #if !BUILDFLAG(IS_ANDROID)
       &features::kPwaNavigationCapturing,
+#endif
+#if !BUILDFLAG(IS_ANDROID)
+      &features::kReadAnythingOmniboxChip,
 #endif
       &features::kSCTAuditingHashdance,
       &features::kServiceWorkerAutoPreload,
@@ -243,7 +245,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &history_clusters::features::kOnDeviceClusteringKeywordFiltering,
       &history_clusters::internal::kHistoryClustersInternalsPage,
       &history_clusters::internal::kHistoryClustersNavigationContextClustering,
-      &history_clusters::internal::kJourneys,
       &history_clusters::internal::kJourneysImages,
       &history_clusters::internal::kOmniboxHistoryClusterProvider,
       &history_embeddings::kHistoryEmbeddings,
@@ -281,6 +282,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &omnibox::kRichAutocompletion,
       &omnibox::kStarterPackExpansion,
       &one_time_tokens::features::kGmailOtpRetrievalService,
+      &optimization_guide::kPredictionModelComponentDelivery,
       &optimization_guide::features::kOptimizationGuideFetchingForSRP,
       &optimization_guide::features::kOptimizationGuideModelExecution,
       &optimization_guide::features::kOptimizationHints,
@@ -288,7 +290,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &permissions::features::kCpssUseTfliteSignatureRunner,
       &permissions::features::kPermissionsPromptSurvey,
       &permissions::features::kPermissionPredictionsV2,
-      &permissions::features::kShowRelatedWebsiteSetsPermissionGrants,
       &personal_context::features::kPersonalContext,
       &privacy_sandbox::kEnforcePrivacySandboxAttestations,
 #if !BUILDFLAG(IS_ANDROID)

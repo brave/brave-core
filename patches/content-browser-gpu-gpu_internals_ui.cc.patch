@@ -1,8 +1,8 @@
 diff --git a/content/browser/gpu/gpu_internals_ui.cc b/content/browser/gpu/gpu_internals_ui.cc
-index 4d2bcb60e24addd87256261896ae0ec7dfb49c68..1a903e1bfb47887bb1a52f0c7904110346943ce1 100644
+index 72f48ad5d7bf7c31f7645f8cf495fd119e353d95..036ff6f09e7488fe87fe065920855a747a28dabd 100644
 --- a/content/browser/gpu/gpu_internals_ui.cc
 +++ b/content/browser/gpu/gpu_internals_ui.cc
-@@ -726,6 +726,7 @@ void GpuMessageHandler::HandleGetGpuInfo(const base::ListValue& args) {
+@@ -723,6 +723,7 @@ void GpuMessageHandler::HandleGetGpuInfo(const base::ListValue& args) {
  }
  
  base::DictValue GpuMessageHandler::GetClientInfo() {
@@ -10,7 +10,7 @@ index 4d2bcb60e24addd87256261896ae0ec7dfb49c68..1a903e1bfb47887bb1a52f0c79041103
    CHECK_CURRENTLY_ON(BrowserThread::UI, base::NotFatalUntil::M159);
  
    base::DictValue dict;
-@@ -766,6 +767,13 @@ base::DictValue GpuMessageHandler::GetClientInfo() {
+@@ -763,6 +764,13 @@ base::DictValue GpuMessageHandler::GetClientInfo() {
    dict.Set("revision_identifier", GPU_LISTS_VERSION);
  
    return dict;

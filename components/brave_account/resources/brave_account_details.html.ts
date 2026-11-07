@@ -80,7 +80,7 @@ export function getHtml(this: BraveAccountDetailsElement) {
               ? html`<leo-button
                   kind="plain"
                   size=${ROW_BUTTON_SIZE}
-                  ?isDisabled=${this.isResendingConfirmationEmail}
+                  ?isDisabled="${this.isResendingConfirmationEmail}"
                   @click=${this.onResendConfirmationEmailLinkClicked}
                 >
                   ${loadTimeData.getString(

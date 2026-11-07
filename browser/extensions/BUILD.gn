@@ -73,7 +73,6 @@ source_set("brave_prefs_util_impl") {
 
   deps = [
     "//brave/components/brave_shields/core/browser",
-    "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/profiles:profile",
     "//chrome/common/extensions/api",
@@ -165,6 +164,7 @@ source_set("extensions") {
       "//brave/components/extension_malware_blocklist/browser",
       "//brave/components/local_ai/buildflags",
       "//brave/components/ntp_background_images/common",
+      "//brave/components/psst/buildflags",
       "//brave/components/request_otr/common",
       "//brave/components/speedreader/common/buildflags",
       "//brave/components/tor/buildflags",
@@ -172,7 +172,6 @@ source_set("extensions") {
       "//brave/components/web_discovery/buildflags",
       "//brave/components/webcompat_reporter/common",
       "//chrome/browser:browser_process",
-      "//chrome/browser:browser_public_dependencies",
       "//chrome/browser:global_features",
       "//chrome/browser/extensions:chrome_extensions_browser_client",
       "//chrome/browser/themes",
@@ -303,6 +302,7 @@ source_set("test_support") {
     "//base",
     "//base/test:test_support",
     "//brave/browser",
+    "//brave/browser:browser_process",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/constants",
     "//chrome/browser/extensions",

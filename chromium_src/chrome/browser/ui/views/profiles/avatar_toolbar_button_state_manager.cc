@@ -5,9 +5,13 @@
 
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button_state_manager.h"
 
-#include "brave/app/vector_icons/vector_icons.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
+
+namespace profiles {
+// Defined in //brave/browser/profiles:chromium_impl.
+const gfx::VectorIcon& GetBraveGuestAvatarIcon();
+}  // namespace profiles
 
 namespace {
 
@@ -99,8 +103,8 @@ class BraveGuestStateProvider : public GuestStateProvider {
       int icon_size,
       SkColor icon_color,
       const ui::ColorProvider& color_provider) const override {
-    return {ui::ImageModel::FromVectorIcon(kUserMenuGuestIcon, icon_color,
-                                           icon_size),
+    return {ui::ImageModel::FromVectorIcon(profiles::GetBraveGuestAvatarIcon(),
+                                           icon_color, icon_size),
             AvatarIconType::kNonPlaceholder};
   }
 };

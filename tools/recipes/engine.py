@@ -35,7 +35,6 @@ import typing
 
 from google.protobuf import json_format as jsonpb
 
-import config_types
 import proto_support
 from recipe_api import RecipeApi, RecipeScriptApi
 from recipe_test_api import RecipeTestApi

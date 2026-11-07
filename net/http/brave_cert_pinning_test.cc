@@ -40,6 +40,8 @@
 // "net/http/transport_security_state_source.h", as this file cannot include
 // any headers itself, since it's always included in a nested namespace.
 #include "net/http/transport_security_state_source.h"  // IWYU pragma: keep
+// Defines TransportSecurityStatePinsSource, used by the pins header below.
+#include "net/http/transport_security_state_pins_source.h"  // IWYU pragma: keep
 
 // Only fails on ChromeOS, which we don't build. Just assert.
 static_assert(BUILDFLAG(INCLUDE_TRANSPORT_SECURITY_STATE_PRELOAD_LIST));
@@ -83,14 +85,6 @@ class BraveCertPinningTest : public testing::TestWithParam<std::string_view> {
             std::move(base_verifier))));
     SetDirectProxyConfig(builder);
     context_ = builder.Build();
-
-#if BUILDFLAG(IS_IOS)
-    // Without this, iOS (and only iOS) appears to bypass pin violations for
-    // this test's CA, since CertVerifyProcIOS can't reliably determine
-    // is_issued_by_known_root the way desktop's builtin verifier can.
-    context_->transport_security_state()
-        ->SetEnablePublicKeyPinningBypassForLocalTrustAnchors(false);
-#endif  // BUILDFLAG(IS_IOS)
   }
 
   // On Linux and Android, URLRequestContextBuilder does not create a default

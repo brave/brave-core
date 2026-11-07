@@ -12,9 +12,11 @@
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_helper.h"
 
+class BrowserWindowInterface;
+
 class BraveSidePanelCoordinator : public SidePanelCoordinator {
  public:
-  using SidePanelCoordinator::SidePanelCoordinator;
+  explicit BraveSidePanelCoordinator(BrowserWindowInterface* browser);
   ~BraveSidePanelCoordinator() override;
 
   // SidePanelUI overrides:

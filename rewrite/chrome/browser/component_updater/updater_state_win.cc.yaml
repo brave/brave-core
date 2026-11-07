@@ -1,0 +1,39 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Point the update policy key at Brave Update.'
+    regex:
+      re_pattern: '(kGoogleUpdatePoliciesKey\[\]\s*=\s*)L"[^;]*;'
+      replace: |-
+        \1L"SOFTWARE\\\\Policies\\\\BraveSoftware\\\\Update";
+
+  - description: |-
+      Use the Brave Update product GUID in the Chrome update policy override.
+
+      Brave Origin is a separate product with its own GUID.
+    regex:
+      re_pattern: '(?:const|constexpr)\s+wchar_t\s+kChromeUpdatePolicyOverride\[\][^;]*;'
+      replace: |-
+        #if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+        constexpr wchar_t kChromeUpdatePolicyOverride[] =
+            L"Update{F1EF32DE-F987-4289-81D2-6C4780027F9B}";
+        #else
+        constexpr wchar_t kChromeUpdatePolicyOverride[] =
+            L"Update{AFE6A462-C574-4B8A-AF43-4CC60DF4563B}";
+        #endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+
+  - description: 'Point the Update registry path at Brave Update.'
+    regex:
+      re_pattern: '(kRegPathGoogleUpdate\[\]\s*=\s*)L"[^;]*;'
+      replace: |-
+        \1L"Software\\\\BraveSoftware\\\\Update";
+
+  - description: 'Point the Update Clients registry path at Brave Update.'
+    regex:
+      re_pattern: '(kRegPathClientsGoogleUpdate\[\]\s*=\s*)L"[^;]*;'
+      replace: |-
+        \1L"Software\\\\BraveSoftware\\\\Update\\\\Clients\\\\"
+            L"{B131C935-9BE6-41DA-9599-1F776BEB8019}";

@@ -8,35 +8,28 @@
 
 #include <memory>
 
-#include "base/no_destructor.h"
-#include "ios/chrome/browser/shared/model/profile/profile_keyed_service_factory_ios.h"
+#include "brave/components/brave_account/brave_account_service.h"
+#include "ios/chrome/browser/shared/model/profile/typed_profile_keyed_service_factory_ios.h"
 
 class KeyedService;
-
-namespace web {
-class BrowserState;
-}
+class ProfileIOS;
 
 namespace brave_account {
 
-class BraveAccountService;
-
-class BraveAccountServiceFactoryIOS : public ProfileKeyedServiceFactoryIOS {
+class BraveAccountServiceFactoryIOS
+    : public TypedProfileKeyedServiceFactoryIOS<BraveAccountServiceFactoryIOS,
+                                                BraveAccountService> {
  public:
+  explicit BraveAccountServiceFactoryIOS(PassKey key);
+
   BraveAccountServiceFactoryIOS(const BraveAccountServiceFactoryIOS&) = delete;
   BraveAccountServiceFactoryIOS& operator=(
       const BraveAccountServiceFactoryIOS&) = delete;
 
-  static BraveAccountServiceFactoryIOS* GetInstance();
-  static BraveAccountService* GetFor(web::BrowserState* state);
+  static BraveAccountService* GetFor(ProfileIOS* profile);
 
  private:
-  friend base::NoDestructor<BraveAccountServiceFactoryIOS>;
-
-  BraveAccountServiceFactoryIOS();
-  ~BraveAccountServiceFactoryIOS() override;
-
-  // BrowserStateKeyedServiceFactory:
+  // TypedProfileKeyedServiceFactoryIOS:
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
       ProfileIOS* profile) const override;
 };

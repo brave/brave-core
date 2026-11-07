@@ -29,16 +29,17 @@ import java.util.List;
 public class TransactionUtils {
     @CoinType.EnumType
     public static int getCoinFromTxDataUnion(@NonNull final TxDataUnion txDataUnion) {
-        if (txDataUnion.which() == TxDataUnion.Tag.BtcTxData) {
-            return CoinType.BTC;
-        } else if (txDataUnion.which() == TxDataUnion.Tag.ZecTxData) {
-            return CoinType.ZEC;
-        } else if (txDataUnion.which() == TxDataUnion.Tag.FilTxData) {
-            return CoinType.FIL;
-        } else if (txDataUnion.which() == TxDataUnion.Tag.SolanaTxData) {
-            return CoinType.SOL;
-        } else {
-            return CoinType.ETH;
+        switch (txDataUnion.which()) {
+            case TxDataUnion.Tag.BtcTxData:
+                return CoinType.BTC;
+            case TxDataUnion.Tag.ZecTxData:
+                return CoinType.ZEC;
+            case TxDataUnion.Tag.FilTxData:
+                return CoinType.FIL;
+            case TxDataUnion.Tag.SolanaTxData:
+                return CoinType.SOL;
+            default:
+                return CoinType.ETH;
         }
     }
 

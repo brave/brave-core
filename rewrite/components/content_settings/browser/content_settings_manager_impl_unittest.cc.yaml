@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Implement Brave's GetBraveShieldsSettings() in the test delegate.
+
+      Brave adds it to ContentSettingsManagerImpl::Delegate as a pure virtual,
+      so the delegate couldn't be instantiated without it.
+    add_to_public:
+      class_name: NoCookieSettingsDelegate
+      code: |-
+        void GetBraveShieldsSettings(
+            const content::GlobalRenderFrameHostToken& frame_token,
+            mojom::ContentSettingsManager::GetBraveShieldsSettingsCallback
+                callback) override {
+          std::move(callback).Run(brave_shields::mojom::ShieldsSettings::New());
+        }

@@ -10,10 +10,10 @@
 
 #include "brave/components/infobars/core/brave_confirm_infobar_delegate.h"
 #include "components/infobars/core/infobar_delegate.h"
+#include "ui/base/mojom/window_open_disposition.mojom-forward.h"
 
 class PrefService;
 class GURL;
-enum class WindowOpenDisposition;
 
 namespace content {
 class WebContents;
@@ -48,7 +48,7 @@ class CreativeSearchResultAdClickedInfoBarDelegate
   std::u16string GetLinkText() const override;
   GURL GetLinkURL() const override;
   bool ShouldExpire(const NavigationDetails& details) const override;
-  bool LinkClicked(WindowOpenDisposition disposition) override;
+  bool LinkClicked(ui::mojom::WindowOpenDisposition disposition) override;
 
   // BraveConfirmInfoBarDelegate:
   bool ShouldSupportMultiLine() const override;

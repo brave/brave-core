@@ -89,6 +89,9 @@
         <ignore regexp="The resource `R.color.settings_search_logo_color_1` appears to be unused" />
         <ignore regexp="The resource `R.color.settings_search_logo_color_2` appears to be unused" />
         <ignore regexp="The resource `R.color.settings_search_logo_color_3` appears to be unused" />
+
+        <!-- Plastered at ToolbarPhone.java with R.dimen.brave_toolbar_edge_padding_ntp -->
+        <ignore regexp="The resource `R.dimen.toolbar_edge_padding_ntp` appears to be unused" />
     </issue>
     <issue id="ImpliedQuantity">
         <ignore regexp="brave/build/android/android_brave_strings_grd"/>

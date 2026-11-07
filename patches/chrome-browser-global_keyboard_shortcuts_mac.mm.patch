@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/global_keyboard_shortcuts_mac.mm b/chrome/browser/global_keyboard_shortcuts_mac.mm
-index 1bbe4c5fab65668acadce3f60c0e6d181f83036e..44f2cfee1431c3c8c0a3d9187d00b39163b7bd82 100644
+index 4e41528d09564f6b11c0d691565568c36aa25dc3..e35b36d149a2a7a232070fd48e90dfcef2e28e97 100644
 --- a/chrome/browser/global_keyboard_shortcuts_mac.mm
 +++ b/chrome/browser/global_keyboard_shortcuts_mac.mm
 @@ -151,6 +151,7 @@ const std::vector<KeyboardShortcutData>& GetShortcutsNotPresentInMainMenu() {
@@ -15,7 +15,7 @@ index 1bbe4c5fab65668acadce3f60c0e6d181f83036e..44f2cfee1431c3c8c0a3d9187d00b391
  
  CommandForKeyEventResult CommandForKeyEvent(NSEvent* event) {
 +  CommandForKeyEventResult result = [&]() -> CommandForKeyEventResult {
-   DCHECK(event);
+   CHECK(event, base::NotFatalUntil::M162);
    if ([event type] != NSEventTypeKeyDown)
      return NoCommand();
 @@ -220,6 +222,11 @@ CommandForKeyEventResult CommandForKeyEvent(NSEvent* event) {

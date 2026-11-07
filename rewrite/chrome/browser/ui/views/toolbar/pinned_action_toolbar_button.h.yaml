@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+blank_metadata_header_macros: true
+
+substitutions:
+  - description: |-
+      Declare Brave's `ShouldShowMenu()` override.
+
+      Pinned container buttons show no context menu: only the downloads button
+      is pinned, and Brave has no toolbar customization UI for it yet.
+    add_to_public:
+      class_name: PinnedActionToolbarButton
+      code: 'bool ShouldShowMenu() override;'

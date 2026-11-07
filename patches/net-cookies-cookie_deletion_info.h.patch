@@ -1,8 +1,8 @@
 diff --git a/net/cookies/cookie_deletion_info.h b/net/cookies/cookie_deletion_info.h
-index 24244583ef79c5fc473467e15ef168243a82b9f8..44ac8eec89ecf71a32ce7e55da7833d774b64aa9 100644
+index 45b4828c71c002b1bfc0094cd63077d8a77401d0..071dced52ec2036c334e180070bfe14f9b9155ac 100644
 --- a/net/cookies/cookie_deletion_info.h
 +++ b/net/cookies/cookie_deletion_info.h
-@@ -151,6 +151,7 @@ struct NET_EXPORT CookieDeletionInfo {
+@@ -158,6 +158,7 @@ struct NET_EXPORT CookieDeletionInfo {
    // If true, third-party cookie blocking applies to the context that triggered
    // the deletion. In this case, we should only delete partitioned cookies.
    bool partitioned_state_only = false;

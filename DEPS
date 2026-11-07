@@ -6,6 +6,36 @@ vars = {
 }
 
 deps = {
+  "third_party/android_deps/libs/com_android_tools_common": {
+    "packages": [
+      {
+        "package": "chromium/third_party/android_deps/libs/com_android_tools_common",
+        "version": "version:2@32.5.0-alpha06.cr2",
+      },
+    ],
+    "condition": "checkout_android",
+    "dep_type": "cipd",
+  },
+  "third_party/android_deps/libs/com_android_tools_layoutlib_layoutlib_api": {
+    "packages": [
+      {
+        "package": "chromium/third_party/android_deps/libs/com_android_tools_layoutlib_layoutlib_api",
+        "version": "version:2@32.5.0-alpha06.cr2",
+      },
+    ],
+    "condition": "checkout_android",
+    "dep_type": "cipd",
+  },
+  "third_party/android_deps/libs/com_android_tools_sdk_common": {
+    "packages": [
+      {
+        "package": "chromium/third_party/android_deps/libs/com_android_tools_sdk_common",
+        "version": "version:2@32.5.0-alpha06.cr2",
+      },
+    ],
+    "condition": "checkout_android",
+    "dep_type": "cipd",
+  },
   "vendor/omaha": {
     "url": "https://github.com/brave/omaha.git@846b535b45365499c9097059502aaae2ed69fc85",
     "condition": "checkout_win",

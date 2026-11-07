@@ -17,7 +17,7 @@ import { RouteObserverMixin, Router } from '../router.js';
 import type { Route } from '../router.js';
 import type { SettingsPlugin } from '../settings_main/settings_plugin.js';
 import { SearchableViewContainerMixin } from '../settings_page/searchable_view_container_mixin.js';
-import { WebUiListenerMixin } from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
+import { WebUiListenerMixin } from '/shared/settings/web_ui_listener_mixin.js'
 
 import { getTemplate } from './brave_system_page_index.html.js';
 import * as BraveOriginMojom from '../brave_origin_settings.mojom-webui.js'

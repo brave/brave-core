@@ -125,6 +125,11 @@ nala_icon_overrides = [
     source = "ic_trash.xml"
     dest = "ic_delete_24dp.xml"
   },
+  {
+    # Override Chromium's Site controls (app menu).
+    source = "ic_tune_small.xml"
+    dest = "ic_settings_tune_24dp.xml"
+  },
 ]
 
 # Overrides for drawables under //chrome/android/java/res, which
@@ -405,7 +410,6 @@ nala_icons = [
   "ic_checkbox_unchecked.xml",
   "ic_close.xml",
   "ic_code.xml",
-  "ic_credit_card.xml",
   "ic_disable_outline.xml",
   "ic_download.xml",
   "ic_edit_box.xml",

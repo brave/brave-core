@@ -1,0 +1,13 @@
+diff --git a/components/history_clusters/core/config.h b/components/history_clusters/core/config.h
+index 8a53746c798631954b3ec3e82983d46653c5c6b2..03df5f13d585266387a389fe810bff201267555c 100644
+--- a/components/history_clusters/core/config.h
++++ b/components/history_clusters/core/config.h
+@@ -28,7 +28,7 @@ struct Config {
+ 
+   // True if Journeys is enabled. Journeys is only enabled on desktop platforms.
+   bool is_journeys_enabled_no_locale_check =
+-      !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS);
++      false;
+ 
+   // The max number of visits to use for each clustering iteration. This limits
+   // the number of visits sent to the clustering backend per batch.

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarView.java b/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarView.java
-index b2e020a7a54fb2fdffa661212afd2f9c7787b4d7..fd348b9f7feab532e59eb16375999599cb9464e4 100644
+index b60ca7310a6d3f9cce72faf2b8297f8d79b59060..0a88148ba1f7591d5b55270fcbc0bdb643523fda 100644
 --- a/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarView.java
 +++ b/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarView.java
-@@ -309,6 +309,7 @@ public class BottomBarView extends LinearLayout {
+@@ -364,6 +364,7 @@ public class BottomBarView extends LinearLayout {
              case ActionId.HOME_BUTTON:
                  return mHomeContainer;
              case ActionId.GLIC:

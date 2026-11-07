@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/web_applications/os_integration/mac/app_shim_launch.mm b/chrome/browser/web_applications/os_integration/mac/app_shim_launch.mm
-index 49761f6f52c57c807c516cdb150b91ab7e5c1c91..24ea366f63d6de5e8bdfad8189d2c4919393539f 100644
+index 2b15e4d8964f438dec8dc579ed492d672cbdba52..e82d412dd58b850ffab097d34fd7d227f8b4d0cc 100644
 --- a/chrome/browser/web_applications/os_integration/mac/app_shim_launch.mm
 +++ b/chrome/browser/web_applications/os_integration/mac/app_shim_launch.mm
 @@ -159,6 +159,11 @@ void LaunchTheFirstShimThatWorksOnFileThread(

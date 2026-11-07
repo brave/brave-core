@@ -5,13 +5,12 @@
 
 import("//build/config/android/rules.gni")
 
-# VdPreview (Android's VectorDrawable renderer) lives in sdk-common.jar. The
-# upstream //third_party/android_deps targets for these Android-tools jars are
-# visibility-restricted to //build/android/unused_resources and intentionally
-# ship without their transitive deps, so re-declare them here, pointing at the
-# same CIPD jars, with the deps VdPreview needs at runtime. guava and the
-# Kotlin stdlib are public, so they are referenced directly.
-_android_tools_dir = "//third_party/android_deps/cipd/libs"
+# VdPreview (Android's VectorDrawable renderer) lives in sdk-common.jar.
+# Upstream no longer ships these Android-tools jars, so brave/DEPS fetches them
+# from their per-library CIPD packages, and they're declared here with the deps
+# VdPreview needs at runtime. guava and the Kotlin stdlib come from
+# //third_party/android_deps.
+_android_tools_dir = "//brave/third_party/android_deps/libs"
 
 java_prebuilt("layoutlib_api_java") {
   jar_path = "$_android_tools_dir/com_android_tools_layoutlib_layoutlib_api/layoutlib-api.jar"
@@ -26,7 +25,7 @@ java_prebuilt("common_java") {
   enable_bytecode_checks = false
   deps = [
     "//third_party/android_deps:guava_java",
-    "//third_party/kotlin_stdlib:kotlin_stdlib_java",
+    "//third_party/android_deps:kotlin_stdlib_java",
   ]
 }
 
@@ -38,7 +37,7 @@ java_prebuilt("sdk_common_java") {
     ":common_java",
     ":layoutlib_api_java",
     "//third_party/android_deps:guava_java",
-    "//third_party/kotlin_stdlib:kotlin_stdlib_java",
+    "//third_party/android_deps:kotlin_stdlib_java",
   ]
 }
 
