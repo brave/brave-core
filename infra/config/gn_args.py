@@ -62,6 +62,7 @@ gn_args.config(
         'enable_precompiled_headers': False,
         'enable_pseudolocales': False,
         'ignore_missing_widevine_signing_cert': False,
+        'thin_lto_enable_cache': False,
         'root_extra_deps': [
             '//brave',
         ],
