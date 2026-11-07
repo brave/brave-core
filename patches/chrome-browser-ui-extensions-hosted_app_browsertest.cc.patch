@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/extensions/hosted_app_browsertest.cc b/chrome/browser/ui/extensions/hosted_app_browsertest.cc
+index a4572e9a36e0a5c248173f6db2e27363c0d0ecd8..0ff04ce73ea26751d1d454ee5150f5e4902d2683 100644
+--- a/chrome/browser/ui/extensions/hosted_app_browsertest.cc
++++ b/chrome/browser/ui/extensions/hosted_app_browsertest.cc
+@@ -1981,7 +1981,7 @@ class HostedAppJitTestBase : public HostedAppProcessModelTest {
+    public:
+     // A custom ContentBrowserClient to selectively turn off JIT for certain
+     // sites.
+-    class JitChromeContentBrowserClient : public ChromeContentBrowserClient {
++    class JitChromeContentBrowserClient : public BraveContentBrowserClient {
+      public:
+       explicit JitChromeContentBrowserClient(bool jit_disabled_default)
+           : is_jit_disabled_by_default_(jit_disabled_default) {}

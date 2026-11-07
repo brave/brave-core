@@ -1,0 +1,22 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Let Brave customize the size of the scaled icon.
+
+      GetCustomGraphicSize() is declared in the plastered header and defaults
+      to std::nullopt, which keeps the upstream ActionIconSize().
+    regex:
+      re_pattern: '(ScaleImageSkiaRep\(\s*rep,\s*)(extensions::ExtensionAction::ActionIconSize\(\))(,)'
+      replace: '\1GetCustomGraphicSize().value_or(\2)\3'
+
+  - description: |-
+      Let Brave customize the icon offsets before it is drawn.
+
+      ApplyCustomGraphicOffsets() is defined in the chromium_src override.
+    add_before_line:
+      line: 'canvas->DrawImageInt(skia, x_offset, y_offset);'
+      code: '  ApplyCustomGraphicOffsets(x_offset, y_offset);'
