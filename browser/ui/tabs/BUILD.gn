@@ -26,15 +26,18 @@ assert(is_win || is_mac || is_linux || is_chromeos || is_android)
 source_set("tabs_public") {
   sources = [
     "public/brave_tab_features.h",
+    "public/closing_last_tab_controller.h",
     "public/shared_pinned_tab_utils.h",
     "public/switches.h",
     "public/vertical_tab_controller.h",
   ]
 
   public_deps = [
+    "//base",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/psst/buildflags",
     "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/tabs:tab_strip_model_observer",
     "//chrome/browser/ui/tabs:tabs_public",
     "//ui/base/unowned_user_data",
   ]
@@ -56,6 +59,7 @@ if (!is_android) {
 
     sources = [
       "brave_tab_features.cc",
+      "closing_last_tab_controller.cc",
       "shared_pinned_tab_utils.cc",
       "vertical_tab_controller.cc",
     ]
@@ -81,6 +85,7 @@ if (!is_android) {
       "//brave/components/brave_perf_predictor/browser",
       "//brave/components/brave_rewards/core/buildflags",
       "//brave/components/brave_wallet/common/buildflags",
+      "//brave/components/constants",
       "//brave/components/image_metadata_stripper/common",
       "//brave/components/misc_metrics",
       "//brave/components/request_otr/common/buildflags",
@@ -88,6 +93,7 @@ if (!is_android) {
       "//chrome/browser/content_settings:content_settings_factory",
       "//chrome/browser/profiles",
       "//chrome/browser/ui:browser_commands",
+      "//chrome/browser/ui:browser_tabstrip",
       "//chrome/browser/ui:ui_features",
       "//chrome/browser/ui:unload_controller",
       "//chrome/browser/ui/browser_window",
