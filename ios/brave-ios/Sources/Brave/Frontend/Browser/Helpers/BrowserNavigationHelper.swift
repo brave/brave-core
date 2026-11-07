@@ -59,6 +59,7 @@ class BrowserNavigationHelper {
     let vc = BookmarksViewController(
       folder: bvc.bookmarkManager.lastVisitedFolder(),
       bookmarkManager: bvc.bookmarkManager,
+      bookmarkImporter: BookmarkImporterFactory.get(profile: bvc.profileController.profile),
       isPrivateBrowsing: bvc.privateBrowsingManager.isPrivateBrowsing
     )
     vc.toolbarUrlActionsDelegate = bvc
