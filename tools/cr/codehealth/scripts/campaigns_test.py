@@ -188,6 +188,32 @@ class CampaignIndexTest(unittest.TestCase):
         self.assertIn('by hand, on a header Brave includes: bbb', report)
         self.assertNotIn('2000001', report)
 
+    def test_report_lists_every_whole_file_replacement(self) -> None:
+        cluster = campaigns.Cluster(
+            ['1'],
+            [Commit('a', 'Migrate X', ['1'])],
+            overridden=[f'w{i}.cc *' for i in range(5)]
+            + [f'p{i}.cc' for i in range(4)],
+        )
+        report = self.index.report([cluster])
+        self.assertIn(
+            'Brave overrides: w0.cc *, w1.cc *, w2.cc *, w3.cc *, w4.cc * '
+            '(+4, none whole-file)',
+            report,
+        )
+
+    def test_report_truncates_overrides_without_replacements(self) -> None:
+        cluster = campaigns.Cluster(
+            ['1'],
+            [Commit('a', 'Migrate X', ['1'])],
+            overridden=['w.cc *'] + [f'p{i}.cc' for i in range(4)],
+        )
+        report = self.index.report([cluster])
+        self.assertIn(
+            'Brave overrides: w.cc *, p0.cc, p1.cc (+2, none whole-file)',
+            report,
+        )
+
     def test_small_and_non_campaign_clusters_are_dropped(self) -> None:
         commits = [
             Commit('a', 'Add a thing', ['1']),

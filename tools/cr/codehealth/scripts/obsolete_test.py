@@ -257,6 +257,44 @@ class PatchAdoptionsTest(unittest.TestCase):
             lines[-2:],
         )
 
+    def test_a_moved_file_is_read_at_its_old_path(self):
+        """A patch that moved with its file had its lines before the range,
+        under the file's old path."""
+        brave = FakeGit(
+            {
+                (
+                    None,
+                    'patches/a.patch',
+                ): 'diff --git a/new/x.cc b/new/x.cc\n+Lines(argument);\n'
+            }
+        )
+        chromium = FakeGit(
+            {
+                ('old', 'old/x.cc'): 'Lines(argument);\n',
+                ('new', 'new/x.cc'): 'Lines(argument);\nLines(argument);\n',
+            },
+            log='R100\told/x.cc\tnew/x.cc\n',
+        )
+        self.assertEqual(
+            [
+                'adopted (1 -> 2)\tpatches/a.patch\tnew/x.cc\t'
+                '+Lines(argument);',
+                '0 patched files outside chromium/src skipped',
+                '1 patched files already upstream',
+                '    (list them with --debt)',
+            ],
+            PatchAdoptions(FakeRange(brave, chromium)).run(),
+        )
+        chromium.files_at[('new', 'new/x.cc')] = 'Lines(argument);\n'
+        self.assertEqual(
+            [
+                '0 patched files outside chromium/src skipped',
+                '1 patched files already upstream',
+                '    (list them with --debt)',
+            ],
+            PatchAdoptions(FakeRange(brave, chromium)).run(),
+        )
+
     def test_subdirectories_and_missing_files(self):
         brave = FakeGit(
             {
@@ -518,6 +556,35 @@ class TestFiltersTest(unittest.TestCase):
             [
                 'test/filters/a.filter:1\t-GlicApiTest*.*\tnew subclass suite '
                 'GlicApiCaptureRegionTest (18d83271faee)'
+            ],
+            [line for line in filters.run() if 'new subclass suite' in line],
+        )
+
+    def test_new_subclass_suite_in_another_binary_is_not_reported(self):
+        """A filter of one binary doesn't run a subclass that the source's
+        name puts in another."""
+        brave = FakeGit(
+            {
+                (None, 'test/filters/unit_tests.filter'): '-FooTest.*\n',
+                (None, 'test/filters/interactive_ui_tests-linux.filter'): (
+                    '-FooTest.*\n'
+                ),
+            }
+        )
+        log = (
+            '@@@ 18d83271faee\n'
+            '+++ b/foo_interactive_uitest.cc\n'
+            '+class NewVisualTest : public FooTest {\n'
+        )
+        filters = TestFilters(
+            FakeRange(brave, FakeGit(log=log)),
+            TestIndex(_OLD_TESTS),
+            TestIndex(_NEW_TESTS + ['TEST_F(NewVisualTest, Case) {']),
+        )
+        self.assertEqual(
+            [
+                'test/filters/interactive_ui_tests-linux.filter:1\t-FooTest.*'
+                '\tnew subclass suite NewVisualTest (18d83271faee)'
             ],
             [line for line in filters.run() if 'new subclass suite' in line],
         )

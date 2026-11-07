@@ -331,10 +331,14 @@ class CampaignIndex:
                 )
             paths = cluster.overridden
             if paths:
-                shown = ', '.join(paths[: self._SHOWN])
+                # Every whole-file replacement needs a check of its own, while
+                # the rest are found by grepping for the campaign's idiom.
+                whole = sum(p.endswith(' *') for p in paths)
+                count = max(whole, self._SHOWN)
+                shown = ', '.join(paths[:count])
                 more = (
-                    f' (+{len(paths) - self._SHOWN})'
-                    if len(paths) > self._SHOWN
+                    f' (+{len(paths) - count}, none whole-file)'
+                    if len(paths) > count
                     else ''
                 )
                 lines.append(f'  Brave overrides: {shown}{more}')
