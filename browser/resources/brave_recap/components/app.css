@@ -7,6 +7,13 @@
   --recap-page-background: var(--leo-color-page-background);
   --recap-text: var(--leo-color-text-primary);
   --recap-text-muted: var(--leo-color-text-secondary);
+  --recap-hero-background: var(--leo-gradient-hero);
+  --recap-hero-text: var(--leo-color-white);
+  --recap-card-shadow: var(--leo-effect-elevation-05);
+  /* Nala's marketing font-display-primary-hero; browser tokens stop at 46px. */
+  --recap-stat-font:
+    600 120px/130px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, Helvetica, Arial, sans-serif;
 }
 
 html,
@@ -28,6 +35,10 @@ body {
   min-height: 100vh;
 }
 
+.progress {
+  padding: var(--leo-spacing-2xl) var(--leo-spacing-3xl) 0;
+}
+
 .slide {
   flex: 1;
   display: flex;
@@ -38,6 +49,7 @@ body {
   margin: 0 auto;
   padding: var(--leo-spacing-3xl) var(--leo-spacing-5xl);
   box-sizing: border-box;
+  cursor: pointer;
   animation: slide-in var(--leo-duration-l) var(--leo-easing-out);
 }
 
@@ -79,6 +91,54 @@ p.lead {
   margin-bottom: var(--leo-spacing-3xl);
 }
 
+.hero {
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-m);
+  margin-bottom: var(--leo-spacing-3xl);
+  padding: var(--leo-spacing-4xl) var(--leo-spacing-5xl);
+  border-radius: var(--leo-radius-xxl);
+  background: var(--recap-hero-background);
+  color: var(--recap-hero-text);
+  box-shadow: var(--recap-card-shadow);
+}
+
+.hero h2 {
+  font: var(--leo-font-heading-h1);
+  margin: 0;
+}
+
+.big-value {
+  display: grid;
+  font: var(--recap-stat-font);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.big-value > * {
+  grid-area: 1 / 1;
+}
+
+.big-value .sizer {
+  visibility: hidden;
+}
+
+.big-value .unit {
+  font: var(--leo-font-heading-display1);
+  margin-inline-start: var(--leo-spacing-l);
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--leo-spacing-2xl) var(--leo-spacing-3xl) var(--leo-spacing-3xl);
+}
+
+.nav > * {
+  flex: 0 0 auto;
+}
+
 .privacy-note {
   display: flex;
   align-items: center;
@@ -87,6 +147,16 @@ p.lead {
   font: var(--leo-font-large-semibold);
   color: var(--recap-text);
   --leo-icon-size: var(--leo-icon-m);
+}
+
+@media (max-width: 800px) {
+  .big-value {
+    font: var(--leo-font-heading-display1);
+  }
+
+  .big-value .unit {
+    font: var(--leo-font-heading-h1);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
