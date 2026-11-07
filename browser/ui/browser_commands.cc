@@ -145,6 +145,12 @@
 #endif
 #endif
 
+#if BUILDFLAG(ENABLE_PSST)
+#include "brave/browser/ui/tabs/public/brave_tab_features.h"
+#include "brave/browser/ui/views/page_action/psst_action_controller.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#endif
+
 using content::WebContents;
 
 namespace brave {
