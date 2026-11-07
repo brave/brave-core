@@ -1873,11 +1873,10 @@ FooFeature(Profile& profile) : profile_(profile) {}
 
 **A Brave feature scoped to a tab is a plain class held as a `std::unique_ptr`
 member of `BraveTabFeatures` and created in its `Init()`, not a
-`WebContentsUserData` tab helper attached in `brave::AttachTabHelpers()`.**
-Upstream is moving every desktop tab helper this way
-([crbug.com/540709814](https://crbug.com/540709814)), and per the
-[Chromium Browser Design Principles](https://chromium.googlesource.com/chromium/src/+/main/docs/chrome_browser_design_principles.md)
-`TabHelpers::AttachTabHelpers` becomes remove-only on desktop.
+`WebContentsUserData` tab helper attached to the tab's `WebContents`.** Upstream
+owns its tab-scoped features in `TabFeatures` the same way
+([crbug.com/540709814](https://crbug.com/540709814)), following the
+[Chromium Browser Design Principles](https://chromium.googlesource.com/chromium/src/+/main/docs/chrome_browser_design_principles.md).
 
 - Desktop: `browser/ui/tabs/brave_tab_features.cc`.
 - Android: `browser/android/brave_tab_features.cc`, where the feature also runs
@@ -1900,12 +1899,12 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
 }
 ```
 
-`brave::AttachTabHelpers()` and `brave::AttachPrivacySensitiveTabHelpers()`
-remain only for helpers that must also attach to WebContents that are not tabs
-(for example, AI chat's associated contents or background contents), which is
-the same exception upstream allows. A presubmit check rejects `CreateFor*` calls
-in `brave_tab_features.cc` and new ones in `brave_tab_helpers.cc` unless the
-helper is on its allowlist.
+`brave::AttachPrivacySensitiveTabHelpers()`, which runs for every WebContents as
+it is created, is only for helpers that must also attach to WebContents that are
+not tabs (for example, background contents or AI chat's associated contents),
+the same exception upstream makes for its universal WebContents observers. A
+presubmit check rejects `CreateFor*` calls in `brave_tab_features.cc` and new
+ones in `brave_tab_helpers.cc` unless the helper is on its allowlist.
 
 ---
 

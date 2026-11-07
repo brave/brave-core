@@ -2,11 +2,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""Presubmit checks for brave/browser.
-
-See docs/best-practices/architecture.md (ARCH-074) for where tab-scoped
-features belong.
-"""
+"""Presubmit checks for brave/browser."""
 
 import chromium_presubmit_overrides
 
@@ -24,14 +20,13 @@ _CREATE_FOR_CALL = r'([\w:]+)::(\w*CreateFor\w*|CreateIfNeeded)\('
 # tabs. Justify additions in the change description.
 _ALLOWED_CREATE_FOR_CALLS = ()
 
-# Helpers brave::AttachTabHelpers() may attach to the WebContents.
+# Helpers brave_tab_helpers.cc may attach to the WebContents.
 #
 # Each must also be attachable to WebContents that are not tabs, so it cannot
 # be owned by BraveTabFeatures. A helper that is only ever tab-scoped belongs
 # in BraveTabFeatures instead. Justify additions in the change description.
 _ALLOWED_WEB_CONTENTS_HELPERS = (
-    # Attached by brave::AttachPrivacySensitiveTabHelpers(), which AI chat also
-    # calls for the WebContents it creates for associated content.
+    # Attached to every WebContents by brave::AttachPrivacySensitiveTabHelpers().
     'content_settings::PageSpecificContentSettings',
     'brave_shields::BraveShieldsWebContentsObserver',
     'ephemeral_storage::EphemeralStorageTabHelper',
@@ -96,7 +91,7 @@ def CheckNoCreateForInBraveTabFeatures(input_api, output_api):
 
 
 def CheckNoNewTabHelpersInBraveTabHelpers(input_api, output_api):
-    """Keeps brave::AttachTabHelpers() remove-only for tab-scoped helpers.
+    """Keeps tab-scoped helpers out of brave_tab_helpers.cc.
 
     A helper may be added only if it also has to attach to WebContents that
     are not tabs. Helpers already in the file are not flagged, so lines can be
@@ -124,8 +119,7 @@ def CheckNoNewTabHelpersInBraveTabHelpers(input_api, output_api):
                     output_api.PresubmitError(
                         f'{f.LocalPath()}:{line_num}: {helper} is attached to '
                         'the WebContents. Tab-scoped features must be owned by '
-                        'BraveTabFeatures instead (see ARCH-074 in '
-                        'docs/best-practices/architecture.md). If the helper '
+                        'BraveTabFeatures instead. If the helper '
                         'must also attach to WebContents that are not tabs, '
                         'add it to _ALLOWED_WEB_CONTENTS_HELPERS in '
                         'browser/PRESUBMIT.py with justification.'
