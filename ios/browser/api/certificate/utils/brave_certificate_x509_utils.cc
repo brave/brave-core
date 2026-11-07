@@ -299,7 +299,6 @@ std::string SignatureAlgorithmDigestToName(
     case bssl::SignatureAlgorithm::kEcdsaSha512:
     case bssl::SignatureAlgorithm::kRsaPssSha512:
       return "SHA-512";
-    case bssl::SignatureAlgorithm::kMtcProofDraftPlants04:
     case bssl::SignatureAlgorithm::kMtcProof:
     case bssl::SignatureAlgorithm::kMldsa44:
     case bssl::SignatureAlgorithm::kMldsa65:
@@ -325,7 +324,6 @@ std::string SignatureAlgorithmIdToName(
     case bssl::SignatureAlgorithm::kEcdsaSha384:
     case bssl::SignatureAlgorithm::kEcdsaSha512:
       return "ECDSA";
-    case bssl::SignatureAlgorithm::kMtcProofDraftPlants04:
     case bssl::SignatureAlgorithm::kMtcProof:
     case bssl::SignatureAlgorithm::kMldsa44:
     case bssl::SignatureAlgorithm::kMldsa65:
