@@ -240,6 +240,24 @@ def setdep(revisions: list[str], extra_deps_file: Path | None = None) -> None:
     )
 
 
+def _without_cache_dir(config: str) -> str:
+    """Drop `.gclient`'s `cache_dir`, which `SetConfig` rejects when it is
+    inside the checkout, as CI's is: the runner never touches the git cache."""
+    module = ast.parse(config)
+    module.body = [
+        statement
+        for statement in module.body
+        if not (
+            isinstance(statement, ast.Assign)
+            and any(
+                isinstance(target, ast.Name) and target.id == 'cache_dir'
+                for target in statement.targets
+            )
+        )
+    ]
+    return ast.unparse(module)
+
+
 class ExtraDepsRunner:
     """Installs `EXTRA_DEPS` entries with gclient-resolved conditions.
 
@@ -274,7 +292,9 @@ class ExtraDepsRunner:
             )
         client = gclient.GClient(root, options)
         client.SetConfig(
-            gclient_utils.FileRead(Path(root) / options.config_filename)
+            _without_cache_dir(
+                gclient_utils.FileRead(Path(root) / options.config_filename)
+            )
         )
         return cls(client)
 
