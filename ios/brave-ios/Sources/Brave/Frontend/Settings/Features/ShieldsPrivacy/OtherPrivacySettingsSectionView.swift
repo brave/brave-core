@@ -143,6 +143,11 @@ struct OtherPrivacySettingsSectionView: View {
         option: Preferences.General.followUniversalLinks
       )
       OptionToggleView(
+        title: Strings.replaceSystemSearchEngineURLs,
+        subtitle: Strings.replaceSystemSearchEngineURLsDescription,
+        option: Preferences.General.replaceSystemSearchEngineURLs
+      )
+      OptionToggleView(
         title: Strings.googleSafeBrowsing,
         subtitle: String.localizedStringWithFormat(
           Strings.googleSafeBrowsingUsingWebKitDescription,
