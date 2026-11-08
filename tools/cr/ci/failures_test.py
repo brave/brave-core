@@ -9,52 +9,69 @@ import unittest
 import _boot  # noqa: F401  -- adds parent tools/cr to sys.path
 from ci import failures  # noqa: E402  -- after _boot
 from ci.failures import (  # noqa: E402  -- after _boot
-    CheckFailures,
     FailedBuild,
     FailedTest,
     Kind,
 )
 
 
-class ClassifyTest(unittest.TestCase):
+def _kind(**fields) -> Kind:
+    return FailedBuild('Build', 'https://ci/1', 'Failed', **fields).kind
+
+
+class KindTest(unittest.TestCase):
     _TEST = (FailedTest('Suite.Test', 'FAILURE'),)
 
-    def test_workspace_switching_build_systems_is_infra(self):
-        log = '[build] Run gn clean before switching from ninja to siso in out'
-        self.assertEqual(
-            failures.classify(log, (), step_failed=True), Kind.INFRA
-        )
+    def test_machine_problems_are_infra(self):
+        for log in (
+            '[build] Run gn clean before switching from ninja to siso in out',
+            'OSError: [Errno 28] No space left on device',
+            'write siso.INFO: There is not enough space on the disk.',
+            'vol/attach failed: exit status 1',
+            "Volume vol-1 is in state in-use/attached and can't be attached",
+        ):
+            with self.subTest(log=log):
+                self.assertEqual(_kind(log_tail=log), Kind.INFRA)
+
+    def test_an_aborted_build_is_infra(self):
+        self.assertEqual(_kind(aborted=True, problems=('Timeout',)), Kind.INFRA)
 
     def test_only_tests(self):
-        self.assertEqual(
-            failures.classify('', self._TEST, step_failed=False), Kind.TESTS
-        )
+        self.assertEqual(_kind(tests=self._TEST), Kind.TESTS)
 
     def test_a_failed_step_is_a_build_failure(self):
         self.assertEqual(
-            failures.classify('error', self._TEST, step_failed=True),
-            Kind.BUILD,
+            _kind(tests=self._TEST, problems=('Exit code 1',)), Kind.BUILD
         )
+        self.assertEqual(_kind(log_tail='error'), Kind.BUILD)
 
 
-class FailedStepTailTest(unittest.TestCase):
-    def test_stops_at_the_first_failed_step(self):
+class WithFatalLineTest(unittest.TestCase):
+    _FATAL = (
+        'F1108 13:30:24.969724   11708 glog.go:261] log: exiting because of '
+        'error writing previous log to sinks: There is not enough space on '
+        'the disk.'
+    )
+
+    def test_a_fatal_line_above_the_tail_leads_it(self):
         log = '\n'.join(
             [
-                '[Step 1/3] Process exited with code 0',
-                '[Step 2/3] error: it broke',
-                '[Step 2/3] Process exited with code 1',
-                '[Step 3/3] cleanup',
-                '[Step 3/3] Process exited with code 0',
+                'I1108 13:30:20.1 11708 build.go:1] start',
+                f'[2026-11-08T13:30:25.238Z] {self._FATAL}',
+                'I1108 13:30:25.1 11708 build.go:2] spew',
+                'Finished: FAILURE',
             ]
         )
-        self.assertEqual(
-            failures.failed_step_tail(log, lines=2),
-            '[Step 2/3] error: it broke\n[Step 2/3] Process exited with code 1',
-        )
+        tail = failures.tail(log, lines=2)
+        found = failures.with_fatal_line(log, tail)
+        self.assertEqual(found, f'{self._FATAL}\n[...]\n{tail}')
+        self.assertEqual(_kind(log_tail=found), Kind.INFRA)
 
-    def test_without_a_failed_step_takes_the_end(self):
-        self.assertEqual(failures.failed_step_tail('a\nb\nc', lines=2), 'b\nc')
+    def test_a_tail_with_the_fatal_line_or_none_is_kept(self):
+        self.assertEqual(
+            failures.with_fatal_line(self._FATAL, self._FATAL), self._FATAL
+        )
+        self.assertEqual(failures.with_fatal_line('a\nb', 'b'), 'b')
 
 
 _MOCHA_OUTPUT = '\n'.join(
@@ -104,97 +121,6 @@ class MochaFailuresTest(unittest.TestCase):
     def test_other_output_has_none(self):
         self.assertEqual(
             failures.mocha_failures('Expected: true\nfailed: x'), ()
-        )
-
-
-class ToMarkdownTest(unittest.TestCase):
-    def test_no_failures(self):
-        self.assertEqual(failures.to_markdown([]), 'No failed checks.\n')
-
-    def test_lists_builds_tests_and_logs(self):
-        report = failures.to_markdown(
-            [
-                CheckFailures(
-                    check='PR browser (android)',
-                    url='https://tc/agg',
-                    system='teamcity',
-                    builds=(
-                        FailedBuild(
-                            name='Android_Build',
-                            url='https://tc/build',
-                            summary='Exit code 1',
-                            kind=Kind.BUILD,
-                            problems=('Process exited with code 1',),
-                            log_tail='error: ```boom```',
-                        ),
-                        FailedBuild(
-                            name='Android_Test',
-                            url='https://tc/test',
-                            summary='Tests failed: 1',
-                            kind=Kind.TESTS,
-                            tests=(
-                                FailedTest(
-                                    'Suite.Test',
-                                    'FAILURE',
-                                    details='Expected 1',
-                                    known='failing since build 1',
-                                ),
-                            ),
-                            log_tail='not shown for tests',
-                        ),
-                    ),
-                ),
-                CheckFailures(
-                    check='other', url='u', system='x', error='no access'
-                ),
-            ]
-        )
-        self.assertIn('### Android_Build: build', report)
-        self.assertIn('- Problem: Process exited with code 1', report)
-        # A log quoting a fence gets a longer one.
-        self.assertIn('````\nerror: ```boom```\n````', report)
-        self.assertIn(
-            '- Test `Suite.Test`: FAILURE (failing since build 1)', report
-        )
-        self.assertIn('```\nExpected 1\n```', report)
-        self.assertNotIn('not shown for tests', report)
-        self.assertIn('Could not read its builds: no access', report)
-
-    def test_lists_mocha_failures_and_history(self):
-        report = failures.to_markdown(
-            [
-                CheckFailures(
-                    check='PR browser linux (x64)',
-                    url='https://tc/agg',
-                    system='teamcity',
-                    builds=(
-                        FailedBuild(
-                            name='Linux_Test',
-                            url='https://tc/test',
-                            summary='Tests failed: 1',
-                            kind=Kind.TESTS,
-                            tests=(
-                                FailedTest(
-                                    'Suite.Mocha',
-                                    'FAILURE',
-                                    mocha=('Page saves\nAssertionError: no',),
-                                    history=('`Linux_Test`: failed 1 of 2',),
-                                ),
-                            ),
-                        ),
-                    ),
-                )
-            ]
-        )
-        self.assertIn(
-            '- Test `Suite.Mocha`: FAILURE\n'
-            '  - Mocha test failed: `Page saves`\n'
-            '  - History: `Linux_Test`: failed 1 of 2\n',
-            report,
-        )
-        self.assertIn(
-            '`Suite.Mocha`, Mocha:\n\n```\nPage saves\nAssertionError: no\n```',
-            report,
         )
 
 

@@ -28,8 +28,17 @@ class Kind(enum.StrEnum):
 _INFRA_PATTERNS = (
     # A workspace built with ninja, now built with siso.
     re.compile(r'Run gn clean before switching from ninja to siso'),
+    # A full disk, as POSIX and Windows word it.
     re.compile(r'No space left on device'),
+    re.compile(r'There is not enough space on the disk'),
+    # The agent's workspace volume is still attached to another machine.
+    re.compile(r'vol/attach failed'),
+    re.compile(r"is in state in-use/attached and can't be attached"),
 )
+
+# A `glog` fatal line, as siso writes one before it exits:
+# `F1108 13:30:24.969724   11708 glog.go:261] ...`.
+_GLOG_FATAL = re.compile(r'\bF\d{4} \d\d:\d\d:\d\d\.\d+ +\d+ \S+:\d+\] .*')
 
 # How many lines of a failed step's log a report keeps.
 LOG_TAIL_LINES = 60
@@ -62,12 +71,24 @@ class FailedBuild:
     url: str
     # The CI system's one-line summary of the failure.
     summary: str
-    kind: Kind
     tests: tuple[FailedTest, ...] = ()
     # Build problems other than failed tests, e.g. a step's exit code.
     problems: tuple[str, ...] = ()
     # The end of the failed step's log.
     log_tail: str = ''
+    # Whether the CI system stopped it (a timeout, a newer run).
+    aborted: bool = False
+
+    @property
+    def kind(self) -> Kind:
+        """What it most likely needs, from how it failed and its log."""
+        if self.aborted or any(
+            pattern.search(self.log_tail) for pattern in _INFRA_PATTERNS
+        ):
+            return Kind.INFRA
+        if self.tests and not self.problems:
+            return Kind.TESTS
+        return Kind.BUILD
 
 
 @dataclass(frozen=True)
@@ -80,40 +101,6 @@ class CheckFailures:
     builds: tuple[FailedBuild, ...] = field(default_factory=tuple)
     # Why the builds couldn't be read, if they couldn't.
     error: str = ''
-
-
-def classify(
-    log_tail: str, tests: tuple[FailedTest, ...], *, step_failed: bool
-) -> Kind:
-    """The `Kind` of a failed build, from its log and what failed.
-
-    `step_failed` is whether a build step failed, rather than only tests.
-    """
-    if any(pattern.search(log_tail) for pattern in _INFRA_PATTERNS):
-        return Kind.INFRA
-    if tests and not step_failed:
-        return Kind.TESTS
-    return Kind.BUILD
-
-
-_EXIT_CODE = re.compile(r'Process exited with code (\d+)')
-
-
-def failed_step_tail(log: str, lines: int = LOG_TAIL_LINES) -> str:
-    """The lines of a TeamCity build log leading up to the first step that
-    exited non-zero, or the log's last lines when none did.
-
-    A build's last steps are usually cleanup, so its last lines rarely say
-    why it failed.
-    """
-    log_lines = log.splitlines()
-    end = len(log_lines)
-    for index, line in enumerate(log_lines):
-        match = _EXIT_CODE.search(line)
-        if match and match[1] != '0':
-            end = index + 1
-            break
-    return '\n'.join(log_lines[max(0, end - lines) : end])
 
 
 # `mocha_adapter_simple.ts` logs a failure as one console message,
@@ -153,49 +140,11 @@ def tail(text: str, lines: int = LOG_TAIL_LINES) -> str:
     return '\n'.join(text.splitlines()[-lines:])
 
 
-def _fence(text: str) -> str:
-    fence = '````' if '```' in text else '```'
-    return f'{fence}\n{text}\n{fence}'
-
-
-def to_markdown(failures: list[CheckFailures]) -> str:
-    """A report of `failures`, one section per check."""
-    if not failures:
-        return 'No failed checks.\n'
-    sections = []
-    for check in failures:
-        lines = [f'## {check.check} ({check.system})', '', check.url, '']
-        if check.error:
-            lines += [f'Could not read its builds: {check.error}', '']
-        for build in check.builds:
-            lines += [
-                f'### {build.name}: {build.kind}',
-                '',
-                f'{build.summary} ({build.url})',
-                '',
-            ]
-            lines += [f'- Problem: {problem}' for problem in build.problems]
-            for test in build.tests:
-                known = f' ({test.known})' if test.known else ''
-                lines.append(f'- Test `{test.name}`: {test.status}{known}')
-                lines += [
-                    f'  - Mocha test failed: `{failure.splitlines()[0]}`'
-                    for failure in test.mocha
-                ]
-                lines += [f'  - History: {line}' for line in test.history]
-            if build.problems or build.tests:
-                lines.append('')
-            for test in build.tests:
-                if test.mocha:
-                    lines += [
-                        f'`{test.name}`, Mocha:',
-                        '',
-                        _fence('\n\n'.join(test.mocha)),
-                        '',
-                    ]
-                if test.details:
-                    lines += [f'`{test.name}`:', '', _fence(test.details), '']
-            if build.log_tail and build.kind != Kind.TESTS:
-                lines += ['Log:', '', _fence(build.log_tail), '']
-        sections.append('\n'.join(lines))
-    return '\n'.join(sections)
+def with_fatal_line(log: str, log_tail: str) -> str:
+    """`log_tail`, after `log`'s last `glog` fatal line when the tail doesn't
+    have it: siso's output after its fatal error can push it far above the
+    end of the log."""
+    fatal = _GLOG_FATAL.findall(log)
+    if not fatal or fatal[-1] in log_tail:
+        return log_tail
+    return f'{fatal[-1]}\n[...]\n{log_tail}'

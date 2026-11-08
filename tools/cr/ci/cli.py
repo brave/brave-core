@@ -12,6 +12,9 @@ Subcommands:
     failures PR [--output FILE]
         Reports what failed behind each failed check: the failed builds,
         their problems, failed tests, and the end of the failed step's log.
+    log URL --output FILE
+        Writes the whole log of the build at URL (a check's link, or a build
+        `failures` lists) to FILE, for what the report's log tail cuts.
     rerun URL [--wipe-workspace]
         Queues the build at URL (a check's link) again. For TeamCity, an
         aggregate reruns its failed dependencies; for GitHub Actions, the job
@@ -29,10 +32,7 @@ from pathlib import Path
 import sys
 
 import _boot  # noqa: F401  -- adds parent tools/cr to sys.path
-from ci import failures, github, report  # noqa: E402  -- after _boot
-from ci.actions import ActionsCi  # noqa: E402  -- after _boot
-from ci.jenkins import JenkinsCi  # noqa: E402  -- after _boot
-from ci.teamcity import TeamCityCi, build_id  # noqa: E402  -- after _boot
+from ci import github, report, systems  # noqa: E402  -- after _boot
 
 
 def _cmd_checks(args: argparse.Namespace) -> int:
@@ -44,45 +44,25 @@ def _cmd_checks(args: argparse.Namespace) -> int:
 
 
 def _cmd_failures(args: argparse.Namespace) -> int:
-    checks = github.pr_checks(args.pr)
-    found = report.collect(checks)
-    pending = len(checks.in_state(github.State.PENDING))
-    text = (
-        f'# CI failures of PR {checks.number} ({checks.branch}) at '
-        f'{checks.head}\n\n'
-        f'{len(found)} failed, {pending} pending of {len(checks.checks)} '
-        'checks.\n\n' + failures.to_markdown(found)
-    )
+    found = report.of(args.pr)
     if args.output:
-        args.output.write_text(text, encoding='utf-8', newline='')
-        for check in found:
-            kinds = ', '.join(f'{b.name}: {b.kind}' for b in check.builds)
-            print(f'{check.check}: {kinds or check.error or "no builds"}')
+        args.output.write_text(found.markdown(), encoding='utf-8', newline='')
+        print('\n'.join(found.summary()))
         print(f'Written to {args.output}')
     else:
-        print(text)
+        print(found.markdown())
+    return 0
+
+
+def _cmd_log(args: argparse.Namespace) -> int:
+    log = systems.full_log(args.url)
+    args.output.write_text(log, encoding='utf-8', newline='')
+    print(f'{len(log.splitlines())} lines written to {args.output}')
     return 0
 
 
 def _cmd_rerun(args: argparse.Namespace) -> int:
-    if github.TEAMCITY_HOST in args.url:
-        if args.wipe_workspace:
-            print('--wipe-workspace is for Jenkins only.')
-            return 1
-        print(TeamCityCi().rerun(build_id(args.url)))
-    elif github.JENKINS_HOST in args.url:
-        JenkinsCi.from_config().rerun(
-            args.url, wipe_workspace=args.wipe_workspace
-        )
-        print(f'Queued {args.url.rstrip("/").rsplit("/", 1)[0]} again.')
-    elif ActionsCi.is_job_url(args.url):
-        if args.wipe_workspace:
-            print('--wipe-workspace is for Jenkins only.')
-            return 1
-        print(ActionsCi().rerun(args.url))
-    else:
-        print(f'Not a Jenkins, TeamCity or GitHub Actions build: {args.url}')
-        return 1
+    print(systems.rerun(args.url, wipe_workspace=args.wipe_workspace))
     return 0
 
 
@@ -100,12 +80,20 @@ def main() -> int:
     found.add_argument('pr')
     found.add_argument('--output', type=Path)
     found.set_defaults(func=_cmd_failures)
+    log = subparsers.add_parser('log', help="Write a build's whole log.")
+    log.add_argument('url')
+    log.add_argument('--output', type=Path, required=True)
+    log.set_defaults(func=_cmd_log)
     rerun = subparsers.add_parser('rerun', help='Queue a build again.')
     rerun.add_argument('url')
     rerun.add_argument('--wipe-workspace', action='store_true')
     rerun.set_defaults(func=_cmd_rerun)
     args = parser.parse_args()
-    return args.func(args)
+    try:
+        return args.func(args)
+    except systems.Unsupported as e:
+        print(e)
+        return 1
 
 
 if __name__ == '__main__':

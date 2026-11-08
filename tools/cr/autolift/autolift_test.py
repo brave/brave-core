@@ -18,6 +18,8 @@ import unittest
 from unittest import mock
 
 import autolift
+from ci import failures as ci_failures  # noqa: E402  -- after autolift
+from ci import report as ci_report  # noqa: E402  -- after autolift
 
 _FULL_HASH = '5691202e214341a5d96a3296c1b9811cce19572b'
 
@@ -2151,15 +2153,14 @@ class CiFailuresTest(unittest.TestCase):
                 autolift.ci_github, 'has_pull_request', return_value=True
             ),
             mock.patch.object(
-                autolift.ci_github, 'pr_checks', return_value=checks
-            ) as pr_checks,
-            mock.patch.object(
-                autolift.ci_report, 'collect', return_value=found
-            ),
+                ci_report,
+                'of',
+                return_value=ci_report.Report(checks, tuple(found)),
+            ) as report_of,
             contextlib.redirect_stdout(stdout),
         ):
             result = autolift._cmd_ci_failures(mock.Mock(target=159))
-        pr_checks.assert_called_once_with('cr159')
+        report_of.assert_called_once_with('cr159')
         return result, stdout.getvalue()
 
     def test_no_pull_request_yet(self):
@@ -2184,13 +2185,14 @@ class CiFailuresTest(unittest.TestCase):
 
     def test_failed_checks(self):
         State = autolift.ci_github.State
-        build = autolift.ci_failures.FailedBuild(
-            'Android_Build', 'b', 'Exit code 1', autolift.ci_failures.Kind.INFRA
+        build = ci_failures.FailedBuild(
+            'Android_Build',
+            'b',
+            'Exit code 1',
+            log_tail='No space left on device',
         )
         found = [
-            autolift.ci_failures.CheckFailures(
-                'check 0', 'u', 'teamcity', (build,)
-            )
+            ci_failures.CheckFailures('check 0', 'u', 'teamcity', (build,))
         ]
         result, out = self._run([State.FAILURE, State.PENDING], found)
         self.assertEqual(result, autolift.CI_FAILED)

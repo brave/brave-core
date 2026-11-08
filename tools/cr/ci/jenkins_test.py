@@ -845,6 +845,66 @@ class FailedBuildsTest(unittest.TestCase):
         )
         self.assertEqual(tests.tests[0].details, 'Expected 1')
 
+    def test_a_fatal_line_only_the_console_has_leads_the_tail(self):
+        fatal = (
+            'F1108 13:30:24.969724   11708 glog.go:261] log: exiting: '
+            'There is not enough space on the disk.'
+        )
+        session = _json_session(
+            {
+                'wfapi/describe': {
+                    'stages': [{'id': '2', 'name': 'build', 'status': 'FAILED'}]
+                },
+                'execution/node/2/wfapi/describe': {
+                    'stageFlowNodes': [{'id': '21', 'status': 'FAILED'}],
+                },
+                'execution/node/21/wfapi/log': {'text': 'I1108 spew'},
+            }
+        )
+        json_get = session.get.side_effect
+
+        def get(url, **kwargs):
+            if url == f'{_RUN}/logText/progressiveText?start=0':
+                response = MagicMock()
+                response.text = f'[2026-11-08T13:30:25.238Z] {fatal}\nspew\n'
+                return response
+            return json_get(url, **kwargs)
+
+        session.get.side_effect = get
+        session.head.return_value.headers = {'X-Text-Size': '1000'}
+        with patch('ci.jenkins.requests.Session', return_value=session):
+            builds = jenkins.JenkinsCi('u', 't').failed_builds(_RUN)
+        self.assertEqual(len(builds), 1)
+        build = builds[0]
+        self.assertEqual(build.log_tail, f'{fatal}\n[...]\nI1108 spew')
+        self.assertEqual(build.kind, failures.Kind.INFRA)
+
+    def test_full_log(self):
+        session = MagicMock()
+        session.get.return_value.text = (
+            '\x1b[8mha:////abc=\x1b[0m[Pipeline] sh\nFinished: FAILURE\n'
+        )
+        with patch('ci.jenkins.requests.Session', return_value=session):
+            log = jenkins.JenkinsCi('u', 't').full_log(_RUN)
+        session.get.assert_called_once_with(f'{_RUN}/consoleText', timeout=120)
+        self.assertEqual(log, '[Pipeline] sh\nFinished: FAILURE\n')
+
+    def test_full_log_of_a_test_report_is_its_run_s(self):
+        session = MagicMock()
+        session.get.return_value.text = ''
+        with patch('ci.jenkins.requests.Session', return_value=session):
+            jenkins.JenkinsCi('u', 't').full_log(f'{_RUN}/testReport/')
+        session.get.assert_called_once_with(f'{_RUN}/consoleText', timeout=120)
+
+    def test_unreadable_full_log_raises(self):
+        session = MagicMock()
+        session.get.return_value.raise_for_status.side_effect = (
+            jenkins.requests.HTTPError('404')
+        )
+        with patch('ci.jenkins.requests.Session', return_value=session):
+            with self.assertRaises(jenkins.BadOutcomeException):
+                jenkins.JenkinsCi('u', 't').full_log(_RUN)
+
     def test_unreadable_run_raises(self):
         with self.assertRaises(jenkins.BadOutcomeException):
             self._failed_builds({})
@@ -928,18 +988,23 @@ class FailedBuildsTest(unittest.TestCase):
 
 
 class RerunTest(unittest.TestCase):
-    def _rerun(self, **kwargs) -> MagicMock:
+    def _rerun(self, **kwargs) -> tuple[MagicMock, str]:
         session = MagicMock()
         session.get.return_value.json.return_value = {
             'crumbRequestField': 'Jenkins-Crumb',
             'crumb': 'c',
         }
         with patch('ci.jenkins.requests.Session', return_value=session):
-            jenkins.JenkinsCi('u', 't').rerun(f'{_RUN}/', **kwargs)
-        return session
+            said = jenkins.JenkinsCi('u', 't').rerun(f'{_RUN}/', **kwargs)
+        return session, said
 
     def test_queues_the_job_again(self):
-        session = self._rerun()
+        session, said = self._rerun()
+        self.assertEqual(
+            said,
+            'Queued https://ci.brave.com/job/brave-core-build-pr-windows-x64/'
+            'job/PR-1 again.',
+        )
         session.post.assert_called_once_with(
             'https://ci.brave.com/job/brave-core-build-pr-windows-x64/job/'
             'PR-1/buildWithParameters',
@@ -949,7 +1014,7 @@ class RerunTest(unittest.TestCase):
         )
 
     def test_wipes_the_workspace_when_asked(self):
-        session = self._rerun(wipe_workspace=True)
+        session, _ = self._rerun(wipe_workspace=True)
         self.assertEqual(
             session.post.call_args.kwargs['params'], {'WIPE_WORKSPACE': 'true'}
         )

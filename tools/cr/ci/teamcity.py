@@ -50,7 +50,27 @@ def _brave_core_revision(build: dict) -> str:
     return revisions[-1].get('version', '')[:10] if revisions else ''
 
 
-def build_id(url: str) -> int:
+_EXIT_CODE = re.compile(r'Process exited with code (\d+)')
+
+
+def _failed_step_tail(log: str) -> str:
+    """The lines of a build log leading up to the first step that exited
+    non-zero, or the log's last lines when none did.
+
+    A build's last steps are usually cleanup, so its last lines rarely say
+    why it failed.
+    """
+    log_lines = log.splitlines()
+    end = len(log_lines)
+    for index, line in enumerate(log_lines):
+        match = _EXIT_CODE.search(line)
+        if match and match[1] != '0':
+            end = index + 1
+            break
+    return '\n'.join(log_lines[max(0, end - failures.LOG_TAIL_LINES) : end])
+
+
+def _build_id(url: str) -> int:
     """The id of the build at `url`."""
     match = _BUILD_ID.search(url)
     if not match:
@@ -81,13 +101,14 @@ class TeamCityCi:
     def _api(self, path: str) -> dict:
         return json.loads(self._cli('api', '--raw', path))
 
-    def failed_builds(self, aggregate: int) -> list[FailedBuild]:
-        """The builds that failed in `aggregate`'s chain, or `aggregate`
-        itself when it has no failed dependencies.
+    def failed_builds(self, url: str) -> list[FailedBuild]:
+        """The builds that failed in the chain of the aggregate at `url`, or
+        the aggregate itself when it has no failed dependencies.
 
         A build that failed only because one it depends on did is left out:
         the one it depends on says why.
         """
+        aggregate = _build_id(url)
         fields = 'id,buildTypeId,branchName,statusText,webUrl'
         builds = self._api(
             '/app/rest/builds?locator=snapshotDependency:'
@@ -119,20 +140,12 @@ class TeamCityCi:
         tests = self._failed_tests(teamcity_id, build.get('branchName', ''))
         log_tail = ''
         if step_problems:
-            log_tail = failures.failed_step_tail(
-                self._cli(
-                    'api',
-                    '--raw',
-                    f'/downloadBuildLog.html?buildId={teamcity_id}&plain=true',
-                )
-            )
+            log = self._log(teamcity_id)
+            log_tail = failures.with_fatal_line(log, _failed_step_tail(log))
         return FailedBuild(
             name=build.get('buildTypeId', str(teamcity_id)),
             url=build.get('webUrl', ''),
             summary=build.get('statusText', ''),
-            kind=failures.classify(
-                log_tail, tests, step_failed=bool(step_problems)
-            ),
             tests=tests,
             problems=step_problems,
             log_tail=log_tail,
@@ -220,11 +233,20 @@ class TeamCityCi:
             lines.append(line)
         return tuple(lines)
 
-    def rerun(self, build: int) -> str:
-        """Queues `build` again, with the same job, branch, revision and
-        parameters, and returns the CLI's output.
+    def full_log(self, url: str) -> str:
+        """The whole build log of the build at `url`."""
+        return self._log(_build_id(url))
+
+    def _log(self, build: int) -> str:
+        return self._cli(
+            'api', '--raw', f'/downloadBuildLog.html?buildId={build}&plain=true'
+        )
+
+    def rerun(self, url: str) -> str:
+        """Queues the build at `url` again, with the same job, branch,
+        revision and parameters, and returns the CLI's output.
 
         For an aggregate, TeamCity reuses the dependencies that succeeded,
         and reruns those that failed.
         """
-        return self._cli('run', 'restart', str(build), write=True)
+        return self._cli('run', 'restart', str(_build_id(url)), write=True)

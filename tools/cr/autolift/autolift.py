@@ -142,7 +142,6 @@ import sys
 import requests
 
 import _boot  # noqa: F401  -- adds parent tools/cr to sys.path
-from ci import failures as ci_failures  # noqa: E402  -- after _boot
 from ci import github as ci_github  # noqa: E402  -- after _boot
 from ci import report as ci_report  # noqa: E402  -- after _boot
 from exceptions import RebaseNeededException  # noqa: E402  -- after _boot
@@ -3323,20 +3322,15 @@ class PullRequestFailures:
                 f'- {run.branch} has no pull request yet: there is no CI to '
                 'read.',
             )
-        checks = ci_github.pr_checks(run.branch)
-        found = ci_report.collect(checks)
-        pending = checks.in_state(ci_github.State.PENDING)
-        leads = _collect_leads(run.milestone, found)
-        text = (
-            f'# CI failures of {run.branch} (PR {checks.number}) at '
-            f'{checks.head}\n\n' + ci_failures.to_markdown(found)
-        )
+        found = ci_report.of(run.branch)
+        checks = found.checks
+        leads = _collect_leads(run.milestone, list(found.failed))
+        text = found.markdown()
         if leads:
             text += '\n' + _leads_markdown(leads, f'M{run.milestone}.md')
         output.write_text(text, encoding='utf-8', newline='')
         lines = [
-            f'- PR {checks.number} at {checks.head[:12]}: {len(found)} '
-            f'failed, {len(pending)} pending of {len(checks.checks)} checks. '
+            f'- PR {checks.number} at {checks.head[:12]}: {found.counts()} '
             f'Details in {output}.'
         ]
         head = repository.brave.run_git('rev-parse', 'HEAD')
@@ -3345,11 +3339,7 @@ class PullRequestFailures:
                 f'- The checks ran on {checks.head[:12]}, not HEAD '
                 f'({head[:12]}).'
             )
-        for check in found:
-            kinds = ', '.join(f'{b.name}: {b.kind}' for b in check.builds)
-            lines.append(
-                f'- {check.check}: {kinds or check.error or "no failed builds"}'
-            )
+        lines += [f'- {line}' for line in found.summary()]
         if leads:
             named = [lead.name for lead in leads if lead.any]
             lines.append(
@@ -3358,8 +3348,10 @@ class PullRequestFailures:
                 + (f': {", ".join(named)}' if named else '')
                 + '.'
             )
-        lines += [f'- Pending: {check.name}' for check in pending]
-        status = CI_FAILED if found else CI_PENDING if pending else 0
+        lines += [f'- Pending: {check.name}' for check in found.pending]
+        status = (
+            CI_FAILED if found.failed else CI_PENDING if found.pending else 0
+        )
         return status, '\n'.join(lines)
 
 
