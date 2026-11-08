@@ -63,6 +63,8 @@ _HTML_TAG = re.compile(r'<[^>]+>')
 _CONSOLE_NOTE = re.compile(r'\x1b\[8mha:.*?\x1b\[0m')
 # How much of the end of a console log to read: logs reach tens of MB.
 _CONSOLE_TAIL_BYTES = 32 * 1024
+# How much of it to search for a fatal line the stage log lacks.
+_FATAL_SCAN_BYTES = 512 * 1024
 
 # States meaning a pipeline has finished and no longer needs polling.
 _TERMINAL_WATCH_STATES = frozenset(
@@ -397,13 +399,21 @@ class JenkinsCi:
                 or {}
             )
             error = ((stage.get('error') or {}).get('message') or '').strip()
-            log_tail = self._stage_log(session, url, stage)
+            text = self._stage_text(session, url, stage)
+            stage_tail = failures.tail(text)
+            log_tail = failures.with_fatal_line(text, stage_tail)
+            if log_tail == stage_tail:
+                # The step's log can stop short of a fatal line the console
+                # has.
+                log_tail = failures.with_fatal_line(
+                    self._console_end(session, url, _FATAL_SCAN_BYTES),
+                    stage_tail,
+                )
             builds.append(
                 FailedBuild(
                     name=failed.get('name', ''),
                     url=url,
                     summary=error or f'Stage {failed.get("name")} failed',
-                    kind=failures.classify(log_tail, (), step_failed=True),
                     problems=(error,) if error else (),
                     log_tail=log_tail,
                 )
@@ -417,7 +427,6 @@ class JenkinsCi:
                     name=names,
                     url=f'{url}testReport/',
                     summary=f'{len(tests)} failed test(s) in {names}',
-                    kind=failures.Kind.TESTS,
                     tests=tests,
                 )
             )
@@ -455,20 +464,26 @@ class JenkinsCi:
             name=stage.get('name', 'pipeline'),
             url=url,
             summary='; '.join(causes) or 'Aborted',
-            kind=failures.Kind.INFRA,
+            aborted=True,
             problems=causes,
             log_tail=self._console_tail(session, url),
         )
 
+    @classmethod
+    def _console_tail(cls, session: requests.Session, url: str) -> str:
+        return failures.tail(
+            cls._console_end(session, url, _CONSOLE_TAIL_BYTES)
+        )
+
     @staticmethod
-    def _console_tail(session: requests.Session, url: str) -> str:
+    def _console_end(session: requests.Session, url: str, size: int) -> str:
+        """The last `size` bytes of the run's console log, from a line
+        start, or '' when it can't be read."""
         log = f'{url}logText/progressiveText'
         try:
             head = session.head(log, timeout=15)
             head.raise_for_status()
-            start = max(
-                0, int(head.headers.get('X-Text-Size', 0)) - _CONSOLE_TAIL_BYTES
-            )
+            start = max(0, int(head.headers.get('X-Text-Size', 0)) - size)
             response = session.get(f'{log}?start={start}', timeout=30)
             response.raise_for_status()
         except (requests.RequestException, ValueError):
@@ -477,13 +492,26 @@ class JenkinsCi:
         if start:
             # The first line is cut.
             text = text.partition('\n')[2]
-        return failures.tail(text)
+        return text
 
-    def _stage_log(
+    def full_log(self, build_url: str) -> str:
+        """The whole console log of the run at `build_url`, or of the run
+        whose `testReport/` it is."""
+        url = (build_url.rstrip('/') + '/').removesuffix('testReport/')
+        try:
+            response = self._session().get(f'{url}consoleText', timeout=120)
+            response.raise_for_status()
+        except requests.RequestException as e:
+            raise BadOutcomeException(
+                f'Could not read {url}consoleText: {e}'
+            ) from e
+        return _CONSOLE_NOTE.sub('', response.text)
+
+    def _stage_text(
         self, session: requests.Session, url: str, stage: dict
     ) -> str:
-        """The end of the log of a stage's failed step, or of its last step
-        when none is marked failed."""
+        """The log of a stage's failed step, or of its last step when none
+        is marked failed."""
         nodes = stage.get('stageFlowNodes') or []
         failed = [node for node in nodes if node.get('status') == 'FAILED']
         node = (failed or nodes or [None])[-1]
@@ -494,8 +522,7 @@ class JenkinsCi:
         )
         if log is None:
             return ''
-        text = html.unescape(_HTML_TAG.sub('', log.get('text') or ''))
-        return failures.tail(text)
+        return html.unescape(_HTML_TAG.sub('', log.get('text') or ''))
 
     def _failed_tests(
         self, session: requests.Session, url: str
@@ -533,9 +560,10 @@ class JenkinsCi:
                 )
         return tuple(tests)
 
-    def rerun(self, build_url: str, *, wipe_workspace: bool = False) -> None:
+    def rerun(self, build_url: str, *, wipe_workspace: bool = False) -> str:
         """Queues the job of the run at `build_url` again, from scratch when
-        `wipe_workspace` is set (a PR job's `WIPE_WORKSPACE` parameter)."""
+        `wipe_workspace` is set (a PR job's `WIPE_WORKSPACE` parameter), and
+        says so."""
         job_url = build_url.rstrip('/').rsplit('/', 1)[0] + '/'
         session = self._session()
         crumb = self._get_crumb(session, self._server_root((job_url,)))
@@ -547,6 +575,7 @@ class JenkinsCi:
             timeout=30,
         )
         response.raise_for_status()
+        return f'Queued {job_url.rstrip("/")} again.'
 
     def _resolve_display_name(
         self, session: requests.Session, job: _WatchedJob

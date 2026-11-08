@@ -19,7 +19,7 @@ _JENKINS = (
 
 class ParseRollupTest(unittest.TestCase):
     def test_statuses_and_check_runs(self):
-        checks = github.parse_rollup(
+        checks = github._parse_rollup(
             [
                 {
                     '__typename': 'StatusContext',
@@ -81,7 +81,7 @@ class ParseRollupTest(unittest.TestCase):
         )
 
     def test_keeps_the_latest_entry_per_name(self):
-        checks = github.parse_rollup(
+        checks = github._parse_rollup(
             [
                 {'context': 'a', 'state': 'FAILURE', 'targetUrl': 'u1'},
                 {'context': 'a', 'state': 'SUCCESS', 'targetUrl': 'u2'},

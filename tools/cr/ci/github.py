@@ -8,14 +8,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import enum
-import urllib.parse
 
+from ci import systems
 from gh_cli import GhCli
 
-BRAVE_CORE = 'brave/brave-core'
-
-JENKINS_HOST = 'ci.brave.com'
-TEAMCITY_HOST = 'teamcity.brave.com'
+_BRAVE_CORE = 'brave/brave-core'
 
 
 class State(enum.StrEnum):
@@ -47,15 +44,8 @@ class Check:
 
     @property
     def system(self) -> str:
-        """`jenkins`, `teamcity` or `actions` (a GitHub Actions job) for the
-        CI systems this package reads, otherwise the URL's host."""
-        parsed = urllib.parse.urlparse(self.url)
-        host = parsed.hostname or ''
-        if host == 'github.com' and '/actions/runs/' in parsed.path:
-            return 'actions'
-        return {JENKINS_HOST: 'jenkins', TEAMCITY_HOST: 'teamcity'}.get(
-            host, host
-        )
+        """The CI system that ran it, as `systems.name()` gives it."""
+        return systems.name(self.url)
 
 
 @dataclass(frozen=True)
@@ -70,7 +60,7 @@ class PullRequestChecks:
         return [check for check in self.checks if check.state == state]
 
 
-def parse_rollup(rollup: list[dict]) -> tuple[Check, ...]:
+def _parse_rollup(rollup: list[dict]) -> tuple[Check, ...]:
     """Checks from a `statusCheckRollup`, the latest entry for each name."""
     checks: dict[str, Check] = {}
     for entry in rollup:
@@ -89,14 +79,16 @@ def parse_rollup(rollup: list[dict]) -> tuple[Check, ...]:
     return tuple(checks.values())
 
 
-def pr_checks(pr: int | str, repo: str = BRAVE_CORE) -> PullRequestChecks:
-    """The checks of pull request `pr`, a number or a branch, in `repo`."""
+def pr_checks(pr: int | str) -> PullRequestChecks:
+    """The checks of brave-core's pull request `pr`, a number or a branch."""
     data = GhCli().view_pr(
-        pr, repo=repo, fields='number,headRefName,headRefOid,statusCheckRollup'
+        pr,
+        repo=_BRAVE_CORE,
+        fields='number,headRefName,headRefOid,statusCheckRollup',
     )
     return PullRequestChecks(
         number=data['number'],
         branch=data['headRefName'],
         head=data['headRefOid'],
-        checks=parse_rollup(data.get('statusCheckRollup') or []),
+        checks=_parse_rollup(data.get('statusCheckRollup') or []),
     )
