@@ -201,6 +201,38 @@ class FormatEventTest(unittest.TestCase):
             ['■ success, after 1h02m, 12 turns, $1.50'],
         )
 
+    def test_result_with_token_usage_over_every_model(self):
+        event = {
+            'type': 'result',
+            'subtype': 'success',
+            'duration_ms': 69_440,
+            'num_turns': 6,
+            'total_cost_usd': 2.7405162,
+            # The last result's alone, which the line doesn't use.
+            'usage': {'input_tokens': 12, 'output_tokens': 1302},
+            'modelUsage': {
+                'claude-opus-5-5': {
+                    'inputTokens': 54,
+                    'outputTokens': 4567,
+                    'cacheReadInputTokens': 2_850_151,
+                    'cacheCreationInputTokens': 415_786,
+                },
+                'claude-haiku-5-5': {
+                    'inputTokens': 6,
+                    'outputTokens': 433,
+                    'cacheReadInputTokens': 0,
+                    'cacheCreationInputTokens': 0,
+                },
+            },
+        }
+        self.assertEqual(
+            run_claude.format_event(event),
+            [
+                '■ success, after 1m09s, 6 turns, $2.74, 3.27M tokens in '
+                '(2.85M from cache, 416k to cache), 5k out'
+            ],
+        )
+
     def test_other_events_print_nothing(self):
         self.assertEqual(
             run_claude.format_event(
