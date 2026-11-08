@@ -79,13 +79,17 @@ class ActionsCiTest(unittest.TestCase):
         self.assertTrue(build.log_tail.startswith(f'{fatal}\n[...]\nspew\n'))
         self.assertEqual(build.kind, Kind.INFRA)
 
-    def test_full_log_drops_the_bom_and_timestamps(self):
+    def test_full_log_drops_the_bom_and_timestamps_if_asked(self):
         ci, _ = self._ci()
         self.assertEqual(
-            ci.full_log(_URL),
+            ci.full_log(_URL, timestamps=False),
             'Set up\nChecking\nHttpError: 504 Gateway Timeout\n'
             '##[error]Process completed with exit code 1.\n'
             'Post job cleanup.\n',
+        )
+        self.assertEqual(
+            ci.full_log(_URL),
+            _LOG.removeprefix('\N{ZERO WIDTH NO-BREAK SPACE}'),
         )
 
     def test_reruns_the_job(self):

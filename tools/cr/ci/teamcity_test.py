@@ -219,6 +219,22 @@ class FailedBuildsTest(unittest.TestCase):
         self.assertEqual(teamcity.TeamCityCi(run=cli).full_log(_url(7)), _LOG)
         self.assertEqual(cli.calls[0][1]['TEAMCITY_RO'], '1')
 
+    def test_full_log_drops_the_times_but_keeps_the_severity(self):
+        log = (
+            "Build 'Brave Browser / android / test'\n"
+            '[15:13:02]i: Changed build status to failed\n'
+            '[15:24:21]W: Build was removed from the queue\n'
+        )
+        cli = FakeCli({'/downloadBuildLog.html?buildId=7&plain=true': log})
+        ci = teamcity.TeamCityCi(run=cli)
+        self.assertEqual(
+            ci.full_log(_url(7), timestamps=False),
+            "Build 'Brave Browser / android / test'\n"
+            'i: Changed build status to failed\n'
+            'W: Build was removed from the queue\n',
+        )
+        self.assertEqual(ci.full_log(_url(7)), log)
+
     def test_a_build_without_failed_dependencies_is_read_itself(self):
         cli = FakeCli(
             {

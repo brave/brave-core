@@ -26,17 +26,25 @@ def _main(*args: str) -> tuple[int, str]:
 
 
 class LogTest(unittest.TestCase):
-    def test_writes_the_log(self):
+    def _log(self, *args: str) -> tuple[int, str, str, mock.Mock]:
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / 'build.log'
             with mock.patch.object(
                 systems, 'full_log', return_value='a\nb\n'
             ) as full_log:
-                result, out = _main('log', _URL, '--output', str(output))
+                result, out = _main('log', _URL, '--output', str(output), *args)
             text = output.read_text()
-        full_log.assert_called_once_with(_URL)
+        return result, text, out, full_log
+
+    def test_writes_the_log_with_its_timestamps(self):
+        result, text, out, full_log = self._log()
+        full_log.assert_called_once_with(_URL, timestamps=True)
         self.assertEqual((result, text), (0, 'a\nb\n'))
         self.assertIn('2 lines written', out)
+
+    def test_leaves_the_timestamps_out_when_asked(self):
+        _, _, _, full_log = self._log('--no-timestamps')
+        full_log.assert_called_once_with(_URL, timestamps=False)
 
     def test_refuses_other_urls(self):
         with tempfile.TemporaryDirectory() as directory:

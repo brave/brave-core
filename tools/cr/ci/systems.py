@@ -63,9 +63,10 @@ def failed_builds(url: str) -> list[FailedBuild]:
     return _for(url).failed_builds(url)
 
 
-def full_log(url: str) -> str:
-    """The whole log of the build at `url`."""
-    return _for(url).full_log(url)
+def full_log(url: str, *, timestamps: bool = True) -> str:
+    """The whole log of the build at `url`, without its lines' timestamps if
+    asked: they cost context, and only tell when what happened."""
+    return _for(url).full_log(url, timestamps=timestamps)
 
 
 def rerun(url: str, *, wipe_workspace: bool = False) -> str:

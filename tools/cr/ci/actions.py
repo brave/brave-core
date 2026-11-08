@@ -52,7 +52,7 @@ class ActionsCi:
             f'{step.get("conclusion")}'
             for step in steps
         )
-        log = self.full_log(url)
+        log = self.full_log(url, timestamps=False)
         log_tail = failures.with_fatal_line(log, self._error_tail(log))
         summary = job.get('conclusion') or job.get('status') or ''
         if steps:
@@ -67,12 +67,13 @@ class ActionsCi:
             )
         ]
 
-    def full_log(self, url: str) -> str:
-        """The whole log of the job at `url`, without the runner's
-        timestamps."""
+    def full_log(self, url: str, *, timestamps: bool = True) -> str:
+        """The whole log of the job at `url`, without the runner's timestamps
+        if asked."""
         repo, job_id = self._job(url)
         log = self._gh.api(f'repos/{repo}/actions/jobs/{job_id}/logs')
-        return _TIMESTAMP.sub('', log.removeprefix(_BOM))
+        log = log.removeprefix(_BOM)
+        return log if timestamps else _TIMESTAMP.sub('', log)
 
     @staticmethod
     def _error_tail(log: str) -> str:
