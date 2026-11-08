@@ -6,7 +6,10 @@
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 
 #include <algorithm>
+#include <memory>
+#include <utility>
 
+#include "base/memory/raw_ptr.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
@@ -292,6 +295,105 @@ TEST_F(BraveTabTest, CanCloseTabViaMiddleButtonClick) {
       .Times(1);
   tab_ptr->OnMousePressed(press_event);
   tab_ptr->OnMouseReleased(release_event);
+}
+
+class BraveTabDoubleClickCloseTest : public BraveTabTest {
+ public:
+  void SetUp() override {
+    BraveTabTest::SetUp();
+    ON_CALL(browser_window_, GetProfile())
+        .WillByDefault(testing::Return(&profile_));
+    ON_CALL(testing::Const(browser_window_), GetProfile())
+        .WillByDefault(testing::Return(&profile_));
+    ON_CALL(browser_window_, GetType())
+        .WillByDefault(testing::Return(BrowserWindowInterface::TYPE_NORMAL));
+    ON_CALL(tab_slot_controller_, GetBrowserWindowInterface())
+        .WillByDefault(testing::Return(&browser_window_));
+
+    widget_ = CreateTestWidget(views::Widget::InitParams::CLIENT_OWNS_WIDGET);
+    tab_ = widget_->SetContentsView(
+        std::make_unique<BraveTab>(tabs::TabHandle(1), &tab_slot_controller_));
+    tab_slot_controller_.set_active_tab(tab_);
+    tab_->SetBoundsRect({0, 0, 100, 50});
+    views::test::RunScheduledLayout(tab_);
+  }
+
+  void TearDown() override {
+    tab_ = nullptr;
+    widget_.reset();
+    BraveTabTest::TearDown();
+  }
+
+  void SetDoubleClickCloseEnabled(bool enabled) {
+    profile_.GetPrefs()->SetBoolean(brave_tabs::kDoubleClickCloseTabEnabled,
+                                    enabled);
+  }
+
+  void Click(int click_count, int flags) {
+    const gfx::Point point(50, 25);
+    ui::MouseEvent press(ui::EventType::kMousePressed, point, point,
+                         base::TimeTicks(), flags, 0);
+    press.SetClickCount(click_count);
+    tab_->OnMousePressed(press);
+    ui::MouseEvent release(ui::EventType::kMouseReleased, point, point,
+                           base::TimeTicks(), flags, 0);
+    tab_->OnMouseReleased(release);
+  }
+
+  void DoubleClick(int flags = ui::EF_LEFT_MOUSE_BUTTON) {
+    Click(1, flags);
+    Click(2, flags);
+  }
+
+ protected:
+  TestingProfile profile_;
+  testing::NiceMock<MockBrowserWindowInterfaceWithVerticalTabController>
+      browser_window_{profile_.GetPrefs()};
+  testing::NiceMock<MockTabSlotController> tab_slot_controller_;
+  std::unique_ptr<views::Widget> widget_;
+  raw_ptr<BraveTab> tab_ = nullptr;
+};
+
+TEST_F(BraveTabDoubleClickCloseTest, DisabledByDefault) {
+  EXPECT_FALSE(
+      profile_.GetPrefs()->GetBoolean(brave_tabs::kDoubleClickCloseTabEnabled));
+  EXPECT_CALL(tab_slot_controller_, CloseTab(testing::_, testing::_)).Times(0);
+  DoubleClick();
+}
+
+TEST_F(BraveTabDoubleClickCloseTest, ClosesTabWhenEnabled) {
+  SetDoubleClickCloseEnabled(true);
+  EXPECT_CALL(tab_slot_controller_,
+              CloseTab(tab_.get(), CloseTabSource::kFromMouse));
+  DoubleClick();
+}
+
+TEST_F(BraveTabDoubleClickCloseTest, ClosesPinnedTab) {
+  tabs::TabData data;
+  data.pinned = true;
+  tab_->SetDataForTesting(std::move(data));
+  SetDoubleClickCloseEnabled(true);
+  EXPECT_CALL(tab_slot_controller_,
+              CloseTab(tab_.get(), CloseTabSource::kFromMouse));
+  DoubleClick();
+}
+
+// Only the second click of the double-click is sent to this tab.
+TEST_F(BraveTabDoubleClickCloseTest, IgnoresDoubleClickStartedElsewhere) {
+  SetDoubleClickCloseEnabled(true);
+  EXPECT_CALL(tab_slot_controller_, CloseTab(testing::_, testing::_)).Times(0);
+  Click(2, ui::EF_LEFT_MOUSE_BUTTON);
+}
+
+TEST_F(BraveTabDoubleClickCloseTest, IgnoresOtherClicks) {
+  SetDoubleClickCloseEnabled(true);
+  EXPECT_CALL(tab_slot_controller_, CloseTab(testing::_, testing::_)).Times(0);
+  Click(1, ui::EF_LEFT_MOUSE_BUTTON);
+  DoubleClick(ui::EF_RIGHT_MOUSE_BUTTON);
+  for (int modifier : {ui::EF_SHIFT_DOWN, ui::EF_CONTROL_DOWN, ui::EF_ALT_DOWN,
+                       ui::EF_COMMAND_DOWN}) {
+    DoubleClick(ui::EF_LEFT_MOUSE_BUTTON | modifier);
+  }
 }
 
 // Tests that a pinned vertical tab's icon is centered when floating from

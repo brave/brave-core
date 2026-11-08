@@ -215,6 +215,9 @@
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_TABS_MIDDLE_CLICK_CLOSE_TAB" desc="The label for allowing middle button click to close tabs" formatter_data="webui=BraveSettings">
     Allow middle button click to close tabs
   </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_TABS_DOUBLE_CLICK_CLOSE_TAB" desc="The label for allowing left mouse button double-clicks to close tabs" formatter_data="webui=BraveSettings">
+    Allow double-click to close tabs
+  </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_TABS_USE_FLOATING_VERTICAL_TABS" desc="The label for enabling floating mode for vertical tab strip">
     Auto expand on hover when minimized
   </message>

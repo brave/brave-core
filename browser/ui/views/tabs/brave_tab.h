@@ -67,6 +67,7 @@ class BraveTab : public Tab
   void UpdateTreeToggleButtonIcon();
 
   // Tab:
+  bool OnMousePressed(const ui::MouseEvent& event) override;
   views::BubbleBorder::Arrow GetAnchorPosition() const override;
   std::u16string GetRenderedTooltipText(const gfx::Point& p) const override;
 
@@ -224,6 +225,9 @@ class BraveTab : public Tab
   bool showing_close_button_for_test() const { return showing_close_button_; }
 
   raw_ptr<SmallAccentIconView> small_accent_icon_view_ = nullptr;  // not owned
+
+  // True if the last mouse press on this tab had a click count of 1.
+  bool last_press_was_first_click_ = false;
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   base::ScopedObservation<containers::ContainersService,
