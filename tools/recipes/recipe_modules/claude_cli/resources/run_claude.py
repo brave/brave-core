@@ -151,6 +151,46 @@ def _tail(text: str) -> list[str]:
     return [line for line in lines if line][-TAIL_LINES:]
 
 
+def _count(number: int) -> str:
+    """`950`, `4.6k`, `3.27M`."""
+    if number >= 1_000_000:
+        return f'{number / 1_000_000:.3g}M'
+    if number >= 1_000:
+        return f'{number / 1_000:.3g}k'
+    return str(number)
+
+
+def _token_usage(model_usage: Any) -> str:
+    """The session's tokens, over every model it used: what went in, and how
+    much of that its cache served and stored, and what came out. '' without
+    any.
+
+    From `modelUsage`, which covers the whole session, as its cost does, rather
+    than `usage`, which covers only its last result."""
+    if not isinstance(model_usage, dict):
+        return ''
+    totals = collections.Counter()
+    for usage in model_usage.values():
+        if isinstance(usage, dict):
+            for key in (
+                'inputTokens',
+                'cacheReadInputTokens',
+                'cacheCreationInputTokens',
+                'outputTokens',
+            ):
+                if isinstance(usage.get(key), int):
+                    totals[key] += usage[key]
+    if not totals:
+        return ''
+    read = totals['cacheReadInputTokens']
+    written = totals['cacheCreationInputTokens']
+    tokens_in = totals['inputTokens'] + read + written
+    return (
+        f'{_count(tokens_in)} tokens in ({_count(read)} from cache, '
+        f'{_count(written)} to cache), {_count(totals["outputTokens"])} out'
+    )
+
+
 def _duration(milliseconds: int) -> str:
     minutes, seconds = divmod(round(milliseconds / 1000), 60)
     hours, minutes = divmod(minutes, 60)
@@ -221,6 +261,8 @@ def format_event(event: dict[str, Any]) -> list[str]:
             parts.append(f'{event["num_turns"]} turns')
         if isinstance(event.get('total_cost_usd'), (int, float)):
             parts.append(f'${event["total_cost_usd"]:.2f}')
+        if tokens := _token_usage(event.get('modelUsage')):
+            parts.append(tokens)
         # Not `result`, which repeats Claude's last message.
         lines.append(', '.join(parts))
 
