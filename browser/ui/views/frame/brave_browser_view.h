@@ -326,13 +326,8 @@ class BraveBrowserView : public BrowserView,
   // class's ctor body runs).
   void EnsureFindBarHostViewIsLastChild();
 
-  void ToggleSidebar() override;
   bool HasSelectedURL() const override;
   void CleanAndCopySelectedURL() override;
-
-#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
-  void ShowPlaylistBubble() override;
-#endif
 
   void UpdateSideBarHorizontalAlignment();
 
