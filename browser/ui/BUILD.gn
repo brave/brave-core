@@ -50,7 +50,6 @@ if (!is_android) {
   source_set("brave_browser_window_header") {
     public = [ "brave_browser_window.h" ]
     public_deps = [
-      "//brave/components/playlist/core/common/buildflags",
       "//brave/components/speedreader/common/buildflags",
       "//chrome/browser/ui:browser_window_header",
     ]

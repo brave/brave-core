@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/views/page_action/playlist_page_action_controller.h"
 
-#include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "brave/components/playlist/core/common/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
@@ -113,10 +112,13 @@ void PlaylistPageActionController::ShowBubble(
     return;
   }
 
-  BrowserView& browser_view =
-      CHECK_DEREF(BrowserView::GetBrowserViewForBrowser(bwi));
+  // Not a BrowserView, e.g. a WebUIBrowserWindow.
+  BrowserView* const browser_view = BrowserView::GetBrowserViewForBrowser(bwi);
+  if (!browser_view) {
+    return;
+  }
   views::View* const anchor_view =
-      browser_view.toolbar_button_provider()
+      browser_view->toolbar_button_provider()
           ->GetPageActionBubbleAnchor(kActionShowPlaylistPageAction)
           .GetIfView();
   if (!anchor_view || !anchor_view->GetWidget()) {

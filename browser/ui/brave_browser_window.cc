@@ -40,8 +40,6 @@ BraveBrowserWindow* BraveBrowserWindow::FromBrowser(
 }
 
 #if defined(TOOLKIT_VIEWS)
-void BraveBrowserWindow::ToggleSidebar() {}
-
 bool BraveBrowserWindow::HasSelectedURL() const {
   return false;
 }

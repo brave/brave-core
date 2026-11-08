@@ -10,15 +10,21 @@
 
 #include "base/callback_list.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
+#include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/web_discovery/buildflags/buildflags.h"
+#include "build/build_config.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
+#include "third_party/widevine/cdm/buildflags.h"
 
 class BraveWaybackMachineTabHelper;
 class Profile;
@@ -168,14 +174,18 @@ class BraveTabFeatures : public TabFeatures {
   std::unique_ptr<ContentsObservingTabFeature>
       cloudflare_js_detection_tab_helper_;
 
-  // Avoids a white flash on new tabs. Windows only, null elsewhere.
+#if BUILDFLAG(IS_WIN)
+  // Avoids a white flash on new tabs.
   std::unique_ptr<ContentsObservingTabFeature> background_color_tab_helper_;
+#endif  // BUILDFLAG(IS_WIN)
 
   // Records page and media session metrics.
   std::unique_ptr<ContentsObservingTabFeature> page_metrics_tab_helper_;
 
+#if BUILDFLAG(ENABLE_REQUEST_OTR)
   // Shows an infobar while browsing a site off the record at its request.
   std::unique_ptr<ContentsObservingTabFeature> request_otr_tab_helper_;
+#endif  // BUILDFLAG(ENABLE_REQUEST_OTR)
 
   // Opens the Leo panel once for users in the sidebar test.
   std::unique_ptr<ContentsObservingTabFeature> sidebar_tab_helper_;
@@ -184,18 +194,26 @@ class BraveTabFeatures : public TabFeatures {
 
   // Records searches. Null when SERP metrics are disabled or off the record.
   std::unique_ptr<ContentsObservingTabFeature> serp_metrics_tab_helper_;
-  // Notifies the ads service of tab events. Null without Brave Ads.
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  // Notifies the ads service of tab events.
   std::unique_ptr<ContentsObservingTabFeature> ads_tab_helper_;
-  // Handles search result ads. Null without Brave Ads or off the record.
+  // Handles search result ads. Null off the record.
   std::unique_ptr<ContentsObservingTabFeature>
       creative_search_result_ad_tab_helper_;
-  // Offers and runs Web Discovery. Null without it or outside regular profiles.
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
+  // Offers and runs Web Discovery. Null outside regular profiles.
   std::unique_ptr<ContentsObservingTabFeature> web_discovery_tab_helper_;
-  // Detects the Rewards creator of the page. Null without Brave Rewards.
+#endif  // BUILDFLAG(ENABLE_WEB_DISCOVERY)
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+  // Detects the Rewards creator of the page.
   std::unique_ptr<ContentsObservingTabFeature> rewards_tab_helper_;
-  // Finds the page's Brave News feeds. Null without Brave News or off the
-  // record. Declared before the page action controllers that observe it.
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+  // Finds the page's Brave News feeds. Null off the record. Declared before the
+  // page action controllers that observe it.
   std::unique_ptr<ContentsObservingTabFeature> brave_news_tab_helper_;
+#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   // Serves the wallet providers of the tab's frames.
   std::unique_ptr<ContentsObservingTabFeature> brave_wallet_tab_helper_;
@@ -206,8 +224,10 @@ class BraveTabFeatures : public TabFeatures {
   // that observes it.
   std::unique_ptr<ContentsObservingTabFeature> speedreader_tab_helper_;
 #endif
-  // Offers to enable Widevine when the page asks for it. Null without it.
+#if BUILDFLAG(ENABLE_WIDEVINE)
+  // Offers to enable Widevine when the page asks for it.
   std::unique_ptr<ContentsObservingTabFeature> drm_tab_helper_;
+#endif  // BUILDFLAG(ENABLE_WIDEVINE)
   // Estimates the bandwidth that Shields saves.
   std::unique_ptr<brave_perf_predictor::PerfPredictorTabHelper>
       perf_predictor_tab_helper_;
@@ -231,9 +251,11 @@ class BraveTabFeatures : public TabFeatures {
 #endif  // BUILDFLAG(ENABLE_TOR)
   // Holds the Shields state for the page shown in the tab.
   std::unique_ptr<ContentsObservingTabFeature> brave_shields_tab_helper_;
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
   // Records whether the page asked for high accuracy geolocation.
   std::unique_ptr<ContentsObservingTabFeature>
       geolocation_permission_tab_helper_;
+#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   // Provides the tab's content to AI Chat. Null when AI Chat is not allowed.

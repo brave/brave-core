@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser_window.h"
 
@@ -48,16 +47,11 @@ class BraveBrowserWindow : public BrowserWindow {
 #endif
 
 #if defined(TOOLKIT_VIEWS)
-  virtual void ToggleSidebar();
   virtual bool HasSelectedURL() const;
   virtual void CleanAndCopySelectedURL();
 
   // Returns true when bubble is shown.
   virtual bool ShowBraveHelpBubbleView(const std::string& text);
-#endif
-
-#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
-  virtual void ShowPlaylistBubble() {}
 #endif
 
   // Returns true if all tabs in this window is being dragged.

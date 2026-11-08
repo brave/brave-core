@@ -81,7 +81,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserWebUIBrowserTest,
   ASSERT_TRUE(WebUIBrowserWindow::FromBrowser(browser()));
   EXPECT_FALSE(BraveBrowserWindow::FromBrowser(browser()));
 
-  // Commands that go through BraveBrowserWindow do nothing for this window.
+  // Commands backed by views-only features do nothing for this window.
   EXPECT_FALSE(brave::HasSelectedURL(browser()));
   brave::CleanAndCopySelectedURL(browser());
   brave::ToggleSidebar(browser());
