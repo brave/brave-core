@@ -395,7 +395,7 @@ class RunRecipeTest(unittest.TestCase):
             engine.importlib, 'import_module', import_module
         ):
             with self.assertRaises(RuntimeError):
-                engine.run_recipe('group/sub/my_recipe', {})
+                engine._Engine().run_recipe('group/sub/my_recipe', {})
         import_module.assert_called_once_with('recipes.group.sub.my_recipe')
 
 
@@ -426,6 +426,24 @@ class WorkspaceTest(unittest.TestCase):
             engine._Engine(workspace=workspace)
             self.assertTrue(workspace.is_dir())
             self.assertEqual(Path.cwd(), workspace)
+            os.chdir(self._prev_cwd)
+
+    def test_the_job_gets_a_temp_dir_in_its_workspace(self):
+        with (
+            tempfile.TemporaryDirectory() as tmp,
+            mock.patch.dict(os.environ),
+            mock.patch.object(engine.tempfile, 'tempdir', '/elsewhere'),
+        ):
+            eng = engine._Engine(workspace=tmp)
+            eng.use_temp_dir()
+            temp_dir = Path(tmp).resolve() / 'rc' / 'tmp'
+            self.assertTrue(temp_dir.is_dir())
+            self.assertEqual(
+                eng._instantiate_module('path', []).temp_dir, temp_dir
+            )
+            for var in engine.TEMP_DIR_ENV_VARS:
+                self.assertEqual(os.environ[var], str(temp_dir))
+            self.assertEqual(tempfile.gettempdir(), str(temp_dir))
             os.chdir(self._prev_cwd)
 
     def test_workspace_defaults_to_cwd(self):
