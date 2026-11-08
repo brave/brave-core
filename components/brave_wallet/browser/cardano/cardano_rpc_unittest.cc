@@ -92,10 +92,10 @@ class CardanoRpcUnitTest : public testing::Test {
     return base::NumberToString(response_height_);
   }
 
-  network::ResourceRequest WaitForPendingRequest() {
-    EXPECT_TRUE(
+  void WaitForPendingRequest(network::ResourceRequest& request) {
+    ASSERT_TRUE(
         base::test::RunUntil([&] { return url_loader_factory_.NumPending(); }));
-    return url_loader_factory_.GetPendingRequest(0)->request;
+    request = url_loader_factory_.GetPendingRequest(0)->request;
   }
 
  protected:
@@ -174,7 +174,7 @@ TEST_F(CardanoRpcUnitTest, BraveServicesKey) {
   network_manager_->SetNetworkURLForTesting(
       mojom::kCardanoMainnet, GURL("https://cardano-test.example.com/api/"));
   cardano_mainnet_rpc_->GetLatestBlock(callback.Get());
-  EXPECT_EQ(url_loader_factory_.pending_requests()->size(), 1u);
+  ASSERT_EQ(url_loader_factory_.pending_requests()->size(), 1u);
   EXPECT_FALSE(
       url_loader_factory_.pending_requests()->front().request.headers.GetHeader(
           kBraveServicesKeyHeader));
@@ -183,7 +183,7 @@ TEST_F(CardanoRpcUnitTest, BraveServicesKey) {
   network_manager_->SetNetworkURLForTesting(mojom::kCardanoMainnet, GURL());
 
   cardano_mainnet_rpc_->GetLatestBlock(callback.Get());
-  EXPECT_EQ(url_loader_factory_.pending_requests()->size(), 1u);
+  ASSERT_EQ(url_loader_factory_.pending_requests()->size(), 1u);
   EXPECT_TRUE(
       url_loader_factory_.pending_requests()->front().request.headers.GetHeader(
           kBraveServicesKeyHeader));
@@ -357,7 +357,8 @@ TEST_F(CardanoRpcUnitTest, PostTransaction) {
   // PostTransaction works.
   cardano_mainnet_rpc_->PostTransaction({1, 2, 3},
                                         post_tx_future.GetCallback());
-  auto request = WaitForPendingRequest();
+  network::ResourceRequest request;
+  ASSERT_NO_FATAL_FAILURE(WaitForPendingRequest(request));
   EXPECT_EQ(request.url, req_url);
   EXPECT_EQ(request.request_body->elements()
                 ->at(0)
@@ -371,7 +372,7 @@ TEST_F(CardanoRpcUnitTest, PostTransaction) {
   url_loader_factory_.ClearResponses();
   cardano_mainnet_rpc_->PostTransaction({1, 2, 3},
                                         post_tx_future.GetCallback());
-  request = WaitForPendingRequest();
+  ASSERT_NO_FATAL_FAILURE(WaitForPendingRequest(request));
   EXPECT_EQ(request.url, req_url);
   url_loader_factory_.AddResponse(req_url, "not valid txid");
   EXPECT_EQ(post_tx_future.Take().error(), WalletParsingErrorMessage());
@@ -380,7 +381,7 @@ TEST_F(CardanoRpcUnitTest, PostTransaction) {
   url_loader_factory_.ClearResponses();
   cardano_mainnet_rpc_->PostTransaction({1, 2, 3},
                                         post_tx_future.GetCallback());
-  request = WaitForPendingRequest();
+  ASSERT_NO_FATAL_FAILURE(WaitForPendingRequest(request));
   EXPECT_EQ(request.url, req_url);
   url_loader_factory_.AddResponse(req_url, txid_response,
                                   net::HTTP_INTERNAL_SERVER_ERROR);
@@ -390,7 +391,7 @@ TEST_F(CardanoRpcUnitTest, PostTransaction) {
   url_loader_factory_.ClearResponses();
   cardano_testnet_rpc_->PostTransaction({1, 2, 3},
                                         post_tx_future.GetCallback());
-  request = WaitForPendingRequest();
+  ASSERT_NO_FATAL_FAILURE(WaitForPendingRequest(request));
   EXPECT_EQ(request.url, testnet_rpc_url_ + "tx/submit");
   EXPECT_EQ(request.request_body->elements()
                 ->at(0)
