@@ -117,5 +117,17 @@ class PrChecksTest(unittest.TestCase):
         )
 
 
+class HasPullRequestTest(unittest.TestCase):
+    def test_asks_brave_core_for_the_branch_s_open_pull_requests(self):
+        with mock.patch.object(
+            github.GhCli, 'list_prs', side_effect=[[{'number': 1}], []]
+        ) as list_prs:
+            self.assertTrue(github.has_pull_request('cr159'))
+            self.assertFalse(github.has_pull_request('cr160'))
+        list_prs.assert_called_with(
+            head='cr160', fields='number', repo='brave/brave-core'
+        )
+
+
 if __name__ == '__main__':
     unittest.main()
