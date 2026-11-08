@@ -503,6 +503,85 @@ def _kill_quietly(pid: int) -> None:
         os.kill(pid, signal.SIGKILL)
 
 
+def _read(tool_id, path, parent=None):
+    return _assistant(
+        {
+            'type': 'tool_use',
+            'id': tool_id,
+            'name': 'Read',
+            'input': {'file_path': str(path)},
+        },
+        parent=parent,
+    )
+
+
+def _read_result(tool_id, first, last, parent=None):
+    text = ''.join(f'{n:>6}\tline {n}\n' for n in range(first, last + 1))
+    return {
+        'type': 'user',
+        'message': {
+            'content': [
+                {'type': 'tool_result', 'tool_use_id': tool_id, 'content': text}
+            ]
+        },
+        'parent_tool_use_id': parent,
+    }
+
+
+class RequiredReadsTest(unittest.TestCase):
+    def setUp(self):
+        tmp = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, tmp)
+        self.skill = Path(tmp) / 'SKILL.md'
+        self.skill.write_text(
+            ''.join(f'line {n}\n' for n in range(1, 11)), encoding='utf-8'
+        )
+        self.reads = run_claude.RequiredReads([self.skill])
+
+    def test_pages_that_cover_the_file_read_it(self):
+        for event in (
+            _read('a', self.skill),
+            _read_result('a', 1, 6),
+            _read('b', self.skill),
+            _read_result('b', 7, 10),
+        ):
+            self.reads.handle(event)
+        self.assertEqual(self.reads.missed(), [])
+
+    def test_a_read_that_stopped_short_or_a_subagent_s_does_not(self):
+        for event in (
+            _read('a', self.skill),
+            _read_result('a', 1, 4),
+            _read('b', self.skill, parent='agent'),
+            _read_result('b', 1, 10, parent='agent'),
+        ):
+            self.reads.handle(event)
+        self.assertEqual(
+            self.reads.missed(),
+            [f'- `{self.skill.resolve()}`: 6 of 10 lines not read (5-10)'],
+        )
+
+    @_linux_only
+    def test_run_appends_what_was_missed_to_the_report(self):
+        report = self.skill.parent / 'report.md'
+        report.write_text('# Report\n', encoding='utf-8')
+        lines = [json.dumps(_read('a', self.skill)) + '\n']
+        script = f'import sys\nsys.stdout.write({"".join(lines)!r})\n'
+        with contextlib.redirect_stdout(io.StringIO()) as stdout:
+            code = run_claude.run(
+                [sys.executable, '-c', script],
+                self.skill.parent / 'claude.jsonl',
+                must_read=[self.skill],
+                report=report,
+            )
+        self.assertEqual(code, 0)
+        self.assertIn('## Instructions not read in full', stdout.getvalue())
+        self.assertIn(
+            '10 of 10 lines not read (1-10)',
+            report.read_text(encoding='utf-8'),
+        )
+
+
 @_linux_only
 class RunTest(unittest.TestCase):
     def _run(self, lines, exit_code=0):

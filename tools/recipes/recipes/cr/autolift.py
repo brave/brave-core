@@ -40,7 +40,12 @@ REPORT = 'report.md'
 _CR_BRANCH_RE = re.compile(r'refs/heads/cr(\d+)')
 
 # What a step's simulation reports when a test doesn't say.
-_LIFT_ADVICE = {'action': 'lift', 'prompt': 'Lift.', 'reasons': []}
+_LIFT_ADVICE = {
+    'action': 'lift',
+    'prompt': 'Lift.',
+    'reads': ['tools/cr/autolift/SKILL.md'],
+    'reasons': [],
+}
 _NOTHING_PENDING = {'pending': 0, 'prompt': None, 'report': 'sync-tooling.md'}
 
 
@@ -226,6 +231,10 @@ def RunSteps(api: DEPS, properties: InputProperties) -> None:
                 log_dir=run_dir,
                 add_dirs=add_dirs,
                 allowed_tools=allowed_tools,
+                # The skill's files the prompt names; the report lists any the
+                # agent didn't read in full.
+                must_read=[root / path for path in advice['reads']],
+                report=run_dir / REPORT,
             )
         finally:
             # The report in full, however the run ended. A run that stopped
@@ -261,7 +270,12 @@ def GenTests(api: TEST_DEPS):
         return api.step_data(
             'advise',
             api.json.output(
-                {'action': action, 'prompt': prompt, 'reasons': ['- Why.']}
+                {
+                    'action': action,
+                    'prompt': prompt,
+                    'reads': ['tools/cr/autolift/SKILL.md'] if prompt else [],
+                    'reasons': ['- Why.'],
+                }
             ),
         )
 
