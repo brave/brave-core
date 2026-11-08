@@ -5,6 +5,7 @@
 
 #include "brave/browser/net/brave_proxying_url_loader_factory.h"
 
+#include <cstddef>
 #include <memory>
 #include <optional>
 #include <string>
@@ -13,7 +14,11 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
+#include "base/location.h"
+#include "base/memory/scoped_refptr.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/test/bind.h"
+#include "base/time/time.h"
 #include "brave/browser/net/fake_brave_request_handler.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "chrome/test/base/testing_profile.h"
@@ -54,6 +59,39 @@ network::mojom::URLResponseHeadPtr CreateRedirectHead(const GURL& new_url) {
   return head;
 }
 
+// Forwards to the current default task runner, counting the tasks posted to it,
+// so a test can tell which Mojo receivers are bound to it.
+class CountingTaskRunner : public base::SequencedTaskRunner {
+ public:
+  CountingTaskRunner()
+      : target_(base::SequencedTaskRunner::GetCurrentDefault()) {}
+
+  bool PostDelayedTask(const base::Location& from_here,
+                       base::OnceClosure task,
+                       base::TimeDelta delay) override {
+    ++posted_tasks_;
+    return target_->PostDelayedTask(from_here, std::move(task), delay);
+  }
+  bool PostNonNestableDelayedTask(const base::Location& from_here,
+                                  base::OnceClosure task,
+                                  base::TimeDelta delay) override {
+    ++posted_tasks_;
+    return target_->PostNonNestableDelayedTask(from_here, std::move(task),
+                                               delay);
+  }
+  bool RunsTasksInCurrentSequence() const override {
+    return target_->RunsTasksInCurrentSequence();
+  }
+
+  size_t posted_tasks() const { return posted_tasks_; }
+
+ private:
+  ~CountingTaskRunner() override = default;
+
+  const scoped_refptr<base::SequencedTaskRunner> target_;
+  size_t posted_tasks_ = 0;
+};
+
 class BraveProxyingURLLoaderFactoryTest : public testing::Test {
  public:
   BraveProxyingURLLoaderFactoryTest() {
@@ -62,7 +100,8 @@ class BraveProxyingURLLoaderFactoryTest : public testing::Test {
     profile_ = TestingProfile::Builder().Build();
   }
 
-  mojo::Remote<network::mojom::URLLoaderFactory> CreateFactory() {
+  mojo::Remote<network::mojom::URLLoaderFactory> CreateFactory(
+      scoped_refptr<base::SequencedTaskRunner> task_runner = nullptr) {
     network::URLLoaderFactoryBuilder builder;
     proxy_ = std::make_unique<BraveProxyingURLLoaderFactory<std::shared_ptr>>(
         *request_handler_, profile_.get(),
@@ -71,7 +110,8 @@ class BraveProxyingURLLoaderFactoryTest : public testing::Test {
             kDocumentSubResource,
         url::Origin::Create(GURL("https://factory-initiator.example")),
         net::IsolationInfo(), std::nullopt,
-        base::MakeRefCounted<RequestIDGenerator>(), base::DoNothing(), nullptr);
+        base::MakeRefCounted<RequestIDGenerator>(), base::DoNothing(),
+        std::move(task_runner));
 
     mojo::Remote<network::mojom::URLLoaderFactory> factory;
     std::move(builder).Finish(factory.BindNewPipeAndPassReceiver(),
@@ -245,6 +285,59 @@ TEST_F(BraveProxyingURLLoaderFactoryTest,
       << ", initiator: " << *initiator_for_redirected;
   EXPECT_EQ(initiator, *initiator_for_redirected)
       << "Redirected URL: " << redirected_url;
+}
+
+// Under content's `kSubresourceLoaderProxyTaskQueue`, a main frame's
+// subresource factory gets a high-priority task runner. Every receiver of the
+// proxy must use it, rather than the default queue, as upstream's WebRequest
+// proxy does.
+TEST_F(BraveProxyingURLLoaderFactoryTest,
+       SubresourceFactoryReceiversUseItsTaskRunner) {
+  auto task_runner = base::MakeRefCounted<CountingTaskRunner>();
+  auto factory = CreateFactory(task_runner);
+
+  size_t posted_tasks = task_runner->posted_tasks();
+  factory.FlushForTesting();
+  EXPECT_GT(task_runner->posted_tasks(), posted_tasks) << "Factory receiver";
+
+  mojo::Remote<network::mojom::URLLoaderFactory> clone;
+  factory->Clone(clone.BindNewPipeAndPassReceiver());
+  factory.FlushForTesting();
+  posted_tasks = task_runner->posted_tasks();
+  clone.FlushForTesting();
+  EXPECT_GT(task_runner->posted_tasks(), posted_tasks) << "Cloned receiver";
+
+  mojo::Remote<network::mojom::URLLoaderFactory> clone_of_clone;
+  clone->Clone(clone_of_clone.BindNewPipeAndPassReceiver());
+  clone.FlushForTesting();
+  posted_tasks = task_runner->posted_tasks();
+  clone_of_clone.FlushForTesting();
+  EXPECT_GT(task_runner->posted_tasks(), posted_tasks)
+      << "Receiver cloned from a clone";
+
+  const GURL request_url("https://example.com/resource");
+  network::TestURLLoaderClient client;
+  mojo::Remote<network::mojom::URLLoader> loader;
+  CreateLoaderAndStart(
+      clone, loader,
+      CreateRequest(request_url,
+                    url::Origin::Create(GURL("https://initiator.example"))),
+      client);
+  // `NumPending()` runs the loop until idle itself; calling it from
+  // `RunUntil()`'s idle callback nests that loop, which never quits on Mac.
+  ASSERT_EQ(1, test_factory_.NumPending());
+
+  posted_tasks = task_runner->posted_tasks();
+  loader.FlushForTesting();
+  EXPECT_GT(task_runner->posted_tasks(), posted_tasks) << "URLLoader receiver";
+
+  posted_tasks = task_runner->posted_tasks();
+  ASSERT_TRUE(
+      test_factory_.SimulateResponseForPendingRequest(request_url.spec(), ""));
+  client.RunUntilComplete();
+  EXPECT_GT(task_runner->posted_tasks(), posted_tasks)
+      << "URLLoaderClient receiver";
+  EXPECT_EQ(net::OK, client.completion_status().error_code);
 }
 
 // Coverage for AuthorizeBypassRedirectChecks() and for redirects authorized by

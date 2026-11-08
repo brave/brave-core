@@ -8,12 +8,20 @@
 #include <optional>
 #include <string>
 #include <string_view>
+#include <vector>
 
+#include "base/location.h"
+#include "base/run_loop.h"
 #include "base/strings/string_util.h"
+#include "base/test/bind.h"
+#include "base/test/scoped_feature_list.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "content/common/features.h"
+#include "content/public/browser/browser_task_traits.h"
+#include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
@@ -31,6 +39,7 @@
 #include "services/network/public/mojom/url_loader.mojom.h"
 #include "services/network/public/mojom/url_loader_factory.mojom.h"
 #include "services/network/test/test_url_loader_client.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -318,4 +327,56 @@ IN_PROC_BROWSER_TEST_F(BraveProxyingURLLoaderFactoryFollowRedirectTest,
     client.RunUntilComplete();
     EXPECT_EQ(net::ERR_INVALID_ARGUMENT, client.completion_status().error_code);
   }
+}
+
+// With no extension loaded, BraveProxyingURLLoaderFactory is the only UI-thread
+// proxy of the frame's factory, so this covers it alone.
+class BraveProxyingURLLoaderFactorySubresourceTaskQueueTest
+    : public BraveProxyingURLLoaderFactoryFollowRedirectTest {
+ public:
+  BraveProxyingURLLoaderFactorySubresourceTaskQueueTest() {
+    feature_list_.InitAndEnableFeature(
+        features::kSubresourceLoaderProxyTaskQueue);
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+// Mirrors upstream's
+// WebRequestProxyingURLLoaderFactorySubresourceTaskQueueTest.
+// ClonedFactoryAndHeaderClientUseSubresourceLoaderProxyQueue: a nested clone
+// is only bound once the proxy's Clone() runs, so its flush only beats a task
+// already queued on kDefault if the clones are on kSubresourceLoaderProxy.
+IN_PROC_BROWSER_TEST_F(BraveProxyingURLLoaderFactorySubresourceTaskQueueTest,
+                       ClonedFactoryUsesSubresourceLoaderProxyQueue) {
+  auto proxy_task_runner = content::GetUIThreadTaskRunner(
+      {content::BrowserTaskType::kSubresourceLoaderProxy});
+  auto default_task_runner =
+      content::GetUIThreadTaskRunner({content::BrowserTaskType::kDefault});
+
+  mojo::Remote<network::mojom::URLLoaderFactory> factory = CreateFrameFactory();
+  mojo::Remote<network::mojom::URLLoaderFactory> cloned_factory;
+  mojo::Remote<network::mojom::URLLoaderFactory> second_cloned_factory;
+  factory->Clone(cloned_factory.BindNewPipeAndPassReceiver(proxy_task_runner));
+  cloned_factory->Clone(
+      second_cloned_factory.BindNewPipeAndPassReceiver(proxy_task_runner));
+
+  base::RunLoop run_loop;
+  std::vector<std::string> execution_order;
+  auto record = [&](std::string_view event) {
+    execution_order.emplace_back(event);
+    if (execution_order.size() == 2u) {
+      run_loop.Quit();
+    }
+  };
+  second_cloned_factory.FlushAsyncForTesting(
+      base::BindLambdaForTesting([&] { record("cloned_factory_flushed"); }));
+  default_task_runner->PostTask(FROM_HERE, base::BindLambdaForTesting([&] {
+                                  record("default_queue_task");
+                                }));
+  run_loop.Run();
+
+  EXPECT_THAT(execution_order, testing::ElementsAre("cloned_factory_flushed",
+                                                    "default_queue_task"));
 }

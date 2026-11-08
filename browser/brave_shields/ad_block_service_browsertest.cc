@@ -61,6 +61,7 @@
 #include "chrome/test/base/platform_browser_test.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
+#include "content/common/features.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "crypto/sha2.h"
@@ -449,6 +450,35 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByDefaultBlocker) {
   ASSERT_EQ(true, EvalJs(contents,
                          "setExpectations(0, 1, 0, 0);"
                          "addImage('ad_banner.png')"));
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+}
+
+// Under content's `kSubresourceLoaderProxyTaskQueue`, Brave's proxy handles a
+// main frame's subresource requests on a high-priority queue, which a
+// committing document's factory only starts once its navigation finishes.
+class AdBlockServiceSubresourceTaskQueueTest : public AdBlockServiceTest {
+ public:
+  AdBlockServiceSubresourceTaskQueueTest() {
+    feature_list_.InitAndEnableFeature(
+        features::kSubresourceLoaderProxyTaskQueue);
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+// The ad in the page's markup is requested as the document commits, so it is
+// among the first requests the deferred queue runs.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceSubresourceTaskQueueTest,
+                       AdInMarkupGetsBlocked) {
+  UpdateAdBlockInstanceWithRules("*ad_banner.png");
+
+  NavigateToURL(embedded_test_server()->GetURL("/ad_banner_in_markup.html"));
+  content::WebContents* contents = web_contents();
+
+  EXPECT_EQ(0, EvalJs(contents, "document.getElementById('ad').naturalWidth"));
+  EXPECT_NE(0,
+            EvalJs(contents, "document.getElementById('logo').naturalWidth"));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
