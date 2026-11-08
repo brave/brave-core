@@ -53,8 +53,10 @@ class DispatchTest(unittest.TestCase):
     def test_reads_through_the_url_s_system_made_once(self):
         self.teamcity.failed_builds.return_value = ['build']
         self.assertEqual(systems.failed_builds(_TEAMCITY), ['build'])
-        systems.full_log(_TEAMCITY)
-        self.teamcity.full_log.assert_called_once_with(_TEAMCITY)
+        systems.full_log(_TEAMCITY, timestamps=True)
+        self.teamcity.full_log.assert_called_once_with(
+            _TEAMCITY, timestamps=True
+        )
         self.assertEqual(self.made, [self.teamcity])
 
     def test_refuses_other_urls(self):

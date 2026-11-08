@@ -882,12 +882,40 @@ class FailedBuildsTest(unittest.TestCase):
     def test_full_log(self):
         session = MagicMock()
         session.get.return_value.text = (
-            '\x1b[8mha:////abc=\x1b[0m[Pipeline] sh\nFinished: FAILURE\n'
+            '[2026-11-08T14:30:44.281Z] \x1b[8mha:////abc=\x1b[0m'
+            '[Pipeline] sh\n[2026-11-08T14:31:34.913Z] Finished: FAILURE\n'
         )
         with patch('ci.jenkins.requests.Session', return_value=session):
-            log = jenkins.JenkinsCi('u', 't').full_log(_RUN)
-        session.get.assert_called_once_with(f'{_RUN}/consoleText', timeout=120)
+            ci = jenkins.JenkinsCi('u', 't')
+            log = ci.full_log(_RUN, timestamps=False)
+            stamped = ci.full_log(_RUN)
+        session.get.assert_called_with(f'{_RUN}/consoleText', timeout=120)
         self.assertEqual(log, '[Pipeline] sh\nFinished: FAILURE\n')
+        self.assertEqual(
+            stamped,
+            '[2026-11-08T14:30:44.281Z] [Pipeline] sh\n'
+            '[2026-11-08T14:31:34.913Z] Finished: FAILURE\n',
+        )
+
+    def test_a_stage_s_tail_has_no_timestamps(self):
+        builds = self._failed_builds(
+            {
+                'wfapi/describe': {
+                    'stages': [{'id': '2', 'name': 'build', 'status': 'FAILED'}]
+                },
+                'execution/node/2/wfapi/describe': {
+                    'stageFlowNodes': [{'id': '21', 'status': 'FAILED'}],
+                },
+                'execution/node/21/wfapi/log': {
+                    'text': '14:30:33 [2026-11-08T14:30:33.600Z] Program '
+                    'autoninja exited with error code 1.\n'
+                    '14:30:33 [2026-11-08T14:30:33.600Z] '
+                },
+            }
+        )
+        self.assertEqual(
+            builds[0].log_tail, 'Program autoninja exited with error code 1.'
+        )
 
     def test_full_log_of_a_test_report_is_its_run_s(self):
         session = MagicMock()

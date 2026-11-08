@@ -61,6 +61,11 @@ _HTML_TAG = re.compile(r'<[^>]+>')
 
 # The console log's hidden annotations.
 _CONSOLE_NOTE = re.compile(r'\x1b\[8mha:.*?\x1b\[0m')
+# The timestamps before each log line: the Timestamper plugin's, and before it
+# in a step's log, the time `wfapi/log` adds.
+_TIMESTAMP = re.compile(
+    r'^(?:\d\d:\d\d:\d\d )?\[\d{4}-\d\d-\d\dT[\d:.]+Z\] ?', re.MULTILINE
+)
 # How much of the end of a console log to read: logs reach tens of MB.
 _CONSOLE_TAIL_BYTES = 32 * 1024
 # How much of it to search for a fatal line the stage log lacks.
@@ -488,15 +493,15 @@ class JenkinsCi:
             response.raise_for_status()
         except (requests.RequestException, ValueError):
             return ''
-        text = _CONSOLE_NOTE.sub('', response.text)
+        text = _TIMESTAMP.sub('', _CONSOLE_NOTE.sub('', response.text))
         if start:
             # The first line is cut.
             text = text.partition('\n')[2]
         return text
 
-    def full_log(self, build_url: str) -> str:
+    def full_log(self, build_url: str, *, timestamps: bool = True) -> str:
         """The whole console log of the run at `build_url`, or of the run
-        whose `testReport/` it is."""
+        whose `testReport/` it is, without its lines' timestamps if asked."""
         url = (build_url.rstrip('/') + '/').removesuffix('testReport/')
         try:
             response = self._session().get(f'{url}consoleText', timeout=120)
@@ -505,7 +510,8 @@ class JenkinsCi:
             raise BadOutcomeException(
                 f'Could not read {url}consoleText: {e}'
             ) from e
-        return _CONSOLE_NOTE.sub('', response.text)
+        text = _CONSOLE_NOTE.sub('', response.text)
+        return text if timestamps else _TIMESTAMP.sub('', text)
 
     def _stage_text(
         self, session: requests.Session, url: str, stage: dict
@@ -522,7 +528,8 @@ class JenkinsCi:
         )
         if log is None:
             return ''
-        return html.unescape(_HTML_TAG.sub('', log.get('text') or ''))
+        text = html.unescape(_HTML_TAG.sub('', log.get('text') or ''))
+        return _TIMESTAMP.sub('', text)
 
     def _failed_tests(
         self, session: requests.Session, url: str
