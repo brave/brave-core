@@ -33,19 +33,25 @@ TEST(CardanoRpcSchema, TokenIdFromHex) {
   EXPECT_FALSE(
       TokenIdFromHex("1f7a58a1aa1e6b047a42109ade331ce26c9c2cce027d043f"
                      "f264fb1f"));
-  EXPECT_EQ(29u,
-            TokenIdFromHex("1f7a58a1aa1e6b047a42109ade331ce26c9c2cce027d043f"
-                           "f264fb1f42")
-                ->size());
-  EXPECT_EQ(34u,
-            TokenIdFromHex("1f7a58a1aa1e6b047a42109ade331ce26c9c2cce027d043f"
-                           "f264fb1f425249434b53")
-                ->size());
-  EXPECT_EQ(60u,
-            TokenIdFromHex("1f7a58a1aa1e6b047a42109ade331ce26c9c2cce027d043f"
-                           "f264fb1fAABBCCDDEEFFAABBCCDDEEFFAABBCCDDEEFFAABB"
-                           "CCDDEEFFAABBCCDDEEFFAABB")
-                ->size());
+  auto token_id = TokenIdFromHex(
+      "1f7a58a1aa1e6b047a42109ade331ce26c9c2cce027d043f"
+      "f264fb1f42");
+  ASSERT_TRUE(token_id);
+  EXPECT_EQ(29u, token_id->size());
+
+  token_id = TokenIdFromHex(
+      "1f7a58a1aa1e6b047a42109ade331ce26c9c2cce027d043f"
+      "f264fb1f425249434b53");
+  ASSERT_TRUE(token_id);
+  EXPECT_EQ(34u, token_id->size());
+
+  token_id = TokenIdFromHex(
+      "1f7a58a1aa1e6b047a42109ade331ce26c9c2cce027d043f"
+      "f264fb1fAABBCCDDEEFFAABBCCDDEEFFAABBCCDDEEFFAABB"
+      "CCDDEEFFAABBCCDDEEFFAABB");
+  ASSERT_TRUE(token_id);
+  EXPECT_EQ(60u, token_id->size());
+
   EXPECT_FALSE(
       TokenIdFromHex("1f7a58a1aa1e6b047a42109ade331ce26c9c2cce027d043"
                      "ff264fb1fAABBCCDDEEFFAABBCCDDEEFFAABBCCDDEEFFAA"
@@ -86,7 +92,7 @@ TEST(CardanoRpcSchema, EpochParameters) {
   valid.min_fee_b = "20";
   valid.coins_per_utxo_size = "30";
 
-  EXPECT_EQ(*EpochParameters::FromBlockfrostApiValue(valid.Clone()),
+  EXPECT_EQ(EpochParameters::FromBlockfrostApiValue(valid.Clone()),
             EpochParameters({.min_fee_coefficient = 10,
                              .min_fee_constant = 20,
                              .coins_per_utxo_size = 30}));
@@ -118,7 +124,7 @@ TEST(CardanoRpcSchema, Block) {
   valid.slot = "20";
   valid.epoch = "30";
 
-  EXPECT_EQ(*Block::FromBlockfrostApiValue(valid.Clone()),
+  EXPECT_EQ(Block::FromBlockfrostApiValue(valid.Clone()),
             Block({.height = 10, .slot = 20, .epoch = 30}));
 
   for (auto* value : kInvalidUint32Values) {
@@ -153,6 +159,7 @@ TEST(CardanoRpcSchema, UnspentOutput) {
   valid.amount.back().unit = "lovelace";
 
   auto converted = UnspentOutput::FromBlockfrostApiValue(addr, valid.Clone());
+  ASSERT_TRUE(converted);
   EXPECT_EQ(base::HexEncode(converted->tx_hash),
             "000102030405060708090A0B0C0D0F0E000102030405060708090A0B0C0D0F0E");
   EXPECT_EQ(converted->output_index, 123u);
@@ -180,6 +187,7 @@ TEST(CardanoRpcSchema, UnspentOutput) {
   valid.amount.back().quantity = "555";
   valid.amount.back().unit = base::HexEncode(foo_token);
   converted = UnspentOutput::FromBlockfrostApiValue(addr, valid.Clone());
+  ASSERT_TRUE(converted);
   EXPECT_EQ(converted->coin_value.tokens[foo_token], 555u);
   EXPECT_EQ(converted->coin_value.lovelace_amount, 1000u);
 
@@ -187,6 +195,7 @@ TEST(CardanoRpcSchema, UnspentOutput) {
   valid.amount.back().quantity = "1";
   valid.amount.back().unit = base::HexEncode(bar_token);
   converted = UnspentOutput::FromBlockfrostApiValue(addr, valid.Clone());
+  ASSERT_TRUE(converted);
   EXPECT_EQ(converted->coin_value.tokens[foo_token], 555u);
   EXPECT_EQ(converted->coin_value.tokens[bar_token], 1u);
   EXPECT_EQ(converted->coin_value.lovelace_amount, 1000u);
@@ -197,6 +206,7 @@ TEST(CardanoRpcSchema, UnspentOutput) {
   valid.amount.back().quantity = "100000000000";
   valid.amount.back().unit = base::HexEncode(baz_token);
   converted = UnspentOutput::FromBlockfrostApiValue(addr, valid.Clone());
+  ASSERT_TRUE(converted);
   EXPECT_EQ(converted->coin_value.tokens[foo_token], 555u);
   EXPECT_EQ(converted->coin_value.tokens[bar_token], 1u);
   EXPECT_EQ(converted->coin_value.tokens[baz_token], 100000000000u);
@@ -257,7 +267,7 @@ TEST(CardanoRpcSchema, Transaction) {
       "000102030405060708090a0b0c0d0e0f000102030405060708090a0b0c0d0e0f";
 
   EXPECT_EQ(
-      *Transaction::FromBlockfrostApiValue(valid.Clone()),
+      Transaction::FromBlockfrostApiValue(valid.Clone()),
       Transaction({.tx_hash = std::to_array<uint8_t>({
                        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
                        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -289,7 +299,7 @@ TEST(CardanoRpcSchema, AssetInfo) {
   expected_asset.name = "Foo token";
   expected_asset.ticker = "foo";
 
-  EXPECT_EQ(*AssetInfo::FromBlockfrostApiValue(valid.Clone()), expected_asset);
+  EXPECT_EQ(AssetInfo::FromBlockfrostApiValue(valid.Clone()), expected_asset);
 }
 
 }  // namespace brave_wallet::cardano_rpc
