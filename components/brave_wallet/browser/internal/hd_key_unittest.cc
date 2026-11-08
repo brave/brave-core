@@ -316,80 +316,78 @@ TEST(HDKeyUnitTest, TestVector3) {
 
 TEST(HDKeyUnitTest, GenerateFromExtendedKey) {
   // m/0/2147483647'/1/2147483646'/2
-  auto parsed_xprv = HDKey::GenerateFromExtendedKey(
+  const std::string kXprv =
       "xprvA2nrNbFZABcdryreWet9Ea4LvTJcGsqrMzxHx98MMrotbir7yrKCEXw7nadnHM8Dq38E"
-      "GfSh6dqA9QWTyefMLEcBYJUuekgW4BYPJcr9E7j");
+      "GfSh6dqA9QWTyefMLEcBYJUuekgW4BYPJcr9E7j";
+  const std::string kXpub =
+      "xpub6FnCn6nSzZAw5Tw7cgR9bi15UV96gLZhjDstkXXxvCLsUXBGXPdSnLFbdpq8p9HmGsAp"
+      "ME5hQTZ3emM2rnY5agb9rXpVGyy3bdW6EEgAtqt";
+
+  // Serializing a parsed key must reproduce the input, which covers depth,
+  // parent fingerprint, index and chain code.
+  auto parsed_xprv = HDKey::GenerateFromExtendedKey(kXprv);
+  ASSERT_TRUE(parsed_xprv);
+  ASSERT_TRUE(parsed_xprv->hdkey);
   EXPECT_EQ(parsed_xprv->version,
             std::to_underlying(ExtendedKeyVersion::kXprv));
   auto* hdkey_from_pri = parsed_xprv->hdkey.get();
-  EXPECT_EQ(hdkey_from_pri->depth_, 5u);
-  EXPECT_EQ(base::HexEncodeLower(hdkey_from_pri->parent_fingerprint_),
-            "31a507b8");
-  EXPECT_EQ(hdkey_from_pri->index_, 2u);
-  EXPECT_EQ(base::HexEncodeLower(hdkey_from_pri->chain_code_),
-            "9452b549be8cea3ecb7a84bec10dcfd94afe4d129ebfd3b3cb58eedf394ed271");
+  EXPECT_EQ(hdkey_from_pri->GetPrivateExtendedKey(ExtendedKeyVersion::kXprv),
+            kXprv);
+  EXPECT_EQ(hdkey_from_pri->GetPublicExtendedKey(ExtendedKeyVersion::kXpub),
+            kXpub);
   EXPECT_EQ(base::HexEncodeLower(hdkey_from_pri->GetPrivateKeyBytes()),
             "bb7d39bdb83ecf58f2fd82b6d918341cbef428661ef01ab97c28a4842125ac23");
   EXPECT_EQ(
-      base::HexEncodeLower(hdkey_from_pri->public_key_),
+      base::HexEncodeLower(hdkey_from_pri->GetPublicKeyBytes()),
       "024d902e1a2fc7a8755ab5b694c575fce742c48d9ff192e63df5193e4c7afe1f9c");
   EXPECT_EQ(base::HexEncodeLower(hdkey_from_pri->GetIdentifier()),
             "26132fdbe7bf89cbc64cf8dafa3f9f88b8666220");
 
-  // m/0/2147483647'/1/2147483646'/2
-  auto parsed_xpub = HDKey::GenerateFromExtendedKey(
-      "xpub6FnCn6nSzZAw5Tw7cgR9bi15UV96gLZhjDstkXXxvCLsUXBGXPdSnLFbdpq8p9HmGsAp"
-      "ME5hQTZ3emM2rnY5agb9rXpVGyy3bdW6EEgAtqt");
+  auto parsed_xpub = HDKey::GenerateFromExtendedKey(kXpub);
+  ASSERT_TRUE(parsed_xpub);
+  ASSERT_TRUE(parsed_xpub->hdkey);
   EXPECT_EQ(parsed_xpub->version,
             std::to_underlying(ExtendedKeyVersion::kXpub));
   auto* hdkey_from_pub = parsed_xpub->hdkey.get();
-  EXPECT_EQ(hdkey_from_pub->depth_, 5u);
-  EXPECT_EQ(base::HexEncodeLower(hdkey_from_pub->parent_fingerprint_),
-            "31a507b8");
-  EXPECT_EQ(hdkey_from_pub->index_, 2u);
-  EXPECT_EQ(base::HexEncodeLower(hdkey_from_pub->chain_code_),
-            "9452b549be8cea3ecb7a84bec10dcfd94afe4d129ebfd3b3cb58eedf394ed271");
+  EXPECT_EQ(hdkey_from_pub->GetPublicExtendedKey(ExtendedKeyVersion::kXpub),
+            kXpub);
   EXPECT_TRUE(hdkey_from_pub->GetPrivateKeyBytes().empty());
   EXPECT_EQ(
-      base::HexEncodeLower(hdkey_from_pub->public_key_),
+      base::HexEncodeLower(hdkey_from_pub->GetPublicKeyBytes()),
       "024d902e1a2fc7a8755ab5b694c575fce742c48d9ff192e63df5193e4c7afe1f9c");
   EXPECT_EQ(base::HexEncodeLower(hdkey_from_pub->GetIdentifier()),
             "26132fdbe7bf89cbc64cf8dafa3f9f88b8666220");
 
   auto parsed_zprv = HDKey::GenerateFromExtendedKey(kBtcMainnetImportAccount0);
+  ASSERT_TRUE(parsed_zprv);
+  ASSERT_TRUE(parsed_zprv->hdkey);
   EXPECT_EQ(parsed_zprv->version,
             std::to_underlying(ExtendedKeyVersion::kZprv));
   auto* hdkey_from_zprv = parsed_zprv->hdkey.get();
-  EXPECT_EQ(hdkey_from_zprv->depth_, 3u);
-  EXPECT_EQ(base::HexEncodeLower(hdkey_from_zprv->parent_fingerprint_),
-            "7ef32bdb");
-  EXPECT_EQ(hdkey_from_zprv->index_, 2147483648u);
-  EXPECT_EQ(base::HexEncodeLower(hdkey_from_zprv->chain_code_),
-            "4a53a0ab21b9dc95869c4e92a161194e03c0ef3ff5014ac692f433c4765490fc");
+  EXPECT_EQ(hdkey_from_zprv->GetPrivateExtendedKey(ExtendedKeyVersion::kZprv),
+            kBtcMainnetImportAccount0);
   EXPECT_EQ(base::ToLowerASCII(
                 base::HexEncode(hdkey_from_zprv->GetPrivateKeyBytes())),
             "e14f274d16ca0d91031b98b162618061d03930fa381af6d4caf44b01819ab6d4");
   EXPECT_EQ(
-      base::HexEncodeLower(hdkey_from_zprv->public_key_),
+      base::HexEncodeLower(hdkey_from_zprv->GetPublicKeyBytes()),
       "02707a62fdacc26ea9b63b1c197906f56ee0180d0bcf1966e1a2da34f5f3a09a9b");
   EXPECT_EQ(base::HexEncodeLower(hdkey_from_zprv->GetIdentifier()),
             "fd13aac9a294188cdfe1331a8d94880bccbef8c1");
 
+  // Serialize() does not support the vprv version for private keys, so the
+  // round trip is not available here.
   auto parsed_vprv = HDKey::GenerateFromExtendedKey(kBtcTestnetImportAccount0);
+  ASSERT_TRUE(parsed_vprv);
+  ASSERT_TRUE(parsed_vprv->hdkey);
   EXPECT_EQ(parsed_vprv->version,
             std::to_underlying(ExtendedKeyVersion::kVprv));
   auto* hdkey_from_vprv = parsed_vprv->hdkey.get();
-  EXPECT_EQ(hdkey_from_vprv->depth_, 3u);
-  EXPECT_EQ(base::HexEncodeLower(hdkey_from_vprv->parent_fingerprint_),
-            "0ef4b1af");
-  EXPECT_EQ(hdkey_from_vprv->index_, 2147483648u);
-  EXPECT_EQ(base::HexEncodeLower(hdkey_from_vprv->chain_code_),
-            "3c8c2037ee4c1621da0d348db51163709a622d0d2838dde6d8419c51f6301c62");
   EXPECT_EQ(base::ToLowerASCII(
                 base::HexEncode(hdkey_from_vprv->GetPrivateKeyBytes())),
             "7262788152f6450e0f0b336847e5ed3ea4319e10b793c3a7488a474aa4fbeaae");
   EXPECT_EQ(
-      base::HexEncodeLower(hdkey_from_vprv->public_key_),
+      base::HexEncodeLower(hdkey_from_vprv->GetPublicKeyBytes()),
       "03b88e0fbe3f646337ed93bc0c0f3b843fcf7d2589e5ec884754e6402027a890b4");
   EXPECT_EQ(base::HexEncodeLower(hdkey_from_vprv->GetIdentifier()),
             "e99b862826a40a32c24c79785d06b19de3fb076f");
@@ -401,64 +399,75 @@ TEST(HDKeyUnitTest, GenerateFromPrivateKey) {
       "bb7d39bdb83ecf58f2fd82b6d918341cbef428661ef01ab97c28a4842125ac23",
       private_key));
   std::unique_ptr<HDKey> key = HDKey::GenerateFromPrivateKey(private_key);
-  EXPECT_NE(key, nullptr);
+  ASSERT_NE(key, nullptr);
 
   std::array<uint8_t, 32> msg_a = {};
   std::array<uint8_t, 32> msg_b = {};
   msg_b.fill(0x08);
-  auto sig_a = *key->SignCompact(msg_a);
-  auto sig_b = *key->SignCompact(msg_b);
-  EXPECT_EQ(base::HexEncodeLower(sig_a.rs_bytes()),
+  auto sig_a = key->SignCompact(msg_a);
+  ASSERT_TRUE(sig_a);
+  auto sig_b = key->SignCompact(msg_b);
+  ASSERT_TRUE(sig_b);
+  EXPECT_EQ(base::HexEncodeLower(sig_a->rs_bytes()),
             "6ba4e554457ce5c1f1d7dbd10459465e39219eb9084ee23270688cbe0d49b52b79"
             "05d5beb28492be439a3250e9359e0390f844321b65f1a88ce07960dd85da06");
-  EXPECT_EQ(base::HexEncodeLower(sig_b.rs_bytes()),
+  EXPECT_EQ(base::HexEncodeLower(sig_b->rs_bytes()),
             "dfae85d39b73c9d143403ce472f7c4c8a5032c13d9546030044050e7d39355e47a"
             "532e5c0ae2a25392d97f5e55ab1288ef1e08d5c034bad3b0956fbbab73b381");
-  EXPECT_TRUE(key->VerifyForTesting(msg_a, sig_a.rs_bytes()));
-  EXPECT_TRUE(key->VerifyForTesting(msg_b, sig_b.rs_bytes()));
+  EXPECT_TRUE(key->VerifyForTesting(msg_a, sig_a->rs_bytes()));
+  EXPECT_TRUE(key->VerifyForTesting(msg_b, sig_b->rs_bytes()));
 }
 
 TEST(HDKeyUnitTest, SignAndVerifyAndRecover) {
   auto parsed_xprv = HDKey::GenerateFromExtendedKey(
       "xprvA2nrNbFZABcdryreWet9Ea4LvTJcGsqrMzxHx98MMrotbir7yrKCEXw7nadnHM8Dq38E"
       "GfSh6dqA9QWTyefMLEcBYJUuekgW4BYPJcr9E7j");
+  ASSERT_TRUE(parsed_xprv);
+  ASSERT_TRUE(parsed_xprv->hdkey);
   auto* key = parsed_xprv->hdkey.get();
 
   std::array<uint8_t, 32> msg_a = {};
   std::array<uint8_t, 32> msg_b = {};
   msg_b.fill(0x08);
-  auto sig_a = *key->SignCompact(msg_a);
-  auto sig_b = *key->SignCompact(msg_b);
-  EXPECT_EQ(base::HexEncodeLower(sig_a.rs_bytes()),
+  auto sig_a = key->SignCompact(msg_a);
+  ASSERT_TRUE(sig_a);
+  auto sig_b = key->SignCompact(msg_b);
+  ASSERT_TRUE(sig_b);
+  EXPECT_EQ(base::HexEncodeLower(sig_a->rs_bytes()),
             "6ba4e554457ce5c1f1d7dbd10459465e39219eb9084ee23270688cbe0d49b52b79"
             "05d5beb28492be439a3250e9359e0390f844321b65f1a88ce07960dd85da06");
-  EXPECT_EQ(base::HexEncodeLower(sig_b.rs_bytes()),
+  EXPECT_EQ(base::HexEncodeLower(sig_b->rs_bytes()),
             "dfae85d39b73c9d143403ce472f7c4c8a5032c13d9546030044050e7d39355e47a"
             "532e5c0ae2a25392d97f5e55ab1288ef1e08d5c034bad3b0956fbbab73b381");
-  EXPECT_TRUE(key->VerifyForTesting(msg_a, sig_a.rs_bytes()));
-  EXPECT_TRUE(key->VerifyForTesting(msg_b, sig_b.rs_bytes()));
-  auto public_key_a = *key->RecoverCompact(true, msg_a, sig_a);
-  auto public_key_b = *key->RecoverCompact(true, msg_b, sig_b);
-  auto uncompressed_public_key_a = *key->RecoverCompact(false, msg_a, sig_a);
-  auto uncompressed_public_key_b = *key->RecoverCompact(false, msg_b, sig_b);
-  EXPECT_EQ(base::HexEncode(public_key_a), base::HexEncode(key->public_key_));
-  EXPECT_EQ(base::HexEncode(public_key_b), base::HexEncode(key->public_key_));
-  EXPECT_EQ(base::HexEncode(uncompressed_public_key_a),
+  EXPECT_TRUE(key->VerifyForTesting(msg_a, sig_a->rs_bytes()));
+  EXPECT_TRUE(key->VerifyForTesting(msg_b, sig_b->rs_bytes()));
+  auto public_key_a = key->RecoverCompact(true, msg_a, *sig_a);
+  ASSERT_TRUE(public_key_a);
+  auto public_key_b = key->RecoverCompact(true, msg_b, *sig_b);
+  ASSERT_TRUE(public_key_b);
+  auto uncompressed_public_key_a = key->RecoverCompact(false, msg_a, *sig_a);
+  ASSERT_TRUE(uncompressed_public_key_a);
+  auto uncompressed_public_key_b = key->RecoverCompact(false, msg_b, *sig_b);
+  ASSERT_TRUE(uncompressed_public_key_b);
+  EXPECT_EQ(base::HexEncode(*public_key_a),
+            base::HexEncode(key->GetPublicKeyBytes()));
+  EXPECT_EQ(base::HexEncode(*public_key_b),
+            base::HexEncode(key->GetPublicKeyBytes()));
+  EXPECT_EQ(base::HexEncode(*uncompressed_public_key_a),
             base::HexEncode(key->GetUncompressedPublicKey()));
-  EXPECT_EQ(base::HexEncode(uncompressed_public_key_b),
+  EXPECT_EQ(base::HexEncode(*uncompressed_public_key_b),
             base::HexEncode(key->GetUncompressedPublicKey()));
 
   EXPECT_FALSE(key->VerifyForTesting(std::array<uint8_t, 32>{},
                                      std::array<uint8_t, 64>{}));
-  EXPECT_FALSE(key->VerifyForTesting(msg_a, sig_b.rs_bytes()));
-  EXPECT_FALSE(key->VerifyForTesting(msg_b, sig_a.rs_bytes()));
+  EXPECT_FALSE(key->VerifyForTesting(msg_a, sig_b->rs_bytes()));
+  EXPECT_FALSE(key->VerifyForTesting(msg_b, sig_a->rs_bytes()));
 }
 
-TEST(HDKeyUnitTest, SetPrivateKey) {
-  HDKey key;
-  EXPECT_TRUE(key.SetPrivateKey(std::array<uint8_t, 32>{1, 2, 3}));
-  EXPECT_FALSE(key.GetPrivateKeyBytes().empty());
-  EXPECT_TRUE(!IsPublicKeyEmpty(key.public_key_));
+TEST(HDKeyUnitTest, GenerateFromPrivateKeyInvalid) {
+  // Valid baseline.
+  EXPECT_NE(HDKey::GenerateFromPrivateKey(std::array<uint8_t, 32>{1, 2, 3}),
+            nullptr);
 
   // https://en.bitcoin.it/wiki/Secp256k1
   // https://en.bitcoin.it/wiki/Private_key "Range of valid ECDSA private keys"
@@ -468,20 +477,46 @@ TEST(HDKeyUnitTest, SetPrivateKey) {
       "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
   };
   for (auto& test_case : kInvalidPrivateKeys) {
-    HDKey invalid_key;
-    EXPECT_FALSE(invalid_key.SetPrivateKey(test::HexToArray<32>(test_case)));
+    EXPECT_EQ(HDKey::GenerateFromPrivateKey(test::HexToArray<32>(test_case)),
+              nullptr)
+        << test_case;
   }
 }
 
-TEST(HDKeyUnitTest, SetPublicKey) {
-  HDKey key;
-  std::vector<uint8_t> bytes;
-  const std::string valid_pubkey =
-      "024d902e1a2fc7a8755ab5b694c575fce742c48d9ff192e63df5193e4c7afe1f9c";
-  ASSERT_TRUE(base::HexStringToBytes(valid_pubkey, &bytes));
-  ASSERT_EQ(bytes.size(), kSecp256k1PubkeySize);
-  key.SetPublicKey(*base::span(bytes).to_fixed_extent<kSecp256k1PubkeySize>());
-  EXPECT_EQ(base::HexEncodeLower(key.public_key_), valid_pubkey);
+TEST(HDKeyUnitTest, GenerateFromPrivateKeySetsKeys) {
+  auto key = HDKey::GenerateFromPrivateKey(std::array<uint8_t, 32>{1, 2, 3});
+  ASSERT_TRUE(key);
+  EXPECT_FALSE(key->GetPrivateKeyBytes().empty());
+  EXPECT_FALSE(IsPublicKeyEmpty(key->GetPublicKeyBytes()));
+}
+
+TEST(HDKeyUnitTest, GenerateFromExtendedKeyInvalid) {
+  const std::string kValidXprv =
+      "xprvA2nrNbFZABcdryreWet9Ea4LvTJcGsqrMzxHx98MMrotbir7yrKCEXw7nadnHM8Dq38E"
+      "GfSh6dqA9QWTyefMLEcBYJUuekgW4BYPJcr9E7j";
+  ASSERT_TRUE(HDKey::GenerateFromExtendedKey(kValidXprv));
+
+  // Same as the valid baseline but with the last character changed, which
+  // breaks the Base58Check checksum.
+  std::string bad_checksum = kValidXprv;
+  bad_checksum.back() = 'k';
+  EXPECT_EQ(HDKey::GenerateFromExtendedKey(bad_checksum), nullptr);
+
+  // Characters outside of the Base58 alphabet.
+  EXPECT_EQ(HDKey::GenerateFromExtendedKey("0OIl"), nullptr);
+  EXPECT_EQ(HDKey::GenerateFromExtendedKey(std::string()), nullptr);
+}
+
+TEST(HDKeyUnitTest, GenerateFromExtendedKeyPublicKey) {
+  const std::string kValidXpub =
+      "xpub6FnCn6nSzZAw5Tw7cgR9bi15UV96gLZhjDstkXXxvCLsUXBGXPdSnLFbdpq8p9HmGsAp"
+      "ME5hQTZ3emM2rnY5agb9rXpVGyy3bdW6EEgAtqt";
+  auto parsed = HDKey::GenerateFromExtendedKey(kValidXpub);
+  ASSERT_TRUE(parsed);
+  ASSERT_TRUE(parsed->hdkey);
+  EXPECT_EQ(
+      base::HexEncodeLower(parsed->hdkey->GetPublicKeyBytes()),
+      "024d902e1a2fc7a8755ab5b694c575fce742c48d9ff192e63df5193e4c7afe1f9c");
 }
 
 TEST(HDKeyUnitTest, DeriveChildFromPath) {
@@ -580,11 +615,13 @@ TEST(HDKeyUnitTest, SignDer) {
 
   std::unique_ptr<HDKey> hdkey =
       HDKey::GenerateFromPrivateKey(private_key_bytes);
+  ASSERT_TRUE(hdkey);
 
   auto hashed = DoubleSHA256Hash(
       base::byte_span_from_cstring("Very deterministic message"));
 
   auto signature = hdkey->SignDer(hashed);
+  ASSERT_TRUE(signature);
   // https://github.com/bitcoin/bitcoin/blob/v24.0/src/test/key_tests.cpp#L141
   EXPECT_EQ(
       base::HexEncodeLower(*signature),
