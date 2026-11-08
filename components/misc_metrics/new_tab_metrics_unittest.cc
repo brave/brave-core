@@ -74,6 +74,14 @@ TEST_F(NewTabMetricsTest, ReportNTPSearchUsage) {
   histogram_tester_.ExpectTotalCount(kNTPSearchUsageHistogramName, 21);
 }
 
+TEST_F(NewTabMetricsTest, CustomEngineUsesOtherBucket) {
+  metrics_->ReportNTPSearchDefaultEngine(0);
+  histogram_tester_.ExpectUniqueSample(kNTPSearchEngineHistogramName, 7, 1);
+  metrics_->ReportNTPSearchUsage(0);
+  histogram_tester_.ExpectTotalCount(kNTPGoogleWidgetUsageHistogramName, 0);
+  histogram_tester_.ExpectUniqueSample(kNTPSearchUsageHistogramName, 0, 1);
+}
+
 TEST_F(NewTabMetricsTest, ReportGoogleNTPSearchUsage) {
   metrics_->ReportNTPSearchUsage(
       BravePrepopulatedEngineID::PREPOPULATED_ENGINE_ID_BRAVE);

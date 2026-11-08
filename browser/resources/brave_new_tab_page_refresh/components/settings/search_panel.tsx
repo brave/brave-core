@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { getSearchEngineId } from '$web-common/search_engine_id'
 import * as React from 'react'
 import Checkbox from '@brave/leo/react/checkbox'
 import Icon from '@brave/leo/react/icon'
@@ -69,10 +70,13 @@ export function SearchPanel() {
           <div className='search-engine-list'>
             {searchEngines.map((engine) => (
               <Checkbox
-                key={engine.host}
-                checked={enabledSearchEngines.has(engine.host)}
+                key={getSearchEngineId(engine)}
+                checked={enabledSearchEngines.has(getSearchEngineId(engine))}
                 onChange={({ checked }) => {
-                  actions.setSearchEngineEnabled(engine.host, checked)
+                  actions.setSearchEngineEnabled(
+                    getSearchEngineId(engine),
+                    checked,
+                  )
                 }}
               >
                 <span className='engine-name'>{engine.name}</span>

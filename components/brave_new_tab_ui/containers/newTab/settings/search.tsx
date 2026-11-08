@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { getSearchEngineId } from '$web-common/search_engine_id'
 import * as React from 'react'
 
 // Components
@@ -99,8 +100,8 @@ export default function SearchSettings() {
         <div>{getLocale('searchEnableSearchEnginesTitle')}</div>
         <EnginesGrid>
           {engines.map(engine => <EngineCard key={engine.keyword}>
-            <EngineCheckbox checked={engineConfig[engine.host]} onChange={e => {
-              setEngineConfig(engine.host, e.checked)
+            <EngineCheckbox checked={engineConfig[getSearchEngineId(engine)]} onChange={e => {
+              setEngineConfig(getSearchEngineId(engine), e.checked)
             }}>
               <CheckboxText>{engine.name}</CheckboxText>
               <MediumSearchEngineIcon engine={engine} />

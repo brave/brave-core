@@ -33,6 +33,7 @@
 #include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/new_tab_takeover_disclosure_tooltip_util.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
+#include "brave/components/search_engines/ntp_search_engine_utils.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_scheme_classifier.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
@@ -40,7 +41,7 @@
 #include "chrome/common/pref_names.h"
 #include "components/omnibox/browser/autocomplete_input.h"
 #include "components/prefs/pref_service.h"
-#include "components/search_engines/search_engine_type.h"
+#include "components/search_engines/template_url.h"
 #include "components/search_engines/template_url_service.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
@@ -312,8 +313,10 @@ void NewTabPageHandler::GetLastUsedSearchEngine(
 void NewTabPageHandler::SetLastUsedSearchEngine(
     const std::string& engine_host,
     SetLastUsedSearchEngineCallback callback) {
-  pref_service_->SetString(
-      brave_search_conversion::prefs::kLastUsedNTPSearchEngine, engine_host);
+  if (ntp_search::FindNtpSearchEngine(engine_host, *template_url_service_)) {
+    pref_service_->SetString(
+        brave_search_conversion::prefs::kLastUsedNTPSearchEngine, engine_host);
+  }
   std::move(callback).Run();
 }
 
@@ -321,15 +324,12 @@ void NewTabPageHandler::GetAvailableSearchEngines(
     GetAvailableSearchEnginesCallback callback) {
   std::vector<mojom::SearchEngineInfoPtr> search_engines;
   for (auto template_url : template_url_service_->GetTemplateURLs()) {
-    if (template_url->GetBuiltinEngineType() !=
-        BuiltinEngineType::KEYWORD_MODE_PREPOPULATED_ENGINE) {
+    if (!ntp_search::IsEligibleNtpSearchEngine(*template_url,
+                                               *template_url_service_)) {
       continue;
     }
     const GURL url(template_url->GenerateSearchURL(
         template_url_service_->search_terms_data()));
-    if (!url.is_valid() || !url.has_host()) {
-      continue;
-    }
     auto search_engine = mojom::SearchEngineInfo::New();
     search_engine->prepopulate_id = template_url->prepopulate_id();
     search_engine->host = url.host();
@@ -345,14 +345,8 @@ void NewTabPageHandler::OpenSearch(const std::string& query,
                                    const std::string& engine,
                                    mojom::EventDetailsPtr details,
                                    OpenSearchCallback callback) {
-  // GetTemplateURLForHost can resolve the Brave Search host to a starter pack
-  // engine (@ask) because starter packs outrank other engines on host
-  // collisions, so look up the Brave engine by its unique keyword instead.
-  const bool is_brave = engine == kBraveSearchHost;
-  TemplateURL* template_url =
-      is_brave ? template_url_service_->GetTemplateURLForKeyword(
-                     TemplateURLPrepopulateData::brave_search.keyword)
-               : template_url_service_->GetTemplateURLForHost(engine);
+  auto* template_url =
+      ntp_search::FindNtpSearchEngine(engine, *template_url_service_);
   if (!template_url) {
     std::move(callback).Run();
     return;
@@ -361,7 +355,8 @@ void NewTabPageHandler::OpenSearch(const std::string& query,
   GURL search_url = template_url->GenerateSearchURL(
       template_url_service_->search_terms_data(), base::UTF8ToUTF16(query));
 
-  if (is_brave) {
+  if (template_url->prepopulate_id() ==
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE) {
     auto* local_state = g_browser_process->local_state();
     search_url = brave_search::OverrideWithNewTabSource(
         search_url, local_state, brave_stats::IsFirstRun(local_state));

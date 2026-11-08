@@ -2,6 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
+import { getSearchEngineId } from '$web-common/search_engine_id'
 import { color, radius, spacing } from '@brave/leo/tokens/css/variables'
 import { AutocompleteMatch, AutocompleteResult, OmniboxPopupSelection } from 'chrome://resources/mojo/components/omnibox/browser/searchbox.mojom-webui.js'
 import type { FormattedString } from 'chrome://resources/mojo/components/omnibox/browser/suggest_template_info.mojom-webui.js'
@@ -169,7 +170,8 @@ export default function SearchResults() {
       const match = matches[selectedMatch!]
       if (!match) {
         getNTPBrowserAPI().pageHandler.searchWhatYouTyped(
-          searchEngine?.host ?? defaultSearchHost, query, e.altKey, e.ctrlKey,
+          searchEngine ? getSearchEngineId(searchEngine) : defaultSearchHost,
+          query, e.altKey, e.ctrlKey,
           e.metaKey, e.shiftKey);
         return;
       }

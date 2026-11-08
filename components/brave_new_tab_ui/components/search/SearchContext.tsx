@@ -3,6 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { getSearchEngineId } from '$web-common/search_engine_id'
+import { getEnabledSearchEngineIds, getSelectedSearchEngineId } from '$web-common/search_engine_selection'
+import { defaultSearchHost } from './config'
 import usePromise from '$web-common/usePromise';
 import { AutocompleteResult, FreState, InputKeywordModel, InputMethod, OmniboxPopupSelection, PageHandlerFactory, PageHandlerRemote, PageInterface, PageReceiver, SelectedFileInfo, SelectionDirection, SelectionStep, TabInfo } from 'chrome://resources/mojo/components/omnibox/browser/searchbox.mojom-webui.js';
 import { SuggestInventory } from 'chrome://resources/mojo/components/omnibox/browser/fusebox_action.mojom-webui.js';
@@ -121,11 +124,16 @@ export function SearchContext(props: React.PropsWithChildren<{}>) {
   const [searchEngine, setSearchEngineInternal] = React.useState<SearchEngineInfo>()
   const [query, setQuery] = React.useState('')
   const { result: searchEngines = [] } = usePromise(() => searchEnginesPromise, [])
-  const filteredSearchEngines = searchEngines.filter(s => engineConfig[s.host])
+  const enabledIds = getEnabledSearchEngineIds(searchEngines,
+    new Set(Object.keys(engineConfig).filter(key => engineConfig[key])),
+    defaultSearchHost)
+  const filteredSearchEngines = searchEngines.filter(
+    s => enabledIds.has(getSearchEngineId(s)))
 
   const setSearchEngine = React.useCallback((engine: SearchEngineInfo | string) => {
     if (typeof engine === 'string') {
-      engine = searchEngines.find(e => e.host === engine || e.keyword === engine)!
+      engine = searchEngines.find(
+        e => getSearchEngineId(e) === engine || e.keyword === engine)!
     }
 
     if (!engine) return
@@ -139,8 +147,9 @@ export function SearchContext(props: React.PropsWithChildren<{}>) {
   React.useEffect(() => {
     if (!searchEngines.length) return
 
-    const match = filteredSearchEngines.find(s => s.host === lastSearchEngine)
-      ?? searchEngines[0]
+    const selected = getSelectedSearchEngineId(searchEngines, enabledIds,
+      lastSearchEngine, defaultSearchHost)
+    const match = searchEngines.find(s => getSearchEngineId(s) === selected)!
     getNTPBrowserAPI().newTabMetrics.reportNTPSearchDefaultEngine(match.prepopulateId)
     setSearchEngine(match)
   }, [filteredSearchEngines])

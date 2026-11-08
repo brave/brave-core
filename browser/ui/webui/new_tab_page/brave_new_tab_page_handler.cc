@@ -29,6 +29,7 @@
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
+#include "brave/components/search_engines/ntp_search_engine_utils.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
@@ -38,7 +39,6 @@
 #include "chrome/common/pref_names.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/prefs/pref_service.h"
-#include "components/search_engines/search_engine_type.h"
 #include "components/search_engines/template_url.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/page_navigator.h"
@@ -292,13 +292,16 @@ void BraveNewTabPageHandler::GetSearchEngines(
   auto urls = service->GetTemplateURLs();
   std::vector<brave_new_tab_page::mojom::SearchEngineInfoPtr> search_engines;
   for (TemplateURL* template_url : urls) {
-    if (template_url->GetBuiltinEngineType() !=
-        BuiltinEngineType::KEYWORD_MODE_PREPOPULATED_ENGINE) {
+    if (!ntp_search::IsEligibleNtpSearchEngine(*template_url, *service)) {
       continue;
     }
+    const GURL url(
+        template_url->GenerateSearchURL(service->search_terms_data()));
     auto search_engine = brave_new_tab_page::mojom::SearchEngineInfo::New();
     search_engine->prepopulate_id = template_url->prepopulate_id();
-    search_engine->host = GURL(template_url->url()).host();
+    search_engine->host = template_url->prepopulate_id() > 0
+                              ? GURL(template_url->url()).host()
+                              : url.host();
     search_engine->name = base::UTF16ToUTF8(template_url->short_name());
     search_engine->keyword = base::UTF16ToUTF8(template_url->keyword());
     search_engine->favicon_url = template_url->favicon_url();
@@ -317,8 +320,7 @@ void BraveNewTabPageHandler::SearchWhatYouTyped(const std::string& host,
   auto* service = TemplateURLServiceFactory::GetForProfile(profile_);
   CHECK(service);
 
-  auto* template_url = service->GetTemplateURLForHost(host);
-  DCHECK(template_url);
+  auto* template_url = ntp_search::FindNtpSearchEngine(host, *service);
   if (!template_url) {
     return;
   }

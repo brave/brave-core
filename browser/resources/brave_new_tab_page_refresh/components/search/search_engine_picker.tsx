@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { getSearchEngineId } from '$web-common/search_engine_id'
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import ButtonMenu from '@brave/leo/react/buttonMenu'
@@ -42,7 +43,7 @@ export function SearchEnginePicker(props: Props) {
         </div>
         {searchEngines.map((engine) => (
           <leo-menu-item
-            key={engine.host}
+            key={getSearchEngineId(engine)}
             onClick={() => props.onSelectEngine(engine)}
           >
             <EngineIcon engine={engine} />

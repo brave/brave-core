@@ -1070,6 +1070,7 @@ source_set("ui") {
     "//brave/components/query_filter/browser",
     "//brave/components/resources:scaled_resources",
     "//brave/components/resources:static_resources",
+    "//brave/components/search_engines:ntp_search_engine_utils",
     "//brave/components/services/bat_ads/public/interfaces",
     "//brave/components/skus/browser",
     "//brave/components/skus/browser/resources:generated_resources",
