@@ -319,18 +319,23 @@
       "--verbose",
       "--add-dir",
       "[WORKSPACE]/b",
+      "--add-dir",
+      "[WORKSPACE]/rc/tmp",
       "--allowedTools",
       "Edit(/[WORKSPACE]/b/**)",
       "Write(/[WORKSPACE]/b/**)",
       "Bash(vpython3 tools/cr/autolift/autolift.py publish *)",
       "Bash(vpython3 .autolift/tooling/cr/autolift/autolift.py publish *)",
-      "Bash(echo *)"
+      "Bash(echo *)",
+      "Edit(/[WORKSPACE]/rc/tmp/**)",
+      "Write(/[WORKSPACE]/rc/tmp/**)"
     ],
     "cwd": "[WORKSPACE]/b/src/brave",
     "env": {
       "CHROME_HEADLESS": "1",
       "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1",
-      "CLAUDE_CODE_PRINT_BG_WAIT_CEILING_MS": "0"
+      "CLAUDE_CODE_PRINT_BG_WAIT_CEILING_MS": "0",
+      "CLAUDE_CODE_TMPDIR": "[WORKSPACE]/rc/tmp"
     },
     "env_prefixes": {
       "PATH": [
