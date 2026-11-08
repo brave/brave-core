@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 
-#include <memory>
 #include <optional>
 #include <string>
 #include <utility>
@@ -14,8 +13,8 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
-#include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -222,86 +221,72 @@ TEST(BlockchainRegistryUnitTest, GetAllTokens) {
   // Loop twice to make sure getting the same list twice works
   // For example, make sure nothing is std::move'd
   for (size_t i = 0; i < 2; ++i) {
-    base::RunLoop run_loop;
-    registry->GetAllTokens(
-        mojom::kMainnetChainId, mojom::CoinType::ETH,
-        base::BindLambdaForTesting(
-            [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
-              // ENS Registrar should not be parsed because it doesn't
-              // have decimals nor a symbol defined
-              ASSERT_EQ(token_list.size(), 2UL);
+    base::test::TestFuture<std::vector<mojom::BlockchainTokenPtr>> future;
+    registry->GetAllTokens(mojom::kMainnetChainId, mojom::CoinType::ETH,
+                           future.GetCallback());
+    auto token_list = future.Take();
+    // ENS Registrar should not be parsed because it doesn't
+    // have decimals nor a symbol defined
+    ASSERT_EQ(token_list.size(), 2UL);
 
-              EXPECT_EQ(token_list[0]->name, "Crypto Kitties");
-              EXPECT_EQ(token_list[0]->contract_address,
-                        "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d");
-              EXPECT_FALSE(token_list[0]->is_erc20);
-              EXPECT_TRUE(token_list[0]->is_erc721);
-              EXPECT_EQ(token_list[0]->symbol, "CK");
-              EXPECT_EQ(token_list[0]->decimals, 0);
-              EXPECT_EQ(token_list[0]->spl_token_program,
-                        mojom::SPLTokenProgram::kUnsupported);
+    EXPECT_EQ(token_list[0]->name, "Crypto Kitties");
+    EXPECT_EQ(token_list[0]->contract_address,
+              "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d");
+    EXPECT_FALSE(token_list[0]->is_erc20);
+    EXPECT_TRUE(token_list[0]->is_erc721);
+    EXPECT_EQ(token_list[0]->symbol, "CK");
+    EXPECT_EQ(token_list[0]->decimals, 0);
+    EXPECT_EQ(token_list[0]->spl_token_program,
+              mojom::SPLTokenProgram::kUnsupported);
 
-              EXPECT_EQ(token_list[1]->name, "Basic Attention Token");
-              EXPECT_EQ(token_list[1]->contract_address,
-                        "0x0D8775F648430679A709E98d2b0Cb6250d2887EF");
-              EXPECT_TRUE(token_list[1]->is_erc20);
-              EXPECT_FALSE(token_list[1]->is_erc721);
-              EXPECT_EQ(token_list[1]->symbol, "BAT");
-              EXPECT_EQ(token_list[1]->decimals, 18);
-              EXPECT_EQ(token_list[1]->spl_token_program,
-                        mojom::SPLTokenProgram::kUnsupported);
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+    EXPECT_EQ(token_list[1]->name, "Basic Attention Token");
+    EXPECT_EQ(token_list[1]->contract_address,
+              "0x0D8775F648430679A709E98d2b0Cb6250d2887EF");
+    EXPECT_TRUE(token_list[1]->is_erc20);
+    EXPECT_FALSE(token_list[1]->is_erc721);
+    EXPECT_EQ(token_list[1]->symbol, "BAT");
+    EXPECT_EQ(token_list[1]->decimals, 18);
+    EXPECT_EQ(token_list[1]->spl_token_program,
+              mojom::SPLTokenProgram::kUnsupported);
   }
 
   // Can get other chain tokens
-  base::RunLoop run_loop2;
-  registry->GetAllTokens(
-      mojom::kSepoliaChainId, mojom::CoinType::ETH,
-      base::BindLambdaForTesting(
-          [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
-            ASSERT_EQ(token_list.size(), 1UL);
-            EXPECT_EQ(token_list[0]->name, "Uniswap");
-            EXPECT_EQ(token_list[0]->contract_address,
-                      "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984");
-            EXPECT_TRUE(token_list[0]->is_erc20);
-            EXPECT_FALSE(token_list[0]->is_erc721);
-            EXPECT_EQ(token_list[0]->symbol, "UNI");
-            EXPECT_EQ(token_list[0]->decimals, 18);
-            EXPECT_EQ(token_list[0]->spl_token_program,
-                      mojom::SPLTokenProgram::kUnsupported);
-            run_loop2.Quit();
-          }));
-  run_loop2.Run();
+  {
+    base::test::TestFuture<std::vector<mojom::BlockchainTokenPtr>> future;
+    registry->GetAllTokens(mojom::kSepoliaChainId, mojom::CoinType::ETH,
+                           future.GetCallback());
+    auto token_list = future.Take();
+    ASSERT_EQ(token_list.size(), 1UL);
+    EXPECT_EQ(token_list[0]->name, "Uniswap");
+    EXPECT_EQ(token_list[0]->contract_address,
+              "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984");
+    EXPECT_TRUE(token_list[0]->is_erc20);
+    EXPECT_FALSE(token_list[0]->is_erc721);
+    EXPECT_EQ(token_list[0]->symbol, "UNI");
+    EXPECT_EQ(token_list[0]->decimals, 18);
+    EXPECT_EQ(token_list[0]->spl_token_program,
+              mojom::SPLTokenProgram::kUnsupported);
+  }
 
   // chainId which has no tokens
-  base::RunLoop run_loop3;
-  registry->GetAllTokens(
-      "0x5", mojom::CoinType::ETH,
-      base::BindLambdaForTesting(
-          [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
-            // ENS Registrar should not be parsed because it doesn't have
-            // decimals nor a symbol defined
-            EXPECT_EQ(token_list.size(), 0UL);
-            run_loop3.Quit();
-          }));
-  run_loop3.Run();
+  {
+    base::test::TestFuture<std::vector<mojom::BlockchainTokenPtr>> future;
+    registry->GetAllTokens("0x5", mojom::CoinType::ETH, future.GetCallback());
+    EXPECT_EQ(future.Take().size(), 0UL);
+  }
 
   // Get Solana tokens
-  base::RunLoop run_loop4;
-  registry->GetAllTokens(
-      mojom::kSolanaMainnet, mojom::CoinType::SOL,
-      base::BindLambdaForTesting(
-          [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
-            ASSERT_EQ(token_list.size(), 4UL);
-            EXPECT_EQ(token_list[0], TslaToken());
-            EXPECT_EQ(token_list[1], MoonToken());
-            EXPECT_EQ(token_list[2], UsdcToken());
-            EXPECT_EQ(token_list[3], WrappedSolToken());
-            run_loop4.Quit();
-          }));
-  run_loop4.Run();
+  {
+    base::test::TestFuture<std::vector<mojom::BlockchainTokenPtr>> future;
+    registry->GetAllTokens(mojom::kSolanaMainnet, mojom::CoinType::SOL,
+                           future.GetCallback());
+    auto token_list = future.Take();
+    ASSERT_EQ(token_list.size(), 4UL);
+    EXPECT_EQ(token_list[0], TslaToken());
+    EXPECT_EQ(token_list[1], MoonToken());
+    EXPECT_EQ(token_list[2], UsdcToken());
+    EXPECT_EQ(token_list[3], WrappedSolToken());
+  }
 }
 
 TEST(BlockchainRegistryUnitTest, GetTokenByAddress) {
@@ -310,59 +295,53 @@ TEST(BlockchainRegistryUnitTest, GetTokenByAddress) {
   TokenListMap token_list_map;
   ASSERT_TRUE(ParseTokenList(kTokenListJson, &token_list_map));
   registry->UpdateTokenList(std::move(token_list_map));
-  base::RunLoop run_loop;
-  registry->GetTokenByAddress(
-      mojom::kMainnetChainId, mojom::CoinType::ETH,
-      "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
-      base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
-        EXPECT_EQ(token->symbol, "BAT");
-        run_loop.Quit();
-      }));
-  run_loop.Run();
+  {
+    base::test::TestFuture<mojom::BlockchainTokenPtr> future;
+    registry->GetTokenByAddress(mojom::kMainnetChainId, mojom::CoinType::ETH,
+                                "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+                                future.GetCallback());
+    auto token = future.Take();
+    ASSERT_TRUE(token);
+    EXPECT_EQ(token->symbol, "BAT");
+  }
 
   // Can get other chain tokens
-  base::RunLoop run_loop2;
-  registry->GetTokenByAddress(
-      mojom::kSepoliaChainId, mojom::CoinType::ETH,
-      "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
-      base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
-        EXPECT_EQ(token->symbol, "UNI");
-        run_loop2.Quit();
-      }));
-  run_loop2.Run();
+  {
+    base::test::TestFuture<mojom::BlockchainTokenPtr> future;
+    registry->GetTokenByAddress(mojom::kSepoliaChainId, mojom::CoinType::ETH,
+                                "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
+                                future.GetCallback());
+    auto token = future.Take();
+    ASSERT_TRUE(token);
+    EXPECT_EQ(token->symbol, "UNI");
+  }
 
   // tokens for chanId exist but address doesn't exist
-  base::RunLoop run_loop3;
-  registry->GetTokenByAddress(
-      mojom::kMainnetChainId, mojom::CoinType::ETH,
-      "0xCCC775F648430679A709E98d2b0Cb6250d2887EF",
-      base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
-        EXPECT_FALSE(token);
-        run_loop3.Quit();
-      }));
-  run_loop3.Run();
+  {
+    base::test::TestFuture<mojom::BlockchainTokenPtr> future;
+    registry->GetTokenByAddress(mojom::kMainnetChainId, mojom::CoinType::ETH,
+                                "0xCCC775F648430679A709E98d2b0Cb6250d2887EF",
+                                future.GetCallback());
+    EXPECT_FALSE(future.Take());
+  }
 
   // chainId which has no tokens
-  base::RunLoop run_loop4;
-  registry->GetTokenByAddress(
-      mojom::kSepoliaChainId, mojom::CoinType::ETH,
-      "0xCCC775F648430679A709E98d2b0Cb6250d2887EF",
-      base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
-        EXPECT_FALSE(token);
-        run_loop4.Quit();
-      }));
-  run_loop4.Run();
+  {
+    base::test::TestFuture<mojom::BlockchainTokenPtr> future;
+    registry->GetTokenByAddress(mojom::kSepoliaChainId, mojom::CoinType::ETH,
+                                "0xCCC775F648430679A709E98d2b0Cb6250d2887EF",
+                                future.GetCallback());
+    EXPECT_FALSE(future.Take());
+  }
 
   // Get Solana token
-  base::RunLoop run_loop5;
-  registry->GetTokenByAddress(
-      mojom::kSolanaMainnet, mojom::CoinType::SOL,
-      "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-      base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
-        EXPECT_EQ(token, UsdcToken());
-        run_loop5.Quit();
-      }));
-  run_loop5.Run();
+  {
+    base::test::TestFuture<mojom::BlockchainTokenPtr> future;
+    registry->GetTokenByAddress(mojom::kSolanaMainnet, mojom::CoinType::SOL,
+                                "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+                                future.GetCallback());
+    EXPECT_EQ(future.Take(), UsdcToken());
+  }
 }
 
 TEST(BlockchainRegistryUnitTest, GetTokenBySymbol) {
@@ -371,56 +350,50 @@ TEST(BlockchainRegistryUnitTest, GetTokenBySymbol) {
   TokenListMap token_list_map;
   ASSERT_TRUE(ParseTokenList(kTokenListJson, &token_list_map));
   registry->UpdateTokenList(std::move(token_list_map));
-  base::RunLoop run_loop;
-  registry->GetTokenBySymbol(
-      mojom::kMainnetChainId, mojom::CoinType::ETH, "BAT",
-      base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
-        EXPECT_EQ(token->contract_address,
-                  "0x0D8775F648430679A709E98d2b0Cb6250d2887EF");
-        run_loop.Quit();
-      }));
-  run_loop.Run();
+  {
+    base::test::TestFuture<mojom::BlockchainTokenPtr> future;
+    registry->GetTokenBySymbol(mojom::kMainnetChainId, mojom::CoinType::ETH,
+                               "BAT", future.GetCallback());
+    auto token = future.Take();
+    ASSERT_TRUE(token);
+    EXPECT_EQ(token->contract_address,
+              "0x0D8775F648430679A709E98d2b0Cb6250d2887EF");
+  }
 
   // Can get other chain tokens
-  base::RunLoop run_loop2;
-  registry->GetTokenBySymbol(
-      mojom::kSepoliaChainId, mojom::CoinType::ETH, "UNI",
-      base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
-        EXPECT_EQ(token->contract_address,
-                  "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984");
-        run_loop2.Quit();
-      }));
-  run_loop2.Run();
+  {
+    base::test::TestFuture<mojom::BlockchainTokenPtr> future;
+    registry->GetTokenBySymbol(mojom::kSepoliaChainId, mojom::CoinType::ETH,
+                               "UNI", future.GetCallback());
+    auto token = future.Take();
+    ASSERT_TRUE(token);
+    EXPECT_EQ(token->contract_address,
+              "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984");
+  }
 
   // chainId has tokens but token doesn't exist
-  base::RunLoop run_loop3;
-  registry->GetTokenBySymbol(
-      mojom::kMainnetChainId, mojom::CoinType::ETH, "BRB",
-      base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
-        EXPECT_FALSE(token);
-        run_loop3.Quit();
-      }));
-  run_loop3.Run();
+  {
+    base::test::TestFuture<mojom::BlockchainTokenPtr> future;
+    registry->GetTokenBySymbol(mojom::kMainnetChainId, mojom::CoinType::ETH,
+                               "BRB", future.GetCallback());
+    EXPECT_FALSE(future.Take());
+  }
 
   // chainId which has no tokens
-  base::RunLoop run_loop4;
-  registry->GetTokenBySymbol(
-      "0x5", mojom::CoinType::ETH, "BRB",
-      base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
-        EXPECT_FALSE(token);
-        run_loop4.Quit();
-      }));
-  run_loop4.Run();
+  {
+    base::test::TestFuture<mojom::BlockchainTokenPtr> future;
+    registry->GetTokenBySymbol("0x5", mojom::CoinType::ETH, "BRB",
+                               future.GetCallback());
+    EXPECT_FALSE(future.Take());
+  }
 
   // Get Solana token
-  base::RunLoop run_loop5;
-  registry->GetTokenBySymbol(
-      mojom::kSolanaMainnet, mojom::CoinType::SOL, "USDC",
-      base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
-        EXPECT_EQ(token, UsdcToken());
-        run_loop5.Quit();
-      }));
-  run_loop5.Run();
+  {
+    base::test::TestFuture<mojom::BlockchainTokenPtr> future;
+    registry->GetTokenBySymbol(mojom::kSolanaMainnet, mojom::CoinType::SOL,
+                               "USDC", future.GetCallback());
+    EXPECT_EQ(future.Take(), UsdcToken());
+  }
 }
 
 TEST(BlockchainRegistryUnitTest, IsRestrictedAddress) {
@@ -465,7 +438,7 @@ TEST(BlockchainRegistryUnitTest, GetPrepopulatedNetworksKnownOnesArePreferred) {
   registry->UpdateChainList(std::move(chain_list));
 
   auto found_networks = registry->GetPrepopulatedNetworks();
-  EXPECT_EQ(2u, found_networks.size());
+  ASSERT_EQ(2u, found_networks.size());
   EXPECT_EQ(found_networks[0]->chain_name, "Ethereum Mainnet");
 }
 
@@ -591,10 +564,9 @@ TEST(BlockchainRegistryUnitTest, ParseLists) {
       "0xb9ef770b6a5e12e45983c5d80545258aa38f3b78"));
   EXPECT_TRUE(registry->GetPolkadotRpcUrls().empty());
 
-  auto run_loop = std::make_unique<base::RunLoop>();
-  registry->ParseLists(path,
-                       base::BindLambdaForTesting([&]() { run_loop->Quit(); }));
-  run_loop->Run();
+  base::test::TestFuture<void> parse_future;
+  registry->ParseLists(path, parse_future.GetCallback());
+  ASSERT_TRUE(parse_future.Wait());
 
   // coingecko-ids.json
   EXPECT_EQ(
