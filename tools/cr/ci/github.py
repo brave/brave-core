@@ -79,6 +79,13 @@ def _parse_rollup(rollup: list[dict]) -> tuple[Check, ...]:
     return tuple(checks.values())
 
 
+def has_pull_request(branch: str) -> bool:
+    """Whether brave-core's `branch` has an open pull request."""
+    return bool(
+        GhCli().list_prs(head=branch, fields='number', repo=_BRAVE_CORE)
+    )
+
+
 def pr_checks(pr: int | str) -> PullRequestChecks:
     """The checks of brave-core's pull request `pr`, a number or a branch."""
     data = GhCli().view_pr(
