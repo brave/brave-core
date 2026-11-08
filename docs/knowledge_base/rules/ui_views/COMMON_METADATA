@@ -1,0 +1,80 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# The rules of docs/best-practices/ui-views.md. See
+# docs/knowledge_base/README.md for the fields.
+agentic_review {
+  # An AddChildView() given a raw new or released pointer.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    ast_patterns: "{kind: call_expression, all: [{has: {field: function, regex: '\\bAddChildView(?:At)?$'}}, {has: {field: arguments, has: {any: [{kind: new_expression}, {kind: call_expression, regex: '\\.release\\(\\)$'}]}}}]}"
+    rules: "docs/knowledge_base/rules/ui_views/add-child-views-as-unique-ptr.md"
+  }
+  # Children removed from a view without taking their ownership.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bRemoveChildView\\s*\\("
+    rules: "docs/knowledge_base/rules/ui_views/remove-child-views-with-remove-child-view-t.md"
+  }
+  # A TabStripModel observer unregistering itself by hand.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "(?i)tab_?strip_?model\\w*(?:\\(\\))?\\s*(?:->|\\.)\\s*RemoveObserver\\s*\\(\\s*this\\b"
+    ast_patterns: "{kind: call_expression, regex: 'RemoveObserver\\s*\\(\\s*this\\s*\\)$', inside: {kind: function_definition, regex: '\\bTabStripModel', stopBy: end}}"
+    rules: "docs/knowledge_base/rules/ui_views/no-remove-observer-in-tab-strip-model-observers.md"
+  }
+  # Pointer static_casts in views code.
+  capability_groups {
+    path_expression: "(?:browser/ui/views|chromium_src/chrome/browser/ui/views|chromium_src/ui/views|ui/views|test/views)/.*\\.(?:cc|h|mm)"
+    content_patterns: "\\bstatic_cast<[^<>]*\\*\\s*>"
+    rules: "docs/knowledge_base/rules/ui_views/use-as-view-class-for-view-downcasts.md"
+  }
+  # A static_cast to a pointer to a class named like a view, anywhere.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:browser/ui/views|chromium_src/chrome/browser/ui/views|chromium_src/ui/views|ui/views|test/views)/.*\\.(?:cc|h|mm)"
+    content_patterns: "\\bstatic_cast<\\s*(?:const\\s+)?(?:views::)?\\w*View\\s*\\*\\s*>"
+    rules: "docs/knowledge_base/rules/ui_views/use-as-view-class-for-view-downcasts.md"
+  }
+  # Classes inheriting the deprecated BubbleDialogDelegateView.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\b(?:public|protected|private)\\s+(?:views::)?BubbleDialogDelegateView\\b"
+    content_patterns: "\\bMETADATA_HEADER\\s*\\(\\s*\\w+\\s*,\\s*(?:views::)?BubbleDialogDelegateView\\s*\\)"
+    rules: "docs/knowledge_base/rules/ui_views/no-bubble-dialog-delegate-view.md"
+  }
+  # Classes inheriting the deprecated DialogDelegateView.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\b(?:public|protected|private)\\s+(?:views::)?DialogDelegateView\\b"
+    content_patterns: "\\bMETADATA_HEADER\\s*\\(\\s*\\w+\\s*,\\s*(?:views::)?DialogDelegateView\\s*\\)"
+    rules: "docs/knowledge_base/rules/ui_views/no-dialog-delegate-view.md"
+  }
+  # Uses of ImageFetcher and ImageFetcherService.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bImageFetcher\\w*"
+    content_patterns: "\\bimage_fetcher\\w*"
+    content_patterns: "\\bFetchImage(?:AndData)?\\s*\\("
+    rules: "docs/knowledge_base/rules/ui_views/no-image-fetcher-for-off-the-record-profiles.md"
+  }
+  # Clipboard writes outside tests.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "\\bScopedClipboardWriter\\b"
+    content_patterns: "\\bClipboardBuffer::kCopyPaste\\b"
+    rules: "docs/knowledge_base/rules/ui_views/mark-off-the-record-clipboard-writes.md"
+  }
+  # Clipboard writes marked off-the-record, and the tests of their privacy
+  # types.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bMarkAsOffTheRecord\\s*\\("
+    content_patterns: "\\b(?:PrivacyCapturing)?TestClipboard\\b"
+    content_patterns: "\\bprivacy_types\\b"
+    rules: "docs/knowledge_base/rules/ui_views/test-off-the-record-clipboard-marking.md"
+  }
+}

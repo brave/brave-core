@@ -1,0 +1,206 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# The rules of docs/best-practices/frontend.md. See
+# docs/knowledge_base/README.md for the fields.
+agentic_review {
+  # Spreads arguments into render(), createElement() or cloneElement().
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:ts|tsx|js|jsx)"
+    content_patterns: "\\b(?:render|renderHook|createElement|cloneElement)\\s*\\([^)]*\\.\\.\\."
+    content_patterns: "\\bParameters<typeof\\s+render>"
+    rules: "docs/knowledge_base/rules/frontend/no-spread-args-into-react-apis.md"
+  }
+  # Spreads an object into a JSX element's props.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.tsx"
+    ast_patterns: "{kind: spread_element, inside: {kind: jsx_expression, inside: {any: [{kind: jsx_opening_element}, {kind: jsx_self_closing_element}]}}}"
+    rules: "docs/knowledge_base/rules/frontend/no-spread-args-into-react-apis.md"
+  }
+  # A keyed JSX element inside another keyed element of the same function,
+  # which a nested list's own callback is not.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.tsx"
+    ast_patterns: "{any: [{kind: jsx_self_closing_element, has: {kind: jsx_attribute, has: {kind: property_identifier, regex: '^key$'}}}, {kind: jsx_element, has: {kind: jsx_opening_element, has: {kind: jsx_attribute, has: {kind: property_identifier, regex: '^key$'}}}}], inside: {kind: jsx_element, stopBy: {any: [{kind: arrow_function}, {kind: function_expression}, {kind: function_declaration}]}, has: {kind: jsx_opening_element, has: {kind: jsx_attribute, has: {kind: property_identifier, regex: '^key$'}}}}}"
+    rules: "docs/knowledge_base/rules/frontend/no-redundant-react-keys.md"
+  }
+  # A top-level function other than a hook or component, in a React context
+  # or state file.
+  capability_groups {
+    path_expression: "(?:.*/)?(?:context|contexts|state|store|stores)/[^/]*\\.tsx?"
+    path_expression: "(?:.*/)?[^/]*(?:[Cc]ontext|[Ss]tate|[Ss]tore|[Rr]educer)[^/]*\\.tsx?"
+    path_expression_exclusion: "(?:.*/)?[^/]*\\.(?:test|stories)\\.tsx?"
+    path_expression_exclusion: "(?:.*/)?(?:[^/]*[Uu]tils?[^/]*\\.tsx?|utils?/.*)"
+    content_patterns: "^(?:export\\s+)?(?:async\\s+)?function\\s*\\*?\\s*(?:[a-tv-z_$]|u(?:[a-rt-z0-9_]|s(?:[a-df-z0-9_]|e[a-z0-9_])))[\\w$]*\\s*[(<]"
+    content_patterns: "^(?:export\\s+)?const\\s+(?:[a-tv-z_$]|u(?:[a-rt-z0-9_]|s(?:[a-df-z0-9_]|e[a-z0-9_])))[\\w$]*\\s*(?::[^=]+)?=\\s*(?:async\\s+)?(?:\\([^)]*\\)|[a-z]\\w*)\\s*(?::[^=]+)?=>"
+    rules: "docs/knowledge_base/rules/frontend/keep-utility-functions-out-of-react-context-files.md"
+  }
+  # Attachment and upload components, and per-type list items.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:tsx|jsx)"
+    content_patterns: "\\b(?:function|const|class)\\s+\\w*(?:Attachment|Upload)\\w*"
+    content_patterns: "<\\w*(?:Attachment|Upload)\\w*"
+    content_patterns: "\\b(?:function|const|class)\\s+\\w*(?:Image|Document|File|Pdf)Item\\b"
+    rules: "docs/knowledge_base/rules/frontend/merge-similar-attachment-components.md"
+  }
+  # Enums, or objects of enum-like values, declared in TypeScript tests.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:\\.test|_test)\\.tsx?"
+    content_patterns: "\\benum\\s+\\w+\\s*\\{"
+    content_patterns: "^\\s*k[A-Z]\\w*\\s*[=:]\\s*-?\\d+"
+    content_patterns: "\\b(?:const|let)\\s+\\w+\\s*=\\s*\\{\\s*k[A-Z]\\w*\\s*:"
+    rules: "docs/knowledge_base/rules/frontend/import-mojom-enums-in-ts-tests.md"
+  }
+  # A useMemo() whose callback returns a short expression without calls.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:ts|tsx|js|jsx)"
+    content_patterns: "\\buseMemo\\s*\\(\\s*\\(\\)\\s*=>\\s*[^(){};]{1,80},\\s*\\["
+    ast_patterns: "{any: [{pattern: 'useMemo($F, $$$D)'}, {pattern: 'React.useMemo($F, $$$D)'}], has: {field: arguments, has: {kind: arrow_function, nthChild: 1, has: {field: body, not: {kind: statement_block}, regex: '^[^(){};]{1,80}$'}}}}"
+    rules: "docs/knowledge_base/rules/frontend/no-use-memo-for-trivial-access.md"
+  }
+  # JSX falling back to an empty string, and empty elements.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:tsx|jsx)"
+    content_patterns: ":\\s*(?:''|\"\"|``)\\s*\\}"
+    content_patterns: "\\?\\s*(?:''|\"\"|``)\\s*:"
+    content_patterns: "<(\\w+)(?:\\s[^<>]*)?>\\s*</\\w+>"
+    rules: "docs/knowledge_base/rules/frontend/return-null-from-components-without-data.md"
+  }
+  # Hand-written React contexts.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:ts|tsx|js|jsx)"
+    path_expression_exclusion: "components/common/api/react_api\\.tsx"
+    content_patterns: "\\bcreateContext\\s*[<(]"
+    content_patterns: "\\buseContext\\s*\\("
+    rules: "docs/knowledge_base/rules/frontend/use-generate-react-context-for-mojo-apis.md"
+  }
+  # A state setter called with a spread of the previous state.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:ts|tsx|js|jsx)"
+    content_patterns: "\\bset[A-Z]?\\w*\\s*\\(\\s*(?:\\(?\\s*\\w*\\s*\\)?\\s*=>\\s*\\(?\\s*)?\\{\\s*\\.\\.\\."
+    rules: "docs/knowledge_base/rules/frontend/prefer-partial-state-updates-over-spread.md"
+  }
+  # A Leo custom property read with a fallback.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:css|scss|ts|tsx|js|jsx|html)"
+    content_patterns: "var\\(\\s*--leo-[\\w-]+\\s*,"
+    rules: "docs/knowledge_base/rules/frontend/no-fallbacks-for-leo-css-variables.md"
+  }
+  # Top-level React component definitions, outside stories and tests.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:tsx|jsx)"
+    path_expression_exclusion: "(?:.*/)?[^/]*\\.(?:stories|test)\\.(?:tsx|jsx)"
+    content_patterns: "^(?:export\\s+)?(?:default\\s+)?function\\s+[A-Z]\\w*\\s*[(<]"
+    content_patterns: "^(?:export\\s+)?const\\s+[A-Z]\\w*\\s*(?::[^=]*)?=\\s*(?:React\\.)?(?:memo|forwardRef)?\\s*\\("
+    rules: "docs/knowledge_base/rules/frontend/storybook-stories-for-new-ui.md"
+  }
+  # instanceof checks.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:ts|tsx|js|jsx)"
+    content_patterns: "\\binstanceof\\b"
+    rules: "docs/knowledge_base/rules/frontend/no-instanceof-on-mojom-types.md"
+  }
+  # A new file under a resources/ directory, which starts with the licence
+  # header.
+  capability_groups {
+    path_expression: "(?:.*/)?resources/.+"
+    content_patterns: "Copyright \\(c\\) \\d{4} The Brave Authors"
+    rules: "docs/knowledge_base/rules/frontend/webui-resources-under-host-directory.md"
+  }
+  # Navigation done in JavaScript.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:ts|tsx|js|jsx|html)"
+    content_patterns: "\\bwindow\\.open\\s*\\("
+    content_patterns: "\\blocation(?:\\.href)?\\s*=[^=]"
+    content_patterns: "\\blocation\\.(?:assign|replace)\\s*\\("
+    content_patterns: "\\bchrome\\.tabs\\.(?:create|update)\\s*\\("
+    content_patterns: "\\bopen(?:Tab|Url|URL|Link)\\w*\\s*\\("
+    rules: "docs/knowledge_base/rules/frontend/prefer-links-over-button-navigation.md"
+  }
+  # waitFor() in TypeScript tests.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.test\\.tsx?"
+    content_patterns: "\\bwaitFor\\s*\\("
+    rules: "docs/knowledge_base/rules/frontend/no-unnecessary-wait-for-in-react-tests.md"
+  }
+  # The selection and document-wide queries.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:ts|tsx|js|jsx)"
+    content_patterns: "\\bgetSelection\\s*\\("
+    content_patterns: "\\bdocument\\.(?:getElementById|querySelector(?:All)?|getElementsBy\\w+)\\s*\\("
+    content_patterns: "\\bdocument\\.activeElement\\b"
+    rules: "docs/knowledge_base/rules/frontend/no-global-state-in-component-scoped-functions.md"
+  }
+  # Exported TypeScript types, outside tests and stories.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:ts|tsx)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:\\.test|_test|\\.stories)\\.tsx?"
+    content_patterns: "^export\\s+(?:default\\s+)?(?:declare\\s+)?(?:type|interface|enum|const\\s+enum)\\s+\\w+"
+    rules: "docs/knowledge_base/rules/frontend/document-exported-typescript-types.md"
+  }
+  # Lines of code, and code fences, in Markdown.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.md"
+    content_patterns: "^\\s*```"
+    content_patterns: "^\\s*</?[A-Za-z>]"
+    content_patterns: "\\bon[A-Z]\\w*=\\{"
+    content_patterns: "=>"
+    content_patterns: "^\\s*(?:import|export|const|let|var|function|class|return|if|for)\\b"
+    content_patterns: "[;{}(]\\s*$"
+    rules: "docs/knowledge_base/rules/frontend/valid-code-examples-in-docs.md"
+  }
+  # A <script> tag without a src, in HTML.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.html"
+    content_patterns: "<script(?:\\s+(?:type|nonce|async|defer|lang|crossorigin|blocking)(?:=(?:\"[^\"]*\"|'[^']*'|[^\\s>]+))?)*\\s*>"
+    rules: "docs/knowledge_base/rules/frontend/no-inline-scripts-in-webui-pages.md"
+  }
+  # React class components.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:ts|tsx|js|jsx)"
+    content_patterns: "\\bextends\\s+(?:React\\.)?(?:Pure)?Component\\b"
+    rules: "docs/knowledge_base/rules/frontend/prefer-react-function-components.md"
+  }
+  # ||=, and x = x || f().
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:ts|tsx|js|jsx)"
+    content_patterns: "\\|\\|="
+    content_patterns: "=\\s*[\\w.]+\\s*\\|\\|\\s*(?:await\\s+)?[\\w.]+\\s*\\("
+    rules: "docs/knowledge_base/rules/frontend/side-effects-left-of-logical-or.md"
+  }
+  # Leo tokens added to, or hex colors removed from, HTML.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.html"
+    content_patterns: "var\\(\\s*--leo-"
+    diff_patterns: "^-.*\\b(?:background(?:-color)?|color)\\s*:\\s*#[0-9A-Fa-f]{3,8}\\b"
+    rules: "docs/knowledge_base/rules/frontend/keep-hardcoded-initial-colors-in-webui-html.md"
+  }
+  # JSON.parse() outside the body of a try.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:ts|tsx|js|jsx)"
+    ast_patterns: "{pattern: 'JSON.parse($$$)', not: {inside: {stopBy: end, kind: statement_block, inside: {kind: try_statement}}}}"
+    rules: "docs/knowledge_base/rules/frontend/catch-json-parse-errors-in-react-render.md"
+  }
+  # Asserting that render() or its result is truthy.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.test\\.tsx?"
+    content_patterns: "\\bexpect\\s*\\(\\s*render\\s*\\("
+    content_patterns: "\\bexpect\\s*\\(\\s*(?:result|rendered|renderResult|view|wrapper|utils)\\s*\\)\\s*\\.\\s*(?:not\\s*\\.\\s*)?toBe(?:Truthy|Defined)\\s*\\("
+    rules: "docs/knowledge_base/rules/frontend/no-render-to-be-truthy-assertions.md"
+  }
+  # dangerouslySetInnerHTML.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:ts|tsx|js|jsx)"
+    content_patterns: "\\bdangerouslySetInnerHTML\\b"
+    rules: "docs/knowledge_base/rules/frontend/no-dangerously-set-inner-html-for-external-content.md"
+  }
+  # Effects, and effects that start asynchronous work.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:ts|tsx|js|jsx)"
+    content_patterns: "\\buse(?:Layout)?Effect\\s*\\("
+    ast_patterns: "{any: [{pattern: 'useEffect($$$)'}, {pattern: 'React.useEffect($$$)'}, {pattern: 'useLayoutEffect($$$)'}, {pattern: 'React.useLayoutEffect($$$)'}], has: {stopBy: end, any: [{pattern: '$P.then($$$)'}, {kind: await_expression}, {pattern: 'fetch($$$)'}]}}"
+    rules: "docs/knowledge_base/rules/frontend/clean-up-async-work-in-use-effect.md"
+  }
+}

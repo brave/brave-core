@@ -1,0 +1,12 @@
+diff --git a/agents/knowledge_base/rules/general/java/COMMON_METADATA b/agents/knowledge_base/rules/general/java/COMMON_METADATA
+index b36a0fc18005d418ce429e5bd6f72141877df83a..cb46455b5288b14e19973cc1d576e57b31f0d5a3 100644
+--- a/agents/knowledge_base/rules/general/java/COMMON_METADATA
++++ b/agents/knowledge_base/rules/general/java/COMMON_METADATA
+@@ -10,7 +10,6 @@ agentic_review {
+   capability_groups {
+     path_expression: "(?:.*/)?[^/]*\\.java"
+     rules: "agents/knowledge_base/rules/general/java/accurate-target-references-in-javadoc-link-tags.md"
+-    rules: "agents/knowledge_base/rules/general/java/add-unit-tests-for-new-code.md"
+     rules: "agents/knowledge_base/rules/general/java/annotate-typedef-annotations-with-target-type-use.md"
+     rules: "agents/knowledge_base/rules/general/java/assert-mutual-exclusivity-of-execution-modes.md"
+     rules: "agents/knowledge_base/rules/general/java/avoid-backward-compat-in-debug-logs.md"

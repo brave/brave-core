@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Drop the rules for Chromium's third-party workflows.
+
+      They concern Crowbar, Copybara, Autoroller submodules and CIPD/3PP
+      packages, none of which Brave uses: Brave changes third_party/ through
+      patches, which these rules would object to.
+    count: 3
+    regex:
+      re_pattern:
+        '\n\s*rules:
+        "[^"]*/(?:avoid-transitional-third-party-directories|do-not-modify-third-party-submodule-source|use-copybara-strictly-for-transformations-in-crowbar)\.md"'
+      replace: ''
+  - description: 'Drop the group the rules above leave empty.'
+    regex:
+      re_pattern:
+        '\n\s*capability_groups \{\s*path_expression: "third_party/\.\*"\s*\}'
+      replace: ''

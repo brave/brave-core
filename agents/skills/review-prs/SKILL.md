@@ -6,7 +6,7 @@ description:
   cron. Triggers on: review prs, review recent prs, /review-prs, check prs for
   best practices.'
 argument-hint:
-  '[days|page<N>|#<PR>] [open|closed|all] [auto] [reviewer-priority] [full]'
+  '[days|page<N>|#<PR>] [open|closed|all] [auto] [reviewer-priority] [full] [kb]'
 disable-model-invocation: true
 allowed-tools: Bash(gh pr diff:*)
 ---
@@ -24,6 +24,14 @@ documented best practices.
   before is reviewed only in the files whose changes differ since then, and a PR
   where none differ (a rebase, a merge of the base branch) is not reviewed
   again.
+- **`kb`**: check each PR against the rules of the knowledge base
+  (`docs/knowledge_base/`, and Chromium's `agents/knowledge_base/`) that its
+  changes need, instead of every best-practices document its file types select.
+  `tools/cr/knowledge_base.py` picks the rules by the files and the lines they
+  concern, so each detect prompt holds only matching rules and the diff of the
+  files they apply to; Chromium's rules that only file types select are listed
+  in one catalog prompt, for the detect subagent to open as needed. See
+  `docs/knowledge_base/README.md`.
 
 **IMPORTANT:** This skill only reviews PRs against existing best practices. It
 must NEVER create, modify, or add new best practice rules or documentation
@@ -62,16 +70,18 @@ text, or violation details.
 ## The Job
 
 When invoked with
-`/review-prs [days|page<N>|#<PR>] [open|closed|all] [auto] [reviewer-priority] [full]`:
+`/review-prs [days|page<N>|#<PR>] [open|closed|all] [auto] [reviewer-priority] [full] [kb]`:
 
 ### Step 1: Prepare (zero LLM tokens)
 
 Run the prepare script with all arguments (`auto` → `--auto`,
-`reviewer-priority` → `--reviewer-priority`, `full` → `--full`):
+`reviewer-priority` → `--reviewer-priority`, `full` → `--full`, `kb` → `--kb`).
+The scripts run under `vpython3`, which brave-core vendors in
+`vendor/depot_tools/`, with the packages `vpython.toml` lists:
 
 ```bash
 SKILL_DIR="<absolute path to .claude/skills/review-prs>"
-python3 $SKILL_DIR/prepare-review.py [days|page<N>|#<PR>] [open|closed|all] [--auto] [--reviewer-priority] [--full]
+vpython3 $SKILL_DIR/prepare-review.py [days|page<N>|#<PR>] [open|closed|all] [--auto] [--reviewer-priority] [--full] [--kb]
 ```
 
 The script's stdout is a tiny JSON with `work_dir` and `manifest` paths.
@@ -125,7 +135,7 @@ this prompt:
 
 ```
 Read your instructions from: {prompt_file}
-Work from the diff in that file; do not read source files. Never post anything to GitHub.
+Work from the diff in that file; do not read source files, only the rule files it names. Never post anything to GitHub.
 ```
 
 **Launch ALL detect subagents across ALL PRs in a single message** so they run
@@ -146,7 +156,7 @@ it creates duplicates.
 ### Step 4: Select candidates (zero LLM tokens)
 
 ```bash
-python3 $SKILL_DIR/select-candidates.py --work-dir "$WORK_DIR"
+vpython3 $SKILL_DIR/select-candidates.py --work-dir "$WORK_DIR"
 ```
 
 Its stdout is a JSON object whose `validators` array has one entry per PR with
@@ -172,7 +182,7 @@ Run the collector script — it reads the validators' result files and runs
 post-review.py:
 
 ```bash
-python3 $SKILL_DIR/collect-results.py --work-dir "$WORK_DIR" [--auto]
+vpython3 $SKILL_DIR/collect-results.py --work-dir "$WORK_DIR" [--auto]
 ```
 
 Pass `--auto` if `auto_mode` is true.

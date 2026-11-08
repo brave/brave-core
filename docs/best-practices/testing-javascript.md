@@ -62,9 +62,10 @@ std::string updated_text =
 (e.g., checking for element existence, waiting for JS API readiness):
 
 ```cpp
-const base::TimeTicks deadline = base::TimeTicks::Now() + base::Seconds(10);
+const base::TimeTicks deadline =
+    base::TimeTicks::Now() + TestTimeouts::action_timeout();
 for (;;) {
-  NonBlockingDelay(base::Milliseconds(10));
+  NonBlockingDelay(TestTimeouts::tiny_timeout());
   if (content::EvalJs(web_contents, "!!document.getElementById('foo')",
                       content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                       ISOLATED_WORLD_ID_BRAVE_INTERNAL)
@@ -108,9 +109,10 @@ WaitForSolanaProviderBinding();
 // window.braveSolana.on might not be ready yet!
 
 // ✅ CORRECT - Manual polling for JS API readiness
-const base::TimeTicks deadline = base::TimeTicks::Now() + base::Seconds(5);
+const base::TimeTicks deadline =
+    base::TimeTicks::Now() + TestTimeouts::action_timeout();
 for (;;) {
-  NonBlockingDelay(base::Milliseconds(10));
+  NonBlockingDelay(TestTimeouts::tiny_timeout());
   if (content::EvalJs(web_contents,
                       "typeof window.braveSolana?.on === 'function'",
                       content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,

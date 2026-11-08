@@ -1,0 +1,86 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# The rules of docs/best-practices/patches.md. See
+# docs/knowledge_base/README.md for the fields. In a patch file, a line the
+# patch adds reads `+...` to content_patterns, and a line it removes `-...`.
+agentic_review {
+  # Lines a patch adds.
+  capability_groups {
+    path_expression: "patches/.*\\.patch"
+    content_patterns: "^\\+(?:[^+]|\\+[^+]|\\+\\+[^+ ])"
+    content_patterns: "^\\+$"
+    rules: "docs/knowledge_base/rules/patches/single-line-patches.md"
+  }
+  # Blank lines, comments and changed lines in a patch, which may be
+  # non-functional.
+  capability_groups {
+    path_expression: "patches/.*\\.patch"
+    content_patterns: "^\\+\\s*$"
+    content_patterns: "^\\+\\s*(?://|/\\*|\\*|<!--|#\\s)"
+    content_patterns: "^\\+.*\\S\\s+(?://|#)\\s"
+    content_patterns: "^-(?:[^-]|-[^-]|--[^- ])"
+    content_patterns: "^-$"
+    rules: "docs/knowledge_base/rules/patches/patches-only-functional-changes.md"
+  }
+  # Upstream lines a patch removes or modifies.
+  capability_groups {
+    path_expression: "patches/.*\\.patch"
+    content_patterns: "^-(?:[^-]|-[^-]|--[^- ])"
+    content_patterns: "^-$"
+    rules: "docs/knowledge_base/rules/patches/leave-upstream-lines-untouched-in-patches.md"
+  }
+  # Upstream lines an XML patch removes.
+  capability_groups {
+    path_expression: "patches/.*\\.(?:xml|grd|grdp)\\.patch"
+    content_patterns: "^-(?:[^-]|-[^-]|--[^- ])"
+    content_patterns: "^-$"
+    rules: "docs/knowledge_base/rules/patches/comment-out-xml-in-patches.md"
+  }
+  # List entries and XML elements a patch adds.
+  capability_groups {
+    path_expression: "patches/.*\\.patch"
+    content_patterns: "^\\+\\s*<[A-Za-z]"
+    content_patterns: "^\\+\\s*\"[^\"]*\",?\\s*$"
+    content_patterns: "^\\+\\s*'[^']*',?\\s*$"
+    content_patterns: "^\\+\\s*\\{.*\\},?\\s*$"
+    content_patterns: "^\\+\\s*[\\w:.]+,\\s*$"
+    rules: "docs/knowledge_base/rules/patches/extensible-patches-use-include.md"
+  }
+  # Lines a patch adds to upstream C++.
+  capability_groups {
+    path_expression: "patches/.*\\.(?:cc|h|mm)\\.patch"
+    content_patterns: "^\\+(?:[^+]|\\+[^+]|\\+\\+[^+ ])"
+    rules: "docs/knowledge_base/rules/patches/patch-hooks-via-brave-macros.md"
+  }
+  # BRAVE_ hook macros a patch inserts, and their definitions in overrides.
+  capability_groups {
+    path_expression: "patches/.*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "chromium_src/.*\\.(?:cc|h|mm)"
+    content_patterns: "^\\+.*\\bBRAVE_[A-Z0-9_]+"
+    content_patterns: "^\\s*#\\s*define\\s+BRAVE_\\w+(?:\\(|\\s*\\\\|\\s+\\S)"
+    rules: "docs/knowledge_base/rules/patches/brave-patch-macro-naming.md"
+  }
+  # GN list lines a patch removes, modifies or subtracts.
+  capability_groups {
+    path_expression: "patches/.*(?:BUILD\\.gn|\\.gni)\\.patch"
+    content_patterns: "^-(?:[^-]|-[^-]|--[^- ])"
+    content_patterns: "^\\+.*-="
+    rules: "docs/knowledge_base/rules/patches/gn-list-removal-with-minus-equals.md"
+  }
+  # GN dependencies a patch adds.
+  capability_groups {
+    path_expression: "patches/.*(?:BUILD\\.gn|\\.gni)\\.patch"
+    content_patterns: "^\\+.*\\b(?:public_|data_)?deps\\s*[+-]?="
+    content_patterns: "^\\+\\s*\"//[^\"]*\",?\\s*$"
+    rules: "docs/knowledge_base/rules/patches/gn-deps-via-brave-variable.md"
+  }
+  # Lines a patch adds to a Python script.
+  capability_groups {
+    path_expression: "patches/.*\\.py\\.patch"
+    content_patterns: "^\\+(?:[^+]|\\+[^+]|\\+\\+[^+ ])"
+    rules: "docs/knowledge_base/rules/patches/no-patches-to-python-build-scripts.md"
+  }
+}

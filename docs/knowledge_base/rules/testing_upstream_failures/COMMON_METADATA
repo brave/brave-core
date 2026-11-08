@@ -1,0 +1,49 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# The rules of docs/best-practices/testing-upstream-failures.md. See
+# docs/knowledge_base/README.md for the fields.
+agentic_review {
+  # Any change to the generated upstream flake filters.
+  capability_groups {
+    path_expression: "test/filters/generated/.*\\.filter"
+    rules: "docs/knowledge_base/rules/testing_upstream_failures/no-hand-edits-to-generated-test-filters.md"
+  }
+  # A patch that disables or skips a test.
+  capability_groups {
+    path_expression: "patches/.*\\.patch"
+    content_patterns: "\\b(?:DISABLED|MAYBE)_\\w"
+    content_patterns: "\\bGTEST_SKIP\\b"
+    content_patterns: "@(?:DisabledTest|DisableIf)\\b"
+    rules: "docs/knowledge_base/rules/testing_upstream_failures/no-patches-to-disable-upstream-tests.md"
+  }
+  # Any change to a patch or chromium_src override of an upstream test file.
+  capability_groups {
+    path_expression: "patches/(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest|_uitest|Test)\\.(?:cc|h|mm|java)\\.patch"
+    path_expression: "chromium_src/.*(?:_unittest|_browsertest|_test|_interactive_uitest|_uitest)\\.(?:cc|h|mm)"
+    rules: "docs/knowledge_base/rules/testing_upstream_failures/disable-upstream-flakes-rather-than-patch-fixes.md"
+  }
+  # Test entries added to a hand-written filter file.
+  capability_groups {
+    path_expression: "test/filters/[^/]*\\.filter"
+    content_patterns: "^-\\S"
+    rules: "docs/knowledge_base/rules/testing_upstream_failures/check-upstream-flakiness-before-filtering-tests.md"
+    rules: "docs/knowledge_base/rules/testing_upstream_failures/match-filter-file-to-failure-scope.md"
+    rules: "docs/knowledge_base/rules/testing_upstream_failures/comment-filter-file-entries.md"
+    rules: "docs/knowledge_base/rules/testing_upstream_failures/group-filter-entries-by-root-cause.md"
+  }
+  # Wildcard entries added to a hand-written filter file.
+  capability_groups {
+    path_expression: "test/filters/[^/]*\\.filter"
+    content_patterns: "^-[^#]*\\*"
+    rules: "docs/knowledge_base/rules/testing_upstream_failures/filter-only-flaky-test-variants.md"
+  }
+  # Comment lines added to a hand-written filter file.
+  capability_groups {
+    path_expression: "test/filters/[^/]*\\.filter"
+    content_patterns: "^#"
+    rules: "docs/knowledge_base/rules/testing_upstream_failures/blank-line-before-filter-comment-sections.md"
+  }
+}

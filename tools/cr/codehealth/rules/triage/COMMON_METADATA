@@ -1,4 +1,4 @@
-# Sweep i: subject triage. See tools/cr/codehealth/scripts/sweep.py for the fields.
+# Sweep i: subject triage. See tools/cr/knowledge_base.py for the fields.
 # Every group drops platform-only subjects Brave doesn't build or customize
 # (ash, ChromeOS, Fuchsia), Perfetto rolls, gardener test disables and Android
 # test migrations. Test migrations are dropped on every platform: a renamed test
@@ -6,27 +6,27 @@
 agentic_review {
   capability_groups {
     subject_patterns: "(?i)codehealth|code health|deprecat|replace .* with|enforce|compile-time|\\buse .* form\\b"
-    exclude_subject_expression: "(?i)^\\[?ash\\b|\\bash(?:::|/)|chrome ?os|\\bcros\\b|fuchsia|perfetto|gardener|^(?:\\[[^\\]]*\\]\\s*)*disable .*tests?\\b|migrate .*tests?\\b|tests? .*(?:to|onto) (?:batch|robolectric|junit)"
+    subject_pattern_exclusion: "(?i)^\\[?ash\\b|\\bash(?:::|/)|chrome ?os|\\bcros\\b|fuchsia|perfetto|gardener|^(?:\\[[^\\]]*\\]\\s*)*disable .*tests?\\b|migrate .*tests?\\b|tests? .*(?:to|onto) (?:batch|robolectric|junit)"
     rules: "tools/cr/codehealth/rules/triage/deprecations-and-enforcement.md"
   }
   capability_groups {
     subject_patterns: "(?i)migrat|clean ?up|refactor|bedrock|\\blit\\b|polymer|consolidat"
-    exclude_subject_expression: "(?i)^\\[?ash\\b|\\bash(?:::|/)|chrome ?os|\\bcros\\b|fuchsia|perfetto|gardener|^(?:\\[[^\\]]*\\]\\s*)*disable .*tests?\\b|migrate .*tests?\\b|tests? .*(?:to|onto) (?:batch|robolectric|junit)"
+    subject_pattern_exclusion: "(?i)^\\[?ash\\b|\\bash(?:::|/)|chrome ?os|\\bcros\\b|fuchsia|perfetto|gardener|^(?:\\[[^\\]]*\\]\\s*)*disable .*tests?\\b|migrate .*tests?\\b|tests? .*(?:to|onto) (?:batch|robolectric|junit)"
     rules: "tools/cr/codehealth/rules/triage/migrations-and-clean-ups.md"
   }
   capability_groups {
     subject_patterns: "(?i)use-after|\\buaf\\b|dangling|\\brace\\b|crash"
-    exclude_subject_expression: "(?i)^\\[?ash\\b|\\bash(?:::|/)|chrome ?os|\\bcros\\b|fuchsia|perfetto|gardener|^(?:\\[[^\\]]*\\]\\s*)*disable .*tests?\\b|migrate .*tests?\\b|tests? .*(?:to|onto) (?:batch|robolectric|junit)"
+    subject_pattern_exclusion: "(?i)^\\[?ash\\b|\\bash(?:::|/)|chrome ?os|\\bcros\\b|fuchsia|perfetto|gardener|^(?:\\[[^\\]]*\\]\\s*)*disable .*tests?\\b|migrate .*tests?\\b|tests? .*(?:to|onto) (?:batch|robolectric|junit)"
     rules: "tools/cr/codehealth/rules/triage/memory-safety-and-crashes.md"
   }
   capability_groups {
     subject_patterns: "(?i)\\blaunch|enable .* by default"
-    exclude_subject_expression: "(?i)^\\[?ash\\b|\\bash(?:::|/)|chrome ?os|\\bcros\\b|fuchsia|perfetto|gardener|^(?:\\[[^\\]]*\\]\\s*)*disable .*tests?\\b|migrate .*tests?\\b|tests? .*(?:to|onto) (?:batch|robolectric|junit)"
+    subject_pattern_exclusion: "(?i)^\\[?ash\\b|\\bash(?:::|/)|chrome ?os|\\bcros\\b|fuchsia|perfetto|gardener|^(?:\\[[^\\]]*\\]\\s*)*disable .*tests?\\b|migrate .*tests?\\b|tests? .*(?:to|onto) (?:batch|robolectric|junit)"
     rules: "tools/cr/codehealth/rules/triage/launches-and-default-enables.md"
   }
   capability_groups {
     subject_patterns: "(?i)\\brenam|\\bmove|\\bsplit\\b.*\\b(?:into|out of|off from|from)\\b|\\bsplit\\b.*\\b(?:files?|class(?:es)?|targets?|headers?|librar(?:y|ies)|components?)\\b"
-    exclude_subject_expression: "(?i)^\\[?ash\\b|\\bash(?:::|/)|chrome ?os|\\bcros\\b|fuchsia|perfetto|gardener|^(?:\\[[^\\]]*\\]\\s*)*disable .*tests?\\b|migrate .*tests?\\b|tests? .*(?:to|onto) (?:batch|robolectric|junit)"
+    subject_pattern_exclusion: "(?i)^\\[?ash\\b|\\bash(?:::|/)|chrome ?os|\\bcros\\b|fuchsia|perfetto|gardener|^(?:\\[[^\\]]*\\]\\s*)*disable .*tests?\\b|migrate .*tests?\\b|tests? .*(?:to|onto) (?:batch|robolectric|junit)"
     rules: "tools/cr/codehealth/rules/triage/moves-and-renames.md"
   }
 }

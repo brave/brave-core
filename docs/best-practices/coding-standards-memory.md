@@ -264,11 +264,11 @@ base::BindOnce(&OnComplete, std::move(weak_tabs));
 
 <a id="CSM-015"></a>
 
-## ✅ Use `SEQUENCE_CHECKER` Consistently - All Methods or None
+## ✅ Use `SEQUENCE_CHECKER` Consistently - All Methods, Not Some
 
-**If a class is single-threaded, either apply `DCHECK_CALLED_ON_VALID_SEQUENCE`
-to all methods or remove the sequence checker entirely.** Partial checking is
-misleading and makes correct code look unsafe.
+**If a single-threaded class has a sequence checker, apply
+`DCHECK_CALLED_ON_VALID_SEQUENCE` to all of its methods rather than only some.**
+Partial checking is misleading and makes correct code look unsafe.
 
 ---
 
@@ -581,6 +581,10 @@ type where the variable appears again later in the function. Even if the move is
 inside an `if`/`else` branch, a future refactor could change control flow and
 expose the bug.
 
+**Exception:** Reinitializing a moved-from variable (assigning to it, or calling
+`reset()` or `clear()`) before its next use is fine, and so is a test of a
+type's move operations asserting the moved-from state.
+
 ---
 
 <a id="CSM-031"></a>
@@ -811,9 +815,9 @@ void Schedule(std::string_view name) {
 ```
 
 The same applies to `base::span<T>` — bind an owning container
-(`std::vector<T>`) rather than the span. Prefer making the callback target take
-an owning type (`const std::string&`, `std::vector<T>`) so the bound copy is
-forced to own its data.
+(`std::vector<T>`) rather than the span. When the callback target keeps the
+data, make it take the owning type by value (`std::string`, `std::vector<T>`),
+which also forces the bound argument to own its data.
 
 **Exception:** Binding a span-like view is acceptable in two cases:
 

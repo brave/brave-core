@@ -1,0 +1,12 @@
+diff --git a/agents/knowledge_base/rules/agents/COMMON_METADATA b/agents/knowledge_base/rules/agents/COMMON_METADATA
+index 7c7b74b9c8feb4622c0bb5837210b51aca5ba57b..b09a74902ba34bc27b09bb0c46d7210066a5f09d 100644
+--- a/agents/knowledge_base/rules/agents/COMMON_METADATA
++++ b/agents/knowledge_base/rules/agents/COMMON_METADATA
+@@ -1,6 +1,7 @@
+ agentic_review {
+   capability_groups {
+     path_expression: "agents/.*"
++    path_expression: "brave/(?:agents|[.]claude|docs/knowledge_base)/.*"
+     rules: "agents/knowledge_base/rules/agents/use-emphatic-imperatives-for-agent-constraints.md"
+   }
+ }

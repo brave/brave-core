@@ -4,6 +4,10 @@ This document is an index of best practices for the Brave Browser codebase,
 discovered from code reviews, test fixes, and development experience. Each
 section links to a detailed document.
 
+The [knowledge base](./knowledge_base/README.md) holds these conventions as code
+review rules, which automated reviews match against the lines a change adds, and
+is to replace these documents.
+
 ## Nala / Leo Design System
 
 - **[Nala / Leo Design System](./best-practices/nala.md)** - Icons (Android,

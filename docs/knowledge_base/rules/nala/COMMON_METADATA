@@ -1,0 +1,84 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# The rules of docs/best-practices/nala.md. See
+# docs/knowledge_base/README.md for the fields.
+agentic_review {
+  # Android drawable resources, including binary ones, which have no lines.
+  capability_groups {
+    path_expression: "(?:.*/)?res/drawable[^/]*/[^/]+"
+    rules: "docs/knowledge_base/rules/nala/android-icons-from-nala-icons-gni.md"
+  }
+  # SVG files.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.svg"
+    rules: "docs/knowledge_base/rules/nala/webui-icons-from-leo-icons.md"
+  }
+  # SVG files referenced, and SVG drawn inline, in WebUI code.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:ts|tsx|js|jsx|html|css|scss)"
+    content_patterns: "\\.svg\\b"
+    content_patterns: "<svg\\b"
+    rules: "docs/knowledge_base/rules/nala/webui-icons-from-leo-icons.md"
+  }
+  # Vector icon files.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.icon"
+    rules: "docs/knowledge_base/rules/nala/vector-icons-from-leo-icons.md"
+  }
+  # A vector icon other than a Leo one listed in GN.
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.gn"
+    path_expression: "(?:.*/)?[^/]*\\.gni"
+    content_patterns: "^\\s*\"(?:[^\"l]|l[^\"e]|le[^\"o]|leo[^\"_])[^\"]*\\.icon\""
+    rules: "docs/knowledge_base/rules/nala/vector-icons-from-leo-icons.md"
+  }
+  # Color resources, hex colors and Android's colors, in Android resources.
+  capability_groups {
+    path_expression: "(?:.*/)?res/.*\\.xml"
+    content_patterns: "<color\\b"
+    content_patterns: "#[0-9A-Fa-f]{3,8}\\b"
+    content_patterns: "@android:color/"
+    rules: "docs/knowledge_base/rules/nala/android-colors-from-nala-tokens.md"
+  }
+  # Colors built or named in Java instead of read from resources.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.java"
+    content_patterns: "\\bColor\\.(?:parseColor|rgb|argb|valueOf)\\s*\\("
+    content_patterns: "\\bColor\\.(?:BLACK|WHITE|RED|GREEN|BLUE|GRAY|YELLOW|CYAN|MAGENTA|DKGRAY|LTGRAY|TRANSPARENT)\\b"
+    rules: "docs/knowledge_base/rules/nala/android-colors-from-nala-tokens.md"
+  }
+  # Native form controls and dialogs, and switch or dialog roles, in React.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:tsx|jsx)"
+    content_patterns: "<(?:select|button|input|dialog|textarea)\\b"
+    content_patterns: "\\brole=\\{?[\"'](?:switch|dialog|alertdialog|checkbox|radio)[\"']"
+    content_patterns: "\\bstyled\\.(?:button|input|select|dialog)\\b"
+    rules: "docs/knowledge_base/rules/nala/leo-components-over-native-html-elements.md"
+  }
+  # Components and class names for widgets Leo provides, and hover state.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:ts|tsx|js|jsx)"
+    content_patterns: "\\b(?:function|class|const)\\s+(?:[A-Z]\\w*)?(?:Tooltip|Popover|Spinner|Loader|LoadingIndicator|Segmented|TabSwitcher|Dropdown|Menu|Modal|Dialog|Overlay|Toast|Snackbar|Notification|Banner|Collapse|Collapsible|Accordion|Expander)\\w*"
+    content_patterns: "\\bclassName=\\{?[\"'`][^\"'`]*(?:tooltip|popover|spinner|loader|segmented|modal|toast|accordion|collapsible|dropdown|context-menu)"
+    content_patterns: "\\bonMouse(?:Enter|Leave|Over)\\s*="
+    rules: "docs/knowledge_base/rules/nala/leo-components-over-custom-reimplementations.md"
+  }
+  # Styles for widgets Leo provides, and spinner animations.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:css|scss)"
+    content_patterns: "\\.[\\w-]*(?:tooltip|popover|spinner|loader|segmented|modal|toast|accordion|collapsible|dropdown|context-menu)[\\w-]*"
+    content_patterns: "@keyframes\\s+[\\w-]*(?:spin|rotat)"
+    rules: "docs/knowledge_base/rules/nala/leo-components-over-custom-reimplementations.md"
+  }
+  # Brave color ids, and mixer entries mapping a color id to a Nala token.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bE_CPONLY\\s*\\(\\s*kColor\\w*"
+    content_patterns: "\\bBRAVE_COLOR_ID\\s*\\("
+    content_patterns: "\\]\\s*=\\s*\\{\\s*nala::kColor\\w*\\s*\\}"
+    rules: "docs/knowledge_base/rules/nala/no-intermediate-nala-color-ids.md"
+  }
+}

@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Drop the rule about Perfetto commit messages.
+
+      Brave's reviews read a pull request's diff, which a rule about the
+      commit message cannot be checked against.
+    regex:
+      re_pattern:
+        '\n\s*rules:
+        "[^"]*/document-perfetto-diff-test-command-in-commit-message\.md"'
+      replace: ''

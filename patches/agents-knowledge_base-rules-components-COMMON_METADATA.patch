@@ -1,0 +1,12 @@
+diff --git a/agents/knowledge_base/rules/components/COMMON_METADATA b/agents/knowledge_base/rules/components/COMMON_METADATA
+index 2a391129075dc8eb68c0b0f742187872da7a005b..11a580a1ac93f6e4d32605de4b04a24a3d0d4715 100644
+--- a/agents/knowledge_base/rules/components/COMMON_METADATA
++++ b/agents/knowledge_base/rules/components/COMMON_METADATA
+@@ -2,7 +2,6 @@ agentic_review {
+   capability_groups {
+     path_expression: "components/.*"
+     rules: "agents/knowledge_base/rules/components/support-dynamic-refresh-for-enterprise-policies.md"
+-    rules: "agents/knowledge_base/rules/components/update-autofill-heuristics-test-expectations-in-deps.md"
+   }
+   capability_groups {
+     path_expression: "components/.*"

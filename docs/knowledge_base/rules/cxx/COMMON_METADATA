@@ -1,0 +1,562 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# The rules of docs/best-practices/coding-standards.md. See
+# docs/knowledge_base/README.md for the fields.
+agentic_review {
+  # Adds or removes #include lines.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "^\\s*#\\s*include\\s"
+    diff_patterns: "^-\\s*#\\s*include\\s"
+    rules: "docs/knowledge_base/rules/cxx/include-what-you-use.md"
+    rules: "docs/knowledge_base/rules/cxx/remove-unused-includes.md"
+    rules: "docs/knowledge_base/rules/cxx/no-gn-private-header-includes.md"
+    rules: "docs/knowledge_base/rules/cxx/no-include-order-review-comments.md"
+  }
+  # Adds #include lines to headers.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.h"
+    content_patterns: "^\\s*#\\s*include\\s"
+    rules: "docs/knowledge_base/rules/cxx/forward-declare-in-headers.md"
+  }
+  # Includes full mojom bindings in a header.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.h"
+    content_patterns: "^\\s*#\\s*include\\s+\"[^\"]*\\.mojom\\.h\""
+    rules: "docs/knowledge_base/rules/cxx/mojom-forward-headers.md"
+  }
+  # Include guards and #pragma once.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.h"
+    content_patterns: "^\\s*#\\s*pragma\\s+once\\b"
+    content_patterns: "^\\s*#\\s*(?:ifndef|define)\\s+\\w+_H_?\\s*$"
+    content_patterns: "^\\s*#\\s*endif\\s*//\\s*\\w+_H_?\\s*$"
+    rules: "docs/knowledge_base/rules/cxx/include-guards-not-pragma-once.md"
+    rules: "docs/knowledge_base/rules/cxx/include-guard-name-from-path.md"
+  }
+  # Names in a negative form.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "(?:Disabled|_disabled|disabled_|Disallow|_disallow|\\bdisallow_)"
+    content_patterns: "(?:\\bIsNot[A-Z]|\\bis_not_|\\bShouldNot[A-Z]|\\bshould_not_|\\bDont[A-Z]|\\bdont_)"
+    rules: "docs/knowledge_base/rules/cxx/positive-boolean-names.md"
+  }
+  # Names a concept shares across prefs, WebUI and JS.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm|ts|tsx|js)"
+    content_patterns: "\\bprefs::k\\w+"
+    content_patterns: "\\bRegister\\w*Pref\\s*\\("
+    content_patterns: "\\bRegisterMessageCallback\\s*\\("
+    content_patterns: "\\bAddLocalizedStrings?\\s*\\("
+    content_patterns: "\\bFireWebUIListener\\s*\\("
+    content_patterns: "\\bchrome\\.send\\s*\\("
+    content_patterns: "\\bsendWithPromise\\s*\\("
+    content_patterns: "\\baddWebUiListener\\s*\\("
+    content_patterns: "\\bloadTimeData\\.get\\w*\\s*\\("
+    content_patterns: "\\bprefs\\.[a-z_]+\\.[\\w.]+"
+    rules: "docs/knowledge_base/rules/cxx/consistent-names-across-layers.md"
+  }
+  # Declares Mojo interfaces, methods and types.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.mojom"
+    content_patterns: "^\\s*(?:interface|struct|enum|union|const)\\s+\\w+"
+    content_patterns: "^\\s*\\w+\\s*\\([^)]*\\)\\s*(?:=>\\s*\\([^)]*\\))?\\s*;"
+    rules: "docs/knowledge_base/rules/cxx/consistent-names-across-layers.md"
+  }
+  # Declares or defines functions and classes.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "^\\s*(?:(?:static|virtual|inline|constexpr|explicit|const)\\s+)*(?:void|bool|int|size_t|double|float|auto|u?int\\d+_t|[\\w:]*[A-Z][\\w:]*(?:<[^;]*>)?|[\\w:]+::[\\w:]+(?:<[^;]*>)?)[*&]*\\s+[*&]?(?:\\w+::)*[A-Z]\\w*\\s*\\("
+    content_patterns: "^\\s*(?:class|struct)\\s+(?:[A-Z_]+_EXPORT\\s+)?[A-Z]\\w*"
+    rules: "docs/knowledge_base/rules/cxx/grammatical-identifier-names.md"
+    rules: "docs/knowledge_base/rules/cxx/maybe-prefix-for-conditional-actions.md"
+    rules: "docs/knowledge_base/rules/cxx/overloads-over-ignored-parameters.md"
+  }
+  # Declares functions or callbacks returning bool.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bbool\\s+(?:\\w+::)*[A-Z]\\w*\\s*\\("
+    content_patterns: "\\b(?:Once|Repeating)Callback<\\s*void\\s*\\(\\s*bool\\b"
+    rules: "docs/knowledge_base/rules/cxx/should-prefix-for-bool-queries.md"
+    rules: "docs/knowledge_base/rules/cxx/result-codes-over-bool.md"
+  }
+  # Records UMA histograms or P3A metrics.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bUMA_HISTOGRAM_\\w+\\s*\\("
+    content_patterns: "\\bUmaHistogram\\w+\\s*\\("
+    content_patterns: "\\bp3a_utils::\\w+"
+    content_patterns: "\\bRecordToHistogramBucket\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx/record-prefix-for-metrics-methods.md"
+    rules: "docs/knowledge_base/rules/cxx/emit-histograms-from-one-place.md"
+  }
+  # Declares methods that read or write persisted state.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "^\\s*(?:(?:static|virtual|inline)\\s+)*(?:void|bool|int|size_t|double|float|auto|u?int\\d+_t|[\\w:]*[A-Z][\\w:]*(?:<[^;]*>)?|[\\w:]+::[\\w:]+(?:<[^;]*>)?)[*&]*\\s+(?:\\w+::)*(?:Persist|Store|Restore|Load|Save|Write|Read)[A-Z]\\w*\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx/load-save-names-for-persistence.md"
+  }
+  # Declares or uses camelCase variables (Objective-C++ excluded).
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h)"
+    content_patterns: "(?:^|[\\s(,*&<>])(?:[a-jl-z][a-z0-9]*|k[a-z0-9]+)[A-Z]\\w*\\s*(?:=[^=]|;|\\{|\\[|,|\\))"
+    rules: "docs/knowledge_base/rules/cxx/snake-case-variable-names.md"
+  }
+  # Declares classes with the Brave prefix.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "^\\s*(?:class|struct)\\s+(?:[A-Z_]+_EXPORT\\s+)?Brave[A-Z]\\w*"
+    rules: "docs/knowledge_base/rules/cxx/brave-prefix-only-for-chromium-subclasses.md"
+  }
+  # Defines classes.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "^\\s*(?:class|struct)\\s+(?:[A-Z_]+_EXPORT\\s+)?[A-Z]\\w*(?:\\s+final)?\\s*(?::|\\{|$)"
+    rules: "docs/knowledge_base/rules/cxx/filename-matches-class-name.md"
+  }
+  # Inherits from several base classes.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "^\\s*(?:class|struct)\\s[^;{]*:\\s*(?:public|protected|private)\\s[^;{]*,"
+    content_patterns: "^\\s+(?:public|protected|private)\\s+(?:virtual\\s+)?[\\w:<>]+\\s*(?:,|\\{)?\\s*$"
+    rules: "docs/knowledge_base/rules/cxx/composition-over-multiple-inheritance.md"
+  }
+  # Opening braces on a line of their own.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "^\\s*\\{\\s*$"
+    rules: "docs/knowledge_base/rules/cxx/kr-opening-braces.md"
+  }
+  # Lines a statement continues after.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "(?:[(,=+?]|&&|\\|\\||<<)\\s*$"
+    rules: "docs/knowledge_base/rules/cxx/four-space-continuation-indent.md"
+  }
+  # Copyright headers.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm|mojom|java|ts|tsx|js|py|gn|gni)"
+    content_patterns: "\\bCopyright\\b"
+    rules: "docs/knowledge_base/rules/cxx/current-year-in-new-file-copyright.md"
+    rules: "docs/knowledge_base/rules/cxx/keep-chromium-copyright-on-derived-code.md"
+    rules: "docs/knowledge_base/rules/cxx/keep-original-copyright-year.md"
+  }
+  # Defines functions in headers.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.h"
+    content_patterns: "\\)\\s*(?:const\\s*)?(?:noexcept\\s*)?(?:override\\s*|final\\s*)*\\{"
+    ast_patterns: "{kind: function_definition}"
+    rules: "docs/knowledge_base/rules/cxx/no-function-bodies-in-headers.md"
+  }
+  # Defines virtual functions or overrides inline in headers.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.h"
+    content_patterns: "\\bvirtual\\b[^;]*\\)[^;]*\\{"
+    content_patterns: "\\b(?:override|final)\\s*\\{"
+    ast_patterns: "{kind: function_definition, any: [{regex: '^virtual\\b'}, {has: {kind: function_declarator, has: {kind: virtual_specifier}}}]}"
+    rules: "docs/knowledge_base/rules/cxx/no-inline-virtual-functions.md"
+  }
+  # Friend declarations.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "^\\s*friend\\s"
+    content_patterns: "\\bFRIEND_TEST(?:_ALL_PREFIXES)?\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx/friend-declarations-after-private.md"
+  }
+  # File-scope statics and free functions in .cc files.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|mm)"
+    content_patterns: "^static\\s"
+    content_patterns: "^(?:inline\\s+)?(?:void|bool|int|size_t|double|float|auto|u?int\\d+_t|[\\w:]*[A-Z][\\w:]*(?:<[^;]*>)?|[\\w:]+::[\\w:]+(?:<[^;]*>)?)[*&]*\\s+[*&]?[A-Z]\\w*\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx/anonymous-namespace-for-file-local-code.md"
+  }
+  # static constexpr at file scope in .cc files.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|mm)"
+    content_patterns: "^static\\s+constexpr\\b"
+    rules: "docs/knowledge_base/rules/cxx/no-static-in-anonymous-namespace.md"
+  }
+  # Out-of-line member definitions in .cc files.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|mm)"
+    content_patterns: "^[\\w:<>,*& ]*\\b\\w+::~?[A-Za-z]\\w*\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx/cc-definition-order-matches-header.md"
+    rules: "docs/knowledge_base/rules/cxx/break-up-bloated-files.md"
+  }
+  # Override declarations and their group labels in headers.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.h"
+    content_patterns: "\\boverride\\b"
+    content_patterns: "^\\s*//\\s*[\\w:]+(?:<[^>]*>)?:\\s*$"
+    rules: "docs/knowledge_base/rules/cxx/group-overrides-by-parent-class.md"
+  }
+  # Comments mentioning history, change or alternatives.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "(?://|/\\*).*\\b(?:[Pp]reviously|[Nn]o longer|[Rr]emoved|[Cc]hanged|[Uu]sed to|[Oo]riginally|[Ff]ormerly|[Nn]ow|[Mm]oved|[Ii]nstead|[Rr]ather than|[Rr]eplac(?:ed|es|ing)|[Mm]igrat\\w*|[Aa]nymore|[Ll]egacy|[Oo]ld|[Rr]efactor\\w*|[Aa]longside|[Ss]o that|[Pp]er review|[Ff]ollow-?up)\\b"
+    content_patterns: "(?://|/\\*).*\\b[Tt]his (?:CL|PR|change|commit|patch)\\b"
+    rules: "docs/knowledge_base/rules/cxx/comments-make-sense-to-future-readers.md"
+  }
+  # Early returns on failure.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\breturn\\s+(?:std::nullopt|absl::nullopt|false|nullptr|-1|\\{\\})\\s*;"
+    content_patterns: "\\breturn\\s+(?:base|std)::unexpected\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx/comment-early-return-failure-branches.md"
+  }
+  # Declares or defines a base::Feature.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bBASE_(?:DECLARE_)?FEATURE\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx/feature-comments-in-cc-file.md"
+  }
+  # Comments on workarounds and upstream bugs, in code and patches.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/.*\\.patch"
+    content_patterns: "(?://|/\\*|#).*\\b(?:[Ww]orkaround|[Ww]ork around|WAR|[Hh]ack|[Uu]pstream|crbug|[Bb]ug)\\b"
+    content_patterns: "\\bcrbug\\.com/"
+    content_patterns: "\\bissues\\.chromium\\.org/"
+    rules: "docs/knowledge_base/rules/cxx/link-upstream-issue-in-workarounds.md"
+  }
+  # Comments pointing "above" or "below".
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "test/filters/.*"
+    path_expression: "(?:.*/)?BUILD\\.gn|(?:.*/)?[^/]*\\.gni"
+    path_expression: "patches/.*\\.patch"
+    content_patterns: "(?://|#|/\\*|^\\s*\\*).*\\b(?:[Aa]bove|[Bb]elow)\\b"
+    rules: "docs/knowledge_base/rules/cxx/no-positional-references-in-comments.md"
+  }
+  # Comments that look like code.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "^\\s*//\\s*#\\s*(?:include|if|ifdef|define)\\b"
+    content_patterns: "^\\s*//.*[;{}]\\s*$"
+    rules: "docs/knowledge_base/rules/cxx/no-commented-out-code.md"
+  }
+  # CHECK, DCHECK and other crash primitives, outside tests.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest|_test_utils?|_test_helpers?|_test_support)\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?test/.*"
+    content_patterns: "\\bD?CHECK(?:_[A-Z]+)?\\s*\\("
+    content_patterns: "\\bImmediateCrash\\s*\\("
+    content_patterns: "\\bDumpWithoutCrashing\\w*\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx/check-over-dcheck-for-impossible-conditions.md"
+    rules: "docs/knowledge_base/rules/cxx/no-unnecessary-dchecks.md"
+    rules: "docs/knowledge_base/rules/cxx/no-check-on-external-data.md"
+    rules: "docs/knowledge_base/rules/cxx/match-crash-primitive-to-intent.md"
+  }
+  # NOTREACHED() and CHECK(false), outside tests.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest|_test_utils?|_test_helpers?|_test_support)\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?test/.*"
+    content_patterns: "\\bNOTREACHED\\s*\\("
+    content_patterns: "\\bCHECK\\s*\\(\\s*false\\s*[,)]"
+    rules: "docs/knowledge_base/rules/cxx/notreached-only-for-invariants.md"
+    rules: "docs/knowledge_base/rules/cxx/no-code-after-notreached.md"
+    rules: "docs/knowledge_base/rules/cxx/check-over-conditional-notreached.md"
+  }
+  # Uses base::NotFatalUntil.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bNotFatalUntil\\b"
+    rules: "docs/knowledge_base/rules/cxx/not-fatal-until-for-check-migration.md"
+  }
+  # Replaces a DCHECK with a fatal CHECK or NOTREACHED.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    required_diff_patterns: "^-.*\\bDCHECK(?:_[A-Z]+)?\\s*\\("
+    required_diff_patterns: "^\\+.*\\b(?:CHECK(?:_[A-Z]+)?|NOTREACHED)\\s*\\("
+    diff_patterns: "^\\+.*\\b(?:CHECK(?:_[A-Z]+)?|NOTREACHED)\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx/not-fatal-until-for-check-migration.md"
+  }
+  # CHECKs in tests.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "\\bCHECK(?:_[A-Z]+)?\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx/no-check-for-test-expectations.md"
+  }
+  # Members holding a success-or-error result.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\b(?:base|std)::expected<[^;]*>\\s+\\w+_\\s*(?:;|=|\\{)"
+    content_patterns: "\\bstd::variant<[^;]*[Ee]rror[^;]*>\\s+\\w+_\\s*(?:;|=|\\{)"
+    rules: "docs/knowledge_base/rules/cxx/store-only-success-state.md"
+  }
+  # Overrides and member functions with empty bodies.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\boverride\\s*\\{\\s*\\}"
+    content_patterns: "^[\\w:<>,*& ]*\\b\\w+::~?[A-Za-z]\\w*\\([^;]*\\)\\s*(?:const\\s*)?\\{\\s*\\}\\s*$"
+    rules: "docs/knowledge_base/rules/cxx/no-empty-overrides.md"
+  }
+  # Calls added by patches and chromium_src overrides.
+  capability_groups {
+    path_expression: "patches/.*\\.patch"
+    path_expression: "chromium_src/.*"
+    content_patterns: "\\b\\w+\\s*\\([^;]*\\)\\s*;\\s*$"
+    rules: "docs/knowledge_base/rules/cxx/combine-methods-always-called-together.md"
+  }
+  # Queries and observers in service code.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*_service(?:_impl)?\\.(?:cc|h|mm)"
+    content_patterns: "^\\s*(?:\\w+(?:->|\\.))*Get[A-Z]\\w*\\([^;]*\\)\\s*;\\s*$"
+    content_patterns: "\\bobservers?_\\b"
+    content_patterns: "\\bfor\\s*\\(.*\\bobservers?\\w*\\s*\\)"
+    rules: "docs/knowledge_base/rules/cxx/observer-notifications-for-ui-updates.md"
+  }
+  # Conditional compilation on the platform.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "^\\s*#\\s*(?:if|elif)\\b.*\\bBUILDFLAG\\s*\\(\\s*IS_\\w+\\s*\\)"
+    rules: "docs/knowledge_base/rules/cxx/split-platform-specific-implementations.md"
+    rules: "docs/knowledge_base/rules/cxx/feature-checks-over-platform-checks.md"
+  }
+  # Tests compiler-provided or removed platform macros.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?third_party/.*"
+    content_patterns: "^\\s*#\\s*(?:if|elif|ifdef|ifndef)\\b.*\\b(?:OS_[A-Z]+|WIN32|_WIN32|_WIN64|__APPLE__|__MACH__|__linux__|__linux|__ANDROID__|ANDROID|TARGET_OS_\\w+)\\b"
+    rules: "docs/knowledge_base/rules/cxx/use-build-config-platform-buildflags.md"
+  }
+  # Asserts that a feature is enabled.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bD?CHECK\\s*\\(\\s*!?\\s*(?:base::)?FeatureList::IsEnabled\\s*\\("
+    content_patterns: "\\bD?CHECK\\s*\\(\\s*!?\\s*(?:[\\w:]+::)?Is\\w*Enabled\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx/feature-flag-checks-at-entry-points.md"
+  }
+  # Static and global variables.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bstatic\\s+[\\w:<>]+[*&]?\\s+\\w+\\s*(?:=|;|\\{)"
+    content_patterns: "^\\s*(?:[\\w:<>]+[*&]?\\s+)+g_\\w+\\s*(?:=[^=]|;|\\{)"
+    rules: "docs/knowledge_base/rules/cxx/no-static-per-profile-state.md"
+  }
+  # Reads environment variables.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\b(?:getenv|secure_getenv|_wgetenv)\\s*\\("
+    content_patterns: "\\bbase::Environment\\b"
+    content_patterns: "\\bGetEnvironmentVariable[AW]?\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx/no-environment-variable-config.md"
+  }
+  # Defines enums and constants that may mirror Mojo.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm|java|ts|tsx|js)"
+    content_patterns: "^\\s*(?:export\\s+)?(?:const\\s+)?enum\\s+(?:class\\s+)?\\w+"
+    content_patterns: "\\bstatic\\s+final\\s+(?:int|long|String)\\s+[A-Z][A-Z0-9_]*\\s*="
+    content_patterns: "@(?:IntDef|StringDef)\\b"
+    content_patterns: "^\\s*export\\s+const\\s+[A-Z][A-Z0-9_]*\\s*="
+    rules: "docs/knowledge_base/rules/cxx/use-mojo-generated-constants.md"
+  }
+  # Uses rapidjson.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "(?:.*/)?BUILD\\.gn|(?:.*/)?[^/]*\\.gni"
+    path_expression: "(?:.*/)?DEPS"
+    content_patterns: "\\brapidjson\\b"
+    rules: "docs/knowledge_base/rules/cxx/no-rapidjson.md"
+  }
+  # Logging statements.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\b(?:D?V?P?LOG|D?V?P?LOG_IF|SYSLOG|LOG_STREAM)\\s*\\("
+    content_patterns: "\\bstd::(?:cout|cerr|clog)\\b"
+    content_patterns: "\\bf?printf\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx/dvlog-for-retained-logging.md"
+    rules: "docs/knowledge_base/rules/cxx/no-sensitive-data-in-logs.md"
+  }
+  # LOG(ERROR).
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\b(?:LOG|PLOG|LOG_IF|PLOG_IF)\\s*\\(\\s*ERROR\\b"
+    rules: "docs/knowledge_base/rules/cxx/no-log-error-for-non-critical-failures.md"
+  }
+  # Release-build logging and crash keys.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\b(?:LOG|PLOG|LOG_IF|PLOG_IF)\\s*\\(\\s*(?:ERROR|WARNING|INFO)\\b"
+    content_patterns: "\\bSCOPED_CRASH_KEY_\\w+\\s*\\("
+    content_patterns: "\\b(?:Allocate|Set|Clear)CrashKeyString\\s*\\("
+    content_patterns: "\\bScopedCrashKeyString\\b"
+    rules: "docs/knowledge_base/rules/cxx/crash-keys-for-crash-diagnostics.md"
+  }
+  # Guards a log with VLOG_IS_ON.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bVLOG_IS_ON\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx/no-vlog-is-on-guards.md"
+  }
+  # VLOG statements.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bD?VLOG(?:_IF)?\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx/vlog-component-name-matches-directory.md"
+  }
+  # Work on the UI thread and other potentially slow paths, outside tests.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest|_test_utils?|_test_helpers?|_test_support)\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?test/.*"
+    content_patterns: "\\b\\w+OnUI(?:Thread)?\\s*\\("
+    content_patterns: "\\bBrowserThread::UI\\b"
+    content_patterns: "\\bGetUIThreadTaskRunner\\s*\\("
+    content_patterns: "\\bSCOPED_UMA_HISTOGRAM_\\w*TIMER\\w*\\s*\\("
+    content_patterns: "\\bJSONReader::\\w+\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx/scoped-uma-timer-for-slow-paths.md"
+  }
+  # A public: label in a struct.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    ast_patterns: "{kind: access_specifier, regex: '^public', inside: {kind: field_declaration_list, inside: {kind: struct_specifier}}}"
+    rules: "docs/knowledge_base/rules/cxx/no-public-label-in-structs.md"
+  }
+  # Singletons, outside tests.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest|_test_utils?|_test_helpers?|_test_support)\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?test/.*"
+    content_patterns: "\\bNoDestructor<"
+    content_patterns: "\\bGetInstance\\s*\\(\\s*\\)"
+    content_patterns: "\\bbase::Singleton<"
+    content_patterns: "\\bDefaultSingletonTraits<"
+    rules: "docs/knowledge_base/rules/cxx/global-features-over-no-destructor.md"
+  }
+  # Percentages and divisions scaled by 100.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "(?i)\\b\\w*(?:percent|pct)\\w*\\b"
+    content_patterns: "[\\w)\\]]\\s*/\\s*[\\w(][^;]*\\*\\s*100(?:\\.0*)?f?\\b"
+    rules: "docs/knowledge_base/rules/cxx/multiply-before-dividing-in-percentages.md"
+  }
+  # Lambdas whose body spans several lines.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\[[^\\]]*\\]\\s*\\([^)]*\\)\\s*(?:mutable\\s*)?(?:->\\s*[\\w:<>*&]+\\s*)?\\{\\s*$"
+    content_patterns: "\\[[^\\]]*\\]\\s*\\{\\s*$"
+    rules: "docs/knowledge_base/rules/cxx/named-functions-over-complex-lambdas.md"
+  }
+  # Variables declared auto.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bauto\\b[*&\\s]*\\w+\\s*="
+    rules: "docs/knowledge_base/rules/cxx/auto-only-for-verbose-types.md"
+  }
+  # Members with default initializers.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "^\\s*[\\w:<>,*&\\s]*[\\w>*&]\\s+\\w+_\\s*(?:=\\s*[^=;][^;]*|\\{[^};]*\\})\\s*;"
+    rules: "docs/knowledge_base/rules/cxx/no-default-member-init-when-ctor-sets.md"
+  }
+  # Uses std::variant.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\b(?:std|absl)::variant<"
+    rules: "docs/knowledge_base/rules/cxx/overloads-over-variant-parameters.md"
+  }
+  # Loops over observer lists.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bfor\\s*\\([^:;]*:\\s*\\*?\\w*observers?\\w*\\s*\\)"
+    rules: "docs/knowledge_base/rules/cxx/observer-list-notify.md"
+  }
+  # Builds or runs JavaScript from C++, outside tests.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest|_test_utils?|_test_helpers?|_test_support)\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?test/.*"
+    content_patterns: "\\bExecuteJavaScript\\w*\\s*\\("
+    content_patterns: "\\bExecuteScript\\w*\\s*\\("
+    content_patterns: "\\bEvaluateJavaScript\\w*\\s*\\("
+    content_patterns: "\\bRequestExecuteScript\\s*\\("
+    content_patterns: "\\bCallJavascriptFunction\\w*\\s*\\("
+    content_patterns: "\"[^\"]*\\b(?:const|let|var|function|window|document)\\b[^\"]*\"\\s*\\+"
+    content_patterns: "\\b(?:StrCat|StringPrintf|StrFormat|ReplaceStringPlaceholders)\\s*\\(\\s*\\{?\\s*\"[^\"]*\\b(?:const|let|var|function|window|document)\\b"
+    rules: "docs/knowledge_base/rules/cxx/json-encode-data-injected-into-javascript.md"
+  }
+  # Uses the deprecated ExecuteScriptAndExtract* test functions.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bExecuteScriptAndExtract\\w*\\s*\\("
+    content_patterns: "\\bdomAutomationController\\b"
+    rules: "docs/knowledge_base/rules/cxx/evaljs-over-execute-script-and-extract.md"
+  }
+  # Casts to Profile*.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\b(?:static|reinterpret|dynamic)_cast<\\s*(?:const\\s+)?Profile\\s*\\*\\s*>"
+    content_patterns: "\\(\\s*Profile\\s*\\*\\s*\\)\\s*\\w"
+    rules: "docs/knowledge_base/rules/cxx/profile-from-browser-context.md"
+  }
+  # Constructs GURLs, outside tests.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest|_test_utils?|_test_helpers?|_test_support)\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?test/.*"
+    content_patterns: "\\bGURL\\s+\\w+\\s*[({]"
+    content_patterns: "\\bGURL\\s*[({]\\s*[^)}\\s]"
+    rules: "docs/knowledge_base/rules/cxx/check-gurl-is-valid.md"
+  }
+  # Death tests.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "\\b\\w*_DEATH\\w*\\s*\\("
+    content_patterns: "\\b\\w*DeathTest\\b"
+    rules: "docs/knowledge_base/rules/cxx/death-test-suite-suffix.md"
+  }
+  # const TimeDelta constants.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bconst\\s+(?:base::)?TimeDelta\\s+k[A-Z]\\w*"
+    content_patterns: "\\bconst\\s+auto\\s+k[A-Z]\\w*\\s*=\\s*base::(?:Days|Hours|Minutes|Seconds|Milliseconds|Microseconds|Nanoseconds)\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx/constexpr-time-delta-constants.md"
+  }
+  # Removes features, prefs or strings.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "(?:.*/)?[^/]*\\.grdp?"
+    diff_patterns: "^-.*\\bBASE_(?:DECLARE_)?FEATURE\\s*\\("
+    diff_patterns: "^-.*\\bRegister\\w*Pref\\s*\\("
+    diff_patterns: "^-.*\\bFeatureList::IsEnabled\\s*\\("
+    diff_patterns: "^-\\s*<message\\s+name=\"IDS_"
+    rules: "docs/knowledge_base/rules/cxx/migrate-prefs-of-removed-features.md"
+    rules: "docs/knowledge_base/rules/cxx/remove-dead-code-with-removed-features.md"
+  }
+  # Decides from URLs or origins, outside tests.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest|_test_utils?|_test_helpers?|_test_support)\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?test/.*"
+    content_patterns: "\\burl::Origin::Create\\s*\\("
+    content_patterns: "\\burl::SchemeHostPort\\s*\\("
+    content_patterns: "\\bGetLastCommittedURL\\s*\\("
+    content_patterns: "\\bGetLastCommittedOrigin\\s*\\("
+    content_patterns: "\\bGetSecurityOrigin\\s*\\("
+    content_patterns: "\\bSecurityOrigin\\b"
+    content_patterns: "\\binitiator_origin\\b"
+    content_patterns: "\\.opaque\\s*\\(\\s*\\)"
+    rules: "docs/knowledge_base/rules/cxx/origin-not-url-for-security-decisions.md"
+    rules: "docs/knowledge_base/rules/cxx/opaque-origin-frames-default-restricted.md"
+  }
+  # Conditionals and loops without braces.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "^\\s*(?:\\}\\s*)?(?:if|for|while|else\\s+if)\\s*\\(.*\\)\\s*$"
+    content_patterns: "^\\s*(?:\\}\\s*)?else\\s*$"
+    content_patterns: "^\\s*(?:if|for|while)\\s*\\(.*\\)\\s*[^\\s{].*;\\s*$"
+    rules: "docs/knowledge_base/rules/cxx/no-missing-brace-review-comments.md"
+  }
+  # Comparisons with the constant first.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "[(&|]\\s*(?:-?\\d+(?:\\.\\d+)?[uUlLfF]*|nullptr|true|false|k[A-Z]\\w*)\\s*[!=]=\\s*[\\w(*]"
+    rules: "docs/knowledge_base/rules/cxx/no-yoda-conditions.md"
+  }
+}
