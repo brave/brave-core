@@ -52,6 +52,10 @@ def _brave_core_revision(build: dict) -> str:
 
 _EXIT_CODE = re.compile(r'Process exited with code (\d+)')
 
+# The time before each log line. The severity after it (`i:`, `W:`, `E:`) is
+# kept.
+_TIMESTAMP = re.compile(r'^\[\d\d:\d\d:\d\d\]', re.MULTILINE)
+
 
 def _failed_step_tail(log: str) -> str:
     """The lines of a build log leading up to the first step that exited
@@ -140,7 +144,7 @@ class TeamCityCi:
         tests = self._failed_tests(teamcity_id, build.get('branchName', ''))
         log_tail = ''
         if step_problems:
-            log = self._log(teamcity_id)
+            log = self._log(teamcity_id, timestamps=False)
             log_tail = failures.with_fatal_line(log, _failed_step_tail(log))
         return FailedBuild(
             name=build.get('buildTypeId', str(teamcity_id)),
@@ -233,14 +237,16 @@ class TeamCityCi:
             lines.append(line)
         return tuple(lines)
 
-    def full_log(self, url: str) -> str:
-        """The whole build log of the build at `url`."""
-        return self._log(_build_id(url))
+    def full_log(self, url: str, *, timestamps: bool = True) -> str:
+        """The whole build log of the build at `url`, without its lines'
+        timestamps if asked."""
+        return self._log(_build_id(url), timestamps=timestamps)
 
-    def _log(self, build: int) -> str:
-        return self._cli(
+    def _log(self, build: int, *, timestamps: bool) -> str:
+        log = self._cli(
             'api', '--raw', f'/downloadBuildLog.html?buildId={build}&plain=true'
         )
+        return log if timestamps else _TIMESTAMP.sub('', log)
 
     def rerun(self, url: str) -> str:
         """Queues the build at `url` again, with the same job, branch,
