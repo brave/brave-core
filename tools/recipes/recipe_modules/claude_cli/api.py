@@ -39,6 +39,8 @@ class ClaudeCliApi(RecipeApi):
         log_dir: Path | config_types.Path,
         add_dirs: Iterable[str | Path | config_types.Path] = (),
         allowed_tools: Iterable[str] = (),
+        must_read: Iterable[str | Path | config_types.Path] = (),
+        report: Path | config_types.Path | None = None,
     ) -> StepData:
         """Run Claude on *prompt* as the step named *name*, until it finishes.
 
@@ -54,6 +56,10 @@ class ClaudeCliApi(RecipeApi):
             add_dirs: Directories Claude may work in, beyond its cwd.
             allowed_tools: Tool permission rules that skip auto mode's review,
                 e.g. `Edit(/<dir>/**)`.
+            must_read: Files the prompt asks Claude to read in full; those it
+                didn't read all of itself are named at the end, and in
+                *report*.
+            report: Where to name them.
 
         Returns:
             The step's `StepData`.
@@ -65,6 +71,12 @@ class ClaudeCliApi(RecipeApi):
             log_dir / STREAM_LOG,
             '--logs',
             log_dir,
+        ]
+        for path in must_read:
+            cmd += ['--must-read', path]
+        if report is not None:
+            cmd += ['--report', report]
+        cmd += [
             '--',
             'claude',
             '--print',

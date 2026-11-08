@@ -47,11 +47,13 @@ def RunSteps(api: DEPS):
         log_dir=log_dir,
         add_dirs=[checkout],
         allowed_tools=[f'Edit(/{checkout}/**)', f'Write(/{checkout}/**)'],
+        must_read=[checkout / 'brave/tools/cr/autolift/SKILL.md'],
+        report=log_dir / 'report.md',
     )
 
 
 def GenTests(api: TEST_DEPS):
-    # Every option: extra dirs and pre-approved tools.
+    # Every option: extra dirs, pre-approved tools, and files to read in full.
     yield api.test(
         'full',
         api.claude_cli.prompt_matches('claude', r'Fix the build\..*`src`\.'),
