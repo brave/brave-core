@@ -48,7 +48,7 @@ TEST(BitcoinTxMeta, ToTransactionInfo) {
   EXPECT_EQ(ti->chain_id, meta.chain_id());
   EXPECT_EQ(ti->from_account_id, btc_account_id);
   EXPECT_EQ(ti->tx_status, meta.status());
-  EXPECT_TRUE(ti->tx_data_union->is_btc_tx_data());
+  ASSERT_TRUE(ti->tx_data_union->is_btc_tx_data());
   EXPECT_EQ(meta.created_time(), ti->created_time);
   EXPECT_EQ(meta.submitted_time(), ti->submitted_time);
   EXPECT_EQ(meta.confirmed_time(), ti->confirmed_time);
@@ -58,11 +58,11 @@ TEST(BitcoinTxMeta, ToTransactionInfo) {
   EXPECT_EQ(tx_data->to, "tb1qva8clyftt2fstawn5dy0nvrfmygpzulf3lwulm");
   EXPECT_EQ(tx_data->amount, 200000ULL);
   EXPECT_EQ(tx_data->fee, 1000ULL);
-  EXPECT_EQ(tx_data->inputs.size(), 1u);
+  ASSERT_EQ(tx_data->inputs.size(), 1u);
   EXPECT_EQ(tx_data->inputs[0]->address,
             "tb1q56kslnp386v43wpp6wkpx072ryud5gu865efx8");
   EXPECT_EQ(tx_data->inputs[0]->value, 200000ULL);
-  EXPECT_EQ(tx_data->outputs.size(), 1u);
+  ASSERT_EQ(tx_data->outputs.size(), 1u);
   EXPECT_EQ(tx_data->outputs[0]->address,
             "tb1qva8clyftt2fstawn5dy0nvrfmygpzulf3lwulm");
   EXPECT_EQ(tx_data->outputs[0]->value, 200000ULL - 1000);
