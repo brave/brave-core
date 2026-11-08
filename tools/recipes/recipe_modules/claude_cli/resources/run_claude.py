@@ -227,6 +227,67 @@ def format_event(event: dict[str, Any]) -> list[str]:
     return [f'{indent}{line}' if line else '' for line in lines]
 
 
+# A line of a Read result: its number, a tab, then the file's line.
+_READ_LINE_RE = re.compile(r'^\s*(\d+)\t', re.MULTILINE)
+
+
+def _ranges(numbers: list[int]) -> str:
+    """`3-5, 9` for [3, 4, 5, 9]."""
+    spans: list[list[int]] = []
+    for number in numbers:
+        if spans and number == spans[-1][1] + 1:
+            spans[-1][1] = number
+        else:
+            spans.append([number, number])
+    return ', '.join(f'{a}-{b}' if a != b else str(a) for a, b in spans)
+
+
+class RequiredReads:
+    """Which lines of each of *paths* Claude read itself, with the Read tool:
+    a subagent's reads, or a summary, don't count."""
+
+    def __init__(self, paths: list[Path]) -> None:
+        self._lines = {
+            path.resolve(): len(path.read_text(encoding='utf-8').splitlines())
+            for path in paths
+        }
+        self._seen: dict[Path, set[int]] = {path: set() for path in self._lines}
+        # Read calls awaiting their result: tool use id -> file.
+        self._pending: dict[str, Path] = {}
+
+    def handle(self, event: dict[str, Any]) -> None:
+        if event.get('parent_tool_use_id'):
+            return
+        blocks = (event.get('message') or {}).get('content') or []
+        for block in blocks:
+            if not isinstance(block, dict):
+                continue
+            if block.get('type') == 'tool_use' and block.get('name') == 'Read':
+                path = (block.get('input') or {}).get('file_path')
+                if path and Path(path).resolve() in self._lines:
+                    self._pending[block.get('id')] = Path(path).resolve()
+            elif block.get('type') == 'tool_result':
+                path = self._pending.pop(block.get('tool_use_id'), None)
+                if path is not None and not block.get('is_error'):
+                    text = _result_text(block.get('content'))
+                    self._seen[path].update(
+                        int(n) for n in _READ_LINE_RE.findall(text)
+                    )
+
+    def missed(self) -> list[str]:
+        """A line for each file Claude didn't read all of, saying what it
+        missed."""
+        found = []
+        for path, count in self._lines.items():
+            missed = sorted(set(range(1, count + 1)) - self._seen[path])
+            if missed:
+                found.append(
+                    f'- `{path}`: {len(missed)} of {count} lines not read '
+                    f'({_ranges(missed)})'
+                )
+        return found
+
+
 def parse_line(line: str) -> dict[str, Any] | None:
     """The event on one line of the stream, or None for any other line."""
     try:
@@ -315,12 +376,16 @@ class Digest:
     the logs in *logs_dir*, if given."""
 
     def __init__(
-        self, emit: Callable[[str], None], logs_dir: Path | None = None
+        self,
+        emit: Callable[[str], None],
+        logs_dir: Path | None = None,
+        reads: RequiredReads | None = None,
     ) -> None:
         self._lock = threading.Lock()
         self._print = emit
         self._followers: dict[str, Follower] = {}
         self._logs = LogsFollower(logs_dir, self.emit) if logs_dir else None
+        self._reads = reads
         self.failed = False
         # Background work stopped with no turn of Claude's after it: Claude
         # stopped what it was waiting on, rather than the work finishing.
@@ -354,6 +419,8 @@ class Digest:
             self.abandoned.clear()
         if event.get('type') == 'result' and event.get('is_error'):
             self.failed = True
+        if self._reads is not None:
+            self._reads.handle(event)
         for text in format_event(event):
             self.emit(text)
         for task_id, path in background_commands(event):
@@ -474,17 +541,25 @@ def _exit_on_signal(signum: int, _frame: Any) -> None:
     raise SystemExit(128 + signum)
 
 
-def run(cmd: list[str], log: Path, logs_dir: Path | None = None) -> int:
+def run(
+    cmd: list[str],
+    log: Path,
+    logs_dir: Path | None = None,
+    must_read: list[Path] | None = None,
+    report: Path | None = None,
+) -> int:
     """Runs *cmd*, logging its stream to *log* and printing the digest.
 
     Whatever *cmd* leaves running when it exits, or when this is stopped, is
-    stopped too.
+    stopped too. Each of *must_read* that Claude didn't read all of itself is
+    named at the end, and in *report*, if given.
 
     Returns the exit code: Claude's own, or 1 if it reported an error result
     while exiting 0.
     """
     log.parent.mkdir(parents=True, exist_ok=True)
-    digest = Digest(lambda text: print(text, flush=True), logs_dir)
+    reads = RequiredReads(must_read) if must_read else None
+    digest = Digest(lambda text: print(text, flush=True), logs_dir, reads)
 
     def pump(stream, log_file) -> None:
         for line in stream:
@@ -527,6 +602,19 @@ def run(cmd: list[str], log: Path, logs_dir: Path | None = None) -> int:
         )
         for task in digest.abandoned:
             digest.emit(f'  ⏹ {task}')
+    if reads is not None and (missed := reads.missed()):
+        section = [
+            '## Instructions not read in full',
+            '',
+            'Claude did not read all of these itself, with the Read tool:',
+            '',
+            *missed,
+        ]
+        for line in section:
+            digest.emit(line)
+        if report is not None:
+            with report.open('a', encoding='utf-8') as file:
+                file.write('\n' + '\n'.join(section) + '\n')
     return returncode or int(digest.failed or bool(digest.abandoned))
 
 
@@ -537,6 +625,17 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument(
         '--logs', type=Path, help='A directory whose `*.log` files to follow.'
+    )
+    parser.add_argument(
+        '--must-read',
+        type=Path,
+        action='append',
+        help='A file Claude must read in full itself (repeatable).',
+    )
+    parser.add_argument(
+        '--report',
+        type=Path,
+        help='Where to say which of `--must-read` Claude did not read.',
     )
     parser.add_argument('cmd', nargs='+', help='The claude command, after --.')
     args = parser.parse_args(argv)
@@ -554,7 +653,7 @@ def main(argv: list[str] | None = None) -> int:
     if os.getppid() != engine:
         # The engine was gone before the death signal was armed.
         return 1
-    return run(args.cmd, args.log, args.logs)
+    return run(args.cmd, args.log, args.logs, args.must_read, args.report)
 
 
 if __name__ == '__main__':
