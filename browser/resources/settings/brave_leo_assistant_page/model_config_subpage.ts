@@ -125,6 +125,8 @@ class ModelConfigSubpage extends ModelConfigSubpageBase {
       this.shadowRoot!.querySelector('#model-config-ui') as unknown as {
         isUrlInvalid: boolean
         invalidUrlErrorMessage: string
+        showApiKeyError(message: string): void
+        saveErrorMessage: string
       }
 
     if (!e.detail.modelConfig.options.customModelOptions) {
@@ -132,6 +134,7 @@ class ModelConfigSubpage extends ModelConfigSubpageBase {
       return
     }
 
+    modelConfigElement.saveErrorMessage = ''
     let response = null
     if (isEditing) {
       response = await this.browserProxy_
@@ -151,6 +154,24 @@ class ModelConfigSubpage extends ModelConfigSubpageBase {
       modelConfigElement.invalidUrlErrorMessage = this.i18n(
         'braveLeoAssistantEndpointError'
       )
+      return
+    }
+
+    if (response.result === OperationResult.EncryptionFailed) {
+      modelConfigElement.showApiKeyError(
+        this.i18n('braveLeoAssistantApiKeyEncryptionError'))
+      return
+    }
+
+    if (response.result === OperationResult.DecryptionFailed) {
+      modelConfigElement.showApiKeyError(
+        this.i18n('braveLeoAssistantApiKeyDecryptionError'))
+      return
+    }
+
+    if (response.result !== OperationResult.Success) {
+      modelConfigElement.saveErrorMessage =
+        this.i18n('braveLeoAssistantModelSaveError')
       return
     }
 

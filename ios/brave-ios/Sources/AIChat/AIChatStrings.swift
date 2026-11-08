@@ -581,6 +581,27 @@ extension Strings {
       value: "Invalid context size",
       comment: "The error message shown when the context size is invalid"
     )
+    public static let customModelFormEncryptionErrorMessage = NSLocalizedString(
+      "aichat.customModelFormEncryptionErrorMessage",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Couldn't securely save your API key. Try again.",
+      comment: "The error message when a custom model API key could not be encrypted and saved"
+    )
+    public static let customModelFormDecryptionErrorMessage = NSLocalizedString(
+      "aichat.customModelFormDecryptionErrorMessage",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Couldn't read your saved API key. Try again or re-enter it.",
+      comment: "The error message when a stored custom model API key could not be read"
+    )
+    public static let customModelFormSaveErrorMessage = NSLocalizedString(
+      "aichat.customModelFormSaveErrorMessage",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Couldn't save this model. Try again.",
+      comment: "The error message when saving a custom model fails for another reason"
+    )
     public static let customModelFormPrivateEndpointErrorMessage = NSLocalizedString(
       "aichat.customModelFormPrivateEndpointErrorMessage",
       tableName: "BraveLeo",

@@ -332,6 +332,12 @@ void OAIAPIClient::PerformRequest(
   CHECK(model_options.is_custom_model_options());
   const auto& opts = *model_options.get_custom_model_options();
 
+  if (opts.api_key_unavailable) {
+    std::move(completed_callback)
+        .Run(base::unexpected(mojom::APIError::InternalError));
+    return;
+  }
+
   if (!opts.endpoint.is_valid()) {
     std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
     return;

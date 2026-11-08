@@ -1864,6 +1864,15 @@
   <message name="IDS_SETTINGS_LEO_ASSISTANT_PROXY_NOTE" desc="A note for users when adding model server info">
     Brave doesn't proxy these requests, please read privacy terms of the chosen provider.
   </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_API_KEY_ENCRYPTION_ERROR" desc="Error at the API key field when a custom model API key cannot be securely stored. The form remains open for retry.">
+    Couldn't securely save your API key. Try again.
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_API_KEY_DECRYPTION_ERROR" desc="Error at the API key field when a saved custom model key could not be read. The original encrypted key is preserved.">
+    Couldn't read your saved API key. Try again or re-enter it.
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_MODEL_SAVE_ERROR" desc="Error when a custom model cannot be saved, for example because it was removed while its form was open.">
+    Couldn't save this model. Try again.
+  </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_ENDPOINT_ERROR" desc="An error note for users when url is invalidated">
     Non-local endpoints should employ the HTTPS protocol for secure data transmission.
   </message>

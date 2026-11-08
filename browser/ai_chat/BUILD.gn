@@ -406,6 +406,7 @@ source_set("browser_tests") {
       "ai_chat_policy_browsertest.cc",
       "ai_chat_profiles_enabled_browsertest.cc",
       "ai_chat_render_view_context_menu_browsertest.cc",
+      "ai_chat_settings_helper_browsertest.cc",
       "ai_chat_sidepanel_behavior_browsertest.cc",
       "ai_chat_ui_browsertest.cc",
       "code_execution_tool_browsertest.cc",
@@ -445,6 +446,7 @@ source_set("browser_tests") {
       "//chrome/browser/glic/actor",
       "//chrome/browser/pdf:pdf_extension_test_utils",
       "//chrome/browser/screen_ai:screen_ai_install_state",
+      "//chrome/browser/tab_list",
       "//chrome/browser/ui:browser_window_header",
       "//chrome/browser/ui/animation",
       "//chrome/browser/ui/browser_window",
@@ -456,6 +458,8 @@ source_set("browser_tests") {
       "//chrome/test:test_support_ui",
       "//components/history/core/browser",
       "//components/history_embeddings/core",
+      "//components/os_crypt/async/browser:test_support",
+      "//components/prefs",
       "//printing/buildflags",
       "//services/screen_ai/buildflags",
       "//services/screen_ai/public/cpp:utilities",
@@ -468,7 +472,6 @@ source_set("browser_tests") {
       deps += [
         "//brave/components/history_embeddings:test_support",
         "//brave/components/local_ai/core",
-        "//components/prefs",
       ]
     }
 
