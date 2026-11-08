@@ -1,0 +1,22 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# These tests intentionally call CoCreateInstance with COM uninitialized.
+# On Brave's Windows ASan bots, that error path grows the CRT exit-handler
+# table through _register_onexit_function -> _recalloc_base -> _msize_base.
+# ASan's HeapSize interceptor rejects the existing buffer as not owned by ASan,
+# aborting before the tests can check CO_E_NOTINITIALIZED. The COM test code is
+# unmodified upstream code; COM hook patching is compiled out on x64.
+# All 288 reports are Windows x64 ASan failures. Upstream LUCI Analysis shows
+# 0% failures/flakes over 30 days (2026-11-05); each test has 530 passing Windows
+# ASan runs, all on Windows-10-19045. Filter only Windows ASan for this failure.
+# https://github.com/brave/brave-browser/issues/58155
+# https://github.com/brave/brave-browser/issues/58156
+# https://github.com/brave/brave-browser/issues/58157
+# https://github.com/brave/brave-browser/issues/58158
+-ComInitCheckHook.AssertNotInitialized
+-ComInitCheckHook.HookRemoval
+-ComInitCheckHook.MultipleHooks
+-TestComInitBalancer.UnbalancedPairsWithComBalancerDisabled

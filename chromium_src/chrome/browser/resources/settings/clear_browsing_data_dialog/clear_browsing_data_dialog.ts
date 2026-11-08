@@ -6,6 +6,8 @@
 import 'chrome://resources/cr_elements/cr_tabs/cr_tabs.js'
 
 import { injectStyle } from '//resources/brave/lit_overriding.js'
+// renderBraveTabs_() below renders the template, see its comment.
+// eslint-disable-next-line @webui-eslint/lit-element-structure
 import { css, html } from '//resources/lit/v3_0/lit.rollup.js'
 import type {
   PropertyValues, TemplateResult
@@ -106,8 +108,15 @@ function withLeoAssistantOption(options: BrowsingDataTypeOption[]) {
 const TAB_INDEX_DELETE_NOW = 0
 const TAB_INDEX_ON_EXIT = 1
 
+// Upstream's HTMLElementTagNameMap entry for this tag points at the upstream
+// class, and TypeScript rejects a second entry with a different type.
+// eslint-disable-next-line @webui-eslint/lit-element-structure
 class SettingsClearBrowsingDataDialogElement extends
     SettingsClearBrowsingDataDialogElementChromium {
+  static override get is() {
+    return 'settings-clear-browsing-data-dialog'
+  }
+
   static override get properties() {
     return {
       ...super.properties,
@@ -120,7 +129,7 @@ class SettingsClearBrowsingDataDialogElement extends
     }
   }
 
-  override accessor tabNames_: string[] = [
+  override tabNames_: string[] = [
     loadTimeData.getString('clearBrowsingData'),
     loadTimeData.getString('onExitPageTitle'),
   ]
@@ -160,18 +169,6 @@ class SettingsClearBrowsingDataDialogElement extends
     this.moreBrowsingDataTypeOptionsList_ = []
   }
 
-  override firstUpdated(changedProperties: PropertyValues<this>) {
-    super.firstUpdated(changedProperties)
-
-    this.addWebUiListener(
-        'brave-rewards-enabled-changed', (enabled: boolean) => {
-          this.braveRewardsEnabled_ = enabled
-        })
-    this.braveBrowserProxy_.getBraveRewardsEnabled().then((enabled) => {
-      this.braveRewardsEnabled_ = enabled
-    })
-  }
-
   override willUpdate(changedProperties: PropertyValues<this>) {
     super.willUpdate(changedProperties)
 
@@ -191,6 +188,18 @@ class SettingsClearBrowsingDataDialogElement extends
     this.expandedBrowsingDataTypeOptionsList_ =
         withLeoAssistantOption(this.expandedBrowsingDataTypeOptionsList_)
     // </if>
+  }
+
+  override firstUpdated(changedProperties: PropertyValues<this>) {
+    super.firstUpdated(changedProperties)
+
+    this.addWebUiListener(
+        'brave-rewards-enabled-changed', (enabled: boolean) => {
+          this.braveRewardsEnabled_ = enabled
+        })
+    this.braveBrowserProxy_.getBraveRewardsEnabled().then((enabled) => {
+      this.braveRewardsEnabled_ = enabled
+    })
   }
 
   // The lit_mangler can't inject a `.tabNames` binding itself: JSDOM lowercases

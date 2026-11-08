@@ -67,10 +67,6 @@
     *** mReferenceButtonData;
 }
 
--keep class org.chromium.chrome.browser.undo_tab_close_snackbar.UndoBarController {
-    *** showUndoBar(...);
-}
-
 -keep class org.chromium.chrome.browser.tabbed_mode.TabbedNavigationBarColorController {
     private *** getNavigationBarColor(...);
     *** useActiveTabColor(...);

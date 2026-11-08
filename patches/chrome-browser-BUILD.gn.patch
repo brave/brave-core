@@ -1,37 +1,21 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 814b9d649a31646c7bc072d882a5e11b70d5d6d6..32e664e949e50bb8d678f5704080b60849801c5a 100644
+index f0f529901a3fcde87402a508a627cdfc2419be42..18d28c041cf4f08eef35d03ea069f4a086996310 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -2,6 +2,7 @@
- # Use of this source code is governed by a BSD-style license that can be
- # found in the LICENSE file.
- 
-+import("//brave/browser/sources.gni")
- import("//base/allocator/allocator.gni")
- import("//build/buildflag_header.gni")
- import("//build/config/buildflags_paint_preview.gni")
-@@ -2223,6 +2224,7 @@ source_set("browser") {
-     # should be added to browser_generated_files.
-     ":browser_public_dependencies",
-     ":core",
+@@ -2212,6 +2212,7 @@ source_set("browser") {
+   public_deps = [
+     ":browser_features",
+     ":buildflags",
 +    "//brave/browser:core",
      "//chrome/browser/accessibility/accessibility_prefs",
      "//chrome/browser/browsing_data",
      "//chrome/browser/download",
-@@ -3592,7 +3594,7 @@ source_set("browser") {
+@@ -4119,7 +4120,7 @@ source_set("browser") {
  
    # TODO(https://crbug.com/356905053): Add more dependencies here and merge this
    # block with the `enable_extensions` block above.
 -  if (enable_desktop_android_extensions) {
 +  if (is_android && enable_extensions_core) {
-     deps += [ "//chrome/browser/ui/android/extensions" ]
-   }
- 
-@@ -5342,6 +5344,7 @@ group("browser_public_dependencies") {
-     "//sql",
-     "//ui/lottie",
-   ]
-+  public_deps += brave_chrome_browser_public_deps
-   if (is_android) {
-     public_deps += [
-       "//chrome/android/features/dev_ui:buildflags",
+     deps += [
+       "//chrome/browser/ui/android/extensions",
+       "//chrome/browser/ui/android/extensions/browser_window_helper/internal",

@@ -33,7 +33,6 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
-import org.chromium.chrome.browser.app.tabwindow.TabWindowManagerSingleton;
 import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.bookmarks.TabBookmarker;
@@ -51,7 +50,7 @@ import org.chromium.chrome.browser.data_sharing.DataSharingTabManager;
 import org.chromium.chrome.browser.ephemeraltab.EphemeralTabCoordinator;
 import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
-import org.chromium.chrome.browser.glic.GlicButtonDelegate;
+import org.chromium.chrome.browser.glic.toolbar_button.GlicButtonDelegate;
 import org.chromium.chrome.browser.homepage.HomepageManager;
 import org.chromium.chrome.browser.hub.HubManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
@@ -59,6 +58,7 @@ import org.chromium.chrome.browser.layouts.LayoutType;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.merchant_viewer.MerchantTrustSignalsCoordinator;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
+import org.chromium.chrome.browser.ntp.BraveNewTabPage;
 import org.chromium.chrome.browser.omnibox.LocationBar;
 import org.chromium.chrome.browser.omnibox.OmniboxChipManager;
 import org.chromium.chrome.browser.omnibox.suggestions.action.OmniboxActionDelegateImpl;
@@ -68,12 +68,14 @@ import org.chromium.chrome.browser.readaloud.ReadAloudController;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
+import org.chromium.chrome.browser.tab_group_sync.TabGroupSyncServiceFactory;
 import org.chromium.chrome.browser.tab_ui.TabContentManager;
 import org.chromium.chrome.browser.tab_ui.TabModelDotInfo;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabClosureParams;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.chrome.browser.tasks.tab_management.GroupWindowChecker;
 import org.chromium.chrome.browser.tasks.tab_management.TabGroupUiOneshotSupplier;
 import org.chromium.chrome.browser.theme.BottomUiThemeColorProvider;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
@@ -113,6 +115,7 @@ import org.chromium.components.browser_ui.widget.scrim.ScrimManager;
 import org.chromium.components.embedder_support.contextmenu.ContextMenuPopulatorFactory;
 import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.omnibox.AutocompleteInput;
+import org.chromium.components.tab_group_sync.TabGroupSyncService;
 import org.chromium.content_public.browser.selection.SelectionDropdownMenuDelegate;
 import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 import org.chromium.ui.base.ActivityResultTracker;
@@ -451,7 +454,21 @@ public class BraveToolbarManager extends ToolbarManager
                                 id -> ((ChromeActivity) mActivity).onOptionsItemSelected(id, null),
                                 mProfileSupplier,
                                 mTabModelSelectorSupplier,
-                                TabWindowManagerSingleton.getInstance()),
+                                (tabModel, currentTabGroupId) -> {
+                                    Profile modelProfile = tabModel.getProfile();
+                                    if (modelProfile == null) {
+                                        return false;
+                                    }
+                                    TabGroupSyncService syncService =
+                                            !modelProfile.isOffTheRecord()
+                                                    ? TabGroupSyncServiceFactory.getForProfile(
+                                                            modelProfile)
+                                                    : null;
+                                    GroupWindowChecker windowChecker =
+                                            new GroupWindowChecker(
+                                                    mActivity, syncService, tabModel);
+                                    return windowChecker.hasOtherGroups(currentTabGroupId);
+                                }),
                         mActivityTabProvider,
                         mToolbarTabController::openHomepage,
                         mCallbackController.makeCancelable(
@@ -646,6 +663,20 @@ public class BraveToolbarManager extends ToolbarManager
         if (isToolbarPhone()) {
             updateBraveBottomControlsVisibility(hasFocus);
         }
+        if (hasFocus) {
+            dismissNtpTopSitesTooltip();
+        }
+    }
+
+    // The NTP's top-sites tooltip is a floating popup, not part of the NTP's own view
+    // hierarchy, so it does not participate in the omnibox-focus animation that fades/hides the
+    // rest of the NTP content - it must be dismissed explicitly here instead.
+    private void dismissNtpTopSitesTooltip() {
+        Tab tab = mActivityTabProvider.get();
+        if (tab == null || !(tab.getNativePage() instanceof BraveNewTabPage)) {
+            return;
+        }
+        ((BraveNewTabPage) tab.getNativePage()).dismissTopSitesTooltip();
     }
 
     private void registerHubLayoutObserver() {

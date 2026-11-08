@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="is">
+<translation id="5725339460980108526">Brave kemur í veg fyrir að vefsvæði geti notað fótspor þriðja aðila þegar þú ert í huliðsstillingu</translation>
+<translation id="1365023215312302966">Vefsvæði geta notað fótspor þriðja aðila til að sérsníða efni og auglýsingar og sjá aðgerðir sem þú framkvæmir á öðrum vefsvæðum</translation>
+<translation id="7271018957317922139">Vefsvæði geta ekki notað fótspor þriðja aðila þegar þú ert í huliðsstillingu. Ef vefsvæði sem reiðir sig á þessi fótspor virkar ekki geturðu <ph name="BEGIN_LINK"/>prófað að veita því tímabundinn aðgang að fótsporum þriðja aðila<ph name="END_LINK"/>.</translation>
+<translation id="2004697686368036666">Eiginleikar á sumum vefsvæðum virka hugsanlega ekki</translation>
+<translation id="2183376768278472507">Ef vefsvæði virkar ekki sem skyldi geturðu prófað að veita því tiltekna vefsvæði aðgang að fótsporum þriðja aðila</translation>
+<translation id="2235344399760031203">Lokað er á fótspor þriðja aðila</translation>
+<translation id="2360633687155619995">Vefsvæði geta notað fótspor þriðja aðila til að sérsníða efni og auglýsingar og sjá aðgerðir sem þú framkvæmir á öðrum vefsvæðum. Sumir eiginleikar vefsvæða virka hugsanlega ekki sem skyldi.</translation>
+<translation id="2496115946829713659">Vefsvæði geta notað fótspor þriðja aðila til að sérsníða efni og auglýsingar og sjá aðgerðir sem þú framkvæmir á öðrum vefsvæðum</translation>
+<translation id="7220743783949410550">Vefsvæði geta ekki notað fótspor þriðja aðila þegar þú ert í huliðsstillingu. Ef vefsvæði sem reiðir sig á þessi fótspor virkar ekki geturðu <ph name="START_LINK"/>prófað að veita því tímabundinn aðgang að fótsporum þriðja aðila<ph name="END_LINK"/>.</translation>
+<translation id="3425311689852411591">Vefsvæði sem reiða sig á fótspor þriðja aðila ættu að virka sem skyldi</translation>
+<translation id="3624583033347146597">Veldu stillingar fyrir fótspor þriðja aðila</translation>
+<translation id="3918378745482005425">Sumir eiginleikar virka ef til vill ekki. Tengd vefsvæði geta áfram notað fótspor þriðju aðila.</translation>
+<translation id="4278390842282768270">Leyft</translation>
+<translation id="4412992751769744546">Leyfa fótspor þriðja aðila</translation>
+<translation id="4711259472133554310">Þú getur tilgreint undantekningar í stillingunum til að leyfa tilteknum vefsvæðum ávallt að nota fótspor þriðja aðila</translation>
+<translation id="5677928146339483299">Á bannlista</translation>
+<translation id="6196640612572343990">Loka á fótspor þriðja aðila</translation>
+<translation id="6308169245546905162">Vefsvæði geta notað fótspor þriðja aðila til að sjá hvaða aðgerðir þú framkvæmir á öðrum vefsvæðum</translation>
+<translation id="7315780377187123731">Nánar um valkostinn „Loka á fótspor þriðja aðila“</translation>
+<translation id="7374493521304367420">Vefsvæði geta samt sem áður notað fótpor til að fylgjast með vafranotkun þinni á þeim</translation>
+<translation id="7453144832830554937">Eiginleikar vefsvæða sem reiða sig á fótspor þriðja aðila virka hugsanlega ekki</translation>
+<translation id="7538480403395139206">Nánar um valkostinn „Leyfa fótspor þriðja aðila“</translation>
+<translation id="8200078544056087897">Eiginleikar vefsvæða sem reiða sig á fótspor þriðja aðila ættu að virka sem skyldi</translation>
+<translation id="839994149685752920">Vefsvæði geta notað fótspor þriðja aðila til að sérsníða efni og auglýsingar</translation>
+</translationbundle>

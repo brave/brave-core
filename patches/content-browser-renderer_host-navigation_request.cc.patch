@@ -1,8 +1,8 @@
 diff --git a/content/browser/renderer_host/navigation_request.cc b/content/browser/renderer_host/navigation_request.cc
-index 6811b5d2f03dc5bc8e3e9d383c8d26f3dcd767f2..81b4975626b8258b7f85e907eee3880f0cdea4d5 100644
+index 4c35b986cf6c3880fdd0f1ed0a1026a921e28f82..2015a30081d73c7336432c26a3193c740d217344 100644
 --- a/content/browser/renderer_host/navigation_request.cc
 +++ b/content/browser/renderer_host/navigation_request.cc
-@@ -4032,6 +4032,9 @@ void NavigationRequest::OnRequestRedirected(
+@@ -4061,6 +4061,9 @@ void NavigationRequest::OnRequestRedirected(
    }
  
    common_params_->referrer->url = GURL(redirect_info.new_referrer);
@@ -12,7 +12,7 @@ index 6811b5d2f03dc5bc8e3e9d383c8d26f3dcd767f2..81b4975626b8258b7f85e907eee3880f
    common_params_->referrer = Referrer::SanitizeForRequest(
        common_params_->url, *common_params_->referrer);
  
-@@ -6230,7 +6233,10 @@ void NavigationRequest::OnStartChecksComplete(
+@@ -6449,7 +6452,10 @@ void NavigationRequest::OnStartChecksComplete(
    bool is_visible = GetWebContents() &&
                      GetWebContents()->GetVisibility() == Visibility::VISIBLE;
  

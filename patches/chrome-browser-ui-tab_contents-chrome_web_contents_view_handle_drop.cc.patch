@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/tab_contents/chrome_web_contents_view_handle_drop.cc b/chrome/browser/ui/tab_contents/chrome_web_contents_view_handle_drop.cc
-index 1dc42d2755f83945673d01813368fa40c77af442..9824cb2827f517aae711797ccc943ce8710c32e4 100644
+index 2e3ed6f9f1742414b8e87960853064c792d45ec5..f7a59e908d4b3fc879fcd293eff5f5d0aaa228a3 100644
 --- a/chrome/browser/ui/tab_contents/chrome_web_contents_view_handle_drop.cc
 +++ b/chrome/browser/ui/tab_contents/chrome_web_contents_view_handle_drop.cc
 @@ -239,6 +239,8 @@ void HandleOnPerformingDrop(

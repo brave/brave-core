@@ -45,7 +45,7 @@ class CoseSign1 : bssl::VerifyCertificateChainDelegate {
   bool IsSignatureAlgorithmAcceptable(
       bssl::SignatureAlgorithm signature_algorithm,
       bssl::CertErrors* errors) override;
-  bool IsPublicKeyAcceptable(EVP_PKEY* public_key,
+  bool IsPublicKeyAcceptable(const EVP_PKEY* public_key,
                              bssl::CertErrors* errors) override;
   bssl::SignatureVerifyCache* GetVerifyCache() override;
   bool AcceptPreCertificates() override;

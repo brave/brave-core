@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { CustomizeChromeApiProxy } from './customize_chrome_api_proxy.js'
+import { browserProxyFactory as customizeChromeProxyFactory } from './customize_chrome.mojom-webui.js'
 
 // eslint-disable-next-line
 import { CrLitElement, html, css } from '//resources/lit/v3_0/lit.rollup.js'
@@ -33,7 +33,7 @@ class ClosePanelButtonElement extends CrLitElement {
   }
 
   private onClosePanel() {
-    CustomizeChromeApiProxy.getInstance().handler.closePanel()
+    customizeChromeProxyFactory.getInstance().handler.closePanel()
   }
 }
 
@@ -110,7 +110,7 @@ class DarkerThemeToggleElement extends I18nMixinLit(CrLitElement) {
       return
     }
 
-    const apiProxy = CustomizeChromeApiProxy.getInstance()
+    const apiProxy = customizeChromeProxyFactory.getInstance()
 
     apiProxy.callbackRouter.onUseDarkerThemeChanged.addListener(
       (useDarkerTheme: boolean) => {
@@ -136,7 +136,7 @@ class DarkerThemeToggleElement extends I18nMixinLit(CrLitElement) {
   }
 
   private onDarkerThemeToggleChange() {
-    CustomizeChromeApiProxy.getInstance().handler.setUseDarkerTheme(
+    customizeChromeProxyFactory.getInstance().handler.setUseDarkerTheme(
       !this.usingDarkerTheme_
     )
   }

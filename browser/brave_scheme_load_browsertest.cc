@@ -63,7 +63,7 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
     ui_test_utils::UrlLoadObserver load_complete(url);
     browser()->OpenURL(
         content::OpenURLParams(url, content::Referrer(),
-                               WindowOpenDisposition::CURRENT_TAB,
+                               WindowOpenDisposition::kCurrentTab,
                                ui::PAGE_TRANSITION_TYPED, false),
         /*navigation_handle_callback=*/{});
     load_complete.Wait();
@@ -290,7 +290,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest, MAYBE_CrashURLTest) {
   content::ScopedAllowRendererCrashes allow_renderer_crashes(active_contents());
   browser()->OpenURL(
       content::OpenURLParams(GURL("brave://crash"), content::Referrer(),
-                             WindowOpenDisposition::CURRENT_TAB,
+                             WindowOpenDisposition::kCurrentTab,
                              ui::PAGE_TRANSITION_TYPED, false),
       /*navigation_handle_callback=*/{});
   crash_observer.Wait();

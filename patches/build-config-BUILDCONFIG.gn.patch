@@ -1,8 +1,8 @@
 diff --git a/build/config/BUILDCONFIG.gn b/build/config/BUILDCONFIG.gn
-index a8dcb4d4675505227c2259a8851d9b2ee904faef..ffadf4be9d2d1c620ba06b31a609a1ce4ad72787 100644
+index 179b9b729ed457aefde93d71dbbc2e2040dc974f..6af5b1c3d13288529b200352e59fc474c184fe0e 100644
 --- a/build/config/BUILDCONFIG.gn
 +++ b/build/config/BUILDCONFIG.gn
-@@ -393,6 +393,7 @@ default_compiler_configs = [
+@@ -392,6 +392,7 @@ default_compiler_configs = [
    "//build/config/sanitizers:default_sanitizer_flags",
    "//build/config:feature_flags",
  ]

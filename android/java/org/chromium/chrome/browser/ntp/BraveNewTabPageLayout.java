@@ -25,6 +25,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Display;
 import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,6 +70,7 @@ import org.chromium.chrome.browser.brave_news.LinearLayoutManagerWrapper;
 import org.chromium.chrome.browser.brave_news.models.FeedItemCard;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
+import org.chromium.chrome.browser.custom_layout.popup_window_tooltip.PopupWindowTooltip;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.ntp_background_images.model.NTPImage;
 import org.chromium.chrome.browser.ntp_background_images.model.SponsoredTab;
@@ -91,6 +93,7 @@ import org.chromium.chrome.browser.tab.TabAttributes;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tabmodel.TabModelUtils;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
+import org.chromium.components.browser_ui.styles.SemanticColorUtils;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
@@ -109,6 +112,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     private static final String TAG = "BraveNewTabPage";
 
     private static final int HOUR_MS = 3_600_000;
+
+    private static final long TOOLTIP_FADE_OUT_DURATION_MS = 300;
 
     private @Nullable ViewGroup mMvTilesContainerLayout;
 
@@ -137,6 +142,11 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     private @Nullable Wallpaper mWallpaper;
 
     private @Nullable BraveNewTabTakeoverInfobar mNewTabTakeoverInfobar;
+
+    private @Nullable PopupWindowTooltip mTopSitesTooltip;
+    private boolean mTopSitesTooltipScrolledAway;
+    private ViewTreeObserver.@Nullable OnGlobalLayoutListener mTopSitesVisibilityListener;
+    private ViewTreeObserver.@Nullable OnGlobalLayoutListener mTopSitesTooltipCheckListener;
 
     private CopyOnWriteArrayList<FeedItemsCard> mNewsItemsFeedCard =
             new CopyOnWriteArrayList<FeedItemsCard>();
@@ -229,6 +239,107 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         if (getVisibility() != View.VISIBLE) setVisibility(View.VISIBLE);
     }
 
+    // mMvTilesContainerLayout is detached from the NTP layout tree and adopted as a
+    // RecyclerView item (see BraveNtpAdapter#onCreateViewHolder), so it is only actually
+    // laid out/shown some time after this NTP attaches to the window (on first creation) or
+    // re-attaches (e.g. returning from the tab switcher) - never synchronously within
+    // onAttachedToWindow() itself. mRecyclerView stays validly attached across those
+    // transitions, so its ViewTreeObserver is used to wait for that to happen.
+    private void scheduleTopSitesTooltipCheck() {
+        assumeNonNull(mRecyclerView);
+        mTopSitesTooltipCheckListener =
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        assumeNonNull(mMvTilesContainerLayout);
+                        if (!mMvTilesContainerLayout.isShown()) return;
+                        assumeNonNull(mRecyclerView);
+                        mRecyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        mTopSitesTooltipCheckListener = null;
+                        maybeShowTopSitesTooltip();
+                    }
+                };
+        mRecyclerView
+                .getViewTreeObserver()
+                .addOnGlobalLayoutListener(mTopSitesTooltipCheckListener);
+    }
+
+    // The tooltip explains switching to "frequently visited", so it is pointless to show if
+    // that mode would be empty (e.g. a fresh install with no browsing history yet). Only
+    // applies to frequent mode: if the user has switched to shortcuts mode, this gate doesn't
+    // apply. mMvTilesContainerLayout's single child is the actual tile row
+    // (BraveMostVisitedTilesLayoutBase); its child count reflects whatever is currently
+    // rendered, which - in frequent mode - is exactly the frequent tiles, since the "Add new"
+    // button only shows in shortcuts mode.
+    private boolean isFrequentModeEmpty() {
+        if (NtpUtil.getTopSitesDisplayMode() != NtpUtil.TOP_SITES_MODE_FREQUENT) {
+            return false;
+        }
+        assumeNonNull(mMvTilesContainerLayout);
+        if (mMvTilesContainerLayout.getChildCount() == 0) {
+            return true;
+        }
+        View tileRow = mMvTilesContainerLayout.getChildAt(0);
+        return !(tileRow instanceof ViewGroup) || ((ViewGroup) tileRow).getChildCount() == 0;
+    }
+
+    private boolean isTopSitesTooltipDismissed() {
+        return ChromeSharedPreferences.getInstance()
+                .readBoolean(BravePreferenceKeys.BRAVE_NTP_TOP_SITES_TOOLTIP_DISMISSED, false);
+    }
+
+    private void setTopSitesTooltipDismissed() {
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_NTP_TOP_SITES_TOOLTIP_DISMISSED, true);
+    }
+
+    private void maybeShowTopSitesTooltip() {
+        assumeNonNull(mMvTilesContainerLayout);
+        if ((mTopSitesTooltip != null && mTopSitesTooltip.isShowing())
+                || !NtpUtil.shouldDisplayTopSites()
+                || isTopSitesTooltipDismissed()
+                || mTopSitesTooltipScrolledAway
+                || !mMvTilesContainerLayout.isShown()
+                || isFrequentModeEmpty()) {
+            return;
+        }
+
+        mTopSitesTooltip =
+                new PopupWindowTooltip.Builder(getContext())
+                        .anchorView(mMvTilesContainerLayout)
+                        .arrowColor(SemanticColorUtils.getColorSurfaceContainerLowest(getContext()))
+                        .arrowWidth(dpToPx(getContext(), 16))
+                        .arrowHeight(dpToPx(getContext(), 8))
+                        .gravity(Gravity.BOTTOM)
+                        .margin(0f)
+                        .dismissOnOutsideTouch(false)
+                        .dismissOnInsideTouch(false)
+                        .backgroundDimDisabled(true)
+                        .padding((float) dpToPx(getContext(), 16))
+                        .setWidth(mMvTilesContainerLayout.getWidth())
+                        .contentView(R.layout.brave_top_sites_tooltip_layout)
+                        .build();
+
+        View closeButton = mTopSitesTooltip.findViewById(R.id.top_sites_tooltip_close);
+        closeButton.setOnClickListener(
+                v -> {
+                    assumeNonNull(mTopSitesTooltip);
+                    mTopSitesTooltip.dismiss();
+                    setTopSitesTooltipDismissed();
+                });
+
+        mTopSitesTooltip.show();
+    }
+
+    // Called from BraveToolbarManager.onUrlFocusChange() - the tooltip is a floating popup, not
+    // part of the NTP's own view hierarchy, so it does not participate in the omnibox-focus
+    // animation that fades/hides the rest of the NTP content and must be dismissed explicitly.
+    public void dismissTopSitesTooltip() {
+        if (mTopSitesTooltip != null && mTopSitesTooltip.isShowing()) {
+            mTopSitesTooltip.dismiss();
+        }
+    }
+
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
@@ -255,6 +366,33 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
         // Show recent tabs dialog for variants B, C, and D if NTP was shown after inactivity
         maybeShowRecentTabsDialog();
+
+        if (mMvTilesContainerLayout != null) {
+            scheduleTopSitesTooltipCheck();
+            registerTopSitesVisibilityListener();
+        }
+    }
+
+    // Collapses the whole tile row when frequent mode has no sites to show (e.g. a fresh
+    // install with no browsing history, or a mode switch into an equally-empty frequent list -
+    // see the TileGroup.PendingChanges.isUserTriggered plaster for why that now reliably
+    // re-renders). ViewTreeObserver is tied to window attachment, not just parent-child
+    // relationships, so a listener registered on mRecyclerView's observer before a
+    // detach/reattach (e.g. a tab-switcher round-trip) can go stale - re-registered fresh on
+    // every onAttachedToWindow() and removed on onDetachedFromWindow(), mirroring
+    // scheduleTopSitesTooltipCheck()'s same reasoning.
+    private void registerTopSitesVisibilityListener() {
+        assumeNonNull(mRecyclerView);
+        mTopSitesVisibilityListener =
+                () -> {
+                    if (mMvTilesContainerLayout == null) return;
+                    boolean isEmpty = isFrequentModeEmpty();
+                    mMvTilesContainerLayout.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
+                    if (isEmpty && mTopSitesTooltip != null && mTopSitesTooltip.isShowing()) {
+                        mTopSitesTooltip.dismiss();
+                    }
+                };
+        mRecyclerView.getViewTreeObserver().addOnGlobalLayoutListener(mTopSitesVisibilityListener);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -584,6 +722,21 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                     }
                 });
 
+        mRecyclerView.addOnScrollListener(
+                new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                        // Only treat an actual user touch-drag as "scrolled away" - programmatic
+                        // jumps like keepPosition()'s scrollToPositionWithOffset() never enter
+                        // the dragging state, so they correctly don't trigger this.
+                        if (newState != RecyclerView.SCROLL_STATE_DRAGGING) return;
+                        mTopSitesTooltipScrolledAway = true;
+                        if (mTopSitesTooltip != null && mTopSitesTooltip.isShowing()) {
+                            mTopSitesTooltip.fadeOutAndDismiss(TOOLTIP_FADE_OUT_DURATION_MS);
+                        }
+                    }
+                });
+
         maybeCreateSafeAreaReporter();
     }
 
@@ -708,6 +861,24 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     protected void onDetachedFromWindow() {
         assertNonNull(mRecyclerView);
 
+        if (mTopSitesTooltip != null && mTopSitesTooltip.isShowing()) {
+            mTopSitesTooltip.dismiss();
+        }
+
+        if (mTopSitesVisibilityListener != null) {
+            mRecyclerView
+                    .getViewTreeObserver()
+                    .removeOnGlobalLayoutListener(mTopSitesVisibilityListener);
+            mTopSitesVisibilityListener = null;
+        }
+
+        if (mTopSitesTooltipCheckListener != null) {
+            mRecyclerView
+                    .getViewTreeObserver()
+                    .removeOnGlobalLayoutListener(mTopSitesTooltipCheckListener);
+            mTopSitesTooltipCheckListener = null;
+        }
+
         if (mWorkerTask != null && mWorkerTask.getStatus() == AsyncTask.Status.RUNNING) {
             mWorkerTask.cancel(true);
             mWorkerTask = null;
@@ -769,6 +940,12 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         // it will be called again once NTP image is ready.
         maybeShowNTPImage();
 
+        // The tooltip's width is fixed to the tile row's width at build() time, so it needs to
+        // be rebuilt (not just repositioned) to match the tile row's new width after rotation.
+        if (mTopSitesTooltip != null && mTopSitesTooltip.isShowing()) {
+            mTopSitesTooltip.dismiss();
+        }
+
         new Handler(Looper.getMainLooper())
                 .postDelayed(
                         () -> {
@@ -777,6 +954,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                                 mNtpAdapter.setRecyclerViewHeight(mRecyclerView.getHeight());
                             }
                             keepPosition();
+                            maybeShowTopSitesTooltip();
                         },
                         10);
     }

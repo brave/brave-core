@@ -513,7 +513,7 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsTabHelperBrowserTest,
                        FollowsDiscardedContents) {
   const GURL url = embedded_test_server()->GetURL("a.com", "/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url, WindowOpenDisposition::NEW_BACKGROUND_TAB,
+      browser(), url, WindowOpenDisposition::kNewBackgroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   TabStripModel* const tab_strip_model = browser()->tab_strip_model();
   const int index = tab_strip_model->count() - 1;

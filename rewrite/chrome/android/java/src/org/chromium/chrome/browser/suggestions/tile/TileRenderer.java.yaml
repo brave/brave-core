@@ -5,6 +5,19 @@
 
 substitutions:
   - description: |-
+      Only show the "Add new" custom-links button in shortcuts (pinned) mode,
+      not in frequently-visited mode, since adding a custom shortcut doesn't
+      make sense for frequency-based suggestions.
+    regex:
+      re_pattern:
+        '(boolean shouldShowAddNewButton\(List<Tile> sectionTiles\) \{)'
+      replace: |-
+        \1
+                if (org.chromium.chrome.browser.ntp.NtpUtil.getTopSitesDisplayMode()
+                        != org.chromium.chrome.browser.ntp.NtpUtil.TOP_SITES_MODE_SHORTCUTS) {
+                    return false;
+                }
+  - description: |-
       Open Brave's NTP top-sites widget menu on long-press of the "Add new"
       custom-links button, matching the long-press menu on regular tiles.
       Part of NTP improvements in PR#39092

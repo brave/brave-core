@@ -1,8 +1,8 @@
 diff --git a/front_end/panels/application/ApplicationPanelSidebar.ts b/front_end/panels/application/ApplicationPanelSidebar.ts
-index 51e9b17cf73c3556e3e38768d07ef254ed57ffcf..2966889d4c8fd2b075a57faa00b5a924209fb054 100644
+index 0ea24130128e2093af7ab77d2e392e0931868c40..8a17cc431777e833bde93b0db0d57141677e32f7 100644
 --- a/front_end/panels/application/ApplicationPanelSidebar.ts
 +++ b/front_end/panels/application/ApplicationPanelSidebar.ts
-@@ -551,6 +551,7 @@ export class ApplicationPanelSidebar extends UI.Widget.VBox implements SDK.Targe
+@@ -562,6 +562,7 @@ export class ApplicationPanelSidebar extends UI.Widget.VBox implements SDK.Targe
          },
          {scoped: true});
      this.contentElement.style.contain = 'layout style';

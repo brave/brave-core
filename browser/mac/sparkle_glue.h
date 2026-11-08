@@ -36,6 +36,12 @@
 // such as a disk image.
 - (BOOL)isOnReadOnlyFilesystem;
 
+// Makes `sharedSparkleGlue` return `glue`, which may be nil.
++ (void)setSharedSparkleGlueForTesting:(SparkleGlue*)glue;
+
+// Uses `updater` in place of Sparkle's `SUUpdater`.
+- (void)setUpdaterForTesting:(id)updater;
+
 @end  // @interface SparkleGlue
 
 #endif  // __OBJC__

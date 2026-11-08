@@ -1,0 +1,30 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+syntax = "proto3";
+
+package recipes.brave.cr.autolift;
+
+message InputProperties {
+  // The milestone of the `cr<N>` branch to lift; the latest `cr<N>` branch on
+  // brave-core when unset.
+  int32 milestone = 1;
+
+  // Carries on with a run that stopped before finishing, in the checkout,
+  // out dir and `.autolift/cr<N>/` as it left them, rather than starting over.
+  bool resume = 2;
+
+  // Only fixes what fails in the CI of `cr<N>`'s pull request, as GitHub has
+  // the branch: no lift, no rebase, and fixes pushed as fixups. With
+  // `chromium_version`, of each of the channel bump's pull requests.
+  bool autofix = 3;
+
+  // A Chromium tag (e.g. `157.0.8103.38`) to bump Brave's release channels
+  // on its milestone M<N> to: a `cr<N>.x` (off master) or
+  // `cr<N>.x-on-<channel>` branch and pull request for each. The tooling comes
+  // from `cr<milestone>` (the latest when unset), without syncing it with the
+  // newer branches.
+  string chromium_version = 4;
+}

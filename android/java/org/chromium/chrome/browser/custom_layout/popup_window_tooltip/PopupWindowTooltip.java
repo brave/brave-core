@@ -116,30 +116,37 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
         mPopupWindow.setWidth(mWidth);
         mPopupWindow.setHeight(mHeight);
         mPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        mPopupWindow.setOutsideTouchable(true);
+        // Outside touches are delivered to the popup only when it should react to them (either
+        // by dismissing or by swallowing them below); otherwise they pass straight through to
+        // whatever is underneath, so the underlying content stays interactive.
+        mPopupWindow.setOutsideTouchable(mDismissOnOutsideTouch);
         mPopupWindow.setTouchable(true);
-        mPopupWindow.setTouchInterceptor(new View.OnTouchListener() {
-            @SuppressLint("ClickableViewAccessibility")
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                final int x = (int) event.getX();
-                final int y = (int) event.getY();
+        mPopupWindow.setTouchInterceptor(
+                new View.OnTouchListener() {
+                    @SuppressLint("ClickableViewAccessibility")
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        final int x = (int) event.getX();
+                        final int y = (int) event.getY();
 
-                if (!mDismissOnOutsideTouch && (event.getAction() == MotionEvent.ACTION_DOWN)
-                        && ((x < 0) || (x >= mContentLayout.getMeasuredWidth()) || (y < 0)
-                                || (y >= mContentLayout.getMeasuredHeight()))) {
-                    return true;
-                } else if (!mDismissOnOutsideTouch
-                        && event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-                    return true;
-                } else if ((event.getAction() == MotionEvent.ACTION_DOWN)
-                        && mDismissOnInsideTouch) {
-                    dismiss();
-                    return true;
-                }
-                return false;
-            }
-        });
+                        if (!mDismissOnOutsideTouch
+                                && (event.getAction() == MotionEvent.ACTION_DOWN)
+                                && ((x < 0)
+                                        || (x >= mContentLayout.getMeasuredWidth())
+                                        || (y < 0)
+                                        || (y >= mContentLayout.getMeasuredHeight()))) {
+                            return true;
+                        } else if (!mDismissOnOutsideTouch
+                                && event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                            return true;
+                        } else if ((event.getAction() == MotionEvent.ACTION_DOWN)
+                                && mDismissOnInsideTouch) {
+                            dismiss();
+                            return true;
+                        }
+                        return false;
+                    }
+                });
         mPopupWindow.setClippingEnabled(false);
     }
 
@@ -281,6 +288,20 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
             mPopupWindow.dismiss();
         }
     }
+
+    /** Fades out the whole tooltip (content and arrow together) before dismissing it. */
+    public void fadeOutAndDismiss(long durationMs) {
+        if (mDismissed) {
+            return;
+        }
+        mContentLayout
+                .animate()
+                .alpha(0f)
+                .setDuration(durationMs)
+                .withEndAction(this::dismiss)
+                .start();
+    }
+
     public boolean isShowing() {
         return mPopupWindow != null && mPopupWindow.isShowing();
     }

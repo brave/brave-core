@@ -59,33 +59,32 @@ causing the test to fail, fix that code — don't hide it with a filter.
 **Run the upstream flake check (from `src/brave`):**
 
 ```bash
-# Default 30-day lookback
-vpython3 tools/chromium_tests_analysis/check-upstream-flake.py "TestSuite.TestMethod"
+# On the branch the Chromium checkout is at, every variant
+vpython3 tools/chromium_tests_analysis/is_upstream_flake.py "TestSuite.TestMethod"
 
-# Wider lookback window
-vpython3 tools/chromium_tests_analysis/check-upstream-flake.py "TestSuite.TestMethod" --days 60
+# Only the variants matching the platform that failed
+vpython3 tools/chromium_tests_analysis/is_upstream_flake.py "TestSuite.TestMethod" --os windows
 
-# Search by test class name (finds all methods in the suite)
-vpython3 tools/chromium_tests_analysis/check-upstream-flake.py "TestSuite"
+# Against upstream main instead of Brave's branch
+vpython3 tools/chromium_tests_analysis/is_upstream_flake.py "TestSuite.TestMethod" --ref main
 ```
 
-The script queries Chromium's LUCI Analysis database and returns one of five
-verdicts:
+The script asks Chromium's LUCI Analysis the question Chromium's CQ asks before
+exonerating a failure, for each variant (builder, OS and test suite) at the
+checkout's position on its branch. Each variant gets one of four statuses:
 
-| Verdict                          | Flake Rate         | Action                                                   |
-| -------------------------------- | ------------------ | -------------------------------------------------------- |
-| **Known upstream flake**         | ≥5%                | Safe to filter. Document rate in filter comment.         |
-| **Occasional upstream failures** | 1–5%               | Prefer filtering. Document instability.                  |
-| **Stable upstream**              | <1%                | Investigate Brave-specific causes before filtering.      |
-| **Insufficient data**            | N/A (<10 verdicts) | Manual investigation needed.                             |
-| **Not found**                    | N/A                | Test may be Brave-specific or use a different ID format. |
-
-**Flake rate** is calculated as `(failed + flaky) / (passed + failed + flaky)`.
+| Status      | Meaning                                                                | Action                                              |
+| ----------- | ---------------------------------------------------------------------- | --------------------------------------------------- |
+| **FLAKY**   | At least 3 flaky verdicts within ±7 days, at least 1 within ±1 weekday | Safe to filter for that platform.                   |
+| **FAILING** | At least 6 of the 10 nearest runs failed, or at least 3 in a row       | Safe to filter; the test is broken upstream.        |
+| **STABLE**  | Results exist and neither criterion is met                             | Investigate Brave-specific causes before filtering. |
+| **NO DATA** | No results near the position (hidden unless `--all` is passed)         | Manual investigation needed.                        |
 
 **Decision rule:**
 
-- **≥1% flake rate** → prefer adding to a filter file over attempting a fix
-- **<1% flake rate** → investigate Brave-specific causes:
+- **FLAKY or FAILING on the platform that failed** → prefer adding to a filter
+  file over attempting a fix
+- **STABLE** → investigate Brave-specific causes:
   1. Check `src/brave/chromium_src/` for overrides in the test's directory tree
   2. Check `patches/` for any patch touching the same files
 
@@ -126,11 +125,10 @@ sanitizer-specific filters are loaded.
 
 **Do not place a filter in a sanitizer-specific file (e.g., `-asan`, `-msan`) if
 upstream LUCI Analysis data shows the test also fails on non-sanitizer builds.**
-LUCI Analysis aggregates across all build configs, so a non-zero upstream flake
-rate means the test can fail outside of sanitizer builds too. In that case, use
-a broader filter file (e.g., `browser_tests.filter` or
-`browser_tests-win.filter`) to cover all environments where the failure may
-occur.
+`is_upstream_flake.py` reports each builder separately, so check which builders
+are FLAKY or FAILING. If non-sanitizer builders are among them, use a broader
+filter file (e.g., `browser_tests.filter` or `browser_tests-win.filter`) to
+cover all environments where the failure may occur.
 
 ---
 
@@ -144,15 +142,16 @@ includes:**
 1. **Why** the test is disabled
 2. **What** specific condition causes the failure
 3. **Why** this filter file was chosen (if not obvious from the filename)
-4. **Upstream flakiness data** — flake rate and lookback period (for upstream
-   Chromium tests)
+4. **Upstream flakiness data** — the `is_upstream_flake.py` status, the builders
+   it applies to and the branch checked (for upstream Chromium tests)
 
 ```
 # ❌ WRONG - no explanation
 -WebUIURLLoaderFactoryTest.RangeRequest/*
 
 # ✅ CORRECT - full context
-# Known upstream flake: 1.8% flake rate over 30 days per LUCI Analysis.
+# Confirmed upstream flake on refs/branch-heads/8103 per LUCI Analysis
+# (FLAKY on linux-rel and Linux Tests).
 # Mojo data pipe race condition — completion signal arrives before data is
 # flushed through the consumer side.
 -WebUIURLLoaderFactoryTest.RangeRequest/*

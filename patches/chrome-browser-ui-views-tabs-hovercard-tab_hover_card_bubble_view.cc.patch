@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.cc b/chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.cc
-index dc571ae36e3b9b695e86ab9329c20919b455cf4e..d6f1cfd4d489bb1ad68bf95bea7b6d6f86599870 100644
+index e582c70239cba9924f189579ff12977660bb485b..fd78d900970c71aec1ebc582a459dd0c2cbc4cd2 100644
 --- a/chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.cc
 +++ b/chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.cc
 @@ -442,7 +442,7 @@ class TabHoverCardBubbleView::TabCardView : public views::View {
@@ -19,7 +19,7 @@ index dc571ae36e3b9b695e86ab9329c20919b455cf4e..d6f1cfd4d489bb1ad68bf95bea7b6d6f
    raw_ptr<FadeLabelView> title_label_ = nullptr;
    raw_ptr<FadeLabelView> domain_label_ = nullptr;
    raw_ptr<FooterView> footer_view_ = nullptr;
-@@ -679,7 +680,7 @@ TabHoverCardBubbleView::TabHoverCardBubbleView(
+@@ -680,7 +681,7 @@ TabHoverCardBubbleView::TabHoverCardBubbleView(
  
    SetProperty(views::kElementIdentifierKey, kHoverCardBubbleElementId);
  

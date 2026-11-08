@@ -258,28 +258,40 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                                 return;
                             }
                             PlaylistOptionsEnum option = playlistItemOption.getOptionType();
-                            if (option == PlaylistOptionsEnum.MOVE_PLAYLIST_ITEM) {
-                                showMoveOrCopyPlaylistBottomSheet();
-                            } else if (option == PlaylistOptionsEnum.COPY_PLAYLIST_ITEM) {
-                                showMoveOrCopyPlaylistBottomSheet();
-                            } else if (option == PlaylistOptionsEnum.DELETE_ITEMS_OFFLINE_DATA) {
-                                mPlaylistService.removeLocalDataForItem(
-                                        playlistItemOption.getPlaylistItemModel().getId());
-                                // Playlist item will be updated based on event
-                            } else if (option == PlaylistOptionsEnum.OPEN_IN_NEW_TAB) {
-                                openPlaylistInTab(
-                                        false,
-                                        playlistItemOption.getPlaylistItemModel().getPageSource());
-                            } else if (option == PlaylistOptionsEnum.OPEN_IN_PRIVATE_TAB) {
-                                openPlaylistInTab(
-                                        true,
-                                        playlistItemOption.getPlaylistItemModel().getPageSource());
-                            } else if (option == PlaylistOptionsEnum.DELETE_PLAYLIST_ITEM) {
-                                deleteHLSContent(playlistItemOption.getPlaylistItemModel().getId());
-                                mPlaylistService.removeItemFromPlaylist(
-                                        playlistItemOption.getPlaylistId(),
-                                        playlistItemOption.getPlaylistItemModel().getId());
-                                loadPlaylist(playlistItemOption.getPlaylistId());
+                            switch (option) {
+                                case PlaylistOptionsEnum.MOVE_PLAYLIST_ITEM:
+                                case PlaylistOptionsEnum.COPY_PLAYLIST_ITEM:
+                                    showMoveOrCopyPlaylistBottomSheet();
+                                    break;
+                                case PlaylistOptionsEnum.DELETE_ITEMS_OFFLINE_DATA:
+                                    mPlaylistService.removeLocalDataForItem(
+                                            playlistItemOption.getPlaylistItemModel().getId());
+                                    // Playlist item will be updated based on event
+                                    break;
+                                case PlaylistOptionsEnum.OPEN_IN_NEW_TAB:
+                                    openPlaylistInTab(
+                                            false,
+                                            playlistItemOption
+                                                    .getPlaylistItemModel()
+                                                    .getPageSource());
+                                    break;
+                                case PlaylistOptionsEnum.OPEN_IN_PRIVATE_TAB:
+                                    openPlaylistInTab(
+                                            true,
+                                            playlistItemOption
+                                                    .getPlaylistItemModel()
+                                                    .getPageSource());
+                                    break;
+                                case PlaylistOptionsEnum.DELETE_PLAYLIST_ITEM:
+                                    deleteHLSContent(
+                                            playlistItemOption.getPlaylistItemModel().getId());
+                                    mPlaylistService.removeItemFromPlaylist(
+                                            playlistItemOption.getPlaylistId(),
+                                            playlistItemOption.getPlaylistItemModel().getId());
+                                    loadPlaylist(playlistItemOption.getPlaylistId());
+                                    break;
+                                default:
+                                    break;
                             }
                         });
 

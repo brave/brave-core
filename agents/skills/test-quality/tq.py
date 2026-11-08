@@ -9,13 +9,18 @@
 Agents do the judging; this script enumerates and shards the tests, tracks
 progress, merges results into issue drafts, and posts them rate limited.
 
-    tq.py init --type unittest [--path components/brave_wallet ...]
+    tq.py init --type unittest [--lane LANE] [--path components/brave_wallet]
     tq.py status DIR
     tq.py verify-work DIR
     tq.py bug-work DIR
-    tq.py aggregate DIR
+    tq.py aggregate DIR [--min-severity low|medium|high]
     tq.py labels --repo brave/brave-browser
     tq.py post DIR --account netzenbot (--one PATH | --batch | --bugs)
+
+`init` makes one work dir per lane under its output dir: `effectiveness` (would
+the test fail if the code broke) and `best-practices` (does the test follow the
+documented test rules). `status`, `verify-work`, `bug-work` and `aggregate` take
+either the output dir (all lanes) or one lane dir; `post` takes a lane dir.
 """
 
 import argparse
@@ -55,6 +60,8 @@ TYPES = {
 }
 _EXCLUDE_RE = re.compile(r'(^|/)(third_party|vendor|node_modules)/')
 
+LANES = ('effectiveness', 'best-practices')
+
 # Category slugs -> issue labels.
 _FALSE_POSITIVE = {
     'unreached-assertions',
@@ -76,6 +83,13 @@ TEST_LABELS = {
     ),
     'tests/missing-coverage': (
         "Functionality isn't meaningfully covered despite tests existing"
+    ),
+    'tests/best-practice-violation': (
+        'Tests that violate a documented test best practice'
+    ),
+    'tests/flaky-risk': (
+        'Tests whose waits or shared state can make them flaky or '
+        'order-dependent'
     ),
 }
 _BASE_LABELS = ['tests', 'tests/test-quality', 'QA/No', 'release-notes/exclude']
@@ -122,6 +136,337 @@ FEATURE_LABELS = [
     ('common/importer', 'feature/importer'),
 ]
 _SEV = {'high': 0, 'medium': 1, 'low': 2}
+
+# The best-practices lane audits test files against rules in
+# docs/best-practices. Rules are named by their stable anchor id, so they can
+# move between docs; the ones below are the test rules that are auditable from
+# a test file.
+_BP_DIR = _REPO_ROOT / 'docs' / 'best-practices'
+# Every rule in these docs must be classified below (audited, reference or
+# skipped), so a newly added rule is noticed instead of silently ignored.
+_PRACTICE_DOCS = (
+    'testing-async.md',
+    'testing-isolation.md',
+    'testing-javascript.md',
+    'testing-navigation.md',
+)
+_CPP = ('unittest', 'browsertest', 'interactive_uitest')
+_BROWSER = ('browsertest', 'interactive_uitest')
+_WEBUI = ('webui',)
+# (rule id, test types, also judged by the effectiveness lane?, audit note).
+# Rules marked True are about assertions that wouldn't fail, which the
+# effectiveness lane already judges by mutation; they're dropped when both
+# lanes run, so one problem doesn't become two issues.
+PRACTICE_RULES = [
+    (
+        'TA-003',
+        _CPP,
+        False,
+        'Flag sleeps and fixed delays used to wait for something to happen. A '
+        'delay inside a deadline-bounded polling loop is the documented '
+        'fallback (TJ-002), not a violation.',
+    ),
+    (
+        'TA-005',
+        _CPP,
+        False,
+        'Flag every `RunUntilIdle()` use. Group all occurrences in the file '
+        'into one finding.',
+    ),
+    (
+        'TA-008',
+        _BROWSER,
+        False,
+        '`EvalJs`/`ExecJs` or another blocking IPC inside a `RunUntil` lambda.',
+    ),
+    (
+        'TA-009',
+        _CPP,
+        False,
+        '`RunLoop` + `BindLambdaForTesting` + `Quit()` around an API whose '
+        'callback a `TestFuture` could capture. Not for observers, for '
+        'callbacks that fire several times, or for timeout/cancellation '
+        'tests. Group all occurrences in the file into one finding.',
+    ),
+    (
+        'TA-012',
+        _BROWSER,
+        False,
+        '`EvalJs` right after an async mojo call whose effect it checks, with '
+        'no wait in between.',
+    ),
+    (
+        'TI-002',
+        _CPP,
+        False,
+        'Assertions on private state or internals instead of public behavior. '
+        'A single `*ForTesting()` accessor is accepted (TI-011, ARCH-020).',
+    ),
+    (
+        'TI-003',
+        _BROWSER,
+        False,
+        'One expected value shared by requests to different domains or '
+        'subresources.',
+    ),
+    (
+        'TI-004',
+        _BROWSER,
+        False,
+        'Throttle or delay tests whose window is not much larger than the '
+        'time the test spends polling.',
+    ),
+    (
+        'TI-010',
+        ('unittest',),
+        False,
+        'Tests under `components/` that include `chrome/browser/...` or '
+        'depend on `//chrome` (check includes and the BUILD.gn deps).',
+    ),
+    (
+        'TI-011',
+        _CPP,
+        False,
+        'Several `FRIEND_TEST_ALL_PREFIXES` for one member that one '
+        '`*_for_testing()` accessor would serve.',
+    ),
+    (
+        'TI-013',
+        _CPP,
+        False,
+        'A test-only global or flag changed in `SetUp` and never restored '
+        '(`TearDown` or a scoped RAII helper counts as restoring).',
+    ),
+    (
+        'TI-020',
+        _CPP,
+        False,
+        'JSON checked with `HasSubstr` or string comparison, or an expected '
+        'dict built by hand where a `ParseJsonDict` literal would do.',
+    ),
+    (
+        'TI-025',
+        _CPP,
+        False,
+        '`value_or(...)` fallbacks in assertions, and optional access with no '
+        'earlier `ASSERT_TRUE(has_value())`.',
+    ),
+    (
+        'TI-027',
+        _CPP,
+        False,
+        'Setup that writes internal state straight into a configuration '
+        'production code cannot reach. Check the production callers first.',
+    ),
+    (
+        'TI-028',
+        _CPP,
+        False,
+        '`WillRepeatedly` on an `EXPECT_CALL` for a method that should run '
+        'exactly once. Not for stubs whose call count is irrelevant '
+        '(`ON_CALL`, getters, `NiceMock` defaults).',
+    ),
+    (
+        'TI-034',
+        _CPP,
+        False,
+        '`EXPECT_*` guarding a pointer, optional, size or index that the next '
+        'lines dereference or index.',
+    ),
+    (
+        'TI-037',
+        _CPP,
+        False,
+        'Test HTTP handlers and interceptors whose default branch silently '
+        'returns null, empty or 404.',
+    ),
+    (
+        'TI-042',
+        _CPP,
+        False,
+        'A `base::Feature` whose default the test relies on without pinning '
+        'it, or a `ScopedFeatureList` initialized after the objects that read '
+        'the flag are constructed.',
+    ),
+    (
+        'TJ-004',
+        _BROWSER,
+        False,
+        'Using a JS API after waiting only for its mojo binding.',
+    ),
+    (
+        'TN-001',
+        _BROWSER,
+        False,
+        'Polling or `TestNavigationObserver` waiting on a same-document '
+        '(hash) navigation.',
+    ),
+    (
+        'TN-002',
+        _BROWSER,
+        False,
+        '`setTimeout` delays in evaluated JS used to wait for a condition.',
+    ),
+    (
+        'TN-003',
+        _BROWSER,
+        False,
+        'Speedreader tests that interact with distilled content after '
+        '`NavigateToPageSynchronously` without `WaitDistilled`.',
+    ),
+    (
+        'CS-061',
+        _CPP,
+        False,
+        '`EXPECT_DEATH`/`ASSERT_DEATH` (or CHECK death variants) in a suite '
+        'whose name does not end in `DeathTest`.',
+    ),
+    (
+        'CSA-051',
+        _CPP,
+        False,
+        'Hand-rolled `JSONReader::Read` + `GetDict()`/`FindString` chains in '
+        'assertions where `base::test::ParseJson*`/`DictionaryHasValue` '
+        'apply. Cite TI-020 instead when the problem is substring matching.',
+    ),
+    (
+        'ARCH-062',
+        ('unittest',),
+        False,
+        'Only the "do not use `BrowserWithTestWindowTest`" part. Ignore the '
+        'CUJ test requirement.',
+    ),
+    (
+        'BS-033',
+        ('unittest',),
+        False,
+        'A unit test under `browser/` whose code under test lives in '
+        '`components/`.',
+    ),
+    (
+        'BS-023',
+        _BROWSER,
+        False,
+        'A browser test of code that also ships on Android deriving from '
+        '`InProcessBrowserTest` instead of `PlatformBrowserTest`. Skip '
+        'desktop-only features.',
+    ),
+    (
+        'FE-016',
+        _WEBUI,
+        False,
+        '`waitFor` around updates that `rerender`/`act` already apply '
+        'synchronously.',
+    ),
+    # Judged by the effectiveness lane too.
+    ('TI-008', _BROWSER, True, '`EvalJs`/`ExecJs` whose result is discarded.'),
+    (
+        'TI-012',
+        _CPP,
+        True,
+        'A test-only switch or override that turns off the code the test name '
+        'says it verifies.',
+    ),
+    (
+        'TI-016',
+        ('unittest',),
+        True,
+        'A tool, handler or parser entry point that takes external input and '
+        'is tested only with valid input.',
+    ),
+    ('TI-018', _CPP, True, 'Ordered results asserted by content only.'),
+    (
+        'TI-021',
+        _CPP,
+        True,
+        'Error-path tests that do not check the side effects that must not '
+        'happen.',
+    ),
+    (
+        'TI-022',
+        ('unittest', 'browsertest'),
+        True,
+        'Serialization tests that skip fields or invalid input.',
+    ),
+    ('TI-026', _CPP, True, 'A guard condition tested on one side only.'),
+    (
+        'TI-029',
+        _BROWSER,
+        True,
+        'A browser test asserting a return value but not the observable '
+        'effect.',
+    ),
+    (
+        'ARCH-062b',
+        _CPP,
+        True,
+        'A test whose logic mirrors the production logic and breaks on any '
+        'refactor without catching a bug.',
+    ),
+    (
+        'CSRC-002',
+        _CPP,
+        True,
+        '`#define X DISABLED_X` in a chromium_src test override.',
+    ),
+    (
+        'FE-027',
+        _WEBUI,
+        True,
+        '`expect(render(...)).toBeTruthy()` and similar always-true checks.',
+    ),
+]
+# Rules whose violation risks flakiness or order dependence; findings under
+# them also get the `tests/flaky-risk` label.
+_FLAKY_RULES = {
+    'TA-003',
+    'TA-005',
+    'TA-008',
+    'TA-012',
+    'TI-003',
+    'TI-004',
+    'TI-013',
+    'TI-042',
+    'TJ-004',
+    'TN-001',
+    'TN-002',
+    'TN-003',
+}
+# Preferred patterns. Shown so a finding's suggested_fix can point at them;
+# never cited as a violation.
+PRACTICE_REFS = [
+    ('TA-006', _CPP),
+    ('TA-010', _BROWSER),
+    ('TJ-001', _BROWSER),
+    ('TJ-002', _BROWSER),
+]
+# Rules in _PRACTICE_DOCS that can't be audited from a test file, with why.
+PRACTICE_SKIP = {
+    'TA-001': 'section header',
+    'TA-002': 'how to fix a flake, not a property of a test',
+    'TA-004': 'rule of thumb for fixes',
+    'TA-011': 'an alternative, not a rule',
+    'TI-001': 'subjective: when a real dependency is acceptable',
+    'TI-005': 'section header',
+    'TI-006': 'research process',
+    'TI-007': 'comment convention',
+    'TI-009': 'maintainability, not correctness',
+    'TI-014': 'style: assertion messages',
+    'TI-015': 'style: SCOPED_TRACE in helpers',
+    'TI-017': 'refactoring process',
+    'TI-023': 'style: parameterize similar tests',
+    'TI-024': 'style: extract assertion helpers',
+    'TI-030': 'PR process',
+    'TI-033': 'PR process',
+    'TI-035': 'production code, not the test',
+    'TI-036': 'style: TEST vs TEST_F',
+    'TI-038': 'style: test names',
+    'TI-039': 'PR process and coverage',
+    'TI-040': 'coverage of chromium_src overrides',
+    'TI-041': 'coverage: flag combinations',
+    'TI-043': 'how to run tests',
+    'TJ-003': 'tests of page-visible APIs deliberately run in the main world',
+}
 
 
 def _run(cmd, env=None, cwd=None):
@@ -186,6 +531,21 @@ def _shard(items, max_lines, max_items=None):
     return shards
 
 
+# lane -> (template, name in the work dir); same names so agent prompts match.
+_BRIEFS = {
+    'effectiveness': (
+        ('audit_brief.md', 'AUDIT_BRIEF.md'),
+        ('verify_brief.md', 'VERIFY_BRIEF.md'),
+        ('bug_brief.md', 'BUG_BRIEF.md'),
+    ),
+    'best-practices': (
+        ('bp_audit_brief.md', 'AUDIT_BRIEF.md'),
+        ('bp_verify_brief.md', 'VERIFY_BRIEF.md'),
+        ('bug_brief.md', 'BUG_BRIEF.md'),
+    ),
+}
+
+
 def _fill(template, meta):
     text = (_SKILL_DIR / template).read_text(encoding='utf-8')
     for key in ('DIR', 'TYPE', 'TYPE_NAME', 'REPO_ROOT'):
@@ -193,9 +553,97 @@ def _fill(template, meta):
     return text
 
 
+def _load_rules():
+    """rule id -> {doc, title, text} for every anchored rule in the docs."""
+    rules = {}
+    for doc in sorted(_BP_DIR.glob('*.md')):
+        text = doc.read_text(encoding='utf-8')
+        for part in re.split(r'(?=<a id="[A-Za-z0-9-]+"></a>)', text):
+            m = re.match(r'<a id="([A-Za-z0-9-]+)"></a>', part)
+            if not m:
+                continue
+            body = re.sub(r'<a id="[^"]*"></a>\s*', '', part).strip()
+            body = re.sub(r'\n-{3,}\s*$', '', body).strip()
+            head = re.match(r'#+\s*(.+)\n?', body)
+            title = re.sub(r'^[✅❌\s]+', '', head.group(1)) if head else ''
+            rules[m.group(1)] = {
+                'doc': doc.name,
+                'title': title or m.group(1),
+                'text': body[head.end() :].strip() if head else body,
+            }
+    return rules
+
+
+def _practices(test_type, skip_overlap):
+    """Rules for a test type -> (PRACTICES.md text, {id: {doc, title}})."""
+    rules = _load_rules()
+    audit = [
+        r
+        for r in PRACTICE_RULES
+        if test_type in r[1] and not (skip_overlap and r[2])
+    ]
+    refs = [i for i, types in PRACTICE_REFS if test_type in types]
+    known = (
+        {r[0] for r in PRACTICE_RULES}
+        | {i for i, _ in PRACTICE_REFS}
+        | set(PRACTICE_SKIP)
+    )
+    missing = sorted(known - set(rules))
+    if missing:
+        sys.exit(
+            'rules not found in docs/best-practices: %s (renamed or removed? '
+            'update the tables in tq.py)' % ', '.join(missing)
+        )
+    unclassified = sorted(
+        i
+        for i, r in rules.items()
+        if r['doc'] in _PRACTICE_DOCS and i not in known
+    )
+    if unclassified:
+        print(
+            'warning: %d rule(s) in the testing docs are not classified in '
+            'tq.py and will not be audited: %s'
+            % (len(unclassified), ', '.join(unclassified))
+        )
+    if not audit:
+        sys.exit('no best-practice rules apply to %s' % test_type)
+
+    def section(rid, note=None):
+        r = rules[rid]
+        out = ['### %s: %s (%s)' % (rid, r['title'], r['doc']), '']
+        if note:
+            out += ['**Audit note:** ' + note, '']
+        return out + [r['text'], '']
+
+    lines = [
+        '# Best practices to audit (%s)' % TYPES[test_type][0],
+        '',
+        'Rule text is copied from `docs/best-practices/`. Rule ids are stable.',
+        '',
+        '## Rules to audit',
+        '',
+    ]
+    for rid, _, _, note in audit:
+        lines += section(rid, note)
+    if refs:
+        lines += [
+            '## Preferred patterns',
+            '',
+            'Use these to write `suggested_fix`. Never report them as '
+            'violations.',
+            '',
+        ]
+        for rid in refs:
+            lines += section(rid)
+    used = [r[0] for r in audit] + refs
+    return '\n'.join(lines), {
+        i: {'doc': rules[i]['doc'], 'title': rules[i]['title']} for i in used
+    }
+
+
 def cmd_init(args):
     type_name, file_re, test_re = TYPES[args.type]
-    out = Path(
+    root = Path(
         args.out
         or '/tmp/brave-test-quality/%s-%s'
         % (args.type, datetime.datetime.now().strftime('%Y%m%d-%H%M'))
@@ -218,6 +666,42 @@ def cmd_init(args):
         rows.append(
             (f, len(lines), sum(1 for line in lines if test_rx.match(line)))
         )
+    sha = _run(['git', 'rev-parse', 'HEAD'], cwd=_REPO_ROOT).stdout.strip()
+    shards = _shard(rows, args.max_lines)
+    lanes = LANES if args.lane == 'all' else (args.lane,)
+    for lane in lanes:
+        meta = {
+            'dir': str(root / lane),
+            'lane': lane,
+            'type': args.type,
+            'type_name': type_name,
+            'repo_root': str(_REPO_ROOT),
+            'sha': sha,
+            'paths': args.path or [],
+        }
+        practices = None
+        if lane == 'best-practices':
+            # With both lanes running, leave assertion-strength rules to the
+            # effectiveness lane.
+            practices, meta['rules'] = _practices(
+                args.type, skip_overlap=args.lane == 'all'
+            )
+        _init_lane(root / lane, meta, rows, shards, practices)
+        print(
+            '%s: %s | %d files, %d lines, %d tests, %d audit shards%s'
+            % (
+                lane,
+                root / lane,
+                len(rows),
+                sum(r[1] for r in rows),
+                sum(r[2] for r in rows),
+                len(shards),
+                ', %d rules' % len(meta['rules']) if practices else '',
+            )
+        )
+
+
+def _init_lane(out, meta, rows, shards, practices):
     for sub in (
         'audit/shards',
         'audit/results',
@@ -229,43 +713,21 @@ def cmd_init(args):
         'post',
     ):
         (out / sub).mkdir(parents=True, exist_ok=True)
-    sha = _run(['git', 'rev-parse', 'HEAD'], cwd=_REPO_ROOT).stdout.strip()
-    meta = {
-        'dir': str(out),
-        'type': args.type,
-        'type_name': type_name,
-        'repo_root': str(_REPO_ROOT),
-        'sha': sha,
-        'paths': args.path or [],
-    }
     _write_json(out / 'meta.json', meta)
     with open(out / 'manifest.tsv', 'w', encoding='utf-8') as f:
         f.write('path\tlines\ttests\n')
         for r in rows:
             f.write('%s\t%d\t%d\n' % r)
-    shards = _shard(rows, args.max_lines)
     for i, shard in enumerate(shards, 1):
         with open(
             out / ('audit/shards/shard-%02d.txt' % i), 'w', encoding='utf-8'
         ) as f:
             for p, nlines, ntests in shard:
                 f.write('%s\t%d lines\t%d tests\n' % (p, nlines, ntests))
-    for src, dst in (
-        ('audit_brief.md', 'AUDIT_BRIEF.md'),
-        ('verify_brief.md', 'VERIFY_BRIEF.md'),
-        ('bug_brief.md', 'BUG_BRIEF.md'),
-    ):
+    for src, dst in _BRIEFS[meta['lane']]:
         (out / dst).write_text(_fill(src, meta), encoding='utf-8')
-    print('work dir: %s' % out)
-    print(
-        '%d files, %d lines, %d tests, %d audit shards'
-        % (
-            len(rows),
-            sum(r[1] for r in rows),
-            sum(r[2] for r in rows),
-            len(shards),
-        )
-    )
+    if practices:
+        (out / 'PRACTICES.md').write_text(practices, encoding='utf-8')
 
 
 def _audit_rows(d):
@@ -284,6 +746,29 @@ def _verify_rows(d):
     return rows
 
 
+def _lane(d):
+    # Work dirs made before lanes existed have no `lane`.
+    return _read_json(d / 'meta.json').get('lane', 'effectiveness')
+
+
+def _flagged(row):
+    # Tests with a finding: `weak` (effectiveness lane) or `flagged`.
+    return row.get('flagged', row.get('weak', 0))
+
+
+def _lane_dirs(path):
+    """A lane dir, or the lane dirs under an output dir."""
+    path = Path(path)
+    if not path.is_dir():
+        sys.exit('no such dir: %s' % path)
+    if (path / 'meta.json').exists():
+        return [path]
+    dirs = [p for p in sorted(path.iterdir()) if (p / 'meta.json').exists()]
+    if not dirs:
+        sys.exit('no work dir at %s' % path)
+    return dirs
+
+
 def cmd_status(args):
     d = Path(args.dir)
     out = []
@@ -294,10 +779,16 @@ def cmd_status(args):
         got = len(_read_jsonl(d / 'audit/results' / (s.stem + '.jsonl'))[0])
         done += got >= want
     files = _audit_rows(d)
-    weak = sum(r.get('weak', 0) for r in files.values())
+    flagged = sum(_flagged(r) for r in files.values())
     out.append(
-        'audit: %d/%d shards, %d files, %d weak tests'
-        % (done, len(shards), len(files), weak)
+        'audit: %d/%d shards, %d files, %d %s tests'
+        % (
+            done,
+            len(shards),
+            len(files),
+            flagged,
+            'weak' if _lane(d) == 'effectiveness' else 'flagged',
+        )
     )
     work = sorted((d / 'verify/work').glob('shard-*.json'))
     if work:
@@ -327,22 +818,26 @@ def cmd_verify_work(args):
             p, n, _ = line.rstrip('\n').split('\t')
             manifest[p] = int(n)
     items = []
+    lane = _lane(d)
     for p, r in sorted(_audit_rows(d).items()):
         findings = []
         for i, f in enumerate(r.get('findings', [])):
-            findings.append(
-                {
-                    'id': '%s#%d' % (p, i),
-                    'tests': f.get('tests', []),
-                    'line': f.get('line'),
-                    'category': f.get('category'),
-                    'confidence': f.get('confidence'),
-                    'claim': f.get('summary', ''),
-                    'mutation': f.get('regression', ''),
-                    'production_ref': f.get('production_ref', ''),
-                    'suggested_fix': f.get('suggested_fix', ''),
-                }
-            )
+            rec = {
+                'id': '%s#%d' % (p, i),
+                'tests': f.get('tests', []),
+                'line': f.get('line'),
+                'confidence': f.get('confidence'),
+                'claim': f.get('summary', ''),
+                'suggested_fix': f.get('suggested_fix', ''),
+            }
+            if lane == 'best-practices':
+                rec['rule'] = f.get('rule')
+                rec['evidence'] = f.get('evidence', '')
+            else:
+                rec['category'] = f.get('category')
+                rec['mutation'] = f.get('regression', '')
+                rec['production_ref'] = f.get('production_ref', '')
+            findings.append(rec)
         if findings:
             items.append((p, manifest.get(p, 0), findings))
     shards = _shard(
@@ -405,22 +900,53 @@ def _feature_label(path):
     return None
 
 
-def _test_issues(meta, verdicts, work):
-    blob = 'https://github.com/brave/brave-core/blob/%s/' % meta['sha']
+def _sev(verdict):
+    sev = verdict.get('severity')
+    return sev if sev in _SEV else 'low'
+
+
+def _by_file(verdicts, work, min_sev):
+    """path -> ids of kept findings (CONFIRMED/NARROWED), worst first."""
     files = collections.defaultdict(list)
     for i, v in verdicts.items():
-        if v.get('verdict') in ('CONFIRMED', 'NARROWED') and i in work:
+        if (
+            v.get('verdict') in ('CONFIRMED', 'NARROWED')
+            and i in work
+            and _SEV[_sev(v)] <= _SEV[min_sev]
+        ):
             files[work[i][0]].append(i)
-    names = collections.Counter(os.path.basename(p) for p in files)
-    issues = []
-    for p, ids in sorted(files.items()):
+    for ids in files.values():
         ids.sort(
             key=lambda i: (
-                _SEV.get(verdicts[i].get('severity'), 3),
+                _SEV[_sev(verdicts[i])],
                 work[i][1].get('line') or 0,
             )
         )
-        top = verdicts[ids[0]].get('severity') or 'low'
+    return files
+
+
+def _path_labels(path):
+    labels = []
+    feature = _feature_label(path)
+    if feature:
+        labels.append(feature)
+    if path.startswith('ios/'):
+        labels.append('OS/iOS')
+    return labels
+
+
+def _short_name(path, names):
+    name = os.path.basename(path)
+    return '/'.join(path.split('/')[-2:]) if names[name] > 1 else name
+
+
+def _test_issues(meta, verdicts, work, min_sev):
+    blob = 'https://github.com/brave/brave-core/blob/%s/' % meta['sha']
+    files = _by_file(verdicts, work, min_sev)
+    names = collections.Counter(os.path.basename(p) for p in files)
+    issues = []
+    for p, ids in sorted(files.items()):
+        top = _sev(verdicts[ids[0]])
         body = [
             '%s in [`%s`](%s) would keep passing if the behavior they cover '
             'broke.' % (meta['type_name'].capitalize(), p, blob + p),
@@ -440,7 +966,7 @@ def _test_issues(meta, verdicts, work):
                 '### %s (%s severity)%s'
                 % (
                     ', '.join('`%s`' % t for t in tests),
-                    v.get('severity') or 'low',
+                    _sev(v),
                     line,
                 ),
                 '',
@@ -470,25 +996,98 @@ def _test_issues(meta, verdicts, work):
             labels.append('tests/weak-assertions')
         if 'missing-key-case' in cats:
             labels.append('tests/missing-coverage')
-        feature = _feature_label(p)
-        if feature:
-            labels.append(feature)
-        if p.startswith('ios/'):
-            labels.append('OS/iOS')
-        name = os.path.basename(p)
-        if names[name] > 1:
-            name = '/'.join(p.split('/')[-2:])
+        labels += _path_labels(p)
         issues.append(
             {
                 'key': p,
-                'title': 'Weak %s in %s' % (meta['type_name'], name),
+                'title': 'Weak %s in %s'
+                % (meta['type_name'], _short_name(p, names)),
                 'body': '\n'.join(body) + '\n',
                 'labels': labels,
                 'severity': top,
                 'findings': len(ids),
             }
         )
-    issues.sort(key=lambda x: (_SEV.get(x['severity'], 3), x['key']))
+    issues.sort(key=lambda x: (_SEV[x['severity']], x['key']))
+    return issues
+
+
+def _bp_issues(meta, verdicts, work, min_sev):
+    sha = meta['sha']
+    blob = 'https://github.com/brave/brave-core/blob/%s/' % sha
+    rules = meta.get('rules', {})
+    files = _by_file(verdicts, work, min_sev)
+    names = collections.Counter(os.path.basename(p) for p in files)
+    issues = []
+    for p, ids in sorted(files.items()):
+        body = [
+            '%s in [`%s`](%s) break test best practices documented in '
+            '`docs/best-practices`.'
+            % (meta['type_name'].capitalize(), p, blob + p),
+            '',
+        ]
+        rule_ids = set()
+        for i in ids:
+            v, f = verdicts[i], work[i][1]
+            rid = v.get('rule') or f.get('rule') or ''
+            rule_ids.add(rid)
+            rule = rules.get(rid)
+            rule_text = '`%s`' % rid
+            if rule:
+                rule_text = '[%s: %s](%sdocs/best-practices/%s#%s)' % (
+                    rid,
+                    rule['title'],
+                    blob,
+                    rule['doc'],
+                    rid,
+                )
+            tests = v.get('violating_tests') or f.get('tests') or []
+            line = (
+                ' [L%s](%s#L%s)' % (f['line'], blob + p, f['line'])
+                if f.get('line')
+                else ''
+            )
+            body += [
+                '### %s (%s severity)%s'
+                % (
+                    ', '.join('`%s`' % t for t in tests) or 'File-wide',
+                    _sev(v),
+                    line,
+                ),
+                '',
+                '- **Rule:** %s' % rule_text,
+                '- **Problem:** %s'
+                % _clean(v.get('issue_text') or f.get('claim')),
+            ]
+            evidence = (v.get('evidence') or f.get('evidence') or '').strip()
+            if evidence:
+                body.append('- **Code:** `%s`' % evidence.replace('`', "'"))
+            body += [
+                '- **Suggested fix:** %s'
+                % _clean(v.get('suggested_fix') or f.get('suggested_fix')),
+                '',
+            ]
+        body.append(
+            "_Found by an AI-assisted audit of this file against Brave's test "
+            'best practices; each item was independently re-verified against '
+            'the rule text and the surrounding code. Line links are pinned to '
+            '%s._' % sha[:11]
+        )
+        issues.append(
+            {
+                'key': p,
+                'title': 'Test best-practice violations in %s'
+                % _short_name(p, names),
+                'body': '\n'.join(body) + '\n',
+                'labels': list(_BASE_LABELS)
+                + ['tests/best-practice-violation']
+                + (['tests/flaky-risk'] if rule_ids & _FLAKY_RULES else [])
+                + _path_labels(p),
+                'severity': _sev(verdicts[ids[0]]),
+                'findings': len(ids),
+            }
+        )
+    issues.sort(key=lambda x: (_SEV[x['severity']], x['key']))
     return issues
 
 
@@ -551,6 +1150,7 @@ def _bug_issues(d, meta):
 def cmd_aggregate(args):
     d = Path(args.dir)
     meta = _read_json(d / 'meta.json')
+    lane = meta.get('lane', 'effectiveness')
     work = {}
     for w in sorted((d / 'verify/work').glob('shard-*.json')):
         for item in _read_json(w):
@@ -560,11 +1160,12 @@ def cmd_aggregate(args):
     missing = sorted(set(work) - set(verdicts))
     audit = _audit_rows(d)
     print(
-        'audit: %d files, %d tests reviewed, %d weak, %d findings'
+        'audit: %d files, %d tests reviewed, %d %s, %d findings'
         % (
             len(audit),
             sum(r.get('tests_reviewed', 0) for r in audit.values()),
-            sum(r.get('weak', 0) for r in audit.values()),
+            sum(_flagged(r) for r in audit.values()),
+            'weak' if lane == 'effectiveness' else 'flagged',
             len(work),
         )
     )
@@ -575,7 +1176,8 @@ def cmd_aggregate(args):
     for m in missing[:10]:
         print('  missing:', m)
 
-    issues = _test_issues(meta, verdicts, work)
+    build = _test_issues if lane == 'effectiveness' else _bp_issues
+    issues = build(meta, verdicts, work, args.min_severity)
     drafts = d / 'final/drafts'
     drafts.mkdir(parents=True, exist_ok=True)
     for old in drafts.glob('*.md'):
@@ -661,7 +1263,7 @@ def _existing(repo, account, label, env):
             '--state',
             'all',
             '--limit',
-            '1000',
+            '5000',
             '--json',
             'title,url',
         ],
@@ -712,7 +1314,11 @@ def cmd_post(args):
         issues, label = _read_json(d / 'final/bug_issues.json'), 'bug'
     else:
         issues = _read_json(d / 'final/issues.json')
-        label = 'tests/test-quality'
+        label = (
+            'tests/best-practice-violation'
+            if _lane(d) == 'best-practices'
+            else 'tests/test-quality'
+        )
     if args.one:
         issues = [x for x in issues if x['key'] == args.one]
         if not issues:
@@ -804,10 +1410,24 @@ def main():
     s = sub.add_parser('init')
     s.add_argument('--type', required=True, choices=sorted(TYPES))
     s.add_argument('--path', action='append', help='limit to a path prefix')
-    s.add_argument('--out', help='work dir (default under /tmp)')
+    s.add_argument('--out', help='output dir (default under /tmp)')
+    s.add_argument(
+        '--lane',
+        default='all',
+        choices=LANES + ('all',),
+        help='what to check (default: all lanes, one work dir each)',
+    )
     s.add_argument('--max-lines', type=int, default=9500)
-    for name in ('status', 'bug-work', 'aggregate'):
+    for name in ('status', 'bug-work'):
         sub.add_parser(name).add_argument('dir')
+    s = sub.add_parser('aggregate')
+    s.add_argument('dir')
+    s.add_argument(
+        '--min-severity',
+        default='low',
+        choices=sorted(_SEV, key=_SEV.get),
+        help='drop findings below this severity from the issues',
+    )
     s = sub.add_parser('verify-work')
     s.add_argument('dir')
     s.add_argument('--max-findings', type=int, default=20)
@@ -824,7 +1444,7 @@ def main():
     g.add_argument('--batch', action='store_true', help='post test issues')
     g.add_argument('--bugs', action='store_true', help='post bug issues')
     args = p.parse_args()
-    {
+    cmds = {
         'init': cmd_init,
         'status': cmd_status,
         'verify-work': cmd_verify_work,
@@ -832,7 +1452,17 @@ def main():
         'aggregate': cmd_aggregate,
         'labels': cmd_labels,
         'post': cmd_post,
-    }[args.cmd](args)
+    }
+    if args.cmd in ('status', 'verify-work', 'bug-work', 'aggregate'):
+        # Takes an output dir (every lane) or one lane dir.
+        dirs = _lane_dirs(args.dir)
+        for d in dirs:
+            if len(dirs) > 1:
+                print('== %s' % _lane(d))
+            args.dir = str(d)
+            cmds[args.cmd](args)
+        return
+    cmds[args.cmd](args)
 
 
 if __name__ == '__main__':

@@ -724,24 +724,22 @@ Available specificity levels (prefer most specific):
    For Chromium tests, check the LUCI Analysis database:
 
    ```bash
-   vpython3 ./tools/chromium_tests_analysis/check-upstream-flake.py "<TestName>"
+   vpython3 ./tools/chromium_tests_analysis/is_upstream_flake.py "<TestName>" --os <platform> --json
    ```
 
-   The script queries `analysis.api.luci.app` and returns a verdict:
+   The script asks `analysis.api.luci.app` whether each variant (builder, OS,
+   test suite) meets Chromium's own CQ flake criteria on the branch the Chromium
+   checkout is at. Read each `variants[].status` (see
+   `agents/skills/check-upstream-flake/SKILL.md` for the JSON shape):
 
-   - **Known upstream flake** (>=5% flake rate): Supports the disable. Verify
-     the PR comment mentions upstream flakiness.
-   - **Occasional upstream failures** (1-5%): Weakly supports the disable. PR
-     should document this.
-   - **Stable upstream** (<1%): The test is reliable in Chromium — the root
-     cause is likely Brave-specific. The PR must explain what Brave-specific
-     factors cause the failure. A disable without this explanation is a **red
-     flag**.
-   - **Not found / Insufficient data**: Cannot determine from upstream data.
-     Manual analysis needed.
-
-   Use `--days 60` for a wider lookback window if the default 30 days has
-   insufficient data.
+   - **FLAKY / FAILING**: Supports the disable for the platforms of those
+     builders. Verify the PR comment mentions upstream flakiness and that the
+     filter file is no broader than the confirmed builders.
+   - **STABLE**: The test is reliable in Chromium — the root cause is likely
+     Brave-specific. The PR must explain what Brave-specific factors cause the
+     failure. A disable without this explanation is a **red flag**.
+   - **No variants with data**: Cannot determine from upstream data. Retry with
+     `--ref main`; otherwise manual analysis is needed.
 
 **Red flags (overly broad disables):**
 
@@ -1137,7 +1135,7 @@ Review a PR by number (assumes brave/brave-core):
 - [ ] Only posted to GitHub if user explicitly requested (after approval via the
       question tool when available; watermark appended to the review body and
       every inline comment)
-- [ ] For test disables: checked upstream flakiness via check-upstream-flake.py
+- [ ] For test disables: checked upstream flakiness via is_upstream_flake.py
 
 ### Local Mode Only
 

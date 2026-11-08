@@ -20,6 +20,7 @@ source_set("browser_tests") {
     deps = [
       ":sessions",
       "//base/test:test_support",
+      "//brave/browser/ui:brave_tab_prefs",
       "//brave/browser/ui/tabs:tab_strip",
       "//brave/browser/ui/tabs:tree_tab",
       "//brave/components/tabs",

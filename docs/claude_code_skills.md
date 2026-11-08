@@ -13,7 +13,7 @@ of truth) and linked into the generated `.claude/skills/` discovery dir by
 | `/add-best-practice`      | Add a new best practice entry to the docs                                         |
 | `/fix-bp-docs`            | Audit and fix stale references, duplicates, and formatting in best practices docs |
 | `/check-milestones`       | Check/fix milestones on PRs and issues                                            |
-| `/check-upstream-flake`   | Check LUCI Analysis for upstream test flakiness                                   |
+| `/check-upstream-flake`   | Check LUCI Analysis for confirmed upstream test flakes                            |
 | `/clean-branches`         | Delete local branches whose PRs are merged (Experimental)                         |
 | `/commit`                 | Create atomic git commits                                                         |
 | `/create-contributor-prs` | Dispatch the rebase-from-fork workflow so CI runs on contributor PRs              |
@@ -26,7 +26,7 @@ of truth) and linked into the generated `.claude/skills/` discovery dir by
 | `/preflight`              | Run all preflight checks (format, build, test)                                    |
 | `/rebase-downstream`      | Rebase a tree of dependent branches                                               |
 | `/review`                 | Code review (PR or local changes)                                                 |
-| `/test-quality`           | Find tests that would pass even if the code they test broke, and file issues      |
+| `/test-quality`           | Audit tests for weak assertions and best-practice violations, and file issues     |
 | `/top-crashers`           | Query Backtrace for top crash data (Experimental)                                 |
 | `/uplift`                 | Cherry-pick fixes to beta/release branches                                        |
 

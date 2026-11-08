@@ -6,9 +6,14 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_SLOT_CONTROLLER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_SLOT_CONTROLLER_H_
 
-#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/accent_color/brave_tab_accent_types.h"
 #include "ui/base/models/image_model.h"
+
+// Defined in brave/browser/ui/tabs/brave_tab_prefs.h, which this header's
+// target doesn't depend on. A value-initialized TabMinWidthMode is kDefault.
+namespace brave_tabs {
+enum class TabMinWidthMode;
+}  // namespace brave_tabs
 
 namespace tabs {
 class TreeTabNode;

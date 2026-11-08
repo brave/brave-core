@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/browser/BUILD.gn b/components/omnibox/browser/BUILD.gn
-index 916f06eb1ae3d26f3f7e6d9b753be6312606a21d..f9d9562b70aec6ebfe098408db7f184cedb15328 100644
+index f7aaba4a989da2663c8ef1692e5ad7fbb9ff3f3c..683075294c3d5c59b1ca6147143ce71723eed5e3 100644
 --- a/components/omnibox/browser/BUILD.gn
 +++ b/components/omnibox/browser/BUILD.gn
 @@ -376,6 +376,7 @@ static_library("browser") {
@@ -24,8 +24,8 @@ index 916f06eb1ae3d26f3f7e6d9b753be6312606a21d..f9d9562b70aec6ebfe098408db7f184c
    ]
 +  deps += brave_components_omnibox_browser_deps
  
-   configs += [ "//build/config/compiler:wexit_time_destructors" ]
- 
+   if (is_android) {
+     deps += [ "//components/location/android:settings" ]
 @@ -1151,6 +1154,7 @@ mojom("mojo_bindings") {
        ":suggest_template_info_mojo_bindings",
      ]

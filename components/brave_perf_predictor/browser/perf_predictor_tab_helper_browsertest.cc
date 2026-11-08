@@ -144,9 +144,13 @@ IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, NoBlockNoSavings) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
+  // The page counts the image's load event too, so wait for it before the XHR
+  // instead of racing the two.
   EXPECT_EQ(true, EvalJs(contents,
-                         "addImage('logo.png');"
-                         "setExpectations(0, 0, 1, 0);"
+                         "setExpectations(1, 0, 0, 0);"
+                         "addImage('logo.png')"));
+  EXPECT_EQ(true, EvalJs(contents,
+                         "setExpectations(1, 0, 1, 0);"
                          "xhr('analytics.js')"));
   // Prediction triggered when web contents are closed
   contents->Close();
@@ -255,7 +259,7 @@ IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest,
                        TimingFollowsDiscardedContents) {
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
       browser(), embedded_test_server()->GetURL("/blocking.html"),
-      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   TabStripModel* const tab_strip_model = browser()->tab_strip_model();
   const int index = tab_strip_model->active_index();

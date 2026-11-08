@@ -146,6 +146,52 @@ constexpr char16_t kYoutubeFullscreenVideoFitWorkaround[] =
 }());
 )";
 
+// m.youtube.com has no manifest, so Add to Home screen would generate a
+// monogram icon. Declare one mirroring www.youtube.com's; that one can't be
+// linked directly as it isn't served with CORS headers.
+constexpr char16_t kYoutubeManifest[] =
+    uR"(
+(function() {
+  function addManifest() {
+    if (document.querySelector('head > link[rel~="manifest"]')) {
+      return;
+    }
+    const origin = location.origin;
+    const icons = 'https://www.gstatic.com/youtube/img';
+    const manifest = {
+      name: 'YouTube',
+      short_name: 'YouTube',
+      start_url: origin + '/?feature=ytca',
+      scope: origin + '/',
+      display: 'minimal-ui',
+      background_color: '#FFFFFF',
+      theme_color: '#FF0033',
+      icons: [
+        {src: icons + '/branding/favicon/favicon_144x144_v2.png',
+         sizes: '144x144', type: 'image/png'},
+        {src: icons + '/branding/favicon/favicon_192x192_v2.png',
+         sizes: '192x192', type: 'image/png'},
+        {src: icons + '/web/maskable/logo_192x192.png',
+         sizes: '192x192', type: 'image/png', purpose: 'maskable'},
+        {src: icons + '/web/maskable/logo_512x512.png',
+         sizes: '512x512', type: 'image/png', purpose: 'maskable'},
+      ],
+    };
+    const link = document.createElement('link');
+    link.rel = 'manifest';
+    link.href = 'data:application/manifest+json,'
+        + encodeURIComponent(JSON.stringify(manifest));
+    document.head.appendChild(link);
+  }
+  // Blink only reads manifest links that are children of <head>.
+  if (document.head) {
+    addManifest();
+  } else {
+    document.addEventListener('DOMContentLoaded', addManifest, {once: true});
+  }
+}());
+)";
+
 // Drives the YouTube player into fullscreen so the caller can follow up with
 // Picture in Picture. On a cold load the player and its controls hydrate
 // asynchronously, so the fullscreen button may be absent at injection time: the
@@ -454,6 +500,10 @@ void YouTubeScriptInjectorTabHelper::PrimaryMainDocumentElementAvailable() {
           preferences::features::kBraveYoutubeFullscreenVideoFitWorkaround)) {
     contents->GetPrimaryMainFrame()->ExecuteJavaScript(
         kYoutubeFullscreenVideoFitWorkaround, base::NullCallback());
+  }
+  if (IsYouTubeDomain(/*mobileOnly=*/true)) {
+    contents->GetPrimaryMainFrame()->ExecuteJavaScript(kYoutubeManifest,
+                                                       base::NullCallback());
   }
 }
 

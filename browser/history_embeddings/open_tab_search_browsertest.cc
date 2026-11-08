@@ -81,7 +81,7 @@ class OpenTabSearchBrowserTest : public InProcessBrowserTest {
                  const GURL& url,
                  const std::string& title) {
     ui_test_utils::NavigateToURLWithDisposition(
-        target, url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+        target, url, WindowOpenDisposition::kNewForegroundTab,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
     content::WebContents* contents =
         target->tab_strip_model()->GetActiveWebContents();

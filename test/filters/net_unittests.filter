@@ -23,6 +23,11 @@
 -InputFileParsersTest.ParsePkpJsonInvalidPinset
 -TransportSecurityStateTest.PinValidationWithCompiledInPins
 -TransportSecurityStateStaticTest.PreloadedProductionStaticPins
+-KeyPinningStateChrome.PinValidationWithCompiledInPins
+-KeyPinningStateChrome.PreloadedProductionStaticPins
+-KeyPinningStateChrome.UpdateKeyPinsEmptyList
+-KeyPinningStateChrome.UpdateKeyPinsListTimestamp
+-KeyPinningStateChrome.UpdateKeyPinsListValidPin
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -CanPoolTest.CanNotPoolWithBadPins
