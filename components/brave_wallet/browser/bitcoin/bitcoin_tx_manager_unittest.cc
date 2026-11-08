@@ -10,9 +10,10 @@
 #include <utility>
 
 #include "base/files/scoped_temp_dir.h"
-#include "base/test/mock_callback.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -28,9 +29,6 @@
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/origin.h"
-
-using testing::_;
-using testing::SaveArg;
 
 namespace brave_wallet {
 
@@ -116,28 +114,24 @@ TEST_F(BitcoinTxManagerUnitTest, SubmitTransaction) {
       mojom::kBitcoinMainnet, from_account.Clone(), kMockBtcAddress, 5000,
       false, nullptr);
 
-  base::MockCallback<BitcoinTxManager::AddUnapprovedBitcoinTransactionCallback>
-      add_callback;
-  std::string meta_id;
-  EXPECT_CALL(add_callback, Run(_, _, _)).WillOnce(SaveArg<1>(&meta_id));
+  base::test::TestFuture<bool, const std::string&, const std::string&>
+      add_future;
   btc_tx_manager()->AddUnapprovedBitcoinTransaction(params.Clone(),
-                                                    add_callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&add_callback);
-  EXPECT_TRUE(!meta_id.empty());
+                                                    add_future.GetCallback());
+  const std::string meta_id = add_future.Get<1>();
+  ASSERT_FALSE(meta_id.empty());
 
   auto tx_meta1 = btc_tx_manager()->GetTxForTesting(meta_id);
-  EXPECT_TRUE(tx_meta1);
+  ASSERT_TRUE(tx_meta1);
   EXPECT_EQ(tx_meta1->chain_id(), mojom::kBitcoinMainnet);
 
   EXPECT_EQ(tx_meta1->from(), from_account);
   EXPECT_EQ(tx_meta1->status(), mojom::TransactionStatus::Unapproved);
 
-  base::MockCallback<TxManager::ApproveTransactionCallback> approve_callback;
-  EXPECT_CALL(approve_callback, Run(true, _, _));
-  ApproveTransaction(meta_id, approve_callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&approve_callback);
+  base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
+      approve_future;
+  ApproveTransaction(meta_id, approve_future.GetCallback());
+  EXPECT_TRUE(approve_future.Get<0>());
 
   tx_meta1 = btc_tx_manager()->GetTxForTesting(meta_id);
   ASSERT_TRUE(tx_meta1);
@@ -147,7 +141,10 @@ TEST_F(BitcoinTxManagerUnitTest, SubmitTransaction) {
 
   bitcoin_test_rpc_server_->ConfirmAllTransactions();
   btc_tx_manager()->UpdatePendingTransactions(mojom::kBitcoinMainnet);
-  task_environment_.RunUntilIdle();
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    auto tx_meta = btc_tx_manager()->GetTxForTesting(meta_id);
+    return tx_meta && tx_meta->status() == mojom::TransactionStatus::Confirmed;
+  }));
   tx_meta1 = btc_tx_manager()->GetTxForTesting(meta_id);
   ASSERT_TRUE(tx_meta1);
   EXPECT_FALSE(tx_meta1->tx_hash().empty());
@@ -163,18 +160,15 @@ TEST_F(BitcoinTxManagerUnitTest, SubmitTransactionError) {
       mojom::kBitcoinMainnet, from_account.Clone(), kMockBtcAddress, 5000,
       false, nullptr);
 
-  base::MockCallback<BitcoinTxManager::AddUnapprovedBitcoinTransactionCallback>
-      add_callback;
-  std::string meta_id;
-  EXPECT_CALL(add_callback, Run(_, _, _)).WillOnce(SaveArg<1>(&meta_id));
+  base::test::TestFuture<bool, const std::string&, const std::string&>
+      add_future;
   btc_tx_manager()->AddUnapprovedBitcoinTransaction(params.Clone(),
-                                                    add_callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&add_callback);
-  EXPECT_TRUE(!meta_id.empty());
+                                                    add_future.GetCallback());
+  const std::string meta_id = add_future.Get<1>();
+  ASSERT_FALSE(meta_id.empty());
 
   auto tx_meta1 = btc_tx_manager()->GetTxForTesting(meta_id);
-  EXPECT_TRUE(tx_meta1);
+  ASSERT_TRUE(tx_meta1);
   EXPECT_EQ(tx_meta1->chain_id(), mojom::kBitcoinMainnet);
 
   EXPECT_EQ(tx_meta1->from(), from_account);
@@ -182,11 +176,10 @@ TEST_F(BitcoinTxManagerUnitTest, SubmitTransactionError) {
 
   bitcoin_test_rpc_server_->FailNextTransactionBroadcast();
 
-  base::MockCallback<TxManager::ApproveTransactionCallback> approve_callback;
-  EXPECT_CALL(approve_callback, Run(false, _, _));
-  btc_tx_manager()->ApproveTransaction(meta_id, approve_callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&approve_callback);
+  base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
+      approve_future;
+  btc_tx_manager()->ApproveTransaction(meta_id, approve_future.GetCallback());
+  EXPECT_FALSE(approve_future.Get<0>());
 
   tx_meta1 = btc_tx_manager()->GetTxForTesting(meta_id);
   ASSERT_TRUE(tx_meta1);
