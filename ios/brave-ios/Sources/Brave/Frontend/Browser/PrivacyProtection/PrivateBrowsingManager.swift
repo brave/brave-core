@@ -6,14 +6,21 @@ import Combine
 import Data
 import Foundation
 
+enum TabBrowsingMode: Int {
+  case regular, `private`, tor
+}
+
 public final class PrivateBrowsingManager: ObservableObject {
 
   public init() {}
+
+  @Published public var isTorBrowsing = false
 
   @Published public var isPrivateBrowsing = false {
     didSet {
       if oldValue != isPrivateBrowsing {
         if !isPrivateBrowsing {
+          isTorBrowsing = false
           Domain.clearInMemoryDomains()
         }
       }

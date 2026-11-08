@@ -211,6 +211,10 @@ public class BrowserViewController: UIViewController {
   private var toolbarTopConstraint: Constraint?
   private var toolbarBottomConstraint: Constraint?
   var toolbarVisibilityCancellable: AnyCancellable?
+  var torMenuCancellable: AnyCancellable?
+  var torMenuPopupTask: Task<Void, Never>?
+  var torMenuPopupTabID: UUID?
+  var torMenuPopupURL: URL?
 
   var keyboardState: KeyboardState?
 
@@ -479,7 +483,7 @@ public class BrowserViewController: UIViewController {
     }
 
     for tab in tabManager.tabsForCurrentMode where tab.id != tabManager.selectedTab?.id {
-      tab.browserData?.newTabPageViewController = nil
+      tab.nativeNewTabPageViewController = nil
     }
   }
 
@@ -814,6 +818,7 @@ public class BrowserViewController: UIViewController {
     }
 
     updateUsingBottomBar(using: newCollection)
+    topToolbar.setTabSwipeGestureHost(view, bottomToolbar: toolbar)
     updateURLBar()
 
     toolbarVisibilityViewModel.toolbarState = .expanded
@@ -866,6 +871,10 @@ public class BrowserViewController: UIViewController {
 
   @objc func tappedTopArea() {
     toolbarVisibilityViewModel.toolbarState = .expanded
+  }
+
+  @objc private func tappedStatusBarArea() {
+    scrollSelectedTabToTop()
   }
 
   @objc func sceneWillResignActiveNotification(_ notification: NSNotification) {
@@ -1066,7 +1075,6 @@ public class BrowserViewController: UIViewController {
 
     view.addSubview(alertStackView)
     view.addSubview(bottomTouchArea)
-    view.addSubview(topTouchArea)
     if #available(iOS 26.0, *) {
       view.addSubview(bottomBarKeyboardBackground)
     }
@@ -1077,6 +1085,8 @@ public class BrowserViewController: UIViewController {
     if #available(iOS 26.0, *) {
       view.addSubview(topEdgeView)
     }
+    // Keep the status-bar tap target above the chrome's decorative overlays.
+    view.addSubview(topTouchArea)
 
     // For now we hide some elements so they are not visible
     header.isHidden = true
@@ -1165,7 +1175,7 @@ public class BrowserViewController: UIViewController {
     UNUserNotificationCenter.current().delegate = self
 
     // Add interactions
-    topTouchArea.addTarget(self, action: #selector(tappedTopArea), for: .touchUpInside)
+    topTouchArea.addTarget(self, action: #selector(tappedStatusBarArea), for: .touchUpInside)
     bottomTouchArea.addTarget(self, action: #selector(tappedTopArea), for: .touchUpInside)
     header.collapsedBarContainerView.addTarget(
       self,
@@ -1424,7 +1434,7 @@ public class BrowserViewController: UIViewController {
 
     topTouchArea.snp.makeConstraints { make in
       make.top.left.right.equalTo(self.view)
-      make.height.equalTo(32)
+      make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.top)
     }
 
     bottomTouchArea.snp.makeConstraints { make in
@@ -1749,7 +1759,7 @@ public class BrowserViewController: UIViewController {
 
   fileprivate func showNewTabPageController() {
     guard let selectedTab = tabManager.selectedTab else { return }
-    if selectedTab.newTabPageViewController == nil {
+    if selectedTab.nativeNewTabPageViewController == nil {
       let ntpController = NewTabPageViewController(
         tab: selectedTab,
         profilePrefs: profileController.profile.prefs,
@@ -1759,19 +1769,17 @@ public class BrowserViewController: UIViewController {
         rewards: rewards,
         privateBrowsingManager: privateBrowsingManager
       )
-      // Donate NewTabPage Activity For Custom Suggestions
-      let newTabPageActivity =
-        ActivityShortcutManager.shared.createShortcutActivity(
+      ntpController.delegate = self
+      if !selectedTab.isTor {
+        let newTabPageActivity = ActivityShortcutManager.shared.createShortcutActivity(
           type: selectedTab.isPrivate ? .newPrivateTab : .newTab
         )
-
-      ntpController.delegate = self
-      ntpController.userActivity = newTabPageActivity
-
-      newTabPageActivity.becomeCurrent()
-      selectedTab.newTabPageViewController = ntpController
+        ntpController.userActivity = newTabPageActivity
+        newTabPageActivity.becomeCurrent()
+      }
+      selectedTab.nativeNewTabPageViewController = ntpController
     }
-    guard let ntpController = selectedTab.newTabPageViewController else {
+    guard let ntpController = selectedTab.nativeNewTabPageViewController else {
       assertionFailure("homePanelController is still nil after assignment.")
       return
     }
@@ -2097,6 +2105,7 @@ public class BrowserViewController: UIViewController {
 
   public func moveTab(tabId: UUID, to browser: BrowserViewController) {
     guard let tab = tabManager.allTabs.filter({ $0.id == tabId }).first,
+      !tab.isTor,
       let url = tab.visibleURL
     else {
       return
@@ -3175,7 +3184,8 @@ extension BrowserViewController {
   }
 
   public func submitSearchText(_ text: String, isBraveSearchPromotion: Bool = false) {
-    if FeatureList.kUseChromiumSearchEngines.enabled {
+    // Tor keeps its independent engine preference in both search architectures.
+    if FeatureList.kUseChromiumSearchEngines.enabled && !privateBrowsingManager.isTorBrowsing {
       if let searchURL = templateURLSearchURL(
         for: text,
         isBraveSearchPromotion: isBraveSearchPromotion,
@@ -3189,7 +3199,10 @@ extension BrowserViewController {
     }
 
     var engine = profile.searchEngines.defaultEngine(
-      forType: privateBrowsingManager.isPrivateBrowsing ? .privateMode : .standard
+      forType: .init(
+        isPrivate: privateBrowsingManager.isPrivateBrowsing,
+        isTor: privateBrowsingManager.isTorBrowsing
+      )
     )
 
     if isBraveSearchPromotion {

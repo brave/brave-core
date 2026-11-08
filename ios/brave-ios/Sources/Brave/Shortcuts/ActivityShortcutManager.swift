@@ -5,6 +5,7 @@
 
 import BraveCore
 import BraveNews
+import BraveStrings
 import BraveVPN
 import BrowserIntentsModels
 import CoreSpotlight
@@ -24,6 +25,7 @@ import os.log
 public enum ActivityType: String, CaseIterable {
   case newTab = "NewTab"
   case newPrivateTab = "NewPrivateTab"
+  case newPrivateTorTab = "NewPrivateTorTab"
   case openBookmarks = "OpenBookmarks"
   case openHistoryList = "OpenHistoryList"
   case clearBrowsingHistory = "ClearBrowsingHistory"
@@ -43,6 +45,8 @@ public enum ActivityType: String, CaseIterable {
       return Strings.Shortcuts.activityTypeNewTabTitle
     case .newPrivateTab:
       return Strings.Shortcuts.activityTypeNewPrivateTabTitle
+    case .newPrivateTorTab:
+      return Strings.Tor.shortcutTitle
     case .openBookmarks:
       return Strings.Shortcuts.activityTypeOpenBookmarksTitle
     case .openHistoryList:
@@ -63,6 +67,8 @@ public enum ActivityType: String, CaseIterable {
   /// The content description for designated activity  type
   public var description: String {
     switch self {
+    case .newPrivateTorTab:
+      return Strings.Tor.shortcutDescription
     case .newTab, .newPrivateTab:
       return Strings.Shortcuts.activityTypeTabDescription
     case .openHistoryList:
@@ -89,6 +95,8 @@ public enum ActivityType: String, CaseIterable {
       return Strings.Shortcuts.activityTypeNewTabSuggestedPhrase
     case .newPrivateTab:
       return Strings.Shortcuts.activityTypeNewPrivateTabSuggestedPhrase
+    case .newPrivateTorTab:
+      return Strings.Tor.shortcutPhrase
     case .openBookmarks:
       return Strings.Shortcuts.activityTypeOpenBookmarksSuggestedPhrase
     case .openHistoryList:
@@ -151,6 +159,7 @@ public class ActivityShortcutManager: NSObject {
 
   @MainActor
   private func handleActivityDetails(type: ActivityType, using bvc: BrowserViewController) {
+    guard type != .newPrivateTorTab || Preferences.Privacy.torEnabled.value else { return }
     let openExternalNewTab: (Bool, Bool) -> Void = { isPrivate, attemptLocationFieldFocus in
       bvc.openBlankNewTab(
         attemptLocationFieldFocus: attemptLocationFieldFocus,
@@ -166,17 +175,25 @@ public class ActivityShortcutManager: NSObject {
         bvc.privateBrowsingManager.isPrivateBrowsing,
         Preferences.General.openKeyboardOnNTPSelection.value
       )
-    case .newPrivateTab:
-      if Preferences.Privacy.lockWithPasscode.value {
+    case .newPrivateTab, .newPrivateTorTab:
+      let openPrivateTab = {
+        if type == .newPrivateTorTab {
+          guard Preferences.Privacy.torEnabled.value else { return }
+          bvc.privateBrowsingManager.isPrivateBrowsing = true
+          bvc.privateBrowsingManager.isTorBrowsing = true
+        }
         openExternalNewTab(true, Preferences.General.openKeyboardOnNTPSelection.value)
+      }
+      if Preferences.Privacy.lockWithPasscode.value {
+        openPrivateTab()
       } else if Preferences.Privacy.privateBrowsingLock.value {
         guard let windowProtection = bvc.windowProtection else { return }
         bvc.askForLocalAuthentication(using: windowProtection, viewType: .external) { success, _ in
           guard success else { return }
-          openExternalNewTab(true, Preferences.General.openKeyboardOnNTPSelection.value)
+          openPrivateTab()
         }
       } else {
-        openExternalNewTab(true, Preferences.General.openKeyboardOnNTPSelection.value)
+        openPrivateTab()
       }
     case .openBookmarks:
       bvc.popToBVC()

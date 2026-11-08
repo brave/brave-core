@@ -192,6 +192,10 @@ extension Preferences {
       key: "search.defaultprivate.name",
       default: nil
     )
+    /// The independently selected engine for Tor tabs.
+    static let defaultTorEngineName = Option<String?>(
+      key: "search.defaulttor.name", default: "braveSearch"
+    )
     /// Whether or not to show recent searches
     static let shouldShowRecentSearches = Option<Bool>(
       key: "search.should-show-recent-searches",
@@ -257,6 +261,18 @@ extension Preferences {
   }
 
   final public class Privacy {
+    public static let torEnabled = Option<Bool>(key: "privacy.tor-enabled", default: true)
+    public static let disableTorAutomaticPopup = Option<Bool>(key: "privacy.tor-disable-automatic-popup", default: false)
+    public static let onlyOnionInTor = Option<Bool>(key: "privacy.only-onion-in-tor", default: true)
+    public static let torBridgeConfiguration = Option<String>(
+      key: "privacy.tor-bridges",
+      default: "{\"useBridges\":false,\"source\":\"builtIn\",\"builtIn\":\"obfs4\",\"requested\":[],\"provided\":[]}"
+    )
+    /// Keep each new Tor tab's website data and circuits separate.
+    public static let keepTorTabsSeparate = Option<Bool>(
+      key: "privacy.keep-tor-tabs-separate",
+      default: true
+    )
     static let lockWithPasscode = Option<Bool>(key: "privacy.lock-with-passcode", default: false)
     public static let privateBrowsingLock = Option<Bool>(
       key: "privacy.private-browsing-lock",

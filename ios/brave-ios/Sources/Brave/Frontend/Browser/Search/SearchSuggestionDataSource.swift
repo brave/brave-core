@@ -31,6 +31,8 @@ class SearchSuggestionDataSource {
   }
 
   let isPrivate: Bool
+  let isTor: Bool
+  var defaultEngineType: DefaultEngineType { .init(isPrivate: isPrivate, isTor: isTor) }
   let isAIChatAvailable: Bool
   let isPlaylistAvailable: Bool
   let maxSearchSuggestions = 5
@@ -50,7 +52,7 @@ class SearchSuggestionDataSource {
   let searchEngines: SearchEngines?
 
   private var defaultEngine: OpenSearchEngine? {
-    searchEngines?.defaultEngine(forType: isPrivate ? .privateMode : .standard)
+    searchEngines?.defaultEngine(forType: defaultEngineType)
   }
 
   var quickSearchItems: [QuickSearchItem] {
@@ -78,7 +80,7 @@ class SearchSuggestionDataSource {
   }
 
   var braveSearchPromotionAvailable: Bool {
-    guard Preferences.Review.launchCount.value > 1,
+    guard !isTor, Preferences.Review.launchCount.value > 1,
       defaultEngine?.shortName != OpenSearchEngine.EngineNames.brave,
       let braveSearchPromotionLaunchDate = Preferences.BraveSearch.braveSearchPromotionLaunchDate
         .value,
@@ -113,8 +115,10 @@ class SearchSuggestionDataSource {
     isPrivate: Bool,
     isAIChatAvailable: Bool,
     isPlaylistAvailable: Bool,
-    searchEngines: SearchEngines?
+    searchEngines: SearchEngines?,
+    isTor: Bool = false
   ) {
+    self.isTor = isTor
     self.isPrivate = isPrivate
     self.isAIChatAvailable = isAIChatAvailable
     self.isPlaylistAvailable = isPlaylistAvailable
@@ -122,6 +126,7 @@ class SearchSuggestionDataSource {
   }
 
   func querySuggestClient() {
+    guard !isTor else { return }
     // Do not query suggestions if user is not opt_ed in
     if !Preferences.Search.showSuggestions.value {
       Logger.module.info("Suggestions are not enabled")
@@ -182,7 +187,7 @@ class SearchSuggestionDataSource {
 
   func setupSearchClient() {
     // Show the default search engine first.
-    if !isPrivate,
+    if !isPrivate, !isTor,
       let userAgent = SearchViewController.userAgent,
       let engines = searchEngines?.defaultEngine(forType: .standard)
     {

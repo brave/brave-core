@@ -177,6 +177,9 @@ struct SearchSettingsView: View {
   @Bindable var viewModel: SearchSettingsViewModel
   /// Opens the quick search engines settings
   var openQuickSearchEngines: () -> Void
+  var torSearchEngines: SearchEngines
+
+  @State private var torEngineName: String?
 
   @ObservedObject private var showSearchSuggestions = Preferences.Search.showSuggestions
   @ObservedObject private var showRecentSearches = Preferences.Search.shouldShowRecentSearches
@@ -198,6 +201,19 @@ struct SearchSettingsView: View {
           searchEngines: viewModel.searchEngines,
           selection: $viewModel.defaultPrivateSearchEngineID
         )
+        Picker(Strings.Tor.searchTab, selection: $torEngineName) {
+          ForEach(torSearchEngines.orderedEngines, id: \.shortName) { engine in
+            Text(engine.displayName).tag(engine.shortName as String?)
+          }
+        }
+        .onAppear {
+          torEngineName = torSearchEngines.defaultEngine(forType: .tor)?.shortName
+        }
+        .onChange(of: torEngineName) { _, name in
+          if let name {
+            torSearchEngines.updateDefaultEngine(name, forType: .tor)
+          }
+        }
         Button {
           openQuickSearchEngines()
         } label: {

@@ -393,6 +393,8 @@ def AddBraveCredits(
     # contained under a "third_party" or "vendor" directory.
     additional_list = list(additional_paths)
     additional_list += [
+        os.path.join('brave', 'ios', 'tor', 'credits', 'embedded'),
+        os.path.join('brave', 'ios', 'tor', 'credits', 'transports'),
         os.path.join(
             'brave',
             'resources',

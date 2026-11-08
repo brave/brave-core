@@ -25,7 +25,7 @@ class ShareExtensionHelper {
   ///   - applicationActivities: The application activities to include in this share sheet.
   ///   - completionHandler: This will be triggered once the share sheet is dismissed and can be used to cleanup any lingering data
   /// - Returns: An `UIActivityViewController` prepped and ready to present.
-  func createActivityViewController(
+  @MainActor func createActivityViewController(
     applicationActivities: [UIActivity] = []
   ) -> UIActivityViewController {
     let printInfo = UIPrintInfo(dictionary: nil)
@@ -45,7 +45,9 @@ class ShareExtensionHelper {
     if let title = selectedTab?.title {
       // Makes sure the share sheet shows the same title as the tab
       // Also adds a title to several places, such as the Subject field in Mail
-      activityItems.append(URLActivityItemProvider(title: title, url: selectedURL))
+      activityItems.append(URLActivityItemProvider(
+        title: title, url: selectedURL, includeLocalMetadata: selectedTab?.isTor == true
+      ))
     } else {
       activityItems.append(selectedURL)
     }

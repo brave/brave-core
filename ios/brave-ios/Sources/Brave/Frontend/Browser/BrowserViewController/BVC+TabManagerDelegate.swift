@@ -20,6 +20,7 @@ import os.log
 
 extension BrowserViewController: TabManagerDelegate {
   func attachTabHelpers(to tab: some TabState) {
+    guard !tab.isTor else { return }
     tab.browserData = .init(tab: tab, tabGeneratorAPI: profileController.tabGeneratorAPI)
     tab.pullToRefresh = .init(tab: tab)
     tab.renderProcessCrash = .init(tab: tab)
@@ -99,14 +100,7 @@ extension BrowserViewController: TabManagerDelegate {
         )
       }
     )
-    let braveShieldsHelper: BraveShieldsTabHelper = .init(
-      tab: tab,
-      braveShieldsSettings: BraveShieldsSettingsServiceFactory.get(profile: tab.profile)
-    )
-    tab.braveShieldsHelper = braveShieldsHelper
-    // When `BraveShieldsTabHelper+TabPolicyDecider` is moved to `BraveShields` target,
-    // we should add it as a policy decider at initialization.
-    tab.addPolicyDecider(braveShieldsHelper)
+    attachShields(to: tab)
     // Must be added before `braveSearch`. HttpsUpgradeTabHelper needs first look at a
     // main-frame http navigation so it can attempt the upgrade before BraveSearchTabHelper
     // decides whether to route it into QuickView. BraveSearchTabHelper recognizes a reissued
@@ -384,7 +378,32 @@ extension BrowserViewController: TabManagerDelegate {
   func tabManager(_ tabManager: TabManager, willAddTab tab: some TabState) {
   }
 
+  private func attachShields(to tab: some TabState) {
+    let helper = BraveShieldsTabHelper(
+      tab: tab,
+      braveShieldsSettings: BraveShieldsSettingsServiceFactory.get(profile: tab.profile)
+    )
+    tab.braveShieldsHelper = helper
+    tab.contentBlocker?.adBlockService = braveCore.adblockService
+    tab.addPolicyDecider(helper)
+  }
+
   func tabManager(_ tabManager: TabManager, didAddTab tab: some TabState) {
+    if tab.isTor {
+      tab.torContentBlocker = ContentBlockerHelper(tab: tab)
+      attachShields(to: tab)
+      tab.protectionStats = .init(tab: tab)
+      if let tab = tab as? TorTabState {
+        tab.torPageTools = TorPageToolsTabHelper(tab: tab)
+        tab.nightMode = NightModeTabHelper(tab: tab)
+      }
+      observeTorMenuStatus()
+      tab.downloadDelegate = self
+      tab.delegate = self
+      tab.addObserver(self)
+      updateTabsBarVisibility()
+      return
+    }
     tab.addObserver(self)
     tab.delegate = self
     tab.downloadDelegate = self

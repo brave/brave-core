@@ -5,6 +5,7 @@
 
 import AVKit
 import BraveCore
+import BraveTorUI
 import BraveShared
 import BraveUI
 import BraveVPN
@@ -127,10 +128,12 @@ extension BrowserViewController {
     from sourceView: UIView,
     activities: [UIActivity],
     tab: (any TabState)?,
-    pageURL: URL?
+    pageURL: URL?,
+    initiallyShowsConnectionSection: Bool = false
   ) {
     var actions: [Action] = []
-    if profileController.profile.prefs.isBraveVPNAvailable {
+    let isTor = tab?.isTor == true
+    if !isTor && profileController.profile.prefs.isBraveVPNAvailable {
       actions.append(vpnMenuAction)
     }
     actions.append(contentsOf: destinationMenuActions(for: pageURL))
@@ -188,8 +191,19 @@ extension BrowserViewController {
       .map { .init(id: $0, attributes: .disabled) }
     actions.append(contentsOf: pageActivities)
     actions.append(contentsOf: remainingPageActivities)
+    if isTor {
+      // Restrict Tor to local tools and operations on its proxied web view.
+      let allowed = TorMenuPolicy.allowedActions
+      actions = actions.map { action in
+        var action = action
+        if !allowed.contains(action.id) { action.attributes.insert(.disabled) }
+        return action
+      }
+    }
     let browserMenu = BrowserMenuController(
       actions: actions,
+      connectionSection: isTor ? AnyView(TorMenuStatusView()) : nil,
+      initiallyShowsConnectionSection: initiallyShowsConnectionSection,
       handlePresentation: { [unowned self] action in
         switch action {
         case .settings:
@@ -208,7 +222,7 @@ extension BrowserViewController {
         }
       }
     )
-    if UIDevice.current.userInterfaceIdiom == .pad {
+    if UIDevice.current.userInterfaceIdiom == .pad && !initiallyShowsConnectionSection {
       browserMenu.modalPresentationStyle = .popover
     }
     browserMenu.popoverPresentationController?.sourceView = sourceView
@@ -297,7 +311,7 @@ extension BrowserViewController {
         )
       }
     }
-    if BraveCore.FeatureList.kBraveShredFeature.enabled {
+    if BraveCore.FeatureList.kBraveShredFeature.enabled || tab?.isTor == true {
       let isShredAvailable = tabManager.selectedTab?.visibleURL?.isShredAvailable ?? false
       actions.append(
         .init(id: .shredData, attributes: isShredAvailable ? [] : [.disabled]) {
@@ -313,7 +327,7 @@ extension BrowserViewController {
         }
       )
     }
-    let printFormatter = tab?.view.viewPrintFormatter()
+    let printFormatter = (tab as? TorTabState)?.pagePrintFormatter ?? tab?.view.viewPrintFormatter()
     actions.append(
       .init(id: .print) {
         @MainActor [unowned self] _ in

@@ -118,6 +118,20 @@ protocol NewTabPageDelegate: AnyObject {
 /// favourites
 class NewTabPageViewController: UIViewController {
   weak var delegate: NewTabPageDelegate?
+  private(set) var torTabGridPreview: UIImage?
+
+  @discardableResult
+  func captureTorTabGridPreview() -> UIImage? {
+    guard browserTab?.isTor == true, let page = viewIfLoaded,
+      page.window != nil, !page.bounds.isEmpty
+    else { return torTabGridPreview }
+    page.layoutIfNeeded()
+    torTabGridPreview = page.screenshot(
+      offset: .init(x: 0, y: -page.safeAreaInsets.top),
+      quality: UIConstants.activeScreenshotQuality
+    )
+    return torTabGridPreview
+  }
 
   var ntpStatsOnboardingFrame: CGRect? {
     guard let section = sections.firstIndex(where: { $0 is StatsSectionProvider }) else {
@@ -189,7 +203,9 @@ class NewTabPageViewController: UIViewController {
       privateBrowsingManager: privateBrowsingManager,
       profilePrefs: profilePrefs
     )
-    background = NewTabPageBackground(dataSource: dataSource, prefs: profilePrefs)
+    background = NewTabPageBackground(
+      dataSource: dataSource, prefs: profilePrefs, allowsSponsoredMedia: !tab.isTor
+    )
     notifications = NewTabPageNotifications(rewards: rewards)
     collectionView = NewTabCollectionView(frame: .zero, collectionViewLayout: layout)
     super.init(nibName: nil, bundle: nil)
@@ -248,7 +264,8 @@ class NewTabPageViewController: UIViewController {
           self?.handleTopSiteAction(action: action)
         },
         isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing,
-        tileSource: topSitesTileSource
+        tileSource: topSitesTileSource,
+        allowsIconNetworkRequests: !tab.isTor
       ),
       TopSitesOverflowSectionProvider(
         action: { [weak self] in
@@ -271,7 +288,7 @@ class NewTabPageViewController: UIViewController {
       sections.insert(ntpDefaultBrowserCalloutProvider, at: 0)
     }
 
-    if !privateBrowsingManager.isPrivateBrowsing, profilePrefs.isBraveNewsAvailable {
+    if !tab.isPrivate, profilePrefs.isBraveNewsAvailable {
       sections.append(
         BraveNewsSectionProvider(
           dataSource: feedDataSource,
@@ -324,7 +341,7 @@ class NewTabPageViewController: UIViewController {
       recordBraveNewsDaysUsedP3A()
     }
 
-    recordNewTabCreatedP3A()
+    if !tab.isTor { recordNewTabCreatedP3A() }
     recordBraveNewsWeeklyUsageCountP3A()
   }
 
@@ -467,8 +484,10 @@ class NewTabPageViewController: UIViewController {
 
     presentNotification()
 
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.50) {
-      self.delegate?.showNTPOnboarding()
+    if browserTab?.isTor != true {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.50) { [weak self] in
+        self?.delegate?.showNTPOnboarding()
+      }
     }
   }
 
@@ -479,6 +498,12 @@ class NewTabPageViewController: UIViewController {
   }
 
   override func willMove(toParent parent: UIViewController?) {
+    if parent == nil {
+      captureTorTabGridPreview()
+      if browserTab?.visibleURL?.isNewTabURL == true {
+        (browserTab as? TorTabState)?.onVisualsUpdated?()
+      }
+    }
     super.willMove(toParent: parent)
 
     backgroundView.imageView.image = parent == nil ? nil : background.backgroundImage
@@ -627,7 +652,7 @@ class NewTabPageViewController: UIViewController {
   }
 
   private func presentNotification() {
-    if privateBrowsingManager.isPrivateBrowsing || notificationShowing {
+    if browserTab?.isPrivate != false || notificationShowing {
       return
     }
 
@@ -903,6 +928,7 @@ class NewTabPageViewController: UIViewController {
   }
 
   private func loadFeedContents(completion: (() -> Void)? = nil) {
+    guard browserTab?.isPrivate == false else { completion?(); return }
     if !feedDataSource.shouldLoadContent {
       return
     }
@@ -1093,7 +1119,7 @@ extension NewTabPageViewController: PreferencesObserver {
 // MARK: - UIScrollViewDelegate
 extension NewTabPageViewController {
   var isBraveNewsVisible: Bool {
-    return profilePrefs.isBraveNewsAvailable && !privateBrowsingManager.isPrivateBrowsing
+    return profilePrefs.isBraveNewsAvailable && browserTab?.isPrivate == false
       && (Preferences.BraveNews.isEnabled.value || Preferences.BraveNews.isShowingOptIn.value)
   }
 
@@ -1642,5 +1668,30 @@ extension P3ATimedStorage where Value == Int {
   }
   fileprivate static var sponsoredNewTabsCreatedStorage: Self {
     .init(name: "sponsored-new-tabs-created", lifetimeInDays: 7)
+  }
+}
+
+extension TabDataValues {
+  private struct TorNewTabPageKey: TabDataKey {
+    static var defaultValue: NewTabPageViewController? { nil }
+  }
+
+  fileprivate var torNewTabPageViewController: NewTabPageViewController? {
+    get { self[TorNewTabPageKey.self] }
+    set { self[TorNewTabPageKey.self] = newValue }
+  }
+}
+
+@MainActor
+extension TabState {
+  var nativeNewTabPageViewController: NewTabPageViewController? {
+    get { isTor ? data.torNewTabPageViewController : data.browserData?.newTabPageViewController }
+    set {
+      if isTor {
+        data.torNewTabPageViewController = newValue
+      } else {
+        data.browserData?.newTabPageViewController = newValue
+      }
+    }
   }
 }

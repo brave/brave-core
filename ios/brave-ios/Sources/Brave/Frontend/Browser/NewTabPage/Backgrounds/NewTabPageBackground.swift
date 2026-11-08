@@ -19,6 +19,7 @@ import UIKit
 class NewTabPageBackground: PreferencesObserver {
   /// The source of new tab page backgrounds
   private let dataSource: NTPDataSource
+  private let allowsSponsoredMedia: Bool
   private let prefs: any PrefService
   private let prefsChangeRegistrar: PrefChangeRegistrar
   /// The current background image & possibly sponsor
@@ -42,11 +43,12 @@ class NewTabPageBackground: PreferencesObserver {
   /// while the New Tab Page is active
   var changed: (() -> Void)?
   /// Create a background holder given a source of all NTP background images
-  init(dataSource: NTPDataSource, prefs: any PrefService) {
+  init(dataSource: NTPDataSource, prefs: any PrefService, allowsSponsoredMedia: Bool = true) {
+    self.allowsSponsoredMedia = allowsSponsoredMedia
     self.dataSource = dataSource
     self.prefs = prefs
     self.prefsChangeRegistrar = PrefChangeRegistrar(prefService: prefs)
-    dataSource.newBackground { [weak self] background in
+    dataSource.newBackground(allowsSponsoredMedia: allowsSponsoredMedia) { [weak self] background in
       self?.currentBackground = background
     }
 
@@ -56,7 +58,7 @@ class NewTabPageBackground: PreferencesObserver {
       self?.handlePreferencesChange()
     }
 
-    recordSponsoredMediaTypeP3A()
+    if allowsSponsoredMedia { recordSponsoredMediaTypeP3A() }
   }
 
   deinit {
@@ -78,10 +80,10 @@ class NewTabPageBackground: PreferencesObserver {
       repeats: false,
       block: { [weak self] _ in
         guard let self = self else { return }
-        self.dataSource.newBackground { [weak self] background in
+        self.dataSource.newBackground(allowsSponsoredMedia: self.allowsSponsoredMedia) { [weak self] background in
           self?.currentBackground = background
         }
-        self.recordSponsoredMediaTypeP3A()
+        if self.allowsSponsoredMedia { self.recordSponsoredMediaTypeP3A() }
       }
     )
   }

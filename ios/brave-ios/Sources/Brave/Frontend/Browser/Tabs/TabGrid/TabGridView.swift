@@ -69,6 +69,7 @@ struct TabGridView: View {
   @State private var selectedTabs: Set<TabState.ID> = []
 
   @ObservedObject private var privateBrowsingOnly = Preferences.Privacy.privateBrowsingOnly
+  @ObservedObject private var torEnabled = Preferences.Privacy.torEnabled
 
   private enum DestinationSheet: Int, Identifiable, Hashable {
     case syncedTabs
@@ -92,6 +93,7 @@ struct TabGridView: View {
   @State private var isShredAlertPresented: Bool = false
   @State private var activeShredMode: ActiveShredMode?
   @State private var isShredAnimationVisible: Bool = false
+  @State private var pendingTorShredIDs: Set<TabState.ID>?
 
   var browserColors: BrowserColors {
     viewModel.isPrivateBrowsing ? .privateMode : .standard
@@ -127,7 +129,7 @@ struct TabGridView: View {
         if !viewModel.isPrivateTabsLocked {
           GeometryReader { proxy in
             ScrollView {
-              PrivateModeInfoView()
+              PrivateModeInfoView(isTor: viewModel.mode == .tor)
                 .padding(40)
                 .frame(maxWidth: .infinity, minHeight: proxy.size.height)
             }
@@ -268,6 +270,18 @@ struct TabGridView: View {
       presenting: activeShredMode,
       actions: { _ in
         Button(role: .destructive) {
+          if viewModel.mode == .tor {
+            switch activeShredMode {
+            case .selectedTab:
+              pendingTorShredIDs = Set([viewModel.selectedTab?.id].compactMap { $0 })
+            case .selectedTabs:
+              pendingTorShredIDs = Set(selectedTabs)
+            case .allTabs:
+              pendingTorShredIDs = Set(viewModel.tabs.map(\.id))
+            case nil:
+              pendingTorShredIDs = []
+            }
+          }
           isShredAnimationVisible = true
         } label: {
           Text(Strings.Shields.shredDataButtonTitle)
@@ -300,18 +314,24 @@ struct TabGridView: View {
           .animationDidFinish { _ in
             let originalTabIDs = Set(viewModel.tabs.map(\.id))
             var dismissAfterShred = originalTabIDs.count == 1 || shredMode == .allTabs
-            switch shredMode {
-            case .selectedTab:
-              viewModel.shredSelectedTab()
-            case .selectedTabs:
-              let affectedTabsIDs = viewModel.shredSelectedTabs(Set(selectedTabs))
-              if !dismissAfterShred {
-                dismissAfterShred = originalTabIDs.count == affectedTabsIDs.count
+            if let torIDs = pendingTorShredIDs {
+              let affected = viewModel.shredTorTabs(torIDs)
+              dismissAfterShred = viewModel.mode == .tor && originalTabIDs.isSubset(of: affected)
+            } else {
+              switch shredMode {
+              case .selectedTab:
+                viewModel.shredSelectedTab()
+              case .selectedTabs:
+                let affectedTabsIDs = viewModel.shredSelectedTabs(Set(selectedTabs))
+                if !dismissAfterShred {
+                  dismissAfterShred = originalTabIDs.count == affectedTabsIDs.count
+                }
+              case .allTabs:
+                viewModel.shredAllTabs()
               }
-            case .allTabs:
-              viewModel.shredAllTabs()
             }
             withAnimation {
+              pendingTorShredIDs = nil
               isShredAnimationVisible = false
               activeShredMode = nil
               editMode = .inactive
@@ -350,7 +370,7 @@ struct TabGridView: View {
       .keyboardShortcut("w", modifiers: [.command, .shift])
 
       Button {
-        viewModel.isPrivateBrowsing.toggle()
+        viewModel.mode = viewModel.isPrivateBrowsing ? .regular : .private
       } label: {
         Text(
           viewModel.isPrivateBrowsing
@@ -508,14 +528,14 @@ struct TabGridView: View {
       .keyboardShortcut("t", modifiers: [.command])
       Spacer()
 
-      if !privateBrowsingOnly.value {
-        TabGridModeSwitcher(
-          isPrivateBrowsing: $viewModel.isPrivateBrowsing,
-          regularTabCount: viewModel.regularTabCount
-        )
-        .scaledToFit()
-        .dynamicTypeSize(.xSmall..<DynamicTypeSize.xxxLarge)
-      }
+      TabGridModeSwitcher(
+        mode: $viewModel.mode,
+        modes: viewModel.availableModes,
+        regularTabCount: viewModel.regularTabCount
+      )
+      .id("\(privateBrowsingOnly.value)-\(torEnabled.value)")
+      .scaledToFit()
+      .dynamicTypeSize(.xSmall..<DynamicTypeSize.xxxLarge)
       Spacer()
 
       Button {
@@ -756,11 +776,21 @@ private struct TabGridLegacyAddTabButtonStyle: ButtonStyle {
 // We must use a UISegmentedControl directly as you cannot change the height of a PickerView using
 // a segmented picker style
 private struct TabGridModeSwitcher: UIViewRepresentable {
-  @Binding var isPrivateBrowsing: Bool
+  @Binding var mode: TabBrowsingMode
+  var modes: [TabBrowsingMode]
+  private var isPrivateBrowsing: Bool { mode != .regular }
   var regularTabCount: Int
 
   private var tabCount: String {
     String.localizedStringWithFormat(Strings.TabGrid.tabsCountFormat, regularTabCount)
+  }
+
+  private func title(for mode: TabBrowsingMode) -> String {
+    switch mode {
+    case .regular: tabCount
+    case .private: Strings.TabGrid.privateBrowsingModeTitle
+    case .tor: Strings.Tor.title
+    }
   }
 
   private var controlHeight: CGFloat {
@@ -811,19 +841,19 @@ private struct TabGridModeSwitcher: UIViewRepresentable {
   }
 
   func makeUIView(context: Context) -> UISegmentedControl {
-    let items: [Any] = [
-      tabCount,
-      Strings.TabGrid.privateBrowsingModeTitle,
-    ]
+    let items: [Any] = modes.map { title(for: $0) }
     let uiView: UISegmentedControl
     if #available(iOS 26.0, *) {
       uiView = GlassBackedSegmentedControl(items: items)
     } else {
       uiView = UISegmentedControl(items: items)
     }
+    uiView.apportionsSegmentWidthsByContent = true
     uiView.addAction(
       .init(handler: { [unowned uiView] _ in
-        isPrivateBrowsing = uiView.selectedSegmentIndex == 1
+        if let selectedMode = modes[safe: uiView.selectedSegmentIndex] {
+          mode = selectedMode
+        }
       }),
       for: .valueChanged
     )
@@ -832,13 +862,15 @@ private struct TabGridModeSwitcher: UIViewRepresentable {
   }
 
   func updateUIView(_ uiView: UISegmentedControl, context: Context) {
-    uiView.setTitle(tabCount, forSegmentAt: 0)
-    uiView.selectedSegmentIndex = isPrivateBrowsing ? 1 : 0
+    for (index, mode) in modes.enumerated() {
+      uiView.setTitle(title(for: mode), forSegmentAt: index)
+    }
+    uiView.selectedSegmentIndex = modes.firstIndex(of: mode) ?? UISegmentedControl.noSegment
     uiView.backgroundColor = UIColor(
       braveSystemName: isPrivateBrowsing ? .privateWindow10 : .neutral10
     )
     let titleFont = UIFont.preferredFont(
-      for: .subheadline,
+      for: .caption1,
       weight: .medium,
       traitCollection: .init(
         preferredContentSizeCategory: uiView.traitCollection.toolbarButtonContentSizeCategory
@@ -875,10 +907,11 @@ private struct TabGridModeSwitcher: UIViewRepresentable {
 }
 
 private struct PrivateModeInfoView: View {
+  var isTor = false
   var body: some View {
     VStack(spacing: 48) {
       Label {
-        Text(Strings.TabGrid.privateBrowsingInfoTitle)
+        Text(isTor ? Strings.Tor.title : Strings.TabGrid.privateBrowsingInfoTitle)
           .foregroundStyle(.white)
       } icon: {
         Image(braveSystemName: "leo.product.private-window")
@@ -893,13 +926,13 @@ private struct PrivateModeInfoView: View {
         )
         BulletPointView(
           icon: "leo.antenna",
-          title: Strings.TabGrid.privateBrowsingInfoBulletTwoTitle,
-          description: Strings.TabGrid.privateBrowsingInfoBulletTwoBody
+          title: isTor ? Strings.Tor.privacyTitle : Strings.TabGrid.privateBrowsingInfoBulletTwoTitle,
+          description: isTor ? Strings.Tor.privacyBody : Strings.TabGrid.privateBrowsingInfoBulletTwoBody
         )
         BulletPointView(
           icon: "leo.product.vpn",
-          title: Strings.TabGrid.privateBrowsingInfoBulletThreeTitle,
-          description: Strings.TabGrid.privateBrowsingInfoBulletThreeBody
+          title: isTor ? Strings.Tor.title : Strings.TabGrid.privateBrowsingInfoBulletThreeTitle,
+          description: isTor ? Strings.Tor.limitations : Strings.TabGrid.privateBrowsingInfoBulletThreeBody
         )
       }
     }
