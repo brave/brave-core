@@ -12,9 +12,9 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/gmock_callback_support.h"
-#include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_test_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_tx_state_manager.h"
@@ -29,11 +29,11 @@
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using base::test::RunOnceClosure;
 using testing::_;
-using testing::SaveArg;
 
 namespace brave_wallet {
 
@@ -135,32 +135,24 @@ TEST_F(CardanoTxManagerUnitTest, SubmitTransaction) {
       mojom::kCardanoMainnet, from_account.Clone(), kMockCardanoAddress1,
       1000000, false, std::nullopt, nullptr);
 
-  base::MockCallback<CardanoTxManager::AddUnapprovedCardanoTransactionCallback>
-      add_callback;
-  std::string meta_id;
-  EXPECT_CALL(add_callback, Run(_, _, _))
-      .WillOnce(
-          testing::DoAll(SaveArg<1>(&meta_id),
-                         RunOnceClosure(task_environment_.QuitClosure())));
-  cardano_tx_manager()->AddUnapprovedCardanoTransaction(params.Clone(),
-                                                        add_callback.Get());
-  task_environment_.RunUntilQuit();
-  testing::Mock::VerifyAndClearExpectations(&add_callback);
-  EXPECT_TRUE(!meta_id.empty());
+  base::test::TestFuture<bool, const std::string&, const std::string&>
+      add_future;
+  cardano_tx_manager()->AddUnapprovedCardanoTransaction(
+      params.Clone(), add_future.GetCallback());
+  const std::string meta_id = add_future.Get<1>();
+  ASSERT_FALSE(meta_id.empty());
 
   auto tx_meta1 = cardano_tx_manager()->GetTxForTesting(meta_id);
-  EXPECT_TRUE(tx_meta1);
+  ASSERT_TRUE(tx_meta1);
   EXPECT_EQ(tx_meta1->chain_id(), mojom::kCardanoMainnet);
 
   EXPECT_EQ(tx_meta1->from(), from_account);
   EXPECT_EQ(tx_meta1->status(), mojom::TransactionStatus::Unapproved);
 
-  base::MockCallback<TxManager::ApproveTransactionCallback> approve_callback;
-  EXPECT_CALL(approve_callback, Run(true, _, _))
-      .WillOnce(RunOnceClosure(task_environment_.QuitClosure()));
-  ApproveTransaction(meta_id, approve_callback.Get());
-  task_environment_.RunUntilQuit();
-  testing::Mock::VerifyAndClearExpectations(&approve_callback);
+  base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
+      approve_future;
+  ApproveTransaction(meta_id, approve_future.GetCallback());
+  EXPECT_TRUE(approve_future.Get<0>());
 
   tx_meta1 = cardano_tx_manager()->GetTxForTesting(meta_id);
   ASSERT_TRUE(tx_meta1);
@@ -198,32 +190,24 @@ TEST_F(CardanoTxManagerUnitTest, SubmitTransaction_SendToken) {
       mojom::kCardanoMainnet, from_account.Clone(), kMockCardanoAddress1, 5,
       false, base::HexEncodeLower(GetMockTokenId("brave")), nullptr);
 
-  base::MockCallback<CardanoTxManager::AddUnapprovedCardanoTransactionCallback>
-      add_callback;
-  std::string meta_id;
-  EXPECT_CALL(add_callback, Run(_, _, _))
-      .WillOnce(
-          testing::DoAll(SaveArg<1>(&meta_id),
-                         RunOnceClosure(task_environment_.QuitClosure())));
-  cardano_tx_manager()->AddUnapprovedCardanoTransaction(params.Clone(),
-                                                        add_callback.Get());
-  task_environment_.RunUntilQuit();
-  testing::Mock::VerifyAndClearExpectations(&add_callback);
-  EXPECT_TRUE(!meta_id.empty());
+  base::test::TestFuture<bool, const std::string&, const std::string&>
+      add_future;
+  cardano_tx_manager()->AddUnapprovedCardanoTransaction(
+      params.Clone(), add_future.GetCallback());
+  const std::string meta_id = add_future.Get<1>();
+  ASSERT_FALSE(meta_id.empty());
 
   auto tx_meta1 = cardano_tx_manager()->GetTxForTesting(meta_id);
-  EXPECT_TRUE(tx_meta1);
+  ASSERT_TRUE(tx_meta1);
   EXPECT_EQ(tx_meta1->chain_id(), mojom::kCardanoMainnet);
 
   EXPECT_EQ(tx_meta1->from(), from_account);
   EXPECT_EQ(tx_meta1->status(), mojom::TransactionStatus::Unapproved);
 
-  base::MockCallback<TxManager::ApproveTransactionCallback> approve_callback;
-  EXPECT_CALL(approve_callback, Run(true, _, _))
-      .WillOnce(RunOnceClosure(task_environment_.QuitClosure()));
-  ApproveTransaction(meta_id, approve_callback.Get());
-  task_environment_.RunUntilQuit();
-  testing::Mock::VerifyAndClearExpectations(&approve_callback);
+  base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
+      approve_future;
+  ApproveTransaction(meta_id, approve_future.GetCallback());
+  EXPECT_TRUE(approve_future.Get<0>());
 
   tx_meta1 = cardano_tx_manager()->GetTxForTesting(meta_id);
   ASSERT_TRUE(tx_meta1);
@@ -255,21 +239,15 @@ TEST_F(CardanoTxManagerUnitTest, SubmitTransactionError) {
       mojom::kCardanoMainnet, from_account.Clone(), kMockCardanoAddress1,
       1000000, false, std::nullopt, nullptr);
 
-  base::MockCallback<CardanoTxManager::AddUnapprovedCardanoTransactionCallback>
-      add_callback;
-  std::string meta_id;
-  EXPECT_CALL(add_callback, Run(_, _, _))
-      .WillOnce(
-          testing::DoAll(SaveArg<1>(&meta_id),
-                         RunOnceClosure(task_environment_.QuitClosure())));
-  cardano_tx_manager()->AddUnapprovedCardanoTransaction(params.Clone(),
-                                                        add_callback.Get());
-  task_environment_.RunUntilQuit();
-  testing::Mock::VerifyAndClearExpectations(&add_callback);
-  EXPECT_TRUE(!meta_id.empty());
+  base::test::TestFuture<bool, const std::string&, const std::string&>
+      add_future;
+  cardano_tx_manager()->AddUnapprovedCardanoTransaction(
+      params.Clone(), add_future.GetCallback());
+  const std::string meta_id = add_future.Get<1>();
+  ASSERT_FALSE(meta_id.empty());
 
   auto tx_meta1 = cardano_tx_manager()->GetTxForTesting(meta_id);
-  EXPECT_TRUE(tx_meta1);
+  ASSERT_TRUE(tx_meta1);
   EXPECT_EQ(tx_meta1->chain_id(), mojom::kCardanoMainnet);
 
   EXPECT_EQ(tx_meta1->from(), from_account);
@@ -277,12 +255,11 @@ TEST_F(CardanoTxManagerUnitTest, SubmitTransactionError) {
 
   cardano_test_rpc_server_->FailNextTransactionSubmission();
 
-  base::MockCallback<TxManager::ApproveTransactionCallback> approve_callback;
-  EXPECT_CALL(approve_callback, Run(false, _, _))
-      .WillOnce(RunOnceClosure(task_environment_.QuitClosure()));
-  cardano_tx_manager()->ApproveTransaction(meta_id, approve_callback.Get());
-  task_environment_.RunUntilQuit();
-  testing::Mock::VerifyAndClearExpectations(&approve_callback);
+  base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
+      approve_future;
+  cardano_tx_manager()->ApproveTransaction(meta_id,
+                                           approve_future.GetCallback());
+  EXPECT_FALSE(approve_future.Get<0>());
 
   tx_meta1 = cardano_tx_manager()->GetTxForTesting(meta_id);
   ASSERT_TRUE(tx_meta1);
