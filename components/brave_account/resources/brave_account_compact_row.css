@@ -7,6 +7,8 @@
  * #type=style-lit
  * #css_wrapper_metadata_end */
 
-brave-account-link-row.action-required::part(description) {
-  color: var(--leo-color-systemfeedback-error-text);
+brave-account-link-row.action-required {
+  --brave-account-row-description-color: var(
+    --leo-color-systemfeedback-error-text
+  );
 }

@@ -16,12 +16,7 @@ export function getHtml(this: BraveAccountLinkRowElement) {
     <div class="title-and-description">
       <div class="title">${this.label}</div>
       ${this.description
-        ? html`<div
-            class="description"
-            part="description"
-          >
-            ${this.displayDescription}
-          </div>`
+        ? html`<div class="description">${this.displayDescription}</div>`
         : nothing}
     </div>
     <leo-button
