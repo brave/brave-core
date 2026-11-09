@@ -144,6 +144,15 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
         },
       },
       semanticHistorySearchPref_: Object,
+      isOnDeviceSpeechMultilingualModelAvailable_: {
+        readOnly: true,
+        type: Boolean,
+        value: function () {
+          return loadTimeData.getBoolean(
+            'isOnDeviceSpeechMultilingualModelAvailable',
+          )
+        },
+      },
       // </if>
       requestOTRActions_: {
         readOnly: true,
@@ -179,6 +188,7 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
   declare private isSemanticHistorySearchAvailable_: boolean
   declare private isOnDeviceSpeechModelAvailable_: boolean
   declare private semanticHistorySearchPref_: chrome.settingsPrivate.PrefObject<boolean>
+  declare private isOnDeviceSpeechMultilingualModelAvailable_: boolean
   // </if>
   declare private requestOTRActions_: Object[]
   declare private requestOTRAction_: String

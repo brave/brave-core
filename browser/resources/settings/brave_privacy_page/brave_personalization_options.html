@@ -34,6 +34,15 @@
       sub-label="$i18n{onDeviceSpeechModelSubLabel}">
   </settings-toggle-button>
 </template>
+<template is="dom-if" if="[[isOnDeviceSpeechMultilingualModelAvailable_]]">
+  <settings-toggle-button id="onDeviceSpeechMultilingualModelEnabled"
+      class="cr-row"
+      icon="microphone"
+      pref-key="brave.local_ai.on_device_speech_multilingual_model_enabled"
+      label="$i18n{onDeviceSpeechMultilingualModelLabel}"
+      sub-label="$i18n{onDeviceSpeechMultilingualModelSubLabel}">
+  </settings-toggle-button>
+</template>
 <!-- </if> -->
 <div class="settings-box">
   <span class="icon" aria-hidden="true">
