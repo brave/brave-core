@@ -39,6 +39,10 @@ export function MaybeImage(props: React.DetailedHTMLProps<React.ImgHTMLAttribute
 export function SearchEngineIcon(props: { engine?: SearchEngineInfo, className?: string }) {
   if (!props.engine) return null
 
+  if (props.engine.prepopulateId === 0n) {
+    return <Icon name='search' className={props.className} />
+  }
+
   const nalaIcon = icons[props.engine.host as keyof typeof icons]
 
   return nalaIcon

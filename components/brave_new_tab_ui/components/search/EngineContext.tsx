@@ -2,6 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
+import { getSearchEngineId } from '$web-common/search_engine_id'
 import { SearchEngineInfo } from '../../api/background'
 import { useNewTabPref } from '../../hooks/usePref'
 import * as React from 'react';
@@ -41,7 +42,7 @@ export function EngineContextProvider(props: React.PropsWithChildren<{}>) {
   const [config, setConfig] = React.useState<Record<string, boolean>>(searchEngineConfig);
 
   const setLastNtpSearchEngine = React.useCallback((engine: SearchEngineInfo) => {
-    setLastUsed(engine.host);
+    setLastUsed(getSearchEngineId(engine));
   }, [setLastUsed])
 
   const lastNtpSearchEngine = React.useMemo(() => {

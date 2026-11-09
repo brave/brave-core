@@ -7,6 +7,18 @@ group("search_engines") {
   deps = [ "//components/search_engines" ]
 }
 
+source_set("ntp_search_engine_utils") {
+  sources = [
+    "ntp_search_engine_utils.cc",
+    "ntp_search_engine_utils.h",
+  ]
+  deps = [
+    "//base",
+    "//components/search_engines",
+    "//url",
+  ]
+}
+
 source_set("unit_tests") {
   testonly = true
 

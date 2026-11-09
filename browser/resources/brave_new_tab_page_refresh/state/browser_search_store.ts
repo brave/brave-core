@@ -3,6 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { getSearchEngineId } from '$web-common/search_engine_id'
+import {
+  getEnabledSearchEngineIds,
+  getSelectedSearchEngineId,
+} from '$web-common/search_engine_selection'
 import { InputMethod } from 'chrome://resources/mojo/components/omnibox/browser/searchbox.mojom-webui.js'
 import { SuggestInventory } from 'chrome://resources/mojo/components/omnibox/browser/fusebox_action.mojom-webui.js'
 
@@ -29,7 +34,11 @@ function loadEnabledSearchEngines(
   availableEngines: SearchEngineInfo[],
   defaultSearchEngine: string,
 ) {
-  const set = new Set([defaultSearchEngine])
+  const set = getEnabledSearchEngineIds(
+    availableEngines,
+    new Set(),
+    defaultSearchEngine,
+  )
   const data = localStorage.getItem(enabledSearchEnginesStorageKey)
   if (!data) {
     return set
@@ -46,14 +55,11 @@ function loadEnabledSearchEngines(
   }
   set.clear()
   for (const engine of availableEngines) {
-    if (record[engine.host]) {
-      set.add(engine.host)
+    if (record[getSearchEngineId(engine)]) {
+      set.add(getSearchEngineId(engine))
     }
   }
-  if (set.size === 0) {
-    set.add(defaultSearchEngine)
-  }
-  return set
+  return getEnabledSearchEngineIds(availableEngines, set, defaultSearchEngine)
 }
 
 function storeEnabledSearchEngines(engines: Set<string>) {
@@ -121,7 +127,9 @@ export function createSearchStore() {
   }
 
   function findSearchEngine(engine: string) {
-    return store.getState().searchEngines.find(({ host }) => host === engine)
+    return store
+      .getState()
+      .searchEngines.find((item) => getSearchEngineId(item) === engine)
   }
 
   searchProxy.addListeners({
@@ -137,9 +145,26 @@ export function createSearchStore() {
     onSearchStateUpdated: debounce(updatePrefs, 10),
   })
 
+  function repairLastUsedSearchEngine() {
+    const state = store.getState()
+    const lastUsedSearchEngine = getSelectedSearchEngineId(
+      state.searchEngines,
+      state.enabledSearchEngines,
+      state.lastUsedSearchEngine,
+      defaultSearchEngine,
+    )
+    if (
+      state.searchEngines.length
+      && lastUsedSearchEngine !== state.lastUsedSearchEngine
+    ) {
+      store.update({ lastUsedSearchEngine })
+      newTabProxy.handler.setLastUsedSearchEngine(lastUsedSearchEngine)
+    }
+  }
+
   async function loadData() {
     await Promise.all([updateSearchEngines(), updatePrefs()])
-
+    repairLastUsedSearchEngine()
     store.update({ initialized: true })
   }
 
@@ -186,6 +211,7 @@ export function createSearchStore() {
         storeEnabledSearchEngines(enabledSearchEngines)
         return { enabledSearchEngines }
       })
+      repairLastUsedSearchEngine()
     },
 
     setLastUsedSearchEngine(engine) {

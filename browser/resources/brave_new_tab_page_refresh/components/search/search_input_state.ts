@@ -3,6 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { getSearchEngineId } from '$web-common/search_engine_id'
+import {
+  getEnabledSearchEngineIds,
+  getSelectedSearchEngineId,
+} from '$web-common/search_engine_selection'
 import * as React from 'react'
 
 import {
@@ -23,6 +28,7 @@ import { urlFromInput } from '../../lib/url_input'
 export function useSearchInputState(inputKey: string) {
   const actions = useSearchActions()
 
+  const initialized = useSearchState((s) => s.initialized)
   const showSearchBox = useSearchState((s) => s.showSearchBox)
   const searchEngines = useSearchState((s) => s.searchEngines)
   const enabledSearchEngines = useSearchState((s) => s.enabledSearchEngines)
@@ -40,27 +46,32 @@ export function useSearchInputState(inputKey: string) {
   const [selectedResultOption, setSelectedResultOption] = React.useState<
     number | null
   >(null)
-  const [currentEngine, setCurrentEngine] = React.useState(
-    lastUsedSearchEngine || defaultSearchEngine,
+  const [requestedEngine, setCurrentEngine] = React.useState<string | null>(
+    null,
+  )
+  const currentEngine = getSelectedSearchEngineId(
+    searchEngines,
+    enabledSearchEngines,
+    requestedEngine ?? lastUsedSearchEngine,
+    defaultSearchEngine,
+  )
+  const availableIds = getEnabledSearchEngineIds(
+    searchEngines,
+    enabledSearchEngines,
+    defaultSearchEngine,
   )
 
-  // If the enabled search engine list changes, and the current engine is no
-  // longer in the list, then choose the default search engine. If the default
-  // search engine is also not in the list, then choose the first engine in the
-  // list of enabled engines.
+  // Wait for saved preferences, then commit fallbacks so re-enabling an engine
+  // does not select it again.
   React.useEffect(() => {
-    if (!enabledSearchEngines.has(currentEngine)) {
-      if (
-        enabledSearchEngines.size === 0
-        || enabledSearchEngines.has(defaultSearchEngine)
-      ) {
-        setCurrentEngine(defaultSearchEngine)
-      } else {
-        const [firstEngine] = enabledSearchEngines.values()
-        setCurrentEngine(firstEngine)
-      }
+    if (
+      initialized
+      && searchEngines.length
+      && requestedEngine !== currentEngine
+    ) {
+      setCurrentEngine(currentEngine)
     }
-  }, [enabledSearchEngines, defaultSearchEngine])
+  }, [initialized, searchEngines, requestedEngine, currentEngine])
 
   // Build the list of result options. The result options can contain a direct
   // URL (if the user has typed a URL) or a list of autocomplete options.
@@ -122,21 +133,20 @@ export function useSearchInputState(inputKey: string) {
     }
   }, [query])
 
-  const searchEngine = searchEngines.find(({ host }) => host === currentEngine)
+  const searchEngine = searchEngines.find(
+    (engine) => getSearchEngineId(engine) === currentEngine,
+  )
 
-  const searchEngineOptions = searchEngines.filter((engine) => {
-    if (enabledSearchEngines.size === 0) {
-      return engine.host === defaultSearchEngine
-    }
-    return enabledSearchEngines.has(engine.host)
-  })
+  const searchEngineOptions = searchEngines.filter((engine) =>
+    availableIds.has(getSearchEngineId(engine)),
+  )
 
   function selectSearchEngine(engine: SearchEngineInfo) {
-    setCurrentEngine(engine.host)
-    actions.setLastUsedSearchEngine(engine.host)
+    setCurrentEngine(getSearchEngineId(engine))
+    actions.setLastUsedSearchEngine(getSearchEngineId(engine))
     actions.stopAutocomplete()
     if (query) {
-      actions.queryAutocomplete(query, engine.host)
+      actions.queryAutocomplete(query, getSearchEngineId(engine))
     }
   }
 

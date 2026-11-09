@@ -15,6 +15,14 @@ interface Props {
 
 export function EngineIcon(props: Props) {
   const { engine } = props
+  if (engine.prepopulateId === 0n) {
+    return (
+      <Icon
+        name='search'
+        className='engine-icon'
+      />
+    )
+  }
   const iconName = getNamedIcon(engine.host)
   if (iconName) {
     return (
