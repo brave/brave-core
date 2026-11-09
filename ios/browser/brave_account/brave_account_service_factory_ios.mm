@@ -33,10 +33,9 @@ BraveAccountServiceFactoryIOS::BraveAccountServiceFactoryIOS(PassKey key)
 
 std::unique_ptr<KeyedService>
 BraveAccountServiceFactoryIOS::BuildServiceInstanceFor(
-    ProfileIOS* profile) const {
-  CHECK(profile);
+    ProfileIOS& profile) const {
   return std::make_unique<BraveAccountService>(
-      profile->GetPrefs(), profile->GetSharedURLLoaderFactory(),
+      profile.GetPrefs(), profile.GetSharedURLLoaderFactory(),
       GetApplicationContext()->GetOSCryptAsync());
 }
 
