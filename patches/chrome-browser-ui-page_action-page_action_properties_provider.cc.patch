@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/page_action/page_action_properties_provider.cc b/chrome/browser/ui/page_action/page_action_properties_provider.cc
-index 127fbb81e61100fd95ce5423c92b4512dadb10d3..4494285f6e0a8c21f9234dca2c7ef85d5dbd6b87 100644
+index ac0829b58074bf682ab7396376fdb96d03e97c45..563e1e6db118074349b5f035f44aff633b24d87e 100644
 --- a/chrome/browser/ui/page_action/page_action_properties_provider.cc
 +++ b/chrome/browser/ui/page_action/page_action_properties_provider.cc
-@@ -230,6 +230,55 @@ constexpr auto kPageActionProperties = base::MakeFixedFlatMap<
+@@ -225,6 +225,66 @@ constexpr auto kPageActionProperties = base::MakeFixedFlatMap<
              .element_identifier = kAutofillAddressPageActionElementId,
          },
      },
@@ -11,6 +11,8 @@ index 127fbb81e61100fd95ce5423c92b4512dadb10d3..4494285f6e0a8c21f9234dca2c7ef85d
 +        {
 +            .histogram_name = "PartitionedStorage",
 +            .type = PageActionIconType::kBravePartitionedStorage,
++            .priority = page_actions::PageActionPriorityCategory::
++                kSecurityTrustAndPermissions,
 +        },
 +    },
 +    {
@@ -18,6 +20,8 @@ index 127fbb81e61100fd95ce5423c92b4512dadb10d3..4494285f6e0a8c21f9234dca2c7ef85d
 +        {
 +           .histogram_name = "PsstIcon",
 +           .type = PageActionIconType::kBravePsst,
++           .priority = page_actions::PageActionPriorityCategory::
++               kProactiveSuggestion,
 +        },
 +    },
 +    {
@@ -25,6 +29,7 @@ index 127fbb81e61100fd95ce5423c92b4512dadb10d3..4494285f6e0a8c21f9234dca2c7ef85d
 +        {
 +            .histogram_name = "Speedreader",
 +            .type = PageActionIconType::kBraveSpeedreader,
++            .priority = page_actions::PageActionPriorityCategory::kQuietUtility,
 +        },
 +    },
 +    {
@@ -32,6 +37,8 @@ index 127fbb81e61100fd95ce5423c92b4512dadb10d3..4494285f6e0a8c21f9234dca2c7ef85d
 +        {
 +            .histogram_name = "WaybackMachine",
 +            .type = PageActionIconType::kBraveWaybackMachine,
++            .priority = page_actions::PageActionPriorityCategory::
++                kProactiveSuggestion,
 +        },
 +    },
 +    {
@@ -39,6 +46,7 @@ index 127fbb81e61100fd95ce5423c92b4512dadb10d3..4494285f6e0a8c21f9234dca2c7ef85d
 +        {
 +            .histogram_name = "Playlist",
 +            .type = PageActionIconType::kBravePlaylist,
++            .priority = page_actions::PageActionPriorityCategory::kQuietUtility,
 +        },
 +    },
 +    {
@@ -46,6 +54,8 @@ index 127fbb81e61100fd95ce5423c92b4512dadb10d3..4494285f6e0a8c21f9234dca2c7ef85d
 +        {
 +            .histogram_name = "OnionLocation",
 +            .type = PageActionIconType::kBraveOnionLocation,
++            .priority = page_actions::PageActionPriorityCategory::
++                kSecurityTrustAndPermissions,
 +        },
 +    },
 +    {
@@ -53,6 +63,7 @@ index 127fbb81e61100fd95ce5423c92b4512dadb10d3..4494285f6e0a8c21f9234dca2c7ef85d
 +        {
 +            .histogram_name = "BraveNews",
 +            .type = PageActionIconType::kBraveNews,
++            .priority = page_actions::PageActionPriorityCategory::kQuietUtility,
 +        },
 +    },
      {
