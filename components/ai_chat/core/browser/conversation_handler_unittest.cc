@@ -2941,7 +2941,12 @@ TEST_F(ConversationHandlerUnitTest, UploadFile) {
   base::RunLoop loop2;
   EXPECT_CALL(client, OnModelDataChanged).Times(0);
   EXPECT_FALSE(conversation_handler_->IsRequestInProgress());
+  testing::Sequence request_in_progress_seq2;
+  EXPECT_CALL(client, OnAPIRequestInProgress(true))
+      .Times(1)
+      .InSequence(request_in_progress_seq2);
   EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .InSequence(request_in_progress_seq2)
       .WillOnce(testing::InvokeWithoutArgs(&loop2, &base::RunLoop::Quit))
       .WillRepeatedly(testing::Return());
   conversation_handler_->SubmitHumanConversationEntry(
@@ -4596,6 +4601,121 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolsCalled) {
   EXPECT_MOJOM_EQ(tool_event2->output->at(0),
                   mojom::ContentBlock::NewTextContentBlock(
                       mojom::TextContentBlock::New("Result from tool2")));
+}
+
+// Neither observers nor the UI see the conversation idle between the response
+// and its first tool, between tools, or before the post-tool generation.
+TEST_F(ConversationHandlerUnitTest, ToolUseEvents_NotIdleBetweenToolLoopSteps) {
+  conversation_handler_->associated_content_manager()->ClearContent();
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  auto tool1 = std::make_unique<NiceMock<MockTool>>("test_tool", "Test tool");
+  auto tool2 =
+      std::make_unique<NiceMock<MockTool>>("test_tool2", "Test tool 2");
+  ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
+    std::vector<base::WeakPtr<Tool>> tools;
+    tools.push_back(tool1->GetWeakPtr());
+    tools.push_back(tool2->GetWeakPtr());
+    return tools;
+  });
+  auto respond = [](Tool::UseToolCallback callback) {
+    std::vector<mojom::ContentBlockPtr> result;
+    result.push_back(mojom::ContentBlock::NewTextContentBlock(
+        mojom::TextContentBlock::New("Result")));
+    std::move(callback).Run(std::move(result), {});
+  };
+  EXPECT_CALL(*tool1, UseTool).WillOnce(testing::WithArg<1>(respond));
+  EXPECT_CALL(*tool2, UseTool).WillOnce(testing::WithArg<1>(respond));
+
+  auto complete = [](EngineConsumer::GenerationCompletedCallback callback) {
+    std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewCompletionEvent(
+            mojom::CompletionEvent::New("")),
+        std::nullopt)));
+  };
+  base::RunLoop run_loop;
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                // Each tool's name doubles as its tool use ID.
+                for (const char* name : {"test_tool", "test_tool2"}) {
+                  callback.Run(EngineConsumer::GenerationResultData(
+                      mojom::ConversationEntryEvent::NewToolUseEvent(
+                          mojom::ToolUseEvent::New(name, name, "{}",
+                                                   std::nullopt, std::nullopt,
+                                                   nullptr, false)),
+                      std::nullopt));
+                }
+              }),
+          testing::WithArg<7>(complete)))
+      .WillOnce(testing::DoAll(
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("Done")),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [&](EngineConsumer::GenerationCompletedCallback callback) {
+                complete(std::move(callback));
+                run_loop.Quit();
+              })));
+
+  // Whether each notification showed the conversation generating or running a
+  // tool, with repeats collapsed.
+  std::vector<bool> observer_busy;
+  std::vector<bool> ui_busy;
+  auto record = [](std::vector<bool>& busy, bool is_busy) {
+    if (busy.empty() || busy.back() != is_busy) {
+      busy.push_back(is_busy);
+    }
+  };
+  NiceMock<MockConversationHandlerObserver> observer;
+  observer.Observe(conversation_handler_.get());
+  ON_CALL(observer, OnRequestInProgressChanged)
+      .WillByDefault([&](ConversationHandler* handler, bool in_progress) {
+        record(observer_busy, in_progress || handler->IsToolUseInProgress());
+      });
+  NiceMock<MockUntrustedConversationHandlerClient> untrusted_client(
+      conversation_handler_.get());
+  ON_CALL(untrusted_client, OnEntriesUIStateChanged)
+      .WillByDefault([&](mojom::ConversationEntriesStatePtr state) {
+        record(ui_busy, state->is_generating || state->is_tool_executing);
+      });
+  // The trusted page has no tool flag, so it counts an active task as busy.
+  std::vector<bool> page_busy;
+  bool page_request_in_progress = false;
+  mojom::TaskState page_task_state = mojom::TaskState::kNone;
+  auto record_page = [&] {
+    record(page_busy, page_request_in_progress ||
+                          (page_task_state != mojom::TaskState::kNone &&
+                           page_task_state != mojom::TaskState::kStopped));
+  };
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  ON_CALL(client, OnAPIRequestInProgress).WillByDefault([&](bool in_progress) {
+    page_request_in_progress = in_progress;
+    record_page();
+  });
+  ON_CALL(client, OnTaskStateChanged)
+      .WillByDefault([&](mojom::TaskState task_state) {
+        page_task_state = task_state;
+        record_page();
+      });
+
+  conversation_handler_->SubmitHumanConversationEntry("Use both tools",
+                                                      std::nullopt);
+  run_loop.Run();
+  // The UIs get their updates over mojo, so deliver what was already sent.
+  untrusted_client.FlushForTesting();
+  client.FlushForTesting();
+
+  EXPECT_EQ(conversation_handler_->GetConversationHistory().size(), 3u);
+  EXPECT_THAT(observer_busy, testing::ElementsAre(true, false));
+  EXPECT_THAT(ui_busy, testing::ElementsAre(true, false));
+  EXPECT_THAT(page_busy, testing::ElementsAre(true, false));
 }
 
 TEST_F(ConversationHandlerUnitTest, ToolUseEvents_DuplicateToolIds) {
@@ -6919,18 +7039,26 @@ TEST_F(ConversationHandlerUnitTest,
               OnAPIResponseError(mojom::APIError::ConnectionIssue, testing::_))
       .Times(0);
 
-  // One request-complete notification for the failed attempt, and one for the
-  // successful retry.
+  // The retry continues the same request, so it is only reported complete
+  // once, after the retry succeeds.
   EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(2);
   EXPECT_CALL(client, OnAPIRequestInProgress(false))
-      .Times(2)
-      .WillOnce(testing::Return())
       .WillOnce(testing::InvokeWithoutArgs(&run_loop, &base::RunLoop::Quit));
+  std::vector<bool> observed;
+  NiceMock<MockConversationHandlerObserver> observer;
+  observer.Observe(conversation_handler_.get());
+  ON_CALL(observer, OnRequestInProgressChanged)
+      .WillByDefault([&](ConversationHandler*, bool in_progress) {
+        if (observed.empty() || observed.back() != in_progress) {
+          observed.push_back(in_progress);
+        }
+      });
 
   conversation_handler_->SubmitHumanConversationEntry("Test question",
                                                       std::nullopt);
   run_loop.Run();
 
+  EXPECT_THAT(observed, testing::ElementsAre(true, false));
   const auto& history = conversation_handler_->GetConversationHistory();
   ASSERT_EQ(history.size(), 2u);
   EXPECT_EQ(history[0]->character_type, mojom::CharacterType::HUMAN);
@@ -6970,10 +7098,9 @@ TEST_F(ConversationHandlerUnitTest,
               OnAPIResponseError(mojom::APIError::ConnectionIssue, testing::_))
       .Times(1);
 
+  // Reported complete once, when the retry fails too.
   EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(2);
   EXPECT_CALL(client, OnAPIRequestInProgress(false))
-      .Times(2)
-      .WillOnce(testing::Return())
       .WillOnce(testing::InvokeWithoutArgs(&run_loop, &base::RunLoop::Quit));
 
   conversation_handler_->SubmitHumanConversationEntry("Test question",
