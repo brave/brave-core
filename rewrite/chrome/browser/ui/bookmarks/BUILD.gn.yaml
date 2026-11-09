@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Make :impl depend on Brave's bookmark icon resources.
+
+      When kBraveFilledBookmarkFolderIcon is enabled, the bookmark_utils.cc
+      chromium_src override draws the filled folder icon from the
+      IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_* images, whose IDs come from the
+      generated bookmark_icon_resources.h. Without this dependency the
+      override can compile before grit has generated that header.
+    insert_into_list:
+      target: impl
+      list_name: deps
+      values:
+        - //brave/browser/resources/bookmark_icon:bookmark_icon_resources
