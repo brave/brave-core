@@ -18,8 +18,8 @@
 #include "base/sequence_checker.h"
 #include "base/values.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
+#include "brave/components/brave_shields/core/browser/ad_block_request_type.h"
 #include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
-#include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "third_party/rust/cxx/v1/cxx.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -43,7 +43,7 @@ class AdBlockEngine {
 
   adblock::BlockerResult ShouldStartRequest(
       const GURL& url,
-      blink::mojom::ResourceType resource_type,
+      AdBlockRequestType request_type,
       const url::Origin& request_initiator,
       const std::string& method,
       bool previously_matched_rule,
@@ -51,7 +51,7 @@ class AdBlockEngine {
       bool previously_matched_important);
   std::optional<std::string> GetCspDirectives(
       const GURL& url,
-      blink::mojom::ResourceType resource_type,
+      AdBlockRequestType request_type,
       const url::Origin& first_party_origin,
       const std::string& method);
   void UseResources(const adblock::BraveCoreResourceStorage& storage);
