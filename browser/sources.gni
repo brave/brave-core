@@ -970,16 +970,6 @@ if (enable_brave_news) {
   ]
 }
 
-# https://github.com/brave/brave-browser/issues/41486
-if (is_android) {
-  brave_chrome_browser_allow_circular_includes_from += [
-    "//brave/browser/android:android_browser_process",
-    "//brave/browser/android:tabs_impl",
-    "//brave/browser/android/preferences",
-    "//brave/browser/notifications",
-  ]
-}
-
 # TODO(https://github.com/brave/brave-browser/issues/43310):
 # brave_new_tab_page_ui.cc includes some headers (e.g. from
 # //brave/browser/new_tab) that are currently in the //chrome/browser target.
