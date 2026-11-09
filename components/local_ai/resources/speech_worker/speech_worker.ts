@@ -50,7 +50,12 @@ class AsrStreamInputAdapter implements AsrStreamInputInterface {
     const onResult = (text: string, isFinal: boolean) => {
       // Empty transcript means nothing was recognized. Send an empty
       // vector rather than a bogus [FINAL] "" (still ends the session).
-      responder.onResponse(text ? [{ transcript: text, isFinal }] : [])
+      responder.onResponse(text ? [{ 
+        transcript: text, 
+        isFinal,
+        // TODO: Populate real audio timestamps. brave/brave-browser#58975
+        audioStartTime: { microseconds: BigInt(0) },
+        audioEndTime: { microseconds: BigInt(0) } }] : [])
     }
 
     // AsrStreamResponder carries results only, so a closed pipe is how the
