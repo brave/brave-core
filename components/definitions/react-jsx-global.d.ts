@@ -10,7 +10,7 @@
 // Two things still rely on the old global `JSX` namespace:
 //   1. A lot of our code (and some third-party .d.ts) references global JSX
 //      types directly, e.g. `JSX.Element`.
-//   2. Libraries like @brave/leo (and a few of our own files) register custom
+//   2. Libraries like @brave/nala (and a few of our own files) register custom
 //      elements (`leo-menu-item`, `leo-title`, ...) by augmenting the *global*
 //      `JSX.IntrinsicElements` interface.
 //

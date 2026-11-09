@@ -15,7 +15,7 @@ namespace {
 void AddBaseline(ColorProvider* provider) {
   auto& mixer = provider->AddMixer();
 
-  // Baseline primitive palette from @brave/leo tokens (styles.json). These feed
+  // Baseline primitive palette from @brave/nala tokens (styles.json). These feed
   // nala::kColorPrimitive* via ui::kColorRef* in nala_color_mixer.cc.
   mixer[kColorRefNeutral0] = {SkColorSetRGB(0x00, 0x00, 0x00)};
   mixer[kColorRefNeutral4] = {SkColorSetRGB(0x0f, 0x0f, 0x0f)};
