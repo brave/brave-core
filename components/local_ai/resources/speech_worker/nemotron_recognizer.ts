@@ -233,6 +233,11 @@ export class NemotronStreamSession {
       model.hann,
       initFftPower(config.N_FFT as FftSize),
     )
+    this.frontend.appendAudioSamples(
+      new Float32Array(
+        (config.TARGET_SAMPLE_RATE * config.LEADING_SILENCE_MS) / 1000,
+      ),
+    )
   }
 
   addAudio(samples: Float32Array): void {
@@ -272,7 +277,7 @@ export class NemotronStreamSession {
     this.state = 'finishing'
 
     const flush =
-      this.modelConfig.SILENCE_FLUSH_CHUNKS
+    this.modelConfig.SILENCE_FLUSH_CHUNKS
       * this.modelConfig.NEMO_CHUNK
       * config.HOP_LENGTH
 
@@ -350,43 +355,60 @@ export class NemotronStreamSession {
 
       // Fresh input tensors every step. Do not reuse/carry ORT tensors.
       const encoderFeeds: Record<string, OrtTensor> = {
-        audio_signal: new ort.Tensor('float32', sig, [
-          1,
-          config.N_MELS,
-          this.modelConfig.NEMO_FRAMES,
-        ]),
 
-        length: new ort.Tensor(
+          audio_signal: new ort.Tensor('float32', sig, [
+            1,
+            config.N_MELS,
+            this.modelConfig.NEMO_FRAMES,
+          ]),
+
+          length: new ort.Tensor(
+            'int64',
+            BigInt64Array.from([BigInt(this.modelConfig.NEMO_FRAMES)]),
+            [1],
+          ),
+
+          cache_last_channel_len: new ort.Tensor('int64', this.cacheLen, [1]),
+        }
+
+        if (this.modelType === 'multilingual') {
+        encoderFeeds.prompt_index = new ort.Tensor(
           'int64',
-          BigInt64Array.from([BigInt(this.modelConfig.NEMO_FRAMES)]),
+          BigInt64Array.from([BigInt(this.promptId!)]),
           [1],
         ),
+        // tensor layout expected by en and multilingual models are different
+        // this difference is inherited from original nemo models from which 
+        // onnx models are derived
+        encoderFeeds.cache_last_channel = new ort.Tensor('float32', this.cacheCh, [
+          this.modelConfig.NEMO_NUM_ENCODER_LAYERS,
+          1,
+          this.modelConfig.NEMO_LEFT_CONTEXT,
+          this.modelConfig.NEMO_HIDDEN_DIM,
+        ]),
 
-        cache_last_channel: new ort.Tensor('float32', this.cacheCh, [
+        encoderFeeds.cache_last_time = new ort.Tensor('float32', this.cacheTime, [
+          this.modelConfig.NEMO_NUM_ENCODER_LAYERS,
+          1,
+          this.modelConfig.NEMO_HIDDEN_DIM,
+          this.modelConfig.NEMO_CONV_CONTEXT,
+        ])
+      } else {
+        encoderFeeds.cache_last_channel = new ort.Tensor('float32', this.cacheCh, [
           1,
           this.modelConfig.NEMO_NUM_ENCODER_LAYERS,
           this.modelConfig.NEMO_LEFT_CONTEXT,
           this.modelConfig.NEMO_HIDDEN_DIM,
         ]),
 
-        cache_last_time: new ort.Tensor('float32', this.cacheTime, [
+        encoderFeeds.cache_last_time = new ort.Tensor('float32', this.cacheTime, [
           1,
           this.modelConfig.NEMO_NUM_ENCODER_LAYERS,
           this.modelConfig.NEMO_HIDDEN_DIM,
           this.modelConfig.NEMO_CONV_CONTEXT,
-        ]),
-
-        cache_last_channel_len: new ort.Tensor('int64', this.cacheLen, [1]),
+        ])
       }
-
-      if (this.modelType === 'multilingual') {
-        encoderFeeds.prompt_index = new ort.Tensor(
-          'int64',
-          BigInt64Array.from([BigInt(this.promptId!)]),
-          [1],
-        )
-      }
-
+      
       const eo = await this.model.runEncoder(encoderFeeds, ENC_FETCHES)
 
       // <if expr="!is_official_build">
@@ -474,12 +496,22 @@ export class NemotronStreamSession {
           const tok = argmax(dout.outputs.data as Float32Array)
 
           if (tok !== this.modelConfig.NEMO_BLANK) {
-            this.hyp.push(tok)
+            const tokenText = tokens[tok] ?? ''
+
+            // Multilingual Nemotron can emit language-control tokens such as <es-ES>.
+            // strip these tags out
+            const isLanguageTag = config.MULTILINGUAL_LANGUAGE_TAG_TOKENS.has(tokenText)
+            if (!isLanguageTag) {
+              this.hyp.push(tok)
+            }
+
             this.prevToken = tok
             this.st1 = (dout.output_states_1.data as Float32Array).slice()
             this.st2 = (dout.output_states_2.data as Float32Array).slice()
             // <if expr="!is_official_build">
-            emittedTokensThisChunk++
+            if (!isLanguageTag) {
+              emittedTokensThisChunk++
+            }
             // </if>
           }
 

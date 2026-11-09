@@ -128,6 +128,12 @@ export const MULTILINGUAL_SUPPORTED_LANGUAGES = {
   'hi-IN': 6,
 } as const
 
+export const MULTILINGUAL_LANGUAGE_TAG_TOKENS = new Set(
+  Object.keys(MULTILINGUAL_SUPPORTED_LANGUAGES).map(
+    (lang) => `<${lang}>`,
+  ),
+)
+
 // Silence fed before the first real sample. The exported ONNX encoder graph
 // drops the first 2 time frames of its pre-encode output. This happens inside
 // the graph, not in our streaming code. It shifts the output grid off the

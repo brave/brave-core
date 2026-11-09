@@ -490,7 +490,7 @@ describe('NemotronStreamSession', () => {
       const { session } = createSession(createMockModel())
       const real = makeRealAudio(2000)
       const flushSamples =
-        config.SILENCE_FLUSH_CHUNKS * config.NEMO_CHUNK * config.HOP_LENGTH
+        config.COMMON_NEMOTRON_CONFIG.SILENCE_FLUSH_CHUNKS * config.COMMON_NEMOTRON_CONFIG.NEMO_CHUNK * config.HOP_LENGTH
 
       session.addAudio(real)
       session.finish()
