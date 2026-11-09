@@ -5,11 +5,11 @@
 
 #include "brave/browser/net/onion_origin_header_client.h"
 
-#include <memory>
 #include <optional>
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/memory/ptr_util.h"
 #include "base/values.h"
 #include "mojo/public/cpp/bindings/callback_helpers.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
@@ -30,8 +30,7 @@ net::HttpRequestHeaders HideCrossOriginOnionOrigin(
     net::HttpRequestHeaders headers) {
   std::optional<std::string> origin =
       headers.GetHeader(net::HttpRequestHeaders::kOrigin);
-  if (origin &&
-      net::IsCrossOriginOnionRequest(url::Origin::Create(GURL(*origin)), url)) {
+  if (origin && net::IsCrossOriginOnionRequest(GURL(*origin), url)) {
     headers.SetHeader(net::HttpRequestHeaders::kOrigin,
                       url::Origin().Serialize());
   }
@@ -41,20 +40,20 @@ net::HttpRequestHeaders HideCrossOriginOnionOrigin(
 }  // namespace
 
 // static
-mojo::PendingRemote<network::mojom::TrustedHeaderClient>
-OnionOriginHeaderClient::Create(
-    mojo::PendingRemote<network::mojom::TrustedHeaderClient> inner) {
-  mojo::PendingRemote<network::mojom::TrustedHeaderClient> remote;
+void OnionOriginHeaderClient::Create(
+    mojo::PendingReceiver<network::mojom::TrustedHeaderClient> receiver,
+    mojo::PendingRemote<network::mojom::TrustedHeaderClient> target_client) {
   mojo::MakeSelfOwnedReceiver(
-      std::make_unique<OnionOriginHeaderClient>(std::move(inner)),
-      remote.InitWithNewPipeAndPassReceiver());
-  return remote;
+      base::WrapUnique(new OnionOriginHeaderClient(std::move(target_client))),
+      std::move(receiver));
 }
 
 OnionOriginHeaderClient::OnionOriginHeaderClient(
-    mojo::PendingRemote<network::mojom::TrustedHeaderClient> inner) {
-  if (inner) {
-    inner_.Bind(std::move(inner));
+    mojo::PendingRemote<network::mojom::TrustedHeaderClient> target_client) {
+  if (target_client) {
+    target_client_.Bind(std::move(target_client));
+    target_client_.set_disconnect_handler(base::BindOnce(
+        &OnionOriginHeaderClient::OnTargetDisconnect, base::Unretained(this)));
   }
 }
 
@@ -64,31 +63,19 @@ void OnionOriginHeaderClient::OnBeforeSendHeaders(
     const GURL& request_url,
     const net::HttpRequestHeaders& headers,
     OnBeforeSendHeadersCallback callback) {
-  if (!inner_) {
-    std::move(callback).Run(net::OK,
-                            HideCrossOriginOnionOrigin(request_url, headers),
-                            std::nullopt);
-    return;
+  if (target_client_.is_bound()) {
+    target_client_->OnBeforeSendHeaders(
+        request_url, headers,
+        mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+            base::BindOnce(
+                &OnionOriginHeaderClient::OnTargetBeforeSendHeadersComplete,
+                weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                request_url, headers),
+            net::ERR_FAILED, std::nullopt, std::nullopt));
+  } else {
+    OnTargetBeforeSendHeadersComplete(std::move(callback), request_url, headers,
+                                      net::OK, std::nullopt, std::nullopt);
   }
-
-  // If `inner_` disconnects, fail the request rather than leaving it hanging.
-  inner_->OnBeforeSendHeaders(
-      request_url, headers,
-      mojo::WrapCallbackWithDefaultInvokeIfNotRun(
-          base::BindOnce(
-              [](const GURL& request_url,
-                 const net::HttpRequestHeaders& original_headers,
-                 OnBeforeSendHeadersCallback callback, int32_t result,
-                 const std::optional<net::HttpRequestHeaders>& headers,
-                 std::optional<base::DictValue> extended_net_log_events) {
-                std::move(callback).Run(
-                    result,
-                    HideCrossOriginOnionOrigin(
-                        request_url, headers.value_or(original_headers)),
-                    std::move(extended_net_log_events));
-              },
-              request_url, headers, std::move(callback)),
-          net::ERR_FAILED, std::nullopt, std::nullopt));
 }
 
 void OnionOriginHeaderClient::OnHeadersReceived(
@@ -96,15 +83,31 @@ void OnionOriginHeaderClient::OnHeadersReceived(
     const net::IPEndPoint& remote_endpoint,
     const std::optional<net::SSLInfo>& ssl_info,
     OnHeadersReceivedCallback callback) {
-  if (!inner_) {
+  if (target_client_.is_bound()) {
+    target_client_->OnHeadersReceived(
+        headers, remote_endpoint, ssl_info,
+        mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+            std::move(callback), net::ERR_FAILED, std::nullopt, std::nullopt));
+  } else {
     std::move(callback).Run(net::OK, std::nullopt, std::nullopt);
-    return;
   }
+}
 
-  inner_->OnHeadersReceived(
-      headers, remote_endpoint, ssl_info,
-      mojo::WrapCallbackWithDefaultInvokeIfNotRun(
-          std::move(callback), net::ERR_FAILED, std::nullopt, std::nullopt));
+void OnionOriginHeaderClient::OnTargetDisconnect() {
+  target_client_.reset();
+}
+
+void OnionOriginHeaderClient::OnTargetBeforeSendHeadersComplete(
+    OnBeforeSendHeadersCallback callback,
+    const GURL& request_url,
+    const net::HttpRequestHeaders& original_headers,
+    int32_t result,
+    const std::optional<net::HttpRequestHeaders>& headers,
+    std::optional<base::DictValue> extended_net_log_events) {
+  std::move(callback).Run(result,
+                          HideCrossOriginOnionOrigin(
+                              request_url, headers.value_or(original_headers)),
+                          std::move(extended_net_log_events));
 }
 
 }  // namespace brave

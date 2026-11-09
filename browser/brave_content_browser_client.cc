@@ -1372,8 +1372,11 @@ BraveContentBrowserClient::GetWebSocketOptions(
   // have no frame, so their origin is not known here and they always get the
   // client.
   if (!frame || net::IsOnion(frame->GetLastCommittedOrigin())) {
-    options.header_client = brave::OnionOriginHeaderClient::Create(
+    mojo::PendingRemote<network::mojom::TrustedHeaderClient> header_client;
+    brave::OnionOriginHeaderClient::Create(
+        header_client.InitWithNewPipeAndPassReceiver(),
         std::move(options.header_client));
+    options.header_client = std::move(header_client);
   }
 #endif  // BUILDFLAG(ENABLE_TOR)
   return options;

@@ -28,7 +28,8 @@ NET_EXPORT bool IsLocalhostOrOnion(const GURL& url);
 // equivalent.
 NET_EXPORT bool IsCrossOriginOnionRequest(const url::Origin& initiator,
                                           const GURL& url);
-
+NET_EXPORT bool IsCrossOriginOnionRequest(const GURL& initiator,
+                                          const GURL& url);
 }  // namespace net
 
 #endif  // BRAVE_CHROMIUM_SRC_NET_BASE_URL_UTIL_H_

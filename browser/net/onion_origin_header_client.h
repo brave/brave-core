@@ -9,6 +9,9 @@
 #include <optional>
 #include <string>
 
+#include "base/memory/weak_ptr.h"
+#include "base/values.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "net/ssl/ssl_info.h"
@@ -27,13 +30,13 @@ namespace brave {
 // pages, so they do not disclose the address they came from.
 class OnionOriginHeaderClient : public network::mojom::TrustedHeaderClient {
  public:
-  // Returns a remote to a self-owned client wrapping `inner`, which may be
-  // null.
-  static mojo::PendingRemote<network::mojom::TrustedHeaderClient> Create(
-      mojo::PendingRemote<network::mojom::TrustedHeaderClient> inner);
+  // Binds a self-owned client to `receiver`. If `target_client` is valid, the
+  // client forwards calls to it after nullifying the Origin header of
+  // cross-origin .onion requests.
+  static void Create(
+      mojo::PendingReceiver<network::mojom::TrustedHeaderClient> receiver,
+      mojo::PendingRemote<network::mojom::TrustedHeaderClient> target_client);
 
-  explicit OnionOriginHeaderClient(
-      mojo::PendingRemote<network::mojom::TrustedHeaderClient> inner);
   OnionOriginHeaderClient(const OnionOriginHeaderClient&) = delete;
   OnionOriginHeaderClient& operator=(const OnionOriginHeaderClient&) = delete;
   ~OnionOriginHeaderClient() override;
@@ -48,7 +51,22 @@ class OnionOriginHeaderClient : public network::mojom::TrustedHeaderClient {
                          OnHeadersReceivedCallback callback) override;
 
  private:
-  mojo::Remote<network::mojom::TrustedHeaderClient> inner_;
+  explicit OnionOriginHeaderClient(
+      mojo::PendingRemote<network::mojom::TrustedHeaderClient> target_client);
+
+  void OnTargetDisconnect();
+
+  void OnTargetBeforeSendHeadersComplete(
+      OnBeforeSendHeadersCallback callback,
+      const GURL& request_url,
+      const net::HttpRequestHeaders& original_headers,
+      int32_t result,
+      const std::optional<net::HttpRequestHeaders>& headers,
+      std::optional<base::DictValue> extended_net_log_events);
+
+  mojo::Remote<network::mojom::TrustedHeaderClient> target_client_;
+
+  base::WeakPtrFactory<OnionOriginHeaderClient> weak_ptr_factory_{this};
 };
 
 }  // namespace brave

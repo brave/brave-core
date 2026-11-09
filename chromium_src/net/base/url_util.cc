@@ -25,8 +25,9 @@ std::string URLToEphemeralStorageDomain(const GURL& url) {
 
   // GetDomainAndRegistry might return an empty string if this host is an IP
   // address or a file URL.
-  if (domain.empty())
+  if (domain.empty()) {
     domain = url::Origin::Create(url).Serialize();
+  }
 
   return domain;
 }
@@ -57,6 +58,11 @@ bool IsCrossOriginOnionRequest(const url::Origin& initiator, const GURL& url) {
   const GURL& target_url =
       url.SchemeIsWSOrWSS() ? ChangeWebSocketSchemeToHttpScheme(url) : url;
   return !initiator.IsSameOriginWith(target_url);
+}
+
+bool IsCrossOriginOnionRequest(const GURL& initiator, const GURL& url) {
+  url::Origin initiator_origin = url::Origin::Create(initiator);
+  return IsCrossOriginOnionRequest(initiator_origin, url);
 }
 
 }  // namespace net

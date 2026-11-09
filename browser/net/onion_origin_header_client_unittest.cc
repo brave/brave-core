@@ -65,8 +65,9 @@ class InnerHeaderClient : public network::mojom::TrustedHeaderClient {
 class OnionOriginHeaderClientTest : public testing::Test {
  protected:
   void CreateClient(mojo::PendingRemote<network::mojom::TrustedHeaderClient>
-                        inner = mojo::NullRemote()) {
-    client_.Bind(OnionOriginHeaderClient::Create(std::move(inner)));
+                        target_client = mojo::NullRemote()) {
+    OnionOriginHeaderClient::Create(client_.BindNewPipeAndPassReceiver(),
+                                    std::move(target_client));
   }
 
   // Returns the result and headers the network service would send for a
@@ -152,12 +153,15 @@ TEST_F(OnionOriginHeaderClientTest, RunsInnerClientBeforeHidingOrigin) {
   EXPECT_TRUE(inner.headers_received());
 }
 
-TEST_F(OnionOriginHeaderClientTest, FailsWhenInnerClientDisconnects) {
+TEST_F(OnionOriginHeaderClientTest, HidesOriginAfterInnerClientDisconnects) {
   InnerHeaderClient inner;
   CreateClient(inner.CreateRemote());
   inner.Disconnect();
+  // Let the disconnect propagate so the client stops forwarding to the inner
+  // client and falls back to hiding the Origin locally.
+  task_environment_.RunUntilIdle();
 
-  EXPECT_EQ(net::ERR_FAILED, SendHeaders(GURL("wss://bar.com/socket")).first);
+  EXPECT_EQ("null", SentOrigin(GURL("wss://bar.com/socket")));
 }
 
 }  // namespace
