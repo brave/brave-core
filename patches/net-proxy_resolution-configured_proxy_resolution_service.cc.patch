@@ -1,12 +1,13 @@
 diff --git a/net/proxy_resolution/configured_proxy_resolution_service.cc b/net/proxy_resolution/configured_proxy_resolution_service.cc
-index 76060b4e2efddda3aa01e2ece02f4091c410907b..412a9d1292fdeb3354bfc3fa2f81bd96738c2613 100644
+index 76060b4e2efddda3aa01e2ece02f4091c410907b..d6c041ad91c6c1de58215681a5f7f2d6be175ee5 100644
 --- a/net/proxy_resolution/configured_proxy_resolution_service.cc
 +++ b/net/proxy_resolution/configured_proxy_resolution_service.cc
-@@ -986,6 +986,7 @@ int ConfiguredProxyResolutionService::ResolveProxy(
-   // using a direct connection for example).
-   int rv = TryResolveSynchronously(url, /*bypass_override_rules=*/false,
-                                    net_log, result);
-+  BRAVE_CONFIGURED_PROXY_RESOLUTION_SERVICE_RESOLVE_PROXY
-   if (rv != ERR_IO_PENDING) {
-     rv = ProcessResolutionResult(url, network_anonymization_key, method, result,
-                                  rv, net_log);
+@@ -1280,6 +1280,8 @@ int ConfiguredProxyResolutionService::ProcessResolutionResult(
+     ProxyInfo* result,
+     int result_code,
+     const NetLogWithSource& net_log) {
++  MaybeSetTorCircuitIsolation(result_code, config_, url,
++                              network_anonymization_key, result, this);
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+ 
+   // Log the result of the proxy resolution.
