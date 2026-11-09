@@ -9,6 +9,10 @@ on:
       COMMIT_HASH:
         required: true
         description: "Commit hash of the PR"
+      REBASE:
+        type: boolean
+        default: false
+        description: "Rebase onto the latest base branch"
 
 permissions:
   contents: write
@@ -25,6 +29,7 @@ jobs:
           GH_REPO: ${{ github.repository }}
           PR_NUMBER: ${{ inputs.PR_NUMBER }}
           COMMIT_HASH: ${{ inputs.COMMIT_HASH }}
+          REBASE: ${{ inputs.REBASE }}
         run: |
           set -x
 
@@ -46,7 +51,18 @@ jobs:
           [[ "$isCrossRepository" = "true" ]] || { echo "PR is not cross repo. Exiting!"; exit 1; }
 
           contribHeadRefName="contributor-$headRepositoryOwnerLogin-$headRefName"
-          if gh api "repos/${GITHUB_REPOSITORY}/git/refs/heads/$contribHeadRefName" > /dev/null 2>&1; then
+          if [[ "$REBASE" == "true" ]]; then
+            gh auth setup-git
+            repo="$RUNNER_TEMP/repo.git"
+            git clone --bare --filter=blob:none --single-branch --branch "$baseRefName" \
+              "https://github.com/${GITHUB_REPOSITORY}.git" "$repo"
+            git -C "$repo" fetch origin "$COMMIT_HASH"
+            git -C "$repo" branch contrib "$COMMIT_HASH"
+            # replay needs no worktree, so only blobs touched by the rebase are fetched.
+            git -C "$repo" replay --onto "$baseRefName" "$baseRefName..contrib" > "$RUNNER_TEMP/replay"
+            git -C "$repo" update-ref --stdin < "$RUNNER_TEMP/replay"
+            git -C "$repo" push --force origin "contrib:refs/heads/$contribHeadRefName"
+          elif gh api "repos/${GITHUB_REPOSITORY}/git/refs/heads/$contribHeadRefName" > /dev/null 2>&1; then
             gh api --method PATCH "repos/${GITHUB_REPOSITORY}/git/refs/heads/$contribHeadRefName" \
               --field sha="$COMMIT_HASH" --field force=true
           else
