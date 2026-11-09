@@ -520,8 +520,6 @@ if (enable_ai_chat && is_android) {
 }
 
 if (enable_containers) {
-  brave_chrome_browser_allow_circular_includes_from +=
-      [ "//brave/browser/containers" ]
   brave_chrome_browser_deps += [
     "//brave/browser/containers",
     "//brave/browser/containers:navigator",
