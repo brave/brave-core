@@ -13,14 +13,18 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/functional/bind.h"
+#include "base/strings/escape.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
+#include "brave/components/constants/network_constants.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/search_engines/ui_thread_search_terms_data.h"
 #include "chrome/browser/ui/search_engines/template_url_table_model.h"
 #include "components/country_codes/country_codes.h"
 #include "components/prefs/pref_service.h"
@@ -28,12 +32,16 @@
 #include "components/search_engines/search_engines_pref_names.h"
 #include "components/search_engines/template_url.h"
 #include "components/search_engines/template_url_id.h"
+#include "url/url_constants.h"
 
 namespace settings {
 
 namespace {
 constexpr char kBraveSearchForTorKeyword[] =
     ":search.brave4u7jddbv7cyviptqjc7jusxh72uik7zt6adtckl5f4nwy2v72qd.onion";
+
+// Key to search for in the URL for proxying favicon URLs.
+constexpr char kIconURLKey[] = "iconURL";
 
 // Must match the prefix upstream uses in CreateDictionaryForEngine() for the
 // opaque engine IDs it sends to the WebUI.
@@ -79,6 +87,31 @@ void SortDefaultSearchEnginesListInJP(
   }
 
   std::rotate(defaults.begin(), yahoo_jp, yahoo_jp + 1);
+}
+
+// Builds a Brave-proxied favicon URL (same endpoint Android uses via
+// StaticRedirectHelper) so that the Settings page doesn't fetch icons directly
+// from the search engine's servers.
+GURL GetProxiedFaviconURL(const TemplateURL& template_url) {
+  GURL page_url = template_url.GenerateSearchURL(UIThreadSearchTermsData());
+  if (!page_url.SchemeIsHTTPOrHTTPS()) {
+    page_url = template_url.favicon_url();
+  }
+  if (!page_url.SchemeIsHTTPOrHTTPS()) {
+    return GURL();
+  }
+  page_url = page_url.DeprecatedGetOriginAsURL();
+  // Google's favicon server has no icon for www.google.com, only google.com.
+  if (page_url.host() == "www.google.com") {
+    GURL::Replacements replacements;
+    replacements.SetHostStr("google.com");
+    page_url = page_url.ReplaceComponents(replacements);
+  }
+  return GURL(base::StrCat(
+      {url::kHttpsScheme, url::kStandardSchemeSeparator, kBraveFaviconsProxy,
+       "/faviconV2?client=chrome&nfrp=2&check_seen=true&size=32&min_size=16"
+       "&max_size=256&fallback_opts=TYPE,SIZE,URL&url=",
+       base::EscapeQueryParamValue(page_url.spec(), /*use_plus=*/false)}));
 }
 
 }  // namespace
@@ -168,6 +201,24 @@ void BraveSearchEnginesHandler::HandleSetDefaultPrivateSearchEngine(
       template_url->sync_guid());
 
   OnTemplateURLServiceChanged();
+}
+
+base::DictValue BraveSearchEnginesHandler::CreateDictionaryForEngine(
+    TemplateURL* template_url) {
+  base::DictValue dict =
+      SearchEnginesHandler::CreateDictionaryForEngine(template_url);
+  // Upstream only exposes http(s) icon URLs to the downloaded <img>; leave
+  // other schemes (e.g. chrome-extension://) as is.
+  if (const std::string* icon_url = dict.FindString(kIconURLKey);
+      icon_url && GURL(*icon_url).SchemeIsHTTPOrHTTPS()) {
+    const GURL proxied_url = GetProxiedFaviconURL(*template_url);
+    if (proxied_url.is_valid()) {
+      dict.Set(kIconURLKey, proxied_url.spec());
+    } else {
+      dict.Remove(kIconURLKey);
+    }
+  }
+  return dict;
 }
 
 base::DictValue BraveSearchEnginesHandler::GetSearchEnginesList() {
