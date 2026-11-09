@@ -83,6 +83,13 @@ source_set("brave_shields_impl") {
     ]
   }
 
+  if (!is_android) {
+    deps += [
+      "//brave/browser/infobars",
+      "//components/infobars/content",
+    ]
+  }
+
   if (is_android) {
     sources += [
       "android/brave_first_party_storage_cleaner_utils.cc",
@@ -146,6 +153,8 @@ source_set("unit_tests") {
       "//chrome/test/base:testing_browser_process",
       "//components/favicon/content",
       "//components/favicon/core/test:test_support",
+      "//components/infobars/content",
+      "//components/infobars/core",
       "//components/tabs:test_support",
     ]
   }
