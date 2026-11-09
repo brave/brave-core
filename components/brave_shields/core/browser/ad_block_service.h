@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_AD_BLOCK_SERVICE_H_
-#define BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_AD_BLOCK_SERVICE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_AD_BLOCK_SERVICE_H_
+#define BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_AD_BLOCK_SERVICE_H_
 
 #include <stdint.h>
 
@@ -26,13 +26,13 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/threading/sequence_bound.h"
 #include "base/values.h"
-#include "brave/components/brave_shields/content/browser/ad_block_engine_wrapper.h"
-#include "brave/components/brave_shields/content/browser/ad_block_subscription_download_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_dat_cache_manager.h"
+#include "brave/components/brave_shields/core/browser/ad_block_engine_wrapper.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_list_p3a.h"
 #include "brave/components/brave_shields/core/browser/ad_block_resource_provider.h"
+#include "brave/components/brave_shields/core/browser/ad_block_subscription_download_manager.h"
 #include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
@@ -309,4 +309,4 @@ void MigrateObsoletePrefsForAdBlockService(PrefService* local_state);
 
 }  // namespace brave_shields
 
-#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_AD_BLOCK_SERVICE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_AD_BLOCK_SERVICE_H_

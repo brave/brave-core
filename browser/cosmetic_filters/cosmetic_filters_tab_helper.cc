@@ -12,7 +12,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/core/browser/ad_block_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"

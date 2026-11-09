@@ -10,9 +10,9 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
-#include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
-#include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager_observer.h"
 #include "brave/components/brave_shields/core/browser/ad_block_custom_resource_provider.h"
+#include "brave/components/brave_shields/core/browser/ad_block_subscription_service_manager.h"
+#include "brave/components/brave_shields/core/browser/ad_block_subscription_service_manager_observer.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 #include "components/prefs/pref_change_registrar.h"
 
