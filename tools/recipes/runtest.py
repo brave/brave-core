@@ -5,10 +5,13 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """Runs a Brave/Chromium test executable and processes its output.
 
-This is a harness to run gtests on Linux, macOS and Windows desktop only (no
-iOS/Android/run-isolated yet). It sets up the per-platform test environment
-(sanitizers, xvfb + DBus on Linux, proxy/sandbox/library paths), runs the test,
-optionally parses the gtest output, and reports the outcome.
+This is a harness to run gtests on Linux, macOS and Windows desktop, and
+Android test suites from a Linux host (no iOS/run-isolated yet). On desktop it
+sets up the per-platform test environment (sanitizers, xvfb + DBus on Linux,
+proxy/sandbox/library paths) and runs the test binary. On Android it runs the
+suite as upstream's emulator bots do, through `logdog_wrapper.py` and the
+suite's `bin/run_<suite>` wrapper, with `test_runner.py` starting the emulator.
+Either way it optionally parses the gtest output and reports the outcome.
 """
 
 from __future__ import annotations
@@ -34,6 +37,12 @@ import gtest_output
 
 # Exit code used by the test launcher to signal a non-fatal warning.
 WARNING_EXIT_CODE = 88
+
+# Exit code `test_runner.py` uses for an infra failure (devices, emulator).
+INFRA_FAILURE_EXIT_CODE = 87
+
+# The AVD Brave's CI runs Android tests on, from tools/android/avd/proto.
+DEFAULT_AVD_CONFIG = 'android_33_google_apis_x64'
 
 # Path to the SUID sandbox binary, which must be installed on all Linux bots.
 CHROME_SANDBOX_PATH = '/opt/chromium/chrome_sandbox'
@@ -81,6 +90,12 @@ class Options:
 
     # Path the test launcher writes its JSON summary to (None = auto temp file).
     test_launcher_summary_output: Path | None
+
+    # 'android' to run an Android test suite; None for the host platform.
+    test_platform: str | None = None
+
+    # Name of the AVD config Android suites that need a device run on.
+    avd_config: str = DEFAULT_AVD_CONFIG
 
 
 @dataclass(frozen=True)
@@ -236,6 +251,7 @@ def run_command(
     env: dict[str, str],
     parser: gtest_output.GTestParser | None = None,
     symbolizer: list[str] | None = None,
+    cwd: Path | None = None,
 ) -> int:
     """Runs `command`, streaming its output and returning its exit code.
 
@@ -256,7 +272,7 @@ def run_command(
     sys.stderr.flush()
 
     if not parser and not symbolizer:
-        return subprocess.run(command, env=env, check=False).returncode
+        return subprocess.run(command, env=env, cwd=cwd, check=False).returncode
 
     with contextlib.ExitStack() as stack:
         test_proc = stack.enter_context(
@@ -265,6 +281,7 @@ def run_command(
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
                 env=env,
+                cwd=cwd,
                 text=True,
                 encoding='utf-8',
                 errors='replace',
@@ -481,6 +498,8 @@ def report_outcome(
 
     if failed_test_count:
         print(f'failed {failed_test_count}')
+    elif exit_code == INFRA_FAILURE_EXIT_CODE:
+        print('infra failure')
     else:
         print('crashed or hung')
 
@@ -594,6 +613,115 @@ def _build_env(extra_env: dict[str, str]) -> dict[str, str]:
     env.update(extra_env)
     env['CHROMIUM_TEST_LAUNCHER_BOT_MODE'] = '1'
     return env
+
+
+# -- Android ----------------------------------------------------------------
+
+_BRAVE_SCRIPT_DIR = Path(__file__).resolve().parents[2] / 'script'
+
+# The mode argument the generated `bin/run_<suite>` hands `test_runner.py`.
+_TEST_RUNNER_MODE_RE = re.compile(r"test_runner\.py\)', '([a-z_]+)'")
+
+
+def android_test_mode(wrapper: Path) -> str:
+    """Returns the `test_runner.py` mode `wrapper` runs, e.g. 'junit'."""
+    match = _TEST_RUNNER_MODE_RE.search(wrapper.read_text(encoding='utf-8'))
+    if not match:
+        raise ValueError(f'{wrapper} does not run build/android/test_runner.py')
+    return match.group(1)
+
+
+def build_android_test_command(
+    suite: str, mode: str, avd_config: str
+) -> list[str]:
+    """Builds the command upstream's bots run an Android suite's shard with.
+
+    This is mb.py's isolate command, without the logdog butler, plus the
+    emulator mixin's arguments for suites that need a device. Paths are relative
+    to the build dir, which the command runs from.
+    """
+    command = [
+        'vpython3',
+        '../../build/android/test_wrapper/logdog_wrapper.py',
+        '--target',
+        suite,
+    ]
+    if mode == 'junit':
+        return command
+    return command + [
+        '--store-tombstones',
+        f'--avd-config=../../tools/android/avd/proto/{avd_config}.textpb',
+        '--recover-devices',
+    ]
+
+
+def kvm_access_problem() -> str | None:
+    """Says why the emulator can't use KVM here, if it can't.
+
+    Without KVM the emulator doesn't fail, it times out booting.
+    """
+    kvm = Path('/dev/kvm')
+    if not kvm.exists():
+        return '/dev/kvm does not exist: the Android emulator needs KVM.'
+    if not os.access(kvm, os.R_OK | os.W_OK):
+        return (
+            'No read/write access to /dev/kvm, which the Android emulator '
+            'needs: the user must be in the kvm group (`id -nG`).'
+        )
+    return None
+
+
+def _android_env(build_dir: Path) -> dict[str, str]:
+    """Returns the environment Android suites run with."""
+    # Brave's patches to the Android test scripts load their chromium_src
+    # overrides with `brave_chromium_utils`.
+    python_path = [str(_BRAVE_SCRIPT_DIR)]
+    if os.environ.get('PYTHONPATH'):
+        python_path.append(os.environ['PYTHONPATH'])
+    return _build_env(
+        {
+            'CHROMIUM_OUTPUT_DIR': str(build_dir),
+            'PYTHONPATH': os.pathsep.join(python_path),
+        }
+    )
+
+
+def run_android_test(options: Options, args: list[str]) -> int:
+    """Runs the Android suite `args[0]` from the host and returns its code."""
+    build_dir = options.build_dir
+    suite = args[0]
+    wrapper = build_dir / 'bin' / f'run_{suite}'
+    if not wrapper.exists():
+        raise FileNotFoundError(f'Unable to find {wrapper}')
+
+    mode = android_test_mode(wrapper)
+    if mode != 'junit' and (problem := kvm_access_problem()):
+        print(problem, file=sys.stderr)
+        return INFRA_FAILURE_EXIT_CODE
+
+    command = build_android_test_command(suite, mode, options.avd_config)
+    command.extend(args[1:])
+
+    json_parser = (
+        gtest_output.GTestJSONParser() if options.parse_gtest_output else None
+    )
+    json_file = options.test_launcher_summary_output
+    if json_parser:
+        json_file = json_parser.prepare_json_file(json_file)
+    if json_file:
+        command.append(f'--test-launcher-summary-output={json_file}')
+
+    try:
+        result = run_command(
+            command, env=_android_env(build_dir), cwd=build_dir
+        )
+    finally:
+        if json_parser:
+            json_parser.process_json_file()
+
+    if json_parser:
+        report_outcome(options.test_type or suite, result, json_parser)
+    return result
 
 
 # -- Virtual X server (Linux) -----------------------------------------------
@@ -791,6 +919,19 @@ def main() -> int:
         help='Path to the test launcher summary JSON file.',
     )
     parser.add_argument(
+        '--test-platform',
+        choices=['android'],
+        default=None,
+        help='Run an Android test suite (named as its bin/run_<suite>) '
+        'instead of a host binary.',
+    )
+    parser.add_argument(
+        '--avd-config',
+        default=DEFAULT_AVD_CONFIG,
+        help='The tools/android/avd/proto config (without .textpb) the '
+        'emulator for Android suites runs (default: %(default)s).',
+    )
+    parser.add_argument(
         'test_command',
         nargs=argparse.REMAINDER,
         help='The test executable (or python script) and its arguments.',
@@ -812,7 +953,13 @@ def main() -> int:
         enable_msan=parsed.enable_msan,
         enable_tsan=parsed.enable_tsan,
         strip_path_prefix=parsed.strip_path_prefix,
-        test_launcher_summary_output=parsed.test_launcher_summary_output,
+        test_launcher_summary_output=(
+            parsed.test_launcher_summary_output.resolve()
+            if parsed.test_launcher_summary_output
+            else None
+        ),
+        test_platform=parsed.test_platform,
+        avd_config=parsed.avd_config,
     )
     args = list(parsed.test_command)
 
@@ -823,6 +970,12 @@ def main() -> int:
     )
 
     print(f'[Running on builder: "{options.builder_name}"]')
+
+    if options.test_platform == 'android':
+        if not sys.platform.startswith('linux'):
+            print('Android suites run from a Linux host only.', file=sys.stderr)
+            return 1
+        return run_android_test(options, args)
 
     if sys.platform not in ('win32', 'cygwin') and not sys.platform.startswith(
         ('linux', 'darwin')
