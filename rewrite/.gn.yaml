@@ -13,3 +13,14 @@ substitutions:
       variable: allow_circular_includes_from_allowlist
       literal: allow_circular_includes_from_brave
       import: //brave/build/circular_includes_brave.gni
+
+  - description: |
+      Exempt Brave's targets from the strict include checks.
+
+      Upstream exempts its own directories one by one, and Brave's targets,
+      and the upstream ones Brave adds sources to, don't pass the checks yet.
+    add_literal_to_variable:
+      variable: check_includes_strict_exceptions
+      literal: brave_check_includes_strict_exceptions
+      import: //brave/build/strict_deps_failures_brave.gni
+      assume_defined: true
