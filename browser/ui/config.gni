@@ -93,7 +93,6 @@ if (enable_brave_wallet) {
   # "brave/browser/ui/webui/brave_rewards/rewards_page_handler.h"
   brave_ui_allow_circular_includes_from += [
     "//brave/browser/ui/webui/brave_wallet/wallet_page",
-    "//brave/browser/ui/webui/brave_wallet/line_chart",
     "//brave/browser/ui/webui/brave_wallet/market",
     "//brave/browser/ui/webui/brave_wallet/nft",
   ]
