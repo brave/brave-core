@@ -18,7 +18,7 @@
 
 namespace {
 
-std::unique_ptr<KeyedService> BuildFaviconLoader(ProfileIOS* profile) {
+std::unique_ptr<KeyedService> BuildFaviconLoader(ProfileIOS& profile) {
   return std::make_unique<brave_favicon::BraveFaviconLoader>(
       ios::FaviconServiceFactory::GetForProfile(
           profile, ServiceAccessType::EXPLICIT_ACCESS));
@@ -30,7 +30,7 @@ namespace brave_favicon {
 // static
 BraveIOSFaviconLoaderFactory::TestingFactory
 BraveIOSFaviconLoaderFactory::GetDefaultFactory() {
-  return base::BindRepeating(&BuildFaviconLoader);
+  return base::BindOnce(&BuildFaviconLoader);
 }
 
 BraveIOSFaviconLoaderFactory::BraveIOSFaviconLoaderFactory(PassKey key)
@@ -46,7 +46,7 @@ BraveIOSFaviconLoaderFactory::BraveIOSFaviconLoaderFactory(PassKey key)
 
 std::unique_ptr<KeyedService>
 BraveIOSFaviconLoaderFactory::BuildServiceInstanceFor(
-    ProfileIOS* profile) const {
+    ProfileIOS& profile) const {
   return BuildFaviconLoader(profile);
 }
 }  // namespace brave_favicon

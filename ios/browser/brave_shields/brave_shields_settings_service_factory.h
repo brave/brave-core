@@ -31,7 +31,7 @@ class BraveShieldsSettingsServiceFactory
  private:
   // TypedProfileKeyedServiceFactoryIOS:
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
-      ProfileIOS* context) const override;
+      ProfileIOS& profile) const override;
 };
 }  // namespace brave_shields
 

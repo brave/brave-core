@@ -35,7 +35,7 @@ class WebcompatReporterServiceFactory
 
   // TypedProfileKeyedServiceFactoryIOS implementation.
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
-      ProfileIOS* profile) const override;
+      ProfileIOS& profile) const override;
 };
 
 }  // namespace webcompat_reporter
