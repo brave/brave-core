@@ -375,14 +375,18 @@ TEST(HDKeyUnitTest, GenerateFromExtendedKey) {
   EXPECT_EQ(base::HexEncodeLower(hdkey_from_zprv->GetIdentifier()),
             "fd13aac9a294188cdfe1331a8d94880bccbef8c1");
 
-  // Serialize() does not support the vprv version for private keys, so the
-  // round trip is not available here.
   auto parsed_vprv = HDKey::GenerateFromExtendedKey(kBtcTestnetImportAccount0);
   ASSERT_TRUE(parsed_vprv);
   ASSERT_TRUE(parsed_vprv->hdkey);
   EXPECT_EQ(parsed_vprv->version,
             std::to_underlying(ExtendedKeyVersion::kVprv));
   auto* hdkey_from_vprv = parsed_vprv->hdkey.get();
+  // Serialize as xprv because Serialize() does not support vprv. The expected
+  // key has the same payload as the input, with only the version and checksum
+  // changed, so this covers depth, fingerprint, index and chain code.
+  EXPECT_EQ(hdkey_from_vprv->GetPrivateExtendedKey(ExtendedKeyVersion::kXprv),
+            "xprv9xmnwVv4jGS2pytAGTb7myJxLRVhHByZeiZmyyZgX9oSSHSuLiXHR3t1wBuK"
+            "3c6dMe5mCyT4BMNwdWmTs58nohJTTx7Rw6WZxoRNKD4TPvx");
   EXPECT_EQ(base::ToLowerASCII(
                 base::HexEncode(hdkey_from_vprv->GetPrivateKeyBytes())),
             "7262788152f6450e0f0b336847e5ed3ea4319e10b793c3a7488a474aa4fbeaae");
