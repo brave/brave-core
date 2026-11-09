@@ -12,7 +12,7 @@
 #include <utility>
 #include <vector>
 
-#include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/browser/workspaces/workspace_metadata.h"
 #include "chrome/browser/ui/browser_tabrestore.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
@@ -128,9 +128,12 @@ void RestoreWorkspaceIntoWindow(
   // Remember the placeholder tabs by identity, not by index. A restored
   // pinned tab is forced to the front of the strip by AddRestoredTab, so
   // positions shift underneath us and an index would name the wrong tab.
-  std::vector<raw_ptr<content::WebContents>> placeholders;
+  //
+  // Held weakly because closing one of these destroys it: a raw pointer left
+  // in the vector would dangle for as long as the vector outlives the close.
+  std::vector<base::WeakPtr<content::WebContents>> placeholders;
   for (int i = 0; i < tsm->count(); ++i) {
-    placeholders.push_back(tsm->GetWebContentsAt(i));
+    placeholders.push_back(tsm->GetWebContentsAt(i)->GetWeakPtr());
   }
   const int base_index = tsm->count();
 
@@ -180,8 +183,11 @@ void RestoreWorkspaceIntoWindow(
     }
   }
 
-  for (content::WebContents* placeholder : placeholders) {
-    const int index = tsm->GetIndexOfWebContents(placeholder);
+  for (const base::WeakPtr<content::WebContents>& placeholder : placeholders) {
+    if (!placeholder) {
+      continue;
+    }
+    const int index = tsm->GetIndexOfWebContents(placeholder.get());
     if (index != TabStripModel::kNoTab) {
       tsm->CloseWebContentsAt(index, TabCloseTypes::CLOSE_NONE);
     }

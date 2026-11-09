@@ -16,6 +16,7 @@
 #include "chrome/browser/ui/browser_init_state.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -160,6 +161,80 @@ IN_PROC_BROWSER_TEST_F(WorkspaceServiceBrowserTest,
     return home && home->GetWindow()->IsVisible();
   })) << "Closing a space should hand the screen back to the window it was "
          "opened from, not close it and quit the browser";
+}
+
+// The mirror of the test above. Closing a space's window outright is a
+// request to close it, not to go back to the window the space came from --
+// and once the tabs are gone the two look identical, so the service is told
+// which it was while the tabs are still there.
+IN_PROC_BROWSER_TEST_F(WorkspaceServiceBrowserTest,
+                       ClosingASpaceWindowDoesNotReturnToTheUnmanagedWindow) {
+  ASSERT_TRUE(service());
+
+  // A second window keeps the browser reachable, so closing the space's
+  // window does not start the retire-everything sweep and this test can look
+  // at what happened to the first window.
+  ASSERT_TRUE(CreateBrowser(browser()->GetProfile()));
+
+  WorkspaceMetadata workspace =
+      service()->CreateWorkspaceInWindow("Work", browser());
+  BrowserWindowInterface* workspace_window = WindowFor(workspace.id);
+  ASSERT_TRUE(workspace_window);
+  ASSERT_FALSE(IsVisible(browser()));
+
+  // What BraveBrowserView::OnWindowCloseRequested() reports when the person
+  // closes the window themselves: the tabs are still present at that point.
+  ASSERT_GT(workspace_window->GetTabStripModel()->count(), 0);
+  service()->NoteWindowCloseRequested(workspace_window);
+
+  ui_test_utils::BrowserDestroyedObserver destroyed(workspace_window);
+  workspace_window->GetTabStripModel()->CloseAllTabs();
+  destroyed.Wait();
+
+  EXPECT_FALSE(IsVisible(browser()))
+      << "Closing a space's window should not bring back the window it was "
+         "opened from; that is what losing its last tab does";
+}
+
+// Deleting a space always takes its window with it. A workspace window left
+// open after being unbound is saved by nobody -- it is excluded from
+// Chromium's session restore, and unbinding drops the service as its saver --
+// so the person is handed an ordinary window instead.
+IN_PROC_BROWSER_TEST_F(WorkspaceServiceBrowserTest,
+                       DeletingTheSpaceYouAreViewingLeavesAnOrdinaryWindow) {
+  ASSERT_TRUE(service());
+
+  WorkspaceMetadata workspace =
+      service()->CreateWorkspaceInWindow("Work", browser());
+  BrowserWindowInterface* workspace_window = WindowFor(workspace.id);
+  ASSERT_TRUE(workspace_window);
+  const SessionID workspace_window_id = workspace_window->GetSessionID();
+  ASSERT_TRUE(IsVisible(workspace_window));
+
+  service()->DeleteWorkspace(workspace.id);
+
+  EXPECT_TRUE(base::test::RunUntil([&] {
+    return BrowserWindowInterface::FromSessionID(workspace_window_id) ==
+           nullptr;
+  })) << "The deleted space's window should not be left open";
+
+  // Whatever the person is left looking at has to be a window something will
+  // persist, which a workspace window is not.
+  bool has_tracked_window = false;
+  ProfileBrowserCollection::GetForProfile(browser()->GetProfile())
+      ->ForEach([&](BrowserWindowInterface* browser_window) {
+        if (browser_window->GetType() ==
+                BrowserWindowInterface::Type::TYPE_NORMAL &&
+            browser_window->GetWindow()->IsVisible() &&
+            !BrowserInitState::From(browser_window)
+                 ->omit_from_session_restore()) {
+          has_tracked_window = true;
+          return false;
+        }
+        return true;
+      });
+  EXPECT_TRUE(has_tracked_window)
+      << "Deleting a space should leave a window that session restore saves";
 }
 
 // Workspaces persist themselves. Letting Chromium record their windows too
