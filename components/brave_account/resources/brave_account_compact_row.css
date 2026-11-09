@@ -7,6 +7,10 @@
  * #type=style-lit
  * #css_wrapper_metadata_end */
 
+brave-account-link-row {
+  --brave-account-row-title-font: var(--leo-font-default-semibold);
+}
+
 brave-account-link-row.action-required {
   --brave-account-row-description-color: var(
     --leo-color-systemfeedback-error-text

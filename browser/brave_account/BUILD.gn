@@ -5,6 +5,8 @@
 
 static_library("brave_account") {
   sources = [
+    "brave_account_dependent_services_factory.cc",
+    "brave_account_dependent_services_factory.h",
     "brave_account_dialog_mode_holder.cc",
     "brave_account_dialog_mode_holder.h",
     "brave_account_navigation_throttle.cc",

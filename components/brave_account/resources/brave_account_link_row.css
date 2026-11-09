@@ -46,7 +46,7 @@
   flex: auto;
 
   .title {
-    font: var(--leo-font-default-semibold);
+    font: var(--brave-account-row-title-font, var(--leo-font-default-regular));
   }
 
   .description {

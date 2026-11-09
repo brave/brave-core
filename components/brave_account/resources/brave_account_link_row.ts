@@ -28,6 +28,8 @@ function getRoute(page: SettingsPage) {
   switch (page) {
     case SettingsPage.kBraveAccount:
       return routes.BRAVE_ACCOUNT
+    case SettingsPage.kEmailAliases:
+      return routes.EMAIL_ALIASES
     case SettingsPage.kGetStarted:
       return routes.GET_STARTED
   }

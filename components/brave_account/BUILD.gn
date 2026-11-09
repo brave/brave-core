@@ -14,6 +14,8 @@ source_set("constants") {
 
 source_set("brave_account") {
   sources = [
+    "brave_account_dependent_services.cc",
+    "brave_account_dependent_services.h",
     "brave_account_encryption.cc",
     "brave_account_encryption.h",
     "brave_account_service.cc",
@@ -132,6 +134,10 @@ source_set("test_support") {
     "mock_brave_account_authentication.h",
     "mock_brave_account_authentication_observer.cc",
     "mock_brave_account_authentication_observer.h",
+    "mock_brave_account_dependent_service_registrar.cc",
+    "mock_brave_account_dependent_service_registrar.h",
+    "mock_brave_account_dependent_services_observer.cc",
+    "mock_brave_account_dependent_services_observer.h",
   ]
 
   deps = [
@@ -145,6 +151,7 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
+    "brave_account_dependent_services_unittest.cc",
     "brave_account_service_test.h",
     "brave_account_service_unittest.cc",
     "flows/cancel_verification_unittest.cc",
@@ -176,6 +183,7 @@ source_set("unit_tests") {
     "//components/os_crypt/async/browser:test_support",
     "//components/os_crypt/async/common",
     "//components/prefs:test_support",
+    "//mojo/public/cpp/bindings",
     "//net",
     "//services/network:test_support",
     "//services/network/public/cpp",

@@ -9,6 +9,12 @@
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOGGED_OUT_ROW_TITLE" desc="Title inviting users to sign in or create a Brave Account, shown in the Get started settings page" formatter_data="webui=BraveAccountSettings">
     Log in or create a Brave account
   </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_FEATURES_TITLE" desc="Heading of the list of features that use Brave Account, shown below the account details" formatter_data="webui=BraveAccountSettings">
+    Features using your Brave account
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_FEATURES_EMAIL_ALIASES_LABEL" desc="Label of the row that opens the Email Aliases settings, in the list of features that use Brave Account" formatter_data="webui=BraveAccountSettings">
+    Email aliases
+  </message>
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL" desc="Label for the button that opens the Brave Account dialog when clicked" formatter_data="webui=BraveAccountSettings">
     Get Started
   </message>

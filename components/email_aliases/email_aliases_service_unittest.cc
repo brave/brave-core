@@ -21,6 +21,7 @@
 #include "base/values.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_account/mock_brave_account_authentication.h"
+#include "brave/components/brave_account/mock_brave_account_dependent_service_registrar.h"
 #include "brave/components/brave_account/mojom/get_service_token.mojom.h"
 #include "brave/components/brave_account/prefs.h"
 #include "brave/components/constants/brave_services_key.h"
@@ -31,6 +32,7 @@
 #include "brave/components/email_aliases/test_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/testing_pref_service.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_status_code.h"
@@ -209,8 +211,12 @@ class EmailAliasesAPITest : public ::testing::Test {
               email_aliases_auth_observer_remote_.Bind(std::move(observer));
             });
 
+    EXPECT_CALL(dependent_service_registrar_,
+                Register(brave_account::mojom::Service::kEmailAliases, _));
+
     service_ = std::make_unique<EmailAliasesService>(
         brave_account_auth_->BindAndGetRemote(),
+        dependent_service_registrar_.BindAndGetRemote(),
         url_loader_factory_.GetSafeWeakWrapper(), prefs_);
 
     ASSERT_TRUE(base::test::RunUntil(
@@ -247,6 +253,8 @@ class EmailAliasesAPITest : public ::testing::Test {
       brave_account_auth_;
   mojo::Remote<brave_account::mojom::AuthenticationObserver>
       email_aliases_auth_observer_remote_;
+  brave_account::MockBraveAccountDependentServiceRegistrar
+      dependent_service_registrar_;
   std::unique_ptr<EmailAliasesService> service_;
   AliasObserver observer_;
 };

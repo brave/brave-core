@@ -50,6 +50,7 @@
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
+#include "brave/components/brave_account/mojom/dependent_services.mojom.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_education/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
@@ -749,6 +750,7 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
   if (brave_account::features::IsBraveAccountEnabled()) {
     registry.ForWebUI<BraveSettingsUI>()
         .Add<brave_account::mojom::Authentication>()
+        .Add<brave_account::mojom::DependentServices>()
         .Add<brave_account::mojom::DialogOpener>();
   }
   registry.ForWebUI<BraveSettingsUI>()

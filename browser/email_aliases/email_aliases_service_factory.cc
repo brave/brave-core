@@ -7,8 +7,12 @@
 
 #include <utility>
 
+#include "base/check_deref.h"
+#include "brave/browser/brave_account/brave_account_dependent_services_factory.h"
 #include "brave/browser/brave_account/brave_account_service_factory.h"
+#include "brave/components/brave_account/brave_account_dependent_services.h"
 #include "brave/components/brave_account/brave_account_service.h"
+#include "brave/components/brave_account/mojom/dependent_services.mojom.h"
 #include "brave/components/email_aliases/email_aliases_service.h"
 #include "brave/components/email_aliases/features.h"
 #include "chrome/browser/profiles/profile.h"
@@ -44,10 +48,15 @@ EmailAliasesServiceFactory* EmailAliasesServiceFactory::GetInstance() {
 
 EmailAliasesServiceFactory::EmailAliasesServiceFactory()
     : ProfileKeyedServiceFactory("EmailAliasesService") {
+  DependsOn(brave_account::BraveAccountDependentServicesFactory::GetInstance());
   DependsOn(brave_account::BraveAccountServiceFactory::GetInstance());
 }
 
 EmailAliasesServiceFactory::~EmailAliasesServiceFactory() = default;
+
+bool EmailAliasesServiceFactory::ServiceIsCreatedWithBrowserContext() const {
+  return true;
+}
 
 std::unique_ptr<KeyedService>
 EmailAliasesServiceFactory::BuildServiceInstanceForBrowserContext(
@@ -59,10 +68,18 @@ EmailAliasesServiceFactory::BuildServiceInstanceForBrowserContext(
   }
 
   mojo::PendingRemote<brave_account::mojom::Authentication> brave_account_auth;
-  brave_account::BraveAccountServiceFactory::GetFor(context)->BindInterface(
-      brave_account_auth.InitWithNewPipeAndPassReceiver());
+  CHECK_DEREF(brave_account::BraveAccountServiceFactory::GetFor(context))
+      .BindInterface(brave_account_auth.InitWithNewPipeAndPassReceiver());
+
+  mojo::PendingRemote<brave_account::mojom::DependentServiceRegistrar>
+      dependent_service_registrar;
+  CHECK_DEREF(
+      brave_account::BraveAccountDependentServicesFactory::GetFor(context))
+      .BindInterface(
+          dependent_service_registrar.InitWithNewPipeAndPassReceiver());
+
   return std::make_unique<EmailAliasesService>(
-      std::move(brave_account_auth),
+      std::move(brave_account_auth), std::move(dependent_service_registrar),
       context->GetDefaultStoragePartition()
           ->GetURLLoaderFactoryForBrowserProcess(),
       *pref_service);
