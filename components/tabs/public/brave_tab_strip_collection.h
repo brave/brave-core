@@ -9,6 +9,8 @@
 #include <cstddef>
 #include <memory>
 
+#include "base/memory/scoped_refptr.h"
+#include "base/memory/weak_ptr.h"
 #include "components/split_tabs/split_tab_id.h"
 #include "components/tab_groups/tab_group_id.h"
 #include "components/tabs/public/tab_group_tab_collection.h"
@@ -128,10 +130,15 @@ class BraveTabStripCollection : public TabStripCollection {
       TabCollection* collection) override;
 
  private:
-  class ScopedUnwrappedNotifications;
   class UnwrappedHierarchy;
 
   bool ShouldDelegate() const;
+
+  // Returns |unwrapped_hierarchy_snapshot_|, or a new one if there's none.
+  // Observers are notified of the changes since then when the last reference
+  // is released. Nestable, as operations of the delegate can lead to other
+  // ones.
+  scoped_refptr<UnwrappedHierarchy> ScopeUnwrappedNotifications();
 
   // TabStripCollection::AddTabCollectionImpl() and RemoveTabCollectionImpl()
   // without notifications.
@@ -151,9 +158,8 @@ class BraveTabStripCollection : public TabStripCollection {
   std::unique_ptr<BraveTabStripCollectionDelegate> delegate_;
 
   // The unwrapped hierarchy that observers know of. Set while the delegate is
-  // handling an operation. See ScopedUnwrappedNotifications.
-  std::unique_ptr<UnwrappedHierarchy> unwrapped_hierarchy_snapshot_;
-  int unwrapped_notifications_depth_ = 0;
+  // handling an operation. Owned by the references of the operation.
+  base::WeakPtr<UnwrappedHierarchy> unwrapped_hierarchy_snapshot_;
 };
 
 }  // namespace tabs

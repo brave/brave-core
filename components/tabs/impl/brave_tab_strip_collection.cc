@@ -15,7 +15,10 @@
 #include "base/check_op.h"
 #include "base/containers/map_util.h"
 #include "base/memory/ptr_util.h"
-#include "base/memory/raw_ref.h"
+#include "base/memory/raw_ptr.h"
+#include "base/memory/ref_counted.h"
+#include "base/memory/scoped_refptr.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/tabs/public/brave_tab_strip_collection_delegate.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
 #include "components/split_tabs/split_tab_visual_data.h"
@@ -39,12 +42,32 @@ namespace tabs {
 //     TabCollectionObserver and implements a view model vertical tab strip.
 //     As vertical tab strip only need indentation, we can keep the view model
 //     unaware of tree tab nodes.
-class BraveTabStripCollection::UnwrappedHierarchy {
+//
+// If |collection_to_notify| is given, this is the hierarchy that observers know
+// of. It's shared by nested operations of the delegate, and when the last one
+// releases it, observers are notified of the changes since then.
+class BraveTabStripCollection::UnwrappedHierarchy
+    : public base::RefCounted<UnwrappedHierarchy> {
  public:
-  explicit UnwrappedHierarchy(const TabCollection& root) { Add(root); }
+  explicit UnwrappedHierarchy(
+      const TabCollection& root,
+      BraveTabStripCollection* collection_to_notify = nullptr)
+      : collection_to_notify_(collection_to_notify) {
+    Add(root);
+  }
   UnwrappedHierarchy(const UnwrappedHierarchy&) = delete;
   UnwrappedHierarchy& operator=(const UnwrappedHierarchy&) = delete;
-  ~UnwrappedHierarchy() = default;
+
+  base::WeakPtr<UnwrappedHierarchy> GetWeakPtr() {
+    return weak_factory_.GetWeakPtr();
+  }
+
+  // Makes this the hierarchy of |root| as it is.
+  void Reset(const TabCollection& root) {
+    handle_to_children_.clear();
+    handle_to_parent_.clear();
+    Add(root);
+  }
 
   bool Contains(const TabCollectionNodeHandle& handle) const {
     return handle_to_parent_.contains(handle);
@@ -173,6 +196,14 @@ class BraveTabStripCollection::UnwrappedHierarchy {
   }
 
  private:
+  friend class base::RefCounted<UnwrappedHierarchy>;
+
+  ~UnwrappedHierarchy() {
+    if (collection_to_notify_) {
+      collection_to_notify_->NotifyUnwrappedChanges();
+    }
+  }
+
   void Add(const TabCollection& collection) {
     std::vector<TabCollectionNodeHandle> handles;
     AddUnwrappedChildren(collection, collection.GetHandle(), handles);
@@ -230,33 +261,8 @@ class BraveTabStripCollection::UnwrappedHierarchy {
       handle_to_children_;
   absl::flat_hash_map<TabCollectionNodeHandle, TabCollectionHandle>
       handle_to_parent_;
-};
-
-// Notifies observers of the changes made within its lifetime as the changes of
-// the unwrapped hierarchy. Nestable, as operations of the delegate can lead to
-// other ones.
-class BraveTabStripCollection::ScopedUnwrappedNotifications {
- public:
-  explicit ScopedUnwrappedNotifications(BraveTabStripCollection& collection)
-      : collection_(collection) {
-    if (collection_->unwrapped_notifications_depth_++ == 0) {
-      collection_->unwrapped_hierarchy_snapshot_ =
-          std::make_unique<UnwrappedHierarchy>(*collection_);
-    }
-  }
-  ScopedUnwrappedNotifications(const ScopedUnwrappedNotifications&) = delete;
-  ScopedUnwrappedNotifications& operator=(const ScopedUnwrappedNotifications&) =
-      delete;
-  ~ScopedUnwrappedNotifications() {
-    CHECK_GT(collection_->unwrapped_notifications_depth_, 0);
-    if (--collection_->unwrapped_notifications_depth_ == 0) {
-      collection_->NotifyUnwrappedChanges();
-      collection_->unwrapped_hierarchy_snapshot_.reset();
-    }
-  }
-
- private:
-  const raw_ref<BraveTabStripCollection> collection_;
+  const raw_ptr<BraveTabStripCollection> collection_to_notify_;
+  base::WeakPtrFactory<UnwrappedHierarchy> weak_factory_{this};
 };
 
 // We disable |send_notifications_immediately| in order to be aligned with
@@ -265,6 +271,19 @@ BraveTabStripCollection::BraveTabStripCollection()
     : TabStripCollection(/*send_notifications_immediately=*/false) {}
 
 BraveTabStripCollection::~BraveTabStripCollection() = default;
+
+scoped_refptr<BraveTabStripCollection::UnwrappedHierarchy>
+BraveTabStripCollection::ScopeUnwrappedNotifications() {
+  // Nested operations share the outermost one.
+  if (unwrapped_hierarchy_snapshot_) {
+    return base::WrapRefCounted(unwrapped_hierarchy_snapshot_.get());
+  }
+
+  auto snapshot = base::MakeRefCounted<UnwrappedHierarchy>(
+      /*root=*/*this, /*collection_to_notify=*/this);
+  unwrapped_hierarchy_snapshot_ = snapshot->GetWeakPtr();
+  return snapshot;
+}
 
 void BraveTabStripCollection::SetDelegate(
     std::unique_ptr<BraveTabStripCollectionDelegate> delegate) {
@@ -340,7 +359,7 @@ void BraveTabStripCollection::AddTabRecursive(
     bool new_pinned_state,
     TabInterface* opener) {
   if (ShouldDelegate()) {
-    ScopedUnwrappedNotifications notifications(*this);
+    auto notifications = ScopeUnwrappedNotifications();
     delegate_->AddTabRecursive(std::move(tab), index, new_group_id,
                                new_pinned_state, opener);
     return;
@@ -357,7 +376,7 @@ void BraveTabStripCollection::MoveTabsRecursive(
     bool new_pinned_state,
     const TabCollection::TypeEnumSet retain_collection_types) {
   if (ShouldDelegate()) {
-    ScopedUnwrappedNotifications notifications(*this);
+    auto notifications = ScopeUnwrappedNotifications();
     delegate_->MoveTabsRecursive(tab_indices, destination_index, new_group_id,
                                  new_pinned_state, retain_collection_types);
     return;
@@ -370,7 +389,7 @@ void BraveTabStripCollection::MoveTabsRecursive(
 
 ScopedTab BraveTabStripCollection::RemoveTabAtIndexRecursive(size_t index) {
   if (ShouldDelegate()) {
-    ScopedUnwrappedNotifications notifications(*this);
+    auto notifications = ScopeUnwrappedNotifications();
     return delegate_->RemoveTabAtIndexRecursive(index);
   }
 
@@ -383,7 +402,7 @@ void BraveTabStripCollection::InsertTabCollectionAt(
     bool pinned,
     std::optional<tab_groups::TabGroupId> parent_group) {
   if (ShouldDelegate()) {
-    ScopedUnwrappedNotifications notifications(*this);
+    auto notifications = ScopeUnwrappedNotifications();
     delegate_->InsertTabCollectionAt(std::move(collection), index, pinned,
                                      parent_group);
     return;
@@ -417,7 +436,7 @@ void BraveTabStripCollection::CreateSplit(
   if (ShouldDelegate()) {
     bool handled = false;
     {
-      ScopedUnwrappedNotifications notifications(*this);
+      auto notifications = ScopeUnwrappedNotifications();
       handled = delegate_->CreateSplit(split_id, tabs, visual_data);
     }
     if (handled) {
@@ -445,14 +464,14 @@ void BraveTabStripCollection::MoveTabsRecursiveForDelegate(
                                         new_group_id, new_pinned_state,
                                         retain_collection_types);
   if (unwrapped_hierarchy_snapshot_) {
-    unwrapped_hierarchy_snapshot_ = std::make_unique<UnwrappedHierarchy>(*this);
+    unwrapped_hierarchy_snapshot_->Reset(*this);
   }
 }
 
 void BraveTabStripCollection::MoveCollectionAndNotify(TabCollection* collection,
                                                       TabCollection* new_parent,
                                                       size_t index) {
-  ScopedUnwrappedNotifications notifications(*this);
+  auto notifications = ScopeUnwrappedNotifications();
   TabCollection* old_parent = collection->GetParentCollection();
   new_parent->AddCollection(old_parent->MaybeRemoveCollection(collection),
                             index);
@@ -462,7 +481,7 @@ void BraveTabStripCollection::Unsplit(split_tabs::SplitTabId split_id) {
   if (ShouldDelegate()) {
     bool handled = false;
     {
-      ScopedUnwrappedNotifications notifications(*this);
+      auto notifications = ScopeUnwrappedNotifications();
       handled = delegate_->Unsplit(split_id);
     }
     if (handled) {
@@ -507,7 +526,7 @@ BraveTabStripCollection::GetTreeTabNodeIdForGroup(
 void BraveTabStripCollection::PrepareTreeTabNodesForBatchDetach(
     const std::vector<TabInterface*>& moving_tabs) {
   if (ShouldDelegate()) {
-    ScopedUnwrappedNotifications notifications(*this);
+    auto notifications = ScopeUnwrappedNotifications();
     delegate_->PrepareTreeTabNodesForBatchDetach(moving_tabs);
   }
 }
@@ -551,7 +570,7 @@ void BraveTabStripCollection::InsertDetachedTreeTabNode(
     return;
   }
 
-  ScopedUnwrappedNotifications notifications(*this);
+  auto notifications = ScopeUnwrappedNotifications();
   AddTabCollectionSilently(
       std::move(collection),
       GetInsertionDetails(index, /*pinned=*/false, /*group=*/std::nullopt));
@@ -566,7 +585,7 @@ std::unique_ptr<TabCollection> BraveTabStripCollection::RemoveTabCollection(
 
   // e.g. A group wrapped by a tree tab node collection is detached to be
   // dragged to another window.
-  ScopedUnwrappedNotifications notifications(*this);
+  auto notifications = ScopeUnwrappedNotifications();
   std::unique_ptr<TabCollection> removed_collection =
       RemoveTabCollectionSilently(collection);
   if (collection->type() == TabCollection::Type::GROUP) {
@@ -610,11 +629,11 @@ BraveTabStripCollection::RemoveTabCollectionSilently(
 
 void BraveTabStripCollection::NotifyUnwrappedChanges() {
   CHECK(unwrapped_hierarchy_snapshot_);
-  const UnwrappedHierarchy current(*this);
+  const auto current = base::MakeRefCounted<UnwrappedHierarchy>(/*root=*/*this);
   // Places the remaining ones first, so that removed collections don't take
   // them along, e.g. the tabs of an unsplit split.
-  NotifyPlacedNodes(current, GetHandle());
-  NotifyRemovedNodes(current, GetHandle());
+  NotifyPlacedNodes(*current, GetHandle());
+  NotifyRemovedNodes(*current, GetHandle());
 }
 
 void BraveTabStripCollection::NotifyRemovedNodes(
