@@ -1,8 +1,16 @@
 diff --git a/net/proxy_resolution/configured_proxy_resolution_service.cc b/net/proxy_resolution/configured_proxy_resolution_service.cc
-index 76060b4e2efddda3aa01e2ece02f4091c410907b..d6c041ad91c6c1de58215681a5f7f2d6be175ee5 100644
+index 76060b4e2efddda3aa01e2ece02f4091c410907b..deaae5745d7a504b22daca4777031142120b184c 100644
 --- a/net/proxy_resolution/configured_proxy_resolution_service.cc
 +++ b/net/proxy_resolution/configured_proxy_resolution_service.cc
-@@ -1280,6 +1280,8 @@ int ConfiguredProxyResolutionService::ProcessResolutionResult(
+@@ -1109,6 +1109,7 @@ int ConfiguredProxyResolutionService::TryResolveSynchronously(
+ }
+ 
+ ConfiguredProxyResolutionService::~ConfiguredProxyResolutionService() {
++  ProxyConfigServiceTor::ClearProxyAuthorization(this);
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+   in_destruction_ = true;
+   NetworkChangeNotifier::RemoveIPAddressObserver(this);
+@@ -1280,6 +1281,8 @@ int ConfiguredProxyResolutionService::ProcessResolutionResult(
      ProxyInfo* result,
      int result_code,
      const NetLogWithSource& net_log) {
