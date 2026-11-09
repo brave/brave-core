@@ -56,6 +56,8 @@ constexpr char kEthSendRawTransaction[] = "eth_sendRawTransaction";
 constexpr char kEthSign[] = "eth_sign";
 constexpr char kPersonalSign[] = "personal_sign";
 constexpr char kPersonalEcRecover[] = "personal_ecRecover";
+constexpr char kEthGetEncryptionPublicKey[] = "eth_getEncryptionPublicKey";
+constexpr char kEthDecrypt[] = "eth_decrypt";
 constexpr char kWalletWatchAsset[] = "wallet_watchAsset";
 constexpr char kMetamaskWatchAsset[] = "metamask_watchAsset";
 constexpr char kWeb3ClientVersion[] = "web3_clientVersion";
@@ -816,6 +818,15 @@ void EthereumProviderImpl::SetupMethodHandlers() {
   add_handler(kEthSubscribe, &EthereumProviderImpl::HandleEthSubscribeMethod);
   add_handler(kEthUnsubscribe,
               &EthereumProviderImpl::HandleEthUnsubscribeMethod);
+
+  // Deprecated methods we only once supported.
+  for (std::string_view method : {kEthGetEncryptionPublicKey, kEthDecrypt}) {
+    method_handlers_.emplace(
+        method, base::BindRepeating([](JsonRpcRequest request,
+                                       RequestCallback callback) {
+          RejectUnsupportedMethod(std::move(request.id), std::move(callback));
+        }));
+  }
 }
 
 void EthereumProviderImpl::HandleEthAccountsMethod(JsonRpcRequest request,

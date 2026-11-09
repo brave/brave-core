@@ -2879,4 +2879,50 @@ TEST_F(EthereumProviderImplUnitTest, ProviderResponseFormat) {
   EXPECT_EQ(response.second, base::Value(std::move(expected_list)));
 }
 
+TEST_F(EthereumProviderImplUnitTest, DeprecatedEncryptionMethods) {
+  // Unhandled methods are forwarded to JsonRpcService, which would answer with
+  // this result. Seeing it in a response means the method was proxied to the
+  // network instead of being rejected locally.
+  SetInterceptor(R"({"jsonrpc":"2.0","id":1,"result":"0xdeadbeef"})");
+
+  GURL url("https://brave.com");
+  Navigate(url);
+
+  auto expect_rejected = [&](const std::string& request_payload_json) {
+    SCOPED_TRACE(request_payload_json);
+    auto response = Request(ParseJson(request_payload_json));
+    EXPECT_TRUE(response.first);
+
+    mojom::ProviderError error = mojom::ProviderError::kUnknown;
+    std::string error_message;
+    GetErrorCodeMessage(std::move(response.second), &error, &error_message);
+    EXPECT_EQ(error, mojom::ProviderError::kUnsupportedMethod);
+    EXPECT_EQ(error_message,
+              l10n_util::GetStringUTF8(IDS_WALLET_REQUEST_PROCESSING_ERROR));
+  };
+
+  // Rejected with no wallet set up.
+  expect_rejected(
+      R"({"id":"1","jsonrpc":"2.0","method":"eth_getEncryptionPublicKey",
+          "params":["0x6b1Bd828cF8CE051B6282dCFEf6863746E2E1909"]})");
+  expect_rejected(
+      R"({"id":"1","jsonrpc":"2.0","method":"eth_decrypt",
+          "params":["0xdeadbeef","0x6b1Bd828cF8CE051B6282dCFEf6863746E2E1909"]})");
+
+  CreateWallet();
+  auto account_0 = GetAccountUtils().EnsureEthAccount(0);
+  AddEthereumPermission(account_0->account_id);
+
+  // Still rejected with an unlocked wallet and a permitted account, i.e. the
+  // rejection is unconditional and never prompts the user.
+  expect_rejected(absl::StrFormat(R"({"id":"1","jsonrpc":"2.0",
+                          "method":"eth_getEncryptionPublicKey",
+                          "params":["%s"]})",
+                                  account_0->address));
+  expect_rejected(absl::StrFormat(R"({"id":"1","jsonrpc":"2.0",
+                                      "method":"eth_decrypt",
+                                      "params":["0xdeadbeef","%s"]})",
+                                  account_0->address));
+}
+
 }  // namespace brave_wallet
