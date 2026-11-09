@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "base/test/run_until.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/values.h"
@@ -157,11 +158,16 @@ TEST_F(OnionOriginHeaderClientTest, HidesOriginAfterInnerClientDisconnects) {
   InnerHeaderClient inner;
   CreateClient(inner.CreateRemote());
   inner.Disconnect();
-  // Let the disconnect propagate so the client stops forwarding to the inner
-  // client and falls back to hiding the Origin locally.
-  task_environment_.RunUntilIdle();
 
-  EXPECT_EQ("null", SentOrigin(GURL("wss://bar.com/socket")));
+  // Wait for the disconnect to propagate so the client stops forwarding to the
+  // inner client and falls back to hiding the Origin locally. Until then,
+  // requests are still forwarded to the now-disconnected inner client and fail
+  // with net::ERR_FAILED.
+  EXPECT_TRUE(base::test::RunUntil([&] {
+    auto [result, headers] = SendHeaders(GURL("wss://bar.com/socket"));
+    return result == net::OK && headers &&
+           headers->GetHeader(net::HttpRequestHeaders::kOrigin) == "null";
+  }));
 }
 
 }  // namespace
