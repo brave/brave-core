@@ -25,7 +25,7 @@ namespace brave {
 
 namespace {
 
-net::HttpRequestHeaders HideCrossOriginOnionOrigin(
+net::HttpRequestHeaders MaybeHideCrossOriginOnionOrigin(
     const GURL& url,
     net::HttpRequestHeaders headers) {
   std::optional<std::string> origin =
@@ -105,7 +105,7 @@ void OnionOriginHeaderClient::OnTargetBeforeSendHeadersComplete(
     const std::optional<net::HttpRequestHeaders>& headers,
     std::optional<base::DictValue> extended_net_log_events) {
   std::move(callback).Run(result,
-                          HideCrossOriginOnionOrigin(
+                          MaybeHideCrossOriginOnionOrigin(
                               request_url, headers.value_or(original_headers)),
                           std::move(extended_net_log_events));
 }

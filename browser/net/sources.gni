@@ -43,8 +43,6 @@ brave_browser_net_sources = [
   "//brave/browser/net/brave_user_agent_network_delegate_helper.h",
   "//brave/browser/net/global_privacy_control_network_delegate_helper.cc",
   "//brave/browser/net/global_privacy_control_network_delegate_helper.h",
-  "//brave/browser/net/onion_origin_header_client.cc",
-  "//brave/browser/net/onion_origin_header_client.h",
   "//brave/browser/net/resource_context_data.cc",
   "//brave/browser/net/resource_context_data.h",
   "//brave/browser/net/url_context.cc",
@@ -55,6 +53,13 @@ if (enable_brave_wallet) {
   brave_browser_net_sources += [
     "//brave/browser/net/decentralized_dns_network_delegate_helper.cc",
     "//brave/browser/net/decentralized_dns_network_delegate_helper.h",
+  ]
+}
+
+if (enable_tor) {
+  brave_browser_net_sources += [
+    "//brave/browser/net/onion_origin_header_client.cc",
+    "//brave/browser/net/onion_origin_header_client.h",
   ]
 }
 

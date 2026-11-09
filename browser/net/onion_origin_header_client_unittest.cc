@@ -9,7 +9,6 @@
 #include <string>
 #include <utility>
 
-#include "base/test/run_until.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/values.h"
@@ -72,12 +71,14 @@ class OnionOriginHeaderClientTest : public testing::Test {
   }
 
   // Returns the result and headers the network service would send for a
-  // handshake to `url` carrying `origin`.
+  // handshake to `url` carrying `origin`, or no Origin header if unset.
   std::pair<int, std::optional<net::HttpRequestHeaders>> SendHeaders(
       const GURL& url,
-      const std::string& origin = kOnionOrigin) {
+      std::optional<std::string> origin = kOnionOrigin) {
     net::HttpRequestHeaders headers;
-    headers.SetHeader(net::HttpRequestHeaders::kOrigin, origin);
+    if (origin) {
+      headers.SetHeader(net::HttpRequestHeaders::kOrigin, *origin);
+    }
     base::test::TestFuture<int, const std::optional<net::HttpRequestHeaders>&,
                            std::optional<base::DictValue>>
         future;
@@ -117,6 +118,15 @@ TEST_F(OnionOriginHeaderClientTest, KeepsNonOnionOrigin) {
   CreateClient();
   EXPECT_EQ("https://foo.com",
             SentOrigin(GURL("wss://bar.com/socket"), "https://foo.com"));
+}
+
+TEST_F(OnionOriginHeaderClientTest, DoesNotAddMissingOrigin) {
+  CreateClient();
+  auto [result, headers] =
+      SendHeaders(GURL("wss://bar.com/socket"), std::nullopt);
+  EXPECT_EQ(net::OK, result);
+  ASSERT_TRUE(headers);
+  EXPECT_FALSE(headers->HasHeader(net::HttpRequestHeaders::kOrigin));
 }
 
 TEST_F(OnionOriginHeaderClientTest, PassesResponseHeadersThrough) {
@@ -159,15 +169,11 @@ TEST_F(OnionOriginHeaderClientTest, HidesOriginAfterInnerClientDisconnects) {
   CreateClient(inner.CreateRemote());
   inner.Disconnect();
 
-  // Wait for the disconnect to propagate so the client stops forwarding to the
-  // inner client and falls back to hiding the Origin locally. Until then,
-  // requests are still forwarded to the now-disconnected inner client and fail
-  // with net::ERR_FAILED.
-  EXPECT_TRUE(base::test::RunUntil([&] {
-    auto [result, headers] = SendHeaders(GURL("wss://bar.com/socket"));
-    return result == net::OK && headers &&
-           headers->GetHeader(net::HttpRequestHeaders::kOrigin) == "null";
-  }));
+  auto [result, headers] = SendHeaders(GURL("wss://bar.com/socket"));
+  EXPECT_EQ(net::OK, result);
+  ASSERT_TRUE(headers);
+  EXPECT_EQ("null", headers->GetHeader(net::HttpRequestHeaders::kOrigin));
+  EXPECT_FALSE(headers->HasHeader("X-Inner"));
 }
 
 }  // namespace

@@ -39,7 +39,8 @@ TEST(UrlUtilTest, IsOnionUrlSchemes) {
 }
 
 TEST(UrlUtilTest, IsCrossOriginOnionRequest) {
-  const auto initiator_origin = url::Origin::Create(GURL("https://foo.onion/"));
+  const url::Origin initiator_origin =
+      url::Origin::Create(GURL("https://foo.onion/"));
 
   EXPECT_TRUE(
       IsCrossOriginOnionRequest(initiator_origin, GURL("https://bar.onion/")));
@@ -65,7 +66,8 @@ TEST(UrlUtilTest, IsCrossOriginOnionRequest) {
   EXPECT_FALSE(
       IsCrossOriginOnionRequest(initiator_origin, GURL("wss://foo.onion/a")));
 
-  const auto foo_https_site = url::Origin::Create(GURL("https://foo.com/"));
+  const url::Origin foo_https_site =
+      url::Origin::Create(GURL("https://foo.com/"));
   EXPECT_FALSE(
       IsCrossOriginOnionRequest(foo_https_site, GURL("https://bar.onion/")));
   EXPECT_FALSE(

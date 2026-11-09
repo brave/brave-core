@@ -74,8 +74,8 @@ constexpr char kFrameWebSocketScript[] = R"(
   });
 )";
 
-// Same as above, but the WebSocket is opened from a SharedWorker, which has no
-// RenderFrameHost.
+// Same as kFrameWebSocketScript, but the WebSocket is opened from a
+// SharedWorker, which has no RenderFrameHost.
 constexpr char kSharedWorkerWebSocketScript[] = R"(
   new Promise((resolve, reject) => {
     const worker = new SharedWorker('/shared-worker.js',
@@ -136,6 +136,13 @@ class OnionCorsOriginBrowserTest : public InProcessBrowserTest {
     const GURL page_url = https_server_.GetURL("foobar.onion", kPagePath);
     EXPECT_TRUE(ui_test_utils::NavigateToURL(tor_browser, page_url));
     return tor_browser->tab_strip_model()->GetActiveWebContents();
+  }
+
+  // Loads a page from a regular (non-onion) origin in a normal window.
+  content::WebContents* OpenNonOnionPage() {
+    const GURL page_url = https_server_.GetURL("b.com", kPagePath);
+    EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), page_url));
+    return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
   GURL CrossOriginURL(std::string_view path, std::string_view host = "a.com") {
@@ -364,6 +371,23 @@ IN_PROC_BROWSER_TEST_F(OnionCorsOriginBrowserTest, WebSocketOrigin) {
     // Cross-origin WebSockets must not disclose the .onion origin.
     EXPECT_EQ(
         "null",
+        content::EvalJs(web_contents,
+                        content::JsReplace(
+                            script, EchoRequestHeadersWebSocketURL("a.com"))));
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(OnionCorsOriginBrowserTest,
+                       CrossOriginWebSocketFromNonOnionPageKeepsOrigin) {
+  content::WebContents* web_contents = OpenNonOnionPage();
+  const std::string page_origin =
+      url::Origin::Create(web_contents->GetLastCommittedURL()).Serialize();
+
+  for (const char* script :
+       {kFrameWebSocketScript, kSharedWorkerWebSocketScript}) {
+    SCOPED_TRACE(script);
+    EXPECT_EQ(
+        page_origin,
         content::EvalJs(web_contents,
                         content::JsReplace(
                             script, EchoRequestHeadersWebSocketURL("a.com"))));
