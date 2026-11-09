@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <optional>
 #include <string>
 #include <tuple>
 
@@ -23,6 +24,7 @@
 #include "net/base/url_util.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
+#include "third_party/blink/public/common/manifest/manifest.h"
 #include "third_party/blink/public/mojom/manifest/manifest.mojom.h"
 #include "url/url_constants.h"
 
@@ -120,14 +122,14 @@ class AndroidYouTubeScriptInjectorBrowserTest : public PlatformBrowserTest {
 
   std::tuple<blink::mojom::ManifestRequestResult,
              GURL,
-             blink::mojom::ManifestPtr>
+             std::optional<blink::Manifest>>
   GetManifest() {
     base::test::TestFuture<blink::mojom::ManifestRequestResult, GURL,
-                           blink::mojom::ManifestPtr>
+                           std::optional<blink::Manifest>>
         future;
     web_contents()->GetPrimaryPage().GetManifest(
         future.GetCallback<blink::mojom::ManifestRequestResult, const GURL&,
-                           blink::mojom::ManifestPtr>());
+                           std::optional<blink::Manifest>>());
     return future.Take();
   }
 
@@ -464,9 +466,9 @@ IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
   EXPECT_EQ(blink::mojom::ManifestRequestResult::kSuccess, result);
   EXPECT_TRUE(manifest_url.SchemeIs(url::kDataScheme));
   ASSERT_TRUE(manifest);
-  EXPECT_EQ(u"YouTube", manifest->name);
-  EXPECT_EQ(url.host(), manifest->start_url.host());
-  EXPECT_EQ(4u, manifest->icons.size());
+  EXPECT_EQ(u"YouTube", manifest->name());
+  EXPECT_EQ(url.host(), manifest->start_url().host());
+  EXPECT_EQ(4u, manifest->icons().size());
 }
 
 IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
