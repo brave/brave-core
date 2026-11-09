@@ -28,7 +28,8 @@ import {
 import { installTrustedTypesPolicy } from './ort_env'
 import { NemotronStreamSession, OrtNemotronModel } from './nemotron_recognizer'
 
-import { parseTokens, readBigBuffer } from './utils'
+import { parseTokens, readBigBuffer, getNemotronModelType } from './utils'
+import type { NemotronModelType } from './configs'
 
 // Thin mojo endpoint for one ASR stream: owns the receiver and responder
 // and bridges AsrStreamInput calls to a mojo-free NemotronStreamSession.
@@ -39,6 +40,8 @@ class AsrStreamInputAdapter implements AsrStreamInputInterface {
 
   constructor(
     model: OrtNemotronModel,
+    modelType: NemotronModelType,
+    promptID: number | null,
     sampleRateHz: number,
     pending: AsrStreamInputPendingReceiver,
     responder: AsrStreamResponderRemote,
@@ -47,18 +50,7 @@ class AsrStreamInputAdapter implements AsrStreamInputInterface {
     const onResult = (text: string, isFinal: boolean) => {
       // Empty transcript means nothing was recognized. Send an empty
       // vector rather than a bogus [FINAL] "" (still ends the session).
-      responder.onResponse(
-        text
-          ? [
-              {
-                transcript: text,
-                isFinal,
-                audioStartTime: undefined,
-                audioEndTime: undefined,
-              },
-            ]
-          : [],
-      )
+      responder.onResponse(text ? [{ transcript: text, isFinal }] : [])
     }
 
     // AsrStreamResponder carries results only, so a closed pipe is how the
@@ -67,6 +59,8 @@ class AsrStreamInputAdapter implements AsrStreamInputInterface {
 
     this.session = new NemotronStreamSession(
       model,
+      modelType,
+      promptID,
       sampleRateHz,
       onResult,
       onError,
@@ -90,6 +84,8 @@ class SpeechRecognitionFactoryImpl
   private readonly receiver: SpeechRecognitionFactoryReceiver
   private readonly streams = new Set<AsrStreamInputAdapter>()
   private model: OrtNemotronModel | null = null
+  private modelType: NemotronModelType | null = null
+  private promptId: number | null = null
 
   constructor() {
     this.receiver = new SpeechRecognitionFactoryReceiver(this)
@@ -99,9 +95,11 @@ class SpeechRecognitionFactoryImpl
     return this.receiver.$.bindNewPipeAndPassRemote()
   }
 
-  async init(files: OrtModelFiles) {
+  async init(files: OrtModelFiles, lang: string = 'es-ES') {
     try {
-      this.model = await OrtNemotronModel.buildFromBytes(
+      const { modelType, promptId } = getNemotronModelType(lang)
+      // TODO: load model files based on modelType
+      const model = await OrtNemotronModel.buildFromBytes(
         readBigBuffer(files.encoder, 'Encoder'),
         readBigBuffer(files.encoderData, 'EncoderData'),
         readBigBuffer(files.decoder, 'Decoder'),
@@ -111,6 +109,9 @@ class SpeechRecognitionFactoryImpl
           readBigBuffer(files.melFilters, 'Filterbank').slice().buffer,
         ),
       )
+      this.modelType = modelType
+      this.promptId = promptId ?? null
+      this.model = model
       return { success: true }
     } catch (err) {
       console.error('[speech-worker] init failed:', err)
@@ -123,7 +124,7 @@ class SpeechRecognitionFactoryImpl
     stream: AsrStreamInputPendingReceiver,
     responder: AsrStreamResponderRemote,
   ) {
-    if (!this.model) {
+    if (!this.model || !this.modelType) {
       console.error('[speech-worker] createAsrStream before init')
       responder.$.close()
       return
@@ -133,6 +134,8 @@ class SpeechRecognitionFactoryImpl
     try {
       adapter = new AsrStreamInputAdapter(
         this.model,
+        this.modelType,
+        this.promptId,
         options.sampleRateHz,
         stream,
         responder,
