@@ -60,7 +60,7 @@ bool IsCrossOriginOnionRequest(const url::Origin& initiator, const GURL& url) {
   return !initiator.IsSameOriginWith(target_url);
 }
 
-bool IsCrossOriginOnionRequest(const std::string& initiator, const GURL& url) {
+bool IsCrossOriginOnionRequest(std::string_view initiator, const GURL& url) {
   return IsCrossOriginOnionRequest(url::Origin::Create(GURL(initiator)), url);
 }
 
