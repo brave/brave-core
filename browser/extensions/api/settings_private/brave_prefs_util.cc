@@ -338,6 +338,9 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[local_ai::prefs::kOnDeviceSpeechEnglishModelEnabled] =
       settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)
+      [local_ai::prefs::kOnDeviceSpeechMultilingualModelEnabled] =
+          settings_api::PrefType::kBoolean;
 #endif
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
