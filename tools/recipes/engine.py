@@ -30,6 +30,7 @@ import logging
 import os
 from pathlib import Path
 import sys
+import tempfile
 import types
 import typing
 
@@ -45,6 +46,11 @@ from step_stack import StepStack
 RECIPES_ROOT = Path(__file__).resolve().parent
 MODULES_PKG = 'recipe_modules'
 RECIPES_PKG = 'recipes'
+
+# The variables a job's temp dir is given in, as luciexe's `TempDirEnvVars`:
+# Python reads `TMPDIR`, `TEMP` and `TMP`; Windows' `GetTempPath()` reads `TMP`
+# then `TEMP`; Chromium on Mac reads `MAC_CHROMIUM_TMPDIR`.
+TEMP_DIR_ENV_VARS = ('MAC_CHROMIUM_TMPDIR', 'TEMP', 'TEMPDIR', 'TMP', 'TMPDIR')
 
 
 def _ensure_on_sys_path() -> None:
@@ -466,6 +472,17 @@ class _Engine:
         self._cache[name] = inst
         return inst
 
+    def use_temp_dir(self) -> None:
+        """Gives the job its own temp dir, the path module's `temp_dir`, as a
+        luciexe host does: every step inherits it, and the engine's own
+        temporary files go there too."""
+        temp_dir = Path(self._instantiate_module('path', []).temp_dir)
+        temp_dir.mkdir(parents=True, exist_ok=True)
+        for var in TEMP_DIR_ENV_VARS:
+            os.environ[var] = str(temp_dir)
+        # `tempfile` caches the temp dir it found first.
+        tempfile.tempdir = None
+
     def run_recipe(
         self, recipe_name: str, properties: dict[str, object] | None = None
     ) -> object:
@@ -608,15 +625,6 @@ def _run_steps(
     return run_steps(*args)
 
 
-def run_recipe(
-    recipe_name: str,
-    properties: dict[str, object] | None = None,
-    workspace: str | Path | None = None,
-) -> object:
-    """Resolve DEPS for *recipe_name* and run its `RunSteps`."""
-    return _Engine(workspace).run_recipe(recipe_name, properties)
-
-
 def main(argv: list[str] | None = None) -> int:
     argv = sys.argv[1:] if argv is None else list(argv)
     # `engine.py test run|train|list [...]` dispatches to the simulation-test
@@ -649,7 +657,9 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO)
-    run_recipe(args.recipe, json.loads(args.properties), args.workspace)
+    job = _Engine(args.workspace)
+    job.use_temp_dir()
+    job.run_recipe(args.recipe, json.loads(args.properties))
     return 0
 
 

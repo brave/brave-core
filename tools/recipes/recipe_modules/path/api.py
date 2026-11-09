@@ -286,12 +286,23 @@ class PathApi(RecipeApi):
     def cleanup_dir(self) -> str | Path | config_types.Path:
         """Scratch directory: `<workspace>/rc`.
 
-        Everything under here is disposable -- treat it as empty at the start of
-        a job and gone afterwards. This is where `mkdtemp` puts the directories
+        Everything under here is disposable, and cleared when the workspace is
+        disposed of. This is where `mkdtemp` puts the directories
         it makes, so a step that needs somewhere to write throwaway output has a
         home for it that nothing else has to clean up.
         """
         return self.workspace / 'rc'
+
+    @property
+    def temp_dir(self) -> str | Path | config_types.Path:
+        """The job's temp dir: `<cleanup_dir>/tmp`.
+
+        The engine points the temp dir variables at it for the whole job, as
+        luciexe hosts do, so what tests and tools leave in their temp dir goes
+        when the workspace is disposed of. It is apart from `mkdtemp`'s
+        directories, so a test's leftovers there are its own.
+        """
+        return self.cleanup_dir / 'tmp'
 
     # Filesystem seams. The real-vs-simulated choice is made once in
     # `initialise()` by picking a backend. The methods below just delegate, so
