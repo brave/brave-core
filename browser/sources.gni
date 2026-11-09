@@ -949,18 +949,12 @@ if (enable_print_preview) {
   ]
 }
 
-# https://github.com/brave/brave-browser/issues/41464
 if (enable_tor) {
   brave_chrome_browser_deps += [ "//brave/browser/tor:util" ]
-  brave_chrome_browser_allow_circular_includes_from +=
-      [ "//brave/browser/tor:util" ]
 }
 
-# https://github.com/brave/brave-browser/issues/10644
 if (enable_widevine) {
   brave_chrome_browser_deps += [ "//brave/browser/widevine" ]
-  brave_chrome_browser_allow_circular_includes_from +=
-      [ "//brave/browser/widevine" ]
 }
 
 if (enable_brave_news) {
