@@ -17,6 +17,7 @@
 #include "ui/base/unowned_user_data/user_data_factory.h"
 
 class AIChatSidePanelTabTransferBridge;
+class BeforeUnloadIgnoreController;
 class BraveNonClientHitTestHelper;
 class BraveShieldsUIContentsCache;
 class BraveVPNController;
@@ -108,6 +109,9 @@ class BraveBrowserWindowFeatures {
       window_closing_confirm_controller_;
 
   std::unique_ptr<ClosingLastTabController> closing_last_tab_controller_;
+
+  std::unique_ptr<BeforeUnloadIgnoreController>
+      before_unload_ignore_controller_;
 };
 
 #endif  // BRAVE_BROWSER_UI_BROWSER_WINDOW_INTERNAL_BRAVE_BROWSER_WINDOW_FEATURES_H_

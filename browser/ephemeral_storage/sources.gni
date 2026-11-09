@@ -30,6 +30,8 @@ brave_browser_ephemeral_storage_deps = [
 ]
 
 if (!is_android) {
-  brave_browser_ephemeral_storage_deps +=
-      [ "//chrome/browser/ui:browser_manager_service" ]
+  brave_browser_ephemeral_storage_deps += [
+    "//brave/browser/ui/tabs:tabs_public",
+    "//chrome/browser/ui:browser_manager_service",
+  ]
 }
