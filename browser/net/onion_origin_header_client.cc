@@ -30,7 +30,7 @@ net::HttpRequestHeaders MaybeHideCrossOriginOnionOrigin(
     net::HttpRequestHeaders headers) {
   std::optional<std::string> origin =
       headers.GetHeader(net::HttpRequestHeaders::kOrigin);
-  if (origin && net::IsCrossOriginOnionRequest(GURL(*origin), url)) {
+  if (origin && net::IsCrossOriginOnionRequest(*origin, url)) {
     headers.SetHeader(net::HttpRequestHeaders::kOrigin,
                       url::Origin().Serialize());
   }

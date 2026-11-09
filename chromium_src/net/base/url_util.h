@@ -8,6 +8,8 @@
 
 #include <net/base/url_util.h>  // IWYU pragma: export
 
+#include <string>
+
 #include "net/base/net_export.h"
 #include "url/origin.h"
 
@@ -28,7 +30,7 @@ NET_EXPORT bool IsLocalhostOrOnion(const GURL& url);
 // equivalent.
 NET_EXPORT bool IsCrossOriginOnionRequest(const url::Origin& initiator,
                                           const GURL& url);
-NET_EXPORT bool IsCrossOriginOnionRequest(const GURL& initiator,
+NET_EXPORT bool IsCrossOriginOnionRequest(const std::string& initiator,
                                           const GURL& url);
 }  // namespace net
 
