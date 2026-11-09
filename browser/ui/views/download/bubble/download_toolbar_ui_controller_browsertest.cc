@@ -6,8 +6,12 @@
 #include "chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.h"
 
 #include "base/callback_list.h"
+#include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
 #include "base/memory/raw_ptr.h"
+#include "base/run_loop.h"
+#include "base/task/single_thread_task_runner.h"
+#include "base/threading/thread_restrictions.h"
 #include "chrome/browser/download/bubble/download_bubble_update_service.h"
 #include "chrome/browser/download/bubble/download_bubble_update_service_factory.h"
 #include "chrome/browser/download/download_item_model.h"
@@ -17,13 +21,17 @@
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/toolbar/pinned_action_toolbar_button.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
+#include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/ui_test_utils.h"
 #include "components/download/public/common/download_item.h"
 #include "components/download/public/common/mock_download_item.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "components/prefs/pref_service.h"
 #include "components/vector_icons/vector_icons.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/test/browser_test.h"
+#include "net/test/embedded_test_server/embedded_test_server.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/models/image_model.h"
@@ -180,4 +188,44 @@ IN_PROC_BROWSER_TEST_F(DownloadToolbarInsecureIconTest,
       btn->GetImageModel(views::Button::STATE_NORMAL);
   ASSERT_TRUE(image.has_value());
   EXPECT_TRUE(image->GetVectorIcon().color() == warning_color);
+}
+
+class DownloadToolbarRestartTest : public InProcessBrowserTest {
+ public:
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+    embedded_test_server()->ServeFilesFromSourceDirectory("chrome/test/data");
+    ASSERT_TRUE(embedded_test_server()->Start());
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    ASSERT_TRUE(download_dir_.CreateUniqueTempDir());
+    PrefService* prefs = browser()->GetProfile()->GetPrefs();
+    prefs->SetBoolean(prefs::kPromptForDownload, false);
+    prefs->SetFilePath(prefs::kDownloadDefaultDirectory,
+                       download_dir_.GetPath());
+  }
+
+  ToolbarButton* download_button() {
+    return BrowserView::GetBrowserViewForBrowser(browser())
+        ->toolbar_button_provider()
+        ->GetDownloadButton();
+  }
+
+ private:
+  base::ScopedTempDir download_dir_;
+};
+
+IN_PROC_BROWSER_TEST_F(DownloadToolbarRestartTest, PRE_ShownForRecentDownload) {
+  ui_test_utils::DownloadURL(
+      browser(), embedded_test_server()->GetURL("/downloads/a_zip_file.zip"));
+  EXPECT_TRUE(download_button());
+}
+
+// The window is created before download history is loaded, so the button must
+// be refreshed once it is.
+IN_PROC_BROWSER_TEST_F(DownloadToolbarRestartTest, ShownForRecentDownload) {
+  base::RunLoop run_loop;
+  base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
+      FROM_HERE, run_loop.QuitClosure(), base::Seconds(3));
+  run_loop.Run();
+  EXPECT_TRUE(download_button());
 }

@@ -18,3 +18,16 @@ substitutions:
                 info, display_, bubble_controller_, browser_)) {
           ShowToolbarButton();
         }
+
+  - description: |
+      Refresh the toolbar button once download history has loaded.
+
+      Windows created at startup see no models yet, so the button is hidden
+      and upstream never re-evaluates it, dropping the recent-download icon
+      after a restart.
+    after_function_impl:
+      function_name: DownloadDisplayController::OnOfflineItemsInitialized
+      code: |-
+        if (display_) {
+          UpdateButtonStateFromUpdateService();
+        }
