@@ -23,8 +23,8 @@ ProfileMiscMetricsServiceFactory::ProfileMiscMetricsServiceFactory(PassKey key)
 
 std::unique_ptr<KeyedService>
 ProfileMiscMetricsServiceFactory::BuildServiceInstanceFor(
-    ProfileIOS* profile) const {
-  return std::make_unique<ProfileMiscMetricsService>(profile);
+    ProfileIOS& profile) const {
+  return std::make_unique<ProfileMiscMetricsService>(&profile);
 }
 
 }  // namespace misc_metrics

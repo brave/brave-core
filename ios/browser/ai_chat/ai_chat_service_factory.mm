@@ -38,12 +38,12 @@ AIChatServiceFactory::AIChatServiceFactory(PassKey key)
 }
 
 std::unique_ptr<KeyedService> AIChatServiceFactory::BuildServiceInstanceFor(
-    ProfileIOS* profile) const {
+    ProfileIOS& profile) const {
   if (!features::IsAIChatEnabled()) {
     return nullptr;
   }
 
-  if (profile->IsOffTheRecord()) {
+  if (profile.IsOffTheRecord()) {
     return nullptr;
   }
 
@@ -51,7 +51,7 @@ std::unique_ptr<KeyedService> AIChatServiceFactory::BuildServiceInstanceFor(
       [](ProfileIOS* profile) {
         return skus::SkusServiceFactory::GetForProfile(profile);
       },
-      base::Unretained(profile));
+      base::Unretained(&profile));
 
   auto credential_manager = std::make_unique<AIChatCredentialManager>(
       std::move(skus_service_getter), GetApplicationContext()->GetLocalState());
@@ -62,11 +62,11 @@ std::unique_ptr<KeyedService> AIChatServiceFactory::BuildServiceInstanceFor(
   return std::make_unique<AIChatService>(
       ModelServiceFactory::GetForProfile(profile),
       TabTrackerServiceFactory::GetForProfile(profile),
-      std::move(credential_manager), user_prefs::UserPrefs::Get(profile),
+      std::move(credential_manager), user_prefs::UserPrefs::Get(&profile),
       profile_metrics ? profile_metrics->GetAIChatMetrics() : nullptr,
       GetApplicationContext()->GetOSCryptAsync(),
-      profile->GetSharedURLLoaderFactory(),
-      version_info::GetChannelString(::GetChannel()), profile->GetStatePath());
+      profile.GetSharedURLLoaderFactory(),
+      version_info::GetChannelString(::GetChannel()), profile.GetStatePath());
 }
 
 }  // namespace ai_chat
