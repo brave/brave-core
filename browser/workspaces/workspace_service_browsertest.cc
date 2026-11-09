@@ -7,6 +7,7 @@
 
 #include <optional>
 
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/uuid.h"
 #include "brave/browser/workspaces/features.h"
@@ -17,6 +18,8 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/ui_test_utils.h"
+#include "components/sessions/core/session_id.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -127,6 +130,36 @@ IN_PROC_BROWSER_TEST_F(WorkspaceServiceBrowserTest,
   EXPECT_FALSE(
       service()->IsWorkspaceOnScreenElsewhere(workspace.id, unmanaged_id))
       << "A workspace that is no longer on screen is still being held";
+}
+
+// Closing the last tab of a space closes its window. That must not be read as
+// a request to quit: the window the space was opened from comes back instead.
+IN_PROC_BROWSER_TEST_F(WorkspaceServiceBrowserTest,
+                       ClosingTheLastTabOfASpaceReturnsToTheUnmanagedWindow) {
+  ASSERT_TRUE(service());
+  const SessionID unmanaged_id = browser()->GetSessionID();
+
+  WorkspaceMetadata workspace =
+      service()->CreateWorkspaceInWindow("Work", browser());
+  BrowserWindowInterface* workspace_window = WindowFor(workspace.id);
+  ASSERT_TRUE(workspace_window);
+  ASSERT_FALSE(IsVisible(browser()));
+
+  // Closing the only tab takes the window with it.
+  ui_test_utils::BrowserDestroyedObserver destroyed(workspace_window);
+  workspace_window->GetTabStripModel()->CloseAllTabs();
+  destroyed.Wait();
+
+  // Looked up by id on each poll rather than held across the close: if this
+  // regresses the unmanaged window is destroyed, and a stale pointer would
+  // read as a crash instead of a failure. Waiting on the condition also
+  // covers the retire-everything task OnBrowserClosed posts.
+  EXPECT_TRUE(base::test::RunUntil([&] {
+    BrowserWindowInterface* home =
+        BrowserWindowInterface::FromSessionID(unmanaged_id);
+    return home && home->GetWindow()->IsVisible();
+  })) << "Closing a space should hand the screen back to the window it was "
+         "opened from, not close it and quit the browser";
 }
 
 // Workspaces persist themselves. Letting Chromium record their windows too
