@@ -298,10 +298,12 @@ helpers, types, etc) before and after re-including the upstream source. They
 serve us well as hosts for code that does not need to be placed in a plaster to
 achieve the same effect.
 
-For header includes, keep each new `#include` with the code that needs it:
-`chromium_src` for code there, or the plaster for code there. If code in both
-needs the header, add the include only in `chromium_src`
-([PLSTR-006](./best-practices/plaster.md#PLSTR-006)).
+For header includes, apply include-what-you-use (IWYU) to each file: the
+original Chromium source file and its `chromium_src` shadow file. When only the
+shadow file requires a header, add its `#include` in `chromium_src`. When only
+code added to the original Chromium file requires a header, add its `#include`
+through the plaster. If both files require the header, add its `#include` only
+in `chromium_src` ([PLSTR-006](./best-practices/plaster.md#PLSTR-006)).
 
 Do (when the header is needed by code in `chromium_src`):
 
