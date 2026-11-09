@@ -872,18 +872,6 @@ brave_chrome_browser_allow_circular_includes_from += [
   "//brave/browser/brave_stats",
 ]
 
-if (enable_local_ai) {
-  brave_chrome_browser_allow_circular_includes_from +=
-      [ "//brave/browser/history_embeddings" ]
-}
-
-if (enable_ai_chat) {
-  # TODO(https://github.com/brave/brave-browser/issues/50507):
-  # Remove this once webui/ai_chat does not depend on chrome/browser.
-  brave_chrome_browser_allow_circular_includes_from +=
-      [ "//brave/browser/ui/webui/ai_chat" ]
-}
-
 if (enable_playlist) {
   brave_chrome_browser_sources += brave_browser_playlist_sources
   brave_chrome_browser_deps += brave_browser_playlist_deps
