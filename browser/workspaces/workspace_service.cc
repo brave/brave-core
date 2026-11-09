@@ -439,6 +439,14 @@ bool WorkspaceService::HasOnlyPutAwayWindowsExcept(
 }
 
 void WorkspaceService::ClosePutAwayWindows() {
+  // Every one of these is going away, so none of them has an origin left to
+  // hand the screen back to. Dropping the lineage up front stops
+  // OnBrowserClosed from reading each of these closes as a workspace window
+  // going away on its own and showing the next window instead of quitting.
+  // It has to happen here rather than around the loop, because the closes
+  // below complete asynchronously.
+  window_to_unmanaged_window_.clear();
+
   std::vector<raw_ptr<BrowserWindowInterface>> put_away;
   for (SessionID window_id : put_away_windows_) {
     if (auto* browser = BrowserWindowInterface::FromSessionID(window_id)) {
@@ -507,6 +515,10 @@ void WorkspaceService::OnBrowserClosed(BrowserWindowInterface* browser) {
   // serialize here; WillCloseAllTabs saved the workspace while it still had
   // tabs.
   const SessionID window_id = browser->GetSessionID();
+
+  // Read before the lineage entry is dropped below.
+  const std::optional<SessionID> origin = GetUnmanagedWindowFor(window_id);
+
   UnbindWindow(window_id);
   put_away_windows_.erase(window_id);
   windows_awaiting_restore_.erase(window_id);
@@ -514,9 +526,20 @@ void WorkspaceService::OnBrowserClosed(BrowserWindowInterface* browser) {
     return entry.first == window_id || entry.second == window_id;
   });
 
-  // Hidden windows must not keep the browser running. Once the last visible
-  // window is gone, retire them so normal shutdown can proceed. Deferred
-  // because this runs while |browser| is still being torn down.
+  // A workspace window going away on its own -- the person closed its last
+  // tab -- is not a request to quit. Hand the screen back to the window it
+  // was opened from instead of retiring everything behind it.
+  if (origin) {
+    if (auto* home = BrowserWindowInterface::FromSessionID(*origin)) {
+      put_away_windows_.erase(*origin);
+      home->GetWindow()->Show();
+      return;
+    }
+  }
+
+  // Put-away windows must not keep the browser running. Once nothing the
+  // person can reach is left, retire them so normal shutdown can proceed.
+  // Deferred because this runs while |browser| is still being torn down.
   if (HasOnlyPutAwayWindowsExcept(nullptr)) {
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE,
