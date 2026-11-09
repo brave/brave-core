@@ -269,7 +269,7 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
 #endif
   (*s_brave_allowlist)[kEnableWindowClosingConfirm] =
       settings_api::PrefType::kBoolean;
-  (*s_brave_allowlist)[kEnableClosingLastTab] =
+  (*s_brave_allowlist)[brave_tabs::kEnableClosingLastTab] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kShowFullscreenReminder] =
       settings_api::PrefType::kBoolean;

@@ -39,3 +39,16 @@ substitutions:
     after_function_impl:
       function_name: Browser::OnTabClosing
       code: 'brave_tabs::MaybeCloseWindowWithOnlySharedPinnedTabs(this);'
+
+  - description: |-
+      Keep the window open when its last tab closes.
+
+      Unless the kEnableClosingLastTab pref allows closing it, a normal window
+      gets a new tab instead of closing when its tab strip empties.
+    preempt_function_impl:
+      function_name: Browser::TabStripEmpty
+      code: |-
+        if (auto* controller = ClosingLastTabController::From(this);
+            controller && controller->MaybeKeepWindowOpen()) {
+          return;
+        }

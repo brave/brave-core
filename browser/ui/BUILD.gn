@@ -542,6 +542,7 @@ source_set("ui") {
       "//brave/browser/ui/tabs:tab_menu",
       "//brave/browser/ui/tabs:tab_model",
       "//brave/browser/ui/tabs:tab_strip",
+      "//brave/browser/ui/tabs:tabs_public",
       "//brave/browser/ui/webui/brave_welcome_page",
       "//brave/browser/ui/webui/settings/brave_account",
       "//brave/browser/workspaces",
@@ -1736,6 +1737,7 @@ source_set("browser_tests") {
 
     deps = [
       ":brave_browser_window_header",
+      ":brave_tab_prefs",
       ":ui",
       "//brave/app:command_ids",
       "//brave/browser/ui/window_closing_confirm",

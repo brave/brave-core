@@ -20,13 +20,13 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
-#include "brave/components/constants/pref_names.h"
 #include "brave/components/sidebar/browser/constants.h"
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
@@ -754,8 +754,8 @@ IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
                        ClosingLastTabWithWebPanelClosesWindow) {
   // Keeps the process alive once |browser()| goes away.
   ASSERT_TRUE(CreateBrowser(browser()->GetProfile()));
-  ASSERT_TRUE(
-      browser()->GetProfile()->GetPrefs()->GetBoolean(kEnableClosingLastTab));
+  ASSERT_TRUE(browser()->GetProfile()->GetPrefs()->GetBoolean(
+      brave_tabs::kEnableClosingLastTab));
 
   // Held before the panel opens, so normal_contents->Close() is unambiguously
   // closing the user's own tab and can't silently become the panel's.
@@ -782,7 +782,8 @@ IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
                        ClosingLastTabWithWebPanelAddsNewTabWhenPrefIsOff) {
-  browser()->GetProfile()->GetPrefs()->SetBoolean(kEnableClosingLastTab, false);
+  browser()->GetProfile()->GetPrefs()->SetBoolean(
+      brave_tabs::kEnableClosingLastTab, false);
   // Navigated away from the new tab URL so the added tab is distinguishable.
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(kRegularTabURL)));
   auto* normal_contents = tab_model()->GetActiveWebContents();
@@ -808,8 +809,8 @@ IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
 // keeps the window open exactly as it does upstream.
 IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
                        UserPinnedTabKeepsWindowOpenWithWebPanel) {
-  ASSERT_TRUE(
-      browser()->GetProfile()->GetPrefs()->GetBoolean(kEnableClosingLastTab));
+  ASSERT_TRUE(browser()->GetProfile()->GetPrefs()->GetBoolean(
+      brave_tabs::kEnableClosingLastTab));
 
   auto* normal_contents = tab_model()->GetActiveWebContents();
 
@@ -838,7 +839,8 @@ IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
 // tab left here to replace.
 IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
                        DetachingLastTabWithWebPanelClosesWindow) {
-  browser()->GetProfile()->GetPrefs()->SetBoolean(kEnableClosingLastTab, false);
+  browser()->GetProfile()->GetPrefs()->SetBoolean(
+      brave_tabs::kEnableClosingLastTab, false);
   auto* browser2 = CreateBrowser(browser()->GetProfile());
   ASSERT_TRUE(browser2);
 
@@ -863,7 +865,8 @@ IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
 // attempt leaves nothing behind to affect a later last-tab close.
 IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
                        DeferredCloseGivesUpWhenTabArrives) {
-  browser()->GetProfile()->GetPrefs()->SetBoolean(kEnableClosingLastTab, false);
+  browser()->GetProfile()->GetPrefs()->SetBoolean(
+      brave_tabs::kEnableClosingLastTab, false);
   auto* browser2 = CreateBrowser(browser()->GetProfile());
   ASSERT_TRUE(browser2);
 
@@ -952,8 +955,8 @@ IN_PROC_BROWSER_TEST_F(WebPanelBeforeUnloadBrowserTest,
                        PanelBeforeUnloadCannotBlockClosingLastTab) {
   // Keeps the process alive once |browser()| goes away.
   ASSERT_TRUE(CreateBrowser(browser()->GetProfile()));
-  ASSERT_TRUE(
-      browser()->GetProfile()->GetPrefs()->GetBoolean(kEnableClosingLastTab));
+  ASSERT_TRUE(browser()->GetProfile()->GetPrefs()->GetBoolean(
+      brave_tabs::kEnableClosingLastTab));
 
   auto* normal_contents = tab_model()->GetActiveWebContents();
   auto* panel_contents = OpenWebPanelWithBeforeUnload();

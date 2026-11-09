@@ -7,7 +7,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/browser_commands.h"
-#include "brave/components/constants/pref_names.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "chrome/browser/devtools/devtools_window_testing.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search/search.h"
@@ -116,8 +116,8 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, OpenNewTabWhenTabStripIsEmpty) {
   ASSERT_TRUE(embedded_test_server()->Start());
   BrowserWindowInterface* new_browser = OpenNewBrowser(browser()->GetProfile());
   ASSERT_TRUE(new_browser);
-  new_browser->GetProfile()->GetPrefs()->SetBoolean(kEnableClosingLastTab,
-                                                    false);
+  new_browser->GetProfile()->GetPrefs()->SetBoolean(
+      brave_tabs::kEnableClosingLastTab, false);
   TabStripModel* tab_strip = new_browser->tab_strip_model();
   auto page_url = embedded_test_server()->GetURL("/empty.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(new_browser, page_url));
@@ -163,8 +163,8 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
   ASSERT_TRUE(embedded_test_server()->Start());
   BrowserWindowInterface* new_browser = OpenNewBrowser(browser()->GetProfile());
   ASSERT_TRUE(new_browser);
-  new_browser->GetProfile()->GetPrefs()->SetBoolean(kEnableClosingLastTab,
-                                                    true);
+  new_browser->GetProfile()->GetPrefs()->SetBoolean(
+      brave_tabs::kEnableClosingLastTab, true);
   TabStripModel* tab_strip = new_browser->tab_strip_model();
   auto page_url = embedded_test_server()->GetURL("/empty.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(new_browser, page_url));
@@ -186,8 +186,8 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
   ASSERT_TRUE(embedded_test_server()->Start());
   BrowserWindowInterface* new_browser = OpenNewBrowser(browser()->GetProfile());
   ASSERT_TRUE(new_browser);
-  new_browser->GetProfile()->GetPrefs()->SetBoolean(kEnableClosingLastTab,
-                                                    false);
+  new_browser->GetProfile()->GetPrefs()->SetBoolean(
+      brave_tabs::kEnableClosingLastTab, false);
 
   // When "Bring all tabs to this window" commands executes
   brave::BringAllTabs(browser());
@@ -200,7 +200,8 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
                        CloseBrowserAfterDetachingAllTabToAnotherBrowser) {
-  browser()->GetProfile()->GetPrefs()->SetBoolean(kEnableClosingLastTab, false);
+  browser()->GetProfile()->GetPrefs()->SetBoolean(
+      brave_tabs::kEnableClosingLastTab, false);
   BrowserWindowInterface* browser2 = CreateBrowser(browser()->GetProfile());
   ASSERT_TRUE(browser2);
 
@@ -220,7 +221,8 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
 IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
                        CreateAnotherWindowWithExistingTab) {
   ASSERT_TRUE(embedded_test_server()->Start());
-  browser()->GetProfile()->GetPrefs()->SetBoolean(kEnableClosingLastTab, false);
+  browser()->GetProfile()->GetPrefs()->SetBoolean(
+      brave_tabs::kEnableClosingLastTab, false);
   TabStripModel* tab_strip = browser()->tab_strip_model();
 
   auto page_url = embedded_test_server()->GetURL("/empty.html");

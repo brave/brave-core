@@ -564,7 +564,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   BraveOmniboxClientImpl::RegisterProfilePrefs(registry);
 
   registry->RegisterBooleanPref(kEnableWindowClosingConfirm, true);
-  registry->RegisterBooleanPref(kEnableClosingLastTab, true);
+  registry->RegisterBooleanPref(brave_tabs::kEnableClosingLastTab, true);
   registry->RegisterBooleanPref(kShowFullscreenReminder, true);
   registry->RegisterBooleanPref(
       kWebViewRoundedCorners,

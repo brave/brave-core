@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser.cc b/chrome/browser/ui/browser.cc
-index 4e9be10d04e981ab98120a4ede977df090ec59c8..45a0015eabf242825b6c39cd4db8b01444e5b078 100644
+index 4e9be10d04e981ab98120a4ede977df090ec59c8..42525ade870d47468a506e04bf9f41ca720f29d7 100644
 --- a/chrome/browser/ui/browser.cc
 +++ b/chrome/browser/ui/browser.cc
 @@ -237,7 +237,7 @@ Browser* Browser::Create(BrowserWindowCreateParams params) {
@@ -31,7 +31,18 @@ index 4e9be10d04e981ab98120a4ede977df090ec59c8..45a0015eabf242825b6c39cd4db8b014
            tab_strip_model_delegate_.get(),
            profile_,
            // Tab groups are disabled for app browsers.
-@@ -678,6 +678,7 @@ void Browser::OnTabInsertedAt(WebContents* contents, int index) {
+@@ -613,6 +613,10 @@ void Browser::OnTabStripModelChanged(TabStripModel* tab_strip_model,
+ }
+ 
+ void Browser::TabStripEmpty() {
++  if (auto* controller = ClosingLastTabController::From(this);
++      controller && controller->MaybeKeepWindowOpen()) {
++    return;
++  }
+   // A touch tab drag session may still be delivering OS touch events to this
+   // window's native widget. Destroying it mid-gesture would strand the drag, so
+   // let TabDragController take ownership of closing this browser once the drag
+@@ -678,6 +682,7 @@ void Browser::OnTabInsertedAt(WebContents* contents, int index) {
  
  void Browser::OnTabClosing(tabs::TabInterface* tab,
                             bool* had_active_modal_dialog) {
@@ -39,7 +50,7 @@ index 4e9be10d04e981ab98120a4ede977df090ec59c8..45a0015eabf242825b6c39cd4db8b014
    WebContents* contents = tab->GetContents();
    // When this function is called |contents| has been removed from the
    // TabStripModel. Some of the following code may trigger calling to the
-@@ -702,6 +703,8 @@ void Browser::OnTabClosing(tabs::TabInterface* tab,
+@@ -702,6 +707,8 @@ void Browser::OnTabClosing(tabs::TabInterface* tab,
    metrics_observer->WebContentsWillSoonBeDestroyed();
  
    ExclusiveAccessManager::From(this)->OnTabClosing(contents);
