@@ -223,7 +223,8 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
         _browsingHistoryDriver.get(),
         ios::HistoryServiceFactory::GetForProfile(_profile),
         web_history_service_, SyncServiceFactory::GetForProfile(_profile),
-        /*device_info_tracker=*/nullptr);
+        /*device_info_tracker=*/nullptr,
+        /*critical_action_provider=*/nullptr);
   }
   return self;
 }
