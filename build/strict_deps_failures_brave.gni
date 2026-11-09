@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Brave counterpart to Chromium's `check_includes_strict_exceptions` directory
+# allowlist, until Brave's targets meet the strict include checks.
+brave_check_includes_strict_exceptions = [
+  # TODO(https://github.com/brave/brave-browser/issues/59200): Fix Brave's
+  # targets' strict include violations and remove this entry.
+  {
+    includer = "//brave/*"
+  },
+
+  # `prepopulated_engines` builds Brave's `brave_prepopulated_engines.h`, whose
+  # `//base` use `json_to_struct` can't make a public dep.
+  {
+    includer = "//third_party/search_engines_data/*"
+  },
+]
