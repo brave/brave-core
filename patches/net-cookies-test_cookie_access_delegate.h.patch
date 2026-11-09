@@ -1,8 +1,8 @@
 diff --git a/net/cookies/test_cookie_access_delegate.h b/net/cookies/test_cookie_access_delegate.h
-index 0dacce582d2ce45c8bcf61fe0b31f970f947b086..279bf6ca3ebf1a3216dfc69a6340523630aa23af 100644
+index ee5cdd78a40c66fc3b6168afbb4a39705fecdb47..fad5a81c071c5e9d770bfdc8c8e22c14af8afa5a 100644
 --- a/net/cookies/test_cookie_access_delegate.h
 +++ b/net/cookies/test_cookie_access_delegate.h
-@@ -58,6 +58,12 @@ class TestCookieAccessDelegate : public CookieAccessDelegate {
+@@ -59,6 +59,12 @@ class TestCookieAccessDelegate : public CookieAccessDelegate {
        const std::string& site_for_cookies_scheme,
        bool require_secure_origin);
  
