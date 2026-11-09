@@ -16,6 +16,7 @@ namespace syncer {
 DataTypeSet EncryptableUserTypes() {
   DataTypeSet encryptable_user_types = EncryptableUserTypes_ChromiumImpl();
   // Brave sync has encryption setup ready when sync chain created.
+  encryptable_user_types.Put(CONTACT_INFO);
   encryptable_user_types.Put(DEVICE_INFO);
   encryptable_user_types.Put(HISTORY);
   encryptable_user_types.Put(AI_CHAT_CONVERSATION);

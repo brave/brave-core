@@ -9,8 +9,14 @@ namespace syncer {
 namespace {
 
 TEST(DataTypeTest, EncryptableUserTypes) {
+  EXPECT_TRUE(EncryptableUserTypes().Has(CONTACT_INFO));
   EXPECT_TRUE(EncryptableUserTypes().Has(DEVICE_INFO));
   EXPECT_TRUE(EncryptableUserTypes().Has(HISTORY));
+}
+
+TEST(DataTypeTest, BraveUnencryptableUserTypes) {
+  EXPECT_FALSE(EncryptableUserTypes().Has(HISTORY_DELETE_DIRECTIVES));
+  EXPECT_FALSE(EncryptableUserTypes().Has(NIGORI));
 }
 
 TEST(DataTypeTest, LowPriorityUserTypes) {
