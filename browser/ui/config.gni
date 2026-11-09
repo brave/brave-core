@@ -71,20 +71,11 @@ if (toolkit_views) {
   if (enable_containers) {
     brave_ui_allow_circular_includes_from += [ "//brave/browser/ui/containers" ]
   }
-
-  if (enable_speedreader) {
-    brave_ui_allow_circular_includes_from +=
-        [ "//brave/browser/ui/views/speedreader" ]
-  }
 }
 
 if (enable_brave_ads) {
   brave_ui_allow_circular_includes_from +=
       [ "//brave/browser/ui/webui/ads_internals" ]
-}
-
-if (enable_speedreader) {
-  brave_ui_allow_circular_includes_from += [ "//brave/browser/ui/speedreader" ]
 }
 
 if (enable_email_aliases) {
