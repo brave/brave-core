@@ -129,7 +129,7 @@ class BraveTabStripCollection : public TabStripCollection {
 
  private:
   class ScopedUnwrappedNotifications;
-  struct UnwrappedHierarchy;
+  class UnwrappedHierarchy;
 
   bool ShouldDelegate() const;
 

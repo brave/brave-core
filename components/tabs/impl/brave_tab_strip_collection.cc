@@ -39,7 +39,8 @@ namespace tabs {
 //     TabCollectionObserver and implements a view model vertical tab strip.
 //     As vertical tab strip only need indentation, we can keep the view model
 //     unaware of tree tab nodes.
-struct BraveTabStripCollection::UnwrappedHierarchy {
+class BraveTabStripCollection::UnwrappedHierarchy {
+ public:
   explicit UnwrappedHierarchy(const TabCollection& root) { Add(root); }
   UnwrappedHierarchy(const UnwrappedHierarchy&) = delete;
   UnwrappedHierarchy& operator=(const UnwrappedHierarchy&) = delete;
