@@ -43,7 +43,8 @@ OBJC_EXPORT
 + (BOOL)isSupported:(id<PrefServiceBridge>)prefService;
 
 /// Create a rewards engine that will read and write its state to the given path
-- (instancetype)initWithStateStoragePath:(NSString*)path;
+- (instancetype)initWithStateStoragePath:(NSString*)path
+                             prefService:(id<PrefServiceBridge>)prefService;
 
 - (instancetype)init NS_UNAVAILABLE;
 
