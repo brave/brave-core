@@ -65,7 +65,7 @@
   "devEngines": {
     "runtime": {
       "name": "node",
-      "version": ">=24.16.0 <25.0.0",
+      "version": ">=24.16.0 <27.0.0",
       "onFail": "error"
     },
     "packageManager": {
