@@ -848,11 +848,18 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                         assertNonNull(mNtpAdapter);
                         mIsTopSitesEnabled = NtpUtil.shouldDisplayTopSites();
                         mNtpAdapter.setTopSitesEnabled(mIsTopSitesEnabled);
+                        if (!mIsTopSitesEnabled) {
+                            dismissTopSitesTooltip();
+                        }
                     } else if (TextUtils.equals(
                             key, BackgroundImagesPreferences.PREF_SHOW_BRAVE_STATS)) {
                         assertNonNull(mNtpAdapter);
                         mIsBraveStatsEnabled = NtpUtil.shouldDisplayBraveStats();
                         mNtpAdapter.setBraveStatsEnabled(mIsBraveStatsEnabled);
+                        // The stats row sits above the top-sites row, so toggling it shifts the
+                        // tooltip's anchor view - dismiss since PopupWindowTooltip can't reposition
+                        // itself once shown.
+                        dismissTopSitesTooltip();
                     }
                 };
     }
