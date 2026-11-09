@@ -27,9 +27,7 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.components.browser_ui.widget.containment.ContainmentItem;
 import org.chromium.components.user_prefs.UserPrefs;
 
-/**
- * The preference used to reset Brave Leo.
- */
+/** The preference used to reset Brave Leo. */
 public class BraveLeoResetPreference extends Preference
         implements Preference.OnPreferenceClickListener, ContainmentItem {
     private static final String TAG = "BraveLeoResetPref";
