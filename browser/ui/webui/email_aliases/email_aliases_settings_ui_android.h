@@ -17,8 +17,7 @@
 
 class EmailAliasesSettingsUIAndroid
     : public content::WebUIController,
-      public brave_account::mojom::DialogController,
-      public brave_account::mojom::DialogOpener {
+      public brave_account::mojom::SettingsOpener {
  public:
   explicit EmailAliasesSettingsUIAndroid(content::WebUI* web_ui);
   EmailAliasesSettingsUIAndroid(const EmailAliasesSettingsUIAndroid&) = delete;
@@ -34,23 +33,15 @@ class EmailAliasesSettingsUIAndroid
           receiver);
   void BindInterface(
       mojo::PendingReceiver<brave_account::mojom::Authentication> receiver);
-  void BindInterface(
-      mojo::PendingReceiver<brave_account::mojom::DialogController> receiver);
-  void BindInterface(mojo::PendingReceiver<brave_account::mojom::DialogOpener>
+  void BindInterface(mojo::PendingReceiver<brave_account::mojom::SettingsOpener>
                          pending_receiver);
 
  private:
-  // brave_account::mojom::DialogOpener:
-  void OpenDialog(brave_account::mojom::DialogMode dialog_mode) override;
+  // brave_account::mojom::SettingsOpener:
+  void OpenSettings(brave_account::mojom::SettingsPage page) override;
 
-  // brave_account::mojom::DialogController:
-  void CloseDialog() override;
-  void GetDialogMode(GetDialogModeCallback callback) override;
-
-  mojo::Receiver<brave_account::mojom::DialogController>
-      dialog_controller_receiver_{this};
-  mojo::Receiver<brave_account::mojom::DialogOpener> dialog_opener_receiver_{
-      this};
+  mojo::Receiver<brave_account::mojom::SettingsOpener>
+      settings_opener_receiver_{this};
 
  public:
   WEB_UI_CONTROLLER_TYPE_DECL();

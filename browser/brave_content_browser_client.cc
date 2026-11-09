@@ -878,8 +878,7 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
   if (email_aliases::features::IsEmailAliasesEnabled()) {
     registry.ForWebUI<EmailAliasesSettingsUIAndroid>()
         .Add<brave_account::mojom::Authentication>()
-        .Add<brave_account::mojom::DialogController>()
-        .Add<brave_account::mojom::DialogOpener>()
+        .Add<brave_account::mojom::SettingsOpener>()
         .Add<email_aliases::mojom::EmailAliasesService>()
         .Add<email_aliases::mojom::EmailAliasesMetrics>();
   }

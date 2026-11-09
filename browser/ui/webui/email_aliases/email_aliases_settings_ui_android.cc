@@ -10,10 +10,9 @@
 #include "base/check.h"
 #include "base/check_deref.h"
 #include "base/strings/strcat.h"
-#include "brave/browser/brave_account/brave_account_dialog_mode_holder.h"
 #include "brave/browser/brave_account/brave_account_service_factory.h"
 #include "brave/browser/email_aliases/email_aliases_service_factory.h"
-#include "brave/browser/ui/brave_account/brave_account_dialog_opener.h"
+#include "brave/browser/ui/brave_account/brave_account_settings_opener_android.h"
 #include "brave/components/brave_account/brave_account_service.h"
 #include "brave/components/brave_account/resources/grit/brave_account_resources_map.h"
 #include "brave/components/email_aliases/constants.h"
@@ -90,33 +89,16 @@ void EmailAliasesSettingsUIAndroid::BindInterface(
 }
 
 void EmailAliasesSettingsUIAndroid::BindInterface(
-    mojo::PendingReceiver<brave_account::mojom::DialogController> receiver) {
-  dialog_controller_receiver_.reset();
-  dialog_controller_receiver_.Bind(std::move(receiver));
-}
-
-void EmailAliasesSettingsUIAndroid::BindInterface(
-    mojo::PendingReceiver<brave_account::mojom::DialogOpener>
+    mojo::PendingReceiver<brave_account::mojom::SettingsOpener>
         pending_receiver) {
-  dialog_opener_receiver_.reset();
-  dialog_opener_receiver_.Bind(std::move(pending_receiver));
+  settings_opener_receiver_.reset();
+  settings_opener_receiver_.Bind(std::move(pending_receiver));
 }
 
-void EmailAliasesSettingsUIAndroid::OpenDialog(
-    brave_account::mojom::DialogMode dialog_mode) {
-  brave_account::OpenBraveAccountDialog(CHECK_DEREF(web_ui()->GetWebContents()),
-                                        dialog_mode);
-}
-
-void EmailAliasesSettingsUIAndroid::CloseDialog() {
-  web_ui()->GetWebContents()->Close();
-}
-
-void EmailAliasesSettingsUIAndroid::GetDialogMode(
-    GetDialogModeCallback callback) {
-  std::move(callback).Run(
-      brave_account::BraveAccountDialogModeHolder::GetDialogMode(
-          CHECK_DEREF(web_ui()->GetWebContents())));
+void EmailAliasesSettingsUIAndroid::OpenSettings(
+    brave_account::mojom::SettingsPage page) {
+  brave_account::OpenSettingsPage(CHECK_DEREF(web_ui()->GetWebContents()),
+                                  page);
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(EmailAliasesSettingsUIAndroid)

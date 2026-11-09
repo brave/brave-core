@@ -11,7 +11,7 @@ if (!signInRoot || !manageRoot) {
   throw new Error('Unable to find Email Aliases page mount points')
 }
 
-customElements.whenDefined('brave-account-row').then(() => {
+customElements.whenDefined('brave-account-compact-row').then(() => {
   mount(signInRoot, manageRoot, {
     onLoggedInChange: () => {},
     styleTarget: document.head,
