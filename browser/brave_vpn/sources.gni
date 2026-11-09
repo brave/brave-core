@@ -9,10 +9,8 @@ brave_browser_brave_vpn_sources = []
 brave_browser_brave_vpn_deps = []
 
 if (enable_brave_vpn) {
-  brave_browser_brave_vpn_sources += [
-    "//brave/browser/brave_vpn/brave_vpn_service_factory.cc",
-    "//brave/browser/brave_vpn/brave_vpn_service_factory.h",
-  ]
+  brave_browser_brave_vpn_sources +=
+      [ "//brave/browser/brave_vpn/brave_vpn_service_factory.cc" ]
   brave_browser_brave_vpn_deps += [
     "//base",
     "//brave/browser/brave_vpn",

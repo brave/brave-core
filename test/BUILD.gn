@@ -1432,6 +1432,7 @@ test("brave_browser_tests") {
 
   if (enable_brave_vpn) {
     deps += [
+      "//brave/browser/brave_vpn",
       "//brave/components/brave_vpn/browser",
       "//brave/components/brave_vpn/common",
     ]
