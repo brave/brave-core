@@ -8,6 +8,7 @@
 #include "base/path_service.h"
 #include "base/process/launch.h"
 #include "base/test/bind.h"
+#include "base/test/scoped_command_line.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
@@ -645,15 +646,13 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, NoBuiltInBridgesRequest) {
 // The system proxy resolver ignores the ProxyConfigService where Tor's proxy is
 // set, so Tor profiles must not get one.
 class TorProfileManagerSystemProxyResolverTest : public TorProfileManagerTest {
- public:
-  void SetUpCommandLine(base::CommandLine* command_line) override {
-    TorProfileManagerTest::SetUpCommandLine(command_line);
-    command_line->AppendSwitch(switches::kUseSystemProxyResolver);
-  }
-
  protected:
+  // Not set at startup, so real contexts never launch the resolver service.
   network::mojom::NetworkContextParamsPtr ConfigureNetworkContextParams(
       Profile* profile) {
+    base::test::ScopedCommandLine scoped_command_line;
+    scoped_command_line.GetProcessCommandLine()->AppendSwitch(
+        switches::kUseSystemProxyResolver);
     auto params = network::mojom::NetworkContextParams::New();
     auto cert_verifier_params =
         cert_verifier::mojom::CertVerifierCreationParams::New();
