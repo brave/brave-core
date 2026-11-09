@@ -1,12 +1,34 @@
 diff --git a/chrome/browser/ui/extensions/icon_with_badge_image_source.h b/chrome/browser/ui/extensions/icon_with_badge_image_source.h
-index e9cb1be92f1f08c376c4b94ca9b98569319587a8..84450c167d75b3319f299b8ccdf6c482804cecb1 100644
+index e9cb1be92f1f08c376c4b94ca9b98569319587a8..449dc1e98e42c631436565c08b461d11c19bb042 100644
 --- a/chrome/browser/ui/extensions/icon_with_badge_image_source.h
 +++ b/chrome/browser/ui/extensions/icon_with_badge_image_source.h
-@@ -62,6 +62,7 @@ class IconWithBadgeImageSource : public gfx::CanvasImageSource {
-   bool paint_blocked_actions_decoration() const {
+@@ -63,12 +63,19 @@ class IconWithBadgeImageSource : public gfx::CanvasImageSource {
      return paint_blocked_actions_decoration_;
    }
-+  BRAVE_ICON_WITH_BADGE_IMAGE_SOURCE_H_
  
++ protected:
++  virtual std::optional<int> GetCustomGraphicSize();
++  virtual std::optional<int> GetCustomGraphicXOffset();
++  virtual std::optional<int> GetCustomGraphicYOffset();
++  void ApplyCustomGraphicOffsets(int& x_offset, int& y_offset);
++
   private:
++  friend class brave::BraveIconWithBadgeImageSource;
    // gfx::CanvasImageSource:
+   void Draw(gfx::Canvas* canvas) override;
+ 
+   // Paints |badge_|, if any, on |canvas|.
+-  void PaintBadge(gfx::Canvas* canvas);
++  virtual void PaintBadge(gfx::Canvas* canvas);
+ 
+   // Paints a decoration over the base icon to indicate that the action wants to
+   // run.
+@@ -83,7 +90,7 @@ class IconWithBadgeImageSource : public gfx::CanvasImageSource {
+   // all cases, our badges and decorations should be positions at the corners of
+   // the area where the icon exists (ignoring all the paddings).
+   // https://crbug.com/40571346.
+-  gfx::Rect GetIconAreaRect() const;
++  virtual gfx::Rect GetIconAreaRect() const;
+ 
+   GetColorProviderCallback get_color_provider_callback_;
+ 

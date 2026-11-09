@@ -191,6 +191,9 @@ gfx::Rect BraveIconWithBadgeImageSource::GetBadgeRect(
 }
 
 gfx::Rect BraveIconWithBadgeImageSource::GetIconAreaRect() const {
+  // Upstream implementation caps the icon area size to the default icon size.
+  // Here we do not cap the icon area size, allowing it to be as large as the
+  // actual size of the image source.
   return gfx::Rect(size());
 }
 
