@@ -507,6 +507,12 @@ base::WeakPtr<WorkspaceService> WorkspaceService::GetWeakPtr() {
 
 void WorkspaceService::Shutdown() {
   browser_collection_observation_.Reset();
+  // Tab strips are observed through TabStripModelObserver's own bookkeeping
+  // rather than a ScopedObservation member, which TabStripModel deletes the
+  // constructor for. Without this, WillCloseAllTabs could still run
+  // SaveWorkspaceFromWindow -- writing prefs and posting disk I/O -- after
+  // the service has shut down.
+  TabStripModelObserver::StopObservingAll(this);
   weak_ptr_factory_.InvalidateWeakPtrs();
 }
 

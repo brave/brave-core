@@ -7,7 +7,7 @@
 
 #include <optional>
 
-#include "base/run_loop.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/uuid.h"
 #include "brave/browser/workspaces/features.h"
@@ -150,18 +150,16 @@ IN_PROC_BROWSER_TEST_F(WorkspaceServiceBrowserTest,
   workspace_window->GetTabStripModel()->CloseAllTabs();
   destroyed.Wait();
 
-  // Let any retire-everything task posted by OnBrowserClosed run, so a
-  // regression here shows up as a closed window rather than a race.
-  base::RunLoop().RunUntilIdle();
-
-  // Looked up by id: if this regresses, the unmanaged window is gone and
-  // holding a pointer to it would be a use-after-free.
-  BrowserWindowInterface* home =
-      BrowserWindowInterface::FromSessionID(unmanaged_id);
-  ASSERT_TRUE(home) << "Closing a space also closed the window it was opened "
-                       "from, which quits the browser";
-  EXPECT_TRUE(IsVisible(home))
-      << "The window the space was opened from should be showing again";
+  // Looked up by id on each poll rather than held across the close: if this
+  // regresses the unmanaged window is destroyed, and a stale pointer would
+  // read as a crash instead of a failure. Waiting on the condition also
+  // covers the retire-everything task OnBrowserClosed posts.
+  EXPECT_TRUE(base::test::RunUntil([&] {
+    BrowserWindowInterface* home =
+        BrowserWindowInterface::FromSessionID(unmanaged_id);
+    return home && home->GetWindow()->IsVisible();
+  })) << "Closing a space should hand the screen back to the window it was "
+         "opened from, not close it and quit the browser";
 }
 
 // Workspaces persist themselves. Letting Chromium record their windows too

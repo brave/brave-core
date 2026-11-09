@@ -16,7 +16,7 @@
 //
 // |id| is the stable identity: it keys both the metadata preference and the
 // on-disk directory, so renaming a workspace moves no storage. A workspace
-// holds the tabs of a single window, so there is no window count here.
+// holds the tabs of a single window.
 struct WorkspaceMetadata {
   base::Uuid id;
   std::string name;
