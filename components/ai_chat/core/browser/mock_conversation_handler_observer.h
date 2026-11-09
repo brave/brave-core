@@ -62,6 +62,11 @@ class MockConversationHandlerObserver : public ConversationHandler::Observer {
               (override));
 
   MOCK_METHOD(void,
+              OnClientVisibilityChanged,
+              (ConversationHandler*),
+              (override));
+
+  MOCK_METHOD(void,
               OnConversationTitleChanged,
               (const std::string&, const std::string&),
               (override));

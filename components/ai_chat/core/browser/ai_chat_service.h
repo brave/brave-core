@@ -152,6 +152,7 @@ class AIChatService : public KeyedService,
                             size_t event_order,
                             mojom::ToolUseEventPtr tool_use) override;
   void OnClientConnectionChanged(ConversationHandler* handler) override;
+  void OnClientVisibilityChanged(ConversationHandler* handler) override;
   void OnConversationTitleChanged(const std::string& conversation_uuid,
                                   const std::string& title) override;
   void OnConversationTokenInfoChanged(
@@ -461,13 +462,13 @@ class AIChatService : public KeyedService,
   // Sends |conversation_generation_state_| to all |observer_remotes_| and
   // closes out-of-date notifications.
   void NotifyConversationGenerationStateChanged();
-  // Whether |uuid| has a loaded ConversationHandler with a connected client.
-  // This doesn't mean the conversation is on screen.
-  bool IsConversationClientConnected(const std::string& uuid) const;
+  // Whether |uuid| has a loaded ConversationHandler with a visible client, i.e.
+  // the conversation is on screen.
+  bool IsConversationViewed(const std::string& uuid) const;
   // Marks |conversation_uuid| as no longer generating once its handler is
-  // neither generating nor running tools: idle if a client is connected,
-  // otherwise kAwaitingUserInput if it stopped on a permission challenge, or
-  // else kCompletedNotViewed.
+  // neither generating nor running tools: idle if it is viewed, otherwise
+  // kAwaitingUserInput if it stopped on a permission challenge, or else
+  // kCompletedNotViewed.
   void MaybeMarkGenerationComplete(const std::string& conversation_uuid);
   // DeleteConversation() without OnConversationListChanged(), for callers that
   // delete several conversations and then send the list once.

@@ -13,6 +13,19 @@ import createConversationAPI from './conversation_api'
 // or browser AIChat service
 //
 
+// The browser counts a conversation as viewed only while a client reports
+// that it's visible, so report now and on every visibility change. Returns a
+// function that stops reporting.
+function reportClientVisibility(
+  conversationHandler: Mojom.ConversationHandlerRemote,
+) {
+  const report = () =>
+    conversationHandler.setClientVisible(document.visibilityState === 'visible')
+  report()
+  document.addEventListener('visibilitychange', report)
+  return () => document.removeEventListener('visibilitychange', report)
+}
+
 export function bindConversation(
   aiChat: AIChatAPI['api'],
   id: string | undefined,
@@ -42,6 +55,7 @@ export function bindConversation(
       conversationUIReceiverRemote,
     )
   }
+  const stopReportingVisibility = reportClientVisibility(conversationHandler)
 
   // Optimistic update for conversation ID to prevent any jank when components
   // don't know what the conversation ID is for matching to an entry in the
@@ -53,6 +67,7 @@ export function bindConversation(
   return {
     conversationHandler,
     close: () => {
+      stopReportingVisibility()
       conversationAPI.close()
       conversationHandler.$.close()
       conversationUIReceiver.$.close()
@@ -80,11 +95,13 @@ export function newConversation(aiChat: AIChatAPI['api'], workspaceUrl?: Url) {
     conversationUIReceiverRemote,
     workspaceUrl ?? null,
   )
+  const stopReportingVisibility = reportClientVisibility(conversationHandler)
 
   return {
     isNew: true,
     conversationHandler,
     close: () => {
+      stopReportingVisibility()
       conversationAPI.close()
       conversationHandler.$.close()
       conversationUIReceiver.$.close()
