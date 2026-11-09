@@ -909,11 +909,8 @@ if (toolkit_views) {
       [ "//brave/browser/ui/views/location_bar" ]
 }
 
-# https://github.com/brave/brave-browser/issues/41418
 if (enable_extensions) {
   brave_chrome_browser_deps +=
-      [ "//brave/browser/extensions:brave_prefs_util_impl" ]
-  brave_chrome_browser_allow_circular_includes_from +=
       [ "//brave/browser/extensions:brave_prefs_util_impl" ]
 }
 
