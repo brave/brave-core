@@ -20,9 +20,9 @@ import { CommandsCache } from './utils/commandsCache'
 import { match } from './utils/match'
 import { getLocale } from '$web-common/locale'
 
-import Icon, { setIconBasePath } from '@brave/leo/react/icon'
-import { color, font, radius, spacing } from '@brave/leo/tokens/css/variables'
-import Button from '@brave/leo/react/button'
+import Icon, { setIconBasePath } from '@brave/nala/react/icon'
+import { color, font, radius, spacing } from '@brave/nala/tokens/css/variables'
+import Button from '@brave/nala/react/button'
 setIconBasePath('chrome://resources/brave-icons')
 
 const Container = styled.div`

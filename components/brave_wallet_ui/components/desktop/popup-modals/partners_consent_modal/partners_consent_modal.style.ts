@@ -4,8 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import Dialog from '@brave/leo/react/dialog'
-import { font, spacing, color } from '@brave/leo/tokens/css/variables'
+import Dialog from '@brave/nala/react/dialog'
+import { font, spacing, color } from '@brave/nala/tokens/css/variables'
 
 // Shared Styles
 import { WalletButton } from '../../../shared/style'

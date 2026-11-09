@@ -2,8 +2,8 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-import Icon from '@brave/leo/react/icon';
-import { effect, font, radius, spacing } from '@brave/leo/tokens/css/variables';
+import Icon from '@brave/nala/react/icon';
+import { effect, font, radius, spacing } from '@brave/nala/tokens/css/variables';
 import * as React from 'react';
 import styled, { css } from 'styled-components';
 import { useInspectContext } from './context';

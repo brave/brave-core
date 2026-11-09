@@ -4,8 +4,8 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import DropDown from '@brave/leo/react/dropdown'
-import Toggle from '@brave/leo/react/toggle'
+import DropDown from '@brave/nala/react/dropdown'
+import Toggle from '@brave/nala/react/toggle'
 
 import { useNewTabState, useNewTabActions } from '../../context/new_tab_context'
 import { ClockFormat } from '../../state/new_tab_store'

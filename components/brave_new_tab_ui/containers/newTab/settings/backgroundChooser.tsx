@@ -12,7 +12,7 @@ import {
 } from '../../../components/default'
 import NavigateBack from '../../../components/default/settings/navigateBack'
 import BackgroundOption from './backgroundOption'
-import Toggle from '@brave/leo/react/toggle'
+import Toggle from '@brave/nala/react/toggle'
 
 import { getLocale } from '../../../../common/locale'
 

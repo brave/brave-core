@@ -4,10 +4,10 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import AlertCenter from '@brave/leo/react/alertCenter'
-import Button from '@brave/leo/react/button'
-import Dialog from '@brave/leo/react/dialog'
-import Icon from '@brave/leo/react/icon'
+import AlertCenter from '@brave/nala/react/alertCenter'
+import Button from '@brave/nala/react/button'
+import Dialog from '@brave/nala/react/dialog'
+import Icon from '@brave/nala/react/icon'
 import { getLocale } from '$web-common/locale'
 import classnames from '$web-common/classnames'
 import DragOverlay from '../drag_overlay'

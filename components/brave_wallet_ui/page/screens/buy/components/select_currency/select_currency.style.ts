@@ -5,9 +5,9 @@
 
 import * as React from 'react'
 import styled from 'styled-components'
-import Input from '@brave/leo/react/input'
-import Label from '@brave/leo/react/label'
-import { font, color } from '@brave/leo/tokens/css/variables'
+import Input from '@brave/nala/react/input'
+import Label from '@brave/nala/react/label'
+import { font, color } from '@brave/nala/tokens/css/variables'
 
 // Shared Styles
 import {

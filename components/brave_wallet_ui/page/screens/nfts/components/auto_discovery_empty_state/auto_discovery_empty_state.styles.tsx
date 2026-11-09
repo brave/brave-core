@@ -4,8 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css/variables'
-import Ring from '@brave/leo/react/progressRing'
+import * as leo from '@brave/nala/tokens/css/variables'
+import Ring from '@brave/nala/react/progressRing'
 
 import { WalletButton } from '../../../../../components/shared/style'
 

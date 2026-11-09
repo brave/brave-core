@@ -5,9 +5,9 @@
 
 import * as React from 'react'
 import { useHistory, useLocation } from 'react-router'
-import Checkbox from '@brave/leo/react/checkbox'
-import Button from '@brave/leo/react/button'
-import Input, { type InputEventDetail } from '@brave/leo/react/input'
+import Checkbox from '@brave/nala/react/checkbox'
+import Button from '@brave/nala/react/button'
+import Input, { type InputEventDetail } from '@brave/nala/react/input'
 
 // Types
 import { WalletRoutes } from '../../../constants/types'

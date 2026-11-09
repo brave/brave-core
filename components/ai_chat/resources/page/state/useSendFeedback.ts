@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { showAlert } from '@brave/leo/react/alertCenter'
+import { showAlert } from '@brave/nala/react/alertCenter'
 import { getLocale } from '$web-common/locale'
 import { ConversationAPI } from '../api/conversation_api'
 import { useAIChat } from './ai_chat_context'

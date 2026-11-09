@@ -5,9 +5,9 @@
 
 import Flex from "$web-common/Flex";
 import { getLocale } from "$web-common/locale";
-import Button from '@brave/leo/react/button';
-import Floating from '@brave/leo/react/floating';
-import { color, radius, spacing } from "@brave/leo/tokens/css/variables";
+import Button from '@brave/nala/react/button';
+import Floating from '@brave/nala/react/floating';
+import { color, radius, spacing } from "@brave/nala/tokens/css/variables";
 import * as React from "react";
 import styled, { css } from "styled-components";
 import { useSearchContext } from "./SearchContext";

@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 import styled, { css } from 'styled-components'
-import * as leo from '@brave/leo/tokens/css/variables'
+import * as leo from '@brave/nala/tokens/css/variables'
 import textureUrl from '../../assets/bg-texture.svg'
 
 // The two palettes are distinct literal types, so the parameter only asks

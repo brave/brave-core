@@ -9,7 +9,7 @@ import { getScrollableParents, useParentScrolled } from '../../helpers/scrolling
 import * as React from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import * as ReactDOM from 'react-dom'
-import Icon from '@brave/leo/react/icon'
+import Icon from '@brave/nala/react/icon'
 import { getLocale } from '../../../common/locale'
 import * as gridSitesActions from '../../actions/grid_sites_actions'
 // Types

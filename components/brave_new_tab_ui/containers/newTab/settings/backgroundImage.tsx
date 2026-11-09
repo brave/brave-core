@@ -19,7 +19,7 @@ import {
 } from '../../../components/default'
 import braveBackground from './assets/brave-background.png'
 import UploadIcon from './assets/upload-icon'
-import Toggle from '@brave/leo/react/toggle'
+import Toggle from '@brave/nala/react/toggle'
 
 import { getLocale } from '../../../../common/locale'
 

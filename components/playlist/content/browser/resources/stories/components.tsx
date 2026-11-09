@@ -8,7 +8,7 @@ import { Provider } from 'react-redux'
 import { withKnobs } from '@storybook/addon-knobs'
 import { BrowserRouter, MemoryRouter } from 'react-router-dom'
 
-import '@brave/leo/tokens/css/variables.css'
+import '@brave/nala/tokens/css/variables.css'
 
 import store from '../store'
 import { mockData } from './mockData'

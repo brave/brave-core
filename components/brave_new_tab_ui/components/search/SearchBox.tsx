@@ -4,9 +4,9 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import Flex from '$web-common/Flex';
 import { getLocale } from '$web-common/locale';
-import Icon from '@brave/leo/react/icon';
-import Input from '@brave/leo/react/input';
-import { color, font, spacing } from '@brave/leo/tokens/css/variables';
+import Icon from '@brave/nala/react/icon';
+import Input from '@brave/nala/react/input';
+import { color, font, spacing } from '@brave/nala/tokens/css/variables';
 import * as React from 'react';
 import styled from 'styled-components';
 import EnginePicker from './EnginePicker';

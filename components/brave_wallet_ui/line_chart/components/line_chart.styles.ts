@@ -5,7 +5,7 @@
 
 import styled, { css } from 'styled-components'
 import { LoaderIcon } from 'brave-ui/components/icons'
-import * as leo from '@brave/leo/tokens/css/variables'
+import * as leo from '@brave/nala/tokens/css/variables'
 
 export const StyledWrapper = styled.div<{
   customStyle?: { [key: string]: string }

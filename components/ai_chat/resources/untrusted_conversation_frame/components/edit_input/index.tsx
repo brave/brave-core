@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-import Button from '@brave/leo/react/button'
+import Button from '@brave/nala/react/button'
 import { getLocale } from '$web-common/locale'
 
 import Editable from '../../../page/components/input_box/editable'

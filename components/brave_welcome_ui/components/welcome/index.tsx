@@ -9,7 +9,7 @@ import * as S from './style'
 import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
 import { loadTimeData } from '$web-common/loadTimeData'
-import Button from '@brave/leo/react/button'
+import Button from '@brave/nala/react/button'
 
 import { WelcomeBrowserProxyImpl, DefaultBrowserBrowserProxyImpl, P3APhase } from '../../api/welcome_browser_proxy'
 import WebAnimationPlayer from '../../api/web_animation_player'

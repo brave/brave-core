@@ -11,13 +11,13 @@ import {
   LearnMoreLink,
   LearnMoreText,
   SettingsText } from '../../../components/default'
-import Toggle from '@brave/leo/react/toggle'
+import Toggle from '@brave/nala/react/toggle'
 import Flex from '$web-common/Flex'
 
 // Utilities
 import { getLocale } from '../../../../common/locale'
 import { loadTimeData } from '$web-common/loadTimeData'
-import { color } from '@brave/leo/tokens/css/variables'
+import { color } from '@brave/nala/tokens/css/variables'
 
 interface Props {
   onChange: () => void

@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import LeoAlert from '@brave/leo/react/alert'
+import LeoAlert from '@brave/nala/react/alert'
 
 // Shared Styles
 import { Row } from '../../../../../components/shared/style'

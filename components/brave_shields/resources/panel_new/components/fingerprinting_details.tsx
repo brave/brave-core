@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Toggle from '@brave/leo/react/toggle'
+import Toggle from '@brave/nala/react/toggle'
 
 import { getString } from './strings'
 import { ContentSettingsType } from 'gen/components/content_settings/core/common/content_settings_types.mojom.m'

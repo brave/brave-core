@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
-import { setIconBasePath } from '@brave/leo/react/icon'
+import { setIconBasePath } from '@brave/nala/react/icon'
 
 import { AppContext } from './lib/app_context'
 import { createAppStore } from './webui/browser_app_store'

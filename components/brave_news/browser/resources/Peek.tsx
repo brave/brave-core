@@ -4,8 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { getLocale } from '$web-common/locale';
-import Icon from '@brave/leo/react/icon';
-import { color, effect, font, radius, spacing } from '@brave/leo/tokens/css/variables';
+import Icon from '@brave/nala/react/icon';
+import { color, effect, font, radius, spacing } from '@brave/nala/tokens/css/variables';
 import * as React from 'react';
 import styled, { keyframes } from 'styled-components';
 import { NEWS_FEED_CLASS } from './Feed';

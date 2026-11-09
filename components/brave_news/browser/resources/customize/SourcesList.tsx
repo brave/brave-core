@@ -9,7 +9,7 @@ import {
   color,
   font,
   spacing,
-} from '@brave/leo/tokens/css/variables'
+} from '@brave/nala/tokens/css/variables'
 import { PluralStringProxyImpl } from 'chrome://resources/js/plural_string_proxy.js'
 import * as React from 'react'
 import styled from 'styled-components'

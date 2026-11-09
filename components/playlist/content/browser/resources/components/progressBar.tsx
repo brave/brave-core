@@ -5,8 +5,8 @@
 
 import styled from 'styled-components'
 
-import LeoProgressBar from '@brave/leo/react/progressBar'
-import { color } from '@brave/leo/tokens/css/variables'
+import LeoProgressBar from '@brave/nala/react/progressBar'
+import { color } from '@brave/nala/tokens/css/variables'
 
 export const ProgressBar = styled(LeoProgressBar)`
   position: absolute;

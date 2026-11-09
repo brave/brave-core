@@ -5,8 +5,8 @@
 
 import styled from 'styled-components'
 import { LoaderIcon } from 'brave-ui/components/icons'
-import * as leo from '@brave/leo/tokens/css/variables'
-import Checkbox from '@brave/leo/react/checkbox'
+import * as leo from '@brave/nala/tokens/css/variables'
+import Checkbox from '@brave/nala/react/checkbox'
 import LeoDropdown from '@brave/leo/react/dropdown'
 
 // Shared Styles

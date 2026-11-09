@@ -6,8 +6,8 @@
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 
-import Button from '@brave/leo/react/button'
-import { setIconBasePath } from '@brave/leo/react/icon'
+import Button from '@brave/nala/react/button'
+import { setIconBasePath } from '@brave/nala/react/icon'
 import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 import styled from 'styled-components'
 import { downloadExport, getExportData } from './export'

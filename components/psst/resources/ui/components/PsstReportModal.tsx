@@ -6,10 +6,10 @@
 import * as React from 'react'
 import styled from 'styled-components'
 
-import { color, font } from '@brave/leo/tokens/css/variables'
-import Button from '@brave/leo/react/button'
-import Icon from '@brave/leo/react/icon'
-import * as leo from '@brave/leo/tokens/css/variables'
+import { color, font } from '@brave/nala/tokens/css/variables'
+import Button from '@brave/nala/react/button'
+import Icon from '@brave/nala/react/icon'
+import * as leo from '@brave/nala/tokens/css/variables'
 
 import Flex from '$web-common/Flex'
 import { loadTimeData } from '$web-common/loadTimeData'

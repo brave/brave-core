@@ -7,7 +7,7 @@ import { getPlaylistAPI } from './api/api'
 import { getPlaylistActions } from './api/getPlaylistActions'
 import { PlayerEventsPayload } from './api/playerEventsNotifier'
 import { types } from './constants/playlist_types'
-import { showAlert } from '@brave/leo/react/alertCenter'
+import { showAlert } from '@brave/nala/react/alertCenter'
 import { getLocalizedString } from './utils/l10n'
 import { history } from './components/historyContext'
 

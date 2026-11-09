@@ -8,7 +8,7 @@ import * as S from './style'
 
 import { getLocale } from '$web-common/locale'
 import classnames from '$web-common/classnames'
-import Button from '@brave/leo/react/button'
+import Button from '@brave/nala/react/button'
 
 import DataContext from '../../state/context'
 import { useViewTypeTransition } from '../../state/hooks'

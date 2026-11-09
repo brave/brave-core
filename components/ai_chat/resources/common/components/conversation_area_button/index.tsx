@@ -4,8 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
-import ProgressRing from '@brave/leo/react/progressRing'
+import Button from '@brave/nala/react/button'
+import ProgressRing from '@brave/nala/react/progressRing'
 import classnames from '$web-common/classnames'
 import styles from './style.module.scss'
 

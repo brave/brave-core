@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Checkbox from '@brave/leo/react/checkbox'
+import Checkbox from '@brave/nala/react/checkbox'
 import type { Element as HastElement, Root } from 'hast'
 import * as React from 'react'
 import { visit } from 'unist-util-visit'

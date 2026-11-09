@@ -4,8 +4,8 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
-import Dialog from '@brave/leo/react/dialog'
+import Button from '@brave/nala/react/button'
+import Dialog from '@brave/nala/react/dialog'
 import { getLocale } from '$web-common/locale'
 import { useAIChat } from '../../state/ai_chat_context'
 import styles from './style.module.scss'

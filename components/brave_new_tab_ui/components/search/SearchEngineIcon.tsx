@@ -4,10 +4,10 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from "react";
-import { icon } from "@brave/leo/tokens/css/variables";
+import { icon } from "@brave/nala/tokens/css/variables";
 import styled from "styled-components";
 import { SearchEngineInfo } from "../../api/background";
-import Icon from "@brave/leo/react/icon";
+import Icon from "@brave/nala/react/icon";
 
 // Mapping of search engine host to Nala icon for the icons we bundle in the browser
 const icons = {

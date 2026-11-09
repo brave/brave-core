@@ -4,9 +4,9 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 import styled, { css } from 'styled-components'
-import Icon from '@brave/leo/react/icon'
-import ProgressRing from '@brave/leo/react/progressRing'
-import * as leo from '@brave/leo/tokens/css/variables'
+import Icon from '@brave/nala/react/icon'
+import ProgressRing from '@brave/nala/react/progressRing'
+import * as leo from '@brave/nala/tokens/css/variables'
 import { getLocale, formatLocale } from '$web-common/locale'
 import getPageHandlerInstance, { ConnectionStatus } from '../../api/brave_page_handler'
 

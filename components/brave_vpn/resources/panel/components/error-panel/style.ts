@@ -4,9 +4,9 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import Alert from '@brave/leo/react/alert'
-import Button from '@brave/leo/react/button'
-import { color, spacing } from '@brave/leo/tokens/css/variables'
+import Alert from '@brave/nala/react/alert'
+import Button from '@brave/nala/react/button'
+import { color, spacing } from '@brave/nala/tokens/css/variables'
 
 export const Box = styled.div`
   width: 100%;

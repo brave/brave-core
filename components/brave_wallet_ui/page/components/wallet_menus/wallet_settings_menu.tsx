@@ -6,8 +6,8 @@
 import './leo_menu_elements'
 import * as React from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
-import Toggle from '@brave/leo/react/toggle'
-import Icon from '@brave/leo/react/icon'
+import Toggle from '@brave/nala/react/toggle'
+import Icon from '@brave/nala/react/icon'
 
 // Page API Proxy
 import getWalletPageApiProxy from '$wallet/page/wallet_page_api_proxy'

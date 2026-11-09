@@ -4,8 +4,8 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
-import Dialog from '@brave/leo/react/dialog'
+import Button from '@brave/nala/react/button'
+import Dialog from '@brave/nala/react/dialog'
 import { formatLocale, getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
 import { useConversation } from '../../state/conversation_context'

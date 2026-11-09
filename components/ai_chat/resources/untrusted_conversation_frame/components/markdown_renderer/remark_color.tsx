@@ -7,8 +7,8 @@ import * as React from 'react'
 import { SKIP, visit } from 'unist-util-visit'
 import type { Root, Text, InlineCode } from 'mdast'
 import type { Parent } from 'unist'
-import Tooltip from '@brave/leo/react/tooltip'
-import Icon from '@brave/leo/react/icon'
+import Tooltip from '@brave/nala/react/tooltip'
+import Icon from '@brave/nala/react/icon'
 import styles from './style.module.scss'
 
 // Matches hex (#rgb, #rrggbb, #rgba, #rrggbbaa), rgb/rgba, hsl/hsla.

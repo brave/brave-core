@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Checkbox from '@brave/leo/react/checkbox'
+import Checkbox from '@brave/nala/react/checkbox'
 
 // Types
 import { BraveWallet } from '../../../../../constants/types'

@@ -8,7 +8,7 @@ import * as S from './style'
 import { MainButtonType, FontFamily, FontSize, PlaybackSpeed, PlaybackState, ColumnWidth } from '../../api/browser'
 import classnames from '$web-common/classnames'
 import { loadTimeData } from '$web-common/loadTimeData'
-import Icon from '@brave/leo/react/icon'
+import Icon from '@brave/nala/react/icon'
 import { getLocale } from '$web-common/locale'
 
 const mainButtonsOptions = [

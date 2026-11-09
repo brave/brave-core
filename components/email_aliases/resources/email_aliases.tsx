@@ -12,7 +12,7 @@ import { createRoot } from 'react-dom/client'
 import * as React from 'react'
 import { SignInPage, ManagePage } from './content/email_aliases_manage_page'
 import { StyleSheetManager } from 'styled-components'
-import { setIconBasePath } from '@brave/leo/react/icon'
+import { setIconBasePath } from '@brave/nala/react/icon'
 import {
   EmailAliasesMetrics,
   EmailAliasesServiceInterface,

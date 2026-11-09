@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { useHistory, useLocation } from 'react-router'
-import Button from '@brave/leo/react/button'
+import Button from '@brave/nala/react/button'
 
 // types
 import { WalletRoutes } from '../../../../../constants/types'

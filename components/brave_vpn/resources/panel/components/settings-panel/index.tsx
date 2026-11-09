@@ -9,7 +9,7 @@ import * as Styles from './style'
 import { PanelHeader } from '../select-region-list'
 import getPanelBrowserAPI, { ManageURLType } from '../../api/panel_browser_api'
 import { getLocale } from '$web-common/locale'
-import Toggle from '@brave/leo/react/toggle'
+import Toggle from '@brave/nala/react/toggle'
 import { useSelector } from '../../state/hooks'
 
 interface Props {

@@ -4,9 +4,9 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 import styled from 'styled-components'
-import Button from '@brave/leo/react/button'
-import Icon from '@brave/leo/react/icon'
-import * as leo from '@brave/leo/tokens/css/variables'
+import Button from '@brave/nala/react/button'
+import Icon from '@brave/nala/react/icon'
+import * as leo from '@brave/nala/tokens/css/variables'
 import { getLocale } from '$web-common/locale'
 
 const Form = styled.form<{ isEmpty: boolean }>`

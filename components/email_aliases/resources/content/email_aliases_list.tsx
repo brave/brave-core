@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { AliasItem } from './email_aliases_item'
-import { color, spacing, radius } from '@brave/leo/tokens/css/variables'
+import { color, spacing, radius } from '@brave/nala/tokens/css/variables'
 import {
   DeleteAliasModal,
   EditMode,
@@ -12,10 +12,10 @@ import {
 } from './email_aliases_modal'
 import { getLocale, formatLocale } from '$web-common/locale'
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
+import Button from '@brave/nala/react/button'
 import Col from './styles/Col'
 import Description from './styles/Description'
-import Dialog from '@brave/leo/react/dialog'
+import Dialog from '@brave/nala/react/dialog'
 import Row from './styles/Row'
 import styled from 'styled-components'
 import {

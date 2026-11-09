@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Checkbox from '@brave/leo/react/checkbox'
+import Checkbox from '@brave/nala/react/checkbox'
 
 import { getString } from '../lib/strings'
 import SecureLink from '$web-common/SecureLink'

@@ -4,10 +4,10 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 
-import Toggle from '@brave/leo/react/toggle'
+import Toggle from '@brave/nala/react/toggle'
 import { getLocale } from '$web-common/locale'
 import { loadTimeData } from '$web-common/loadTimeData'
-import Dropdown from '@brave/leo/react/dropdown'
+import Dropdown from '@brave/nala/react/dropdown'
 
 import * as S from './style'
 import getPanelBrowserAPI, {
@@ -23,7 +23,7 @@ import {
   ContentSetting
 } from 'gen/components/content_settings/core/common/content_settings.mojom.m'
 import styled from 'styled-components'
-import { color } from '@brave/leo/tokens/css/variables'
+import { color } from '@brave/nala/tokens/css/variables'
 
 const PanelDropdown = styled(Dropdown)`
   color: ${color.text.primary};
