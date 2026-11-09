@@ -14,8 +14,8 @@ To keep `gn check` passing, these Brave sources are collected in
 `//chrome/browser:core` (upstream's sources) and `//brave/browser:core`, the
 latter added by `rewrite/chrome/browser/BUILD.gn.yaml`. `//brave/browser:core`
 is therefore Brave's monolith, the counterpart of upstream's
-`//chrome/browser:core` and `//chrome/browser/ui:ui`. Upstream is breaking its
-monoliths up, and we must not add to ours.
+`//chrome/browser:core`. Upstream is breaking its monolith up, and we must not
+add to ours.
 
 #### Rules
 
