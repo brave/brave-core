@@ -273,6 +273,15 @@ void WorkspaceService::SwapVisibleWindow(BrowserWindowInterface* from_window,
     window_to_unmanaged_window_.insert_or_assign(to_id, origin);
   }
 
+  // Capture the window being put away. Until autosave lands this is the only
+  // moment besides closing where a workspace is written, and a window can sit
+  // off screen indefinitely -- losing everything since it was opened if the
+  // browser then crashes, since these windows are excluded from Chromium's
+  // session restore.
+  if (std::optional<base::Uuid> leaving = GetWorkspaceForWindow(from_id)) {
+    SaveWorkspaceFromWindow(*leaving, from_window);
+  }
+
   // Take the outgoing window's bounds so the workspace appears where the
   // person was already looking rather than wherever it last sat.
   to_window->GetWindow()->SetBounds(from_window->GetWindow()->GetBounds());

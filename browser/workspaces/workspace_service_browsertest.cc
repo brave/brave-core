@@ -196,6 +196,41 @@ IN_PROC_BROWSER_TEST_F(WorkspaceServiceBrowserTest,
          "opened from; that is what losing its last tab does";
 }
 
+// A workspace is written when its window goes off screen, not only when the
+// window closes. Without this a space switched away from holds nothing on
+// disk until it is closed, and these windows are excluded from Chromium's
+// session restore, so a crash in between loses every tab.
+IN_PROC_BROWSER_TEST_F(WorkspaceServiceBrowserTest,
+                       SwitchingAwayFromASpaceSavesIt) {
+  ASSERT_TRUE(service());
+
+  WorkspaceMetadata workspace =
+      service()->CreateWorkspaceInWindow("Work", browser());
+  BrowserWindowInterface* workspace_window = WindowFor(workspace.id);
+  ASSERT_TRUE(workspace_window);
+
+  chrome::AddTabAt(workspace_window, GURL("about:blank"), /*index=*/-1,
+                   /*foreground=*/false);
+  chrome::AddTabAt(workspace_window, GURL("about:blank"), /*index=*/-1,
+                   /*foreground=*/false);
+  ASSERT_EQ(workspace_window->GetTabStripModel()->count(), 3);
+
+  // Nothing has been written yet: the space was created empty and has not
+  // left the screen.
+  std::optional<WorkspaceMetadata> before =
+      service()->GetWorkspace(workspace.id);
+  ASSERT_TRUE(before);
+  ASSERT_EQ(before->number_of_tabs, 0);
+
+  service()->SwitchWindowToUnmanaged(workspace_window);
+
+  std::optional<WorkspaceMetadata> after =
+      service()->GetWorkspace(workspace.id);
+  ASSERT_TRUE(after);
+  EXPECT_EQ(after->number_of_tabs, 3)
+      << "Switching away from a space should have written its tabs";
+}
+
 // Deleting a space always takes its window with it. A workspace window left
 // open after being unbound is saved by nobody -- it is excluded from
 // Chromium's session restore, and unbinding drops the service as its saver --
