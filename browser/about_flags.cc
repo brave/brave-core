@@ -986,8 +986,18 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
       kOsDesktop,                                                     \
       FEATURE_VALUE_TYPE(local_ai::kBraveOnDeviceSpeechRecognition),  \
   })
+#define BRAVE_ON_DEVICE_SPEECH_MULTILINGUAL_FLAG                      \
+  EXPAND_FEATURE_ENTRIES({                                            \
+      "brave-on-device-speech-multilingual",                          \
+      "Brave On-Device Multilingual Speech Recognition",              \
+      "Enables on-device speech recognition in languages other than " \
+      "English. Needs Brave On-Device Speech Recognition.",           \
+      kOsDesktop,                                                     \
+      FEATURE_VALUE_TYPE(local_ai::kBraveOnDeviceSpeechMultilingual), \
+  })
 #else
 #define BRAVE_ON_DEVICE_SPEECH_RECOGNITION_FLAG
+#define BRAVE_ON_DEVICE_SPEECH_MULTILINGUAL_FLAG
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 #define BRAVE_OMNIBOX_FEATURES                                                \
@@ -1780,6 +1790,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
   BRAVE_AI_CHAT_TAB_MANAGEMENT_TOOL_ENTRY                                      \
   BRAVE_HISTORY_EMBEDDINGS_FLAG                                                \
   BRAVE_ON_DEVICE_SPEECH_RECOGNITION_FLAG                                      \
+  BRAVE_ON_DEVICE_SPEECH_MULTILINGUAL_FLAG                                     \
   BRAVE_OMNIBOX_FEATURES                                                       \
   BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                                  \
   BRAVE_UPGRADE_WHEN_IDLE_FEATURE_ENTRY                                        \
