@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/containers/enum_set.h"
+
 #include <components/sync/base/data_type_unittest.cc>
 
 namespace syncer {
@@ -31,6 +33,50 @@ TEST(DataTypeTest, LowPriorityUserTypes) {
 // properly support the upstream change.
 TEST(DataTypeTest, DataTypeCounts) {
   EXPECT_EQ(static_cast<int>(DataTypeForHistograms::kMaxValue), 86);
+}
+
+// Brave's sync chain is always in encrypt-everything mode, so every user type
+// outside EncryptableUserTypes() reaches the server as plain text. This test is
+// meant to fail when a Chromium bump adds such a type, so that the team can
+// decide whether it carries user data and belongs in EncryptableUserTypes().
+TEST(DataTypeTest, ApprovedPlainTextUserTypes) {
+  constexpr DataTypeSet kApprovedPlainTextUserTypes = {
+      AUTOFILL_WALLET_DATA,
+      AUTOFILL_WALLET_USAGE,
+      AUTOFILL_VALUABLE,
+      AUTOFILL_VALUABLE_METADATA,
+      HISTORY_DELETE_DIRECTIVES,
+      SUPERVISED_USER_SETTINGS,
+      USER_EVENTS,
+      USER_CONSENTS,
+      SECURITY_EVENTS,
+      OS_PRIORITY_PREFERENCES,
+      SHARING_MESSAGE,
+      INCOMING_PASSWORD_SHARING_INVITATION,
+      OUTGOING_PASSWORD_SHARING_INVITATION,
+      SHARED_TAB_GROUP_DATA,
+      COLLABORATION_GROUP,
+      SHARED_COMMENT,
+      ACCOUNT_SETTING,
+      SKILL,
+      ENCRYPTED_TAB_CONTEXT_ITEM,
+      NOTEBOOK,
+      JOURNEY,
+  };
+  const DataTypeSet plain_text_user_types =
+      base::Difference(UserTypes(), EncryptableUserTypes());
+  const DataTypeSet unapproved =
+      base::Difference(plain_text_user_types, kApprovedPlainTextUserTypes);
+  const DataTypeSet no_longer_plain_text =
+      base::Difference(kApprovedPlainTextUserTypes, plain_text_user_types);
+  EXPECT_TRUE(unapproved.empty())
+      << DataTypeSetToDebugString(unapproved)
+      << " is not encrypted and not approved. Add it to "
+         "EncryptableUserTypes() if it carries user data, otherwise approve it "
+         "above.";
+  EXPECT_TRUE(no_longer_plain_text.empty())
+      << DataTypeSetToDebugString(no_longer_plain_text)
+      << " is no longer plain text, drop it from the list above.";
 }
 
 TEST(DataTypeTest, AIChatConversationEncryptable) {
