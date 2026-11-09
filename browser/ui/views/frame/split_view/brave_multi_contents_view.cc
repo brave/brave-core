@@ -237,16 +237,17 @@ views::ProposedLayout BraveMultiContentsView::CalculateProposedLayout(
   const int web_panel_width =
       ClampWebPanelWidth(GetWebPanelWidth(), host_width);
   const int resize_area_width = GetWebPanelResizeAreaWidth();
-  const int reserved_width = web_panel_width + resize_area_width;
+  const int reserved_width_for_web_panel_area =
+      web_panel_width + resize_area_width;
   views::SizeBounds new_size_bounds = size_bounds;
-  new_size_bounds.Enlarge(-reserved_width, 0);
+  new_size_bounds.Enlarge(-reserved_width_for_web_panel_area, 0);
   views::ProposedLayout layouts =
       MultiContentsView::CalculateProposedLayout(new_size_bounds);
 
   if (web_panel_on_left_) {
     for (auto& layout : layouts.child_layouts) {
       // Move all other views to right to put web panel on left side.
-      layout.bounds.Offset(reserved_width, 0);
+      layout.bounds.Offset(reserved_width_for_web_panel_area, 0);
     }
   }
 
@@ -257,7 +258,8 @@ views::ProposedLayout BraveMultiContentsView::CalculateProposedLayout(
       contents_container_view_for_web_panel_->GetVisible(), web_panel_rect);
 
   const int resize_area_x =
-      web_panel_on_left_ ? web_panel_width : host_width - reserved_width;
+      web_panel_on_left_ ? web_panel_width
+                         : host_width - reserved_width_for_web_panel_area;
   layouts.child_layouts.emplace_back(
       web_panel_resize_area_.get(), IsWebPanelVisible(),
       gfx::Rect(resize_area_x, 0, resize_area_width, host_height));
