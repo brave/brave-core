@@ -11,7 +11,7 @@ substitutions:
       an upstream import churn cannot break this.
     regex:
       re_pattern: |-
-        ^(package org\.chromium\.chrome\.browser\.undo_tab_close_snackbar;)$
+        ^(package org\.chromium\.chrome\.browser\.tab_ui\.undo_tab_close_snackbar;)$
       re_flags: [MULTILINE]
       replace: |-
         \1
@@ -27,12 +27,11 @@ substitutions:
       entry is out of the queue and not tracked as shown, so the commits
       cannot change its remaining tabs.
 
-      Anchored after the empty-entry early return, so an empty entry still
-      returns before any commit.
+      Anchored after the empty-entry early return that opens the method, so an
+      empty entry still returns before any commit.
     regex:
       re_pattern: |-
-        (private void showUndoBar\(UndoBarEntry entry\) \{\n.*?\n        \}\n)
-      re_flags: [DOTALL]
+        (private void showUndoBar\(UndoBarEntry entry\) \{\s*if \(entry\.mRemainingTabIds\.isEmpty\(\)[^{]*\{\s*return;\s*\}\n)
       replace: |
         \1        if (!ChromeSharedPreferences.getInstance()
                         .readBoolean(BravePreferenceKeys.SHOW_UNDO_WHEN_TABS_CLOSED, true)) {

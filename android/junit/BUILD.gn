@@ -93,8 +93,8 @@ if (is_android) {
   }
 
   robolectric_library(
-      "brave_junit_tests_org.chromium.chrome.browser.undo_tab_close_snackbar") {
-    sources = [ "src/org/chromium/chrome/browser/undo_tab_close_snackbar/BraveUndoBarControllerTest.java" ]
+      "brave_junit_tests_org.chromium.chrome.browser.tab_ui.undo_tab_close_snackbar") {
+    sources = [ "src/org/chromium/chrome/browser/tab_ui/undo_tab_close_snackbar/BraveUndoBarControllerTest.java" ]
 
     deps = [
       "//base:base_java",
@@ -104,6 +104,7 @@ if (is_android) {
       "//chrome/android/junit:chrome_junit_tests_helper",
       "//chrome/browser/preferences:java",
       "//chrome/browser/tab:java",
+      "//chrome/browser/tab_ui/android:java",
       "//chrome/browser/tabmodel:java",
       "//chrome/browser/ui/messages/android:java",
     ]

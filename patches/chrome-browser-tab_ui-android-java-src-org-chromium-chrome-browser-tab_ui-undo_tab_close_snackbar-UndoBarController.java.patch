@@ -1,10 +1,10 @@
-diff --git a/chrome/android/java/src/org/chromium/chrome/browser/undo_tab_close_snackbar/UndoBarController.java b/chrome/android/java/src/org/chromium/chrome/browser/undo_tab_close_snackbar/UndoBarController.java
-index a3b8546656f900028c0028ad2c368d46ee499909..ec42bc1bf807bd6a9ec99223e6cd073732cea40d 100644
---- a/chrome/android/java/src/org/chromium/chrome/browser/undo_tab_close_snackbar/UndoBarController.java
-+++ b/chrome/android/java/src/org/chromium/chrome/browser/undo_tab_close_snackbar/UndoBarController.java
+diff --git a/chrome/browser/tab_ui/android/java/src/org/chromium/chrome/browser/tab_ui/undo_tab_close_snackbar/UndoBarController.java b/chrome/browser/tab_ui/android/java/src/org/chromium/chrome/browser/tab_ui/undo_tab_close_snackbar/UndoBarController.java
+index 240876180fad213c810ddbb920d49ed710b8445d..427d3722df7537e4c762aa057adac035391d2b33 100644
+--- a/chrome/browser/tab_ui/android/java/src/org/chromium/chrome/browser/tab_ui/undo_tab_close_snackbar/UndoBarController.java
++++ b/chrome/browser/tab_ui/android/java/src/org/chromium/chrome/browser/tab_ui/undo_tab_close_snackbar/UndoBarController.java
 @@ -4,6 +4,9 @@
  
- package org.chromium.chrome.browser.undo_tab_close_snackbar;
+ package org.chromium.chrome.browser.tab_ui.undo_tab_close_snackbar;
  
 +import org.chromium.base.BravePreferenceKeys;
 +import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
