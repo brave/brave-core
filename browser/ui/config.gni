@@ -52,7 +52,6 @@ if (toolkit_views) {
     "//brave/browser/ui/tabs:tab_menu",
     "//brave/browser/ui/sidebar:sidebar_impl",
     "//brave/browser/ui/split_view",
-    "//brave/browser/ui/views:layout_provider",
     "//brave/browser/ui/views/frame",
     "//brave/browser/ui/views/frame:frame_impl",
     "//brave/browser/ui/views/frame/split_view",
@@ -60,7 +59,6 @@ if (toolkit_views) {
     "//brave/browser/ui/views/location_bar",
     "//brave/browser/ui/views/page_info",
     "//brave/browser/ui/views/side_panel:side_panel_impl",
-    "//brave/browser/ui/views/workspaces",
   ]
 
   if (enable_ai_chat) {
