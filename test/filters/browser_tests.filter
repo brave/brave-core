@@ -2960,14 +2960,6 @@
 -GlicInvokeBrowserTest.HiddenInvokeFailsImmediatelyWhenClientNeedsSignIn
 -GlicInvokeBrowserTest.InactiveTabShowOnlyInvokeFailsWhenClientNeedsSignIn
 
-# These tests crash at shutdown (DCHECK in TaskTracker::WillPostTask): removing
-# their memory pressure policy notifies an AsyncMemoryConsumerRegistration,
-# which posts to its consumer's sequence after the thread pool has shut down.
-# Brave's Ads and Rewards databases register one on BLOCK_SHUTDOWN sequences;
-# upstream's tests pass.
--AutocompleteDictionaryPreloadBrowserTest.DoNotPreloadDictionayUnderMemoryPressure
--AutocompleteDictionaryPreloadBrowserTest.PreloadedDictionayDiscardedByMemoryPressure
-
 # Brave hides the settings AI page (`ai: false` in page_visibility.ts), so its
 # Gemini subpages redirect to chrome://settings.
 -GlicSettingsPageBrowserTest.OpenGlicSettingsPageOpensProviderSubpage/*
