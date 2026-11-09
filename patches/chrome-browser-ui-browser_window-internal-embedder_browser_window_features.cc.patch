@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_window/internal/embedder_browser_window_features.cc b/chrome/browser/ui/browser_window/internal/embedder_browser_window_features.cc
-index a2c0889f7003c1f1b70c76beb1e6b481d8ac649e..db543313c209f4292de4bc28b69d45cf3a4cd4be 100644
+index a2c0889f7003c1f1b70c76beb1e6b481d8ac649e..2fd1966797f29510a4810157ba4ed1c7df7fdd92 100644
 --- a/chrome/browser/ui/browser_window/internal/embedder_browser_window_features.cc
 +++ b/chrome/browser/ui/browser_window/internal/embedder_browser_window_features.cc
 @@ -10,7 +10,9 @@
@@ -13,7 +13,7 @@ index a2c0889f7003c1f1b70c76beb1e6b481d8ac649e..db543313c209f4292de4bc28b69d45cf
  
  EmbedderBrowserWindowFeatures::~EmbedderBrowserWindowFeatures() = default;
  
-@@ -21,6 +23,7 @@ EmbedderBrowserWindowFeatures* EmbedderBrowserWindowFeatures::From(
+@@ -21,19 +23,24 @@ EmbedderBrowserWindowFeatures* EmbedderBrowserWindowFeatures::From(
  }
  
  void EmbedderBrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
@@ -21,7 +21,11 @@ index a2c0889f7003c1f1b70c76beb1e6b481d8ac649e..db543313c209f4292de4bc28b69d45cf
    // Embedder implementation goes here.
  }
  
-@@ -31,9 +34,12 @@ void EmbedderBrowserWindowFeatures::InitPostWindowConstruction(
+ void EmbedderBrowserWindowFeatures::InitPostWindowConstruction(
+     BrowserWindowInterface* browser) {
++  brave_browser_window_features_->InitPostWindowConstruction();
+   // Embedder implementation goes here.
+ }
  
  void EmbedderBrowserWindowFeatures::InitPostBrowserViewConstruction(
      BrowserView* browser_view) {

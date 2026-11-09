@@ -116,6 +116,14 @@ void BraveBrowserWindowFeatures::Init() {
   }
 }
 
+void BraveBrowserWindowFeatures::InitPostWindowConstruction() {
+  // The fullscreen controller only exists once the window is constructed.
+  if (auto* brave_browser_window =
+          BraveBrowserWindow::FromBrowser(base::to_address(browser_))) {
+    brave_browser_window->ReadyToListenFullscreenChanges();
+  }
+}
+
 void BraveBrowserWindowFeatures::InitPostBrowserViewConstruction(
     BrowserView* browser_view) {
   if (sidebar::CanUseSidebar(browser_view->browser())) {
