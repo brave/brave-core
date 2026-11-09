@@ -8,7 +8,7 @@
 # Packages allowed to run install/build lifecycle scripts.
 allowBuilds:
   '@brave/leo-sf-symbols@https://codeload.github.com/brave/leo-sf-symbols/tar.gz/b5a6139df7ebd3f7d55aa8d6af60a524edab87b0': true
-  '@brave/leo@https://codeload.github.com/brave/leo/tar.gz/c5f9c8f78f3df5b767a83ad67babd8b29323266a': true
+  '@brave/leo@https://codeload.github.com/brave/leo/tar.gz/c5f9c8f78f3df5b767a83ad67babd8b29323266a': set this to true or false
   # No-op unless npm_config_build_from_source is set; prebuilt binaries ship as optionalDependencies.
   '@parcel/watcher': false
   # Falls back to pure-JS hashing (lib/js.js) if the native binding is unavailable.
@@ -52,6 +52,7 @@ minimumReleaseAge: 5040
 # Security fix published within the age window; remove once it has matured.
 minimumReleaseAgeExclude:
   - handlebars@4.7.10
+  - '@brave/nala'
 
 # Use isolated node_modules layout (no package hoisting).
 nodeLinker: isolated

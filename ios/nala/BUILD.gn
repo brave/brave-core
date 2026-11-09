@@ -280,8 +280,8 @@ ios_swift_framework_bundle("nala_assets_framework") {
   info_plist = "Info.plist"
   deps = [ ":nala_assets" ]
   sources = [
-    "//brave/node_modules/@brave/leo/tokens/ios-swift/ColorSetAccessors.swift",
-    "//brave/node_modules/@brave/leo/tokens/ios-swift/Gradients.swift",
+    "//brave/node_modules/@brave/nala/tokens/ios-swift/ColorSetAccessors.swift",
+    "//brave/node_modules/@brave/nala/tokens/ios-swift/Gradients.swift",
     "nala_bundle.swift",
   ]
   frameworks = [ "Foundation.framework" ]
@@ -290,7 +290,7 @@ ios_swift_framework_bundle("nala_assets_framework") {
 bundle_data("nala_assets") {
   sources = get_target_outputs(":make_symbols_asset_catalog")
   sources += [ rebase_path(
-          "//brave/node_modules/@brave/leo/tokens/ios-swift/Colors.xcassets") ]
+          "//brave/node_modules/@brave/nala/tokens/ios-swift/Colors.xcassets") ]
   outputs = [ "{{bundle_contents_dir}}/{{source_file_part}}" ]
   public_deps = [ ":make_symbols_asset_catalog" ]
 }

@@ -171,7 +171,7 @@ generate_grd("fonts_grdp") {
   deps = [ ":fonts_copy" ]
 }
 
-leo_icons_base_path = "../../../node_modules/@brave/leo/icons"
+leo_icons_base_path = "../../../node_modules/@brave/nala/icons"
 
 # These are icons included in Leo. Add them on an as-needed basis, because there
 # are a **LOT** of icons in Leo. You can check if there's an icon  which suits
@@ -698,7 +698,7 @@ copy("static_copy") {
 copy("leo_static_copy") {
   sources = rebase_path(leo_static_files,
                         ".",
-                        "../../../node_modules/@brave/leo/tokens")
+                        "../../../node_modules/@brave/nala/tokens")
   outputs = [ "$brave_resources_extra_grdps_path/leo/css/{{source_file_part}}" ]
 }
 

@@ -15,10 +15,6 @@ on:
         description: 'Commit hash for web-discovery-project DEPS update (optional)'
         required: false
         type: string
-      leo_ref:
-        description: 'Commit hash for @brave/leo package.json update (optional)'
-        required: false
-        type: string
 
 permissions:
   contents: write
@@ -49,15 +45,6 @@ jobs:
           [[ "$WDP_REF" =~ ^[0-9a-f]{40}$ ]] || { echo "::error::Invalid wdp_ref: must be a 40-char hex SHA"; exit 1; }
           sed -i -E "s|(\"vendor/web-discovery-project\"[^@]*@)[0-9a-f]{40}|\1${WDP_REF}|" DEPS
           grep -q "$WDP_REF" DEPS || { echo "::error::Failed to update WDP hash in DEPS"; exit 1; }
-
-      - name: Update Leo in package.json
-        if: inputs.leo_ref != ''
-        env:
-          LEO_REF: ${{ inputs.leo_ref }}
-        run: |
-          [[ "$LEO_REF" =~ ^[0-9a-f]{40}$ ]] || { echo "::error::Invalid leo_ref: must be a 40-char hex SHA"; exit 1; }
-          sed -i -E "s|(\"@brave/leo\"[^#]*#)[0-9a-f]{40}|\1${LEO_REF}|" package.json
-          grep -q "$LEO_REF" package.json || { echo "::error::Failed to update Leo hash in package.json"; exit 1; }
 
       - name: Install Socket CLI
         run: |
@@ -116,7 +103,6 @@ jobs:
           GHSA_IDS: ${{ inputs.ghsa_ids }}
           ISSUE_LINK: ${{ inputs.issue_link }}
           WDP_REF: ${{ inputs.wdp_ref }}
-          LEO_REF: ${{ inputs.leo_ref }}
         run: |
           BODY="Addresses: $GHSA_IDS"
           IFS=',' read -ra LINKS <<< "$ISSUE_LINK"
@@ -126,10 +112,6 @@ jobs:
           if [[ -n "$WDP_REF" ]]; then
             WDP_PR=$(gh api "repos/brave/web-discovery-project/commits/$WDP_REF/pulls" -q '.[0].html_url' 2>/dev/null || true)
             [[ -n "$WDP_PR" ]] && BODY="$BODY"$'\n\n'"WDP: $WDP_PR"
-          fi
-          if [[ -n "$LEO_REF" ]]; then
-            LEO_PR=$(gh api "repos/brave/leo/commits/$LEO_REF/pulls" -q '.[0].html_url' 2>/dev/null || true)
-            [[ -n "$LEO_PR" ]] && BODY="$BODY"$'\n\n'"Leo: $LEO_PR"
           fi
           {
             echo "body<<EOF"
