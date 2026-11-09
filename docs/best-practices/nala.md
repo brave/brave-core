@@ -111,8 +111,8 @@ tokens, and requires manual accessibility work.
 
 ### Use Leo instead of native HTML elements
 
-| Instead of…               | Use…                                              |
-| ------------------------- | ------------------------------------------------- |
+| Instead of…               | Use…                                               |
+| ------------------------- | -------------------------------------------------- |
 | `<select>`                | `Dropdown` from `@brave/nala/react/dropdown`       |
 | `<button>`                | `Button` from `@brave/nala/react/button`           |
 | `<input type="text">`     | `Input` from `@brave/nala/react/input`             |
@@ -185,16 +185,16 @@ Before creating a custom React component, check whether Leo already provides it.
 Custom re-implementations add maintenance burden and are often less accessible
 than the Leo originals.
 
-| Don't build a custom…                | Use…                                                                                                                           |
-| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
-| Button with a dropdown menu          | `ButtonMenu` from `@brave/nala/react/buttonMenu`                                                                                |
-| Tooltip / hover popover              | `Tooltip` from `@brave/nala/react/tooltip`                                                                                      |
+| Don't build a custom…                | Use…                                                                                                                             |
+| ------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| Button with a dropdown menu          | `ButtonMenu` from `@brave/nala/react/buttonMenu`                                                                                 |
+| Tooltip / hover popover              | `Tooltip` from `@brave/nala/react/tooltip`                                                                                       |
 | Segmented control / tab switcher     | `SegmentedControl` + `SegmentedControlItem` from `@brave/nala/react/segmentedControl` / `@brave/nala/react/segmentedControlItem` |
-| Loading spinner / activity indicator | `ProgressRing` from `@brave/nala/react/progressRing`                                                                            |
-| Dropdown/context menu                | `Menu` from `@brave/nala/react/menu`                                                                                            |
-| Modal / overlay dialog               | `Dialog` from `@brave/nala/react/dialog`                                                                                        |
-| Toast / notification banner          | `Alert` from `@brave/nala/react/alert`                                                                                          |
-| Collapsible / accordion              | `Collapse` from `@brave/nala/react/collapse`                                                                                    |
+| Loading spinner / activity indicator | `ProgressRing` from `@brave/nala/react/progressRing`                                                                             |
+| Dropdown/context menu                | `Menu` from `@brave/nala/react/menu`                                                                                             |
+| Modal / overlay dialog               | `Dialog` from `@brave/nala/react/dialog`                                                                                         |
+| Toast / notification banner          | `Alert` from `@brave/nala/react/alert`                                                                                           |
+| Collapsible / accordion              | `Collapse` from `@brave/nala/react/collapse`                                                                                     |
 
 ```tsx
 // ❌ WRONG - hand-rolled loading spinner
