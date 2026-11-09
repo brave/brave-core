@@ -92,6 +92,20 @@ void WorkspaceService::RenameWorkspace(const base::Uuid& id,
   workspaces_changed_callbacks_.Notify();
 }
 
+void WorkspaceService::RollBackWorkspaceMetadata(
+    const WorkspaceMetadata& previous,
+    base::Time written_at) {
+  // The write failed, but it failed asynchronously: the workspace may have
+  // been renamed, saved again or deleted in the meantime. Only undo the entry
+  // this write put there, so a rollback never overwrites a newer change or
+  // puts a deleted workspace back in the list.
+  std::optional<WorkspaceMetadata> current = GetWorkspace(previous.id);
+  if (!current || current->modified_at != written_at) {
+    return;
+  }
+  SaveWorkspaceMetadata(previous);
+}
+
 void WorkspaceService::SaveWorkspaceMetadata(const WorkspaceMetadata& meta) {
   CHECK(meta.id.is_valid());
   ScopedDictPrefUpdate updated(*pref_service_, kWorkspacesMetadataPref);
@@ -104,9 +118,10 @@ void WorkspaceService::RemoveWorkspaceMetadata(const base::Uuid& id) {
 }
 
 void WorkspaceService::DeleteWorkspace(const base::Uuid& id) {
-  // A deleted workspace takes its window with it. Left behind, a put-away
-  // window would linger off screen with no row in any bubble to bring it
-  // back, holding the browser open.
+  // A deleted workspace always takes its window with it. Left behind, that
+  // window is saved by nobody: it is excluded from Chromium's session restore,
+  // and unbinding drops this service as its saver. A put-away one would also
+  // linger off screen with no row in any bubble to bring it back.
   if (std::optional<SessionID> window_id = GetWindowForWorkspace(id)) {
     BrowserWindowInterface* window =
         BrowserWindowInterface::FromSessionID(*window_id);
@@ -114,20 +129,16 @@ void WorkspaceService::DeleteWorkspace(const base::Uuid& id) {
     // out through WillCloseAllTabs.
     UnbindWindow(*window_id);
 
-    const bool put_away = put_away_windows_.contains(*window_id);
-    const bool can_go_home = GetUnmanagedWindowFor(*window_id).has_value();
-    if (window && (put_away || can_go_home)) {
-      if (!put_away) {
-        // Someone is looking at this window, so send them home before it goes.
-        SwitchWindowToUnmanaged(window);
+    if (window) {
+      if (!put_away_windows_.contains(*window_id)) {
+        // Someone is looking at this window, so they need somewhere to land
+        // before it goes.
+        ShowUnmanagedWindowFor(window);
       }
       put_away_windows_.erase(*window_id);
       UnloadController::From(window)->set_confirmed_to_close(true);
       window->GetWindow()->Close();
     }
-    // A window that is on screen with nowhere to go stays open as an ordinary
-    // unmanaged window: closing it would take away the only thing the person
-    // can see.
   }
 
   RemoveWorkspaceMetadata(id);
@@ -201,8 +212,8 @@ void WorkspaceService::SaveWorkspaceFromWindow(const base::Uuid& id,
 
   auto on_error = base::BindPostTask(
       base::SequencedTaskRunner::GetCurrentDefault(),
-      base::BindOnce(&WorkspaceService::SaveWorkspaceMetadata, GetWeakPtr(),
-                     *previous));
+      base::BindOnce(&WorkspaceService::RollBackWorkspaceMetadata, GetWeakPtr(),
+                     *previous, workspace.modified_at));
 
   io_task_runner_->PostTask(
       FROM_HERE, base::BindOnce(&WriteWorkspaceToDisk, std::move(commands),
@@ -302,7 +313,8 @@ void WorkspaceService::SwitchWindowToWorkspace(
 }
 
 BrowserWindowInterface* WorkspaceService::CreateWindowOver(
-    BrowserWindowInterface* from_window) {
+    BrowserWindowInterface* from_window,
+    WindowKind kind) {
   if (GetBrowserWindowCreationStatusForProfile(*profile_) !=
       BrowserWindowInterface::CreationStatus::kOk) {
     return nullptr;
@@ -313,10 +325,12 @@ BrowserWindowInterface* WorkspaceService::CreateWindowOver(
                                    /*user_gesture=*/true);
   params.initial_bounds = from_window->GetWindow()->GetBounds();
   params.should_trigger_session_restore = false;
-  // Keep workspace windows out of Chromium's session entirely. The service
+  // Keep workspace windows out of Chromium's session entirely: this service
   // persists them itself, and leaving them tracked means "continue where you
-  // left off" restores a workspace as though it were ordinary tabs.
-  params.omit_from_session_restore = true;
+  // left off" restores a workspace as though it were ordinary tabs. An
+  // unmanaged window is the opposite case -- nothing here saves it, so it has
+  // to stay tracked.
+  params.omit_from_session_restore = kind == WindowKind::kWorkspace;
   BrowserWindowInterface* window = CreateBrowserWindow(std::move(params));
   if (!window) {
     return nullptr;
@@ -328,18 +342,34 @@ BrowserWindowInterface* WorkspaceService::CreateWindowOver(
   return window;
 }
 
+void WorkspaceService::ShowUnmanagedWindowFor(BrowserWindowInterface* window) {
+  if (std::optional<SessionID> home_id =
+          GetUnmanagedWindowFor(window->GetSessionID())) {
+    if (auto* home = BrowserWindowInterface::FromSessionID(*home_id)) {
+      put_away_windows_.erase(*home_id);
+      home->GetWindow()->SetBounds(window->GetWindow()->GetBounds());
+      home->GetWindow()->Show();
+      return;
+    }
+  }
+
+  // The window this one came from has since closed, so there is nothing to go
+  // back to. Open an ordinary window rather than leaving the person with
+  // nothing once |window| goes.
+  if (auto* home = CreateWindowOver(window, WindowKind::kUnmanaged)) {
+    home->GetWindow()->Show();
+  }
+}
+
 void WorkspaceService::OpenWorkspaceWindow(
     const base::Uuid& id,
     BrowserWindowInterface* from_window) {
-  BrowserWindowInterface* to_window = CreateWindowOver(from_window);
-  if (!to_window) {
-    return;
-  }
-
-  BindWorkspaceToWindowForRestore(id, to_window);
-  SwapVisibleWindow(from_window, to_window);
-
-  // A workspace opened for the first time this session still lives on disk.
+  // The tabs are read before the window exists, so the window can be created
+  // already holding them. Creating it first and filling it afterwards would
+  // put an empty, bound, interactive window on screen for the length of a
+  // disk read: long enough for its tabs to be closed before they are
+  // saveable, for the workspace to be deleted underneath it, or for tabs the
+  // person opens to be mistaken for placeholders and closed.
   base::FilePath path = GetWorkspacePathForId(id);
   auto backend = base::MakeRefCounted<sessions::CommandStorageBackend>(
       io_task_runner_, path, kWorkspaceSessionType,
@@ -349,44 +379,45 @@ void WorkspaceService::OpenWorkspaceWindow(
       FROM_HERE,
       base::BindOnce(&ReadWorkspaceFromDisk, std::move(path),
                      std::move(backend)),
-      base::BindOnce(&WorkspaceService::DoFillWorkspaceWindow, GetWeakPtr(), id,
-                     to_window->GetSessionID()));
+      base::BindOnce(&WorkspaceService::DoOpenWorkspaceWindow, GetWeakPtr(), id,
+                     from_window->GetSessionID()));
 }
 
-void WorkspaceService::DoFillWorkspaceWindow(
+void WorkspaceService::DoOpenWorkspaceWindow(
     base::Uuid id,
-    SessionID window_id,
+    SessionID from_window_id,
     std::optional<std::vector<std::unique_ptr<sessions::SessionCommand>>>
         commands) {
-  windows_awaiting_restore_.erase(window_id);
-
-  BrowserWindowInterface* window =
-      BrowserWindowInterface::FromSessionID(window_id);
-  if (!window) {
-    // Only release the binding if this workspace is still pointed at the
-    // window we were filling; it may have been reopened somewhere else while
-    // the read was in flight.
-    auto it = workspace_to_window_.find(id);
-    if (it != workspace_to_window_.end() && it->second == window_id) {
-      workspace_to_window_.erase(it);
-      workspaces_changed_callbacks_.Notify();
-    }
-    return;
-  }
-
   if (!commands) {
-    // The workspace could not be read. Leave it bound to nothing so the empty
-    // window cannot save itself over whatever is still on disk.
-    UnbindWindow(window_id);
+    // The workspace could not be read. No window is created, so there is
+    // nothing holding tabs that neither this service nor Chromium would save.
     return;
   }
 
-  if (commands->empty()) {
-    // Nothing saved yet, so the window keeps the new tab it opened with.
+  // Any of this can have changed while the read was in flight.
+  if (!GetWorkspace(id) || GetWindowForWorkspace(id)) {
     return;
   }
 
-  RestoreWorkspaceIntoWindow(window, std::move(*commands));
+  BrowserWindowInterface* from_window =
+      BrowserWindowInterface::FromSessionID(from_window_id);
+  if (!from_window) {
+    return;
+  }
+
+  BrowserWindowInterface* to_window =
+      CreateWindowOver(from_window, WindowKind::kWorkspace);
+  if (!to_window) {
+    return;
+  }
+
+  // Bound before the swap, so the window is saveable from the moment the
+  // person can reach it.
+  BindWorkspaceToWindow(id, to_window);
+  if (!commands->empty()) {
+    RestoreWorkspaceIntoWindow(to_window, std::move(*commands));
+  }
+  SwapVisibleWindow(from_window, to_window);
 }
 
 void WorkspaceService::SwitchWindowToUnmanaged(
@@ -411,9 +442,18 @@ WorkspaceMetadata WorkspaceService::CreateWorkspaceInWindow(
     const std::string& name,
     BrowserWindowInterface* from_window) {
   WorkspaceMetadata workspace = CreateWorkspace(name);
-  // A new workspace has nothing on disk, so opening it leaves the window with
-  // just the tab it was created with.
-  SwitchWindowToWorkspace(workspace.id, from_window);
+
+  // Deliberately not routed through SwitchWindowToWorkspace: a new workspace
+  // has nothing on disk, so it needs no read, and waiting on one would leave
+  // the window unsaveable for the length of a round trip it does not need.
+  BrowserWindowInterface* to_window =
+      CreateWindowOver(from_window, WindowKind::kWorkspace);
+  if (!to_window) {
+    return workspace;
+  }
+
+  BindWorkspaceToWindow(workspace.id, to_window);
+  SwapVisibleWindow(from_window, to_window);
   return workspace;
 }
 
@@ -472,13 +512,6 @@ void WorkspaceService::BindWorkspaceToWindow(const base::Uuid& id,
   workspaces_changed_callbacks_.Notify();
 }
 
-void WorkspaceService::BindWorkspaceToWindowForRestore(
-    const base::Uuid& id,
-    BrowserWindowInterface* window) {
-  BindWorkspaceToWindow(id, window);
-  windows_awaiting_restore_.insert(window->GetSessionID());
-}
-
 void WorkspaceService::WillCloseAllTabs(TabStripModel* tab_strip_model) {
   // The last chance to capture a workspace: these tabs are about to go, and
   // they are still here, so one of them can name the window they live in.
@@ -490,14 +523,19 @@ void WorkspaceService::WillCloseAllTabs(TabStripModel* tab_strip_model) {
   }
 
   const SessionID window_id = window->GetSessionID();
-  if (windows_awaiting_restore_.contains(window_id)) {
-    // The window is still holding its placeholder tab while the workspace is
-    // read off disk. Saving now would write that placeholder over it.
-    return;
-  }
-
   if (std::optional<base::Uuid> id = GetWorkspaceForWindow(window_id)) {
     SaveWorkspaceFromWindow(*id, window);
+  }
+}
+
+void WorkspaceService::NoteWindowCloseRequested(
+    BrowserWindowInterface* window) {
+  // A window whose tab strip has already emptied is closing because it ran
+  // out of tabs: Browser::TabStripEmpty() closes it through the same path a
+  // person's close request takes. Tabs still being present is what marks this
+  // as the person's doing.
+  if (window->GetTabStripModel()->count() > 0) {
+    windows_closed_by_person_.insert(window->GetSessionID());
   }
 }
 
@@ -527,15 +565,16 @@ void WorkspaceService::OnBrowserClosed(BrowserWindowInterface* browser) {
 
   UnbindWindow(window_id);
   put_away_windows_.erase(window_id);
-  windows_awaiting_restore_.erase(window_id);
   std::erase_if(window_to_unmanaged_window_, [window_id](const auto& entry) {
     return entry.first == window_id || entry.second == window_id;
   });
 
   // A workspace window going away on its own -- the person closed its last
   // tab -- is not a request to quit. Hand the screen back to the window it
-  // was opened from instead of retiring everything behind it.
-  if (origin) {
+  // was opened from instead of retiring everything behind it. Closing the
+  // window outright is a request to quit, so that case falls through.
+  const bool closed_by_person = windows_closed_by_person_.erase(window_id) > 0;
+  if (origin && !closed_by_person) {
     if (auto* home = BrowserWindowInterface::FromSessionID(*origin)) {
       put_away_windows_.erase(*origin);
       home->GetWindow()->Show();

@@ -44,6 +44,8 @@
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/toolbar/screenshot_button.h"
 #include "brave/browser/ui/window_closing_confirm/window_closing_confirm_controller.h"
+#include "brave/browser/workspaces/workspace_service.h"
+#include "brave/browser/workspaces/workspace_service_factory.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/commands/common/features.h"
@@ -835,6 +837,14 @@ views::CloseRequestResult BraveBrowserView::OnWindowCloseRequested() {
   if (auto* controller = WindowClosingConfirmController::From(browser());
       controller && controller->MaybeAskBeforeClosing()) {
     return views::CloseRequestResult::kCannotClose;
+  }
+
+  // Recorded only once the close is going ahead. Workspaces needs to know a
+  // close came from the person rather than from the tab strip emptying, and
+  // the tabs are still here to tell them apart.
+  if (auto* service =
+          WorkspaceServiceFactory::GetForProfile(browser()->GetProfile())) {
+    service->NoteWindowCloseRequested(browser());
   }
 
   return BrowserView::OnWindowCloseRequested();

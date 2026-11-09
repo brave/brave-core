@@ -20,6 +20,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/time/time.h"
 #include "base/uuid.h"
 #include "brave/browser/workspaces/pref_names.h"
 #include "brave/browser/workspaces/workspace_metadata.h"
@@ -86,6 +87,13 @@ class WorkspaceService : public KeyedService,
 
   // Writes workspace metadata into the profile preference.
   void SaveWorkspaceMetadata(const WorkspaceMetadata& meta);
+
+  // Undoes the metadata written optimistically by a save whose disk write
+  // then failed.  |written_at| identifies that write: if the workspace has
+  // since been renamed, saved again or deleted, the rollback is dropped
+  // rather than clobbering the newer state.
+  void RollBackWorkspaceMetadata(const WorkspaceMetadata& previous,
+                                 base::Time written_at);
 
   // Removes the workspace metadata entry from the profile preference.
   void RemoveWorkspaceMetadata(const base::Uuid& id);
@@ -167,6 +175,12 @@ class WorkspaceService : public KeyedService,
       const std::string& name,
       BrowserWindowInterface* from_window);
 
+  // Called when |window| has been asked to close, before it does. Lets the
+  // service tell a close the person asked for apart from one that happens
+  // because the tab strip ran empty -- the two should not end the same way,
+  // and by the time the window is gone they look identical.
+  void NoteWindowCloseRequested(BrowserWindowInterface* window);
+
   base::WeakPtr<WorkspaceService> GetWeakPtr();
 
   // KeyedService:
@@ -190,15 +204,21 @@ class WorkspaceService : public KeyedService,
   void BindWorkspaceToWindow(const base::Uuid& id,
                              BrowserWindowInterface* window);
 
-  // As above, but for a window whose tabs have not been read off disk yet:
-  // saving it before the read lands would persist its placeholder tab.
-  void BindWorkspaceToWindowForRestore(const base::Uuid& id,
-                                       BrowserWindowInterface* window);
+  // Whether a window this service opens is one it will persist itself, or an
+  // ordinary window left to Chromium's session restore.
+  enum class WindowKind { kWorkspace, kUnmanaged };
 
   // Opens a window for this profile sized and placed over |from_window|,
   // carrying a single new tab.  A window with an empty tab strip is not a
-  // thing the browser supports, so every workspace window starts with one.
-  BrowserWindowInterface* CreateWindowOver(BrowserWindowInterface* from_window);
+  // thing the browser supports, so every window starts with one.
+  BrowserWindowInterface* CreateWindowOver(BrowserWindowInterface* from_window,
+                                           WindowKind kind);
+
+  // Brings the unmanaged window |window| was opened from back on screen,
+  // opening a fresh one when that window is gone.  Workspace windows are
+  // excluded from session restore, so a person must never be left holding
+  // only windows this service has stopped persisting.
+  void ShowUnmanagedWindowFor(BrowserWindowInterface* window);
 
   // Opens a window for workspace |id| and fills it from disk.  |from_window|
   // supplies the bounds so the workspace appears where the person was looking.
@@ -206,11 +226,13 @@ class WorkspaceService : public KeyedService,
                            BrowserWindowInterface* from_window);
 
   // Called on the UI thread with the commands read from disk by
-  // OpenWorkspaceWindow.  |window_id| identifies the window just created,
-  // which may have closed while the read was in flight.
-  void DoFillWorkspaceWindow(
+  // OpenWorkspaceWindow.  Creates the window and fills it in one step, so
+  // nothing is on screen until it holds the workspace's tabs.
+  // |from_window_id| is the window being switched away from, which may have
+  // closed while the read was in flight.
+  void DoOpenWorkspaceWindow(
       base::Uuid id,
-      SessionID window_id,
+      SessionID from_window_id,
       std::optional<std::vector<std::unique_ptr<sessions::SessionCommand>>>
           commands);
 
@@ -250,10 +272,10 @@ class WorkspaceService : public KeyedService,
   // person merely minimized.
   std::set<SessionID> put_away_windows_;
 
-  // Windows whose workspace is still being read off disk. They hold nothing
-  // but a placeholder tab until the read lands, so saving one would write
-  // that placeholder over the workspace.
-  std::set<SessionID> windows_awaiting_restore_;
+  // Windows the person asked to close, as opposed to ones closing because
+  // their last tab went. Closing a workspace window outright ends the
+  // session; losing its last tab returns to the unmanaged window.
+  std::set<SessionID> windows_closed_by_person_;
 
   base::RepeatingClosureList workspaces_changed_callbacks_;
 
