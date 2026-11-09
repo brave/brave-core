@@ -42,7 +42,9 @@ class ClaudeCliApi(RecipeApi):
     ) -> StepData:
         """Run Claude on *prompt* as the step named *name*, until it finishes.
 
-        The step fails if Claude does, or ends with an error result.
+        The step fails if Claude does, or ends with an error result. Claude
+        keeps its own temporary files in the job's temp dir, and may write
+        there too, so nothing it does lands in the system's temp dir.
 
         Args:
             name: The step name.
@@ -73,11 +75,20 @@ class ClaudeCliApi(RecipeApi):
             'stream-json',
             '--verbose',
         ]
-        for directory in add_dirs:
+        temp_dir = self.m.path.temp_dir
+        for directory in [*add_dirs, temp_dir]:
             cmd += ['--add-dir', directory]
-        if allowed_tools := list(allowed_tools):
-            cmd += ['--allowedTools', *allowed_tools]
+        cmd += [
+            '--allowedTools',
+            *allowed_tools,
+            f'Edit(/{temp_dir}/**)',
+            f'Write(/{temp_dir}/**)',
+        ]
         env = {
+            # Claude Code's own temporary files (background commands'
+            # output, its sandbox's `TMPDIR`) go here rather than to the
+            # system's temp dir, which `TMPDIR` alone doesn't change for it.
+            'CLAUDE_CODE_TMPDIR': str(temp_dir),
             # `--print` otherwise stops subagents and background commands
             # still running 10 minutes after Claude's last turn, and reports
             # success.
