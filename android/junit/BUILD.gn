@@ -231,6 +231,7 @@ if (is_android) {
     resources_package = "org.chromium.chrome.browser.ntp"
     sources = [
       "src/org/chromium/chrome/browser/ntp/BraveNewTabTakeoverInfobarTest.java",
+      "src/org/chromium/chrome/browser/ntp/BraveNtpAdapterTopSitesToggleTest.java",
       "src/org/chromium/chrome/browser/ntp/BraveNtpTopSitesModeUnitTest.java",
       "src/org/chromium/chrome/browser/ntp/NewTabTakeoverSafeAreaReporterTest.java",
     ]
@@ -239,6 +240,8 @@ if (is_android) {
       "//brave/browser/android/preferences:pref_names_java",
       "//brave/browser/ntp_customization:java",
       "//brave/browser/ui/android/ntp_widgets:java",
+      "//brave/components/brave_news/common:mojom_java",
+      "//brave/third_party/android_deps:com_github_bumptech_glide_java",
       "//chrome/android:chrome_java",
       "//chrome/android/junit:chrome_junit_tests_helper",
       "//chrome/browser/tab:java",

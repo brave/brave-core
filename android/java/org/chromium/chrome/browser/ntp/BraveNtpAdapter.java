@@ -170,16 +170,24 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             mStatsHeight = NTPImageUtil.getViewHeight(statsViewHolder.itemView) + margin;
 
         } else if (holder instanceof TopSitesViewHolder) {
-            LinearLayout.LayoutParams layoutParams =
-                    new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.WRAP_CONTENT);
-            int margin = dpToPx(mActivity, CARD_MARGIN_DP);
-            layoutParams.setMargins(margin, margin, margin, 0);
+            if (!mIsTopSitesEnabled) {
+                mMvTilesContainerLayout.setVisibility(View.GONE);
+                mMvTilesContainerLayout.setLayoutParams(
+                        new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0));
+                mTopSitesHeight = 0;
+            } else {
+                LinearLayout.LayoutParams layoutParams =
+                        new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT);
+                int margin = dpToPx(mActivity, CARD_MARGIN_DP);
+                layoutParams.setMargins(margin, margin, margin, 0);
 
-            mMvTilesContainerLayout.setLayoutParams(layoutParams);
-            mMvTilesContainerLayout.setBackgroundResource(R.drawable.rounded_dark_bg_alpha);
-            mTopSitesHeight = NTPImageUtil.getViewHeight(holder.itemView) + margin;
+                mMvTilesContainerLayout.setVisibility(View.VISIBLE);
+                mMvTilesContainerLayout.setLayoutParams(layoutParams);
+                mMvTilesContainerLayout.setBackgroundResource(R.drawable.rounded_dark_bg_alpha);
+                mTopSitesHeight = NTPImageUtil.getViewHeight(holder.itemView) + margin;
+            }
 
         } else if (holder instanceof NewContentViewHolder) {
             NewContentViewHolder newContentViewHolder = (NewContentViewHolder) holder;
@@ -493,7 +501,12 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public int getTopSitesCount() {
-        return mIsTopSitesEnabled ? 1 : 0;
+        // The Top Sites row wraps a reused singleton view (mMvTilesContainerLayout), not a
+        // fresh view RecyclerView creates/destroys. Removing/re-inserting it (notifyItemRemoved
+        // + notifyItemInserted) corrupts RecyclerView's predictive-layout bookkeeping if both
+        // ops land in the same deferred layout pass. Keep it a permanent slot; toggling only
+        // changes its bound content/visibility, never its presence in the adapter.
+        return 1;
     }
 
     public int getTopItemsCount() {
@@ -503,15 +516,9 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void setTopSitesEnabled(boolean isTopSitesEnabled) {
         if (mIsTopSitesEnabled != isTopSitesEnabled) {
             mIsTopSitesEnabled = isTopSitesEnabled;
-            if (mIsTopSitesEnabled) {
-                notifyItemInserted(getStatsCount());
-            } else {
-                notifyItemRemoved(getStatsCount());
-            }
-            // Rebind items shifted by the insert/remove above so they're positioned correctly.
-            notifyItemRangeChanged(
-                    getStatsCount(),
-                    getStatsCount() + getTopSitesCount() + getNewContentCount() + ONE_ITEM_SPACE);
+            // The row's position never changes (see getTopSitesCount()), so a rebind is all
+            // that's needed - no insert/remove, and nothing after it shifts.
+            notifyItemChanged(getStatsCount());
         }
     }
 
