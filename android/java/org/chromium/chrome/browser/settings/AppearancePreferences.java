@@ -502,6 +502,10 @@ public class AppearancePreferences extends AppearanceSettingsFragment
                     // duplicate ID.
                     indexData.removeEntryForKey(
                             AppearancePreferences.class.getName(), PREF_ADDRESS_BAR);
+                    // Brave never offers Gemini, so its toolbar toggle is never shown.
+                    indexData.removeEntryForKey(
+                            AppearancePreferences.class.getName(),
+                            AppearanceSettingsFragment.PREF_GLIC_BOTTOM_BAR_BUTTON_SWITCH);
                     // Unless the bottom bar moves the "Homepage" row here, Brave keeps it in main
                     // settings and the upstream copy would be a second search result for the same
                     // screen.
