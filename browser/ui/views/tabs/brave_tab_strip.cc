@@ -122,15 +122,10 @@ BraveVerticalTabStripRegionView* BraveTabStrip::GetVerticalTabStripRegionView()
     return nullptr;
   }
 
-  auto* vertical_region_view = browser_view->vertical_tab_strip_container_view()
-                                   ->vertical_tab_strip_region_view();
-
-  if (!vertical_region_view) {
-    // Could be null while closing a window.
-    return nullptr;
-  }
-
-  return vertical_region_view;
+  // The container and its region view could be null while closing a window.
+  auto* container_view = browser_view->vertical_tab_strip_container_view();
+  return container_view ? container_view->vertical_tab_strip_region_view()
+                        : nullptr;
 }
 
 bool BraveTabStrip::IsVerticalTabsFloating() const {
@@ -257,25 +252,26 @@ void BraveTabStrip::MaybeStartDrag(TabSlotView* source,
   TabStrip::MaybeStartDrag(source, event, original_selection);
 }
 
-void BraveTabStrip::AddedToWidget() {
-  TabStrip::AddedToWidget();
+void BraveTabStrip::ViewHierarchyChanged(
+    const views::ViewHierarchyChangedDetails& details) {
+  TabStrip::ViewHierarchyChanged(details);
 
-  // When Chromium's upstream vertical tabs feature is active,
-  // TabStrip::Initialize() is never called so tab_container_ remains null.
-  // Skip UpdateOrientation() to avoid crashing when accessing it.
-  if (auto* vtc = VerticalTabController::From(GetBrowserWindowInterface());
-      !vtc || !vtc->SupportsBraveVerticalTabs()) {
+  // When entering and exiting Focus Mode, the tab strip can be reparented
+  // without AddedToWidget() invoked. In order to call UpdateOrientation() in
+  // these cases, we use `ViewHierarchyChanged` to observe the reparenting.
+  // Additions to an unattached hierarchy are ignored because the tab container
+  // isn't created until the tab strip is initialized, which can happen after
+  // the tab strip is added.
+  if (!details.is_add || !details.child->Contains(this) || !GetWidget()) {
     return;
   }
 
   if (BrowserView::GetBrowserViewForBrowser(GetBrowserWindowInterface())) {
     UpdateOrientation();
   } else {
-    // Schedule UpdateOrientation(). At this point, BrowserWindow could still
-    // be being created and it could be unbound to Browser.
-    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-        FROM_HERE, base::BindOnce(&BraveTabStrip::UpdateOrientation,
-                                  weak_factory_.GetWeakPtr()));
+    // BrowserView may not be bound to the browser yet during window creation.
+    orientation_update_timer_.Start(FROM_HERE, base::TimeDelta(), this,
+                                    &BraveTabStrip::UpdateOrientation);
   }
 }
 
@@ -329,38 +325,32 @@ bool BraveTabStrip::ShouldShowPinnedTabsInGrid() const {
 }
 
 void BraveTabStrip::UpdateOrientation() {
-  // Callers must guard against unsupported configurations (e.g. upstream
-  // vertical tabs where tab_container_ is null).
-  auto* vtc = VerticalTabController::From(GetBrowserWindowInterface());
-  CHECK(vtc && vtc->SupportsBraveVerticalTabs());
+  // When upstream's vertical tabs feature is active, TabStrip::Initialize() is
+  // never called and `tab_container_` remains null. SetAvailableWidthCallback
+  // requires a non-null `tab_container_`.
+  if (auto* vtc = VerticalTabController::From(GetBrowserWindowInterface());
+      !vtc || !vtc->SupportsBraveVerticalTabs()) {
+    return;
+  }
 
-  const bool using_vertical_tabs = ShouldShowVerticalTabs();
-  auto* browser = GetBrowserWindowInterface();
-  DCHECK(browser);
+  if (!BrowserView::GetBrowserViewForBrowser(GetBrowserWindowInterface())) {
+    return;
+  }
 
-  if (using_vertical_tabs) {
-    auto* browser_view = BraveBrowserView::GetBrowserViewForBrowser(browser);
-    DCHECK(browser_view);
-    auto* vertical_region_view =
-        browser_view->vertical_tab_strip_container_view()
-            ->vertical_tab_strip_region_view();
-    // `vertical_region_view` can be null if it's in destruction.
-    if (vertical_region_view) {
-      SetAvailableWidthCallback(base::BindRepeating(
-          &BraveVerticalTabStripRegionView::GetAvailableWidthForTabContainer,
-          base::Unretained(vertical_region_view)));
-    }
+  if (auto* vertical_region_view = GetVerticalTabStripRegionView()) {
+    SetAvailableWidthCallback(base::BindRepeating(
+        &BraveVerticalTabStripRegionView::GetAvailableWidthForTabContainer,
+        base::Unretained(vertical_region_view)));
   } else {
     SetAvailableWidthCallback(base::NullCallback());
   }
 
   if (const auto active_index = GetActiveIndex(); active_index) {
-    // In order to update shadow state, call ActiveStateChanged().
+    // Update the active tab's shadow state for the new orientation.
     tab_at(active_index.value())->ActiveStateChanged();
   }
 
-  // Called only at startup or vertical tab mode changed.
-  // To make initial tabs layout properly.
+  // Lay out tabs for the current orientation immediately.
   DeprecatedLayoutImmediately();
 }
 
