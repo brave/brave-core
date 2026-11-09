@@ -5,26 +5,11 @@
 
 #include "brave/browser/ui/brave_browser.h"
 
-#include "base/check.h"
-#include "brave/browser/ui/brave_browser_window.h"
-#include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "components/tabs/public/tab_interface.h"
 
 BraveBrowser::BraveBrowser(BrowserWindowCreateParams params)
-    : Browser(std::move(params)) {
-  auto* brave_browser_window = BraveBrowserWindow::FromBrowser(this);
-  if (!brave_browser_window) {
-    // The window is not a BrowserView, e.g. a WebUIBrowserWindow.
-    return;
-  }
-
-  // As browser window(BrowserView) is initialized before fullscreen controller
-  // is ready, it's difficult to know when browsr window can listen.
-  // Notify exact timing to do it.
-  CHECK(ExclusiveAccessManager::From(this));
-  brave_browser_window->ReadyToListenFullscreenChanges();
-}
+    : Browser(std::move(params)) {}
 
 BraveBrowser::~BraveBrowser() = default;
 

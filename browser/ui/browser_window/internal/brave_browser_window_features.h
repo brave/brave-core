@@ -55,6 +55,7 @@ class BraveBrowserWindowFeatures {
   ~BraveBrowserWindowFeatures();
 
   void Init();
+  void InitPostWindowConstruction();
   void InitPostBrowserViewConstruction(BrowserView* browser_view);
   void TearDownPreBrowserWindowDestruction();
 
