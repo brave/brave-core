@@ -8,6 +8,8 @@
 // pre-encode left-context frames. Conformer caches are carried between
 // steps, and fixed input/cache shapes keep the encoder cost constant per step.
 
+//////////////// BEGIN: Shared audio frontend for both English only and multi-lingual Nemotron //////////////////////////////
+
 // frontend constants
 export type FftSize =
   | 32
@@ -67,27 +69,60 @@ export const OFF = (N_FFT - WIN_LENGTH) >> 1 // 56
 // [f * HOP_LENGTH - PAD + OFF, f * HOP_LENGTH - PAD + OFF + WIN_LENGTH)
 export const STREAMING_RIGHT_CONTEXT: number = OFF + WIN_LENGTH - PAD
 
+//////////////// END: Shared audio frontend for both English only and multi-lingual Nemotron //////////////////////////////
+
+export type NemotronModelType = 'english' | 'multilingual'
+
 // model specific constants
 export const NEMO_CHUNK: number = 56 // new mel frames per step (560 ms @ 10 ms hop)
 export const NEMO_PRECACHE: number = 9 // pre-encode mel cache frames prepended
-export const NEMO_BLANK: number = 1024
-export const NEMO_VOCAB: number = 1025 // 1024 + blank
-export const NEMO_MAX_SYM: number = 10
-export const NEMO_FRAMES: number = NEMO_PRECACHE + NEMO_CHUNK // 65: fixed encoder input length
-export const NEMO_NUM_ENCODER_LAYERS: number = 24
-export const NEMO_HIDDEN_DIM: number = 1024
-// note that this is different from left context at mel level;
-// its num of frames in the left context of encoder's attention blocks'
-export const NEMO_LEFT_CONTEXT: number = 70
-// its num of frames in the left context of encoder's conv blocks'
-export const NEMO_CONV_CONTEXT: number = 8
-export const NEMO_DECODER_LSTM_DIM: number = 640
 
-// On finish, append this many chunks of silence so the cache-aware encoder
-// and RNN-T decoder flush the final partial chunk — without it the trailing
-// word(s) can be dropped to right-context / emission lag. The silence frames
-// decode to RNN-T blanks, so the transcript is unaffected.
-export const SILENCE_FLUSH_CHUNKS: number = 3
+export const COMMON_NEMOTRON_CONFIG = {
+  NEMO_CHUNK,
+  NEMO_PRECACHE,
+  NEMO_FRAMES: NEMO_PRECACHE + NEMO_CHUNK, // 65: fixed encoder input length
+  NEMO_MAX_SYM: 10,
+  NEMO_NUM_ENCODER_LAYERS: 24,
+  NEMO_HIDDEN_DIM: 1024,
+  NEMO_DECODER_LSTM_DIM: 640,
+  // its num of frames in the left context of encoder's conv blocks'
+  // conv_kernel_size = 9, so causal context = kernel_size - 1 = 8.
+  NEMO_CONV_CONTEXT: 8,
+  // On finish, append this many chunks of silence so the cache-aware encoder
+  // and RNN-T decoder flush the final partial chunk — without it the trailing
+  // word(s) can be dropped to right-context / emission lag. The silence frames
+  // decode to RNN-T blanks, so the transcript is unaffected.
+  SILENCE_FLUSH_CHUNKS: 3,
+} as const
+
+export const ENGLISH_NEMOTRON_CONFIG = {
+  ...COMMON_NEMOTRON_CONFIG,
+  NEMO_BLANK: 1024,
+  NEMO_VOCAB: 1025, // 1024 + blank
+  // note that this is different from left context at mel level;
+  // its num of frames in the left context of encoder's attention blocks'
+  NEMO_LEFT_CONTEXT: 70,
+} as const
+
+export const MULTILINGUAL_NEMOTRON_CONFIG = {
+  ...COMMON_NEMOTRON_CONFIG,
+  NEMO_BLANK: 13087,
+  NEMO_VOCAB: 13088,
+  NEMO_LEFT_CONTEXT: 56,
+} as const
+
+// supported languages
+
+export const ENGLISH_SUPPORTED_LANGUAGES = ['en-US', 'en-GB'] as const
+
+export const MULTILINGUAL_SUPPORTED_LANGUAGES = {
+  'es-ES': 2,
+  'es-US': 3,
+  'it-IT': 15,
+  'pt-BR': 12,
+  'pt-PT': 13,
+  'hi-IN': 6,
+} as const
 
 // Silence fed before the first real sample. The exported ONNX encoder graph
 // drops the first 2 time frames of its pre-encode output. This happens inside
