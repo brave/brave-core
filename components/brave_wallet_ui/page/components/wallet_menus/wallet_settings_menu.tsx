@@ -111,8 +111,10 @@ export const WalletSettingsMenu = (props: Props) => {
         },
       )
     } else {
-      // Tabs.create is desktop specific. Using window.open for mobile
-      window.open(HELP_CENTER_URL, '_blank', 'noopener noreferrer')
+      // Tabs.create is desktop specific.
+      getWalletPageApiProxy().pageHandler.openTab({
+        url: HELP_CENTER_URL,
+      })
     }
   }
 
