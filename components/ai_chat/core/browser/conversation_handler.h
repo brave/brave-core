@@ -17,6 +17,7 @@
 #include <variant>
 #include <vector>
 
+#include "base/containers/flat_set.h"
 #include "base/containers/span.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
@@ -107,6 +108,9 @@ class ConversationHandler : public mojom::ConversationHandler,
 
     // Called when a mojo client connects or disconnects
     virtual void OnClientConnectionChanged(ConversationHandler* handler) {}
+    // Called when the conversation gains its first visible client or loses its
+    // last one.
+    virtual void OnClientVisibilityChanged(ConversationHandler* handler) {}
     virtual void OnConversationTitleChanged(
         const std::string& conversation_uuid,
         const std::string& title) {}
@@ -182,6 +186,9 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnArchiveContentUpdated(mojom::ConversationArchivePtr conversation_data);
 
   bool IsAnyClientConnected();
+  // Whether a connected client has reported that its UI is visible, i.e. the
+  // conversation is on screen. Hidden clients still count as connected.
+  bool IsAnyClientVisible() const;
   bool HasAnyHistory();
   bool IsRequestInProgress();
   // Whether a tool use loop is running, between generation requests.
@@ -214,6 +221,9 @@ class ConversationHandler : public mojom::ConversationHandler,
                                 const std::string& tool_name,
                                 mojom::ToolPermission permission) override;
   void SetContentAgentChosen(bool chosen) override;
+  // Identifies the client by the receiver that sent it, so it must arrive over
+  // mojo rather than be called directly.
+  void SetClientVisible(bool visible) override;
   void RateMessage(bool is_liked,
                    const std::string& turn_uuid,
                    RateMessageCallback callback) override;
@@ -594,6 +604,10 @@ class ConversationHandler : public mojom::ConversationHandler,
       base::span<const mojom::ConversationTurnPtr> turns);
   void OnSuggestedQuestionsChanged();
   void OnClientConnectionChanged();
+  void OnReceiverDisconnected();
+  // Records whether receiver |id|'s client is visible, notifying observers if
+  // that changes IsAnyClientVisible().
+  void SetReceiverVisible(mojo::ReceiverId id, bool visible);
   void OnConversationTitleChanged(std::string_view title);
   void OnConversationTokenInfoChanged(
       std::optional<std::string_view> thread_uuid,
@@ -760,6 +774,8 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   base::ObserverList<Observer> observers_;
   mojo::ReceiverSet<mojom::ConversationHandler> receivers_;
+  // The |receivers_| whose client last reported its UI as visible.
+  base::flat_set<mojo::ReceiverId> visible_receivers_;
   mojo::ReceiverSet<mojom::UntrustedConversationHandler> untrusted_receivers_;
   // std::monostate because ReceiverSet's MessageFilter overload of Add()
   // requires a non-void context type.
