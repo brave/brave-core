@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Report any entity about to be committed with unencrypted specifics.
+
+      Brave's sync chain is always in encrypt-everything mode, so an upstream
+      type whose EncryptionPolicy is kNeverEncrypted commits plain text
+      silently. This is the single point every outgoing commit passes through,
+      so checking here covers types added upstream in the future.
+    preempt_function_impl:
+      function_name: Commit::PostAndProcessResponse
+      code: |-
+        CheckCommitEntitiesEncryption(message_.commit());
