@@ -466,14 +466,11 @@ class AIChatService : public KeyedService,
   void AddToolProvidersToConversation(ConversationHandler* conversation);
   // Sends |conversation_generation_state_| to all |observer_remotes_|.
   void NotifyConversationGenerationStateChanged();
-  // Whether |uuid| has a loaded ConversationHandler with a connected client.
-  // This doesn't mean the conversation is on screen.
-  bool IsConversationClientConnected(const std::string& uuid) const;
-  // Marks |conversation_uuid| as no longer generating once its handler is
+  // Marks |handler|'s conversation as no longer generating now that it is
   // neither generating nor running tools: idle if a client is connected,
   // otherwise kAwaitingUserInput if it stopped on a permission challenge, or
   // else kCompletedNotViewed.
-  void MaybeMarkGenerationComplete(const std::string& conversation_uuid);
+  void MaybeMarkGenerationComplete(ConversationHandler* handler);
   // DeleteConversation() without OnConversationListChanged(), for callers that
   // delete several conversations and then send the list once.
   void DeleteConversationWithoutNotifyingList(const std::string& id);

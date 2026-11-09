@@ -1230,15 +1230,9 @@ void AIChatService::OnRequestInProgressChanged(ConversationHandler* handler,
       it->second = mojom::ConversationGenerationState::kGenerating;
       NotifyConversationGenerationStateChanged();
     }
-  } else if (const auto* state =
-                 base::FindOrNull(conversation_generation_state_, uuid);
-             state &&
-             *state == mojom::ConversationGenerationState::kGenerating) {
-    // The handler reports false before deciding whether to continue with a
-    // tool or a queued request, so decide once it has.
-    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-        FROM_HERE, base::BindOnce(&AIChatService::MaybeMarkGenerationComplete,
-                                  weak_ptr_factory_.GetWeakPtr(), uuid));
+  } else {
+    // The handler reports neither in progress only once its tool loop stops.
+    MaybeMarkGenerationComplete(handler);
   }
 
   // We don't unload a conversation if it has a request in progress, so check
@@ -1646,31 +1640,19 @@ void AIChatService::SetCompletionNotificationCallbacks(
   close_completion_notification_callback_ = std::move(close);
 }
 
-bool AIChatService::IsConversationClientConnected(
-    const std::string& uuid) const {
-  auto* handler = base::FindPtrOrNull(conversation_handlers_, uuid);
-  return handler && handler->IsAnyClientConnected();
-}
-
-void AIChatService::MaybeMarkGenerationComplete(
-    const std::string& conversation_uuid) {
+void AIChatService::MaybeMarkGenerationComplete(ConversationHandler* handler) {
+  const std::string& conversation_uuid = handler->get_conversation_uuid();
   auto it = conversation_generation_state_.find(conversation_uuid);
   if (it == conversation_generation_state_.end() ||
       it->second != mojom::ConversationGenerationState::kGenerating) {
     return;
   }
-  auto* handler =
-      base::FindPtrOrNull(conversation_handlers_, conversation_uuid);
-  if (handler &&
-      (handler->IsRequestInProgress() || handler->IsToolUseInProgress())) {
-    return;
-  }
-  if (IsConversationClientConnected(conversation_uuid)) {
+  if (handler->IsAnyClientConnected()) {
     conversation_generation_state_.erase(it);
     NotifyConversationGenerationStateChanged();
     return;
   }
-  const bool needs_approval = handler && handler->IsAwaitingUserInput();
+  const bool needs_approval = handler->IsAwaitingUserInput();
   it->second = needs_approval
                    ? mojom::ConversationGenerationState::kAwaitingUserInput
                    : mojom::ConversationGenerationState::kCompletedNotViewed;
