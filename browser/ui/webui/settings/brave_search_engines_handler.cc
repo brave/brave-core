@@ -40,6 +40,9 @@ namespace {
 constexpr char kBraveSearchForTorKeyword[] =
     ":search.brave4u7jddbv7cyviptqjc7jusxh72uik7zt6adtckl5f4nwy2v72qd.onion";
 
+// Key to search for in the URL for proxying favicon URLs.
+constexpr char kIconURLKey[] = "iconURL";
+
 // Must match the prefix upstream uses in CreateDictionaryForEngine() for the
 // opaque engine IDs it sends to the WebUI.
 constexpr std::string_view kTemplateURLIdPrefix = "db:";
@@ -206,13 +209,13 @@ base::DictValue BraveSearchEnginesHandler::CreateDictionaryForEngine(
       SearchEnginesHandler::CreateDictionaryForEngine(template_url);
   // Upstream only exposes http(s) icon URLs to the downloaded <img>; leave
   // other schemes (e.g. chrome-extension://) as is.
-  if (const std::string* icon_url = dict.FindString("iconURL");
+  if (const std::string* icon_url = dict.FindString(kIconURLKey);
       icon_url && GURL(*icon_url).SchemeIsHTTPOrHTTPS()) {
     const GURL proxied_url = GetProxiedFaviconURL(*template_url);
     if (proxied_url.is_valid()) {
-      dict.Set("iconURL", proxied_url.spec());
+      dict.Set(kIconURLKey, proxied_url.spec());
     } else {
-      dict.Remove("iconURL");
+      dict.Remove(kIconURLKey);
     }
   }
   return dict;
