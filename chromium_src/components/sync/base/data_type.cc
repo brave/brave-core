@@ -20,6 +20,9 @@ DataTypeSet EncryptableUserTypes() {
   encryptable_user_types.Put(DEVICE_INFO);
   encryptable_user_types.Put(HISTORY);
   encryptable_user_types.Put(AI_CHAT_CONVERSATION);
+  // Upstream keeps this plain because the server writes it too. Brave's server
+  // never writes any of it.
+  encryptable_user_types.Put(PRIORITY_PREFERENCES);
   return encryptable_user_types;
 }
 

@@ -12,6 +12,7 @@ TEST(DataTypeTest, EncryptableUserTypes) {
   EXPECT_TRUE(EncryptableUserTypes().Has(CONTACT_INFO));
   EXPECT_TRUE(EncryptableUserTypes().Has(DEVICE_INFO));
   EXPECT_TRUE(EncryptableUserTypes().Has(HISTORY));
+  EXPECT_TRUE(EncryptableUserTypes().Has(PRIORITY_PREFERENCES));
 }
 
 TEST(DataTypeTest, BraveUnencryptableUserTypes) {
