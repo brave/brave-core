@@ -16,12 +16,12 @@
 #include "brave/browser/ui/views/page_action/test_tab_interface.h"
 #include "brave/components/tor/onion_location_tab_helper.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "chrome/browser/ui/page_action/page_action_controller.h"
-#include "chrome/browser/ui/page_action/page_action_icon_type.h"
 #include "chrome/browser/ui/page_action/page_action_model.h"
 #include "chrome/browser/ui/page_action/page_action_model_observer.h"
-#include "chrome/browser/ui/page_action/test_support/test_page_action_properties_provider.h"
+#include "chrome/browser/ui/page_action/page_action_properties_provider.h"
 #include "chrome/browser/ui/toolbar/pinned_toolbar/pinned_toolbar_actions_model.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/policy/core/common/policy_pref_names.h"
@@ -37,28 +37,32 @@ namespace page_actions {
 
 class OnionLocationPageActionControllerTest : public testing::Test {
  public:
-  OnionLocationPageActionControllerTest()
-      : properties_provider_(PageActionPropertiesMap{{
-            kActionShowOnionLocation,
-            PageActionProperties{
-                .histogram_name = "OnionLocation",
-                .type = brave::kOnionLocationPageActionIconType,
-            },
-        }}) {}
+  OnionLocationPageActionControllerTest() = default;
+  explicit OnionLocationPageActionControllerTest(bool use_tor_profile)
+      : use_tor_profile_(use_tor_profile) {}
 
   void SetUp() override {
+    TestingProfile* tab_profile = &profile_;
+    if (use_tor_profile_) {
+      // The onion chip is only shown in Tor windows.
+      tab_profile = TestingProfile::Builder().BuildOffTheRecord(
+          &profile_, Profile::OTRProfileID::TorID());
+    }
     pinned_actions_model_ =
-        std::make_unique<PinnedToolbarActionsModel>(&profile_);
+        std::make_unique<PinnedToolbarActionsModel>(tab_profile);
     tab_interface_ =
-        std::make_unique<TestTabInterface>(&profile_, base::DoNothing());
+        std::make_unique<TestTabInterface>(tab_profile, base::DoNothing());
     tab_interface_->Activate();
 
     tab_helper_ =
         std::make_unique<tor::OnionLocationTabHelper>(*tab_interface_);
 
+    // Upstream actions competing with the onion chip for the chip selector.
     page_action_controller_ = std::make_unique<PageActionControllerImpl>(
         *tab_interface_,
-        std::vector<actions::ActionId>{kActionShowOnionLocation},
+        std::vector<actions::ActionId>{kActionShowOnionLocation,
+                                       kActionShowMemorySaverChip,
+                                       kActionShowCookieControls},
         properties_provider_, pinned_actions_model_.get());
 
     action_item_ = actions::ActionItem::Builder()
@@ -72,6 +76,10 @@ class OnionLocationPageActionControllerTest : public testing::Test {
 
     page_action_controller_->AddObserver(kActionShowOnionLocation,
                                          observation_);
+    page_action_controller_->AddObserver(kActionShowMemorySaverChip,
+                                         memory_saver_observation_);
+    page_action_controller_->AddObserver(kActionShowCookieControls,
+                                         cookie_controls_observation_);
 
     controller_ = std::make_unique<OnionLocationPageActionController>(
         *tab_interface_, *page_action_controller_);
@@ -79,6 +87,8 @@ class OnionLocationPageActionControllerTest : public testing::Test {
   }
 
   void TearDown() override {
+    cookie_controls_observation_.Reset();
+    memory_saver_observation_.Reset();
     observation_.Reset();
     controller_.reset();
     tab_helper_.reset();
@@ -100,11 +110,22 @@ class OnionLocationPageActionControllerTest : public testing::Test {
   TestingProfile& profile() { return profile_; }
 
   OnionLocationPageActionController* controller() { return controller_.get(); }
+  PageActionControllerImpl& page_action_controller() {
+    return *page_action_controller_;
+  }
   const PageActionTestObserver& observer() const { return observer_; }
+  const PageActionTestObserver& memory_saver_observer() const {
+    return memory_saver_observer_;
+  }
+  const PageActionTestObserver& cookie_controls_observer() const {
+    return cookie_controls_observer_;
+  }
 
  private:
+  const bool use_tor_profile_ = false;
   content::BrowserTaskEnvironment task_environment_;
-  TestPageActionPropertiesProvider properties_provider_;
+  // The production provider, so chip priorities come from the patched table.
+  PageActionPropertiesProvider properties_provider_;
   TestingProfile profile_;
 
   std::unique_ptr<PinnedToolbarActionsModel> pinned_actions_model_;
@@ -116,6 +137,12 @@ class OnionLocationPageActionControllerTest : public testing::Test {
   PageActionTestObserver observer_;
   base::ScopedObservation<PageActionModelInterface, PageActionModelObserver>
       observation_{&observer_};
+  PageActionTestObserver memory_saver_observer_;
+  base::ScopedObservation<PageActionModelInterface, PageActionModelObserver>
+      memory_saver_observation_{&memory_saver_observer_};
+  PageActionTestObserver cookie_controls_observer_;
+  base::ScopedObservation<PageActionModelInterface, PageActionModelObserver>
+      cookie_controls_observation_{&cookie_controls_observer_};
 
   std::unique_ptr<tor::OnionLocationTabHelper> tab_helper_;
   std::unique_ptr<OnionLocationPageActionController> controller_;
@@ -204,6 +231,48 @@ TEST_F(OnionLocationPageActionControllerTest, ExecuteActionNoopWhenHidden) {
   // TorProfileManager (which needs a full browser environment this unit test
   // doesn't set up).
   controller()->ExecuteAction();
+}
+
+class OnionLocationChipPriorityTest
+    : public OnionLocationPageActionControllerTest {
+ public:
+  OnionLocationChipPriorityTest()
+      : OnionLocationPageActionControllerTest(/*use_tor_profile=*/true) {}
+};
+
+// The onion chip outranks upstream promotions instead of being hidden by them.
+TEST_F(OnionLocationChipPriorityTest, PreemptsLowerPriorityUpstreamChip) {
+  page_action_controller().Show(kActionShowMemorySaverChip);
+  page_action_controller().ShowSuggestionChip(kActionShowMemorySaverChip);
+  ASSERT_TRUE(memory_saver_observer().should_show_suggestion_chip());
+
+  tab_helper()->SetOnionLocationForTesting(GURL("http://example.onion/"));
+  RefreshPageAction();
+  EXPECT_TRUE(observer().should_show_suggestion_chip());
+  EXPECT_FALSE(memory_saver_observer().should_show_suggestion_chip());
+
+  // A promotion requested while the onion chip shows stays collapsed.
+  page_action_controller().ShowSuggestionChip(kActionShowMemorySaverChip);
+  EXPECT_TRUE(observer().should_show_suggestion_chip());
+  EXPECT_FALSE(memory_saver_observer().should_show_suggestion_chip());
+
+  // Once the onion chip goes away the promotion gets its turn.
+  tab_helper()->SetOnionLocationForTesting(GURL());
+  RefreshPageAction();
+  EXPECT_FALSE(observer().should_show_suggestion_chip());
+  EXPECT_TRUE(memory_saver_observer().should_show_suggestion_chip());
+}
+
+// Security/trust chips are shown together rather than competing.
+TEST_F(OnionLocationChipPriorityTest, CoexistsWithSecurityChip) {
+  page_action_controller().Show(kActionShowCookieControls);
+  page_action_controller().ShowSuggestionChip(kActionShowCookieControls);
+  ASSERT_TRUE(cookie_controls_observer().should_show_suggestion_chip());
+
+  tab_helper()->SetOnionLocationForTesting(GURL("http://example.onion/"));
+  RefreshPageAction();
+  EXPECT_TRUE(observer().should_show_suggestion_chip());
+  EXPECT_TRUE(cookie_controls_observer().should_show_suggestion_chip());
 }
 
 }  // namespace page_actions

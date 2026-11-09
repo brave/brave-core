@@ -17,6 +17,7 @@ void PageActionTestObserver::OnPageActionModelChanged(
   visible_ = model.GetVisible();
   text_ = model.GetText();
   tooltip_text_ = model.GetTooltipText();
+  should_show_suggestion_chip_ = model.ShouldShowSuggestionChip();
   ++model_change_count_;
 }
 
