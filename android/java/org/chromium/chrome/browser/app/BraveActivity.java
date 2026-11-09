@@ -840,6 +840,7 @@ public abstract class BraveActivity extends ChromeActivity
 
                         return;
                     }
+                    openWalletPanelRunnable.run();
                 });
     }
 
