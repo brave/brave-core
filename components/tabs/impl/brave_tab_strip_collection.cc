@@ -46,18 +46,18 @@ struct BraveTabStripCollection::UnwrappedHierarchy {
   ~UnwrappedHierarchy() = default;
 
   bool Contains(const TabCollectionNodeHandle& handle) const {
-    return handle_to_parent.contains(handle);
+    return handle_to_parent_.contains(handle);
   }
 
   const std::vector<TabCollectionNodeHandle>& GetChildren(
       const TabCollectionHandle& collection) const {
-    const auto* children = base::FindOrNull(handle_to_children, collection);
+    const auto* children = base::FindOrNull(handle_to_children_, collection);
     CHECK(children);
     return *children;
   }
 
   TabCollectionHandle GetParent(const TabCollectionNodeHandle& handle) const {
-    const auto* parent = base::FindOrNull(handle_to_parent, handle);
+    const auto* parent = base::FindOrNull(handle_to_parent_, handle);
     CHECK(parent);
     return *parent;
   }
@@ -82,7 +82,7 @@ struct BraveTabStripCollection::UnwrappedHierarchy {
 
   bool IsChildOf(const TabCollectionNodeHandle& handle,
                  const TabCollectionHandle& parent) const {
-    const auto* actual_parent = base::FindOrNull(handle_to_parent, handle);
+    const auto* actual_parent = base::FindOrNull(handle_to_parent_, handle);
     return actual_parent && *actual_parent == parent;
   }
 
@@ -133,13 +133,13 @@ struct BraveTabStripCollection::UnwrappedHierarchy {
   void Insert(const TabCollectionNodeHandle& handle,
               const TabCollectionHandle& parent,
               size_t index) {
-    const auto it = handle_to_children.find(parent);
-    CHECK(it != handle_to_children.end());
+    const auto it = handle_to_children_.find(parent);
+    CHECK(it != handle_to_children_.end());
     CHECK_LE(index, it->second.size());
     it->second.insert(it->second.begin() + index, handle);
-    handle_to_parent[handle] = parent;
+    handle_to_parent_[handle] = parent;
     if (const auto* collection = std::get_if<TabCollectionHandle>(&handle)) {
-      handle_to_children.try_emplace(*collection);
+      handle_to_children_.try_emplace(*collection);
     }
   }
 
@@ -147,9 +147,9 @@ struct BraveTabStripCollection::UnwrappedHierarchy {
   void CopyDescendants(const UnwrappedHierarchy& other,
                        const TabCollectionHandle& collection) {
     const auto& other_children = other.GetChildren(collection);
-    handle_to_children[collection] = other_children;
+    handle_to_children_[collection] = other_children;
     for (const auto& child : other_children) {
-      handle_to_parent[child] = collection;
+      handle_to_parent_[child] = collection;
       if (const auto* child_collection =
               std::get_if<TabCollectionHandle>(&child)) {
         CopyDescendants(other, *child_collection);
@@ -159,10 +159,10 @@ struct BraveTabStripCollection::UnwrappedHierarchy {
 
   // Takes |handle| out of its parent, keeping its descendants.
   void Detach(const TabCollectionNodeHandle& handle) {
-    const auto it = handle_to_children.find(GetParent(handle));
-    CHECK(it != handle_to_children.end());
+    const auto it = handle_to_children_.find(GetParent(handle));
+    CHECK(it != handle_to_children_.end());
     std::erase(it->second, handle);
-    handle_to_parent.erase(handle);
+    handle_to_parent_.erase(handle);
   }
 
   // Removes |handle| along with its descendants.
@@ -175,7 +175,7 @@ struct BraveTabStripCollection::UnwrappedHierarchy {
   void Add(const TabCollection& collection) {
     std::vector<TabCollectionNodeHandle> handles;
     AddUnwrappedChildren(collection, collection.GetHandle(), handles);
-    handle_to_children[collection.GetHandle()] = std::move(handles);
+    handle_to_children_[collection.GetHandle()] = std::move(handles);
   }
 
   // Adds the children of |collection| as the children of |parent|, replacing
@@ -194,7 +194,7 @@ struct BraveTabStripCollection::UnwrappedHierarchy {
         const TabCollectionHandle child_collection_handle =
             (*child_collection)->GetHandle();
         handles.push_back(child_collection_handle);
-        handle_to_parent[child_collection_handle] = parent;
+        handle_to_parent_[child_collection_handle] = parent;
 
         Add(**child_collection);
         continue;
@@ -203,7 +203,7 @@ struct BraveTabStripCollection::UnwrappedHierarchy {
       const TabHandle tab_handle =
           std::get<ScopedTab>(child).get()->GetHandle();
       handles.push_back(tab_handle);
-      handle_to_parent[tab_handle] = parent;
+      handle_to_parent_[tab_handle] = parent;
     }
   }
 
@@ -213,22 +213,22 @@ struct BraveTabStripCollection::UnwrappedHierarchy {
       return;
     }
 
-    const auto it = handle_to_children.find(*collection);
-    CHECK(it != handle_to_children.end());
+    const auto it = handle_to_children_.find(*collection);
+    CHECK(it != handle_to_children_.end());
 
     const std::vector<TabCollectionNodeHandle> descendants =
         std::move(it->second);
-    handle_to_children.erase(it);
+    handle_to_children_.erase(it);
     for (const auto& descendant : descendants) {
-      handle_to_parent.erase(descendant);
+      handle_to_parent_.erase(descendant);
       RemoveDescendants(descendant);
     }
   }
 
   absl::flat_hash_map<TabCollectionHandle, std::vector<TabCollectionNodeHandle>>
-      handle_to_children;
+      handle_to_children_;
   absl::flat_hash_map<TabCollectionNodeHandle, TabCollectionHandle>
-      handle_to_parent;
+      handle_to_parent_;
 };
 
 // Notifies observers of the changes made within its lifetime as the changes of
