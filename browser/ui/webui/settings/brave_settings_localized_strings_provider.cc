@@ -513,6 +513,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"semanticHistorySearchSubLabel",
        IDS_SETTINGS_SEMANTIC_HISTORY_SEARCH_SUB_LABEL},
       {"onDeviceSpeechModelLabel", IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_LABEL},
+      {"onDeviceSpeechMultilingualModelLabel",
+       IDS_SETTINGS_ON_DEVICE_SPEECH_MULTILINGUAL_MODEL_LABEL},
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
       {"historyRetentionLabel", IDS_SETTINGS_HISTORY_RETENTION_LABEL},
       {"historyRetentionSubLabel", IDS_SETTINGS_HISTORY_RETENTION_SUB_LABEL},
@@ -1240,9 +1242,18 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       "onDeviceSpeechModelSubLabel",
       l10n_util::GetStringFUTF16(IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_SUB_LABEL,
                                  ui::FormatBytes(local_ai::kApproxModelSize)));
+  html_source->AddString(
+      "onDeviceSpeechMultilingualModelSubLabel",
+      l10n_util::GetStringFUTF16(
+          IDS_SETTINGS_ON_DEVICE_SPEECH_MULTILINGUAL_MODEL_SUB_LABEL,
+          ui::FormatBytes(local_ai::kApproxMultilingualModelSize)));
   html_source->AddBoolean(
       "isOnDeviceSpeechModelAvailable",
       local_ai::CanOfferOnDeviceSpeech(g_browser_process->local_state()));
+  html_source->AddBoolean("isOnDeviceSpeechMultilingualModelAvailable",
+                          local_ai::CanOfferOnDeviceSpeechModel(
+                              g_browser_process->local_state(),
+                              local_ai::OnDeviceSpeechModel::kMultilingual));
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY)

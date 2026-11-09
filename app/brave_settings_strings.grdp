@@ -849,6 +849,12 @@
   <message name="IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_SUB_LABEL" desc="Description for the setting that downloads Brave's on-device speech recognition model. Turning the setting off removes the model.">
     Download a speech recognition model (<ph name="DOWNLOAD_SIZE">$1<ex>636 MB</ex></ph>) so sites can process speech on this device. Turn this off to remove the model.
   </message>
+  <message name="IDS_SETTINGS_ON_DEVICE_SPEECH_MULTILINGUAL_MODEL_LABEL" desc="Label for the setting that downloads Brave's multilingual on-device speech recognition model, so that sites can process speech in languages other than English on this device">
+    On-device multilingual speech recognition
+  </message>
+  <message name="IDS_SETTINGS_ON_DEVICE_SPEECH_MULTILINGUAL_MODEL_SUB_LABEL" desc="Description for the setting that downloads Brave's multilingual on-device speech recognition model, which serves languages other than English. Turning the setting off removes the model.">
+    Download a multilingual speech recognition model (<ph name="DOWNLOAD_SIZE">$1<ex>697 MB</ex></ph>) so sites can process speech in other languages on this device. Turn this off to remove the model.
+  </message>
   <!-- History retention -->
   <message name="IDS_SETTINGS_HISTORY_RETENTION_LABEL" desc="Label for the setting that controls how long browsing history is retained">
     Local history retention
