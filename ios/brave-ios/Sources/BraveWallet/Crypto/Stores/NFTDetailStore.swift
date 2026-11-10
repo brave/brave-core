@@ -10,7 +10,6 @@ class NFTDetailStore: ObservableObject, WalletObserverStore {
   private let keyringService: BraveWalletKeyringService
   private let rpcService: BraveWalletJsonRpcService
   private let txService: BraveWalletTxService
-  private let ipfsApi: IpfsAPI
   private var txServiceObserver: TxServiceObserver?
   @Published var owner: BraveWallet.AccountInfo?
   @Published var nft: BraveWallet.BlockchainToken
@@ -27,7 +26,6 @@ class NFTDetailStore: ObservableObject, WalletObserverStore {
     keyringService: BraveWalletKeyringService,
     rpcService: BraveWalletJsonRpcService,
     txService: BraveWalletTxService,
-    ipfsApi: IpfsAPI,
     nft: BraveWallet.BlockchainToken,
     nftMetadata: BraveWallet.NftMetadata?,
     owner: BraveWallet.AccountInfo?
@@ -36,7 +34,6 @@ class NFTDetailStore: ObservableObject, WalletObserverStore {
     self.keyringService = keyringService
     self.rpcService = rpcService
     self.txService = txService
-    self.ipfsApi = ipfsApi
     self.nft = nft
     self.nftMetadata = nftMetadata
     self.owner = owner
@@ -77,10 +74,7 @@ class NFTDetailStore: ObservableObject, WalletObserverStore {
 
       if nftMetadata == nil {
         isLoading = true
-        nftMetadata = await rpcService.fetchNFTMetadata(
-          for: nft,
-          ipfsApi: ipfsApi
-        )
+        nftMetadata = await rpcService.fetchNFTMetadata(for: nft)
         isLoading = false
       }
     }

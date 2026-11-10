@@ -681,7 +681,7 @@ extension BraveWallet.NftMetadata {
     URL(string: image)
   }
 
-  func httpfyIpfsUrl(ipfsApi: IpfsAPI) -> BraveWallet.NftMetadata {
+  func httpfyIpfsUrl() -> BraveWallet.NftMetadata {
     guard image.hasPrefix("ipfs://"),
       let url = URL(string: image)
     else {
@@ -690,7 +690,7 @@ extension BraveWallet.NftMetadata {
     return .init(
       name: self.name,
       description: self.desc,
-      image: ipfsApi.resolveGatewayUrl(for: url)?.absoluteString ?? self.image,
+      image: IpfsAPI.resolveGatewayUrl(for: url)?.absoluteString ?? self.image,
       imageData: self.imageData,
       externalUrl: self.externalUrl,
       attributes: self.attributes,
