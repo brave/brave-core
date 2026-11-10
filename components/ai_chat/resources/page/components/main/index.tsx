@@ -64,6 +64,10 @@ function Main() {
     conversationContext.conversationUuid,
   )
 
+  const conversationTitle = aiChatContext.conversations.find(
+    (c) => c.uuid === conversationContext.conversationUuid,
+  )?.title
+
   const isHistoryPlaceholderData =
     conversationContext.api.useGetConversationHistory().isPlaceholderData
 
@@ -275,6 +279,7 @@ function Main() {
       <WorkspaceFileLightbox
         file={conversationContext.previewWorkspaceFile}
         onClose={() => conversationContext.setPreviewWorkspaceFile(null)}
+        conversationTitle={conversationTitle}
         onOpen={(file) => {
           aiChatContext.api.uiHandler.openWorkspaceFile(
             { url: file.workspaceUrl },

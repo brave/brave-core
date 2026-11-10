@@ -3,6 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import JSZip from 'jszip'
+import {
+  kAIChatOrigin,
+  kDownloadWorkspaceRequest,
+  kDownloadWorkspaceResponse,
+} from './download'
 import {
   installMessageHandler,
   kReadFileRequest,
@@ -236,5 +242,89 @@ describe('READ_FILE handler', () => {
     expect(console.error).toHaveBeenCalledWith(
       expect.stringContaining('no source to reply to'),
     )
+  })
+})
+
+describe('DOWNLOAD_WORKSPACE handler', () => {
+  /** Lets pending work settle, then returns the reply, if any. */
+  async function downloadReply(): Promise<Record<string, unknown> | undefined> {
+    // Zipping takes several turns of the event loop.
+    for (let i = 0; i < 10 && !source.postMessage.mock.calls.length; i++) {
+      await new Promise((resolve) => setTimeout(resolve, 10))
+    }
+    expect(source.postMessage.mock.calls.length).toBeLessThan(2)
+    const call = source.postMessage.mock.calls[0]
+    if (!call) {
+      return undefined
+    }
+    // The reply must be aimed at the AI Chat page, never '*'.
+    expect(call[1]).toBe(kAIChatOrigin)
+    return call[0]
+  }
+
+  // jsdom's Blob has no arrayBuffer(), so read it the old-fashioned way.
+  function readBytes(blob: Blob): Promise<ArrayBuffer> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = () => resolve(reader.result as ArrayBuffer)
+      reader.onerror = () => reject(reader.error)
+      reader.readAsArrayBuffer(blob)
+    })
+  }
+
+  it('replies with a zip of the workspace named after the folder', async () => {
+    ready()
+    post({ type: kDownloadWorkspaceRequest, requestId: 'r1' }, kAIChatOrigin)
+    const response = await downloadReply()
+    expect(response).toMatchObject({
+      type: kDownloadWorkspaceResponse,
+      requestId: 'r1',
+    })
+    const file = response!.file as File
+    expect(file.name).toBe('workspace.zip')
+    expect(file.type).toBe('application/zip')
+    const zip = await JSZip.loadAsync(await readBytes(file))
+    expect(await zip.file('notes.txt')!.async('string')).toBe('hello\nworld')
+    expect(await zip.file('src/main.ts')!.async('string')).toBe('export {}')
+  })
+
+  it('names the archive "workspace.zip" for an unnamed (OPFS) root', async () => {
+    resolveRoot(createFakeWorkspace({ 'a.txt': 'a' }, ''))
+    post({ type: kDownloadWorkspaceRequest }, kAIChatOrigin)
+    expect(((await downloadReply())!.file as File).name).toBe('workspace.zip')
+  })
+
+  it('errors when the launch never delivers a handle', async () => {
+    post({ type: kDownloadWorkspaceRequest, requestId: 2 }, kAIChatOrigin)
+    rejectRoot(new Error('workspace folder is unavailable'))
+    expect(await downloadReply()).toEqual({
+      type: kDownloadWorkspaceResponse,
+      requestId: 2,
+      error: 'workspace folder is unavailable',
+    })
+  })
+
+  it.each([
+    [kSenderOrigin, 'the viewer origin'],
+    [kWorkspaceOrigin, 'the workspace origin itself'],
+    ['chrome://leo-ai.evil', 'a longer host'],
+    ['chrome-untrusted://leo-ai', 'a different scheme'],
+  ])('ignores requests from %s (%s)', async (origin) => {
+    ready()
+    post({ type: kDownloadWorkspaceRequest }, origin)
+    await new Promise((resolve) => setTimeout(resolve, 50))
+    expect(source.postMessage).not.toHaveBeenCalled()
+  })
+
+  it.each([
+    [{ type: kReadFileRequest, path: 'notes.txt' }],
+    [{ requestId: 1 }],
+    [kDownloadWorkspaceRequest],
+    [null],
+  ])('ignores unrecognised payload %p from AI Chat', async (data) => {
+    ready()
+    post(data, kAIChatOrigin)
+    await new Promise((resolve) => setTimeout(resolve, 50))
+    expect(source.postMessage).not.toHaveBeenCalled()
   })
 })

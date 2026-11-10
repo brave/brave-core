@@ -4,10 +4,18 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // postMessage bridge that lets the `view.` sibling origin read files out of the
-// workspace folder. Only that origin is accepted: the workspace holds an
-// auto-granted File System Access handle to a user-picked folder.
+// workspace folder, and lets the AI Chat page download the whole folder as a
+// zip. Only those origins are accepted, each for its own request type: the
+// workspace holds an auto-granted File System Access handle to a user-picked
+// folder.
 
-import { readFile } from './file_ops'
+import {
+  DownloadWorkspaceResponse,
+  kAIChatOrigin,
+  kDownloadWorkspaceRequest,
+  kDownloadWorkspaceResponse,
+} from './download'
+import { readFile, zipWorkspace } from './file_ops'
 
 export const kReadFileRequest = 'READ_FILE'
 export const kReadFileResponse = 'READ_FILE_RESULT'
@@ -32,6 +40,24 @@ export function viewOrigin(origin: string): string {
     : ''
 }
 
+// Waits for the directory handle, with a timeout so a request doesn't hang
+// forever when the workspace never gets a folder.
+function awaitRoot(
+  root: Promise<FileSystemDirectoryHandle>,
+): Promise<FileSystemDirectoryHandle> {
+  const timeoutPromise = new Promise<never>((_resolve, reject) => {
+    setTimeout(
+      () => reject(new Error('Workspace folder not available (timeout)')),
+      5000,
+    )
+  })
+  return Promise.race([root, timeoutPromise])
+}
+
+function errorMessage(e: unknown): string {
+  return e instanceof Error ? e.message : String(e)
+}
+
 async function readFilePayload(
   root: Promise<FileSystemDirectoryHandle>,
   path: unknown,
@@ -41,18 +67,55 @@ async function readFilePayload(
     return { error: 'READ_FILE requires a non-empty string "path"' }
   }
   try {
-    // Add a timeout so we don't hang forever waiting for the directory handle
-    const timeoutPromise = new Promise<never>((_resolve, reject) => {
-      setTimeout(
-        () => reject(new Error('Workspace folder not available (timeout)')),
-        5000,
-      )
-    })
-    const handle = await Promise.race([root, timeoutPromise])
+    const handle = await awaitRoot(root)
     return { file: await readFile(handle, path) }
   } catch (e) {
-    return { error: e instanceof Error ? e.message : String(e) }
+    return { error: errorMessage(e) }
   }
+}
+
+async function downloadWorkspacePayload(
+  root: Promise<FileSystemDirectoryHandle>,
+): Promise<{ file?: File; error?: string }> {
+  try {
+    const handle = await awaitRoot(root)
+    const zip = await zipWorkspace(handle)
+    const blob = await zip.generateAsync({ type: 'blob' })
+    // The OPFS root has an empty name.
+    const name = `${handle.name || 'workspace'}.zip`
+    return { file: new File([blob], name, { type: 'application/zip' }) }
+  } catch (e) {
+    return { error: errorMessage(e) }
+  }
+}
+
+// Replies to an AI Chat page request to download the workspace as a zip.
+async function handleDownloadRequest(
+  root: Promise<FileSystemDirectoryHandle>,
+  event: MessageEvent,
+) {
+  const data = event.data as Record<string, unknown> | null
+  if (
+    typeof data !== 'object'
+    || data === null
+    || data.type !== kDownloadWorkspaceRequest
+  ) {
+    console.debug('[leo-workspace] ignoring non-DOWNLOAD_WORKSPACE message')
+    return
+  }
+  const source = event.source as Window | null
+  if (!source) {
+    console.error(
+      '[leo-workspace] DOWNLOAD_WORKSPACE has no source to reply to',
+    )
+    return
+  }
+  const response: DownloadWorkspaceResponse = {
+    type: kDownloadWorkspaceResponse,
+    requestId: data.requestId,
+    ...(await downloadWorkspacePayload(root)),
+  }
+  source.postMessage(response, kAIChatOrigin)
 }
 
 // |root| resolves when the directory handle arrives via launchQueue, so a
@@ -77,6 +140,10 @@ export function installMessageHandler(
       event.origin,
       event.data,
     )
+    if (event.origin === kAIChatOrigin) {
+      await handleDownloadRequest(root, event)
+      return
+    }
     if (event.origin !== targetOrigin) {
       console.debug(
         '[leo-workspace] ignoring message from wrong origin, expected',
