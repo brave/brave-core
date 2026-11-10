@@ -17,7 +17,6 @@
 #include "brave/components/endpoint_client/test_support.h"
 #include "net/http/http_status_code.h"
 #include "services/network/public/cpp/resource_request.h"
-#include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -52,8 +51,7 @@ class EndpointTest : public testing::TestWithParam<const EndpointTestCase<T>*> {
 
     base::test::TestFuture<typename T::Response> future;
     endpoint_client::Client<T>::Send(
-        test_url_loader_factory_.GetSafeWeakWrapper(), typename T::Request(),
-        future.GetCallback());
+        test_url_loader_factory_, typename T::Request(), future.GetCallback());
     EXPECT_THAT(future.Take(),
                 endpoint_client::ResponseEq(test_case.expected_response));
   }

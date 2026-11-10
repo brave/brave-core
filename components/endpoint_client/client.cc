@@ -31,7 +31,7 @@ void OnBodyAsString(OnResponseCallback on_response_callback,
 }  // namespace
 
 std::unique_ptr<network::SimpleURLLoader> StartSimpleURLLoader(
-    network::SharedURLLoaderFactory& url_loader_factory,
+    network::mojom::URLLoaderFactory& url_loader_factory,
     std::string_view method,
     const GURL& url,
     net::HttpRequestHeaders headers,
