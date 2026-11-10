@@ -371,36 +371,36 @@ export class NemotronStreamSession {
       }
 
       if (this.modelType === 'multilingual') {
-        ;(encoderFeeds.prompt_index = new ort.Tensor(
+        encoderFeeds.prompt_index = new ort.Tensor(
           'int64',
           BigInt64Array.from([BigInt(this.promptId!)]),
           [1],
-        )),
-          // tensor layout expected by en and multilingual models are different
-          // this difference is inherited from original nemo models from which
-          // onnx models are derived
-          (encoderFeeds.cache_last_channel = new ort.Tensor(
-            'float32',
-            this.cacheCh,
-            [
-              this.modelConfig.NEMO_NUM_ENCODER_LAYERS,
-              1,
-              this.modelConfig.NEMO_LEFT_CONTEXT,
-              this.modelConfig.NEMO_HIDDEN_DIM,
-            ],
-          )),
-          (encoderFeeds.cache_last_time = new ort.Tensor(
-            'float32',
-            this.cacheTime,
-            [
-              this.modelConfig.NEMO_NUM_ENCODER_LAYERS,
-              1,
-              this.modelConfig.NEMO_HIDDEN_DIM,
-              this.modelConfig.NEMO_CONV_CONTEXT,
-            ],
-          ))
+        )
+        // tensor layout expected by en and multilingual models are different
+        // this difference is inherited from original nemo models from which
+        // onnx models are derived
+        encoderFeeds.cache_last_channel = new ort.Tensor(
+          'float32',
+          this.cacheCh,
+          [
+            this.modelConfig.NEMO_NUM_ENCODER_LAYERS,
+            1,
+            this.modelConfig.NEMO_LEFT_CONTEXT,
+            this.modelConfig.NEMO_HIDDEN_DIM,
+          ],
+        )
+        encoderFeeds.cache_last_time = new ort.Tensor(
+          'float32',
+          this.cacheTime,
+          [
+            this.modelConfig.NEMO_NUM_ENCODER_LAYERS,
+            1,
+            this.modelConfig.NEMO_HIDDEN_DIM,
+            this.modelConfig.NEMO_CONV_CONTEXT,
+          ],
+        )
       } else {
-        ;(encoderFeeds.cache_last_channel = new ort.Tensor(
+        encoderFeeds.cache_last_channel = new ort.Tensor(
           'float32',
           this.cacheCh,
           [
@@ -409,17 +409,17 @@ export class NemotronStreamSession {
             this.modelConfig.NEMO_LEFT_CONTEXT,
             this.modelConfig.NEMO_HIDDEN_DIM,
           ],
-        )),
-          (encoderFeeds.cache_last_time = new ort.Tensor(
-            'float32',
-            this.cacheTime,
-            [
-              1,
-              this.modelConfig.NEMO_NUM_ENCODER_LAYERS,
-              this.modelConfig.NEMO_HIDDEN_DIM,
-              this.modelConfig.NEMO_CONV_CONTEXT,
-            ],
-          ))
+        )
+        encoderFeeds.cache_last_time = new ort.Tensor(
+          'float32',
+          this.cacheTime,
+          [
+            1,
+            this.modelConfig.NEMO_NUM_ENCODER_LAYERS,
+            this.modelConfig.NEMO_HIDDEN_DIM,
+            this.modelConfig.NEMO_CONV_CONTEXT,
+          ],
+        )
       }
 
       const eo = await this.model.runEncoder(encoderFeeds, ENC_FETCHES)
