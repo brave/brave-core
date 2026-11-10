@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Depend on Brave's customize toolbar actions.
+
+      The customize_toolbar_handler.cc override includes brave_action.h and
+      list_action_modifiers.h, which need the generated Brave vector icons.
+    insert_into_list:
+      target: customize_toolbar
+      list_name: deps
+      values:
+        - //brave/browser/ui/webui/side_panel/customize_chrome
