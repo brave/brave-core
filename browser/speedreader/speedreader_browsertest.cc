@@ -7,6 +7,7 @@
 
 #include "base/command_line.h"
 #include "base/functional/bind.h"
+#include "base/i18n/language_tag.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/escape.h"
@@ -992,7 +993,10 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ToolbarProcessesAccelerators) {
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ToolbarLangs) {
   language::LanguagePrefs language_prefs(browser()->GetProfile()->GetPrefs());
   language_prefs.SetUserSelectedLanguagesList(
-      {"en-US", "ja", "en-CA", "fr-CA"});
+      {base::i18n::GetKnownLanguageTag("en-US"),
+       base::i18n::GetKnownLanguageTag("ja"),
+       base::i18n::GetKnownLanguageTag("en-CA"),
+       base::i18n::GetKnownLanguageTag("fr-CA")});
 
   EnableSpeedreaderAllowedForAllSites();
   NavigateToPageSynchronously(kTestPageReadable);
