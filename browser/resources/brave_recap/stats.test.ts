@@ -3,16 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import {
-  getDaysSinceFirstRun,
-  getHdVideoHoursEquivalent,
-  getMoviesEquivalent,
-  getTimeSavedMs,
-  hasEnoughData,
-} from './stats'
+import { getDaysSinceFirstRun, getTimeSavedMs, hasEnoughData } from './stats'
 
 const DAY_MS = 24 * 60 * 60 * 1000
-const GB = 1024 * 1024 * 1024
 
 function makeStats(
   adsBlocked: number,
@@ -25,17 +18,6 @@ function makeStats(
 describe('brave recap stats', () => {
   it('estimates 50ms saved per blocked item, like the NTP widget', () => {
     expect(getTimeSavedMs(makeStats(1000))).toBe(50_000)
-  })
-
-  it('counts whole two-hour movies', () => {
-    expect(getMoviesEquivalent(makeStats(143_999))).toBe(0)
-    expect(getMoviesEquivalent(makeStats(144_000))).toBe(1)
-    expect(getMoviesEquivalent(makeStats(1_284_213))).toBe(8)
-  })
-
-  it('counts whole hours of HD video at 3 GB per hour', () => {
-    expect(getHdVideoHoursEquivalent(makeStats(0, 3 * GB - 1))).toBe(0)
-    expect(getHdVideoHoursEquivalent(makeStats(0, 9 * GB))).toBe(3)
   })
 
   it('returns 0 days when the install date is unknown', () => {

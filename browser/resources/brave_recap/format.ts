@@ -23,6 +23,19 @@ function splitParts(parts: Intl.NumberFormatPart[]): FormattedValue {
   return { value, unit }
 }
 
+const numberFormats = new Map<string, Intl.NumberFormat>()
+
+// Formatters are costly to create and the count-up formats every frame.
+function getNumberFormat(options: Intl.NumberFormatOptions = {}) {
+  const key = JSON.stringify(options)
+  let format = numberFormats.get(key)
+  if (!format) {
+    format = new Intl.NumberFormat(undefined, options)
+    numberFormats.set(key, format)
+  }
+  return format
+}
+
 function formatUnit(
   value: number,
   unit: string,
@@ -30,7 +43,7 @@ function formatUnit(
   maximumFractionDigits = 0,
 ) {
   return splitParts(
-    new Intl.NumberFormat(undefined, {
+    getNumberFormat({
       style: 'unit',
       unit,
       unitDisplay,
@@ -41,37 +54,44 @@ function formatUnit(
 }
 
 export function formatCount(value: number) {
-  return new Intl.NumberFormat().format(Math.round(value))
+  return getNumberFormat().format(Math.round(value))
 }
 
-export function formatTimeSaved(ms: number): FormattedValue {
-  const seconds = ms / 1000
-  const minutes = seconds / 60
-  const hours = minutes / 60
-  const days = hours / 24
-  if (days >= 1) {
-    return formatUnit(days, 'day', 'long', 2)
+const SECOND_MS = 1000
+const MINUTE_MS = 60 * SECOND_MS
+const HOUR_MS = 60 * MINUTE_MS
+const DAY_MS = 24 * HOUR_MS
+
+// The unit is picked from `unitFor`, so a counting-up value can keep the unit
+// of its final value.
+export function formatTimeSaved(ms: number, unitFor = ms): FormattedValue {
+  if (unitFor >= DAY_MS) {
+    return formatUnit(ms / DAY_MS, 'day', 'long', 2)
   }
-  if (hours >= 1) {
-    return formatUnit(hours, 'hour', 'long', 1)
+  if (unitFor >= HOUR_MS) {
+    return formatUnit(ms / HOUR_MS, 'hour', 'long', 1)
   }
-  if (minutes >= 1) {
-    return formatUnit(minutes, 'minute', 'long')
+  if (unitFor >= MINUTE_MS) {
+    return formatUnit(ms / MINUTE_MS, 'minute', 'long')
   }
-  return formatUnit(Math.max(seconds, 0), 'second', 'long')
+  return formatUnit(Math.max(ms, 0) / SECOND_MS, 'second', 'long')
 }
 
-export function formatBandwidth(bytes: number): FormattedValue {
-  const kb = bytes / 1024
-  const mb = kb / 1024
-  const gb = mb / 1024
-  if (gb >= 1) {
-    return formatUnit(gb, 'gigabyte', 'short', 2)
+const KB = 1024
+const MB = 1024 * KB
+const GB = 1024 * MB
+
+export function formatBandwidth(
+  bytes: number,
+  unitFor = bytes,
+): FormattedValue {
+  if (unitFor >= GB) {
+    return formatUnit(bytes / GB, 'gigabyte', 'short', 2)
   }
-  if (mb >= 1) {
-    return formatUnit(mb, 'megabyte', 'short', 1)
+  if (unitFor >= MB) {
+    return formatUnit(bytes / MB, 'megabyte', 'short', 1)
   }
-  return formatUnit(kb, 'kilobyte', 'short')
+  return formatUnit(bytes / KB, 'kilobyte', 'short')
 }
 
 export function joinValue({ value, unit }: FormattedValue) {
