@@ -330,17 +330,6 @@
   return _defaultHostContentSettings;
 }
 
-- (BraveWebViewConfiguration*)defaultWebViewConfiguration {
-  return BraveWebViewConfigurationProvider::FromBrowserState(_profile)
-      .GetConfiguration();
-}
-
-- (BraveWebViewConfiguration*)nonPersistentWebViewConfiguration {
-  return BraveWebViewConfigurationProvider::FromBrowserState(
-             _profile->GetOffTheRecordProfile())
-      .GetConfiguration();
-}
-
 #pragma mark - Handling of destroying the incognito BrowserState
 
 // The incognito BrowserState should be closed when the last incognito tab is
