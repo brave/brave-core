@@ -14,6 +14,7 @@
 #include "brave/browser/ui/screenshot/screenshot_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/tabs/public/before_unload_ignore_controller.h"
 #include "brave/browser/ui/tabs/public/closing_last_tab_controller.h"
 #include "brave/browser/ui/tabs/tree_tab_session_manager.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
@@ -102,6 +103,10 @@ void BraveBrowserWindowFeatures::Init() {
   closing_last_tab_controller_ =
       GetUserDataFactory().CreateInstance<ClosingLastTabController>(*browser_,
                                                                     *browser_);
+
+  before_unload_ignore_controller_ =
+      GetUserDataFactory().CreateInstance<BeforeUnloadIgnoreController>(
+          *browser_, *browser_);
 
   brave_non_client_hit_test_helper_ =
       GetUserDataFactory().CreateInstance<BraveNonClientHitTestHelper>(

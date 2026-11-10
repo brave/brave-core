@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/check_deref.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
@@ -43,7 +44,7 @@
 #include "url/origin.h"
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/tabs/public/before_unload_ignore_controller.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #else
@@ -272,8 +273,8 @@ void BraveEphemeralStorageServiceDelegate::
       }
       tab_handlers.emplace(tab->GetHandle());
     }
-    static_cast<BraveBrowser*>(browser)->SetTabsToIgnoreBeforeUnloadHandlers(
-        tab_handlers);
+    CHECK_DEREF(BeforeUnloadIgnoreController::From(browser))
+        .SetTabsToIgnoreBeforeUnloadHandlers(tab_handlers);
 
     for (auto& tab_handle : tab_handlers) {
       if (tab_handle == tabs::TabHandle::Null() || !tab_handle.Get()) {

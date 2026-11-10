@@ -56,7 +56,10 @@ source_set("tabs_public") {
   ]
 
   if (!is_android) {
-    sources += [ "public/closing_last_tab_controller.h" ]
+    sources += [
+      "public/before_unload_ignore_controller.h",
+      "public/closing_last_tab_controller.h",
+    ]
     public_deps += [ "//chrome/browser/ui/tabs:tab_strip_model_observer" ]
   }
 }
@@ -66,6 +69,7 @@ if (!is_android) {
     visibility = [ "//brave/browser:core" ]
 
     sources = [
+      "before_unload_ignore_controller.cc",
       "brave_tab_features.cc",
       "closing_last_tab_controller.cc",
       "shared_pinned_tab_utils.cc",
