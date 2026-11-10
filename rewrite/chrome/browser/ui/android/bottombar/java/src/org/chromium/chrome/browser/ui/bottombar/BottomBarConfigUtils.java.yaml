@@ -6,8 +6,13 @@
 substitutions:
   - description: |-
       Default the bottom bar setting to Brave's prior bottom toolbar choices.
+
+      Both the setting's fallback in isBottomBarUserEnabled() and the default
+      that maybePinDefaultUserEnabled() saves as a pin read it, so a pin never
+      overrides the user's earlier Brave choice with upstream's default.
+    count: 2
     regex:
       re_pattern: |-
-        (ChromePreferenceKeys\.BOTTOM_BAR_ENABLED,\s*)(ChromeFeatureList\.sAndroidBottomBarDefaultUserEnabled\.getValue\(\))
+        (boolean defaultValue =\s*)(ChromeFeatureList\.sAndroidBottomBarDefaultUserEnabled\.getValue\(\))
       replace: |-
         \1BraveBottomBarUserPrefs.getDefaultUserEnabled(\2)
