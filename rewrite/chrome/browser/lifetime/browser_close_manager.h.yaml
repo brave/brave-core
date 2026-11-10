@@ -7,8 +7,8 @@ substitutions:
   - description: |-
       Expose whether closing all browsers is in progress
 
-      `BraveBrowser` skips its window closing confirmation while the
-      application is quitting.
+      `WindowClosingConfirmController` skips its window closing confirmation
+      while the application is quitting.
     add_to_public:
       class_name: BrowserCloseManager
       code: static bool BrowserClosingStarted();
