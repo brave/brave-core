@@ -310,7 +310,6 @@
       "Write(/[WORKSPACE]/b/**)",
       "Bash(vpython3 tools/cr/autolift/autolift.py publish *)",
       "Bash(vpython3 .autolift/tooling/cr/autolift/autolift.py publish *)",
-      "Bash(echo *)",
       "Edit(/[WORKSPACE]/rc/tmp/**)",
       "Write(/[WORKSPACE]/rc/tmp/**)"
     ],

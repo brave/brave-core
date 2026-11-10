@@ -186,14 +186,14 @@ def RunSteps(api: DEPS, properties: InputProperties) -> None:
     # without auto mode reviewing each edit. `publish`, the run's one push, is
     # allowed too: auto mode otherwise judges it by what the run printed before
     # it, and a rebased branch "behind" its remote reads as overwriting it.
-    # The agent runs it as `publish ... > <log> 2>&1; echo "exit $?"`.
+    # A rule only covers a command it matches whole, so the agent runs
+    # `publish` bare: it keeps its own log.
     add_dirs = [checkout]
     allowed_tools = [
         f'Edit(/{checkout}/**)',
         f'Write(/{checkout}/**)',
         f'Bash(vpython3 {AUTOLIFT} publish *)',
         f'Bash(vpython3 {STAGED_AUTOLIFT} publish *)',
-        'Bash(echo *)',
     ]
     with api.brave_core_checkout.brave_core_layout():
         advice = _advise(api, script, tag or str(milestone), properties)
