@@ -9,7 +9,9 @@
 #include <memory>
 
 #include "base/functional/bind.h"
+#include "base/location.h"
 #include "base/run_loop.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
@@ -186,6 +188,57 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, PinAndUnpinTabs) {
       tab_strip_model_2->GetWebContentsAt(0)));
   EXPECT_FALSE(shared_pinned_tab_service->IsDummyContents(
       tab_strip_model_2->GetWebContentsAt(0)));
+}
+
+IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
+                       ActivateWindowWithPendingUnpin) {
+  auto* model = browser()->tab_strip_model();
+  auto* other_model = CreateNewBrowser()->GetTabStripModel();
+  auto* service = GetForBrowser(browser());
+  auto* contents = model->GetWebContentsAt(0);
+
+  model->SetTabPinned(0, /*pinned=*/true);
+  ASSERT_EQ(2, other_model->count());
+  ASSERT_TRUE(service->IsDummyContents(other_model->GetWebContentsAt(0)));
+
+  model->SetTabPinned(0, /*pinned=*/false);
+  // Deliver activation before the posted unpin handler has run.
+  service->OnBrowserActivated(browser());
+  ASSERT_TRUE(base::test::RunUntil([&] { return other_model->count() == 1; }));
+
+  ASSERT_EQ(1, model->count());
+  EXPECT_EQ(contents, model->GetWebContentsAt(0));
+  EXPECT_FALSE(model->IsTabPinned(0));
+  EXPECT_FALSE(service->IsDummyContents(model->GetWebContentsAt(0)));
+  EXPECT_FALSE(other_model->IsTabPinned(0));
+}
+
+IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
+                       ActivatePendingUnpinDummyInOtherWindow) {
+  auto* model = browser()->tab_strip_model();
+  auto* other_browser = CreateNewBrowser();
+  auto* other_model = other_browser->GetTabStripModel();
+  auto* service = GetForBrowser(browser());
+  auto* contents = model->GetWebContentsAt(0);
+  service->OnBrowserActivated(browser());
+
+  model->SetTabPinned(0, /*pinned=*/true);
+  ASSERT_EQ(2, other_model->count());
+  ASSERT_TRUE(service->IsDummyContents(other_model->GetWebContentsAt(0)));
+
+  model->SetTabPinned(0, /*pinned=*/false);
+  other_model->ActivateTabAt(0);
+  service->OnBrowserActivated(other_browser);
+  base::RunLoop run_loop;
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, run_loop.QuitClosure());
+  run_loop.Run();
+
+  ASSERT_EQ(1, model->count());
+  EXPECT_EQ(contents, model->GetWebContentsAt(0));
+  EXPECT_FALSE(model->IsTabPinned(0));
+  ASSERT_EQ(1, other_model->count());
+  EXPECT_FALSE(other_model->IsTabPinned(0));
 }
 
 class SharedPinnedTreeTabServiceBrowserTest
