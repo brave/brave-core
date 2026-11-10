@@ -24,10 +24,7 @@
 #include "brave/components/brave_account/state_internal.h"
 #include "brave/components/endpoint_client/client.h"
 #include "brave/components/endpoint_client/request_handle.h"
-
-namespace network {
-class SharedURLLoaderFactory;
-}  // namespace network
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace os_crypt_async {
 class Encryptor;
@@ -141,7 +138,7 @@ class FlowBase {
       base::OnceCallback<void(Response)> callback) {
     return endpoint_client::Client<Endpoint>::template Send<
         endpoint_client::RequestCancelability::kCancelable>(
-        url_loader_factory_, std::move(request), std::move(callback));
+        *url_loader_factory_, std::move(request), std::move(callback));
   }
 
   // Flow-owned: the handle is parked in `in_flight_` and cancelled by
@@ -161,7 +158,7 @@ class FlowBase {
   template <typename Endpoint, typename Request>
   void SendUnownedRequest(Request request) {
     endpoint_client::Client<Endpoint>::Send(
-        url_loader_factory_, std::move(request),
+        *url_loader_factory_, std::move(request),
         base::BindOnce([](typename Endpoint::Response) {}));
   }
 

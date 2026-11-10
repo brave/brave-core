@@ -13,7 +13,6 @@
 #include <string_view>
 #include <utility>
 
-#include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/memory/scoped_refptr.h"
@@ -26,8 +25,8 @@
 #include "brave/components/endpoint_client/with_headers.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_response_headers.h"
-#include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "services/network/public/mojom/url_loader_factory.mojom.h"
 #include "url/gurl.h"
 
 // See //brave/components/endpoint_client/README.md
@@ -50,7 +49,7 @@ using OnResponseCallback =
 // callback, which destroys it once the response has been handled, and this
 // returns `nullptr`.
 std::unique_ptr<network::SimpleURLLoader> StartSimpleURLLoader(
-    network::SharedURLLoaderFactory& url_loader_factory,
+    network::mojom::URLLoaderFactory& url_loader_factory,
     std::string_view method,
     const GURL& url,
     net::HttpRequestHeaders headers,
@@ -83,7 +82,7 @@ class Client {
              std::same_as<detail::MaybeStripWithHeaders<Response>,
                           typename Endpoint::Response>)
   [[nodiscard]] static auto Send(
-      const scoped_refptr<network::SharedURLLoaderFactory>& url_loader_factory,
+      network::mojom::URLLoaderFactory& url_loader_factory,
       Request request,
       base::OnceCallback<void(Response)> callback) {
     auto upload_data = request.Serialize();
@@ -96,7 +95,7 @@ class Client {
     }();
 
     auto simple_url_loader = detail::StartSimpleURLLoader(
-        CHECK_DEREF(url_loader_factory), Request::Method(), Endpoint::URL(),
+        url_loader_factory, Request::Method(), Endpoint::URL(),
         std::move(headers), std::move(upload_data), Request::ContentType(),
         std::move(static_cast<detail::RequestOptions&>(request)), C,
         base::BindOnce(MakeResponse<Response>).Then(std::move(callback)));
@@ -112,8 +111,8 @@ class Client {
   static Response MakeResponse(int net_error,
                                scoped_refptr<net::HttpResponseHeaders> headers,
                                std::optional<std::string> response_body) {
-    Response response(
-        Response::Deserialize(net_error, headers, std::move(response_body)));
+    Response response(Response::Deserialize(net_error, headers.get(),
+                                            std::move(response_body)));
     if constexpr (base::is_instantiation<Response, WithHeaders>) {
       if (response.status_code) {
         response.headers = std::move(headers);

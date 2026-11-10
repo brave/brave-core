@@ -46,7 +46,6 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/cpp/url_loader_completion_status.h"
-#include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/public/mojom/fetch_api.mojom.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -117,8 +116,8 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
         base::BindRepeating(&ClientTest::Interceptor, base::Unretained(this)));
 
     base::test::TestFuture<Response> future;
-    Client<Endpoint>::Send(test_url_loader_factory_.GetSafeWeakWrapper(),
-                           MakeRequest(), future.GetCallback());
+    Client<Endpoint>::Send(test_url_loader_factory_, MakeRequest(),
+                           future.GetCallback());
     EXPECT_THAT(future.Take(), ResponseEq(test_case.response));
   }
 
@@ -585,14 +584,14 @@ TEST_F(ClientTestCancelableRequest, ResetPreventsCallback) {
   base::test::TestFuture<JSONEndpoint::Response> cancelled_future;
   RequestHandle request_handle =
       Client<JSONEndpoint>::Send<RequestCancelability::kCancelable>(
-          test_url_loader_factory_.GetSafeWeakWrapper(),
-          JSONEndpoint::Request(), cancelled_future.GetCallback());
+          test_url_loader_factory_, JSONEndpoint::Request(),
+          cancelled_future.GetCallback());
 
   // Sent after the cancelled request, so once this one completes, the cancelled
   // one would have too.
   base::test::TestFuture<JSONEndpoint::Response> future;
-  Client<JSONEndpoint>::Send(test_url_loader_factory_.GetSafeWeakWrapper(),
-                             JSONEndpoint::Request(), future.GetCallback());
+  Client<JSONEndpoint>::Send(test_url_loader_factory_, JSONEndpoint::Request(),
+                             future.GetCallback());
 
   request_handle.reset();
 
@@ -608,8 +607,7 @@ TEST_F(ClientTestCancelableRequest, ResetInsideCallbackIsSafe) {
   base::test::TestFuture<void> future;
   RequestHandle request_handle =
       Client<JSONEndpoint>::Send<RequestCancelability::kCancelable>(
-          test_url_loader_factory_.GetSafeWeakWrapper(),
-          JSONEndpoint::Request(),
+          test_url_loader_factory_, JSONEndpoint::Request(),
           base::BindLambdaForTesting(
               [&request_handle,
                done = future.GetCallback()](JSONEndpoint::Response) mutable {
@@ -628,8 +626,8 @@ TEST_F(ClientTestCancelableRequest, ResetAfterCompletionIsNoOp) {
   base::test::TestFuture<JSONEndpoint::Response> future;
   RequestHandle request_handle =
       Client<JSONEndpoint>::Send<RequestCancelability::kCancelable>(
-          test_url_loader_factory_.GetSafeWeakWrapper(),
-          JSONEndpoint::Request(), future.GetCallback());
+          test_url_loader_factory_, JSONEndpoint::Request(),
+          future.GetCallback());
 
   ASSERT_TRUE(future.Wait());
   request_handle.reset();
@@ -639,8 +637,8 @@ TEST_F(ClientTestCancelableRequestDeathTest, ResetOnAnotherSequenceCrashes) {
   base::test::TestFuture<JSONEndpoint::Response> future;
   RequestHandle request_handle =
       Client<JSONEndpoint>::Send<RequestCancelability::kCancelable>(
-          test_url_loader_factory_.GetSafeWeakWrapper(),
-          JSONEndpoint::Request(), future.GetCallback());
+          test_url_loader_factory_, JSONEndpoint::Request(),
+          future.GetCallback());
 
   EXPECT_CHECK_DEATH({
     base::Thread thread("other-sequence");
@@ -680,8 +678,8 @@ TEST(ClientTestUrlReplacements, OverridesReachTheOutgoingRequest) {
   request.url_replacements = std::move(url_replacements);
 
   base::test::TestFuture<JSONEndpoint::Response> future;
-  Client<JSONEndpoint>::Send(test_url_loader_factory.GetSafeWeakWrapper(),
-                             std::move(request), future.GetCallback());
+  Client<JSONEndpoint>::Send(test_url_loader_factory, std::move(request),
+                             future.GetCallback());
   // Wait() only resolves once the request completed, which requires the
   // interceptor to have run - so the EXPECT_EQ above is guaranteed to have been
   // reached.
@@ -700,8 +698,8 @@ TEST(ClientTestMaxBodySize, ExceedingItFailsWithInsufficientResources) {
   request.max_body_size = 1;
 
   base::test::TestFuture<JSONEndpoint::Response> future;
-  Client<JSONEndpoint>::Send(test_url_loader_factory.GetSafeWeakWrapper(),
-                             std::move(request), future.GetCallback());
+  Client<JSONEndpoint>::Send(test_url_loader_factory, std::move(request),
+                             future.GetCallback());
 
   JSONEndpoint::Response expected_response;
   expected_response.net_error = net::ERR_INSUFFICIENT_RESOURCES;
@@ -720,8 +718,8 @@ TEST(ClientTestResponseHeaders, NotSetWithoutStatusCode) {
   request.max_body_size = 1;
 
   base::test::TestFuture<WithHeaders<JSONEndpoint::Response>> future;
-  Client<JSONEndpoint>::Send(test_url_loader_factory.GetSafeWeakWrapper(),
-                             std::move(request), future.GetCallback());
+  Client<JSONEndpoint>::Send(test_url_loader_factory, std::move(request),
+                             future.GetCallback());
 
   WithHeaders<JSONEndpoint::Response> expected_response;
   expected_response.net_error = net::ERR_INSUFFICIENT_RESOURCES;
@@ -745,8 +743,8 @@ TEST_P(ClientTestRetryOptions, Retry) {
   request.retry_options = test_case.retry_options;
 
   base::test::TestFuture<JSONEndpoint::Response> future;
-  Client<JSONEndpoint>::Send(test_url_loader_factory_.GetSafeWeakWrapper(),
-                             std::move(request), future.GetCallback());
+  Client<JSONEndpoint>::Send(test_url_loader_factory_, std::move(request),
+                             future.GetCallback());
   ASSERT_TRUE(future.Wait());
 
   EXPECT_EQ(num_requests, test_case.expected_num_requests);

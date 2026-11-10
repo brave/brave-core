@@ -150,6 +150,10 @@ struct MyEndpoint {
 `Client<>` enforces type safety: only the declared request type is accepted, and
 only the declared response type is returned.
 
+`Send<>()` takes a `network::mojom::URLLoaderFactory&` and doesn't retain it.
+The examples dereference a `scoped_refptr<network::SharedURLLoaderFactory>` that
+is checked to be non-`nullptr` once, where it's stored.
+
 ```cpp
 LoginInit::Request request;
 request.network_traffic_annotation_tag =
@@ -158,7 +162,7 @@ request.body.email = "user@example.com";
 request.body.serialized_ke1 = "0e85b8e68bd22965e15e...";
 
 Client<LoginInit>::Send(
-    url_loader_factory_, std::move(request),
+    *url_loader_factory_, std::move(request),
     base::BindOnce([](LoginInit::Response response) {
       if (!response.body) {
         // response.net_error, response.status_code
@@ -232,14 +236,14 @@ request.headers.SetHeader("X-Custom-Header", "value");
 SetBearerToken(request, bearer_token);
 
 Client<MyEndpoint>::Send(
-    url_loader_factory_, std::move(request),
+    *url_loader_factory_, std::move(request),
     base::BindOnce([](MyEndpoint::Response response) {}));
 ```
 
 ```cpp
 // Response with headers
 Client<MyEndpoint>::Send(
-    url_loader_factory_, std::move(request),
+    *url_loader_factory_, std::move(request),
     base::BindOnce([](WithHeaders<MyEndpoint::Response> response) {
       // response.headers
     }));
@@ -258,7 +262,7 @@ By default, requests are non-cancelable. To make a request cancelable, use the
 ```cpp
 RequestHandle request_handle =
     Client<MyEndpoint>::Send<RequestCancelability::kCancelable>(
-        url_loader_factory_, std::move(request),
+        *url_loader_factory_, std::move(request),
         base::BindOnce([](MyEndpoint::Response response) {}));
 
 request_handle.reset();  // cancels the request
@@ -278,9 +282,8 @@ A non-empty handle must be destroyed (or `reset()`) on the sequence that called
 
 ### 5. Mocking endpoints in tests
 
-`Client<>::Send<>()` depends only on a `network::SharedURLLoaderFactory`, so in
-tests you can construct and configure a `network::TestURLLoaderFactory`, then
-pass `test_url_loader_factory_.GetSafeWeakWrapper()` to the code under test.
+In tests, construct and configure a `network::TestURLLoaderFactory` and pass it
+to `Send<>()` directly.
 
 Helpers for registering typed mock responses are available in
 `//brave/components/endpoint_client:test_support`.
@@ -340,7 +343,7 @@ for `WithHeaders<>` responses), and reports which one differs on failure.
 
 ```cpp
 base::test::TestFuture<LoginInit::Response> future;
-Client<LoginInit>::Send(test_url_loader_factory_.GetSafeWeakWrapper(),
+Client<LoginInit>::Send(test_url_loader_factory_,
                         std::move(request), future.GetCallback());
 EXPECT_THAT(future.Take(), ResponseEq(expected_response));
 ```

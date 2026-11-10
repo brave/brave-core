@@ -12,7 +12,6 @@
 
 #include "base/check.h"
 #include "base/json/json_reader.h"
-#include "base/memory/scoped_refptr.h"
 #include "base/types/expected.h"
 #include "base/values.h"
 #include "brave/components/endpoint_client/is_response_body.h"
@@ -33,10 +32,9 @@ struct Response {
   // Builds a Response from the network result, HTTP response headers,
   // and optional response body. Body deserialization is only attempted
   // when the network request succeeded and response headers are present.
-  static Response Deserialize(
-      int net_error,
-      const scoped_refptr<net::HttpResponseHeaders>& headers,
-      std::optional<std::string> response_body) {
+  static Response Deserialize(int net_error,
+                              const net::HttpResponseHeaders* headers,
+                              std::optional<std::string> response_body) {
     Response response;
     response.net_error = net_error;
 
