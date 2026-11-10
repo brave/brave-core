@@ -13,22 +13,12 @@ export interface RecapStats {
 // Same estimate the NTP stats widget uses.
 const MS_SAVED_PER_BLOCKED_ITEM = 50
 
-const MS_PER_MOVIE = 2 * 60 * 60 * 1000
-const BYTES_PER_HD_VIDEO_HOUR = 3 * 1024 * 1024 * 1024
 const MS_PER_DAY = 24 * 60 * 60 * 1000
 
 const MIN_BLOCKED_TO_SHOW = 100
 
 export function getTimeSavedMs(stats: RecapStats) {
   return stats.adsBlocked * MS_SAVED_PER_BLOCKED_ITEM
-}
-
-export function getMoviesEquivalent(stats: RecapStats) {
-  return Math.floor(getTimeSavedMs(stats) / MS_PER_MOVIE)
-}
-
-export function getHdVideoHoursEquivalent(stats: RecapStats) {
-  return Math.floor(stats.bandwidthSavedBytes / BYTES_PER_HD_VIDEO_HOUR)
 }
 
 export function getDaysSinceFirstRun(stats: RecapStats) {

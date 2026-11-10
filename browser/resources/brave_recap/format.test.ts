@@ -37,6 +37,14 @@ describe('brave recap formatting', () => {
     expect(formatBandwidth(24.04 * GB).value).toBe('24.04')
   })
 
+  it('can keep the unit of another value', () => {
+    const final = formatTimeSaved(3.6 * HOUR_MS)
+    const counting = formatTimeSaved(30 * MINUTE_MS, 3.6 * HOUR_MS)
+    expect(counting.value).toBe('0.5')
+    expect(counting.unit).toBe(final.unit)
+    expect(formatBandwidth(512 * MB, 8 * GB).value).toBe('0.5')
+  })
+
   it('returns a unit separate from the number', () => {
     const formatted = formatBandwidth(2 * GB)
     expect(formatted.unit).not.toBe('')

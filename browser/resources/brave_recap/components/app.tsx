@@ -4,43 +4,63 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { createPortal } from 'react-dom'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
-import Navdots from '@brave/leo/react/navdots'
+import Tooltip from '@brave/leo/react/tooltip'
 import { getLocale, formatLocale } from '$web-common/locale'
 import {
   RecapStats,
   getDaysSinceFirstRun,
-  getHdVideoHoursEquivalent,
-  getMoviesEquivalent,
   getTimeSavedMs,
   hasEnoughData,
 } from '../stats'
 import {
-  FormattedValue,
+  BLOCKED_COMPARISONS,
+  Comparison,
+  DATA_COMPARISONS,
+  TIME_COMPARISONS,
+  pickComparison,
+} from '../comparisons'
+import {
   formatBandwidth,
   formatCount,
   formatMonthYear,
   formatTimeSaved,
   joinValue,
 } from '../format'
-import { renderShareCard } from '../share_card'
+import { ShareCardImages, renderShareCard } from '../share_card'
 import '../strings'
 
 // TODO: replace with an attributed download link once growth provides one.
 const DOWNLOAD_URL = 'https://brave.com/download/'
-// Same-origin so it doesn't taint the share card canvas.
-const LOGO_URL = '/brave-icon.svg'
+const RECAP_URL = 'brave://recap'
+// Same-origin so they don't taint the share card canvas.
+const CARD_IMAGES: ShareCardImages = {
+  logo: '/brave-icon.svg',
+  pattern: '/images/card_pattern.png',
+}
 
-const SLIDES = ['intro', 'blocked', 'time', 'data', 'share'] as const
-type Slide = (typeof SLIDES)[number]
+export const SLIDES = ['intro', 'blocked', 'time', 'data', 'share'] as const
+export type Slide = (typeof SLIDES)[number]
+// These wait for the person: the intro until they start, the share slide
+// because it's the end.
+const UNTIMED_SLIDES: readonly Slide[] = ['intro', 'share']
 
 const COUNT_UP_MS = 1400
+// A press longer than this pauses the slide rather than advancing it.
+const HOLD_MS = 300
+// How much of the slide, from the start side, goes back when tapped.
+const BACK_ZONE = 1 / 3
+
+function prefersReducedMotion() {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+}
 
 function useCountUp(target: number) {
   const [value, setValue] = React.useState(0)
   React.useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (prefersReducedMotion()) {
       setValue(target)
       return
     }
@@ -60,135 +80,337 @@ function useCountUp(target: number) {
   return value
 }
 
-function ValueText({ value }: { value: FormattedValue }) {
+// Only this text re-renders while the number counts up.
+function CountUp(props: { to: number; format: (value: number) => string }) {
+  return <>{props.format(useCountUp(props.to))}</>
+}
+
+function usePageHidden() {
+  const [hidden, setHidden] = React.useState(document.hidden)
+  React.useEffect(() => {
+    const onChange = () => setHidden(document.hidden)
+    document.addEventListener('visibilitychange', onChange)
+    return () => document.removeEventListener('visibilitychange', onChange)
+  }, [])
+  return hidden
+}
+
+interface Nav {
+  next: () => void
+  back: () => void
+  // A tap on the start third of the slide goes back and anywhere else
+  // advances, like stories elsewhere. Nothing happens at the end of a long
+  // press.
+  tap: (e: React.MouseEvent<HTMLElement>) => void
+  setHelpOpen: (open: boolean) => void
+}
+
+interface SlideProps {
+  stats: RecapStats
+  nav: Nav
+  // The share image, rendered when the recap opens so it's ready on arrival.
+  card?: ShareCard
+}
+
+interface ShareCard {
+  blob: Blob
+  url: string
+}
+
+function Progress(props: {
+  index: number
+  autoAdvance: boolean
+  paused: boolean
+  onComplete: () => void
+}) {
+  return (
+    <div
+      className='progress'
+      role='progressbar'
+      aria-label={getLocale(S.BRAVE_RECAP_SLIDES_LABEL)}
+      aria-valuemin={1}
+      aria-valuemax={SLIDES.length}
+      aria-valuenow={props.index + 1}
+      aria-valuetext={formatLocale(S.BRAVE_RECAP_SLIDE_LABEL, {
+        $1: formatCount(props.index + 1),
+        $2: formatCount(SLIDES.length),
+      })}
+    >
+      {SLIDES.map((slide, i) => {
+        const state =
+          i < props.index
+            ? 'done'
+            : i > props.index
+              ? 'todo'
+              : props.autoAdvance
+                ? 'running'
+                : 'done'
+        return (
+          <span
+            key={slide}
+            className='step'
+          >
+            <span
+              // Remount so going back to a slide restarts its timer.
+              key={`${slide}-${props.index}`}
+              className={`fill ${state}`}
+              data-paused={props.paused || undefined}
+              onAnimationEnd={
+                state === 'running' ? props.onComplete : undefined
+              }
+            />
+          </span>
+        )
+      })}
+    </div>
+  )
+}
+
+function BackButton({ nav }: { nav: Nav }) {
+  return (
+    <Button
+      fab
+      className='icon-button'
+      kind='filled'
+      size='medium'
+      title={getLocale(S.BRAVE_RECAP_BACK)}
+      aria-label={getLocale(S.BRAVE_RECAP_BACK)}
+      onClick={nav.back}
+      data-testid='recap-back'
+    >
+      <Icon name='carat-left' />
+    </Button>
+  )
+}
+
+function NextButton({ nav }: { nav: Nav }) {
+  return (
+    <Button
+      kind='filled'
+      size='medium'
+      onClick={nav.next}
+    >
+      {getLocale(S.BRAVE_RECAP_NEXT)}
+      <Icon
+        slot='icon-after'
+        name='carat-right'
+      />
+    </Button>
+  )
+}
+
+// Each slide renders inside a frame. Only the current frame owns the shared
+// bottom bar, so the buttons stay put while slide content moves.
+interface Frame {
+  exiting: boolean
+  bottomBar: HTMLElement | null
+}
+
+const FrameContext = React.createContext<Frame>({
+  exiting: false,
+  bottomBar: null,
+})
+
+function SlideLayout(props: {
+  children: React.ReactNode
+  start: React.ReactNode
+  primary: React.ReactNode
+  onContentClick?: (e: React.MouseEvent<HTMLElement>) => void
+}) {
+  const frame = React.useContext(FrameContext)
   return (
     <>
-      {value.value}
-      {value.unit && <span className='unit'>{value.unit}</span>}
+      <div
+        className='slide'
+        onClick={props.onContentClick}
+      >
+        {props.children}
+      </div>
+      {!frame.exiting
+        && frame.bottomBar
+        && createPortal(
+          <>
+            {props.start}
+            {props.primary}
+          </>,
+          frame.bottomBar,
+        )}
     </>
   )
 }
 
-// Reserves the final value's width so the card doesn't grow while counting.
-function BigValue(props: { value: FormattedValue; final: FormattedValue }) {
+function AppIcon() {
   return (
-    <div className='big-value'>
-      <span
-        className='sizer'
-        aria-hidden='true'
-      >
-        <ValueText value={props.final} />
-      </span>
-      <span>
-        <ValueText value={props.value} />
+    <div className='app-icon'>
+      <Icon name='brave-icon-release-color' />
+    </div>
+  )
+}
+
+function IntroSlide({ stats, nav }: SlideProps) {
+  const days = getDaysSinceFirstRun(stats)
+  return (
+    <SlideLayout
+      onContentClick={nav.tap}
+      start={
+        <Tooltip
+          mode='default'
+          placement='top-start'
+          onVisibilityChange={({ visible }) => nav.setHelpOpen(visible)}
+        >
+          <Button
+            fab
+            kind='filled'
+            size='medium'
+            aria-label={getLocale(S.BRAVE_RECAP_HELP_LABEL)}
+            aria-description={getLocale(S.BRAVE_RECAP_PRIVACY_NOTE)}
+            data-testid='recap-help'
+          >
+            <Icon name='help-outline' />
+          </Button>
+          <div
+            slot='content'
+            className='help'
+          >
+            {getLocale(S.BRAVE_RECAP_PRIVACY_NOTE)}
+          </div>
+        </Tooltip>
+      }
+      primary={
+        <Button
+          kind='filled'
+          size='medium'
+          onClick={nav.next}
+        >
+          {getLocale(S.BRAVE_RECAP_GET_STARTED)}
+          <Icon
+            slot='icon-after'
+            name='carat-right'
+          />
+        </Button>
+      }
+    >
+      <div className='intro'>
+        <AppIcon />
+        <h1>{getLocale(S.BRAVE_RECAP_INTRO_HEADING)}</h1>
+      </div>
+      <div className='messages'>
+        <p className='message start'>
+          {stats.firstRunTime
+            ? formatLocale(S.BRAVE_RECAP_INTRO_SINCE, {
+                $1: <strong>{formatMonthYear(stats.firstRunTime)}</strong>,
+              })
+            : getLocale(S.BRAVE_RECAP_INTRO_NO_DATE)}
+        </p>
+        {days > 1 && (
+          <p className='message end'>
+            {formatLocale(S.BRAVE_RECAP_INTRO_DAYS, {
+              $1: <strong>{formatCount(days)}</strong>,
+            })}
+          </p>
+        )}
+      </div>
+    </SlideLayout>
+  )
+}
+
+// Reserves the final value's width so the number doesn't shift while counting.
+// The final value is what screen readers get; the counting one is hidden.
+function BigValue(props: { to: number; format: (value: number) => string }) {
+  const final = props.format(props.to)
+  return (
+    <div
+      className='big-value'
+      style={{ '--chars': final.length } as React.CSSProperties}
+    >
+      <span className='sizer'>{final}</span>
+      <span aria-hidden='true'>
+        <CountUp
+          to={props.to}
+          format={props.format}
+        />
       </span>
     </div>
   )
 }
 
-function PrivacyNote() {
+function StatSlide(props: {
+  nav: Nav
+  to: number
+  format: (value: number) => string
+  caption: string
+  comparisons: Comparison[]
+  finalValue: number
+  text: string
+}) {
+  const comparison = pickComparison(props.comparisons, props.finalValue)
   return (
-    <p className='privacy-note'>
-      <Icon name='shield-done' />
-      {getLocale(S.BRAVE_RECAP_PRIVACY_NOTE)}
-    </p>
-  )
-}
-
-function IntroSlide({ stats }: { stats: RecapStats }) {
-  const days = getDaysSinceFirstRun(stats)
-  return (
-    <>
-      <div className='logo'>
-        <Icon name='brave-icon-release-color' />
-      </div>
-      <h1>{getLocale(S.BRAVE_RECAP_INTRO_HEADING)}</h1>
-      {stats.firstRunTime ? (
-        <>
-          <p className='lead'>
-            {formatLocale(S.BRAVE_RECAP_INTRO_SINCE, {
-              $1: formatMonthYear(stats.firstRunTime),
-            })}
-          </p>
-          {days > 0 && (
-            <p>
-              {formatLocale(S.BRAVE_RECAP_INTRO_DAYS, {
-                $1: formatCount(days),
-              })}
-            </p>
-          )}
-        </>
-      ) : (
-        <p className='lead'>{getLocale(S.BRAVE_RECAP_INTRO_NO_DATE)}</p>
-      )}
-      <PrivacyNote />
-    </>
-  )
-}
-
-function BlockedSlide({ stats }: { stats: RecapStats }) {
-  const value = useCountUp(stats.adsBlocked)
-  return (
-    <>
-      <div className='hero'>
+    <SlideLayout
+      onContentClick={props.nav.tap}
+      start={<BackButton nav={props.nav} />}
+      primary={<NextButton nav={props.nav} />}
+    >
+      <div className='stat'>
         <BigValue
-          value={{ value: formatCount(value), unit: '' }}
-          final={{ value: formatCount(stats.adsBlocked), unit: '' }}
+          to={props.to}
+          format={props.format}
         />
-        <h2>{getLocale(S.BRAVE_RECAP_BLOCKED_HEADING)}</h2>
+        <h2>{props.caption}</h2>
       </div>
-      <p>{getLocale(S.BRAVE_RECAP_BLOCKED_TEXT)}</p>
-    </>
+      <div className='panels'>
+        {comparison && (
+          <p className='panel comparison'>{getLocale(comparison)}</p>
+        )}
+        <p className='panel note'>{props.text}</p>
+      </div>
+    </SlideLayout>
   )
 }
 
-function TimeSlide({ stats }: { stats: RecapStats }) {
-  const value = useCountUp(getTimeSavedMs(stats))
-  const movies = getMoviesEquivalent(stats)
+function BlockedSlide({ stats, nav }: SlideProps) {
   return (
-    <>
-      <div className='hero'>
-        <BigValue
-          value={formatTimeSaved(value)}
-          final={formatTimeSaved(getTimeSavedMs(stats))}
-        />
-        <h2>{getLocale(S.BRAVE_RECAP_TIME_HEADING)}</h2>
-      </div>
-      <p>
-        {movies > 1
-          ? formatLocale(S.BRAVE_RECAP_TIME_TEXT, { $1: formatCount(movies) })
-          : getLocale(
-              movies === 1
-                ? S.BRAVE_RECAP_TIME_TEXT_ONE
-                : S.BRAVE_RECAP_TIME_TEXT_SHORT,
-            )}
-      </p>
-    </>
+    <StatSlide
+      nav={nav}
+      to={stats.adsBlocked}
+      format={formatCount}
+      caption={getLocale(S.BRAVE_RECAP_BLOCKED_HEADING)}
+      comparisons={BLOCKED_COMPARISONS}
+      finalValue={stats.adsBlocked}
+      text={getLocale(S.BRAVE_RECAP_BLOCKED_TEXT)}
+    />
   )
 }
 
-function DataSlide({ stats }: { stats: RecapStats }) {
-  const value = useCountUp(stats.bandwidthSavedBytes)
-  const hours = getHdVideoHoursEquivalent(stats)
+function TimeSlide({ stats, nav }: SlideProps) {
+  const timeSaved = getTimeSavedMs(stats)
+  const final = formatTimeSaved(timeSaved)
   return (
-    <>
-      <div className='hero'>
-        <BigValue
-          value={formatBandwidth(value)}
-          final={formatBandwidth(stats.bandwidthSavedBytes)}
-        />
-        <h2>{getLocale(S.BRAVE_RECAP_DATA_HEADING)}</h2>
-      </div>
-      <p>
-        {hours > 1
-          ? formatLocale(S.BRAVE_RECAP_DATA_TEXT, { $1: formatCount(hours) })
-          : getLocale(
-              hours === 1
-                ? S.BRAVE_RECAP_DATA_TEXT_ONE
-                : S.BRAVE_RECAP_DATA_TEXT_SHORT,
-            )}
-      </p>
-    </>
+    <StatSlide
+      nav={nav}
+      to={timeSaved}
+      // Keeps the final value's unit while counting.
+      format={(value) => formatTimeSaved(value, timeSaved).value}
+      caption={formatLocale(S.BRAVE_RECAP_TIME_CAPTION, { $1: final.unit })}
+      comparisons={TIME_COMPARISONS}
+      finalValue={timeSaved}
+      text={getLocale(S.BRAVE_RECAP_TIME_TEXT)}
+    />
+  )
+}
+
+function DataSlide({ stats, nav }: SlideProps) {
+  const bytes = stats.bandwidthSavedBytes
+  const final = formatBandwidth(bytes)
+  return (
+    <StatSlide
+      nav={nav}
+      to={bytes}
+      format={(value) => formatBandwidth(value, bytes).value}
+      caption={formatLocale(S.BRAVE_RECAP_DATA_CAPTION, { $1: final.unit })}
+      comparisons={DATA_COMPARISONS}
+      finalValue={bytes}
+      text={getLocale(S.BRAVE_RECAP_DATA_TEXT)}
+    />
   )
 }
 
@@ -205,11 +427,8 @@ function openShareIntent(url: string) {
   window.open(url, '_blank', 'noopener')
 }
 
-function ShareSlide({ stats }: { stats: RecapStats }) {
-  const [card, setCard] = React.useState<Blob>()
-  const [cardUrl, setCardUrl] = React.useState<string>()
-  const [copied, setCopied] = React.useState<'image' | 'text'>()
-
+function useShareCard(stats: RecapStats, images: ShareCardImages) {
+  const [card, setCard] = React.useState<ShareCard>()
   React.useEffect(() => {
     let url: string | undefined
     let cancelled = false
@@ -236,16 +455,16 @@ function ShareSlide({ stats }: { stats: RecapStats }) {
           },
         ],
         cta: getLocale(S.BRAVE_RECAP_CARD_CTA),
+        url: RECAP_URL,
       },
-      LOGO_URL,
+      images,
     )
       .then((blob) => {
         if (cancelled) {
           return
         }
         url = URL.createObjectURL(blob)
-        setCard(blob)
-        setCardUrl(url)
+        setCard({ blob, url })
       })
       .catch((e) => {
         console.error('[brave-recap] failed to render share card:', e)
@@ -256,83 +475,85 @@ function ShareSlide({ stats }: { stats: RecapStats }) {
         URL.revokeObjectURL(url)
       }
     }
-  }, [stats])
+  }, [stats, images])
+  return card
+}
 
-  const flashCopied = (what: 'image' | 'text') => {
-    setCopied(what)
-    setTimeout(() => setCopied(undefined), 2000)
+// Neither X nor Reddit can take an image through a share link, so the image is
+// put on the clipboard to paste into the post.
+async function copyImage(card: ShareCard) {
+  try {
+    await navigator.clipboard.write([
+      new ClipboardItem({ [card.blob.type || 'image/png']: card.blob }),
+    ])
+    return true
+  } catch (e) {
+    console.error('[brave-recap] failed to copy the share image:', e)
+    return false
   }
+}
 
-  const copyImage = async () => {
+function ShareSlide({ stats, nav, card }: SlideProps) {
+  const [imageCopied, setImageCopied] = React.useState(false)
+
+  const download = () => {
     if (!card) {
       return
     }
-    await navigator.clipboard.write([new ClipboardItem({ 'image/png': card })])
-    flashCopied('image')
-  }
-
-  const download = () => {
-    if (!cardUrl) {
-      return
-    }
     const link = document.createElement('a')
-    link.href = cardUrl
+    link.href = card.url
     link.download = 'brave-recap.png'
     link.click()
   }
 
-  const shareText = getShareText(stats)
-  const encodedText = encodeURIComponent(shareText)
+  // Copy first: the post opens in a new tab, and the clipboard can only be
+  // written while this page has focus.
+  const share = async (url: string) => {
+    if (card && (await copyImage(card))) {
+      setImageCopied(true)
+    }
+    openShareIntent(url)
+  }
+
+  const shareText = encodeURIComponent(getShareText(stats))
+  const redditTitle = encodeURIComponent(
+    formatLocale(S.BRAVE_RECAP_SHARE_POST_TITLE, {
+      $1: formatCount(stats.adsBlocked),
+    }),
+  )
 
   return (
-    <div className='share'>
-      <div className='card-preview'>
-        {cardUrl && (
-          <img
-            src={cardUrl}
-            alt={getLocale(S.BRAVE_RECAP_CARD_TITLE)}
+    <SlideLayout
+      start={<BackButton nav={nav} />}
+      primary={
+        <Button
+          kind='filled'
+          size='medium'
+          onClick={download}
+          isDisabled={!card}
+        >
+          <Icon
+            slot='icon-before'
+            name='download'
           />
-        )}
-      </div>
-      <div className='share-actions'>
-        <h1>{getLocale(S.BRAVE_RECAP_SHARE_HEADING)}</h1>
-        <p>{getLocale(S.BRAVE_RECAP_SHARE_TEXT)}</p>
-        <div className='button-row'>
-          <Button
-            kind='filled'
-            size='large'
-            onClick={copyImage}
-            isDisabled={!card}
-          >
-            <Icon
-              slot='icon-before'
-              name={copied === 'image' ? 'check-normal' : 'copy'}
+          {getLocale(S.BRAVE_RECAP_DOWNLOAD)}
+        </Button>
+      }
+    >
+      <div className='share'>
+        <div className='card-preview'>
+          {card && (
+            <img
+              src={card.url}
+              alt={getLocale(S.BRAVE_RECAP_CARD_TITLE)}
             />
-            {getLocale(
-              copied === 'image'
-                ? S.BRAVE_RECAP_COPIED
-                : S.BRAVE_RECAP_COPY_IMAGE,
-            )}
-          </Button>
-          <Button
-            kind='outline'
-            size='large'
-            onClick={download}
-            isDisabled={!cardUrl}
-          >
-            <Icon
-              slot='icon-before'
-              name='download'
-            />
-            {getLocale(S.BRAVE_RECAP_DOWNLOAD)}
-          </Button>
+          )}
         </div>
-        <div className='button-row'>
+        <div className='share-actions'>
           <Button
             kind='outline'
-            onClick={() =>
-              openShareIntent(`https://x.com/intent/post?text=${encodedText}`)
-            }
+            size='medium'
+            onClick={() => share(`https://x.com/intent/post?text=${shareText}`)}
           >
             <Icon
               slot='icon-before'
@@ -342,15 +563,12 @@ function ShareSlide({ stats }: { stats: RecapStats }) {
           </Button>
           <Button
             kind='outline'
+            size='medium'
             onClick={() =>
-              openShareIntent(
-                `https://www.reddit.com/submit?url=${encodeURIComponent(
-                  DOWNLOAD_URL,
-                )}&title=${encodeURIComponent(
-                  formatLocale(S.BRAVE_RECAP_SHARE_POST_TITLE, {
-                    $1: formatCount(stats.adsBlocked),
-                  }),
-                )}`,
+              // A text post, so the image can be pasted next to the same text
+              // as on X.
+              share(
+                `https://www.reddit.com/submit?selftext=true&title=${redditTitle}&text=${shareText}`,
               )
             }
           >
@@ -360,73 +578,229 @@ function ShareSlide({ stats }: { stats: RecapStats }) {
             />
             {getLocale(S.BRAVE_RECAP_POST_ON_REDDIT)}
           </Button>
-          <Button
-            kind='plain'
-            onClick={async () => {
-              await navigator.clipboard.writeText(shareText)
-              flashCopied('text')
-            }}
-          >
-            <Icon
-              slot='icon-before'
-              name={copied === 'text' ? 'check-normal' : 'link-normal'}
-            />
-            {getLocale(
-              copied === 'text'
-                ? S.BRAVE_RECAP_COPIED
-                : S.BRAVE_RECAP_COPY_LINK,
-            )}
-          </Button>
+          {imageCopied && (
+            <p
+              className='share-hint'
+              role='status'
+            >
+              {getLocale(S.BRAVE_RECAP_IMAGE_COPIED)}
+            </p>
+          )}
         </div>
-        <PrivacyNote />
       </div>
-    </div>
+    </SlideLayout>
   )
 }
 
-function renderSlide(slide: Slide, stats: RecapStats) {
+function renderSlide(slide: Slide, { stats, nav, card }: SlideProps) {
   switch (slide) {
     case 'intro':
-      return <IntroSlide stats={stats} />
+      return (
+        <IntroSlide
+          stats={stats}
+          nav={nav}
+          card={card}
+        />
+      )
     case 'blocked':
-      return <BlockedSlide stats={stats} />
+      return (
+        <BlockedSlide
+          stats={stats}
+          nav={nav}
+          card={card}
+        />
+      )
     case 'time':
-      return <TimeSlide stats={stats} />
+      return (
+        <TimeSlide
+          stats={stats}
+          nav={nav}
+          card={card}
+        />
+      )
     case 'data':
-      return <DataSlide stats={stats} />
+      return (
+        <DataSlide
+          stats={stats}
+          nav={nav}
+          card={card}
+        />
+      )
     case 'share':
-      return <ShareSlide stats={stats} />
+      return (
+        <ShareSlide
+          stats={stats}
+          nav={nav}
+          card={card}
+        />
+      )
   }
+}
+
+function Backgrounds(props: { active: Slide; paused?: boolean }) {
+  // Counts how often each slide has been shown, so its photo's drift restarts
+  // every time while a photo that's fading out keeps its place.
+  const shown = React.useRef<Partial<Record<Slide, number>>>({})
+  const lastActive = React.useRef<Slide | undefined>(undefined)
+  if (lastActive.current !== props.active) {
+    shown.current[props.active] = (shown.current[props.active] ?? 0) + 1
+    lastActive.current = props.active
+  }
+  // All are mounted so they load up front and can crossfade.
+  return (
+    <div
+      className='backgrounds'
+      aria-hidden='true'
+      data-paused={props.paused || undefined}
+    >
+      {SLIDES.map((slide) => (
+        <div
+          key={slide}
+          className='background'
+          data-slide={slide}
+          data-active={slide === props.active || undefined}
+        >
+          <div
+            key={shown.current[slide] ?? 0}
+            className='background-image'
+          />
+        </div>
+      ))}
+    </div>
+  )
 }
 
 function EmptyState() {
   return (
-    <div className='recap slide-intro'>
+    <main className='recap-card slide-empty'>
+      <Backgrounds active='intro' />
       <div className='slide'>
-        <div className='logo'>
-          <Icon name='brave-icon-release-color' />
+        <div className='intro'>
+          <AppIcon />
+          <h1>{getLocale(S.BRAVE_RECAP_EMPTY_HEADING)}</h1>
         </div>
-        <h1>{getLocale(S.BRAVE_RECAP_EMPTY_HEADING)}</h1>
-        <p className='lead'>{getLocale(S.BRAVE_RECAP_EMPTY_TEXT)}</p>
+        <div className='panels'>
+          <p className='panel note'>{getLocale(S.BRAVE_RECAP_EMPTY_TEXT)}</p>
+        </div>
       </div>
-    </div>
+    </main>
   )
 }
 
-export function App({ stats }: { stats: RecapStats }) {
-  const [index, setIndex] = React.useState(0)
+interface Props {
+  stats: RecapStats
+  // For stories: where to start, and share card images that resolve there.
+  initialSlide?: Slide
+  cardImages?: ShareCardImages
+}
+
+type Direction = 'forward' | 'back'
+
+interface Navigation {
+  index: number
+  direction: Direction
+  // Set once the person has moved, so the first slide doesn't animate in.
+  moved: boolean
+  // Slides still animating out, with the direction they left in.
+  exiting: Array<{ slide: Slide; direction: Direction }>
+}
+
+type NavigationAction =
+  | { type: 'step'; delta: number; animate: boolean }
+  | { type: 'exited'; slide: Slide }
+
+function navigate(state: Navigation, action: NavigationAction): Navigation {
+  if (action.type === 'exited') {
+    return {
+      ...state,
+      exiting: state.exiting.filter((frame) => frame.slide !== action.slide),
+    }
+  }
+  const index = Math.max(
+    0,
+    Math.min(state.index + action.delta, SLIDES.length - 1),
+  )
+  if (index === state.index) {
+    return state
+  }
+  const direction = index > state.index ? 'forward' : 'back'
+  return {
+    index,
+    direction,
+    moved: true,
+    exiting: action.animate
+      ? [
+          ...state.exiting.filter(
+            (frame) =>
+              frame.slide !== SLIDES[index]
+              && frame.slide !== SLIDES[state.index],
+          ),
+          { slide: SLIDES[state.index], direction },
+        ]
+      : [],
+  }
+}
+
+function Recap({
+  stats,
+  initialSlide = 'intro',
+  cardImages = CARD_IMAGES,
+}: Props) {
+  const [reducedMotion] = React.useState(prefersReducedMotion)
+  const [navigation, dispatch] = React.useReducer(navigate, undefined, () => ({
+    index: SLIDES.indexOf(initialSlide),
+    direction: 'forward' as Direction,
+    moved: false,
+    exiting: [],
+  }))
+  const [bottomBar, setBottomBar] = React.useState<HTMLElement | null>(null)
+  const [holding, setHolding] = React.useState(false)
+  const [holdingContent, setHoldingContent] = React.useState(false)
+  const [helpOpen, setHelpOpen] = React.useState(false)
+  const [keyboardFocus, setKeyboardFocus] = React.useState(false)
+  const pageHidden = usePageHidden()
+  const card = useShareCard(stats, cardImages)
+  const pressStart = React.useRef(0)
+  const lastPressMs = React.useRef(0)
+  const usingKeyboard = React.useRef(false)
+  const { index } = navigation
   const slide = SLIDES[index]
-  const isLast = index === SLIDES.length - 1
 
   const next = React.useCallback(
-    () => setIndex((i) => Math.min(i + 1, SLIDES.length - 1)),
-    [],
+    () => dispatch({ type: 'step', delta: 1, animate: !reducedMotion }),
+    [reducedMotion],
   )
-  const back = React.useCallback(() => setIndex((i) => Math.max(i - 1, 0)), [])
+  const back = React.useCallback(
+    () => dispatch({ type: 'step', delta: -1, animate: !reducedMotion }),
+    [reducedMotion],
+  )
+
+  const nav = React.useMemo<Nav>(
+    () => ({
+      next,
+      back,
+      tap: (e) => {
+        if (lastPressMs.current > HOLD_MS) {
+          return
+        }
+        const rect = e.currentTarget.getBoundingClientRect()
+        const rtl = getComputedStyle(e.currentTarget).direction === 'rtl'
+        const fromStart = rtl ? rect.right - e.clientX : e.clientX - rect.left
+        if (fromStart < rect.width * BACK_ZONE) {
+          back()
+        } else {
+          next()
+        }
+      },
+      setHelpOpen,
+    }),
+    [next, back],
+  )
 
   React.useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight' || e.key === ' ') {
+      usingKeyboard.current = true
+      if (e.key === 'ArrowRight') {
         e.preventDefault()
         next()
       } else if (e.key === 'ArrowLeft') {
@@ -434,76 +808,118 @@ export function App({ stats }: { stats: RecapStats }) {
         back()
       }
     }
+    const onPointerDown = () => (usingKeyboard.current = false)
     window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
+    window.addEventListener('pointerdown', onPointerDown, true)
+    return () => {
+      window.removeEventListener('keydown', onKeyDown)
+      window.removeEventListener('pointerdown', onPointerDown, true)
+    }
   }, [next, back])
 
-  if (!hasEnoughData(stats)) {
-    return <EmptyState />
+  // Leaving the intro unmounts the tooltip without telling us it closed.
+  React.useEffect(() => setHelpOpen(false), [index])
+
+  const release = () => {
+    if (holding) {
+      lastPressMs.current = performance.now() - pressStart.current
+    }
+    setHolding(false)
+    setHoldingContent(false)
   }
 
+  // Kept in slide order so each slide keeps its React state while it leaves.
+  const frames = SLIDES.flatMap((frameSlide) => {
+    if (frameSlide === slide) {
+      return [
+        { slide: frameSlide, exiting: false, direction: navigation.direction },
+      ]
+    }
+    const exiting = navigation.exiting.find(
+      (frame) => frame.slide === frameSlide,
+    )
+    return exiting ? [{ ...exiting, exiting: true }] : []
+  })
+
   return (
-    <div className={`recap slide-${slide}`}>
-      <div className='progress'>
-        <Navdots
-          dotCount={SLIDES.length}
-          activeDot={index}
-          onChange={(e) => setIndex(e.activeDot)}
-          label={getLocale(S.BRAVE_RECAP_SLIDES_LABEL)}
-          getDotLabel={(dot) =>
-            formatLocale(S.BRAVE_RECAP_SLIDE_LABEL, {
-              $1: formatCount(dot + 1),
-              $2: formatCount(SLIDES.length),
-            })
-          }
-        />
+    <main
+      className={`recap-card slide-${slide}`}
+      data-holding={holdingContent || undefined}
+      style={
+        {
+          '--recap-hold-delay': `${HOLD_MS}ms`,
+        } as React.CSSProperties
+      }
+      onPointerDown={(e) => {
+        pressStart.current = performance.now()
+        setHolding(true)
+        setHoldingContent(!(e.target as Element).closest('.bottom-bar'))
+      }}
+      onPointerUp={release}
+      onPointerCancel={release}
+      onPointerLeave={release}
+      onFocus={() => setKeyboardFocus(usingKeyboard.current)}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
+          setKeyboardFocus(false)
+        }
+      }}
+    >
+      <Backgrounds
+        active={slide}
+        paused={holding || helpOpen || keyboardFocus || pageHidden}
+      />
+      <Progress
+        index={index}
+        autoAdvance={!reducedMotion && !UNTIMED_SLIDES.includes(slide)}
+        paused={holding || helpOpen || keyboardFocus || pageHidden}
+        onComplete={next}
+      />
+      <div className='slides'>
+        {frames.map((frame) => (
+          <div
+            key={frame.slide}
+            className='slide-frame'
+            data-motion={
+              frame.exiting ? 'exit' : navigation.moved ? 'enter' : undefined
+            }
+            data-direction={frame.direction}
+            aria-hidden={frame.exiting || undefined}
+            inert={frame.exiting}
+            onTransitionEnd={(e) => {
+              if (frame.exiting && e.target === e.currentTarget) {
+                dispatch({ type: 'exited', slide: frame.slide })
+              }
+            }}
+          >
+            <FrameContext.Provider
+              value={{ exiting: frame.exiting, bottomBar }}
+            >
+              {renderSlide(frame.slide, { stats, nav, card })}
+            </FrameContext.Provider>
+          </div>
+        ))}
       </div>
       <div
-        className='slide'
-        key={slide}
-        onClick={slide === 'share' ? undefined : next}
-      >
-        {renderSlide(slide, stats)}
-      </div>
-      <div className='nav'>
-        <Button
-          kind='plain'
-          size='large'
-          onClick={back}
-          isDisabled={index === 0}
-        >
-          <Icon
-            slot='icon-before'
-            name='arrow-left'
-          />
-          {getLocale(S.BRAVE_RECAP_BACK)}
-        </Button>
-        {isLast ? (
-          <Button
-            kind='plain'
-            size='large'
-            onClick={() => setIndex(0)}
-          >
-            <Icon
-              slot='icon-before'
-              name='refresh'
-            />
-            {getLocale(S.BRAVE_RECAP_START_OVER)}
-          </Button>
-        ) : (
-          <Button
-            kind='filled'
-            size='large'
-            onClick={next}
-          >
-            {getLocale(S.BRAVE_RECAP_NEXT)}
-            <Icon
-              slot='icon-after'
-              name='arrow-right'
-            />
-          </Button>
-        )}
-      </div>
+        className='bottom-bar'
+        ref={setBottomBar}
+      />
+    </main>
+  )
+}
+
+export function App(props: Props) {
+  return (
+    <div className='stage'>
+      {hasEnoughData(props.stats) ? (
+        <Recap
+          stats={props.stats}
+          initialSlide={props.initialSlide}
+          cardImages={props.cardImages}
+        />
+      ) : (
+        <EmptyState />
+      )}
     </div>
   )
 }
