@@ -27,6 +27,7 @@ source_set("brave_recap") {
     "//content/public/browser",
     "//services/network/public/mojom",
     "//ui/webui",
+    "//ui/webui/resources:resources_grit",
   ]
 }
 

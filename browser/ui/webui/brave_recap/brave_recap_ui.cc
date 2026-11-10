@@ -24,6 +24,7 @@
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "services/network/public/mojom/content_security_policy.mojom.h"
+#include "ui/webui/resources/grit/webui_resources.h"
 #include "ui/webui/webui_util.h"
 
 namespace {
@@ -59,6 +60,9 @@ BraveRecapUI::BraveRecapUI(content::WebUI* web_ui)
   webui::SetupWebUIDataSource(source, kBraveRecapGenerated,
                               IDR_BRAVE_RECAP_STATIC_BRAVE_RECAP_HTML);
   source->AddResourcePaths(kBraveRecapStaticResources);
+  // The share card draws this onto a canvas, so it must be same-origin.
+  source->AddResourcePath("brave-icon.svg",
+                          IDR_BRAVE_ICONS_BRAVE_ICON_RELEASE_COLOR_SVG);
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
       "img-src 'self' chrome://resources blob: data:;");
