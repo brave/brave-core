@@ -448,6 +448,7 @@ source_set("browser_tests") {
       "//chrome/browser",
       "//chrome/browser/glic",
       "//chrome/browser/glic/actor",
+      "//chrome/browser/notifications:test_support",
       "//chrome/browser/pdf:pdf_extension_test_utils",
       "//chrome/browser/screen_ai:screen_ai_install_state",
       "//chrome/browser/ui:browser_window_header",
@@ -466,6 +467,7 @@ source_set("browser_tests") {
       "//services/screen_ai/public/cpp:utilities",
       "//ui/accessibility:ax_base",
       "//ui/accessibility:ax_features_mojo",
+      "//ui/message_center/public/cpp",
     ]
 
     if (enable_local_ai) {
