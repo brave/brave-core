@@ -27,7 +27,10 @@
   }
 
   .description {
-    color: var(--leo-color-text-secondary);
+    color: var(
+      --brave-account-row-description-color,
+      var(--leo-color-text-secondary)
+    );
   }
 }
 

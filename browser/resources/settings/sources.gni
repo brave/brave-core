@@ -129,8 +129,11 @@ brave_settings_local_css_files = [ "brave_origin_page/brave_origin_page.css" ]
 brave_account_settings_ts_files = [
   "brave_account_compact_row.html.ts",
   "brave_account_compact_row.ts",
+  "brave_account_compact_row_browser_proxy.ts",
   "brave_account_details.html.ts",
   "brave_account_details.ts",
+  "brave_account_link_row.html.ts",
+  "brave_account_link_row.ts",
   "brave_account_logged_out_row.html.ts",
   "brave_account_logged_out_row.ts",
   "brave_account_row.html.ts",
@@ -144,6 +147,7 @@ brave_account_settings_ts_files = [
 brave_account_settings_css_files = [
   "brave_account_compact_row.css",
   "brave_account_details.css",
+  "brave_account_link_row.css",
   "brave_account_row_common.css",
 ]
 

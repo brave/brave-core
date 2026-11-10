@@ -11,18 +11,12 @@ import {
 } from '//resources/lit/v3_0/lit.rollup.js'
 
 import { AccountState } from './brave_account.mojom-webui.js'
-import {
-  BraveAccountRowBrowserProxy,
-  BraveAccountRowBrowserProxyImpl,
-} from './brave_account_row_browser_proxy.js'
+import { BraveAccountCompactRowBrowserProxy } from './brave_account_compact_row_browser_proxy.js'
 import { BraveAccountSettingsStrings } from './brave_components_webui_strings.js'
 import { getCss } from './brave_account_compact_row.css.js'
 import { getHtml } from './brave_account_compact_row.html.js'
-import { TextTruncator } from './brave_account_text_truncator.js'
-import { routes } from './route.js'
-import { Router } from './router.js'
 
-// A row for pages that are not where the account is managed: it only points at
+// A row for pages that are not where the account is managed: it only links to
 // the account section, which owns the full account UI. Every account state is
 // summarized by its description alone.
 export class BraveAccountCompactRowElement extends CrLitElement {
@@ -42,26 +36,21 @@ export class BraveAccountCompactRowElement extends CrLitElement {
     return {
       actionRequired: { type: Boolean, state: true },
       description: { type: String, state: true },
-      displayDescription: { type: String, state: true },
       state: { type: Object, state: true },
     }
   }
 
   protected accessor actionRequired = false
   protected accessor description = ''
-  protected accessor displayDescription = ''
   protected accessor state: AccountState | undefined = undefined
 
-  private browserProxy!: BraveAccountRowBrowserProxy
+  private browserProxy!: BraveAccountCompactRowBrowserProxy
   private accountStateListenerId: number | null = null
-  private truncator = new TextTruncator((text: string) => {
-    this.displayDescription = text
-  })
 
   override connectedCallback() {
     super.connectedCallback()
 
-    this.browserProxy = new BraveAccountRowBrowserProxyImpl()
+    this.browserProxy = new BraveAccountCompactRowBrowserProxy()
     this.accountStateListenerId =
       this.browserProxy.authenticationObserverCallbackRouter.onAccountStateChanged.addListener(
         (state: AccountState) => {
@@ -78,8 +67,6 @@ export class BraveAccountCompactRowElement extends CrLitElement {
       this.accountStateListenerId,
     )
     this.browserProxy.authenticationObserverCallbackRouter.$.close()
-
-    this.truncator.disconnect()
   }
 
   override willUpdate(changedProperties: PropertyValues<this>) {
@@ -91,20 +78,6 @@ export class BraveAccountCompactRowElement extends CrLitElement {
           ?? this.state?.loggedOut?.verification,
       )
       this.description = this.getDescription()
-    }
-  }
-
-  override updated(changedProperties: PropertyValues<this>) {
-    super.updated(changedProperties)
-
-    if ((changedProperties as Map<PropertyKey, unknown>).has('description')) {
-      const element =
-        this.shadowRoot?.querySelector<HTMLElement>('.description')
-      if (element) {
-        this.truncator.observe(element, this.description)
-      } else {
-        this.truncator.disconnect()
-      }
     }
   }
 
@@ -125,10 +98,6 @@ export class BraveAccountCompactRowElement extends CrLitElement {
         BraveAccountSettingsStrings.SETTINGS_BRAVE_ACCOUNT_LOGGED_OUT_ROW_TITLE,
       )
     )
-  }
-
-  protected navigateToAccountSection() {
-    Router.getInstance().navigateTo(routes.GET_STARTED)
   }
 }
 
