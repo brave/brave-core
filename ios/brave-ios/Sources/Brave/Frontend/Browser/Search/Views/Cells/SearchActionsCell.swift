@@ -150,6 +150,7 @@ class SearchActionsCell: UICollectionViewCell, CollectionViewReusable {
     primaryButton.configuration = primaryConfiguration
 
     var secondaryConfiguration = UIButton.Configuration.plain()
+    secondaryConfiguration.baseBackgroundColor = .clear
     secondaryConfiguration.baseForegroundColor = UIColor(braveSystemName: .textInteractive)
     secondaryConfiguration.contentInsets = primaryConfiguration.contentInsets
     secondaryConfiguration.titleTextAttributesTransformer =
