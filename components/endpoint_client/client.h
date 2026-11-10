@@ -44,6 +44,11 @@ using OnResponseCallback =
                             scoped_refptr<net::HttpResponseHeaders> headers,
                             std::optional<std::string> response_body)>;
 
+// Creates and starts a `SimpleURLLoader` for the request. For
+// `RequestCancelability::kCancelable`, returns the loader, and destroying it
+// cancels the request. Otherwise, the loader is owned by its own completion
+// callback, which destroys it once the response has been handled, and this
+// returns `nullptr`.
 std::unique_ptr<network::SimpleURLLoader> StartSimpleURLLoader(
     network::SharedURLLoaderFactory& url_loader_factory,
     std::string_view method,
