@@ -549,6 +549,19 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
       </if>
 
+      <!-- Mac updater -->
+      <if expr="is_macosx">
+        <message name="IDS_PROMOTE_PREFLIGHT_LAUNCH_ERROR" desc="Status label shown when an administrator user requested automatic updates for all users, but the OS failed to start the pre-flight process.  Mac-only.">
+          Failed to set up automatic updates for all users (preflight launch error: <ph name="ERROR_NUMBER">$1<ex>1</ex></ph>)
+        </message>
+        <message name="IDS_PROMOTE_PREFLIGHT_SCRIPT_ERROR" desc="Status label shown when an administrator user requested automatic updates for all users, but the pre-flight process reported an error.  Mac-only.">
+          Failed to set up automatic updates for all users (preflight execution error: <ph name="ERROR_NUMBER">$1<ex>1</ex></ph>)
+        </message>
+        <message name="IDS_UPGRADE_ERROR_DETAILS" desc="Status label optionally shown when an error occurred during upgrade. The upgrade daemon may optionally send supplemental error messages; if they're available, we append them after this message in an HTML pre block.">
+          Error details:
+        </message>
+      </if>
+
       <!-- Brave Rewards Extension -->
       <if expr="use_titlecase">
         <message name="IDS_HIDE_BRAVE_REWARDS_ACTION_ICON" desc="The menu item to hide the Brave Rewards icon on the location bar">
