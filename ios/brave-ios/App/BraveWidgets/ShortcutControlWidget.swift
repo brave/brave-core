@@ -47,15 +47,15 @@ struct ShortcutControlConfigurationIntent: ControlConfigurationIntent {
   static let title: LocalizedStringResource = "Shortcut"
   static let isDiscoverable: Bool = false
 
-  @Parameter(title: "Shortcut", optionsProvider: WidgetShortcutControlOptionsProvider())
-  var shortcut: ShortcutControlOption?
+  @Parameter(title: "Shortcut", optionsProvider: WidgetShortcutOptionsProvider())
+  var shortcut: ShortcutOption?
 }
 
 @available(iOS 26.0, *)
-struct WidgetShortcutControlOptionsProvider: DynamicOptionsProvider {
-  func results() async throws -> [ShortcutControlOption] {
+struct WidgetShortcutOptionsProvider: DynamicOptionsProvider {
+  func results() async throws -> [ShortcutOption] {
     let disabledShortcuts = await DisabledShortcutsWidgetData.loadDisabledShortcuts()
-    return ShortcutControlOption.allCases.filter {
+    return ShortcutOption.allCases.filter {
       !disabledShortcuts.contains($0.widgetShortcut)
     }
   }
@@ -63,13 +63,13 @@ struct WidgetShortcutControlOptionsProvider: DynamicOptionsProvider {
 
 @available(iOS 26.0, *)
 struct ShortcutControlValueProvider: AppIntentControlValueProvider {
-  func previewValue(configuration: ShortcutControlConfigurationIntent) -> ShortcutControlOption? {
+  func previewValue(configuration: ShortcutControlConfigurationIntent) -> ShortcutOption? {
     shortcut(for: configuration.shortcut?.widgetShortcut, disabledShortcuts: [])
   }
 
   func currentValue(
     configuration: ShortcutControlConfigurationIntent
-  ) async throws -> ShortcutControlOption? {
+  ) async throws -> ShortcutOption? {
     let disabledShortcuts = await DisabledShortcutsWidgetData.loadDisabledShortcuts()
     return shortcut(
       for: configuration.shortcut?.widgetShortcut,
@@ -77,15 +77,14 @@ struct ShortcutControlValueProvider: AppIntentControlValueProvider {
     )
   }
 
-  /// `nil` is the unconfigured control. It shows the lion and still opens Search.
   private func shortcut(
     for shortcut: WidgetShortcut?,
     disabledShortcuts: Set<WidgetShortcut>
-  ) -> ShortcutControlOption? {
+  ) -> ShortcutOption? {
     guard let shortcut else { return nil }
     if disabledShortcuts.contains(shortcut) {
       return nil
     }
-    return ShortcutControlOption(rawValue: shortcut.rawValue) ?? nil
+    return ShortcutOption(rawValue: shortcut.rawValue) ?? nil
   }
 }
