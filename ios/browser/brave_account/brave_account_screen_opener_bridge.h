@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_IOS_BROWSER_BRAVE_ACCOUNT_BRAVE_ACCOUNT_DIALOG_OPENER_BRIDGE_H_
-#define BRAVE_IOS_BROWSER_BRAVE_ACCOUNT_BRAVE_ACCOUNT_DIALOG_OPENER_BRIDGE_H_
+#ifndef BRAVE_IOS_BROWSER_BRAVE_ACCOUNT_BRAVE_ACCOUNT_SCREEN_OPENER_BRIDGE_H_
+#define BRAVE_IOS_BROWSER_BRAVE_ACCOUNT_BRAVE_ACCOUNT_SCREEN_OPENER_BRIDGE_H_
 
 #import <Foundation/Foundation.h>
 
@@ -16,14 +16,17 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// A bridge for opening the Brave Account dialog over the WebUI page serving
-/// the account rows.
+/// A bridge for opening the screens that a WebUI page asks for.
 OBJC_EXPORT
-@protocol BraveAccountDialogOpenerBridge
+@protocol BraveAccountScreenOpenerBridge
+/// Opens the Brave Account dialog over the page.
 - (void)openBraveAccountDialogWithDialogMode:(BraveAccountDialogMode)dialogMode
     NS_SWIFT_NAME(openBraveAccountDialog(dialogMode:));
+/// Opens the settings page `page` in place of the page.
+- (void)openSettingsPage:(BraveAccountSettingsPage)page
+    NS_SWIFT_NAME(openSettingsPage(page:));
 @end
 
 NS_ASSUME_NONNULL_END
 
-#endif  // BRAVE_IOS_BROWSER_BRAVE_ACCOUNT_BRAVE_ACCOUNT_DIALOG_OPENER_BRIDGE_H_
+#endif  // BRAVE_IOS_BROWSER_BRAVE_ACCOUNT_BRAVE_ACCOUNT_SCREEN_OPENER_BRIDGE_H_
