@@ -5,8 +5,4 @@
 
 #include "brave/browser/ui/views/frame/brave_browser_native_widget_mac.h"
 
-#define BrowserNativeWidgetMac BraveBrowserNativeWidgetMac
-
 #include <chrome/browser/ui/views/frame/browser_native_widget_factory_mac.mm>
-
-#undef BrowserNativeWidgetMac

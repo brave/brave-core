@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/frame/layout/browser_view_layout.cc b/chrome/browser/ui/views/frame/layout/browser_view_layout.cc
+index 08df6d9f5521d2c36f1e25c15ee7f6f6054c74fb..ce88191a0eb7eb892b523bb9f13572492b24fd5b 100644
+--- a/chrome/browser/ui/views/frame/layout/browser_view_layout.cc
++++ b/chrome/browser/ui/views/frame/layout/browser_view_layout.cc
+@@ -142,7 +142,7 @@ std::unique_ptr<BrowserViewLayout> BrowserViewLayout::CreateLayout(
+   if (browser) {
+     switch (browser->GetType()) {
+       case BrowserWindowInterface::Type::TYPE_NORMAL:
+-        return std::make_unique<BrowserViewTabbedLayoutImpl>(
++        return std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
+             std::move(delegate), std::move(views));
+       case BrowserWindowInterface::Type::TYPE_APP:
+       case BrowserWindowInterface::Type::TYPE_APP_POPUP: {

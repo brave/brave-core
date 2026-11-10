@@ -1,0 +1,16 @@
+diff --git a/chrome/browser/ui/views/frame/browser_frame_view_linux.h b/chrome/browser/ui/views/frame/browser_frame_view_linux.h
+index 382436b045585da44597845a9f2b74434673b2b1..7c1a2d19767742b64d48301ee211f83d86480438 100644
+--- a/chrome/browser/ui/views/frame/browser_frame_view_linux.h
++++ b/chrome/browser/ui/views/frame/browser_frame_view_linux.h
+@@ -17,9 +17,9 @@ class LinuxUi;
+ 
+ // A specialization of OpaqueBrowserFrameView that is also able to
+ // render client side decorations (shadow, border, and rounded corners).
+-class BrowserFrameViewLinux : public OpaqueBrowserFrameView,
++class BrowserFrameViewLinux : public BraveOpaqueBrowserFrameView,
+                               public ui::WindowButtonOrderObserver {
+-  METADATA_HEADER(BrowserFrameViewLinux, OpaqueBrowserFrameView)
++  METADATA_HEADER(BrowserFrameViewLinux, BraveOpaqueBrowserFrameView)
+ 
+  public:
+   BrowserFrameViewLinux(BrowserWidget* widget,
