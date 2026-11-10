@@ -90,6 +90,7 @@
 #include "brave/components/password_strength_meter/password_strength_meter.mojom.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
+#include "brave/components/query_filter/content/query_filter_navigation_throttle.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/skus/common/skus_internals.mojom.h"
@@ -1701,6 +1702,8 @@ void BraveContentBrowserClient::CreateThrottlesForNavigation(
 #endif
 
   brave_search::BackupResultsNavigationThrottle::MaybeCreateAndAdd(registry);
+
+  query_filter::QueryFilterNavigationThrottle::MaybeCreateAndAdd(registry);
 }
 
 // Updates the global privacy control web preference and returns true if it is

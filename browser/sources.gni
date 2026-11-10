@@ -249,6 +249,7 @@ brave_chrome_browser_deps = [
   "//brave/components/privacy_sandbox",
   "//brave/components/query_filter/browser",
   "//brave/components/query_filter/common",
+  "//brave/components/query_filter/content",
   "//brave/components/request_otr/common/buildflags",
   "//brave/components/resources",
   "//brave/components/serp_metrics",

@@ -7,19 +7,15 @@
 
 #include <memory>
 #include <string>
-#include <utility>
 #include <vector>
 
-#include "base/functional/bind.h"
 #include "base/logging.h"
-#include "base/memory/weak_ptr.h"
-#include "base/task/sequenced_task_runner.h"
+#include "brave/components/brave_shields/content/browser/restart_navigation.h"
 #include "brave/components/debounce/core/browser/debounce_service.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/navigation_throttle.h"
-#include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
@@ -144,25 +140,8 @@ DebounceNavigationThrottle::MaybeRedirect() {
   VLOG(1) << "Debouncing rule applied: " << original_url << " -> "
           << debounced_url;
 
-  content::OpenURLParams params =
-      content::OpenURLParams::FromNavigationHandle(navigation_handle());
-  params.url = debounced_url;
-  params.transition = ui::PAGE_TRANSITION_CLIENT_REDIRECT;
-  // We get a DCHECK here if we don't clear the redirect chain because
-  // technically this is a new navigation
-  params.redirect_chain.clear();
-
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(
-                     [](base::WeakPtr<content::WebContents> web_contents,
-                        const content::OpenURLParams& params) {
-                       if (!web_contents) {
-                         return;
-                       }
-                       web_contents->OpenURL(params,
-                                             /*navigation_handle_callback=*/{});
-                     },
-                     web_contents->GetWeakPtr(), std::move(params)));
+  brave_shields::RestartNavigationWithURL(*navigation_handle(), debounced_url,
+                                          ui::PAGE_TRANSITION_CLIENT_REDIRECT);
   return NavigationThrottle::CANCEL;
 }
 
