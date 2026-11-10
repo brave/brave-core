@@ -8,6 +8,7 @@
 #include <string>
 #include <string_view>
 #include <utility>
+#include <variant>
 #include <vector>
 
 #include "base/command_line.h"
@@ -20,16 +21,25 @@
 #include "brave/browser/ai_chat/ai_chat_conversation_ui_browsertest_base.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/tools/mock_tool.h"
+#include "brave/components/ai_chat/core/browser/tools/mock_tool_provider.h"
+#include "brave/components/ai_chat/core/browser/tools/tool.h"
+#include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "chrome/browser/notifications/notification_display_service_tester.h"
 #include "chrome/browser/notifications/notification_handler.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/tabs/tab_enums.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/render_frame_host.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/common/content_switches.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/message_center/public/cpp/notification.h"
@@ -45,6 +55,10 @@ constexpr std::string_view kNoRow = "no row";
 constexpr std::string_view kNoIndicator = "no indicator";
 constexpr std::string_view kGeneratingIndicator = "generating-indicator";
 constexpr std::string_view kCompletedIndicator = "completed-indicator";
+constexpr std::string_view kAwaitingUserInputIndicator =
+    "awaiting-user-input-indicator";
+
+constexpr char kPermissionToolName[] = "permission_tool";
 
 // A JS function returning what the row of conversation $1 shows, with $2 for
 // kNoRow and $3 for kNoIndicator. JsReplace turns `$$` into `$`.
@@ -144,6 +158,48 @@ class AIChatGenerationStatusBrowserTest
     MockGenerateCallbacks response = future->Take();
     EXPECT_FALSE(conversation_handler_->IsAnyClientConnected());
     return response;
+  }
+
+  // Adds a tool named kPermissionToolName to the background conversation,
+  // which asks for the user's permission until it is granted.
+  MockTool* AddPermissionTool() {
+    auto* tool_provider = conversation_handler_->AddToolProviderForTesting(
+        std::make_unique<testing::NiceMock<MockToolProvider>>());
+    auto* tool = tool_provider->AddToolForTesting(
+        std::make_unique<testing::NiceMock<MockTool>>(kPermissionToolName));
+    auto granted = std::make_shared<bool>(false);
+    ON_CALL(*tool, RequiresUserInteractionBeforeHandling)
+        .WillByDefault(
+            [granted](const mojom::ToolUseEvent&)
+                -> std::variant<bool, mojom::PermissionChallengePtr> {
+              if (*granted) {
+                return false;
+              }
+              return mojom::PermissionChallenge::New();
+            });
+    ON_CALL(*tool, UserPermissionGranted).WillByDefault([granted](auto&&...) {
+      *granted = true;
+    });
+    return tool;
+  }
+
+  // Releases a held response with a request to use the permission tool.
+  void RequestPermissionToolUse(MockGenerateCallbacks response) {
+    ReleaseResponse(std::move(response),
+                    mojom::ConversationEntryEvent::NewToolUseEvent(
+                        CreateToolUseEvent(kPermissionToolName, "tool_use")));
+  }
+
+  // Closes the page NavigateToConversationUI() last opened and waits until the
+  // background conversation has no client connected.
+  void CloseConversationUI() {
+    TabStripModel* tab_strip = browser()->GetTabStripModel();
+    const int index = tab_strip->GetIndexOfWebContents(
+        content::WebContents::FromRenderFrameHost(conversation_rfh_));
+    conversation_rfh_ = nullptr;
+    tab_strip->CloseWebContentsAt(index, TabCloseTypes::CLOSE_NONE);
+    ASSERT_TRUE(base::test::RunUntil(
+        [&] { return !conversation_handler_->IsAnyClientConnected(); }));
   }
 
   // Streams |event| as part of a held response, without releasing it.
@@ -317,6 +373,115 @@ IN_PROC_BROWSER_TEST_F(AIChatGenerationStatusBrowserTest,
   ASSERT_TRUE(WaitForRowIndicator(other_page, uuid, kNoIndicator));
   EXPECT_EQ(notifications_shown_, 0);
   EXPECT_TRUE(GetNotifications().empty());
+}
+
+// A background conversation that stops on a tool's permission challenge shows
+// the warning rather than the dot, and a notification asking for approval.
+IN_PROC_BROWSER_TEST_F(AIChatGenerationStatusBrowserTest,
+                       PermissionRequestShowsAwaitingIndicator) {
+  content::RenderFrameHost* page = OpenFullPageOnNewChat();
+
+  MockGenerateCallbacks response = StartBackgroundGeneration();
+  const std::string uuid = conversation_handler_->get_conversation_uuid();
+  MockTool* tool = AddPermissionTool();
+  EXPECT_CALL(*tool, UseTool).Times(0);
+  ASSERT_TRUE(WaitForRowIndicator(page, uuid, kGeneratingIndicator));
+
+  RequestPermissionToolUse(std::move(response));
+  ASSERT_TRUE(WaitForRowIndicator(page, uuid, kAwaitingUserInputIndicator));
+
+  const auto notifications = GetNotifications();
+  ASSERT_EQ(notifications.size(), 1u);
+  EXPECT_EQ(
+      notifications[0].title(),
+      l10n_util::GetStringUTF16(IDS_AI_CHAT_NOTIFICATION_TITLE_NEEDS_APPROVAL));
+  EXPECT_EQ(notifications[0].message(),
+            l10n_util::GetStringUTF16(
+                IDS_AI_CHAT_NOTIFICATION_BODY_NEEDS_APPROVAL_FALLBACK));
+}
+
+// Approving the challenge from the conversation brings the ring back while the
+// tool runs and the response continues, and the dot once that finishes with
+// the conversation no longer open.
+IN_PROC_BROWSER_TEST_F(AIChatGenerationStatusBrowserTest,
+                       ApprovingPermissionShowsGeneratingThenCompleted) {
+  MockGenerateCallbacks response = StartBackgroundGeneration();
+  const std::string uuid = conversation_handler_->get_conversation_uuid();
+  MockTool* tool = AddPermissionTool();
+
+  // This page keeps its new chat open throughout.
+  content::RenderFrameHost* other_page = OpenFullPageOnNewChat();
+  RequestPermissionToolUse(std::move(response));
+  ASSERT_TRUE(
+      WaitForRowIndicator(other_page, uuid, kAwaitingUserInputIndicator));
+
+  // Opening the conversation clears the warning.
+  NavigateToConversationUI(uuid);
+  ASSERT_TRUE(WaitForRowIndicator(other_page, uuid, kNoIndicator));
+
+  Tool::UseToolCallback use_tool;
+  EXPECT_CALL(*tool, UseTool)
+      .WillOnce(testing::WithArg<1>([&](Tool::UseToolCallback callback) {
+        use_tool = std::move(callback);
+      }));
+  ASSERT_TRUE(
+      VerifyConversationFrameElementState("permission-allow-once-button"));
+  ASSERT_TRUE(ClickElement("permission-allow-once-button",
+                           GetConversationEntriesFrame()));
+  ASSERT_TRUE(base::test::RunUntil([&] { return !use_tool.is_null(); }));
+  EXPECT_TRUE(WaitForRowIndicator(other_page, uuid, kGeneratingIndicator));
+
+  // Leave while the tool runs, then let it and the response finish.
+  CloseConversationUI();
+  auto future = SetupMockGenerateAssistantResponse();
+  std::move(use_tool).Run(CreateContentBlocksForText("Tool result"), {});
+  MockGenerateCallbacks next_response = future->Take();
+  EXPECT_TRUE(WaitForRowIndicator(other_page, uuid, kGeneratingIndicator));
+
+  CompleteResponse(std::move(next_response));
+  EXPECT_TRUE(WaitForRowIndicator(other_page, uuid, kCompletedIndicator));
+  const auto notifications = GetNotifications();
+  ASSERT_EQ(notifications.size(), 1u);
+  EXPECT_EQ(notifications[0].title(),
+            l10n_util::GetStringUTF16(IDS_AI_CHAT_NOTIFICATION_TITLE));
+}
+
+// Leaving a conversation without answering its challenge brings the warning
+// back, but not once its task has been stopped.
+IN_PROC_BROWSER_TEST_F(AIChatGenerationStatusBrowserTest,
+                       StoppingTaskClearsAwaitingIndicator) {
+  MockGenerateCallbacks response = StartBackgroundGeneration();
+  const std::string uuid = conversation_handler_->get_conversation_uuid();
+  MockTool* tool = AddPermissionTool();
+  EXPECT_CALL(*tool, UseTool).Times(0);
+
+  // This page keeps its new chat open throughout.
+  content::RenderFrameHost* other_page = OpenFullPageOnNewChat();
+  RequestPermissionToolUse(std::move(response));
+  ASSERT_TRUE(
+      WaitForRowIndicator(other_page, uuid, kAwaitingUserInputIndicator));
+
+  NavigateToConversationUI(uuid);
+  ASSERT_TRUE(WaitForRowIndicator(other_page, uuid, kNoIndicator));
+  CloseConversationUI();
+  ASSERT_TRUE(
+      WaitForRowIndicator(other_page, uuid, kAwaitingUserInputIndicator));
+
+  NavigateToConversationUI(uuid);
+  ASSERT_TRUE(WaitForRowIndicator(other_page, uuid, kNoIndicator));
+  // The page only shows a stop control for content agent tasks, so call what
+  // it calls.
+  conversation_handler_->StopTask();
+  CloseConversationUI();
+
+  // Finish another background response. The service sends its dot after
+  // anything it sent when the stopped conversation was left, so once the dot
+  // shows, the stopped conversation's row is up to date.
+  MockGenerateCallbacks other_response = StartBackgroundGeneration();
+  const std::string other_uuid = conversation_handler_->get_conversation_uuid();
+  CompleteResponse(std::move(other_response));
+  ASSERT_TRUE(WaitForRowIndicator(other_page, other_uuid, kCompletedIndicator));
+  EXPECT_TRUE(WaitForRowIndicator(other_page, uuid, kNoIndicator));
 }
 
 }  // namespace ai_chat

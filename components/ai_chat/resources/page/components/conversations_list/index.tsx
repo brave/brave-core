@@ -205,6 +205,7 @@ function ConversationItem(props: ConversationItemProps) {
             === Mojom.ConversationGenerationState.kAwaitingUserInput && (
             <span
               className={styles.awaitingUserInputIndicator}
+              data-testid='awaiting-user-input-indicator'
               aria-label={getLocale(S.AI_CHAT_CONVERSATION_LIST_NEEDS_APPROVAL)}
               title={getLocale(S.AI_CHAT_CONVERSATION_LIST_NEEDS_APPROVAL)}
               role='img'
