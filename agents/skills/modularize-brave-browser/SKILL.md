@@ -40,7 +40,7 @@ These apply to every change made with this skill.
   cycle.
 - **A file blocked by a monolith stays put.** If a file includes a header still
   in a monolith (another directory in `brave_chrome_browser_sources`,
-  `//chrome/browser:core`, `//chrome/browser/ui:ui`, `//brave/test:*` sources),
+  `//brave/browser/ui:ui`, `//chrome/browser:core`, `//brave/test:*` sources),
   it cannot move until that header's owner is modularized. Report the blocking
   header to the user.
 - **No suppressions.** Never use `check_includes = false`. Never use
@@ -62,19 +62,19 @@ These apply to every change made with this skill.
 
 ## Where things live
 
-| What                                                                           | Where                                                                                                                                                                                                        |
-| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Monolith sources                                                               | `brave_chrome_browser_sources` in `browser/sources.gni`, extended by `brave_browser_<dir>_sources` in `browser/<dir>/sources.gni`; compiled into `//brave/browser:core`, a dep of `//chrome/browser:browser` |
-| Deps of the monolith                                                           | `brave_chrome_browser_deps` (and `brave_browser_<dir>_deps`)                                                                                                                                                 |
-| Monolith tests                                                                 | `sources` of `brave_unit_tests` and `brave_browser_tests` in `test/BUILD.gn`; modular tests are deps of those targets                                                                                        |
-| `brave_chrome_browser_allow_circular_includes_from` (`browser/sources.gni`)    | declared on `//brave/browser:core`                                                                                                                                                                           |
-| `brave_ui_allow_circular_includes_from` (`browser/ui/config.gni`)              | declared on `//brave/browser/ui:ui`, and on `//chrome/browser/ui:ui` through the next list                                                                                                                   |
-| `brave_chrome_browser_ui_allow_circular_includes_from` (`browser/sources.gni`) | declared on `//chrome/browser/ui:ui`, via `rewrite/chrome/browser/ui/BUILD.gn.yaml`                                                                                                                          |
-| `[ ":brave_prefs_util_impl" ]` (`browser/extensions/BUILD.gn`)                 | declared on `//brave/browser/extensions:extensions`                                                                                                                                                          |
-| `build/circular_includes_brave.gni`                                            | the Brave targets allowed to declare the key (`//.gn` fails `gn gen` for any other); it does not list entries                                                                                                |
+| What                                                                        | Where                                                                                                                                                                                                        |
+| --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Monolith sources                                                            | `brave_chrome_browser_sources` in `browser/sources.gni`, extended by `brave_browser_<dir>_sources` in `browser/<dir>/sources.gni`; compiled into `//brave/browser:core`, a dep of `//chrome/browser:browser` |
+| Deps of the monolith                                                        | `brave_chrome_browser_deps` (and `brave_browser_<dir>_deps`)                                                                                                                                                 |
+| Monolith tests                                                              | `sources` of `brave_unit_tests` and `brave_browser_tests` in `test/BUILD.gn`; modular tests are deps of those targets                                                                                        |
+| `brave_chrome_browser_allow_circular_includes_from` (`browser/sources.gni`) | declared on `//brave/browser:core`                                                                                                                                                                           |
+| `brave_ui_allow_circular_includes_from` (`browser/ui/config.gni`)           | declared on `//brave/browser/ui:ui`, which also takes every entry as a dep                                                                                                                                   |
+| `[ ":brave_prefs_util_impl" ]` (`browser/extensions/BUILD.gn`)              | declared on `//brave/browser/extensions:extensions`                                                                                                                                                          |
+| `build/circular_includes_brave.gni`                                         | the Brave targets allowed to declare the key (`//.gn` fails `gn gen` for any other); it does not list entries                                                                                                |
 
-An entry in `brave_ui_allow_circular_includes_from` applies to two targets, so
-removing it must pass `gn check` for both.
+Because `//brave/browser/ui:ui` also depends on every entry in
+`brave_ui_allow_circular_includes_from`, removing an entry can drop its target
+from the build. See [B] step 4.
 
 ## Terms
 
@@ -217,6 +217,8 @@ source_set("browser_tests") {
   needs its upstream target to depend on the narrow `:<dir>` headers target,
   never on `//brave/browser`, through the matching `sources.gni` deps list or a
   `rewrite/` substitution. A dep on a broad target turns one edge into a cycle.
+  `gn check` does not see includes made from `chromium_src` overrides, so add
+  the dep even when it passes.
 
 ### 4. Fix `gn check` errors
 
@@ -240,8 +242,8 @@ source_set("browser_tests") {
    - **Dead entry**: `A` does not transitively depend on `B`, or `B` does not
      include `A`. Run `gn check --fix`.
    - **Header in a monolith**: `B` includes a header that is in `A` only because
-     `A` is a monolith (`brave_chrome_browser_sources`, `//chrome/browser:core`,
-     `//chrome/browser/ui:ui`). For a Brave header, run [A] on its directory and
+     `A` is a monolith (`brave_chrome_browser_sources`, `//brave/browser/ui:ui`,
+     `//chrome/browser:core`). For a Brave header, run [A] on its directory and
      retry. For an upstream header, restore the entry, keep or add a comment
      naming the header, and report it to the user as blocked.
    - **Real cycle**: `A` includes `B` and `B` includes `A`. Fix the design first
@@ -257,7 +259,13 @@ source_set("browser_tests") {
      including it. Run `gn check --fix` so `B` depends on `A`, run `gn gen`,
      then delete the edge in the reported loop that has no matching `#include`.
 
-4. If `gn check --fix` reports a visibility error, fix the visibility or choose
+4. For an entry in `brave_ui_allow_circular_includes_from`, run
+   `gn path out/<dir> //brave/browser/ui:ui <B>` on every directory. If no path
+   is left, nothing else links `B`, and `gn check` will not say so: it does not
+   see includes made from `chromium_src` overrides. Find the upstream target
+   whose override includes `B`'s headers, give it a dep on `B` in a separate
+   change, and remove the entry after that lands.
+5. If `gn check --fix` reports a visibility error, fix the visibility or choose
    the correct target.
 
 ## Breaking a design cycle

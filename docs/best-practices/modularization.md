@@ -99,13 +99,13 @@ remove the entry, delete it, then apply the first row that matches.**
 Target `A` _includes_ target `B` when `A`'s sources `#include` `B`'s public
 headers (or `sources` with `friend`); `A` should depend on `B` exactly then.
 
-| Situation                                                                                                                                               | Fix                                                                                                                                          |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| `A` does not transitively depend on `B`, or `B` does not include `A`                                                                                    | The entry is dead. Run `gn check --fix`.                                                                                                     |
-| `B` includes a header that is in `A` only because `A` is a monolith (`brave_chrome_browser_sources`, `//chrome/browser:core`, `//chrome/browser/ui:ui`) | Brave header: move it into its own headers target (MOD-003). Upstream header: keep the entry and record it as blocked in the tracking issue. |
-| `A` includes `B` and `B` includes `A`                                                                                                                   | Real cycle. Extract the shared declarations into a third headers target, or merge the two targets.                                           |
-| `A` is a `component`/`static_library` with `public`/`sources`                                                                                           | Move the sources into `A_sources`, make `A` a `group` (see the `/modularize-brave-browser` skill).                                           |
-| `B` includes `A`, and `A` depends on `B` without including it                                                                                           | Backwards arrow. Make `B` depend on `A`, then fix the loop `gn gen` reports by deleting the edge with no matching `#include`.                |
+| Situation                                                                                                                                              | Fix                                                                                                                                          |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `A` does not transitively depend on `B`, or `B` does not include `A`                                                                                   | The entry is dead. Run `gn check --fix`.                                                                                                     |
+| `B` includes a header that is in `A` only because `A` is a monolith (`brave_chrome_browser_sources`, `//brave/browser/ui:ui`, `//chrome/browser:core`) | Brave header: move it into its own headers target (MOD-003). Upstream header: keep the entry and record it as blocked in the tracking issue. |
+| `A` includes `B` and `B` includes `A`                                                                                                                  | Real cycle. Extract the shared declarations into a third headers target, or merge the two targets.                                           |
+| `A` is a `component`/`static_library` with `public`/`sources`                                                                                          | Move the sources into `A_sources`, make `A` a `group` (see the `/modularize-brave-browser` skill).                                           |
+| `B` includes `A`, and `A` depends on `B` without including it                                                                                          | Backwards arrow. Make `B` depend on `A`, then fix the loop `gn gen` reports by deleting the edge with no matching `#include`.                |
 
 Verify with `gn check` on every platform the files build on, and for pure
 metadata changes confirm the Ninja graph is unchanged with
@@ -187,7 +187,8 @@ and
 narrow Brave headers target, not on `//brave/browser`.** An upstream file
 including `brave/browser/foo.h` forces the upstream target to depend on whatever
 owns that header. Put the header in a small target so the dep adds one edge
-instead of a cycle.
+instead of a cycle. `gn check` does not see includes made from `chromium_src`
+files, so a missing dep shows up only at link time.
 
 ---
 
