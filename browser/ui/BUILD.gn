@@ -37,14 +37,6 @@ import("//mojo/public/tools/bindings/mojom.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 
 if (!is_android) {
-  source_set("brave_browser_header") {
-    public = [ "brave_browser.h" ]
-    public_deps = [
-      "//base",
-      "//chrome/browser/ui:browser_header",
-    ]
-  }
-
   # Counterpart of //chrome/browser/ui:browser_window_header. Its implementation
   # is in :ui.
   source_set("brave_browser_window_header") {
@@ -413,7 +405,6 @@ source_set("ui") {
       "bookmark/bookmark_helper.h",
       "bookmark/brave_bookmark_prefs.cc",
       "bookmark/brave_bookmark_prefs.h",
-      "brave_browser.cc",
       "brave_browser_actions.cc",
       "brave_browser_actions.h",
       "brave_browser_command_controller.cc",
@@ -530,7 +521,6 @@ source_set("ui") {
     }
 
     deps += [
-      ":brave_browser_header",
       ":brave_browser_window_header",
       "//base",
       "//brave/browser/brave_account",

@@ -5,17 +5,6 @@
 
 substitutions:
   - description: |
-      Instantiate BraveBrowser instead of Browser
-
-      Both `Browser::Create` and `Browser::DeprecatedCreateOwnedForTesting`
-      construct the Brave subclass so Brave-specific behaviour is always in
-      place.
-    count: 2
-    regex:
-      pattern: 'base::WrapUnique(new Browser(std::move(params)))'
-      replace: 'base::WrapUnique(new BraveBrowser(std::move(params)))'
-
-  - description: |
       Use BraveTabStripModel for the browser's tab strip model
     regex:
       pattern: 'std::make_unique<TabStripModel>'
