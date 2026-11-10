@@ -10,7 +10,12 @@ import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import { Command } from 'commander'
-import { loadBuilder, supportBuilder } from './builder.ts'
+import {
+  getBuilderBuildTarget,
+  getBuilderGclientTargets,
+  loadBuilder,
+  supportBuilder,
+} from './builder.ts'
 import * as Log from './log.ts'
 
 // `var`, as imports run before this initialiser and read `isCI` while loading.
@@ -32,15 +37,14 @@ function writeBuilder(dir: string, name: string) {
   fs.mkdirSync(builderDir, { recursive: true })
   fs.writeFileSync(
     path.join(builderDir, 'gn-args.json'),
-    JSON.stringify({ gn_args: { is_asan: true }, secrets: {} }),
+    JSON.stringify({
+      gn_args: { target_os: 'linux', target_cpu: 'x64', is_asan: true },
+      secrets: {},
+    }),
   )
   fs.writeFileSync(
     path.join(builderDir, 'sync.json'),
-    JSON.stringify({
-      target_os: 'linux',
-      target_cpu: 'x64',
-      gclient_overrides: {},
-    }),
+    JSON.stringify({ target_os: ['android'], target_cpu: [] }),
   )
   fs.writeFileSync(
     path.join(builderDir, 'targets.json'),
@@ -63,8 +67,11 @@ describe('loadBuilder', () => {
     writeBuilder(dir, 'linux-x64-asan-brave')
     expect(loadBuilder('linux-x64-asan-brave', dir)).toEqual({
       name: 'linux-x64-asan-brave',
-      gnArgs: { gn_args: { is_asan: true }, secrets: {} },
-      sync: { target_os: 'linux', target_cpu: 'x64', gclient_overrides: {} },
+      gnArgs: {
+        gn_args: { target_os: 'linux', target_cpu: 'x64', is_asan: true },
+        secrets: {},
+      },
+      sync: { target_os: ['android'], target_cpu: [] },
       targets: { compile: ['brave:all'], tests: ['brave_unit_tests'] },
     })
   })
@@ -151,9 +158,11 @@ describe('supportBuilder', () => {
     )
   })
 
-  it('accepts --builder alone', () => {
+  it('hands the loaded builder to the action', () => {
     const { action } = run(['--builder', 'fake-builder'])
-    expect(action).toHaveBeenCalled()
+    expect(action.mock.calls[0]![1].builder).toEqual(
+      loadBuilder('fake-builder', dir),
+    )
   })
 
   it('rejects other flags and positional arguments', () => {
@@ -174,5 +183,100 @@ describe('supportBuilder', () => {
   it('allows the listed options', () => {
     const { action } = run(['--builder', 'fake-builder', '--init'], ['init'])
     expect(action).toHaveBeenCalled()
+  })
+})
+
+const fakeBuilder = (
+  gnArgs: Record<string, unknown>,
+  sync: { target_os: string[]; target_cpu: string[] },
+) => ({
+  name: 'fake-builder',
+  gnArgs: { gn_args: gnArgs },
+  sync,
+  targets: { compile: [], tests: [] },
+})
+
+describe('getBuilderGclientTargets', () => {
+  it('returns the lists from sync.json, not the build target', () => {
+    expect(
+      getBuilderGclientTargets(
+        fakeBuilder(
+          { target_os: 'android', target_cpu: 'arm64' },
+          { target_os: ['android', 'linux'], target_cpu: [] },
+        ),
+      ),
+    ).toEqual({ targetOSList: ['android', 'linux'], targetArchList: [] })
+  })
+
+  it('leaves the lists empty to sync the host only', () => {
+    expect(
+      getBuilderGclientTargets(
+        fakeBuilder(
+          { target_os: 'linux', target_cpu: 'x64' },
+          { target_os: [], target_cpu: [] },
+        ),
+      ),
+    ).toEqual({ targetOSList: [], targetArchList: [] })
+  })
+})
+
+describe('getBuilderBuildTarget', () => {
+  it('builds for the target in the GN args', () => {
+    expect(
+      getBuilderBuildTarget(
+        fakeBuilder(
+          { target_os: 'linux', target_cpu: 'x64' },
+          { target_os: [], target_cpu: [] },
+        ),
+        'linux',
+      ),
+    ).toEqual({ targetOS: 'linux', targetArch: 'x64' })
+  })
+
+  it('does not take the target from the gclient lists', () => {
+    expect(
+      getBuilderBuildTarget(
+        fakeBuilder(
+          { target_os: 'android', target_cpu: 'arm64' },
+          { target_os: ['linux', 'android'], target_cpu: ['x64'] },
+        ),
+        'linux',
+      ),
+    ).toEqual({ targetOS: 'android', targetArch: 'arm64' })
+  })
+
+  it('rejects a target_os the checkout does not sync', () => {
+    expect(() =>
+      getBuilderBuildTarget(
+        fakeBuilder(
+          { target_os: 'android', target_cpu: 'arm64' },
+          { target_os: [], target_cpu: [] },
+        ),
+        'linux',
+      ),
+    ).toThrow(
+      "builder fake-builder builds for target_os android, which is neither the host's (linux) nor in its sync.json",
+    )
+  })
+
+  it('does not require a cross target_cpu to be listed', () => {
+    expect(
+      getBuilderBuildTarget(
+        fakeBuilder(
+          { target_os: 'android', target_cpu: 'arm64' },
+          { target_os: ['android'], target_cpu: [] },
+        ),
+        'linux',
+      ),
+    ).toEqual({ targetOS: 'android', targetArch: 'arm64' })
+  })
+
+  it('requires the build target in the GN args', () => {
+    expect(() =>
+      getBuilderBuildTarget(
+        fakeBuilder({ target_os: 'linux' }, { target_os: [], target_cpu: [] }),
+        'linux',
+      ),
+    ).toThrow('builder fake-builder: gn-args.json has no target_cpu')
   })
 })
