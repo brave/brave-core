@@ -135,6 +135,12 @@ class SharedPinnedTabService : public KeyedService,
 
   raw_ptr<TabStripModel> change_source_model_ = nullptr;
 
+  // Tab strips with an unpin whose OnTabUnpinned() is posted but hasn't run
+  // yet. Until it runs, such a tab strip has fewer pinned tabs than
+  // |pinned_tab_data_|, which must not be mistaken for an out-of-sync browser.
+  // There is one entry per pending unpin, so a model may appear more than once.
+  std::vector<raw_ptr<TabStripModel>> pending_unpin_models_;
+
   bool profile_will_be_destroyed_ = false;
 
   base::ScopedObservation<Profile, ProfileObserver> profile_observation_{this};

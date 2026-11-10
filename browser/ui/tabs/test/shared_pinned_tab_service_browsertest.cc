@@ -231,6 +231,39 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTreeTabServiceBrowserTest,
   EXPECT_FALSE(service->IsDummyContents(contents));
 }
 
+// An activation of the browser between an unpin and the service's deferred
+// handling of it must not make the service think the browser is out of sync.
+IN_PROC_BROWSER_TEST_F(
+    SharedPinnedTreeTabServiceBrowserTest,
+    ActivateBrowserBeforeUnpinIsHandled_DoesNotAddStrayDummy) {
+  auto* prefs = browser()->GetProfile()->GetPrefs();
+  prefs->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
+  prefs->SetBoolean(brave_tabs::kTreeTabsEnabled, true);
+
+  auto* model = browser()->tab_strip_model();
+  auto* other_model = CreateNewBrowser()->GetTabStripModel();
+  auto* contents = model->GetWebContentsAt(0);
+  auto* service = GetForBrowser(browser());
+
+  model->SetTabPinned(0, true);
+  ASSERT_TRUE(service->IsSharedContents(contents));
+  ASSERT_EQ(2, other_model->count());
+
+  // Unpinning defers the service's handling to a posted task. Activate the
+  // browser before that task runs, as a late window activation can.
+  model->ExecuteContextMenuCommand(0, TabStripModel::CommandTogglePinned);
+  ASSERT_FALSE(model->IsTabPinned(0));
+  service->OnBrowserActivated(browser());
+
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return other_model->count() == 1; }));
+  EXPECT_EQ(1, model->count());
+  EXPECT_EQ(contents, model->GetWebContentsAt(0));
+  EXPECT_FALSE(model->IsTabPinned(0));
+  EXPECT_FALSE(service->IsSharedContents(contents));
+  EXPECT_FALSE(service->IsDummyContents(contents));
+}
+
 IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, ActivatePinnedTab) {
   // Precondition
   auto* browser_1 = browser();
