@@ -303,7 +303,7 @@ class SettingsViewController: TableViewController {
             guard
               let page = BraveAccountWebUIController(
                 screen: .settingsPage(.braveAccount),
-                profileController: braveCore
+                profile: braveCore.profile
               )
             else { return }
             (navigationController ?? self).present(

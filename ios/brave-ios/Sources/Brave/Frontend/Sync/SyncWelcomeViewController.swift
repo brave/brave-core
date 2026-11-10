@@ -320,10 +320,7 @@ class SyncWelcomeViewController: SyncViewController {
 
   @objc
   private func onSyncInternalsAction() {
-    let syncInternalsController = ChromeWebUIController(
-      braveCore: braveCore,
-      isPrivateBrowsing: false
-    ).then {
+    let syncInternalsController = ChromeWebUIController(profile: braveCore.profile).then {
       $0.title = Strings.Sync.internalsTitle
       $0.webView.load(URLRequest(url: URL(string: "brave://sync-internals")!))
     }

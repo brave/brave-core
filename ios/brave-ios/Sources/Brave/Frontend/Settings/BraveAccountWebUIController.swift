@@ -12,20 +12,20 @@ import UIKit
 final class BraveAccountWebUIController: ChromeWebUIController,
   BraveAccountScreenOpenerBridge
 {
-  private let profileController: BraveProfileController
+  private let profile: any Profile
   private let url: URL
   private let dialogMode: BraveAccount.DialogMode?
 
-  init?(screen: Screen, profileController: BraveProfileController) {
+  init?(screen: Screen, profile: any Profile) {
     guard let destination = screen.destination else { return nil }
-    self.profileController = profileController
+    self.profile = profile
     url = destination.url
     if case .dialog(let dialogMode) = screen {
       self.dialogMode = dialogMode
     } else {
       dialogMode = nil
     }
-    super.init(braveCore: profileController, isPrivateBrowsing: false)
+    super.init(profile: profile)
     title = destination.title
     navigationItem.rightBarButtonItem = .doneButton { [unowned self] in
       dismiss(animated: true)
@@ -74,7 +74,7 @@ final class BraveAccountWebUIController: ChromeWebUIController,
     guard
       let dialog = BraveAccountWebUIController(
         screen: .dialog(dialogMode),
-        profileController: profileController
+        profile: profile
       )
     else { return }
     present(UINavigationController(rootViewController: dialog), animated: true)
@@ -86,7 +86,7 @@ final class BraveAccountWebUIController: ChromeWebUIController,
     guard let presenter = presentingViewController,
       let next = BraveAccountWebUIController(
         screen: .settingsPage(page),
-        profileController: profileController
+        profile: profile
       )
     else { return }
     dismiss(animated: true) {
