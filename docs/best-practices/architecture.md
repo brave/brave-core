@@ -1563,38 +1563,55 @@ class MyTabFeature {
  public:
   DECLARE_USER_DATA(MyTabFeature)
 
-  explicit MyTabFeature(tabs::TabInterface* tab, /* other deps */);
+  explicit MyTabFeature(tabs::TabInterface& tab, /* other deps */);
 
-  static MyTabFeature* From(tabs::TabInterface* tab) {
-    return Get(tab->GetUnownedUserDataHost());
-  }
+  // Returns null when `tab` is null.
+  static MyTabFeature* From(tabs::TabInterface* tab);
 
  private:
-  ScopedUnownedUserData<MyTabFeature> scoped_unowned_user_data_;
+  ui::ScopedUnownedUserData<MyTabFeature> scoped_unowned_user_data_;
 };
 
 // In .cc:
 DEFINE_USER_DATA(MyTabFeature)
 
-MyTabFeature::MyTabFeature(tabs::TabInterface* tab, /* other deps */)
-    : scoped_unowned_user_data_(tab->GetUnownedUserDataHost(), *this) {}
+// static
+MyTabFeature* MyTabFeature::From(tabs::TabInterface* tab) {
+  return tab ? Get(tab->GetUnownedUserDataHost()) : nullptr;
+}
+
+MyTabFeature::MyTabFeature(tabs::TabInterface& tab, /* other deps */)
+    : scoped_unowned_user_data_(tab.GetUnownedUserDataHost(), *this) {}
 ```
 
 **Creation in TabFeatures::Init() or BrowserWindowFeatures::Init():**
 
 ```cpp
-// Using the factory for testability:
+// Desktop: using the factory lets tests override the feature.
 my_tab_feature_ = GetUserDataFactory().CreateInstance<MyTabFeature>(
     tab,        // For the injection function
-    &tab, ...   // Normal constructor args
+    tab, ...    // Normal constructor args
 );
 ```
+
+On Android, `TabFeatures::GetUserDataFactory()` is private to upstream, so
+`BraveTabFeatures` creates the feature with `std::make_unique`.
 
 **Production retrieval:**
 
 ```cpp
 auto* feature = MyTabFeature::From(tab);
+
+// From a WebContents, which may not be a tab's:
+auto* feature =
+    MyTabFeature::From(tabs::TabInterface::MaybeGetFromContents(web_contents));
 ```
+
+Look the feature up with `From()` at each point of use rather than caching a
+pointer or `WeakPtr` to it. Tab features are destroyed when the tab is closed,
+before the tab strip notifies its observers and before the contents is
+destroyed, and a discarded contents is no longer mapped to its tab, so `From()`
+returns null once the feature is gone.
 
 ---
 
@@ -1604,30 +1621,29 @@ auto* feature = MyTabFeature::From(tab);
 
 **For integration tests that need mock features in a live browser, use
 `GetUserDataFactoryForTesting().AddOverrideForTesting()`** to substitute a mock
-before browser initialization. For unit tests, attach features directly to a
-mock interface's `UnownedUserDataHost`.
+before browser initialization. For unit tests, construct the feature against a
+`tabs::MockTabInterface`.
 
 **Unit test — attach to mock interface:**
 
 ```cpp
-ui::UnownedUserDataHost user_data_host_;
-testing::NiceMock<MockTabInterface> mock_tab_;
-
-EXPECT_CALL(mock_tab_, GetUnownedUserDataHost)
-    .WillRepeatedly(testing::ReturnRef(user_data_host_));
+// MockTabInterface is already a NiceMock and returns its own
+// UnownedUserDataHost, so neither needs setting up.
+tabs::MockTabInterface mock_tab_;
 
 // Feature attaches itself via ScopedUnownedUserData in constructor
-my_feature_.emplace(&mock_tab_, ...);
+my_feature_.emplace(mock_tab_, ...);
+ASSERT_EQ(MyTabFeature::From(&mock_tab_), &*my_feature_);
 ```
 
-**Integration test — factory override for live browser:**
+**Integration test — factory override for live browser (desktop only):**
 
 ```cpp
 // Install override BEFORE browser creation
 auto override = tabs::TabFeatures::GetUserDataFactoryForTesting()
     .AddOverrideForTesting(
         base::BindRepeating([](tabs::TabInterface& tab) {
-          return std::make_unique<MyTabFeatureMock>(&tab);
+          return std::make_unique<MyTabFeatureMock>(tab);
         }));
 ```
 
@@ -1880,10 +1896,14 @@ Upstream is moving every desktop tab helper this way
 `TabHelpers::AttachTabHelpers` becomes remove-only on desktop.
 
 - Desktop: `browser/ui/tabs/brave_tab_features.cc`.
-- Android: `browser/android/brave_tab_features.cc`, where the feature also runs
-  there.
+- Android: `browser/android/brave_tab_features.cc`, when the feature also runs
+  on Android.
 - If other code needs to reach the feature, expose it with UnownedUserData
-  (`X::From(tab)`), not `X::FromWebContents()`.
+  (`X::From(tab)`), not `X::FromWebContents()` (see [ARCH-064](#ARCH-064)).
+- When the feature sits behind a buildflag, guard its member and accessor in
+  `brave_tab_features.h` with the same buildflag as its creation, and put the
+  feature in its own gn target that asserts the buildflag, so builds without the
+  feature (such as Origin) do not compile it.
 
 ```cpp
 // ❌ WRONG - a tab-scoped feature attached to the WebContents
@@ -1940,3 +1960,24 @@ When a feature only needs the contents occasionally, hold
 use. Otherwise subscribe with `TabInterface::RegisterWillDiscardContents()`,
 which `ContentsObservingTabFeature` does for you. Android does not replace a
 tab's contents, but follow the same pattern there for portability.
+
+A feature in `components/` cannot derive from `ContentsObservingTabFeature`,
+which lives in `chrome/`. Subscribe to `RegisterWillDiscardContents()` in the
+constructor instead, and in the callback call `Observe(new_contents)` and reset
+any state that belongs to the old contents' page.
+
+```cpp
+FooTabHelper::FooTabHelper(tabs::TabInterface& tab)
+    : WebContentsObserver(tab.GetContents()) {
+  will_discard_contents_subscription_ =
+      tab.RegisterWillDiscardContents(base::BindRepeating(
+          &FooTabHelper::WillDiscardContents, base::Unretained(this)));
+}
+
+void FooTabHelper::WillDiscardContents(tabs::TabInterface* tab,
+                                       content::WebContents* old_contents,
+                                       content::WebContents* new_contents) {
+  ResetPageState();
+  Observe(new_contents);
+}
+```
