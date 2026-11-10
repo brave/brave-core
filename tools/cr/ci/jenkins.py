@@ -56,6 +56,13 @@ _WFAPI_STATUS_TO_STATE = {
 # `testReport` statuses of tests that failed in this run.
 _FAILED_TEST_STATUSES = frozenset({'FAILED', 'REGRESSION'})
 
+# How many of a run's failed tests get their history read, and how many of
+# the job's earlier runs it looks back through for one that ran each.
+_HISTORY_TESTS = 10
+_HISTORY_RUNS = 10
+# Characters `hudson.tasks.test.TestObject.safe()` replaces in a test's URL.
+_UNSAFE_IN_TEST_URL = re.compile(r'[/\\:?#%<>]')
+
 # `wfapi/log` serves a step's log as HTML.
 _HTML_TAG = re.compile(r'<[^>]+>')
 
@@ -537,35 +544,136 @@ class JenkinsCi:
         report = self._get_json(
             session,
             f'{url}testReport/api/json?tree=suites[cases[className,name,'
-            'status,age,errorDetails,errorStackTrace]]',
+            'status,age,failedSince,errorDetails,errorStackTrace]]',
         )
+        cases = [
+            case
+            for suite in (report or {}).get('suites') or []
+            for case in suite.get('cases') or []
+            if case.get('status') in _FAILED_TEST_STATUSES
+        ]
+        job_url, _, number = url.rstrip('/').rpartition('/')
+        runs = (
+            self._earlier_runs(session, job_url, int(number))
+            if cases and number.isdigit()
+            else []
+        )
+        # Per earlier run and class URL: each case's status.
+        classes: dict[tuple[int, str], dict[str, str] | None] = {}
         tests = []
-        for suite in (report or {}).get('suites') or []:
-            for case in suite.get('cases') or []:
-                if case.get('status') not in _FAILED_TEST_STATUSES:
-                    continue
-                name = case.get('name', '')
-                class_name = case.get('className', '')
-                if class_name and class_name != name:
-                    name = f'{class_name}.{name}'
-                details = '\n'.join(
-                    part
-                    for part in (
-                        case.get('errorDetails'),
-                        case.get('errorStackTrace'),
-                    )
-                    if part
+        for index, case in enumerate(cases):
+            name = case.get('name', '')
+            class_name = case.get('className', '')
+            if class_name and class_name != name:
+                name = f'{class_name}.{name}'
+            details = '\n'.join(
+                part
+                for part in (
+                    case.get('errorDetails'),
+                    case.get('errorStackTrace'),
                 )
-                age = case.get('age') or 0
-                tests.append(
-                    FailedTest(
-                        name=name,
-                        status=case['status'],
-                        details=failures.tail(details, 40),
-                        known=f'failing for {age} builds' if age > 1 else '',
-                    )
+                if part
+            )
+            age = case.get('age') or 0
+            known = ''
+            if age > 1:
+                known = f'failing for {age} builds'
+                if case.get('failedSince'):
+                    known += f', since #{case["failedSince"]}'
+            history = ()
+            if index < _HISTORY_TESTS:
+                history = self._history(session, job_url, case, runs, classes)
+            tests.append(
+                FailedTest(
+                    name=name,
+                    status=case['status'],
+                    details=failures.tail(details, 40),
+                    known=known,
+                    history=history,
                 )
+            )
         return tuple(tests)
+
+    def _earlier_runs(
+        self, session: requests.Session, job_url: str, number: int
+    ) -> list[tuple[int, str, str]]:
+        """The job's runs before run `number`, newest first, as
+        `(number, result, brave-core commit)`."""
+        job = (
+            self._get_json(
+                session,
+                f'{job_url}/api/json?tree=builds[number,result,'
+                'actions[remoteUrls,lastBuiltRevision[SHA1]]]'
+                f'{{0,{_HISTORY_RUNS * 3}}}',
+            )
+            or {}
+        )
+        runs = []
+        for build in job.get('builds') or []:
+            if build.get('number', 0) >= number:
+                continue
+            revision = next(
+                (
+                    action['lastBuiltRevision'].get('SHA1', '')[:10]
+                    for action in build.get('actions') or []
+                    if (action or {}).get('lastBuiltRevision')
+                    and any(
+                        'brave-core' in remote
+                        for remote in action.get('remoteUrls') or []
+                    )
+                ),
+                '',
+            )
+            runs.append((build['number'], build.get('result') or '', revision))
+        return runs[:_HISTORY_RUNS]
+
+    def _history(
+        self,
+        session: requests.Session,
+        job_url: str,
+        case: dict,
+        runs: list[tuple[int, str, str]],
+        classes: dict[tuple[int, str], dict[str, str] | None],
+    ) -> tuple[str, ...]:
+        """The newest of `runs` that reported `case`: its status there, and
+        the commit that run built."""
+        class_name = case.get('className', '')
+        package, _, simple = class_name.rpartition('.')
+        class_path = (
+            f'{_UNSAFE_IN_TEST_URL.sub("_", package or "(root)")}/'
+            f'{_UNSAFE_IN_TEST_URL.sub("_", simple)}'
+        )
+        skipped = []
+        for number, result, revision in runs:
+            key = (number, class_path)
+            if key not in classes:
+                report = self._get_json(
+                    session,
+                    f'{job_url}/{number}/testReport/{class_path}/api/json'
+                    '?tree=child[name,status]',
+                )
+                classes[key] = (
+                    None
+                    if report is None
+                    else {
+                        child.get('name', ''): child.get('status', '')
+                        for child in report.get('child') or []
+                    }
+                )
+            status = (classes[key] or {}).get(case.get('name', ''))
+            if status is None:
+                skipped.append(f'#{number} ({result or "running"})')
+                continue
+            line = f'last ran in #{number} ({result})'
+            if revision:
+                line += f' on `{revision}`'
+            line += f': {status}'
+            if skipped:
+                line += f'; not in {", ".join(skipped)}'
+            return (line,)
+        if not runs:
+            return ()
+        return (f'not in the job\'s {len(runs)} earlier runs',)
 
     def rerun(self, build_url: str, *, wipe_workspace: bool = False) -> str:
         """Queues the job of the run at `build_url` again, from scratch when

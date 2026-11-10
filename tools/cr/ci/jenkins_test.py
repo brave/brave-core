@@ -745,7 +745,16 @@ class WatchLoopTest(unittest.TestCase):
         self.assertTrue(succeeded)
 
 
-_RUN = 'https://ci.brave.com/job/brave-core-build-pr-windows-x64/job/PR-1/84'
+_JOB = 'https://ci.brave.com/job/brave-core-build-pr-windows-x64/job/PR-1'
+_RUN = f'{_JOB}/84'
+_TEST_REPORT = (
+    'testReport/api/json?tree=suites[cases[className,name,status,age,'
+    'failedSince,errorDetails,errorStackTrace]]'
+)
+_JOB_BUILDS = (
+    'api/json?tree=builds[number,result,'
+    'actions[remoteUrls,lastBuiltRevision[SHA1]]]{0,30}'
+)
 
 
 def _json_session(responses: dict[str, object]) -> MagicMock:
@@ -797,8 +806,7 @@ class FailedBuildsTest(unittest.TestCase):
                 'execution/node/21/wfapi/log': {
                     'text': '<span>error: a &amp; b</span>\nFAILED: x.o'
                 },
-                'testReport/api/json?tree=suites[cases[className,name,'
-                'status,age,errorDetails,errorStackTrace]]': {
+                _TEST_REPORT: {
                     'suites': [
                         {
                             'cases': [
@@ -807,6 +815,7 @@ class FailedBuildsTest(unittest.TestCase):
                                     'name': 'Old',
                                     'status': 'FAILED',
                                     'age': 34,
+                                    'failedSince': 50,
                                     'errorDetails': 'Expected 1',
                                 },
                                 {
@@ -839,11 +848,146 @@ class FailedBuildsTest(unittest.TestCase):
         self.assertEqual(
             [(t.name, t.status, t.known) for t in tests.tests],
             [
-                ('Suite.Old', 'FAILED', 'failing for 34 builds'),
+                ('Suite.Old', 'FAILED', 'failing for 34 builds, since #50'),
                 ('Suite.New', 'REGRESSION', ''),
             ],
         )
         self.assertEqual(tests.tests[0].details, 'Expected 1')
+
+    def test_history_names_the_last_run_that_reported_the_test(self):
+        def revisions(brave_core):
+            return [
+                None,
+                {
+                    'remoteUrls': ['https://github.com/brave/devops'],
+                    'lastBuiltRevision': {'SHA1': 'd' * 40},
+                },
+                {
+                    'remoteUrls': ['git@github.com:brave/brave-core.git'],
+                    'lastBuiltRevision': {'SHA1': brave_core * 40},
+                },
+            ]
+
+        responses = {
+            f'{_RUN}/wfapi/describe': {
+                'stages': [{'id': '4', 'name': 'test', 'status': 'UNSTABLE'}]
+            },
+            f'{_RUN}/{_TEST_REPORT}': {
+                'suites': [
+                    {
+                        'cases': [
+                            {
+                                'className': 'Suite',
+                                'name': 'New',
+                                'status': 'FAILED',
+                                'age': 1,
+                                'failedSince': 84,
+                            },
+                            {
+                                'className': 'Suite',
+                                'name': 'Other',
+                                'status': 'FAILED',
+                                'age': 1,
+                            },
+                            {
+                                'className': 'org.chromium.chrome.JavaTest',
+                                'name': 'testA',
+                                'status': 'FAILED',
+                            },
+                        ]
+                    }
+                ]
+            },
+            f'{_JOB}/{_JOB_BUILDS}': {
+                'builds': [
+                    {'number': 85, 'result': None, 'actions': []},
+                    {
+                        'number': 83,
+                        'result': 'NOT_BUILT',
+                        'actions': revisions('c'),
+                    },
+                    {
+                        'number': 82,
+                        'result': 'ABORTED',
+                        'actions': revisions('b'),
+                    },
+                    {
+                        'number': 81,
+                        'result': 'SUCCESS',
+                        'actions': revisions('a'),
+                    },
+                ]
+            },
+            f'{_JOB}/82/testReport/(root)/Suite/api/json'
+            '?tree=child[name,status]': {
+                'child': [{'name': 'Other', 'status': 'FAILED'}]
+            },
+            f'{_JOB}/81/testReport/(root)/Suite/api/json'
+            '?tree=child[name,status]': {
+                'child': [
+                    {'name': 'New', 'status': 'PASSED'},
+                    {'name': 'Other', 'status': 'PASSED'},
+                ]
+            },
+        }
+        requested = []
+
+        def get(url, **_):
+            requested.append(url)
+            response = MagicMock()
+            if url in responses:
+                response.json.return_value = responses[url]
+            else:
+                response.raise_for_status.side_effect = (
+                    jenkins.requests.HTTPError(url)
+                )
+            return response
+
+        session = MagicMock()
+        session.get.side_effect = get
+        with patch('ci.jenkins.requests.Session', return_value=session):
+            builds = jenkins.JenkinsCi('u', 't').failed_builds(_RUN)
+        self.assertEqual(len(builds), 1)
+        build = builds[0]
+        self.assertEqual(
+            [(t.name, t.known, t.history) for t in build.tests],
+            [
+                (
+                    'Suite.New',
+                    '',
+                    (
+                        f'last ran in #81 (SUCCESS) on `{"a" * 10}`: PASSED; '
+                        'not in #83 (NOT_BUILT), #82 (ABORTED)',
+                    ),
+                ),
+                (
+                    'Suite.Other',
+                    '',
+                    (
+                        f'last ran in #82 (ABORTED) on `{"b" * 10}`: FAILED; '
+                        'not in #83 (NOT_BUILT)',
+                    ),
+                ),
+                (
+                    'org.chromium.chrome.JavaTest.testA',
+                    '',
+                    ("not in the job's 3 earlier runs",),
+                ),
+            ],
+        )
+        # Each run's class report is read once, whichever tests share it.
+        self.assertEqual(
+            requested.count(
+                f'{_JOB}/81/testReport/(root)/Suite/api/json'
+                '?tree=child[name,status]'
+            ),
+            1,
+        )
+        self.assertIn(
+            f'{_JOB}/83/testReport/org.chromium.chrome/JavaTest/api/json'
+            '?tree=child[name,status]',
+            requested,
+        )
 
     def test_a_fatal_line_only_the_console_has_leads_the_tail(self):
         fatal = (
