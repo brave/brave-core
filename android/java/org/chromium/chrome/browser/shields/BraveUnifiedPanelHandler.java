@@ -80,7 +80,6 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabFavicon;
-import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.ui.favicon.FaviconHelper;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.webcompat_reporter.WebcompatReporterServiceFactory;
@@ -123,6 +122,7 @@ public class BraveUnifiedPanelHandler {
     private static final int ICON_OVERLAP_MARGIN_DP = -8;
     private static final int FAVICON_ELEVATION_DP = 1;
     private static final int PANEL_OVERLAP_OFFSET_DP = 7;
+    private static final int PANEL_SHADOW_SAFETY_GAP_DP = 12;
     private static final int SITE_FAVICON_CONTAINER_SIZE_DP = 32;
     private static final int SITE_FAVICON_SIZE_DP = 20;
     // The Leo ic_disable_outline icon draws its circle between viewport coordinates 2–22 inside a
@@ -448,28 +448,38 @@ public class BraveUnifiedPanelHandler {
         mPopupView.setClipToOutline(true);
 
         mAnchorView = anchorView;
-        if (BottomToolbarConfiguration.isToolbarBottomAnchored()) {
+
+        int[] anchorLocation = new int[2];
+        mAnchorView.getLocationInWindow(anchorLocation);
+        int decorViewHeight = ((Activity) mContext).getWindow().getDecorView().getHeight();
+        // Probably an API we could call but this is tautological.
+        boolean toolbarAtBottom = anchorLocation[1] > decorViewHeight / 2;
+        Rect visibleFrame = new Rect();
+        ((Activity) mContext).getWindow().getDecorView().getWindowVisibleDisplayFrame(visibleFrame);
+
+        if (toolbarAtBottom) {
             popupWindow.setAnimationStyle(R.style.AnchoredPopupAnimEndBottom);
         } else {
             popupWindow.setAnimationStyle(R.style.AnchoredPopupAnimEndTop);
         }
 
         try {
-            int[] anchorLocation = new int[2];
-            mAnchorView.getLocationInWindow(anchorLocation);
-            int decorViewHeight = ((Activity) mContext).getWindow().getDecorView().getHeight();
             int overlapPx = (int) (PANEL_OVERLAP_OFFSET_DP * density);
 
-            if (BottomToolbarConfiguration.isToolbarBottomAnchored()) {
-                // Mirror the top-toolbar rule: end the panel 7 dp above the toolbar top so
-                // its bottom edge lands in the browser-chrome space adjacent to the URL bar,
-                // which a web page cannot render into.
+            if (toolbarAtBottom) {
+                // Keep the panel's bottom edge just above the toolbar. Gravity.BOTTOM
+                // re-resolves this offset against the toolbar's own bottom edge on every
+                // relayout, so the panel grows upward in place as its content changes (e.g.
+                // expanding "Advanced controls") with no explicit repositioning needed.
+                // clipToOutline doesn't clip the panel's elevation shadow, hence the extra
+                // safety gap beyond the toolbar's own top edge.
                 int anchorTop = anchorLocation[1];
-                int yOffset = decorViewHeight - anchorTop - overlapPx;
-                int panelBottom = anchorTop + overlapPx;
+                int toolbarBottom = anchorTop + mAnchorView.getHeight();
+                int panelBottom = anchorTop - (int) (PANEL_SHADOW_SAFETY_GAP_DP * density);
+                int yOffset = toolbarBottom - panelBottom;
 
-                ((MaxHeightFrameLayout) mPopupView)
-                        .setMaxHeightPx(panelBottom - marginPx);
+                int maxHeightPx = panelBottom - visibleFrame.top;
+                ((MaxHeightFrameLayout) mPopupView).setMaxHeightPx(maxHeightPx);
 
                 popupWindow.showAtLocation(
                         mAnchorView, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, yOffset);
