@@ -71,19 +71,19 @@ auto RegistrationOf(const std::string& component_id) {
 
 }  // namespace
 
-// Runs each test for each model. The registrar logic is the same for both
-// models. Only the component, its install dir and its pref differ.
-class OnDeviceSpeechModelsComponentInstallerUnitTest
-    : public testing::TestWithParam<OnDeviceSpeechModel> {
+// Drives the registrar for the one model a test is about.
+class OnDeviceSpeechModelsComponentInstallerTestBase : public testing::Test {
  public:
-  OnDeviceSpeechModelsComponentInstallerUnitTest()
-      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {
+  explicit OnDeviceSpeechModelsComponentInstallerTestBase(
+      OnDeviceSpeechModel model)
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
+        model_(model) {
     feature_list_.InitWithFeatures(
         {kBraveOnDeviceSpeechRecognition, kBraveOnDeviceSpeechMultilingual},
         {});
   }
 
-  ~OnDeviceSpeechModelsComponentInstallerUnitTest() override = default;
+  ~OnDeviceSpeechModelsComponentInstallerTestBase() override = default;
 
   void SetUp() override {
     cus_ = std::make_unique<component_updater::MockComponentUpdateService>();
@@ -151,7 +151,7 @@ class OnDeviceSpeechModelsComponentInstallerUnitTest
   }
 
   // The model this run is about, and the other one.
-  OnDeviceSpeechModel model() const { return GetParam(); }
+  OnDeviceSpeechModel model() const { return model_; }
   OnDeviceSpeechModel other_model() const {
     return model() == kEnglish ? kMultilingual : kEnglish;
   }
@@ -352,6 +352,32 @@ class OnDeviceSpeechModelsComponentInstallerUnitTest
   base::ScopedPathOverride scoped_path_override_{
       component_updater::DIR_COMPONENT_USER};
   base::test::ScopedFeatureList feature_list_;
+  const OnDeviceSpeechModel model_;
+};
+
+// Runs each test for each model. The registrar logic is the same for both
+// models. Only the component, its install dir and its pref differ.
+class OnDeviceSpeechModelsComponentInstallerUnitTest
+    : public OnDeviceSpeechModelsComponentInstallerTestBase,
+      public testing::WithParamInterface<OnDeviceSpeechModel> {
+ public:
+  OnDeviceSpeechModelsComponentInstallerUnitTest()
+      : OnDeviceSpeechModelsComponentInstallerTestBase(GetParam()) {}
+};
+
+// For behaviour that only one of the models has.
+class OnDeviceSpeechEnglishModelComponentInstallerUnitTest
+    : public OnDeviceSpeechModelsComponentInstallerTestBase {
+ public:
+  OnDeviceSpeechEnglishModelComponentInstallerUnitTest()
+      : OnDeviceSpeechModelsComponentInstallerTestBase(kEnglish) {}
+};
+
+class OnDeviceSpeechMultilingualModelComponentInstallerUnitTest
+    : public OnDeviceSpeechModelsComponentInstallerTestBase {
+ public:
+  OnDeviceSpeechMultilingualModelComponentInstallerUnitTest()
+      : OnDeviceSpeechModelsComponentInstallerTestBase(kMultilingual) {}
 };
 
 // `OnDeviceSpeechModelsComponentInstallerPolicy`, which the component
@@ -480,9 +506,8 @@ TEST_P(
 
 // Tests that `ManageOnDeviceSpeechModelsComponentRegistration` removes both
 // models, and clears both prefs, when the Local AI master switch is off, the
-// other condition
-// `CanOfferOnDeviceSpeech` requires. Brave Origin manages this one, so it can
-// turn off long after startup.
+// other condition `CanOfferOnDeviceSpeech` requires. Brave Origin manages this
+// one, so it can turn off long after startup.
 TEST_P(
     OnDeviceSpeechModelsComponentInstallerUnitTest,
     ManageOnDeviceSpeechModelsComponentRegistration_RemovesWhenLocalAIDisabled) {
@@ -1120,24 +1145,37 @@ TEST_P(OnDeviceSpeechModelsComponentInstallerUnitTest,
   EXPECT_TRUE(IsEnabled(other_model()));
 }
 
-// Tests that `kBraveOnDeviceSpeechMultilingual` off takes only the
-// multilingual model away. The multilingual model goes off disk, its pref is
-// cleared and a request for it is refused. The English model registers, and
-// stays installed and enabled.
-TEST_P(OnDeviceSpeechModelsComponentInstallerUnitTest,
-       MultilingualFeatureOffRemovesOnlyTheMultilingualModel) {
+INSTANTIATE_TEST_SUITE_P(
+    ,
+    OnDeviceSpeechModelsComponentInstallerUnitTest,
+    testing::Values(kEnglish, kMultilingual),
+    [](const testing::TestParamInfo<OnDeviceSpeechModel>& info) {
+      return info.param == kEnglish ? "English" : "Multilingual";
+    });
+
+// Tests that `kBraveOnDeviceSpeechMultilingual` off takes the multilingual
+// model away. The model goes off disk, its pref is cleared and a request for it
+// is refused.
+TEST_F(OnDeviceSpeechMultilingualModelComponentInstallerUnitTest,
+       MultilingualFeatureOffRemovesTheModel) {
   base::test::ScopedFeatureList disabled;
   disabled.InitWithFeatures({kBraveOnDeviceSpeechRecognition},
                             {kBraveOnDeviceSpeechMultilingual});
 
-  if (model() == kMultilingual) {
-    // Also checks that the pref is cleared.
-    ExpectNoRegistrationAndDeletedCopy();
-    base::test::TestFuture<bool> refused;
-    MaybeRegisterOnDeviceSpeechModelsComponent(model(), refused.GetCallback());
-    EXPECT_FALSE(refused.Get());
-    return;
-  }
+  // Also checks that the pref is cleared.
+  ExpectNoRegistrationAndDeletedCopy();
+  base::test::TestFuture<bool> refused;
+  MaybeRegisterOnDeviceSpeechModelsComponent(model(), refused.GetCallback());
+  EXPECT_FALSE(refused.Get());
+}
+
+// Tests that `kBraveOnDeviceSpeechMultilingual` off leaves the English model
+// alone. The model registers, and stays installed and enabled.
+TEST_F(OnDeviceSpeechEnglishModelComponentInstallerUnitTest,
+       MultilingualFeatureOffKeepsTheModel) {
+  base::test::ScopedFeatureList disabled;
+  disabled.InitWithFeatures({kBraveOnDeviceSpeechRecognition},
+                            {kBraveOnDeviceSpeechMultilingual});
 
   auto* state = OnDeviceSpeechModelsState::GetInstance();
   state->SetInstallDir(model(), install_dir_);
@@ -1153,13 +1191,5 @@ TEST_P(OnDeviceSpeechModelsComponentInstallerUnitTest,
   EXPECT_TRUE(state->IsModelInstalled(model()));
   EXPECT_TRUE(IsEnabled(model()));
 }
-
-INSTANTIATE_TEST_SUITE_P(
-    ,
-    OnDeviceSpeechModelsComponentInstallerUnitTest,
-    testing::Values(kEnglish, kMultilingual),
-    [](const testing::TestParamInfo<OnDeviceSpeechModel>& info) {
-      return info.param == kEnglish ? "English" : "Multilingual";
-    });
 
 }  // namespace local_ai
