@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/BUILD.gn b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/BUILD.gn
+index 9588da9ed1fdcfd96b81ce8c12fdf153f2123ff7..5702d740424a387ee40b90b425d97fe8f9c02a50 100644
+--- a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/BUILD.gn
++++ b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/BUILD.gn
+@@ -15,6 +15,7 @@ source_set("customize_toolbar") {
+     "//mojo/public/cpp/bindings",
+   ]
+   deps = [
++    "//brave/browser/ui/webui/side_panel/customize_chrome",
+     "//chrome/app/vector_icons",
+     "//chrome/browser/profiles:profile",
+     "//chrome/browser/ui:browser_actions",
