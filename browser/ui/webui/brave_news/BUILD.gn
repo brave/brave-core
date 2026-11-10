@@ -16,6 +16,7 @@ source_set("brave_news") {
 
   deps = [
     "//brave/browser/brave_news",
+    "//brave/browser/ui/webui:brave_sanitized_image_source",
     "//brave/components/brave_news/browser",
     "//brave/components/brave_news/browser/resources:sidebar_generated_resources",
     "//brave/components/brave_news/common",

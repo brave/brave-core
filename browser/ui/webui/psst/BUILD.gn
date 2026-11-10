@@ -24,6 +24,7 @@ static_library("psst") {
   deps = [
     "//brave/browser/ui",
     "//brave/browser/ui/tabs:tabs_public",
+    "//brave/browser/ui/webui:brave_webui_source",
     "//brave/components/psst/resources:psst_dialog_generated_resources_grit",
     "//brave/components/psst/resources:static_resources_grit",
     "//brave/components/resources:strings_grit",
