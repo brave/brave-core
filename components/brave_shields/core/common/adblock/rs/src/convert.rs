@@ -79,8 +79,9 @@ impl From<InnerEngineDebugInfo> for DebugInfo {
 // Converts `Option<FilterRuleDebugInfo>` into a `UniquePtr<FilterRuleInfo>`.
 fn to_filter_rule_info(
     info: Option<InnerFilterRuleDebugInfo>,
-    source_title: &dyn Fn(u32) -> String,
+    source_titles: &[String],
 ) -> UniquePtr<FilterRuleInfo> {
+    // `None` unless the engine was built in debug mode.
     let Some(info) = info else {
         return UniquePtr::null();
     };
@@ -93,21 +94,19 @@ fn to_filter_rule_info(
     if let Some(source_location) = info.source_location {
         filter_rule_info.source_index = i32::try_from(source_location.source_index).unwrap_or(-1);
         filter_rule_info.line_number = i32::try_from(source_location.line_number).unwrap_or(-1);
-        filter_rule_info.list_title = source_title(source_location.source_index);
+        filter_rule_info.list_title =
+            source_titles.get(source_location.source_index as usize).cloned().unwrap_or_default();
     }
     UniquePtr::new(filter_rule_info)
 }
 
-pub fn to_blocker_result(
-    result: InnerBlockerResult,
-    source_title: &dyn Fn(u32) -> String,
-) -> BlockerResult {
+pub fn to_blocker_result(result: InnerBlockerResult, source_titles: &[String]) -> BlockerResult {
     BlockerResult {
         matched: result.should_block(),
         important: result.important,
         has_exception: result.exception.is_some(),
-        filter: to_filter_rule_info(result.filter, source_title),
-        exception: to_filter_rule_info(result.exception, source_title),
+        filter: to_filter_rule_info(result.filter, source_titles),
+        exception: to_filter_rule_info(result.exception, source_titles),
         redirect: result.redirect.into(),
         rewritten_url: result.rewritten_url.into(),
     }

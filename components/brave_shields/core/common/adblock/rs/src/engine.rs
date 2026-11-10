@@ -169,11 +169,7 @@ impl Engine {
             previously_matched_rule,
             force_check_exceptions,
         );
-        to_blocker_result(result, &|source_index| self.source_title(source_index))
-    }
-
-    fn source_title(&self, source_index: u32) -> String {
-        self.source_titles.get(source_index as usize).cloned().unwrap_or_default()
+        to_blocker_result(result, &self.source_titles)
     }
 
     pub fn get_csp_directives(
@@ -205,6 +201,7 @@ impl Engine {
     }
 
     pub fn deserialize(&mut self, serialized: &CxxVector<u8>) -> bool {
+        // DAT files are never loaded in debug mode, empty titles.
         self.source_titles.clear();
         self.engine.deserialize(serialized.as_slice()).is_ok()
     }
