@@ -15,12 +15,15 @@
   cursor: pointer;
   display: flex;
   gap: var(--leo-spacing-xl);
+
+  /* <if expr="not is_android and not is_ios"> */
   /* Chromium's settings row inset, so this row lines up with its neighbors. */
   padding: var(--leo-spacing-l) var(--cr-section-padding);
 
   &:hover {
     background: var(--leo-color-container-highlight);
   }
+  /* </if> */
 
   > leo-icon {
     --leo-icon-size: var(--leo-icon-m);
