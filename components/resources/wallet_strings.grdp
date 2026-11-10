@@ -631,6 +631,12 @@
   <message name="IDS_BRAVE_WALLET_NEXT_TRANSACTION" desc="Next transaction button text" formatter_data="webui=Wallet">Next transaction</message>
   <message name="IDS_BRAVE_WALLET_PREVIOUS_TRANSACTION" desc="Previous transaction button text" formatter_data="webui=Wallet">Previous transaction</message>
   <message name="IDS_BRAVE_WALLET_REJECT_TRANSACTIONS" desc="Reject transactions button text" formatter_data="webui=Wallet">Reject <ph name="QUEUE_LENGTH">$1<ex>4</ex></ph>  transactions</message>
+  <message name="IDS_BRAVE_WALLET_APPROVAL_FOR_ALL_WARNING_TITLE" desc="Approval for all warning title" formatter_data="webui=Wallet">Set approval for all</message>
+  <message name="IDS_BRAVE_WALLET_APPROVAL_FOR_ALL_WARNING_DESCRIPTION" desc="Approval for all warning description" formatter_data="webui=Wallet">This lets the spender below transfer every NFT you own in this collection. This includes any NFTs you receive later.</message>
+  <message name="IDS_BRAVE_WALLET_WARNING" desc="Warning label" formatter_data="webui=Wallet">Warning</message>
+  <message name="IDS_BRAVE_WALLET_APPROVAL_FOR_ALL_FINAL_WARNING_TITLE" desc="Approval for all final warning title" formatter_data="webui=Wallet">Give this site access to all your NFTs?</message>
+  <message name="IDS_BRAVE_WALLET_APPROVAL_FOR_ALL_FINAL_WARNING_DESCRIPTION" desc="Approval for all final warning description" formatter_data="webui=Wallet">You're about to let <ph name="ADDRESS">$1<ex>0xfdafdsfa</ex></ph> transfer every NFT in this wallet, including any you receive later.</message>
+  <message name="IDS_BRAVE_WALLET_CONFIRM_ANYWAY" desc="Confirm anyway button text" formatter_data="webui=Wallet">Confirm anyway</message>
   <message name="IDS_BRAVE_WALLET_NFT_DETAIL_BLOCKCHAIN" desc="NFT detail screen blockchain category" formatter_data="webui=Wallet">Blockchain</message>
   <message name="IDS_BRAVE_WALLET_NFT_DETAIL_TOKEN_STANDARD" desc="NFT detail screen token standard category" formatter_data="webui=Wallet">Token standard</message>
   <message name="IDS_BRAVE_WALLET_NFT_DETAIL_TOKEN_ID" desc="NFT detail screen token id category" formatter_data="webui=Wallet">Token ID</message>
