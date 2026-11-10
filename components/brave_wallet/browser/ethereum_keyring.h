@@ -45,15 +45,6 @@ class EthereumKeyring : public Secp256k1HDKeyring {
 
   void SignTransaction(const std::string& address, EthTransaction* tx);
 
-  bool GetPublicKeyFromX25519_XSalsa20_Poly1305(const std::string& address,
-                                                std::string* key);
-  std::optional<std::vector<uint8_t>> DecryptCipherFromX25519_XSalsa20_Poly1305(
-      const std::string& version,
-      base::span<const uint8_t> nonce,
-      base::span<const uint8_t> ephemeral_public_key,
-      base::span<const uint8_t> ciphertext,
-      const std::string& address);
-
   std::optional<std::string> GetDiscoveryAddress(size_t index) const;
   std::optional<std::string> EncodePrivateKeyForExport(
       const std::string& address);
