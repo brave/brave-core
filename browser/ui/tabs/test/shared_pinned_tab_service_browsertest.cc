@@ -210,7 +210,11 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTreeTabServiceBrowserTest,
   auto* contents = model->GetWebContentsAt(0);
   auto* service = GetForBrowser(browser());
 
-  BrowserWindow::FromBrowser(browser())->Show();
+  // Don't Show() browser() here. On Linux its activation completes late, after
+  // a deactivation caused by the other window, so OnBrowserActivated() can run
+  // between the unpin below and the service's posted OnTabUnpinned().
+  // SynchronizeNewBrowser() then treats the unpinned browser as out of sync and
+  // inserts a new dummy tab at index 0.
   model->SetTabPinned(0, true);
   ASSERT_TRUE(service->IsSharedContents(contents));
   ASSERT_EQ(2, other_model->count());

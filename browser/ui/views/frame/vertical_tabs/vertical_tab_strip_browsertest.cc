@@ -1642,6 +1642,14 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
   auto* tab_strip = browser_view()->horizontal_tab_strip_for_testing();
   auto* model = browser()->tab_strip_model();
 
+  // Initialize the sync service before a group exists. Otherwise its deferred
+  // init can run during QuitBrowsers() and CHECK on the closed browser.
+  auto* tab_groups_service =
+      tab_groups::TabGroupSyncServiceFactory::GetForProfile(
+          browser()->GetProfile());
+  ASSERT_TRUE(tab_groups_service);
+  tab_groups_service->SetIsInitializedForTesting(true);
+
   // A pinned tab gives the unpinned tabs a clip path that depends on their
   // position, and a group adds header views that scroll along with the tabs.
   model->SetTabPinned(0, true);
