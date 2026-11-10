@@ -31,6 +31,17 @@ std::optional<std::string> GetFinalRecipient(
     mojom::TransactionType tx_type,
     base::span<const std::string> tx_args);
 
+// Returns true for transaction types whose calldata targets a non-payable
+// entrypoint, meaning the transaction's native value cannot possibly be part of
+// the transfer the calldata describes.
+//
+// The ERC-20, ERC-721 and ERC-1155 transfer and approval entrypoints are all
+// declared non-payable
+//
+// Types that legitimately carry native value (ETHSend, ETHSwap and
+// ETHFilForwarderTransfer) are excluded.
+bool IsNonPayableTokenTransactionType(mojom::TransactionType tx_type);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_DATA_PARSER_H_
