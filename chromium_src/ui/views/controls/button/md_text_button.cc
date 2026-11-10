@@ -239,9 +239,8 @@ MdTextButton::ButtonColors MdTextButton::GetButtonColors() {
   // 3. If dark mode, prefer the |dark_background_color|.
   // 4. If none of the above the background color is transparent.
   SkColor bg_color = SK_ColorTRANSPARENT;
-  if (auto override_color = GetBgColorOverrideDeprecated();
-      override_color.has_value()) {
-    bg_color = override_color.value();
+  if (auto override_color = GetBgColorOverride(); override_color.has_value()) {
+    bg_color = override_color->ResolveToSkColor(GetColorProvider());
   } else {
     std::optional<ui::ColorId> bg_color_id = style->background_color;
     if (is_dark && style->dark_background_color.has_value()) {
