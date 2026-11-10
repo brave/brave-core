@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/tab_model/tab_model_test_helper.cc b/chrome/browser/ui/android/tab_model/tab_model_test_helper.cc
-index 5e26419b40b6b3ff563ce95faf497821c11c1cbf..ab7eab89e1b5f4aa79e5a7a6d8b2b777102dd347 100644
+index f9653d3c03f6986ab6ce1f16a905fa76c0e99b23..69feeff22ca53d52b53c265be0ae09c0c38beb16 100644
 --- a/chrome/browser/ui/android/tab_model/tab_model_test_helper.cc
 +++ b/chrome/browser/ui/android/tab_model/tab_model_test_helper.cc
-@@ -40,10 +40,9 @@
+@@ -41,10 +41,9 @@
  #include "ui/gfx/range/range.h"
  #include "url/gurl.h"
  
@@ -16,7 +16,7 @@ index 5e26419b40b6b3ff563ce95faf497821c11c1cbf..ab7eab89e1b5f4aa79e5a7a6d8b2b777
  #endif
  
  TestTabModel::TestTabModel(Profile* profile,
-@@ -356,7 +355,7 @@ bool TestTabModel::IsClosingAllTabs() {
+@@ -369,7 +368,7 @@ bool TestTabModel::IsClosingAllTabs() {
    return false;
  }
  

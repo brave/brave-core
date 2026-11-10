@@ -118,6 +118,7 @@ source_set("core") {
   }
   public_deps = [
     ":tab_helpers_header",
+    "//brave/browser:brave_browser_features",
     "//brave/components/psst/buildflags",
     "//chrome/browser:shell_integration",
   ]
