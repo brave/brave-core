@@ -927,8 +927,6 @@ if (enable_brave_news) {
 
 if (is_mac) {
   brave_chrome_browser_deps += [ "//brave/browser/upgrade_when_idle" ]
-  brave_chrome_browser_allow_circular_includes_from +=
-      [ "//brave/browser/upgrade_when_idle" ]
 }
 
 # Deps for chrome/browser/prefs:impl
