@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_ENDPOINT_CLIENT_REQUEST_H_
 #define BRAVE_COMPONENTS_ENDPOINT_CLIENT_REQUEST_H_
 
-#include <cstddef>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -14,15 +13,10 @@
 #include "base/check.h"
 #include "base/check_deref.h"
 #include "base/json/json_writer.h"
-#include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/endpoint_client/is_request_body.h"
-#include "brave/components/endpoint_client/retry_options.h"
-#include "brave/components/endpoint_client/url_replacements.h"
+#include "brave/components/endpoint_client/request_options.h"
 #include "net/http/http_request_headers.h"
-#include "net/traffic_annotation/network_traffic_annotation.h"
-#include "services/network/public/cpp/simple_url_loader.h"
-#include "services/network/public/mojom/fetch_api.mojom.h"
 
 namespace endpoint_client::detail {
 
@@ -43,7 +37,7 @@ enum class Method {
 // A request binds a request body type to a specific HTTP method and
 // provides access to the method, Content-Type, and serialized body.
 template <IsRequestBody RequestBody, Method M>
-struct Request {
+struct Request : RequestOptions {
   using Body = RequestBody;
 
   static constexpr std::string_view Method() {
@@ -79,14 +73,6 @@ struct Request {
   std::optional<std::string> Serialize() const { return Serialize(body); }
 
   Body body;
-  std::optional<std::size_t> max_body_size =
-      network::SimpleURLLoader::kMaxBoundedStringDownloadSize;
-  net::MutableNetworkTrafficAnnotationTag network_traffic_annotation_tag;
-  network::mojom::RedirectMode redirect_mode =
-      network::mojom::RedirectMode::kError;
-  RetryOptions retry_options;
-  base::TimeDelta timeout_duration;
-  UrlReplacements url_replacements;
 
  private:
   // Returns the Content-Type value for a JSON request body.
