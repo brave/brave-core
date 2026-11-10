@@ -1,0 +1,23 @@
+diff --git a/chrome/browser/ui/views/frame/layout/browser_view_layout_delegate.h b/chrome/browser/ui/views/frame/layout/browser_view_layout_delegate.h
+index 2d92bee805b7e8fca4d72b4ce594f2c7db0b166a..44f877f702ab97559722f065a97e0f7dc14f0273 100644
+--- a/chrome/browser/ui/views/frame/layout/browser_view_layout_delegate.h
++++ b/chrome/browser/ui/views/frame/layout/browser_view_layout_delegate.h
+@@ -70,6 +70,18 @@ class BrowserViewLayoutDelegate {
+       base::RepeatingCallback<void(bool)> callback,
+       bool* current_state_out) = 0;
+   virtual int GetRestoredWindowCornerRadius() const = 0;
++  virtual bool ShouldShowVerticalTabs() const = 0;
++  virtual bool ShouldShowWindowTitleForVerticalTabs() const = 0;
++  virtual bool IsVerticalTabOnRight() const = 0;
++  virtual bool ShouldUseBraveWebViewRoundedCornersForContents() const = 0;
++  virtual int GetRoundedCornersWebViewMargin() const = 0;
++  virtual bool IsBookmarkBarOnByPref() const = 0;
++  virtual bool IsContentTypeSidePanelVisible() const = 0;
++  virtual bool IsFullscreenForBrowser() const = 0;
++  virtual bool IsFullscreenForTab() const = 0;
++  virtual void UpdateContentsCornerRadii(
++      const gfx::RoundedCornersF& corner_radii) = 0;
++  virtual bool IsFullscreen() const = 0;
+ };
+ 
+ #endif  // CHROME_BROWSER_UI_VIEWS_FRAME_LAYOUT_BROWSER_VIEW_LAYOUT_DELEGATE_H_

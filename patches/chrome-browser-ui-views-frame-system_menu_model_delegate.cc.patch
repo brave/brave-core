@@ -1,0 +1,24 @@
+diff --git a/chrome/browser/ui/views/frame/system_menu_model_delegate.cc b/chrome/browser/ui/views/frame/system_menu_model_delegate.cc
+index c1eb4d11f57912c6f5a21440899299947a6ef7b3..13f4426e0412153f1df000e6a9e15af99af47285 100644
+--- a/chrome/browser/ui/views/frame/system_menu_model_delegate.cc
++++ b/chrome/browser/ui/views/frame/system_menu_model_delegate.cc
+@@ -51,6 +51,9 @@ SystemMenuModelDelegate::SystemMenuModelDelegate(
+ SystemMenuModelDelegate::~SystemMenuModelDelegate() = default;
+ 
+ bool SystemMenuModelDelegate::IsCommandIdChecked(int command_id) const {
++  if (auto result = MaybeHandleBraveCommand(command_id, browser_); result.has_value()) {
++    return *result;
++  }
+ #if BUILDFLAG(IS_LINUX)
+   if (command_id == IDC_USE_SYSTEM_TITLE_BAR) {
+     PrefService* prefs = browser_->GetProfile()->GetPrefs();
+@@ -142,6 +145,9 @@ bool SystemMenuModelDelegate::IsItemForCommandIdDynamic(int command_id) const {
+ 
+ std::u16string SystemMenuModelDelegate::GetLabelForCommandId(
+     int command_id) const {
++  if (auto label = MaybeGetLabelForBraveCommand(command_id, browser_)) {
++    return *label;
++  }
+   CHECK(IsItemForCommandIdDynamic(command_id), base::NotFatalUntil::M162);
+ 
+   int string_id;
