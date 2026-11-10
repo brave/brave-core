@@ -32,9 +32,9 @@
 #include "chrome/common/chrome_paths_internal.h"
 #include "chrome/common/chrome_switches.h"
 #include "components/component_updater/component_updater_switches.h"
-#include "components/dom_distiller/core/dom_distiller_switches.h"
 #include "components/embedder_support/switches.h"
 #include "components/sync/base/command_line_switches.h"
+#include "components/web_distiller/core/web_distiller_switches.h"
 #include "google_apis/gaia/gaia_switches.h"
 #include "services/network/public/cpp/is_potentially_trustworthy.h"
 
@@ -119,7 +119,7 @@ content::ContentUtilityClient* BraveMainDelegate::CreateContentUtilityClient() {
 void BraveMainDelegate::AppendCommandLineOptions() {
   auto* command_line = base::CommandLine::ForCurrentProcess();
   command_line->AppendSwitch(switches::kDisableDomainReliability);
-  command_line->AppendSwitch(switches::kEnableDomDistiller);
+  command_line->AppendSwitch(switches::kEnableWebDistiller);
   command_line->AppendSwitch(switches::kEnableDistillabilityService);
 
   if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
