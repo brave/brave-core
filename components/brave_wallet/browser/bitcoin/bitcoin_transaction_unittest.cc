@@ -10,6 +10,7 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/test/values_test_util.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_rpc_responses.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_serializer.h"
 #include "brave/components/json/json_helper.h"
@@ -41,6 +42,34 @@ TEST(BitcoinTransaction, Outpoint_Value) {
   EXPECT_EQ(parsed->txid, outpoint.txid);
 }
 
+TEST(BitcoinTransaction, Outpoint_FromValue_Invalid) {
+  BitcoinTransaction::Outpoint outpoint;
+  outpoint.index = 123;
+  base::HexStringToSpan(kTxid1, outpoint.txid);
+  const base::DictValue valid = outpoint.ToValue();
+  ASSERT_TRUE(BitcoinTransaction::Outpoint::FromValue(valid));
+
+  base::DictValue dict = valid.Clone();
+  EXPECT_TRUE(dict.Remove("txid"));
+  EXPECT_FALSE(BitcoinTransaction::Outpoint::FromValue(dict));
+
+  dict = valid.Clone();
+  dict.Set("txid", "not hex");
+  EXPECT_FALSE(BitcoinTransaction::Outpoint::FromValue(dict));
+
+  dict = valid.Clone();
+  dict.Set("txid", "aa38");
+  EXPECT_FALSE(BitcoinTransaction::Outpoint::FromValue(dict));
+
+  dict = valid.Clone();
+  EXPECT_TRUE(dict.Remove("index"));
+  EXPECT_FALSE(BitcoinTransaction::Outpoint::FromValue(dict));
+
+  dict = valid.Clone();
+  dict.Set("index", "123");
+  EXPECT_FALSE(BitcoinTransaction::Outpoint::FromValue(dict));
+}
+
 TEST(BitcoinTransaction, TxInput_Value) {
   BitcoinTransaction::TxInput input;
   input.utxo_address = kAddress1;
@@ -63,12 +92,61 @@ TEST(BitcoinTransaction, TxInput_Value) {
   input.raw_outpoint_tx = {3, 2, 1};
   parsed = input.FromValue(input.ToValue());
   ASSERT_TRUE(parsed);
+  ASSERT_TRUE(parsed->raw_outpoint_tx.has_value());
   EXPECT_EQ(*parsed->raw_outpoint_tx, input.raw_outpoint_tx);
 
   input.raw_outpoint_tx->clear();
   parsed = input.FromValue(input.ToValue());
   ASSERT_TRUE(parsed);
   ASSERT_FALSE(parsed->raw_outpoint_tx);
+}
+
+TEST(BitcoinTransaction, TxInput_FromValue_Invalid) {
+  BitcoinTransaction::TxInput input;
+  input.utxo_address = kAddress1;
+  input.utxo_outpoint.index = 123;
+  base::HexStringToSpan(kTxid1, input.utxo_outpoint.txid);
+  input.utxo_value = 555666777;
+  input.script_sig = {1, 2, 3};
+  input.witness = {4, 5, 6};
+  input.raw_outpoint_tx = {3, 2, 1};
+  const base::DictValue valid = input.ToValue();
+  ASSERT_TRUE(BitcoinTransaction::TxInput::FromValue(valid));
+
+  for (const char* key : {"utxo_address", "utxo_outpoint", "utxo_value",
+                          "script_sig", "witness"}) {
+    SCOPED_TRACE(key);
+    base::DictValue dict = valid.Clone();
+    EXPECT_TRUE(dict.Remove(key));
+    EXPECT_FALSE(BitcoinTransaction::TxInput::FromValue(dict));
+  }
+
+  base::DictValue dict = valid.Clone();
+  dict.Set("utxo_address", 1);
+  EXPECT_FALSE(BitcoinTransaction::TxInput::FromValue(dict));
+
+  dict = valid.Clone();
+  dict.Set("utxo_outpoint", "outpoint");
+  EXPECT_FALSE(BitcoinTransaction::TxInput::FromValue(dict));
+
+  dict = valid.Clone();
+  dict.Set("utxo_outpoint", base::DictValue());
+  EXPECT_FALSE(BitcoinTransaction::TxInput::FromValue(dict));
+
+  dict = valid.Clone();
+  dict.Set("utxo_value", "not a number");
+  EXPECT_FALSE(BitcoinTransaction::TxInput::FromValue(dict));
+
+  for (const char* key : {"script_sig", "witness", "raw_outpoint_tx"}) {
+    SCOPED_TRACE(key);
+    dict = valid.Clone();
+    dict.Set(key, "not hex");
+    EXPECT_FALSE(BitcoinTransaction::TxInput::FromValue(dict));
+
+    dict = valid.Clone();
+    dict.Set(key, "abc");
+    EXPECT_FALSE(BitcoinTransaction::TxInput::FromValue(dict));
+  }
 }
 
 TEST(BitcoinTransaction, TxInput_FromRpcUtxo) {
@@ -122,6 +200,38 @@ TEST(BitcoinTransaction, TxOutput_Value) {
   ASSERT_TRUE(parsed);
   EXPECT_EQ(*parsed, output);
   EXPECT_EQ(parsed->type, BitcoinTransaction::TxOutputType::kChange);
+}
+
+TEST(BitcoinTransaction, TxOutput_FromValue_Invalid) {
+  BitcoinTransaction::TxOutput output;
+  output.address = kAddress2;
+  output.script_pubkey.assign({0, 1, 2, 7});
+  output.amount = 555666777;
+  const base::DictValue valid = output.ToValue();
+  ASSERT_TRUE(BitcoinTransaction::TxOutput::FromValue(valid));
+
+  for (const char* key : {"type", "address", "script_pubkey", "amount"}) {
+    SCOPED_TRACE(key);
+    base::DictValue dict = valid.Clone();
+    EXPECT_TRUE(dict.Remove(key));
+    EXPECT_FALSE(BitcoinTransaction::TxOutput::FromValue(dict));
+  }
+
+  base::DictValue dict = valid.Clone();
+  dict.Set("address", 1);
+  EXPECT_FALSE(BitcoinTransaction::TxOutput::FromValue(dict));
+
+  dict = valid.Clone();
+  dict.Set("script_pubkey", "not hex");
+  EXPECT_FALSE(BitcoinTransaction::TxOutput::FromValue(dict));
+
+  dict = valid.Clone();
+  dict.Set("script_pubkey", "abc");
+  EXPECT_FALSE(BitcoinTransaction::TxOutput::FromValue(dict));
+
+  dict = valid.Clone();
+  dict.Set("amount", "not a number");
+  EXPECT_FALSE(BitcoinTransaction::TxOutput::FromValue(dict));
 }
 
 TEST(BitcoinTransaction, Value) {
@@ -183,6 +293,68 @@ TEST(BitcoinTransaction, Value) {
 
   tx.set_sending_max_amount(false);
   parsed = tx.FromValue(tx.ToValue());
+  ASSERT_TRUE(parsed);
+  EXPECT_FALSE(parsed->sending_max_amount());
+}
+
+TEST(BitcoinTransaction, FromValue_Invalid) {
+  BitcoinTransaction tx;
+
+  BitcoinTransaction::TxInput input;
+  input.utxo_address = kAddress1;
+  input.utxo_outpoint.index = 123;
+  base::HexStringToSpan(kTxid1, input.utxo_outpoint.txid);
+  input.utxo_value = 555666777;
+  tx.AddInput(std::move(input));
+
+  BitcoinTransaction::TxOutput output;
+  output.address = kAddress2;
+  output.script_pubkey =
+      BitcoinSerializer::AddressToScriptPubkey(kAddress2, true);
+  output.amount = 50;
+  tx.AddOutput(std::move(output));
+
+  tx.set_to(kAddress2);
+  tx.set_amount(12345);
+  tx.set_locktime(777);
+  tx.set_sending_max_amount(true);
+  const base::DictValue valid = tx.ToValue();
+  auto valid_parsed = BitcoinTransaction::FromValue(valid);
+  ASSERT_TRUE(valid_parsed);
+  ASSERT_TRUE(valid_parsed->sending_max_amount());
+
+  for (const char* key : {"inputs", "outputs", "locktime", "to", "amount"}) {
+    SCOPED_TRACE(key);
+    base::DictValue dict = valid.Clone();
+    EXPECT_TRUE(dict.Remove(key));
+    EXPECT_FALSE(BitcoinTransaction::FromValue(dict));
+  }
+
+  for (const char* key : {"inputs", "outputs"}) {
+    SCOPED_TRACE(key);
+    // Entry which is not a dict.
+    base::DictValue dict = valid.Clone();
+    dict.FindList(key)->Append("not a dict");
+    EXPECT_FALSE(BitcoinTransaction::FromValue(dict));
+
+    // Entry which is an invalid dict.
+    dict = valid.Clone();
+    dict.FindList(key)->Append(base::DictValue());
+    EXPECT_FALSE(BitcoinTransaction::FromValue(dict));
+  }
+
+  base::DictValue dict = valid.Clone();
+  dict.Set("locktime", "4294967296");
+  EXPECT_FALSE(BitcoinTransaction::FromValue(dict));
+
+  dict = valid.Clone();
+  dict.Set("amount", "not a number");
+  EXPECT_FALSE(BitcoinTransaction::FromValue(dict));
+
+  // Missing sending_max_amount falls back to false.
+  dict = valid.Clone();
+  EXPECT_TRUE(dict.Remove("sending_max_amount"));
+  auto parsed = BitcoinTransaction::FromValue(dict);
   ASSERT_TRUE(parsed);
   EXPECT_FALSE(parsed->sending_max_amount());
 }

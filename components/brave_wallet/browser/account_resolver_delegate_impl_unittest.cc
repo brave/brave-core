@@ -31,6 +31,7 @@ class AccountResolverDelegateImplUnitTest : public testing::Test {
  public:
   AccountResolverDelegateImplUnitTest() {
     feature_list_.InitWithFeatures({features::kBraveWalletBitcoinFeature,
+                                    features::kBraveWalletBitcoinImportFeature,
                                     features::kBraveWalletBitcoinLedgerFeature,
                                     features::kBraveWalletZCashFeature,
                                     features::kBraveWalletCardanoFeature,

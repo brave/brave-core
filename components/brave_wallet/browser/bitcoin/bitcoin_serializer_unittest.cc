@@ -65,9 +65,13 @@ TEST(BitcoinSerializer, SerializeInputForSign) {
 
   tx.set_locktime(777);
 
-  EXPECT_EQ(base::HexEncode(*BitcoinSerializer::SerializeInputForSign(tx, 0)),
+  auto sighash1 = BitcoinSerializer::SerializeInputForSign(tx, 0);
+  ASSERT_TRUE(sighash1.has_value());
+  EXPECT_EQ(base::HexEncode(*sighash1),
             "25395E842E3005AC64B1B23CEA639C1899A3C2D18EBF58CC47679EBE3EC810F9");
-  EXPECT_EQ(base::HexEncode(*BitcoinSerializer::SerializeInputForSign(tx, 1)),
+  auto sighash2 = BitcoinSerializer::SerializeInputForSign(tx, 1);
+  ASSERT_TRUE(sighash2.has_value());
+  EXPECT_EQ(base::HexEncode(*sighash2),
             "FBD8650BA68214C9659928A7E16A6B4148D895755BC5036B328532CAFC4267FB");
 
   // P2PKH addresses are not supported.

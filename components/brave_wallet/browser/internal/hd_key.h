@@ -124,11 +124,6 @@ class HDKey {
   std::array<uint8_t, kSecp256k1FingerprintSize> GetFingerprint() const;
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(HDKeyUnitTest, GenerateFromExtendedKey);
-  FRIEND_TEST_ALL_PREFIXES(HDKeyUnitTest, SetPrivateKey);
-  FRIEND_TEST_ALL_PREFIXES(HDKeyUnitTest, SetPublicKey);
-  FRIEND_TEST_ALL_PREFIXES(HDKeyUnitTest, SignAndVerifyAndRecover);
-
   HDKey& operator=(const HDKey& other);
   HDKey(const HDKey& other);
 

@@ -339,6 +339,17 @@ TEST(BlockchainListParseUnitTest, ParseChainList) {
   EXPECT_EQ(18, chain2->decimals);
   EXPECT_EQ(0u, chain2->icon_urls.size());
   EXPECT_EQ(chain2->coin, mojom::CoinType::ETH);
+
+  // Invalid top-level input is rejected.
+  ChainList invalid_result;
+  EXPECT_FALSE(ParseChainList("", &invalid_result));
+  EXPECT_FALSE(ParseChainList("{}", &invalid_result));
+  EXPECT_TRUE(invalid_result.empty());
+
+  // Invalid entries are skipped.
+  EXPECT_TRUE(
+      ParseChainList(R"([3, {}, {"name": "No Chain Id"}])", &invalid_result));
+  EXPECT_TRUE(invalid_result.empty());
 }
 
 TEST(BlockchainListParseUnitTest, ParseCoingeckoIdsMap) {
@@ -372,6 +383,11 @@ TEST(BlockchainListParseUnitTest, ParseCoingeckoIdsMap) {
             "0x1-tools-ai-multi-tool");
 
   EXPECT_FALSE(coingecko_ids_map->contains({"0x2", "0xdeadbeef"}));
+
+  EXPECT_FALSE(ParseCoingeckoIdsMap(""));
+  EXPECT_FALSE(ParseCoingeckoIdsMap("[]"));
+  EXPECT_FALSE(ParseCoingeckoIdsMap(R"({"0x1": 3})"));
+  EXPECT_FALSE(ParseCoingeckoIdsMap(R"({"0x1": {"0xabc": 3}})"));
 }
 
 TEST(BlockchainListParseUnitTest, ParseRestrictedAddressesList) {
@@ -388,11 +404,15 @@ TEST(BlockchainListParseUnitTest, ParseRestrictedAddressesList) {
       ParseRestrictedAddressesList(json);
   ASSERT_TRUE(restricted_addresses_list);
 
-  EXPECT_EQ((*restricted_addresses_list).size(), 4U);
+  ASSERT_EQ(restricted_addresses_list->size(), 4U);
   EXPECT_EQ((*restricted_addresses_list)[0],
             "0xb9ef770b6a5e12e45983c5d80545258aa38f3b78");
   EXPECT_EQ((*restricted_addresses_list)[1],
             "0xe41d2489571d322189246dafa5ebde1f4699f498");
+
+  EXPECT_FALSE(ParseRestrictedAddressesList(""));
+  EXPECT_FALSE(ParseRestrictedAddressesList("[]"));
+  EXPECT_FALSE(ParseRestrictedAddressesList(R"({"addresses": 3})"));
 }
 
 TEST(BlockchainListParseUnitTest, ParsePolkadotRpcUrls) {

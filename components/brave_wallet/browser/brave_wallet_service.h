@@ -415,7 +415,6 @@ class BraveWalletService : public KeyedService,
 
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, AddSuggestToken);
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, ImportFromMetaMask);
-  FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, Reset);
 
   bool HasPendingDecryptRequestForOrigin(const url::Origin& origin) const;
   bool HasPendingGetEncryptionPublicKeyRequestForOrigin(

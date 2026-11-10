@@ -183,7 +183,8 @@ TEST_F(OrchardStorageTest, AccountMeta) {
 
   {
     auto result = orchard_storage_->GetAccountMeta(account_id_1);
-    EXPECT_TRUE(result.has_value());
+    ASSERT_TRUE(result.has_value());
+    ASSERT_TRUE(result.value().has_value());
     EXPECT_EQ(result.value()->account_birthday, 100u);
     EXPECT_FALSE(result.value()->latest_scanned_block_id);
     EXPECT_FALSE(result.value()->latest_scanned_block_hash);
@@ -200,7 +201,8 @@ TEST_F(OrchardStorageTest, AccountMeta) {
   EXPECT_TRUE(orchard_storage_->RegisterAccount(account_id_2, 200).has_value());
   {
     auto result = orchard_storage_->GetAccountMeta(account_id_2);
-    EXPECT_TRUE(result.has_value());
+    ASSERT_TRUE(result.has_value());
+    ASSERT_TRUE(result.value().has_value());
     EXPECT_EQ(result.value()->account_birthday, 200u);
     EXPECT_FALSE(result.value()->latest_scanned_block_id);
     EXPECT_FALSE(result.value()->latest_scanned_block_hash);
@@ -246,7 +248,8 @@ TEST_F(OrchardStorageTest, PutDiscoveredNotes_u64Value) {
   {
     auto account_1_spendable_notes = orchard_storage_->GetSpendableNotes(
         OrchardPool::kOrchard, account_id_1);
-    EXPECT_EQ(2u, account_1_spendable_notes->size());
+    ASSERT_TRUE(account_1_spendable_notes.has_value());
+    ASSERT_EQ(2u, account_1_spendable_notes->size());
     SortByBlockId(*account_1_spendable_notes);
     EXPECT_EQ(
         account_1_spendable_notes.value()[0],
@@ -297,7 +300,8 @@ TEST_F(OrchardStorageTest, PutDiscoveredNotes) {
   {
     auto account_1_spendable_notes = orchard_storage_->GetSpendableNotes(
         OrchardPool::kOrchard, account_id_1);
-    EXPECT_EQ(2u, account_1_spendable_notes->size());
+    ASSERT_TRUE(account_1_spendable_notes.has_value());
+    ASSERT_EQ(2u, account_1_spendable_notes->size());
     SortByBlockId(*account_1_spendable_notes);
     EXPECT_EQ(account_1_spendable_notes.value()[0],
               GenerateMockOrchardNote(account_id_1, 101, 1));
@@ -309,7 +313,8 @@ TEST_F(OrchardStorageTest, PutDiscoveredNotes) {
   {
     auto account_2_spendable_notes = orchard_storage_->GetSpendableNotes(
         OrchardPool::kOrchard, account_id_2);
-    EXPECT_EQ(3u, account_2_spendable_notes->size());
+    ASSERT_TRUE(account_2_spendable_notes.has_value());
+    ASSERT_EQ(3u, account_2_spendable_notes->size());
     SortByBlockId(*account_2_spendable_notes);
     EXPECT_EQ(account_2_spendable_notes.value()[0],
               GenerateMockOrchardNote(account_id_2, 111, 1));
@@ -357,7 +362,8 @@ TEST_F(OrchardStorageTest, PutDiscoveredNotes) {
   {
     auto account_1_spendable_notes = orchard_storage_->GetSpendableNotes(
         OrchardPool::kOrchard, account_id_1);
-    EXPECT_EQ(2u, account_1_spendable_notes->size());
+    ASSERT_TRUE(account_1_spendable_notes.has_value());
+    ASSERT_EQ(2u, account_1_spendable_notes->size());
     SortByBlockId(*account_1_spendable_notes);
     EXPECT_EQ(account_1_spendable_notes.value()[0],
               GenerateMockOrchardNote(account_id_1, 105, 2));
@@ -369,7 +375,8 @@ TEST_F(OrchardStorageTest, PutDiscoveredNotes) {
   {
     auto account_2_spendable_notes = orchard_storage_->GetSpendableNotes(
         OrchardPool::kOrchard, account_id_2);
-    EXPECT_EQ(2u, account_2_spendable_notes->size());
+    ASSERT_TRUE(account_2_spendable_notes.has_value());
+    ASSERT_EQ(2u, account_2_spendable_notes->size());
     SortByBlockId(*account_2_spendable_notes);
     EXPECT_EQ(account_2_spendable_notes.value()[0],
               GenerateMockOrchardNote(account_id_2, 111, 1));
@@ -380,12 +387,16 @@ TEST_F(OrchardStorageTest, PutDiscoveredNotes) {
   // Accounts meta updated
   {
     auto account_meta = orchard_storage_->GetAccountMeta(account_id_1);
+    ASSERT_TRUE(account_meta.has_value());
+    ASSERT_TRUE(account_meta.value().has_value());
     EXPECT_EQ(account_meta.value()->latest_scanned_block_id, 300u);
     EXPECT_EQ(account_meta.value()->latest_scanned_block_hash, "hash300");
   }
 
   {
     auto account_meta = orchard_storage_->GetAccountMeta(account_id_2);
+    ASSERT_TRUE(account_meta.has_value());
+    ASSERT_TRUE(account_meta.value().has_value());
     EXPECT_EQ(account_meta.value()->latest_scanned_block_id, 300u);
     EXPECT_EQ(account_meta.value()->latest_scanned_block_hash, "hash300");
   }
@@ -449,13 +460,17 @@ TEST_F(OrchardStorageTest, HandleChainReorg) {
 
   {
     auto account_meta = orchard_storage_->GetAccountMeta(account_id_2);
+    ASSERT_TRUE(account_meta.has_value());
+    ASSERT_TRUE(account_meta.value().has_value());
     EXPECT_EQ(account_meta.value()->latest_scanned_block_id, 500u);
     EXPECT_EQ(account_meta.value()->latest_scanned_block_hash, "hash500");
     auto account_2_spendable_notes = orchard_storage_->GetSpendableNotes(
         OrchardPool::kOrchard, account_id_2);
+    ASSERT_TRUE(account_2_spendable_notes.has_value());
     EXPECT_EQ(2u, account_2_spendable_notes->size());
     auto account_2_nullifiers =
         orchard_storage_->GetNullifiers(OrchardPool::kOrchard, account_id_2);
+    ASSERT_TRUE(account_2_nullifiers.has_value());
     EXPECT_EQ(2u, account_2_nullifiers->size());
   }
 
@@ -466,6 +481,8 @@ TEST_F(OrchardStorageTest, HandleChainReorg) {
 
   {
     auto account_meta = orchard_storage_->GetAccountMeta(account_id_2);
+    ASSERT_TRUE(account_meta.has_value());
+    ASSERT_TRUE(account_meta.value().has_value());
     EXPECT_EQ(account_meta.value()->latest_scanned_block_id, 300u);
     EXPECT_EQ(account_meta.value()->latest_scanned_block_hash, "hash300");
   }
@@ -473,6 +490,8 @@ TEST_F(OrchardStorageTest, HandleChainReorg) {
   // Unused account is untouched
   {
     auto account_meta = orchard_storage_->GetAccountMeta(account_id_1);
+    ASSERT_TRUE(account_meta.has_value());
+    ASSERT_TRUE(account_meta.value().has_value());
     EXPECT_EQ(account_meta.value()->latest_scanned_block_id, 450u);
     EXPECT_EQ(account_meta.value()->latest_scanned_block_hash, "hash450");
   }
@@ -483,12 +502,14 @@ TEST_F(OrchardStorageTest, HandleChainReorg) {
   {
     auto account_1_nullifiers =
         orchard_storage_->GetNullifiers(OrchardPool::kOrchard, account_id_1);
+    ASSERT_TRUE(account_1_nullifiers.has_value());
     EXPECT_EQ(2u, account_1_nullifiers->size());
     auto account_1_spendable_notes = orchard_storage_->GetSpendableNotes(
         OrchardPool::kOrchard, account_id_1);
     // Since we removed 2 nullifiers and 1 note there should be 3 spendable
     // notes
-    EXPECT_EQ(3u, account_1_spendable_notes->size());
+    ASSERT_TRUE(account_1_spendable_notes.has_value());
+    ASSERT_EQ(3u, account_1_spendable_notes->size());
     SortByBlockId(*account_1_spendable_notes);
     EXPECT_EQ(account_1_spendable_notes.value()[0],
               GenerateMockOrchardNote(account_id_1, 101, 1));
@@ -502,12 +523,14 @@ TEST_F(OrchardStorageTest, HandleChainReorg) {
   {
     auto account_2_nullifiers =
         orchard_storage_->GetNullifiers(OrchardPool::kOrchard, account_id_2);
+    ASSERT_TRUE(account_2_nullifiers.has_value());
     EXPECT_EQ(0u, account_2_nullifiers->size());
     auto account_2_spendable_notes = orchard_storage_->GetSpendableNotes(
         OrchardPool::kOrchard, account_id_2);
     // Since we removed 2 nullifiers and 1 note there should be 3 spendable
     // notes
-    EXPECT_EQ(3u, account_2_spendable_notes->size());
+    ASSERT_TRUE(account_2_spendable_notes.has_value());
+    ASSERT_EQ(3u, account_2_spendable_notes->size());
     SortByBlockId(*account_2_spendable_notes);
     EXPECT_EQ(account_2_spendable_notes.value()[0],
               GenerateMockOrchardNote(account_id_2, 211, 1));
@@ -522,6 +545,10 @@ TEST_F(OrchardStorageTest, HandleChainReorg) {
   // Account 1 was reorged on 0
   {
     auto account_meta = orchard_storage_->GetAccountMeta(account_id_1);
+    ASSERT_TRUE(account_meta.has_value());
+    ASSERT_TRUE(account_meta.value().has_value());
+    ASSERT_TRUE(account_meta.value()->latest_scanned_block_id.has_value());
+    ASSERT_TRUE(account_meta.value()->latest_scanned_block_hash.has_value());
     EXPECT_EQ(account_meta.value()->latest_scanned_block_id.value(), 0u);
     EXPECT_EQ(account_meta.value()->latest_scanned_block_hash.value(), "hash0");
   }
@@ -531,9 +558,11 @@ TEST_F(OrchardStorageTest, HandleChainReorg) {
   {
     auto account_1_nullifiers =
         orchard_storage_->GetNullifiers(OrchardPool::kOrchard, account_id_1);
+    ASSERT_TRUE(account_1_nullifiers.has_value());
     EXPECT_EQ(0u, account_1_nullifiers->size());
     auto account_1_spendable_notes = orchard_storage_->GetSpendableNotes(
         OrchardPool::kOrchard, account_id_1);
+    ASSERT_TRUE(account_1_spendable_notes.has_value());
     EXPECT_EQ(0u, account_1_spendable_notes->size());
   }
 }
@@ -663,14 +692,17 @@ TEST_F(OrchardStorageTest, TruncateShards) {
           .value());
 
   for (uint32_t i = 0; i < 5; i++) {
-    EXPECT_EQ(CreateShard(i, 1),
-              **(orchard_storage_->GetShard(OrchardPool::kOrchard, account_id,
-                                            OrchardShardAddress(1, i))));
+    auto shard = orchard_storage_->GetShard(OrchardPool::kOrchard, account_id,
+                                            OrchardShardAddress(1, i));
+    ASSERT_TRUE(shard.has_value());
+    ASSERT_TRUE(shard->has_value());
+    EXPECT_EQ(CreateShard(i, 1), **shard);
   }
 
-  EXPECT_EQ(std::nullopt,
-            *(orchard_storage_->GetShard(OrchardPool::kOrchard, account_id,
-                                         OrchardShardAddress(1, 6))));
+  auto removed_shard = orchard_storage_->GetShard(
+      OrchardPool::kOrchard, account_id, OrchardShardAddress(1, 6));
+  ASSERT_TRUE(removed_shard.has_value());
+  EXPECT_EQ(std::nullopt, *removed_shard);
 }
 
 TEST_F(OrchardStorageTest, ShardOverridesSubtreeRoot) {
@@ -705,6 +737,8 @@ TEST_F(OrchardStorageTest, ShardOverridesSubtreeRoot) {
 
   auto result = orchard_storage_->GetShard(OrchardPool::kOrchard, account_id,
                                            OrchardShardAddress{1, 5});
+  ASSERT_TRUE(result.has_value());
+  ASSERT_TRUE(result.value().has_value());
   EXPECT_EQ(*result.value(), new_shard);
 }
 
@@ -753,6 +787,8 @@ TEST_F(OrchardStorageTest, InsertShards) {
   {
     auto result = orchard_storage_->GetShard(OrchardPool::kOrchard, account_id,
                                              OrchardShardAddress{1, 11});
+    ASSERT_TRUE(result.has_value());
+    ASSERT_TRUE(result.value().has_value());
     EXPECT_EQ(*result.value(), new_shard);
   }
 
@@ -760,6 +796,9 @@ TEST_F(OrchardStorageTest, InsertShards) {
     for (uint32_t i = 0; i < 10; i++) {
       auto result = orchard_storage_->GetShard(
           OrchardPool::kOrchard, account_id, OrchardShardAddress{1, i});
+      ASSERT_TRUE(result.has_value());
+      ASSERT_TRUE(result.value().has_value());
+      ASSERT_TRUE(result.value()->root_hash.has_value());
       auto root = CreateSubtreeRoot(1, i);
       EXPECT_EQ(std::vector<uint8_t>(std::begin(*result.value()->root_hash),
                                      std::end(*result.value()->root_hash)),
@@ -767,10 +806,10 @@ TEST_F(OrchardStorageTest, InsertShards) {
     }
   }
 
-  EXPECT_EQ(11u, orchard_storage_
-                     ->GetLatestShardIndex(OrchardPool::kOrchard, account_id)
-                     .value()
-                     .value());
+  auto latest_shard_index =
+      orchard_storage_->GetLatestShardIndex(OrchardPool::kOrchard, account_id);
+  ASSERT_TRUE(latest_shard_index.has_value());
+  EXPECT_EQ(std::optional<uint32_t>(11u), latest_shard_index.value());
   EXPECT_EQ(new_shard,
             orchard_storage_->LastShard(OrchardPool::kOrchard, account_id, 1)
                 .value());
@@ -1243,6 +1282,8 @@ TEST_F(OrchardStorageTest, ResetAccountSyncState) {
 
   {
     auto account_meta = orchard_storage_->GetAccountMeta(account_id);
+    ASSERT_TRUE(account_meta.has_value());
+    ASSERT_TRUE(account_meta.value().has_value());
     EXPECT_EQ(100u, account_meta.value()->account_birthday);
     EXPECT_FALSE(account_meta.value()->latest_scanned_block_id);
     EXPECT_FALSE(account_meta.value()->latest_scanned_block_hash);
@@ -1252,6 +1293,8 @@ TEST_F(OrchardStorageTest, ResetAccountSyncState) {
             orchard_storage_->ResetAccountSyncState(account_id, 200u).value());
   {
     auto account_meta = orchard_storage_->GetAccountMeta(account_id);
+    ASSERT_TRUE(account_meta.has_value());
+    ASSERT_TRUE(account_meta.value().has_value());
     EXPECT_EQ(200u, account_meta.value()->account_birthday);
     EXPECT_FALSE(account_meta.value()->latest_scanned_block_id);
     EXPECT_FALSE(account_meta.value()->latest_scanned_block_hash);
@@ -1301,7 +1344,8 @@ TEST_F(OrchardStorageTest, UpdateCheckpoint) {
             .value());
     auto get_checkpoint_result =
         orchard_storage_->GetCheckpoint(OrchardPool::kOrchard, account_id, 3);
-    EXPECT_TRUE(get_checkpoint_result.has_value());
+    ASSERT_TRUE(get_checkpoint_result.has_value());
+    ASSERT_TRUE(get_checkpoint_result->has_value());
     OrchardCheckpointBundle checkpoint_bundle =
         std::move(**get_checkpoint_result);
     EXPECT_EQ(3u, checkpoint_bundle.checkpoint_id);
@@ -1377,12 +1421,12 @@ TEST_F(OrchardStorageTest, PoolIsolation_Notes) {
     auto orchard_notes =
         orchard_storage_->GetSpendableNotes(OrchardPool::kOrchard, account_id);
     ASSERT_TRUE(orchard_notes.has_value());
-    EXPECT_EQ(1u, orchard_notes->size());
+    ASSERT_EQ(1u, orchard_notes->size());
 
     auto ironwood_notes =
         orchard_storage_->GetSpendableNotes(OrchardPool::kIronwood, account_id);
     ASSERT_TRUE(ironwood_notes.has_value());
-    EXPECT_EQ(1u, ironwood_notes->size());
+    ASSERT_EQ(1u, ironwood_notes->size());
     EXPECT_EQ(orchard_notes->front().nullifier,
               ironwood_notes->front().nullifier);
   }

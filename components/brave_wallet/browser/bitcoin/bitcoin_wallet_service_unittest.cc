@@ -12,9 +12,9 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_serializer.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
@@ -29,12 +29,8 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-using testing::_;
 using testing::ElementsAreArray;
-using testing::Eq;
 using testing::SaveArg;
-using testing::Truly;
-using testing::WithArg;
 
 namespace brave_wallet {
 
@@ -106,7 +102,8 @@ class BitcoinWalletServiceUnitTest : public testing::Test {
     btc_account_ =
         GetAccountUtils().EnsureAccount(mojom::KeyringId::kBitcoin84, 0);
     ASSERT_TRUE(btc_account_);
-    task_environment_.RunUntilIdle();
+    // Wait for discovery of the new account to update its address indexes.
+    AccountsChangedWaiter(*keyring_service_).Wait();
     keyring_service_->UpdateNextUnusedAddressForBitcoinAccount(
         btc_account_->account_id, next_receive_index, next_change_index);
   }
@@ -117,6 +114,8 @@ class BitcoinWalletServiceUnitTest : public testing::Test {
     hw_btc_account_ =
         GetAccountUtils().EnsureAccount(mojom::KeyringId::kBitcoinHardware, 0);
     ASSERT_TRUE(hw_btc_account_);
+    // Discovery of this account finds nothing, so it emits no observable
+    // signal to wait for.
     task_environment_.RunUntilIdle();
     keyring_service_->UpdateNextUnusedAddressForBitcoinAccount(
         hw_btc_account_->account_id, next_receive_index, next_change_index);
@@ -135,6 +134,8 @@ class BitcoinWalletServiceUnitTest : public testing::Test {
       features::kBraveWalletBitcoinFeature};
   base::test::ScopedFeatureList scoped_btc_ledger_feature_{
       features::kBraveWalletBitcoinLedgerFeature};
+  base::test::ScopedFeatureList scoped_btc_import_feature_{
+      features::kBraveWalletBitcoinImportFeature};
 
   mojom::AccountInfoPtr btc_account_;
   mojom::AccountInfoPtr hw_btc_account_;
@@ -152,7 +153,9 @@ class BitcoinWalletServiceUnitTest : public testing::Test {
 TEST_F(BitcoinWalletServiceUnitTest, GetBalance) {
   SetupBtcAccount();
 
-  base::MockCallback<BitcoinWalletService::GetBalanceCallback> callback;
+  base::test::TestFuture<mojom::BitcoinBalancePtr,
+                         const std::optional<std::string>&>
+      balance_future;
 
   // GetBalance works.
   auto expected_balance = mojom::BitcoinBalance::New();
@@ -171,13 +174,13 @@ TEST_F(BitcoinWalletServiceUnitTest, GetBalance) {
   expected_balance->available_balance =
       10000 + 100000 - 5000 - 50000 - 2222 - 22222;
   expected_balance->pending_balance = 8888 + 88888 - 2222 - 22222;
-  EXPECT_CALL(callback, Run(Truly([&](const mojom::BitcoinBalancePtr& balance) {
-                              return balance == expected_balance;
-                            }),
-                            std::optional<std::string>()));
-  bitcoin_wallet_service_->GetBalance(account_id(), callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  bitcoin_wallet_service_->GetBalance(account_id(),
+                                      balance_future.GetCallback());
+  {
+    auto [balance, error] = balance_future.Take();
+    EXPECT_EQ(balance, expected_balance);
+    EXPECT_FALSE(error);
+  }
 
   bitcoin_test_rpc_server_->AddMempoolBalance(address_0, 1000, 10000000);
   bitcoin_test_rpc_server_->AddTransactedAddress(address_6);
@@ -186,20 +189,17 @@ TEST_F(BitcoinWalletServiceUnitTest, GetBalance) {
   expected_balance->total_balance = 0;
   expected_balance->available_balance = 0;
   expected_balance->pending_balance = 1000 - 10000000;  // negative
-  EXPECT_CALL(callback, Run(Truly([&](const mojom::BitcoinBalancePtr& balance) {
-                              return balance == expected_balance;
-                            }),
-                            std::optional<std::string>()));
-  bitcoin_wallet_service_->GetBalance(account_id(), callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  bitcoin_wallet_service_->GetBalance(account_id(),
+                                      balance_future.GetCallback());
+  {
+    auto [balance, error] = balance_future.Take();
+    EXPECT_EQ(balance, expected_balance);
+    EXPECT_FALSE(error);
+  }
 }
 
 TEST_F(BitcoinWalletServiceUnitTest, GetBitcoinAccountInfo) {
   SetupBtcAccount(5, 5);
-
-  base::MockCallback<BitcoinWalletService::GetBitcoinAccountInfoCallback>
-      callback;
 
   auto expected_bitcoin_account_info = mojom::BitcoinAccountInfo::New();
   expected_bitcoin_account_info->next_receive_address =
@@ -209,19 +209,18 @@ TEST_F(BitcoinWalletServiceUnitTest, GetBitcoinAccountInfo) {
       mojom::BitcoinAddress::New("bc1q9khch2y932xktwxxzplvaxw6r7h0pw2yeelvj7",
                                  mojom::BitcoinKeyId::New(1, 5));
 
-  EXPECT_CALL(callback, Run(Truly([&](const mojom::BitcoinAccountInfoPtr& arg) {
-                EXPECT_EQ(expected_bitcoin_account_info, arg);
-                return true;
-              })));
-  bitcoin_wallet_service_->GetBitcoinAccountInfo(account_id(), callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  base::test::TestFuture<mojom::BitcoinAccountInfoPtr> info_future;
+  bitcoin_wallet_service_->GetBitcoinAccountInfo(account_id(),
+                                                 info_future.GetCallback());
+  EXPECT_EQ(expected_bitcoin_account_info, info_future.Take());
 }
 
 TEST_F(BitcoinWalletServiceUnitTest, RunDiscovery) {
   SetupBtcAccount(5, 5);
 
-  base::MockCallback<BitcoinWalletService::RunDiscoveryCallback> callback;
+  base::test::TestFuture<mojom::BitcoinAddressPtr,
+                         const std::optional<std::string>&>
+      discovery_future;
   auto bitcoin_account_info =
       bitcoin_wallet_service_->GetBitcoinAccountInfoSync(account_id());
   EXPECT_EQ(bitcoin_account_info->next_receive_address->key_id,
@@ -257,11 +256,13 @@ TEST_F(BitcoinWalletServiceUnitTest, RunDiscovery) {
 
   auto expected_receive_address = keyring_service_->GetBitcoinAddress(
       account_id(), mojom::BitcoinKeyId::New(0, 10));
-  EXPECT_CALL(callback, Run(Eq(std::ref(expected_receive_address)),
-                            std::optional<std::string>()));
-  bitcoin_wallet_service_->RunDiscovery(account_id(), false, callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  bitcoin_wallet_service_->RunDiscovery(account_id(), false,
+                                        discovery_future.GetCallback());
+  {
+    auto [address, error] = discovery_future.Take();
+    EXPECT_EQ(address, expected_receive_address);
+    EXPECT_FALSE(error);
+  }
 
   bitcoin_account_info =
       bitcoin_wallet_service_->GetBitcoinAccountInfoSync(account_id());
@@ -272,11 +273,13 @@ TEST_F(BitcoinWalletServiceUnitTest, RunDiscovery) {
 
   auto expected_change_address = keyring_service_->GetBitcoinAddress(
       account_id(), mojom::BitcoinKeyId::New(1, 8));
-  EXPECT_CALL(callback, Run(Eq(std::ref(expected_change_address)),
-                            std::optional<std::string>()));
-  bitcoin_wallet_service_->RunDiscovery(account_id(), true, callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  bitcoin_wallet_service_->RunDiscovery(account_id(), true,
+                                        discovery_future.GetCallback());
+  {
+    auto [address, error] = discovery_future.Take();
+    EXPECT_EQ(address, expected_change_address);
+    EXPECT_FALSE(error);
+  }
 
   bitcoin_account_info =
       bitcoin_wallet_service_->GetBitcoinAccountInfoSync(account_id());
@@ -289,9 +292,9 @@ TEST_F(BitcoinWalletServiceUnitTest, RunDiscovery) {
 TEST_F(BitcoinWalletServiceUnitTest, GetUtxos) {
   SetupBtcAccount(5, 5);
 
-  using GetUtxosResult =
-      base::expected<BitcoinWalletService::UtxoMap, std::string>;
-  base::MockCallback<BitcoinWalletService::GetUtxosCallback> callback;
+  base::test::TestFuture<
+      base::expected<BitcoinWalletService::UtxoMap, std::string>>
+      utxos_future;
 
   // GetUtxos works.
   BitcoinWalletService::UtxoMap expected_utxos;
@@ -315,39 +318,27 @@ TEST_F(BitcoinWalletServiceUnitTest, GetUtxos) {
   utxo_6.status.confirmed = true;
   EXPECT_EQ(expected_utxos.size(), 12u);
 
-  GetUtxosResult actual_utxos;
-  EXPECT_CALL(callback, Run(Truly([&](const GetUtxosResult& arg) {
-                EXPECT_TRUE(arg.has_value());
-                EXPECT_EQ(arg.value(), expected_utxos);
-                return true;
-              })));
-  bitcoin_wallet_service_->GetUtxos(account_id(), callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  bitcoin_wallet_service_->GetUtxos(account_id(), utxos_future.GetCallback());
+  auto actual_utxos = utxos_future.Take();
+  ASSERT_TRUE(actual_utxos.has_value());
+  EXPECT_EQ(actual_utxos.value(), expected_utxos);
 }
 
 TEST_F(BitcoinWalletServiceUnitTest, CreateTransaction_UpdatesChangeAddress) {
   SetupBtcAccount(5, 5);
 
-  using CreateTransactionResult =
-      base::expected<BitcoinTransaction, std::string>;
-  base::MockCallback<BitcoinWalletService::CreateTransactionCallback> callback;
-
-  BitcoinTransaction actual_tx;
-  EXPECT_CALL(callback, Run(Truly([&](const CreateTransactionResult& arg) {
-                EXPECT_TRUE(arg.has_value());
-                actual_tx = arg.value();
-                return true;
-              })));
+  base::test::TestFuture<base::expected<BitcoinTransaction, std::string>>
+      create_future;
 
   bitcoin_test_rpc_server_->AddTransactedAddress(
       keyring_service_->GetBitcoinAddress(account_id(),
                                           mojom::BitcoinKeyId::New(1, 5)));
 
-  bitcoin_wallet_service_->CreateTransaction(account_id(), kMockBtcAddress,
-                                             48000, false, callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  bitcoin_wallet_service_->CreateTransaction(
+      account_id(), kMockBtcAddress, 48000, false, create_future.GetCallback());
+  auto create_result = create_future.Take();
+  ASSERT_TRUE(create_result.has_value());
+  BitcoinTransaction actual_tx = std::move(create_result.value());
 
   auto change_address_6 =
       keyring_service_
@@ -362,20 +353,13 @@ TEST_F(BitcoinWalletServiceUnitTest, CreateTransaction_UpdatesChangeAddress) {
 TEST_F(BitcoinWalletServiceUnitTest, CreateTransaction) {
   SetupBtcAccount(5, 5);
 
-  using CreateTransactionResult =
-      base::expected<BitcoinTransaction, std::string>;
-  base::MockCallback<BitcoinWalletService::CreateTransactionCallback> callback;
-
-  BitcoinTransaction actual_tx;
-  EXPECT_CALL(callback, Run(Truly([&](const CreateTransactionResult& arg) {
-                EXPECT_TRUE(arg.has_value());
-                actual_tx = arg.value();
-                return true;
-              })));
-  bitcoin_wallet_service_->CreateTransaction(account_id(), kMockBtcAddress,
-                                             48000, false, callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  base::test::TestFuture<base::expected<BitcoinTransaction, std::string>>
+      create_future;
+  bitcoin_wallet_service_->CreateTransaction(
+      account_id(), kMockBtcAddress, 48000, false, create_future.GetCallback());
+  auto create_result = create_future.Take();
+  ASSERT_TRUE(create_result.has_value());
+  BitcoinTransaction actual_tx = std::move(create_result.value());
 
   EXPECT_EQ(actual_tx.locktime(), 12345u);
   EXPECT_EQ(actual_tx.amount(), 48000u);
@@ -385,7 +369,7 @@ TEST_F(BitcoinWalletServiceUnitTest, CreateTransaction) {
   EXPECT_EQ(actual_tx.TotalInputsAmount(), 50000u + 5000u);
   EXPECT_EQ(actual_tx.TotalOutputsAmount(), 50000u + 5000u - 4879u);
 
-  EXPECT_EQ(actual_tx.inputs().size(), 2u);
+  ASSERT_EQ(actual_tx.inputs().size(), 2u);
   auto& input_0 = actual_tx.inputs().at(0);
   EXPECT_EQ(input_0.utxo_address,
             bitcoin_test_rpc_server_->Address0()->address_string);
@@ -406,7 +390,7 @@ TEST_F(BitcoinWalletServiceUnitTest, CreateTransaction) {
   EXPECT_TRUE(input_1.script_sig.empty());
   EXPECT_TRUE(input_1.witness.empty());
 
-  EXPECT_EQ(actual_tx.outputs().size(), 2u);
+  ASSERT_EQ(actual_tx.outputs().size(), 2u);
 
   auto& output_0 = actual_tx.outputs().at(0);
   EXPECT_EQ(output_0.address, kMockBtcAddress);
@@ -426,32 +410,21 @@ TEST_F(BitcoinWalletServiceUnitTest, CreateTransaction) {
 TEST_F(BitcoinWalletServiceUnitTest, SignAndPostTransaction) {
   SetupBtcAccount(5, 5);
 
-  using CreateTransactionResult =
-      base::expected<BitcoinTransaction, std::string>;
-  base::MockCallback<BitcoinWalletService::CreateTransactionCallback> callback;
+  base::test::TestFuture<base::expected<BitcoinTransaction, std::string>>
+      create_future;
+  bitcoin_wallet_service_->CreateTransaction(
+      account_id(), kMockBtcAddress, 48000, false, create_future.GetCallback());
+  auto create_result = create_future.Take();
+  ASSERT_TRUE(create_result.has_value());
+  BitcoinTransaction initial_tx = std::move(create_result.value());
 
-  base::MockCallback<BitcoinWalletService::SignAndPostTransactionCallback>
-      sign_callback;
-
-  BitcoinTransaction initial_tx;
-  EXPECT_CALL(callback, Run(Truly([&](const CreateTransactionResult& arg) {
-                EXPECT_TRUE(arg.has_value());
-                initial_tx = arg.value();
-                return true;
-              })));
-  bitcoin_wallet_service_->CreateTransaction(account_id(), kMockBtcAddress,
-                                             48000, false, callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
-
-  BitcoinTransaction signed_tx;
-  EXPECT_CALL(sign_callback, Run(kMockBtcTxid3, _, ""))
-      .WillOnce(
-          WithArg<1>([&](const BitcoinTransaction& tx) { signed_tx = tx; }));
+  base::test::TestFuture<std::string, BitcoinTransaction, std::string>
+      sign_future;
   bitcoin_wallet_service_->SignAndPostTransaction(
-      account_id(), std::move(initial_tx), sign_callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&sign_callback);
+      account_id(), std::move(initial_tx), sign_future.GetCallback());
+  auto [txid, signed_tx, error] = sign_future.Take();
+  EXPECT_EQ(txid, kMockBtcTxid3);
+  EXPECT_EQ(error, "");
 
   EXPECT_EQ(BitcoinSerializer::CalcTransactionWeight(signed_tx, false), 832u);
   EXPECT_EQ(BitcoinSerializer::CalcTransactionVBytes(signed_tx, false), 208u);
@@ -490,28 +463,17 @@ TEST_F(BitcoinWalletServiceUnitTest, SignAndPostTransaction) {
 TEST_F(BitcoinWalletServiceUnitTest, PostHwSignedTransaction) {
   SetupHwBtcAccount(5, 5);
 
-  using CreateTransactionResult =
-      base::expected<BitcoinTransaction, std::string>;
-  base::MockCallback<BitcoinWalletService::CreateTransactionCallback> callback;
-
-  BitcoinTransaction actual_tx;
-  EXPECT_CALL(callback, Run(Truly([&](const CreateTransactionResult& arg) {
-                EXPECT_TRUE(arg.has_value());
-                actual_tx = arg.value();
-                return true;
-              })));
+  base::test::TestFuture<base::expected<BitcoinTransaction, std::string>>
+      create_future;
   bitcoin_wallet_service_->CreateTransaction(hw_account_id(), kMockBtcAddress,
-                                             48000, false, callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+                                             48000, false,
+                                             create_future.GetCallback());
+  auto create_result = create_future.Take();
+  ASSERT_TRUE(create_result.has_value());
+  BitcoinTransaction actual_tx = std::move(create_result.value());
 
-  base::MockCallback<BitcoinWalletService::PostHwSignedTransactionCallback>
-      sign_callback;
-
-  BitcoinTransaction signed_tx;
-  EXPECT_CALL(sign_callback, Run(kMockBtcTxid3, _, ""))
-      .WillOnce(
-          WithArg<1>([&](const BitcoinTransaction& tx) { signed_tx = tx; }));
+  base::test::TestFuture<std::string, BitcoinTransaction, std::string>
+      sign_future;
   auto bitcoin_signature = mojom::BitcoinSignature::New();
   bitcoin_signature->witness_array.push_back(
       std::vector<uint8_t>{0x00, 0x01, 0x02});
@@ -519,9 +481,10 @@ TEST_F(BitcoinWalletServiceUnitTest, PostHwSignedTransaction) {
       std::vector<uint8_t>{0xa0, 0xb0, 0xc0});
   bitcoin_wallet_service_->PostHwSignedTransaction(
       hw_account_id(), std::move(actual_tx), *bitcoin_signature,
-      sign_callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&sign_callback);
+      sign_future.GetCallback());
+  auto [txid, signed_tx, error] = sign_future.Take();
+  EXPECT_EQ(txid, kMockBtcTxid3);
+  EXPECT_EQ(error, "");
 
   EXPECT_EQ(BitcoinSerializer::CalcTransactionWeight(signed_tx, false), 624u);
   EXPECT_EQ(BitcoinSerializer::CalcTransactionVBytes(signed_tx, false), 156u);
@@ -554,8 +517,6 @@ TEST_F(BitcoinWalletServiceUnitTest, PostHwSignedTransaction) {
 }
 
 TEST_F(BitcoinWalletServiceUnitTest, DiscoverExtendedKeyAccount) {
-  base::MockCallback<BitcoinWalletService::GetExtendedKeyAccountBalanceCallback>
-      callback;
   bitcoin_test_rpc_server_->SetUpBitcoinRpc(std::nullopt, std::nullopt);
 
   // Xpub form kMnemonicDivideCruise m/84'/0'/0'.
@@ -583,51 +544,47 @@ TEST_F(BitcoinWalletServiceUnitTest, DiscoverExtendedKeyAccount) {
   bitcoin_test_rpc_server_->AddMempoolBalance(receive_address_0_100, 2000,
                                               1000);
 
-  EXPECT_CALL(
-      callback,
-      Run(Truly([&](const mojom::BitcoinBalancePtr& balance) {
-            auto expected = mojom::BitcoinBalance::New();
-            expected->total_balance = 2011000;
-            expected->available_balance = 2010000;
-            expected->pending_balance = 1000;
-            expected->balances["bc1qe68jzwhglrs9lm0zf8ddqvzrdcxeg8ej5nd0rc"] =
-                10000;
-            expected->balances["bc1qajvjuwcexnnv7h58kqgdl435l9ap0cuyg260tp"] =
-                2000000;
-            expected->balances["bc1q4mfd6eghcyu36g7g9fauccjhnqwudfa9ecmvx0"] =
-                1000;
-            return balance == expected;
-          }),
-          std::optional<std::string>()));
+  auto expected = mojom::BitcoinBalance::New();
+  expected->total_balance = 2011000;
+  expected->available_balance = 2010000;
+  expected->pending_balance = 1000;
+  expected->balances["bc1qe68jzwhglrs9lm0zf8ddqvzrdcxeg8ej5nd0rc"] = 10000;
+  expected->balances["bc1qajvjuwcexnnv7h58kqgdl435l9ap0cuyg260tp"] = 2000000;
+  expected->balances["bc1q4mfd6eghcyu36g7g9fauccjhnqwudfa9ecmvx0"] = 1000;
+
+  base::test::TestFuture<mojom::BitcoinBalancePtr,
+                         const std::optional<std::string>&>
+      balance_future;
   bitcoin_wallet_service_->GetExtendedKeyAccountBalance(
-      mojom::kBitcoinMainnet, xpub_extended_key, callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+      mojom::kBitcoinMainnet, xpub_extended_key, balance_future.GetCallback());
+  auto [balance, error] = balance_future.Take();
+  EXPECT_EQ(balance, expected);
+  EXPECT_FALSE(error);
 }
 
 TEST_F(BitcoinWalletServiceUnitTest, DiscoverWalletAccount) {
-  base::MockCallback<BitcoinWalletService::DiscoverWalletAccountCallback>
-      callback;
   bitcoin_test_rpc_server_->SetUpBitcoinRpc(std::nullopt, std::nullopt);
 
-  // By default discovered receive and change indexes are zero.
-  EXPECT_CALL(callback, Run(Truly([&](auto& arg) {
-                DiscoveredBitcoinAccount expected;
-                return EqualsNoBalance(arg.value(), expected);
-              })));
-  bitcoin_wallet_service_->DiscoverWalletAccount(mojom::KeyringId::kBitcoin84,
-                                                 0, callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  auto discover = [&](uint32_t account_index) {
+    using Result = base::expected<DiscoveredBitcoinAccount, std::string>;
+    base::test::TestFuture<Result> future;
+    bitcoin_wallet_service_->DiscoverWalletAccount(
+        mojom::KeyringId::kBitcoin84, account_index, future.GetCallback());
+    return future.Take();
+  };
 
-  EXPECT_CALL(callback, Run(Truly([&](auto& arg) {
-                DiscoveredBitcoinAccount expected;
-                return EqualsNoBalance(arg.value(), expected);
-              })));
-  bitcoin_wallet_service_->DiscoverWalletAccount(mojom::KeyringId::kBitcoin84,
-                                                 1, callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  // By default discovered receive and change indexes are zero.
+  {
+    auto result = discover(0);
+    ASSERT_TRUE(result.has_value());
+    EXPECT_TRUE(EqualsNoBalance(result.value(), DiscoveredBitcoinAccount()));
+  }
+
+  {
+    auto result = discover(1);
+    ASSERT_TRUE(result.has_value());
+    EXPECT_TRUE(EqualsNoBalance(result.value(), DiscoveredBitcoinAccount()));
+  }
 
   // Receive addresses 5 and 30 for account 0 are transacted.
   auto receive_address_5 = keyring_service_->GetBitcoinAccountDiscoveryAddress(
@@ -638,25 +595,20 @@ TEST_F(BitcoinWalletServiceUnitTest, DiscoverWalletAccount) {
   bitcoin_test_rpc_server_->AddTransactedAddress(receive_address_30);
 
   // For acc 0 next receive address is 6.
-  EXPECT_CALL(callback, Run(Truly([&](auto& arg) {
-                DiscoveredBitcoinAccount expected;
-                expected.next_unused_receive_index = 6;
-                return EqualsNoBalance(arg.value(), expected);
-              })));
-  bitcoin_wallet_service_->DiscoverWalletAccount(mojom::KeyringId::kBitcoin84,
-                                                 0, callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  {
+    auto result = discover(0);
+    ASSERT_TRUE(result.has_value());
+    DiscoveredBitcoinAccount expected;
+    expected.next_unused_receive_index = 6;
+    EXPECT_TRUE(EqualsNoBalance(result.value(), expected));
+  }
 
   // For acc 1 nothing is still discovered.
-  EXPECT_CALL(callback, Run(Truly([&](auto& arg) {
-                DiscoveredBitcoinAccount expected;
-                return EqualsNoBalance(arg.value(), expected);
-              })));
-  bitcoin_wallet_service_->DiscoverWalletAccount(mojom::KeyringId::kBitcoin84,
-                                                 1, callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  {
+    auto result = discover(1);
+    ASSERT_TRUE(result.has_value());
+    EXPECT_TRUE(EqualsNoBalance(result.value(), DiscoveredBitcoinAccount()));
+  }
 
   // Receive address 15 and change address 17 for account 0 are transacted.
   auto receive_address_15 = keyring_service_->GetBitcoinAccountDiscoveryAddress(
@@ -671,51 +623,42 @@ TEST_F(BitcoinWalletServiceUnitTest, DiscoverWalletAccount) {
   bitcoin_test_rpc_server_->AddTransactedAddress(receive_address_8);
 
   // Discovered are 30+1 and 17+1.
-  EXPECT_CALL(callback, Run(Truly([&](auto& arg) {
-                DiscoveredBitcoinAccount expected;
-                expected.next_unused_receive_index = 31;
-                expected.next_unused_change_index = 18;
-                return EqualsNoBalance(arg.value(), expected);
-              })));
-  bitcoin_wallet_service_->DiscoverWalletAccount(mojom::KeyringId::kBitcoin84,
-                                                 0, callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  {
+    auto result = discover(0);
+    ASSERT_TRUE(result.has_value());
+    DiscoveredBitcoinAccount expected;
+    expected.next_unused_receive_index = 31;
+    expected.next_unused_change_index = 18;
+    EXPECT_TRUE(EqualsNoBalance(result.value(), expected));
+  }
 
   // Discovered 9 and 0.
-  EXPECT_CALL(callback, Run(Truly([&](auto& arg) {
-                DiscoveredBitcoinAccount expected;
-                expected.next_unused_receive_index = 9;
-                return EqualsNoBalance(arg.value(), expected);
-              })));
-  bitcoin_wallet_service_->DiscoverWalletAccount(mojom::KeyringId::kBitcoin84,
-                                                 1, callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  {
+    auto result = discover(1);
+    ASSERT_TRUE(result.has_value());
+    DiscoveredBitcoinAccount expected;
+    expected.next_unused_receive_index = 9;
+    EXPECT_TRUE(EqualsNoBalance(result.value(), expected));
+  }
 }
 
 TEST_F(BitcoinWalletServiceUnitTest, GetBtcHardwareTransactionSignData) {
   SetupHwBtcAccount(5, 5);
 
-  using CreateTransactionResult =
-      base::expected<BitcoinTransaction, std::string>;
-  base::MockCallback<BitcoinWalletService::CreateTransactionCallback> callback;
-
-  BitcoinTransaction actual_tx;
-  EXPECT_CALL(callback, Run(Truly([&](const CreateTransactionResult& arg) {
-                EXPECT_TRUE(arg.has_value());
-                actual_tx = arg.value();
-                return true;
-              })));
+  base::test::TestFuture<base::expected<BitcoinTransaction, std::string>>
+      create_future;
   bitcoin_wallet_service_->CreateTransaction(hw_account_id(), kMockBtcAddress,
-                                             48000, false, callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+                                             48000, false,
+                                             create_future.GetCallback());
+  auto create_result = create_future.Take();
+  ASSERT_TRUE(create_result.has_value());
+  BitcoinTransaction actual_tx = std::move(create_result.value());
 
   auto sign_data = bitcoin_wallet_service_->GetBtcHardwareTransactionSignData(
       actual_tx, hw_account_id());
 
-  EXPECT_EQ(sign_data->inputs.size(), 2u);
+  ASSERT_TRUE(sign_data);
+  ASSERT_EQ(sign_data->inputs.size(), 2u);
   EXPECT_EQ(sign_data->inputs[0],
             mojom::BtcHardwareTransactionSignInputData::New(
                 std::vector<uint8_t>{0xAA, 0x38}, 1, "84'/0'/0'/0/0"));
@@ -799,6 +742,7 @@ TEST_F(BitcoinWalletServiceUnitTest, BitcoinImportRunsDiscovery) {
 
   auto account = keyring_service_->ImportBitcoinAccountSync(
       "acc", kBtcMainnetImportAccount0, mojom::kBitcoinMainnet);
+  ASSERT_TRUE(account);
 
   auto acc_info =
       bitcoin_wallet_service_->GetBitcoinAccountInfoSync(account->account_id);

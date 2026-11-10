@@ -61,8 +61,9 @@ TEST(EthereumKeyringUnitTest, EncodePrivateKeyForExport) {
       "8f9e36c31dc46e81472b6a5e40a4487e725ace445b8203f243fb8958",
       &seed));
   EthereumKeyring keyring(seed, base::BindRepeating(IsAddressAllowed));
-  auto address = *keyring.AddNewHDAccount(0);
-  EXPECT_EQ(keyring.EncodePrivateKeyForExport(address),
+  auto address = keyring.AddNewHDAccount(0);
+  ASSERT_TRUE(address);
+  EXPECT_EQ(keyring.EncodePrivateKeyForExport(*address),
             "8140cea58e3bebd6174dbc589a7f70e049556233d32e44969d62e51dd0d1189a");
 }
 
@@ -118,8 +119,9 @@ TEST(EthereumKeyringUnitTest, SignTransaction) {
       "8f9e36c31dc46e81472b6a5e40a4487e725ace445b8203f243fb8958",
       &seed));
   EthereumKeyring keyring2(seed, base::BindRepeating(IsAddressAllowed));
-  auto address = *keyring2.AddNewHDAccount(0);
-  keyring2.SignTransaction(address, &tx);
+  auto address = keyring2.AddNewHDAccount(0);
+  ASSERT_TRUE(address);
+  keyring2.SignTransaction(*address, &tx);
   EXPECT_TRUE(tx.IsSigned());
   EXPECT_EQ(base::HexEncodeLower(tx.GetSignedTransaction()),
             "307866383663303938353034613831376338303038323532303839343335333533"
@@ -139,25 +141,30 @@ TEST(EthereumKeyringUnitTest, SignMessage) {
 
   EthereumKeyring keyring(*MnemonicToSeed(kMnemonic),
                           base::BindRepeating(IsAddressAllowed));
-  auto address = *keyring.ImportAccount(private_key);
+  auto imported_address = keyring.ImportAccount(private_key);
+  ASSERT_TRUE(imported_address);
+  const std::string address = *imported_address;
   EXPECT_EQ(address, "0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB");
 
   std::vector<uint8_t> message;
   EXPECT_TRUE(base::HexStringToBytes("deadbeef", &message));
-  auto sig = *keyring.SignMessage(address, message, 0, false);
-  EXPECT_EQ(base::HexEncodeLower(sig),
+  auto sig = keyring.SignMessage(address, message, 0, false);
+  ASSERT_TRUE(sig);
+  EXPECT_EQ(base::HexEncodeLower(*sig),
             "a77440e5c84e5f16ca3636c7af5857c828d2a8f1afbc0a6945d33d4fc45f216e"
             "3eefd69ccc5b3cee000fdaa564d8f1512789af8fe62f2907f5a8c87885b508fa"
             "1b");
 
-  sig = *keyring.SignMessage(address, message, 3, false);
-  EXPECT_EQ(base::HexEncodeLower(sig),
+  sig = keyring.SignMessage(address, message, 3, false);
+  ASSERT_TRUE(sig);
+  EXPECT_EQ(base::HexEncodeLower(*sig),
             "a77440e5c84e5f16ca3636c7af5857c828d2a8f1afbc0a6945d33d4fc45f216e"
             "3eefd69ccc5b3cee000fdaa564d8f1512789af8fe62f2907f5a8c87885b508fa"
             "29");
 
-  sig = *keyring.SignMessage(address, message, 300, false);
-  EXPECT_EQ(base::HexEncodeLower(sig),
+  sig = keyring.SignMessage(address, message, 300, false);
+  ASSERT_TRUE(sig);
+  EXPECT_EQ(base::HexEncodeLower(*sig),
             "a77440e5c84e5f16ca3636c7af5857c828d2a8f1afbc0a6945d33d4fc45f216e"
             "3eefd69ccc5b3cee000fdaa564d8f1512789af8fe62f2907f5a8c87885b508fa"
             "7b");
@@ -171,8 +178,9 @@ TEST(EthereumKeyringUnitTest, SignMessage) {
   EXPECT_TRUE(base::HexStringToBytes(
       "be609aee343fb3c4b28e1df9e632fca64fcfaede20f02e86244efddf30957bd2",
       &message));
-  sig = *keyring.SignMessage(address, message, 3, true);
-  EXPECT_EQ(base::HexEncodeLower(sig),
+  sig = keyring.SignMessage(address, message, 3, true);
+  ASSERT_TRUE(sig);
+  EXPECT_EQ(base::HexEncodeLower(*sig),
             "789c0e9025bbf9410b58c2ca43ea1add3c6cfed66001300b9c102f78022cf6e21b"
             "bf3780d68ff28e72c0ccb4f515b3d527c585abf59bc03531f5047b0357ef3329");
 }
@@ -215,9 +223,10 @@ TEST(EthereumKeyringUnitTest, ImportedAccounts) {
   // SignMessage
   std::vector<uint8_t> message;
   EXPECT_TRUE(base::HexStringToBytes("68656c6c6f20776f726c64", &message));
-  auto sig = *keyring.SignMessage("0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB",
-                                  message, 0, false);
-  EXPECT_EQ(base::HexEncodeLower(sig),
+  auto sig = keyring.SignMessage("0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB",
+                                 message, 0, false);
+  ASSERT_TRUE(sig);
+  EXPECT_EQ(base::HexEncodeLower(*sig),
             "ce909e8ea6851bc36c007a0072d0524b07a3ff8d4e623aca4c71ca8e57250c4d0a"
             "3fc38fa8fbaaa81ead4b9f6bd03356b6f8bf18bccad167d78891636e1d69561b");
   EXPECT_TRUE(keyring.RemoveImportedAccount(
@@ -264,10 +273,11 @@ TEST(EthereumKeyringUnitTest, ImportedAccounts) {
 TEST(EthereumKeyringUnitTest, GetPublicKeyFromX25519_XSalsa20_Poly1305) {
   EthereumKeyring keyring(*MnemonicToSeed(kMnemonic),
                           base::BindRepeating(IsAddressAllowed));
-  auto address = *keyring.AddNewHDAccount(0);
+  auto address = keyring.AddNewHDAccount(0);
+  ASSERT_TRUE(address);
   std::string public_encryption_key;
   EXPECT_TRUE(keyring.GetPublicKeyFromX25519_XSalsa20_Poly1305(
-      address, &public_encryption_key));
+      *address, &public_encryption_key));
   EXPECT_EQ(public_encryption_key,
             "eui9/fqCHT7aSUkKK9eooQFnOCD9COK9Mi1ZtOxIj2A=");
 
@@ -285,7 +295,9 @@ TEST(EthereumKeyringUnitTest, DecryptCipherFromX25519_XSalsa20_Poly1305) {
 
   // pub encryption key:
   // "eui9/fqCHT7aSUkKK9eooQFnOCD9COK9Mi1ZtOxIj2A="
-  auto address = *keyring.AddNewHDAccount(0);
+  auto account = keyring.AddNewHDAccount(0);
+  ASSERT_TRUE(account);
+  const std::string address = *account;
 
   // {
   //   version: 'x25519-xsalsa20-poly1305',
@@ -312,7 +324,7 @@ TEST(EthereumKeyringUnitTest, DecryptCipherFromX25519_XSalsa20_Poly1305) {
   message_bytes = keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
       "x25519-xsalsa20-poly1305", nonce, ephemeral_public_key, ciphertext,
       address);
-  EXPECT_TRUE(message_bytes.has_value());
+  ASSERT_TRUE(message_bytes.has_value());
   std::string message_str(message_bytes->begin(), message_bytes->end());
   EXPECT_EQ(message_str, "Ode to Anthony!");
 
@@ -336,6 +348,7 @@ TEST(EthereumKeyringUnitTest, DecryptCipherFromX25519_XSalsa20_Poly1305) {
   message_bytes = keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
       "x25519-xsalsa20-poly1305", nonce, ephemeral_public_key, ciphertext,
       address);
+  ASSERT_TRUE(message_bytes.has_value());
   message_str = std::string(message_bytes->begin(), message_bytes->end());
   EXPECT_TRUE(message_str.empty());
 

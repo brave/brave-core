@@ -167,7 +167,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_FinalRecipientTest) {
                 "0x1E", "0x32")));
 
     EthTxMeta meta(eth_account_id, std::move(tx));
-    ASSERT_EQ(meta.ToTransactionInfo()->effective_recipient.value(),
+    EXPECT_EQ(meta.ToTransactionInfo()->effective_recipient,
               "f12fopnvzwjwfu3k45sdofngoru6gpokobsbjyl2a");
   }
 
@@ -189,7 +189,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_FinalRecipientTest) {
                 "0x1E", "0x32")));
 
     EthTxMeta meta(eth_account_id, std::move(tx));
-    ASSERT_EQ(meta.ToTransactionInfo()->effective_recipient.value(),
+    EXPECT_EQ(meta.ToTransactionInfo()->effective_recipient,
               "0x35353535353535353535353535353535353535bb");
   }
 
@@ -212,7 +212,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_FinalRecipientTest) {
                 "0x1E", "0x32")));
 
     EthTxMeta meta(eth_account_id, std::move(tx));
-    ASSERT_EQ(meta.ToTransactionInfo()->effective_recipient.value(),
+    EXPECT_EQ(meta.ToTransactionInfo()->effective_recipient,
               "0x35353535353535353535353535353535353535bb");
   }
 
@@ -235,7 +235,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_FinalRecipientTest) {
                 "0x1E", "0x32")));
 
     EthTxMeta meta(eth_account_id, std::move(tx));
-    ASSERT_EQ(meta.ToTransactionInfo()->effective_recipient.value(),
+    EXPECT_EQ(meta.ToTransactionInfo()->effective_recipient,
               "0x35353535353535353535353535353535353535bb");
   }
 
@@ -258,7 +258,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_FinalRecipientTest) {
                 "0x1E", "0x32")));
 
     EthTxMeta meta(eth_account_id, std::move(tx));
-    ASSERT_EQ(meta.ToTransactionInfo()->effective_recipient.value(),
+    EXPECT_EQ(meta.ToTransactionInfo()->effective_recipient,
               "0x35353535353535353535353535353535353535bb");
   }
 
@@ -274,7 +274,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_FinalRecipientTest) {
                 "0x1E", "0x32")));
 
     EthTxMeta meta(eth_account_id, std::move(tx));
-    ASSERT_EQ(meta.ToTransactionInfo()->effective_recipient.value(),
+    EXPECT_EQ(meta.ToTransactionInfo()->effective_recipient,
               "0x3535353535353535353535353535353535353535");
   }
 }

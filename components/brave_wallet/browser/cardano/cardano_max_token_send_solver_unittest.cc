@@ -149,7 +149,9 @@ TEST_F(CardanoMaxTokenSendSolverUnitTest, SetupOutputs) {
 
   EXPECT_FALSE(tx.TargetOutput());
   EXPECT_FALSE(tx.ChangeOutput());
-  EXPECT_TRUE(CardanoMaxTokenSendSolver::SetupOutputs(tx, builder_params));
+  ASSERT_TRUE(CardanoMaxTokenSendSolver::SetupOutputs(tx, builder_params));
+  ASSERT_TRUE(tx.TargetOutput());
+  ASSERT_TRUE(tx.ChangeOutput());
   EXPECT_EQ(tx.TargetOutput()->type, CardanoTransaction::TxOutputType::kTarget);
   EXPECT_EQ(tx.TargetOutput()->address, builder_params.send_to_address);
   EXPECT_EQ(tx.TargetOutput()->coin_value.lovelace_amount,

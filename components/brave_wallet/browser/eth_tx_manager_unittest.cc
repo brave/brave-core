@@ -17,7 +17,9 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -79,11 +81,10 @@ void AddUnapprovedTransactionFailureCallback(bool* callback_called,
   *callback_called = true;
 }
 
-void MakeERC721TransferFromDataCallback(base::RunLoop* run_loop,
-                                        bool expected_success,
-                                        mojom::TransactionType expected_type,
-                                        bool success,
-                                        const std::vector<uint8_t>& data) {
+void VerifyERC721TransferFromData(bool expected_success,
+                                  mojom::TransactionType expected_type,
+                                  bool success,
+                                  const std::vector<uint8_t>& data) {
   ASSERT_EQ(expected_success, success);
 
   // Verify tx type.
@@ -92,8 +93,6 @@ void MakeERC721TransferFromDataCallback(base::RunLoop* run_loop,
     ASSERT_NE(tx_info, std::nullopt);
     EXPECT_EQ(expected_type, std::get<0>(*tx_info));
   }
-
-  run_loop->Quit();
 }
 
 }  // namespace
@@ -409,40 +408,37 @@ class EthTxManagerUnitTest : public testing::Test {
       const std::string& contract_address,
       bool expected_success,
       mojom::TransactionType expected_type) {
-    base::RunLoop run_loop;
+    base::test::TestFuture<bool, const std::vector<uint8_t>&> future;
     eth_tx_manager()->MakeERC1155TransferFromData(
-        from, to, token_id, value, contract_address,
-        base::BindLambdaForTesting(
-            [&](bool success, const std::vector<uint8_t>& data) {
-              EXPECT_EQ(expected_success, success);
-              if (success) {
-                mojom::TransactionType tx_type;
-                std::vector<std::string> tx_params;
-                std::vector<std::string> tx_args;
-                mojom::SwapInfoPtr swap_info;
+        from, to, token_id, value, contract_address, future.GetCallback());
 
-                auto tx_info = GetTransactionInfoFromData(data);
-                ASSERT_NE(tx_info, std::nullopt);
-                std::tie(tx_type, tx_params, tx_args, swap_info) =
-                    std::move(*tx_info);
+    const auto& [success, data] = future.Get();
+    EXPECT_EQ(expected_success, success);
+    if (success) {
+      mojom::TransactionType tx_type;
+      std::vector<std::string> tx_params;
+      std::vector<std::string> tx_args;
+      mojom::SwapInfoPtr swap_info;
 
-                EXPECT_EQ(expected_type, tx_type);
-                EXPECT_EQ(tx_args[0], from);
-                EXPECT_EQ(tx_args[1], to);
-                EXPECT_EQ(tx_args[2], token_id);
-                EXPECT_EQ(tx_args[3], value);
-                EXPECT_EQ(tx_args[4], "0x");  // empty bytes data
-                EXPECT_EQ(tx_params[0], "address");
-                EXPECT_EQ(tx_params[1], "address");
-                EXPECT_EQ(tx_params[2], "uint256");
-                EXPECT_EQ(tx_params[3], "uint256");
-                EXPECT_EQ(tx_params[4], "bytes");
-                EXPECT_FALSE(swap_info);
-              }
-              run_loop.Quit();
-            }));
+      auto tx_info = GetTransactionInfoFromData(data);
+      ASSERT_NE(tx_info, std::nullopt);
+      std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
 
-    run_loop.Run();
+      EXPECT_EQ(expected_type, tx_type);
+      ASSERT_EQ(tx_args.size(), 5u);
+      ASSERT_EQ(tx_params.size(), 5u);
+      EXPECT_EQ(tx_args[0], from);
+      EXPECT_EQ(tx_args[1], to);
+      EXPECT_EQ(tx_args[2], token_id);
+      EXPECT_EQ(tx_args[3], value);
+      EXPECT_EQ(tx_args[4], "0x");  // empty bytes data
+      EXPECT_EQ(tx_params[0], "address");
+      EXPECT_EQ(tx_params[1], "address");
+      EXPECT_EQ(tx_params[2], "uint256");
+      EXPECT_EQ(tx_params[3], "uint256");
+      EXPECT_EQ(tx_params[4], "bytes");
+      EXPECT_FALSE(swap_info);
+    }
   }
 
  protected:
@@ -478,7 +474,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithGasPriceAndGasLimit) {
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
   auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-  EXPECT_TRUE(tx_meta);
+  ASSERT_TRUE(tx_meta);
 
   uint256_t gas_price_value;
   uint256_t gas_limit_value;
@@ -508,7 +504,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedEvmTransaction) {
     task_environment_.RunUntilIdle();
     EXPECT_TRUE(callback_called);
     auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-    EXPECT_TRUE(tx_meta);
+    ASSERT_TRUE(tx_meta);
 
     EXPECT_FALSE(tx_meta->dapp_origin());
     EXPECT_EQ(tx_meta->tx()->type(), EthTransactionType::kEip1559);
@@ -532,7 +528,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedEvmTransaction) {
     task_environment_.RunUntilIdle();
     EXPECT_TRUE(callback_called);
     auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-    EXPECT_TRUE(tx_meta);
+    ASSERT_TRUE(tx_meta);
 
     EXPECT_FALSE(tx_meta->dapp_origin());
     EXPECT_EQ(tx_meta->tx()->type(), EthTransactionType::kLegacy);
@@ -555,7 +551,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedEvmTransaction) {
     task_environment_.RunUntilIdle();
     EXPECT_TRUE(callback_called);
     auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-    EXPECT_TRUE(tx_meta);
+    ASSERT_TRUE(tx_meta);
 
     EXPECT_FALSE(tx_meta->dapp_origin());
     EXPECT_EQ(tx_meta->tx()->type(), EthTransactionType::kLegacy);
@@ -580,7 +576,7 @@ TEST_F(EthTxManagerUnitTest, WalletOrigin) {
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
   auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-  EXPECT_TRUE(tx_meta);
+  ASSERT_TRUE(tx_meta);
 
   EXPECT_FALSE(tx_meta->dapp_origin());
 }
@@ -602,7 +598,7 @@ TEST_F(EthTxManagerUnitTest, SomeSiteOrigin) {
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
   auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-  EXPECT_TRUE(tx_meta);
+  ASSERT_TRUE(tx_meta);
 
   EXPECT_EQ(tx_meta->dapp_origin(),
             url::Origin::Create(GURL("https://some.site.com")));
@@ -799,7 +795,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithoutGasLimit) {
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
   auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-  EXPECT_TRUE(tx_meta);
+  ASSERT_TRUE(tx_meta);
 
   uint256_t gas_price_value;
   uint256_t gas_limit_value;
@@ -847,7 +843,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithoutGasLimit) {
     task_environment_.RunUntilIdle();
     EXPECT_TRUE(callback_called);
     tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-    EXPECT_TRUE(tx_meta);
+    ASSERT_TRUE(tx_meta);
     EXPECT_TRUE(HexValueToUint256(gas_price, &gas_price_value));
     EXPECT_TRUE(
         HexValueToUint256(Uint256ValueToHex(kv.second), &gas_limit_value));
@@ -872,7 +868,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithoutGasPrice) {
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
   auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-  EXPECT_TRUE(tx_meta);
+  ASSERT_TRUE(tx_meta);
 
   uint256_t gas_price_value;
   uint256_t gas_limit_value;
@@ -909,7 +905,7 @@ TEST_F(EthTxManagerUnitTest,
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
   auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-  EXPECT_TRUE(tx_meta);
+  ASSERT_TRUE(tx_meta);
 
   uint256_t gas_price_value;
   uint256_t gas_limit_value;
@@ -945,7 +941,7 @@ TEST_F(EthTxManagerUnitTest,
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
   auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-  EXPECT_TRUE(tx_meta);
+  ASSERT_TRUE(tx_meta);
 
   uint256_t gas_price_value;
   EXPECT_TRUE(HexValueToUint256("0x17fcf18321", &gas_price_value));
@@ -971,7 +967,7 @@ TEST_F(EthTxManagerUnitTest, SetGasPriceAndLimitForUnapprovedTransaction) {
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
   auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-  EXPECT_TRUE(tx_meta);
+  ASSERT_TRUE(tx_meta);
 
   uint256_t gas_price_value;
   EXPECT_TRUE(HexValueToUint256("0x17fcf18321", &gas_price_value));
@@ -1039,7 +1035,7 @@ TEST_F(EthTxManagerUnitTest, SetGasPriceAndLimitForUnapprovedTransaction) {
 
   // Get the updated TX.
   tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-  EXPECT_TRUE(tx_meta);
+  ASSERT_TRUE(tx_meta);
   EXPECT_EQ(tx_meta->tx()->gas_price(), update_gas_price);
   EXPECT_EQ(tx_meta->tx()->gas_limit(), update_gas_limit);
 }
@@ -1060,39 +1056,36 @@ TEST_F(EthTxManagerUnitTest, SetDataForUnapprovedTransaction) {
   EXPECT_TRUE(callback_called);
 
   auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-  EXPECT_TRUE(tx_meta);
+  ASSERT_TRUE(tx_meta);
 
   EXPECT_EQ(tx_meta->tx()->data(), initial_data);
 
   // Invalid tx_meta id should fail
   std::vector<uint8_t> new_data1;
-  base::RunLoop run_loop;
-  eth_tx_manager()->SetDataForUnapprovedTransaction(
-      "", new_data1, base::BindLambdaForTesting([&](bool success) {
-        EXPECT_FALSE(success);
-        run_loop.Quit();
-      }));
-  run_loop.Run();
+  {
+    base::test::TestFuture<bool> future;
+    eth_tx_manager()->SetDataForUnapprovedTransaction("", new_data1,
+                                                      future.GetCallback());
+    EXPECT_FALSE(future.Get());
+  }
 
   std::vector<uint8_t> new_data2{1U, 3U, 3U, 7U};
   TestTxServiceObserver observer("0x6", "0x11", "0x22", "", "", new_data2);
   tx_service_->AddObserver(observer.GetReceiver());
 
   // Change the data
-  base::RunLoop run_loop2;
-  eth_tx_manager()->SetDataForUnapprovedTransaction(
-      tx_meta_id, new_data2, base::BindLambdaForTesting([&](bool success) {
-        EXPECT_TRUE(success);
-        run_loop2.Quit();
-      }));
-  run_loop2.Run();
+  {
+    base::test::TestFuture<bool> future;
+    eth_tx_manager()->SetDataForUnapprovedTransaction(tx_meta_id, new_data2,
+                                                      future.GetCallback());
+    EXPECT_TRUE(future.Get());
+  }
 
-  task_environment_.RunUntilIdle();
-  EXPECT_TRUE(observer.TxUpdated());
+  ASSERT_TRUE(base::test::RunUntil([&] { return observer.TxUpdated(); }));
 
   // Get the updated TX.
   tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-  EXPECT_TRUE(tx_meta);
+  ASSERT_TRUE(tx_meta);
   EXPECT_EQ(tx_meta->tx()->data(), new_data2);
 }
 
@@ -1111,67 +1104,61 @@ TEST_F(EthTxManagerUnitTest, SetNonceForUnapprovedTransaction) {
   EXPECT_TRUE(callback_called);
 
   auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-  EXPECT_TRUE(tx_meta);
+  ASSERT_TRUE(tx_meta);
 
   EXPECT_EQ(tx_meta->tx()->nonce(), 6ULL);
 
   // Invalid tx_meta id should fail
-  base::RunLoop run_loop;
-  eth_tx_manager()->SetNonceForUnapprovedTransaction(
-      "", "0x02", base::BindLambdaForTesting([&](bool success) {
-        EXPECT_FALSE(success);
-        run_loop.Quit();
-      }));
-  run_loop.Run();
+  {
+    base::test::TestFuture<bool> future;
+    eth_tx_manager()->SetNonceForUnapprovedTransaction("", "0x02",
+                                                       future.GetCallback());
+    EXPECT_FALSE(future.Get());
+  }
   EXPECT_EQ(tx_meta->tx()->nonce(), 6ULL);
 
   // Invalid nonce value should fail
-  base::RunLoop run_loop2;
-  eth_tx_manager()->SetNonceForUnapprovedTransaction(
-      tx_meta_id, "invalid nonce",
-      base::BindLambdaForTesting([&](bool success) {
-        EXPECT_FALSE(success);
-        run_loop2.Quit();
-      }));
-  run_loop2.Run();
+  {
+    base::test::TestFuture<bool> future;
+    eth_tx_manager()->SetNonceForUnapprovedTransaction(
+        tx_meta_id, "invalid nonce", future.GetCallback());
+    EXPECT_FALSE(future.Get());
+  }
   EXPECT_EQ(tx_meta->tx()->nonce(), 6ULL);
 
   TestTxServiceObserver observer("0x3", "0x11", "0x22");
   tx_service_->AddObserver(observer.GetReceiver());
 
   // Change the nonce
-  base::RunLoop run_loop3;
-  eth_tx_manager()->SetNonceForUnapprovedTransaction(
-      tx_meta_id, "0x3", base::BindLambdaForTesting([&](bool success) {
-        EXPECT_TRUE(success);
-        run_loop3.Quit();
-      }));
-  run_loop3.Run();
+  {
+    base::test::TestFuture<bool> future;
+    eth_tx_manager()->SetNonceForUnapprovedTransaction(tx_meta_id, "0x3",
+                                                       future.GetCallback());
+    EXPECT_TRUE(future.Get());
+  }
 
-  task_environment_.RunUntilIdle();
-  EXPECT_TRUE(observer.TxUpdated());
+  ASSERT_TRUE(base::test::RunUntil([&] { return observer.TxUpdated(); }));
 
   // Get the updated TX.
   tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-  EXPECT_TRUE(tx_meta);
+  ASSERT_TRUE(tx_meta);
   EXPECT_EQ(tx_meta->tx()->nonce(), 3ULL);
 
   // Change the nonce back to blank
   observer.SetExpectedNonce("");
-  base::RunLoop run_loop4;
-  eth_tx_manager()->SetNonceForUnapprovedTransaction(
-      tx_meta_id, "", base::BindLambdaForTesting([&](bool success) {
-        EXPECT_TRUE(success);
-        run_loop4.Quit();
-      }));
-  run_loop4.Run();
+  observer.Reset();
+  {
+    base::test::TestFuture<bool> future;
+    eth_tx_manager()->SetNonceForUnapprovedTransaction(tx_meta_id, "",
+                                                       future.GetCallback());
+    EXPECT_TRUE(future.Get());
+  }
 
-  task_environment_.RunUntilIdle();
-  EXPECT_TRUE(observer.TxUpdated());
+  ASSERT_TRUE(base::test::RunUntil([&] { return observer.TxUpdated(); }));
 
   // Get the updated TX.
   tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-  EXPECT_TRUE(tx_meta);
+  ASSERT_TRUE(tx_meta);
   EXPECT_EQ(tx_meta->tx()->nonce(), std::nullopt);
 }
 
@@ -1267,7 +1254,8 @@ TEST_F(EthTxManagerUnitTest, ProcessEthHardwareSignature) {
   // eth_getTransactionCount and eth_sendRawTransaction
   SetInterceptor("{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0x0\"}");
 
-  base::RunLoop run_loop;
+  base::test::TestFuture<bool, mojom::ProviderError, const std::string&>
+      sign_future;
   eth_tx_manager()->ProcessEthHardwareSignature(
       tx_meta_id,
       mojom::EthereumSignatureVRS::New(
@@ -1276,18 +1264,14 @@ TEST_F(EthTxManagerUnitTest, ProcessEthHardwareSignature) {
                                     "76a194f8b11f50d2eade744e"),
           *PrefixedHexStringToBytes("0x7aa705c9144742836b7fbbd0745c57f67b60df7b"
                                     "8d1790fe59f91ed8d2bfc11d")),
-      base::BindLambdaForTesting([&](bool success,
-                                     mojom::ProviderError error_out,
-                                     const std::string& error_message_out) {
-        EXPECT_TRUE(success);
-        EXPECT_EQ(error_out, mojom::ProviderError::kSuccess);
-        EXPECT_TRUE(error_message_out.empty());
-        auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-        EXPECT_TRUE(tx_meta);
-        EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Submitted);
-        run_loop.Quit();
-      }));
-  run_loop.Run();
+      sign_future.GetCallback());
+  const auto& [success, error_out, error_message_out] = sign_future.Get();
+  EXPECT_TRUE(success);
+  EXPECT_EQ(error_out, mojom::ProviderError::kSuccess);
+  EXPECT_TRUE(error_message_out.empty());
+  auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
+  ASSERT_TRUE(tx_meta);
+  EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Submitted);
   ASSERT_TRUE(observer.TxStatusChanged());
 }
 
@@ -1325,7 +1309,7 @@ TEST_F(EthTxManagerUnitTest, ProcessEthHardwareSignatureFail) {
                   l10n_util::GetStringUTF8(
                       IDS_BRAVE_WALLET_HARDWARE_PROCESS_TRANSACTION_ERROR));
         auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-        EXPECT_TRUE(tx_meta);
+        ASSERT_TRUE(tx_meta);
         EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Error);
         callback_called = true;
       }));
@@ -1378,11 +1362,12 @@ TEST_F(EthTxManagerUnitTest, GetNonceForHardwareTransaction) {
   eth_tx_manager()->GetNonceForHardwareTransaction(
       tx_meta_id,
       base::BindLambdaForTesting([&](const std::optional<std::string>& nonce) {
-        EXPECT_TRUE(nonce);
+        ASSERT_TRUE(nonce);
         EXPECT_FALSE(nonce->empty());
         auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-        EXPECT_TRUE(tx_meta);
+        ASSERT_TRUE(tx_meta);
         EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Unapproved);
+        ASSERT_TRUE(tx_meta->tx()->nonce().has_value());
         EXPECT_EQ(Uint256ValueToHex(tx_meta->tx()->nonce().value()), nonce);
         callback_called = true;
       }));
@@ -1394,6 +1379,7 @@ TEST_F(EthTxManagerUnitTest, GetNonceForHardwareTransaction) {
       tx_meta_id,
       base::BindLambdaForTesting(
           [&](const std::optional<std::string>& hex_message) {
+            ASSERT_TRUE(hex_message);
             EXPECT_EQ(
                 *hex_message,
                 "f871018517fcf1832182960494be862ad9abfe6f22bcb087716c7d89a260"
@@ -1431,11 +1417,12 @@ TEST_F(EthTxManagerUnitTest, GetNonceForHardwareTransaction1559) {
   eth_tx_manager()->GetNonceForHardwareTransaction(
       tx_meta_id,
       base::BindLambdaForTesting([&](const std::optional<std::string>& nonce) {
-        EXPECT_TRUE(nonce);
+        ASSERT_TRUE(nonce);
         EXPECT_FALSE(nonce->empty());
         auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-        EXPECT_TRUE(tx_meta);
+        ASSERT_TRUE(tx_meta);
         EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Unapproved);
+        ASSERT_TRUE(tx_meta->tx()->nonce().has_value());
         EXPECT_EQ(Uint256ValueToHex(tx_meta->tx()->nonce().value()), nonce);
         callback_called = true;
       }));
@@ -1447,6 +1434,7 @@ TEST_F(EthTxManagerUnitTest, GetNonceForHardwareTransaction1559) {
       tx_meta_id,
       base::BindLambdaForTesting([&](const std::optional<std::string>&
                                          hex_message) {
+        ASSERT_TRUE(hex_message);
         EXPECT_EQ(
             *hex_message,
             "02dd04800101019401010101010101010101010101010101010101018080c0");
@@ -1502,7 +1490,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapproved1559TransactionWithGasFeeAndLimit) {
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
   auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-  EXPECT_TRUE(tx_meta);
+  ASSERT_TRUE(tx_meta);
 
   uint256_t gas_limit_value;
   EXPECT_TRUE(HexValueToUint256(gas_limit, &gas_limit_value));
@@ -1530,7 +1518,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapproved1559TransactionWithoutGasLimit) {
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
   auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-  EXPECT_TRUE(tx_meta);
+  ASSERT_TRUE(tx_meta);
 
   uint256_t gas_limit_value;
   EXPECT_TRUE(HexValueToUint256("0x9604", &gas_limit_value));
@@ -1559,7 +1547,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapproved1559TransactionWithoutGasFee) {
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
   auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-  EXPECT_TRUE(tx_meta);
+  ASSERT_TRUE(tx_meta);
 
   uint256_t gas_limit_value;
   EXPECT_TRUE(HexValueToUint256(gas_limit, &gas_limit_value));
@@ -1588,7 +1576,7 @@ TEST_F(EthTxManagerUnitTest,
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
   auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-  EXPECT_TRUE(tx_meta);
+  ASSERT_TRUE(tx_meta);
 
   uint256_t gas_limit_value;
   EXPECT_TRUE(HexValueToUint256("0x9604", &gas_limit_value));
@@ -1625,6 +1613,8 @@ TEST_F(EthTxManagerUnitTest,
               "id": 1
             }
           )");
+        } else {
+          ADD_FAILURE() << "Unhandled request: " << *header_value;
         }
       }));
 
@@ -1646,7 +1636,7 @@ TEST_F(EthTxManagerUnitTest,
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
   auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-  EXPECT_TRUE(tx_meta);
+  ASSERT_TRUE(tx_meta);
 
   EXPECT_EQ(Uint256ValueToHex(tx_meta->tx()->gas_limit()), gas_limit);
   auto* tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx());
@@ -1688,6 +1678,8 @@ TEST_F(EthTxManagerUnitTest,
               "result": "0x00000000000009604",
               "id": 1
             })");
+        } else {
+          ADD_FAILURE() << "Unhandled request: " << *header_value;
         }
       }));
 
@@ -1708,7 +1700,7 @@ TEST_F(EthTxManagerUnitTest,
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
   auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-  EXPECT_TRUE(tx_meta);
+  ASSERT_TRUE(tx_meta);
 
   EXPECT_EQ(Uint256ValueToHex(tx_meta->tx()->gas_limit()), "0x9604");
   auto* tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx());
@@ -1733,6 +1725,8 @@ TEST_F(EthTxManagerUnitTest, AddUnapproved1559TransactionFeeHistoryFailed) {
               "id": 1
             }
           )");
+        } else {
+          ADD_FAILURE() << "Unhandled request: " << *header_value;
         }
       }));
 
@@ -1771,7 +1765,7 @@ TEST_F(EthTxManagerUnitTest,
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
   auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-  EXPECT_TRUE(tx_meta);
+  ASSERT_TRUE(tx_meta);
 
   // Gas limit obtained by querying eth_estimateGas.
   EXPECT_EQ(tx_meta->tx()->gas_limit(), 38404ULL);
@@ -1802,7 +1796,7 @@ TEST_F(EthTxManagerUnitTest,
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
   auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-  EXPECT_TRUE(tx_meta);
+  ASSERT_TRUE(tx_meta);
 
   uint256_t gas_limit_value;
   EXPECT_TRUE(HexValueToUint256(gas_limit, &gas_limit_value));
@@ -1830,7 +1824,7 @@ TEST_F(EthTxManagerUnitTest,
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
   auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-  EXPECT_TRUE(tx_meta);
+  ASSERT_TRUE(tx_meta);
 
   // Gas limit obtained by querying eth_estimateGas.
   EXPECT_EQ(tx_meta->tx()->gas_limit(), 38404ULL);
@@ -1860,7 +1854,7 @@ TEST_F(EthTxManagerUnitTest,
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
   auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-  EXPECT_TRUE(tx_meta);
+  ASSERT_TRUE(tx_meta);
 
   uint256_t gas_limit_value;
   EXPECT_TRUE(HexValueToUint256(gas_limit, &gas_limit_value));
@@ -1889,7 +1883,7 @@ TEST_F(EthTxManagerUnitTest, SetGasFeeAndLimitForUnapprovedTransaction) {
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
   auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-  EXPECT_TRUE(tx_meta);
+  ASSERT_TRUE(tx_meta);
 
   // Gas limit should be filled by requesting eth_estimateGas.
   uint256_t gas_limit_value;
@@ -1978,7 +1972,7 @@ TEST_F(EthTxManagerUnitTest, SetGasFeeAndLimitForUnapprovedTransaction) {
 
   // Get the updated TX.
   tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-  EXPECT_TRUE(tx_meta);
+  ASSERT_TRUE(tx_meta);
   EXPECT_EQ(tx_meta->tx()->gas_limit(), update_gas_limit);
   tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx());
   EXPECT_EQ(tx1559->max_priority_fee_per_gas(),
@@ -2003,7 +1997,7 @@ TEST_F(EthTxManagerUnitTest,
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
   auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-  EXPECT_TRUE(tx_meta);
+  ASSERT_TRUE(tx_meta);
 
   callback_called = false;
   eth_tx_manager()->SetGasFeeAndLimitForUnapprovedTransaction(
@@ -2062,6 +2056,8 @@ TEST_F(EthTxManagerUnitTest, TestSubmittedToConfirmed) {
                 "status": "0x1"
               }
             })");
+        } else {
+          ADD_FAILURE() << "Unhandled request: " << *header_value;
         }
       }));
 
@@ -2239,6 +2235,7 @@ TEST_F(EthTxManagerUnitTest, CancelTransaction) {
   auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
   ASSERT_TRUE(tx_meta);
   EXPECT_EQ(tx_meta->tx()->nonce(), orig_tx_meta->tx()->nonce());
+  ASSERT_TRUE(tx_meta->tx()->nonce().has_value());
   EXPECT_EQ(Uint256ValueToHex(tx_meta->tx()->nonce().value()), "0x6");
   EXPECT_EQ(tx_meta->tx()->gas_price(), 176000000000ULL);  // 160*1.1 gwei
   EXPECT_EQ(tx_meta->tx()->GetToChecksumAddress(),
@@ -2262,6 +2259,7 @@ TEST_F(EthTxManagerUnitTest, CancelTransaction) {
   tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
   ASSERT_TRUE(tx_meta);
   EXPECT_EQ(tx_meta->tx()->nonce(), orig_tx_meta->tx()->nonce());
+  ASSERT_TRUE(tx_meta->tx()->nonce().has_value());
   EXPECT_EQ(Uint256ValueToHex(tx_meta->tx()->nonce().value()), "0x7");
   EXPECT_EQ(tx_meta->tx()->gas_price(), 0x17fcf18321ULL);  // 0x17fcf18321
   EXPECT_EQ(tx_meta->tx()->GetToChecksumAddress(),
@@ -2285,6 +2283,7 @@ TEST_F(EthTxManagerUnitTest, CancelTransaction) {
   auto* orig_tx1559_ptr = static_cast<Eip1559Transaction*>(orig_tx_meta->tx());
   auto* tx1559_ptr = static_cast<Eip1559Transaction*>(tx_meta->tx());
   EXPECT_EQ(tx1559_ptr->nonce(), orig_tx1559_ptr->nonce());
+  ASSERT_TRUE(tx1559_ptr->nonce().has_value());
   EXPECT_EQ(Uint256ValueToHex(tx1559_ptr->nonce().value()), "0x8");
   EXPECT_EQ(tx1559_ptr->max_priority_fee_per_gas(),
             2200000000ULL);                                  // 2*1.1 gwei
@@ -2403,47 +2402,58 @@ TEST_F(EthTxManagerUnitTest, MakeERC721TransferFromDataTxType) {
               "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
               "\"0x0000000000000000000000000000000000000000000000000000000000"
               "000000\"}");
+        } else {
+          ADD_FAILURE() << "Unhandled request: " << request_string;
         }
       }));
 
-  auto run_loop = std::make_unique<base::RunLoop>();
-  eth_tx_manager()->MakeERC721TransferFromData(
-      "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f",
-      "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460a", "0xf",
-      contract_safe_transfer_from,
-      base::BindOnce(&MakeERC721TransferFromDataCallback, run_loop.get(), true,
-                     mojom::TransactionType::ERC721SafeTransferFrom));
-  run_loop->Run();
+  {
+    base::test::TestFuture<bool, const std::vector<uint8_t>&> future;
+    eth_tx_manager()->MakeERC721TransferFromData(
+        "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f",
+        "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460a", "0xf",
+        contract_safe_transfer_from, future.GetCallback());
+    const auto& [success, data] = future.Get();
+    VerifyERC721TransferFromData(
+        true, mojom::TransactionType::ERC721SafeTransferFrom, success, data);
+  }
 
-  run_loop = std::make_unique<base::RunLoop>();
-  eth_tx_manager()->MakeERC721TransferFromData(
-      "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f",
-      "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460a", "0xf",
-      contract_transfer_from,
-      base::BindOnce(&MakeERC721TransferFromDataCallback, run_loop.get(), true,
-                     mojom::TransactionType::ERC721TransferFrom));
-  run_loop->Run();
+  {
+    base::test::TestFuture<bool, const std::vector<uint8_t>&> future;
+    eth_tx_manager()->MakeERC721TransferFromData(
+        "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f",
+        "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460a", "0xf",
+        contract_transfer_from, future.GetCallback());
+    const auto& [success, data] = future.Get();
+    VerifyERC721TransferFromData(
+        true, mojom::TransactionType::ERC721TransferFrom, success, data);
+  }
 
   // Invalid token ID should fail.
-  run_loop = std::make_unique<base::RunLoop>();
-  eth_tx_manager()->MakeERC721TransferFromData(
-      "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f",
-      "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460a", "1", contract_transfer_from,
-      base::BindOnce(&MakeERC721TransferFromDataCallback, run_loop.get(), false,
-                     mojom::TransactionType::Other));
-  run_loop->Run();
+  {
+    base::test::TestFuture<bool, const std::vector<uint8_t>&> future;
+    eth_tx_manager()->MakeERC721TransferFromData(
+        "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f",
+        "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460a", "1",
+        contract_transfer_from, future.GetCallback());
+    const auto& [success, data] = future.Get();
+    VerifyERC721TransferFromData(false, mojom::TransactionType::Other, success,
+                                 data);
+  }
 
   // Address on the restricted list should fail.
   BlockchainRegistry::ScopedRestrictedAddressesForTesting
       scoped_erc721_restricted({"0xbfb30a082f650c2a15d0632f0e87be4f8e64460a"});
-  run_loop = std::make_unique<base::RunLoop>();
-  eth_tx_manager()->MakeERC721TransferFromData(
-      "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f",
-      "0xbfb30a082f650c2a15d0632f0e87be4f8e64460a", "0xf",
-      contract_safe_transfer_from,
-      base::BindOnce(&MakeERC721TransferFromDataCallback, run_loop.get(), false,
-                     mojom::TransactionType::Other));
-  run_loop->Run();
+  {
+    base::test::TestFuture<bool, const std::vector<uint8_t>&> future;
+    eth_tx_manager()->MakeERC721TransferFromData(
+        "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f",
+        "0xbfb30a082f650c2a15d0632f0e87be4f8e64460a", "0xf",
+        contract_safe_transfer_from, future.GetCallback());
+    const auto& [success, data] = future.Get();
+    VerifyERC721TransferFromData(false, mojom::TransactionType::Other, success,
+                                 data);
+  }
 }
 
 TEST_F(EthTxManagerUnitTest, MakeERC1155TransferFromData) {

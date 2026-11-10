@@ -105,8 +105,6 @@ class EthTransaction {
   FRIEND_TEST_ALL_PREFIXES(EthTransactionUnitTest, GetSignedTransactionAndHash);
   FRIEND_TEST_ALL_PREFIXES(EthTransactionUnitTest, TransactionAndValue);
   FRIEND_TEST_ALL_PREFIXES(EthTransactionUnitTest, GetDataFee);
-  FRIEND_TEST_ALL_PREFIXES(Eip2930TransactionUnitTest,
-                           GetSignedTransactionAndHash);
 
   EthTransaction(uint256_t chain_id,
                  std::optional<uint256_t> nonce,
