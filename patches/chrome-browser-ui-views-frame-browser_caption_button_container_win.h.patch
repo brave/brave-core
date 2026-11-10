@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/frame/browser_caption_button_container_win.h b/chrome/browser/ui/views/frame/browser_caption_button_container_win.h
+index bda5b2b0ab02d4d4b254bf3ed64e1ccbfbf51b83..c779498e8d5f434815a11f3cc25ce8f6f77edaa5 100644
+--- a/chrome/browser/ui/views/frame/browser_caption_button_container_win.h
++++ b/chrome/browser/ui/views/frame/browser_caption_button_container_win.h
+@@ -39,6 +39,7 @@ class BrowserCaptionButtonContainer : public views::View,
+   void OnWindowControlsOverlayEnabledChanged();
+ 
+  private:
++  friend class BraveBrowserFrameViewWin;
+   friend class BrowserFrameViewWin;
+ 
+   // views::View:
