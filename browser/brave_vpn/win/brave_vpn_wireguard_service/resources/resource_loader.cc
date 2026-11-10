@@ -38,8 +38,6 @@ base::FilePath FindPakFilePath(const base::FilePath& assets_path,
   if (base::PathExists(pak_path)) {
     return pak_path;
   }
-  if (locale != "en-US") {
-  }
   CHECK_NE(locale, "en-US");
   return FindPakFilePath(assets_path, "en-US");
 }
