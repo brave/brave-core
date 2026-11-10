@@ -12,7 +12,16 @@
 #include "url/gurl.h"
 #include "url/origin.h"
 
+class PrefService;
+
 namespace query_filter {
+
+// Returns whether known tracking query parameters filtering has been disabled
+// via the managed `kTrackingQueryParametersFilteringEnabled` policy preference.
+// Filtering is enabled by default, so this only returns true when the
+// preference is managed and explicitly set to false.
+bool IsQueryFilteringDisabledByPolicy(const PrefService* prefs);
+
 std::optional<GURL> ApplyQueryFilter(const GURL& original_url);
 
 // This function will return a new url stripping known tracking query params.

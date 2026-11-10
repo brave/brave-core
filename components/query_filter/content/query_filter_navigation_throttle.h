@@ -6,27 +6,46 @@
 #ifndef BRAVE_COMPONENTS_QUERY_FILTER_CONTENT_QUERY_FILTER_NAVIGATION_THROTTLE_H_
 #define BRAVE_COMPONENTS_QUERY_FILTER_CONTENT_QUERY_FILTER_NAVIGATION_THROTTLE_H_
 
+#include "base/memory/raw_ptr.h"
 #include "content/public/browser/navigation_throttle.h"
 #include "content/public/browser/navigation_throttle_registry.h"
+
+namespace brave_shields {
+class BraveShieldsSettingsService;
+}  // namespace brave_shields
+
 namespace query_filter {
 
-// This class allows to intercept navigations that will be intercepted by
-// a service worker.
+// A dedicated navigation throttle to capture cases where filtering only
+// on the network delegate side might not be sufficient as it relies on
+// the request actually hitting the n/w stack. However, that may not happen
+// always. For e.g. Service workers could potentially intercept these requests
+// before and serve cached response. See
+// https://github.com/brave/brave-browser/issues/23742 for more details.
 class QueryFilterNavigationThrottle : public content::NavigationThrottle {
  public:
   explicit QueryFilterNavigationThrottle(
-      content::NavigationThrottleRegistry& registry);
+      content::NavigationThrottleRegistry& registry,
+      brave_shields::BraveShieldsSettingsService* shields_settings_service);
   ~QueryFilterNavigationThrottle() override;
 
   QueryFilterNavigationThrottle(const QueryFilterNavigationThrottle&) = delete;
   QueryFilterNavigationThrottle& operator=(
       const QueryFilterNavigationThrottle&) = delete;
 
-  static void MaybeCreateAndAdd(content::NavigationThrottleRegistry& registry);
+  static void MaybeCreateAndAdd(
+      content::NavigationThrottleRegistry& registry,
+      brave_shields::BraveShieldsSettingsService* shields_settings_service);
 
   // `content::NavigationThrottle`:
+  // Observe the first navigation and strip out any flagged parameters. If
+  // stripped creates a new internal redirect navigation.
   ThrottleCheckResult WillStartRequest() override;
   const char* GetNameForLogging() override;
+
+ private:
+  raw_ptr<brave_shields::BraveShieldsSettingsService>
+      shields_settings_service_ = nullptr;
 };
 }  // namespace query_filter
 #endif  // BRAVE_COMPONENTS_QUERY_FILTER_CONTENT_QUERY_FILTER_NAVIGATION_THROTTLE_H_

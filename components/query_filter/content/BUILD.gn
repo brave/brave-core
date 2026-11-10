@@ -14,9 +14,9 @@ source_set("content") {
   deps = [
     "//base",
     "//brave/components/brave_shields/content/browser:restart_navigation",
+    "//brave/components/brave_shields/core/browser",
     "//brave/components/query_filter/browser",
     "//brave/components/query_filter/common",
-    "//components/prefs",
     "//components/user_prefs",
     "//content/public/browser",
     "//ui/base",

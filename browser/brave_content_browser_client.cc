@@ -1703,7 +1703,11 @@ void BraveContentBrowserClient::CreateThrottlesForNavigation(
 
   brave_search::BackupResultsNavigationThrottle::MaybeCreateAndAdd(registry);
 
-  query_filter::QueryFilterNavigationThrottle::MaybeCreateAndAdd(registry);
+  auto* shields_settings_service =
+      BraveShieldsSettingsServiceFactory::GetForProfile(
+          Profile::FromBrowserContext(context));
+  query_filter::QueryFilterNavigationThrottle::MaybeCreateAndAdd(
+      registry, shields_settings_service);
 }
 
 // Updates the global privacy control web preference and returns true if it is
