@@ -128,8 +128,9 @@ class BraveOnDeviceSpeechBrowserTest : public InProcessBrowserTest {
     // Brave components register and ask it for their downloads too.
     EXPECT_CALL(
         *on_demand_updater_,
-        EnsureInstalled(testing::Ne(local_ai::kOnDeviceSpeechModelsComponentId),
-                        testing::_))
+        EnsureInstalled(
+            testing::Ne(local_ai::kOnDeviceSpeechEnglishModelComponentId),
+            testing::_))
         .Times(testing::AnyNumber());
 
     // Browser tests run with `--disable-component-update`
@@ -137,7 +138,7 @@ class BraveOnDeviceSpeechBrowserTest : public InProcessBrowserTest {
     // components and the registrar has no update service. Start it here
     // instead, as a user who enabled the model leaves it.
     g_browser_process->local_state()->SetBoolean(
-        local_ai::prefs::kOnDeviceSpeechModelEnabled, true);
+        local_ai::prefs::kOnDeviceSpeechEnglishModelEnabled, true);
     local_ai::ManageOnDeviceSpeechModelsComponentRegistration(
         g_browser_process->component_updater(),
         g_browser_process->local_state());
@@ -146,7 +147,8 @@ class BraveOnDeviceSpeechBrowserTest : public InProcessBrowserTest {
     // the drain, so it also takes over from the drain's expectation.
     EXPECT_CALL(
         *on_demand_updater_,
-        EnsureInstalled(local_ai::kOnDeviceSpeechModelsComponentId, testing::_))
+        EnsureInstalled(local_ai::kOnDeviceSpeechEnglishModelComponentId,
+                        testing::_))
         .Times(0);
 
     original_client_ = content::SetBrowserClientForTesting(&client_);
@@ -186,7 +188,8 @@ class BraveOnDeviceSpeechBrowserTest : public InProcessBrowserTest {
   void AnswerDownloadWith(update_client::Error error) {
     EXPECT_CALL(
         *on_demand_updater_,
-        EnsureInstalled(local_ai::kOnDeviceSpeechModelsComponentId, testing::_))
+        EnsureInstalled(local_ai::kOnDeviceSpeechEnglishModelComponentId,
+                        testing::_))
         .WillOnce([this, error](const std::string& id,
                                 component_updater::Callback callback) {
           if (error == update_client::Error::NONE) {
@@ -279,14 +282,15 @@ class BraveOnDeviceSpeechBrowserTest : public InProcessBrowserTest {
   void DrainRegistrationRequest() {
     EXPECT_CALL(
         *on_demand_updater_,
-        EnsureInstalled(local_ai::kOnDeviceSpeechModelsComponentId, testing::_))
+        EnsureInstalled(local_ai::kOnDeviceSpeechEnglishModelComponentId,
+                        testing::_))
         .WillRepeatedly(
             [](const std::string& id, component_updater::Callback callback) {
               std::move(callback).Run(update_client::Error::NONE);
             });
     base::test::TestFuture<bool> answered;
     local_ai::MaybeRegisterOnDeviceSpeechModelsComponent(
-        answered.GetCallback());
+        local_ai::OnDeviceSpeechModel::kEnglish, answered.GetCallback());
     ASSERT_TRUE(answered.Wait());
   }
 
@@ -439,7 +443,7 @@ class BraveOnDeviceSpeechPromptBrowserTest
   void SetUpOnMainThread() override {
     BraveOnDeviceSpeechQualityBrowserTest::SetUpOnMainThread();
     g_browser_process->local_state()->ClearPref(
-        local_ai::prefs::kOnDeviceSpeechModelEnabled);
+        local_ai::prefs::kOnDeviceSpeechEnglishModelEnabled);
     prompt_factory_ =
         std::make_unique<permissions::MockPermissionPromptFactory>(
             permissions::PermissionRequestManager::FromWebContents(
@@ -454,7 +458,7 @@ class BraveOnDeviceSpeechPromptBrowserTest
  protected:
   bool IsEnabled() {
     return g_browser_process->local_state()->GetBoolean(
-        local_ai::prefs::kOnDeviceSpeechModelEnabled);
+        local_ai::prefs::kOnDeviceSpeechEnglishModelEnabled);
   }
 
   std::unique_ptr<permissions::MockPermissionPromptFactory> prompt_factory_;

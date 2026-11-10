@@ -32,7 +32,7 @@ class OnDeviceSpeechModelPermissionRequestUnitTest : public testing::Test {
 
   bool IsEnabled() {
     return local_state_.GetBoolean(
-        local_ai::prefs::kOnDeviceSpeechModelEnabled);
+        local_ai::prefs::kOnDeviceSpeechEnglishModelEnabled);
   }
 
   bool IsAskEnabled() {
