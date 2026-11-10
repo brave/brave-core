@@ -94,7 +94,7 @@ std::unique_ptr<DeAmpBodyHandler> DeAmpBodyHandler::Create(
     const network::ResourceRequest& request,
     const content::WebContents::Getter& wc_getter) {
   auto* contents = wc_getter.Run();
-  if (!contents) {
+  if (!contents || !request.url.SchemeIsHTTPOrHTTPS()) {
     return nullptr;
   }
   PrefService* prefs =
