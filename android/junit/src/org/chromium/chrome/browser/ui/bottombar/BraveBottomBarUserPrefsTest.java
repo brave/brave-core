@@ -34,6 +34,8 @@ public class BraveBottomBarUserPrefsTest {
     public void tearDown() {
         ChromeSharedPreferences.getInstance().removeKey(ChromePreferenceKeys.BOTTOM_BAR_ENABLED);
         ChromeSharedPreferences.getInstance()
+                .removeKey(ChromePreferenceKeys.BOTTOM_BAR_DEFAULT_PIN_STATE);
+        ChromeSharedPreferences.getInstance()
                 .removeKey(BravePreferenceKeys.BRAVE_ENABLE_BOTTOM_BAR);
         ChromeSharedPreferences.getInstance()
                 .removeKey(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY);
@@ -81,6 +83,23 @@ public class BraveBottomBarUserPrefsTest {
     public void testUnsetSettingInheritsBottomToolbarSettingOff() {
         setBottomToolbarSetting(false);
         assertBottomBarGates(false);
+    }
+
+    @Test
+    @EnableFeatures(ChromeFeatureList.ANDROID_BOTTOM_BAR)
+    public void testPinnedDefaultKeepsFormerBottomBarSettingOff() {
+        setFormerBottomBarSetting(false);
+        BottomBarConfigUtils.maybePinDefaultUserEnabled();
+        assertBottomBarGates(false);
+    }
+
+    @Test
+    @EnableFeatures(ChromeFeatureList.ANDROID_BOTTOM_BAR)
+    public void testPinnedDefaultKeepsBottomToolbarSettingOn() {
+        ChromeFeatureList.sAndroidBottomBarDefaultUserEnabled.setForTesting(false);
+        setBottomToolbarSetting(true);
+        BottomBarConfigUtils.maybePinDefaultUserEnabled();
+        assertBottomBarGates(true);
     }
 
     @Test
