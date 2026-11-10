@@ -1,81 +1,51 @@
 ## AUTO-GENERATED FILE -- DO NOT EDIT.
 ##
-## Upstream content_unittests tests with a flake rate >= 1.0% on
-## windows bots over the past 30 days per Chromium LUCI Analysis.
+## Upstream content_unittests tests that Chromium LUCI Analysis confirms as flaky
+## or failing on win bots at refs/branch-heads/8127@{#862}.
 ## Regenerate with:
 ##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--BackgroundSyncManagerTest.WakeBrowserCalledForOneShotSync
-
-# 99.0% flake rate over 30 days per LUCI Analysis (125 passed, 1 failed, 12114 flaky).
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 769 flaky verdicts in 14 days, 84 in the last 2 weekdays.
 -BrowserMainLoopTest.PostCreateThreadsResultAbortsStartup
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--BtmServiceHistogramTest.Deletion_Enforced
+# Flaky on win-rel (Windows-10-19045): 4 flaky of 48 verdicts.
+-CacheStorageManagerTest.DeleteBucketDataConflictingBucketIds
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--BtmServiceStateRemovalTest.BrowsingDataDeletion_Enabled
-
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--BtmServiceStateRemovalTest.BrowsingDataDeletion_RespectsStorageAccessGrantExceptions
-
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--IndexedDBTest.PutWithInvalidBlob/LevelDB
-
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--IndexedDBTest.PutWithInvalidBlob/SQLite
-
-# 4.2% flake rate over 30 days per LUCI Analysis (23 passed, 0 failed, 1 flaky).
--InputRouterImplTest.GestureTypesIgnoringAck
-
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--InputRouterImplTest.TimeoutMonitorStopWithMainThreadTouchAction
-
-# 68.4% flake rate over 30 days per LUCI Analysis (7260 passed, 0 failed, 15718 flaky).
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 343 flaky verdicts in 14 days, 49 in the last 2 weekdays.
 -LevelDbBackingStoreTest.CompactionTaskTiming
 
-# 76.1% flake rate over 30 days per LUCI Analysis (5489 passed, 0 failed, 17489 flaky).
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 564 flaky verdicts in 14 days, 49 in the last 2 weekdays.
 -LevelDbBackingStoreTest.TombstoneSweeperTiming
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--MediaStreamManagerCapturedSurfaceControlActionTest.FailsIfSelfCapture/0
-
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--MediaStreamManagerCapturedSurfaceControlActionTest.FailsIfSelfCapture/1
-
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--MediaStreamManagerCapturedSurfaceControlActionTest.FailsIfSelfCapture/2
-
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--MediaStreamManagerCapturedSurfaceControlActionTest.FailsIfSelfCapture/3
-
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--MediaStreamManagerCapturedSurfaceControlActionTest.FailsIfSelfCapture/4
-
-# 1.2% flake rate over 30 days per LUCI Analysis (22707 passed, 5 failed, 267 flaky).
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 3 flaky verdicts in 14 days, 2 in the last 2 weekdays.
 -NavigationURLLoaderImplTest.ForceAsyncInterceptorForRedirect
 
-# 1.4% flake rate over 30 days per LUCI Analysis (22649 passed, 5 failed, 325 flaky).
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 3 flaky verdicts in 14 days, 2 in the last 2 weekdays.
 -NavigationURLLoaderImplTest.ForceAsyncParseHeaders
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--PrefetchCanaryCheckerTest.NetworkConnectionShardsCache
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 3 flaky verdicts in 14 days, 1 in the last 2 weekdays.
+-NavigationURLLoaderImplTest.TimeoutDuringAsyncInterceptorForRedirect
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 14 failed, 0 flaky).
--PrerenderHostRegistryTest.CreateAndStartHost_WhenPendingPrerendersExist
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 27 flaky verdicts in 14 days, 1 in the last 2 weekdays.
+-ParametrizedTests/PrefetchServiceLimitsTest.PrefetchFailsAndIsReset/0
 
-# 2.2% flake rate over 30 days per LUCI Analysis (22472 passed, 5 failed, 503 flaky).
--RenderFrameHostImplTest.CalculateStorageKeyFirstPartyOverride
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 29 flaky verdicts in 14 days, 4 in the last 2 weekdays.
+-ParametrizedTests/PrefetchServiceLimitsTest.PrefetchFailsAndIsReset/1
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--RenderWidgetHostViewAuraOverscrollTest.ReverseFlingCancelsOverscroll
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 23 flaky verdicts in 14 days, 2 in the last 2 weekdays.
+-ParametrizedTests/PrefetchServiceLimitsTest.PrefetchFailsAndIsReset/2
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--RendererWebAudioDeviceImplBufferSizeTest.ExactLatency_HighHardwareBufferSize_CapsAtMaxBufferSize
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 36 flaky verdicts in 14 days, 4 in the last 2 weekdays.
+-ParametrizedTests/PrefetchServiceLimitsTest.PrefetchReset/0
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--WebContentsImplTest.NoEarlyStop
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 31 flaky verdicts in 14 days, 4 in the last 2 weekdays.
+-ParametrizedTests/PrefetchServiceLimitsTest.PrefetchReset/1
 
-# 5.3% flake rate over 30 days per LUCI Analysis (24118 passed, 5 failed, 1357 flaky).
--WebRtcInternalsMessageHandlerTest.DontRunJSBeforeNavigationCommitted
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 33 flaky verdicts in 14 days, 6 in the last 2 weekdays.
+-ParametrizedTests/PrefetchServiceLimitsTest.PrefetchReset/2
+
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 766 flaky verdicts in 14 days, 81 in the last 2 weekdays.
+-RenderProcessHostShardTest.IsSuitableHost
+
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 755 flaky verdicts in 14 days, 81 in the last 2 weekdays.
+-RenderProcessHostShardTest.ServiceWorker

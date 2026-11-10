@@ -4,23 +4,29 @@
 
 ## ✅ Auto-Generated Filters for Flaky Upstream Tests
 
-**Upstream tests with a flake rate ≥1% over the past 30 days (per Chromium LUCI
-Analysis) are filtered automatically.** The
+**Upstream tests that Chromium LUCI Analysis confirms as flaky or failing on the
+Chromium branch Brave is built from are filtered automatically.** The
 `test/filters/generated/<suite>-<config>.filter` files — where `<config>` is a
 platform like `linux` or a platform-sanitizer combination like `linux-asan` —
 are produced by a script and picked up by `npm run test` alongside the
-hand-written files in `test/filters/`. Flake rates are computed per config from
-the matching upstream bots, so a test that only flakes on e.g. Linux ASan bots
-stays enabled everywhere else. Do not edit these files by hand; refresh them
-instead:
+hand-written files in `test/filters/`. Each test is judged per upstream bot at
+the position of the Chromium checkout, with the criteria Chromium's CQ uses: a
+test is filtered for a config when, on one of its bots, it is flaky (at least 3
+flaky verdicts within ±7 days, at least 1 within ±1 weekday) or failing (at
+least 6 of the 10 nearest runs failed, or at least 3 in a row). It is also
+filtered when the config's CI bots together have at least 3 flaky verdicts in
+the last 14 days, at least 1 of them in the last 2 weekdays. A test that only
+flakes on e.g. Linux ASan bots stays enabled everywhere else. A config the
+branch has no upstream bots for gets no file. Do not edit these files by hand;
+refresh them instead:
 
 ```bash
 # in src/brave/
 vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# Only specific suites, or different thresholds:
-vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py browser_tests --days 30 \
-    --min-flake-rate 1.0
+# Only specific suites, or at another Chromium tag or branch:
+vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py browser_tests \
+    --ref 158.0.8127.22
 ```
 
 Candidate discovery is based on LUCI Analysis failure clusters, which only
@@ -80,10 +86,16 @@ checkout's position on its branch. Each variant gets one of four statuses:
 | **STABLE**  | Results exist and neither criterion is met                             | Investigate Brave-specific causes before filtering. |
 | **NO DATA** | No results near the position (hidden unless `--all` is passed)         | Manual investigation needed.                        |
 
+Chromium's FLAKY criterion only counts a failure and a pass within one run, and
+Chromium retries failed browser tests in a separate run. Under each table the
+script therefore also counts the FLAKY verdicts of the test's CI bots together,
+per bot OS. A line ending in `-> FLAKY` means they meet the same thresholds
+together, which also confirms the flake on that platform.
+
 **Decision rule:**
 
-- **FLAKY or FAILING on the platform that failed** → prefer adding to a filter
-  file over attempting a fix
+- **FLAKY or FAILING on the platform that failed, per bot or pooled** → prefer
+  adding to a filter file over attempting a fix
 - **STABLE** → investigate Brave-specific causes:
   1. Check `src/brave/chromium_src/` for overrides in the test's directory tree
   2. Check `patches/` for any patch touching the same files

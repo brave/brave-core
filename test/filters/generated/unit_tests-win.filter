@@ -1,231 +1,208 @@
 ## AUTO-GENERATED FILE -- DO NOT EDIT.
 ##
-## Upstream unit_tests tests with a flake rate >= 1.0% on
-## windows bots over the past 30 days per Chromium LUCI Analysis.
+## Upstream unit_tests tests that Chromium LUCI Analysis confirms as flaky
+## or failing on win bots at refs/branch-heads/8127@{#862}.
 ## Regenerate with:
 ##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 3.0% flake rate over 30 days per LUCI Analysis (32653 passed, 0 failed, 996 flaky).
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 5 flaky verdicts in 14 days, 2 in the last 2 weekdays.
+-AISummarizerWithFeatureConfigTest.CanCreateAndCreateWithManifestGemma4
+
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 5 flaky verdicts in 14 days, 2 in the last 2 weekdays.
+-AIWriterWithFeatureConfigTest.CanCreateAndCreateWithManifestGemma4
+
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 19 flaky verdicts in 14 days, 1 in the last 2 weekdays.
+-AccessCodeCastHandlerTest.DefaultPresentation
+
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 17 flaky verdicts in 14 days, 2 in the last 2 weekdays.
+-AccessCodeCastHandlerTest.DefaultPresentationError
+
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 16 flaky verdicts in 14 days, 1 in the last 2 weekdays.
+-AccessCodeCastHandlerTest.DesktopMirroringError
+
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 10 flaky verdicts in 14 days, 3 in the last 2 weekdays.
+-AccessCodeCastHandlerTest.InitiatorWebContentsDestroyed
+
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 43 flaky verdicts in 14 days, 4 in the last 2 weekdays.
+-AccessCodeCastHandlerTest.OnSinkAddedResult
+
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 41 flaky verdicts in 14 days, 1 in the last 2 weekdays.
+-AccessCodeCastHandlerTest.OtherDevicesIgnored
+
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 12 flaky verdicts in 14 days, 1 in the last 2 weekdays.
+-AccessCodeCastHandlerTest.ProfileAccountError
+
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 12 flaky verdicts in 14 days, 1 in the last 2 weekdays.
+-AccessCodeCastHandlerTest.StartPresentationContext
+
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 31 flaky verdicts in 14 days, 3 in the last 2 weekdays.
 -AccessCodeCastSinkServiceFactoryTest.PrefEnabledReturnsValidService
 
-# 6.7% flake rate over 30 days per LUCI Analysis (31397 passed, 1 failed, 2251 flaky).
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 32 flaky verdicts in 14 days, 2 in the last 2 weekdays.
 -AccessCodeCastSinkServiceTest.TestChangeNetworkWithRouteActive
 
-# 5.6% flake rate over 30 days per LUCI Analysis (31779 passed, 1 failed, 1877 flaky).
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 27 flaky verdicts in 14 days, 4 in the last 2 weekdays.
 -AccessCodeCastSinkServiceTest.TestChangeNetworkWithRouteActiveExpiration
 
-# 5.8% flake rate over 30 days per LUCI Analysis (31714 passed, 1 failed, 1940 flaky).
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 29 flaky verdicts in 14 days, 4 in the last 2 weekdays.
 -AccessCodeCastSinkServiceTest.TestChangeNetworksExpiration
 
-# 5.7% flake rate over 30 days per LUCI Analysis (31740 passed, 1 failed, 1914 flaky).
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 21 flaky verdicts in 14 days, 3 in the last 2 weekdays.
 -AccessCodeCastSinkServiceTest.TestChangeNetworksNoExpiration
 
-# 1.2% flake rate over 30 days per LUCI Analysis (33239 passed, 30 failed, 386 flaky).
--AccountsPolicyManagerTest.ClearProfileWhenSigninAndSignoutNotAllowed
-
-# 21.5% flake rate over 30 days per LUCI Analysis (26428 passed, 0 failed, 7223 flaky).
--All/AnnouncementNotificationServiceVersionTest.VersionTest/0
-
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--All/BookmarkEditorViewTest.EditorFullyShown/0
-
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--All/BookmarkEditorViewTest.EditorFullyShown/1
-
-# 84.0% flake rate over 30 days per LUCI Analysis (5384 passed, 0 failed, 28270 flaky).
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 720 flaky verdicts in 14 days, 73 in the last 2 weekdays.
 -All/DiceWebSigninInterceptHandlerChromeSigninInterceptionTest.CheckStrings/2
 
-# 83.1% flake rate over 30 days per LUCI Analysis (5685 passed, 0 failed, 27973 flaky).
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 729 flaky verdicts in 14 days, 83 in the last 2 weekdays.
 -All/DiceWebSigninInterceptHandlerChromeSigninInterceptionTest.ChromeSigninSubtitleWithAccountPreviewData/2
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--All/PrintContentAnalysisUtilsTest.PrintIfAllowedByPolicyWarnedThenBypass/0
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 167 flaky verdicts in 14 days, 28 in the last 2 weekdays.
+-All/IndigoPageActionControllerTest.HeuristicHidesActionOnFailure/Legacy
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--All/PrintContentAnalysisUtilsTest.PrintIfAllowedByPolicyWarnedThenBypass/1
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 26 flaky verdicts in 14 days, 4 in the last 2 weekdays.
+-All/IndigoPageActionControllerTest.InvokeActionOpensGlicWithProtoPrompt/ContextualCues
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--All/TabStripTest.ChangingLayoutTypeResizesTabs/0
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 3 flaky verdicts in 14 days, 1 in the last 2 weekdays.
+-All/LocalPrinterHandlerDefaultTest.StartGetCapabilityAccessDenied/1
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--All/TabStripTest.ChangingLayoutTypeResizesTabs/1
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 58 flaky verdicts in 14 days, 10 in the last 2 weekdays.
+-CountingPolicyTest.CapReturns
 
-# 6.7% flake rate over 30 days per LUCI Analysis (30647 passed, 0 failed, 2201 flaky).
--CastMediaNotificationItemTest.MediaPositionUpdate
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 32 flaky verdicts in 14 days, 5 in the last 2 weekdays.
+-CountingPolicyTest.DeleteDatabase
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--ChromeBrowsingDataRemoverDelegateTest.DomainReliability_Beacons_WithFilter
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 22 flaky verdicts in 14 days, 2 in the last 2 weekdays.
+-CountingPolicyTest.DuplicateRows
 
-# 2.5% flake rate over 30 days per LUCI Analysis (32822 passed, 0 failed, 828 flaky).
--ChromeBrowsingDataRemoverDelegateTest.RemoveLensOverlayWebUIStorage
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 40 flaky verdicts in 14 days, 1 in the last 2 weekdays.
+-CountingPolicyTest.EarlyFlush
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--ChromeBrowsingDataRemoverDelegateTest.RemoveSafeBrowsingCookieForever
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 31 flaky verdicts in 14 days, 3 in the last 2 weekdays.
+-CountingPolicyTest.GetOlderActions
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--ChromeBrowsingDataRemoverDelegateWithPasswordsTest.RemovePasswordStatisticsByOrigin
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 15 flaky verdicts in 14 days, 1 in the last 2 weekdays.
+-CountingPolicyTest.GetTodaysActions
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--ClientSideDetectionHostTest.NavigationCancelsShouldClassifyUrl
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 13 flaky verdicts in 14 days, 2 in the last 2 weekdays.
+-CountingPolicyTest.LogAndFetchFilteredActions
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--ComponentLoaderTest.AddOrReplace
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 29 flaky verdicts in 14 days, 3 in the last 2 weekdays.
+-CountingPolicyTest.LogWithStrippedArguments
 
-# 1.3% flake rate over 30 days per LUCI Analysis (33232 passed, 0 failed, 430 flaky).
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 19 flaky verdicts in 14 days, 2 in the last 2 weekdays.
+-CountingPolicyTest.MoreMerging
+
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 197 flaky verdicts in 14 days, 18 in the last 2 weekdays.
 -CountingPolicyTest.RemoveActions
 
-# 1.1% flake rate over 30 days per LUCI Analysis (33286 passed, 15 failed, 356 flaky).
--DialServiceImplTest.TestMultipleNetworkInterfaces
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 45 flaky verdicts in 14 days, 7 in the last 2 weekdays.
+-CountingPolicyTest.RemoveAllURLs
 
-# 97.6% flake rate over 30 days per LUCI Analysis (10 passed, 0 failed, 406 flaky).
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 44 flaky verdicts in 14 days, 5 in the last 2 weekdays.
+-CountingPolicyTest.RemoveExtensionData
+
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 82 flaky verdicts in 14 days, 9 in the last 2 weekdays.
+-CountingPolicyTest.RemoveSpecificURLs
+
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 24 flaky verdicts in 14 days, 3 in the last 2 weekdays.
+-CountingPolicyTest.StringTableCleaning
+
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 6 flaky verdicts in 14 days, 1 in the last 2 weekdays.
+-DeveloperPrivateApiUnitTest.ExtensionUpdatedEventOnAllowlistWarningChange
+
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 6 flaky verdicts in 14 days, 1 in the last 2 weekdays.
+-DialServiceImplTest.TestSendMultipleRequests
+
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 6 flaky verdicts in 14 days, 1 in the last 2 weekdays.
+-EnterpriseReportingPrivateGetContextInfoOSFirewallTest.Test/0
+
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 693 flaky verdicts in 14 days, 64 in the last 2 weekdays.
 -ExtensionScriptAndCaptureVisibleTest.UserHostRestrictions_HasHostPermission
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--ExtensionUpdaterTest.TestGalleryRequestsWithOrganicBrand
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 3 flaky verdicts in 14 days, 1 in the last 2 weekdays.
+-ExtensionTelemetryServiceSystemTimeTest.PersistsReportsWithUnspecifiedManagementAuthorityOnShutdown
 
-# 20.0% flake rate over 30 days per LUCI Analysis (8 passed, 2 failed, 0 flaky).
--GlicUnifiedActivityManagerTest.ActorTaskStateTransitions
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 8 flaky verdicts in 14 days, 2 in the last 2 weekdays.
+-FeatureShowcaseDefaultBrowserHandlerTest.SetAsDefaultBrowserLogsMetrics
 
-# 21.5% flake rate over 30 days per LUCI Analysis (26419 passed, 0 failed, 7240 flaky).
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 17 flaky verdicts in 14 days, 3 in the last 2 weekdays.
+-FullStreamUIPolicyTest.CapReturns
+
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 23 flaky verdicts in 14 days, 5 in the last 2 weekdays.
+-FullStreamUIPolicyTest.RemoveActions
+
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 22 flaky verdicts in 14 days, 2 in the last 2 weekdays.
+-FullStreamUIPolicyTest.RemoveSpecificURLs
+
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 112 flaky verdicts in 14 days, 27 in the last 2 weekdays.
 -IsolatedWebAppPolicyManagerOnDemandUpdatePreloadedTest.ComponentUpdateQueuedButNoUpdate
 
-# 37.6% flake rate over 30 days per LUCI Analysis (21003 passed, 0 failed, 12656 flaky).
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 443 flaky verdicts in 14 days, 64 in the last 2 weekdays.
 -IsolatedWebAppPolicyManagerTest.AppInstalled
 
-# 1.9% flake rate over 30 days per LUCI Analysis (33012 passed, 0 failed, 644 flaky).
--IsolatedWebAppPolicyManagerTest.AppInstalledAtPinnedVersion
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 3 flaky verdicts in 14 days, 1 in the last 2 weekdays.
+-LensOverlayQueryControllerMockTimeTest.FetchInteraction_StartsNewQueryFlowAfterTimeout
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--KnownUnexpectedBehavior/FendCoreParamTest.Test/MixedFractionUnitSubtraction
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 16 flaky verdicts in 14 days, 1 in the last 2 weekdays.
+-OmniboxEverywhereControllerTest.FallsBackToLastUsedProfileOnBackgroundStartup
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--KnownUnexpectedBehavior/FendCoreParamTest.Test/MorePrecision
-
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--KnownUnexpectedBehavior/FendCoreParamTest.Test/NegativeRoundingAboveHalf
-
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--KnownUnexpectedBehavior/FendCoreParamTest.Test/NegativeRoundingHalfEven
-
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--KnownUnexpectedBehavior/FendCoreParamTest.Test/NegativeRoundingHalfOdd
-
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--KnownUnexpectedBehavior/FendCoreParamTest.Test/PositiveRoundingAboveHalf
-
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--KnownUnexpectedBehavior/FendCoreParamTest.Test/PositiveRoundingHalfEven
-
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--KnownUnexpectedBehavior/FendCoreParamTest.Test/PositiveRoundingHalfOdd
-
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--MayFail/FendCoreParamTest.Test/PercentSymbol
-
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--MayFail/FendCoreParamTest.Test/UnitConversion
-
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--MetadataDatabaseTestWithIndexesOnDisk/MetadataDatabaseTest.UpdateTrackerTest/0
-
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--MetadataDatabaseTestWithIndexesOnDisk/MetadataDatabaseTest.UpdateTrackerTest/1
-
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--NeedOrNoNeedKey/RecordHandlerImplTest.UploadsGapRecordOnServerFailure/0
-
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--NeedOrNoNeedKey/RecordHandlerImplTest.UploadsGapRecordOnServerFailure/1
-
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--NeedOrNoNeedKey/RecordHandlerImplTest.UploadsGapRecordOnServerFailure/2
-
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--NeedOrNoNeedKey/RecordHandlerImplTest.UploadsGapRecordOnServerFailure/3
-
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--NoStatePrefetchTest.LinkManagerAbandonInactivePrerender
-
-# 27.6% flake rate over 30 days per LUCI Analysis (19190 passed, 1 failed, 7328 flaky).
--OmniboxEverywhereBackgroundModeManagerTest.LaunchOnStartupRegistrationWithStartupLaunchManager
-
-# 2.1% flake rate over 30 days per LUCI Analysis (7012 passed, 148 failed, 0 flaky).
--OmniboxEverywhereHandlerTest.DismissShortcutSetupWithHotkeyAdvancesToReminder
-
-# 1.9% flake rate over 30 days per LUCI Analysis (31343 passed, 4 failed, 619 flaky).
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 48 flaky verdicts in 14 days, 7 in the last 2 weekdays.
 -OmniboxEverywhereUIManagerTest.DeactivationWithinGracePeriodReactivatesWidget
 
-# 1.1% flake rate over 30 days per LUCI Analysis (8136 passed, 2 failed, 86 flaky).
--OmniboxEverywhereUIManagerTest.PersistentDeactivationBypassedDuringFileChooser
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 6 flaky verdicts in 14 days, 3 in the last 2 weekdays.
+-OmniboxEverywhereUIManagerTest.DemoteWidget
 
-# 1.3% flake rate over 30 days per LUCI Analysis (8117 passed, 2 failed, 105 flaky).
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 16 flaky verdicts in 14 days, 7 in the last 2 weekdays.
+-OmniboxEverywhereUIManagerTest.LensPromoLifecycleInPersistentMode
+
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 6 flaky verdicts in 14 days, 2 in the last 2 weekdays.
+-OmniboxEverywhereUIManagerTest.PersistentDeactivationDemotesWidgetAndKeepsVisible
+
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 22 flaky verdicts in 14 days, 6 in the last 2 weekdays.
 -OmniboxEverywhereUIManagerTest.PersistentDeactivationWithinGracePeriodReactivatesWidget
 
-# 7.7% flake rate over 30 days per LUCI Analysis (31076 passed, 0 failed, 2579 flaky).
--PasswordCheckDelegateTest.GetInsecureCredentialsDedupesLeakedAndCompromised
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 3 flaky verdicts in 14 days, 1 in the last 2 weekdays.
+-OmniboxEverywhereUIManagerTest.ShowForProfileReactivatesExistingWidget
 
-# 7.3% flake rate over 30 days per LUCI Analysis (31222 passed, 1 failed, 2441 flaky).
--PasswordCheckDelegateTest.GetInsecureCredentialsHandlesTimes
-
-# 1.6% flake rate over 30 days per LUCI Analysis (33105 passed, 8 failed, 541 flaky).
+# Flaky on ci/Win10 Tests x64 (Windows-10-19045): 6 flaky of 307 verdicts.
 -PasswordStatusCheckServiceBaseTest.CheckTimeUpdatedAfterRunScheduledInTheFuture
 
-# 1.7% flake rate over 30 days per LUCI Analysis (33075 passed, 5 failed, 584 flaky).
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 10 flaky verdicts in 14 days, 2 in the last 2 weekdays.
+-PasswordStatusCheckServiceBaseTest.PasswordCardCheckTime
+
+# Flaky on ci/Win10 Tests x64 (Windows-10-19045): 10 flaky of 307 verdicts.
+# Flaky on ci/win11-arm64-rel-tests (Windows-11): 13 flaky of 457 verdicts.
 -PasswordStatusCheckServiceBaseTest.PasswordCheckNoPasswords
 
-# 95.8% flake rate over 30 days per LUCI Analysis (1 passed, 22 failed, 1 flaky).
--PasswordStatusCheckServiceBaseTest.PasswordCheckSignedOutWithPasswords
-
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--PasswordStatusCheckServiceBaseTest.PasswordCheck_Error
-
-# 1.7% flake rate over 30 days per LUCI Analysis (33093 passed, 14 failed, 553 flaky).
--PasswordStatusCheckServiceBaseTest.PrefInitialized
-
-# 1.7% flake rate over 30 days per LUCI Analysis (33069 passed, 2 failed, 583 flaky).
+# Flaky on ci/Win10 Tests x64 (Windows-10-19045): 5 flaky of 307 verdicts.
 -PasswordStatusCheckServiceBaseTest.ScheduledCheckRunsRepeatedly
 
-# 7.8% flake rate over 30 days per LUCI Analysis (31018 passed, 0 failed, 2641 flaky).
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 31 flaky verdicts in 14 days, 1 in the last 2 weekdays.
 -PerformanceManagerMetricsProviderDesktopTest.TestCpuThrottlingMetricRecordedWhereAvailable
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--PinInfoBarControllerTest.DontShowIfShownMaxTimes
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 37 flaky verdicts in 14 days, 2 in the last 2 weekdays.
+-SafeBrowsingEnvironmentDataCollectionWinTest.CollectDlls
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--PreinstalledWebAppUtilsTest.OfflineManifestValid
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 5 flaky verdicts in 14 days, 1 in the last 2 weekdays.
+-ShareOperationUnitTest.WithoutTitle
 
-# 15.0% flake rate over 30 days per LUCI Analysis (28609 passed, 1 failed, 5052 flaky).
--ProfileKeyedServiceFactoryUnittest.PredefinedProfileSelectionsFactoryTest
+# Flaky on ci/Win10 Tests x64 (Windows-10-19045): 5 flaky of 307 verdicts.
+-ShareServiceUnitTest.PortableDocumentFormat
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--ReloadButtonMetricsTest.LogFirstPaintMetrics
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 100 flaky verdicts in 14 days, 18 in the last 2 weekdays.
+-SystemMediaSourceWinTest.ConstructionDoesNotCrash
 
-# 3.8% flake rate over 30 days per LUCI Analysis (32397 passed, 0 failed, 1263 flaky).
--RevokedPermissionsServiceBackfillTest.LastVisitedBackfill_NothingToBackfill
-
-# 3.3% flake rate over 30 days per LUCI Analysis (32543 passed, 0 failed, 1119 flaky).
--RevokedPermissionsServiceBackfillTest.LastVisitedBackfill_RevokedAsUsual
-
-# 3.3% flake rate over 30 days per LUCI Analysis (32530 passed, 0 failed, 1127 flaky).
--RevokedPermissionsServiceBackfillTest.LastVisitedBackfill_SuccessfullCompletion
-
-# 15.3% flake rate over 30 days per LUCI Analysis (28503 passed, 0 failed, 5159 flaky).
--SiteSettingsHelperChooserExceptionTest.GetChooserExceptionListFromProfile
-
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--StartupTabProviderTest.GetCommandLineTabsFileUrl
-
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--TPMMetricsProviderTest.GetMetricsFullName
-
-# 44.2% flake rate over 30 days per LUCI Analysis (18785 passed, 9 failed, 14863 flaky).
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 317 flaky verdicts in 14 days, 22 in the last 2 weekdays.
 -ThemeServiceTest.PolicyThemeColorSet
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
--TpmIdentifierTest.TpmTest
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 44 flaky verdicts in 14 days, 1 in the last 2 weekdays.
+-UserPolicySigninServiceSignedInTest.InitWhileSignedIn
 
-# 1.7% flake rate over 30 days per LUCI Analysis (12173 passed, 31 failed, 185 flaky).
--TranslateBubbleViewTest.SearchNoResultsMessage
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 21 flaky verdicts in 14 days, 6 in the last 2 weekdays.
+-UserPolicySigninServiceTest.RegisterPolicyClientOAuthFailure
 
-# 10.9% flake rate over 30 days per LUCI Analysis (29983 passed, 196 failed, 3477 flaky).
--VideoOverlayWindowViewsTest.TitleAndScrimHideAfterTimer
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 19 flaky verdicts in 14 days, 3 in the last 2 weekdays.
+-UserPolicySigninServiceTest.RegisterPolicyClientSucceeded
+
+# Flaky on ci/Win10 Tests x64, ci/win11-arm64-rel-tests together: 31 flaky verdicts in 14 days, 1 in the last 2 weekdays.
+-WebAppLauncherUpdateTest.UpdatePwaLaunchers

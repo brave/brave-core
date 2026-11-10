@@ -8,21 +8,23 @@ Update the auto-generated filter files for flaky upstream tests.
 
 Usage:
     vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py \\
-        [suite ...] [--days 30] [--min-flake-rate 1.0]
+        [suite ...] [--ref 157.0.8103.39]
 
 N.B.: The generated list of flaky tests is not exhaustive because the
 discovery APIs we are using (see below) cap the number of result items.
 
-The script works as follows:
-
 For each upstream test suite that Brave runs (browser_tests, unit_tests, etc.),
-the script finds tests whose flake rate in Chromium's LUCI Analysis data
-exceeds the threshold over the lookback period and writes them to
+the script finds the tests Chromium's LUCI Analysis confirms as flaky or failing
+on the Chromium branch Brave is built from, and writes them to
 test/filters/generated/<suite>-<config>.filter, where <config> is a platform
-("linux") or a platform-sanitizer combination ("linux-asan"). Flake rates are
-computed per config from the matching upstream bots, so a test only flaky on
-e.g. Linux ASan bots is only filtered there. The files are picked up
-automatically by `pnpm run test` (see build/commands/lib/testUtils.ts).
+("linux") or a platform-sanitizer combination ("linux-asan"). The files are
+picked up automatically by `pnpm run test` (see
+build/commands/lib/testUtils.ts).
+
+The branch and position default to those of the Chromium checkout (`src/`),
+e.g. refs/branch-heads/8103@{#1035}; `--ref` picks another tag, branch or
+commit. Branch results live in their own LUCI project (chromium-m157), and
+every query below goes to that project.
 
 Candidate test discovery uses the following clustering APIs. For more
 information on LUCI's data model, see README.md in this directory.
@@ -36,29 +38,34 @@ information on LUCI's data model, see README.md in this directory.
     `Clusters.QueryClusterFailures` lists recent failures inside the cluster,
     and the script collects the test IDs with the most failures from them.
 
-    Note that this second step always looks at the last 7 days, whatever
-    `--days` says: the window is hardcoded upstream and the RPC takes no time
-    range. A longer lookback therefore widens the flake rates computed in steps
-    3 and 4, but not the discovery of candidates through multi-test clusters.
+    Note that this second step always looks at the last 7 days: the window is
+    hardcoded upstream and the RPC takes no time range.
 
-Any test with a meaningful flake rate must fail regularly, so it is expected to
-surface in one of these clusters: in its test name cluster, or, if a bug is
-already filed on it, in the bug's rule cluster.
+Any flaky test must fail regularly, so it is expected to surface in one of
+these clusters: in its test name cluster, or, if a bug is already filed on it,
+in the bug's rule cluster.
 
-The check then computes the flake rate of each test found during discovery:
+Each candidate is then judged the way Chromium's CQ judges a failure before
+exonerating it:
 
-3.  `TestHistory.QueryStats` returns the candidate's verdict counts over the
-    lookback period, broken down by day and variant.
-4.  `TestHistory.QueryVariants` maps each variant to its builder and OS. The
-    script uses this to group the verdict counts into the configurations Brave
-    tests (platform x sanitizer), dropping bots for configurations Brave never
-    runs (ChromeOS, Android, iOS, ...).
+3.  `TestHistory.QueryVariants` lists the bots (variants) the candidate ran on.
+    Each is mapped to the configuration Brave tests (platform x sanitizer) from
+    its builder name and OS; bots for configurations Brave never runs
+    (ChromeOS, Android, iOS, Wayland, ...) are dropped, as are runs of the
+    binary under another suite name with other flags (pixel_browser_tests).
+    Runs without the field trial testing config (browser_tests_no_field_trial)
+    are kept, as Brave builds without it.
+4.  `TestVariants.QueryStability` applies Chromium's own flake and failure
+    criteria to each remaining variant at the branch position.
+5.  QueryStability only counts a flake that failed and passed within one run,
+    and Chromium retries failed browser tests in a separate run. For each
+    configuration no single bot settles, `TestHistory.QueryStats` reads the
+    daily FLAKY verdict counts of its CI bots, and they are counted together
+    against the same thresholds.
 
-For each configuration, the rate of failed or flaky verdicts among all
-meaningful verdicts (passed, failed or flaky) is computed. Tests at or above the
-threshold (default: 1% over 30 days, with at least 10 meaningful verdicts) are
-written to `test/filters/generated/<suite>-<configuration>.filter`. Note that
-this includes tests that consistently fail upstream, not only flaky ones.
+A test is written to the filter file of every configuration where at least one
+bot is flaky or failing, or where its CI bots are flaky together.
+Configurations the branch has no bots for get no file.
 """
 
 from __future__ import annotations
@@ -75,10 +82,11 @@ import argparse
 import os
 import sys
 import time
-from collections import Counter
+from collections import Counter, defaultdict
 from collections.abc import Callable, Iterable, Iterator
 from contextlib import AbstractContextManager, contextmanager
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import NoReturn, TypeVar
 
@@ -101,15 +109,19 @@ from rich.text import Text
 
 from luci_analysis import (
     MAX_CLUSTER_FAILURES,
-    MIN_MEANINGFUL_VERDICTS,
+    POOLED_WINDOW_DAYS,
+    STABILITY_WINDOW_DAYS,
     ClusterSummary,
-    Flakiness,
     LuciAnalysis,
     LuciAnalysisError,
+    PooledFlakes,
     RequestStats,
-    StatsGroup,
+    Source,
+    Stability,
+    Status,
     TestVariant,
     Window,
+    source_for,
 )
 
 # The item a batch of parallel work is applied to, and what it yields.
@@ -147,16 +159,18 @@ SANITIZERS = ("asan", "msan", "ubsan")
 
 # Bots whose builder name contains one of these don't correspond to any
 # generated filter file: Brave doesn't build for ChromeOS/Fuchsia or run
-# tests under TSan, and Android/iOS have no filter files. These bots can't
-# be excluded via PLATFORM_OS_PREFIXES because Android emulator bots report
-# the Linux host "os" and iOS bots a Mac "os".
+# tests under TSan or Wayland, and Android/iOS have no filter files. These
+# bots can't be excluded via PLATFORM_OS_PREFIXES because Android emulator
+# bots report the Linux host "os" and iOS bots a Mac "os".
 EXCLUDED_BUILDER_KEYWORDS = (
     "android",
     "chromeos",
     "chromium os",
+    "chromiumos",
     "fuchsia",
     "ios",
     "tsan",
+    "wayland",
 )
 
 # Requests in flight across the whole run. Every batch of work shares one
@@ -321,8 +335,8 @@ class Display:
 
         Args:
             suite: The test suite the phase belongs to.
-            description: What the phase is doing, e.g. "fetching test
-                history".
+            description: What the phase is doing, e.g. "checking
+                stability".
             total: How many items the phase has to get through.
         """
         task_id = self._progress.add_task(
@@ -425,7 +439,7 @@ def normalize_test_id(test_id: str) -> str:
 
     WebUI browser tests report JS sub-results as separate
     "<case>__<sub_result>" test IDs. Only the parent "<case>" is an
-    actual gtest case that can be filtered and has full history stats.
+    actual gtest case that can be filtered and has stability data.
     """
     head, sep, fine = test_id.partition("#")
     if not sep:
@@ -496,31 +510,27 @@ def get_config_for_variant(variant: TestVariant) -> str | None:
     return platform
 
 
-def analyze_per_config(
-    groups: list[StatsGroup], config_by_hash: dict[str, str | None]
-) -> dict[str, Flakiness]:
-    """Read a test's history separately for each config it ran on.
+@dataclass(frozen=True)
+class PooledReason:
+    """A config whose CI bots are flaky together, though none is alone."""
 
-    Args:
-        groups: The test's per-day, per-variant history.
-        config_by_hash: Which Brave config each variant hash belongs to,
-            or None for bots Brave does not test.
-    """
-    return {
-        config: Flakiness.of_groups(
-            g for g in groups if config_by_hash.get(g.variant_hash) == config
-        )
-        for config in get_all_configs()
-    }
+    flakes: PooledFlakes
+    # The CI bots pooled, as "ci/<builder>".
+    builders: tuple[str, ...]
+
+
+# Why a test is excluded on a config: one bot upstream confirms, or the
+# config's CI bots pooled.
+Reason = Stability | PooledReason
 
 
 class SuiteUpdater:
     """The work of bringing one suite's filter files up to date.
 
-    A run is four phases: a) discover candidates, b) read their history, c) work
-    out which config each ran on, and d) write the files. Each stage needs the
-    same handful of things: a client to ask, a display to report to, and the
-    suite and thresholds being worked to.
+    A run is three phases: a) discover candidates, b) judge each one on every
+    config it ran on, and c) write the files. Each stage needs the same handful
+    of things: a client to ask, a display to report to, and the suite and branch
+    position being worked to.
     """
 
     def __init__(
@@ -529,8 +539,7 @@ class SuiteUpdater:
         *,
         client: LuciAnalysis,
         display: Display,
-        days: int,
-        min_flake_rate: float,
+        source: Source,
         filters_dir: Path,
     ) -> None:
 
@@ -543,16 +552,14 @@ class SuiteUpdater:
         # Where to report progress; likewise shared.
         self._display = display
 
-        # How far back to look. Note this does not widen cluster-based
-        # discovery, which upstream fixes at 7 days.
-        self._days = days
-
-        # Flake rate, as a fraction, at or above which a test is
-        # excluded on a given config.
-        self._min_flake_rate = min_flake_rate
+        # The branch position every test is judged at.
+        self._source = source
 
         # Directory the .filter files are written to.
         self._filters_dir = filters_dir
+
+        # The suite names whose runs stand for Brave's run of this suite.
+        self._suite_names = {suite, f"{suite}_no_field_trial"}
 
         # Matches the ":<suite>!gtest" portion of structured test IDs
         # like "://chrome/test\:browser_tests!gtest::Suite#Case".
@@ -560,10 +567,7 @@ class SuiteUpdater:
 
     def run(self) -> None:
         """Bring this suite's filter files up to date."""
-        test_ids = self.discover_candidates()
-        history = self.read_history(test_ids)
-        config_by_hash = self.resolve_configs(history)
-        self.write_filters(self.entries_by_config(history, config_by_hash))
+        self.write_filters(self.entries_by_config(self.discover_candidates()))
 
     # -- reporting
 
@@ -601,7 +605,7 @@ class SuiteUpdater:
         # independent, and serially they dominate a suite's wall time.
         queries = [
             (failure_filter, window)
-            for window in get_candidate_windows(self._days)
+            for window in get_candidate_windows(STABILITY_WINDOW_DAYS)
             for failure_filter in get_discovery_filters(self._suite)
         ]
 
@@ -670,90 +674,99 @@ class SuiteUpdater:
                 )
         return failure_counts, len(failures) >= MAX_CLUSTER_FAILURES
 
-    def read_history(self, test_ids: list[str]) -> dict[str, list[StatsGroup]]:
-        """Fetch the per-day, per-variant history of each candidate."""
-        window = Window.last_days(self._days)
+    def judge(self, test_id: str) -> list[tuple[str, Reason]]:
+        """Each config a test is flaky or failing on, and why."""
+        variants: list[tuple[str, TestVariant]] = []
+        configs: list[str] = []
+        for variant in self._client.variants(test_id):
+            # The same binary also runs with other flags as other suites,
+            # e.g. pixel_browser_tests. Brave builds without the field trial
+            # testing config, so the no_field_trial runs match it best.
+            if variant.definition.get("test_suite") not in self._suite_names:
+                continue
+            config = get_config_for_variant(variant)
+            if config:
+                variants.append((test_id, variant))
+                configs.append(config)
+        results, criteria = self._client.stability(variants, self._source)
+        reasons: list[tuple[str, Reason]] = [
+            (config, result)
+            for config, result in zip(configs, results)
+            if result.confirmed
+        ]
 
-        def fetch_one(test_id: str) -> tuple[str, list[StatsGroup]]:
-            return test_id, self._client.history(test_id, window)
-
-        history: dict[str, list[StatsGroup]] = {}
-        with self._phase("fetching test history", len(test_ids)) as task:
-            for test_id, groups in run_in_parallel(fetch_one, test_ids):
-                history[test_id] = groups
-                task.advance()
-        return history
-
-    def resolve_configs(
-        self, history: dict[str, list[StatsGroup]]
-    ) -> dict[str, str | None]:
-        """Map each variant hash in the history to a Brave test config.
-
-        Variant hashes are shared between tests that run on the same bot
-        config, so one QueryVariants call typically resolves the hashes
-        of most tests in a suite; further calls are only made for tests
-        whose history holds still-unknown hashes.
-        """
-        config_by_hash: dict[str, str | None] = {}
-        with self._phase("resolving bot variants", len(history)) as task:
-            for test_id, groups in history.items():
-                if not all(g.variant_hash in config_by_hash for g in groups):
-                    for variant in self._client.variants(test_id):
-                        config_by_hash[variant.variant_hash] = (
-                            get_config_for_variant(variant)
-                        )
-                    # Don't re-query hashes QueryVariants didn't return.
-                    for group in groups:
-                        config_by_hash.setdefault(group.variant_hash, None)
-                task.advance()
-        return config_by_hash
+        # Configs no single bot settles, pooled over their CI bots.
+        confirmed = {config for config, _ in reasons}
+        ci_bots: dict[str, dict[str, TestVariant]] = defaultdict(dict)
+        for config, (_, variant) in zip(configs, variants):
+            if (
+                config not in confirmed
+                and variant.definition.get("bucket") == "ci"
+            ):
+                ci_bots[config][variant.variant_hash] = variant
+        if not ci_bots:
+            return reasons
+        days = self._client.ci_flaky_days(
+            test_id, Window.last_days(POOLED_WINDOW_DAYS)
+        )
+        today = datetime.now(timezone.utc).date()
+        for config, bots in sorted(ci_bots.items()):
+            flakes = PooledFlakes.tally(
+                [day for day in days if day.variant_hash in bots],
+                criteria,
+                today,
+            )
+            if flakes.met:
+                builders = sorted(
+                    {
+                        f"ci/{v.definition.get('builder', '')}"
+                        for v in bots.values()
+                    }
+                )
+                reasons.append((config, PooledReason(flakes, tuple(builders))))
+        return reasons
 
     def entries_by_config(
-        self,
-        history: dict[str, list[StatsGroup]],
-        config_by_hash: dict[str, str | None],
-    ) -> dict[str, list[tuple[str, Flakiness]]]:
+        self, test_ids: list[str]
+    ) -> dict[str, dict[str, list[Reason]]]:
         """Pick out which tests to exclude, on which config.
 
-        Args:
-            history: Each candidate's per-day, per-variant history.
-            config_by_hash: Which Brave config each variant hash belongs
-                to, or None for bots Brave does not test.
+        Returns:
+            For each config, the gtest names to exclude, each with the bots
+            upstream confirms it as flaky or failing on.
         """
-        entries: dict[str, list[tuple[str, Flakiness]]] = {
-            config: [] for config in get_all_configs()
+        entries: dict[str, dict[str, list[Reason]]] = {
+            config: {} for config in get_all_configs()
         }
-        for test_id, groups in history.items():
-            gtest_name = structured_id_to_gtest_name(test_id)
-            if not gtest_name:
-                continue
-            for config, flakiness in analyze_per_config(
-                groups, config_by_hash
-            ).items():
-                if flakiness.counts.meaningful < MIN_MEANINGFUL_VERDICTS:
-                    continue
-                if flakiness.flake_rate < self._min_flake_rate:
-                    continue
-                entries[config].append((gtest_name, flakiness))
+        with self._phase("checking stability", len(test_ids)) as task:
+            for test_id, confirmed in zip(
+                test_ids, run_in_parallel(self.judge, test_ids)
+            ):
+                gtest_name = structured_id_to_gtest_name(test_id)
+                if gtest_name:
+                    for config, result in confirmed:
+                        entries[config].setdefault(gtest_name, []).append(
+                            result
+                        )
+                task.advance()
 
         # Platform filter files also apply to sanitizer runs, so
         # sanitizer files only need the tests that aren't already
         # filtered for the platform in general.
         for platform in PLATFORM_OS_PREFIXES:
-            platform_names = {name for name, _ in entries[platform]}
             for sanitizer in SANITIZERS:
                 config = f"{platform}-{sanitizer}"
-                entries[config] = [
-                    entry
-                    for entry in entries[config]
-                    if entry[0] not in platform_names
-                ]
+                entries[config] = {
+                    name: results
+                    for name, results in entries[config].items()
+                    if name not in entries[platform]
+                }
         return entries
 
     # -- writing the files
 
     def write_filters(
-        self, entries_by_config: dict[str, list[tuple[str, Flakiness]]]
+        self, entries_by_config: dict[str, dict[str, list[Reason]]]
     ) -> None:
         """Write this suite's filter files, and retire the stale ones."""
         self._filters_dir.mkdir(parents=True, exist_ok=True)
@@ -798,37 +811,61 @@ class SuiteUpdater:
                 self._log(f"removed stale {path.name}")
 
     def filter_content(
-        self, config: str, entries: list[tuple[str, Flakiness]]
+        self, config: str, entries: dict[str, list[Reason]]
     ) -> str:
         """The text of one generated filter file.
 
         Args:
             config: Brave test config name, e.g. "linux" or "linux-asan".
-            entries: The (gtest_name, flakiness) pairs to exclude.
+            entries: The gtest names to exclude, each with the bots
+                upstream confirms it as flaky or failing on.
         """
         lines = [
             "## AUTO-GENERATED FILE -- DO NOT EDIT.",
             "##",
-            f"## Upstream {self._suite} tests with a flake rate >="
-            f" {self._min_flake_rate:.1%} on",
-            f"## {config} bots over the past {self._days} days per Chromium"
-            " LUCI Analysis.",
+            f"## Upstream {self._suite} tests that Chromium LUCI Analysis"
+            " confirms as flaky",
+            f"## or failing on {config} bots at {self._source.description}.",
             "## Regenerate with:",
             "##   vpython3 tools/chromium_tests_analysis/"
             "update-upstream-flake-filters.py",
         ]
-        for gtest_name, flakiness in sorted(entries, key=lambda e: e[0]):
-            counts = flakiness.counts
+        for gtest_name in sorted(entries):
             lines.append("")
-            lines.append(
-                f"# {flakiness.flake_rate:.1%} flake rate over"
-                f" {self._days} days per LUCI Analysis"
-                f" ({counts.passed} passed,"
-                f" {counts.failed} failed,"
-                f" {counts.flaky} flaky)."
+            lines.extend(
+                sorted(
+                    {self.describe(result) for result in entries[gtest_name]}
+                )
             )
             lines.append(f"-{gtest_name}")
         return "\n".join(lines) + "\n"
+
+    def describe(self, reason: Reason) -> str:
+        """One comment line naming the bots and what upstream saw on them."""
+        if isinstance(reason, PooledReason):
+            flakes = reason.flakes
+            return (
+                f"# Flaky on {', '.join(reason.builders)} together:"
+                f" {flakes.flaky} flaky verdicts in {POOLED_WINDOW_DAYS} days,"
+                f" {flakes.flaky_1wd} in the last 2 weekdays."
+            )
+        variant = reason.variant
+        builder = variant.get("reviver_builder") or variant.get("builder", "")
+        if variant.get("bucket"):
+            builder = f"{variant['bucket']}/{builder}"
+        if variant.get("test_suite", self._suite) != self._suite:
+            builder += f" {variant['test_suite']}"
+        where = f"{builder} ({variant.get('os', '')})"
+        if reason.status is Status.FAILING:
+            return (
+                f"# Failing on {where}:"
+                f" {reason.failure('unexpectedTestRuns')} of 10 runs"
+                " unexpected."
+            )
+        return (
+            f"# Flaky on {where}: {reason.flake('runFlakyVerdicts')} flaky of"
+            f" {reason.flake('totalVerdicts')} verdicts."
+        )
 
 
 def handle_interrupt(client: LuciAnalysis) -> NoReturn:
@@ -865,34 +902,25 @@ def main() -> None:
         help=f"Test suites to update (default: {' '.join(DEFAULT_SUITES)})",
     )
     parser.add_argument(
-        "--days",
-        type=int,
-        default=30,
+        "--ref",
         help=(
-            "Number of days to look back (default: 30, max: 90). Note"
-            " that discovery through multi-test clusters is fixed at 7"
-            " days upstream and does not widen with this."
+            "chromium/src tag, branch or commit to judge tests at, e.g."
+            " 157.0.8103.39. Defaults to the local Chromium checkout."
         ),
-    )
-    parser.add_argument(
-        "--min-flake-rate",
-        type=float,
-        default=1.0,
-        help="Flake rate threshold in percent (default: 1.0)",
     )
     args = parser.parse_args()
 
-    if args.days < 1 or args.days > 90:
-        console.print("[red]Error:[/] --days must be between 1 and 90.")
-        sys.exit(1)
-
     suites = args.suites
-    min_flake_rate = args.min_flake_rate / 100.0
+    source = source_for(args.ref)
+    console.print(
+        f"Judging tests at {source.description}"
+        f" (LUCI project {source.project})."
+    )
 
     # One connection to LUCI and one display for the whole run, shared
     # by every suite so the fan-out stays capped and the summary line
     # counts everything.
-    client = LuciAnalysis()
+    client = LuciAnalysis(project=source.project)
     display = Display(client.stats)
 
     def update_one(suite: str) -> None:
@@ -900,8 +928,7 @@ def main() -> None:
             suite,
             client=client,
             display=display,
-            days=args.days,
-            min_flake_rate=min_flake_rate,
+            source=source,
             filters_dir=GENERATED_FILTERS_DIR,
         ).run()
 

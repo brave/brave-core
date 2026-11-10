@@ -605,6 +605,12 @@ def is_upstream_flake(test_name, platform):
                     for v in data.get("variants", [])
                     if v.get("status") in ("flaky", "failing")
                 }
+                | {
+                    builder
+                    for p in data.get("pooled", [])
+                    if p.get("met")
+                    for builder in p.get("builders", [])
+                }
             )
             if confirmed_on:
                 return {
