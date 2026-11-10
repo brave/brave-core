@@ -213,6 +213,45 @@ TEST_F(ContainersServiceTest,
   service_->RemoveObserver(&observer);
 }
 
+TEST_F(ContainersServiceTest, GetNewTabTarget_ReadsPref) {
+  SetNewTabTargetToPrefs(mojom::NewTabTarget::NewContainerId("container-id"),
+                         prefs_);
+  auto target = service_->GetNewTabTarget();
+  ASSERT_TRUE(target);
+  ASSERT_TRUE(target->is_container_id());
+  EXPECT_EQ(target->get_container_id(), "container-id");
+}
+
+TEST_F(ContainersServiceTest,
+       NewTabTarget_ClearedWhenContainerLeavesSyncedList) {
+  std::vector<mojom::ContainerPtr> synced;
+  synced.push_back(MakeContainer("container-id", "Work"));
+  SetContainersToPrefs(synced, prefs_);
+  SetNewTabTargetToPrefs(mojom::NewTabTarget::NewContainerId("container-id"),
+                         prefs_);
+
+  // Unrelated list changes keep the choice.
+  synced.push_back(MakeContainer("other-id", "Other"));
+  SetContainersToPrefs(synced, prefs_);
+  auto target = service_->GetNewTabTarget();
+  ASSERT_TRUE(target);
+  ASSERT_TRUE(target->is_container_id());
+  EXPECT_EQ(target->get_container_id(), "container-id");
+
+  // Removing the chosen container clears it.
+  SetContainersToPrefs({}, prefs_);
+  EXPECT_FALSE(service_->GetNewTabTarget());
+}
+
+TEST_F(ContainersServiceTest, NewTabTarget_TemporaryChoiceSurvivesListChanges) {
+  SetNewTabTargetToPrefs(mojom::NewTabTarget::NewTemporaryContainer(true),
+                         prefs_);
+  SetContainersToPrefs({}, prefs_);
+  auto target = service_->GetNewTabTarget();
+  ASSERT_TRUE(target);
+  EXPECT_TRUE(target->is_temporary_container());
+}
+
 TEST_F(ContainersServiceTest, MarkContainerUsed_PersistsSnapshot) {
   auto container = MakeContainer("used-id", "Local");
   std::vector<mojom::ContainerPtr> synced;

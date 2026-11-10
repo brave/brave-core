@@ -18,6 +18,10 @@ inline constexpr char kContainersList[] = "brave.containers.list";
 // Local-only dictionary of container snapshots that are still referenced by
 // this profile even if they disappear from the synced containers list.
 inline constexpr char kLocallyUsedContainers[] = "brave.containers.used";
+// Dict holding at most one of {container_id: string, temporary_container: true,
+// ask_each_time: true}: where blank new tabs (Ctrl+T, the new-tab button)
+// open. Empty means no container. Local, like kLocallyUsedContainers.
+inline constexpr char kNewTabTarget[] = "brave.containers.new_tab_target";
 
 }  // namespace containers::prefs
 

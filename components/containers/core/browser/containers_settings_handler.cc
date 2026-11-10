@@ -45,6 +45,10 @@ ContainersSettingsHandler::ContainersSettingsHandler(PrefService* prefs)
       prefs::kContainersList,
       base::BindRepeating(&ContainersSettingsHandler::OnContainersChanged,
                           base::Unretained(this)));
+  pref_change_registrar_.Add(
+      prefs::kNewTabTarget,
+      base::BindRepeating(&ContainersSettingsHandler::OnNewTabTargetChanged,
+                          base::Unretained(this)));
 }
 
 ContainersSettingsHandler::~ContainersSettingsHandler() {}
@@ -158,6 +162,23 @@ void ContainersSettingsHandler::ReorderContainers(
   std::move(callback).Run(std::nullopt);
 }
 
+void ContainersSettingsHandler::GetNewTabTarget(
+    GetNewTabTargetCallback callback) {
+  std::move(callback).Run(GetNewTabTargetFromPrefs(*prefs_));
+}
+
+void ContainersSettingsHandler::SetNewTabTarget(
+    mojom::NewTabTargetPtr target,
+    SetNewTabTargetCallback callback) {
+  if (target && target->is_container_id() &&
+      !GetContainerFromPrefs(*prefs_, target->get_container_id())) {
+    std::move(callback).Run(mojom::ContainerOperationError::kNotFound);
+    return;
+  }
+  SetNewTabTargetToPrefs(target, *prefs_);
+  std::move(callback).Run(std::nullopt);
+}
+
 // static
 std::optional<mojom::ContainerOperationError>
 ContainersSettingsHandler::ValidateEditableContainerProperties(
@@ -181,6 +202,12 @@ void ContainersSettingsHandler::OnContainersChanged() {
   // Notify UI about container list changes (from this window or others).
   if (ui_) {
     ui_->OnContainersChanged(GetContainersFromPrefs(*prefs_));
+  }
+}
+
+void ContainersSettingsHandler::OnNewTabTargetChanged() {
+  if (ui_) {
+    ui_->OnNewTabTargetChanged(GetNewTabTargetFromPrefs(*prefs_));
   }
 }
 
