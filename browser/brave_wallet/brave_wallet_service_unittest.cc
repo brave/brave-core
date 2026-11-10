@@ -11,7 +11,6 @@
 #include <string_view>
 #include <vector>
 
-#include "base/barrier_closure.h"
 #include "base/containers/to_vector.h"
 #include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
@@ -2637,19 +2636,14 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
             url::Origin::Create(GURL(kBraveUIWalletPanelURL))));
       };
 
-  base::RunLoop data_cleared_run_loop;
-  auto data_cleared_barrier =
-      base::BarrierClosure(2, data_cleared_run_loop.QuitClosure());
   EXPECT_CALL(observer, OnStorageKeyDataCleared(
                             StoragePartition::REMOVE_DATA_MASK_ALL,
                             testing::Truly(page_storage_key_callback_valid),
-                            base::Time(), base::Time::Max()))
-      .WillOnce(base::test::RunClosure(data_cleared_barrier));
+                            base::Time(), base::Time::Max()));
   EXPECT_CALL(observer, OnStorageKeyDataCleared(
                             StoragePartition::REMOVE_DATA_MASK_ALL,
                             testing::Truly(panel_storage_key_callback_valid),
-                            base::Time(), base::Time::Max()))
-      .WillOnce(base::test::RunClosure(data_cleared_barrier));
+                            base::Time(), base::Time::Max()));
 #endif
 
   const std::string eth_addr = "0x407637cC04893DA7FA4A7C0B58884F82d69eD448";
@@ -2684,8 +2678,11 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
   EXPECT_TRUE(GetPendingAddSuggestTokenRequests().empty());
 
 #if !BUILDFLAG(IS_ANDROID)
-  // Wait for async ClearDataForOrigin
-  data_cleared_run_loop.Run();
+  // The observer is notified when ClearDataForOrigin starts, and the service
+  // passes no completion callback. Drain the thread pool so QuotaManager has
+  // closed its database before the profile directory is deleted. Windows
+  // cannot delete files that are still open.
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 #endif
 }
