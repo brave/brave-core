@@ -10,4 +10,9 @@ namespace local_ai {
 BASE_FEATURE(kBraveOnDeviceSpeechRecognition,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
+// Serves languages other than English with the multilingual model. Takes
+// effect only with `kBraveOnDeviceSpeechRecognition` enabled.
+BASE_FEATURE(kBraveOnDeviceSpeechMultilingual,
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 }  // namespace local_ai
