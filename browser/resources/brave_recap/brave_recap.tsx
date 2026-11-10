@@ -6,7 +6,6 @@
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import { setIconBasePath } from '@brave/leo/react/icon'
-import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 import { loadTimeData } from '$web-common/loadTimeData'
 import { App } from './components/app'
 import { RecapStats } from './stats'
@@ -20,8 +19,4 @@ const stats: RecapStats = {
   firstRunTime: Number(loadTimeData.getString('firstRunTime')),
 }
 
-createRoot(document.getElementById('root')!).render(
-  <StyledComponentsProvider>
-    <App stats={stats} />
-  </StyledComponentsProvider>,
-)
+createRoot(document.getElementById('root')!).render(<App stats={stats} />)
