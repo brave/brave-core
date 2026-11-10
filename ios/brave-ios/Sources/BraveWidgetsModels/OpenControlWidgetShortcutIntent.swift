@@ -6,6 +6,15 @@
 import AppIntents
 import UIKit
 
+/// Implemented by the scene delegate so a control intent can open its shortcut in that scene's
+/// browser. The widget extension links this module but cannot link the browser, so the intent
+/// reaches it through this protocol rather than depending on it directly.
+@available(iOS 26.0, *)
+@MainActor
+public protocol ControlWidgetShortcutOpening: AnyObject {
+  func openControlWidgetShortcut(_ shortcut: WidgetShortcut)
+}
+
 @available(iOS 26.0, *)
 public struct OpenControlWidgetShortcutIntent: UISceneAppIntent {
   public static let title: LocalizedStringResource = "Open Brave"
@@ -20,11 +29,20 @@ public struct OpenControlWidgetShortcutIntent: UISceneAppIntent {
     self.shortcutOption = shortcut
   }
 
-  /// Read through `valueState` rather than `shortcutOption`. The wrapped value is not populated on
-  /// the instance `scene(_:willPerformAppIntent:)` receives, but the resolved parameter is.
+  /// `.unset` is a parameter that has not resolved, which is distinct from one resolved to `nil`.
   public var shortcut: WidgetShortcut? {
     guard case .set(let option) = $shortcutOption.valueState else { return nil }
     return option?.widgetShortcut
+  }
+
+  /// The system delivers the intent to a scene and resolves parameters before running `perform()`,
+  /// so both `shortcut` and `uiScene` are available here.
+  @MainActor
+  public func perform() async throws -> some IntentResult {
+    if let shortcut, let opener = uiScene?.delegate as? ControlWidgetShortcutOpening {
+      opener.openControlWidgetShortcut(shortcut)
+    }
+    return .result()
   }
 }
 
