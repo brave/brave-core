@@ -197,13 +197,22 @@ def _duration(milliseconds: int) -> str:
     return f'{hours}h{minutes:02d}m' if hours else f'{minutes}m{seconds:02d}s'
 
 
+def _content(event: dict[str, Any]) -> list[Any]:
+    """The content blocks of *event*'s message. Some system events, such as
+    `permission_denied`, carry a plain-text `message` instead."""
+    message = event.get('message')
+    if not isinstance(message, dict):
+        return []
+    return message.get('content') or []
+
+
 def background_commands(event: dict[str, Any]) -> list[tuple[str, Path]]:
     """The `(task id, output file)` of each command *event* reports started in
     the background."""
     if event.get('type') != 'user':
         return []
     found = []
-    for block in (event.get('message') or {}).get('content') or []:
+    for block in _content(event):
         if isinstance(block, dict) and block.get('type') == 'tool_result':
             match = _BACKGROUND_RE.search(_result_text(block.get('content')))
             if match:
@@ -215,7 +224,6 @@ def format_event(event: dict[str, Any]) -> list[str]:
     """The console lines for one event of the stream; none for most."""
     kind = event.get('type')
     subtype = event.get('subtype')
-    message = event.get('message') or {}
     # Events of subagents name the tool call that started them.
     indent = '    ' if event.get('parent_tool_use_id') else ''
     lines: list[str] = []
@@ -226,8 +234,14 @@ def format_event(event: dict[str, Any]) -> list[str]:
         )
     elif kind == 'system' and subtype == 'task_notification':
         lines.append(f'  ⏹ {event.get("summary") or event.get("status")}')
+    elif kind == 'system' and subtype == 'permission_denied':
+        lines.append(
+            f'  ⛔ {event.get("tool_name", "?")} denied by '
+            f'{event.get("decision_reason_type", "?")}: '
+            f'{event.get("decision_reason", "")}'
+        )
     elif kind == 'assistant':
-        for block in message.get('content') or []:
+        for block in _content(event):
             if not isinstance(block, dict):
                 continue
             if block.get('type') == 'text' and block.get('text', '').strip():
@@ -239,7 +253,7 @@ def format_event(event: dict[str, Any]) -> list[str]:
                     block.get('name', '?'), block.get('input') or {}
                 )
     elif kind == 'user':
-        for block in message.get('content') or []:
+        for block in _content(event):
             if not isinstance(block, dict):
                 continue
             if block.get('type') != 'tool_result':
@@ -300,8 +314,7 @@ class RequiredReads:
     def handle(self, event: dict[str, Any]) -> None:
         if event.get('parent_tool_use_id'):
             return
-        blocks = (event.get('message') or {}).get('content') or []
-        for block in blocks:
+        for block in _content(event):
             if not isinstance(block, dict):
                 continue
             if block.get('type') == 'tool_use' and block.get('name') == 'Read':
@@ -328,6 +341,48 @@ class RequiredReads:
                     f'({_ranges(missed)})'
                 )
         return found
+
+
+class PermissionDenials:
+    """The tool calls the permission check denied, each with its input and
+    the reason the check gave, as the stream has them."""
+
+    def __init__(self) -> None:
+        # Tool calls by tool use id: (name, input, whether a subagent's).
+        self._calls: dict[str, tuple[str, dict[str, Any], bool]] = {}
+        self.denied: list[str] = []
+
+    def handle(self, event: dict[str, Any]) -> None:
+        for block in _content(event):
+            if isinstance(block, dict) and block.get('type') == 'tool_use':
+                self._calls[str(block.get('id'))] = (
+                    str(block.get('name', '?')),
+                    block.get('input') or {},
+                    bool(event.get('parent_tool_use_id')),
+                )
+        if event.get('subtype') != 'permission_denied':
+            return
+        name, tool_input, subagent = self._calls.get(
+            str(event.get('tool_use_id')),
+            (str(event.get('tool_name', '?')), {}, False),
+        )
+        lines = [
+            f'### `{name}`{" (subagent)" if subagent else ""}, denied by '
+            f'{event.get("decision_reason_type", "?")}',
+            '',
+            f'Reason: {event.get("decision_reason") or "none given"}',
+            '',
+        ]
+        if tool_input:
+            lines += [
+                '```json',
+                json.dumps(tool_input, indent=2, ensure_ascii=False),
+                '```',
+                '',
+            ]
+        if isinstance(event.get('message'), str):
+            lines += [f'> {line}' for line in event['message'].splitlines()]
+        self.denied.append('\n'.join(lines).rstrip())
 
 
 def parse_line(line: str) -> dict[str, Any] | None:
@@ -428,6 +483,7 @@ class Digest:
         self._followers: dict[str, Follower] = {}
         self._logs = LogsFollower(logs_dir, self.emit) if logs_dir else None
         self._reads = reads
+        self.denials = PermissionDenials()
         self.failed = False
         # Background work stopped with no turn of Claude's after it: Claude
         # stopped what it was waiting on, rather than the work finishing.
@@ -463,6 +519,7 @@ class Digest:
             self.failed = True
         if self._reads is not None:
             self._reads.handle(event)
+        self.denials.handle(event)
         for text in format_event(event):
             self.emit(text)
         for task_id, path in background_commands(event):
@@ -644,14 +701,29 @@ def run(
         )
         for task in digest.abandoned:
             digest.emit(f'  ⏹ {task}')
+    sections = []
     if reads is not None and (missed := reads.missed()):
-        section = [
-            '## Instructions not read in full',
-            '',
-            'Claude did not read all of these itself, with the Read tool:',
-            '',
-            *missed,
-        ]
+        sections.append(
+            [
+                '## Instructions not read in full',
+                '',
+                'Claude did not read all of these itself, with the Read tool:',
+                '',
+                *missed,
+            ]
+        )
+    if digest.denials.denied:
+        sections.append(
+            [
+                '## Permission denials',
+                '',
+                'The permission check denied these tool calls, for the reason '
+                'it gave:',
+                '',
+                '\n\n'.join(digest.denials.denied),
+            ]
+        )
+    for section in sections:
         for line in section:
             digest.emit(line)
         if report is not None:

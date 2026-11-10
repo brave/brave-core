@@ -150,6 +150,21 @@ class FormatEventTest(unittest.TestCase):
             ['  ⏹ Background command "Build" completed (exit code 0)'],
         )
 
+    def test_permission_denied(self):
+        event = {
+            'type': 'system',
+            'subtype': 'permission_denied',
+            'tool_name': 'Bash',
+            'decision_reason_type': 'classifier',
+            'decision_reason': 'Blocked by fast classifier',
+            'message': 'Permission for this action was denied.',
+        }
+        self.assertEqual(
+            run_claude.format_event(event),
+            ['  ⛔ Bash denied by classifier: Blocked by fast classifier'],
+        )
+        self.assertEqual(run_claude.background_commands(event), [])
+
     def test_subagent_is_indented(self):
         event = _assistant({'type': 'text', 'text': 'hi'}, parent='toolu_1')
         self.assertEqual(run_claude.format_event(event), ['    hi'])
@@ -580,6 +595,16 @@ class RequiredReadsTest(unittest.TestCase):
             self.reads.handle(event)
         self.assertEqual(self.reads.missed(), [])
 
+    def test_events_with_a_text_message_are_skipped(self):
+        self.reads.handle(
+            {
+                'type': 'system',
+                'subtype': 'permission_denied',
+                'message': 'Permission for this action was denied.',
+            }
+        )
+        self.assertEqual(len(self.reads.missed()), 1)
+
     def test_a_read_that_stopped_short_or_a_subagent_s_does_not(self):
         for event in (
             _read('a', self.skill),
@@ -592,6 +617,49 @@ class RequiredReadsTest(unittest.TestCase):
             self.reads.missed(),
             [f'- `{self.skill.resolve()}`: 6 of 10 lines not read (5-10)'],
         )
+
+    @_linux_only
+    def test_run_reports_each_denial_with_its_call_and_reason(self):
+        report = self.skill.parent / 'report.md'
+        report.write_text('# Report\n', encoding='utf-8')
+        command = (
+            'vpython3 tools/cr/autolift/autolift.py publish 159 > p.log 2>&1'
+        )
+        events = [
+            _assistant(
+                {
+                    'type': 'tool_use',
+                    'id': 'toolu_1',
+                    'name': 'Bash',
+                    'input': {'command': command, 'description': 'Publish'},
+                }
+            ),
+            {
+                'type': 'system',
+                'subtype': 'permission_denied',
+                'tool_name': 'Bash',
+                'tool_use_id': 'toolu_1',
+                'decision_reason_type': 'classifier',
+                'decision_reason': 'Blocked by fast classifier',
+                'message': 'Permission for this action was denied.',
+            },
+        ]
+        lines = ''.join(json.dumps(event) + '\n' for event in events)
+        script = f'import sys\nsys.stdout.write({lines!r})\n'
+        with contextlib.redirect_stdout(io.StringIO()) as stdout:
+            code = run_claude.run(
+                [sys.executable, '-c', script],
+                self.skill.parent / 'claude.jsonl',
+                report=report,
+            )
+        self.assertEqual(code, 0)
+        self.assertNotIn('Event not shown', stdout.getvalue())
+        text = report.read_text(encoding='utf-8')
+        self.assertIn('## Permission denials', text)
+        self.assertIn('### `Bash`, denied by classifier', text)
+        self.assertIn('Reason: Blocked by fast classifier', text)
+        self.assertIn(json.dumps(command), text)
+        self.assertIn('> Permission for this action was denied.', text)
 
     @_linux_only
     def test_run_appends_what_was_missed_to_the_report(self):
