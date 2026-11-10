@@ -82,6 +82,10 @@ class OnDeviceSpeechModelsState {
     base::FilePath model_dir;
   };
 
+  // Returns the directories of `model`.
+  ModelDirs& GetDirs(OnDeviceSpeechModel model);
+  const ModelDirs& GetDirs(OnDeviceSpeechModel model) const;
+
   ModelDirs english_dirs_;
   ModelDirs multilingual_dirs_;
 

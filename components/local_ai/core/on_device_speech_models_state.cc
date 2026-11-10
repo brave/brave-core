@@ -6,6 +6,7 @@
 #include "brave/components/local_ai/core/on_device_speech_models_state.h"
 
 #include <string_view>
+#include <utility>
 
 #include "base/files/file_path.h"
 #include "base/no_destructor.h"
@@ -51,8 +52,7 @@ void OnDeviceSpeechModelsState::SetInstallDir(
     OnDeviceSpeechModel model,
     const base::FilePath& install_dir) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  ModelDirs& dirs = model == OnDeviceSpeechModel::kEnglish ? english_dirs_
-                                                           : multilingual_dirs_;
+  ModelDirs& dirs = GetDirs(model);
   if (dirs.install_dir == install_dir) {
     return;
   }
@@ -66,9 +66,7 @@ void OnDeviceSpeechModelsState::SetInstallDir(
 const base::FilePath& OnDeviceSpeechModelsState::GetInstallDir(
     OnDeviceSpeechModel model) const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return model == OnDeviceSpeechModel::kEnglish
-             ? english_dirs_.install_dir
-             : multilingual_dirs_.install_dir;
+  return GetDirs(model).install_dir;
 }
 
 bool OnDeviceSpeechModelsState::IsModelInstalled(
@@ -80,8 +78,23 @@ bool OnDeviceSpeechModelsState::IsModelInstalled(
 const base::FilePath& OnDeviceSpeechModelsState::GetModelDir(
     OnDeviceSpeechModel model) const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return model == OnDeviceSpeechModel::kEnglish ? english_dirs_.model_dir
-                                                : multilingual_dirs_.model_dir;
+  return GetDirs(model).model_dir;
+}
+
+OnDeviceSpeechModelsState::ModelDirs& OnDeviceSpeechModelsState::GetDirs(
+    OnDeviceSpeechModel model) {
+  return const_cast<ModelDirs&>(std::as_const(*this).GetDirs(model));
+}
+
+const OnDeviceSpeechModelsState::ModelDirs& OnDeviceSpeechModelsState::GetDirs(
+    OnDeviceSpeechModel model) const {
+  switch (model) {
+    case OnDeviceSpeechModel::kEnglish:
+      return english_dirs_;
+    case OnDeviceSpeechModel::kMultilingual:
+      return multilingual_dirs_;
+  }
+  NOTREACHED();
 }
 
 }  // namespace local_ai
