@@ -9,8 +9,8 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/grit/generated_resources.h"
-#include "components/dom_distiller/core/dom_distiller_features.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/web_distiller/core/web_distiller_features.h"
 
 namespace {
 constexpr int kPasteMacResourceId = IDS_PASTE_MAC;
