@@ -162,14 +162,6 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
   // thickness more).
   gfx::RoundedCornersF CalculateInfobarCornerRadii() const;
 
-  // Brave's sidebar icon strip (SidebarControlView) has its own compositor
-  // layer added after the infobar container in the browser view's child
-  // order, so it paints over (hides) BraveInfoBarContainerView's bottom
-  // divider wherever the two overlap horizontally. Pushes a small
-  // browser-painted patch into the sidebar itself so the divider still reads
-  // as continuous under it.
-  void UpdateSidebarBottomDivider() const;
-
   // Whether the sidebar / vertical tab strip occupies the leading (lowest-X)
   // edge in stored coordinates. As stored bounds are paint-mirrored in RTL,
   // these flip the user's alignment pref so the visual side always matches

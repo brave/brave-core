@@ -360,24 +360,6 @@ void BraveBrowserViewTabbedLayoutImpl::AdjustInfobarLayout(
   }
 }
 
-void BraveBrowserViewTabbedLayoutImpl::UpdateSidebarBottomDivider() const {
-  if (!views().sidebar_container) {
-    return;
-  }
-
-  if (!IsParentedTo(views().infobar_container, views().browser_view) ||
-      !delegate().IsInfobarVisible() ||
-      delegate().ShouldUseBraveWebViewRoundedCornersForContents()) {
-    views().sidebar_container->SetInfobarBottomDividerY(std::nullopt);
-    return;
-  }
-
-  const gfx::Rect infobar_bounds = views().infobar_container->bounds();
-  const gfx::Rect sidebar_bounds = views().sidebar_container->bounds();
-  views().sidebar_container->SetInfobarBottomDividerY(infobar_bounds.bottom() -
-                                                      sidebar_bounds.y());
-}
-
 gfx::RoundedCornersF
 BraveBrowserViewTabbedLayoutImpl::CalculateInfobarCornerRadii() const {
   if (!delegate().ShouldUseBraveWebViewRoundedCornersForContents()) {
@@ -473,7 +455,6 @@ void BraveBrowserViewTabbedLayoutImpl::DoPostLayoutVisualAdjustments(
   BrowserViewTabbedLayoutImpl::DoPostLayoutVisualAdjustments(params);
   UpdateInsetsForVerticalTabStrip();
   delegate().UpdateContentsCornerRadii(CalculateContentsCornerRadii());
-  UpdateSidebarBottomDivider();
 
   if (auto* infobar_container = views::AsViewClass<BraveInfoBarContainerView>(
           views().infobar_container.get())) {

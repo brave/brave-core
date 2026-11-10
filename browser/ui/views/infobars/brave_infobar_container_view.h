@@ -29,15 +29,6 @@ class BraveInfoBarContainerView : public InfoBarContainerView {
       const views::SizeBounds& available_size) const override;
   void OnThemeChanged() override;
 
-  // InfoBarContainer:
-  void PlatformSpecificRemoveInfoBar(infobars::InfoBar* infobar) override;
-
-  // When `enabled`, replaces the flat bottom divider with a floating-card
-  // look: margin from the window edges (applied by the browser view's layout;
-  // see BraveBrowserViewTabbedLayoutImpl::AdjustInfobarLayout()) plus a
-  // rounded-rect outline border. `contents_corner_radii` are the radii of the
-  // infobars inside the outline; the outline itself is rounded by its own
-  // thickness more, the same way the contents view's outline is.
   void SetRoundedBorderEnabled(
       bool enabled,
       const gfx::RoundedCornersF& contents_corner_radii);
@@ -48,9 +39,7 @@ class BraveInfoBarContainerView : public InfoBarContainerView {
 
   void UpdateOutlineBorder();
 
-  // Rounds the infobars' own corners to match the outline. They each paint to
-  // an opaque layer that composites over everything the container painted, so
-  // square layers would cover the outline's rounded corners.
+  // Rounds the infobars' own corners to match the outline.
   void UpdateInfoBarCornerRadii();
 
   bool rounded_border_enabled_ = false;

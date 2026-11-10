@@ -494,16 +494,6 @@ TEST(BraveBrowserViewTabbedLayoutImplTest,
             layout->CalculateContentsCornerRadiiForTesting());
 }
 
-// ---------------------------------------------------------------------------
-// CalculateInfobarCornerRadii
-//
-// The infobar floats as its own card (see AdjustInfobarLayout()): its top
-// corners follow the window/border radius the same way the contents view's
-// do, but its bottom corners always use the smaller border radius, since the
-// infobar never touches the window's bottom edge (the contents view is
-// always below it).
-// ---------------------------------------------------------------------------
-
 TEST(BraveBrowserViewTabbedLayoutImplTest,
      CalculateInfobarCornerRadiiEmptyWithoutRoundedCorners) {
   BraveLayoutProvider layout_provider;

@@ -106,6 +106,7 @@ BraveInfoBarContainerView::~BraveInfoBarContainerView() = default;
 
 void BraveInfoBarContainerView::PlatformSpecificRemoveInfoBar(
     infobars::InfoBar* infobar) {
+  OnInfoBarStateChanged(/*is_animating=*/false);
   // TODO(https://github.com/brave/brave-browser/issues/61574): Add
   // queued-count pill support for `BraveConfirmInfoBar`.
   BraveConfirmInfoBar* const brave_confirm_infobar =
@@ -121,13 +122,8 @@ void BraveInfoBarContainerView::Layout(PassKey) {
   LayoutSuperclass<InfoBarContainerView>(this);
 
   if (rounded_border_enabled_) {
-    // InfoBarContainerView::Layout() stacks the infobars across this
-    // container's raw bounds, with no awareness of SetBorder()'s insets. Move
-    // them into the content bounds so the rounded-rect outline painted in
-    // OnPaintBorder() has a reserved ring to show in - each infobar paints to
-    // its own opaque layer, which composites over whatever the container
-    // painted underneath it. Their own heights are kept as-is;
-    // CalculatePreferredSize() reserves the extra space this needs.
+    // Position infobars within content bounds to accommodate border insets and
+    // reserve space for the rounded-rect outline.
     const gfx::Rect contents_bounds = GetContentsBounds();
     for (views::View* child : children()) {
       if (child == content_shadow_) {
@@ -152,11 +148,8 @@ gfx::Size BraveInfoBarContainerView::CalculatePreferredSize(
     return size;
   }
 
-  // The browser view gives this container exactly its preferred height and
-  // starts the web contents directly below it, then insets those bounds to
-  // float the infobars as a card (see AdjustInfobarLayout()). Ask for the
-  // card's margins and outline on top of the infobars' own heights, so that
-  // inset doesn't eat into them.
+  // Reserve extra height for card margins and outline so layout insets don't
+  // reduce infobar space.
   size.Enlarge(0, 2 * (kRoundedCornersContentsViewMargin +
                        kRoundedCornersContentsOutlineThickness));
   return size;
@@ -172,12 +165,6 @@ void BraveInfoBarContainerView::OnThemeChanged() {
   }
 }
 
-void BraveInfoBarContainerView::PlatformSpecificRemoveInfoBar(
-    infobars::InfoBar* infobar) {
-  InfoBarContainerView::PlatformSpecificRemoveInfoBar(infobar);
-  OnInfoBarStateChanged(/*is_animating=*/false);
-}
-
 void BraveInfoBarContainerView::SetRoundedBorderEnabled(
     bool enabled,
     const gfx::RoundedCornersF& contents_corner_radii) {
@@ -189,16 +176,11 @@ void BraveInfoBarContainerView::SetRoundedBorderEnabled(
   rounded_border_enabled_ = enabled;
   contents_corner_radii_ = contents_corner_radii;
 
-  // The flat hairline divider is only used in the classic (non-rounded)
-  // style; the outline border below takes over marking the boundary when
-  // rounded corners are in use.
+  // Use the flat hairline divider only for classic style, and the outline
+  // border for rounded corners.
   DCHECK(content_shadow_);
   content_shadow_->SetVisible(!enabled);
 
-  // Upstream's background is a square-cornered solid fill, which would show
-  // through outside the outline's rounded corners, since the outline's own
-  // fill is clipped to its path. In the rounded style that fill covers the
-  // whole card, so the background isn't needed at all.
   SetBackground(enabled ? nullptr
                         : views::CreateSolidBackground(
                               kColorInfoBarContentAreaSeparator));
@@ -236,9 +218,6 @@ void BraveInfoBarContainerView::UpdateInfoBarCornerRadii() {
   const gfx::RoundedCornersF radii =
       rounded_border_enabled_ ? contents_corner_radii_ : gfx::RoundedCornersF();
 
-  // content_shadow_ is always the last child, so the infobars are the children
-  // before it, top to bottom. Only the outer corners of the stack follow the
-  // outline; stacked infobars still meet each other squarely.
   DCHECK_EQ(content_shadow_, children().back());
   const size_t infobar_count = children().size() - 1;
   for (size_t i = 0; i < infobar_count; ++i) {
