@@ -129,9 +129,7 @@ export const MULTILINGUAL_SUPPORTED_LANGUAGES = {
 } as const
 
 export const MULTILINGUAL_LANGUAGE_TAG_TOKENS = new Set(
-  Object.keys(MULTILINGUAL_SUPPORTED_LANGUAGES).map(
-    (lang) => `<${lang}>`,
-  ),
+  Object.keys(MULTILINGUAL_SUPPORTED_LANGUAGES).map((lang) => `<${lang}>`),
 )
 
 // Silence fed before the first real sample. The exported ONNX encoder graph

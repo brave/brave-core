@@ -50,12 +50,19 @@ class AsrStreamInputAdapter implements AsrStreamInputInterface {
     const onResult = (text: string, isFinal: boolean) => {
       // Empty transcript means nothing was recognized. Send an empty
       // vector rather than a bogus [FINAL] "" (still ends the session).
-      responder.onResponse(text ? [{ 
-        transcript: text, 
-        isFinal,
-        // TODO: Populate real audio timestamps. brave/brave-browser#58975
-        audioStartTime: { microseconds: BigInt(0) },
-        audioEndTime: { microseconds: BigInt(0) } }] : [])
+      responder.onResponse(
+        text
+          ? [
+              {
+                transcript: text,
+                isFinal,
+                // TODO: Populate real audio timestamps. brave/brave-browser#58975
+                audioStartTime: { microseconds: BigInt(0) },
+                audioEndTime: { microseconds: BigInt(0) },
+              },
+            ]
+          : [],
+      )
     }
 
     // AsrStreamResponder carries results only, so a closed pipe is how the
@@ -90,7 +97,7 @@ class SpeechRecognitionFactoryImpl
   private readonly streams = new Set<AsrStreamInputAdapter>()
   private model: OrtNemotronModel | null = null
   // The browser only delivers the English model so far.
-  private readonly modelType: NemotronModelType = 'english'
+  private readonly modelType: NemotronModelType = 'multilingual' //'english'
 
   constructor() {
     this.receiver = new SpeechRecognitionFactoryReceiver(this)
@@ -134,7 +141,7 @@ class SpeechRecognitionFactoryImpl
     try {
       // The browser falls back to en-US when a page sets no language, so a
       // missing one only comes from a caller that skips that.
-      const language = options.language ?? 'en-US'
+      const language = options.language ?? 'es-ES' // 'en-US'
       const { modelType, promptId } = getNemotronModelType(language)
       if (modelType !== this.modelType) {
         throw new Error(`${language} needs the ${modelType} model`)
