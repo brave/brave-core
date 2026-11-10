@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+
+source_set("content") {
+  sources = [
+    "query_filter_navigation_throttle.cc",
+    "query_filter_navigation_throttle.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_shields/content/browser:restart_navigation",
+    "//brave/components/query_filter/browser",
+    "//brave/components/query_filter/common",
+    "//components/prefs",
+    "//components/user_prefs",
+    "//content/public/browser",
+    "//ui/base",
+    "//url",
+  ]
+}

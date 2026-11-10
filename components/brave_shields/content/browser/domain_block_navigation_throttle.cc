@@ -14,13 +14,13 @@
 #include "base/functional/bind.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/notreached.h"
-#include "base/task/single_thread_task_runner.h"
 #include "brave/components/brave_shields/content/browser/ad_block_engine_wrapper.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/content/browser/domain_block_controller_client.h"
 #include "brave/components/brave_shields/content/browser/domain_block_page.h"
 #include "brave/components/brave_shields/content/browser/domain_block_tab_storage.h"
+#include "brave/components/brave_shields/content/browser/restart_navigation.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
@@ -318,36 +318,15 @@ void DomainBlockNavigationThrottle::On1PESState(bool is_1pes_enabled) {
 }
 
 void DomainBlockNavigationThrottle::RestartNavigation(const GURL& url) {
-  content::NavigationHandle* handle = navigation_handle();
-
-  content::OpenURLParams params =
-      content::OpenURLParams::FromNavigationHandle(handle);
-
-  content::WebContents* contents = handle->GetWebContents();
-
-  params.url = url;
-  params.transition = static_cast<ui::PageTransition>(
-      params.transition | ui::PAGE_TRANSITION_CLIENT_REDIRECT);
-  // We get a DCHECK here if we don't clear the redirect chain because
-  // technically this is a new navigation
-  params.redirect_chain.clear();
+  RestartNavigationWithURL(
+      *navigation_handle(), url,
+      ui::PageTransitionFromInt(navigation_handle()->GetPageTransition() |
+                                ui::PAGE_TRANSITION_CLIENT_REDIRECT));
 
   // Cancel without an error status to surface any real errors during page
   // load.
   CancelDeferredNavigation(content::NavigationThrottle::ThrottleCheckResult(
       content::NavigationThrottle::CANCEL));
-
-  base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(
-                     [](base::WeakPtr<content::WebContents> web_contents,
-                        const content::OpenURLParams& params) {
-                       if (!web_contents) {
-                         return;
-                       }
-                       web_contents->OpenURL(params,
-                                             /*navigation_handle_callback=*/{});
-                     },
-                     contents->GetWeakPtr(), std::move(params)));
 }
 
 const char* DomainBlockNavigationThrottle::GetNameForLogging() {
