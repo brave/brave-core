@@ -52,12 +52,24 @@ final class PageDataTests: XCTestCase {
       )
 
       // Then
+
+      // On iOS 27+ WebKit handles GPC natively when the feature is enabled
+      var isGPCHandledByWebKit = false
+      if #available(iOS 27.0, *) {
+        // kWebKitGlobalPrivacyControl is enabled by default, but we can't
+        // check against it here. Mentioning so it's hopefully found if that
+        // changes
+        isGPCHandledByWebKit = true
+      }
+
       // We get only entries of the main frame
       // NOTE: If we were to add some engines we might see additional types
-      let expectedMainFrameTypes: Set<UserScriptType> = [
+      var expectedMainFrameTypes: Set<UserScriptType> = [
         .siteStateListener, .farblingProtection(etld: "example.com"),
-        .gpc(true),
       ]
+      if !isGPCHandledByWebKit {
+        expectedMainFrameTypes.insert(.gpc(true))
+      }
       XCTAssertEqual(mainFrameRequestTypes, expectedMainFrameTypes)
 
       // When
@@ -89,10 +101,12 @@ final class PageDataTests: XCTestCase {
         isBlockFingerprintingEnabled: true,
         isGPCEnabled: true
       )
-      let expectedMainAndSubFrameTypes: Set<UserScriptType> = [
+      var expectedMainAndSubFrameTypes: Set<UserScriptType> = [
         .siteStateListener, .farblingProtection(etld: "example.com"),
-        .gpc(true),
       ]
+      if !isGPCHandledByWebKit {
+        expectedMainAndSubFrameTypes.insert(.gpc(true))
+      }
       XCTAssertEqual(expectedMainAndSubFrameTypes, addedSubFrameFrameRequestTypes)
 
       // When
