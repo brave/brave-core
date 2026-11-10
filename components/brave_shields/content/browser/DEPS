@@ -22,12 +22,3 @@ include_rules = [
   "+third_party/zlib",
   "+ui/base",
 ]
-
-specific_include_rules = {
-  "ad_block_filters_provider\.h": [
-    "+third_party/rust/cxx/v1/cxx.h",
-  ],
-  "ad_block_filters_provider_manager\.h": [
-    "+third_party/rust/cxx/v1/cxx.h",
-  ],
-}

@@ -15,6 +15,7 @@
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_functions.h"
+#include "base/notreached.h"
 #include "base/sequence_checker.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/timer/elapsed_timer.h"
@@ -55,6 +56,7 @@ std::string_view RequestTypeToString(
     case AdBlockRequestType::kUnknown:
       return "";
   }
+  NOTREACHED();
 }
 
 }  // namespace

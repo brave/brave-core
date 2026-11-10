@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_shields/content/browser/ad_block_request_type_util.h"
 
+#include "base/notreached.h"
+
 namespace brave_shields {
 
 AdBlockRequestType ToAdBlockRequestType(
@@ -41,9 +43,12 @@ AdBlockRequestType ToAdBlockRequestType(
     case blink::mojom::ResourceType::kServiceWorker:
     case blink::mojom::ResourceType::kCspReport:
     case blink::mojom::ResourceType::kPluginResource:
-    default:
+    case blink::mojom::ResourceType::kNavigationPreloadMainFrame:
+    case blink::mojom::ResourceType::kNavigationPreloadSubFrame:
+    case blink::mojom::ResourceType::kJson:
       return AdBlockRequestType::kUnknown;
   }
+  NOTREACHED();
 }
 
 }  // namespace brave_shields
