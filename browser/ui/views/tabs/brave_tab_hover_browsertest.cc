@@ -18,6 +18,7 @@
 #include "chrome/browser/ui/thumbnails/thumbnail_tab_helper.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/tabs/hovercard/hover_card_update_type.h"
 #include "chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.h"
 #include "chrome/browser/ui/views/tabs/hovercard/tab_hover_card_controller.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
@@ -75,7 +76,7 @@ class BraveTabHoverTest : public InProcessBrowserTest {
     // GetFocusManager()->SetFocusedView(tab) is flakey, and fails semi
     // regularly. Thus, we have to trigger the hover directly.
     horizontal_tab_strip_for_testing()->UpdateHoverCard(
-        tab, TabSlotController::HoverCardUpdateType::kHover);
+        tab, HoverCardUpdateType::kHover);
   }
 
  private:
