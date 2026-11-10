@@ -52,7 +52,7 @@ public class BraveContextMenuManager extends ContextMenuManager {
         if (id == ContextMenuItemId.EDIT_SHORTCUT) {
             return R.string.brave_contextmenu_edit_favorite;
         } else if (id == ContextMenuItemId.PIN_THIS_SHORTCUT) {
-            return R.string.brave_contextmenu_pin_this_favorite;
+            return R.string.brave_contextmenu_pin;
         }
         return super.getResourceIdForMenuItem(id);
     }
