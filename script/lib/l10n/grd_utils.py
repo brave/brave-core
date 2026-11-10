@@ -413,7 +413,7 @@ def get_chromium_grd_src_with_fallback(grd_file_path, brave_source_root):
 def get_original_grd(src_root, grd_file_path):
     """Obtains the Chromium GRD file for a specified Brave GRD file."""
     # pylint: disable=fixme
-    # TODO: consider passing this mapping into the script from l10nUtil.js
+    # TODO: consider passing this mapping into the script from l10nUtil.ts
     grd_file_name = os.path.basename(grd_file_path)
     if grd_file_name == 'components_brave_strings.grd':
         return os.path.join(

@@ -7,7 +7,7 @@ import path from 'node:path'
 import fs from 'node:fs'
 import config from './config.ts'
 import util from './util.ts'
-import l10nUtil from './l10nUtil.js'
+import l10nUtil from './l10nUtil.ts'
 
 const srcDir = config.srcDir
 
