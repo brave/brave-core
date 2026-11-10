@@ -32,7 +32,7 @@ bool AllowFingerprintingForHost(blink::CanvasRenderingContextHost* host,
   if (!host) {
     return true;
   }
-  return brave::AllowFingerprinting(
+  return !brave::IsStrictFingerprintingEnabled(
       host->GetTopExecutionContext(),
       is_webgl2 ? ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL2
                 : ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL);

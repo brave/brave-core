@@ -12,7 +12,7 @@
 namespace {
 
 bool AllowFingerprintingFromScriptState(blink::ScriptState* script_state) {
-  return brave::AllowFingerprinting(
+  return !brave::IsStrictFingerprintingEnabled(
       blink::ExecutionContext::From(script_state),
       ContentSettingsType::BRAVE_WEBCOMPAT_CANVAS);
 }

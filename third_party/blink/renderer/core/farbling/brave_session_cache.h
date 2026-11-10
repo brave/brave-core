@@ -54,8 +54,8 @@ GetBraveFarblingLevelFor(ExecutionContext* context,
                          BraveFarblingLevel default_value);
 // TODO(https://github.com/brave/brave-browser/issues/58021): Remove this helper
 // once the MAXIMUM ("strict") farbling mode is removed; it currently returns
-// true unless the farbling level is MAXIMUM.
-CORE_EXPORT bool AllowFingerprinting(
+// true if the farbling level is MAXIMUM.
+CORE_EXPORT bool IsStrictFingerprintingEnabled(
     ExecutionContext* context,
     ContentSettingsType webcompat_settings_type);
 CORE_EXPORT bool AllowFontFamily(ExecutionContext* context,
