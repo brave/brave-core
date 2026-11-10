@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/extensions/BUILD.gn b/chrome/browser/ui/android/extensions/BUILD.gn
-index eff2b9d25a300b911950531df03ebba5a66849a0..caab6cb335ef91df1b7b0231862b5cc14b8c9725 100644
+index 2944d5a7789831a1027364902100a5c6c9548979..e3f0e9d346e946d7291d44367c6b65dc50cee70e 100644
 --- a/chrome/browser/ui/android/extensions/BUILD.gn
 +++ b/chrome/browser/ui/android/extensions/BUILD.gn
 @@ -2,6 +2,7 @@

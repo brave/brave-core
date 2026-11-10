@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Match top_sites_factory.cc's extensions condition.
+
+      chrome/browser/history/top_sites_factory.cc uses IDR_WEBSTORE_ICON_32
+      whenever BUILDFLAG(ENABLE_EXTENSIONS_CORE) is on, which is also true on
+      regular Android now that enable_extensions_core is forced on there; the
+      resource ID goes undeclared otherwise.
+    count: 2
+    regex:
+      pattern: 'not is_android or is_desktop_android'
+      replace: 'not is_android or enable_extensions_core'
