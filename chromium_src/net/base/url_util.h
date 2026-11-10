@@ -8,6 +8,9 @@
 
 #include <net/base/url_util.h>  // IWYU pragma: export
 
+#include <string>
+#include <string_view>
+
 #include "net/base/net_export.h"
 #include "url/origin.h"
 
@@ -23,6 +26,13 @@ NET_EXPORT bool IsOnion(const url::Origin& origin);
 
 NET_EXPORT bool IsLocalhostOrOnion(const GURL& url);
 
+// Whether a request to `url` initiated by `initiator` is a cross-origin request
+// coming from a .onion page. A ws(s) `url` is compared as its http(s)
+// equivalent.
+NET_EXPORT bool IsCrossOriginOnionRequest(const url::Origin& initiator,
+                                          const GURL& url);
+NET_EXPORT bool IsCrossOriginOnionRequest(std::string_view initiator,
+                                          const GURL& url);
 }  // namespace net
 
 #endif  // BRAVE_CHROMIUM_SRC_NET_BASE_URL_UTIL_H_

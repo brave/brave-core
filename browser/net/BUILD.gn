@@ -144,4 +144,8 @@ source_set("unit_tests") {
   if (enable_brave_ads) {
     sources += [ "search_ads_header_network_delegate_helper_unittest.cc" ]
   }
+
+  if (enable_tor) {
+    sources += [ "onion_origin_header_client_unittest.cc" ]
+  }
 }
