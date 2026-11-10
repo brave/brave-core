@@ -2200,12 +2200,6 @@
 # This test fails because we add our own item to omnibox contextual search
 -OmniboxRowGroupedViewBrowserTest.AnimationAndGrouping
 
-# This test fails because we temporarily reverted
-# https://source.chromium.org/chromium/chromium/src/+/b1e66bdb
-# see https://github.com/brave/brave-browser/issues/49422
--LocalNetworkAccessBrowserTest.HtmlScriptSrcAllowPermission
--LocalNetworkAccessHtmlScriptBrowserTest.HtmlScriptSrcAllowPermission
-
 # These tests fail because we don't currently support having our vertical tabs
 # support and upstream's vertical tab support active simultaneously (see
 # https://github.com/brave/brave-browser/issues/48373)
