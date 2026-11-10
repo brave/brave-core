@@ -10,13 +10,13 @@
 
 #include "google/protobuf/message_lite.h"
 
-namespace endpoint_client::detail {
+namespace endpoint_client::internal {
 
 // A Protobuf message is a type publicly derived from
 // google::protobuf::MessageLite.
 template <typename T>
 concept IsProtobufMessage = std::derived_from<T, google::protobuf::MessageLite>;
 
-}  // namespace endpoint_client::detail
+}  // namespace endpoint_client::internal
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_IS_PROTOBUF_MESSAGE_H_

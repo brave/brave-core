@@ -10,7 +10,7 @@
 
 #include "services/network/public/cpp/simple_url_loader.h"
 
-namespace endpoint_client::detail {
+namespace endpoint_client::internal {
 
 // Retry configuration forwarded to SimpleURLLoader::SetRetryOptions().
 // The defaults (no retries, RETRY_NEVER) leave the request non-retrying.
@@ -20,6 +20,6 @@ struct RetryOptions {
       network::SimpleURLLoader::RETRY_NEVER;
 };
 
-}  // namespace endpoint_client::detail
+}  // namespace endpoint_client::internal
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_RETRY_OPTIONS_H_

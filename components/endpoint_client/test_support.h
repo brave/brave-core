@@ -36,7 +36,7 @@
 
 namespace endpoint_client {
 
-namespace detail {
+namespace internal {
 
 template <IsJSONResponse Response>
   requires(HasToValue<typename Response::SuccessBody> &&
@@ -94,7 +94,7 @@ ResponseBodyEq(
   return testing::Optional(base::test::ErrorIs(BodyEq(expected->error())));
 }
 
-}  // namespace detail
+}  // namespace internal
 
 // Registers a mock response for Endpoint in network::TestURLLoaderFactory.
 // Supports simulating transport errors, HTTP status codes, and
@@ -118,7 +118,7 @@ void MockResponseFor(network::TestURLLoaderFactory& test_url_loader_factory,
 
   test_url_loader_factory.AddResponse(
       url_replacements.Apply(Endpoint::URL()), std::move(head),
-      detail::ToContent(response),
+      internal::ToContent(response),
       network::URLLoaderCompletionStatus(response.net_error));
 }
 
@@ -136,14 +136,14 @@ bool MatchesEndpoint(const network::ResourceRequest& request,
 }
 
 template <typename Response>
-  requires detail::IsResponse<detail::MaybeStripWithHeaders<Response>>
+  requires internal::IsResponse<internal::MaybeStripWithHeaders<Response>>
 testing::Matcher<const Response&> ResponseEq(const Response& expected) {
   auto response_matcher = testing::AllOf(
       testing::Field("net_error", &Response::net_error, expected.net_error),
       testing::Field("status_code", &Response::status_code,
                      expected.status_code),
       testing::Field("body", &Response::body,
-                     detail::ResponseBodyEq(expected.body)));
+                     internal::ResponseBodyEq(expected.body)));
 
   if constexpr (base::is_instantiation<Response, WithHeaders>) {
     static constexpr auto kRawHeaders = [](const auto& headers) {

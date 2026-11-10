@@ -19,7 +19,7 @@ namespace endpoint_client {
 
 namespace {
 
-using detail::MaybeStripWithHeaders;
+using internal::MaybeStripWithHeaders;
 
 struct TestRequestBody {
   base::DictValue ToValue() const;

@@ -36,7 +36,7 @@ namespace endpoint_client {
 
 enum class RequestCancelability { kNonCancelable, kCancelable };
 
-namespace detail {
+namespace internal {
 
 using OnResponseCallback =
     base::OnceCallback<void(int net_error,
@@ -59,7 +59,7 @@ std::unique_ptr<network::SimpleURLLoader> StartSimpleURLLoader(
     RequestCancelability cancelability,
     OnResponseCallback on_response_callback);
 
-}  // namespace detail
+}  // namespace internal
 
 // Client<> performs a full network roundtrip for a given endpoint using
 // network::SimpleURLLoader. It serializes the endpoint's Request type,
@@ -77,9 +77,9 @@ class Client {
   template <RequestCancelability C = RequestCancelability::kNonCancelable,
             typename Request,
             typename Response>
-    requires(std::same_as<detail::MaybeStripWithHeaders<Request>,
+    requires(std::same_as<internal::MaybeStripWithHeaders<Request>,
                           typename Endpoint::Request> &&
-             std::same_as<detail::MaybeStripWithHeaders<Response>,
+             std::same_as<internal::MaybeStripWithHeaders<Response>,
                           typename Endpoint::Response>)
   [[nodiscard]] static auto Send(
       network::mojom::URLLoaderFactory& url_loader_factory,
@@ -94,10 +94,10 @@ class Client {
       }
     }();
 
-    auto simple_url_loader = detail::StartSimpleURLLoader(
+    auto simple_url_loader = internal::StartSimpleURLLoader(
         url_loader_factory, Request::Method(), Endpoint::URL(),
         std::move(headers), std::move(upload_data), Request::ContentType(),
-        std::move(static_cast<detail::RequestOptions&>(request)), C,
+        std::move(static_cast<internal::RequestOptions&>(request)), C,
         base::BindOnce(MakeResponse<Response>).Then(std::move(callback)));
 
     if constexpr (C == RequestCancelability::kCancelable) {

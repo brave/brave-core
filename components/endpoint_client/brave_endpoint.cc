@@ -11,7 +11,7 @@
 #include "brave/brave_domains/service_domains.h"
 #include "url/url_constants.h"
 
-namespace endpoint_client::detail {
+namespace endpoint_client::internal {
 
 GURL MakeBraveServiceURL(std::string_view prefix, std::string_view path) {
   return GURL(base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator,
@@ -20,4 +20,4 @@ GURL MakeBraveServiceURL(std::string_view prefix, std::string_view path) {
       .Resolve(path);
 }
 
-}  // namespace endpoint_client::detail
+}  // namespace endpoint_client::internal

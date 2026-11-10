@@ -10,7 +10,7 @@
 #include "base/json/json_writer.h"
 #include "google/protobuf/message_lite.h"
 
-namespace endpoint_client::detail {
+namespace endpoint_client::internal {
 
 std::optional<std::string> SerializeJSONRequestBody(
     const base::DictValue& request_body) {
@@ -32,4 +32,4 @@ std::optional<std::string> SerializeProtobufRequestBody(
   return serialized;
 }
 
-}  // namespace endpoint_client::detail
+}  // namespace endpoint_client::internal

@@ -16,7 +16,7 @@
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/fetch_api.mojom.h"
 
-namespace endpoint_client::detail {
+namespace endpoint_client::internal {
 
 struct RequestOptions {
   std::optional<std::size_t> max_body_size =
@@ -29,6 +29,6 @@ struct RequestOptions {
   UrlReplacements url_replacements;
 };
 
-}  // namespace endpoint_client::detail
+}  // namespace endpoint_client::internal
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_REQUEST_OPTIONS_H_

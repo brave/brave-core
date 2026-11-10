@@ -59,7 +59,7 @@ namespace endpoint_client {
 
 namespace {
 
-template <detail::IsRequest RequestT, detail::IsResponse ResponseT>
+template <internal::IsRequest RequestT, internal::IsResponse ResponseT>
 struct TestEndpoint {
   using Request = RequestT;
   using Response = ResponseT;
@@ -80,7 +80,7 @@ using ProtobufEndpoint =
                  Response<ProtobufSuccessBody, ProtobufErrorBody>>;
 
 template <typename Response>
-  requires detail::IsResponse<detail::MaybeStripWithHeaders<Response>>
+  requires internal::IsResponse<internal::MaybeStripWithHeaders<Response>>
 struct TestCase {
   std::string test_name;
   int net_error;
@@ -90,9 +90,9 @@ struct TestCase {
 };
 
 template <IsEndpoint Endpoint, typename Request, typename Response>
-  requires(std::same_as<detail::MaybeStripWithHeaders<Request>,
+  requires(std::same_as<internal::MaybeStripWithHeaders<Request>,
                         typename Endpoint::Request> &&
-           std::same_as<detail::MaybeStripWithHeaders<Response>,
+           std::same_as<internal::MaybeStripWithHeaders<Response>,
                         typename Endpoint::Response>)
 class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
  public:
@@ -274,7 +274,7 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
     return request;
   }
 
-  template <detail::IsJSONResponseBody ResponseBody>
+  template <internal::IsJSONResponseBody ResponseBody>
   static auto MakeResponseBody(BodyCase body_case) {
     std::optional<ResponseBody> response_body;
 
@@ -297,7 +297,7 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
     return response_body;
   }
 
-  template <detail::IsProtobufResponseBody ResponseBody>
+  template <internal::IsProtobufResponseBody ResponseBody>
   static auto MakeResponseBody(BodyCase body_case) {
     std::optional<ResponseBody> response_body;
 
@@ -361,7 +361,7 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
     return response;
   }
 
-  template <detail::IsJSONResponseBody ResponseBody>
+  template <internal::IsJSONResponseBody ResponseBody>
   static std::string MakeBody(BodyCase body_case) {
     switch (body_case) {
       case BodyCase::kEmpty:
@@ -385,7 +385,7 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
     }
   }
 
-  template <detail::IsProtobufResponseBody ResponseBody>
+  template <internal::IsProtobufResponseBody ResponseBody>
   static std::string MakeBody(BodyCase body_case) {
     switch (body_case) {
       case BodyCase::kEmpty:
@@ -438,7 +438,7 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
               network::mojom::RedirectMode::kError);
     EXPECT_THAT(RequestBodyFrom<typename Endpoint::Request::Body>(
                     network::GetUploadData(resource_request)),
-                detail::BodyEq(MakeRequest().body));
+                internal::BodyEq(MakeRequest().body));
 
     if constexpr (base::is_instantiation<Request, WithHeaders>) {
       EXPECT_EQ(resource_request.headers.GetHeader(
@@ -500,7 +500,7 @@ using ClientTestCancelableRequestDeathTest = ClientTestCancelableRequest;
 
 struct RetryOptionsTestCase {
   std::string test_name;
-  detail::RetryOptions retry_options;
+  internal::RetryOptions retry_options;
   // Total number of times the request is expected to be issued
   // (initial attempt + retries).
   std::size_t expected_num_requests;

@@ -14,7 +14,7 @@
 
 namespace endpoint_client {
 
-namespace detail {
+namespace internal {
 
 // An endpoint defines Request and Response type aliases and a static URL().
 template <typename Endpoint>
@@ -36,12 +36,12 @@ concept IsProtobufEndpoint =
     IsEndpointLike<Endpoint> && IsProtobufRequest<typename Endpoint::Request> &&
     IsProtobufResponse<typename Endpoint::Response>;
 
-}  // namespace detail
+}  // namespace internal
 
 // An endpoint is either a JSON endpoint or a Protobuf endpoint.
 template <typename Endpoint>
-concept IsEndpoint =
-    detail::IsJSONEndpoint<Endpoint> || detail::IsProtobufEndpoint<Endpoint>;
+concept IsEndpoint = internal::IsJSONEndpoint<Endpoint> ||
+                     internal::IsProtobufEndpoint<Endpoint>;
 
 }  // namespace endpoint_client
 
