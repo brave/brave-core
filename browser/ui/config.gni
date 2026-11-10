@@ -26,11 +26,9 @@ brave_ui_allow_circular_includes_from += [ "//brave/browser/ui/brave_origin" ]
 if (!is_android) {
   brave_ui_allow_circular_includes_from += [
     "//brave/browser/ui/browser_window/internal",
-    "//brave/browser/ui/tabs:tabs_public",
     "//brave/browser/ui/webui/brave_new_tab_page_refresh",
     "//brave/browser/ui/webui/brave_welcome_page",
     "//brave/browser/ui/webui/side_panel/customize_chrome",
-    "//brave/browser/ui/tabs:tab_strip",
   ]
   if (enable_brave_education) {
     brave_ui_allow_circular_includes_from +=
