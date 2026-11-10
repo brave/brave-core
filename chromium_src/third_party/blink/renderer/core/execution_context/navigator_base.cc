@@ -70,7 +70,7 @@ namespace blink {
 
 String NavigatorBase::userAgent() const {
   if (ExecutionContext* context = GetExecutionContext()) {
-    if (!brave::AllowFingerprinting(
+    if (brave::IsStrictFingerprintingEnabled(
             context, ContentSettingsType::BRAVE_WEBCOMPAT_USER_AGENT)) {
       return brave::BraveSessionCache::From(*context).FarbledUserAgent(
           context->UserAgent());

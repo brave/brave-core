@@ -161,10 +161,11 @@ BraveFarblingLevel GetBraveFarblingLevelFor(
   return value;
 }
 
-bool AllowFingerprinting(ExecutionContext* context,
-                         ContentSettingsType webcompat_settings_type) {
+bool IsStrictFingerprintingEnabled(
+    ExecutionContext* context,
+    ContentSettingsType webcompat_settings_type) {
   return (GetBraveFarblingLevelFor(context, webcompat_settings_type,
-                                   BraveFarblingLevel::OFF) !=
+                                   BraveFarblingLevel::OFF) ==
           BraveFarblingLevel::MAXIMUM);
 }
 
