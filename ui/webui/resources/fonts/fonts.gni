@@ -134,5 +134,4 @@ brave_font_files = [
   "fonts/third_party/manrope/manrope-v11-700.woff2",
   "fonts/third_party/manrope/manrope-v11-800.woff2",
   "fonts/manrope.css",
-  "fonts/manrope_as_poppins.css",
 ]
