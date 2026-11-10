@@ -55,12 +55,14 @@ TabSearchPageHandler::TabSearchPageHandler(
     mojo::PendingRemote<tab_search::mojom::Page> page,
     content::WebUI* web_ui,
     TopChromeWebUIController* webui_controller,
-    MetricsReporter* metrics_reporter)
+    MetricsReporter* metrics_reporter,
+    bool log_metrics)
     : TabSearchPageHandler_ChromiumImpl(std::move(receiver),
                                         std::move(page),
                                         web_ui,
                                         webui_controller,
-                                        metrics_reporter) {
+                                        metrics_reporter,
+                                        log_metrics) {
 #if BUILDFLAG(ENABLE_AI_CHAT)
   Profile* profile = Profile::FromWebUI(web_ui_);
   brave_pref_change_registrar_.Init(profile->GetPrefs());
