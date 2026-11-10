@@ -28,6 +28,7 @@ static_library("endpoint_client") {
     "retry_options.h",
     "url_replacements.cc",
     "url_replacements.h",
+    "with_headers.cc",
     "with_headers.h",
   ]
 
@@ -40,17 +41,21 @@ static_library("endpoint_client") {
   ]
 }
 
-source_set("brave_endpoint") {
+static_library("brave_endpoint") {
   sources = [
+    "brave_endpoint.cc",
     "brave_endpoint.h",
     "static_string.h",
   ]
 
   public_deps = [
-    "//base",
-    "//brave/brave_domains",
     "//brave/components/endpoint_client",
     "//url",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/brave_domains",
   ]
 }
 
