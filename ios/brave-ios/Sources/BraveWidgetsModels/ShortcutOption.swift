@@ -8,7 +8,7 @@ import AppIntents
 /// Picker value for the configurable shortcut control.
 /// Generated `WidgetShortcut` cannot conform to `AppEnum`.
 @available(iOS 26.0, *)
-public enum ShortcutControlOption: Int, AppEnum {
+public enum ShortcutOption: Int, AppEnum {
   case newTab = 1
   case newPrivateTab = 2
   case bookmarks = 3
@@ -26,7 +26,7 @@ public enum ShortcutControlOption: Int, AppEnum {
   public static let typeDisplayRepresentation: TypeDisplayRepresentation = "Shortcut"
 
   // AppEnum requires a dictionary literal. The control button still uses `displayString`.
-  public static let caseDisplayRepresentations: [ShortcutControlOption: DisplayRepresentation] = [
+  public static let caseDisplayRepresentations: [ShortcutOption: DisplayRepresentation] = [
     .newTab: "New Tab",
     .newPrivateTab: "Private Tab",
     .bookmarks: "Bookmarks",

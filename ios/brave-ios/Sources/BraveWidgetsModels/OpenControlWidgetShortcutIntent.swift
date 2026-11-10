@@ -12,11 +12,11 @@ public struct OpenControlWidgetShortcutIntent: UISceneAppIntent {
   public static let openAppWhenRun: Bool = true
 
   @Parameter(title: "Shortcut")
-  public var shortcutOption: ShortcutControlOption?
+  public var shortcutOption: ShortcutOption?
 
   public init() {}
 
-  public init(shortcut: ShortcutControlOption?) {
+  public init(shortcut: ShortcutOption?) {
     self.shortcutOption = shortcut
   }
 
