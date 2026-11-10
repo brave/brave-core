@@ -3508,8 +3508,8 @@ packages:
   bitcoin-ops@1.4.1:
     resolution: {integrity: sha512-pef6gxZFztEhaE9RY9HmWVmiIHqCb2OyS4HPKkpc6CIiiOa3Qmuoylxc5P2EkU3w+5eTSifI9SEZC88idAIGow==}
 
-  bitcoinjs-lib@5.2.0:
-    resolution: {integrity: sha512-5DcLxGUDejgNBYcieMIUfjORtUeNWl828VWLHJGVKZCb4zIS1oOySTUr0LGmcqJBQgTBz3bGbRQla4FgrdQEIQ==}
+  bitcoinjs-lib@5.2.3:
+    resolution: {integrity: sha512-Sgh9N1TpWYt0Jh4s5FRWeBHWCYvqHijyKS5HTrGpeTloA9NCET/4iJ09V8jeu4sIEckSv+6wjHGFNv91iPItvQ==}
     engines: {node: '>=8.0.0'}
 
   blake-hash@2.0.0:
@@ -9431,7 +9431,7 @@ snapshots:
       '@ledgerhq/hw-transport': 6.35.6
       '@ledgerhq/logs': 6.17.0
       bip32-path: 0.4.2
-      bitcoinjs-lib: 5.2.0
+      bitcoinjs-lib: 5.2.3
       bs58: 4.0.1
       bs58check: 2.1.2
       invariant: 2.2.4
@@ -11350,7 +11350,7 @@ snapshots:
 
   '@typescript-eslint/project-service@8.54.0(supports-color@8.1.1)(typescript@5.9.3)':
     dependencies:
-      '@typescript-eslint/tsconfig-utils': 8.65.0(typescript@5.9.3)
+      '@typescript-eslint/tsconfig-utils': 8.54.0(typescript@5.9.3)
       '@typescript-eslint/types': 8.65.0
       debug: 4.4.3(supports-color@8.1.1)
       typescript: 5.9.3
@@ -12064,7 +12064,7 @@ snapshots:
 
   bitcoin-ops@1.4.1: {}
 
-  bitcoinjs-lib@5.2.0:
+  bitcoinjs-lib@5.2.3:
     dependencies:
       bech32: 1.1.4
       bip174: 2.1.1
