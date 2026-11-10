@@ -31,15 +31,13 @@ import { useSafeUISelector } from '$wallet/common/hooks/use-safe-selector'
 // Styled Components
 import { Text, Row, Column } from '$wallet/components/shared/style'
 import {
-  BraveIcon,
   Content,
-  WelcomePageBackground,
   WelcomePageWrapper,
   Title,
-  Heading,
   Description,
   ActionsContainer,
 } from './onboarding_welcome.style'
+import { OnboardingBackground, BraveIcon, Heading } from '../onboarding.style'
 
 export const OnboardingWelcome = () => {
   // Routing
@@ -79,7 +77,7 @@ export const OnboardingWelcome = () => {
 
   return (
     <>
-      <WelcomePageBackground />
+      <OnboardingBackground />
       <WelcomePageWrapper>
         <Content>
           <Row
