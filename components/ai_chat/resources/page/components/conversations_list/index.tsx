@@ -169,6 +169,7 @@ function ConversationItem(props: ConversationItemProps) {
         }}
         onDoubleClick={startEditing}
         href={`/${uuid}`}
+        data-testid={`conversation-item-${uuid}`}
       >
         <div className={styles.displayTitle}>
           <div className={styles.displayTitleContent}>
@@ -184,6 +185,7 @@ function ConversationItem(props: ConversationItemProps) {
           {showGenerating && (
             <span
               className={styles.generatingIndicator}
+              data-testid='generating-indicator'
               aria-label={getLocale(S.AI_CHAT_CONVERSATION_LIST_GENERATING)}
               title={getLocale(S.AI_CHAT_CONVERSATION_LIST_GENERATING)}
               role='img'
@@ -194,6 +196,7 @@ function ConversationItem(props: ConversationItemProps) {
           {showCompleted && (
             <span
               className={styles.completedIndicator}
+              data-testid='completed-indicator'
               aria-label={getLocale(S.AI_CHAT_CONVERSATION_LIST_RESPONSE_READY)}
               title={getLocale(S.AI_CHAT_CONVERSATION_LIST_RESPONSE_READY)}
               role='img'
