@@ -91,8 +91,6 @@ brave_chrome_browser_visibility = [
 ]
 
 brave_chrome_browser_sources = [
-  "//brave/browser/brave_browser_features.cc",
-  "//brave/browser/brave_browser_features.h",
   "//brave/browser/brave_browser_main_extra_parts.cc",
   "//brave/browser/brave_browser_main_extra_parts.h",
   "//brave/browser/brave_browser_main_parts.cc",
@@ -138,6 +136,7 @@ if (enable_brave_wallet) {
 brave_chrome_browser_deps = [
   "//base",
   "//brave/app:brave_generated_resources_grit",
+  "//brave/browser:brave_browser_features",
   "//brave/browser:brave_global_features_impl",
   "//brave/browser:browser_process",
   "//brave/browser:sparkle_buildflags",
@@ -869,7 +868,6 @@ brave_chrome_browser_ui_browser_header_visibility =
 brave_chrome_browser_allow_circular_includes_from += [
   "//brave/browser/brave_shields:brave_shields_impl",
   "//brave/browser/ui",
-  "//brave/browser/brave_stats",
 ]
 
 if (enable_playlist) {

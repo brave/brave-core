@@ -48,6 +48,7 @@ if (!is_android) {
     deps = [
       ":speedreader",
       "//brave/app:generate_command_metadata",
+      "//brave/browser:brave_browser_features",
       "//brave/browser/speedreader",
       "//brave/browser/ui",
       "//brave/browser/ui/speedreader",

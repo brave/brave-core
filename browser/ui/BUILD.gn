@@ -116,6 +116,7 @@ source_set("ui") {
     ":brave_tab_prefs",
     ":ui_features",
     "//brave/brave_domains",
+    "//brave/browser:brave_browser_features",
     "//brave/browser/brave_adaptive_captcha",
     "//brave/browser/brave_origin",
     "//brave/browser/brave_shields",

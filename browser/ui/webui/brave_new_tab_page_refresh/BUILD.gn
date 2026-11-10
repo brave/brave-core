@@ -208,6 +208,7 @@ source_set("browser_tests") {
     sources += [ "new_tab_takeover_browsertest.cc" ]
 
     deps += [
+      "//brave/browser:brave_browser_features",
       "//brave/browser/brave_ads",
       "//brave/components/brave_ads/core",
       "//brave/components/brave_ads/core/browser/service:test_support",
