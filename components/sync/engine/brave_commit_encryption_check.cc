@@ -6,10 +6,7 @@
 #include "brave/components/sync/engine/brave_commit_encryption_check.h"
 
 #include "base/check.h"
-#include "base/debug/crash_logging.h"
-#include "base/debug/dump_without_crashing.h"
 #include "components/sync/protocol/entity_specifics.pb.h"
-#include "components/sync/protocol/sync.pb.h"
 #include "components/sync/protocol/sync_entity.pb.h"
 
 namespace syncer {
@@ -41,39 +38,28 @@ constexpr DataTypeSet kPlainTextCommitAllowedTypes = {
 
 }  // namespace
 
-DataTypeSet GetUnexpectedPlainTextCommitTypes(
-    const sync_pb::CommitMessage& commit) {
-  DataTypeSet unexpected_types;
-  for (const sync_pb::SyncEntity& entity : commit.entries()) {
-    // A deletion has empty specifics, so there is nothing to encrypt.
-    if (entity.deleted() || entity.specifics().has_encrypted()) {
-      continue;
-    }
-    const DataType type = GetDataTypeFromSpecifics(entity.specifics());
-    // DataTypeSet cannot hold UNSPECIFIED, and a locally authored entity
-    // always has a known specifics variant.
-    if (type == UNSPECIFIED || kPlainTextCommitAllowedTypes.Has(type)) {
-      continue;
-    }
-    unexpected_types.Put(type);
+bool IsUnexpectedPlainTextCommit(DataType type,
+                                 const sync_pb::SyncEntity& entity) {
+  // A deletion carries no specifics beyond the default field that identifies
+  // the type, so there is nothing to encrypt.
+  if (entity.deleted() || entity.specifics().has_encrypted()) {
+    return false;
   }
-  return unexpected_types;
+  return !kPlainTextCommitAllowedTypes.Has(type);
 }
 
-void CheckCommitEntitiesEncryption(const sync_pb::CommitMessage& commit) {
-  const DataTypeSet unexpected_types =
-      GetUnexpectedPlainTextCommitTypes(commit);
-  DCHECK(unexpected_types.empty())
-      << "Committing unencrypted sync specifics for "
-      << DataTypeSetToDebugString(unexpected_types);
-  if (unexpected_types.empty()) {
+void CheckCommitEntityEncryption(DataType type,
+                                 PassphraseType passphrase_type,
+                                 const sync_pb::SyncEntity& entity) {
+  // Without an explicit passphrase the chain is not in encrypt-everything
+  // mode, and a type whose EncryptionPolicy is kNeverEncrypted is expected to
+  // commit in plain text.
+  if (!IsExplicitPassphrase(passphrase_type)) {
     return;
   }
-  // Release only: the DCHECK message is compiled out, so the crash key is the
-  // only way the type names reach the dump.
-  SCOPED_CRASH_KEY_STRING256("BraveSync", "plain_text_commit_types",
-                             DataTypeSetToDebugString(unexpected_types));
-  base::debug::DumpWithoutCrashing();
+  DUMP_WILL_BE_CHECK(!IsUnexpectedPlainTextCommit(type, entity))
+      << "Committing unencrypted sync specifics for "
+      << DataTypeToDebugString(type);
 }
 
 }  // namespace syncer

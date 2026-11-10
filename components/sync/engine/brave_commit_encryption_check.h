@@ -7,21 +7,26 @@
 #define BRAVE_COMPONENTS_SYNC_ENGINE_BRAVE_COMMIT_ENCRYPTION_CHECK_H_
 
 #include "components/sync/base/data_type.h"
+#include "components/sync/base/passphrase_enums.h"
 
 namespace sync_pb {
-class CommitMessage;
+class SyncEntity;
 }  // namespace sync_pb
 
 namespace syncer {
 
-// Returns the types of the entities in `commit` that carry unencrypted
-// specifics and are not expected to.
-DataTypeSet GetUnexpectedPlainTextCommitTypes(
-    const sync_pb::CommitMessage& commit);
+// Returns whether `entity` of `type` carries unencrypted specifics for a type
+// Brave expects to be encrypted.
+bool IsUnexpectedPlainTextCommit(DataType type,
+                                 const sync_pb::SyncEntity& entity);
 
-// Reports a crash dump when `commit` is about to leave the device carrying
-// unencrypted specifics for a type Brave expects to be encrypted.
-void CheckCommitEntitiesEncryption(const sync_pb::CommitMessage& commit);
+// Reports a crash dump when `entity` is about to leave the device carrying
+// unencrypted specifics for a type Brave expects to be encrypted. Does nothing
+// unless `passphrase_type` is an explicit one, which is what puts the chain in
+// encrypt-everything mode.
+void CheckCommitEntityEncryption(DataType type,
+                                 PassphraseType passphrase_type,
+                                 const sync_pb::SyncEntity& entity);
 
 }  // namespace syncer
 

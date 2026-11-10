@@ -9,9 +9,11 @@ substitutions:
 
       Brave's sync chain is always in encrypt-everything mode, so an upstream
       type whose EncryptionPolicy is kNeverEncrypted commits plain text
-      silently. This is the single point every outgoing commit passes through,
-      so checking here covers types added upstream in the future.
-    preempt_function_impl:
-      function_name: Commit::PostAndProcessResponse
-      code: |-
-        CheckCommitEntitiesEncryption(message_.commit());
+      silently. Every outgoing entity is assembled here, right where upstream
+      keeps its own fail-closed checks on password data, so checking here
+      covers types added upstream in the future.
+    regex:
+      re_pattern: |-
+        (\s+)(AdjustCommitProto\(sync_entity\);)
+      replace: |-
+        \1\2\1CheckCommitEntityEncryption(type_, passphrase_type_, *sync_entity);

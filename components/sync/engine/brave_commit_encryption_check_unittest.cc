@@ -6,63 +6,52 @@
 #include "brave/components/sync/engine/brave_commit_encryption_check.h"
 
 #include "components/sync/protocol/entity_specifics.pb.h"
-#include "components/sync/protocol/sync.pb.h"
 #include "components/sync/protocol/sync_entity.pb.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace syncer {
 
-TEST(BraveCommitEncryptionCheckTest, EmptyCommit) {
-  sync_pb::CommitMessage commit;
-  EXPECT_TRUE(GetUnexpectedPlainTextCommitTypes(commit).empty());
-}
-
 TEST(BraveCommitEncryptionCheckTest, EncryptedEntityIsAccepted) {
-  sync_pb::CommitMessage commit;
-  commit.add_entries()->mutable_specifics()->mutable_encrypted()->set_blob(
-      "blob");
-  EXPECT_TRUE(GetUnexpectedPlainTextCommitTypes(commit).empty());
+  sync_pb::SyncEntity entity;
+  entity.mutable_specifics()->mutable_encrypted()->set_blob("blob");
+  EXPECT_FALSE(IsUnexpectedPlainTextCommit(BOOKMARKS, entity));
 }
 
 TEST(BraveCommitEncryptionCheckTest, DeletionIsAccepted) {
-  sync_pb::CommitMessage commit;
-  sync_pb::SyncEntity* entity = commit.add_entries();
-  entity->set_deleted(true);
-  entity->mutable_specifics()->mutable_bookmark();
-  EXPECT_TRUE(GetUnexpectedPlainTextCommitTypes(commit).empty());
+  sync_pb::SyncEntity entity;
+  entity.set_deleted(true);
+  entity.mutable_specifics()->mutable_bookmark();
+  EXPECT_FALSE(IsUnexpectedPlainTextCommit(BOOKMARKS, entity));
 }
 
 TEST(BraveCommitEncryptionCheckTest, PlainTextAllowedTypes) {
-  sync_pb::CommitMessage commit;
-  commit.add_entries()->mutable_specifics()->mutable_nigori();
-  commit.add_entries()->mutable_specifics()->mutable_history_delete_directive();
-  commit.add_entries()->mutable_specifics()->mutable_password();
-  EXPECT_TRUE(GetUnexpectedPlainTextCommitTypes(commit).empty());
+  sync_pb::SyncEntity entity;
+  entity.mutable_specifics()->mutable_nigori();
+  EXPECT_FALSE(IsUnexpectedPlainTextCommit(NIGORI, entity));
+  entity.mutable_specifics()->mutable_history_delete_directive();
+  EXPECT_FALSE(IsUnexpectedPlainTextCommit(HISTORY_DELETE_DIRECTIVES, entity));
+  entity.mutable_specifics()->mutable_password();
+  EXPECT_FALSE(IsUnexpectedPlainTextCommit(PASSWORDS, entity));
 }
 
 TEST(BraveCommitEncryptionCheckTest, PlainTextBookmarkIsReported) {
-  sync_pb::CommitMessage commit;
-  commit.add_entries()->mutable_specifics()->mutable_bookmark();
-  EXPECT_EQ(DataTypeSet({BOOKMARKS}),
-            GetUnexpectedPlainTextCommitTypes(commit));
+  sync_pb::SyncEntity entity;
+  entity.mutable_specifics()->mutable_bookmark();
+  EXPECT_TRUE(IsUnexpectedPlainTextCommit(BOOKMARKS, entity));
 }
 
-TEST(BraveCommitEncryptionCheckTest, AllOffendingTypesAreGathered) {
-  sync_pb::CommitMessage commit;
-  commit.add_entries()->mutable_specifics()->mutable_bookmark();
-  commit.add_entries()->mutable_specifics()->mutable_contact_info();
-  commit.add_entries()->mutable_specifics()->mutable_bookmark();
-  commit.add_entries()->mutable_specifics()->mutable_nigori();
-  commit.add_entries()->mutable_specifics()->mutable_encrypted()->set_blob(
-      "blob");
-  EXPECT_EQ(DataTypeSet({BOOKMARKS, CONTACT_INFO}),
-            GetUnexpectedPlainTextCommitTypes(commit));
+TEST(BraveCommitEncryptionCheckTest, PlainTextContactInfoIsReported) {
+  sync_pb::SyncEntity entity;
+  entity.mutable_specifics()->mutable_contact_info();
+  EXPECT_TRUE(IsUnexpectedPlainTextCommit(CONTACT_INFO, entity));
 }
 
-TEST(BraveCommitEncryptionCheckTest, UnsetSpecificsVariantIsIgnored) {
-  sync_pb::CommitMessage commit;
-  commit.add_entries();
-  EXPECT_TRUE(GetUnexpectedPlainTextCommitTypes(commit).empty());
+TEST(BraveCommitEncryptionCheckTest, KeystorePassphraseIsNotChecked) {
+  sync_pb::SyncEntity entity;
+  entity.mutable_specifics()->mutable_bookmark();
+  // Would DCHECK with an explicit passphrase.
+  CheckCommitEntityEncryption(BOOKMARKS, PassphraseType::kKeystorePassphrase,
+                              entity);
 }
 
 }  // namespace syncer
