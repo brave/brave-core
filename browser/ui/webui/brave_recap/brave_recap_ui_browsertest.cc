@@ -82,7 +82,8 @@ IN_PROC_BROWSER_TEST_F(BraveRecapUIBrowserTest, ShowsLifetimeStats) {
 
   EXPECT_EQ("1234", GetLoadTimeString("adsBlocked"));
   EXPECT_EQ("5678", GetLoadTimeString("bandwidthSavedBytes"));
-  EXPECT_EQ("Your Brave Recap", content::EvalJs(web_contents(), kGetHeading));
+  EXPECT_EQ("Your Brave Shields recap is here!",
+            content::EvalJs(web_contents(), kGetHeading));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRecapUIBrowserTest, ShowsEmptyStateWithoutStats) {
