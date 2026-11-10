@@ -819,7 +819,8 @@ void EthereumProviderImpl::SetupMethodHandlers() {
   add_handler(kEthUnsubscribe,
               &EthereumProviderImpl::HandleEthUnsubscribeMethod);
 
-  // Deprecated methods we only once supported.
+  // Reject these deprecated methods locally instead of forwarding them to the
+  // RPC node like other unhandled methods.
   for (std::string_view method : {kEthGetEncryptionPublicKey, kEthDecrypt}) {
     method_handlers_.emplace(
         method, base::BindRepeating([](JsonRpcRequest request,
