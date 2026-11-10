@@ -62,7 +62,8 @@ class TabSearchPageHandler : public TabSearchPageHandler_ChromiumImpl {
       mojo::PendingRemote<tab_search::mojom::Page> page,
       content::WebUI* web_ui,
       TopChromeWebUIController* webui_controller,
-      MetricsReporter* metrics_reporter);
+      MetricsReporter* metrics_reporter,
+      bool log_metrics);
   ~TabSearchPageHandler() override;
   TabSearchPageHandler(const TabSearchPageHandler&) = delete;
   TabSearchPageHandler& operator=(const TabSearchPageHandler&) = delete;
