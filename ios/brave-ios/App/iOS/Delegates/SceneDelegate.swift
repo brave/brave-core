@@ -62,7 +62,7 @@ struct ProfileState {
     // Setup Rewards & Ads
     let configuration = BraveRewards.Configuration.current()
     Migration.migrateAdsConfirmations(for: configuration)
-    rewards = BraveRewards(configuration: configuration)
+    rewards = BraveRewards(configuration: configuration, profile: profileController.profile)
 
     // Setup BraveCore profile migrations
     migrations = BraveProfileMigrations(profileController: profileController)

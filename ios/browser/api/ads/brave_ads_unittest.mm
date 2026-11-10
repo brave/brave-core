@@ -30,6 +30,7 @@
 #include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/new_tab_takeover_infobar_util.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #import "brave/ios/browser/api/ads/ads_client_bridge.h"
+#include "brave/ios/browser/api/profile/profile_bridge_impl.h"
 #include "components/prefs/pref_service.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
@@ -96,7 +97,9 @@ class BraveAdsTest : public PlatformTest {
         test_url_loader_factory_.GetSafeWeakWrapper());
     ads_ = [[BraveAds alloc]
         initWithStateStoragePath:base::SysUTF8ToNSString(
-                                     temp_dir_.GetPath().value())];
+                                     temp_dir_.GetPath().value())
+                         profile:[[ProfileBridgeImpl alloc]
+                                     initWithProfile:profile_]];
   }
 
   PrefService* profile_prefs() { return profile_->GetPrefs(); }
@@ -711,7 +714,9 @@ TEST_F(BraveAdsTest, ClearsNewTabPageShowBackgroundImagePrefOnInit) {
   // Act
   BraveAds* ads = [[BraveAds alloc]
       initWithStateStoragePath:base::SysUTF8ToNSString(
-                                   temp_dir_.GetPath().value())];
+                                   temp_dir_.GetPath().value())
+                       profile:[[ProfileBridgeImpl alloc]
+                                   initWithProfile:profile_]];
 
   // Assert
   EXPECT_NSNE(nil, ads);
