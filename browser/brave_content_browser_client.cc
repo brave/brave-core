@@ -194,6 +194,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
 #include "brave/components/brave_rewards/content/rewards_protocol_navigation_throttle.h"
 #if !BUILDFLAG(IS_ANDROID)
@@ -1622,7 +1623,13 @@ void BraveContentBrowserClient::CreateThrottlesForNavigation(
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   // inserting the navigation throttle at the fist position before any java
   // navigation happens
-  brave_rewards::RewardsProtocolNavigationThrottle::MaybeCreateAndAdd(registry);
+  if (brave_rewards::RewardsServiceFactory::GetForProfile(
+          Profile::FromBrowserContext(registry.GetNavigationHandle()
+                                          .GetWebContents()
+                                          ->GetBrowserContext()))) {
+    brave_rewards::RewardsProtocolNavigationThrottle::MaybeCreateAndAdd(
+        registry);
+  }
 #endif
 
   ChromeContentBrowserClient::CreateThrottlesForNavigation(registry);
