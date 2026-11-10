@@ -1,13 +1,22 @@
 diff --git a/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarConfigUtils.java b/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarConfigUtils.java
-index 1039e59e0cd994c18d82315881d70a59fcd933b6..c5113501ca5ee307a4355130144c00cd8321ad2c 100644
+index 790a575535d3463e38b5ab4006f75020a1001dd6..404fc588560a361f2fedf1349903cc709995c04b 100644
 --- a/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarConfigUtils.java
 +++ b/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarConfigUtils.java
-@@ -92,7 +92,7 @@ public class BottomBarConfigUtils {
-         return ChromeSharedPreferences.getInstance()
-                 .readBoolean(
-                         ChromePreferenceKeys.BOTTOM_BAR_ENABLED,
--                        ChromeFeatureList.sAndroidBottomBarDefaultUserEnabled.getValue());
-+                        BraveBottomBarUserPrefs.getDefaultUserEnabled(ChromeFeatureList.sAndroidBottomBarDefaultUserEnabled.getValue()));
-     }
- 
-     /**
+@@ -184,7 +184,7 @@ public class BottomBarConfigUtils {
+      * <p>Feature consumers should call {@link #isBottomBarEnabled(Context)} instead.
+      */
+     public static boolean isBottomBarUserEnabled() {
+-        boolean defaultValue = ChromeFeatureList.sAndroidBottomBarDefaultUserEnabled.getValue();
++        boolean defaultValue = BraveBottomBarUserPrefs.getDefaultUserEnabled(ChromeFeatureList.sAndroidBottomBarDefaultUserEnabled.getValue());
+         if (ChromeFeatureList.sAndroidBottomBarUsePinnedDefaultUserEnabled.getValue()) {
+             defaultValue =
+                     sReleasedPinForProcess == TriState.NOT_SET
+@@ -206,7 +206,7 @@ public class BottomBarConfigUtils {
+         if (!ChromeFeatureList.sAndroidBottomBar.isEnabled()) return;
+         // Read cached params now so non-tabbed starts (for example Custom Tabs) and unfolded
+         // foldables do not mix pre-native and post-cacheNativeFlags() seeds in the same process.
+-        boolean defaultValue = ChromeFeatureList.sAndroidBottomBarDefaultUserEnabled.getValue();
++        boolean defaultValue = BraveBottomBarUserPrefs.getDefaultUserEnabled(ChromeFeatureList.sAndroidBottomBarDefaultUserEnabled.getValue());
+         boolean pinDefault = ChromeFeatureList.sAndroidBottomBarPinDefaultUserEnabled.getValue();
+         ChromeFeatureList.sAndroidBottomBarUsePinnedDefaultUserEnabled.getValue();
+         ChromeFeatureList.sAndroidBottomBarEducationEnabled.getValue();
