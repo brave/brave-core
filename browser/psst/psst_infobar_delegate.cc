@@ -21,8 +21,6 @@
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if !BUILDFLAG(IS_ANDROID)
-// Defined in brave/browser/ui/views/infobars/psst_infobar.cc. Declared here
-// since it's only ever used by PsstInfoBarDelegate::Create().
 std::unique_ptr<infobars::InfoBar> CreatePsstInfoBar(
     std::unique_ptr<psst::PsstInfoBarDelegate> delegate);
 #endif  // !BUILDFLAG(IS_ANDROID)
@@ -81,9 +79,6 @@ PsstInfoBarDelegate::GetIdentifier() const {
 }
 
 ui::ImageModel PsstInfoBarDelegate::GetIcon() const {
-  // Drawn on top of a branded badge background, so it always
-  // needs to contrast with that fixed color, not the theme's
-  // default icon color.
   return ui::ImageModel::FromVectorIcon(kLeoPsstIcon,
                                         nala::kColorPrimitivePrimary30,
                                         /*icon_size=*/32);
