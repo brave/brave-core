@@ -254,6 +254,7 @@ IN_PROC_BROWSER_TEST_F(
   model->ExecuteContextMenuCommand(0, TabStripModel::CommandTogglePinned);
   ASSERT_FALSE(model->IsTabPinned(0));
   service->OnBrowserActivated(browser());
+  EXPECT_EQ(1, model->count());
 
   ASSERT_TRUE(
       base::test::RunUntil([&]() { return other_model->count() == 1; }));

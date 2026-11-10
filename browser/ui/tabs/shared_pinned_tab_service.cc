@@ -467,6 +467,13 @@ void SharedPinnedTabService::OnTabBlockedStateChanged(tabs::TabInterface* tab) {
   OnTabChangedAt(tab, TabChangeType::kAll);
 }
 
+void SharedPinnedTabService::OnTabStripModelDestroyed(
+    TabStripModel* tab_strip_model) {
+  // The posted OnTabUnpinned() may never see this model, so don't keep a
+  // dangling pointer to it.
+  std::erase(pending_unpin_models_, tab_strip_model);
+}
+
 void SharedPinnedTabService::OnProfileWillBeDestroyed(Profile* profile) {
   profile_will_be_destroyed_ = true;
 }
