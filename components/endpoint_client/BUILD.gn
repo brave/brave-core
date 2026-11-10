@@ -8,6 +8,7 @@ import("//tools/json_schema_compiler/json_schema_api.gni")
 
 static_library("endpoint_client") {
   sources = [
+    "client.cc",
     "client.h",
     "has_to_value.h",
     "is_endpoint.h",
@@ -20,6 +21,7 @@ static_library("endpoint_client") {
     "request.h",
     "request_handle.cc",
     "request_handle.h",
+    "request_options.h",
     "request_types.h",
     "response.h",
     "retry_options.h",
