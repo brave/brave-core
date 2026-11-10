@@ -16,6 +16,7 @@
 #include "base/strings/strcat.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
+#include "base/test/test_future.h"
 #include "base/test/test_timeouts.h"
 #include "base/types/expected.h"
 #include "brave/browser/ai_chat/ai_chat_conversation_ui_browsertest_base.h"
@@ -482,6 +483,93 @@ IN_PROC_BROWSER_TEST_F(AIChatGenerationStatusBrowserTest,
   CompleteResponse(std::move(other_response));
   ASSERT_TRUE(WaitForRowIndicator(other_page, other_uuid, kCompletedIndicator));
   EXPECT_TRUE(WaitForRowIndicator(other_page, uuid, kNoIndicator));
+}
+
+namespace {
+
+// Called with kReadRowIndicatorFunction: records what the row shows now, and
+// again on every DOM change, in window.rowIndicators, skipping repeats. A
+// value the row shows only briefly is still recorded. Returns the first value.
+constexpr char kRecordRowIndicatorsScript[] = R"(
+  ((read) => {
+    const recorded = [read()]
+    new MutationObserver(() => {
+      const value = read()
+      if (value !== recorded.at(-1)) {
+        recorded.push(value)
+      }
+    }).observe(document, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['data-testid'],
+    })
+    window.rowIndicators = recorded
+    return recorded[0]
+  })
+)";
+
+}  // namespace
+
+// A background tool loop keeps the ring from the response that asks for tools,
+// through each tool and the response after them, and only shows the dot and
+// its notification once that last response ends the turn.
+IN_PROC_BROWSER_TEST_F(AIChatGenerationStatusBrowserTest,
+                       ToolLoopShowsGeneratingUntilItEnds) {
+  content::RenderFrameHost* page = OpenFullPageOnNewChat();
+  MockGenerateCallbacks response = StartBackgroundGeneration();
+  const std::string uuid = conversation_handler_->get_conversation_uuid();
+
+  // Two tools that run without asking the user, each held until released.
+  auto* provider = conversation_handler_->AddToolProviderForTesting(
+      std::make_unique<testing::NiceMock<MockToolProvider>>());
+  auto add_held_tool = [&](const std::string& name,
+                           base::test::TestFuture<Tool::UseToolCallback>& use) {
+    auto* tool = provider->AddToolForTesting(
+        std::make_unique<testing::NiceMock<MockTool>>(name, name));
+    EXPECT_CALL(*tool, UseTool)
+        .WillOnce(testing::WithArg<1>([&use](Tool::UseToolCallback callback) {
+          use.SetValue(std::move(callback));
+        }));
+  };
+  base::test::TestFuture<Tool::UseToolCallback> tool_a_use;
+  base::test::TestFuture<Tool::UseToolCallback> tool_b_use;
+  add_held_tool("tool_a", tool_a_use);
+  add_held_tool("tool_b", tool_b_use);
+
+  ASSERT_TRUE(WaitForRowIndicator(page, uuid, kGeneratingIndicator));
+  ASSERT_EQ(kGeneratingIndicator,
+            content::EvalJs(page,
+                            content::JsReplace(
+                                base::StrCat({kRecordRowIndicatorsScript, "(",
+                                              kReadRowIndicatorFunction, ")"}),
+                                uuid, kNoRow, kNoIndicator),
+                            eval_js_options_));
+
+  // The response asks for both tools, so the conversation runs one, then the
+  // other, then asks for the next response.
+  SendEvent(response, mojom::ConversationEntryEvent::NewToolUseEvent(
+                          CreateToolUseEvent("tool_a", "tool_a_id")));
+  ReleaseResponse(std::move(response),
+                  mojom::ConversationEntryEvent::NewToolUseEvent(
+                      CreateToolUseEvent("tool_b", "tool_b_id")));
+  tool_a_use.Take().Run(CreateContentBlocksForText("tool_a result"), {});
+  auto post_tool_generation = SetupMockGenerateAssistantResponse();
+  tool_b_use.Take().Run(CreateContentBlocksForText("tool_b result"), {});
+  MockGenerateCallbacks post_tool_response = post_tool_generation->Take();
+  // The service shows a notification as it decides a response has finished,
+  // which happens synchronously, so any step that looked finished has shown
+  // one by now.
+  EXPECT_EQ(notifications_shown_, 0);
+
+  CompleteResponse(std::move(post_tool_response));
+  ASSERT_TRUE(WaitForRowIndicator(page, uuid, kCompletedIndicator));
+  EXPECT_EQ(notifications_shown_, 1);
+
+  // The page gets the service's state changes in order, so anything shown
+  // between the loop's steps was recorded before the dot.
+  EXPECT_EQ(content::ListValueOf(kGeneratingIndicator, kCompletedIndicator),
+            content::EvalJs(page, "window.rowIndicators", eval_js_options_));
 }
 
 }  // namespace ai_chat
