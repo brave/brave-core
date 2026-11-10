@@ -925,14 +925,6 @@ if (enable_brave_news) {
   ]
 }
 
-# TODO(https://github.com/brave/brave-browser/issues/43310):
-# brave_new_tab_page_ui.cc includes some headers (e.g. from
-# //brave/browser/new_tab) that are currently in the //chrome/browser target.
-if (!is_android) {
-  brave_chrome_browser_allow_circular_includes_from +=
-      [ "//brave/browser/ui/webui/brave_new_tab_page_refresh" ]
-}
-
 if (is_mac) {
   brave_chrome_browser_deps += [ "//brave/browser/upgrade_when_idle" ]
   brave_chrome_browser_allow_circular_includes_from +=

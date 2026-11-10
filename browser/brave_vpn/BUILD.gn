@@ -9,8 +9,15 @@ assert(enable_brave_vpn)
 
 source_set("brave_vpn") {
   sources = [
+    "brave_vpn_service_factory.h",
     "vpn_utils.cc",
     "vpn_utils.h",
+  ]
+
+  public_deps = [
+    "//brave/components/brave_vpn/common/mojom",
+    "//components/keyed_service/content",
+    "//mojo/public/cpp/bindings",
   ]
 
   deps = [
