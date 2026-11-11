@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/check_op.h"
+#include "base/notreached.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/eth_abi_decoder.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
@@ -1471,6 +1472,34 @@ std::optional<std::string> GetFinalRecipient(
   }
 
   return base_to;
+}
+
+bool IsNonPayableTokenTransactionType(mojom::TransactionType tx_type) {
+  switch (tx_type) {
+    case mojom::TransactionType::ERC20Transfer:
+    case mojom::TransactionType::ERC20Approve:
+    case mojom::TransactionType::ERC721TransferFrom:
+    case mojom::TransactionType::ERC721SafeTransferFrom:
+    case mojom::TransactionType::ERC721SetApprovalForAll:
+    case mojom::TransactionType::ERC1155SafeTransferFrom:
+      return true;
+    case mojom::TransactionType::ETHSend:
+    case mojom::TransactionType::ETHSwap:
+    case mojom::TransactionType::ETHFilForwarderTransfer:
+    case mojom::TransactionType::Other:
+    case mojom::TransactionType::SolanaSystemTransfer:
+    case mojom::TransactionType::SolanaSPLTokenTransfer:
+    case mojom::TransactionType::
+        SolanaSPLTokenTransferWithAssociatedTokenAccountCreation:
+    case mojom::TransactionType::SolanaDappSignAndSendTransaction:
+    case mojom::TransactionType::SolanaDappSignTransaction:
+    case mojom::TransactionType::SolanaSwap:
+    case mojom::TransactionType::SolanaCompressedNftTransfer:
+    case mojom::TransactionType::CardanoSendLovelace:
+    case mojom::TransactionType::CardanoSendToken:
+      return false;
+  }
+  NOTREACHED();
 }
 
 }  // namespace brave_wallet
