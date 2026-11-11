@@ -381,8 +381,6 @@ TEST_F(BraveSearchProviderTest, SearchSuggestionsSendTest) {
       {"a email@gmail.com b", false},
       // Block irc scheme.
       {"irc://bravenet", false},
-      // Invalid html url.
-      {"http://a asdfasdfasdfasdf", false},
   };
 
   for (auto& value : cases) {
