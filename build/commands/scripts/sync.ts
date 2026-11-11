@@ -178,9 +178,8 @@ function getGclientTargets(options: SyncTargetOptions): GclientTargets {
   }
 }
 
-// Returns the one target passed to the config.update() call. A builder's comes
-// from its GN args. Without one, the first value of each .gclient list is the
-// target.
+// Returns the one target passed to the config.update() call. Without a
+// builder, the first value of each .gclient list is the target.
 function getBuildTarget(
   options: SyncTargetOptions,
   { targetOSList, targetArchList }: GclientTargets,
@@ -188,7 +187,7 @@ function getBuildTarget(
   // TODO(http://brave.dev/b/56449): Experimental implementation for integration
   // with our bots generator.
   if (options.builder) {
-    return getBuilderBuildTarget(options.builder, config.hostOS)
+    return getBuilderBuildTarget(options.builder)
   }
 
   return { targetOS: targetOSList[0], targetArch: targetArchList[0] }

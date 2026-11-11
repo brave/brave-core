@@ -18,6 +18,9 @@ import * as Log from './log.ts'
  *   1. Variables from .env files (highest priority)
  *   2. Package configuration from package.json
  *   3. Default values provided by caller (lowest priority)
+ *
+ * With `dotenvKeys`, only those .env variables are read; the others are
+ * reported once and ignored, as if they were not set.
  */
 export default class EnvConfig {
   // Directory containing package.json and .env files.
@@ -31,11 +34,18 @@ export default class EnvConfig {
    * Creates a new EnvConfig instance and loads all configuration files.
    *
    * @param configDir - Directory containing package.json and .env files
+   * @param dotenvKeys - The only .env variables to read, if set
    */
-  constructor(configDir: string) {
+  constructor(
+    configDir: string,
+    { dotenvKeys }: { dotenvKeys?: readonly string[] } = {},
+  ) {
     this.#configDir = configDir
     this.#packageJson = EnvConfig.#loadPackageJson(configDir)
-    this.#dotenvConfig = EnvConfig.#loadDotenvConfig(configDir)
+    this.#dotenvConfig = EnvConfig.#restrictTo(
+      EnvConfig.#loadDotenvConfig(configDir),
+      dotenvKeys,
+    )
   }
 
   /**
@@ -334,6 +344,35 @@ export default class EnvConfig {
       fs.writeFileSync(dotenvConfigPath, defaultEnvConfigContent)
     }
     return dotenvConfig
+  }
+
+  /**
+   * Returns the `dotenvKeys` entries of `dotenvConfig`, warning about the
+   * others, or all of it without `dotenvKeys`.
+   */
+  static #restrictTo(
+    dotenvConfig: NodeJS.Dict<string>,
+    dotenvKeys: readonly string[] | undefined,
+  ): NodeJS.Dict<string> {
+    if (!dotenvKeys) {
+      return dotenvConfig
+    }
+    const kept: NodeJS.Dict<string> = {}
+    const ignored: string[] = []
+    for (const [key, value] of Object.entries(dotenvConfig)) {
+      if (dotenvKeys.includes(key)) {
+        kept[key] = value
+      } else {
+        ignored.push(key)
+      }
+    }
+    if (ignored.length) {
+      Log.warn(
+        `Ignoring .env keys other than ${dotenvKeys.join(', ')}: `
+          + ignored.sort().join(', '),
+      )
+    }
+    return kept
   }
 
   /**
