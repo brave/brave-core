@@ -37,7 +37,7 @@ class BraveTabMenuModel : public TabMenuModel {
   BraveTabMenuModel(ui::SimpleMenuModel::Delegate* delegate,
                     TabMenuModelDelegate* tab_menu_model_delegate,
                     TabStripModel* tab_strip_model,
-                    int index);
+                    tabs::TabHandle context_tab);
   BraveTabMenuModel(const BraveTabMenuModel&) = delete;
   BraveTabMenuModel& operator=(const BraveTabMenuModel&) = delete;
   ~BraveTabMenuModel() override;

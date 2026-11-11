@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/browser_tab_strip_controller.h b/chrome/browser/ui/views/tabs/browser_tab_strip_controller.h
-index 552783426bfb16d9f3bf93a9b506cc4261048cb1..90ffda6e11856887be5f6a54c68b403b4b0601d9 100644
+index 552783426bfb16d9f3bf93a9b506cc4261048cb1..fe9391668010372ca6b7cab39591b2f6b27994c5 100644
 --- a/chrome/browser/ui/views/tabs/browser_tab_strip_controller.h
 +++ b/chrome/browser/ui/views/tabs/browser_tab_strip_controller.h
 @@ -117,7 +117,17 @@ class BrowserTabStripController : public TabStripController,
@@ -11,7 +11,7 @@ index 552783426bfb16d9f3bf93a9b506cc4261048cb1..90ffda6e11856887be5f6a54c68b403b
 +      ui::SimpleMenuModel::Delegate* delegate,
 +      TabMenuModelDelegate* tab_menu_model_delegate,
 +      TabStripModel* tab_strip_model,
-+      int index);
++      tabs::TabHandle context_tab);
 +
   private:
 +  friend class BraveBrowserTabStripController;

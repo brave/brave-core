@@ -1908,11 +1908,13 @@ class WebPanelSplitViewBrowserTest : public WebPanelBrowserTest {
         BrowserView::GetBrowserViewForBrowser(browser())
             ->horizontal_tab_strip_for_testing()
             ->controller());
-    menu_controller_ = std::make_unique<TabContextMenuController>(
-        tab_model()->GetTabAtIndex(tab_index)->GetHandle(), strip_controller);
+    const tabs::TabHandle tab =
+        tab_model()->GetTabAtIndex(tab_index)->GetHandle();
+    menu_controller_ =
+        std::make_unique<TabContextMenuController>(tab, strip_controller);
     return std::make_unique<BraveTabMenuModel>(
         menu_controller_.get(), TabMenuModelDelegate::From(browser()),
-        tab_model(), tab_index);
+        tab_model(), tab);
   }
 
   static bool HasAnySplitEntry(const BraveTabMenuModel& model) {
