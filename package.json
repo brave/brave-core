@@ -130,7 +130,7 @@
     "@types/react-syntax-highlighter": "15.5.11",
     "@types/react-virtualized-auto-sizer": "1.0.4",
     "@types/react-window": "1.8.5",
-    "@types/redux-logger": "3.0.9",
+    "@types/redux-logger": "3.0.13",
     "@types/trusted-types": "2.0.7",
     "@types/unist": "3.0.3",
     "acorn": "8.0.5",
