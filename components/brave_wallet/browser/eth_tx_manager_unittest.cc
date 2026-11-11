@@ -2062,7 +2062,7 @@ TEST_F(EthTxManagerUnitTest, TestSubmittedToConfirmed) {
   EXPECT_EQ(mojom::TransactionStatus::Submitted, tx_meta1->status());
   tx_meta2 = eth_tx_manager()->GetTxForTesting("002");
   ASSERT_TRUE(tx_meta2);
-  EXPECT_EQ(mojom::TransactionStatus::Submitted, tx_meta1->status());
+  EXPECT_EQ(mojom::TransactionStatus::Submitted, tx_meta2->status());
 }
 
 TEST_F(EthTxManagerUnitTest, SpeedupTransaction) {
