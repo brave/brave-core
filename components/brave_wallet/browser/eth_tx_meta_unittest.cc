@@ -319,6 +319,8 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_NativeValueOnTokenCalldata) {
 
   auto expect_native_transfer = [=](const mojom::TransactionInfoPtr& tx_info,
                                     const std::string& data) {
+    SCOPED_TRACE(data);
+
     EXPECT_EQ(tx_info->tx_type, mojom::TransactionType::Other);
     EXPECT_TRUE(tx_info->tx_params.empty());
     EXPECT_TRUE(tx_info->tx_args.empty());
@@ -367,7 +369,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_NativeValueOnTokenCalldata) {
 
   // Prove that we correctly handle the ERC721 and ERC1155 transfers.
   for (bool safe : {true, false}) {
-    // ERC721 transerFrom.
+    // ERC721 transferFrom.
 
     std::string data;
     ASSERT_TRUE(erc721::TransferFromOrSafeTransferFrom(
