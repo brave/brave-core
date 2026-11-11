@@ -1480,6 +1480,7 @@ bool IsNonPayableTokenTransactionType(mojom::TransactionType tx_type) {
     case mojom::TransactionType::ERC20Approve:
     case mojom::TransactionType::ERC721TransferFrom:
     case mojom::TransactionType::ERC721SafeTransferFrom:
+    case mojom::TransactionType::ERC721SetApprovalForAll:
     case mojom::TransactionType::ERC1155SafeTransferFrom:
       return true;
     case mojom::TransactionType::ETHSend:

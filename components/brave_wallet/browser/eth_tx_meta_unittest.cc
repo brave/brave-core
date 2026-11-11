@@ -377,13 +377,29 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_NativeValueOnTokenCalldata) {
     auto tx_info = tx_info_for(to_bytes(data), kOneEth);
     expect_native_transfer(tx_info, data);
   }
+
+  {
+    // ERC721 setApprovalForAll.
+
+    // There is no erc721::SetApprovalForAll builder, so encode by hand:
+    // selector, operator address, approved.
+    std::string data =
+        "0xa22cb465"
+        "00000000000000000000000043bcbc106ecf559246637e11aff920c8128d582a"
+        "0000000000000000000000000000000000000000000000000000000000000001";
+
+    auto tx_info = tx_info_for(to_bytes(data), "0x0");
+    ASSERT_EQ(tx_info->tx_type,
+              mojom::TransactionType::ERC721SetApprovalForAll);
+    EXPECT_EQ(tx_info->tx_params,
+              std::vector<std::string>({"address", "bool"}));
+    EXPECT_EQ(tx_info->tx_args,
+              std::vector<std::string>({kCalldataRecipient, "0x1"}));
+    // The approval's effective recipient is the collection, not the operator.
     EXPECT_EQ(tx_info->effective_recipient, kBaseToChecksummed);
 
-    const auto& base_data =
-        tx_info->tx_data_union->get_eth_tx_data_1559()->base_data;
-    EXPECT_EQ(base_data->value, kOneEth);
-    EXPECT_EQ(base_data->to, kBaseToChecksummed);
-    EXPECT_EQ(base_data->data, to_bytes(data));
+    tx_info = tx_info_for(to_bytes(data), kOneEth);
+    expect_native_transfer(tx_info, data);
   }
 
   {
