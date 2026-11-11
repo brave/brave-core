@@ -62,7 +62,7 @@ def _make_registries():
 
 
 class ComputeFreshOutputTest(unittest.TestCase):
-    def test_produces_three_files_per_builder(self):
+    def test_produces_four_files_per_builder(self):
         builders_registry, gn_args_registry = _make_registries()
         fresh = snapshot.compute_fresh_output(
             builders_registry, gn_args_registry
@@ -71,6 +71,7 @@ class ComputeFreshOutputTest(unittest.TestCase):
             set(fresh),
             {
                 'test-builder/gn-args.json',
+                'test-builder/properties.json',
                 'test-builder/sync.json',
                 'test-builder/targets.json',
             },
@@ -104,6 +105,29 @@ class ComputeFreshOutputTest(unittest.TestCase):
         )
         with self.assertRaisesRegex(ConfigError, 'does not match'):
             snapshot.compute_fresh_output(builders_registry, gn_args_registry)
+
+    def test_properties_json_carries_the_builder_spec(self):
+        builders_registry, gn_args_registry = _make_registries()
+        fresh = snapshot.compute_fresh_output(
+            builders_registry, gn_args_registry
+        )
+        self.assertEqual(
+            json.loads(fresh['test-builder/properties.json']),
+            {
+                'builder_spec': {
+                    # Unset fields (build_config, host_platform) are left out.
+                    'chromium_config': {
+                        'target_arch': 'intel',
+                        'target_bits': 64,
+                        'target_platform': 'linux',
+                    },
+                    'gclient_config': {
+                        'target_os': ['android', 'linux'],
+                        'target_cpu': [],
+                    },
+                },
+            },
+        )
 
     def test_sync_and_targets_json(self):
         builders_registry, gn_args_registry = _make_registries()
@@ -150,6 +174,7 @@ class WriteSnapshotTest(unittest.TestCase):
                 sorted(result.changed),
                 [
                     'test-builder/gn-args.json',
+                    'test-builder/properties.json',
                     'test-builder/sync.json',
                     'test-builder/targets.json',
                 ],
@@ -177,6 +202,7 @@ class WriteSnapshotTest(unittest.TestCase):
                 sorted(result.unchanged),
                 [
                     'test-builder/gn-args.json',
+                    'test-builder/properties.json',
                     'test-builder/sync.json',
                     'test-builder/targets.json',
                 ],

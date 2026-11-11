@@ -33,6 +33,36 @@ def _dump(data) -> str:
     return json.dumps(data, indent=2, sort_keys=True) + '\n'
 
 
+def _properties(builder) -> dict:
+    """A builder's `properties.json`: what consumers know of it.
+
+    Upstream's builder properties carry the same `builder_spec`, so the
+    recipe reads the platform it builds for from here, never from the GN
+    args. Unset `chromium_config` fields are left out, as upstream does.
+    """
+    chromium_config = builder.builder_spec.chromium_config
+    gclient_config = builder.builder_spec.gclient_config
+    return {
+        'builder_spec': {
+            'chromium_config': {
+                key: value
+                for key, value in (
+                    ('build_config', chromium_config.build_config),
+                    ('host_platform', chromium_config.host_platform),
+                    ('target_arch', chromium_config.target_arch),
+                    ('target_bits', chromium_config.target_bits),
+                    ('target_platform', chromium_config.target_platform),
+                )
+                if value is not None
+            },
+            'gclient_config': {
+                'target_os': list(gclient_config.target_os),
+                'target_cpu': list(gclient_config.target_cpu),
+            },
+        },
+    }
+
+
 def compute_fresh_output(builders_registry, gn_args_registry) -> dict[str, str]:
     """Returns `{relative_path: content}` for every registered builder.
 
@@ -46,6 +76,7 @@ def compute_fresh_output(builders_registry, gn_args_registry) -> dict[str, str]:
         resolved = gn_args_registry.resolve(builder.name)
         check_builder_spec(builder, resolved['gn_args'])
         output[f'{builder.name}/gn-args.json'] = _dump(resolved)
+        output[f'{builder.name}/properties.json'] = _dump(_properties(builder))
         gclient_config = builder.builder_spec.gclient_config
         output[f'{builder.name}/sync.json'] = _dump(
             {
