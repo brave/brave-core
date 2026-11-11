@@ -1,0 +1,12 @@
+diff --git a/front_end/panels/settings/SettingsScreen.ts b/front_end/panels/settings/SettingsScreen.ts
+index e58bd4f79dba01eca3a7ce3768e6827545d289af..fd740ede0cad656460f313168693f997ccabf580 100644
+--- a/front_end/panels/settings/SettingsScreen.ts
++++ b/front_end/panels/settings/SettingsScreen.ts
+@@ -387,6 +387,7 @@ export class GenericSettingsTab extends UI.Widget.VBox implements SettingsTab {
+     }
+   }
+ }
++import { PatchGenericSettingsTab } from './SettingsScreen.patch.js'; (GenericSettingsTab as any) = PatchGenericSettingsTab(GenericSettingsTab);
+ 
+ export interface ExperimentsSettingsTabViewInput {
+   filterText: string;
