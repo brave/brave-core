@@ -283,7 +283,7 @@ class BraveBrowserView : public BrowserView,
                                             bool visible) override;
   void ShowSplitView(bool focus_active_view) override;
   void HideSplitView() override;
-  void ReparentTopContainerForEndOfImmersive() override;
+  void ReparentTopContainerToBrowserView() override;
   bool ShouldDrawTabStrokes() const override;
   void UpdateTabSearchBubbleHost() override;
 
