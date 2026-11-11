@@ -21,9 +21,8 @@
 #include "brave/components/query_filter/common/features.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
+#include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -140,12 +139,12 @@ class QueryFilterServiceWorkerBrowserTest : public InProcessBrowserTest {
   }
 
   content::WebContents* web_contents() {
-    return browser()->tab_strip_model()->GetActiveWebContents();
+    return chrome_test_utils::GetActiveWebContents(this);
   }
 
   HostContentSettingsMap* content_settings() {
     return HostContentSettingsMapFactory::GetForProfile(
-        browser()->GetProfile());
+        chrome_test_utils::GetProfile(this));
   }
 
   // Turns Brave Shields off for `url`'s origin, which disables query filtering
