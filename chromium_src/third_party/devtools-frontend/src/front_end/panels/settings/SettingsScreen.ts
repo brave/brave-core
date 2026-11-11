@@ -3,9 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import * as Common from '../../core/common/common.js'
-import type { GenericSettingsTab as GenericSettingsTabType } from './SettingsScreen.js'
-
 // @brave/leo brave-icon-release-color.svg, inlined because devtools:// can't
 // load chrome://resources.
 const BRAVE_LOGO_SVG =
@@ -15,13 +12,3 @@ document.documentElement.style.setProperty(
   '--image-file-devtools',
   `url("data:image/svg+xml,${encodeURIComponent(BRAVE_LOGO_SVG)}")`
 )
-
-export function PatchGenericSettingsTab(
-  GenericSettingsTab: typeof GenericSettingsTabType
-) {
-  const isSettingVisible = GenericSettingsTab.isSettingVisible
-  GenericSettingsTab.isSettingVisible = (setting) =>
-    setting.uiDescriptor.category !== Common.Settings.SettingCategory.ACCOUNT &&
-    isSettingVisible(setting)
-  return GenericSettingsTab
-}

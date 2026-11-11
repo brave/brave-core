@@ -1,12 +1,22 @@
 diff --git a/front_end/panels/settings/SettingsScreen.ts b/front_end/panels/settings/SettingsScreen.ts
-index e58bd4f79dba01eca3a7ce3768e6827545d289af..fd740ede0cad656460f313168693f997ccabf580 100644
+index e58bd4f79dba01eca3a7ce3768e6827545d289af..0b2a6a8cc2e001676e3e1f8519a764adf98be753 100644
 --- a/front_end/panels/settings/SettingsScreen.ts
 +++ b/front_end/panels/settings/SettingsScreen.ts
-@@ -387,6 +387,7 @@ export class GenericSettingsTab extends UI.Widget.VBox implements SettingsTab {
-     }
-   }
- }
-+import { PatchGenericSettingsTab } from './SettingsScreen.patch.js'; (GenericSettingsTab as any) = PatchGenericSettingsTab(GenericSettingsTab);
+@@ -3,6 +3,7 @@
+ // found in the LICENSE file.
+ /* eslint-disable @devtools/no-imperative-dom-api */
  
- export interface ExperimentsSettingsTabViewInput {
-   filterText: string;
++import './SettingsScreen.patch.js';
+ import '../../ui/kit/kit.js';
+ 
+ import * as Common from '../../core/common/common.js';
+@@ -297,6 +298,9 @@ export class GenericSettingsTab extends UI.Widget.VBox implements SettingsTab {
+   }
+ 
+   static isSettingVisible(setting: SettingUIRegistration.SettingUIRegistration.RegisteredSettingUI): boolean {
++    if (setting.uiDescriptor.category === Common.Settings.SettingCategory.ACCOUNT) {
++      return false;
++    }
+     return Boolean(setting.uiDescriptor.title?.()) && Boolean(setting.uiDescriptor.category);
+   }
+ 
