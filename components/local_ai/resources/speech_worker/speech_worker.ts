@@ -96,8 +96,6 @@ class SpeechRecognitionFactoryImpl
   private readonly receiver: SpeechRecognitionFactoryReceiver
   private readonly streams = new Set<AsrStreamInputAdapter>()
   private model: OrtNemotronModel | null = null
-  // The browser only delivers the English model so far.
-  private readonly modelType: NemotronModelType = 'multilingual' //'english'
 
   constructor() {
     this.receiver = new SpeechRecognitionFactoryReceiver(this)
@@ -141,11 +139,9 @@ class SpeechRecognitionFactoryImpl
     try {
       // The browser falls back to en-US when a page sets no language, so a
       // missing one only comes from a caller that skips that.
-      const language = options.language ?? 'es-ES' // 'en-US'
+      const language = options.language ?? 'en-US'
       const { modelType, promptId } = getNemotronModelType(language)
-      if (modelType !== this.modelType) {
-        throw new Error(`${language} needs the ${modelType} model`)
-      }
+
       adapter = new AsrStreamInputAdapter(
         this.model,
         modelType,
