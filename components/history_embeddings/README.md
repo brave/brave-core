@@ -4,10 +4,14 @@ Semantic history search. User types a natural-language query; Brave returns
 previously visited pages whose content is semantically close to the query, even
 when no keyword matches.
 
-Built on top of Chromium's `history_embeddings` + `passage_embeddings`
-components, but Brave swaps the embedder for a local **EmbeddingGemma** model
-run natively through LiteRT, and disables the upstream visibility filter that
-depends on remote classification.
+This directory is Brave's fork of Chromium's `components/history_embeddings`
+(core, content, proto), copied from 158.0.8127.22 when upstream removed it in
+M159. The fork keeps only what Brave runs: no answerer, intent classifier,
+visibility filter, optimization guide hooks or search strings component. It uses
+the `brave_history_embeddings` namespace and proto package. Passages are still
+embedded through Chromium's `passage_embeddings` and `page_content_annotations`
+components, with the embedder swapped for a local **EmbeddingGemma** model run
+natively through LiteRT.
 
 This doc is the big-picture overview of the whole feature — upstream + Brave.
 For the Brave embedder's internals (the sandboxed utility, the LiteRT runner,
@@ -16,30 +20,32 @@ component model delivery), see
 
 ## Tunable parameters (defaults)
 
-| Knob                              | Value    | Defined in                                                                                                    |
-| --------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------- |
-| Max words per passage             | 100      | `//components/passage_embeddings/core/passage_embeddings_features.cc` — `kMaxWordsPerAggregatePassage`        |
-| Max passages per page             | 10       | `//components/passage_embeddings/core/passage_embeddings_features.cc` — `kMaxPassagesPerPage`                 |
-| Min words per passage             | 5        | `//components/passage_embeddings/core/passage_embeddings_features.cc` — `kMinWordsPerPassage`                 |
-| Min query word count              | 2        | `//components/history_embeddings/core/history_embeddings_features.cc` — `kSearchQueryMinimumWordCount`        |
-| Min passage word count for search | 5        | `//components/history_embeddings/core/history_embeddings_features.cc` — `kSearchPassageMinimumWordCount`      |
-| Cosine score threshold (Brave)    | **0.45** | `//brave/browser/history_embeddings/brave_passage_embeddings_service_controller.cc` — `GetEmbedderMetadata()` |
-| Embedding output size             | 768      | `//brave/browser/history_embeddings/brave_passage_embeddings_service_controller.cc` — `GetEmbedderMetadata()` |
-| Per-passage score aggregation     | **max**  | `//components/history_embeddings/core/vector_database.cc` — `UrlData::BestScoreWith()`                        |
-| Word-match boost                  | additive | `//components/history_embeddings/core/vector_database.cc` — capped at 5 matched terms, factor 0.2             |
+| Knob                              | Value    | Defined in                                                                                                     |
+| --------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------- |
+| Max words per passage             | 100      | `//components/passage_embeddings/core/passage_embeddings_features.cc` — `kMaxWordsPerAggregatePassage`         |
+| Max passages per page             | 10       | `//components/passage_embeddings/core/passage_embeddings_features.cc` — `kMaxPassagesPerPage`                  |
+| Min words per passage             | 5        | `//components/passage_embeddings/core/passage_embeddings_features.cc` — `kMinWordsPerPassage`                  |
+| Min query word count              | 2        | `//brave/components/history_embeddings/core/history_embeddings_features.cc` — `kSearchQueryMinimumWordCount`   |
+| Min passage word count for search | 5        | `//brave/components/history_embeddings/core/history_embeddings_features.cc` — `kSearchPassageMinimumWordCount` |
+| Cosine score threshold            | model    | `score_threshold` in the component's `model-info.pb`                                                           |
+| Embedding output size             | model    | `output_size` in the component's `model-info.pb`                                                               |
+| Per-passage score aggregation     | **max**  | `//brave/components/history_embeddings/core/vector_database.cc` — `UrlData::BestScoreWith()`                   |
+| Word-match boost                  | additive | `//brave/components/history_embeddings/core/vector_database.cc` — capped at 5 matched terms, factor 0.2        |
 
 `kSearchScoreThreshold` (also in
-`//components/history_embeddings/core/history_embeddings_features.cc`) defaults
-to `-1`, meaning the runtime falls back to the embedder metadata threshold —
-i.e., Brave's 0.45.
+`//brave/components/history_embeddings/core/history_embeddings_features.cc`)
+defaults to `-1`, meaning the runtime falls back to the threshold in the
+embedder metadata, which comes from the model's `model-info.pb` (see
+[`//brave/browser/history_embeddings/README.md`](../../browser/history_embeddings/README.md)).
 
 ### Finch overrides (brave-variations)
 
 Study `HistoryEmbeddingsParamsStudy` in
 [`brave-variations`](https://github.com/brave/brave-variations) tunes the
 word-match path for users who have force-enabled `HistoryEmbeddings` (flag/CLI).
-The study is currently set up with `probability_weight: 0` on the `Tuned` arm —
-wired in but not rolled out.
+The fork reads the same `kHistoryEmbeddings` feature and param names, so the
+study applies to it unchanged. The study is currently set up with
+`probability_weight: 0` on the `Tuned` arm — wired in but not rolled out.
 
 | Param                        | Upstream default | Brave Tuned | What it gates                                                                |
 | ---------------------------- | ---------------- | ----------- | ---------------------------------------------------------------------------- |
@@ -112,16 +118,19 @@ nav finishes
                   passage_embedder_impl.cc
    │
    ▼
-[browser]   HistoryEmbeddingsService::OnPassagesEmbeddingsComputed()
-            validates dimensions / model version, then writes:
+[browser]   HistoryEmbeddingsService::OnPageEmbeddingsAvailable()
+            matches the page to the history visit HistoryEmbeddingsTabHelper
+            recorded for its tab, then writes:
               passages   table (url_id, visit_id, visit_time,
                                 passages_blob — encrypted via os_crypt_async)
               embeddings table (url_id, visit_id, visit_time,
                                 embeddings_blob — serialized proto)
             via SqlDatabase on a worker sequence.
-            └─ service: //components/history_embeddings/content/
+            └─ service: //brave/components/history_embeddings/content/
                   history_embeddings_service.{h,cc}
-            └─ storage: //components/history_embeddings/core/
+            └─ tab helper: //brave/browser/history_embeddings/
+                  history_embeddings_tab_helper.{h,cc}
+            └─ storage: //brave/components/history_embeddings/core/
                   sql_database.{h,cc}, vector_database.{h,cc}
 ```
 
@@ -165,7 +174,7 @@ user enters query
    │
    ▼
 HistoryEmbeddingsService::Search(query, time_range, count, ...)
-   └─ //components/history_embeddings/content/
+   └─ //brave/components/history_embeddings/content/
          history_embeddings_service.{h,cc}
    │
    ├─ reject if query has < 2 words
@@ -186,38 +195,20 @@ Storage::Search() on the DB worker sequence:
                score = cosine(query, passage_embedding)
                best  = max(best, score)
            return best + word_match_boost
-   └─ //components/history_embeddings/core/vector_database.{h,cc}
+   └─ //brave/components/history_embeddings/core/vector_database.{h,cc}
    │
    ▼
-filter: keep only urls where score >= 0.45
+filter: keep only urls where score >= the model's threshold
    └─ threshold resolved in
-      //components/history_embeddings/content/history_embeddings_service.cc
-      (GetScoreThreshold)
+      //brave/components/history_embeddings/content/
+         history_embeddings_service.cc (GetScoreThreshold)
    │
    ▼
-visibility filter
-   • upstream: PageContentAnnotationsService scores each page
-     (ads / paywalls / etc.) and drops low-visibility hits
-     └─ //components/page_content_annotations/core/
-           page_content_annotations_service.{h,cc}
-   • Brave: BraveHistoryEmbeddingsService overrides this and
-     synthesizes 1.0 visibility for every url (no remote
-     classification, no filtering)
-     └─ //brave/browser/history_embeddings/
-           brave_history_embeddings_service.{h,cc}
-        //brave/components/history_embeddings/content/
-           brave_history_embeddings_helpers.h
+look up each url's history row (title, last visit)
    │
    ▼
-optional answerer step (if enabled and not skipped):
-   pick the top passages (min 3 rows, min 1000 total words of context),
-   feed to Answerer → returns synthesized answer text + source url
-   └─ //components/history_embeddings/core/answerer.{h,cc}
-       //components/history_embeddings/core/ml_answerer.{h,cc}
-   │
-   ▼
-SearchResult { scored_url_rows (sorted, capped at count), answerer_result }
-   └─ //components/history_embeddings/core/history_embeddings_search.h
+SearchResult { scored_url_rows (sorted, capped at count) }
+   └─ //brave/components/history_embeddings/core/history_embeddings_search.h
 ```
 
 ### Scoring detail
@@ -235,8 +226,8 @@ would not change the result.
 #### Word-match boost
 
 Implemented in `UrlData::BestScoreWith()`
-(`//components/history_embeddings/core/vector_database.cc`). It's a text-overlap
-bonus added on top of the cosine score, with three gates:
+(`//brave/components/history_embeddings/core/vector_database.cc`). It's a
+text-overlap bonus added on top of the cosine score, with three gates:
 
 1. **Length gate** — if the query has more than `word_match_max_term_count`
    (default 10) terms, word-match is disabled entirely for this URL.
@@ -269,7 +260,7 @@ word_match_boost = sum(per_term_boost over query terms)
 Practical bounds: each term contributes at most `0.2 * 5 / 5 = 0.2`. After
 normalization by query length, the total boost is at most `0.2` regardless of
 query size. So word-match can lift a borderline 0.4-cosine passage to ~0.6 —
-enough to clear Brave's 0.45 threshold and surface the result.
+enough to clear a threshold in that range and surface the result.
 
 Note: term counts are accumulated **across all of the URL's eligible passages**,
 not just the best one. So a URL where the query terms are sprinkled across
@@ -292,34 +283,34 @@ semantically but contain most of the query words can still surface.
 
 | Upstream                                                                  | Brave                                                                                                                                    |
 | ------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Removed in M159                                                           | Forked into `//brave/components/history_embeddings`                                                                                      |
 | TFLite model delivered via OptimizationGuide (server fetch)               | **EmbeddingGemma** `.tflite` delivered via component updater, run natively through LiteRT                                                |
 | Embedder runs in a sandboxed utility process, talks mojo                  | Same sandboxed utility; Brave only swaps the executor inside it (LiteRT `CompiledModel` instead of upstream's TFLite executor)           |
-| PageContentAnnotationsService filters low-visibility pages out of results | Visibility filter bypassed — `SynthesizePassingVisibilityResults()` returns 1.0 for everything                                           |
+| PageContentAnnotationsService filters low-visibility pages out of results | No visibility filter; results go straight to the history lookup                                                                          |
 | `kHistoryEmbeddings` / `kPassageEmbedder` enabled by Finch                | Both DISABLED_BY_DEFAULT; user opts in via `chrome://flags`. brave-variations study tunes word-match params for opt-in users (see above) |
-| `search_score_threshold` from model metadata, fallback 0.9                | Hardcoded **0.45** in `GetEmbedderMetadata()`                                                                                            |
-| Answerer uses OptimizationGuide-delivered model                           | Same plumbing, but gated behind the flag                                                                                                 |
+| Answers in the omnibox and on chrome://history                            | No answerer                                                                                                                              |
 
 ### Brave-side code
 
+- This directory — the fork: `core/` (features, `HistoryEmbeddingsSearch`,
+  `SqlDatabase`, `VectorDatabase`), `content/` (`HistoryEmbeddingsService`, open
+  tab passages) and `proto/`.
 - [`//brave/browser/history_embeddings/`](../../browser/history_embeddings/README.md)
-  — the local embedder: the controller that launches the sandboxed utility and
-  resolves the component model. See its README for the full breakdown.
+  — the service factory, tab helper and gates, and the local embedder: the
+  controller that launches the sandboxed utility and resolves the component
+  model. See its README for the full breakdown.
 - `//brave/services/passage_embeddings/` — `LitertModelRunner`, the LiteRT
   `CompiledModel` execution engine that runs EmbeddingGemma inside the utility.
-- `//brave/browser/history_embeddings/`
-  - `brave_history_embeddings_service.{h,cc}` — subclasses upstream's
-    `HistoryEmbeddingsService` to short-circuit the visibility step.
-- `//brave/components/history_embeddings/content/`
-  - `brave_history_embeddings_helpers.h` —
-    `SynthesizePassingVisibilityResults()`.
-- `//brave/chromium_src/`
-  - Shims that inject `virtual` and `friend` declarations into upstream headers
-    so the Brave singleton can subclass cleanly without patches.
+- `//brave/browser/ui/webui/history_embeddings/` and
+  `//brave/browser/resources/history/history_embeddings/` — the brave://history
+  results card.
+- `//brave/components/omnibox/browser/brave_history_embeddings_provider.{h,cc}`
+  — `@history` omnibox matches.
+- `//brave/chromium_src/` and `//brave/rewrite/`
+  - Keep upstream's copy off: its `IsHistoryEmbeddingsFeatureEnabled()` returns
+    false, so its service, UI and omnibox provider never run.
   - Injects `LitertModelRunner` into `PassageEmbedderImpl::BuildExecutionTask`
     so the utility runs EmbeddingGemma on LiteRT.
-  - Default-disables the upstream feature flags; the Semantic history search
-    toggle opts in. Swaps the keyed service factory to instantiate
-    `BraveHistoryEmbeddingsService`.
 
 ### Process model
 
@@ -343,8 +334,8 @@ semantically but contain most of the query words can still surface.
 - One page can contribute at most 10 passages and ~1000 words to the index.
 - The "score" you see is `max passage cosine + small word-match bonus`. If one
   passage hits 0.7 cosine, the page is in regardless of the other nine.
-- 0.45 is the entire gate. Tuning it is the most direct lever for
-  precision/recall.
+- The model's score threshold is the entire gate. Tuning it is the most direct
+  lever for precision/recall.
 - Visibility is not a factor in Brave — anything indexed can be returned.
 - The query path uses the **same LiteRT embedder** as indexing, just at
   `UserInitiated` priority. First search after launch can be slow because the
