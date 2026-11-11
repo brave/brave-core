@@ -271,6 +271,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &net::features::kEnableWebTransportDraft07,
       &net::features::kTLSTrustAnchorIDs,
       &network::features::kBrowsingTopics,
+      &network::features::kPervasiveSharedDictionaries,
       &network_time::kNetworkTimeServiceQuerying,
       &ntp_features::kCustomizeChromeSidePanelExtensionsCard,
       &ntp_features::kCustomizeChromeWallpaperSearch,
