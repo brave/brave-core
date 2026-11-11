@@ -18,7 +18,6 @@
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "components/bookmarks/test/test_bookmark_client.h"
 #include "components/history/core/browser/history_backend.h"
-#include "components/history/core/browser/history_database.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/test/history_service_test_util.h"
 #include "components/omnibox/browser/fake_autocomplete_provider_client.h"
