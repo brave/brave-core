@@ -693,7 +693,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubFrame) {
                            })
                          )"));
   ASSERT_TRUE(base::test::RunUntil(
-      [&] { return profile()->GetPrefs()->GetUint64(kAdsBlocked) == 2ULL; }));
+      [&] { return profile()->GetPrefs()->GetUint64(kAdsBlocked) >= 2ULL; }));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
 }
 
