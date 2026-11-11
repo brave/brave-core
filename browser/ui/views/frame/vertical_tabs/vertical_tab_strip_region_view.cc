@@ -33,6 +33,7 @@
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
@@ -56,6 +57,7 @@
 #include "ui/compositor/compositor.h"
 #include "ui/compositor/layer.h"
 #include "ui/display/screen.h"
+#include "ui/events/event.h"
 #include "ui/events/event_observer.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/paint_vector_icon.h"
@@ -138,6 +140,12 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
                           browser_window_interface) {
     // Turn off inkdrop to have same bg color with tab's.
     views::InkDrop::Get(this)->SetMode(views::InkDropHost::InkDropMode::OFF);
+
+#if BUILDFLAG(IS_LINUX)
+    // Middle-clicking the new tab button opens the URL from the clipboard in a new tab.
+    SetTriggerableEventFlags(GetTriggerableEventFlags() |
+                             ui::EF_MIDDLE_MOUSE_BUTTON);
+#endif
 
     // We're going to use flex layout for children of this class. Other children
     // from base classes should be handled out of flex layout.

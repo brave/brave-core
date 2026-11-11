@@ -120,6 +120,8 @@ source_set("interactive_ui_tests") {
     "//content/public/browser",
     "//content/test:test_support",
     "//testing/gtest",
+    "//ui/base",
+    "//ui/events:test_support",
     "//ui/views",
   ]
 }

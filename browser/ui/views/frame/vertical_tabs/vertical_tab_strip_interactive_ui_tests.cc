@@ -8,6 +8,7 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
+#include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
@@ -17,6 +18,12 @@
 #include "chrome/test/interaction/interactive_browser_test.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
+#include "ui/base/clipboard/clipboard_buffer.h"
+#include "ui/base/clipboard/scoped_clipboard_writer.h"
+#include "ui/events/event.h"
+#include "ui/events/test/event_generator.h"
+#include "ui/views/widget/widget_utils.h"
+#include "url/gurl.h"
 
 using State = BraveVerticalTabStripRegionView::State;
 
@@ -141,3 +148,52 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripInteractiveUITest,
   EXPECT_TRUE(base::test::RunUntil(
       [&]() { return host_view->GetPreferredSize().width() > 0; }));
 }
+
+#if BUILDFLAG(IS_LINUX)
+// Middle-clicking the new tab button of the vertical tab strip should open the
+// URL from the selection clipboard in a new tab.
+IN_PROC_BROWSER_TEST_F(VerticalTabStripInteractiveUITest,
+                       MiddleClickNewTabButton) {
+  ToggleVerticalTabStrip();
+
+  auto* region_view = browser_view()
+                          ->vertical_tab_strip_container_view()
+                          ->vertical_tab_strip_region_view();
+  ASSERT_TRUE(region_view);
+
+  auto* new_tab_button = region_view->new_tab_button_for_testing();
+  ASSERT_TRUE(new_tab_button);
+  ASSERT_TRUE(new_tab_button->GetVisible());
+
+  // The strip animates when it is shown; wait until the button is really laid
+  // out, otherwise a mouse event cannot land on it (zero-width bounds).
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return new_tab_button->width() > 0 && new_tab_button->height() > 0;
+  }));
+
+  ASSERT_TRUE(ui::Clipboard::IsSupportedClipboardBuffer(
+      ui::ClipboardBuffer::kSelection));
+  const GURL url("https://example.com/");
+  {
+    ui::ScopedClipboardWriter writer(ui::ClipboardBuffer::kSelection);
+    writer.WriteText(base::UTF8ToUTF16(url.spec()));
+  }
+
+  auto* const tab_strip_model = browser()->tab_strip_model();
+  const int initial_tab_count = tab_strip_model->count();
+
+  ui::test::EventGenerator event_generator(
+      views::GetRootWindow(browser_view()->GetWidget()),
+      browser_view()->GetNativeWindow());
+  event_generator.MoveMouseTo(
+      new_tab_button->GetBoundsInScreen().CenterPoint());
+  event_generator.PressButton(ui::EF_MIDDLE_MOUSE_BUTTON);
+  event_generator.ReleaseButton(ui::EF_MIDDLE_MOUSE_BUTTON);
+
+  EXPECT_TRUE(base::test::RunUntil(
+      [&]() { return tab_strip_model->count() == initial_tab_count + 1; }));
+  ASSERT_EQ(initial_tab_count + 1, tab_strip_model->count());
+  EXPECT_EQ(url,
+            tab_strip_model->GetWebContentsAt(initial_tab_count)->GetURL());
+}
+#endif  // BUILDFLAG(IS_LINUX)
