@@ -314,11 +314,12 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
     }
     ExpectConversationHistoryEquals(FROM_HERE, result_2->entries, history);
 
-    // Verify metadata now has new model key
+    // Verify metadata includes the latest entry time.
     conversations = db_->GetAllConversations();
-    EXPECT_EQ(conversations.size(), has_content ? 1u : 2u);
-    ExpectConversationEquals(
-        FROM_HERE, has_content ? conversations[0] : conversations[1], metadata);
+    ASSERT_EQ(conversations.size(), has_content ? 1u : 2u);
+    const auto& updated_conversation = conversations[has_content ? 0 : 1];
+    ExpectConversationEquals(FROM_HERE, updated_conversation, metadata);
+    EXPECT_EQ(updated_conversation->updated_time, history.back()->created_time);
 
     // Edits (delete, re-add and check edit re-construction)
 
