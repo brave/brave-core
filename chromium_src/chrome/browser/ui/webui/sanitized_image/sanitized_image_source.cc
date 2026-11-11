@@ -3,12 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <optional>
+
 #include "services/network/public/cpp/ip_address_space_util.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_loader_factory.mojom.h"
 #include "url/gurl.h"
 
-namespace brave {
+namespace {
 
 bool ShouldRejectLocalImageRequest(const GURL& image_url) {
   std::optional<network::mojom::IPAddressSpace> address_space =
@@ -27,6 +29,6 @@ void SetSanitizedImageLoaderOptions(network::SimpleURLLoader* loader,
            : network::mojom::kURLLoadOptionBlockAllCookies));
 }
 
-}  // namespace brave
+}  // namespace
 
 #include <chrome/browser/ui/webui/sanitized_image/sanitized_image_source.cc>

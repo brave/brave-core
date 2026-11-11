@@ -24,25 +24,19 @@ class BraveSanitizedImageSourceNetworkTest : public SanitizedImageSourceTest {
 
 }  // namespace
 
-TEST_F(BraveSanitizedImageSourceNetworkTest, BraveLoopbackUrlRejected) {
-  ExpectRejected("https://127.0.0.1:8377/icon.png");
-}
-
 TEST_F(BraveSanitizedImageSourceNetworkTest,
-       BraveMappedIpv6LoopbackUrlRejected) {
-  ExpectRejected("https://[::ffff:127.0.0.1]:8377/icon.png");
-}
-
-TEST_F(BraveSanitizedImageSourceNetworkTest, BravePrivateAddressUrlRejected) {
-  ExpectRejected("https://192.168.1.10/icon.png");
-}
-
-TEST_F(BraveSanitizedImageSourceNetworkTest, BraveLocalhostHostnameRejected) {
-  ExpectRejected("https://localhost:8377/icon.png");
-}
-
-TEST_F(BraveSanitizedImageSourceNetworkTest, BraveDotLocalHostnameRejected) {
-  ExpectRejected("https://menu.local/icon.png");
+       BraveLocalAndLoopbackUrlsRejected) {
+  const char* kRejectedUrls[] = {
+      "https://127.0.0.1:8377/icon.png",
+      "https://[::ffff:127.0.0.1]:8377/icon.png",
+      "https://192.168.1.10/icon.png",
+      "https://localhost:8377/icon.png",
+      "https://menu.local/icon.png",
+  };
+  for (const auto* image_url : kRejectedUrls) {
+    SCOPED_TRACE(image_url);
+    ExpectRejected(image_url);
+  }
 }
 
 TEST_F(BraveSanitizedImageSourceNetworkTest, BraveLoaderOptionsApplied) {

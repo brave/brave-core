@@ -13,12 +13,12 @@ substitutions:
       never reach the network (website-triggered local network requests via
       suggested token icons). Hostnames that resolve to local IPs via DNS and
       redirect hops are caught per connection by
-      brave::SetSanitizedImageLoaderOptions, which applies
-      kURLLoadOptionBlockLocalRequest below.
+      SetSanitizedImageLoaderOptions, which applies
+      kURLLoadOptionBlockLocalRequest in the DownloadToString substitution.
     preempt_function_impl:
       function_name: SanitizedImageSource::StartImageDownload
       code: |-
-        if (brave::ShouldRejectLocalImageRequest(request_attributes.image_url)) {
+        if (ShouldRejectLocalImageRequest(request_attributes.image_url)) {
           std::move(callback).Run(nullptr);
           return;
         }
@@ -31,8 +31,8 @@ substitutions:
       the non-Drive branch: the Drive path intentionally authenticates with
       cookies (see its traffic annotation).
     regex:
-      re_pattern: '\n  loader_ptr->DownloadToString\('
+      pattern: 'loader_ptr->DownloadToString('
       replace: |-
-        \n  brave::SetSanitizedImageLoaderOptions(
-              loader_ptr, request_attributes.image_url);
-        \n  loader_ptr->DownloadToString(
+        SetSanitizedImageLoaderOptions(loader_ptr,
+              request_attributes.image_url);
+          loader_ptr->DownloadToString(
