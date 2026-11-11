@@ -15,6 +15,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/peek/peek_features.h"
 #include "brave/browser/ui/peek/public/peek_controller.h"
@@ -476,6 +477,14 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, SiteInfoButtonShowsPageInfoForPeek) {
       PageInfoBubbleViewBase::GetPageInfoBubbleForTesting());
   ASSERT_TRUE(bubble);
   EXPECT_EQ(peek_contents(), bubble->web_contents());
+}
+
+// Only tabs get Brave's helpers from `BraveTabFeatures`, so Peek attaches the
+// privacy-sensitive ones itself.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, AttachesShieldsHelpers) {
+  OpenPeek(GetURL("b.com", "/title2.html"));
+  EXPECT_TRUE(brave_shields::BraveShieldsWebContentsObserver::FromWebContents(
+      peek_contents()));
 }
 
 // Changing Shields is a decision about the site, so it happens in a tab, with

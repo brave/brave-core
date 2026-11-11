@@ -214,8 +214,10 @@ and the `peek_utils` unit tests.
 ### Shields
 
 - Shields protection applies in Peek like in a tab. Blocking runs in the network
-  and renderer, keyed by the site's settings, and
-  `BraveShieldsWebContentsObserver` is attached to every `WebContents`.
+  and renderer, keyed by the site's settings. `PeekContents` attaches Brave's
+  privacy-sensitive helpers (`brave::AttachTabHelpers`: the Shields observer,
+  ephemeral storage and page content settings) before the page loads, since
+  only tabs get them from `BraveTabFeatures`.
 - The Shields button shows whether Shields is on for the site. It doesn't show a
   blocked count, which is tracked by the per-tab Shields helper.
 - Pressing it moves the page into a tab and opens that tab's Shields panel, the
@@ -223,7 +225,7 @@ and the `peek_utils` unit tests.
   scripts is a decision about the site, so it's made with the tab's full browser
   UI, like permission prompts.
 
-Test: `ShieldsButtonMovesToTabAndShowsPanel`.
+Tests: `AttachesShieldsHelpers`, `ShieldsButtonMovesToTabAndShowsPanel`.
 
 ### Object lifetimes
 
@@ -284,15 +286,14 @@ to either move Peek to a tab first or fail closed while the page is in Peek:
 - Password manager bubbles (save, update, manage): only shown for contents that
   are a tab in a browser (`ManagePasswordsUIController`), so they don't show
   from Peek.
-- Autofill and password suggestions: the dropdown is shown in Peek, anchored to
-  the field inside the card. This is the page's own UI rather than a prompt
-  attached to the browser window: the card toolbar shows the site it belongs to,
-  and the suggestions are the ones saved for that site.
+- Autofill and password suggestions: the autofill and password manager clients
+  are tab features, which Peek pages don't have, so no suggestions are offered
+  in Peek. They work after "Open as tab".
 
 - WebAuthn requests that go straight to the platform authenticator (iCloud
   Keychain on macOS, Windows Hello) without Chrome's dialog: the system dialog
   is attached to the browser window and can show while the page is in Peek.
-  Accepted, like autofill: the system dialog names the site the passkey is for
+  Accepted: the system dialog names the site the passkey is for
   (the relying party ID, which must match the requesting site), and the passkey
   only works for that site. Moving Peek to a tab here would need a hook that
   can't tell these requests from conditional (autofill) passkey requests, which
