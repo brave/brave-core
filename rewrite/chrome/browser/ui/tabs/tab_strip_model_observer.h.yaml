@@ -4,14 +4,11 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: |
-      Add Brave-specific callbacks to TabStripModelObserver.
+  - description: |-
+      Notify TabStripModelObserver of tree tab changes
 
-      * TabCustomTitleChanged(): BraveBrowser stores the custom title in the
-        session service so it can be restored even after browser restarts.
-      * OnTreeTabChanged(): Notifies observers of tree-tab structure changes.
+      `OnTreeTabChanged()` reports changes to the tree tab structure, such as a
+      node being created, collapsed or reparented.
     add_to_public:
       class_name: TabStripModelObserver
-      code: |-
-        virtual void TabCustomTitleChanged(content::WebContents* contents, const std::optional<std::string>& custom_title) {}
-        virtual void OnTreeTabChanged(const TreeTabChange& change) {}
+      code: 'virtual void OnTreeTabChanged(const TreeTabChange& change) {}'
