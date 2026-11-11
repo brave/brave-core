@@ -149,13 +149,10 @@ IN_PROC_BROWSER_TEST_F(BraveRecapUIBrowserTest, LoadsAllImages) {
   EXPECT_EQ("6 images, failed: []", content::EvalJs(web_contents(), R"js(
     (async () => {
       const urls = new Set(['/images/card_pattern.webp'])
-      for (const sheet of document.styleSheets) {
-        if (!sheet.href?.endsWith('/components/app.css')) {
-          continue
-        }
+      for (const sheet of document.adoptedStyleSheets) {
         for (const rule of sheet.cssRules) {
           for (const [, url] of rule.cssText.matchAll(/url\("?([^")]+)"?\)/g)) {
-            urls.add(new URL(url, sheet.href).pathname)
+            urls.add(new URL(url, document.baseURI).pathname)
           }
         }
       }

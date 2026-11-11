@@ -31,6 +31,7 @@ import {
 } from '../format'
 import { ShareCardImages, renderShareCard } from '../share_card'
 import { DotMatrix } from './dot_matrix'
+import { LANDSCAPE_QUERY, style } from './app.style'
 import '../strings'
 
 // TODO: replace with an attributed download link once growth provides one.
@@ -53,11 +54,6 @@ const COUNT_UP_MS = 1400
 const HOLD_MS = 300
 // How much of the slide, from the start side, goes back when tapped.
 const BACK_ZONE = 1 / 3
-
-// Desktops and landscape tablets get the wide card. Keep in sync with the
-// landscape media query in app.css.
-const LANDSCAPE_QUERY =
-  '(orientation: landscape) and (min-width: 768px) and (min-height: 540px)'
 
 function prefersReducedMotion() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -937,7 +933,7 @@ function Recap({
 
 export function App(props: Props) {
   return (
-    <div className='stage'>
+    <div data-css-scope={style.scope}>
       <DotMatrix />
       {hasEnoughData(props.stats) ? (
         <Recap

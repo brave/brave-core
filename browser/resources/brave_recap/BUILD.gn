@@ -38,13 +38,7 @@ generate_grd("static_resources_grd") {
   out_grd = static_grd_path
   input_files = [
     "brave_recap.html",
-    "components/app.css",
-    "images/blocked.webp",
     "images/card_pattern.webp",
-    "images/data.webp",
-    "images/intro.webp",
-    "images/share.webp",
-    "images/time.webp",
   ]
   input_files_base_dir = rebase_path(".", "//")
 }

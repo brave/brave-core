@@ -128,7 +128,7 @@ const jestConfig: Config = {
   ],
   setupFilesAfterEnv: ['<rootDir>/components/test/testSetup.ts'],
   moduleNameMapper: {
-    '\\.(jpg|jpeg|png|gif|eot|otf|svg|ttf|woff|woff2)$':
+    '\\.(jpg|jpeg|png|gif|webp|eot|otf|svg|ttf|woff|woff2)$':
       '<rootDir>/components/test/fileMock.ts',
     '\\.(css|less|scss)$': 'identity-obj-proxy',
     '^\\$web-common\\/(.*)': '<rootDir>/components/common/$1',
