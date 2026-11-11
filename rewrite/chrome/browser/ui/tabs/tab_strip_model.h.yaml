@@ -55,3 +55,15 @@ substitutions:
       class_name: TabStripModel
       code: |
         gfx::Range InsertDetachedTreeTabNodeAt(std::unique_ptr<DetachedTabCollection> tree_node, int index);
+
+  - description: |
+      Expose the re-entrancy guard state as is_mutating().
+
+      Brave observers can be invoked synchronously from inside a mutation - e.g.
+      ShowSplitView() attaches a WebContents, which raises a views focus
+      notification, while AddToNewSplit() still holds the guard. They must not
+      call back into the model then.
+    add_to_public:
+      class_name: TabStripModel
+      code: |
+        bool is_mutating() const { return reentrancy_guard_; }

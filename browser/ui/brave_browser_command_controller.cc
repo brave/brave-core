@@ -261,6 +261,15 @@ bool BraveBrowserCommandController::ExecuteCommandWithDispositionAndContext(
     WindowOpenDisposition disposition,
     std::optional<actions::ActionInvocationContext> context,
     base::TimeTicks time_stamp) {
+  // IDC_NEW_SPLIT_TAB splits the active tab, and the web panel's tab must never
+  // join a split. Refuse here rather than disabling the command: its enabled
+  // state is owned by upstream, which re-enables it from tab strip
+  // notifications Brave doesn't all observe, so the disable would go stale.
+  if (id == IDC_NEW_SPLIT_TAB &&
+      sidebar::IsWebPanelTabActive(base::to_address(browser_))) {
+    return true;
+  }
+
   return IsBraveCommands(id) || IsBraveOverrideCommands(
                                     id, *browser_->GetProfile()->GetPrefs())
              ? ExecuteBraveCommandWithDisposition(id, disposition, time_stamp)

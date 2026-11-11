@@ -31,6 +31,18 @@ substitutions:
               }
 
   - description: |
+      Don't pair a kNewSplitView navigation with the sidebar web panel's tab.
+
+      The panel's tab must never join a split. TabStripModel refuses it, but
+      the window.open() split branch here dereferences AddToNewSplit()'s
+      returned id, so this path has to bail out before calling it.
+    regex:
+      re_pattern: '(\(!source_tab \|\| !source_tab->IsSplit\(\)\))'
+      replace: |-
+        \1 &&
+                  !sidebar::IsWebPanelTab(active_tab)
+
+  - description: |
       Pass additional parameter to GetSiteInstanceForNewTab()
     count: 0
     regex:

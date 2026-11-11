@@ -40,6 +40,7 @@
 #include "chrome/common/pref_names.h"
 #include "chrome/common/webui_url_constants.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents.h"
@@ -426,6 +427,24 @@ bool IsWebPanelTab(BrowserWindowInterface* browser,
     return sidebar_controller->IsWebPanelTab(contents);
   }
   return false;
+}
+
+bool IsWebPanelTab(tabs::TabInterface* tab) {
+  if (!tab) {
+    return false;
+  }
+
+  // A detached tab has no window, and a panel never outlives its own window.
+  BrowserWindowInterface* browser = tab->GetBrowserWindowInterface();
+  return browser && IsWebPanelTab(browser, tab->GetContents());
+}
+
+bool IsWebPanelTabActive(BrowserWindowInterface* browser) {
+  // An empty strip has no active contents, and IsWebPanelTab() would match a
+  // null query against the null panel_contents_ of a panel-less controller.
+  content::WebContents* active_contents =
+      browser->GetTabStripModel()->GetActiveWebContents();
+  return active_contents && IsWebPanelTab(browser, active_contents);
 }
 
 bool IsWebPanelOnlyTab(BrowserWindowInterface* browser) {

@@ -45,6 +45,28 @@ substitutions:
               NOTREACHED();\n
 
   - description: |
+      Never let the sidebar web panel's tab join a split view.
+
+      See the comment on BraveIsWebPanelTabAt() in
+      chromium_src/chrome/browser/ui/tabs/tab_strip_model.cc. Returning an
+      empty id rather than CHECKing keeps the ungated entry points (bookmarks
+      and links "open in split view", the contents drop target, extensions)
+      harmless instead of fatal.
+    preempt_function_impl:
+      function_name: TabStripModel::AddToNewSplit
+      return_if: 'BraveNewSplitWouldContainWebPanel(this, indices)'
+      return_value: 'split_tabs::SplitTabId::CreateEmpty()'
+
+  - description: |
+      Never swap or replace the sidebar web panel's tab into a split view.
+
+      UpdateTabInSplit() is a second way into a split that doesn't go through
+      AddToSplitImpl(), so it needs its own guard.
+    preempt_function_impl:
+      function_name: TabStripModel::UpdateTabInSplit
+      return_if: 'BraveIsWebPanelTabAt(this, update_index)'
+
+  - description: |
       Rename `DraggingTabsSession` to `DraggingTabsSessionChromium`.
 
       This avoids a name collision with Brave's `DraggingTabsSession` class.

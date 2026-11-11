@@ -26,6 +26,7 @@
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/browser_dialogs.h"
+#include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
@@ -842,6 +843,14 @@ void RenderViewContextMenu::InitMenu() {
   // before the first separator) when present.
   std::optional<size_t> split_index =
       menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_OPENLINKSPLITVIEW);
+  // The new split is paired with the active tab, and the sidebar web panel's
+  // tab must never join a split. TabStripModel refuses it either way; drop the
+  // item so it isn't offered as a no-op.
+  if (split_index.has_value() && GetBrowser() &&
+      sidebar::IsWebPanelTabActive(GetBrowser())) {
+    menu_model_.RemoveItemAt(split_index.value());
+    split_index.reset();
+  }
   if (split_index.has_value()) {
     std::optional<size_t> separator_index;
     for (size_t i = 0; i < menu_model_.GetItemCount(); ++i) {

@@ -22,13 +22,16 @@ BraveMultiContentsViewDelegateImpl::~BraveMultiContentsViewDelegateImpl() =
 void BraveMultiContentsViewDelegateImpl::WebContentsFocused(
     content::WebContents* contents) {
   TabStripModel* model = bwi_->GetTabStripModel();
-  // https://github.com/brave/brave-browser/issues/53121
-  // On macOS, closing a split view detaches a web contents native view, which
-  // can synchronously trigger a focus change (via AppKit first responder
-  // transfer). This focus event propagates to ActivateTabAt(), but if we're
-  // already inside CloseAllTabs(), the TabStripModel reentrancy guard fires.
-  // Skip the activation when tabs are being closed.
-  if (model->closing_all()) {
+  // Attaching or detaching a web contents native view raises this focus
+  // notification synchronously, so it can arrive from inside a TabStripModel
+  // mutation - e.g. ShowSplitView() attaches while AddToNewSplit() still holds
+  // the re-entrancy guard, or on macOS AppKit transfers first responder during
+  // a detach (https://github.com/brave/brave-browser/issues/53121). Activating
+  // a tab would trip the guard. A user gesture can't arrive mid-mutation, so
+  // such a notification never reflects user intent and is safe to drop.
+  // closing_all() is a separate, longer-lived flag that also covers the gaps
+  // between the individual detaches of a close sequence.
+  if (model->is_mutating() || model->closing_all()) {
     return;
   }
 

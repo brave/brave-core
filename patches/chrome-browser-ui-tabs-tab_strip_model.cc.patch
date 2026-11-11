@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/tabs/tab_strip_model.cc b/chrome/browser/ui/tabs/tab_strip_model.cc
-index 4a85ea7e9e63346fc29cca792f26eaeacd15d0a9..9241e8125bb9bca6bfec02f2392fa964e37f8aa7 100644
+index 4a85ea7e9e63346fc29cca792f26eaeacd15d0a9..41a25ff5464073b7634b9e9cf6fe127a94bfcc74 100644
 --- a/chrome/browser/ui/tabs/tab_strip_model.cc
 +++ b/chrome/browser/ui/tabs/tab_strip_model.cc
 @@ -216,7 +216,7 @@ std::unique_ptr<TabGroupModel> TabGroupModelFactory::Create() {
@@ -34,7 +34,23 @@ index 4a85ea7e9e63346fc29cca792f26eaeacd15d0a9..9241e8125bb9bca6bfec02f2392fa964
      // Also, any tab opened at the end of the TabStrip with a "TYPED"
      // transition inherit opener as well. This covers the cases where the user
      // creates a New Tab (e.g. Ctrl+T, or clicks the New Tab button), or types
-@@ -2697,6 +2706,15 @@ bool TabStripModel::IsContextMenuCommandEnabled(
+@@ -1945,6 +1954,7 @@ void TabStripModel::UpdateSplitRatio(split_tabs::SplitTabId split_id,
+ void TabStripModel::UpdateTabInSplit(tabs::TabInterface* split_tab,
+                                      int update_index,
+                                      SplitUpdateType update_type) {
++  if (BraveIsWebPanelTabAt(this, update_index)) return;
+   ReentrancyCheck reentrancy_check(&reentrancy_guard_);
+ 
+   tabs::TabInterface* update_tab = GetTabAtIndex(update_index);
+@@ -1985,6 +1995,7 @@ split_tabs::SplitTabId TabStripModel::AddToNewSplit(
+     std::vector<int> indices,
+     split_tabs::SplitTabVisualData visual_data,
+     split_tabs::SplitTabCreatedSource source) {
++  if (BraveNewSplitWouldContainWebPanel(this, indices)) return split_tabs::SplitTabId::CreateEmpty();
+   ReentrancyCheck reentrancy_check(&reentrancy_guard_);
+ 
+   CHECK(indices.size() == 1u || indices.size() == 2u)
+@@ -2697,6 +2708,15 @@ bool TabStripModel::IsContextMenuCommandEnabled(
    tabs::TabHandle context_tab = GetTabAtIndex(context_index)->GetHandle();
  
    switch (command_id) {
@@ -50,7 +66,7 @@ index 4a85ea7e9e63346fc29cca792f26eaeacd15d0a9..9241e8125bb9bca6bfec02f2392fa964
      case CommandNewTabToRight:
      case CommandCloseTab:
        return true;
-@@ -2862,6 +2880,15 @@ void TabStripModel::ExecuteContextMenuCommand(int context_index,
+@@ -2862,6 +2882,15 @@ void TabStripModel::ExecuteContextMenuCommand(int context_index,
    }
    tabs::TabHandle context_tab = GetTabAtIndex(context_index)->GetHandle();
    switch (command_id) {
@@ -66,7 +82,7 @@ index 4a85ea7e9e63346fc29cca792f26eaeacd15d0a9..9241e8125bb9bca6bfec02f2392fa964
      case CommandNewTabToRight: {
        base::UmaHistogramCounts1000(
            "Tab.ContextMenu.NewTabToRight.SelectedTabsCount",
-@@ -4521,7 +4548,7 @@ void TabStripModel::MoveTabRelative(TabRelativeDirection direction) {
+@@ -4521,7 +4550,7 @@ void TabStripModel::MoveTabRelative(TabRelativeDirection direction) {
  
  std::pair<std::optional<int>, std::optional<int>>
  TabStripModel::GetAdjacentTabsAfterSelectedMove(
@@ -75,7 +91,7 @@ index 4a85ea7e9e63346fc29cca792f26eaeacd15d0a9..9241e8125bb9bca6bfec02f2392fa964
      int destination_index) {
    const int pinned_tab_count = IndexOfFirstNonPinnedTab();
    const std::vector<int> pinned_selected_indices = GetSelectedPinnedTabs();
-@@ -5006,8 +5033,10 @@ void TabStripModel::InsertTabAtIndexImpl(
+@@ -5006,8 +5035,10 @@ void TabStripModel::InsertTabAtIndexImpl(
    }
  
    tabs::TabInterface* old_active_tab = GetActiveTab();
