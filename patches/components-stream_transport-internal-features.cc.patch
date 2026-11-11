@@ -1,0 +1,15 @@
+diff --git a/components/stream_transport/internal/features.cc b/components/stream_transport/internal/features.cc
+index 6ee348e7bf702b80d649da0403539b74019a8b3c..1167ea5c8ed9e4fd4125d9fdc55decccd545c131 100644
+--- a/components/stream_transport/internal/features.cc
++++ b/components/stream_transport/internal/features.cc
+@@ -8,8 +8,8 @@ namespace stream_transport {
+ 
+ BASE_FEATURE(kBrowserActuatorChannelEnabled, base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+-BASE_FEATURE(kBrowserActuatorProtoStreamTransport,
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kBrowserActuatorProtoStreamTransport,
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE_PARAM(base::TimeDelta,
+                    kProtoStreamBaseReconnectionTime,
