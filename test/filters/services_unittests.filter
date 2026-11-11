@@ -22,9 +22,10 @@
 -All/RestrictedCookieManagerTest.CookiesEnabledFor/*
 -All/RestrictedCookieManagerTest.GetAllForUrlPolicy/*
 -All/RestrictedCookieManagerTest.SetCanonicalCookiePolicy/*
--All/RestrictedCookieManagerTest.SetCookieFromStringCrossOrigin/NETWORK_00010
--All/RestrictedCookieManagerTest.SetCookieFromStringCrossOrigin/SCRIPT_00010
+-All/RestrictedCookieManagerTest.SetCookieFromStringCrossOrigin/NETWORK_0000010
+-All/RestrictedCookieManagerTest.SetCookieFromStringCrossOrigin/SCRIPT_0000010
 -CookieManagerTest.BlockThirdPartyCookies
+-NetworkServiceNetworkDelegateTest.ClearSiteDataForRestrictedAndRecursivePrefetch
 -NetworkServiceNetworkDelegateTest.ClearSiteDataPartitionedStateOnlyForCrossSiteSubframe
 
 # These tests fail because Brave gives a cross-site context ephemeral storage
@@ -42,6 +43,9 @@
 -All/RestrictedCookieManagerTest.PreferBoundCookieContextForScriptGet/*
 -All/RestrictedCookieManagerTest.PreferBoundCookieContextForTopFrameOrigin/*
 -All/RestrictedCookieManagerTest.SetCanonicalCookie_WithStorageAccess/*
+-All/RestrictedCookieManagerTest.StorageAccessNotPotentiallyAllowed_RejectsCookiesEnabledFor/*
+-All/RestrictedCookieManagerTest.StorageAccessNotPotentiallyAllowed_RejectsGetAllForUrl/*
+-All/RestrictedCookieManagerTest.StorageAccessNotPotentiallyAllowed_RejectsGetCookiesString/*
 -NetworkContextTest.PrivacyModeEnabledIfCookiesBlocked
 -NetworkContextTest.PrivacyModeEnabledIfThirdPartyCookiesBlocked
 

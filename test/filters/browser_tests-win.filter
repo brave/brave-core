@@ -141,8 +141,18 @@
 # https://github.com/brave/brave-browser/issues/55112
 -AutofillProgressDialogViewsBrowserTest.CloseBrowserWhileDialogShowing/3
 
+# These tests fail because Brave adds its P3A notice infobar to the active tab
+# at startup, which is the test's first tab. The tests expect no other infobars
+# there, and InfoBarUiTest keeps a dangling pointer to the notice once the tab
+# closes.
+-AlternateNavInfoBarDelegateCentralizedInlineLinksTest.InvokeUi_CentralizedInlineLinks
+-AlternateNavInfoBarDelegateInlineLinksTest.InvokeUi_InlineLinks
+-All/InfoBarUiTest.*
+-All/TabSharingUIViewsTabDiscardBrowserTest.ReplaceNonSharedTabRemovesOldInfobar/*
+-All/TabSharingUIViewsTabDiscardBrowserTest.ReplaceSharedTabStopsSharing/*
+
 # Tests below this point have not been diagnosed or had issues created yet.
--All/PDFPluginDisabledTest.*
+-PDFPluginDisabledTest.*
 -AllowCurrentProfile_DifferentUserSignedInDefaultProfile/ExistingWinBrowserProfilesSigninUtilTest.*
 -AllowCurrentProfile_NoUserSignedIn/ExistingWinBrowserProfilesSigninUtilTest.*
 -AllowCurrentProfile_SameUserSignedIn/ExistingWinBrowserProfilesSigninUtilTest.*
@@ -165,7 +175,6 @@
 -Enabled/RendererAppContainerEnabledTest.IsRespected/0
 -IEImporterBrowserTest.*
 -ImageWriterUtilityClientTest.*
--InfoBarUiTest.*
 -InstanceIDApiTest.*
 -KnownInterceptionDisclosureUITest.*
 -LocalePolicyTest.*

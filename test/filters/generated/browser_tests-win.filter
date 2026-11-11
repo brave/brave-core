@@ -620,6 +620,9 @@
 # 38.1% flake rate over 30 days per LUCI Analysis (39 passed, 24 failed, 0 flaky).
 -AppMenuBrowserTest.InvokeUi_reading_list
 
+# Confirmed flaky upstream on 6 Windows variants per LUCI Analysis.
+-AppModeTest.EnableAppModeTest
+
 # 12.8% flake rate over 30 days per LUCI Analysis (29009 passed, 47 failed, 4230 flaky).
 -AriaNotifyUIABrowserTest.AriaNotifyRaisesUIANotificationEvent
 

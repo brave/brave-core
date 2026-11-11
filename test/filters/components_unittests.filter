@@ -114,8 +114,10 @@
 -ShoppingServiceTest.TestShoppingListEligible_CountryAndLocale_RegionLaunched
 
 # These tests fail because we override SyncAuthManager::DetermineAccountToUse.
+-All/SyncServiceImplTrustedVaultIneligiblePassphraseTest.*
 -SyncServiceImplStartupWithDetermineAccountTypeTest.StartupWithConsumerAccount
 -SyncServiceImplStartupWithDetermineAccountTypeTest.StartupWithManagedAccount
+-SyncServiceImplTrustedVaultEnrollmentTest.*
 
 # These tests fail because we force a resolved (non-managed) consumer status in
 # SyncAuthManager::ActiveAccount::StartDeterminingAccountType, skipping
