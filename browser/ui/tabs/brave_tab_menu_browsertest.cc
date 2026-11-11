@@ -61,7 +61,8 @@ class BraveTabMenuBrowserTest : public InProcessBrowserTest {
       int tab_index) {
     auto model = std::make_unique<BraveTabMenuModel>(
         context_menu_controller, TabMenuModelDelegate::From(browser()),
-        browser()->tab_strip_model(), tab_index);
+        browser()->tab_strip_model(),
+        browser()->tab_strip_model()->GetTabAtIndex(tab_index)->GetHandle());
 
     auto* model_ptr = model.get();
     context_menu_controller->LoadModel(std::move(model));

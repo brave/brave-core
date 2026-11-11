@@ -16,7 +16,7 @@ std::unique_ptr<TabMenuModel> BrowserTabStripController::CreateTabMenuModel(
     ui::SimpleMenuModel::Delegate* delegate,
     TabMenuModelDelegate* tab_menu_model_delegate,
     TabStripModel* tab_strip_model,
-    int index) {
+    tabs::TabHandle context_tab) {
   return std::make_unique<TabMenuModel>(delegate, tab_menu_model_delegate,
-                                        tab_strip_model, index);
+                                        tab_strip_model, context_tab);
 }
