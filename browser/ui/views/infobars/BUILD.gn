@@ -5,6 +5,33 @@
 
 import("//brave/components/psst/buildflags/buildflags.gni")
 
+if (enable_psst) {
+  source_set("psst_infobar") {
+    visibility = [
+      ":unit_tests",
+      "//brave/browser:core",
+    ]
+
+    sources = [
+      "psst_infobar.cc",
+      "psst_infobar.h",
+    ]
+
+    deps = [
+      "//base",
+      "//brave/app:brave_generated_resources_grit",
+      "//brave/browser/psst",
+      "//brave/browser/ui",
+      "//brave/ui/color:nala_color_id",
+      "//chrome/browser/ui/color:color_headers",
+      "//ui/base",
+      "//ui/events",
+      "//ui/gfx",
+      "//ui/views",
+    ]
+  }
+}
+
 source_set("unit_tests") {
   testonly = true
 
@@ -32,6 +59,7 @@ source_set("unit_tests") {
   if (enable_psst) {
     sources += [ "psst_infobar_unittest.cc" ]
     deps += [
+      ":psst_infobar",
       "//brave/app:brave_generated_resources_grit",
       "//brave/browser/psst",
       "//brave/components/psst/core/common",
