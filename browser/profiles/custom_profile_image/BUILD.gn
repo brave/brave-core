@@ -54,7 +54,6 @@ source_set("unit_tests") {
 
 source_set("custom_profile_image") {
   sources = [
-    "hooks.h",
     "profile_image.cc",
     "profile_image.h",
   ]

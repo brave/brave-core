@@ -12,16 +12,9 @@
 #include "base/functional/bind.h"
 #include "base/memory/ptr_util.h"
 #include "base/task/thread_pool.h"
-#include "brave/browser/profiles/custom_profile_image/hooks.h"
 #include "brave/browser/ui/webui/custom_profile_image/features.h"
-#include "brave/ui/webui/custom_profile_image/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile_attributes_entry.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
-
-static_assert(BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE) ==
-                  (BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) ||
-                   BUILDFLAG(IS_LINUX)),
-              "Update the platform check in hooks.h");
 
 namespace custom_profile_image {
 namespace {
@@ -261,7 +254,7 @@ void ProfileImage::Notify() {
 
 }  // namespace custom_profile_image
 
-// Hooks declared in hooks.h; feature ownership stays here.
+// Hooks called from upstream profile code.
 gfx::Image BraveGetCustomProfileImage(const ProfileAttributesEntry& entry) {
   if (!custom_profile_image::ProfileImage::IsEnabled()) {
     return {};

@@ -10,8 +10,11 @@
 
 #include "base/check.h"
 #include "base/values.h"
-#include "brave/browser/profiles/custom_profile_image/hooks.h"
 #include "chrome/browser/profiles/profile_avatar_icon_util.h"
+
+// Defined in //brave/browser/profiles/custom_profile_image, or as a no-op
+// in //brave/browser/profiles:chromium_impl.
+gfx::Image BraveGetCustomProfileImage(const ProfileAttributesEntry& entry);
 
 namespace {
 constexpr std::string_view kSerpMetricsKey = "serp_metrics";
