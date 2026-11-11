@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <utility>
+
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
@@ -15,9 +17,9 @@
 #include "base/process/process_iterator.h"
 #include "base/run_loop.h"
 #include "base/strings/strcat.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/test/bind.h"
-#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_timeouts.h"
 #include "base/test/thread_test_helper.h"
@@ -207,8 +209,18 @@ class BraveTorBrowserTest : public InProcessBrowserTest {
   }
 
   void WaitForUpdaterThread(brave_component_updater::BraveComponent* updater) {
+    WaitForTaskRunner(updater->GetTaskRunner());
+  }
+
+  // BraveTorClientUpdater runs its file deletes on its own sequence, which
+  // differs from the BraveComponent one.
+  void WaitForUpdaterThread(tor::BraveTorClientUpdater* updater) {
+    WaitForTaskRunner(updater->GetTaskRunner());
+  }
+
+  void WaitForTaskRunner(scoped_refptr<base::SequencedTaskRunner> runner) {
     scoped_refptr<base::ThreadTestHelper> io_helper(
-        new base::ThreadTestHelper(updater->GetTaskRunner()));
+        new base::ThreadTestHelper(std::move(runner)));
     ASSERT_TRUE(io_helper->Run());
   }
 
@@ -278,13 +290,11 @@ IN_PROC_BROWSER_TEST_F(BraveTorBrowserTest, OpenCloseDisableTorWindow) {
     EXPECT_TRUE(
         TorProfileServiceFactory::IsTorDisabled(browser()->GetProfile()));
 
-    // The deletes are posted to the updater's sequence; flush it, then wait
-    // for the component to be gone.
+    // The deletes are posted to the client updater's own sequence; flush it,
+    // then the component must be gone.
     WaitForUpdaterThread(g_brave_browser_process->tor_client_updater());
-    EXPECT_TRUE(base::test::RunUntil([] {
-      return !CheckComponentExists(crx_file::id_util::GenerateIdFromHash(
-          tor::kTorClientComponentPublicKeySHA256));
-    }));
+    EXPECT_FALSE(CheckComponentExists(crx_file::id_util::GenerateIdFromHash(
+        tor::kTorClientComponentPublicKeySHA256)));
   }
 }
 
@@ -616,6 +626,7 @@ IN_PROC_BROWSER_TEST_P(BraveTorBrowserTest_EnableTorHttpsOnlyFlag,
   DownloadTorClient();
 
   Profile* tor_profile = OpenTorWindow();
+  ASSERT_TRUE(tor_profile);
   PrefService* prefs = tor_profile->GetPrefs();
   // Check that HTTPS-Only Mode has been enabled for the Tor window.
   EXPECT_TRUE(prefs->GetBoolean(prefs::kHttpsOnlyModeEnabled));
