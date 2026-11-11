@@ -1527,7 +1527,7 @@ TEST_F(BraveWalletServiceUnitTest, SetAssetSpamStatus) {
 
   // Original list has two tokens
   GetUserAssets(token1->chain_id, mojom::CoinType::ETH, &tokens);
-  EXPECT_EQ(tokens.size(), 2u);
+  ASSERT_EQ(tokens.size(), 2u);
 
   // Add token
   EXPECT_TRUE(AddUserAsset(token1.Clone()));
@@ -2565,27 +2565,20 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestTokenRejectsUnreadableContract) {
       true, false, false, mojom::SPLTokenProgram::kUnsupported, false, false,
       "FAKE", 18, true, "", "", mojom::kMainnetChainId, mojom::CoinType::ETH,
       mojom::ZCashTokenType::kNone);
-  bool callback_ran = false;
-  base::RunLoop run_loop;
+  base::test::TestFuture<mojom::EthereumProviderResponsePtr> response_future;
   service_->AddSuggestTokenRequest(
       mojom::AddSuggestTokenRequest::New(MakeDappOriginInfo(GetOrigin()),
                                          suggested.Clone()),
-      base::BindLambdaForTesting(
-          [&](mojom::EthereumProviderResponsePtr response) {
-            callback_ran = true;
-            EXPECT_TRUE(response->reject);
-            mojom::ProviderError error = mojom::ProviderError::kSuccess;
-            std::string error_message;
-            GetErrorCodeMessage(std::move(response->formed_response), &error,
-                                &error_message);
-            EXPECT_NE(error, mojom::ProviderError::kSuccess);
-            EXPECT_FALSE(error_message.empty());
-            run_loop.Quit();
-          }),
-      base::Value(), base::DoNothing());
-  run_loop.Run();
+      response_future.GetCallback(), base::Value(), base::DoNothing());
+  auto response = response_future.Take();
+  EXPECT_TRUE(response->reject);
+  mojom::ProviderError error = mojom::ProviderError::kSuccess;
+  std::string error_message;
+  GetErrorCodeMessage(std::move(response->formed_response), &error,
+                      &error_message);
+  EXPECT_NE(error, mojom::ProviderError::kSuccess);
+  EXPECT_FALSE(error_message.empty());
 
-  EXPECT_TRUE(callback_ran);
   EXPECT_TRUE(GetPendingAddSuggestTokenRequests().empty());
   std::vector<mojom::BlockchainTokenPtr> tokens;
   GetUserAssets(mojom::kMainnetChainId, mojom::CoinType::ETH, &tokens);
