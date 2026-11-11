@@ -267,9 +267,8 @@ action("make_symbols_asset_catalog") {
     string_join(",", nala_icons),
   ]
   outputs = [ "$target_gen_dir/NalaSymbols.xcassets" ]
-  inputs = rebase_path(nala_icons,
-                       ".",
-                       "//brave/node_modules/@brave/nala/icons-sf")
+  inputs =
+      rebase_path(nala_icons, ".", "//brave/node_modules/@brave/nala/icons-sf")
 }
 
 # Swift Package Manager cannot import a `.bundle` unfortunately so we have to
