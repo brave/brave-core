@@ -41,6 +41,7 @@ source_set("peek") {
 
   deps = [
     "//brave/app:brave_generated_resources_grit",
+    "//brave/browser:tab_helpers_header",
     "//brave/browser/ui/sidebar",
     "//brave/browser/ui/views:layout_provider",
     "//brave/browser/ui/views:view_shadow",
@@ -55,7 +56,6 @@ source_set("peek") {
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ssl",
     "//chrome/browser/tab_contents",
-    "//chrome/browser/ui:tab_helpers",
     "//chrome/browser/ui/browser_web_contents_delegate",
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/color:color_headers",
@@ -98,6 +98,7 @@ source_set("browser_tests") {
     "//base",
     "//base/test:test_support",
     "//brave/app:command_ids",
+    "//brave/browser/brave_shields",
     "//brave/browser/ui:brave_browser_window_header",
     "//brave/browser/ui/peek",
     "//brave/components/brave_wallet/common/buildflags",

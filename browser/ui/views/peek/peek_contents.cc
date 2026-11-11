@@ -11,6 +11,7 @@
 #include "base/check.h"
 #include "base/check_deref.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/browser/brave_tab_helpers.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/favicon/favicon_utils.h"
 #include "chrome/browser/history/history_tab_helper.h"
@@ -18,7 +19,6 @@
 #include "chrome/browser/tab_contents/tab_util.h"
 #include "chrome/browser/ui/browser_web_contents_delegate/browser_web_contents_delegate.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
-#include "chrome/browser/ui/tab_helpers.h"
 #include "components/input/native_web_keyboard_event.h"
 #include "components/web_modal/web_contents_modal_dialog_manager.h"
 #include "content/public/browser/download_item_utils.h"
@@ -98,7 +98,9 @@ PeekContents::PeekContents(BrowserWindowInterface& browser,
           CHECK_DEREF(BrowserWebContentsDelegate::From(&browser))),
       delegate_(delegate) {
   CHECK(web_contents_);
-  TabHelpers::AttachTabHelpers(web_contents_.get());
+  // Shields, ephemeral storage and page content settings must apply before
+  // the page loads. In a tab, `BraveTabFeatures` attaches these.
+  brave::AttachTabHelpers(web_contents_.get());
   AttachHelpersFromTabFeatures(*web_contents_);
   web_contents_->SetDelegate(this);
 
