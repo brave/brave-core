@@ -220,7 +220,7 @@
   },
   {
     "cmd": [
-      "vpython3",
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "tools/cr/autolift/autolift.py",
       "advise",
       "158",
