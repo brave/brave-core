@@ -1,0 +1,25 @@
+diff --git a/chrome/browser/profiles/profile_attributes_entry.h b/chrome/browser/profiles/profile_attributes_entry.h
+index c260d92ba4e7c0863514fcdd8025d066e881312a..c75a880b4332cb53f5bd5207098e3c96414a1d69 100644
+--- a/chrome/browser/profiles/profile_attributes_entry.h
++++ b/chrome/browser/profiles/profile_attributes_entry.h
+@@ -95,7 +95,7 @@ class ProfileAttributesEntry {
+   ProfileAttributesEntry();
+   ProfileAttributesEntry(const ProfileAttributesEntry&) = delete;
+   ProfileAttributesEntry& operator=(const ProfileAttributesEntry&) = delete;
+-  virtual ~ProfileAttributesEntry() = default;
++  virtual ~ProfileAttributesEntry();
+ 
+   // Gets the name of the profile to be displayed in the User Menu. The name can
+   // be the GAIA name, local profile name or a combination of them.
+@@ -309,7 +309,11 @@ class ProfileAttributesEntry {
+   static const char kIsGlicEligible[];
+   static const char kAiSubscriptionKey[];
+ 
++ protected:
++  std::unique_ptr<base::SupportsUserData::Data> custom_profile_image_;
++
+  private:
++  friend class custom_profile_image::ProfileImage;
+   friend class ProfileAttributesStorage;
+   FRIEND_TEST_ALL_PREFIXES(ProfileAttributesStorageTest,
+                            EntryInternalAccessors);

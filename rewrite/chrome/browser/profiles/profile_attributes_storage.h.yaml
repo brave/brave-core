@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Let the custom profile image share the storage file sequence.
+    add_friend:
+      class_name: ProfileAttributesStorage
+      friend_type: class custom_profile_image::ProfileImage
+
+  - description: |-
+      Hold the custom profile image file sequence.
+
+      Profile removal and a later profile at the same path must use the same
+      sequence, so it outlives each entry.
+    add_to_protected:
+      class_name: ProfileAttributesStorage
+      code: |-
+        scoped_refptr<base::SequencedTaskRunner> custom_profile_image_file_runner_;

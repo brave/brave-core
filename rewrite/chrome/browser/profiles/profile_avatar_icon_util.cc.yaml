@@ -1,0 +1,68 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Count Brave's avatar icons.
+    regex:
+      pattern: 'constexpr size_t kDefaultAvatarIconsCount = 56;'
+      replace:
+        'constexpr size_t kDefaultAvatarIconsCount = 56 +
+        kBraveDefaultAvatarIconsCount;'
+
+  - description: Let Brave adjust where the modern avatar icons start.
+    regex:
+      re_pattern:
+        '(size_t GetModernAvatarIconStartIndex\(\) \{\n#if
+        !BUILDFLAG\(IS_CHROMEOS\) && !BUILDFLAG\(IS_ANDROID\)\n)'
+      replace: '\1  BRAVE_GET_MODERN_AVATAR_ICON_START_INDEX\n'
+
+  - description: Let Brave supply its avatar icon resources.
+    regex:
+      re_pattern:
+        '(const IconResourceInfo\* GetDefaultAvatarIconResourceInfo\(size_t
+        index\) \{\n  CHECK_LT\(index, kDefaultAvatarIconsCount\);\n)'
+      replace: '\1  BRAVE_GET_DEFAULT_AVATAR_ICON_RESOURCE_INFO\n'
+
+  - description:
+      Let Brave adjust the avatar list for profiles without an account.
+    regex:
+      re_pattern:
+        '(                   base::Value\(std::move\(generic_avatar_info\)\)\);\n)(    return
+        avatars;)'
+      replace:
+        '\1    BRAVE_GET_ICONS_AND_LABELS_FOR_PROFILE_AVATAR_SELECTOR_NOT_SIGNED_IN\n\2'
+
+  - description: |-
+      Select nothing in the avatar list while a custom image is selected.
+
+      The custom image replaces the stored preset and the account picture
+      without clearing them.
+    regex:
+      pattern: |2-
+          bool using_gaia = entry->IsUsingGAIAPicture();
+          size_t selected_avatar_idx =
+              using_gaia ? SIZE_MAX : entry->GetAvatarIconIndex();
+      replace: |2-
+          const bool using_custom_image = BraveIsCustomProfileImageSelected(*entry);
+          bool using_gaia = !using_custom_image && entry->IsUsingGAIAPicture();
+          size_t selected_avatar_idx = using_gaia || using_custom_image
+                                           ? SIZE_MAX
+                                           : entry->GetAvatarIconIndex();
+
+  - description: |-
+      Choosing a preset avatar replaces a custom profile image.
+
+      An unchanged pref emits no update, and observers must see the new preset
+      when the custom image is deactivated, so update the entry directly.
+    add_before_line:
+      line: 'ProfileMetrics::LogProfileAvatarSelection(avatar_icon_index);'
+      code: |2-
+          if (ProfileAttributesEntry* entry =
+                  g_browser_process->profile_manager()
+                      ->GetProfileAttributesStorage()
+                      .GetProfileAttributesWithPath(profile->GetPath())) {
+            entry->SetAvatarIconIndex(avatar_icon_index);
+            BraveSelectFallbackProfileImage(*entry);
+          }

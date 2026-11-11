@@ -6,6 +6,7 @@
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 
 #include "brave/browser/profiles/brave_profile_avatar_downloader.h"
+#include "brave/browser/profiles/custom_profile_image/hooks.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/grit/branded_strings.h"
 

@@ -8,7 +8,10 @@ import("//brave/ui/webui/custom_profile_image/buildflags/buildflags.gni")
 assert(enable_brave_custom_profile_image_webui)
 
 source_set("image_file") {
-  visibility = [ ":unit_tests" ]
+  visibility = [
+    ":custom_profile_image",
+    ":unit_tests",
+  ]
   sources = [
     "image_file.cc",
     "image_file.h",
@@ -23,10 +26,36 @@ source_set("image_file") {
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ "image_file_unittest.cc" ]
+  sources = [
+    "image_file_unittest.cc",
+    "profile_image_unittest.cc",
+  ]
   deps = [
+    ":custom_profile_image",
     ":image_file",
     "//base/test:test_support",
+    "//brave/browser/ui/webui/custom_profile_image",
+    "//chrome/test:test_support",
+    "//chrome/test/base:testing_browser_process",
+    "//components/prefs",
+    "//content/test:test_support",
     "//testing/gtest",
+  ]
+}
+
+source_set("custom_profile_image") {
+  sources = [
+    "hooks.h",
+    "profile_image.cc",
+    "profile_image.h",
+  ]
+  public_deps = [
+    ":image_file",
+    "//base",
+    "//ui/gfx",
+  ]
+  deps = [
+    "//brave/browser/ui/webui/custom_profile_image",
+    "//chrome/browser/profiles:profile_util",
   ]
 }

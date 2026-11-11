@@ -6,7 +6,13 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_PROFILE_ATTRIBUTES_ENTRY_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_PROFILE_ATTRIBUTES_ENTRY_H_
 
+#include "base/supports_user_data.h"
 #include "build/build_config.h"
+
+// The upstream header befriends custom_profile_image::ProfileImage.
+namespace custom_profile_image {
+class ProfileImage;
+}  // namespace custom_profile_image
 
 namespace base {
 class DictValue;

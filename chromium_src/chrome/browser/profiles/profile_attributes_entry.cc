@@ -10,6 +10,7 @@
 
 #include "base/check.h"
 #include "base/values.h"
+#include "brave/browser/profiles/custom_profile_image/hooks.h"
 #include "chrome/browser/profiles/profile_avatar_icon_util.h"
 
 namespace {
@@ -62,4 +63,8 @@ void ProfileAttributesEntry::SetSerpMetrics(base::DictValue serp_metrics) {
   BraveMigrateObsoleteProfileAttributes();
 
 #include <chrome/browser/profiles/profile_attributes_entry.cc>
+
+// Out of line because the entry owns the custom image state.
+ProfileAttributesEntry::~ProfileAttributesEntry() = default;
+
 #undef BRAVE_PROFILE_ATTRIBUTES_ENTRY_MIGRATE_OBSOLETE_PROFILE_ATTRIBUTES

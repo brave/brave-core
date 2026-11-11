@@ -9,6 +9,7 @@
 
 #include "base/check_op.h"
 #include "base/values.h"
+#include "brave/browser/profiles/custom_profile_image/hooks.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
 #include "chrome/grit/theme_resources.h"
