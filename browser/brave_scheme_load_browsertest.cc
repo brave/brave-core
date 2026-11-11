@@ -334,6 +334,8 @@ class BraveSchemeLoadRecapBrowserTest : public BraveSchemeLoadBrowserTest {
 IN_PROC_BROWSER_TEST_F(BraveSchemeLoadRecapBrowserTest,
                        RecapPageIsNotAllowedInPrivateWindow) {
   EXPECT_FALSE(IsURLAllowedInIncognito(GURL("chrome://recap")));
+  // Opening brave://recap from a private window adds a tab showing it to the
+  // normal window and leaves the private window on about:blank.
   TestURLIsNotLoadedInPrivateWindow("brave://recap");
 }
 
