@@ -1,27 +1,6 @@
 [
   {
     "cmd": [
-      "vpython3",
-      "tools/cr/autolift/autolift.py",
-      "advise",
-      "159",
-      "--resume",
-      "--json-output",
-      "/path/to/tmp/json"
-    ],
-    "cwd": "[WORKSPACE]/b/src/brave",
-    "env": {
-      "CHROME_HEADLESS": "1"
-    },
-    "env_prefixes": {
-      "PATH": [
-        "[WORKSPACE]/b/src/brave/tools/cr/bootstrap"
-      ]
-    },
-    "name": "advise"
-  },
-  {
-    "cmd": [
       "git",
       "clone",
       "--depth",
@@ -54,6 +33,27 @@
       ]
     },
     "name": "verify gclient"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
+      "tools/cr/autolift/autolift.py",
+      "advise",
+      "159",
+      "--resume",
+      "--json-output",
+      "/path/to/tmp/json"
+    ],
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "env_prefixes": {
+      "PATH": [
+        "[WORKSPACE]/b/src/brave/tools/cr/bootstrap"
+      ]
+    },
+    "name": "advise"
   },
   {
     "cmd": [
