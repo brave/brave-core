@@ -73,6 +73,7 @@ TEST(BraveRuntimeEnabledFeaturesTest, EnabledFlags) {
   ExpectRuntimeFlagsFollowBaseFeatures(
       {
           RUNTIME_FLAG(ReduceUserAgentMinorVersion),
+          RUNTIME_FLAG(WebMCP),
       },
       true);
 }
