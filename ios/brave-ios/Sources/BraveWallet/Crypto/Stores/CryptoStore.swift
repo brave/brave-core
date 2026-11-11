@@ -109,7 +109,6 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
   private let txService: BraveWalletTxService
   private let ethTxManagerProxy: BraveWalletEthTxManagerProxy
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
-  private let ipfsApi: IpfsAPI
   private let bitcoinWalletService: BraveWalletBitcoinWalletService
   private let zcashWalletService: BraveWalletZCashWalletService
   private let cardanoWalletService: BraveWalletCardanoWalletService
@@ -131,7 +130,6 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     txService: BraveWalletTxService,
     ethTxManagerProxy: BraveWalletEthTxManagerProxy,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
-    ipfsApi: IpfsAPI,
     bitcoinWalletService: BraveWalletBitcoinWalletService,
     zcashWalletService: BraveWalletZCashWalletService,
     cardanoWalletService: BraveWalletCardanoWalletService,
@@ -145,7 +143,6 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     self.txService = txService
     self.ethTxManagerProxy = ethTxManagerProxy
     self.solTxManagerProxy = solTxManagerProxy
-    self.ipfsApi = ipfsApi
     self.bitcoinWalletService = bitcoinWalletService
     self.zcashWalletService = zcashWalletService
     self.cardanoWalletService = cardanoWalletService
@@ -174,7 +171,6 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       blockchainRegistry: blockchainRegistry,
       txService: txService,
       solTxManagerProxy: solTxManagerProxy,
-      ipfsApi: ipfsApi,
       userAssetManager: userAssetManager
     )
     self.accountsStore = .init(
@@ -367,7 +363,6 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       txService: txService,
       blockchainRegistry: blockchainRegistry,
       solTxManagerProxy: solTxManagerProxy,
-      ipfsApi: ipfsApi,
       bitcoinWalletService: bitcoinWalletService,
       zcashWalletService: zcashWalletService,
       userAssetManager: userAssetManager
@@ -400,7 +395,6 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       bitcoinWalletService: bitcoinWalletService,
       zcashWalletService: zcashWalletService,
       cardanoWalletService: cardanoWalletService,
-      ipfsApi: ipfsApi,
       userAssetManager: userAssetManager
     )
     confirmationStore = store
@@ -426,7 +420,6 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       keyringService: keyringService,
       rpcService: rpcService,
       txService: txService,
-      ipfsApi: ipfsApi,
       nft: nft,
       nftMetadata: nftMetadata,
       owner: owner
@@ -472,8 +465,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     keyringService: keyringService,
     walletService: walletService,
     rpcService: rpcService,
-    txService: txService,
-    ipfsApi: ipfsApi
+    txService: txService
   )
 
   func prepare(isInitialOpen: Bool = false) {

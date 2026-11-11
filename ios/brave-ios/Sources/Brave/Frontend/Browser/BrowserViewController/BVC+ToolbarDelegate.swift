@@ -87,7 +87,7 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
             showWeb3ServiceInterstitialPage(service: service, originalURL: url)
           case .load(let resolvedURL):
             if resolvedURL.isIPFSScheme,
-              let resolvedIPFSURL = profileController.ipfsAPI.resolveGatewayUrl(for: resolvedURL)
+              let resolvedIPFSURL = IpfsAPI.resolveGatewayUrl(for: resolvedURL)
             {
               tabManager.selectedTab?.loadRequest(URLRequest(url: resolvedIPFSURL))
             } else {
@@ -309,7 +309,7 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
         return true
       case .load(let resolvedURL):
         if resolvedURL.isIPFSScheme,
-          let resolvedIPFSURL = profileController.ipfsAPI.resolveGatewayUrl(for: resolvedURL)
+          let resolvedIPFSURL = IpfsAPI.resolveGatewayUrl(for: resolvedURL)
         {
           finishEditingAndSubmit(resolvedIPFSURL)
         } else {

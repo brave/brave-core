@@ -42,10 +42,7 @@ extension BrowserViewController {
 
     var cryptoStore: CryptoStore? = walletStore?.cryptoStore
     if cryptoStore == nil {
-      cryptoStore = CryptoStore.from(
-        ipfsApi: profileController.ipfsAPI,
-        profile: profile
-      )
+      cryptoStore = CryptoStore.from(profile: profile)
     }
 
     let vc = SettingsViewController(

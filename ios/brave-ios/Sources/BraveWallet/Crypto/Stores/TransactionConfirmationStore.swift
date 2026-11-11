@@ -216,7 +216,6 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
   private let bitcoinWalletService: BraveWalletBitcoinWalletService
   private let zcashWalletService: BraveWalletZCashWalletService
   private let cardanoWalletService: BraveWalletCardanoWalletService
-  private let ipfsApi: IpfsAPI
   private let assetManager: WalletUserAssetManagerType
   private var selectedChain: BraveWallet.NetworkInfo = .init()
   private var txServiceObserver: TxServiceObserver?
@@ -238,7 +237,6 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     bitcoinWalletService: BraveWalletBitcoinWalletService,
     zcashWalletService: BraveWalletZCashWalletService,
     cardanoWalletService: BraveWalletCardanoWalletService,
-    ipfsApi: IpfsAPI,
     userAssetManager: WalletUserAssetManagerType
   ) {
     self.assetRatioService = assetRatioService
@@ -252,7 +250,6 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     self.bitcoinWalletService = bitcoinWalletService
     self.zcashWalletService = zcashWalletService
     self.cardanoWalletService = cardanoWalletService
-    self.ipfsApi = ipfsApi
     self.assetManager = userAssetManager
 
     self.setupObservers()

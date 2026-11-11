@@ -77,7 +77,6 @@ class SettingsViewController: TableViewController {
   private let keyringStore: KeyringStore?
   private let cryptoStore: CryptoStore?
   private let windowProtection: WindowProtection?
-  private let ipfsAPI: IpfsAPI
   private let altIconsModel = AltIconsModel()
 
   private let featureSectionUUID: UUID = .init()
@@ -116,7 +115,6 @@ class SettingsViewController: TableViewController {
     self.attributionManager = attributionManager
     self.keyringStore = keyringStore
     self.cryptoStore = cryptoStore
-    self.ipfsAPI = braveCore.ipfsAPI
 
     super.init(style: .insetGrouped)
 

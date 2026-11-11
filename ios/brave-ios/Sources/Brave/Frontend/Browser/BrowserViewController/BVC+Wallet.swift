@@ -17,10 +17,7 @@ import os.log
 
 extension WalletStore {
   /// Creates a WalletStore based on the profile
-  static func from(
-    ipfsApi: IpfsAPI,
-    profile: any Profile
-  ) -> WalletStore? {
+  static func from(profile: any Profile) -> WalletStore? {
     guard
       let keyringService = BraveWallet.KeyringServiceFactory.get(profile: profile),
       let rpcService = BraveWallet.JsonRpcServiceFactory.get(profile: profile),
@@ -45,7 +42,6 @@ extension WalletStore {
       txService: txService,
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
-      ipfsApi: ipfsApi,
       bitcoinWalletService: bitcoinWalletService,
       zcashWalletService: zcashWalletService,
       cardanoWalletService: cardanoWalletService
@@ -55,10 +51,7 @@ extension WalletStore {
 
 extension CryptoStore {
   /// Creates a CryptoStore based on the profile
-  static func from(
-    ipfsApi: IpfsAPI,
-    profile: any Profile
-  ) -> CryptoStore? {
+  static func from(profile: any Profile) -> CryptoStore? {
     guard
       let keyringService = BraveWallet.KeyringServiceFactory.get(profile: profile),
       let rpcService = BraveWallet.JsonRpcServiceFactory.get(profile: profile),
@@ -83,7 +76,6 @@ extension CryptoStore {
       txService: txService,
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
-      ipfsApi: ipfsApi,
       bitcoinWalletService: bitcoinWalletService,
       zcashWalletService: zcashWalletService,
       cardanoWalletService: cardanoWalletService
@@ -103,7 +95,7 @@ extension BrowserViewController {
       profile = profile.offTheRecordProfile
     }
     guard
-      let walletStore = WalletStore.from(ipfsApi: profileController.ipfsAPI, profile: profile)
+      let walletStore = WalletStore.from(profile: profile)
     else {
       Logger.module.error("Failed to load wallet. One or more services were unavailable")
       return nil

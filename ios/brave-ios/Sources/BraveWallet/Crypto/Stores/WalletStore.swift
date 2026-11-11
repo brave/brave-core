@@ -71,7 +71,6 @@ public class WalletStore {
     txService: BraveWalletTxService,
     ethTxManagerProxy: BraveWalletEthTxManagerProxy,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
-    ipfsApi: IpfsAPI,
     bitcoinWalletService: BraveWalletBitcoinWalletService,
     zcashWalletService: BraveWalletZCashWalletService,
     cardanoWalletService: BraveWalletCardanoWalletService
@@ -90,7 +89,6 @@ public class WalletStore {
       txService: txService,
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
-      ipfsApi: ipfsApi,
       bitcoinWalletService: bitcoinWalletService,
       zcashWalletService: zcashWalletService,
       cardanoWalletService: cardanoWalletService
@@ -116,7 +114,6 @@ public class WalletStore {
     txService: BraveWalletTxService,
     ethTxManagerProxy: BraveWalletEthTxManagerProxy,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
-    ipfsApi: IpfsAPI,
     bitcoinWalletService: BraveWalletBitcoinWalletService,
     zcashWalletService: BraveWalletZCashWalletService,
     cardanoWalletService: BraveWalletCardanoWalletService
@@ -140,7 +137,6 @@ public class WalletStore {
             txService: txService,
             ethTxManagerProxy: ethTxManagerProxy,
             solTxManagerProxy: solTxManagerProxy,
-            ipfsApi: ipfsApi,
             bitcoinWalletService: bitcoinWalletService,
             zcashWalletService: zcashWalletService,
             cardanoWalletService: cardanoWalletService,
