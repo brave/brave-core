@@ -11,12 +11,12 @@
 #include "brave/browser/history_embeddings/history_embeddings_utils.h"
 #include "brave/components/history_embeddings/core/history_embeddings_features.h"
 #include "brave/components/local_ai/core/pref_names.h"
+#include "brave/components/omnibox/browser/brave_history_embeddings_provider.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/omnibox/browser/autocomplete_input.h"
 #include "components/omnibox/browser/autocomplete_provider_listener.h"
-#include "components/omnibox/browser/history_embeddings_provider.h"
 #include "components/omnibox/browser/test_scheme_classifier.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
@@ -50,7 +50,7 @@ class HistoryEmbeddingsOmniboxBrowserTest : public InProcessBrowserTest {
 
   bool IsEnabledForOmnibox(Profile* profile) {
     return ChromeAutocompleteProviderClient(profile)
-        .IsHistoryEmbeddingsEnabled();
+               .GetBraveHistoryEmbeddingsSearch() != nullptr;
   }
 
   // Enough words to get past `search_query_minimum_word_count`. The provider
@@ -59,7 +59,7 @@ class HistoryEmbeddingsOmniboxBrowserTest : public InProcessBrowserTest {
   void StartHistoryEmbeddingsProvider(Profile* profile) {
     auto client = std::make_unique<ChromeAutocompleteProviderClient>(profile);
     TestProviderListener listener;
-    auto provider = base::MakeRefCounted<HistoryEmbeddingsProvider>(
+    auto provider = base::MakeRefCounted<BraveHistoryEmbeddingsProvider>(
         client.get(), &listener);
 
     TestSchemeClassifier scheme_classifier;
@@ -73,13 +73,8 @@ class HistoryEmbeddingsOmniboxBrowserTest : public InProcessBrowserTest {
   base::test::ScopedFeatureList feature_list_;
 };
 
-// Disabled until the omnibox history embeddings provider moves to the
-// brave_history_embeddings service.
-using DISABLED_HistoryEmbeddingsOmniboxBrowserTest =
-    HistoryEmbeddingsOmniboxBrowserTest;
-
 // Setting turned on after profile setup, so no service was built for it.
-IN_PROC_BROWSER_TEST_F(DISABLED_HistoryEmbeddingsOmniboxBrowserTest,
+IN_PROC_BROWSER_TEST_F(HistoryEmbeddingsOmniboxBrowserTest,
                        NotEnabledForOmniboxUntilRelaunch) {
   Profile* profile = browser()->GetProfile();
   ASSERT_FALSE(profile->GetPrefs()->GetBoolean(
@@ -96,13 +91,13 @@ IN_PROC_BROWSER_TEST_F(DISABLED_HistoryEmbeddingsOmniboxBrowserTest,
 }
 
 // Leaves the setting on for the run below.
-IN_PROC_BROWSER_TEST_F(DISABLED_HistoryEmbeddingsOmniboxBrowserTest,
+IN_PROC_BROWSER_TEST_F(HistoryEmbeddingsOmniboxBrowserTest,
                        PRE_EnabledForOmniboxAfterRelaunch) {
   SetSemanticHistorySearchEnabled(browser()->GetProfile(), true);
 }
 
 // Setting on at profile setup, so the service is built for it.
-IN_PROC_BROWSER_TEST_F(DISABLED_HistoryEmbeddingsOmniboxBrowserTest,
+IN_PROC_BROWSER_TEST_F(HistoryEmbeddingsOmniboxBrowserTest,
                        EnabledForOmniboxAfterRelaunch) {
   Profile* profile = browser()->GetProfile();
   ASSERT_TRUE(profile->GetPrefs()->GetBoolean(

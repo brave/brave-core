@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/autocomplete/chrome_autocomplete_provider_client.h b/chrome/browser/autocomplete/chrome_autocomplete_provider_client.h
+index a89d323d8878e85fd495b41d6e5cce0fd64d2366..e6e15a7c79d25741d821951db8c2b89a9ef7daff 100644
+--- a/chrome/browser/autocomplete/chrome_autocomplete_provider_client.h
++++ b/chrome/browser/autocomplete/chrome_autocomplete_provider_client.h
+@@ -175,6 +175,9 @@ class ChromeAutocompleteProviderClient : public AutocompleteProviderClient {
+     storage_partition_ = storage_partition;
+   }
+ 
++  brave_history_embeddings::HistoryEmbeddingsSearch*
++  GetBraveHistoryEmbeddingsSearch() override;
++
+  private:
+   raw_ptr<Profile> profile_;
+   // Callback to get the current WebContents. In the context of the Omnibox, it

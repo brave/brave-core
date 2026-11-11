@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <optional>
 #include <vector>
 
 #include "base/check.h"
@@ -14,6 +15,7 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_search_conversion/utils.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/components/omnibox/browser/brave_bookmark_provider.h"
 #include "brave/components/omnibox/browser/brave_history_quick_provider.h"
 #include "brave/components/omnibox/browser/brave_history_url_provider.h"
@@ -29,6 +31,13 @@
 #include "components/omnibox/browser/clipboard_provider.h"
 #include "components/omnibox/browser/history_cluster_provider.h"
 #include "components/omnibox/browser/history_fuzzy_provider.h"
+#include "components/search_engines/template_url.h"
+#include "components/search_engines/template_url_service.h"
+#include "components/search_engines/template_url_starter_pack_data.h"
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/components/omnibox/browser/brave_history_embeddings_provider.h"
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -73,6 +82,40 @@ void MaybeAddCommanderProvider(AutocompleteController::Providers& providers,
 #endif
 }
 
+void MaybeAddHistoryEmbeddingsProvider(
+    AutocompleteController::Providers& providers,
+    AutocompleteController* controller) {
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  auto* provider_client = controller->autocomplete_provider_client();
+  if (provider_client->GetBraveHistoryEmbeddingsSearch()) {
+    providers.push_back(base::MakeRefCounted<BraveHistoryEmbeddingsProvider>(
+        provider_client, controller));
+  }
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
+}
+
+// Runs Brave's semantic history search only in the @history scope. Returns
+// nullopt for every other provider, which leaves the decision to upstream.
+std::optional<bool> BraveShouldRunProvider(
+    const AutocompleteProvider* provider,
+    const AutocompleteInput& input,
+    TemplateURLService* template_url_service) {
+  if (!provider ||
+      provider->type() != AutocompleteProvider::Type::kHistoryEmbeddings) {
+    return std::nullopt;
+  }
+  if (!input.in_keyword_mode()) {
+    return false;
+  }
+  AutocompleteInput keyword_input = input;
+  const TemplateURL* keyword_turl =
+      AutocompleteInput::GetSubstitutingTemplateURLForInput(
+          template_url_service, &keyword_input);
+  return keyword_turl &&
+         keyword_turl->starter_pack_id() ==
+             template_url_starter_pack_data::StarterPackId::kHistory;
+}
+
 #if BUILDFLAG(ENABLE_AI_CHAT)
 void MaybeAddLeoProvider(AutocompleteController::Providers& providers,
                          AutocompleteController* controller) {
@@ -114,6 +157,7 @@ void MaybeShowLeoMatch(AutocompleteResult* result) {
 #define OnDeviceHeadProvider BraveOnDeviceHeadProvider
 #define BRAVE_AUTOCOMPLETE_CONTROLLER_AUTOCOMPLETE_CONTROLLER          \
   MaybeAddCommanderProvider(providers_, this);                         \
+  MaybeAddHistoryEmbeddingsProvider(providers_, this);                 \
   IF_BUILDFLAG(ENABLE_AI_CHAT, MaybeAddLeoProvider(providers_, this);) \
   if (IsBraveSearchConversionFeatureEnabled() &&                       \
       !provider_client_->IsOffTheRecord())                             \
