@@ -555,6 +555,8 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, OnlyWriteOwnProperty) {
   ASSERT_EQ(content::EvalJs(primary_main_frame(),
                             WaitForChainIdScript("ethereum", "0xaa36a7")),
             "0xaa36a7");
+  EXPECT_EQ(content::EvalJs(primary_main_frame(), get_chain_id).ExtractString(),
+            "0xaa36a7");
 
   brave_wallet::SetDefaultEthereumWallet(
       browser()->GetProfile()->GetPrefs(),
