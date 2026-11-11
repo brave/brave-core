@@ -29,7 +29,6 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/test/browser_test.h"
-#include "content/public/test/test_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -43,7 +42,6 @@ class CommanderServiceBrowserTest : public InProcessBrowserTest {
   void SetUp() override { InProcessBrowserTest::SetUp(); }
   void TearDownOnMainThread() override {
     commander()->Hide();
-    content::RunAllTasksUntilIdle();
     WaitUntil(base::BindLambdaForTesting(
         [this] { return !commander()->IsShowing(); }));
   }
@@ -109,7 +107,6 @@ IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest, CanHideCommander) {
       base::BindLambdaForTesting([&]() { return commander()->IsShowing(); }));
 
   commander()->Hide();
-  content::RunAllTasksUntilIdle();
   WaitUntil(
       base::BindLambdaForTesting([&]() { return !commander()->IsShowing(); }));
 }
