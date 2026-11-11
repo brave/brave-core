@@ -75,6 +75,21 @@ std::string NonWriteableScriptMethod(const std::string& provider,
          typeof window.%s.%s === "function";)",
       provider, method, provider, method);
 }
+
+// Resolves with `window.<provider>.chainId` once it equals `chain_id`, or with
+// its last observed value after a deadline.
+std::string WaitForChainIdScript(const std::string& provider,
+                                 const std::string& chain_id) {
+  return absl::StrFormat(
+      R"((async () => {
+           const deadline = Date.now() + 15000;
+           while (window.%s?.chainId !== '%s' && Date.now() < deadline) {
+             await new Promise((resolve) => setTimeout(resolve, 50));
+           }
+           return String(window.%s?.chainId);
+         })();)",
+      provider, chain_id, provider);
+}
 }  // namespace
 
 class JSEthereumProviderBrowserTest : public InProcessBrowserTest {
@@ -529,9 +544,10 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, OnlyWriteOwnProperty) {
 
   GetJsonRpcService()->SetNetwork(
       "0xaa36a7", brave_wallet::mojom::CoinType::ETH, std::nullopt);
-  // Needed so ChainChangedEvent observers run
-  base::RunLoop().RunUntilIdle();
-  EXPECT_EQ(content::EvalJs(primary_main_frame(), get_chain_id).ExtractString(),
+  // The chain change reaches the renderer asynchronously, so wait for it.
+  EXPECT_EQ(content::EvalJs(primary_main_frame(),
+                            WaitForChainIdScript("ethereum", "0xaa36a7"))
+                .ExtractString(),
             "0xaa36a7");
 
   brave_wallet::SetDefaultEthereumWallet(
@@ -544,10 +560,14 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, OnlyWriteOwnProperty) {
                 .ExtractString(),
             "0x89");
 
-  GetJsonRpcService()->SetNetwork("0x4", brave_wallet::mojom::CoinType::ETH,
+  GetJsonRpcService()->SetNetwork("0x1", brave_wallet::mojom::CoinType::ETH,
                                   std::nullopt);
-  // Needed so ChainChangedEvent observers run
-  base::RunLoop().RunUntilIdle();
+  // Wait for the Brave provider to receive the chain change, then check that
+  // the overwritten window.ethereum was left alone.
+  EXPECT_EQ(content::EvalJs(primary_main_frame(),
+                            WaitForChainIdScript("braveEthereum", "0x1"))
+                .ExtractString(),
+            "0x1");
   EXPECT_EQ(content::EvalJs(primary_main_frame(), get_chain_id).ExtractString(),
             "0x89");
 }
