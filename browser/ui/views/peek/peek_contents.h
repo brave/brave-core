@@ -94,6 +94,9 @@ class PeekContents : public content::WebContentsDelegate,
                               content::InvalidateTypes changed_flags) override;
   void VisibleSecurityStateChanged(content::WebContents* source) override;
   bool TakeFocus(content::WebContents* source, bool reverse) override;
+  content::KeyboardEventProcessingResult PreHandleKeyboardEvent(
+      content::WebContents* source,
+      const input::NativeWebKeyboardEvent& event) override;
   bool HandleKeyboardEvent(content::WebContents* source,
                            const input::NativeWebKeyboardEvent& event) override;
   void RunFileChooser(content::RenderFrameHost* render_frame_host,

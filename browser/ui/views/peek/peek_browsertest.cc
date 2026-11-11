@@ -377,10 +377,13 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, ContextMenuIgnoredAfterFrameNavigates) {
   EXPECT_FALSE(controller()->IsShowing());
 }
 
+// Escape is handled before the page gets it, so it works even if the page
+// would consume it or its renderer never acks it.
 IN_PROC_BROWSER_TEST_F(PeekBrowserTest, EscapeClosesPeek) {
   OpenPeek(GetURL("b.com", "/title2.html"));
-  // Input sent while the new page is still paint-holding is dropped.
-  content::SimulateEndOfPaintHoldingOnPrimaryMainFrame(peek_contents());
+  ASSERT_TRUE(content::ExecJs(peek_contents(), R"(
+        addEventListener('keydown', e => e.preventDefault(), true);
+      )"));
   content::SimulateKeyPress(peek_contents(), ui::DomKey::ESCAPE,
                             ui::DomCode::ESCAPE, ui::VKEY_ESCAPE,
                             /*control=*/false, /*shift=*/false, /*alt=*/false,
