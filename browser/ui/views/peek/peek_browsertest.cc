@@ -37,6 +37,7 @@
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/input/native_web_keyboard_event.h"
 #include "components/page_info/page_info.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/prefs/pref_service.h"
@@ -51,6 +52,7 @@
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_process_host.h"
+#include "content/public/browser/render_widget_host.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/storage_partition_config.h"
 #include "content/public/browser/web_contents.h"
@@ -388,10 +390,21 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, EscapeClosesPeek) {
   ASSERT_TRUE(content::ExecJs(peek_contents(), R"(
         addEventListener('keydown', e => e.preventDefault(), true);
       )"));
-  content::SimulateKeyPress(peek_contents(), ui::DomKey::ESCAPE,
-                            ui::DomCode::ESCAPE, ui::VKEY_ESCAPE,
-                            /*control=*/false, /*shift=*/false, /*alt=*/false,
-                            /*command=*/false);
+  // `content::SimulateKeyPress()` marks its events `skip_if_unhandled`, which
+  // skips the delegate's pre-handling, so send the key the way the browser
+  // window would.
+  input::NativeWebKeyboardEvent event(
+      blink::WebInputEvent::Type::kRawKeyDown,
+      blink::WebInputEvent::kNoModifiers,
+      blink::WebInputEvent::GetStaticTimeStampForTests());
+  event.windows_key_code = ui::VKEY_ESCAPE;
+  event.dom_key = ui::DomKey::ESCAPE;
+  event.dom_code = static_cast<int>(ui::DomCode::ESCAPE);
+  event.skip_if_unhandled = false;
+  peek_contents()
+      ->GetPrimaryMainFrame()
+      ->GetRenderWidgetHost()
+      ->ForwardKeyboardEvent(event);
   WaitForPeekClosed();
   EXPECT_FALSE(peek_contents());
 }
