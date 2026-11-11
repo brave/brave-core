@@ -61,6 +61,17 @@ source_set("context_menu") {
   ]
 }
 
+# Hooks for the chromium_src override of ChromePageInfoDelegate. Depended on by
+# //brave/browser/ui so the hooks are linked into the browser.
+source_set("page_info") {
+  sources = [ "peek_page_info_hooks.cc" ]
+
+  deps = [
+    ":public",
+    "//content/public/browser",
+  ]
+}
+
 source_set("unit_tests") {
   testonly = true
 
