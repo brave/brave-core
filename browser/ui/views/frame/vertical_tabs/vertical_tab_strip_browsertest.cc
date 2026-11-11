@@ -597,6 +597,10 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, LockLayoutCoalescesLayout) {
 
   AppendTab(browser());
   AppendTab(browser());
+  // TabContainer::AddTabs() may post its animation pass, which counts as
+  // animating until it has run.
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !brave_tab_container->IsAnimating(); }));
   InvalidateAndRunLayoutForVerticalTabStrip();
 
   // While locked, inserts must not run any layout: the new tabs' ideal
