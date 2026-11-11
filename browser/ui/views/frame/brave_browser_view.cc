@@ -854,13 +854,13 @@ void BraveBrowserView::HideSplitView() {
   UpdateRoundedCornersUI();
 }
 
-void BraveBrowserView::ReparentTopContainerForEndOfImmersive() {
+void BraveBrowserView::ReparentTopContainerToBrowserView() {
   if (VerticalTabController::From(browser())->ShouldShowBraveVerticalTabs() ||
       IsFocusModeEnabled(browser())) {
     return;
   }
 
-  BrowserView::ReparentTopContainerForEndOfImmersive();
+  BrowserView::ReparentTopContainerToBrowserView();
 }
 
 bool BraveBrowserView::ShouldDrawTabStrokes() const {
