@@ -25,6 +25,36 @@ import usePromise from '$web-common/usePromise'
 
 type Attachment = TabData | Bookmark | HistoryEntry
 
+function AttachmentCheckbox({
+  checked,
+  isDisabled,
+  onChange,
+  ...props
+}: React.ComponentProps<typeof Checkbox>) {
+  return (
+    <div
+      onKeyDown={(event) => {
+        if (event.key !== 'Enter' && event.key !== ' ') {
+          return
+        }
+        // A keyboard-generated click can be treated as a backdrop click by
+        // the attachment dialog because it has no pointer coordinates.
+        event.preventDefault()
+        if (!event.repeat && !isDisabled) {
+          onChange?.({ checked: !checked })
+        }
+      }}
+    >
+      <Checkbox
+        {...props}
+        checked={checked}
+        isDisabled={isDisabled}
+        onChange={onChange}
+      />
+    </div>
+  )
+}
+
 function TabItem({ tab, index }: { tab: TabData; index: number }) {
   const aiChat = useAIChat()
   const { conversationUuid, associatedContentInfo } = useConversation()
@@ -33,7 +63,7 @@ function TabItem({ tab, index }: { tab: TabData; index: number }) {
     [associatedContentInfo, tab],
   )
   return (
-    <Checkbox
+    <AttachmentCheckbox
       className={styles.tabItem}
       checked={!!content}
       data-testid={`open-tab-${index}`}
@@ -54,7 +84,7 @@ function TabItem({ tab, index }: { tab: TabData; index: number }) {
         className={styles.icon}
         src={`chrome://favicon2/?size=20&pageUrl=${encodeURIComponent(tab.url.url)}&allowGoogleServerFallback=0`}
       />
-    </Checkbox>
+    </AttachmentCheckbox>
   )
 }
 
@@ -66,7 +96,7 @@ function UrlContentItem({ url, title }: { url: string; title: string }) {
     [conversation.associatedContentInfo, url],
   )
   return (
-    <Checkbox
+    <AttachmentCheckbox
       className={styles.tabItem}
       checked={!!content}
       isDisabled={!!content?.conversationTurnUuid}
@@ -94,7 +124,7 @@ function UrlContentItem({ url, title }: { url: string; title: string }) {
         className={styles.icon}
         src={`chrome://favicon2/?size=20&pageUrl=${encodeURIComponent(url)}&allowGoogleServerFallback=0`}
       />
-    </Checkbox>
+    </AttachmentCheckbox>
   )
 }
 

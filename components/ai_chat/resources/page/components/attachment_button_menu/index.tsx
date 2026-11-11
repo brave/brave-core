@@ -4,9 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import ButtonMenu from '@brave/nala/react/buttonMenu'
 import Button from '@brave/nala/react/button'
 import Icon from '@brave/nala/react/icon'
+import Menu from '@brave/nala/react/menu'
 import { ConversationContext } from '../../state/conversation_context'
 import { AIChatContext } from '../../state/ai_chat_context'
 import { shouldDisableAttachmentsButton } from '../../../common/conversation_history_utils'
@@ -45,6 +45,28 @@ undefined
 // </if>
 
 export default function AttachmentButtonMenu(props: Props) {
+  const [trigger, setTrigger] = React.useState<HTMLElement | null>(null)
+  const [isOpen, setIsOpen] = React.useState(false)
+  const attachmentLabel = getLocale(S.AI_CHAT_LEO_ATTACHMENT_MENU_BUTTON_LABEL)
+
+  React.useLayoutEffect(() => {
+    const shadowRoot = trigger?.shadowRoot
+    if (!shadowRoot) {
+      return
+    }
+    // Nala can recreate the shadow button when its slotted content mounts.
+    const syncButtonAria = () => {
+      const button = shadowRoot.querySelector('button')
+      button?.setAttribute('aria-label', attachmentLabel)
+      button?.setAttribute('aria-haspopup', 'menu')
+      button?.setAttribute('aria-expanded', String(isOpen))
+    }
+    syncButtonAria()
+    const observer = new MutationObserver(syncButtonAria)
+    observer.observe(shadowRoot, { childList: true, subtree: true })
+    return () => observer.disconnect()
+  }, [trigger, attachmentLabel, isOpen])
+
   const isMenuDisabled = shouldDisableAttachmentsButton(
     props.conversationHistory,
   )
@@ -58,22 +80,36 @@ export default function AttachmentButtonMenu(props: Props) {
   // </if>
 
   return (
-    <>
-      <ButtonMenu positionStrategy='fixed'>
-        <div
-          slot='anchor-content'
-          className={styles.anchor}
-        >
-          <Button
-            fab
-            kind='plain-faint'
-            title={getLocale(S.AI_CHAT_LEO_ATTACHMENT_MENU_BUTTON_LABEL)}
-            isDisabled={isMenuDisabled}
-            data-testid='attachment-button'
-          >
-            <Icon name='attachment' />
-          </Button>
-        </div>
+    <div className={styles.anchor}>
+      <Button
+        ref={setTrigger}
+        fab
+        kind='plain-faint'
+        title={attachmentLabel}
+        isDisabled={isMenuDisabled}
+        data-testid='attachment-button'
+        onClick={() => setIsOpen((open) => !open)}
+      >
+        <Icon name='attachment' />
+      </Button>
+      <Menu
+        isOpen={isOpen}
+        target={trigger ?? undefined}
+        positionStrategy='fixed'
+        onClose={({ originalEvent, reason }) => {
+          if (
+            reason === 'blur'
+            && trigger
+            && originalEvent.composedPath().includes(trigger)
+          ) {
+            return false
+          }
+          if (originalEvent instanceof KeyboardEvent) {
+            trigger?.focus()
+          }
+          setIsOpen(false)
+        }}
+      >
         <leo-menu-item
           onClick={async () => {
             const files = await pickFiles({
@@ -199,7 +235,7 @@ export default function AttachmentButtonMenu(props: Props) {
             </div>
           </leo-menu-item>
         )}
-      </ButtonMenu>
-    </>
+      </Menu>
+    </div>
   )
 }

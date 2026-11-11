@@ -90,6 +90,37 @@ describe('input box', () => {
     clearAllDataForTesting()
   })
 
+  it('submits with Enter only from the editor', async () => {
+    const submitInputTextToAPI = jest.fn()
+    await renderInputBox(
+      <MockContext>
+        <InputBox
+          context={{ ...testContext, submitInputTextToAPI }}
+          conversationStarted={false}
+        />
+      </MockContext>,
+    )
+
+    const attachmentButton = screen.getByTestId('attachment-button')
+    expect(fireEvent.keyDown(attachmentButton, { key: 'Enter' })).toBe(true)
+    expect(submitInputTextToAPI).not.toHaveBeenCalled()
+
+    const editor = screen.getByTestId('leo-input')
+    expect(fireEvent.keyDown(editor, { key: 'Enter', shiftKey: true })).toBe(
+      true,
+    )
+    expect(fireEvent.keyDown(editor, { key: 'Enter', isComposing: true })).toBe(
+      true,
+    )
+    expect(fireEvent.keyDown(editor, { key: 'Enter', repeat: true })).toBe(
+      false,
+    )
+    expect(submitInputTextToAPI).not.toHaveBeenCalled()
+
+    expect(fireEvent.keyDown(editor, { key: 'Enter' })).toBe(false)
+    expect(submitInputTextToAPI).toHaveBeenCalledTimes(1)
+  })
+
   it('associated content is rendered in input box when not associated with a turn', async () => {
     const { container } = await renderInputBox(
       <MockContext>
