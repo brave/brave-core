@@ -235,7 +235,8 @@ void BraveWalletPermissionContext::RequestWalletPermissions(
     content::PermissionRequestDescription desc(
         content::PermissionDescriptorUtil::
             CreatePermissionDescriptorForPermissionTypes({permission}),
-        rfh->HasTransientUserActivation(), origin_with_address.GetURL());
+        rfh->HasTransientUserActivation());
+    desc.requesting_origin = origin_with_address.GetURL();
 
     // This gives high priority to request and avoids reordering.
     desc.embedded_permission_request_descriptor =
