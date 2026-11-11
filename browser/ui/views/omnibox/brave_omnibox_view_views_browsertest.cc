@@ -80,13 +80,13 @@ class BraveOmniboxViewViewsTest : public InProcessBrowserTest {
   }
 
   void SetSanitizerRules(const std::string& matchers) {
-    base::RunLoop loop;
+    base::test::TestFuture<void> initialized;
 
     auto* url_sanitizer_service =
         brave::URLSanitizerServiceFactory::GetForBrowserContext(
             browser()->GetProfile());
     url_sanitizer_service->SetInitializationCallbackForTesting(
-        loop.QuitClosure());
+        initialized.GetCallback());
     brave::URLSanitizerComponentInstaller::RawConfig config;
     config.matchers = matchers;
     auto* component_intaller =
@@ -94,7 +94,7 @@ class BraveOmniboxViewViewsTest : public InProcessBrowserTest {
             url_sanitizer_service);
     component_intaller->OnConfigReady(config);
 
-    loop.Run();
+    ASSERT_TRUE(initialized.Wait());
   }
 
  private:
@@ -342,7 +342,6 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, DoNotSanitizeInternalURLS) {
   SetSanitizerRules(R"([
     { "include": [ "*://*/*"], "params": ["utm_ad"] }
   ])");
-  base::RunLoop().RunUntilIdle();
 
   omnibox_view()->SelectAll(true);
   omnibox_view()->ExecuteCommand(
