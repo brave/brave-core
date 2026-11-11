@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/toolbar/adaptive_toolbar_enums.h b/chrome/browser/ui/android/toolbar/adaptive_toolbar_enums.h
-index 6fa0383b3488a77460bb7acb62816614471943fa..3d70a1d7f5a7f8619d46d6b755d31b90df984ee6 100644
+index bb54c54eff0005ba5e8b6a66164b695413f0632e..dc1fc402d14c2ee5617db21166072056a978b361 100644
 --- a/chrome/browser/ui/android/toolbar/adaptive_toolbar_enums.h
 +++ b/chrome/browser/ui/android/toolbar/adaptive_toolbar_enums.h
-@@ -49,8 +49,16 @@ enum class AdaptiveToolbarButtonVariant {
+@@ -49,10 +49,18 @@ enum class AdaptiveToolbarButtonVariant {
    kOpenInBrowser = 15,
    // Tab grouping action.
    kTabGrouping = 16,
@@ -17,6 +17,9 @@ index 6fa0383b3488a77460bb7acb62816614471943fa..3d70a1d7f5a7f8619d46d6b755d31b90
    // Glic button.
 -  kGlic = 17,
 +  kGlic = 24,
+   // TTC button.
+-  kTtc = 18,
++  kTtc = 25,
  
-   kMaxValue = kGlic,
+   kMaxValue = kTtc,
  };
