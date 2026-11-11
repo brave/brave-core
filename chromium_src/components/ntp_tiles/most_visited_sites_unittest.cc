@@ -27,7 +27,7 @@ TEST_F(MostVisitedSitesTest,
   most_visited_sites_->AddMostVisitedURLsObserver(&mock_observer_,
                                                   /*max_num_sites=*/3);
   VerifyAndClearExpectations();
-  CHECK(top_sites_callbacks_.empty());
+  EXPECT_TRUE(top_sites_callbacks_.empty());
 
   // Update by TopSites is propagated.
   EXPECT_CALL(*mock_top_sites_, GetMostVisitedURLs(_))
