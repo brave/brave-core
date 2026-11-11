@@ -16,9 +16,11 @@
 #include "base/metrics/histogram_functions.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
-#include "chrome/browser/feedback/show_feedback_page.h"
 #include "brave/browser/history_embeddings/history_embeddings_service_factory.h"
 #include "brave/browser/history_embeddings/history_embeddings_utils.h"
+#include "brave/components/history_embeddings/content/history_embeddings_service.h"
+#include "brave/components/history_embeddings/core/history_embeddings_features.h"
+#include "chrome/browser/feedback/show_feedback_page.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/hats/hats_service.h"
@@ -28,8 +30,6 @@
 #include "chrome/common/chrome_features.h"
 #include "chrome/common/url_constants.h"
 #include "components/history_clusters/core/history_clusters_util.h"
-#include "brave/components/history_embeddings/content/history_embeddings_service.h"
-#include "brave/components/history_embeddings/core/history_embeddings_features.h"
 #include "components/strings/grit/components_strings.h"
 #include "components/url_formatter/url_formatter.h"
 #include "history_embeddings_handler.h"
@@ -49,12 +49,14 @@ OptimizationFeedbackFromMojoUserFeedback(
       return optimization_guide::proto::UserFeedback::USER_FEEDBACK_THUMBS_UP;
     case brave_history_embeddings::mojom::UserFeedback::kUserFeedbackNegative:
       return optimization_guide::proto::UserFeedback::USER_FEEDBACK_THUMBS_DOWN;
-    case brave_history_embeddings::mojom::UserFeedback::kUserFeedbackUnspecified:
+    case brave_history_embeddings::mojom::UserFeedback::
+        kUserFeedbackUnspecified:
       return optimization_guide::proto::UserFeedback::USER_FEEDBACK_UNSPECIFIED;
   }
 }
 
-brave_history_embeddings::mojom::AnswerStatus AnswererAnswerStatusToMojoAnswerStatus(
+brave_history_embeddings::mojom::AnswerStatus
+AnswererAnswerStatusToMojoAnswerStatus(
     brave_history_embeddings::ComputeAnswerStatus status) {
   switch (status) {
     case brave_history_embeddings::ComputeAnswerStatus::kUnspecified:
@@ -124,7 +126,8 @@ void HistoryEmbeddingsHandler::PublishResultToPage(
   user_feedback_ =
       optimization_guide::proto::UserFeedback::USER_FEEDBACK_UNSPECIFIED;
 
-  auto mojom_search_result = brave_history_embeddings::mojom::SearchResult::New();
+  auto mojom_search_result =
+      brave_history_embeddings::mojom::SearchResult::New();
   mojom_search_result->query = native_search_result.query;
   mojom_search_result->answer_status = AnswererAnswerStatusToMojoAnswerStatus(
       native_search_result.answerer_result.status);
@@ -145,8 +148,9 @@ void HistoryEmbeddingsHandler::PublishResultToPage(
         scored_url_row.row.last_visit().InMillisecondsFSinceUnixEpoch();
     item->url_for_display =
         base::UTF16ToUTF8(history_clusters::ComputeURLForDisplay(
-            scored_url_row.row.url(), brave_history_embeddings::GetFeatureParameters()
-                                          .trim_after_host_in_results));
+            scored_url_row.row.url(),
+            brave_history_embeddings::GetFeatureParameters()
+                .trim_after_host_in_results));
     if (!native_search_result.AnswerText().empty() &&
         i == native_search_result.AnswerIndex()) {
       item->answer_data = brave_history_embeddings::mojom::AnswerData::New();

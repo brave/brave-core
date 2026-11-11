@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//mojo/public/tools/bindings/mojom.gni")
+
+# history_embeddings_handler.cc and history_embeddings_handler.h are not built
+# yet: they need the profile's HistoryEmbeddingsService, which nothing builds
+# from the fork yet.
+mojom("mojo_bindings") {
+  sources = [ "history_embeddings.mojom" ]
+  webui_module_path = "/"
+  public_deps = [
+    "//mojo/public/mojom/base",
+    "//url/mojom:url_mojom_gurl",
+  ]
+}

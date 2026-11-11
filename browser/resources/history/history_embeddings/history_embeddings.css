@@ -25,8 +25,10 @@
 }
 
 .card {
-  background: var(--color-history-embeddings-background,
-      var(--cr-card-background-color));
+  background: var(
+    --color-history-embeddings-background,
+    var(--cr-card-background-color)
+  );
   border-radius: var(--cr-card-border-radius);
   box-shadow: var(--cr-card-shadow);
   padding-block: var(--cr-history-embeddings-card-padding-block, 0);
@@ -34,7 +36,9 @@
 
 :host([enable-answers_]) .card {
   padding-block: var(
-      --cr-history-embeddings-card-padding-block-with-answers, 16px);
+    --cr-history-embeddings-card-padding-block-with-answers,
+    16px
+  );
 }
 
 h2 {
@@ -46,8 +50,10 @@ h2 {
   font-size: var(--cr-history-embeddings-heading-font-size, 16px);
   font-weight: 500;
   line-height: var(--cr-history-embeddings-heading-line-height, 24px);
-  color: var(--color-history-embeddings-foreground,
-      var(--cr-primary-text-color));
+  color: var(
+    --color-history-embeddings-foreground,
+    var(--cr-primary-text-color)
+  );
 }
 
 h2 cr-icon {
@@ -62,7 +68,9 @@ h2 cr-icon {
 
 :host([enable-answers_]) .answer-section {
   margin-block-end: var(
-      --cr-history-embeddings-answer-section-margin-block-end, 16px);
+    --cr-history-embeddings-answer-section-margin-block-end,
+    16px
+  );
 }
 
 :host([enable-answers_]) .answer {
@@ -80,8 +88,10 @@ h2 cr-icon {
 
 :host([enable-answers_]) .answer-source {
   align-items: center;
-  color: var(--color-history-embeddings-foreground-subtle,
-      var(--cr-secondary-text-color));
+  color: var(
+    --color-history-embeddings-foreground-subtle,
+    var(--cr-secondary-text-color)
+  );
   display: inline-flex;
   font-size: 11px;
   gap: 4px;
@@ -118,8 +128,10 @@ hr {
   border: 0;
   display: var(--cr-history-embeddings-hr-display, block);
   height: 1px;
-  background: var(--color-history-embeddings-divider,
-      var(--cr-fallback-color-divider));
+  background: var(
+    --color-history-embeddings-divider,
+    var(--cr-fallback-color-divider)
+  );
   margin: 0 24px;
 }
 
@@ -134,7 +146,9 @@ hr:last-of-type {
 cr-url-list-item {
   --cr-url-list-item-height: auto;
   --cr-url-list-item-padding: var(
-      --cr-history-embeddings-url-list-item-padding, 14px 24px);
+    --cr-history-embeddings-url-list-item-padding,
+    14px 24px
+  );
 }
 
 cr-url-list-item:has(.source-passage:not([hidden])) {
@@ -148,13 +162,17 @@ cr-url-list-item:hover + hr {
 
 :host([enable-answers_]) cr-url-list-item {
   --cr-url-list-item-padding: var(
-      --cr-history-embeddings-url-list-item-padding, 8px 24px);
+    --cr-history-embeddings-url-list-item-padding,
+    8px 24px
+  );
 }
 
 :host([enable-answers_]) .result-item {
   align-items: center;
-  color: var(--color-history-embeddings-foreground,
-      var(--cr-primary-text-color));
+  color: var(
+    --color-history-embeddings-foreground,
+    var(--cr-primary-text-color)
+  );
   display: flex;
   gap: 16px;
   padding: 8px 24px;
@@ -167,8 +185,10 @@ cr-url-list-item:hover + hr {
 
 :host([enable-answers_]) .result-image {
   align-items: center;
-  background: var(--color-history-embeddings-image-background,
-      var(--cr-fallback-color-neutral-container));
+  background: var(
+    --color-history-embeddings-image-background,
+    var(--cr-fallback-color-neutral-container)
+  );
   border-radius: 8px;
   display: flex;
   flex-shrink: 0;
@@ -184,7 +204,7 @@ cr-url-list-item:hover + hr {
 }
 
 :host([enable-answers_][in-side-panel])
-    cr-history-embeddings-result-image:not([has-image]) {
+  cr-history-embeddings-result-image:not([has-image]) {
   display: none;
 }
 
@@ -193,7 +213,8 @@ cr-url-list-item:hover + hr {
 }
 
 :host([enable-answers_][in-side-panel])
-    cr-history-embeddings-result-image[has-image] ~ .favicon {
+  cr-history-embeddings-result-image[has-image]
+  ~ .favicon {
   display: none;
 }
 
@@ -225,8 +246,10 @@ cr-url-list-item:hover + hr {
 }
 
 :host([enable-answers_]) .result-url {
-  color: var(--color-history-embeddings-foreground-subtle,
-      var(--cr-secondary-text-color));
+  color: var(
+    --color-history-embeddings-foreground-subtle,
+    var(--cr-secondary-text-color)
+  );
   font-size: 11px;
 }
 
@@ -247,8 +270,10 @@ cr-url-list-item:hover + hr {
 }
 
 :host([enable-answers_]) .time {
-  color: var(--color-history-embeddings-foreground-subtle,
-      var(--cr-secondary-text-color));
+  color: var(
+    --color-history-embeddings-foreground-subtle,
+    var(--cr-secondary-text-color)
+  );
   font-size: 11px;
   line-height: 16px;
   white-space: nowrap;
@@ -268,13 +293,17 @@ cr-url-list-item:hover + hr {
   line-height: var(--cr-history-embeddings-footer-line-height, inherit);
   gap: 8px;
   padding: var(--cr-history-embeddings-footer-padding, 16px 24px 24px);
-  color: var(--color-history-embeddings-foreground-subtle,
-      var(--cr-secondary-text-color));
+  color: var(
+    --color-history-embeddings-foreground-subtle,
+    var(--cr-secondary-text-color)
+  );
 }
 
 :host([enable-answers_]) .footer {
-  padding: var(--cr-history-embeddings-footer-padding-with-answers,
-      16px 24px 24px);
+  padding: var(
+    --cr-history-embeddings-footer-padding-with-answers,
+    16px 24px 24px
+  );
 }
 
 .source-passage {
@@ -286,8 +315,10 @@ cr-url-list-item:hover + hr {
 }
 
 .source-passage-line {
-  background: var(--color-history-embeddings-divider,
-      var(--cr-fallback-color-divider));
+  background: var(
+    --color-history-embeddings-divider,
+    var(--cr-fallback-color-divider)
+  );
   width: 1px;
   margin-inline-start: 20px;
   margin-inline-end: 36px;
