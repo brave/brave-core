@@ -823,10 +823,15 @@ function Recap({
   React.useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       usingKeyboard.current = true
-      if (e.key === 'ArrowRight') {
+      // Leave shortcuts like Alt+Left to the browser.
+      if (e.altKey || e.ctrlKey || e.metaKey) {
+        return
+      }
+      const rtl = getComputedStyle(document.documentElement).direction === 'rtl'
+      if (e.key === (rtl ? 'ArrowLeft' : 'ArrowRight')) {
         e.preventDefault()
         next()
-      } else if (e.key === 'ArrowLeft') {
+      } else if (e.key === (rtl ? 'ArrowRight' : 'ArrowLeft')) {
         e.preventDefault()
         back()
       }
