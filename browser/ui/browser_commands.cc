@@ -506,7 +506,8 @@ void ToggleSidebarPosition(BrowserWindowInterface* browser) {
 
 void ToggleSidebar(BrowserWindowInterface* browser) {
 #if defined(TOOLKIT_VIEWS)
-  if (!browser || !sidebar::SidebarController::From(browser)) {
+  // WebUI browser windows have no sidebar UI to toggle.
+  if (!CHECK_DEREF(sidebar::SidebarController::From(browser)).sidebar()) {
     return;
   }
 

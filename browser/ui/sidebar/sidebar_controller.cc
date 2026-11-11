@@ -276,7 +276,10 @@ void SidebarController::LoadAtTab(const GURL& url) {
 
 void SidebarController::OnShowSidebarOptionChanged(
     SidebarService::ShowSidebarOption option) {
-  CHECK(sidebar_);
+  // WebUI browser windows have no sidebar UI.
+  if (!sidebar_) {
+    return;
+  }
   sidebar_pinned_ = false;
   sidebar_->SetSidebarShowOption(option);
 }
