@@ -86,6 +86,14 @@ class BraveMultiContentsView : public MultiContentsView {
   void UseContentsContainerViewForWebPanel();
   int GetWebPanelWidth() const;
   int GetWebPanelResizeAreaWidth() const;
+
+  // True when the web panel occupies the leading (lowest-X) edge in stored
+  // coordinates. Views mirrors stored bounds on paint, so the leading edge
+  // renders on the visual right in RTL; flipping the pref here keeps the panel
+  // on the visual side the user chose. Matches
+  // BraveBrowserViewTabbedLayoutImpl::IsSidebarLeading().
+  bool IsWebPanelLeading() const;
+
   int ClampWebPanelWidth(int requested_width, int host_width) const;
 
   std::vector<ContentsContainerView*> contents_container_views_for_testing()
@@ -95,6 +103,8 @@ class BraveMultiContentsView : public MultiContentsView {
   }
 
   int web_panel_width_ = 0;
+
+  // The visual side, straight from the alignment pref. See IsWebPanelLeading().
   bool web_panel_on_left_ = false;
   std::optional<int> web_panel_width_on_resize_start_;
 
