@@ -6,9 +6,11 @@
 #ifndef BRAVE_COMPONENTS_QUERY_FILTER_CONTENT_QUERY_FILTER_NAVIGATION_THROTTLE_H_
 #define BRAVE_COMPONENTS_QUERY_FILTER_CONTENT_QUERY_FILTER_NAVIGATION_THROTTLE_H_
 
+#include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "content/public/browser/navigation_throttle.h"
 #include "content/public/browser/navigation_throttle_registry.h"
+#include "url/gurl.h"
 
 namespace brave_shields {
 class BraveShieldsSettingsService;
@@ -42,9 +44,15 @@ class QueryFilterNavigationThrottle : public content::NavigationThrottle {
   ThrottleCheckResult WillStartRequest() override;
   const char* GetNameForLogging() override;
 
+  // When set, a filtered navigation invokes this with the stripped URL instead
+  // of restarting the navigation. Tests use it to observe the redirect.
+  void SetRedirectCallbackForTesting(
+      base::RepeatingCallback<void(const GURL&)> callback);
+
  private:
   raw_ptr<brave_shields::BraveShieldsSettingsService>
       shields_settings_service_ = nullptr;
+  base::RepeatingCallback<void(const GURL&)> redirect_callback_for_testing_;
 };
 }  // namespace query_filter
 #endif  // BRAVE_COMPONENTS_QUERY_FILTER_CONTENT_QUERY_FILTER_NAVIGATION_THROTTLE_H_
