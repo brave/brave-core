@@ -10,15 +10,22 @@
 #include <string>
 #include <string_view>
 
-#include "base/check.h"
-#include "base/check_deref.h"
-#include "base/json/json_writer.h"
 #include "base/values.h"
 #include "brave/components/endpoint_client/is_request_body.h"
 #include "brave/components/endpoint_client/request_options.h"
 #include "net/http/http_request_headers.h"
 
+namespace google::protobuf {
+class MessageLite;
+}  // namespace google::protobuf
+
 namespace endpoint_client::detail {
+
+std::optional<std::string> SerializeJSONRequestBody(
+    const base::DictValue& request_body);
+
+std::optional<std::string> SerializeProtobufRequestBody(
+    const google::protobuf::MessageLite& request_body);
 
 // HTTP methods
 enum class Method {
@@ -91,25 +98,14 @@ struct Request : RequestOptions {
   // Returns std::nullopt if the request body produces an empty dictionary.
   static std::optional<std::string> Serialize(
       const IsJSONRequestBody auto& request_body) {
-    const base::DictValue dict = request_body.ToValue();
-    if (dict.empty()) {
-      return std::nullopt;
-    }
-
-    return CHECK_DEREF(base::WriteJson(dict));
+    return SerializeJSONRequestBody(request_body.ToValue());
   }
 
   // Serializes a Protobuf request body to a binary string.
   // Returns std::nullopt if the request body is empty (ByteSizeLong() == 0).
   static std::optional<std::string> Serialize(
       const IsProtobufRequestBody auto& request_body) {
-    if (!request_body.ByteSizeLong()) {
-      return std::nullopt;
-    }
-
-    std::string serialized;
-    CHECK(request_body.SerializeToString(&serialized));
-    return serialized;
+    return SerializeProtobufRequestBody(request_body);
   }
 };
 

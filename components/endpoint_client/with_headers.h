@@ -8,15 +8,20 @@
 
 #include <string_view>
 
-#include "base/check.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/strings/strcat.h"
 #include "brave/components/endpoint_client/is_request.h"
 #include "brave/components/endpoint_client/is_response.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_response_headers.h"
 
 namespace endpoint_client {
+
+namespace detail {
+
+void SetBearerToken(net::HttpRequestHeaders& headers,
+                    std::string_view bearer_token);
+
+}  // namespace detail
 
 template <typename T>
 struct WithHeaders {
@@ -42,9 +47,7 @@ struct WithHeaders<T> : T {
 // The bearer_token must be non-empty.
 template <detail::IsRequest T>
 void SetBearerToken(WithHeaders<T>& request, std::string_view bearer_token) {
-  CHECK(!bearer_token.empty());
-  request.headers.SetHeader(net::HttpRequestHeaders::kAuthorization,
-                            base::StrCat({"Bearer ", bearer_token}));
+  detail::SetBearerToken(request.headers, bearer_token);
 }
 
 }  // namespace endpoint_client

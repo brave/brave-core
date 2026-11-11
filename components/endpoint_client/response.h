@@ -8,6 +8,7 @@
 
 #include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/check.h"
@@ -67,7 +68,7 @@ struct Response {
   // Deserializes a JSON response body into ResponseBody.
   template <detail::IsJSONResponseBody ResponseBody>
   static std::optional<ResponseBody> Deserialize(
-      const std::string& response_body) {
+      std::string_view response_body) {
     return base::JSONReader::Read(response_body, base::JSON_PARSE_RFC)
         .and_then(
             [](base::Value value) { return ResponseBody::FromValue(value); });
@@ -76,7 +77,7 @@ struct Response {
   // Deserializes a Protobuf response body into ResponseBody.
   template <detail::IsProtobufResponseBody ResponseBody>
   static std::optional<ResponseBody> Deserialize(
-      const std::string& response_body) {
+      std::string_view response_body) {
     if (ResponseBody body; body.ParseFromString(response_body)) {
       return body;
     }
