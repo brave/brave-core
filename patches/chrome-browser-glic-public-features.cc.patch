@@ -1,24 +1,36 @@
 diff --git a/chrome/browser/glic/public/features.cc b/chrome/browser/glic/public/features.cc
-index 6b1d9e9b1b3ce95202210705edbc5aa3abbeddbc..65adbcfbfe81c0f266ad7a7360d0aa38980b026f 100644
+index 610ba82d995aa6fb1e56cc208310e30f3c46f1b4..82572f46881edc852bb0df5ce5c6ec3a2188d2a7 100644
 --- a/chrome/browser/glic/public/features.cc
 +++ b/chrome/browser/glic/public/features.cc
-@@ -85,8 +85,8 @@ const base::FeatureParam<bool> kGlicContextMenuWithOnboarding{
+@@ -95,13 +95,8 @@ const base::FeatureParam<bool> kGlicContextMenuWithOnboarding{
  
  BASE_FEATURE(kGlicContextMenuBelowSearch, base::FEATURE_DISABLED_BY_DEFAULT);
  
 -BASE_FEATURE(kGlicTextSelectionContextMenu,
--             FEATURE_ENABLED_BY_DEFAULT_NON_ANDROID);
+-#if BUILDFLAG(IS_ANDROID)
+-             base::FEATURE_DISABLED_BY_DEFAULT
+-#else
+-             base::FEATURE_ENABLED_BY_DEFAULT
+-#endif
+-);
 +BASE_OVERRIDDEN_FEATURE(kGlicTextSelectionContextMenu,
-+             base::FEATURE_DISABLED_BY_DEFAULT);
++base::FEATURE_DISABLED_BY_DEFAULT);
  const base::FeatureParam<bool> kGlicTextSelectionContextMenuMessageFirstFre{
      &kGlicTextSelectionContextMenu, "message_first_fre", false};
  const base::FeatureParam<bool> kGlicTextSelectionContextMenuAutoSubmit{
-@@ -247,7 +247,7 @@ bool IsGlicNativeLoadingPlaceholderEnabled() {
+@@ -265,13 +260,8 @@ bool IsGlicNativeLoadingPlaceholderEnabled() {
           !base::FeatureList::IsEnabled(kGlicNoWebUiLoader);
  }
  
--BASE_FEATURE(kGeic, FEATURE_ENABLED_BY_DEFAULT_NON_ANDROID);
-+BASE_OVERRIDDEN_FEATURE(kGeic, base::FEATURE_DISABLED_BY_DEFAULT);
+-BASE_FEATURE(kGeic,
+-#if BUILDFLAG(IS_ANDROID)
+-             base::FEATURE_DISABLED_BY_DEFAULT
+-#else
+-             base::FEATURE_ENABLED_BY_DEFAULT
+-#endif
+-);
++BASE_OVERRIDDEN_FEATURE(kGeic,
++base::FEATURE_DISABLED_BY_DEFAULT);
  
  const base::FeatureParam<bool> kGeicEnabledParam{&kGeic, "enabled", true};
  

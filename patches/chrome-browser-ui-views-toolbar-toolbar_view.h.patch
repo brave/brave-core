@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.h b/chrome/browser/ui/views/toolbar/toolbar_view.h
-index ac6b8d0867e96893417269ae68d281b80d5caa20..908574c896c432295217e8aa19a3713d845c5166 100644
+index 2cf182b27dca2f4f4c7135c611b19961c77e2619..e693ee945a64e5503841e5cc77da1c7fa0c59f3b 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.h
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.h
 @@ -121,13 +121,13 @@ class ToolbarView : public views::AccessiblePaneView,
@@ -27,9 +27,9 @@ index ac6b8d0867e96893417269ae68d281b80d5caa20..908574c896c432295217e8aa19a3713d
  
    // Returns true if the view is a descendant of the ToolbarView and should be
    // treated as caption area for window dragging purposes.
-@@ -281,6 +281,10 @@ class ToolbarView : public views::AccessiblePaneView,
-   // Updates glic button parenting after hiding glic actor task icon.
-   void FinalizeHideGlicActorTaskIcon();
+@@ -278,6 +278,10 @@ class ToolbarView : public views::AccessiblePaneView,
+   // Updates glic button parenting after hiding glic secondary button.
+   void FinalizeHideGlicSecondaryButton();
  
 +  BrowserAppMenuButton* app_menu_button() const { return app_menu_button_; }
 +
@@ -38,17 +38,17 @@ index ac6b8d0867e96893417269ae68d281b80d5caa20..908574c896c432295217e8aa19a3713d
   protected:
    // This controls Toolbar, LocationBar and CustomTabBar visibility.
    // If we don't set all three, tab navigation from the app menu breaks
-@@ -288,6 +292,9 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -285,6 +289,9 @@ class ToolbarView : public views::AccessiblePaneView,
    void SetToolbarVisibility(bool visible);
  
   private:
 +  friend class BraveToolbarView;
 +  FRIEND_TEST_ALL_PREFIXES(BraveToolbarViewTest, SplitTabsToolbarButtonTest);
 +  FRIEND_TEST_ALL_PREFIXES(BraveToolbarViewTest, ToolbarCornerRadiusTest);
-   FRIEND_TEST_ALL_PREFIXES(ToolbarViewCircularContextualTasksBrowserTest,
-                            CircularButtonRetainsInteriorMarginsAndPosition);
-   FRIEND_TEST_ALL_PREFIXES(ToolbarViewCircularContextualTasksBrowserTest,
-@@ -366,7 +373,7 @@ class ToolbarView : public views::AccessiblePaneView,
+   // Forwards view overrides to this class.
+   class ContainerView;
+ 
+@@ -340,7 +347,7 @@ class ToolbarView : public views::AccessiblePaneView,
    void OnChromeLabsPrefChanged();
  
    // Loads the images for all the child views.
