@@ -189,15 +189,17 @@ IN_PROC_BROWSER_TEST_F(BraveWalletTabHelperBrowserTest,
 
   ASSERT_TRUE(tab_helper->IsShowingBubble());
   auto* panel_contents = tab_helper->GetBubbleWebContentsForTesting();
+  ASSERT_TRUE(panel_contents);
   auto close_dialog_callback = ShowChooserBubble(
       panel_contents, std::make_unique<FakeUsbChooserController>(1));
   ASSERT_TRUE(tab_helper->IsShowingBubble());
   std::move(close_dialog_callback).Run();
-  base::RunLoop().RunUntilIdle();
+  // Closing the chooser must not close the panel; there is no positive
+  // condition to wait for, so the final RunUntil below covers teardown.
   ASSERT_TRUE(tab_helper->IsShowingBubble());
   chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
-  base::RunLoop().RunUntilIdle();
-  ASSERT_FALSE(tab_helper->IsShowingBubble());
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return !tab_helper->IsShowingBubble(); }));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveWalletTabHelperBrowserTest,
@@ -217,10 +219,9 @@ IN_PROC_BROWSER_TEST_F(BraveWalletTabHelperBrowserTest,
   auto close_dialog_callback = ShowChooserBubble(
       contents, std::make_unique<FakeUsbChooserController>(1));
   std::move(close_dialog_callback).Run();
-  base::RunLoop().RunUntilIdle();
   chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
-  base::RunLoop().RunUntilIdle();
-  ASSERT_FALSE(tab_helper->IsShowingBubble());
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return !tab_helper->IsShowingBubble(); }));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveWalletTabHelperBrowserTest,
@@ -237,8 +238,9 @@ IN_PROC_BROWSER_TEST_F(BraveWalletTabHelperBrowserTest,
       tabs::TabInterface::MaybeGetFromContents(active_contents));
   ASSERT_TRUE(non_panel_web_contents);
   tab_helper->ShowApproveWalletBubble();
-  EXPECT_TRUE(tab_helper->IsShowingBubble());
+  ASSERT_TRUE(tab_helper->IsShowingBubble());
   auto* panel_contents = tab_helper->GetBubbleWebContentsForTesting();
+  ASSERT_TRUE(panel_contents);
   WaitForLoadStop(panel_contents);
   auto popup1 = OpenFromPanel(https_server()->GetURL("a.com", "/popup.html"),
                               panel_contents, tab_helper);
@@ -248,8 +250,8 @@ IN_PROC_BROWSER_TEST_F(BraveWalletTabHelperBrowserTest,
   EXPECT_TRUE(popup2);
   EXPECT_TRUE(tab_helper->IsShowingBubble());
   chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
-  base::RunLoop().RunUntilIdle();
-  ASSERT_FALSE(tab_helper->IsShowingBubble());
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return !tab_helper->IsShowingBubble() && !popup1 && !popup2; }));
 
   EXPECT_FALSE(popup1);
   EXPECT_FALSE(popup2);
@@ -269,8 +271,9 @@ IN_PROC_BROWSER_TEST_F(BraveWalletTabHelperBrowserTest, ClosePopupsWithBubble) {
       tabs::TabInterface::MaybeGetFromContents(active_contents));
   ASSERT_TRUE(non_panel_web_contents);
   tab_helper->ShowApproveWalletBubble();
-  EXPECT_TRUE(tab_helper->IsShowingBubble());
+  ASSERT_TRUE(tab_helper->IsShowingBubble());
   auto* panel_contents = tab_helper->GetBubbleWebContentsForTesting();
+  ASSERT_TRUE(panel_contents);
   WaitForLoadStop(panel_contents);
   auto popup1 = OpenFromPanel(https_server()->GetURL("a.com", "/popup.html"),
                               panel_contents, tab_helper);
@@ -278,7 +281,8 @@ IN_PROC_BROWSER_TEST_F(BraveWalletTabHelperBrowserTest, ClosePopupsWithBubble) {
                               panel_contents, tab_helper);
   EXPECT_TRUE(tab_helper->IsShowingBubble());
   tab_helper->CloseBubble();
-  base::RunLoop().RunUntilIdle();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return !tab_helper->IsShowingBubble() && !popup1 && !popup2; }));
 
   ASSERT_FALSE(tab_helper->IsShowingBubble());
   ASSERT_FALSE(popup1);
