@@ -160,21 +160,6 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
     completion("", "")
   }
 
-  func notifyGetPublicKeyRequestProcessed(requestId: String, approved: Bool) {
-  }
-
-  func pendingGetEncryptionPublicKeyRequests() async -> [BraveWallet.GetEncryptionPublicKeyRequest]
-  {
-    return []
-  }
-
-  func notifyDecryptRequestProcessed(requestId: String, approved: Bool) {
-  }
-
-  func pendingDecryptRequests() async -> [BraveWallet.DecryptRequest] {
-    return []
-  }
-
   func showWalletTestNetworks(_ completion: @escaping (Bool) -> Void) {
     completion(false)
   }

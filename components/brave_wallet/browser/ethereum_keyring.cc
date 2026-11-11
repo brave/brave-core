@@ -167,37 +167,6 @@ std::string EthereumKeyring::GetAddressInternal(const HDKey& hd_key) const {
   return addr.ToChecksumAddress();
 }
 
-bool EthereumKeyring::GetPublicKeyFromX25519_XSalsa20_Poly1305(
-    const std::string& address,
-    std::string* key) {
-  HDKey* hd_key = GetHDKeyFromAddress(address);
-  if (!hd_key) {
-    return false;
-  }
-  const std::vector<uint8_t> public_key =
-      hd_key->GetPublicKeyFromX25519_XSalsa20_Poly1305();
-  if (public_key.empty()) {
-    return false;
-  }
-  *key = base::Base64Encode(public_key);
-  return true;
-}
-
-std::optional<std::vector<uint8_t>>
-EthereumKeyring::DecryptCipherFromX25519_XSalsa20_Poly1305(
-    const std::string& version,
-    base::span<const uint8_t> nonce,
-    base::span<const uint8_t> ephemeral_public_key,
-    base::span<const uint8_t> ciphertext,
-    const std::string& address) {
-  HDKey* hd_key = GetHDKeyFromAddress(address);
-  if (!hd_key) {
-    return std::nullopt;
-  }
-  return hd_key->DecryptCipherFromX25519_XSalsa20_Poly1305(
-      version, nonce, ephemeral_public_key, ciphertext);
-}
-
 std::optional<std::string> EthereumKeyring::GetDiscoveryAddress(
     size_t index) const {
   if (auto key = DeriveAccount(index)) {

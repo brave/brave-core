@@ -214,16 +214,6 @@ class KeyringService : public mojom::KeyringService {
   std::optional<std::string> RecoverAddressByDefaultKeyring(
       base::span<const uint8_t> message,
       base::span<const uint8_t> eth_signature);
-  bool GetPublicKeyFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
-      const mojom::AccountIdPtr& account_id,
-      std::string* key);
-  std::optional<std::vector<uint8_t>>
-  DecryptCipherFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
-      const mojom::AccountIdPtr& account_id,
-      const std::string& version,
-      base::span<const uint8_t> nonce,
-      base::span<const uint8_t> ephemeral_public_key,
-      base::span<const uint8_t> ciphertext);
 
   void AddAccountsWithDefaultName(const mojom::CoinType& coin_type,
                                   mojom::KeyringId keyring_id,

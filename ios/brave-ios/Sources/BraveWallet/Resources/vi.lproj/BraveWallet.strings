@@ -364,21 +364,6 @@
 /* The singular word that will be used in `manageSiteConnectionsAccount`. */
 "wallet.dappsSettingsWebsiteSingular" = "trang web";
 
-/* The message displayed when the user takes a screenshot of their dapp decrypt request. */
-"wallet.decryptMessageScreenshotDetectedMessage" = "Cảnh báo: Ảnh chụp màn hình tin nhắn của bạn có thể được sao lưu vào dịch vụ tệp đám mây và có thể được đọc bởi bất kỳ ứng dụng nào có quyền truy cập ảnh. Brave khuyến nghị bạn không lưu ảnh chụp màn hình này và hãy xóa càng sớm càng tốt.";
-
-/* The title of the button to approve a decrypt request from a dapps website. */
-"wallet.decryptRequestApprove" = "Cho phép";
-
-/* The title of the button to show the message of a decrypt request from a dapps website. */
-"wallet.decryptRequestReveal" = "Hiển thị";
-
-/* A subtitle of the view shown over a dapps website that requests the user decrypt a message. */
-"wallet.decryptRequestSubtitle" = "DApp muốn đọc thông báo này để hoàn thành yêu cầu của bạn";
-
-/* A title of the view shown over a dapps website that requests the user decrypt a message. */
-"wallet.decryptRequestTitle" = "Yêu cầu giải mã";
-
 /* The default account name when adding an account and not entering a custom name. '%@' refers to a coin type and '%lld' refers to a number (for example "Ethereum Account 2") */
 "wallet.defaultAccountName" = "Tài khoản %2$lld %1$@";
 
@@ -549,18 +534,6 @@
 
 /* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom */
 "wallet.gasFeePredefinedLimitOptimal" = "Tối ưu";
-
-/* The title of the button to approve a encryption public key request from a dapps website. */
-"wallet.getEncryptionPublicKeyRequestApprove" = "Cung cấp";
-
-/* The text shown beside the URL origin of a get public encryption key request from a dapp site. Ex 'https://brave.com is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.' */
-"wallet.getEncryptionPublicKeyRequestMessage" = "đang yêu cầu khóa mã hóa công khai của ví của bạn. Nếu bạn đồng ý cung cấp khóa này, trang web sẽ có thể soạn tin nhắn được mã hóa cho bạn.";
-
-/* A subtitle of the view shown over a dapps website that requests the users public encryption key. */
-"wallet.getEncryptionPublicKeyRequestSubtitle" = "DApp đang yêu cầu khóa mã hóa công khai của bạn";
-
-/* A title of the view shown over a dapps website that requests the users public encryption key. */
-"wallet.getEncryptionPublicKeyRequestTitle" = "Yêu cầu khóa mã hóa công khai";
 
 /* The title of the Help Center option inside the menu when user clicks the three dots button beside assets search button or on wallet panel. */
 "wallet.helpCenter" = "Trung tâm trợ giúp";

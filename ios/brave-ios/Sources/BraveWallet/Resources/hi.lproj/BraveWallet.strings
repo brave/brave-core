@@ -364,21 +364,6 @@
 /* The singular word that will be used in `manageSiteConnectionsAccount`. */
 "wallet.dappsSettingsWebsiteSingular" = "वेबसाइट";
 
-/* The message displayed when the user takes a screenshot of their dapp decrypt request. */
-"wallet.decryptMessageScreenshotDetectedMessage" = "चेतावनी: आपके मैसेज का एक स्क्रीनशॉट क्लाउंड फ़ाइल सेवा में बैक अप हो सकता है, और फ़ोटो ऐक्सेस वाले कोई भी ऐप्लिकेशन उसे पढ़ सकता है। Brave सुझाव देता है कि आप स्क्रीनशॉ को सेव न करें और इसे जल्द से जल्द मिटा दें।";
-
-/* The title of the button to approve a decrypt request from a dapps website. */
-"wallet.decryptRequestApprove" = "अनुमति दें";
-
-/* The title of the button to show the message of a decrypt request from a dapps website. */
-"wallet.decryptRequestReveal" = "देखें";
-
-/* A subtitle of the view shown over a dapps website that requests the user decrypt a message. */
-"wallet.decryptRequestSubtitle" = "आपके अनुरोध को पूरा करने के लिए यह DApp इस मैसेज को पढ़ना चाहेगा";
-
-/* A title of the view shown over a dapps website that requests the user decrypt a message. */
-"wallet.decryptRequestTitle" = "डीक्रिप्ट करने का अनुरोध";
-
 /* The default account name when adding an account and not entering a custom name. '%@' refers to a coin type and '%lld' refers to a number (for example "Ethereum Account 2") */
 "wallet.defaultAccountName" = "%1$@ अकाउंट %2$lld";
 
@@ -549,18 +534,6 @@
 
 /* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom */
 "wallet.gasFeePredefinedLimitOptimal" = "सर्वोत्तम";
-
-/* The title of the button to approve a encryption public key request from a dapps website. */
-"wallet.getEncryptionPublicKeyRequestApprove" = "प्रदान करें";
-
-/* The text shown beside the URL origin of a get public encryption key request from a dapp site. Ex 'https://brave.com is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.' */
-"wallet.getEncryptionPublicKeyRequestMessage" = "आपके वॉलेट की पब्लिक एन्क्रिप्शन 'की' का अनुरोध कर रहा है। अगर आप इस 'की' को देने की सहमति देते हैं, तो साइट आपको एन्क्रिप्ट किए हुए मैसेज भेज पाएगी।";
-
-/* A subtitle of the view shown over a dapps website that requests the users public encryption key. */
-"wallet.getEncryptionPublicKeyRequestSubtitle" = "एक DApp आपके पब्लिक एनक्रिप्शन पासवर्ड का अनुरोध कर रहा है";
-
-/* A title of the view shown over a dapps website that requests the users public encryption key. */
-"wallet.getEncryptionPublicKeyRequestTitle" = "पब्लिक एनक्रिप्शन 'की' का अनुरोध";
 
 /* The title of the Help Center option inside the menu when user clicks the three dots button beside assets search button or on wallet panel. */
 "wallet.helpCenter" = "सहायता केंद्र";

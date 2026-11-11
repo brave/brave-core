@@ -94,13 +94,6 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
                       RequestCallback callback,
                       base::Value id);
 
-  void GetEncryptionPublicKey(const std::string& address,
-                              RequestCallback callback,
-                              base::Value id);
-  void Decrypt(const std::string& untrusted_encrypted_data_json,
-               const std::string& address,
-               RequestCallback callback,
-               base::Value id);
   // Used for eth_signTypedData
   void SignTypedMessage(mojom::EthSignTypedDataPtr eth_sign_typed_data,
                         RequestCallback callback,
@@ -183,10 +176,6 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
                                       RequestCallback request_callback);
   void HandleEthSignTypedDataV4Method(JsonRpcRequest request,
                                       RequestCallback request_callback);
-  void HandleEthGetEncryptionPublicKeyMethod(JsonRpcRequest request,
-                                             RequestCallback request_callback);
-  void HandleEthDecryptMethod(JsonRpcRequest request,
-                              RequestCallback request_callback);
   void HandleWalletWatchAssetMethod(JsonRpcRequest request,
                                     RequestCallback request_callback);
   void HandleMetamaskWatchAssetMethod(JsonRpcRequest request,
