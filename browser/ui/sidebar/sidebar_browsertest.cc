@@ -311,7 +311,10 @@ class SidebarBrowserTestWalletSidePanel : public SidebarBrowserTest {
     EXPECT_TRUE(index.has_value());
 
     auto* panel_ui = SidePanelUI::From(browser());
-    CHECK(panel_ui);
+    if (!panel_ui) {
+      ADD_FAILURE() << "No SidePanelUI";
+      return std::nullopt;
+    }
     panel_ui->Show(SidePanelEntryId::kWallet);
 
     EXPECT_TRUE(base::test::RunUntil([&]() {
