@@ -1,5 +1,5 @@
 diff --git a/third_party/polymer/v3_0/BUILD.gn b/third_party/polymer/v3_0/BUILD.gn
-index 86609c53ec63f86fd96f002b6a73d7589d5fe13b..9cd2b12b7e382fe27f99f40c976367d1a4f1c16b 100644
+index 7defa0ff4496a6b0185bf80efb3b78fb389f993e..b64bccce3c30620191e7b8acbc9e49fa5091532a 100644
 --- a/third_party/polymer/v3_0/BUILD.gn
 +++ b/third_party/polymer/v3_0/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -19,8 +19,8 @@ index 86609c53ec63f86fd96f002b6a73d7589d5fe13b..9cd2b12b7e382fe27f99f40c976367d1
    js_files += [
      "iron-a11y-announcer/iron-a11y-announcer.js",
      "iron-a11y-keys/iron-a11y-keys.js",
-@@ -133,8 +134,9 @@ ts_library("library") {
-     "//ui/webui/resources/cr_components/help_bubble:build_ts",
+@@ -132,8 +133,9 @@ ts_library("library") {
+     "//chrome/test/data/webui/settings:build_ts",
      "//ui/webui/resources/cr_elements:build_ts",
    ]
 +  visibility += brave_polymer_library_visibility
@@ -30,7 +30,7 @@ index 86609c53ec63f86fd96f002b6a73d7589d5fe13b..9cd2b12b7e382fe27f99f40c976367d1
      visibility += [
        "//ash/webui/*",
        "//chrome/browser/resources/ash/*",
-@@ -205,7 +207,7 @@ ts_library("library") {
+@@ -204,7 +206,7 @@ ts_library("library") {
      "components-chromium/polymer/polymer-legacy.d.ts",
    ]
  

@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/frame/web_local_frame_impl.h b/third_party/blink/renderer/core/frame/web_local_frame_impl.h
-index 3e37a1715a3b850ebe40d69ab768bfdc1c4f0267..78d5416478ca30c6e76be08a2c65e724cec98cac 100644
+index d265bfc2bfd06a8706ef8649687417409193bc07..a5db01c118e43138b52734c94872cab55d01861c 100644
 --- a/third_party/blink/renderer/core/frame/web_local_frame_impl.h
 +++ b/third_party/blink/renderer/core/frame/web_local_frame_impl.h
 @@ -119,6 +119,7 @@ class CORE_EXPORT WebLocalFrameImpl final
@@ -11,8 +11,8 @@ index 3e37a1715a3b850ebe40d69ab768bfdc1c4f0267..78d5416478ca30c6e76be08a2c65e724
        mojom::blink::TreeScopeType,
        WebLocalFrameClient*,
 @@ -599,6 +600,8 @@ class CORE_EXPORT WebLocalFrameImpl final
- 
-   void WillSendSubmitEvent(const WebFormElement& form);
+   void WasHidden();
+   void WasShown();
  
 +  void NotifyScriptToolsChanged();
 +
