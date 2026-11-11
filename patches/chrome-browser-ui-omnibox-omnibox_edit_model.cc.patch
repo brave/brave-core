@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/omnibox/omnibox_edit_model.cc b/chrome/browser/ui/omnibox/omnibox_edit_model.cc
-index ce1c01686b3bf6d999ec266fa31f551835ace13b..5d170562772f3a24b14991e81899fec13dc11192 100644
+index ce1c01686b3bf6d999ec266fa31f551835ace13b..d70a8acfe865cf0544932420370fcb4bf1aa1b00 100644
 --- a/chrome/browser/ui/omnibox/omnibox_edit_model.cc
 +++ b/chrome/browser/ui/omnibox/omnibox_edit_model.cc
 @@ -548,6 +548,10 @@ bool OmniboxEditModel::ShouldShowCurrentPageIcon() const {
@@ -32,7 +32,25 @@ index ce1c01686b3bf6d999ec266fa31f551835ace13b..5d170562772f3a24b14991e81899fec1
    return searchbox::CanPasteAndGo(controller_->client(), text);
  }
  
-@@ -1932,7 +1941,8 @@ void OmniboxEditModel::GetInfoForCurrentText(AutocompleteMatch* match,
+@@ -1274,6 +1283,7 @@ void OmniboxEditModel::SetKeywordInfo(
+     const std::u16string& keyword_placeholder,
+     metrics::OmniboxEventProto::KeywordModeEntryMethod
+         keyword_mode_entry_method) {
++  [&]() -> void {
+   // Entry should be valid iff in keyword mode.
+   CHECK_EQ(keyword_state == KeywordState::kKeyword,
+            keyword_mode_entry_method !=
+@@ -1285,6 +1295,9 @@ void OmniboxEditModel::SetKeywordInfo(
+   keyword_ = keyword;
+   keyword_placeholder_ = keyword_placeholder;
+   keyword_mode_entry_method_ = keyword_mode_entry_method;
++  }();
++  MaybeUseSemanticHistoryPlaceholder(controller_, keyword_,
++                                     keyword_placeholder_);
+ }
+ 
+ void OmniboxEditModel::ClearAdditionalText() {
+@@ -1932,7 +1945,8 @@ void OmniboxEditModel::GetInfoForCurrentText(AutocompleteMatch* match,
        *match = *autocomplete_controller()->result().default_match();
        found_match_for_text = true;
      } else if (controller_->IsPopupOpen() &&
@@ -42,7 +60,7 @@ index ce1c01686b3bf6d999ec266fa31f551835ace13b..5d170562772f3a24b14991e81899fec1
        const OmniboxPopupSelection selection = GetPopupSelection();
        *match = autocomplete_controller()->result().match_at(selection.line);
        found_match_for_text = true;
-@@ -2278,6 +2288,9 @@ std::u16string OmniboxEditModel::GetPopupAccessibilityLabelForCurrentSelection(
+@@ -2278,6 +2292,9 @@ std::u16string OmniboxEditModel::GetPopupAccessibilityLabelForCurrentSelection(
      const std::u16string& match_text,
      bool include_positional_info,
      int* label_prefix_length) {

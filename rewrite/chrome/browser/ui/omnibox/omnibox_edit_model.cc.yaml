@@ -71,3 +71,16 @@ substitutions:
       replace: |-
         GetPopupSelection().line <
                            autocomplete_controller()->result().size()
+
+  - description: |
+      Ask for a description in the @history scope with semantic history search
+
+      Brave's semantic history search matches the query by meaning, so the
+      @history placeholder asks for a description of the page rather than a
+      word or two. Every keyword state change goes through `SetKeywordInfo`.
+      `MaybeUseSemanticHistoryPlaceholder` lives in the chromium_src shadow.
+    after_function_impl:
+      function_name: OmniboxEditModel::SetKeywordInfo
+      code: |-
+        MaybeUseSemanticHistoryPlaceholder(controller_, keyword_,
+                                           keyword_placeholder_);

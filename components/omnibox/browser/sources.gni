@@ -31,6 +31,8 @@ brave_components_omnibox_browser_sources = [
   "//brave/components/omnibox/browser/promotion_provider.h",
   "//brave/components/omnibox/browser/promotion_utils.cc",
   "//brave/components/omnibox/browser/promotion_utils.h",
+  "//brave/components/omnibox/browser/semantic_history_scope.cc",
+  "//brave/components/omnibox/browser/semantic_history_scope.h",
 ]
 
 brave_components_omnibox_browser_deps = [
