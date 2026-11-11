@@ -467,6 +467,11 @@ void SharedPinnedTabService::OnTabBlockedStateChanged(tabs::TabInterface* tab) {
   OnTabChangedAt(tab, TabChangeType::kAll);
 }
 
+void SharedPinnedTabService::OnTabAudioChanged(tabs::TabInterface* tab) {
+  // Like blocked state, audio used to be reported as a kind of tab change.
+  OnTabChangedAt(tab, TabChangeType::kAll);
+}
+
 void SharedPinnedTabService::OnProfileWillBeDestroyed(Profile* profile) {
   profile_will_be_destroyed_ = true;
 }

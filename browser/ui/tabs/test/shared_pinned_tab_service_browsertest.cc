@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <string>
 
 #include "base/functional/bind.h"
 #include "base/run_loop.h"
@@ -24,12 +25,16 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/navigator/browser_navigator_params.h"
+#include "chrome/browser/ui/recently_audible_helper.h"
 #include "chrome/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/tab_enums.h"
+#include "chrome/browser/ui/tabs/tab_muted_utils.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/toasts/toast_features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/platform_browser_test.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_alert.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/test/browser_test.h"
@@ -375,6 +380,51 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
   EXPECT_FALSE(
       shared_pinned_tab_service->GetTabDataForDummyContents(0, dummy_contents)
           ->blocked);
+}
+
+IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
+                       SynchronizeAudioState) {
+  // Given that there're multiple windows with an audible shared pinned tab
+  auto* browser_1 = browser();
+  auto* tab_strip_model_1 = browser_1->tab_strip_model();
+  tab_strip_model_1->SetTabPinned(0, /* pinned= */ true);
+  auto* shared_contents = tab_strip_model_1->GetWebContentsAt(0);
+  RecentlyAudibleHelper::FromWebContents(shared_contents)
+      ->SetCurrentlyAudibleForTesting();
+  auto* shared_pinned_tab_service = GetForBrowser(browser_1);
+  ASSERT_TRUE(shared_pinned_tab_service);
+
+  auto* browser_2 = CreateNewBrowser();
+  auto* tab_strip_model_2 = browser_2->tab_strip_model();
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return tab_strip_model_2->count() > 1; }));
+  ASSERT_TRUE(tab_strip_model_2->IsTabPinned(0));
+  auto* dummy_contents = tab_strip_model_2->GetWebContentsAt(0);
+  ASSERT_TRUE(shared_pinned_tab_service->IsDummyContents(dummy_contents));
+  auto dummy_alert_state = [&]() {
+    return shared_pinned_tab_service
+        ->GetTabDataForDummyContents(0, dummy_contents)
+        ->alert_state;
+  };
+  EXPECT_NE(dummy_alert_state(), tabs::TabAlert::kAudioMuting);
+
+  // When the shared pinned tab gets muted,
+  ASSERT_TRUE(SetTabAudioMuted(shared_contents, /* mute= */ true,
+                               TabMutedReason::kAudioIndicator,
+                               /* extension_id= */ std::string()));
+
+  // Then the dummy pinned tab should show it muted.
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return dummy_alert_state() == tabs::TabAlert::kAudioMuting; }));
+
+  // When the shared pinned tab gets unmuted,
+  ASSERT_TRUE(SetTabAudioMuted(shared_contents, /* mute= */ false,
+                               TabMutedReason::kAudioIndicator,
+                               /* extension_id= */ std::string()));
+
+  // Then the dummy pinned tab should show it playing again.
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return dummy_alert_state() == tabs::TabAlert::kAudioPlaying; }));
 }
 
 IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
