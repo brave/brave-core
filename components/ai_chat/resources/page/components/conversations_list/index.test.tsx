@@ -710,5 +710,28 @@ describe('ConversationsList', () => {
       })
       await expectIndicators(0, 0)
     })
+
+    it.each([
+      ['ProgressRing', CG.kGenerating, '.generatingIndicator'],
+      ['completed dot', CG.kCompletedNotViewed, '.completedIndicator'],
+      [
+        'approval warning',
+        CG.kAwaitingUserInput,
+        '.awaitingUserInputIndicator',
+      ],
+    ])(
+      'shows the active row its %s while the list covers the conversation',
+      async (_name, state, selector) => {
+        await renderWithGeneration(
+          'uuid-1',
+          { 'uuid-1': state },
+          <ConversationsList coversConversation />,
+        )
+        await waitFor(() => {
+          expect(document.querySelectorAll('.navItemActive').length).toBe(1)
+          expect(document.querySelectorAll(selector).length).toBe(1)
+        })
+      },
+    )
   })
 })
