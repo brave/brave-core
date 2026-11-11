@@ -14,9 +14,11 @@
 
 #include "base/test/bind.h"
 #include "base/test/metrics/histogram_tester.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/sidebar/common/features.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -25,7 +27,12 @@ namespace ai_chat {
 class AIChatMetricsUnitTest : public testing::Test {
  public:
   AIChatMetricsUnitTest()
-      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {
+    // The sidebar default mode selects which histograms are reported; pin it to
+    // kOff so the unsuffixed histograms are the ones that get samples.
+    scoped_feature_list_.InitAndDisableFeature(
+        sidebar::features::kSidebarShowAlwaysOnStable);
+  }
 
   void SetUp() override {
     auto* registry = local_state_.registry();
@@ -102,6 +109,7 @@ class AIChatMetricsUnitTest : public testing::Test {
 
   MockConversationHandler conversation_handler_;
   bool is_premium_ = false;
+  base::test::ScopedFeatureList scoped_feature_list_;
   base::test::TaskEnvironment task_environment_;
   TestingPrefServiceSimple local_state_;
   TestingPrefServiceSimple profile_prefs_;
@@ -208,7 +216,6 @@ TEST_F(AIChatMetricsUnitTest, UsageDailyWeeklyAndMonthly) {
   is_premium_ = false;
 
   ai_chat_metrics_->RecordEnabled(true, false, GetPremiumCallback());
-  task_environment_.RunUntilIdle();
   histogram_tester_.ExpectTotalCount(kUsageDailyHistogramName, 0);
   histogram_tester_.ExpectTotalCount(kUsageWeeklyHistogramName, 0);
   histogram_tester_.ExpectTotalCount(kUsageMonthlyHistogramName, 0);
