@@ -72,7 +72,9 @@ function mockMatchMedia(reducedMotion: boolean) {
       ({
         matches: reducedMotion && query === '(prefers-reduced-motion: reduce)',
         media: query,
-      }) as MediaQueryList,
+        addEventListener: () => {},
+        removeEventListener: () => {},
+      }) as unknown as MediaQueryList,
   )
 }
 
