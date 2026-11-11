@@ -27,6 +27,10 @@ BASE_FEATURE(kAllowSelfCustodyProvidersFeature,
              "BraveRewardsAllowSelfCustodyProviders",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
+BASE_FEATURE(kOfferEventsFeature,
+             "BraveRewardsOfferEvents",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 BASE_FEATURE(kAnimatedBackgroundFeature,
              "BraveRewardsAnimatedBackground",
              base::FEATURE_DISABLED_BY_DEFAULT);
