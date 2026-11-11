@@ -7,7 +7,9 @@
 #define BRAVE_BROWSER_TRAFFIC_CONTROL_TRAFFIC_CONTROL_NAVIGATION_THROTTLE_H_
 
 #include "base/memory/raw_ref.h"
+#include "brave/components/traffic_control/core/mojom/traffic_control.mojom-forward.h"
 #include "content/public/browser/navigation_throttle.h"
+#include "url/gurl.h"
 
 namespace content {
 class NavigationThrottleRegistry;
@@ -39,6 +41,12 @@ class TrafficControlNavigationThrottle : public content::NavigationThrottle {
 
  private:
   ThrottleCheckResult MaybeReroute();
+
+  // Returns the URL to reopen at |target|. On a server redirect this is the
+  // URL the request started at, so that a cross-site hand-off (e.g. a sign-in
+  // redirect carrying a token) runs again with the target's cookies instead of
+  // carrying the source's session across.
+  GURL GetRerouteUrl(const mojom::Target& target);
 
   const raw_ref<TrafficControlService> service_;
 };
