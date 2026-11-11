@@ -916,6 +916,13 @@ void RewardsServiceImpl::FetchUICards(FetchUICardsCallback callback) {
   engine_->FetchUICards(std::move(callback));
 }
 
+void RewardsServiceImpl::RecordOfferEvent(const std::string& offer_id,
+                                          const std::string& event_type) {
+  if (Connected()) {
+    engine_->RecordOfferEvent(offer_id, event_type);
+  }
+}
+
 void RewardsServiceImpl::OnGetRewardsParameters(
     GetRewardsParametersCallback callback,
     mojom::RewardsParametersPtr parameters) {

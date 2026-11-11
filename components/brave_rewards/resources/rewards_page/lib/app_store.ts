@@ -218,6 +218,7 @@ export interface AppActions {
   clearNotification: (id: string) => Promise<void>
   recordOfferClick: () => Promise<void>
   recordOfferView: () => Promise<void>
+  recordOfferEvent: (offerId: string, eventType: string) => void
 }
 
 export interface AppState {
@@ -315,6 +316,7 @@ export function defaultAppStore() {
       async clearNotification(id: string) {},
       async recordOfferClick() {},
       async recordOfferView() {},
+      recordOfferEvent(offerId, eventType) {},
     },
   })
 }

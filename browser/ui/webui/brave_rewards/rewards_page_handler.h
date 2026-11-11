@@ -139,6 +139,8 @@ class RewardsPageHandler : public mojom::RewardsPageHandler {
   void FetchUICards(FetchUICardsCallback callback) override;
   void ResetRewards(ResetRewardsCallback callback) override;
   void RecordOfferView(RecordOfferViewCallback callback) override;
+  void RecordOfferEvent(const std::string& offer_id,
+                        const std::string& event_type) override;
   void RecordOfferClick(RecordOfferClickCallback callback) override;
   void RecordNewTabOnboardingClick(
       RecordNewTabOnboardingClickCallback callback) override;

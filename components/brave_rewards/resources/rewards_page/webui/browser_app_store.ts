@@ -632,6 +632,9 @@ export function createAppStore(): AppStore {
       await pageHandler.recordOfferView()
     },
 
+    recordOfferEvent(offerId, eventType) {
+      pageHandler.recordOfferEvent(offerId, eventType)
+    },
   }
 
   store.update({ actions })
