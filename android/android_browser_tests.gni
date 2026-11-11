@@ -72,6 +72,7 @@ if (enable_brave_wallet) {
 
 android_test_exception_deps = [
   "//brave/browser/autoplay:browser_tests",
+  "//brave/browser/background_fetch:browser_tests",
   "//brave/browser/brave_news:browser_tests",
   "//brave/browser/browsing_data:browser_tests",
   "//brave/browser/extensions",

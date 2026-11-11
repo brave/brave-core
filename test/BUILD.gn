@@ -1065,6 +1065,7 @@ test("brave_browser_tests") {
     "//brave/browser:brave_global_features",
     "//brave/browser:browser_process",
     "//brave/browser/autoplay:browser_tests",
+    "//brave/browser/background_fetch:browser_tests",
     "//brave/browser/brave_shields:brave_shields_impl",
     "//brave/browser/brave_shields:test_support",
     "//brave/browser/brave_stats:browser_tests",
