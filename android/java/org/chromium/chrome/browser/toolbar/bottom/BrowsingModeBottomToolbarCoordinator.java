@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 
+import androidx.appcompat.widget.TooltipCompat;
+
 import com.google.android.material.button.MaterialButton;
 
 import org.chromium.base.Callback;
@@ -323,13 +325,15 @@ public class BrowsingModeBottomToolbarCoordinator {
     }
 
     private void updateTabSwitcherDescription(int tabCount) {
-        mTabSwitcherButtonView.setContentDescription(
+        String description =
                 mTabSwitcherButtonView
                         .getResources()
                         .getQuantityString(
                                 R.plurals.accessibility_toolbar_btn_tabswitcher_toggle_default,
                                 tabCount,
-                                tabCount));
+                                tabCount);
+        mTabSwitcherButtonView.setContentDescription(description);
+        TooltipCompat.setTooltipText(mTabSwitcherButtonView, description);
     }
 
     public void updateBookmarkButton(boolean isBookmarked, boolean editingAllowed) {
