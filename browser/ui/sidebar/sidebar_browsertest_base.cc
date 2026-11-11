@@ -203,13 +203,17 @@ void SidebarBrowserTest::AddItemsTillScrollable(
     SidebarItemsScrollView* scroll_view,
     SidebarService* sidebar_service) {
   int url_prefix = 0;
+  auto contents_view = GetSidebarItemsContentsView(controller());
   while (true) {
+    const size_t expected_count = contents_view->children().size() + 1;
     sidebar_service->AddItem(sidebar::SidebarItem::CreateWebTabItem(
         GURL(base::StrCat(
             {"https://foo/bar_", base::NumberToString(url_prefix)})),
         u"title"));
     url_prefix++;
-    base::RunLoop().RunUntilIdle();
+    // Wait for the new item view to be added to the sidebar.
+    ASSERT_TRUE(base::test::RunUntil(
+        [&]() { return contents_view->children().size() == expected_count; }));
     // Add items till first item becomes invisible.
     if (scroll_view->NeedScrollForItemAt(0)) {
       break;
