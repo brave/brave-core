@@ -111,3 +111,12 @@ HistoryEmbeddingsServiceFactory::BuildServiceInstanceForBrowserContext(
 }
 
 }  // namespace brave_history_embeddings
+
+// Forward declared by the chromium_src override of
+// chrome_autocomplete_provider_client.cc, which hands the service to the
+// omnibox provider.
+brave_history_embeddings::HistoryEmbeddingsSearch*
+BraveGetHistoryEmbeddingsSearch(Profile* profile) {
+  return brave_history_embeddings::HistoryEmbeddingsServiceFactory::
+      GetForProfile(profile);
+}
