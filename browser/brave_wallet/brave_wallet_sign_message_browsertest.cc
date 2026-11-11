@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <cstdint>
 #include <optional>
 
 #include "base/command_line.h"
@@ -73,11 +74,10 @@ bool WaitForWalletBubble(content::WebContents* web_contents) {
 // not prove the sign request was queued. Notify...Processed() is a silent
 // no-op unless the front request has this id, so wait for exactly that.
 bool WaitForPendingSignMessageRequest(BraveWalletService* service,
-                                      size_t request_id) {
+                                      int32_t request_id) {
   return base::test::RunUntil([&] {
     auto requests = service->GetPendingSignMessageRequestsSync();
-    return !requests.empty() &&
-           static_cast<size_t>(requests.front()->id) == request_id;
+    return !requests.empty() && requests.front()->id == request_id;
   });
 }
 
@@ -185,7 +185,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UserApprovedRequest) {
 
   CallEthereumEnable();
   UserGrantPermission(true);
-  size_t request_index = 0;
+  int32_t request_index = 0;
   for (const std::string& method : methods_) {
     ASSERT_TRUE(
         ExecJs(web_contents(),
@@ -212,7 +212,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UserRejectedRequest) {
   CallEthereumEnable();
   UserGrantPermission(true);
 
-  size_t request_index = 0;
+  int32_t request_index = 0;
   for (const std::string& method : methods_) {
     ASSERT_TRUE(
         ExecJs(web_contents(),
@@ -308,7 +308,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, SIWE) {
 
   CallEthereumEnable();
   UserGrantPermission(true);
-  size_t request_index = 0;
+  int32_t request_index = 0;
   struct {
     std::string api_account;
     std::string msg_account;
