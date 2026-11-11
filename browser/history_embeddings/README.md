@@ -1,6 +1,9 @@
 # browser/history_embeddings/
 
-Brave's local embedder for history embeddings (semantic history search).
+The browser side of Brave's semantic history search: the
+`HistoryEmbeddingsService` factory and tab helper for the fork in
+[`//brave/components/history_embeddings`](../../components/history_embeddings/README.md),
+the gates on the Semantic history search setting, and the local embedder.
 
 ## Overview
 
@@ -33,8 +36,10 @@ of the upstream feature flags.
 
 ## Enabling / the Semantic history search setting
 
-Two prefs gate the feature, via the `IsHistoryEmbeddings*` overrides in
-[`chromium_src/.../history_embeddings_utils.cc`](../../chromium_src/chrome/browser/history_embeddings/history_embeddings_utils.cc):
+Two prefs gate the feature, via `IsHistoryEmbeddingsFeatureEnabled()` and
+`IsHistoryEmbeddingsEnabledForProfile()` in
+[`history_embeddings_utils.cc`](history_embeddings_utils.cc), together with
+`kHistoryEmbeddings`:
 
 - **`kBraveLocalAIEnabled`** — local-state master switch (Brave Origin "Local
   AI"); gates `IsHistoryEmbeddingsFeatureEnabled()`.
@@ -59,12 +64,12 @@ service creation, so changes take effect on restart.
 Because of that, the gate reads the setting through
 [`BraveHistoryEmbeddingsStatus`](brave_history_embeddings_status.h), which
 captures it as profile user data at profile setup — so the value the services
-were built with is available for the rest of the session. Both consumers of that
-value read it from `loadTimeData`: the settings page shows its "Relaunch" button
-while the toggle differs from it, and brave://history swaps upstream's
-`enableHistoryEmbeddings` for it
-([`chromium_src/.../history_ui.cc`](../../chromium_src/chrome/browser/ui/webui/history/history_ui.cc))
-so the semantic search input appears only once there is an index behind it.
+were built with is available for the rest of the session. The settings page
+shows its "Relaunch" button while the toggle differs from it. brave://history
+shows its results card, and the omnibox its `@history` matches, only when
+`HistoryEmbeddingsServiceFactory` built a service for the profile, so both
+appear only once there is an index behind them, and so do the `@history` scope's
+"describe what you're searching for" placeholder and spark icon.
 
 ## Model delivery + `EmbedderMetadataUpdated`
 
@@ -98,6 +103,17 @@ stored history rather than mix vector spaces. The file is generated in
 [`brave/leo-local-models`](https://github.com/brave/leo-local-models).
 
 ## Key Files
+
+- **`history_embeddings_service_factory.{h,cc}`** — Builds the fork's
+  `HistoryEmbeddingsService` when the setting was on at startup and the passage
+  embedder observer exists, and never for kiosk or ephemeral profiles.
+
+- **`history_embeddings_tab_helper.{h,cc}`** — `BraveTabFeatures` tab feature
+  that hands each tab's history visit to the service, so extracted passages are
+  stored against it. Follows the tab across discards.
+
+- **`history_embeddings_utils.{h,cc}`** — `IsHistoryEmbeddingsFeatureEnabled()`
+  and `IsHistoryEmbeddingsEnabledForProfile()`.
 
 - **`brave_history_embeddings_status.{h,cc}`** — Profile user data holding the
   Semantic history search setting the embedding services were built with. The
@@ -142,30 +158,32 @@ utility through the standard `LoadModels` mojo call.
 
 ## Related Files
 
-- **`components/history_embeddings/content/brave_history_embeddings_service.h`**
-  — Template wrapping `ChromeHistoryEmbeddingsService` that overrides
-  `OnPassageVisibilityCalculated` to synthesize passing visibility scores, since
-  Brave doesn't use `PageContentAnnotationsService` for content visibility
-  filtering.
+- **`../../components/history_embeddings/`** — the fork of upstream's
+  `components/history_embeddings`: `HistoryEmbeddingsService`, storage and
+  search.
+
+- **`../ui/webui/history_embeddings/`** and
+  **`../resources/history/history_embeddings/`** — the brave://history results
+  card and its mojo handler.
+
+- **`../../components/omnibox/browser/brave_history_embeddings_provider.{h,cc}`**
+  — `@history` omnibox matches.
+
+- **`../../components/omnibox/browser/semantic_history_scope.{h,cc}`** — Whether
+  a keyword is the `@history` scope with an index behind it. Plasters on
+  `OmniboxEditModel::SetKeywordInfo` and `SelectedKeywordView::GetKeywordIcon`
+  use it for the scope's placeholder and icon.
 
 - **`chromium_src/chrome/browser/passage_embeddings/passage_embedder_model_observer_factory.cc`**
   — Gates the per-profile `PassageEmbedderModelObserver` on the Semantic history
   search toggle so neither embedding service is built when it is off (see
   "Enabling / the Semantic history search setting" above).
 
-- **`rewrite/chrome/browser/history_embeddings/history_embeddings_service_factory.cc.yaml`**
-  — Plaster to use `BravePassageEmbeddingsServiceController` and
-  `BraveHistoryEmbeddingsService`.
-
 - **`chromium_src/services/passage_embeddings/passage_embedder_impl.cc`** —
   Injects the LiteRT runner at the top of
   `PassageEmbedderImpl::BuildExecutionTask` (via a
   `BRAVE_PASSAGE_EMBEDDER_IMPL_BUILD_EXECUTION_TASK` macro), so the sandboxed
   utility runs EmbeddingGemma on LiteRT instead of upstream's TFLite executor.
-
-- **`chromium_src/chrome/browser/ui/webui/history/history_ui.cc`** — Swaps
-  brave://history's `enableHistoryEmbeddings` for the session-captured value, so
-  the semantic search input tracks the index rather than the live pref.
 
 - **`chromium_src/chrome/browser/page_content_annotations/`** — Factory
   overrides for `PageContentAnnotationsService`, `PageContentExtractionService`,
