@@ -659,8 +659,9 @@ inline constexpr char kMacOsObsoleteURL[] =
 inline constexpr char kWindowsXPVistaDeprecationURL[] =
     "https://support.brave.app/";
 
-// The URL for the Windows 7/8.1 deprecation help center article.
-inline constexpr char kWindows78DeprecationURL[] =
+// The URL for the "learn more" link on the Windows version obsolescence
+// infobar.
+inline constexpr char kWindowsObsoleteURL[] =
     "https://support.brave.app/hc/en-us/articles/11197967945613";
 
 // The URL for the "Learn more" page for process isolation.
