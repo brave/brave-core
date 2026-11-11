@@ -11,10 +11,11 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/path_service.h"
-#include "base/run_loop.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_path_override.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "brave/components/brave_component_updater/browser/mock_on_demand_updater.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
@@ -136,27 +137,17 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
   }
 
   void CreateWallet() {
-    base::RunLoop run_loop;
-    keyring_service()->CreateWallet(
-        kTestWalletPassword,
-        base::BindLambdaForTesting(
-            [&run_loop](const std::optional<std::string>& mnemonic) {
-              ASSERT_TRUE(mnemonic);
-              ASSERT_FALSE(mnemonic->empty());
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+    base::test::TestFuture<const std::optional<std::string>&> future;
+    keyring_service()->CreateWallet(kTestWalletPassword, future.GetCallback());
+    ASSERT_TRUE(future.Get());
+    ASSERT_FALSE(future.Get()->empty());
   }
 
   void RestoreWallet() {
-    base::RunLoop run_loop;
-    keyring_service()->RestoreWallet(
-        kMnemonicDivideCruise, kTestWalletPassword, false,
-        base::BindLambdaForTesting([&](bool success) {
-          ASSERT_TRUE(success);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    base::test::TestFuture<bool> future;
+    keyring_service()->RestoreWallet(kMnemonicDivideCruise, kTestWalletPassword,
+                                     false, future.GetCallback());
+    ASSERT_TRUE(future.Get());
   }
 
   bool UnlockWallet(const std::string& password) {
@@ -166,17 +157,12 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
   }
 
   void ImportFromExternalWallet() {
-    base::RunLoop run_loop;
+    base::test::TestFuture<bool, const std::optional<std::string>&> future;
     brave_wallet_service_->ImportFromExternalWallet(
         mojom::ExternalWalletType::MetaMask, kTestWalletPassword,
-        kTestWalletPassword,
-        base::BindLambdaForTesting(
-            [&run_loop](bool success, const std::optional<std::string>& err) {
-              ASSERT_TRUE(success);
-              ASSERT_FALSE(err);
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+        kTestWalletPassword, future.GetCallback());
+    ASSERT_TRUE(future.Get<0>());
+    ASSERT_FALSE(future.Get<1>());
   }
 
   PrefService* local_state() { return &local_state_; }
@@ -212,9 +198,21 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
   }
 
  protected:
-  void RunUntilIdle() {
-    task_environment_.RunUntilIdle();
-    base::RunLoop().RunUntilIdle();
+  // Only for proving that nothing happens (absence checks). Use
+  // WaitForComponentRegistered() / WaitForRegistryPopulated() to wait for
+  // something to happen.
+  void RunUntilIdle() { task_environment_.RunUntilIdle(); }
+
+  // Set by the RegisterComponent() mock actions in the tests.
+  bool component_registered_ = false;
+
+  [[nodiscard]] bool WaitForComponentRegistered() {
+    return base::test::RunUntil([this] { return component_registered_; });
+  }
+
+  [[nodiscard]] bool WaitForRegistryPopulated() {
+    return base::test::RunUntil(
+        [this] { return !registry()->IsEmptyForTesting(); });
   }
 
  private:
@@ -241,11 +239,12 @@ TEST_F(WalletDataFilesInstallerUnitTest,
        MaybeRegisterWalletDataFilesComponent_RegisterWithWallets) {
   EXPECT_CALL(*updater(), RegisterComponent(testing::_))
       .Times(1)
-      .WillOnce(testing::Return(true));
+      .WillOnce(testing::DoAll(testing::Assign(&component_registered_, true),
+                               testing::Return(true)));
   // Mimic created wallets.
   local_state()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
   installer().MaybeRegisterWalletDataFilesComponent(updater(), local_state());
-  RunUntilIdle();
+  ASSERT_TRUE(WaitForComponentRegistered());
 }
 
 // Startup registration must not parse lists until the wallet is unlocked.
@@ -253,19 +252,20 @@ TEST_F(WalletDataFilesInstallerUnitTest,
        StartupComponentReady_DefersParsingUntilUnlock) {
   EXPECT_CALL(*updater(), RegisterComponent(testing::_))
       .Times(1)
-      .WillOnce(testing::Return(true));
+      .WillOnce(testing::DoAll(testing::Assign(&component_registered_, true),
+                               testing::Return(true)));
   local_state()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
   installer().MaybeRegisterWalletDataFilesComponent(updater(), local_state());
-  RunUntilIdle();
+  ASSERT_TRUE(WaitForComponentRegistered());
 
   WriteCoingeckoIdsMapToFile();
   installer().OnComponentReady(install_dir());
+  // Absence check: parsing must not start before unlock.
   RunUntilIdle();
   EXPECT_TRUE(registry()->IsEmptyForTesting());
 
   installer().OnWalletUnlocked();
-  RunUntilIdle();
-  EXPECT_FALSE(registry()->IsEmptyForTesting());
+  ASSERT_TRUE(WaitForRegistryPopulated());
 }
 
 TEST_F(WalletDataFilesInstallerUnitTest,
@@ -275,8 +275,7 @@ TEST_F(WalletDataFilesInstallerUnitTest,
 
   WriteCoingeckoIdsMapToFile();
   installer().OnComponentReady(install_dir());
-  RunUntilIdle();
-  EXPECT_FALSE(registry()->IsEmptyForTesting());
+  ASSERT_TRUE(WaitForRegistryPopulated());
 }
 
 // KeyringService::Unlock (not a direct OnWalletUnlocked call) is what
@@ -284,13 +283,15 @@ TEST_F(WalletDataFilesInstallerUnitTest,
 TEST_F(WalletDataFilesInstallerUnitTest, KeyringUnlock_ParsesDeferredLists) {
   EXPECT_CALL(*updater(), RegisterComponent(testing::_))
       .Times(1)
-      .WillOnce(testing::Return(true));
+      .WillOnce(testing::DoAll(testing::Assign(&component_registered_, true),
+                               testing::Return(true)));
   local_state()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
   installer().MaybeRegisterWalletDataFilesComponent(updater(), local_state());
-  RunUntilIdle();
+  ASSERT_TRUE(WaitForComponentRegistered());
 
   WriteCoingeckoIdsMapToFile();
   installer().OnComponentReady(install_dir());
+  // Absence check: parsing must not start before unlock.
   RunUntilIdle();
   EXPECT_TRUE(registry()->IsEmptyForTesting());
 
@@ -301,12 +302,12 @@ TEST_F(WalletDataFilesInstallerUnitTest, KeyringUnlock_ParsesDeferredLists) {
   EXPECT_TRUE(registry()->IsEmptyForTesting());
 
   EXPECT_FALSE(UnlockWallet("wrong-password"));
+  // Absence check: a failed unlock must not trigger parsing.
   RunUntilIdle();
   EXPECT_TRUE(registry()->IsEmptyForTesting());
 
   EXPECT_TRUE(UnlockWallet(kTestWalletPassword));
-  RunUntilIdle();
-  EXPECT_FALSE(registry()->IsEmptyForTesting());
+  ASSERT_TRUE(WaitForRegistryPopulated());
   EXPECT_EQ(registry()->GetCoingeckoId(
                 "0xa", "0x7f5c764cbc14f9669b88837ca1490cca17c31607"),
             "usd-coin");
@@ -317,7 +318,6 @@ TEST_F(WalletDataFilesInstallerUnitTest, OnDemandInstallAndParsing_EmptyPath) {
       .Times(1)
       .WillOnce(testing::Return(true));
   SetOnDemandInstallCallbackWithComponentReady(base::FilePath());
-  RunUntilIdle();
   CreateWallet();
 
   EXPECT_TRUE(registry()->IsEmptyForTesting());
@@ -377,6 +377,7 @@ TEST_F(WalletDataFilesInstallerUnitTest,
   SetOnDemandInstallCallbackWithComponentUpdateError();
   CreateWallet();
 
+  // Absence check: nothing may be parsed after the install error.
   RunUntilIdle();
   EXPECT_TRUE(registry()->IsEmptyForTesting());
 }
@@ -384,13 +385,15 @@ TEST_F(WalletDataFilesInstallerUnitTest,
 TEST_F(WalletDataFilesInstallerUnitTest,
        RestoreAfterStartupRegistration_ParsesOnDemand) {
   EXPECT_CALL(*updater(), RegisterComponent(testing::_))
-      .WillOnce(testing::Return(true));
+      .WillOnce(testing::DoAll(testing::Assign(&component_registered_, true),
+                               testing::Return(true)));
   local_state()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
   installer().MaybeRegisterWalletDataFilesComponent(updater(), local_state());
-  RunUntilIdle();
+  ASSERT_TRUE(WaitForComponentRegistered());
 
   WriteCoingeckoIdsMapToFile();
   installer().OnComponentReady(install_dir());
+  // Absence check: parsing must not start before restore.
   RunUntilIdle();
   EXPECT_TRUE(registry()->IsEmptyForTesting());
 
@@ -464,7 +467,6 @@ TEST_F(WalletDataFilesInstallerUnitTest,
   WriteCoingeckoIdsMapToFile();
 
   ImportFromExternalWallet();
-  RunUntilIdle();
   EXPECT_FALSE(registry()->IsEmptyForTesting());
   EXPECT_EQ(registry()->GetCoingeckoId(
                 "0xa", "0x7f5c764cbc14f9669b88837ca1490cca17c31607"),
