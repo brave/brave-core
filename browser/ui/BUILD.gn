@@ -113,6 +113,7 @@ source_set("ui") {
     "//brave/browser/brave_shields",
     "//brave/browser/skus",
     "//brave/browser/ui/page_info",
+    "//brave/browser/ui/webui:brave_webui_source",
     "//brave/browser/ui/webui/brave_account",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/local_ai/buildflags",
@@ -217,16 +218,10 @@ source_set("ui") {
     "webui/brave_adblock_internals_ui.h",
     "webui/brave_adblock_ui.cc",
     "webui/brave_adblock_ui.h",
-    "webui/brave_sanitized_image_source.cc",
-    "webui/brave_sanitized_image_source.h",
     "webui/brave_web_ui_controller_factory.cc",
     "webui/brave_web_ui_controller_factory.h",
-    "webui/brave_webui_source.cc",
-    "webui/brave_webui_source.h",
     "webui/skus_internals_ui.cc",
     "webui/skus_internals_ui.h",
-    "webui/untrusted_sanitized_image_source.cc",
-    "webui/untrusted_sanitized_image_source.h",
   ]
 
   if (enable_brave_wallet) {
@@ -292,6 +287,7 @@ source_set("ui") {
     deps += [
       "//brave/browser/brave_rewards",
       "//brave/browser/brave_rewards:tab_helper",
+      "//brave/browser/ui/webui/brave_rewards:rewards_page_handler",
       "//chrome/browser:flags",
       "//chrome/browser/lifetime",
     ]
@@ -302,8 +298,6 @@ source_set("ui") {
     sources += [
       "webui/brave_rewards/rewards_page_data_source.cc",
       "webui/brave_rewards/rewards_page_data_source.h",
-      "webui/brave_rewards/rewards_page_handler.cc",
-      "webui/brave_rewards/rewards_page_handler.h",
       "webui/brave_rewards/rewards_page_ui.cc",
       "webui/brave_rewards/rewards_page_ui.h",
       "webui/brave_rewards/rewards_web_ui_utils.cc",
@@ -533,6 +527,7 @@ source_set("ui") {
       "//brave/browser/ui/tabs:tab_model",
       "//brave/browser/ui/tabs:tab_strip",
       "//brave/browser/ui/tabs:tabs_public",
+      "//brave/browser/ui/webui:brave_sanitized_image_source",
       "//brave/browser/ui/webui/brave_welcome_page",
       "//brave/browser/ui/webui/settings/brave_account",
       "//brave/browser/workspaces",
@@ -1256,17 +1251,12 @@ source_set("ui") {
     ]
   }
 
-  # FaviconSource now comes from the //chrome/browser/ui/webui:favicon_source
-  # target, which is enabled on Android via a Brave patch. SanitizedImageSource
-  # is still not compiled into Chromium on Android, so include it here.
+  # FaviconSource comes from the //chrome/browser/ui/webui:favicon_source
+  # target, which is enabled on Android via a Brave patch.
   if (is_android) {
-    sources += [
-      "//chrome/browser/ui/webui/sanitized_image/sanitized_image_source.cc",
-      "//chrome/browser/ui/webui/sanitized_image/sanitized_image_source.h",
-    ]
-
     deps += [
       "//chrome/browser/signin",
+      "//chrome/browser/ui/webui/sanitized_image:sanitized_image_source",
       "//net",
       "//url",
     ]

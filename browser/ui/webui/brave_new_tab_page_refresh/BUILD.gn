@@ -58,6 +58,8 @@ source_set("brave_new_tab_page_refresh") {
     "//brave/browser/ntp_background",
     "//brave/browser/resources/brave_new_tab_page_refresh:generated_resources",
     "//brave/browser/ui:ui_features",
+    "//brave/browser/ui/webui:brave_sanitized_image_source",
+    "//brave/browser/ui/webui:brave_webui_source",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_ads/buildflags",
     "//brave/components/brave_rewards/core/buildflags",
@@ -125,6 +127,7 @@ source_set("brave_new_tab_page_refresh") {
     deps += [
       "//brave/browser/brave_rewards",
       "//brave/browser/brave_rewards:util",
+      "//brave/browser/ui/webui/brave_rewards:rewards_page_handler",
     ]
   }
 
