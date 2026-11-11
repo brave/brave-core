@@ -1,0 +1,32 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/ui/webui/custom_profile_image/buildflags/buildflags.gni")
+
+assert(enable_brave_custom_profile_image_webui)
+
+source_set("image_file") {
+  visibility = [ ":unit_tests" ]
+  sources = [
+    "image_file.cc",
+    "image_file.h",
+  ]
+  public_deps = [
+    "//base",
+    "//brave/ui/webui/custom_profile_image/buildflags",
+    "//skia",
+  ]
+  deps = [ "//ui/gfx/codec" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "image_file_unittest.cc" ]
+  deps = [
+    ":image_file",
+    "//base/test:test_support",
+    "//testing/gtest",
+  ]
+}
