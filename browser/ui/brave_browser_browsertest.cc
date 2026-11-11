@@ -90,9 +90,11 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserWebUIBrowserTest,
       ->SetSidebarShowOption(
           sidebar::SidebarService::ShowSidebarOption::kShowNever);
 
-  // Commands backed by views-only features do nothing for this window.
+  // Nothing is selected in the omnibox, so there is no clean link to copy.
   EXPECT_FALSE(brave::HasSelectedURL(browser()));
   brave::CleanAndCopySelectedURL(browser());
+
+  // Commands backed by views-only features do nothing for this window.
   brave::ToggleSidebar(browser());
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   brave::ShowPlaylistBubble(browser());

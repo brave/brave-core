@@ -330,8 +330,6 @@ class BraveBrowserView : public BrowserView,
   // class's ctor body runs).
   void EnsureFindBarHostViewIsLastChild();
 
-  bool HasSelectedURL() const override;
-  void CleanAndCopySelectedURL() override;
 
   void UpdateSideBarHorizontalAlignment();
 
