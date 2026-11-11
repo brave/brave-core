@@ -4885,10 +4885,11 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, AccountDiscovery) {
 
   EXPECT_CALL(observer, AccountsChanged()).Times(2);  // Accounts 3 and 10.
   EXPECT_TRUE(RestoreWallet(&service, saved_mnemonic(), "brave1", false));
-  // Discovery requests 30 addresses in total. This waits for the 30th request
-  // to be issued, not for its response to be processed.
-  ASSERT_TRUE(base::test::RunUntil(
-      [&]() { return requested_addresses.size() >= 30u; }));
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    auto* manager = brave_wallet_service.account_discovery_manager();
+    return manager &&
+           manager->IsDiscoveryCompleteForTesting(mojom::KeyringId::kDefault);
+  }));
   observer.WaitAndVerify();
   std::vector<mojom::AccountInfoPtr> account_infos =
       service.GetAccountInfosForKeyring(mojom::KeyringId::kDefault);
@@ -4930,10 +4931,11 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, SolAccountDiscovery) {
 
   EXPECT_CALL(observer, AccountsChanged()).Times(2);  // Accounts 3 and 10.
   EXPECT_TRUE(RestoreWallet(&service, saved_mnemonic(), "brave1", false));
-  // Discovery requests 30 addresses in total. This waits for the 30th request
-  // to be issued, not for its response to be processed.
-  ASSERT_TRUE(base::test::RunUntil(
-      [&]() { return requested_addresses.size() >= 30u; }));
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    auto* manager = brave_wallet_service.account_discovery_manager();
+    return manager &&
+           manager->IsDiscoveryCompleteForTesting(mojom::KeyringId::kSolana);
+  }));
   observer.WaitAndVerify();
   std::vector<mojom::AccountInfoPtr> account_infos =
       service.GetAccountInfosForKeyring(mojom::KeyringId::kSolana);
@@ -4976,10 +4978,11 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, FilAccountDiscovery) {
 
   EXPECT_CALL(observer, AccountsChanged()).Times(2);  // Accounts 3 and 10.
   EXPECT_TRUE(RestoreWallet(&service, saved_mnemonic(), "brave1", false));
-  // Discovery requests 30 addresses in total. This waits for the 30th request
-  // to be issued, not for its response to be processed.
-  ASSERT_TRUE(base::test::RunUntil(
-      [&]() { return requested_addresses.size() >= 30u; }));
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    auto* manager = brave_wallet_service.account_discovery_manager();
+    return manager &&
+           manager->IsDiscoveryCompleteForTesting(mojom::KeyringId::kFilecoin);
+  }));
   observer.WaitAndVerify();
   std::vector<mojom::AccountInfoPtr> account_infos =
       service.GetAccountInfosForKeyring(mojom::KeyringId::kFilecoin);
@@ -5040,10 +5043,14 @@ TEST_F(KeyringServiceUnitTest, BitcoinDiscovery) {
   EXPECT_CALL(observer, AccountsAdded(_)).Times(5);
   EXPECT_TRUE(RestoreWallet(&service, kMnemonicAbandonAbandon,
                             kTestWalletPassword, false));
-  // Waits for the 5th account; the exact count is asserted below after the
-  // observer flush (and AccountsAdded is verified to fire exactly 5 times).
-  ASSERT_TRUE(base::test::RunUntil(
-      [&]() { return service.GetAllAccountInfos().size() >= 5u; }));
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    auto* manager = brave_wallet_service.account_discovery_manager();
+    return manager &&
+           manager->IsDiscoveryCompleteForTesting(
+               mojom::KeyringId::kBitcoin84) &&
+           manager->IsDiscoveryCompleteForTesting(
+               mojom::KeyringId::kBitcoin84Testnet);
+  }));
   observer.WaitAndVerify();
   auto& account_infos = service.GetAllAccountInfos();
   ASSERT_EQ(account_infos.size(), 5u);
@@ -5115,10 +5122,11 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, StopsOnError) {
 
   EXPECT_CALL(observer, AccountsChanged()).Times(1);  // Account 3.
   EXPECT_TRUE(RestoreWallet(&service, saved_mnemonic(), "brave1", false));
-  // Discovery stops after the 8th request fails. This waits for the 8th
-  // request to be issued, not for its response to be processed.
-  ASSERT_TRUE(
-      base::test::RunUntil([&]() { return requested_addresses.size() >= 8u; }));
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    auto* manager = brave_wallet_service.account_discovery_manager();
+    return manager &&
+           manager->IsDiscoveryCompleteForTesting(mojom::KeyringId::kDefault);
+  }));
   observer.WaitAndVerify();
   std::vector<mojom::AccountInfoPtr> account_infos =
       service.GetAccountInfosForKeyring(mojom::KeyringId::kDefault);
@@ -5178,10 +5186,11 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, ManuallyAddAccount) {
   EXPECT_CALL(observer, AccountsChanged())
       .Times(3);  // Two accounts added manually, one by discovery.
   EXPECT_TRUE(RestoreWallet(&service, saved_mnemonic(), "brave1", false));
-  // Discovery finishes once the last (26th) address was requested. This waits
-  // for that request to be issued, not for its response to be processed.
-  ASSERT_TRUE(base::test::RunUntil(
-      [&]() { return requested_addresses.size() >= 26u; }));
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    auto* manager = brave_wallet_service.account_discovery_manager();
+    return manager &&
+           manager->IsDiscoveryCompleteForTesting(mojom::KeyringId::kDefault);
+  }));
   observer.WaitAndVerify();
   std::vector<mojom::AccountInfoPtr> account_infos =
       service.GetAccountInfosForKeyring(mojom::KeyringId::kDefault);
@@ -5256,10 +5265,11 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, RestoreWalletTwice) {
   EXPECT_CALL(observer, AccountsChanged()).Times(2);  // Accounts 3 and 10.
   EXPECT_CALL(observer, WalletRestored()).Times(1);
   EXPECT_TRUE(service.RestoreWalletSync(saved_mnemonic(), "brave1", false));
-  // This waits for the 30th request to be issued, not for its response to be
-  // processed.
-  ASSERT_TRUE(base::test::RunUntil(
-      [&]() { return requested_addresses.size() >= 30u; }));
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    auto* manager = brave_wallet_service.account_discovery_manager();
+    return manager &&
+           manager->IsDiscoveryCompleteForTesting(mojom::KeyringId::kDefault);
+  }));
   observer.WaitAndVerify();
   // New account discovery starts.
   EXPECT_TRUE(brave_wallet_service.account_discovery_manager());
