@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/push_messaging/push_messaging_service_unittest.cc b/chrome/browser/push_messaging/push_messaging_service_unittest.cc
+index c7ae0afc7f9d3c1d6bc46e475bdfec9d56fb38d0..9938022c1a93ce9e4352bed818190cbb84e43319 100644
+--- a/chrome/browser/push_messaging/push_messaging_service_unittest.cc
++++ b/chrome/browser/push_messaging/push_messaging_service_unittest.cc
+@@ -112,7 +112,7 @@ constexpr char kStoredLegacyCountHistogram[] =
+ 
+ // Implementation of the TestingProfile that provides the Push Messaging Service
+ // and the Permission Manager, both of which are required for the tests.
+-class PushMessagingTestingProfile : public TestingProfile {
++class PushMessagingTestingProfile : public BraveTestingProfile {
+  public:
+   PushMessagingTestingProfile() = default;
+ 
