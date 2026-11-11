@@ -19,6 +19,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
+#include "brave/browser/brave_news/rss_links_fetcher.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
@@ -314,9 +315,17 @@ IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, FeedsAreNotFoundWhenNotOptedIn) {
       browser(), rss_page_url, WindowOpenDisposition::kCurrentTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
-  // We run until idle here rather than using the Waiter because we want the
-  // load to complete before notifying, and we don't notify empty results.
-  base::RunLoop().RunUntilIdle();
+  // We can't use WaitForFeedsChanged here because empty results are never
+  // notified. The opt-in gate is checked synchronously in DOMContentLoaded, so
+  // if detection had started, its request to the renderer was sent before the
+  // load finished. Issue our own request for the page's RSS links and wait for
+  // its reply: it is queued behind any request the tab helper made, so by the
+  // time it completes a detection result would have been delivered too. The
+  // page does have feeds, so a broken gate would surface them.
+  base::test::TestFuture<std::vector<GURL>> rss_links_future;
+  brave_news::FetchRssLinks(contents()->GetLastCommittedURL(), contents(),
+                            rss_links_future.GetCallback());
+  ASSERT_FALSE(rss_links_future.Get().empty());
 
   ASSERT_EQ(0u, tab_helper->GetAvailableFeedUrls().size());
 }
