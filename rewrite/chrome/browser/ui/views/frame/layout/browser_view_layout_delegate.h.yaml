@@ -1,0 +1,27 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Add methods to BrowserViewLayoutDelegate for BraveBrowserViewLayout 
+
+      BraveBrowserViewLayout queries these through the delegate. They are
+      implemented by BrowserViewLayoutDelegateImpl (see the matching rewrite
+      for browser_view_layout_delegate_impl.h).
+    add_to_public:
+      class_name: BrowserViewLayoutDelegate
+      code: |-
+        virtual bool ShouldShowVerticalTabs() const = 0;
+        virtual bool ShouldShowWindowTitleForVerticalTabs() const = 0;
+        virtual bool IsVerticalTabOnRight() const = 0;
+        virtual bool ShouldUseBraveWebViewRoundedCornersForContents() const = 0;
+        virtual int GetRoundedCornersWebViewMargin() const = 0;
+        virtual bool IsBookmarkBarOnByPref() const = 0;
+        virtual bool IsContentTypeSidePanelVisible() const = 0;
+        virtual bool IsFullscreenForBrowser() const = 0;
+        virtual bool IsFullscreenForTab() const = 0;
+        virtual void UpdateContentsCornerRadii(
+            const gfx::RoundedCornersF& corner_radii) = 0;
+        virtual bool IsFullscreen() const = 0;

@@ -1,0 +1,24 @@
+diff --git a/chrome/browser/ui/views/frame/layout/browser_view_layout_delegate_impl.h b/chrome/browser/ui/views/frame/layout/browser_view_layout_delegate_impl.h
+index 801ef978b2a2372b351d86c642618b14fe12423e..03d81de0d1ecf13f691a1aadabc58f5dae75ca3a 100644
+--- a/chrome/browser/ui/views/frame/layout/browser_view_layout_delegate_impl.h
++++ b/chrome/browser/ui/views/frame/layout/browser_view_layout_delegate_impl.h
+@@ -55,6 +55,19 @@ class BrowserViewLayoutDelegateImpl : public BrowserViewLayoutDelegate {
+       bool* current_state_out) override;
+   int GetRestoredWindowCornerRadius() const override;
+ 
++  bool ShouldShowVerticalTabs() const override;
++  bool ShouldShowWindowTitleForVerticalTabs() const override;
++  bool IsVerticalTabOnRight() const override;
++  bool ShouldUseBraveWebViewRoundedCornersForContents() const override;
++  int GetRoundedCornersWebViewMargin() const override;
++  bool IsBookmarkBarOnByPref() const override;
++  bool IsContentTypeSidePanelVisible() const override;
++  bool IsFullscreenForBrowser() const override;
++  bool IsFullscreenForTab() const override;
++  void UpdateContentsCornerRadii(
++      const gfx::RoundedCornersF& corner_radii) override;
++  bool IsFullscreen() const override;
++
+  protected:
+   BrowserView& browser_view() { return browser_view_.get(); }
+   const BrowserView& browser_view() const { return browser_view_.get(); }
