@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/context_menu_helper.h b/chrome/browser/ui/android/context_menu_helper.h
-index 6f1bb57cf61abf2cf9a9451fd5669af745834056..421eaa4d5775a505aec9f21697c4c4ebfb058914 100644
+index 5d282c2b154da4764a2cd87685fb0fa072e12fb9..a944dde662a1036524577d4001b4e1acc870ddc9 100644
 --- a/chrome/browser/ui/android/context_menu_helper.h
 +++ b/chrome/browser/ui/android/context_menu_helper.h
-@@ -15,11 +15,11 @@
+@@ -17,11 +17,11 @@
  #include "extensions/buildflags/buildflags.h"
  #include "mojo/public/cpp/bindings/associated_remote.h"
  
@@ -16,9 +16,9 @@ index 6f1bb57cf61abf2cf9a9451fd5669af745834056..421eaa4d5775a505aec9f21697c4c4eb
  
  namespace content {
  class WebContents;
-@@ -54,9 +54,9 @@ class ContextMenuHelper
- 
+@@ -57,9 +57,9 @@ class ContextMenuHelper
    content::ContextMenuParams context_menu_params_;
+   int64_t java_peer_id_ = 0;
  
 -#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
 +#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)

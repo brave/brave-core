@@ -1,13 +1,13 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkManagerOpenerImpl.java b/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkManagerOpenerImpl.java
-index 010ab718ecf8f2d883e1088ee11abf3eb698bdda..82e54c97988ca0e396e9bcd9fd198e7d564bc044 100644
+index c74c5185b5d2bc38de91daed1ca221e18010f412..83912d5edc891b4c8f4402a6847f10b2de66bab7 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkManagerOpenerImpl.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkManagerOpenerImpl.java
-@@ -110,7 +110,7 @@ public class BookmarkManagerOpenerImpl implements BookmarkManagerOpener {
+@@ -137,7 +137,7 @@ public class BookmarkManagerOpenerImpl implements BookmarkManagerOpener {
          Intent intent =
                  new Intent(
                          activity == null ? ContextUtils.getApplicationContext() : activity,
 -                        BookmarkActivity.class);
 +                        org.chromium.chrome.browser.app.bookmarks.BraveBookmarkActivity.class);
-         ProfileIntentUtils.addProfileToIntent(profile, intent);
+         ProfileTokenUtils.addProfileToIntent(profile, intent);
          intent.setData(Uri.parse(url));
-         if (activity != null) {
+         // Lets BookmarkActivity reopen the manager as a child tab if the display becomes tablet

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/page_action/page_action_view.cc b/chrome/browser/ui/views/page_action/page_action_view.cc
-index c34fb8acb36fb5a11c1b14541ff1e07ac6c6a8d9..2ef4fac0a03a490b16a0dfeb91bbd616e2a13c57 100644
+index 4d0e79119f2ccfaade8b3757a78d61d31e668086..10b3ab959e8aecc1a2a51ed1d103129e96231374 100644
 --- a/chrome/browser/ui/views/page_action/page_action_view.cc
 +++ b/chrome/browser/ui/views/page_action/page_action_view.cc
-@@ -85,7 +85,7 @@ PageActionView::PageActionView(actions::ActionItem* action_item,
+@@ -93,7 +93,7 @@ PageActionView::PageActionView(actions::ActionItem* action_item,
  
    SetVisible(false);
    label()->SetVisible(false);
@@ -11,7 +11,7 @@ index c34fb8acb36fb5a11c1b14541ff1e07ac6c6a8d9..2ef4fac0a03a490b16a0dfeb91bbd616
    SetBackgroundVisibility(BackgroundVisibility::kWithLabel);
    UpdateBorder();
    SetExpandedLabelAdditionalInsets(views::Inset1D(4, 8));
-@@ -170,6 +170,7 @@ void PageActionView::SetAnchoredMessageDowngradeCallback(
+@@ -183,6 +183,7 @@ void PageActionView::SetAnchoredMessageDowngradeCallback(
  }
  
  void PageActionView::OnNewActiveController(PageActionController* controller) {
@@ -19,9 +19,9 @@ index c34fb8acb36fb5a11c1b14541ff1e07ac6c6a8d9..2ef4fac0a03a490b16a0dfeb91bbd616
    // No-op if the active tab hasn't changed (e.g. LocationBarView::Update()).
    if (controller == current_controller_) {
      return;
-@@ -202,10 +203,13 @@ void PageActionView::OnNewActiveController(PageActionController* controller) {
+@@ -217,10 +218,13 @@ void PageActionView::OnNewActiveController(PageActionController* controller) {
      SetAnchoredMessageDowngradeCallback(base::DoNothing());
-     SetVisible(false);
+     HideImmediately();
    }
 +  }();
 +  OnPageActionModelVisualRefresh(observation_.GetSource());
@@ -33,7 +33,7 @@ index c34fb8acb36fb5a11c1b14541ff1e07ac6c6a8d9..2ef4fac0a03a490b16a0dfeb91bbd616
    const bool visible = model.GetVisible();
    const bool declared_changed = (declared_visible_ != visible);
    declared_visible_ = visible;
-@@ -238,6 +242,15 @@ void PageActionView::OnPageActionModelChanged(
+@@ -252,6 +256,15 @@ void PageActionView::OnPageActionModelChanged(
    if (model.GetShouldAnnounceChip() && !was_chip_visible && IsChipVisible()) {
      GetViewAccessibility().AnnounceAlert(label()->GetText());
    }
@@ -49,7 +49,7 @@ index c34fb8acb36fb5a11c1b14541ff1e07ac6c6a8d9..2ef4fac0a03a490b16a0dfeb91bbd616
  }
  
  void PageActionView::UpdateAnimationState(
-@@ -273,7 +286,7 @@ void PageActionView::HandleSlideAndCrossfadeTransition(
+@@ -287,7 +300,7 @@ void PageActionView::HandleSlideAndCrossfadeTransition(
  
  void PageActionView::HandleSuggestionChipTransition(
      const PageActionModelInterface& model) {
@@ -58,7 +58,7 @@ index c34fb8acb36fb5a11c1b14541ff1e07ac6c6a8d9..2ef4fac0a03a490b16a0dfeb91bbd616
      if (model.GetShouldAnimateChipIn()) {
        AnimateIn(/*string_id=*/std::nullopt);
      } else {
-@@ -346,6 +359,7 @@ void PageActionView::UpdateBorder() {
+@@ -469,6 +482,7 @@ void PageActionView::UpdateBorder() {
        !observation_.GetSource()->GetImage().IsVectorIcon()) {
      border_insets = GetInsetsForNonVectorIcon();
    }
@@ -66,7 +66,7 @@ index c34fb8acb36fb5a11c1b14541ff1e07ac6c6a8d9..2ef4fac0a03a490b16a0dfeb91bbd616
    SetBorder(views::CreateEmptyBorder(border_insets));
  }
  
-@@ -393,6 +407,9 @@ void PageActionView::NotifyClick(const ui::Event& event) {
+@@ -516,6 +530,9 @@ void PageActionView::NotifyClick(const ui::Event& event) {
      builder = std::move(builder).SetProperty(kSidePanelOpenTriggerKey,
                                               *side_panel_trigger);
    }
@@ -76,7 +76,7 @@ index c34fb8acb36fb5a11c1b14541ff1e07ac6c6a8d9..2ef4fac0a03a490b16a0dfeb91bbd616
    action_item_->InvokeAction(std::move(builder).Build());
  }
  
-@@ -520,6 +537,7 @@ void PageActionView::SetModel(PageActionModelInterface* model) {
+@@ -702,6 +719,7 @@ gfx::Size PageActionView::CalculatePreferredSize(
  }
  
  gfx::Size PageActionView::GetMinimumSize() const {
@@ -84,9 +84,9 @@ index c34fb8acb36fb5a11c1b14541ff1e07ac6c6a8d9..2ef4fac0a03a490b16a0dfeb91bbd616
    gfx::Size icon_preferred_size = image_container_view()->GetPreferredSize();
    if (observation_.IsObserving() &&
        !observation_.GetSource()->GetImage().IsVectorIcon()) {
-@@ -530,6 +548,15 @@ gfx::Size PageActionView::GetMinimumSize() const {
-   }
- 
+@@ -714,6 +732,15 @@ gfx::Size PageActionView::GetMinimumSize() const {
+   icon_preferred_size.set_width(
+       ScaleWidthForVisibilityAnimation(icon_preferred_size.width()));
    return icon_preferred_size;
 +  }();
 +  if (auto override_height = GetOverrideHeight()) {
@@ -100,7 +100,7 @@ index c34fb8acb36fb5a11c1b14541ff1e07ac6c6a8d9..2ef4fac0a03a490b16a0dfeb91bbd616
  }
  
  bool PageActionView::IsBubbleShowing() const {
-@@ -754,6 +781,9 @@ void PageActionView::MaybeRecordCollapsedMetrics(int label_width) {
+@@ -943,6 +970,9 @@ void PageActionView::MaybeRecordCollapsedMetrics(int label_width) {
  }
  
  SkColor PageActionView::GetBackgroundColor() const {
@@ -110,7 +110,7 @@ index c34fb8acb36fb5a11c1b14541ff1e07ac6c6a8d9..2ef4fac0a03a490b16a0dfeb91bbd616
    if (observation_.IsObserving() &&
        observation_.GetSource()->GetOverrideBackgroundColorId().has_value() &&
        GetColorProvider()) {
-@@ -764,6 +794,9 @@ SkColor PageActionView::GetBackgroundColor() const {
+@@ -953,6 +983,9 @@ SkColor PageActionView::GetBackgroundColor() const {
  }
  
  SkColor PageActionView::GetForegroundColor() const {

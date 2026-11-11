@@ -1,5 +1,5 @@
 diff --git a/components/optimization_guide/core/delivery/prediction_model_component_configs.cc b/components/optimization_guide/core/delivery/prediction_model_component_configs.cc
-index 189ce91e85f8c3459a5f7c4e66790f24892d0649..e559710a593fc320d21113f0e1113a8fb5e4edc0 100644
+index a90444b3b71a8fe0d435e59a24aa79c6f83c53e5..71a59aa4b1e571e941f18237c81bc8da26c3825a 100644
 --- a/components/optimization_guide/core/delivery/prediction_model_component_configs.cc
 +++ b/components/optimization_guide/core/delivery/prediction_model_component_configs.cc
 @@ -18,8 +18,8 @@
@@ -12,7 +12,7 @@ index 189ce91e85f8c3459a5f7c4e66790f24892d0649..e559710a593fc320d21113f0e1113a8f
 +             base::FEATURE_DISABLED_BY_DEFAULT);
  
  const base::FeatureParam<std::string> kPredictionModelTargets{
-     &kPredictionModelComponentDelivery, "targets", "20"};
+     &kPredictionModelComponentDelivery, "targets", "9,20"};
 @@ -125,6 +125,9 @@ bool IsTargetEnabledForComponentDelivery(proto::OptimizationTarget target) {
  
  std::optional<PredictionModelComponentConfig> GetPredictionModelComponentConfig(

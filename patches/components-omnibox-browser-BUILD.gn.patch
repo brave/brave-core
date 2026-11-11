@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/browser/BUILD.gn b/components/omnibox/browser/BUILD.gn
-index e47e1694fda0eb961ddb64079aa2d98a12a85133..8e453a60660cb018e2e4496a4a358ab0d8474cbc 100644
+index e19be5e0245bc086f6353ec1d12bc57707a97181..c916147b2acb1509583ef1f91702b2cb5c7b20b4 100644
 --- a/components/omnibox/browser/BUILD.gn
 +++ b/components/omnibox/browser/BUILD.gn
 @@ -382,6 +382,7 @@ static_library("browser") {
@@ -18,9 +18,9 @@ index e47e1694fda0eb961ddb64079aa2d98a12a85133..8e453a60660cb018e2e4496a4a358ab0
  
    deps = [
      "//build:android_buildflags",
-@@ -455,6 +457,7 @@ static_library("browser") {
-     "//ui/base",
+@@ -456,6 +458,7 @@ static_library("browser") {
      "//ui/gfx",
+     "//ui/webui:buildflags",
    ]
 +  deps += brave_components_omnibox_browser_deps
  

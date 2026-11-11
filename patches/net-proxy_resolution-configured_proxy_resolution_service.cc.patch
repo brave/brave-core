@@ -1,8 +1,8 @@
 diff --git a/net/proxy_resolution/configured_proxy_resolution_service.cc b/net/proxy_resolution/configured_proxy_resolution_service.cc
-index df2e772e0a02086e1fdcdade9c5589c50013420e..9c2b8ff7102e84617308a7bb3077f6c9683454a1 100644
+index d1f353024cd6fccb3be9f017630b8ac97869e09d..79a0a02bfc96536d3c8419075b04bd2a3b4269f5 100644
 --- a/net/proxy_resolution/configured_proxy_resolution_service.cc
 +++ b/net/proxy_resolution/configured_proxy_resolution_service.cc
-@@ -1110,6 +1110,7 @@ int ConfiguredProxyResolutionService::TryResolveSynchronously(
+@@ -1174,6 +1174,7 @@ int ConfiguredProxyResolutionService::TryResolveSynchronously(
  }
  
  ConfiguredProxyResolutionService::~ConfiguredProxyResolutionService() {
@@ -10,12 +10,12 @@ index df2e772e0a02086e1fdcdade9c5589c50013420e..9c2b8ff7102e84617308a7bb3077f6c9
    DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
    in_destruction_ = true;
    MaybeEndDynamicRoutingPause();
-@@ -1300,6 +1301,8 @@ int ConfiguredProxyResolutionService::ProcessResolutionResult(
+@@ -1364,6 +1365,8 @@ int ConfiguredProxyResolutionService::ProcessResolutionResult(
      ProxyInfo* result,
      int result_code,
      const NetLogWithSource& net_log) {
 +  MaybeSetTorCircuitIsolation(result_code, config_, url,
 +                              network_anonymization_key, result, this);
    DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
- 
-   // Log the result of the proxy resolution.
+   const bool using_system_proxy_resolver =
+       config_ && ShouldUseSystemProxyResolver(config_->value());

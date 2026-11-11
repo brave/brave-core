@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index 71b0e79cb00db9e1497a5613668fb68b0726e05c..e23ef272912b142885db3acd761ab2561e226334 100644
+index 180746883d2689f5a1569dfc06649594b887025a..41df11886ed8c351fcb3f39eb86d781ff22dc88b 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -9,8 +9,8 @@ index 71b0e79cb00db9e1497a5613668fb68b0726e05c..e23ef272912b142885db3acd761ab256
 +import("//brave/build/config.gni")
  import("//build/config/c++/c++.gni")
  import("//build/config/chrome_build.gni")
- import("//build/config/sanitizers/sanitizers.gni")
-@@ -108,6 +109,9 @@ if (build_with_internal_optimization_guide) {
+ import("//build/config/gclient_args.gni")
+@@ -111,6 +112,9 @@ if (build_with_internal_optimization_guide) {
    }
  }
  
@@ -20,7 +20,7 @@ index 71b0e79cb00db9e1497a5613668fb68b0726e05c..e23ef272912b142885db3acd761ab256
  packaging_files_binaries = packaging_files_executables + packaging_files_shlibs
  
  # TODO(mmoss) Any convenient way to get all the relevant build files?
-@@ -213,6 +217,10 @@ action("merge_rpm_dependencies") {
+@@ -216,6 +220,10 @@ action("merge_rpm_dependencies") {
  strip_binary("strip_chrome_binary") {
    binary_input = "$root_out_dir/chrome"
    deps = [ "//chrome" ]
@@ -31,7 +31,7 @@ index 71b0e79cb00db9e1497a5613668fb68b0726e05c..e23ef272912b142885db3acd761ab256
  }
  
  strip_binary("strip_chrome_crashpad_handler") {
-@@ -228,6 +236,10 @@ strip_binary("strip_chrome_management_service") {
+@@ -231,6 +239,10 @@ strip_binary("strip_chrome_management_service") {
  strip_binary("strip_chrome_sandbox") {
    binary_input = "$root_out_dir/chrome_sandbox"
    deps = [ "//sandbox/linux:chrome_sandbox" ]
@@ -42,7 +42,7 @@ index 71b0e79cb00db9e1497a5613668fb68b0726e05c..e23ef272912b142885db3acd761ab256
  }
  
  # On ChromeOS, system services depend on real ANGLE libraries rather than dummy
-@@ -381,6 +393,8 @@ copy("common_packaging_files") {
+@@ -384,6 +396,8 @@ copy("common_packaging_files") {
    }
  
    outputs = [ "$root_out_dir/installer/common/{{source_file_part}}" ]
@@ -51,7 +51,7 @@ index 71b0e79cb00db9e1497a5613668fb68b0726e05c..e23ef272912b142885db3acd761ab256
  }
  
  copy("deb_packaging_files") {
-@@ -487,6 +501,7 @@ group("installer_deps") {
+@@ -490,6 +504,7 @@ group("installer_deps") {
      ":theme_files",
      "//chrome",
    ]
@@ -59,7 +59,7 @@ index 71b0e79cb00db9e1497a5613668fb68b0726e05c..e23ef272912b142885db3acd761ab256
    public_deps += [
      "//chrome:packed_resources",
      "//chrome/browser/enterprise/connectors/device_trust/key_management/installer/management_service:chrome_management_service",
-@@ -564,11 +579,16 @@ group("installer_deps") {
+@@ -567,11 +582,16 @@ group("installer_deps") {
  template("linux_package") {
    assert(defined(invoker.channel))
    channel = invoker.channel
@@ -76,7 +76,7 @@ index 71b0e79cb00db9e1497a5613668fb68b0726e05c..e23ef272912b142885db3acd761ab256
    }
  
    deb_target_name = "${target_name}_deb"
-@@ -579,6 +599,12 @@ template("linux_package") {
+@@ -582,6 +602,12 @@ template("linux_package") {
  
      inputs = packaging_files
      outputs = [ "$root_out_dir/${package}-${channel}_${chrome_version_full}-1_${deb_arch}.deb" ]
@@ -89,7 +89,7 @@ index 71b0e79cb00db9e1497a5613668fb68b0726e05c..e23ef272912b142885db3acd761ab256
  
      args = [
        "-a",
-@@ -617,6 +643,10 @@ template("linux_package") {
+@@ -620,6 +646,10 @@ template("linux_package") {
  
        inputs = packaging_files
        outputs = [ "$root_out_dir/${package}-${channel}-${chrome_version_full}-1.${rpm_arch}.rpm" ]
@@ -100,7 +100,7 @@ index 71b0e79cb00db9e1497a5613668fb68b0726e05c..e23ef272912b142885db3acd761ab256
  
        args = [
          "-a",
-@@ -779,3 +809,6 @@ if (!is_chromeos) {
+@@ -792,3 +822,6 @@ if (!is_chromeos) {
      }
    }
  }
