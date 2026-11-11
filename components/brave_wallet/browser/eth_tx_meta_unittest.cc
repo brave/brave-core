@@ -317,15 +317,8 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_NativeValueOnTokenCalldata) {
     return bytes;
   };
 
-  {
-    // Prove that an ERC-20 transfer with a non-zero value is never presented as
-    // a valid transfer.
-
-    std::string data;
-    ASSERT_TRUE(erc20::Transfer(kCalldataRecipient, 0, &data));
-
-    auto tx_info = tx_info_for(to_bytes(data), kOneEth);
-
+  auto expect_native_transfer = [=](const mojom::TransactionInfoPtr& tx_info,
+                                    const std::string& data) {
     EXPECT_EQ(tx_info->tx_type, mojom::TransactionType::Other);
     EXPECT_TRUE(tx_info->tx_params.empty());
     EXPECT_TRUE(tx_info->tx_args.empty());
@@ -337,6 +330,17 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_NativeValueOnTokenCalldata) {
     EXPECT_EQ(base_data->value, kOneEth);
     EXPECT_EQ(base_data->to, kBaseToChecksummed);
     EXPECT_EQ(base_data->data, to_bytes(data));
+  };
+
+  {
+    // Prove that an ERC-20 transfer with a non-zero value is never presented as
+    // a valid transfer.
+
+    std::string data;
+    ASSERT_TRUE(erc20::Transfer(kCalldataRecipient, 0, &data));
+
+    auto tx_info = tx_info_for(to_bytes(data), kOneEth);
+    expect_native_transfer(tx_info, data);
   }
 
   {
@@ -358,29 +362,21 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_NativeValueOnTokenCalldata) {
     ASSERT_TRUE(erc20::Approve(kCalldataRecipient, 100, &data));
 
     auto tx_info = tx_info_for(to_bytes(data), kOneEth);
-    EXPECT_EQ(tx_info->tx_type, mojom::TransactionType::Other);
-    EXPECT_TRUE(tx_info->tx_params.empty());
-    EXPECT_TRUE(tx_info->tx_args.empty());
-    EXPECT_EQ(tx_info->effective_recipient, kBaseToChecksummed);
-
-    const auto& base_data =
-        tx_info->tx_data_union->get_eth_tx_data_1559()->base_data;
-    EXPECT_EQ(base_data->value, kOneEth);
-    EXPECT_EQ(base_data->to, kBaseToChecksummed);
-    EXPECT_EQ(base_data->data, to_bytes(data));
+    expect_native_transfer(tx_info, data);
   }
 
   // Prove that we correctly handle the ERC721 and ERC1155 transfers.
   for (bool safe : {true, false}) {
+    // ERC721 transerFrom.
+
     std::string data;
     ASSERT_TRUE(erc721::TransferFromOrSafeTransferFrom(
         safe, "0x2f015c60e0be116b1f0cd534704db9c92118fb6a", kCalldataRecipient,
         10, &data));
 
     auto tx_info = tx_info_for(to_bytes(data), kOneEth);
-    EXPECT_EQ(tx_info->tx_type, mojom::TransactionType::Other);
-    EXPECT_TRUE(tx_info->tx_params.empty());
-    EXPECT_TRUE(tx_info->tx_args.empty());
+    expect_native_transfer(tx_info, data);
+  }
     EXPECT_EQ(tx_info->effective_recipient, kBaseToChecksummed);
 
     const auto& base_data =
@@ -391,6 +387,8 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_NativeValueOnTokenCalldata) {
   }
 
   {
+    // ERC1155 transfer.
+
     std::string data;
     ASSERT_TRUE(
         erc1155::SafeTransferFrom("0x2f015c60e0be116b1f0cd534704db9c92118fb6a",
