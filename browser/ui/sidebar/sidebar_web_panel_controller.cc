@@ -108,9 +108,10 @@ const BraveMultiContentsView* SidebarWebPanelController::GetMultiContentsView()
       browser_view_->multi_contents_view());
 }
 
-void SidebarWebPanelController::OnTabWillBeRemoved(tabs::TabInterface* tab,
-                                                   int index) {
-  if (panel_contents_ == tab->GetContents()) {
+void SidebarWebPanelController::OnTabWillBeRemoved(tabs::TabHandle tab) {
+  tabs::TabInterface* tab_interface = tab.Get();
+  CHECK(tab_interface);
+  if (panel_contents_ == tab_interface->GetContents()) {
     ClearPanelState();
   }
 }

@@ -53,7 +53,7 @@ class SidebarWebPanelController : public TabStripModelObserver {
   void ClearPanelState();
 
   // TabStripModelObesrver:
-  void OnTabWillBeRemoved(tabs::TabInterface* tab, int index) override;
+  void OnTabWillBeRemoved(tabs::TabHandle tab) override;
 
   raw_ref<BrowserView> browser_view_;
   base::RepeatingClosure web_panel_state_changed_;
