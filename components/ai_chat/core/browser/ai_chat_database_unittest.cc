@@ -2202,8 +2202,10 @@ TEST_P(AIChatDatabaseMigrationTest, MigrationToVCurrent) {
     // Verify we have existing entries
     auto conversations = db_->GetAllConversations();
     ASSERT_GT(conversations.size(), 0u);
-    EXPECT_GT(db_->GetConversationData(conversations[0]->uuid)->entries.size(),
-              0u);
+    auto first_conversation_data =
+        db_->GetConversationData(conversations[0]->uuid);
+    ASSERT_TRUE(first_conversation_data);
+    EXPECT_GT(first_conversation_data->entries.size(), 0u);
     // ConversationEntry table changed, check it persists correctly
     auto now = base::Time::Now();
     const std::string uuid = "migrationtest";
@@ -2223,6 +2225,7 @@ TEST_P(AIChatDatabaseMigrationTest, MigrationToVCurrent) {
 
     // Test getting the conversation entries
     mojom::ConversationArchivePtr result = db_->GetConversationData(uuid);
+    ASSERT_TRUE(result);
     ExpectConversationHistoryEquals(FROM_HERE, result->entries, history);
 
     // Add another pair of entries
@@ -2232,6 +2235,7 @@ TEST_P(AIChatDatabaseMigrationTest, MigrationToVCurrent) {
 
     // Verify all entries are returned
     mojom::ConversationArchivePtr result_2 = db_->GetConversationData(uuid);
+    ASSERT_TRUE(result_2);
     for (auto& entry : next_history) {
       history.push_back(std::move(entry));
     }
