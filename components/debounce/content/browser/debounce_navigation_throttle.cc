@@ -140,9 +140,12 @@ DebounceNavigationThrottle::MaybeRedirect() {
   VLOG(1) << "Debouncing rule applied: " << original_url << " -> "
           << debounced_url;
 
-  brave_shields::RestartNavigationWithURL(*navigation_handle(), debounced_url,
-                                          ui::PAGE_TRANSITION_CLIENT_REDIRECT);
-  return NavigationThrottle::CANCEL;
+  if (brave_shields::RestartNavigationWithURL(
+          *navigation_handle(), debounced_url,
+          ui::PAGE_TRANSITION_CLIENT_REDIRECT)) {
+    return NavigationThrottle::CANCEL;
+  }
+  return NavigationThrottle::PROCEED;
 }
 
 const char* DebounceNavigationThrottle::GetNameForLogging() {

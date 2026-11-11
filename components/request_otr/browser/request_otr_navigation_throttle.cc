@@ -246,15 +246,15 @@ void RequestOTRNavigationThrottle::On1PESState(bool is_1pes_enabled) {
 }
 
 void RequestOTRNavigationThrottle::RestartNavigation(const GURL& url) {
-  brave_shields::RestartNavigationWithURL(
-      *navigation_handle(), url,
-      ui::PageTransitionFromInt(navigation_handle()->GetPageTransition() |
-                                ui::PAGE_TRANSITION_CLIENT_REDIRECT));
-
-  // Cancel without an error status to surface any real errors during page
-  // load.
-  CancelDeferredNavigation(content::NavigationThrottle::ThrottleCheckResult(
-      content::NavigationThrottle::CANCEL));
+  if (brave_shields::RestartNavigationWithURL(
+          *navigation_handle(), url,
+          ui::PageTransitionFromInt(navigation_handle()->GetPageTransition() |
+                                    ui::PAGE_TRANSITION_CLIENT_REDIRECT))) {
+    // Cancel without an error status to surface any real errors during page
+    // load.
+    CancelDeferredNavigation(content::NavigationThrottle::ThrottleCheckResult(
+        content::NavigationThrottle::CANCEL));
+  }
 }
 
 const char* RequestOTRNavigationThrottle::GetNameForLogging() {

@@ -318,15 +318,15 @@ void DomainBlockNavigationThrottle::On1PESState(bool is_1pes_enabled) {
 }
 
 void DomainBlockNavigationThrottle::RestartNavigation(const GURL& url) {
-  RestartNavigationWithURL(
-      *navigation_handle(), url,
-      ui::PageTransitionFromInt(navigation_handle()->GetPageTransition() |
-                                ui::PAGE_TRANSITION_CLIENT_REDIRECT));
-
-  // Cancel without an error status to surface any real errors during page
-  // load.
-  CancelDeferredNavigation(content::NavigationThrottle::ThrottleCheckResult(
-      content::NavigationThrottle::CANCEL));
+  if (RestartNavigationWithURL(
+          *navigation_handle(), url,
+          ui::PageTransitionFromInt(navigation_handle()->GetPageTransition() |
+                                    ui::PAGE_TRANSITION_CLIENT_REDIRECT))) {
+    // Cancel without an error status to surface any real errors during page
+    // load.
+    CancelDeferredNavigation(content::NavigationThrottle::ThrottleCheckResult(
+        content::NavigationThrottle::CANCEL));
+  }
 }
 
 const char* DomainBlockNavigationThrottle::GetNameForLogging() {
