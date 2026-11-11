@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/browser_command_controller.h b/chrome/browser/ui/browser_command_controller.h
-index 927639acd28959d67e31f9a4386a329669bf846c..20390c9a92ae71cf97470ea57c39f339e51b38b9 100644
+index e2d518a2afdbb6b10dd391172f346febe4d3c8a8..de8e52f28bddc125f7c32e8f426b15abdc2e9554 100644
 --- a/chrome/browser/ui/browser_command_controller.h
 +++ b/chrome/browser/ui/browser_command_controller.h
-@@ -133,6 +133,7 @@ class BrowserCommandController : public CommandUpdater,
+@@ -131,6 +131,7 @@ class BrowserCommandController : public CommandUpdater,
        Profile* profile);
  
   private:
 +  friend class BraveBrowserCommandController;
- #if BUILDFLAG(IS_CHROMEOS)
-   friend class BrowserCommandControllerBrowserTestLockedFullscreen;
- #endif
-@@ -213,7 +214,7 @@ class BrowserCommandController : public CommandUpdater,
+   // CommandUpdater:
+   bool ExecuteCommandWithDispositionAndContext(
+       int id,
+@@ -200,7 +201,7 @@ class BrowserCommandController : public CommandUpdater,
  
    // Update commands whose state depends on the type of fullscreen mode the
    // window is in.

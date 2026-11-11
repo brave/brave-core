@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/common/features.cc b/third_party/blink/common/features.cc
-index 850b9e3764dcf01f92508f0da7d857feca8e44ac..58fc629373373b46a710600cc4022b29d786445a 100644
+index 33bead4d0c4254561d54eb99636124e0b351fb34..c57e3ba7df71dd743fad22985548625380c276c1 100644
 --- a/third_party/blink/common/features.cc
 +++ b/third_party/blink/common/features.cc
 @@ -137,7 +137,7 @@ BASE_FEATURE(kAllowDatapipeDrainedAsBytesConsumerInBFCache,
@@ -24,21 +24,21 @@ index 850b9e3764dcf01f92508f0da7d857feca8e44ac..58fc629373373b46a710600cc4022b29
  // this feature does not automatically expose this element to the web, it only
  // allows the element to be enabled by the runtime enabled feature, for origin
  // trials.
--BASE_FEATURE(kFencedFrames, base::FEATURE_ENABLED_BY_DEFAULT);
+-BASE_FEATURE(kFencedFrames, base::FEATURE_DISABLED_BY_DEFAULT);
 +BASE_OVERRIDDEN_FEATURE(kFencedFrames, base::FEATURE_DISABLED_BY_DEFAULT);
  
  // Enable sending event-level reports through reportEvent() in cross-origin
  // subframes. This requires opt-in both from the cross-origin subframe that is
-@@ -1531,7 +1531,7 @@ BASE_FEATURE_PARAM(
-     "low_pri_async_exec_opt_out_high_fetch_priority_hint",
-     true);
+@@ -1422,7 +1422,7 @@ BASE_FEATURE(kLowLatencyUsageSupportedForCanvas,
+              base::FEATURE_ENABLED_BY_DEFAULT);
+ #endif
  
 -BASE_FEATURE(kMixedContentAutoupgrade,
 +BASE_OVERRIDDEN_FEATURE(kMixedContentAutoupgrade,
               "AutoupgradeMixedContent",
               base::FEATURE_ENABLED_BY_DEFAULT);
  
-@@ -1843,8 +1843,8 @@ BASE_FEATURE_PARAM(base::TimeDelta,
+@@ -1734,8 +1734,8 @@ BASE_FEATURE_PARAM(base::TimeDelta,
                     &kPreloadingEagerHoverHeuristics,
                     "hover_dwell_time",
                     base::Milliseconds(10));
@@ -49,7 +49,7 @@ index 850b9e3764dcf01f92508f0da7d857feca8e44ac..58fc629373373b46a710600cc4022b29
  BASE_FEATURE_PARAM(bool,
                     kPreloadingEagerViewportHeuristicsForDevToolsEmulation,
                     &kPreloadingEagerViewportHeuristics,
-@@ -1855,8 +1855,8 @@ BASE_FEATURE_PARAM(base::TimeDelta,
+@@ -1746,8 +1746,8 @@ BASE_FEATURE_PARAM(base::TimeDelta,
                     "viewport_present_time",
                     base::Milliseconds(50));
  
@@ -60,7 +60,7 @@ index 850b9e3764dcf01f92508f0da7d857feca8e44ac..58fc629373373b46a710600cc4022b29
  BASE_FEATURE_PARAM(bool,
                     kPreloadingModerateViewportHeuristicsEnactCandidates,
                     &kPreloadingModerateViewportHeuristics,
-@@ -1918,7 +1918,7 @@ BASE_FEATURE(kLocalCompileHints, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -1809,7 +1809,7 @@ BASE_FEATURE(kLocalCompileHints, base::FEATURE_ENABLED_BY_DEFAULT);
  
  // Reduce the amount of information in the default 'referer' header for
  // cross-origin requests.
@@ -69,7 +69,7 @@ index 850b9e3764dcf01f92508f0da7d857feca8e44ac..58fc629373373b46a710600cc4022b29
  
  // When disabled, cropTo() is rejected while other tracks share the source, as
  // it was before per-track cropping was supported.
-@@ -2298,7 +2298,7 @@ BASE_FEATURE(kThrottleFullscreenVideoActiveTab,
+@@ -2223,7 +2223,7 @@ BASE_FEATURE(kThrottleFullscreenVideoActiveTab,
  
  // Changes behavior of User-Agent Client Hints to send blank headers when the
  // User-Agent string is overridden, instead of disabling the headers altogether.

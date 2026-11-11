@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/common/tab_collection_node.h b/chrome/browser/ui/views/tabs/common/tab_collection_node.h
-index 0ac3deb17c8aac2ab70cb89401c14386ce1c2ec9..b1d96bd679e3b8ea8701e97339f834dbc4e53c22 100644
+index 7e6fadc75cf970cabeb01c5087e825080d357769..3750667b2c87ae3fc7ee425bc4c833c38de32d9f 100644
 --- a/chrome/browser/ui/views/tabs/common/tab_collection_node.h
 +++ b/chrome/browser/ui/views/tabs/common/tab_collection_node.h
-@@ -32,7 +32,8 @@ class TabCollectionNode {
+@@ -34,7 +34,8 @@ class TabCollectionNode {
   public:
    // Keep the same as TabCollection::Type with a tab.
    // LINT.IfChange(TYPE)

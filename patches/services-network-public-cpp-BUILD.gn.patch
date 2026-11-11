@@ -1,11 +1,11 @@
 diff --git a/services/network/public/cpp/BUILD.gn b/services/network/public/cpp/BUILD.gn
-index 6d31522049c08018fd4d1114cfd0d47ce30547e9..179909b452ad6441ea4f9fe87f4897752a6b68f9 100644
+index 7d69a49b6a3a95c2db57c5d95a9f3102bd823ced..b29a798cf413a77d6612ff9f08d2252b1a2c4da9 100644
 --- a/services/network/public/cpp/BUILD.gn
 +++ b/services/network/public/cpp/BUILD.gn
-@@ -200,6 +200,7 @@ component("cpp") {
-     ":cpp_base",
+@@ -248,6 +248,7 @@ component("cpp") {
      ":flags_and_switches",
      ":is_potentially_trustworthy",
+     ":orb_sniffers_headers",
 +    "//brave/services/network/public/cpp",
      "//net",
      "//services/network/public/mojom",

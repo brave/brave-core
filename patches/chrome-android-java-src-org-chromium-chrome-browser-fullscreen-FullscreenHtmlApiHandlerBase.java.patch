@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java b/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
-index ebd8c553b204bb97003ce97db798f1e42acae622..0dad537d3ee3a91f3ef731033fb625156511ac0d 100644
+index 04eb9aed19336cedf59f83df98909eab4b68c72b..98fb40d4ef0fdc2338bbe6852952e7e176f556f7 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
-@@ -304,6 +304,11 @@ public abstract class FullscreenHtmlApiHandlerBase
+@@ -309,6 +309,11 @@ public abstract class FullscreenHtmlApiHandlerBase
  
                      @Override
                      public void onHidden(Tab tab, @TabHidingType int reason) {
@@ -11,10 +11,10 @@ index ebd8c553b204bb97003ce97db798f1e42acae622..0dad537d3ee3a91f3ef731033fb62515
 +                                .maybeSkipExitFullscreenOnTabHidden(mActivity, reason)) {
 +                            return;
 +                        }
-                         // Clean up any fullscreen state that might impact other tabs.
-                         mFullscreenManagerDelegate.onExitFullscreen(null);
-                     }
-@@ -849,6 +854,10 @@ public abstract class FullscreenHtmlApiHandlerBase
+                         // FullscreenManagerDelegate#onExitFullscreen exits all fullscreen modes
+                         // (including browser immersive mode) when given `null`, whereas passing a
+                         // non-null `tab` only exits tab-initiated fullscreen for that tab. On tab
+@@ -898,6 +903,10 @@ public abstract class FullscreenHtmlApiHandlerBase
      @Override
      public void onActivityStateChange(Activity activity, int newState) {
          if (newState == ActivityState.STOPPED && mExitFullscreenOnStop) {
