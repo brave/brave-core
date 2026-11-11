@@ -10,6 +10,7 @@
 #include <optional>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/memory/weak_ptr.h"
@@ -82,6 +83,9 @@ class RewardsEngine : public mojom::RewardsEngine,
   void GetRewardsParameters(GetRewardsParametersCallback callback) override;
 
   void FetchUICards(FetchUICardsCallback callback) override;
+
+  void RecordOfferEvent(const std::string& offer_id,
+                        const std::string& event_type) override;
 
   void GetPublisherMinVisitTime(
       GetPublisherMinVisitTimeCallback callback) override;
@@ -253,6 +257,9 @@ class RewardsEngine : public mojom::RewardsEngine,
   void OnInitializationComplete(InitializeCallback callback, bool success);
 
   void OnShutdownComplete(ShutdownCallback callback, bool success);
+
+  void OnUICardsFetched(FetchUICardsCallback callback,
+                        std::optional<std::vector<mojom::UICardPtr>> cards);
 
   void OnRecurringTipSaved(SaveRecurringTipCallback callback,
                            mojom::Result result);

@@ -43,6 +43,7 @@ source_set("test") {
     "//brave/components/brave_rewards/core/engine/endpoints/zebpay/post_oauth_zebpay_unittest.cc",
     "//brave/components/brave_rewards/core/engine/hash_prefix_store_unittest.cc",
     "//brave/components/brave_rewards/core/engine/migrations/pref_migration_unittest.cc",
+    "//brave/components/brave_rewards/core/engine/offer_events/offer_events_unittest.cc",
     "//brave/components/brave_rewards/core/engine/parameters/rewards_parameters_provider_unittest.cc",
     "//brave/components/brave_rewards/core/engine/publisher/media/helper_unittest.cc",
     "//brave/components/brave_rewards/core/engine/publisher/media/youtube_unittest.cc",
