@@ -194,9 +194,8 @@ void BraveBrowserCommandController::OnTabChangedAt(tabs::TabInterface* tab,
 }
 
 void BraveBrowserCommandController::OnTabPinnedStateChanged(
-    tabs::TabInterface* tab,
-    int index) {
-  BrowserCommandController::OnTabPinnedStateChanged(tab, index);
+    tabs::TabHandle tab) {
+  BrowserCommandController::OnTabPinnedStateChanged(tab);
   UpdateCommandsForPin();
 }
 

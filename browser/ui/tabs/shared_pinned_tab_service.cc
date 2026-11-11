@@ -391,13 +391,15 @@ void SharedPinnedTabService::OnTabStripModelChanged(
   }
 }
 
-void SharedPinnedTabService::OnTabPinnedStateChanged(tabs::TabInterface* tab,
-                                                     int index) {
+void SharedPinnedTabService::OnTabPinnedStateChanged(tabs::TabHandle handle) {
   if (change_source_model_) {
     return;
   }
 
+  tabs::TabInterface* tab = handle.Get();
+  CHECK(tab);
   auto* tab_strip_model = tab->GetBrowserWindowInterface()->GetTabStripModel();
+  const int index = tab_strip_model->GetIndexOfTab(tab);
   DVLOG(2) << __FUNCTION__ << " index: " << index << " pinned? "
            << tab_strip_model->IsTabPinned(index);
   auto* contents = tab->GetContents();
@@ -919,7 +921,7 @@ void SharedPinnedTabService::OnSharedPinnedTabEnabled() {
         // browser.
         continue;
       }
-      OnTabPinnedStateChanged(tab, i);
+      OnTabPinnedStateChanged(tab->GetHandle());
     }
   }
 }
