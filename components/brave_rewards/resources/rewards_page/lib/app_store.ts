@@ -150,16 +150,29 @@ export interface OpenLinkNotificationAction extends NotificationAction {
 
 export { ExternalWallet, ExternalWalletProvider }
 
+export type OfferEventTrigger = 'hover' | 'click'
+
+export interface OfferEventSpec {
+  type: string
+  trigger: OfferEventTrigger
+  dwellMs: number
+  oncePerLoad: boolean
+}
+
 export interface UICardItem {
   title: string
   description: string
   url: string
   thumbnail: string
+  offerId: string
+  events: OfferEventSpec[]
 }
 
 export interface UICardBanner {
   image: string
   url: string
+  offerId: string
+  events: OfferEventSpec[]
 }
 
 export interface UICard {
