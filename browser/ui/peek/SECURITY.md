@@ -222,8 +222,8 @@ and the `peek_utils` unit tests.
 - Shields protection applies in Peek like in a tab. Blocking runs in the network
   and renderer, keyed by the site's settings. `PeekContents` attaches Brave's
   privacy-sensitive helpers (`brave::AttachTabHelpers`: the Shields observer,
-  ephemeral storage and page content settings) before the page loads, since
-  only tabs get them from `BraveTabFeatures`.
+  ephemeral storage and page content settings) before the page loads, since only
+  tabs get them from `BraveTabFeatures`.
 - The Shields button shows whether Shields is on for the site. It doesn't show a
   blocked count, which is tracked by the per-tab Shields helper.
 - Pressing it moves the page into a tab and opens that tab's Shields panel, the
@@ -245,9 +245,8 @@ Tests: `AttachesShieldsHelpers`, `ShieldsButtonMovesToTabAndShowsPanel`.
   `TearDownPreBrowserWindowDestruction()`, before the `BrowserView`. The Shields
   panel provider, which points to the `BrowserView`, is owned by the controller,
   so it can't outlive it.
-- Requests from the card's buttons and from page events run as tasks bound to
-  a weak pointer to the controller, so they're dropped if the window closes
-  first.
+- Requests from the card's buttons and from page events run as tasks bound to a
+  weak pointer to the controller, so they're dropped if the window closes first.
 
 ## Security audit checklist
 
@@ -299,8 +298,8 @@ to either move Peek to a tab first or fail closed while the page is in Peek:
 - WebAuthn requests that go straight to the platform authenticator (iCloud
   Keychain on macOS, Windows Hello) without Chrome's dialog: the system dialog
   is attached to the browser window and can show while the page is in Peek.
-  Accepted: the system dialog names the site the passkey is for
-  (the relying party ID, which must match the requesting site), and the passkey
-  only works for that site. Moving Peek to a tab here would need a hook that
-  can't tell these requests from conditional (autofill) passkey requests, which
-  pages start as soon as they load.
+  Accepted: the system dialog names the site the passkey is for (the relying
+  party ID, which must match the requesting site), and the passkey only works
+  for that site. Moving Peek to a tab here would need a hook that can't tell
+  these requests from conditional (autofill) passkey requests, which pages start
+  as soon as they load.
