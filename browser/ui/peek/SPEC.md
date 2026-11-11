@@ -290,11 +290,11 @@ Screenshots are added to the PR. Nala tokens above stand in for color values.
   `PeekContents` attaches the ones Peek relies on itself: Brave's
   privacy-sensitive helpers (`brave::AttachTabHelpers`: the Shields observer,
   ephemeral storage and page content settings), the tab-modal dialog manager,
-  the permission request manager, the favicon driver and the history tab
-  helper. `TabFeatures` reuses them once the page is in a tab. Other tab
-  helpers, such as autofill and the password manager, are only attached then.
-  Peek is deliberately not a `TabInterface`: tab features attach browser UI
-  (omnibox page actions, tab dialogs) to the tab they belong to.
+  the permission request manager, the favicon driver and the history tab helper.
+  `TabFeatures` reuses them once the page is in a tab. Other tab helpers, such
+  as autofill and the password manager, are only attached then. Peek is
+  deliberately not a `TabInterface`: tab features attach browser UI (omnibox
+  page actions, tab dialogs) to the tab they belong to.
 - Shift+click goes through `BraveBrowserWebContentsDelegate::OpenURLFromTab`.
   The context menu uses `IDC_CONTENT_CONTEXT_OPENLINKPEEK`.
 - `PeekController::Open(source, params)` returns false unless the source is a
