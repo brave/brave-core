@@ -11,6 +11,7 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/strings/string_util.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/scoped_path_override.h"
 #include "base/test/test_future.h"
@@ -45,12 +46,14 @@ class CustomProfileImageWinIconTest : public testing::Test {
     ProfileShortcutManagerWin::DisableUnpinningForTests();
     ProfileShortcutManagerWin::DisableOutOfProcessShortcutOpsForTests();
     ASSERT_TRUE(manager_.SetUp());
-    shortcuts_ = ProfileShortcutManager::Create(manager_.profile_manager());
     // The icon is badged with the avatar only when there are two profiles.
     path_ = AddProfile(u"Custom");
     AddProfile(u"Other");
+    // Created after the profiles so this is the only icon write in flight;
+    // writes are not ordered with each other.
+    shortcuts_ = ProfileShortcutManager::Create(manager_.profile_manager());
     shortcuts_->CreateOrUpdateProfileIcon(path_);
-    task_environment_.RunUntilIdle();
+    ASSERT_TRUE(base::test::RunUntil([&] { return !ReadIcon().empty(); }));
   }
 
   base::FilePath AddProfile(const std::u16string& name) {
@@ -71,10 +74,11 @@ class CustomProfileImageWinIconTest : public testing::Test {
     return ProfileImage::Get(*storage().GetProfileAttributesWithPath(path_));
   }
 
+  // Icon files are written atomically, so a read sees a whole icon or none.
   std::string ReadIcon() {
     std::string icon;
-    EXPECT_TRUE(base::ReadFileToString(
-        profiles::internal::GetProfileIconPath(path_), &icon));
+    base::ReadFileToString(profiles::internal::GetProfileIconPath(path_),
+                           &icon);
     return icon;
   }
 
@@ -89,7 +93,6 @@ class CustomProfileImageWinIconTest : public testing::Test {
 
 TEST_F(CustomProfileImageWinIconTest, IconFollowsSaveAndRemove) {
   const std::string preset_icon = ReadIcon();
-  ASSERT_FALSE(preset_icon.empty());
 
   SkBitmap bitmap;
   bitmap.allocN32Pixels(64, 64);
@@ -97,14 +100,12 @@ TEST_F(CustomProfileImageWinIconTest, IconFollowsSaveAndRemove) {
   base::test::TestFuture<Result> saved;
   image().Replace(bitmap, saved.GetCallback());
   ASSERT_EQ(saved.Get(), Result::kSuccess);
-  task_environment_.RunUntilIdle();
-  EXPECT_NE(ReadIcon(), preset_icon);
+  EXPECT_TRUE(base::test::RunUntil([&] { return ReadIcon() != preset_icon; }));
 
   base::test::TestFuture<Result> removed;
   image().Remove(removed.GetCallback());
   ASSERT_EQ(removed.Get(), Result::kSuccess);
-  task_environment_.RunUntilIdle();
-  EXPECT_EQ(ReadIcon(), preset_icon);
+  EXPECT_TRUE(base::test::RunUntil([&] { return ReadIcon() == preset_icon; }));
 }
 
 }  // namespace
