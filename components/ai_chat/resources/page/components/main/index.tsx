@@ -206,6 +206,7 @@ function Main() {
             </Button>
           </div>
           <ConversationsList
+            coversConversation
             setIsConversationsListOpen={setIsConversationsListOpen}
           />
         </div>
