@@ -16,12 +16,11 @@ class BraveShieldsSettingsService;
 
 namespace query_filter {
 
-// A dedicated navigation throttle to capture cases where filtering only
-// on the network delegate side might not be sufficient as it relies on
-// the request actually hitting the n/w stack. However, that may not happen
-// always. For e.g. Service workers could potentially intercept these requests
-// before and serve cached response. See
-// https://github.com/brave/brave-browser/issues/23742 for more details.
+// Strips tracking query parameters from a navigation before it can be
+// satisfied without reaching the network stack. The network delegate only
+// sees requests that hit the network, so a service worker can intercept the
+// request and serve a cached response that still contains the original query
+// string. See https://github.com/brave/brave-browser/issues/23742.
 class QueryFilterNavigationThrottle : public content::NavigationThrottle {
  public:
   explicit QueryFilterNavigationThrottle(
@@ -39,7 +38,7 @@ class QueryFilterNavigationThrottle : public content::NavigationThrottle {
 
   // `content::NavigationThrottle`:
   // Observe the first navigation and strip out any flagged parameters. If
-  // stripped creates a new internal redirect navigation.
+  // stripped creates a "fresh" new internal redirect navigation.
   ThrottleCheckResult WillStartRequest() override;
   const char* GetNameForLogging() override;
 

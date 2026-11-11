@@ -26,13 +26,12 @@ namespace {
 
 bool ShouldInterceptNavigation(
     content::BrowserContext* browser_context,
-    brave_shields::BraveShieldsSettingsService* brave_shields_settings_service,
+    brave_shields::BraveShieldsSettingsService* shields_settings_service,
     const std::optional<GURL>& url) {
   if (!browser_context) {
     return false;
   }
   // We ignore interception for the following casees:
-
   // 1. Feature flag is disabled.
   if (!base::FeatureList::IsEnabled(
           query_filter::features::kQueryFilterComponent)) {
@@ -46,8 +45,8 @@ bool ShouldInterceptNavigation(
   }
 
   // 3. Brave shields is disabled.
-  if (brave_shields_settings_service && url.has_value() &&
-      !brave_shields_settings_service->IsBraveShieldsEnabled(*url)) {
+  if (shields_settings_service && url.has_value() &&
+      !shields_settings_service->IsBraveShieldsEnabled(*url)) {
     return false;
   }
 
@@ -71,7 +70,7 @@ void QueryFilterNavigationThrottle::MaybeCreateAndAdd(
     brave_shields::BraveShieldsSettingsService* shields_settings_service) {
   if (!ShouldInterceptNavigation(
           registry.GetNavigationHandle().GetWebContents()->GetBrowserContext(),
-          shields_settings_service, std::nullopt)) {
+          shields_settings_service, /*url=*/std::nullopt)) {
     return;
   }
 
@@ -93,7 +92,7 @@ QueryFilterNavigationThrottle::WillStartRequest() {
     return NavigationThrottle::PROCEED;
   }
 
-  // Query filtering.
+  // Perform query filtering.
   const std::optional<url::Origin> request_initiator =
       navigation_handle()->GetInitiatorOrigin();
   const std::string request_method = navigation_handle()->GetRequestMethod();
@@ -103,11 +102,14 @@ QueryFilterNavigationThrottle::WillStartRequest() {
     return NavigationThrottle::PROCEED;
   }
 
-  // Below we will initiate a new navigation with |new_url| and cancel the
-  // previous one as internal redirect.
-  brave_shields::RestartNavigationWithURL(*navigation_handle(), *filtered_url,
-                                          ui::PAGE_TRANSITION_CLIENT_REDIRECT);
-  return NavigationThrottle::CANCEL;
+  // Redirect internally with the |new_url|.
+  if (brave_shields::RestartNavigationWithURL(
+          *navigation_handle(), *filtered_url,
+          ui::PAGE_TRANSITION_CLIENT_REDIRECT)) {
+    return NavigationThrottle::CANCEL;
+  }
+
+  return NavigationThrottle::PROCEED;
 }
 
 const char* QueryFilterNavigationThrottle::GetNameForLogging() {

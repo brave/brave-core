@@ -122,6 +122,11 @@ std::optional<std::string> StripQueryParameter(std::string_view query,
 namespace query_filter {
 
 bool IsQueryFilteringDisabledByPolicy(const PrefService* prefs) {
+  // By default query filter should be enabled.
+  if (!prefs) {
+    return false;
+  }
+
   // Filtering is enabled by default and can only be disabled via policy.
   return prefs->IsManagedPreference(kTrackingQueryParametersFilteringEnabled) &&
          !prefs->GetBoolean(kTrackingQueryParametersFilteringEnabled);

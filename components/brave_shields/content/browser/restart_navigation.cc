@@ -17,12 +17,12 @@
 
 namespace brave_shields {
 
-void RestartNavigationWithURL(content::NavigationHandle& navigation_handle,
+bool RestartNavigationWithURL(content::NavigationHandle& navigation_handle,
                               const GURL& url,
                               ui::PageTransition transition) {
   content::WebContents* web_contents = navigation_handle.GetWebContents();
   if (!web_contents) {
-    return;
+    return false;
   }
 
   content::OpenURLParams params =
@@ -44,6 +44,7 @@ void RestartNavigationWithURL(content::NavigationHandle& navigation_handle,
                                              /*navigation_handle_callback=*/{});
                      },
                      web_contents->GetWeakPtr(), std::move(params)));
+  return true;
 }
 
 }  // namespace brave_shields

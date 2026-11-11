@@ -19,7 +19,9 @@ namespace brave_shields {
 // Asynchronously starts a new navigation to `url` that copies the parameters
 // of `navigation_handle`, using `transition` as its page transition. The
 // caller is responsible for cancelling the navigation of `navigation_handle`.
-void RestartNavigationWithURL(content::NavigationHandle& navigation_handle,
+// Return true if navigation restart was posted successfully, false
+// otherwise.
+bool RestartNavigationWithURL(content::NavigationHandle& navigation_handle,
                               const GURL& url,
                               ui::PageTransition transition);
 
